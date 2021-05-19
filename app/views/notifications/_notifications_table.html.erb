@@ -20,7 +20,7 @@
         <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
       </td>
       <td class="actions">
-        <span class="btn btn-sm btn-default read-toggle-button" >
+        <span class="btn btn-sm btn-secondary read-toggle-button" >
           <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= n.read ? t('js.mark_as_unread') : t('js.mark_as_read') %>"></i>
         </span>
         <span class="btn btn-sm btn-danger delete-button" title="<%= t('notifications.index.delete') %>">

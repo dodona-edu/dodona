@@ -3,7 +3,7 @@
 <% end %>
 <%= render partial: 'courses/navbar_links' %>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @course.name + " - " + t("courses.show.users") %></h2>
@@ -14,7 +14,7 @@
             <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
             <% if @course.moderated || !@course.pending_members.empty? %>
               <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %>
-                <span class="badge badge-pending" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a>
+                <span class="badge rounded-pill badge-pending" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a>
               </li>
             <% end %>
             <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
@@ -25,9 +25,8 @@
             <div class="modal-dialog" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="<%= t(".close") %>">
-                    <span aria-hidden="true">&times;</span></button>
                   <h4 class="modal-title"><%= t(".edit_all_labels") %></h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t(".close") %>"></button>
                 </div>
                 <div class="modal-body">
                   <ol>
@@ -36,7 +35,7 @@
                         <%= t ".first_download_labels" %>
                       </p>
                       <p>
-                        <a class="btn-text btn-default" href="<%= download_labels_csv_course_members_path(@course) %>"><%= t ".download" %>
+                        <a class="btn-text btn-secondary" href="<%= download_labels_csv_course_members_path(@course) %>"><%= t ".download" %>
                         </a>
                       </p>
                     </li>

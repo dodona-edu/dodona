@@ -34,8 +34,8 @@
       <input id="auto-mark" type="checkbox" name="auto_mark" checked>
       <label class="checkbox-label"
              for="auto-mark"
-             data-toggle="tooltip"
-             data-placement="bottom"
+             data-bs-toggle="tooltip"
+             data-bs-placement="bottom"
              title="<%= t(".auto-mark-help") %>">
         <%= t('.automatically_mark') %>
       </label>
@@ -58,15 +58,15 @@
         </div>
       </div>
       <div class="row row-no-gutters form-row">
-        <div class="col-xs-8 total-score" data-total="<%= @feedback.score %>">
+        <div class="col-8 total-score" data-total="<%= @feedback.score %>">
           <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
         </div>
-        <div class="col-xs-4 score-buttons">
+        <div class="col-4 score-buttons">
           <div class="btn-group" role="group">
-            <%= button_tag class: "btn btn-default btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
+            <%= button_tag class: "btn btn-secondary btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
               <i class="mdi mdi-thumb-down mdi-12" aria-hidden='true'></i>
             <% end %>
-            <%= button_tag class: "btn btn-default btn-sm", id: 'max-button', title: t(".give_max_all") do %>
+            <%= button_tag class: "btn btn-secondary btn-sm", id: 'max-button', title: t(".give_max_all") do %>
               <i class="mdi mdi-thumb-up mdi-12" aria-hidden='true'></i>
             <% end %>
           </div>
@@ -89,7 +89,7 @@
   <h4 class="ellipsis-overflow" title="<%= @feedback.exercise.name %>"><%= @feedback.exercise.name %></h4>
   <% metadata = @feedback.evaluation_exercise.metadata %>
   <span><%= t('.exercise_progress', feedback_count: metadata[:done], feedback_total: metadata[:total]) %></span>
-  <span class="feedback-actions-progress" data-html="true" data-toggle="tooltip" title="<%= t('evaluations.show.progress_html', feedback_count: metadata[:done], feedback_total: metadata[:total]) %>">
+  <span class="feedback-actions-progress" data-bs-html="true" data-bs-toggle="tooltip" title="<%= t('evaluations.show.progress_html', feedback_count: metadata[:done], feedback_total: metadata[:total]) %>">
     <svg class="progress-chart" viewBox="0 0 1 1" style="height: 8px; width: 100%" preserveAspectRatio="none">
       <line x1="0" y1="0.5" x2="<%= metadata[:done].to_f / metadata[:total] %>" y2="0.5" class="info"></line>
       <line x1="<%= metadata[:done].to_f / metadata[:total] %>" y1="0.5" x2="1" y2="0.5" class="not-started"></line>

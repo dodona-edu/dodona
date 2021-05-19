@@ -154,7 +154,7 @@ function initCSRF() {
 }
 
 function initTooltips() {
-    $("[data-toggle=\"tooltip\"]").tooltip({ container: "body" });
+    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body" });
 }
 
 function tooltip(target, message, disappearAfter=1000) {

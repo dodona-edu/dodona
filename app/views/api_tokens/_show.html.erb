@@ -1,14 +1,12 @@
 <h5><%= t ".new-token" %></h5>
 <p><%= t ".new-token-explanation" %>
 <div class="form-horizontal">
-  <div class="field form-group">
+  <div class="field form-group row">
     <div class="col-md-6">
       <div class="input-group ">
         <% name = "fresh-token-value" %>
         <%= text_field_tag name, token.token, readonly: true, class: 'form-control' %>
-        <span class="input-group-btn">
-          <%= clipboard_button_for name %>
-        </span>
+        <%= clipboard_button_for name %>
       </div>
     </div>
   </div>

@@ -1,0 +1,122 @@
+// importing this file has no effect
+// you have to explicitly call @include theme-dark
+@mixin theme-dark {
+  $color-red: $red-800 !global;
+  $color-pink: $pink-800 !global;
+  $color-purple: $purple-800 !global;
+  $color-deep-purple: $deep-purple-800 !global;
+  $color-indigo: $indigo-800 !global;
+  $color-teal: $teal-800 !global;
+  $color-orange: $deep-orange-800 !global;
+  $color-brown: $brown-800 !global;
+  $color-blue-grey: $blue-grey-700 !global;
+
+  $primary-700: $light-blue-800 !global;
+  $accent-300: $yellow-400 !global;
+  $accent-500: $yellow-800 !global;
+  $accent-800: lighten($accent-500, 10%) !global;
+  $brand-primary: $accent-500 !global;
+
+  $success-800: $green-200 !global;
+  $success-500: $green-300 !global;
+  $success-100: $green-800 !global;
+  $danger-800: $red-200 !global;
+  $danger-500: $red-300 !global;
+  $info-500: $light-blue-300 !global;
+  $warning-500: $amber-300 !global;
+
+  $body-bg: $blue-grey-800 !global;
+  $content-bg: $blue-grey-900 !global;
+  $text-color: $white-text !global;
+  $body-color: $text-color !global;
+  $text-disabled: $white-disabled !global;
+  $text-secondary: $white-secondary !global;
+  $hairlinegray: $white-divider !global;
+}
+
+@mixin theme-dark-other {
+  $secondary: $blue-grey-800 !global;
+  $dropdown-link-color: $text-color !global;
+  $dropdown-border-color: $hairlinegray !global;
+  $dropdown-divider-bg: $hairlinegray !global;
+  $dropdown-link-hover-color: $text-color !global;
+  $dropdown-link-hover-bg: $body-bg !global;
+
+  $input-bg: $content-bg !global;
+  $input-color: $text-color !global;
+  $input-disabled-bg: $body-bg !global;
+  $btn-secondary-bg: $content-bg !global;
+  $btn-secondary-color: $text-color !global;
+
+  $pre-bg: $content-bg !global;
+  $pre-color: $text-color !global;
+
+  $code-bg: $body-bg !global;
+  $code-light-bg: $body-bg !global;
+
+  $alert-warning-bg: inherit !global;
+  $alert-info-bg: inherit !global;
+  $alert-danger-bg: inherit !global;
+
+  $table-border-color: $hairlinegray !global;
+  $table-bg-accent: $body-bg !global;
+
+  $nav-link-hover-bg: darken($body-bg, 3%) !global;
+  $nav-tabs-border-color: $hairlinegray !global;
+
+  $modal-content-bg: $content-bg !global;
+  $modal-content-border-color: $hairlinegray !global;
+  $modal-header-border-color: $hairlinegray !global;
+
+  $pagination-bg: $content-bg !global;
+  $pagination-hover-bg: $content-bg !global;
+  $pagination-disabled-bg: $content-bg !global;
+
+  $panel-bg: $body-bg !global;
+  $panel-default-heading-bg: $body-bg !global;
+  $panel-default-text: $text-color !global;
+  $panel-default-border: $content-bg !global;
+
+  // other overrides
+  $text-muted: $white-secondary !global;
+
+  // custom elements
+  $btn-hover-background: $body-bg !global;
+  $btn-active-background: $body-bg !global;
+  $toggle-btn-active-bg: $body-bg !global;
+  $toggle-btn-bg: $content-bg !global;
+
+  $drawer-border: $hairlinegray !global;
+  $drawer-hover: $body-bg !global;
+  $drawer-active: $body-bg !global;
+
+  $feedback-diff-table-header-bg: $body-bg !global;
+  $feedback-diff-table-header-fg: $text-secondary !global;
+  $feedback-diff-table-ins: $green-900 !global;
+  $feedback-diff-table-ins-strong: $green-800 !global;
+  $feedback-diff-table-del: $red-900 !global;
+  $feedback-diff-table-del-strong: $red-800 !global;
+
+  $skeleton-color: $body-bg !global;
+
+  $footer-bg: $blue-grey-900 !global;
+
+  $heatmap-empty-fg: $body-bg !global;
+  $punchcard-fg: $light-blue-900 !global;
+
+  $table-hover-bg: $body-bg !global;
+
+  $input-group-addon-bg: $grey-800 !global;
+
+  $form-select-indicator-color: $text-color !global;
+
+  .activity-description {
+    .light-only {
+      display: none;
+    }
+
+    .dark-only {
+      display: unset;
+    }
+  }
+}

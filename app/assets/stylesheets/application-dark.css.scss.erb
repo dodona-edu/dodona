@@ -1,0 +1,8 @@
+<% if Rails.env.development? || Rails.env.test? || Rails.env.staging? %>
+  //$development: true;
+  $development: false;
+<% end %>
+
+$theme: "dark";
+
+@import "base";

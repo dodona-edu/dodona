@@ -292,9 +292,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 }, (lastTimeout || 0) + 1000);
             } else {
                 lastTimeout = 0;
-                if ($("#activity-submission-link").parent().hasClass("active")) {
+                if ($("#activity-submission-link").hasClass("active")) {
                     $submissionRow.find(".load-submission").get(0).click();
-                } else if ($("#activity-feedback-link").parent().hasClass("active") &&
+                } else if ($("#activity-feedback-link").hasClass("active") &&
                     $("#activity-feedback-link").data("submission_id") === lastSubmission) {
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
@@ -349,7 +349,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (message === undefined) {
             message = I18n.t("js.submission-failed");
         }
-        $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span>&times;</span></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
+        $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"alert\"></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
         enableSubmitButton();
     }
 

@@ -8,12 +8,12 @@
 <% end %>
 
 <div class="row" id="feedback-page">
-  <div class="col-xs-12 col-lg-push-9 col-lg-3 feedback-metadata">
+  <div class="col-12 order-lg-1 col-lg-3 feedback-metadata">
     <div class="card" id="feedback-actions-holder">
       <%= render partial: 'feedback_actions', locals: { evaluation: @feedback.evaluation, feedback: @feedback } %>
     </div>
   </div>
-  <div class="col-xs-12 col-lg-pull-3 col-lg-9 feedback-submission">
+  <div class="col-12 order-lg-0 col-lg-9 feedback-submission">
     <div class="card feedback-show">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><span>
@@ -27,7 +27,7 @@
       <div class="card-supporting-text card-border">
         <div class="row">
         <% if @feedback.total_attempts > 0 %>
-          <div class="col-sm-6 col-sm-push-6">
+          <div class="col-sm-6 order-sm-1">
             <div class="feedback-metadata-submission">
               <p>
               <% if @feedback.submission.present? %>
@@ -49,14 +49,14 @@
               </p>
             </div>
           </div>
-          <div class="col-sm-6 col-sm-pull-6">
+          <div class="col-sm-6 order-sm-0">
           <% else %>
           <div class="col-sm-12">
           <% end %>
             <% if @feedback.submission.present? %>
               <% submission = @feedback.submission %>
               <div class="submission-summary clearfix">
-                <span class='status-icon pull-left'><%= submission_status_icon(submission, 36) %></span>
+                <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
                 <span class="status-line">
                   <%= Submission.human_enum_name(:status, submission.status) %>
                   <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>

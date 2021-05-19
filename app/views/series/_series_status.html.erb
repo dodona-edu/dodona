@@ -2,7 +2,7 @@
 <% if loaded && user.present? %>
   <% deadline_class, deadline_icon = series_status_deadline(series, user) %>
   <% progress_class, progress_icon = series_status_progress(series, user) %>
-  <div class="card-title-icon <%= progress_class %> <%= deadline_class %>" title="<%= series_status(series, user) %>" data-toggle="tooltip" data-placement="top">
+  <div class="card-title-icon <%= progress_class %> <%= deadline_class %>" title="<%= series_status(series, user) %>" data-bs-toggle="tooltip" data-bs-placement="top">
     <i class="mdi <%= progress_icon %>"></i>
     <% if deadline_icon %>
       <i class="mdi mdi-18 <%= deadline_icon %>"></i>

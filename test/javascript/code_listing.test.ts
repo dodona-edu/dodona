@@ -9,14 +9,14 @@ beforeEach(() => {
     window.MathJax.typeset = () => "";
 
     document.body.innerHTML = `
-    <a href="#" data-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
+    <a href="#" data-bs-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
     <div class="code-table" data-submission-id="54">
     <div id="feedback-table-options" class="feedback-table-options">
         <button class="btn btn-text" id="add_global_annotation">Annotatie toevoegen</button>
         <span class="flex-spacer"></span>
         <span class="diff-switch-buttons switch-buttons hide" id="annotations_toggles">
             <span id="diff-switch-prefix">Annotaties</span>
-            <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-toggle="buttons">
+            <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-bs-toggle="buttons">
                 <button class="annotation-toggle active" id="show_all_annotations"></button>
                 <button class="annotation-toggle" id="show_only_errors"></button>
                 <button class="annotation-toggle" id="hide_all_annotations"></button>

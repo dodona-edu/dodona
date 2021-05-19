@@ -196,10 +196,10 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         if (searchOptions.length > 0) {
             $actions
                 .find("ul")
-                .append("<li class='dropdown-header'>" + I18n.t("js.options") + "</li>");
+                .append(`<li><h6 class='dropdown-header'>${I18n.t("js.options")}</h6></li>`);
             searchOptions.forEach(function (action, id) {
                 const $link = $(
-                    `<a class="action" href='#' ${
+                    `<a class="action dropdown-item" href='#' ${
                         action.type ? "data-type=" + action.type : ""
                     } data-search_opt_id="${id}">${
                         action.text
@@ -232,10 +232,10 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         if (searchActions.length > 0) {
             $actions
                 .find("ul")
-                .append("<li class='dropdown-header'>" + I18n.t("js.actions") + "</li>");
+                .append(`<li><h6 class='dropdown-header'>${I18n.t("js.actions")}</h6></li>`);
             searchActions.forEach(function (action) {
                 const $link = $(
-                    `<a class="action" href='${
+                    `<a class="action dropdown-item" href='${
                         action.url ? action.url : "#"
                     }' ${
                         action.type ? "data-type=" + action.type : ""

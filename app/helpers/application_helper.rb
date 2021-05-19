@@ -82,8 +82,8 @@ module ApplicationHelper
       options[:class] ||= ''
       options[:class] += ' active'
     end
-    options[:'data-toggle'] = 'tooltip'
-    options[:'data-placement'] = 'bottom'
+    options[:'data-bs-toggle'] = 'tooltip'
+    options[:'data-bs-placement'] = 'bottom'
 
     locals = {
       title: options.delete(:title),
@@ -111,7 +111,7 @@ module ApplicationHelper
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')
-    button_tag class: 'btn btn-default',
+    button_tag class: 'btn btn-secondary',
                type: 'button',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
@@ -132,7 +132,7 @@ module ApplicationHelper
 
   def sanitize(html)
     @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
-    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
+    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-bs-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
 
     # Filters allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,
@@ -204,15 +204,15 @@ module ApplicationHelper
     end
 
     def page_number(page)
-      tag :li, link(page, page, rel: rel_value(page)), class: ('active' if page == current_page)
+      tag :li, link(page, page, rel: rel_value(page), class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
     end
 
     def gap
-      tag :li, link('&hellip;', '#'), class: 'disabled'
+      tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
     def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#'), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+      tag :li, link(text, page || '#', class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 
@@ -224,15 +224,15 @@ module ApplicationHelper
     end
 
     def page_number(page)
-      tag :li, link(page, page, rel: rel_value(page), "data-remote": true), class: ('active' if page == current_page)
+      tag :li, link(page, page, rel: rel_value(page), "data-remote": true, class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
     end
 
     def gap
-      tag :li, link('&hellip;', '#'), class: 'disabled'
+      tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
     def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', "data-remote": true), class: [classname[0..3], classname, ('disabled' unless page)].join(' ')
+      tag :li, link(text, page || '#', "data-remote": true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 

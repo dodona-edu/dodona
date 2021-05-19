@@ -1,0 +1,187 @@
+.table-toolbar {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1;
+  font-size: 18px;
+  min-height: 36px;
+  width: 100%;
+  color: $text-color;
+  margin-bottom: 6px;
+
+  .btn {
+    font-size: 18px;
+  }
+}
+
+.table-toolbar .table-toolbar-tools {
+  font-size: 18px;
+  letter-spacing: 0.005em;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  width: 100%;
+  min-height: 36px;
+  padding-left: 8px;
+  margin: 0;
+}
+
+.table-toolbar .table-toolbar-tools > .mdi::before {
+  margin-top: 3px;
+  margin-left: 8px;
+  color: $text-disabled;
+}
+
+.table-toolbar .table-toolbar-tools .search {
+  margin-left: 0px;
+  flex: 1;
+
+  input {
+    width: 100%;
+    margin: 0;
+    border: none;
+    color: $text-color;
+    vertical-align: baseline;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  input::-webkit-input-placeholder {
+    color: $text-disabled;
+    font-weight: 300;
+  }
+
+  input::-moz-placeholder {
+    color: $text-disabled;
+    font-weight: 300;
+  }
+
+  input:-ms-input-placeholder {
+    color: $text-disabled;
+    font-weight: 300;
+  }
+
+  input::input-placeholder {
+    color: $text-disabled;
+    font-weight: 300;
+  }
+}
+
+.table-toolbar input {
+  background-color: inherit;
+}
+
+.table-toolbar .table-toolbar-tools .search .tokenfield {
+  border: none;
+  box-shadow: none;
+
+  .token {
+    margin-top: 6px;
+    margin-bottom: 6px;
+    font-size: 15px;
+  }
+
+  .twitter-typeahead .token-input.tt-hint {
+    color: $text-secondary;
+    margin-top: 7px;
+    margin-bottom: 6px;
+    margin-left: 12px;
+  }
+
+  input {
+    font-size: 18px;
+  }
+}
+
+.tt-header {
+  padding-left: 5px;
+}
+
+.dodona-progress {
+  display: block;
+  position: relative;
+  height: 4px;
+  max-width: 100%;
+  visibility: hidden;
+}
+
+.dodona-progress > .bar {
+  display: block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0%;
+  transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dodona-progress > .progressbar {
+  background-color: $progress-bar-bg;
+  z-index: 1;
+  left: 0;
+}
+
+.dodona-progress > .bufferbar {
+  background-image: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.7),
+      rgba(255, 255, 255, 0.7)
+    ),
+    linear-gradient(to right, $accent-A100, $accent-A100);
+  z-index: 0;
+  left: 0;
+}
+
+.dodona-progress > .auxbar {
+  right: 0;
+}
+
+.dodona-progress.dodona-progress-indeterminate > .bar1,
+.dodona-progress.dodona-progress-indeterminate > .bar3 {
+  background-color: $progress-bar-bg;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+
+.mdl-progress.mdl-progress-indeterminate > .bar3 {
+  background-image: none;
+  animation-name: indeterminate2;
+}
+
+.dodona-progress.dodona-progress-indeterminate > .bar1 {
+  animation-name: indeterminate1;
+}
+
+@keyframes indeterminate1 {
+  0% {
+    left: 0%;
+    width: 0%;
+  }
+  50% {
+    left: 25%;
+    width: 75%;
+  }
+  75% {
+    left: 100%;
+    width: 0%;
+  }
+}
+
+@keyframes indeterminate2 {
+  0%,
+  50% {
+    left: 0%;
+    width: 0%;
+  }
+  75% {
+    left: 0%;
+    width: 25%;
+  }
+  100% {
+    left: 100%;
+    width: 0%;
+  }
+}

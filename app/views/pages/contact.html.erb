@@ -1,16 +1,16 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
       </div>
-      <div class="card-supporting-text">
-        <div class="col-sm-6">
+      <div class="card-supporting-text row">
+        <div class="col-lg-6">
           <p><%= t('.contact_p1_html') %></p>
           <p><%= t('.contact_p2_html') %></p>
           <p><%= t('.contact_p3_html') %></p>
         </div>
-        <div class="col-sm-6">
+        <div class="col-lg-6">
           <% if policy(RightsRequest).create? %>
             <div class="callout callout-info">
               <h4><%= t('.rights_request_title') %></h4>
@@ -21,26 +21,26 @@
       </div>
       <div class="card-supporting-text card-border">
         <%= form_for @contact_form, url: create_contact_path, html: {class: 'form-horizontal'} do |f| %>
-          <div class="field form-group">
-            <%= f.label t('.name'), :class => "col-sm-2 control-label" %>
+          <div class="field form-group row">
+            <%= f.label t('.name'), :class => "col-sm-2 col-form-label" %>
             <div class="col-sm-4"><%= f.text_field :name, required: true, class: "form-control" %></div>
           </div>
-          <div class="field form-group">
-            <%= f.label t('.email'), :class => "col-sm-2 control-label" %>
+          <div class="field form-group row">
+            <%= f.label t('.email'), :class => "col-sm-2 col-form-label" %>
             <div class="col-sm-4"><%= f.text_field :email, required: true, class: "form-control" %></div>
           </div>
-          <div class="field form-group">
-            <%= f.label t('.subject'), :class => "col-sm-2 control-label" %>
+          <div class="field form-group row">
+            <%= f.label t('.subject'), :class => "col-sm-2 col-form-label" %>
             <div class="col-sm-4"><%= f.text_field :subject, required: true, class: "form-control" %></div>
           </div>
-          <div class="field form-group">
-            <%= f.label t('.message'), :class => "col-sm-2 control-label" %>
+          <div class="field form-group row">
+            <%= f.label t('.message'), :class => "col-sm-2 col-form-label" %>
             <div class="col-sm-8"><%= f.text_area :message, required: true, class: "form-control", rows: 8 %></div>
           </div>
 
           <% if Rails.env.production? || Rails.env.staging? %>
-            <div class="form-group">
-              <div class="col-sm-offset-2 col-sm-8">
+            <div class="form-group row">
+              <div class="offset-sm-2 col-sm-8">
                 <%= recaptcha_tags %>
               </div>
             </div>
@@ -48,7 +48,7 @@
         <% end %>
       </div>
       <div class="card-actions card-border">
-        <button type="submit" class="btn-primary btn-text pull-right" form="new_contact_form"><%= t('.send') %></a>
+        <button type="submit" class="btn-primary btn-text float-end" form="new_contact_form"><%= t('.send') %></a>
       </div>
     </div>
   </div>

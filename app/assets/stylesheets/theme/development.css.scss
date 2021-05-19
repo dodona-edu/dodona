@@ -1,0 +1,20 @@
+// importing this file has no effect
+// you have to explicitly call @include theme-development
+@mixin theme-development {
+  // primary: teal
+  $primary-100: $teal-100 !global;
+  $primary-300: $teal-300 !global;
+  $primary-500: $teal-500 !global;
+  $primary-700: $teal-700 !global;
+  $primary-800: $teal-800 !global;
+  $primary-900: $teal-900 !global;
+  $primary-A100: $teal-A100 !global;
+
+  // accent: pink
+  $accent-300: $pink-300 !global;
+  $accent-500: $pink-500 !global;
+  $accent-700: $pink-700 !global;
+  $accent-800: $pink-800 !global;
+  $accent-900: $pink-900 !global;
+  $accent-A100: $pink-A100 !global;
+}

@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'scoresheet' %>
 <% end %>
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
@@ -13,7 +13,7 @@
         <div class="scoresheet-options-container">
           <div class="form-group">
             <label for="scoresheet-selector"><%= t('.select_view') %></label>
-            <select class="form-control" id="scoresheet-selector">
+            <select class="form-select" id="scoresheet-selector">
               <option data-url="<%= scoresheet_course_url(@course) %>"><%= t('.course_view') %></option>
               <% @course.series.reverse.each do |s| %>
                 <option data-url="<%= scoresheet_series_url(s) %>" <%= "selected" if s.id == @series.id %>><%= s.name %></option>

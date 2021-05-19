@@ -3,19 +3,19 @@
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
-  <div class="col-sm-10 col-xs-12 col-sm-offset-1">
+  <div class="col-md-10 col-12 offset-md-1 page-content">
     <div class="card">
       <div class="card-title card-title-colored">
         <% if !@course.open_for_all? || @course.moderated %>
           <% title = [] %>
           <% title.push t(".registration-#{@course.registration}-info", institution: @course.institution&.name) unless @course.open_for_all? %>
           <% title.push t(".moderated-info") if @course.moderated %>
-          <h2 class='card-title-text pull-right' title='<%= title.join("\n") %>'>
+          <h2 class='card-title-text float-end' title='<%= title.join("\n") %>'>
             <i class="mdi mdi-account-remove-outline"></i>
           </h2>
         <% end %>
         <% unless @course.visible_for_all? %>
-          <h2 class='card-title-text pull-right' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
+          <h2 class='card-title-text float-end' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
             <i class="mdi mdi-eye-off-outline"></i>
           </h2>
         <% end %>
@@ -31,7 +31,7 @@
 
       <% if @course.description.present? or current_user&.member_of?(@course).! %>
         <div class="card-supporting-text card-border row course-description">
-          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-xs-12">
+          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-12">
             <%= cache @course do %>
               <%= markdown(@course.description) %>
             <% end %>
@@ -48,7 +48,7 @@
       <% if current_user&.course_admin?(@course) %>
         <div class="card-supporting-text card-border">
           <div class="row">
-            <div class="col-xs-12">
+            <div class="col-12">
               <%= render 'user_stats' %>
             </div>
           </div>
@@ -61,31 +61,31 @@
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
-            <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+            <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-end">
               <% if policy(@course).scoresheet? %>
                 <li>
-                  <%= link_to t("courses.scoresheet.scoresheet"), scoresheet_course_url(@course) %>
+                  <%= link_to t("courses.scoresheet.scoresheet"), scoresheet_course_url(@course), class: "dropdown-item" %>
                 </li>
               <% end %>
               <% if policy(@course).copy? %>
                 <li>
-                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}) %>
+                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}), class: "dropdown-item" %>
                 </li>
               <% end %>
               <% if current_user&.course_admin?(@course) %>
                 <li>
-                  <%= link_to t(".download_submissions"), courses_exports_path(@course) %>
+                  <%= link_to t(".download_submissions"), courses_exports_path(@course), class: "dropdown-item" %>
                 </li>
               <% end %>
               <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
-                <li role="separator" class="divider"></li>
+                <li role="separator" class="dropdown-divider"></li>
               <% end %>
               <% if policy(@course).download_submissions? %>
                 <li>
-                  <%= link_to t(".download_my_submissions"), courses_exports_path(@course, user_id: current_user.id) %>
+                  <%= link_to t(".download_my_submissions"), courses_exports_path(@course, user_id: current_user.id), class: "dropdown-item" %>
                 </li>
               <% end %>
             </ul>
@@ -119,11 +119,11 @@
       <% end %>
     </div>
   </div>
-  <nav class="col-md-1 hidden-xs hidden-sm hidden-print series-sidebar">
-    <ul class="nav" data-spy="affix" data-offset-bottom="80">
+  <nav id="scrollspy-nav" class="col-md-1 d-none d-md-block hidden-print series-sidebar">
+    <ul class="nav" data-offset-bottom="80">
       <li class="header ellipsis-overflow"><%= t ".exercise_series" %></li>
       <% @series.each do |series| %>
-        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow', title: series.name %> </li>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow nav-link', title: series.name %> </li>
       <% end %>
     </ul>
   </nav>

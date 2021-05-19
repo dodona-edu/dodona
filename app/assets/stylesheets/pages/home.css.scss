@@ -1,0 +1,185 @@
+.home-cover-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 380px;
+  width: 100%;
+  background: $home-lead-bg;
+  z-index: -1;
+}
+
+.home-header img {
+  margin-top: -35px;
+  margin-bottom: -10px;
+  @media (max-width: 991px) {
+    margin-top: 20px;
+  }
+}
+
+.home-lead {
+  color: $home-lead-fg;
+  margin-bottom: 20px;
+
+  .btn, .btn:active {
+    border-radius: 2px;
+    background-color: $content-bg;
+    border-color: $home-lead-bg;
+    color: $home-lead-bg;
+    text-transform: uppercase;
+  }
+
+  .btn:active {
+    background-color: $btn-active-background;
+  }
+
+  .lead {
+    margin-top: 25px;
+    margin-bottom: 30px;
+    font-size: 24px;
+  }
+}
+
+.home-card .card-title-text {
+  font-size: 36px;
+  line-height: 1.8;
+}
+
+.home-card .ugent {
+  img {
+    margin-top: -10px;
+    margin-bottom: -10px;
+  }
+
+  p {
+    margin-top: 12px;
+    line-height: 20px;
+  }
+}
+
+.home-card .supporters {
+  .center-vertical {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+  }
+}
+
+.info-step p {
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+}
+
+.info-step img {
+  padding-left: 25px;
+  padding-right: 25px;
+  @include media-breakpoint-down(md) {
+    margin: auto;
+  }
+}
+
+.home-summary-card h5 {
+  line-height: 18px;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.home-summary-card .dynamic-homepage-series-link,
+.home-summary-card .course-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.home-summary-card .deadlines p:last-child,
+.home-summary-card .recents p:last-child {
+  margin-bottom: 0;
+}
+
+.home-summary-card.user .deadlines small.deadline-ok,
+.home-summary-card.user .deadlines small.deadline-passed {
+  font-size: 100%;
+  line-height: 2;
+}
+
+.home-summary-card .deadlines .course-link,
+.home-summary-card .recents .course-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+}
+
+.home-summary-card .course-link:hover {
+  color: $course-link-hover-color;
+}
+
+.home-summary-card .stats h1 {
+  margin-top: -10px;
+}
+
+.home-summary-card.getting-started {
+  background-color: $getting-started-bg;
+}
+
+.home-summary-card.getting-started .card-media {
+  background-color: inherit;
+}
+
+.home-summary-card.getting-started .card-title {
+  color: $getting-started-fg;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.home-summary-card.getting-started .getting-started-text {
+  margin-right: 45px;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  @media (max-width: 480px) {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-right: 5px;
+  }
+}
+
+.home-summary-card.getting-started .getting-started-action {
+  background: $content-bg;
+}
+
+.home-summary-card.privacy-disclaimer {
+  .card-supporting-text {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .privacy-disclaimer-icon {
+      margin-right: 1em;
+    }
+
+  }
+}
+
+.recents span.float-start {
+  padding-right: 2px;
+}
+
+.row.v-align {
+  display: flex;
+  align-items: center;
+}
+
+.sponsor-logos .row {
+  display: flex;
+  align-items: center;
+}
+
+.metric-wrapper {
+  margin-top: -6px;
+  margin-bottom: -6px;
+}
+.metric {
+  margin-top: 6px;
+  margin-bottom: 6px;
+}

@@ -1,0 +1,6 @@
+.copy-table .selection-row {
+  cursor: pointer;
+  &:hover {
+    background-color: $table-hover-bg;
+  }
+}

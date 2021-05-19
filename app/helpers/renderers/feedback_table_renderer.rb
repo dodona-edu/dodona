@@ -31,7 +31,7 @@ class FeedbackTableRenderer
     if @result.present?
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
         if @result[:messages].present?
-          @builder.div(class: 'row feedback-table-messages') do
+          @builder.div(class: 'feedback-table-messages') do
             messages(@result[:messages])
           end
         end
@@ -40,7 +40,7 @@ class FeedbackTableRenderer
       end.html_safe
     else
       @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
-        @builder.div(class: 'row feedback-table-messages') do
+        @builder.div(class: 'feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end
       end.html_safe
@@ -79,11 +79,11 @@ class FeedbackTableRenderer
                     end
           @builder.li(class: ('active' if i.zero?)) do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
+            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
-              @builder.span(class: 'badge', id: "badge_#{badge_id}") do
+              @builder.span(class: 'badge rounded-pill', id: "badge_#{badge_id}") do
                 @builder.text! tab_count(t)
               end
             end
@@ -91,9 +91,9 @@ class FeedbackTableRenderer
         end
         if show_code_tab
           @builder.li(class: ('active' if submission[:groups].blank?)) do
-            @builder.a(href: '#code-tab', 'data-toggle': 'tab') do
+            @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
-              @builder.span(class: 'badge', id: 'badge_code')
+              @builder.span(class: 'badge rounded-piil', id: 'badge_code')
             end
           end
         end
@@ -141,10 +141,10 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.correct_tests')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye mdi-18')
               end
-              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye-off mdi-18')
               end
             end
@@ -156,10 +156,10 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.output')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
               end
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-toggle': 'tooltip', 'data-placement': 'top') do
+              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
               end
             end
@@ -174,9 +174,9 @@ class FeedbackTableRenderer
   end
 
   def group(g)
-    @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
       if g[:description]
-        @builder.div(class: 'col-xs-12 description') do
+        @builder.div(class: 'col-12 description') do
           message(g[:description])
         end
       end
@@ -186,33 +186,33 @@ class FeedbackTableRenderer
   end
 
   def testcase(tc)
-    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
     end
   end
 
   def testcase_content(tc)
-    @builder.div(class: 'col-xs-12 description') do
+    @builder.div(class: 'col-12 description') do
       @builder.div(class: 'indicator') do
         tc[:accepted] ? icon_correct : icon_wrong
       end
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each { |t| test(t) }
-    @builder.div(class: 'col-xs-12') do
+    @builder.div(class: 'col-12') do
       messages(tc[:messages])
     end
   end
 
   def test(t)
-    @builder.div(class: 'col-xs-12 test') do
+    @builder.div(class: 'col-12 test') do
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])
         end
       elsif (channel = t[:data]&.fetch(:channel, nil) || t[:channel])
         @builder.div(class: 'description') do
-          @builder.span(class: "label label-#{t[:accepted] ? 'success' : 'danger'}") do
+          @builder.span(class: "badge bg-#{t[:accepted] ? 'success' : 'danger'}") do
             @builder.text! channel
           end
         end

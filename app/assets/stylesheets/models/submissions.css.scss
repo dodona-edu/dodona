@@ -1,0 +1,295 @@
+.submissions-table {
+  th.status-column {
+    width: 48px;
+  }
+}
+
+.feedback-table {
+  .groups {
+    .badge {
+      display: block;
+      text-align: left;
+      border-left: 3px solid;
+      border-radius: 0;
+    }
+    .badge.bg-danger {
+      color: $brand-danger;
+      border-color: $brand-danger;
+      background-color: $content-bg !important;
+    }
+    .badge.bg-success {
+      color: $brand-success;
+      border-color: $brand-success;
+      background-color: $content-bg !important;
+    }
+  }
+
+  .description {
+    background-color: $code-bg;
+    pre {
+      border: none;
+    }
+  }
+  .groups {
+    margin: 0;
+    margin-right: 15px;
+  }
+  .group {
+    background-color: $content-bg;
+    margin-bottom: 12px;
+    border-left: 4px solid gray;
+    position: relative;
+    padding-left: 12px;
+
+    &.correct {
+      border-left-color: $brand-success;
+    }
+    &.wrong {
+      border-left-color: $brand-danger;
+    }
+  }
+  .testcase {
+    .indicator {
+      width: 15px;
+      height: 15px;
+      margin: 0 -12px 3px 3px;
+      float: right;
+
+      span {
+        margin: auto;
+      }
+    }
+    & > div {
+      margin-bottom: 3px;
+    }
+
+    &.correct {
+      .indicator {
+        color: $brand-success;
+      }
+    }
+    &.wrong {
+      .indicator {
+        color: $brand-danger;
+      }
+    }
+  }
+  .test .output,
+  .code {
+    font-family: $font-family-monospace;
+    font-size: 13px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+  }
+  table.diff {
+    overflow: auto;
+    font-size: 13px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    td {
+      vertical-align: top;
+    }
+    td.line-nr {
+      text-align: right;
+      white-space: pre-wrap;
+    }
+    th {
+      font-weight: normal;
+      padding-left: 5px;
+      padding-right: 5px;
+      background: $feedback-diff-table-header-bg;
+      color: $feedback-diff-table-header-fg;
+      vertical-align: center;
+    }
+    .del,
+    .ins,
+    .unchanged {
+      text-decoration: none;
+      padding-left: 5px;
+      padding-right: 5px;
+      word-wrap: break-word;
+      word-break: break-all;
+      white-space: pre-wrap;
+      font-family: $font-family-monospace;
+      strong {
+        font-weight: normal;
+        border-radius: 0.2em;
+      }
+    }
+    .ins {
+      background: $feedback-diff-table-ins;
+    }
+    .del {
+      background: $feedback-diff-table-del;
+    }
+    .ins strong {
+      background: $feedback-diff-table-ins-strong;
+    }
+    .del strong {
+      background: $feedback-diff-table-del-strong;
+    }
+    .line-nr {
+      background: $feedback-diff-table-header-bg;
+      color: $feedback-diff-table-header-fg;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+    .output {
+      width: 100%;
+    }
+    .ins-output,
+    .del-output {
+      width: 50%;
+      max-width: 50%;
+    }
+    .tr {
+      padding: 0;
+      margin: 0;
+      line-height: 1.0;
+    }
+  }
+  .diffs .unified-diff {
+    display: none;
+  }
+  .diffs .split-diff {
+    display: none;
+  }
+  .diffs.show-unified .unified-diff {
+    display: table;
+  }
+  .diffs.show-split .split-diff {
+    display: table;
+  }
+
+  .feedback-table-options {
+    margin-bottom: 1em;
+    width: 100%;
+    display: flex;
+
+    .switch-buttons {
+      margin-left: 1em;
+      span {
+        margin-right: .5em;
+      }
+    }
+
+    .diff-switch-buttons {
+      align-self: flex-end;
+    }
+  }
+
+  .description p {
+    margin-bottom: 0;
+  }
+
+  .linter pre {
+    border: none;
+  }
+  .linter pre.lineno {
+    border-right: 1px solid $divider-color;
+    padding-right: 25px;
+  }
+  .linter td.code {
+    width: 100%;
+  }
+  .linter .lint-errors {
+    list-style-type: none;
+    padding-left: 5px;
+  }
+  .lint-errors .code {
+    margin-left: 30px;
+  }
+  .code.wrong {
+    background: #fee;
+    color: #b00;
+  }
+  .code.correct {
+    background: #dfd;
+    color: #080;
+  }
+  .feedback-table-messages {
+    margin-bottom: 9.5px;
+  }
+  .row > .messages {
+    margin-left: 1em;
+    margin-right: 1em;
+  }
+  .message-zeus, .message-staff {
+    border-left: 3px solid $text-secondary;
+    padding-left: 25px
+  }
+  .message-zeus:before, .message-staff:before, .tab-zeus:before, .tab-staff:before {
+    font: normal normal normal 24px/1 "Material Design Icons";
+    color: $text-secondary;
+    font-size: 18px;
+  }
+  .message-zeus:before, .message-staff:before {
+    position: absolute;
+    left: 22px;
+  }
+  .tab-zeus:before, .tab-staff:before {
+    padding-right: 7px;
+  }
+  .message-zeus:before, .tab-zeus:before {
+    content: "\F0032";
+  }
+  .message-staff:before, .tab-staff:before {
+    content: "\F0474";
+  }
+  .message-zeus+.message-zeus:before,
+  .message-staff+.message-staff:before {
+    content: '';
+  }
+  .tab-link-marker {
+    background: $brand-warning !important;
+  }
+}
+
+#editor-result .ace_content {
+  background-color: $code-light-bg;
+  cursor: default;
+}
+
+iframe.file {
+  border: none;
+}
+
+.ace_gutter-cell {
+  background-position: 2px top !important;
+}
+
+.colored-correct {
+  color: $brand-success;
+}
+
+.colored-wrong {
+  color: $brand-danger;
+}
+
+.colored-warning {
+  color: $brand-warning;
+}
+
+.colored-secondary {
+  color: $text-secondary;
+}
+
+.submission-summary {
+  .status-icon {
+    padding-right: 6px;
+  }
+  .status-line, .byline, .description, .score {
+    display: block;
+  }
+  .description {
+    margin-bottom: 6px;
+  }
+  .edit-score {
+    margin-left: 10px;
+  }
+}
+
+.score-details {
+  padding-bottom: 10px;
+}

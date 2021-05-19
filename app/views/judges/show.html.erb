@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @judge.name %></h2>
@@ -10,7 +10,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <div class="col-sm-6 col-xs-12">
+        <div class="col-sm-6 col-12">
           <p>
             <strong><%= t ".judge" %>:</strong> <%= @judge.name %>
           </p>
@@ -35,15 +35,13 @@
             <strong><%= t ".all_exercises" %>:</strong> <%= link_to Activity.by_judge(@judge).count, activities_url(judge_id: @judge.id), title: @judge.name, class: "ellipsis-overflow" %>
           </p>
         </div>
-        <div class="col-sm-6 col-xs-12">
+        <div class="col-sm-6 col-12">
           <div class="callout callout-info">
             <h4>Webhook</h4>
             <p><%= t ".webhook_html" %></p>
             <div class="input-group">
               <%= text_field_tag :webhook_link, webhook_judge_url(@judge), readonly: true, class: 'form-control' %>
-              <span class="input-group-btn">
-                <%= clipboard_button_for :webhook_link %>
-              </span>
+              <%= clipboard_button_for :webhook_link %>
             </div>
           </div>
         </div>

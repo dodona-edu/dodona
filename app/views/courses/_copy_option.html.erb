@@ -1,10 +1,10 @@
-<div class="field form-group">
-  <div class="col-sm-6 col-sm-offset-3">
+<div class="field form-group row">
+  <div class="col-sm-6 offset-sm-3">
     <input type="checkbox" id="copy_<%= name %>" name="copy_options[<%= name %>]" <%= "checked" if copy_options[name] %>>
     <label class="checkbox-label" for="copy_<%= name %>"><%= explanation %></label>
   </div>
   <% if local_assigns.key? :details %>
-  <span class="help-block col-sm-6 col-sm-offset-3">
+  <span class="help-block col-sm-6 offset-sm-3">
     <%= local_assigns[:details] %>
   </span>
   <% end %>

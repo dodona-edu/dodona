@@ -1,0 +1,99 @@
+.admin-card-info {
+  margin-top: 24px;
+}
+
+.admin-card-stat {
+  margin-bottom: 16px;
+}
+
+.badge-pending {
+  background-color: $pending-color;
+}
+
+.card.course {
+  position: unset;
+  z-index: 0;
+}
+
+.course-search.card {
+  padding-top: 6px;
+}
+
+.copy-courses-table tbody tr {
+  &:hover {
+    background-color: $table-hover-bg;
+    cursor: pointer;
+  }
+}
+
+.activity-sidebar {
+  .nav {
+    padding-bottom: 80px;
+  }
+}
+
+.activity-sidebar,
+.series-sidebar {
+  position: sticky;
+  top: calc(#{$navbar-height} + 20px);
+  padding: 0;
+  height: 100px; // hack, overflow is shown
+
+  @include media-breakpoint-up(md) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2);
+      height: calc(100vh - (#{$navbar-height} + 20px));
+      display: block;
+      overflow-y: auto;
+      position: sticky;
+      top: calc(#{$navbar-height} + 20px);
+
+      &.affix-bottom {
+        height: calc(100vh - (#{$navbar-height} + 120px));
+        position: fixed;
+        top: 70px !important;
+      }
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2);
+    }
+  }
+  @include media-breakpoint-up(xl) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2);
+    }
+  }
+  @include media-breakpoint-up(xxl) {
+    .nav {
+      width: calc((100vw - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2);
+    }
+  }
+
+  .nav > li.header {
+    color: $text-secondary;
+  }
+
+  .nav > li > a {
+    display: block;
+    padding: 6px 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: $text-disabled;
+  }
+
+  .nav > li > a.active,
+  .nav > li > a.active:hover {
+    border-left: 2px solid $primary-800;
+    padding-left: 4px;
+    color: $text-secondary;
+  }
+
+  .nav > li > a:hover {
+    border-left: 1px solid $primary-800;
+    padding-left: 5px;
+    color: $text-secondary;
+  }
+}

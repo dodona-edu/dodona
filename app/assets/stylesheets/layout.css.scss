@@ -1,0 +1,44 @@
+@import "layout/drawer";
+@import "layout/footer";
+@import "layout/navbar";
+
+html,
+body {
+  height: 100%;
+  font-family: $font-family-base;
+}
+
+// Set height of frame layout to fit-content to allow downsizing
+html.dodona-frame,
+html.dodona-frame > body,
+html.lti-frame,
+html.lti-frame > body {
+  height: fit-content;
+  background: $content-bg;
+}
+
+#page-wrapper {
+  min-height: 100%;
+  position: relative;
+  padding-top: 50px;
+
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+  width: 100%;
+
+}
+
+.container.main {
+  padding-top: 20px;
+  padding-bottom: 80px;
+  @include media-breakpoint-down(md) {
+    padding-bottom: 180px;
+  }
+}
+
+iframe.dodona-iframe {
+  width: 100%;
+  border: none;
+  margin-bottom: 10px;
+}

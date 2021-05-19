@@ -2,9 +2,9 @@
   <colgroup>
     <col/>
     <col/>
-    <col class="col-xs-5"/>
-    <col class="col-xs-5"/>
-    <col class="col-xs-2"/>
+    <col class="col-5"/>
+    <col class="col-5"/>
+    <col class="col-2"/>
   </colgroup>
   <thead>
   <tr>
@@ -25,7 +25,7 @@
         </div>
       </td>
       <td class="status-icon">
-      <span class="pull-right">
+      <span class="float-end">
         <% if s.hidden? %>
         <i class="mdi mdi-eye-off mdi-18" title="<%= t "activerecord.attributes.series.visibilities.hidden" %>"></i>
         <% elsif s.closed? %>
@@ -50,7 +50,7 @@
       </td>
       <td class="actions">
         <% if policy(s).edit? %>
-          <%= link_to edit_series_url(s), class: "btn btn-sm btn-default", title: t("series.edit.title") do %>
+          <%= link_to edit_series_url(s), class: "btn btn-sm btn-secondary", title: t("series.edit.title") do %>
             <i class="mdi mdi-18 mdi-pencil"></i>
           <% end %>
         <% end %>

@@ -3,11 +3,11 @@
 <% end %>
 
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left"><i class="mdi mdi-36 <%= @course_membership.course_admin? ? "mdi-school" : "mdi-account" %>">
+          <span class="user-icon float-start"><i class="mdi mdi-36 <%= @course_membership.course_admin? ? "mdi-school" : "mdi-account" %>">
           </i></span>
           <span class="profile-line">
             <span class="name">
@@ -18,7 +18,7 @@
             <% end %>
             <span class="labels">
               <% @course_membership.course_labels.each do |label| %>
-                <span class="label label-default accent-orange"><%= label.name %></span>
+                <span class="badge bg-primary"><%= label.name %></span>
               <% end %>
             </span>
           </span>
@@ -35,20 +35,20 @@
           </span>
         </div>
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h4><%= t "users.show.stats" %></h4>
             <div class="row">
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <a class="card-title-link" href="<%= user_submissions_path(@user, course_id: @course.id) %>">
                   <h1><%= @user.submissions.in_course(@course).count %></h1>
                   <%= t "users.show.submissions" %>
                 </a>
               </div>
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <h1><%= @user.correct_exercises(course: @course) %></h1>
                 <%= t "users.show.correctly_solved" %>
               </div>
-              <div class="col-xs-12 col-sm-4 stat">
+              <div class="col-12 col-sm-4 stat">
                 <h1><%= @user.unfinished_exercises(@course) %></h1>
                 <%= t "users.show.unfinished" %>
               </div>
@@ -64,7 +64,7 @@
             <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
           <% end %>
           <% if policy(@course_membership).update? %>
-            <button class="btn-text" data-toggle="modal" data-target="#labelsEditModal">
+            <button class="btn-text" data-bs-toggle="modal" data-bs-target="#labelsEditModal">
               <%= t ".edit_labels" %>
             </button>
             <% content_for :modal do %>
@@ -72,15 +72,14 @@
                 <div class="modal-dialog" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="<%= t(".close") %>">
-                        <span aria-hidden="true">&times;</span></button>
                       <h4 class="modal-title"><%= t ".edit_labels" %></h4>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t(".close") %>"></button>
                     </div>
                     <div class="modal-body">
                       <%= render 'form', course: @course, user: @user, course_membership: @course_membership %>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn-text" data-dismiss="modal"><%= t(".close") %></button>
+                      <button type="button" class="btn-text" data-bs-dismiss="modal"><%= t(".close") %></button>
                       <button type="submit" class="btn-text btn-primary" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
                     </div>
                   </div>

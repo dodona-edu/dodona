@@ -3,13 +3,13 @@
   <%= javascript_pack_tag 'activities' %>
 <% end %>
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @repository.name %></h2>
       </div>
-      <div class="card-supporting-text">
-        <div class="<%= current_user.repository_admin?(@repository) ? "col-sm-6" : "col-sm-12" %> col-xs-12">
+      <div class="card-supporting-text row">
+        <div class="<%= current_user.repository_admin?(@repository) ? "col-sm-6" : "col-sm-12" %> col-12">
           <p>
             <strong><%= t ".repository" %>:</strong> <%= @repository.name %>
           </p>
@@ -34,21 +34,19 @@
             <strong><%= t(".content_pages") %>:</strong> <%= @repository.content_pages.count %>
           </p>
           <% if policy(@repository).reprocess? %>
-            <div class="pull-right">
+            <div class="float-end">
               <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
             </div>
           <% end %>
         </div>
         <% if current_user.repository_admin?(@repository) %>
-          <div class="col-sm-6 col-xs-12">
+          <div class="col-sm-6 col-12">
             <div class="callout callout-info">
               <h4>Webhook</h4>
               <p><%= t ".webhook_html" %></p>
               <div class="input-group intput-froup-sm">
                 <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
-                <span class="input-group-btn">
                 <%= clipboard_button_for :webhook_link %>
-              </span>
               </div>
             </div>
           </div>

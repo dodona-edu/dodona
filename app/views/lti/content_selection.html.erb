@@ -3,14 +3,14 @@
 <% end %>
 
 <div class="row">
-  <p class="col-xs-12">
+  <p class="col-12">
     <%= t ".intro" %>
   </p>
 </div>
 
 <% if @supported %>
   <label for="lti_content_selection_course"><%= t ".course_title" %></label>
-  <select id="lti_content_selection_course" class="form-control">
+  <select id="lti_content_selection_course" class="form-select">
     <option value=""><%= t ".course_select" %></option>
     <% @grouped_courses.each do |year, courses| %>
       <optgroup label="<%= Course.format_year year %>">

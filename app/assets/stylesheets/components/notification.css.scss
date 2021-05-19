@@ -1,0 +1,11 @@
+th.status-icon {
+  width: 48px;
+}
+
+.notification {
+  &.unread {
+    .notification-icon, .read-indicator {
+      color: $info-500;
+    }
+  }
+}

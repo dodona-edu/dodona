@@ -86,19 +86,11 @@
 .content-page-actions {
   padding-bottom: 16px;
   text-align: center;
-
-  .previous {
-    position: absolute;
-    left: 10px;
-  }
+  display: flex;
+  justify-content: space-between;
 
   #content_page_read_action {
     display: inline-flex;
-  }
-
-  .next {
-    position: absolute;
-    right: 10px;
   }
 }
 

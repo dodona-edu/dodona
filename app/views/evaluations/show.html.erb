@@ -36,8 +36,9 @@
             <%= link_to t('evaluations.destroy'),
                         evaluation_path(@evaluation),
                         method: :delete,
-                        data: { confirm: t('general.are_you_sure'),
-                        class: "dropdown-item" } %>
+                        class: "dropdown-item",
+                        data: { confirm: t('general.are_you_sure') }
+                        %>
           </li>
         </ul>
       </div>

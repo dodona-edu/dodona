@@ -101,7 +101,7 @@ gem 'rails-i18n', '~> 6.0.0'
 # email exceptions
 gem 'exception_notification', '~> 4.4.1'
 gem 'httparty', '~> 0.18.1'
-gem 'slack-notifier', '~> 2.3.2'
+gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
 gem 'nokogiri', '~> 1.11.3'

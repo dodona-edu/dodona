@@ -34,6 +34,8 @@
 
 .activity-sidebar,
 .series-sidebar {
+  position: sticky;
+  top: calc(#{$navbar-height} + 20px);
   padding: 0;
   height: 100px; // hack, overflow is shown
 

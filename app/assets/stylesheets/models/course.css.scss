@@ -35,6 +35,7 @@
 .activity-sidebar,
 .series-sidebar {
   padding: 0;
+  height: 100px; // hack, overflow is shown
 
   @include media-breakpoint-up(md) {
     .nav {

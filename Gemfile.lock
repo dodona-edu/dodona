@@ -346,7 +346,7 @@ GEM
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rb-readline (0.5.5)
-    recaptcha (5.7.0)
+    recaptcha (5.8.0)
       json
     regexp_parser (2.0.3)
     responders (3.0.1)
@@ -518,7 +518,7 @@ DEPENDENCIES
   rails-i18n (~> 6.0.0)
   rails_server_timings (~> 1.0.8)
   rb-readline (~> 0.5.5)
-  recaptcha (~> 5.7.0)
+  recaptcha (~> 5.8.0)
   rouge (= 3.26.0)
   rubocop-rails (~> 2.9.1)
   ruby-saml (~> 1.12.2)

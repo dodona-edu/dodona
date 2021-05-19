@@ -132,7 +132,7 @@ function drawViolin(data: {
     function onMouseOver(e): void {
         const pos = x.invert(d3.pointer(e, graph.node())[0]);
         const i = Math.round(pos);
-        if (i !== tooltipI) {
+        if (i !== tooltipI && x(i) <= innerWidth) {
             tooltipI = i;
             tooltip
                 .attr("opacity", 1)

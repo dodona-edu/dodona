@@ -348,7 +348,6 @@ GEM
     rb-readline (0.5.5)
     recaptcha (5.8.0)
       json
-    ref (2.0.0)
     regexp_parser (2.1.1)
     responders (3.0.1)
       actionpack (>= 5.0)

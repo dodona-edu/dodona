@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.7.4', require: false
+gem 'bootsnap', '~> 1.7.5', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'

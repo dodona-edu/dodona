@@ -24,7 +24,7 @@ module.exports = function (api) {
           bugfixes: true,
           forceAllTransforms: false,
           useBuiltIns: "entry",
-          corejs: 3,
+          corejs: 3.11,
           modules: false,
           exclude: ["transform-typeof-symbol"]
         }
@@ -39,6 +39,7 @@ module.exports = function (api) {
     plugins: [
       "babel-plugin-macros",
       "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-transform-for-of",
       isTestEnv && "babel-plugin-dynamic-import-node",
       "@babel/plugin-transform-destructuring",
       ["@babel/plugin-proposal-class-properties", { loose: true }],

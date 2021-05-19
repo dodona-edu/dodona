@@ -1,3 +1,6 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import jQuery from "jquery";
 
 // jQuery aliases

@@ -123,7 +123,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.11'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.17.0'
+gem 'faker', '~> 2.18.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'

@@ -84,7 +84,7 @@ FactoryBot.define do
       after :build do |exercise|
         exercise.stubs(:update_config)
         exercise.stubs(:config)
-                .returns({ 'evaluation': {} }.stringify_keys)
+                .returns({ evaluation: {} }.stringify_keys)
       end
     end
 

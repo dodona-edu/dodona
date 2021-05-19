@@ -71,8 +71,8 @@ GEM
       rake (>= 10.4, < 14.0)
     ast (2.4.1)
     attr_required (1.0.1)
-    autoprefixer-rails (10.2.4.0)
-      execjs
+    autoprefixer-rails (10.2.5.0)
+      execjs (< 2.8.0)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
     bindata (2.4.8)
@@ -462,7 +462,7 @@ PLATFORMS
 DEPENDENCIES
   ace-rails-ap (~> 4.4)
   annotate (~> 3.1.1)
-  autoprefixer-rails (~> 10.2.4)
+  autoprefixer-rails (~> 10.2.5)
   bcrypt_pbkdf
   bootsnap (~> 1.7.5)
   bootstrap_tokenfield_rails (~> 0.12.1)

@@ -66,7 +66,7 @@ This has one letdown: debugging with `byebug` is broken.
 
 #### Localhost subdomain
 
-Dodona use subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
+Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
 
 If this does not work out of the box you can add the following lines to your `/etc/hosts` file:
 ```

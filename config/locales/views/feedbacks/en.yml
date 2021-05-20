@@ -37,7 +37,8 @@ en:
       give_max_all: "Assign the maximal score to all score items"
       give_zero_all: "Assign 0 to all score items"
     score_actions:
-      give_one: "Assign %{score} to this score item"
+      give_max_one: "Assign %{score} to this score item"
+      give_zero_one: "Geef 0 aan dit scoreonderdeel"
     overview:
       annotations:
         count: "Amount of annotations by teacher"

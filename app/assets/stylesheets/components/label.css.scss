@@ -99,7 +99,7 @@
     border: 1px solid $divider-color;
     *border-right-width: 2px;
     *border-bottom-width: 2px;
-    border-radius: 6px;
+    border-radius: $border-radius-base;
     background-clip: padding-box;
   }
 

@@ -6,7 +6,9 @@ On https://dodona.ugent.be, students can sign in with the credentials of the Sma
 
 The documentation of this project can be found at https://docs.dodona.be.
 
-## Development Setup
+## Dodona development
+
+### Development Setup
 
 1. Install and start `mysql` or `mariadb`.
 2. If using `mysql`, change the `sql-mode` in the `mysqld` configuration block:
@@ -29,31 +31,36 @@ The documentation of this project can be found at https://docs.dodona.be.
    - `http://dodona.localhost:3000/nl/users/2/token/staff`
    - `http://dodona.localhost:3000/nl/users/3/token/student`
 
-## Evaluating exercises locally
+#### Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
 
 1. Install and start `docker`.
 2. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
 3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-python` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-python" -f "dodona-python.dockerfile" .`.
 
-## Loading visualisations locally
+#### Loading visualisations locally
 These steps are not required to run the server, but are needed to let the visualisations load.
 
 1. Install and start `memcached`.
 2. Create the following file `tmp/caching-dev.txt`.
 
-## Starting the server
+#### Windows
+
+Some gems and dependencies (such as memcached) do not work on Windows.
+You should use [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/about) instead, and run everything inside WSL.
+This means you use WSL for the database, memcached, git, Docker, etc.
+
+### Starting a local server
 The simplest way to start the server is with the `rails s` command. But this will not process the submission queue, and javascript will be compiled by webpack in the background (without output when something goes wrong).
 
 - To process the submission queue, delayed job needs to be started with the `bin/delayed_job start` command.
 - With `bin/webpack-dev-server` your javascript is reloaded live and you can see development output.
 
-To run all these processes at the same time, the foreman gem is used. To start the rails server, delayed job and the webpack dev server, simply run `bin/server`.
-The foreman gem is [not bundled with Dodona](https://github.com/ddollar/foreman/wiki/Don%27t-Bundle-Foreman). Install it globally with `gem install foreman`.
+To start the rails server, delayed job and the webpack dev server at the same time, simply run `bin/server`.
 
-This has one letdown: debugging with `byebug` is broken. You can run `bin/server norails` to only start webpack and delayed_job in foreman and then run `rails s` in a different terminal to be able to use `byebug` again.
+This has one letdown: debugging with `byebug` is broken.
 
-## Localhost subdomain
+#### Localhost subdomain
 
 Dodona use subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
 
@@ -62,9 +69,3 @@ If this does not work out of the box you can add the following lines to your `/e
 127.0.0.1             dodona.localhost
 127.0.0.1             sandbox.localhost
 ```
-
-## Running on Windows
-
-Some gems (such as therubyracer) and dependencies (such as memcached) do not work on Windows.
-You should use [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/about) instead, and run everything inside WSL.
-This means you use WSL for the database, memcached, git, Docker, etc.

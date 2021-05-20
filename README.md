@@ -1,12 +1,16 @@
 # Dodona 
 
-The Dodona project aims to provide a solution for the automatic testing of solutions for programming exercises.
+> Dodona is an online exercise platform for **learning to code**. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an **online co-teacher**, designed to give every student access to high quality education. The focus is on automatic corrections and giving **meaningful feedback** on the submitted solutions from students.
 
-On https://dodona.ugent.be, students can sign in with the credentials of the Smartschool, Office 365, or G Suite account of their school. After signing in, you can subscribe to one of the many courses. Dodona courses consist of several exercise series. Each exercise has a detailed exercise description and an extensive test suite. After submitting a solution to an exercise, a sandboxed background job is started to test the solution, and the result and feedback is displayed within seconds.
+This repository contains the source code of the web application. If you simply want to use Dodona, please go to [https://dodona.ugent.be](https://dodona.ugent.be).
 
-The documentation of this project can be found at https://docs.dodona.be.
+The documentation for end users can be found at [https://docs.dodona.be](https://docs.dodona.be).
 
-## Dodona development
+## Supporting Dodona
+
+Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundeds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
+
+## Local development
 
 ### Development Setup
 

@@ -280,10 +280,10 @@ blockquote {
 }
 
 @media screen {
-    .visible-print { display: none; }
-    .visible-print-inline { display: none; }
+  .visible-print { display: none; }
+  .visible-print-inline { display: none; }
 }
 
 @media print {
-    .hidden-print { display: none; }
+  .hidden-print { display: none; }
 }

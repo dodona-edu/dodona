@@ -93,7 +93,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
-              @builder.span(class: 'badge rounded-piil', id: 'badge_code')
+              @builder.span(class: 'badge rounded-pill', id: 'badge_code')
             end
           end
         end

@@ -42,7 +42,7 @@
   @include media-breakpoint-up(md) {
     .nav {
       width: calc((100vw - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2 - var(--scrollbar-width));
-      height: calc(100vh - (#{$navbar-height} + 20px));
+      max-height: calc(100vh - (#{$navbar-height} + 20px));
       display: block;
       overflow-y: auto;
       position: sticky;

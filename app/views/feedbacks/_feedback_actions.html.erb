@@ -98,12 +98,7 @@
 
   <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
   <div class="user-feedback-row">
-    <% @feedback.evaluation.evaluation_exercises.map do |ex|
-      Feedback.find_by(evaluation_user: @feedback.evaluation_user,
-                       evaluation_exercise: ex)
-    end.each do |feedback| %>
-      <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: @feedback } %>
-    <% end %>
+    <%= render partial: 'feedbacks/user_feedback_row', locals: { current_feedback: @feedback } %>
   </div>
 </div>
 

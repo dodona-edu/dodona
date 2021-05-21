@@ -1,0 +1,6 @@
+<% current_feedback.evaluation.evaluation_exercises.map do |ex|
+  Feedback.find_by(evaluation_user: current_feedback.evaluation_user,
+                   evaluation_exercise: ex)
+end.each do |feedback| %>
+  <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: current_feedback } %>
+<% end %>

@@ -121,4 +121,20 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     }
     assert_response :forbidden
   end
+
+  test 'should handle errors when saving' do
+    create :score, score_item: @score_item, feedback: @feedback, score: '10.0'
+
+    post evaluation_scores_path(@evaluation, format: :json), params: {
+      score: {
+        score: '5.0',
+        score_item_id: @score_item.id,
+        feedback_id: @feedback.id
+      }
+    }
+
+    assert_response :unprocessable_entity
+    score = Score.find_by!(score_item: @score_item, feedback: @feedback)
+    assert_equal BigDecimal('10'), score.score
+  end
 end

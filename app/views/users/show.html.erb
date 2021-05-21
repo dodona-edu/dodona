@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon pull-left">
+          <span class="user-icon float-start">
             <% if @user.permission == "student" %>
               <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
             <% elsif @user.permission == "staff" %>
@@ -47,27 +47,27 @@
           <div class="col-sm-12 col-md-6">
             <h4><%= t ".stats" %></h4>
             <div class="row">
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <a class="card-title-link" href="<%= user_submissions_path(@user) %>">
                   <h1><%= @user.submissions.count %></h1>
                   <%= t ".submissions" %>
                 </a>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.subscribed_courses.count %></h1>
                 <%= t ".courses" %>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.correct_exercises %></h1>
                 <%= t ".correctly_solved" %>
               </div>
-              <div class="col-xs-6 stat">
+              <div class="col-6 stat">
                 <h1><%= @user.unfinished_exercises %></h1>
                 <%= t ".unfinished" %>
               </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-offset-1 col-md-5">
+          <div class="col-sm-12 offset-md-1 col-md-5">
             <h4><%= t ".my_courses" %></h4>
             <% if @user.subscribed_courses.empty? %>
               <%= t ".no_courses" %>
@@ -96,12 +96,12 @@
             <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary" %>
           <% end %>
           <% if policy(@user).download_submissions? %>
-            <a class="btn btn-icon dropdown-toggle hidden-print" data-toggle="dropdown">
+            <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
+            <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <%= link_to t('.download_my_submissions'), users_exports_path(@user) %>
+                <%= link_to t('.download_my_submissions'), users_exports_path(@user), class: "dropdown-item" %>
               </li>
             </ul>
           <% end %>
@@ -111,7 +111,7 @@
     <% if policy(@user).edit? %>
       <div class="card">
         <div class="card-supporting-text card-border">
-          <div class="col-xs-12">
+          <div class="col-12">
             <h4><%= t '.api_tokens' %></h4>
             <p class="h4-info-text"><%= t ".token_help_html" %></p>
             <div id="fresh-token">
@@ -137,4 +137,3 @@
     </div>
   </div>
 </div>
-

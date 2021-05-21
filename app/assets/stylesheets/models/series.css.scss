@@ -1,0 +1,211 @@
+.add-activity-action {
+  width: 25px;
+}
+
+.series-activity-list .exercise {
+  height: 40px;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.series-activity-list .activity.new {
+  opacity: 0;
+}
+
+.series-activity-list .activity.pending {
+  opacity: 0.5;
+}
+
+.activity.gu-mirror .actions,
+.series-activity-list .activity .actions {
+  text-align: right;
+}
+
+.series-activity-list .status-icon,
+#activities-table-wrapper .status-icon {
+  text-align: right;
+  color: $text-secondary;
+}
+
+.deadline-future {
+  color: $text-secondary;
+}
+
+.deadline-passed {
+  color: $danger-fg;
+}
+
+.deadline-ok {
+  color: $success-fg;
+}
+
+.submission-status-button {
+  a {
+    color: $btn-accent;
+  }
+}
+
+.card.series-overview {
+  overflow: visible;
+}
+
+.card.series {
+  .card-subtitle {
+    position: relative;
+    margin-bottom: 16px;
+  }
+
+  .card-subtitle h4 {
+    line-height: 24px;
+  }
+
+  .card-subtitle h4 small {
+    font-size: 65%;
+  }
+
+  .card-title-icon {
+    min-width: 40px;
+    width: 40px;
+    min-height: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 22px;
+    margin-right: 16px;
+    border-radius: 50%;
+    background-color: $series-summary-icon-bg;
+
+    & > .mdi::before{
+      line-height: 24px;
+    }
+
+    &.deadline-missed .mdi-alarm-off {
+      &::before{
+        color: $brand-danger;
+      }
+      background-color: $content-bg;
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      border: 1px solid $content-bg;
+    }
+
+    &.deadline-met .mdi-alarm-check {
+      &::before{
+        color: $brand-success;
+      }
+      background-color: $content-bg;
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      border: 1px solid $content-bg;
+    }
+
+    i {
+      color: $series-summary-icon-bg;
+      background: $content-bg;
+      border-radius: 50%;
+      border: 5px solid $content-bg;
+    }
+
+    &.wrong {
+      background-color: $brand-danger;
+
+      i {
+        color: $brand-danger;
+      }
+    }
+
+    &.started, &.completed.deadline-missed {
+      background-color: $brand-success;
+
+      i {
+        color: $brand-success;
+      }
+    }
+
+    &.completed:not(.deadline-missed) {
+      $red: $red-500;
+      $orange: $orange-500;
+      $yellow: $yellow-500;
+      $green: $green-500;
+      $blue: $blue-500;
+      $purple: $purple-500;
+
+      $p1: 10%;
+      $p2: 25%;
+      $p3: 40%;
+      $p4: 60%;
+      $p5: 75%;
+      $p6: 90%;
+
+      background-image: linear-gradient(-135deg,
+      $red $p1,
+      $orange $p2,
+      $yellow $p3,
+      $green $p4,
+      $blue $p5,
+      $purple $p6
+      );
+
+      i {
+        font-weight: bolder;
+        font-size: 32px;
+        background: transparent;
+        border: transparent;
+        color: white;
+      }
+    }
+  }
+}
+
+.card.series-edit {
+  overflow: visible;
+}
+
+.mdi-alarm.mdi-12::before {
+  top: 2px;
+}
+
+.table.table-resource td.series-activities-table-labels {
+  white-space: normal;
+}
+
+.activity-table-skeleton {
+  width: 100%;
+
+  .skeleton-head {
+    border-bottom: solid 1px $skeleton-color;
+    height: 33px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0);
+    background-size: 56px 12px,
+    90px 12px,
+    115px 12px;
+    background-position: 58px 10px,
+    calc(100% - 230px) 10px,
+    calc(100% - 75px) 10px;
+  }
+
+  .skeleton-row {
+    border-top: solid 1px $skeleton-color;
+    height: 37px;
+    background-repeat: no-repeat;
+    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0),
+    linear-gradient($skeleton-color 100%, transparent 0);
+    background-size: 90px 12px,
+    100px 12px,
+    90px 12px,
+    8px 12px;
+    background-position: 58px 15px,
+    calc(100% - 220px) 15px,
+    calc(100% - 100px) 15px,
+    calc(100% - 25px) 15px;
+    padding-right: 8px;
+  }
+}

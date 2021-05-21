@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-xs-12 col-sm-10 col-sm-offset-1">
+  <div class="col-12 col-md-10 offset-md-1">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
@@ -20,7 +20,7 @@
           <tbody>
             <% @feedbacks.each do |fb| %>
               <tr>
-                <td><%= link_to fb.exercise.name, activity_path(fb.exercise) %></td>
+                <td><%= link_to fb.exercise.name, activity_scoped_path(activity: fb.exercise, series: @evaluation.series) %></td>
                 <td><%= fb.submission.present? ? t('.annotation_count', count: fb.submission.annotations.count) : t('.no_submission') %></td>
                 <td><%= render 'feedbacks/score_link', feedback: fb %></td>
                 <td class="actions">

@@ -16,7 +16,7 @@
 %>
 
 <%# You might think that this span here is useless, but you think wrong: https://github.com/twbs/bootstrap/issues/20381 %>
-<span class='progress-chart' data-html="true" data-toggle='tooltip' title="<%= t(info_read, count: read) %>">
+<span class='progress-chart' data-bs-html="true" data-bs-toggle='tooltip' title="<%= t(info_read, count: read) %>">
   <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100">
     <%= raw parts.join("") %>
   </svg>

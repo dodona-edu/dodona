@@ -1,8 +1,7 @@
 <div class="modal-content">
   <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="<%= t("score_items.form.close") %>">
-      <span aria-hidden="true">&times;</span></button>
     <h4 class="modal-title"><%= title %></h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("score_items.form.close") %>"></button>
   </div>
   <% options = {html: { class: 'form-horizontal' }}.merge(form_options) %>
   <% score_item = local_assigns.fetch(:score_item, local_assigns[:models]&.last) %>
@@ -26,22 +25,22 @@
       <% if score_item&.new_record? && local_assigns[:models] %>
         <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
       <% end %>
-      <div class="field form-group">
-        <%= f.label :name, :class => "col-sm-4 control-label" %>
+      <div class="field form-group row">
+        <%= f.label :name, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_field :name, required: true, class: "form-control" %></div>
       </div>
-      <div class="field form-group">
-        <%= f.label :description, :class => "col-sm-4 control-label" %>
+      <div class="field form-group row">
+        <%= f.label :description, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_area :description, class: "form-control", rows: "2" %></div>
-        <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.description-help" %></span>
+        <span class="help-block offset-sm-4 col-sm-8"><%= t "score_items.form.description-help" %></span>
       </div>
-      <div class="field form-group">
-        <%= f.label :maximum, :class => "col-sm-4 control-label" %>
+      <div class="field form-group row">
+        <%= f.label :maximum, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.number_field :maximum, step: 0.25, min: 0.25, max: 999.75, required: true, class: "form-control" %></div>
-        <span class="help-block col-sm-offset-4 col-sm-8"><%= t "score_items.form.score-help" %></span>
+        <span class="help-block offset-sm-4 col-sm-8"><%= t "score_items.form.score-help" %></span>
       </div>
-      <div class="field form-group">
-        <%= f.label :visible, class: 'col-sm-4 control-label' %>
+      <div class="field form-group row">
+        <%= f.label :visible, class: 'col-sm-4 col-form-label' %>
         <div class="col-sm-8">
           <div class="checkbox">
             <%= label_tag do %>

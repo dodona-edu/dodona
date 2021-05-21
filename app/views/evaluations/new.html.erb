@@ -1,17 +1,17 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card series-edit">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t(".create_evaluation") %></h2>
       </div>
-      <div class="card-supporting-text">
-        <div class="col-md-6 col-sm-12 col-md-push-6">
+      <div class="card-supporting-text row">
+        <div class="col-lg-6 col-sm-12 order-lg-1">
           <div class="callout callout-info">
             <h4><%= t ".explanation_title" %></h4>
             <%= t ".explanation_html" %>
           </div>
         </div>
-        <div class="col-md-6 col-sm-12 col-md-pull-6">
+        <div class="col-lg-6 col-sm-12 order-lg-0">
           <%= render 'form', evaluation: @evaluation %>
         </div>
       </div>

@@ -1,9 +1,9 @@
 <% # arguments: activity (Activity), series (Series | nil), user (User) %>
 <% if series&.deadline&.past? %>
   <% if activity.accepted_before_deadline_for?(user, series) %>
-    <i class="mdi mdi-alarm-check mdi-18 colored-correct" title="<%= t 'activities.activity.deadline_met' %>" data-toggle="tooltip" data-placement="right"></i>
+    <i class="mdi mdi-alarm-check mdi-18 colored-correct" title="<%= t 'activities.activity.deadline_met' %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
   <% else %>
-    <i class="mdi mdi-alarm-off mdi-18 colored-wrong" title="<%= t 'activities.activity.deadline_missed' %>" data-toggle="tooltip" data-placement="right"></i>
+    <i class="mdi mdi-alarm-off mdi-18 colored-wrong" title="<%= t 'activities.activity.deadline_missed' %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
   <% end %>
 <% else %>
   <% if activity.accepted_for?(user, series) %>

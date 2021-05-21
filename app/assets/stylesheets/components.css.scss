@@ -1,0 +1,93 @@
+@import "components/btn";
+@import "components/callout";
+@import "components/card";
+@import "components/dropdown";
+@import "components/favorite";
+@import "components/code_listing";
+@import "components/form";
+@import "components/heatmap";
+@import "components/img";
+@import "components/label";
+@import "components/link";
+@import "components/modal";
+@import "components/notification";
+@import "components/punchcard";
+@import "components/evaluations";
+@import "components/table";
+@import "components/toast";
+@import "components/scoresheet";
+@import "components/stepper";
+@import "components/table-toolbar";
+@import "components/tutor";
+@import "components/progress-chart";
+
+.flex-spacer {
+  flex-grow: 1;
+}
+
+.h3-info-text, .h4-info-text, .h5-info-text, .header-info-text {
+  font-size: 85%;
+  color: $text-muted;
+}
+
+.h3-info-text {
+  margin-top: -24px;
+}
+
+.h4-info-text {
+  margin-top: -12px;
+}
+
+.h5-info-text {
+  margin-top: -6px;
+}
+
+.page-subtitle {
+  display: flex;
+  align-items: center;
+  padding-bottom: 16px;
+}
+
+.spinner {
+  background-color: $spinner-bg;
+  border-radius: 100%;
+  animation: scaleout 1.5s infinite ease-in-out;
+}
+
+@keyframes scaleout {
+  0% {
+    transform: scale(0.0);
+  }
+  100% {
+    transform: scale(1.0);
+    opacity: 0;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.alert a {
+  color: $alert-fg;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.col-form-label {
+  @include media-breakpoint-down(sm) {
+    text-align: left;
+  }
+  text-align: right;
+  font-weight: bold;
+}
+
+h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+  font-size: 65%;
+  font-weight: 400;
+  line-height: 1;
+  color: $text-secondary;
+}

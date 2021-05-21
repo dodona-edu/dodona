@@ -1,17 +1,17 @@
 <div class="home-cover-img">&nbsp;</div>
 <div class="row">
-  <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-12">
     <div class="row home-header">
-      <div class="col-xs-12 col-sm-8 col-md-7 home-lead">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-7 col-xxl-8 home-lead">
         <h1><%= t ".support_dodona" %></h1>
         <p class='lead'><%= t ".title_l1" %><br><%= t ".title_l2" %></p>
       </div>
-      <div class="hidden-xs col-sm-4 col-md-5">
-        <%= image_tag("home.png", class: 'img-responsive') %>
+      <div class="d-none d-sm-block col-sm-6 col-md-6 col-lg-6 col-xl-5 col-xxl-4">
+        <%= image_tag("home.png", class: 'img-fluid') %>
       </div>
     </div>
-    <div class="row card home-card">
-      <div class="card-supporting-text row">
+    <div class="card home-card row">
+      <div class="card-supporting-text">
         <%= render partial: 'metrics' %>
       </div>
       <div class="card-supporting-text card-border">
@@ -30,30 +30,30 @@
     </div>
     <div class="row card home-card">
       <div class="card-supporting-text supporters row">
-        <div class="col-xs-12 col-sm-6">
+        <div class="col-12 col-sm-6">
           <h3><%= t ".supported_by" %></h3>
           <p><%= t ".supported_p1_html" %></p>
         </div>
-        <div class="col-xs-12 col-sm-6 sponsor-logos">
+        <div class="col-12 col-sm-6 sponsor-logos">
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-6">
               <%= link_to "https://www.ugent.be/", title: "Universiteit Gent", target: "_blank" do %>
-                <%= image_tag("ugent.png", class: 'img-responsive') %>
+                <%= image_tag("ugent.png", class: 'img-fluid') %>
               <% end %>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-6">
               <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: "Faculteit Wetenschappen", target: "_blank" do %>
-                <%= image_tag("we.#{I18n.locale}.png", class: 'img-responsive') %>
+                <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid') %>
               <% end %>
             </div>
           </div>
           <div class="row">
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-6">
               <%= link_to "https://www.elixir-belgium.org/", title: "Elixir", target: "_blank" do %>
-                <%= image_tag("elixir.png", class: 'img-responsive') %>
+                <%= image_tag("elixir.png", class: 'img-fluid') %>
               <% end %>
             </div>
-            <div class="col-xs-12 col-sm-6">
+            <div class="col-12 col-sm-6">
             </div>
           </div>
         </div>

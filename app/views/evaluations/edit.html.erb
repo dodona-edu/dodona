@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card evaluation-user-select">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title') %></h2>
@@ -11,7 +11,7 @@
           </span>
           <%= link_to t('evaluations.edit_users.clear'), set_multi_user_evaluation_path(@evaluation, type: 'none', format: :js), remote: true, method: :post, data: { confirm: t('evaluations.members_table.remove_users_consequences') } %>.
         </p>
-        <%= link_to t('evaluations.edit_users.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary pull-right" %>
+        <%= link_to t('evaluations.edit_users.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary float-end" %>
         <%= render partial: 'edit_users', locals: { confirm: true } %>
       </div>
     </div>

@@ -2,13 +2,13 @@
   <div class="left flex">
     <div class="content">
       <% if user_signed_in? %>
-        <button type="button" class="drawer-toggle" data-target="#drawer" aria-expanded="false" aria-controls="drawer">
-          <span class="sr-only">Toggle drawer</span>
+        <button type="button" class="drawer-toggle" data-bs-target="#drawer" aria-expanded="false" aria-controls="drawer">
+          <span class="visually-hidden">Toggle drawer</span>
           <i class="mdi mdi-menu"></i>
         </button>
       <% end %>
       <%= link_to root_path, class: "brand" do %>
-        <span class="hidden-xs">Dodona</span>
+        <span class="d-sm-inline d-none">Dodona</span>
         <i class="visible-xs mdi mdi-home"></i>
       <% end %>
     </div>
@@ -28,10 +28,10 @@
         <% if user_signed_in? %>
           <% if current_page?(notifications_path).! %>
             <li id="navbar-notifications" class="dropdown <%= "hidden" unless @last_notifications.any? %>">
-              <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <i class="mdi mdi-24 mdi-bell"></i>
               </a>
-              <div class="dropdown-menu dropdown-menu-right notification-dropdown">
+              <div class="dropdown-menu dropdown-menu-end notification-dropdown">
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
               <script>
@@ -40,7 +40,7 @@
             </li>
           <% end %>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <% if current_user.zeus? %>
                 <% user_icon = 'android' %>
               <% elsif current_user.staff? %>
@@ -52,27 +52,26 @@
               <span class="dropdown-title"><%= current_user.first_name || current_user.last_name %></span>
               <span class="caret"></span>
             </a>
-            <ul class="dropdown-menu dropdown-menu-right">
-              <li class="dropdown-header"><%= current_user.full_name %></li>
-              <li><%= link_to t("layout.menu.profile"), current_user %></li>
-              <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user) %></li>
-              <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user) %></li>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><%= link_to t("layout.menu.profile"), current_user, class: "dropdown-item" %></li>
+              <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user), class: "dropdown-item"  %></li>
+              <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user), class: "dropdown-item"  %></li>
               <% if Export.where(user: current_user).any? %>
-                <li><%= link_to t("layout.menu.my_exports"), exports_path %></li>
+                <li><%= link_to t("layout.menu.my_exports"), exports_path, class: "dropdown-item"  %></li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
-                <li role="separator" class="divider"></li>
+                <li role="separator" class="dropdown-divider"></li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
                   <li>
-                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item" do %>
                       <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i><%= t(".demo_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
-                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST" do %>
+                    <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item"  do %>
                       <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".demo_mode") %>
                     <% end %>
                   </li>
@@ -81,40 +80,40 @@
               <% if policy(:pages).toggle_dark_mode? %>
                 <% if session[:dark] %>
                   <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
                       <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle" do %>
+                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
                       <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% end %>
               <% end %>
-              <li role="separator" class="divider"></li>
+              <li role="separator" class="dropdown-divider"></li>
               <li>
-                <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete %>
+                <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete, class: "dropdown-item"  %>
               </li>
             </ul>
           </li>
         <% else %>
-          <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path %></li>
+          <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path, class: "dropdown-toggle"  %></li>
         <% end %>
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <i class='mdi mdi-24 mdi-web'></i>
             <span class="dropdown-title"><%= I18n.locale.to_s %></span>
             <span class="caret"></span></a>
-          <ul class="dropdown-menu dropdown-menu-right">
-            <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en") %></li>
-            <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl") %></li>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><%= link_to 'English', params.to_unsafe_h.merge(locale: "en"), class: "dropdown-item"  %></li>
+            <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl"), class: "dropdown-item"  %></li>
           </ul>
         </li>
       </ul>
-      <button type="button" class="dodona-navbar-toggle" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
+      <button type="button" class="dodona-navbar-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="visually-hidden">Toggle navigation</span>
         <i class="mdi mdi-dots-vertical"></i>
       </button>
     </div>

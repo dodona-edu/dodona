@@ -2,14 +2,14 @@
   <%= javascript_pack_tag 'course' %>
 <% end %>
 <div class="row">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <h2><%= t '.title' %></h2>
     <div id="stepper" class="panel-group stepper" role="tablist">
       <div id="type-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">1</span>
-            <a role="button" data-toggle="collapse" href="#type-step">
+            <a role="button" data-bs-toggle="collapse" href="#type-step">
               <%= t('.pick_type') %>
               <span class="answer">
                 <% if @copy_options.present? %>
@@ -21,7 +21,7 @@
             </a>
           </h4>
         </div>
-        <div id="type-step" class="panel-collapse collapse <%= "in" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
+        <div id="type-step" class="panel-collapse collapse <%= "show" if @copy_options.nil? && @course.errors.blank? %>" role="tabpanel">
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
@@ -57,7 +57,7 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">2</span>
-            <a role="button" data-toggle="collapse" href="#choose-step">
+            <a role="button" data-bs-toggle="collapse" href="#choose-step">
               <%= t('.choose_course') %>
               <span class="answer">
                 <%= @copy_options[:base].name if @copy_options.present? %>
@@ -79,12 +79,12 @@
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">3</span>
-            <a role="button" data-toggle="collapse" href="#form-step">
+            <a role="button" data-bs-toggle="collapse" href="#form-step">
               <%= t('.data_entry') %>
             </a>
           </h4>
         </div>
-        <div id="form-step" class="panel-collapse collapse <%= "in" if @copy_options.present? || @course.errors.present? %>" role="tabpanel">
+        <div id="form-step" class="panel-collapse collapse <%= "show" if @copy_options.present? || @course.errors.present? %>" role="tabpanel">
           <div class="panel-body">
             <div id="course-form-wrapper">
               <%= render 'form', course: @course, copy_options: @copy_options %>

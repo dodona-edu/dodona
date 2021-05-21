@@ -25,14 +25,14 @@ end %>
 
 <div class="row">
   <% if @activity.exercise? %>
-    <%= link_to '#submission-card', class: "btn btn-lg btn-down col-sm-1 hidden-xs hidden-print", title: t('.handin') do %>
-      <span class='hidden-sm'><%= t('.handin') %></span><br>
+    <%= link_to '#submission-card', class: "btn btn-lg btn-down col-md-1 d-none d-md-block hidden-print", title: t('.handin') do %>
+      <span class='d-none d-lg-inline'><%= t('.handin') %></span><br>
       <i class="mdi mdi-chevron-down"></i>
     <% end %>
   <% else %>
-    <div class="col-sm-1 hidden-xs hidden-print">&nbsp;</div>
+    <div class="col-md-1 d-none d-md-block hidden-print">&nbsp;</div>
   <% end %>
-  <div class="col-sm-10 col-xs-12">
+  <div class="col-md-10 col-12">
     <div class="card activity-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
@@ -40,10 +40,10 @@ end %>
         </h2>
         <% if @series.present? %>
           <div class="card-title-navigation hidden-print">
-            <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
+            <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
             <% end %>
-            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {toggle: 'tooltip', placement: 'top'} do %>
+            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
                 <i class="mdi mdi-chevron-right"></i>
             <% end %>
           </div>
@@ -54,11 +54,11 @@ end %>
   </div>
 
   <% if @series.present? %>
-    <nav class="col-md-1 hidden-xs hidden-sm hidden-print activity-sidebar">
+    <nav class="col-md-1 d-none d-md-block hidden-print activity-sidebar">
       <ul class="nav affix">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
         <% @series.activities.each do |activity| %>
-          <li <%= 'class=active' if activity.id == @activity.id %>><%= link_to activity.name, activity_scoped_path(activity: activity, series: @series), class: 'ellipsis-overflow', title: activity.name %> </li>
+          <li><%= link_to activity.name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
         <% end %>
       </ul>
     </nav>
@@ -68,7 +68,7 @@ end %>
 <% if @activity.exercise? %>
 <div class="row hidden-print">
   <a class="anchor" id="submission-card"></a>
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card card-nav">
       <div class="card-title card-title-colored">
         <% if policy(@activity).submit? %>
@@ -82,17 +82,17 @@ end %>
         <% end %>
         <ul class="nav nav-tabs">
           <% if policy(@activity).submit? || !user_signed_in? %>
-            <li class="active"><a href="#handin" id="activity-handin-link" data-toggle="tab"><%= t ".handin" %></a></li>
+            <li><a href="#handin" id="activity-handin-link" data-bs-toggle="tab" class="active"><%= t ".handin" %></a></li>
           <% end %>
-          <li class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>">
-            <a href="#submissions" data-toggle="tab" id='activity-submission-link'><%= t ".solutions" %></a></li>
-          <li><a href="#feedback" data-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
+          <li>
+            <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link' class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>"><%= t ".solutions" %></a></li>
+          <li><a href="#feedback" data-bs-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
           </li>
         </ul>
       </div>
       <div class="card-supporting-text">
         <div class="tab-content">
-          <div class="tab-pane fade in active" id="handin">
+          <div class="tab-pane fade show active" id="handin">
             <% if !user_signed_in? %>
               <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
             <% end %>
@@ -111,7 +111,7 @@ end %>
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>
-          <div class="tab-pane fade <%= 'in active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
+          <div class="tab-pane fade <%= 'show active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
             <div id="submissions-table-wrapper">
               <% if !user_signed_in? %>
                 <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
@@ -132,14 +132,16 @@ end %>
 </div>
 <% elsif @activity.content_page? %>
 <div class="row hidden-print">
-  <div class="col-sm-10 col-sm-offset-1 col-xs-12">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="content-page-actions">
       <% if @series.present? %>
         <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>
           <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
       <% end %>
+      <span class="gap"></span>
       <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @course, user: current_user, read_state: @read_state} %>
+      <span class="gap"></span>
       <% if @series.present? %>
         <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
           <span class="text"><%= next_tooltip %></span>

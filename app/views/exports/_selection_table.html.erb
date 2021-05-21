@@ -9,7 +9,7 @@
         <%= data[:table_header_type] %>
       </th>
       <% if data[:is_series?] %>
-        <th class='count hidden-xs'>
+        <th class='count d-none d-sm-table-cell'>
             <%= t "activities.index.class_progress" %>
         </th>
       <% end %>
@@ -28,7 +28,7 @@
             <span> <%= el.name %> </span>
           </td>
           <% if data[:is_series?] %>
-            <td class="hidden-xs">
+            <td class="d-none d-sm-table-cell">
               <%= render partial: 'application/progress_chart',
                   locals: {
                       total: data[:course].subscribed_members_count,

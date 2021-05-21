@@ -11,8 +11,8 @@
         <%= link_to best_submission,
                     title: t('activities.activity.correct_after_deadline', deadline: l(series&.deadline, format: :long)),
                     class: 'btn btn-icon',
-                    'data-toggle': 'tooltip',
-                    'data-placement': 'right' do %>
+                    'data-bs-toggle': 'tooltip',
+                    'data-bs-placement': 'right' do %>
           <i class="mdi mdi-information colored-info mdi-18"></i>
         <% end %>
       <% end %>
@@ -23,15 +23,15 @@
       <% if series&.deadline? && activity.accepted_before_deadline_for?(user, series) %>
         <%= link_to best_submission,
                     title: t('activities.activity.wrong_after_deadline', deadline: l(series.deadline, format: :long)),
-                    'data-toggle': 'tooltip',
-                    'data-placement': 'right' do %>
+                    'data-bs-toggle': 'tooltip',
+                    'data-bs-placement': 'right' do %>
           <i class="mdi mdi-information colored-info mdi-18"></i>
         <% end %>
       <% elsif activity.solved_for?(user, series) %>
         <%= link_to best_submission,
                     title: t('series.show.best_is_not_last'),
-                    'data-toggle': 'tooltip',
-                    'data-placement': 'right' do %>
+                    'data-bs-toggle': 'tooltip',
+                    'data-bs-placement': 'right' do %>
           <i class="mdi mdi-alert colored-warning mdi-18"></i>
         <% end %>
       <% end %>
@@ -48,8 +48,8 @@
       <span
           class="btn btn-icon"
           title="<%= t('activities.activity.read_after_deadline', deadline: l(series&.deadline, format: :long)) %>"
-          data-toggle="tooltip"
-          data-placement="right">
+          data-bs-toggle="tooltip"
+          data-bs-placement="right">
           <i class="mdi mdi-information colored-info mdi-18"></i>
       </span>
     <% end %>

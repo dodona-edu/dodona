@@ -1,4 +1,4 @@
-module.exports = function(api) {
+module.exports = function (api) {
   var validEnv = ["development", "test", "production"];
   var currentEnv = api.env();
   var isDevelopmentEnv = api.env("development");
@@ -8,74 +8,49 @@ module.exports = function(api) {
   if (!validEnv.includes(currentEnv)) {
     throw new Error(
       "Please specify a valid `NODE_ENV` or " +
-        '`BABEL_ENV` environment variables. Valid values are "development", ' +
-        '"test", and "production". Instead, received: ' +
-        JSON.stringify(currentEnv) +
-        "."
+      '`BABEL_ENV` environment variables. Valid values are "development", ' +
+      '"test", and "production". Instead, received: ' +
+      JSON.stringify(currentEnv) +
+      "."
     );
   }
 
   return {
     presets: [
-      isTestEnv && [
-        "@babel/preset-env",
-        {
-          targets: {
-            node: "current"
-          }
-        }
-      ],
+      isTestEnv && ["@babel/preset-env", { targets: { node: "current" } }],
       (isProductionEnv || isDevelopmentEnv) && [
         "@babel/preset-env",
         {
+          bugfixes: true,
           forceAllTransforms: false,
           useBuiltIns: "entry",
-          corejs: 3,
+          corejs: 3.11,
           modules: false,
           exclude: ["transform-typeof-symbol"]
         }
       ],
-      [
-        '@babel/preset-typescript',
-        {
-          allExtensions: true,
-          isTSX: true
-        }
-      ]
+      ['@babel/preset-typescript', {
+        allExtensions: true,
+        isTSX: true
+      }]
     ].filter(Boolean),
     // ignore cumsum.js because of a bug in babel: https://github.com/babel/babel/issues/11038
     ignore: [new RegExp("d3-array/src/cumsum.js")],
     plugins: [
       "babel-plugin-macros",
       "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-transform-for-of",
       isTestEnv && "babel-plugin-dynamic-import-node",
       "@babel/plugin-transform-destructuring",
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          loose: true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-object-rest-spread",
-        {
-          useBuiltIns: true
-        }
-      ],
-      [
-        "@babel/plugin-transform-runtime",
-        {
-          helpers: false,
-          regenerator: true,
-          corejs: false
-        }
-      ],
-      [
-        "@babel/plugin-transform-regenerator",
-        {
-          async: false
-        }
-      ]
+      ["@babel/plugin-proposal-class-properties", { loose: true }],
+      ["@babel/plugin-proposal-private-methods", { loose: true }],
+      ["@babel/plugin-proposal-object-rest-spread", { useBuiltIns: true }],
+      ["@babel/plugin-transform-runtime", {
+        helpers: false,
+        regenerator: true,
+        corejs: false
+      }],
+      ["@babel/plugin-transform-regenerator", { async: false }]
     ].filter(Boolean)
   };
 };

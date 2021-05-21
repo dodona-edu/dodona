@@ -13,30 +13,30 @@
       </ul>
     </div>
   <% end %>
-  <div class="field form-group">
-    <%= f.label :name_nl, :class => "col-sm-3 col-xs-12 control-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.text_field :name_nl, class: "form-control", disabled: !f.permission?(:name_nl) %></div>
+  <div class="field form-group row">
+    <%= f.label :name_nl, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.text_field :name_nl, class: "form-control", disabled: !f.permission?(:name_nl) %></div>
   </div>
-  <div class="field form-group">
-    <%= f.label :name_en, :class => "col-sm-3 col-xs-12 control-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.text_field :name_en, class: "form-control", disabled: !f.permission?(:name_en) %></div>
+  <div class="field form-group row">
+    <%= f.label :name_en, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.text_field :name_en, class: "form-control", disabled: !f.permission?(:name_en) %></div>
   </div>
-  <div class="field form-group">
-    <%= f.label :access, :class => "col-sm-3 col-xs-12 control-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.select :access, Activity.accesses.map {|key, value| [Activity.human_enum_name(:access, key), key]}, {}, {:class => 'form-control'} %></div>
+  <div class="field form-group row">
+    <%= f.label :access, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.select :access, Activity.accesses.map {|key, value| [Activity.human_enum_name(:access, key), key]}, {}, {:class => 'form-select'} %></div>
   </div>
-  <div class="field form-group">
-    <%= f.label :labels, :class => "col-sm-3 col-xs-12 control-label" %>
-    <div class="col-sm-6 col-xs-12"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: activity.labels.map(&:name).join(','), placeholder: t(".labels") %></div>
-    <span class="help-block col-sm-offset-3 col-sm-6 col-xs-12"><%= t '.labels_delimiter' %></span>
+  <div class="field form-group row">
+    <%= f.label :labels, :class => "col-sm-3 col-12 col-form-label" %>
+    <div class="col-sm-6 col-12"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: activity.labels.map(&:name).join(','), placeholder: t(".labels") %></div>
+    <span class="help-block offset-sm-3 col-sm-6 col-12"><%= t '.labels_delimiter' %></span>
   </div>
-  <div class="field form-group">
-    <label class="col-sm-3 col-xs-12 control-label"><%= t ".edit_activity" %></label>
-    <div class="col-sm-6 col-xs-12 form-control-static"><%= link_to t(".open_on_github"), activity.github_url, target: '_blank', rel: 'noopener' %></div>
+  <div class="field form-group row">
+    <label class="col-sm-3 col-12 col-form-label"><%= t ".edit_activity" %></label>
+    <div class="col-sm-6 col-12 form-control-static"><%= link_to t(".open_on_github"), activity.github_url, target: '_blank', rel: 'noopener' %></div>
   </div>
-  <div class="field form-group">
-    <label class="col-sm-3 col-xs-12 control-label"><%= t ".info" %></label>
-    <div class="col-sm-6 col-xs-12 form-control-static"><%= link_to t(".info_description"), info_activity_scoped_path(activity: @activity, course: @course, series: @series), rel: 'noopener' %></div>
+  <div class="field form-group row">
+    <label class="col-sm-3 col-12 col-form-label"><%= t ".info" %></label>
+    <div class="col-sm-6 col-12 form-control-static"><%= link_to t(".info_description"), info_activity_scoped_path(activity: @activity, course: @course, series: @series), rel: 'noopener' %></div>
   </div>
 <% end %>
 <script>

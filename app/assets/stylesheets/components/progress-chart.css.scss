@@ -1,0 +1,15 @@
+.progress-chart {
+    shape-rendering: crispEdges;
+    .correct {
+      stroke: $success-300;
+    }
+    .info {
+      stroke: $info-500;
+    }
+    .wrong {
+      stroke: $danger-300;
+    }
+    .not-started {
+      stroke: $hairlinegray;
+    }
+}

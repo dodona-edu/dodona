@@ -20,38 +20,34 @@
       %>
       <% @providers.saml.each do |provider| %>
         <% institution = provider.institution %>
-        <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in' do %>
-          <div class="col-sm-6 col-lg-4">
-            <div class="option-btn">
-              <div class="option-btn-img">
-                <%= image_tag "idp/#{institution.logo}", class: "img-responsive" %>
-              </div>
-              <div class="option-btn-title">
-                <h3><%= institution.short_name %><br>
-                  <small><%= institution.name %></small>
-                </h3>
-              </div>
-              <div><i class="mdi mdi-chevron-right"></i></div>
+        <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in col-md-6 col-xl-4' do %>
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag "idp/#{institution.logo}", class: "img-fluid" %>
             </div>
+            <div class="option-btn-title">
+              <h3><%= institution.short_name %><br>
+                <small><%= institution.name %></small>
+              </h3>
+            </div>
+            <div><i class="mdi mdi-chevron-right"></i></div>
           </div>
         <% end %>
       <% end %>
       <% {'Hogeschool West-Vlaanderen' => 'Howest.jpg', 'UC Leuven Limburg' => 'ucll.png',
           'Arteveldehogeschool' => 'artevelde.png', 'Vrije Universiteit Brussel' => 'vub.jpg',
           'Universiteit Antwerpen' => 'ua.png'}.each do |school, logo| %>
-        <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in' do %>
-          <div class="col-sm-6 col-lg-4">
-            <div class="option-btn">
-              <div class="option-btn-img">
-                <%= image_tag "idp/#{logo}", class: "img-responsive" %>
-              </div>
-              <div class="option-btn-title">
-                <h3><%= school %><br>
-                  <small><%= t('.sign-in-with', provider: 'Office 365') %></small>
-                </h3>
-              </div>
-              <div><i class="mdi mdi-chevron-right"></i></div>
+        <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag "idp/#{logo}", class: "img-fluid" %>
             </div>
+            <div class="option-btn-title">
+              <h3><%= school %><br>
+                <small><%= t('.sign-in-with', provider: 'Office 365') %></small>
+              </h3>
+            </div>
+            <div><i class="mdi mdi-chevron-right"></i></div>
           </div>
         <% end %>
       <% end %>
@@ -64,19 +60,17 @@
     </div>
     <div class="sign-in-dialog-institutions row">
       <% @generic_providers.values.each do |provider| %>
-        <%= link_to provider[:link], class: 'institution-sign-in' do %>
-          <div class="col-sm-6 col-lg-4">
-            <div class="option-btn">
-              <div class="option-btn-img">
-                <%= image_tag "idp/#{provider[:image]}", class: "img-responsive" %>
-              </div>
-              <div class="option-btn-title">
-                <h3><%= provider[:name] %><br>
-                  <small><%= t('.sign-in-with', provider: provider[:name]) %></small>
-                </h3>
-              </div>
-              <div><i class="mdi mdi-chevron-right"></i></div>
+        <%= link_to provider[:link], class: 'institution-sign-in col-md-6 col-xl-4' do %>
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag "idp/#{provider[:image]}", class: "img-fluid" %>
             </div>
+            <div class="option-btn-title">
+              <h3><%= provider[:name] %><br>
+                <small><%= t('.sign-in-with', provider: provider[:name]) %></small>
+              </h3>
+            </div>
+            <div><i class="mdi mdi-chevron-right"></i></div>
           </div>
         <% end %>
       <% end %>
@@ -88,7 +82,7 @@
           </h1>
       </div>
     </div>
-    <div class="input-group input-group-lg" id="scrollable-dropdown-menu">
+    <div class="input-group input-group-lg autocomplete" id="scrollable-dropdown-menu">
       <div class="card">
         <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
       </div>

@@ -61,7 +61,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
   def group(g)
     if g.key?(:data)
-      @builder.div(class: "row group #{g[:accepted] ? 'correct' : 'wrong'}",
+      @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}",
                    "data-statements": (g[:data][:statements]).to_s,
                    "data-stdin": (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
@@ -70,7 +70,7 @@ class PythiaRenderer < FeedbackTableRenderer
           end
         end
         if g[:description]
-          @builder.div(class: 'col-xs-12 description') do
+          @builder.div(class: 'col-12 description') do
             message(g[:description])
           end
         end
@@ -90,7 +90,7 @@ class PythiaRenderer < FeedbackTableRenderer
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
     end.to_h.to_json
-    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
+    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
       testcase_content(tc)
     end
   end
@@ -113,15 +113,15 @@ class PythiaRenderer < FeedbackTableRenderer
         @builder.div(class: 'modal-dialog tutor') do
           @builder.div(class: 'modal-content') do
             @builder.div(class: 'modal-header') do
+              @builder.h4(class: 'modal-title')
               @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-xs') do
+                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
                   @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
                 end
-                @builder.button(type: 'button', class: 'btn btn-link btn-xs', "data-dismiss": 'modal') do
+                @builder.button(type: 'button', class: 'btn btn-link btn-sm', "data-bs-dismiss": 'modal') do
                   @builder.i('', class: 'mdi mdi-close mdi-18')
                 end
               end
-              @builder.h4(class: 'modal-title')
             end
             @builder.div(class: 'modal-body') {}
           end

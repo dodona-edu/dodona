@@ -6,7 +6,7 @@
       <th><%= User.human_attribute_name("name") %></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th class='text-right'><%= t("users.index.progress") %></th>
+      <th class='text-end'><%= t("users.index.progress") %></th>
       <th></th>
     </tr>
     </thead>
@@ -27,17 +27,17 @@
         <td><%= link_to user.full_name, user, title: user.full_name, class: "ellipsis-overflow" %></td>
         <td><%= user.email %></td>
         <td><%= user.institution&.name %></td>
-        <td class='text-right'>
+        <td class='text-end'>
           <%= link_to "#{user.correct_exercises}/#{user.attempted_exercises}", user_submissions_path(user) %>
         </td>
         <td class="actions">
           <% if policy(user).impersonate? %>
-            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-default", title: t("layout.impersonate.impersonate") do %>
+            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-secondary", title: t("layout.impersonate.impersonate") do %>
               <i class="mdi mdi-account mdi-18"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>
-            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>
@@ -55,4 +55,3 @@
     <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}) %>
   </center>
 <% end %>
-

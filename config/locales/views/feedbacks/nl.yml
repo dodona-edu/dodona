@@ -37,7 +37,8 @@ nl:
       give_max_all: "Geef de maximumscore aan alle scoreonderdelen"
       give_zero_all: "Geef 0 aan alle scoreonderdelen"
     score_actions:
-      give_one: "Geef %{score} aan dit scoreonderdeel"
+      give_max_one: "Geef %{score} aan dit scoreonderdeel"
+      give_zero_one: "Geef 0 aan dit scoreonderdeel"
     overview:
       annotations:
         count: "Aantal opmerkingen door lesgever"

@@ -7,6 +7,8 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
+import "core-js/stable";
+import "regenerator-runtime/runtime";
 
 import { start as startRails } from "@rails/ujs";
 
@@ -18,6 +20,11 @@ import jQuery from "jquery";
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
+
+// bootstrap
+import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from "bootstrap";
+const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
+window.bootstrap = bootstrap;
 
 import "polyfills.js";
 import { Drawer } from "drawer";

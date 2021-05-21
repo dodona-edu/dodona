@@ -7,10 +7,5 @@ namespace :assets do
       dest = File.join(assets_path, asset)
       FileUtils.copy_file(source, dest)
     end
-    Rails.configuration.assets.nodigest_fonts.each do |asset|
-      source = File.join(Rails.root, 'vendor/assets/fonts/bootstrap', asset)
-      dest = File.join(assets_path, asset)
-      FileUtils.copy_file(source, dest)
-    end
   end
 end

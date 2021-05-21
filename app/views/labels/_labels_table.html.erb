@@ -1,9 +1,9 @@
 <div class="table-scroll-wrapper">
   <table class="table table-index table-resource">
     <colgroup>
-      <col class="col-xs-8"/>
-      <col class="col-xs-3"/>
-      <col class="col-xs-1"/>
+      <col class="col-8"/>
+      <col class="col-3"/>
+      <col class="col-1"/>
     </colgroup>
     <thead>
     <tr>
@@ -19,7 +19,7 @@
         <td><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
         <td>
           <% if policy(Label).edit? %>
-            <%= link_to edit_label_path(label), class: "btn btn-sm btn-default" do %>
+            <%= link_to edit_label_path(label), class: "btn btn-sm btn-secondary" do %>
               <i class="mdi mdi-pencil mdi-18"></i>
             <% end %>
           <% end %>

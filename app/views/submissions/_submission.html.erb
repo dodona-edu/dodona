@@ -2,7 +2,7 @@
   <td>
     <%= submission_status_icon(submission) %>
     <% if submission.annotated? %>
-      <%= link_to submission_url(submission, anchor: "code"), title: t('submissions.submissions_table.annotated'), data: { toggle: "tooltip", placement: "top" } do %>
+      <%= link_to submission_url(submission, anchor: "code"), title: t('submissions.submissions_table.annotated'), data: { 'bs-toggle': "tooltip", placement: "top" } do %>
         <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary"></i>
       <% end %>
     <% end %>
@@ -12,8 +12,8 @@
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
          title="<%= t('.filter-submissions-by-user') %>"
          data-filter="<%= submission.user.full_name %>"
-         data-toggle="tooltip"
-         data-placement="top"
+         data-bs-toggle="tooltip"
+         data-bs-placement="top"
       >
       </i>
       <% if submission.course.nil? %>
@@ -28,8 +28,8 @@
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"
         title="<%= t('.filter-submissions-by-exercise') %>"
         data-filter="<%= submission.exercise.name %>"
-        data-toggle="tooltip"
-        data-placement="top"
+        data-bs-toggle="tooltip"
+        data-bs-placement="top"
       >
       </i>
       <% if submission.course.nil? %>

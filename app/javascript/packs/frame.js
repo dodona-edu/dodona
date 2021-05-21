@@ -1,9 +1,17 @@
+import "core-js/stable";
+import "regenerator-runtime/runtime";
+
 import jQuery from "jquery";
 
 // jQuery aliases
 window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
+
+// bootstrap
+import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from "bootstrap";
+const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
+window.bootstrap = bootstrap;
 
 import "polyfills.js";
 import { initTooltips } from "util.js";

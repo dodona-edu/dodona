@@ -14,7 +14,5 @@ Rails.application.config.assets.paths << Rails.root.join('node_modules')
 # Rails.application.config.assets.precompile += %w( admin.js admin.css )
 
 Rails.application.config.assets.nodigest = []
-Rails.application.config.assets.nodigest_fonts = []
 
-Rails.application.config.assets.paths << "#{Rails.root}/vendor/assets/fonts"
 Rails.application.config.assets.precompile += %w[mails.css application-dark.css]

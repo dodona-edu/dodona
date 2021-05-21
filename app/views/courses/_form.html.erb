@@ -20,14 +20,14 @@
     <div class="<%= "stepper-part#{needs_border ? " stepper-border" : ""}" %>">
       <input type="hidden" name="copy_options[base_id]" id="copy_base_id" value="<%= copy_options[:base_id] %>"/>
       <div class="form-group">
-        <strong class="col-sm-offset-3 col-sm-6"><%= t('.copy_options_details') %></strong>
+        <strong class="offset-sm-3 col-sm-6"><%= t('.copy_options_details') %></strong>
       </div>
-      <div class="field form-group">
-        <div class="col-sm-6 col-sm-offset-3">
+      <div class="field form-group row">
+        <div class="col-sm-6 offset-sm-3">
           <input id="copy_series" type="checkbox" checked disabled>
           <label for="copy_series" class="checkbox-label"><%= t('.copy_series') %></label>
         </div>
-        <span class="help-block col-sm-6 col-sm-offset-3">
+        <span class="help-block col-sm-6 offset-sm-3">
           <%= t('.copy_series_details') %>
         </span>
       </div>
@@ -35,7 +35,7 @@
       <%= render partial: 'copy_option', locals: {name: :deadlines, copy_options: copy_options, explanation: t(".copy_deadlines")} %>
       <%= render partial: 'copy_option', locals: {name: :admins, copy_options: copy_options, explanation: t(".copy_admins"), details: t(".copy_admins_details")} %>
       <div class="form-group">
-        <strong class="col-sm-push-3 col-sm-6"><%= t('.other_copy_options') %></strong>
+        <strong class="col-sm-6"><%= t('.other_copy_options') %></strong>
       </div>
       <%= render partial: 'copy_option', locals: {name: :hide_series, copy_options: copy_options, explanation: t(".hide_series"), details: t(".hide_series_details")} %>
     </div>
@@ -43,51 +43,51 @@
   <% end %>
 
   <div class="<%= course.new_record? ? "stepper-part#{needs_border ? " stepper-border" : ""}" : "card-supporting-text" %>">
-    <div class="field form-group">
-      <%= f.label :name, :class => "col-sm-3 control-label" %>
+    <div class="field form-group row">
+      <%= f.label :name, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
-    <div class="field form-group">
-      <%= f.label :teacher, :class => "col-sm-3 control-label" %>
+    <div class="field form-group row">
+      <%= f.label :teacher, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :teacher, class: "form-control" %></div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".teacher-help" %></span>
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".teacher-help" %></span>
     </div>
-    <div class="field form-group">
-      <%= f.label :year, :class => "col-sm-3 control-label" %>
+    <div class="field form-group row">
+      <%= f.label :year, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_field :year, class: "form-control" %></div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".year-help" %></span>
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".year-help" %></span>
     </div>
-    <div class="field form-group">
-      <%= f.label :institution, :class => "col-sm-3 control-label" %>
+    <div class="field form-group row">
+      <%= f.label :institution, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6">
         <%= f.select :institution_id,
                      options_for_select(Institution.all.sort_by(&:name).map {|i| [i.name, i.id]}, course.institution_id),
                      {include_blank: t('.no_institution')},
-                     {class: 'form-control'} %>
+                     {class: 'form-select'} %>
       </div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".institution-help_html" %></span>
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".institution-help_html" %></span>
     </div>
-    <div class="field form-group">
-      <%= f.label :description, :class => "col-sm-3 control-label" %>
+    <div class="field form-group row">
+      <%= f.label :description, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".description-help" %></span>
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".description-help" %></span>
     </div>
 
     <% if current_user.zeus? %>
-      <div class="field form-group">
-        <%= f.label :color, class: 'col-sm-3 control-label' %>
+      <div class="field form-group row">
+        <%= f.label :color, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
           <%= f.select :color,
                        options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
                                           course.color),
                        {},
-                       {class: 'form-control'} %>
+                       {class: 'form-select'} %>
         </div>
       </div>
     <% end %>
 
-    <div class="field form-group">
-      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 control-label' %>
+    <div class="field form-group row">
+      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 col-form-label' %>
       <div class="col-sm-6">
         <div class="checkbox">
           <%= label_tag do %>
@@ -102,19 +102,19 @@
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">
     <h4><%= t('.access') %></h4>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.visibility-label') %></strong>
+      <strong class="col-12"><%= t('.visibility-label') %></strong>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <% Course.visibilities.keys.each.with_index do |v, i| %>
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 offset-sm-3">
           <%= f.radio_button :visibility, v %>
           <%= f.label :visibility, t(".visibility-#{v}_html"), value: v, class: "checkbox-label" %>
         </div>
-        <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".visibility-#{v}-help_html" %></span>
+        <span class="help-block offset-sm-3 col-sm-6"><%= t ".visibility-#{v}-help_html" %></span>
       <% end %>
     </div>
-    <div class="field form-group">
-      <div class="col-sm-offset-3 col-sm-6">
+    <div class="field form-group row">
+      <div class="offset-sm-3 col-sm-6">
         <div class="input-group" id="hidden_show_link_field">
           <%= render partial: 'application/token_field', formats: [:html],
                      locals: {
@@ -126,31 +126,31 @@
       </div>
     </div>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.registration-label') %></strong>
+      <strong class="col-12"><%= t('.registration-label') %></strong>
     </div>
-    <div class="field form-group">
+    <div class="field form-group row">
       <% Course.registrations.keys.each.with_index do |r, i| %>
-        <div class="col-sm-6 col-sm-offset-3">
+        <div class="col-sm-6 offset-sm-3">
           <%= f.radio_button :registration, r %>
           <%= f.label :registration, t(".registration-#{r}_html"), value: r, class: "checkbox-label" %>
         </div>
-        <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".registration-#{r}-help_html" %></span>
+        <span class="help-block offset-sm-3 col-sm-6"><%= t ".registration-#{r}-help_html" %></span>
       <% end %>
     </div>
     <div class="form-group">
-      <strong class="col-xs-12"><%= t('.moderated-label') %></strong>
+      <strong class="col-12"><%= t('.moderated-label') %></strong>
     </div>
-    <div class="field form-group">
-      <div class="col-sm-offset-3 col-sm-6">
+    <div class="field form-group row">
+      <div class="offset-sm-3 col-sm-6">
         <%= f.radio_button :moderated, false %>
         <%= f.label :moderated, t('.automatically'), value: false, class: 'checkbox-label' %>
       </div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-automatically-help" %></span>
-      <div class="col-sm-offset-3 col-sm-6">
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".moderated-automatically-help" %></span>
+      <div class="offset-sm-3 col-sm-6">
         <%= f.radio_button :moderated, true %>
         <%= f.label :moderated, t('.moderated'), value: true, class: 'checkbox-label' %>
       </div>
-      <span class="help-block col-sm-offset-3 col-sm-6"><%= t ".moderated-moderated-help" %></span>
+      <span class="help-block offset-sm-3 col-sm-6"><%= t ".moderated-moderated-help" %></span>
     </div>
   </div>
 <% end %>

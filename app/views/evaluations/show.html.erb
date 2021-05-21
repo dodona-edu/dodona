@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-xs-12">
+  <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t('.title', series: @evaluation.series.name) %></h2>
       </div>
       <div class="card-supporting-text">
         <div class="row">
-          <div class="col-lg-6 col-md-12 col-lg-push-6">
+          <div class="col-lg-6 col-md-12 order-lg-1">
             <div class="callout callout-info">
               <h4><%= t ".explanation_title" %></h4>
               <p><%= t ".explanation_part1_html" %></p>
               <p><%= t ".explanation_part2_html" %></p>
             </div>
           </div>
-          <div class="col-lg-6 col-md-12 col-lg-pull-6">
+          <div class="col-lg-6 col-md-12 order-lg-0">
             <p><%= t '.deadline_html', users: @evaluation.users.count, exercises: @evaluation.exercises.count, deadline: l(@evaluation.deadline, format: :submission) %></p>
             <%= render partial: 'exercises_progress_table', locals: { metadata: @evaluation.metadata, series: @evaluation.series } %>
           </div>
@@ -28,15 +28,17 @@
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),
                     class: "btn-primary btn-text",
                     method: :patch %>
-        <a class="btn btn-icon dropdown-toggle" data-toggle="dropdown">
+        <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
         </a>
-        <ul class="dropdown-menu dropdown-menu-right">
+        <ul class="dropdown-menu dropdown-menu-end">
           <li>
             <%= link_to t('evaluations.destroy'),
                         evaluation_path(@evaluation),
                         method: :delete,
-                        data: { confirm: t('general.are_you_sure') } %>
+                        class: "dropdown-item",
+                        data: { confirm: t('general.are_you_sure') }
+                        %>
           </li>
         </ul>
       </div>
@@ -45,10 +47,10 @@
       <div class="card-supporting-text">
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
-              <a href="#evaluation-details" data-toggle="tab"><%= t '.evaluation_details' %></a></li>
+            <li role="presentation">
+              <a href="#evaluation-details" data-bs-toggle="tab" class="active"><%= t '.evaluation_details' %></a></li>
             <% if @evaluation.graded? %>
-              <li role="presentation"><a href="#grading-details" data-toggle="tab"><%= t '.grading_details' %></a></li>
+              <li role="presentation"><a href="#grading-details" data-bs-toggle="tab"><%= t '.grading_details' %></a></li>
             <% end %>
           </ul>
           <div class="tab-content">
@@ -64,7 +66,7 @@
                       <%= t ".grading_details_info_html" %>
                     </p>
                     <div class="btn-group">
-                      <%= link_to export_grades_evaluation_path(@evaluation, format: :csv), class: 'btn btn-default btn-small', title: t('evaluations.download') do %>
+                      <%= link_to export_grades_evaluation_path(@evaluation, format: :csv), class: 'btn btn-secondary btn-small', title: t('evaluations.download') do %>
                         <i class="mdi mdi-download mdi-18"></i>
                       <% end %>
                     </div>

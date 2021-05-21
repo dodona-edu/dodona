@@ -2,7 +2,7 @@
   <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <div class="row">
-  <div class="col-xs-12 col-sm-6 col-lg-8">
+  <div class="col-12 col-md-6 col-lg-8">
     <% if @subscribed_courses.empty? %>
       <%= render "getting_started_card" %>
       <%= render 'privacy_disclaimer' %>
@@ -10,7 +10,7 @@
       <div class="row favorites-row">
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
-            <div class="col-xs-12 col-sm-12 col-lg-6">
+            <div class="col-12 col-sm-12 col-lg-6">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -32,7 +32,7 @@
         <% end %>
         <div class="row row-<%= year.parameterize %>">
           <% courses.each do |course| %>
-            <div class="col-xs-12 col-sm-12 col-lg-6">
+            <div class="col-12 col-sm-12 col-lg-6">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -40,9 +40,9 @@
       <% end %>
     <% end %>
   </div>
-  <div class="col-xs-12 col-sm-6 col-lg-4">
+  <div class="col-12 col-md-6 col-lg-4">
     <div class="row">
-      <div class="col-xs-12">
+      <div class="col-12">
         <%= render "user_card" %>
         <% if current_user.pending_courses.any? %>
           <%= render "pending_courses_card" %>

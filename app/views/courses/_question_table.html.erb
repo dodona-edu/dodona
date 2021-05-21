@@ -30,17 +30,17 @@
         </td>
         <td class="actions">
           <% if policy(question).transition?(:unanswered) %>
-            <%= link_to annotation_path(question), data: { from: question.question_state, to: :unanswered }, class: 'btn btn-sm btn-default state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :unanswered }, class: 'btn btn-sm btn-secondary state-changer' do %>
               <i class="mdi mdi-restart mdi-18" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).transition?(:in_progress) && !question.answered? %>
-            <%= link_to annotation_path(question), data: { from: question.question_state, to: :in_progress }, class: 'btn btn-sm btn-default state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :in_progress }, class: 'btn btn-sm btn-secondary state-changer' do %>
               <i class="mdi mdi-comment-processing-outline mdi-18" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
             <% end %>
           <% end %>
           <% if policy(question).transition?(:answered) %>
-            <%= link_to annotation_path(question), data: { from: question.question_state, to: :answered }, class: 'btn btn-sm btn-default state-changer' do %>
+            <%= link_to annotation_path(question), data: { from: question.question_state, to: :answered }, class: 'btn btn-sm btn-secondary state-changer' do %>
               <i class="mdi mdi-check mdi-18" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
             <% end %>
           <% end %>

@@ -1,0 +1,37 @@
+.toasts {
+  bottom: 24px;
+  left: 24px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.toasts .toast {
+  background-color: $toast-bg;
+  border-radius: 3px;
+  box-shadow: 0 0 2px $toast-inner-shadow, 0 2px 4px $toast-outer-shadow;
+  color: $toast-fg;
+  display: block;
+  line-height: 20px;
+  margin-top: 8px;
+  padding: 16px;
+  transition-duration: 1s;
+  transition-property: transform, opacity;
+  transition-timing-function: ease-out;
+}
+
+.toasts .toast-show {
+  transform: translateY(200px);
+  opacity: 0;
+}
+
+.toasts .toast-hide {
+  opacity: 0;
+}
+
+.toast .spinner {
+  width: 20px;
+  height: 20px;
+  float: right;
+  margin-left: 10px;
+  background-color: $toast-spinner-bg;
+}

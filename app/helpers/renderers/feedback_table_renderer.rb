@@ -77,9 +77,9 @@ class FeedbackTableRenderer
                     else
                       ''
                     end
-          @builder.li(class: ('active' if i.zero?)) do
+          @builder.li do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
+            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
@@ -93,7 +93,7 @@ class FeedbackTableRenderer
           @builder.li(class: ('active' if submission[:groups].blank?)) do
             @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
-              @builder.span(class: 'badge rounded-piil', id: 'badge_code')
+              @builder.span(class: 'badge rounded-pill', id: 'badge_code')
             end
           end
         end
@@ -176,8 +176,10 @@ class FeedbackTableRenderer
   def group(g)
     @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
       if g[:description]
-        @builder.div(class: 'col-12 description') do
-          message(g[:description])
+        @builder.div(class: 'row') do
+          @builder.div(class: 'col-12 description') do
+            message(g[:description])
+          end
         end
       end
       messages(g[:messages])

@@ -22,6 +22,10 @@ pre {
   border-radius: $border-radius-base;
 }
 
+code {
+  background-color: $code-bg;
+}
+
 .img-responsive {
   @extend .img-fluid;
 }
@@ -227,7 +231,7 @@ pre {
 .course-description .panel-group,
 .series .panel-group,
 .activity-description .panel-group {
-  h4.panel-title {
+  .panel-title {
     line-height: 24px;
     font-size: 16px;
     color: inherit;
@@ -268,4 +272,18 @@ mark,
 .pagination {
   justify-content: center;
   margin-top: 12px;
+}
+
+blockquote {
+  padding-left: 6px;
+  border-left: 3px solid $border-color;
+}
+
+@media screen {
+  .visible-print { display: none; }
+  .visible-print-inline { display: none; }
+}
+
+@media print {
+  .hidden-print { display: none; }
 }

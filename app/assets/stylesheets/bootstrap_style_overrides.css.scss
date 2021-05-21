@@ -274,6 +274,11 @@ mark,
   margin-top: 12px;
 }
 
+blockquote {
+  padding-left: 6px;
+  border-left: 3px solid $border-color;
+}
+
 @media screen {
     .visible-print { display: none; }
     .visible-print-inline { display: none; }

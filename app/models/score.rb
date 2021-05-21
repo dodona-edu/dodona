@@ -23,6 +23,7 @@ class Score < ApplicationRecord
   after_save :maybe_complete_feedback
 
   validates :score, presence: true, numericality: { greater_than: -1000, less_than: 1000 }
+  validates :score_item_id, uniqueness: { scope: :feedback_id }
 
   def out_of_bounds?
     return false if score.nil?

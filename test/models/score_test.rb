@@ -54,4 +54,11 @@ class ScoreTest < ActiveSupport::TestCase
     assert @feedback.completed?
     assert_empty @feedback.score_items
   end
+
+  test 'duplicate scores are rejected' do
+    create :score, feedback: @feedback, score_item: @score_item1
+    score = build :score, feedback: @feedback, score_item: @score_item1
+
+    assert_not score.save
+  end
 end

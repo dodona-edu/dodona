@@ -110,8 +110,12 @@ export default class FeedbackActions {
         }).then(async response => {
             if (response.ok) {
                 eval(await response.text());
+            } else if ([403, 404, 422].includes(response.status)) {
+                new dodona.Toast(I18n.t("js.score.conflict"));
+                await this.refresh();
             } else {
                 new dodona.Toast(I18n.t("js.score.unknown"));
+                await this.refresh();
             }
         });
     }

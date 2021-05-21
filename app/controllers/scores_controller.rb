@@ -6,24 +6,28 @@ class ScoresController < ApplicationController
     @score = Score.new(permitted_attributes(Score))
     @score.last_updated_by = current_user
     authorize @score
+    saved = @score.save
+    set_common
     respond_to do |format|
-      if @score.save
-        set_common
+      if saved
         format.js { render :show }
         format.json { render :show, status: :created, location: [@evaluation, @score] }
       else
+        format.js { render :show, status: :unprocessable_entity }
         format.json { render json: @score.errors, status: :unprocessable_entity }
       end
     end
   end
 
   def update
+    updated = @score.update(permitted_attributes(Score))
+    set_common
     respond_to do |format|
-      if @score.update(permitted_attributes(Score))
-        set_common
+      if updated
         format.js { render :show }
-        format.json { render :show, status: :created, location: [@evaluation, @score] }
+        format.json { render :show, status: :ok, location: [@evaluation, @score] }
       else
+        format.js { render :show, status: :unprocessable_entity }
         format.json { render json: @score.errors, status: :unprocessable_entity }
       end
     end

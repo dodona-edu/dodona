@@ -269,3 +269,12 @@ mark,
   justify-content: center;
   margin-top: 12px;
 }
+
+@media screen {
+    .visible-print { display: none; }
+    .visible-print-inline { display: none; }
+}
+
+@media print {
+    .hidden-print { display: none; }
+}

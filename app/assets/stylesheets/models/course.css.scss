@@ -41,7 +41,7 @@
 
   @include media-breakpoint-up(md) {
     .nav {
-      width: calc((100vw - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2);
+      width: calc((100vw - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2 - var(--scrollbar-width));
       height: calc(100vh - (#{$navbar-height} + 20px));
       display: block;
       overflow-y: auto;
@@ -58,17 +58,17 @@
 
   @include media-breakpoint-up(lg) {
     .nav {
-      width: calc((100vw - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2);
+      width: calc((100vw - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2 - var(--scrollbar-width));
     }
   }
   @include media-breakpoint-up(xl) {
     .nav {
-      width: calc((100vw - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2);
+      width: calc((100vw - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2 - var(--scrollbar-width));
     }
   }
   @include media-breakpoint-up(xxl) {
     .nav {
-      width: calc((100vw - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2);
+      width: calc((100vw - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2 - var(--scrollbar-width));
     }
   }
 

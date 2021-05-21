@@ -22,6 +22,10 @@ pre {
   border-radius: $border-radius-base;
 }
 
+code {
+  background-color: $code-bg;
+}
+
 .img-responsive {
   @extend .img-fluid;
 }

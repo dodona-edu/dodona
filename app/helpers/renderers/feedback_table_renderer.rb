@@ -77,9 +77,9 @@ class FeedbackTableRenderer
                     else
                       ''
                     end
-          @builder.li(class: ('active' if i.zero?)) do
+          @builder.li do
             id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission}", title: tooltip) do
+            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id

@@ -97,7 +97,7 @@ class SubmissionRunner
             # judge entry point
             @mountdst.join(@hidden_path, 'judge', 'run').to_path],
       Image: @exercise.merged_config['evaluation']&.fetch('image', nil) || @judge.image,
-      name: "dodona-#{@submission.id}", # assuming unique during execution
+      name: "dodona-#{@submission.id}-#{random_suffix}", # assuming unique during execution
       OpenStdin: true,
       StdinOnce: true, # closes stdin after first disconnect
       NetworkDisabled: !@config['network_enabled'],
@@ -144,6 +144,8 @@ class SubmissionRunner
       rescue StandardError
       end
       # rubocop:enable Lint/SuppressedException
+      # We also still change the name, because the removal can fail as well.
+      docker_options[:name] = "dodona-#{@submission.id}-#{random_suffix}"
       retry
     end
 
@@ -286,5 +288,9 @@ class SubmissionRunner
 
   def truncate(string, max)
     string.length > max ? "#{string[0...max]}... (truncated)" : string
+  end
+
+  def random_suffix
+    SecureRandom.urlsafe_base64(10)
   end
 end

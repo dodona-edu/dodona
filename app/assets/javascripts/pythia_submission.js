@@ -115,8 +115,10 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
         $("#tutor #fullscreen-button").click(function () {
             const elem = $("#tutor").get(0);
             if (fullScreenApi.isFullScreen()) {
+                $("#tutor .modal-dialog").removeClass("modal-fullscreen");
                 fullScreenApi.cancelFullScreen(elem);
             } else {
+                $("#tutor .modal-dialog").addClass("modal-fullscreen");
                 fullScreenApi.requestFullScreen(elem);
             }
         });
@@ -186,8 +188,8 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
                 "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>",
                 { allowFullscreen: true }
             );
-
-            $("#tutor #info-modal").on("shown.bs.modal", function (e) {
+            const modal = $("#tutor #info-modal");
+            modal.on("shown.bs.modal", function (e) {
                 $("#tutorcontent").html(
                     `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`
                 );
@@ -196,10 +198,11 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
                 });
             });
 
-            $("#tutor #info-modal").on("hidden.bs.modal", function () {
+            modal.on("hidden.bs.modal", function () {
                 if (fullScreenApi.isFullScreen()) {
                     const $tutor = $("#tutor");
                     const elem = $tutor.get(0);
+                    $("#tutor .modal-dialog").removeClass("modal-fullscreen");
                     fullScreenApi.cancelFullScreen(elem);
                 }
             });

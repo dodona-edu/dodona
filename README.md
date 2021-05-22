@@ -3,6 +3,8 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dodona-edu/dodona)
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dodona-edu/dodona/Test)
 ![Codecov](https://img.shields.io/codecov/c/github/dodona-edu/dodona)
+[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me)
+[![General chat](https://img.shields.io/static/v1?label=general%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be)
 
 > Dodona is an online exercise platform for **learning to code**. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an **online co-teacher**, designed to give every student access to high quality education. The focus is on automatic corrections and giving **meaningful feedback** on the submitted solutions from students.
 
@@ -19,7 +21,7 @@ Dodona is free to use for schools and we would like to keep it that way! Keeping
 There are several ways to contact us:
 - To report a bug, please use [GitHub Issues](https://github.com/dodona-edu/dodona/issues).
 - If you have a question to which the answer might be of use to others, please use [GitHub Discussions](https://github.com/dodona-edu/dodona/discussions).
-- For more specific questions, use [our contact form](https://dodona.ugent.be/nl/contact/) or send an email to [dodona@ugent.be](mailto:dodona@ugent.be).
+- For more specific questions, use [our contact form](https://dodona.ugent.be/nl/contact/), send an email to [dodona@ugent.be](mailto:dodona@ugent.be) or come chat with us in our [general chat](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be) or our [support chat](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me).
 
 ## Local development
 

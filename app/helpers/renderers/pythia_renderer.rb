@@ -109,11 +109,11 @@ class PythiaRenderer < FeedbackTableRenderer
 
     # Tutor HTML
     @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade modal-info', "data-backdrop": true, tabindex: -1) do
-        @builder.div(class: 'modal-dialog tutor') do
+      @builder.div(id: 'info-modal', class: 'modal fade', "data-backdrop": true, tabindex: -1) do
+        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
           @builder.div(class: 'modal-content') do
             @builder.div(class: 'modal-header') do
-              @builder.h4(class: 'modal-title')
+              @builder.h4(class: 'modal-title') {}
               @builder.div(class: 'icons') do
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
                   @builder.i('', class: 'mdi mdi-fullscreen mdi-18')

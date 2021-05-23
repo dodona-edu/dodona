@@ -1,12 +1,33 @@
-# Dodona 
+# Dodona
 
-The Dodona project aims to provide a solution for the automatic testing of solutions for programming exercises.
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/dodona-edu/dodona)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dodona-edu/dodona/Test)
+![Codecov](https://img.shields.io/codecov/c/github/dodona-edu/dodona)
+[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me)
+[![General chat](https://img.shields.io/static/v1?label=general%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be)
 
-On https://dodona.ugent.be, students can sign in with the credentials of the Smartschool, Office 365, or G Suite account of their school. After signing in, you can subscribe to one of the many courses. Dodona courses consist of several exercise series. Each exercise has a detailed exercise description and an extensive test suite. After submitting a solution to an exercise, a sandboxed background job is started to test the solution, and the result and feedback is displayed within seconds.
+> Dodona is an online exercise platform for **learning to code**. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an **online co-teacher**, designed to give every student access to high quality education. The focus is on automatic corrections and giving **meaningful feedback** on the submitted solutions from students.
 
-The documentation of this project can be found at https://docs.dodona.be.
+This repository contains the source code of the web application. If you simply want to use Dodona, please go to [https://dodona.ugent.be](https://dodona.ugent.be).
 
-## Development Setup
+The documentation for end users can be found at [https://docs.dodona.be](https://docs.dodona.be).
+
+## Supporting Dodona
+
+Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundeds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
+
+## Contacting us
+
+There are several ways to contact us:
+- To report a bug, please use [GitHub Issues](https://github.com/dodona-edu/dodona/issues).
+- If you have a question to which the answer might be of use to others, please use [GitHub Discussions](https://github.com/dodona-edu/dodona/discussions).
+- For more specific questions, use [our contact form](https://dodona.ugent.be/nl/contact/), send an email to [dodona@ugent.be](mailto:dodona@ugent.be) or come chat with us in our [general chat](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be) or our [support chat](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me).
+
+## Local development
+
+If you want to help with development, issues tagged with the [student label](https://github.com/dodona-edu/dodona/issues?q=is%3Aissue+is%3Aopen+label%3Astudent) are a good starting point.
+
+### Development Setup
 
 1. Install and start `mysql` or `mariadb`.
 2. If using `mysql`, change the `sql-mode` in the `mysqld` configuration block:
@@ -29,42 +50,41 @@ The documentation of this project can be found at https://docs.dodona.be.
    - `http://dodona.localhost:3000/nl/users/2/token/staff`
    - `http://dodona.localhost:3000/nl/users/3/token/student`
 
-## Evaluating exercises locally
+#### Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
 
 1. Install and start `docker`.
 2. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
 3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-python` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-python" -f "dodona-python.dockerfile" .`.
 
-## Loading visualisations locally
+#### Loading visualisations locally
 These steps are not required to run the server, but are needed to let the visualisations load.
 
 1. Install and start `memcached`.
 2. Create the following file `tmp/caching-dev.txt`.
 
-## Starting the server
+#### Windows
+
+Some gems and dependencies (such as memcached) do not work on Windows.
+You should use [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/about) instead, and run everything inside WSL.
+This means you use WSL for the database, memcached, git, Docker, etc.
+
+### Starting a local server
 The simplest way to start the server is with the `rails s` command. But this will not process the submission queue, and javascript will be compiled by webpack in the background (without output when something goes wrong).
 
 - To process the submission queue, delayed job needs to be started with the `bin/delayed_job start` command.
 - With `bin/webpack-dev-server` your javascript is reloaded live and you can see development output.
 
-To run all these processes at the same time, the foreman gem is used. To start the rails server, delayed job and the webpack dev server, simply run `bin/server`.
-The foreman gem is [not bundled with Dodona](https://github.com/ddollar/foreman/wiki/Don%27t-Bundle-Foreman). Install it globally with `gem install foreman`.
+To start the rails server, delayed job and the webpack dev server at the same time, simply run `bin/server`.
 
-This has one letdown: debugging with `byebug` is broken. You can run `bin/server norails` to only start webpack and delayed_job in foreman and then run `rails s` in a different terminal to be able to use `byebug` again.
+This has one letdown: debugging with `byebug` is broken.
 
-## Localhost subdomain
+#### Localhost subdomain
 
-Dodona use subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
+Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
 
 If this does not work out of the box you can add the following lines to your `/etc/hosts` file:
 ```
 127.0.0.1             dodona.localhost
 127.0.0.1             sandbox.localhost
 ```
-
-## Running on Windows
-
-Some gems (such as therubyracer) and dependencies (such as memcached) do not work on Windows.
-You should use [WSL 2](https://docs.microsoft.com/en-us/windows/wsl/about) instead, and run everything inside WSL.
-This means you use WSL for the database, memcached, git, Docker, etc.

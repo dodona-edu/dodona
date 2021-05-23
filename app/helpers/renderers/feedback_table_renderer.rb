@@ -78,8 +78,8 @@ class FeedbackTableRenderer
                       ''
                     end
           @builder.li do
-            id = "##{(t[:description] || 'test').parameterize}-#{i}"
-            @builder.a(href: id, 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip) do
+            id = tab_id(t, i)
+            @builder.a(href: "##{id}", 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
               badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
@@ -123,9 +123,15 @@ class FeedbackTableRenderer
   end
 
   def tab(t, i)
-    @builder.div(class: "tab-pane feedback-tab-pane #{'active' if i.zero?}", id: "#{(t[:description] || 'test').parameterize}-#{i}") do
+    @builder.div(class: "tab-pane feedback-tab-pane #{'active' if i.zero?}", id: tab_id(t, i)) do
       tab_content(t)
     end
+  end
+
+  def tab_id(t, i)
+    prefix = t[:description]&.parameterize
+    prefix = 'test' if prefix.blank?
+    "#{prefix}-#{i}"
   end
 
   def tab_content(t)

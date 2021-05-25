@@ -130,10 +130,13 @@ function initCourseShow() {
     const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init() {
-        new ScrollSpy(document.getElementById("scrollspy-nav"), {
-            sectionSelector: ".series .anchor",
-            offset: 90,
-        }).activate();
+        const nav = document.getElementById("scrollspy-nav");
+        if (nav) {
+            new ScrollSpy(nav, {
+                sectionSelector: ".series .anchor",
+                offset: 90,
+            }).activate();
+        }
         $(window).scroll(scroll);
         scroll(); // Load series visible on pageload
     }

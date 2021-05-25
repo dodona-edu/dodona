@@ -187,3 +187,18 @@ a.score-click {
   text-align: right;
   padding-bottom: 5px;
 }
+
+.grade-feedback-table.table {
+  td.subscore-row {
+    padding-left: 30px;
+  }
+
+  td:first-child, th:first-child {
+    max-width: 200px;
+  }
+
+  tr:last-child td {
+    // Restore border at the bottom of the table.
+    border-bottom-width: 1px;
+  }
+}

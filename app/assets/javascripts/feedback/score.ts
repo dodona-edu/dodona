@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch, delay } from "util.js";
 import FeedbackActions from "feedback/actions";
 
 /**
@@ -59,18 +59,26 @@ export default class ScoreForm {
         this.form.addEventListener("submit", e => {
             e.preventDefault();
         });
-        this.input.addEventListener("change", e => {
-            if (valueOnFocus === (e.target as HTMLInputElement).value) {
-                return;
-            }
-            if (!this.input.reportValidity()) {
-                return;
-            }
-            if (updating) {
-                return;
-            }
-            updating = true;
-            this.sendUpdate(document.activeElement as HTMLElement);
+        this.input.addEventListener("change", ev => {
+            // Mark as busy to show we are aware an update should happen.
+            // If we don't do this, we need a difficult balance between waiting
+            // long enough so the delay is useful when using the increment/decrement buttons
+            // and the case where we type the value and don't want to wait.
+            this.visualiseUpdating();
+            delay(() => {
+                if (valueOnFocus === (ev.target as HTMLInputElement).value) {
+                    return;
+                }
+                if (!this.input.reportValidity()) {
+                    return;
+                }
+                if (updating) {
+                    return;
+                }
+                updating = true;
+                console.log("execute");
+                this.sendUpdate(document.activeElement as HTMLElement);
+            }, 400);
         });
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {
@@ -151,7 +159,7 @@ export default class ScoreForm {
         });
     }
 
-    private doRequest(method: string, data: Record<string, unknown>, newFocus: HTMLElement | null = null): void {
+    private doRequest(method: string, data: Record<string, unknown>, newFocus?: HTMLElement): void {
         // Save the element that has focus.
         const activeId = newFocus?.id;
         this.markBusy();
@@ -181,12 +189,16 @@ export default class ScoreForm {
         });
     }
 
-    public markBusy(): void {
-        this.parent.registerUpdating(this.scoreItemId);
-        this.disableInputs();
+    private visualiseUpdating(): void {
         this.input.classList.add("in-progress");
         this.maxText.classList.add("in-progress");
         this.spinner.style.visibility = "visible";
+    }
+
+    public markBusy(): void {
+        this.parent.registerUpdating(this.scoreItemId);
+        this.disableInputs();
+        this.visualiseUpdating();
     }
 
     public disableInputs(): void {

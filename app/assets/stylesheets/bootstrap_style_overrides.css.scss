@@ -20,6 +20,13 @@ pre {
   background-color: $code-bg;
   border: 1px solid $hairlinegray;
   border-radius: $border-radius-base;
+
+  code {
+    // Code inside a pre block is not an inline element, so don't add padding.
+    // See #2763
+    padding-left: 0;
+    padding-right: 0;
+  }
 }
 
 code {

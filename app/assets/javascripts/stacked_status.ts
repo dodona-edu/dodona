@@ -146,10 +146,10 @@ function drawStacked(data: {
     metrics.append("rect")
         .attr("width", margin.right - 20)
         .attr("height", innerHeight)
+        .attr("class", "metric-container")
         .attr("rx", 5)
         .attr("ry", 5)
         .style("fill", "none")
-        .style("stroke", "currentColor")
         .style("stroke-width", 2);
 
     for (const ex of data) {

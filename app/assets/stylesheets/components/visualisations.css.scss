@@ -10,5 +10,9 @@
 
 .violin-invisibar {
     visibility: hidden;
-    fill: none;
+    fill: none
+}
+
+.metric-container {
+    stroke: $panel-primary-border;
 }

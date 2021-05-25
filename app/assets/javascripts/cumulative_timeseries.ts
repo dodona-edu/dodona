@@ -37,7 +37,7 @@ function thresholdTime(n, min, max): () => Date[] {
 function drawCumulativeTimeSeries(data, metaData, exMap): void {
     d3.timeFormatDefaultLocale({
         "dateTime": I18n.t("time.formats.default"),
-        "date": I18n.t("date.formats.default"),
+        "date": I18n.t("date.formats.short"),
         "time": I18n.t("time.formats.short"),
         "periods": [I18n.t("time.am"), I18n.t("time.pm")],
         "days": I18n.t("date.day_names"),
@@ -48,7 +48,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
-    const dateFormat = d3.timeFormat("%A %B %d");
+    const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
     let tooltipI = -1;
@@ -87,7 +87,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .domain(exOrder);
 
     let ticks = d3.timeDay.filter(d=>d3.timeDay.count(metaData["minDate"], d) % 2 === 0);
-    let format = "%a %b-%d";
+    let format = I18n.t("date.formats.weekday_short");
     if (metaData["dateRange"] > 20) {
         ticks = d3.timeMonth;
         format = "%B";
@@ -302,11 +302,10 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        console.log(data);
         Object.entries(data).forEach(entry => {
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
-        // insertFakeData(data, raw.students);
+        insertFakeData(data, raw.students);
         metaData["minDate"] = new Date(d3.min(Object.values(data),
             records => d3.min(records)));
         metaData["maxDate"] = new Date( // round maxDate to day

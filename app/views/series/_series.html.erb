@@ -163,10 +163,11 @@
           dodona.initStacked('/nl/stats/stacked_status?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
           <%= embedded_svg("stacked-bar-chart.svg", {class: "mdi svg-icon-btn rotate"}) %>
         </button>
-        <% if true %>
         <button class="btn btn-secondary annotation-toggle timeseries" onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>) && 
-          dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">Timeseries</button>
-        <% end %>
+          dodona.initTimeseries('/nl/stats/timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+          <%= embedded_svg("heatmap.svg", {class: "mdi svg-icon-btn"}) %>
+        
+        </button>
         <button class="btn btn-secondary annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
           dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
           <%= embedded_svg("stacked-line-chart.svg", {class: "mdi svg-icon-btn"}) %>

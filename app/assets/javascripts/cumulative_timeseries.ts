@@ -27,6 +27,7 @@ function insertFakeData(data, maxCount): void {
     }
 }
 
+// helper function for time binning
 function thresholdTime(n, min, max): () => Date[] {
     const ticks = d3.timeDay;
     return () => {
@@ -53,7 +54,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
     dateArray.unshift(metaData["minDate"]);
     let tooltipI = -1;
 
-    const mapEx = (target: string): string =>
+    const mapEx = (target: string): string => // map id to exercise name
         exMap.find(ex => target.toString() === ex[0].toString());
 
     const svg = d3.select(selector)
@@ -66,6 +67,9 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .append("g")
         .attr("transform",
             "translate(" + margin.left + "," + margin.top + ")");
+
+    // axis and scale settings
+    // --------------------------------------------------------------------------------------------
 
     // common y scale per exercise
     const y = d3.scaleLinear()
@@ -98,6 +102,10 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("transform", `translate(0, ${y(0)})`)
         .call(d3.axisBottom(x).ticks(ticks, format));
 
+    // --------------------------------------------------------------------------------------------
+
+    // tooltip initialisation
+    // --------------------------------------------------------------------------------------------
     const tooltip = graph.append("line")
         .attr("y1", 0)
         .attr("y2", innerHeight)
@@ -122,6 +130,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         .attr("fill", d => color(d[0]))
         .attr("font-size", "12px");
 
+    // tooltip settings when mouse is not hovering over svg
     function tooltipNotFocused(): void {
         tooltipI = -1;
         const date = metaData["maxDate"];
@@ -153,9 +162,11 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .attr("y", d => y(d[1][last][1]/metaData["maxSum"])-5);
     }
     tooltipNotFocused();
+    // --------------------------------------------------------------------------------------------
 
+    // Legend settings
+    // --------------------------------------------------------------------------------------------
     const legend = svg.append("g");
-
 
     let legendX = 0;
     for (const ex of exOrder) {
@@ -187,6 +198,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
         `translate(${width/2 - legend.node().getBBox().width/2},
         ${innerHeight+margin.top+margin.bottom/2})`
     );
+    // --------------------------------------------------------------------------------------------
 
     // add lines
     for (const exId of Object.keys(data)) {
@@ -212,6 +224,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             );
     }
 
+    // determine where to put tooltip line
     function bisect(mx: number): {"date": Date; "i": number} {
         if (!dateArray) {
             return { "date": new Date(0), "i": 0 };
@@ -308,16 +321,18 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        Object.entries(data).forEach(entry => {
+        Object.entries(data).forEach(entry => { // parse dates
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
-        insertFakeData(data, raw.students);
+
+        // insertFakeData(data, raw.students);
+
         metaData["minDate"] = new Date(d3.min(Object.values(data),
             records => d3.min(records)));
-        metaData["maxDate"] = new Date( // round maxDate to day
+        metaData["maxDate"] = new Date( // round maxDate down to day
             d3.timeFormat("%Y-%m-%d")(d3.max(Object.values(data), records => d3.max(records)))
         );
-        metaData["maxSum"] = raw.students ? raw.students : 0;
+        metaData["maxSum"] = raw.students ? raw.students : 0; // max value
         metaData["dateRange"] = Math.round(
             (metaData["maxDate"].getTime() - metaData["minDate"].getTime()) /
             (1000 * 3600 * 24)
@@ -325,16 +340,17 @@ function initCumulativeTimeseries(url, containerId, containerHeight: number): vo
         Object.entries(data).forEach(entry => {
             const exId = entry[0];
             let records = entry[1];
-            // parse datestring to date
-            records = records.map(r => new Date(r));
 
             const binned = d3.bin()
                 .value(d => d.getTime())
                 .thresholds(
                     thresholdTime(metaData["dateRange"]+1, metaData["minDate"], metaData["maxDate"])
                 ).domain([metaData["minDate"], metaData["maxDate"]])(records);
+
             records = undefined; // records no longer needed
             data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length));
+
+            // if 'students' undefined calculate max value from data
             metaData["maxSum"] = Math.max(data[exId][data[exId].length-1][1], metaData["maxSum"]);
         });
 

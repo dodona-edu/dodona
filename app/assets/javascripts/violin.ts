@@ -18,12 +18,12 @@ function drawViolin(data: {
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
-    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
     const maxFreq = d3.max(data, d => d3.max(
+        // height = 100 * yDomain.length;
         d.freq, (bin: number[]) => bin.length
     ));
 
@@ -76,6 +76,7 @@ function drawViolin(data: {
 
     let tooltipI = -1;
 
+    // add the areas
     graph
         .selectAll("violins")
         .data(data)
@@ -102,6 +103,56 @@ function drawViolin(data: {
             .curve(d3.curveCatmullRom)
         );
 
+    // median dot
+    graph
+        .selectAll("medianDot")
+        .data(data)
+        .enter()
+        .append("circle")
+        .style("opacity", 0)
+        .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
+        .attr("cx", d => x(d.median))
+        .attr("r", 4)
+        .attr("fill", "currentColor")
+        .attr("pointer-events", "none")
+        .transition().duration(500)
+        .style("opacity", 1);
+
+    // Additional metrics
+    const metrics = graph.append("g")
+        .attr("transform", `translate(${innerWidth+15}, 0)`);
+
+    metrics.append("rect")
+        .attr("width", margin.right - 20)
+        .attr("height", innerHeight)
+        .attr("class", "metric-container")
+        .attr("rx", 5)
+        .attr("ry", 5)
+        .style("fill", "none")
+        .style("stroke-width", 2);
+
+    for (const ex of data) {
+        const t = Math.round(ex.average*100)/100;
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
+            .attr("y", y(ex.ex_id) + y.bandwidth()/2)
+            .text(`${t}`)
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", "14px");
+
+        metrics.append("text")
+            .attr("x", (margin.right - 20) / 2)
+            .attr("y", y(ex.ex_id) + y.bandwidth())
+            .text(
+                `${I18n.t("js.mean")} ${I18n.t("js.submissions")}`
+            )
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", "12px");
+    }
+
+    // initialize tooltip
     const tooltip = graph.append("line")
         .attr("y1", 0)
         .attr("y2", innerHeight)
@@ -178,54 +229,6 @@ function drawViolin(data: {
     }
 
     svg.on("mousemove", e => onMouseOver(e)).on("mouseout", onMouseOut);
-
-    graph
-        .selectAll("medianDot")
-        .data(data)
-        .enter()
-        .append("circle")
-        .style("opacity", 0)
-        .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
-        .attr("cx", d => x(d.median))
-        .attr("r", 4)
-        .attr("fill", "currentColor")
-        .attr("pointer-events", "none")
-        .transition().duration(500)
-        .style("opacity", 1);
-
-    // Additional metrics
-    const metrics = graph.append("g")
-        .attr("transform", `translate(${innerWidth+15}, 0)`);
-
-    metrics.append("rect")
-        .attr("width", margin.right - 20)
-        .attr("height", innerHeight)
-        .attr("class", "metric-container")
-        .attr("rx", 5)
-        .attr("ry", 5)
-        .style("fill", "none")
-        .style("stroke-width", 2);
-
-    for (const ex of data) {
-        const t = Math.round(ex.average*100)/100;
-        metrics.append("text")
-            .attr("x", (margin.right - 20) / 2)
-            .attr("y", y(ex.ex_id) + y.bandwidth()/2)
-            .text(`${t}`)
-            .attr("text-anchor", "middle")
-            .attr("fill", "currentColor")
-            .style("font-size", "14px");
-
-        metrics.append("text")
-            .attr("x", (margin.right - 20) / 2)
-            .attr("y", y(ex.ex_id) + y.bandwidth())
-            .text(
-                `${I18n.t("js.mean")} ${I18n.t("js.submissions")}`
-            )
-            .attr("text-anchor", "middle")
-            .attr("fill", "currentColor")
-            .style("font-size", "12px");
-    }
 }
 
 function initViolin(url: string, containerId: string, containerHeight: number): void {
@@ -265,6 +268,7 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
 
+        // transform data into array of records for easier binning
         const data = Object.keys(raw.data).map(k => ({
             "ex_id": k,
             // sort so median is calculated correctly
@@ -283,6 +287,7 @@ function initViolin(url: string, containerId: string, containerHeight: number): 
         const maxCount: number = d3.max(data, d => d3.max(d.counts));
 
 
+        // bin each exercise per frequency
         data.forEach(ex => {
             ex["freq"] = d3.bin().thresholds(d3.range(1, maxCount+1))
                 .domain([1, maxCount])(ex.counts);

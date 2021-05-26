@@ -42,9 +42,9 @@ function drawTimeSeries(data, metaData, exMap): void {
     const emptyColor = darkMode ? "#37474F" : "white";
     const lowColor = darkMode ? "#01579B" : "#E3F2FD";
     const highColor = darkMode ? "#039BE5" : "#0D47A1";
-    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
     const dateFormat = d3.timeFormat("%A %B %d");
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
@@ -68,6 +68,7 @@ function drawTimeSeries(data, metaData, exMap): void {
         .padding(.5);
 
 
+    // make sure cell size isn't bigger than bandwidth
     const rectSize = Math.min(y.bandwidth()*1.5, innerWidth / metaData["dateRange"] - 5);
 
     const yAxis = graph.append("g")
@@ -117,6 +118,7 @@ function drawTimeSeries(data, metaData, exMap): void {
         .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
         .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
 
+    // add cells
     Object.keys(data).forEach(exId => {
         graph.selectAll("squares")
             .data(data[exId])
@@ -218,8 +220,9 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        insertFakeData(data);
-        // pick date of first datapoint (to avoid null checks later on)
+
+        // insertFakeData(data);
+
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));
         metaData["maxDate"] = d3.max(Object.values(data),
@@ -245,6 +248,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
             records = undefined; // records no longer needed
 
+            // reduce bins to a single record per bin
             binned.forEach((bin, i) => {
                 const newDate = new Date(metaData["minDate"]);
                 newDate.setDate(newDate.getDate() + i);

@@ -18,9 +18,9 @@ function drawStacked(data: {
 }[], maxSum, exMap): void {
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
-    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
+    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
     const container = d3.select(selector);
@@ -138,7 +138,7 @@ function drawStacked(data: {
         .transition().duration(500)
         .attr("fill", d => color(d.status) as string);
 
-
+    // add gridlines
     const gridlines = graph.append("g").attr("transform", `translate(0, ${y.bandwidth()/2})`)
         .call(d3.axisBottom(x).tickValues([.2, .4, .6, .8]).tickFormat((t: number) => `${t*100}%`)
             .tickSize(innerHeight-y.bandwidth()).tickSizeOuter(0));
@@ -149,6 +149,7 @@ function drawStacked(data: {
     const metrics = graph.append("g")
         .attr("transform", `translate(${innerWidth+10}, 0)`);
 
+    // add bars
     metrics.append("rect")
         .attr("width", margin.right - 20)
         .attr("height", innerHeight)
@@ -158,6 +159,7 @@ function drawStacked(data: {
         .style("fill", "none")
         .style("stroke-width", 2);
 
+    // add additional metrics (total submissions)
     for (const ex of data) {
         const t = maxSum[ex.exercise_id];
         metrics.append("text")
@@ -221,7 +223,8 @@ function initStacked(url, containerId: string, containerHeight: number): void {
 
         const maxSum = {};
         const stack = [];
-        Object.entries(data).forEach(([k, v]: [string, {}]) => {
+        // turn data into array of records
+        Object.entries(data).forEach(([k, v]: [string, Record<string, number>]) => {
             let sum = 0;
             statusOrder.forEach(s => {
                 const c = v[s] ? v[s] : 0;

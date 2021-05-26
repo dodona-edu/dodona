@@ -90,6 +90,13 @@ function drawViolin(data: {
         .attr("class", "violin-path")
         .attr("d", d3.area()
             .x((_, i) => x(i+1))
+            .y0(0)
+            .y1(0)
+            .curve(d3.curveCatmullRom)
+        )
+        .transition().duration(500)
+        .attr("d", d3.area()
+            .x((_, i) => x(i+1))
             .y0(d => -yBin(d.length))
             .y1(d => yBin(d.length))
             .curve(d3.curveCatmullRom)
@@ -177,11 +184,14 @@ function drawViolin(data: {
         .data(data)
         .enter()
         .append("circle")
+        .style("opacity", 0)
         .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
         .attr("cx", d => x(d.median))
         .attr("r", 4)
         .attr("fill", "currentColor")
-        .attr("pointer-events", "none");
+        .attr("pointer-events", "none")
+        .transition().duration(500)
+        .style("opacity", 1);
 
     // Additional metrics
     const metrics = graph.append("g")

@@ -225,7 +225,7 @@
 .graph-info {
   margin-left: 5px;
   display: inline;
-  color: @text-muted
+  color: $text-muted
 }
 
 .graph-title {
@@ -235,11 +235,17 @@
   align-items: center;
 }
 
+button {
+  &:hover .svg-icon-btn {
+    fill: $text-color;
+  }
+}
+
 .svg-icon-btn {
-  fill: @text-secondary;
+  fill: $text-secondary;
 
   &:hover {
-    fill: @text-color;
+    fill: $text-color;
   }
 
   &.rotate {
@@ -249,6 +255,6 @@
 
 .d3-tooltip-label {
   font-size: 14px;
-  stroke: @content-bg;
+  stroke: $content-bg;
   stroke-width: 0.5px;
 }

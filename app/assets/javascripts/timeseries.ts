@@ -38,6 +38,10 @@ function thresholdTime(n, min, max): () => Date[] {
 }
 
 function drawTimeSeries(data, metaData, exMap): void {
+    const darkMode = window.dodona.darkMode;
+    const emptyColor = darkMode ? "#37474F" : "white";
+    const lowColor = darkMode ? "#01579B" : "#E3F2FD";
+    const highColor = darkMode ? "#039BE5" : "#0D47A1";
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
@@ -82,8 +86,7 @@ function drawTimeSeries(data, metaData, exMap): void {
 
 
     // Color scale
-    const color = d3.scaleSequential()
-        .interpolator(d3.interpolateBlues)
+    const color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
         .domain([0, metaData["maxStack"]]);
 
 
@@ -119,13 +122,13 @@ function drawTimeSeries(data, metaData, exMap): void {
             .data(data[exId])
             .enter()
             .append("rect")
+            .attr("class", "day-cell")
+            .classed("empty", d => d["sum"] === 0)
             .attr("rx", 6)
             .attr("ry", 6)
+            .attr("fill", emptyColor)
             .attr("x", d => x(d["date"])-rectSize/2)
             .attr("y", y(exId)-rectSize/2)
-            .attr("width", rectSize)
-            .attr("height", rectSize)
-            .attr("fill", d => color(d["sum"]))
             .on("mouseover", (e, d) => {
                 tooltip.transition()
                     .duration(200)
@@ -156,18 +159,23 @@ function drawTimeSeries(data, metaData, exMap): void {
                 tooltip
                     .style(
                         "left",
-                        `${d3.pointer(e, svg.node())[0]-bbox.width*1.1}px`
+                        `${d3.pointer(e, svg.node())[0]-bbox.width * 1.1}px`
                     )
                     .style(
                         "top",
-                        `${d3.pointer(e, svg.node())[1]-bbox.height*1.25}px`
+                        `${d3.pointer(e, svg.node())[1]-bbox.height*1.1}px`
                     );
             })
             .on("mouseout", () => {
                 tooltip.transition()
                     .duration(500)
                     .style("opacity", 0);
-            });
+            })
+            .transition().duration(500)
+            .attr("width", rectSize)
+            .attr("height", rectSize)
+            .transition().duration(500)
+            .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
     });
 }
 
@@ -210,7 +218,7 @@ function initTimeseries(url, containerId, containerHeight: number): void {
 
         height = 75 * Object.keys(raw.data).length;
         container.style("height", `${height}px`);
-        // insertFakeData(data);
+        insertFakeData(data);
         // pick date of first datapoint (to avoid null checks later on)
         metaData["minDate"] = d3.min(Object.values(data),
             records => d3.min(records, d =>new Date(d.date)));

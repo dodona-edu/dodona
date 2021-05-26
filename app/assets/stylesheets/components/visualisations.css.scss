@@ -16,3 +16,14 @@
 .metric-container {
     stroke: $panel-primary-border;
 }
+
+.day-cell {
+    &.empty {
+      fill: $heatmap-empty-fg;
+    }
+
+    &:hover {
+      stroke: $heatmap-hover-fg;
+      stroke-width: 2;
+    }
+  }

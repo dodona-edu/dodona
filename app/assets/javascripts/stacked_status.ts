@@ -16,8 +16,9 @@ function drawStacked(data: {
     "exercise_id": string;
     "status": string;
 }[], maxSum, exMap): void {
+    const darkMode = window.dodona.darkMode;
+    const emptyColor = darkMode ? "#37474F" : "white";
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
-    // height = 100 * yDomain.length;
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
@@ -101,11 +102,11 @@ function drawStacked(data: {
         .data(data)
         .enter()
         .append("rect")
-        .attr("x", d => x((d.cum_sum - d.count) / maxSum[d.exercise_id]))
-        .attr("width", d => x(d.count / maxSum[d.exercise_id]))
+        .attr("x", 0)
+        .attr("width", 0)
         .attr("y", d => y(d.exercise_id))
         .attr("height", y.bandwidth())
-        .attr("fill", d => color(d.status) as string)
+        .attr("fill", emptyColor)
         .on("mouseover", (e, d) => {
             tooltip.transition()
                 .duration(200)
@@ -130,7 +131,12 @@ function drawStacked(data: {
             tooltip.transition()
                 .duration(500)
                 .style("opacity", 0);
-        });
+        })
+        .transition().duration(500)
+        .attr("x", d => x((d.cum_sum - d.count) / maxSum[d.exercise_id]))
+        .attr("width", d => x(d.count / maxSum[d.exercise_id]))
+        .transition().duration(500)
+        .attr("fill", d => color(d.status) as string);
 
 
     const gridlines = graph.append("g").attr("transform", `translate(0, ${y.bandwidth()/2})`)

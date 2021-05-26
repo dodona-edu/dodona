@@ -201,6 +201,12 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .style("fill", "none")
             .attr("d", d3.line()
                 .x(p => x(p[0]["x0"]))
+                .y(innerHeight)
+                .curve(d3.curveMonotoneX)
+            )
+            .transition().duration(500)
+            .attr("d", d3.line()
+                .x(p => x(p[0]["x0"]))
                 .y(p => y(p[1]/metaData["maxSum"]))
                 .curve(d3.curveMonotoneX)
             );

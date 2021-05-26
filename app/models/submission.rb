@@ -377,7 +377,8 @@ class Submission < ApplicationRecord
     submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
-    value = base[:value]
+    value = {}
+    # part 1: group by exercise and user
     submissions.in_batches do |subs|
       value = value.merge(
         subs.pluck(:exercise_id, :user_id)
@@ -385,32 +386,36 @@ class Submission < ApplicationRecord
         .transform_values(&:count) # calc amount of submissions per user per exercise
       ) { |_k, v1, v2| v1 + v2 }
     end
+
+    # part 2: group by exercise and aggregate amount per user in an array
+    # this can only be done on the complete result since this part drops the user_id
     value = value
             .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
-
+    value.merge(base[:value]) { |_k, v1, v2| v1 + v2 }
     {
       until: submissions.first.id,
       value: value
     }
   end
 
-  def self.stacked_status_matrix(options = {}, base = { until: 0, value: [] })
+  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {} })
     submissions = submissions_since(base[:until], options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
     submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
-    result = {}
+    value = base[:value]
     submissions.in_batches do |subs|
-      result = result.merge(subs.pluck(:exercise_id, :status)
-                              .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+      value = value.merge(
+        subs.pluck(:exercise_id, :status)
+          .group_by(&:itself)
+          .transform_values(&:count)
+          .group_by { |k, _| k[0] } # group by exercise
+          .transform_values { |v| v.map { |x| [x[0][1], x[1]] }.to_h } # -> ex_id -> { status -> count }
+      ) { |_k, v1, v2| v1.merge(v2) }
     end
-
-    value = base[:value] + result
-            .map { |k, v| { exercise_id: k[0], status: k[1], count: v } }
     {
       until: submissions.first.id,
       value: value

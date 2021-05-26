@@ -11,7 +11,7 @@ const statusOrder = [
 ];
 
 function drawStacked(data: {
-    "cum_sum": number;
+    "cSum": number;
     "count": number;
     "exercise_id": string;
     "status": string;
@@ -133,7 +133,7 @@ function drawStacked(data: {
                 .style("opacity", 0);
         })
         .transition().duration(500)
-        .attr("x", d => x((d.cum_sum - d.count) / maxSum[d.exercise_id]))
+        .attr("x", d => x((d.cSum) / maxSum[d.exercise_id]))
         .attr("width", d => x(d.count / maxSum[d.exercise_id]))
         .transition().duration(500)
         .attr("fill", d => color(d.status) as string);
@@ -219,28 +219,19 @@ function initStacked(url, containerId: string, containerHeight: number): void {
         container
             .style("height", `${height}px`);
 
-        data.sort((a, b) => {
-            if (a.exercise_id === b.exercise_id) {
-                return statusOrder.indexOf(a.status) - statusOrder.indexOf(b.status);
-            } else {
-                return a.exercise_id - b.exercise_id;
-            }
-        });
-        let prevId = data[0].exercise_id;
-        let prevSum = 0;
         const maxSum = {};
-        data.forEach(d => {
-            if (prevId !== d.exercise_id) {
-                maxSum[prevId] = prevSum;
-                prevId = d.exercise_id;
-                prevSum = 0;
-            }
-            prevSum += d.count;
-            d["cum_sum"] = prevSum;
+        const stack = [];
+        Object.entries(data).forEach(([k, v]: [string, {}]) => {
+            let sum = 0;
+            statusOrder.forEach(s => {
+                const c = v[s] ? v[s] : 0;
+                stack.push({ "exercise_id": k, "status": s, "cSum": sum, "count": c });
+                sum += c;
+            });
+            maxSum[k] = sum;
         });
-        maxSum[prevId] = prevSum;
 
-        drawStacked(data, maxSum, raw.exercises);
+        drawStacked(stack, maxSum, raw.exercises);
     };
     d3.json(url).then(processor);
 }

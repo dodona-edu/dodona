@@ -11,6 +11,7 @@ window.dodona.initCumulativeTimeseries = initCumulativeTimeseries;
 window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
 
+// function to (de)activate graph mode (switch out ex list for graphs)
 function toggleStats(button, seriesId) {
     const card = $(`#series-card-${seriesId}`);
     const tabs = card.find(".stats-tab");
@@ -46,7 +47,9 @@ function toggleStats(button, seriesId) {
     }
 }
 
-function setActiveToggle(activeNode, title, seriesId) { // returns true if the active tab switched
+// function to switch active graph
+// returns true if the active tab switched
+function setActiveToggle(activeNode, title, seriesId) {
     if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
         const card = $(`#series-card-${seriesId}`);
         const titleSpan = card.find(".graph-title span");

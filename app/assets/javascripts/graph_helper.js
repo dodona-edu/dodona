@@ -1,38 +1,49 @@
 import * as d3 from "d3";
 
+/**
+ * Breaks up y-axis labels into multiple lines when they get too long
+ * @param {*} selection The selection of y-axis labels
+ * @param {number} width     The width available to the labels
+ * @param {[String, String]} exMap     An array of tuples [exId, exName] to link the two.
+ */
+
 function formatTitle(selection, width, exMap) {
     selection.each((datum, i, nodeList) => {
-        const text = d3.select(nodeList[i]);
-        const words = exMap.find(ex => ex[0].toString()===datum.toString())[1].split(" ").reverse();
+        const text = d3.select(nodeList[i]);    // select label i        
+        
+        // find exName corresponding to exId and split on space
+        const words = exMap[datum].split(" ").reverse();
         let word = "";
         let line = [];
         let lineNumber = 0;
         const lineHeight = 1.1; // ems
-        const y = text.attr("y");
-        const dy = parseFloat(text.attr("dy"));
+        const y = text.attr("y"); // original y position (usually seems to be 'null')
+        const dy = parseFloat(text.attr("dy")); // original y-shift
         let tspan = text.text(null)
-            .append("tspan")
+            .append("tspan")    // similar to html span
             .attr("x", 0)
             .attr("y", y)
             .attr("dy", `${dy}em`);
         while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(" "));
-            if (tspan.node().getComputedTextLength() > width) {
-                line.pop();
+            if (tspan.node().getComputedTextLength() > width) { // check if the line fits in the allowed width
+                line.pop(); // if not remove last word
                 tspan.text(line.join(" "));
-                line = [word];
-                tspan = text.append("tspan")
+                line = [word]; // start over with new line
+                tspan = text.append("tspan") // create new tspan for new line
                     .attr("x", -0)
                     .attr("y", y)
-                    .attr("dy", `${++lineNumber*lineHeight+dy}em`)
+                    .attr("dy", `${++lineNumber*lineHeight+dy}em`) // new line starts a little lower than last one
                     .text(word)
                     .attr("text-anchor", "end");
             }
         }
+        const fontSize = parseInt(tspan.style("font-size"));
         const tSpans = text.selectAll("tspan");
-        const breaks = tSpans.size();
-        tSpans.attr("y", -5*(breaks-1)); // should change when changing font size
+        const breaks = tSpans.size(); // amount of times the name has been split
+        // final y position adjustment so everything is centered
+        tSpans.attr("y", -fontSize*(breaks-1)/2);
     });
 }
 

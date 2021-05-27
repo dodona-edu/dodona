@@ -36,18 +36,21 @@ function thresholdTime(n, min, max): () => Date[] {
     };
 }
 
-function drawCumulativeTimeSeries(data, metaData, exMap): void {
+function drawCumulativeTimeSeries(data, metaData, exercises): void {
     d3.timeFormatDefaultLocale(d3Locale);
-    const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
+
+    // extract id's and reverse order (since graphs are built bottom up)
+    const exOrder: string[] = exercises.map(ex => ex[0]).reverse();
+
+    // convert exercises into object to map id's to exercise names
+    const exMap = exercises.reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
+
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
     let tooltipI = -1;
-
-    const mapEx = (target: string): string => // map id to exercise name
-        exMap.find(ex => target.toString() === ex[0].toString());
 
     const svg = d3.select(selector)
         .append("svg")
@@ -179,7 +182,7 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .attr("x", legendX + 20)
             .attr("y", 12)
             .attr("text-anchor", "start")
-            .text(mapEx(ex)[1])
+            .text(exMap[ex])
             .attr("fill", "currentColor")
             .style("font-size", "12px");
 
@@ -200,7 +203,6 @@ function drawCumulativeTimeSeries(data, metaData, exMap): void {
             .data([bins])
             .enter()
             .append("path")
-            .attr("class", mapEx(exId))
             .style("stroke", color(exId) as string)
             .style("fill", "none")
             .attr("d", d3.line()

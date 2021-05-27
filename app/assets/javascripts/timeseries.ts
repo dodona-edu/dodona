@@ -37,7 +37,7 @@ function thresholdTime(n, min, max): () => Date[] {
     };
 }
 
-function drawTimeSeries(data, metaData, exMap): void {
+function drawTimeSeries(data, metaData, exercises): void {
     d3.timeFormatDefaultLocale(d3Locale);
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
@@ -45,7 +45,13 @@ function drawTimeSeries(data, metaData, exMap): void {
     const highColor = darkMode ? "#039BE5" : "#0D47A1";
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
-    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
+
+    // extract id's and reverse order (since graphs are built bottom up)
+    const exOrder: string[] = exercises.map(ex => ex[0]).reverse();
+
+    // convert exercises into object to map id's to exercise names
+    const exMap = exercises.reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
+
     const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
     const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
@@ -65,7 +71,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     // Show the Y scale for exercises (Big Y scale)
     const y = d3.scaleBand()
         .range([innerHeight, 0])
-        .domain(yDomain)
+        .domain(exOrder)
         .padding(.5);
 
 

@@ -13,17 +13,22 @@ function drawViolin(data: {
     "freq": number[][];
     "median": number;
     "average": number;
-}[], exMap: [string, string][]): void {
+}[], exercises: [string, string][]): void {
     const min = d3.min(data, d => d3.min(d.counts));
     const max = d3.max(data, d => d3.max(d.counts));
     const xTicks = 10;
-    const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
+
+    // extract id's and reverse order (since graphs are built bottom up)
+    const exOrder: string[] = exercises.map(ex => ex[0]).reverse();
+
+    // convert exercises into object to map id's to exercise names
+    const exMap = exercises.reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
+
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
     const maxFreq = d3.max(data, d => d3.max(
-        // height = 100 * yDomain.length;
         d.freq, (bin: number[]) => bin.length
     ));
 
@@ -39,7 +44,7 @@ function drawViolin(data: {
     // Show the Y scale for the exercises (Big Y scale)
     const y = d3.scaleBand()
         .range([innerHeight, 0])
-        .domain(yDomain)
+        .domain(exOrder)
         .padding(.5);
 
     const yAxis = graph.append("g")

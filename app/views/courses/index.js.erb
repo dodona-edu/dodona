@@ -9,5 +9,5 @@ if (dodona.copyCoursesLoaded) {
     dodona.copyCoursesLoaded();
 }
 <% else %>
-$("#grouped-course-cards-wrapper").html("<%= escape_javascript(render partial: 'grouped_course_cards', locals: {grouped_courses: @grouped_courses}) %>")
+$("#courses-table-wrapper").html("<%= escape_javascript(render partial: 'courses/courses_table', locals: {courses: @courses}) %>")
 <% end %>

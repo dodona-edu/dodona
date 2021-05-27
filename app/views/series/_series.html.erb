@@ -169,7 +169,7 @@
         
         </button>
         <button class="btn annotation-toggle ctimeseries" onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>) && 
-          dodona.initCumulativeTimeseries('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
+          dodona.graph.init('/nl/stats/cumulative_timeseries?series_id=<%= series.id %>', '#stats-container-<%= series.id %>')">
           <%= embedded_svg("stacked-line-chart.svg", {class: "mdi svg-icon-btn"}) %>
         </button>
       </div>

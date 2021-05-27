@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { d3Locale } from "graph_helper.js"
 
 let selector = "";
 const margin = { top: 20, right: 50, bottom: 80, left: 40 };
@@ -36,16 +37,7 @@ function thresholdTime(n, min, max): () => Date[] {
 }
 
 function drawCumulativeTimeSeries(data, metaData, exMap): void {
-    d3.timeFormatDefaultLocale({
-        "dateTime": I18n.t("time.formats.default"),
-        "date": I18n.t("date.formats.short"),
-        "time": I18n.t("time.formats.short"),
-        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
-        "days": I18n.t("date.day_names"),
-        "shortDays": I18n.t("date.abbr_day_names"),
-        "months": I18n.t("date.month_names").slice(1),
-        "shortMonths": I18n.t("date.abbr_month_names").slice(1)
-    });
+    d3.timeFormatDefaultLocale(d3Locale);
     const exOrder: string[] = exMap.map(ex => ex[0]).reverse();
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;

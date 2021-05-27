@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { formatTitle } from "graph_helper.js";
+import { formatTitle, d3Locale } from "graph_helper.js";
 
 let selector = "";
 const margin = { top: 20, right: 40, bottom: 20, left: 140 };
@@ -38,6 +38,7 @@ function thresholdTime(n, min, max): () => Date[] {
 }
 
 function drawTimeSeries(data, metaData, exMap): void {
+    d3.timeFormatDefaultLocale(d3Locale);
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
     const lowColor = darkMode ? "#01579B" : "#E3F2FD";
@@ -46,7 +47,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     const innerHeight = height - margin.top - margin.bottom;
     const yDomain: string[] = exMap.map(ex => ex[0]).reverse();
     const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
-    const dateFormat = d3.timeFormat("%A %B %d");
+    const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
     const dateArray = d3.timeDays(metaData["minDate"], metaData["maxDate"]);
     dateArray.unshift(metaData["minDate"]);
 
@@ -117,7 +118,7 @@ function drawTimeSeries(data, metaData, exMap): void {
     // add x-axis
     graph.append("g")
         .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
-        .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, "%a %b-%d"));
+        .call(d3.axisBottom(x).ticks(metaData["dateRange"] / 2, I18n.t("date.formats.weekday_short")));
 
     // add cells
     Object.keys(data).forEach(exId => {

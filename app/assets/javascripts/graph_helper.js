@@ -36,4 +36,15 @@ function formatTitle(selection, width, exMap) {
     });
 }
 
+export const d3Locale = {
+    "dateTime": I18n.t("time.formats.default"),
+    "date": I18n.t("date.formats.short"),
+    "time": I18n.t("time.formats.short"),
+    "periods": [I18n.t("time.am"), I18n.t("time.pm")],
+    "days": I18n.t("date.day_names"),
+    "shortDays": I18n.t("date.abbr_day_names"),
+    "months": I18n.t("date.month_names").slice(1),
+    "shortMonths": I18n.t("date.abbr_month_names").slice(1)
+}
+
 export { formatTitle };

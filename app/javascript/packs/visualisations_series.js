@@ -2,12 +2,12 @@
 import { initViolin } from "violin.ts";
 import { initStacked } from "stacked_status.ts";
 import { initTimeseries } from "timeseries.ts";
-import { initCumulativeTimeseries } from "cumulative_timeseries.ts";
+import { CTimeseriesGraph } from "cumulative_timeseries.ts";
 
 window.dodona.initViolin = initViolin;
 window.dodona.initStacked = initStacked;
 window.dodona.initTimeseries = initTimeseries;
-window.dodona.initCumulativeTimeseries = initCumulativeTimeseries;
+window.dodona.graph = new CTimeseriesGraph();
 window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
 

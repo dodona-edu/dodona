@@ -100,11 +100,12 @@ function drawTimeSeries(data, metaData, exMap): void {
     const tooltipLine = graph.append("line")
         .attr("y1", 0)
         .attr("y2", innerHeight-y.bandwidth()/2)
+        .style("opacity", 0)
         .attr("pointer-events", "none")
         .attr("stroke", "currentColor")
         .style("width", 40);
     const tooltipLabel = graph.append("text")
-        .attr("opacity", 0)
+        .style("opacity", 0)
         .text("_") // dummy text to calculate height
         .attr("text-anchor", "start")
         .attr("fill", "currentColor")
@@ -140,21 +141,22 @@ function drawTimeSeries(data, metaData, exMap): void {
                     message += `<br>${s}: ${d[s]}`;
                 });
                 tooltip.html(message);
+
+
+                const doSwitch = x(d["date"]) + tooltipLabel.node().getBBox().width + 5 > innerWidth;
                 tooltipLine
                     .transition()
                     .duration(100)
-                    .attr("opacity", 1)
+                    .style("opacity", 1)
                     .attr("x1", x(d["date"]))
                     .attr("x2", x(d["date"]));
                 tooltipLabel
-                    .attr("opacity", 1)
+                    .transition()
+                    .duration(100)
+                    .style("opacity", 1)
                     .text(dateFormat(d["date"]))
-                    .attr(
-                        "x",
-                        x(d["date"]) - tooltipLabel.node().getBBox().width - 5 > 0 ?
-                            x(d["date"]) - tooltipLabel.node().getBBox().width - 5 :
-                            x(d["date"]) + 10
-                    );
+                    .attr("x", doSwitch ? x(d["date"]) - 5 : x(d["date"]) + 5)
+                    .attr("text-anchor", doSwitch ? "end" : "start");
             })
             .on("mousemove", (e, _) => {
                 const bbox = tooltip.node().getBoundingClientRect();
@@ -179,6 +181,20 @@ function drawTimeSeries(data, metaData, exMap): void {
             .transition().duration(500)
             .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
     });
+
+    svg
+        .on("mouseleave", () => {
+            console.log("mouseleave");
+            tooltipLine
+                .transition()
+                .duration(500)
+                .style("opacity", 0)
+            tooltipLabel
+                .transition()
+                .duration(500)
+                .style("opacity", 0)
+
+        })
 }
 
 function initTimeseries(url, containerId, containerHeight: number): void {

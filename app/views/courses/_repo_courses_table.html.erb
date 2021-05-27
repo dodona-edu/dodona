@@ -1,5 +1,13 @@
 <div class="table-scroll-wrapper">
   <table class="table table-index table-resource">
+    <colgroup>
+      <col class="col-4"/>
+      <col class="col-2"/>
+      <col class="col-2"/>
+      <col class="col-2"/>
+      <col class="col-1"/>
+      <col class="col-1"/>
+    </colgroup>
     <thead>
     <tr>
       <th><%= Course.human_attribute_name("name") %></th>
@@ -20,12 +28,10 @@
         <td><%= course.formatted_year %></td>
         <td><%= course.institution&.name || t('courses.form.no_institution') %></td>
         <td><%= course.subscribed_members_count %></td>
-        <td class="actions">
-          <% if policy(course).edit? %>
-            <%= link_to edit_course_path(course), class: "btn btn-sm btn-secondary" do %>
-              <i class="mdi mdi-pencil mdi-18"></i>
-            <% end %>
-          <% end %>
+        <td class="repository-course-button-cell" data-course_id="<%= course.id %>" data-repository_id="<%= @repository.id %>">
+          <% show_delete_button = local_assigns.fetch(:show_delete_button, false) %>
+          <%= render partial: 'repositories/repository_course_buttons',
+                      locals: {repository: @repository, course: course, show_delete_button: show_delete_button} %>
         </td>
       </tr>
     <% end %>

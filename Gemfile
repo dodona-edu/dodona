@@ -8,13 +8,13 @@ gem 'rails', '~> 6.1.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.3.1'
+gem 'puma', '~> 5.3.2'
 # Use sass for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 
-gem 'webpacker', '~> 5.3.0'
+gem 'webpacker', '~> 5.4.0'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.2'
@@ -95,7 +95,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.8.2'
+gem 'i18n-js', '~> 3.8.3'
 gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
@@ -104,7 +104,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.4'
+gem 'nokogiri', '~> 1.11.5'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering

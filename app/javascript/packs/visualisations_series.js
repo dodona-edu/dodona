@@ -1,15 +1,18 @@
 
 import { initViolin } from "violin.ts";
 import { initStacked } from "stacked_status.ts";
-import { initTimeseries } from "timeseries.ts";
+import { TimeseriesGraph } from "timeseries.ts";
 import { CTimeseriesGraph } from "cumulative_timeseries.ts";
 
-window.dodona.initViolin = initViolin;
-window.dodona.initStacked = initStacked;
-window.dodona.initTimeseries = initTimeseries;
-window.dodona.graph = new CTimeseriesGraph();
 window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
+
+const graphFactory = {
+    "violin": () => ({ init: initViolin }),
+    "stacked": () => ({ init: initStacked }),
+    "timeseries": () => new TimeseriesGraph(),
+    "ctimeseries": () => new CTimeseriesGraph(),
+};
 
 // function to (de)activate graph mode (switch out ex list for graphs)
 function toggleStats(button, seriesId) {
@@ -27,7 +30,10 @@ function toggleStats(button, seriesId) {
         // info.css("display", "inline");
         container.css("display", "flex");
         content.css("display", "none");
-        setActiveToggle(tabs.find(".violin").get()[0], "violin", seriesId);
+        setActiveToggle(
+            tabs.find(".violin").get()[0], "violin",
+            seriesId, "/nl/stats/violin?series_id=", "#stats-container-"
+        );
         button.className = button.className.replace("chart-line", "format-list-bulleted");
 
         initViolin(
@@ -49,11 +55,14 @@ function toggleStats(button, seriesId) {
 
 // function to switch active graph
 // returns true if the active tab switched
-function setActiveToggle(activeNode, title, seriesId) {
+function setActiveToggle(activeNode, title, seriesId, url, selector) {
     if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
         const card = $(`#series-card-${seriesId}`);
         const titleSpan = card.find(".graph-title span");
         const info = card.find(".graph-info");
+
+        const graph = graphFactory[title]();
+        graph.init(url+seriesId, selector+seriesId);
 
         titleSpan.html(I18n.t(`js.${title}_title`));
         Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
@@ -63,7 +72,5 @@ function setActiveToggle(activeNode, title, seriesId) {
             .attr("data-original-title", I18n.t(`js.${title}_desc`))
             .tooltip("show"));
         activeNode.className = activeNode.className + " active";
-        return true;
     }
-    return false;
 }

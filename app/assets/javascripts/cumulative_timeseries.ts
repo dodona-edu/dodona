@@ -258,7 +258,7 @@ export class CTimeseriesGraph {
             .style("margin", "auto");
     }
 
-    prepareData(raw: Record<string, unknown>, url): void {
+    prepareData(raw: Record<string, unknown>, url: string): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url)
                 .then((r: Record<string, unknown>) => this.prepareData(r, url)), 1000);
@@ -288,8 +288,6 @@ export class CTimeseriesGraph {
         Object.entries(data).forEach(entry => { // parse dates
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
-
-        this.insertFakeData(data, raw.students);
 
         const minDate = new Date(d3.min(Object.values(data),
             records => d3.min(records)));

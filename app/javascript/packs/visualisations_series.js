@@ -3,6 +3,7 @@ import { ViolinGraph } from "violin.ts";
 import { StackedStatusGraph } from "stacked_status.ts";
 import { TimeseriesGraph } from "timeseries.ts";
 import { CTimeseriesGraph } from "cumulative_timeseries.ts";
+import { tooltip } from "util.js";
 
 window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
@@ -62,8 +63,8 @@ function setActiveToggle(activeNode, title, seriesId, url, selector) {
             element.className = element.className.replace(" active", "");
         });
         info.on("mouseover", () => info
-            .attr("data-original-title", I18n.t(`js.${title}_desc`))
-            .tooltip("show"));
+            .attr("data-original-title", I18n.t(`js.${title}_desc`)));
+        tooltip(info, I18n.t(`js.${title}_desc`));
         activeNode.className = activeNode.className + " active";
     }
 }

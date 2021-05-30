@@ -226,12 +226,15 @@ export class TimeseriesGraph {
             });
         });
 
+
         this.minDate = d3.min(Object.values(data),
             records => d3.min(records, d => d["date"] as Date));
+        this.minDate.setHours(0, 0, 0, 0); // set start to midnight
         this.maxDate = new Date( // round maxDate down to day
             d3.timeFormat("%Y-%m-%d")(d3.max(Object.values(data),
                 records => d3.max(records, d => d["date"] as Date)))
         );
+        this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = Math.round(
             (this.maxDate.getTime() - this.minDate.getTime()) /

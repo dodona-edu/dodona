@@ -14,7 +14,7 @@ export class CTimeseriesGraph {
     private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
     private readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
-    // private svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, any>;
+    // scales
     private x: d3.ScaleTime<number, number>;
     private y: d3.ScaleLinear<number, number>;
 
@@ -37,11 +37,11 @@ export class CTimeseriesGraph {
 
     // data
     private data: Record<string, [d3.Bin<Date, Date>, number][]>;
-    private maxSum: number;
+    private maxSum: number; // largest y-value = either subscribed students or max value
     private exOrder: string[] // ordering of exercises
-    private exMap: Record<string, string>;
+    private exMap: Record<string, string>; // map from exId -> exName
     private dateRange: number; // difference between first and last date in days
-    private dateArray: Date[];
+    private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
 
     // draws the graph's svg (and other) elements on the screen
     // No more data manipulation is done in this function
@@ -65,7 +65,7 @@ export class CTimeseriesGraph {
         // axis and scale settings
         // -----------------------------------------------------------------------------------------
 
-        // common y scale per exercise
+        // y scale
         this.y = d3.scaleLinear()
             .domain([0, 1])
             .range([this.innerHeight, 0]);
@@ -74,7 +74,7 @@ export class CTimeseriesGraph {
         graph.append("g")
             .call(d3.axisLeft(this.y).ticks(5, ".0%"));
 
-        // Show the X scale
+        // X scale
         this.x = d3.scaleTime()
             .domain([minDate, maxDate])
             .range([0, this.innerWidth]);
@@ -84,12 +84,13 @@ export class CTimeseriesGraph {
             .range(d3.schemeDark2)
             .domain(this.exOrder);
 
-        const format = I18n.t("date.formats.weekday_short");
-
         // add x-axis
         graph.append("g")
             .attr("transform", `translate(0, ${this.y(0)})`)
-            .call(d3.axisBottom(this.x).tickFormat(d3.timeFormat(format)));
+            .call(
+                d3.axisBottom(this.x)
+                    .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
+            );
 
         // -----------------------------------------------------------------------------------------
 
@@ -106,21 +107,17 @@ export class CTimeseriesGraph {
             .attr("stroke", "currentColor")
             .style("width", 40)
             .attr("opacity", 0.6);
+
         this.tooltipLabel = graph.append("text")
             .attr("y", 0)
+            .attr("x", this.x(date) - 5)
+            .attr("text-anchor", "end")
             .attr("dominant-baseline", "hanging")
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .text(this.longDateFormat(date));
-        this.tooltipLabel
-            .attr(
-                "x",
-                this.x(date) - this.tooltipLabel.node().getBBox().width - 5 > 0 ?
-                    this.x(date) - this.tooltipLabel.node().getBBox().width - 5 :
-                    this.x(date) + 10
-            );
         this.tooltipDots = graph.selectAll(".tooltipDot")
             .data(Object.entries(this.data), d => d[0])
             .join("circle")
@@ -147,6 +144,7 @@ export class CTimeseriesGraph {
 
         // Legend settings
         // -----------------------------------------------------------------------------------------
+        // calculate legend element offsets
         const exPosition = [];
         let pos = 0;
         this.exOrder.forEach(ex => {
@@ -215,25 +213,29 @@ export class CTimeseriesGraph {
             if (!this.dateArray) {
                 return;
             }
+            // find insert point in array
             const { date, i } = this.bisect(d3.pointer(e, graph.node())[0]);
-            if (i !== this.tooltipIndex) {
+            if (i !== this.tooltipIndex) { // check if tooltip position changed
                 this.tooltipIndex = i;
                 this.tooltipLine
                     .attr("opacity", 1)
                     .attr("x1", this.x(date))
                     .attr("x2", this.x(date));
+
+                const labelMsg = this.longDateFormat(date);
+                // check if label won't go out of bounds
+                const switchLabel = this.x(date) -
+                    this.fontSize/2*labelMsg.length -
+                    5 < 0;
+                // use main label as reference for switch condition
+                const switchDots = this.x(date) +
+                this.fontSize/2*labelMsg.length +
+                5 > this.innerWidth;
                 this.tooltipLabel
                     .attr("opacity", 1)
                     .text(this.longDateFormat(date))
-                    .attr(
-                        "x",
-                        this.x(date) - this.tooltipLabel.node().getBBox().width - 5 > 0 ?
-                            this.x(date) - this.tooltipLabel.node().getBBox().width - 5 :
-                            this.x(date) + 10
-                    );
-                // use line label width as reference for switch condition
-                const doSwitch = this.x(date)+this.tooltipLabel.node().getBBox().width+5 >
-                    this.innerWidth;
+                    .attr("x", switchLabel ? this.x(date) + 5 : this.x(date) - 5)
+                    .attr("text-anchor", switchLabel ? "start" : "end");
                 this.tooltipDots
                     .attr("opacity", 1)
                     .attr("cx", this.x(date))
@@ -244,8 +246,8 @@ export class CTimeseriesGraph {
                         d => `${Math.round(d[1][i][1]/this.maxSum*10000)/100}% 
                         (${d[1][i][1]}/${this.maxSum})`
                     )
-                    .attr("x", doSwitch ? this.x(date) - 5 : this.x(date) + 5)
-                    .attr("text-anchor", doSwitch ? "end" : "start")
+                    .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
+                    .attr("text-anchor", switchDots ? "end" : "start")
                     .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
             }
         });
@@ -308,6 +310,7 @@ export class CTimeseriesGraph {
 
         this.maxSum = raw["students"] ? raw["students"] as number : 0; // max value
         this.dateRange = d3.timeDay.count(minDate, maxDate) + 1; // dateRange in days
+        // bin data per day (for each exercise)
         Object.entries(data).forEach(([exId, records]) => {
             const binned = d3.bin()
                 .value(d => d.getTime())
@@ -316,6 +319,7 @@ export class CTimeseriesGraph {
                         .domain([minDate.getTime(), maxDate.getTime()])
                         .ticks(d3.timeDay)
                 ).domain([minDate.getTime(), maxDate.getTime()])(records);
+            // combine bins with cumsum of the bins
             this.data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length));
 
             // if 'students' undefined calculate max value from data
@@ -325,10 +329,10 @@ export class CTimeseriesGraph {
         this.draw();
     }
 
-    init(url: string, containerId: string, containerHeight: number): void {
-        if (containerHeight) {
-            this.height = containerHeight;
-        }
+    // Initializes the container for the graph +
+    // puts placeholder text when data isn't loaded +
+    // starts data loading (and transforming) procedure
+    init(url: string, containerId: string): void {
         this.selector = containerId;
         const container = d3.select(this.selector);
 
@@ -357,7 +361,7 @@ export class CTimeseriesGraph {
     bisect(mx: number): {"date": Date; "i": number} {
         const min = this.dateArray[0];
         const max = this.dateArray[this.dateArray.length -1];
-        if (!this.dateArray) {
+        if (!this.dateArray) { // probably not necessary, but just to be safe
             return { "date": new Date(0), "i": 0 };
         }
         const date = this.x.invert(mx);
@@ -383,15 +387,12 @@ export class CTimeseriesGraph {
             .attr("opacity", 0.6)
             .attr("x1", this.x(date))
             .attr("x2", this.x(date));
+
         this.tooltipLabel
             .attr("opacity", 0.6)
             .text(this.longDateFormat(date))
-            .attr(
-                "x",
-                this.x(date) - this.tooltipLabel.node().getBBox().width - 5 > 0 ?
-                    this.x(date) - this.tooltipLabel.node().getBBox().width - 5 :
-                    this.x(date) + 10
-            );
+            .attr("x", this.x(date) - 5)
+            .attr("text-anchor", "end");
         this.tooltipDots
             .attr("opacity", 0.6)
             .attr("cx", this.x(date))

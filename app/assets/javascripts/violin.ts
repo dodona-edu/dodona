@@ -3,22 +3,45 @@ import { formatTitle } from "graph_helper.js";
 
 
 export class ViolinGraph {
-    private selector = "";
+    private selector = ""; // id of parant div
     private container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
 
     private readonly margin = { top: 20, right: 160, bottom: 40, left: 125 };
     private width = 0;
     private height = 0;
+    private innerWidth = 0;
+    private innerHeight = 0;
+    private fontSize = 12;
+
+    // scales
+    private x: d3.ScaleLinear<number, number>;
+
+    // tooltips things
+    private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
+    private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, any>;
+    private tooltipLabel: d3.Selection<SVGTextElement, unknown, HTMLElement, any>;
+    private tooltipDots: d3.Selection<
+        Element | SVGCircleElement | d3.EnterElement | Document | Window | null,
+        unknown,
+        SVGGElement,
+        any
+    >;
+    private tooltipDotLabels: d3.Selection<
+        Element | SVGTextElement | d3.EnterElement | Document | Window | null,
+        unknown,
+        SVGGElement,
+        any
+    >;
 
     // data
     private data: {
         "ex_id": string, "counts": number[],
         "freq": d3.Bin<number, number>[], "median": number, "average": number
     }[];
-    private maxCount = 0;
-    private maxFreq = 0;
-    private exOrder: string[];
-    private exMap : Record<string, string>;
+    private maxCount = 0; // largest y-value
+    private maxFreq = 0; // largest x-value
+    private exOrder: string[]; // list of exercise id's (in correct order)
+    private exMap : Record<string, string>; // Object that maps id -> exname
 
     // draws the graph's svg (and other) elements on the screen
     // No more data manipulation is done in this function
@@ -27,8 +50,8 @@ export class ViolinGraph {
         const max = d3.max(this.data, d => d3.max(d.counts));
         const xTicks = 10;
 
-        const innerWidth = this.width - this.margin.left - this.margin.right;
-        const innerHeight = this.height - this.margin.top - this.margin.bottom;
+        this.innerWidth = this.width - this.margin.left - this.margin.right;
+        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
         const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
         const svg = this.container
@@ -43,7 +66,7 @@ export class ViolinGraph {
 
         // Show the Y scale for the exercises (Big Y scale)
         const y = d3.scaleBand()
-            .range([innerHeight, 0])
+            .range([this.innerHeight, 0])
             .domain(this.exOrder)
             .padding(.5);
 
@@ -62,24 +85,22 @@ export class ViolinGraph {
             .range([0, y.bandwidth()]);
 
         // Show the X scale
-        const x = d3.scaleLinear()
+        this.x = d3.scaleLinear()
             .domain([min, max])
-            .range([5, innerWidth]);
+            .range([5, this.innerWidth]);
         graph.append("g")
-            .attr("transform", "translate(0," + innerHeight + ")")
-            .call(d3.axisBottom(x).ticks(xTicks))
+            .attr("transform", "translate(0," + this.innerHeight + ")")
+            .call(d3.axisBottom(this.x).ticks(xTicks))
             .select(".domain").remove();
 
         // Add X axis label:
         graph.append("text")
             .attr("text-anchor", "end")
             .attr("x", -5)
-            .attr("y", innerHeight+5)
+            .attr("y", this.innerHeight+5)
             .text(I18n.t("js.n_submissions"))
             .attr("class", "violin-label")
             .attr("fill", "currentColor");
-
-        let tooltipI = -1;
 
         // add the areas
         graph
@@ -95,14 +116,14 @@ export class ViolinGraph {
             })
             .attr("class", "violin-path")
             .attr("d", d3.area()
-                .x((_, i) => x(i+1))
+                .x((_, i) => this.x(i+1))
                 .y0(0)
                 .y1(0)
                 .curve(d3.curveCatmullRom)
             )
             .transition().duration(500)
             .attr("d", d3.area()
-                .x((_, i) => x(i+1))
+                .x((_, i) => this.x(i+1))
                 .y0(d => -yBin(d.length))
                 .y1(d => yBin(d.length))
                 .curve(d3.curveCatmullRom)
@@ -116,7 +137,7 @@ export class ViolinGraph {
             .append("circle")
             .style("opacity", 0)
             .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
-            .attr("cx", d => x(d.median))
+            .attr("cx", d => this.x(d.median))
             .attr("r", 4)
             .attr("fill", "currentColor")
             .attr("pointer-events", "none")
@@ -125,16 +146,17 @@ export class ViolinGraph {
 
         // Additional metrics
         const metrics = graph.append("g")
-            .attr("transform", `translate(${innerWidth+15}, 0)`);
+            .attr("transform", `translate(${this.innerWidth+15}, 0)`);
 
         metrics.append("rect")
             .attr("width", this.margin.right - 20)
-            .attr("height", innerHeight)
+            .attr("height", this.innerHeight)
             .attr("class", "metric-container")
             .attr("rx", 5)
             .attr("ry", 5);
 
         for (const ex of this.data) {
+            // round to two decimals
             const t = Math.round(ex.average*100)/100;
             metrics.append("text")
                 .attr("x", (this.margin.right - 20) / 2)
@@ -152,32 +174,32 @@ export class ViolinGraph {
                 )
                 .attr("text-anchor", "middle")
                 .attr("fill", "currentColor")
-                .style("font-size", "12px");
+                .style("font-size", `${this.fontSize}px`);
         }
 
         // initialize tooltip
-        const tooltip = graph.append("line")
+        this.tooltipLine = graph.append("line")
             .attr("y1", 0)
-            .attr("y2", innerHeight)
+            .attr("y2", this.innerHeight)
             .attr("pointer-events", "none")
             .attr("opacity", 0)
             .attr("stroke", "currentColor")
             .style("width", 40);
-        const tooltipLabel = graph.append("text")
+        this.tooltipLabel = graph.append("text")
             .attr("opacity", 0)
-            .attr("y", innerHeight - 10)
+            .attr("y", this.innerHeight - 10)
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
-            .attr("font-size", "12px")
+            .attr("font-size", `${this.fontSize}px`)
             .attr("class", "d3-tooltip-label");
-        const tooltipDots = graph.selectAll("dots")
+        this.tooltipDots = graph.selectAll("dots")
             .data(this.data, d => d["ex_id"])
             .join("circle")
             .attr("r", 4)
             .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
             .attr("opacity", 0)
             .style("fill", "currentColor");
-        const tooltipDotLabels = graph.selectAll("dotlabels")
+        this.tooltipDotLabels = graph.selectAll("dotlabels")
             .data(this.data, d => d["ex_id"])
             .join("text")
             .attr("text-anchor", "end")
@@ -185,51 +207,58 @@ export class ViolinGraph {
             .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
             .attr("y", -5)
             .attr("opacity", 0)
-            .attr("font-size", "12px")
+            .attr("font-size", `${this.fontSize}px`)
             .attr("class", "d3-tooltip-label");
 
-        function onMouseOver(e): void {
-            const pos = x.invert(d3.pointer(e, graph.node())[0]);
-            const i = Math.round(pos);
-            if (i !== tooltipI && x(i) <= innerWidth) {
-                tooltipI = i;
-                tooltip
-                    .attr("opacity", 1)
-                    .attr("x1", x(i))
-                    .attr("x2", x(i));
-                const switchSides = x(i) + tooltipLabel.node().getBBox().width + 5 > innerWidth;
-                tooltipLabel
-                    .attr("opacity", 1)
-                    .text(`${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`)
-                    .attr("text-anchor", switchSides ? "end" : "start")
-                    .attr("x", switchSides ? x(i) - 10 : x(i) + 10);
-                tooltipDots
-                    .attr("opacity", 1)
-                    .attr("cx", x(i));
-                tooltipDotLabels
-                    .attr("opacity", 1)
-                    .text(d => {
-                        const freq = d.freq[Math.max(0, i-1)].length;
-                        return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
-                    })
-                    .attr("text-anchor", switchSides ? "end" : "start")
-                    .attr("x", switchSides ? x(i) - 5 : x(i)+5);
-            }
-        }
+        svg
+            .on("mousemove", e => this.svgMouseMove(e, graph))
+            .on("mouseout", () => this.svgMouseOut());
+    }
 
-        function onMouseOut(): void {
-            tooltipI = -1;
-            tooltip
-                .attr("opacity", 0);
-            tooltipLabel
-                .attr("opacity", 0);
-            tooltipDots
-                .attr("opacity", 0);
-            tooltipDotLabels
-                .attr("opacity", 0);
+    svgMouseMove(e: any, graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>): void {
+        const pos = this.x.invert(d3.pointer(e, graph.node())[0]);
+        const i = Math.round(pos);
+        if (i !== this.tooltipIndex && this.x(i) <= this.innerWidth) {
+            this.tooltipIndex = i;
+            this.tooltipLine
+                .attr("opacity", 1)
+                .attr("x1", this.x(i))
+                .attr("x2", this.x(i));
+            // check if label doesn't go out of bounds
+            const labelMsg = `${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
+            const switchSides = this.x(i) +
+                this.fontSize/2*labelMsg.length +
+                5 > this.innerWidth;
+            this.tooltipLabel
+                .attr("opacity", 1)
+                .text(labelMsg)
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .attr("x", switchSides ? this.x(i) - 10 : this.x(i) + 10);
+            this.tooltipDots
+                .attr("opacity", 1)
+                .attr("cx", this.x(i));
+            this.tooltipDotLabels
+                .attr("opacity", 1)
+                .text(d => {
+                    const freq = d["freq"][Math.max(0, i-1)].length;
+                    // check if plural is needed
+                    return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
+                })
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .attr("x", switchSides ? this.x(i) - 5 : this.x(i)+5);
         }
+    }
 
-        svg.on("mousemove", e => onMouseOver(e)).on("mouseout", onMouseOut);
+    svgMouseOut(): void {
+        this.tooltipIndex = -1;
+        this.tooltipLine
+            .attr("opacity", 0);
+        this.tooltipLabel
+            .attr("opacity", 0);
+        this.tooltipDots
+            .attr("opacity", 0);
+        this.tooltipDotLabels
+            .attr("opacity", 0);
     }
 
     // Displays an error message when there is not enough data
@@ -253,8 +282,10 @@ export class ViolinGraph {
             }), 1000);
             return;
         }
+        // remove placeholder
         d3.select(`${this.selector} *`).remove();
 
+        // no data sent
         if (Object.keys(raw.data).length === 0) {
             this.drawNoData();
         }
@@ -284,14 +315,17 @@ export class ViolinGraph {
             "average": number;
         }[];
 
+        // largest y-value
         this.maxCount = d3.max(this.data, d => d3.max(d.counts));
 
 
         // bin each exercise per frequency
         this.data.forEach(ex => {
+            // bin per amount of required submissions
             ex["freq"] = d3.bin().thresholds(d3.range(1, this.maxCount+1))
                 .domain([1, this.maxCount])(ex.counts);
 
+            // largest x-value
             this.maxFreq = Math.max(this.maxFreq, d3.max(ex["freq"], bin => bin.length));
 
             ex.median = d3.quantile(ex.counts, .5);
@@ -301,10 +335,10 @@ export class ViolinGraph {
         this.draw();
     }
 
-    init(url: string, containerId: string, containerHeight: number): void {
-        if (containerHeight) {
-            this.height = containerHeight;
-        }
+    // Initializes the container for the graph +
+    // puts placeholder text when data isn't loaded +
+    // starts data loading (and transforming) procedure
+    init(url: string, containerId: string): void {
         this.selector = containerId;
         this.container = d3.select(this.selector);
 

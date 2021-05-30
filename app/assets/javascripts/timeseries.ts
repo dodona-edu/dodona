@@ -2,12 +2,13 @@ import * as d3 from "d3";
 import { formatTitle, d3Locale } from "graph_helper.js";
 
 export class TimeseriesGraph {
-    private selector = "";
+    private selector = ""; // parent div id
     private container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
 
     private readonly margin = { top: 20, right: 40, bottom: 20, left: 140 };
     private width = 0;
     private height = 0;
+    private readonly fontSize = 12;
 
     private readonly statusOrder = [
         "correct", "wrong", "compilation error", "runtime error",
@@ -16,8 +17,8 @@ export class TimeseriesGraph {
 
     // data
     private exOrder: string[] // ordering of exercises
-    private exMap: Record<string, string>;
-    private maxStack = 0;
+    private exMap: Record<string, string>; // map from exId -> exName
+    private maxStack = 0; // largest value (max of colour scale domain)
     private dateRange: number; // difference between first and last date in days
     private minDate: Date;
     private maxDate: Date;
@@ -28,9 +29,9 @@ export class TimeseriesGraph {
     draw(): void {
         d3.timeFormatDefaultLocale(d3Locale);
         const darkMode = window.dodona.darkMode;
-        const emptyColor = darkMode ? "#37474F" : "white";
-        const lowColor = darkMode ? "#01579B" : "#E3F2FD";
-        const highColor = darkMode ? "#039BE5" : "#0D47A1";
+        const emptyColor = darkMode ? "#37474F" : "white"; // no data in cell
+        const lowColor = darkMode ? "#01579B" : "#E3F2FD"; // almost no data in cell
+        const highColor = darkMode ? "#039BE5" : "#0D47A1"; // a lot of data in cell
         const innerWidth = this.width - this.margin.left - this.margin.right;
         const innerHeight = this.height - this.margin.top - this.margin.bottom;
 
@@ -49,7 +50,7 @@ export class TimeseriesGraph {
             .attr("transform",
                 "translate(" + this.margin.left + "," + this.margin.top + ")");
 
-        // Show the Y scale for exercises (Big Y scale)
+        // Y scale for exercises
         const y = d3.scaleBand()
             .range([innerHeight, 0])
             .domain(this.exOrder)
@@ -73,11 +74,21 @@ export class TimeseriesGraph {
             .range([0, innerWidth]);
 
 
+        // add x-axis
+        graph.append("g")
+            .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
+            .call(
+                d3.axisBottom(x)
+                    .ticks(this.dateRange / 2, I18n.t("date.formats.weekday_short"))
+            );
+
+
         // Color scale
         const color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
             .domain([0, this.maxStack]);
 
 
+        // init tooltip
         const tooltip = this.container.append("div")
             .attr("class", "d3-tooltip")
             .attr("pointer-events", "none")
@@ -98,15 +109,6 @@ export class TimeseriesGraph {
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", "12px");
-
-
-        // add x-axis
-        graph.append("g")
-            .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
-            .call(
-                d3.axisBottom(x)
-                    .ticks(this.dateRange / 2, I18n.t("date.formats.weekday_short"))
-            );
 
         // add cells
         graph.selectAll(".rectGroup")
@@ -136,9 +138,10 @@ export class TimeseriesGraph {
                         });
                         tooltip.html(message);
 
-
+                        // check if label won't go out of bounds
+                        const labelMsg = dateFormat(d["date"]);
                         const doSwitch = x(d["date"]) +
-                            tooltipLabel.node().getBBox().width +
+                            this.fontSize/2*labelMsg.length +
                             5 > innerWidth;
                         tooltipLine
                             .transition()
@@ -167,6 +170,7 @@ export class TimeseriesGraph {
                             );
                     })
                     .on("mouseout", () => {
+                        // hide tooltip (box) but leave the line
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
@@ -180,6 +184,7 @@ export class TimeseriesGraph {
 
         svg
             .on("mouseleave", () => {
+                // remove the line
                 tooltipLine
                     .transition()
                     .duration(500)
@@ -255,6 +260,7 @@ export class TimeseriesGraph {
             const exId = entry[0];
             let records = entry[1];
 
+            // bin per day
             const binned = d3.bin()
                 .value(d => d["date"].getTime())
                 .thresholds(
@@ -266,7 +272,7 @@ export class TimeseriesGraph {
             records = undefined; // records no longer needed
 
             this.data[exId] = [];
-            // reduce bins to a single record per bin
+            // reduce bins to a single record per bin (see this.data)
             binned.forEach((bin, i) => {
                 const newDate = new Date(this.minDate);
                 newDate.setDate(newDate.getDate() + i);
@@ -290,10 +296,7 @@ export class TimeseriesGraph {
     // Initializes the container for the graph +
     // puts placeholder text when data isn't loaded +
     // starts data loading (and transforming) procedure
-    init(url: string, containerId: string, containerHeight: number): void {
-        if (containerHeight) {
-            this.height = containerHeight;
-        }
+    init(url: string, containerId: string): void {
         this.selector = containerId;
         this.container = d3.select(this.selector);
 

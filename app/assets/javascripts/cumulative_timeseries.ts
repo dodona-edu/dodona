@@ -9,6 +9,7 @@ export class CTimeseriesGraph {
     private height: number; // svg height
     private innerWidth: number; // graph width
     private innerHeight: number; // graph height
+    private readonly fontSize = 12;
 
     private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
     private readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
@@ -110,7 +111,7 @@ export class CTimeseriesGraph {
             .attr("dominant-baseline", "hanging")
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
-            .attr("font-size", "12px")
+            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .text(this.longDateFormat(date));
         this.tooltipLabel
@@ -136,7 +137,7 @@ export class CTimeseriesGraph {
             .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5)
             .attr("class", "tooltipDotlabel")
             .attr("fill", d => color(d[0]))
-            .attr("font-size", "12px")
+            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
@@ -146,38 +147,45 @@ export class CTimeseriesGraph {
 
         // Legend settings
         // -----------------------------------------------------------------------------------------
-        const legend = svg.append("g");
+        const exPosition = [];
+        let pos = 0;
+        this.exOrder.forEach(ex => {
+            exPosition.push([ex, pos]);
+            // rect size (15) + 5 padding + 20 inter-group padding + text length
+            pos += 40 + this.fontSize/2*this.exMap[ex].length;
+        });
+        const legend = svg
+            .append("g")
+            .attr("class", "legend")
+            .attr(
+                "transform",
+                `translate(${this.width/2-pos/2}, ${this.height-this.margin.bottom/2})`
+            )
+            .selectAll("g")
+            .data(exPosition)
+            .enter()
+            .append("g")
+            .attr("transform", d => `translate(${d[1]}, 0)`);
 
-        let legendX = 0;
-        for (const ex of this.exOrder) {
-            // add legend colors dots
-            const group = legend.append("g");
+        // add legend colors dots
 
-            group
-                .append("rect")
-                .attr("x", legendX)
-                .attr("y", 0)
-                .attr("width", 15)
-                .attr("height", 15)
-                .attr("fill", color(ex) as string);
+        legend
+            .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", ex => color(ex[0]) as string);
 
-            // add legend text
-            group
-                .append("text")
-                .attr("x", legendX + 20)
-                .attr("y", 12)
-                .attr("text-anchor", "start")
-                .text(this.exMap[ex])
-                .attr("fill", "currentColor")
-                .style("font-size", "12px");
-
-            legendX += group.node().getBBox().width + 20;
-        }
-        legend.attr(
-            "transform",
-            `translate(${this.width/2 - legend.node().getBBox().width/2},
-            ${this.innerHeight+this.margin.top+this.margin.bottom/2})`
-        );
+        // add legend text
+        legend
+            .append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .text(ex => this.exMap[ex[0]])
+            .attr("fill", "currentColor")
+            .style("font-size", `${this.fontSize}px`);
         // -----------------------------------------------------------------------------------------
 
         // add lines

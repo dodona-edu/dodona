@@ -8,6 +8,7 @@ export class StackedStatusGraph {
     private readonly margin = { top: 20, right: 150, bottom: 40, left: 105 };
     private width = 0;
     private height = 0;
+    private readonly fontSize = 12;
 
     private readonly statusOrder = [
         "correct", "wrong", "compilation error", "runtime error",
@@ -74,34 +75,44 @@ export class StackedStatusGraph {
             .style("opacity", 0)
             .style("z-index", 5);
 
-        const legend = graph.append("g")
-            .attr("transform", `translate(${-this.margin.left/2}, ${innerHeight + 20})`);
+        const statePosition = [];
+        let pos = 0;
+        this.statusOrder.forEach(s => {
+            statePosition.push([s, pos]);
+            // rect size (15) + 5 padding + 20 inter-group padding + text length
+            pos += 40 + this.fontSize/2*s.length;
+        });
+        const legend = svg
+            .append("g")
+            .attr("class", "legend")
+            .attr(
+                "transform",
+                `translate(${this.width/2-pos/2}, ${this.height-this.margin.bottom/2})`
+            )
+            .selectAll("g")
+            .data(statePosition)
+            .enter()
+            .append("g")
+            .attr("transform", d => `translate(${d[1]}, 0)`);
 
-        let legendX = 0;
-        for (const status of this.statusOrder) {
-            // add legend colors dots
-            const group = legend.append("g");
+        // add legend colors dots
+        legend
+            .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", s => color(s[0]) as string);
 
-            group
-                .append("rect")
-                .attr("x", legendX)
-                .attr("y", 0)
-                .attr("width", 15)
-                .attr("height", 15)
-                .attr("fill", color(status) as string);
-
-            // add legend text
-            group
-                .append("text")
-                .attr("x", legendX + 20)
-                .attr("y", 12)
-                .attr("text-anchor", "start")
-                .text(status)
-                .attr("fill", "currentColor")
-                .style("font-size", "12px");
-
-            legendX += group.node().getBBox().width + 20;
-        }
+        // add legend text
+        legend
+            .append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .text(s => s[0])
+            .attr("fill", "currentColor")
+            .style("font-size", `${this.fontSize}px`);
 
         // add bars
         graph.selectAll(".bar")
@@ -160,7 +171,7 @@ export class StackedStatusGraph {
         const metrics = graph.append("g")
             .attr("transform", `translate(${innerWidth+10}, 0)`);
 
-        // add bars
+        
         metrics.append("rect")
             .attr("width", this.margin.right - 20)
             .attr("height", innerHeight)

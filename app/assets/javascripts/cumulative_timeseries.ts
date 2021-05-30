@@ -307,10 +307,7 @@ export class CTimeseriesGraph {
         this.dateArray = d3.timeDays(minDate, maxDate);
 
         this.maxSum = raw["students"] ? raw["students"] as number : 0; // max value
-        this.dateRange = Math.round(
-            (maxDate.getTime() - minDate.getTime()) /
-            (1000 * 3600 * 24)
-        ); // dateRange in days
+        this.dateRange = d3.timeDay.count(minDate, maxDate) + 1; // dateRange in days
         Object.entries(data).forEach(([exId, records]) => {
             const binned = d3.bin()
                 .value(d => d.getTime())

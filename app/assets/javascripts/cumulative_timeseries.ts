@@ -106,7 +106,8 @@ export class CTimeseriesGraph {
             .style("width", 40)
             .attr("opacity", 0.6);
         this.tooltipLabel = graph.append("text")
-            .text("_") // dummy text to calculate height
+            .attr("y", 0)
+            .attr("dominant-baseline", "hanging")
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", "12px")
@@ -118,8 +119,7 @@ export class CTimeseriesGraph {
                 this.x(date) - this.tooltipLabel.node().getBBox().width - 5 > 0 ?
                     this.x(date) - this.tooltipLabel.node().getBBox().width - 5 :
                     this.x(date) + 10
-            )
-            .attr("y", this.tooltipLabel.node().getBBox().height);
+            );
         this.tooltipDots = graph.selectAll(".tooltipDot")
             .data(Object.entries(this.data), d => d[0])
             .join("circle")

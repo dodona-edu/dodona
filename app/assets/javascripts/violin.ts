@@ -167,13 +167,11 @@ export class ViolinGraph {
             .style("width", 40);
         const tooltipLabel = graph.append("text")
             .attr("opacity", 0)
-            .text("_") // dummy text to calculate height
+            .attr("y", innerHeight - 10)
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", "12px")
             .attr("class", "d3-tooltip-label");
-        tooltipLabel
-            .attr("y", innerHeight - 10);
         const tooltipDots = graph.selectAll("dots")
             .data(this.data, d => d["ex_id"])
             .join("circle")

@@ -71,7 +71,7 @@ export class CTimeseriesGraph {
 
         // y axis
         graph.append("g")
-            .call(d3.axisLeft(this.y).ticks(5, ".2%"));
+            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
 
         // Show the X scale
         this.x = d3.scaleTime()
@@ -83,17 +83,12 @@ export class CTimeseriesGraph {
             .range(d3.schemeDark2)
             .domain(this.exOrder);
 
-        let ticks = d3.timeDay.filter(d=>d3.timeDay.count(minDate, d) % 2 === 0);
-        let format = I18n.t("date.formats.weekday_short");
-        if (this.dateRange > 20) {
-            ticks = d3.timeMonth;
-            format = "%B";
-        }
+        const format = I18n.t("date.formats.weekday_short");
 
         // add x-axis
         graph.append("g")
             .attr("transform", `translate(0, ${this.y(0)})`)
-            .call(d3.axisBottom(this.x).ticks(ticks, format));
+            .call(d3.axisBottom(this.x).tickFormat(d3.timeFormat(format)));
 
         // -----------------------------------------------------------------------------------------
 

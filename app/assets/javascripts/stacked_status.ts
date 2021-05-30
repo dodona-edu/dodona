@@ -171,7 +171,6 @@ export class StackedStatusGraph {
         const metrics = graph.append("g")
             .attr("transform", `translate(${innerWidth+10}, 0)`);
 
-        
         metrics.append("rect")
             .attr("width", this.margin.right - 20)
             .attr("height", innerHeight)
@@ -210,7 +209,7 @@ export class StackedStatusGraph {
             .style("height", "50px")
             .append("div")
             .text(I18n.t("js.no_data"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
     }
 
     // transforms the data into a form usable by the graph +
@@ -269,11 +268,9 @@ export class StackedStatusGraph {
         this.container
             .html("") // clean up possible previous visualisations
             .style("height", `${this.height}px`)
-            .style("display", "flex")
-            .style("align-items", "center")
             .append("div")
             .text(I18n.t("js.loading"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 

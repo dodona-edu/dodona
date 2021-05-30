@@ -27,3 +27,17 @@
       stroke-width: 2;
     }
   }
+
+.stats-container {
+  display: flex;
+  align-items: center;
+}
+
+.graph_placeholder {
+  margin: auto;
+}
+
+.metric-container {
+  fill: none;
+  stroke-width: 2;
+}

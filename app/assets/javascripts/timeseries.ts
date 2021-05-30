@@ -55,7 +55,6 @@ export class TimeseriesGraph {
             .domain(this.exOrder)
             .padding(.5);
 
-
         // make sure cell size isn't bigger than bandwidth
         const rectSize = Math.min(y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
 
@@ -67,6 +66,9 @@ export class TimeseriesGraph {
         yAxis
             .selectAll(".tick text")
             .call(formatTitle, this.margin.left-yAxisPadding, this.exMap);
+
+        console.log(this.minDate, this.maxDate);
+        console.log(this.data);
 
         // Show the X scale
         const x = d3.scaleTime()
@@ -94,12 +96,11 @@ export class TimeseriesGraph {
             .style("width", 40);
         const tooltipLabel = graph.append("text")
             .style("opacity", 0)
-            .text("_") // dummy text to calculate height
+            .attr("y", innerHeight-y.bandwidth()/2-5)
+            .attr("dominant-baseline", "center")
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", "12px");
-        tooltipLabel
-            .attr("y", innerHeight - y.bandwidth()/2 - tooltipLabel.node().getBBox().height/2);
 
 
         // add x-axis
@@ -233,15 +234,12 @@ export class TimeseriesGraph {
             });
         });
 
-
-        this.minDate = d3.min(Object.values(data),
-            records => d3.min(records, d => d["date"] as Date));
+        this.minDate = new Date(d3.min(Object.values(data),
+            records => d3.min(records, d => d["date"] as Date)));
         this.minDate.setHours(0, 0, 0, 0); // set start to midnight
-        this.maxDate = new Date( // round maxDate down to day
-            d3.timeFormat("%Y-%m-%d")(d3.max(Object.values(data),
-                records => d3.max(records, d => d["date"] as Date)))
-        );
-        this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
+        this.maxDate = new Date(d3.max(Object.values(data),
+            records => d3.max(records, d => d["date"] as Date)));
+        this.maxDate.setHours(0, 0, 0, 0); // set end right before midnight
 
         this.dateRange = Math.round(
             (this.maxDate.getTime() - this.minDate.getTime()) /

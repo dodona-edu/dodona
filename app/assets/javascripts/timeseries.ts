@@ -198,7 +198,7 @@ export class TimeseriesGraph {
             .style("height", "50px")
             .append("div")
             .text(I18n.t("js.no_data"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
     }
 
     // transforms the data into a form usable by the graph +
@@ -303,11 +303,9 @@ export class TimeseriesGraph {
         this.container
             .html("") // clean up possible previous visualisations
             .style("height", `${this.height}px`) // prevent shrinking after switching graphs
-            .style("display", "flex")
-            .style("align-items", "center")
             .append("div")
             .text(I18n.t("js.loading"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 
 

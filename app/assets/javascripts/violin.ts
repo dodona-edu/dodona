@@ -132,9 +132,7 @@ export class ViolinGraph {
             .attr("height", innerHeight)
             .attr("class", "metric-container")
             .attr("rx", 5)
-            .attr("ry", 5)
-            .style("fill", "none")
-            .style("stroke-width", 2);
+            .attr("ry", 5);
 
         for (const ex of this.data) {
             const t = Math.round(ex.average*100)/100;
@@ -240,7 +238,7 @@ export class ViolinGraph {
             .style("height", "50px")
             .append("div")
             .text(I18n.t("js.no_data"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
     }
 
 
@@ -316,11 +314,9 @@ export class ViolinGraph {
         this.container
             .html("") // clean up possible previous visualisations
             .style("height", `${this.height}px`)
-            .style("display", "flex")
-            .style("align-items", "center")
             .append("div")
             .text(I18n.t("js.loading"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         d3.json(url).then((r: Record<string, unknown>) => {

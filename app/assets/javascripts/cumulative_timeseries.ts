@@ -261,7 +261,7 @@ export class CTimeseriesGraph {
             .style("height", "50px")
             .append("div")
             .text(I18n.t("js.no_data"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
     }
 
     // transforms the data into a form usable by the graph +
@@ -338,11 +338,9 @@ export class CTimeseriesGraph {
         container
             .html("") // clean up possible previous visualisations
             .style("height", `${this.height}px`) // prevent shrinking after switching graphs
-            .style("display", "flex")
-            .style("align-items", "center")
             .append("div")
             .text(I18n.t("js.loading"))
-            .style("margin", "auto");
+            .attr("class", "graph_placeholder");
         this.width = (container.node() as Element).getBoundingClientRect().width;
 
         this.innerWidth = this.width - this.margin.left - this.margin.right;

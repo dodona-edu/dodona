@@ -71,7 +71,7 @@ export class CTimeseriesGraph {
 
         // y axis
         graph.append("g")
-            .call(d3.axisLeft(this.y).ticks(5).tickFormat((v: number) => `${100*v}%`));
+            .call(d3.axisLeft(this.y).ticks(5, ".2%"));
 
         // Show the X scale
         this.x = d3.scaleTime()

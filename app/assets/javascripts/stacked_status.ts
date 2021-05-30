@@ -149,7 +149,7 @@ export class StackedStatusGraph {
             .call(
                 d3.axisBottom(x)
                     .tickValues([.2, .4, .6, .8])
-                    .tickFormat((t: number) => `${t*100}%`)
+                    .tickFormat(d3.format(".0%"))
                     .tickSize(innerHeight-y.bandwidth()).tickSizeOuter(0)
             );
         gridlines

@@ -304,7 +304,9 @@ export class ViolinGraph {
     }
 
     init(url: string, containerId: string, containerHeight: number): void {
-        this.height = containerHeight;
+        if (containerHeight) {
+            this.height = containerHeight;
+        }
         this.selector = containerId;
         this.container = d3.select(this.selector);
 

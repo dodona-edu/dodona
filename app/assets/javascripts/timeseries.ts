@@ -67,12 +67,9 @@ export class TimeseriesGraph {
             .selectAll(".tick text")
             .call(formatTitle, this.margin.left-yAxisPadding, this.exMap);
 
-        console.log(this.minDate, this.maxDate);
-        console.log(this.data);
-
         // Show the X scale
         const x = d3.scaleTime()
-            .domain([this.minDate, this.maxDate])
+            .domain([this.minDate.getTime(), this.maxDate.getTime()])
             .range([0, innerWidth]);
 
 
@@ -112,67 +109,74 @@ export class TimeseriesGraph {
             );
 
         // add cells
-        Object.keys(this.data).forEach(exId => {
-            graph.selectAll("squares")
-                .data(this.data[exId])
-                .enter()
-                .append("rect")
-                .attr("class", "day-cell")
-                .classed("empty", d => d["sum"] === 0)
-                .attr("rx", 6)
-                .attr("ry", 6)
-                .attr("fill", emptyColor)
-                .attr("x", d => x(d["date"])-rectSize/2)
-                .attr("y", y(exId)-rectSize/2)
-                .on("mouseover", (e, d) => {
-                    tooltip.transition()
-                        .duration(200)
-                        .style("opacity", .9);
-                    let message = `${I18n.t("js.submissions")} :<br>Total: ${d["sum"]}`;
-                    this.statusOrder.forEach(s => {
-                        message += `<br>${s}: ${d[s]}`;
-                    });
-                    tooltip.html(message);
+        graph.selectAll(".rectGroup")
+            .data(Object.keys(this.data))
+            .enter()
+            .append("g")
+            .attr("class", "rectGroup")
+            .each((exId: string, i: number, group) => {
+                d3.select(group[i]).selectAll("rect")
+                    .data(this.data[exId])
+                    .enter()
+                    .append("rect")
+                    .attr("class", "day-cell")
+                    .classed("empty", d => d["sum"] === 0)
+                    .attr("rx", 6)
+                    .attr("ry", 6)
+                    .attr("fill", emptyColor)
+                    .attr("x", d => x(d["date"])-rectSize/2)
+                    .attr("y", y(exId)-rectSize/2)
+                    .on("mouseover", (e, d) => {
+                        tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        let message = `${I18n.t("js.submissions")} :<br>Total: ${d["sum"]}`;
+                        this.statusOrder.forEach(s => {
+                            message += `<br>${s}: ${d[s]}`;
+                        });
+                        tooltip.html(message);
 
 
-                    const doSwitch = x(d["date"])+tooltipLabel.node().getBBox().width+5>innerWidth;
-                    tooltipLine
-                        .transition()
-                        .duration(100)
-                        .style("opacity", 1)
-                        .attr("x1", x(d["date"]))
-                        .attr("x2", x(d["date"]));
-                    tooltipLabel
-                        .transition()
-                        .duration(100)
-                        .style("opacity", 1)
-                        .text(dateFormat(d["date"]))
-                        .attr("x", doSwitch ? x(d["date"]) - 5 : x(d["date"]) + 5)
-                        .attr("text-anchor", doSwitch ? "end" : "start");
-                })
-                .on("mousemove", (e, _) => {
-                    const bbox = tooltip.node().getBoundingClientRect();
-                    tooltip
-                        .style(
-                            "left",
-                            `${d3.pointer(e, svg.node())[0]-bbox.width * 1.1}px`
-                        )
-                        .style(
-                            "top",
-                            `${d3.pointer(e, svg.node())[1]-bbox.height*1.1}px`
-                        );
-                })
-                .on("mouseout", () => {
-                    tooltip.transition()
-                        .duration(500)
-                        .style("opacity", 0);
-                })
-                .transition().duration(500)
-                .attr("width", rectSize)
-                .attr("height", rectSize)
-                .transition().duration(500)
-                .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
-        });
+                        const doSwitch = x(d["date"]) +
+                            tooltipLabel.node().getBBox().width +
+                            5 > innerWidth;
+                        tooltipLine
+                            .transition()
+                            .duration(100)
+                            .style("opacity", 1)
+                            .attr("x1", x(d["date"]))
+                            .attr("x2", x(d["date"]));
+                        tooltipLabel
+                            .transition()
+                            .duration(100)
+                            .style("opacity", 1)
+                            .text(dateFormat(d["date"]))
+                            .attr("x", doSwitch ? x(d["date"]) - 5 : x(d["date"]) + 5)
+                            .attr("text-anchor", doSwitch ? "end" : "start");
+                    })
+                    .on("mousemove", (e, _) => {
+                        const bbox = tooltip.node().getBoundingClientRect();
+                        tooltip
+                            .style(
+                                "left",
+                                `${d3.pointer(e, svg.node())[0]-bbox.width * 1.1}px`
+                            )
+                            .style(
+                                "top",
+                                `${d3.pointer(e, svg.node())[1]-bbox.height*1.1}px`
+                            );
+                    })
+                    .on("mouseout", () => {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    })
+                    .transition().duration(500)
+                    .attr("width", rectSize)
+                    .attr("height", rectSize)
+                    .transition().duration(500)
+                    .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
+            });
 
         svg
             .on("mouseleave", () => {
@@ -239,7 +243,7 @@ export class TimeseriesGraph {
         this.minDate.setHours(0, 0, 0, 0); // set start to midnight
         this.maxDate = new Date(d3.max(Object.values(data),
             records => d3.max(records, d => d["date"] as Date)));
-        this.maxDate.setHours(0, 0, 0, 0); // set end right before midnight
+        this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = Math.round(
             (this.maxDate.getTime() - this.minDate.getTime()) /
@@ -250,7 +254,6 @@ export class TimeseriesGraph {
         Object.entries(data).forEach(entry => {
             const exId = entry[0];
             let records = entry[1];
-            // parse datestring to date
 
             const binned = d3.bin()
                 .value(d => d["date"].getTime())
@@ -288,7 +291,9 @@ export class TimeseriesGraph {
     // puts placeholder text when data isn't loaded +
     // starts data loading (and transforming) procedure
     init(url: string, containerId: string, containerHeight: number): void {
-        this.height = containerHeight;
+        if (containerHeight) {
+            this.height = containerHeight;
+        }
         this.selector = containerId;
         this.container = d3.select(this.selector);
 

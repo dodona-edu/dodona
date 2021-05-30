@@ -104,10 +104,11 @@ export class StackedStatusGraph {
         }
 
         // add bars
-        graph.selectAll("bars")
+        graph.selectAll(".bar")
             .data(this.data)
             .enter()
             .append("rect")
+            .attr("class", "bar")
             .attr("x", 0)
             .attr("width", 0)
             .attr("y", d => y(d.exercise_id))
@@ -245,7 +246,9 @@ export class StackedStatusGraph {
     }
 
     init(url: string, containerId: string, containerHeight: number): void {
-        this.height = containerHeight;
+        if (containerHeight) {
+            this.height = containerHeight;
+        }
         this.selector = containerId;
         this.container = d3.select(this.selector);
 

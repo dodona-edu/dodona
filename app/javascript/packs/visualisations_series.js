@@ -1,6 +1,6 @@
 
-import { initViolin } from "violin.ts";
-import { initStacked } from "stacked_status.ts";
+import { ViolinGraph } from "violin.ts";
+import { StackedStatusGraph } from "stacked_status.ts";
 import { TimeseriesGraph } from "timeseries.ts";
 import { CTimeseriesGraph } from "cumulative_timeseries.ts";
 
@@ -8,8 +8,8 @@ window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
 
 const graphFactory = {
-    "violin": () => ({ init: initViolin }),
-    "stacked": () => ({ init: initStacked }),
+    "violin": () => new ViolinGraph(),
+    "stacked": () => new StackedStatusGraph(),
     "timeseries": () => new TimeseriesGraph(),
     "ctimeseries": () => new CTimeseriesGraph(),
 };
@@ -22,7 +22,6 @@ function toggleStats(button, seriesId) {
     const container = card.find(".stats-container");
     const title = card.find(".graph-title");
     const info = card.find(".graph-info");
-    const height = content.height();
     if (tabs.css("display") == "none") {
         tabs.css("display", "flex");
         info.css("display", "inline");
@@ -35,12 +34,6 @@ function toggleStats(button, seriesId) {
             seriesId, "/nl/stats/violin?series_id=", "#stats-container-"
         );
         button.className = button.className.replace("chart-line", "format-list-bulleted");
-
-        initViolin(
-            `/nl/stats/violin?series_id=${seriesId}`,
-            `#stats-container-${seriesId}`,
-            height - tabs.get()[0].getBoundingClientRect().height - 5
-        );
     } else {
         tabs.css("display", "none");
         info.css("display", "none");

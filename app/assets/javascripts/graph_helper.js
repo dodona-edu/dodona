@@ -9,8 +9,8 @@ import * as d3 from "d3";
 
 function formatTitle(selection, width, exMap) {
     selection.each((datum, i, nodeList) => {
-        const text = d3.select(nodeList[i]);    // select label i        
-        
+        const text = d3.select(nodeList[i]); // select label i
+
         // find exName corresponding to exId and split on space
         const words = exMap[datum].split(" ").reverse();
         let word = "";
@@ -20,21 +20,23 @@ function formatTitle(selection, width, exMap) {
         const y = text.attr("y"); // original y position (usually seems to be 'null')
         const dy = parseFloat(text.attr("dy")); // original y-shift
         let tspan = text.text(null)
-            .append("tspan")    // similar to html span
+            .append("tspan") // similar to html span
             .attr("x", 0)
             .attr("y", y)
             .attr("dy", `${dy}em`);
         while (word = words.pop()) {
             line.push(word);
             tspan.text(line.join(" "));
-            if (tspan.node().getComputedTextLength() > width) { // check if the line fits in the allowed width
+            // check if the line fits in the allowed width
+            if (tspan.node().getComputedTextLength() > width) {
                 line.pop(); // if not remove last word
                 tspan.text(line.join(" "));
                 line = [word]; // start over with new line
                 tspan = text.append("tspan") // create new tspan for new line
                     .attr("x", -0)
                     .attr("y", y)
-                    .attr("dy", `${++lineNumber*lineHeight+dy}em`) // new line starts a little lower than last one
+                    // new line starts a little lower than last one
+                    .attr("dy", `${++lineNumber*lineHeight+dy}em`)
                     .text(word)
                     .attr("text-anchor", "end");
             }
@@ -56,6 +58,5 @@ export const d3Locale = {
     "shortDays": I18n.t("date.abbr_day_names"),
     "months": I18n.t("date.month_names").slice(1),
     "shortMonths": I18n.t("date.abbr_month_names").slice(1)
-}
-
+};
 export { formatTitle };

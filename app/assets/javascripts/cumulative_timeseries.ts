@@ -184,7 +184,7 @@ export class CTimeseriesGraph {
         for (const exId of Object.keys(this.data)) {
             const exGroup = graph.append("g");
             const bins = this.data[exId];
-            exGroup.selectAll("lines")
+            exGroup.selectAll("path")
                 .data([bins])
                 .enter()
                 .append("path")
@@ -321,7 +321,9 @@ export class CTimeseriesGraph {
     }
 
     init(url: string, containerId: string, containerHeight: number): void {
-        this.height = containerHeight;
+        if (containerHeight) {
+            this.height = containerHeight;
+        }
         this.selector = containerId;
         const container = d3.select(this.selector);
 

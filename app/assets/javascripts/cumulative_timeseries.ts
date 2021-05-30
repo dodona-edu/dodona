@@ -289,14 +289,12 @@ export class CTimeseriesGraph {
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
 
-        const minDate = new Date(d3.min(Object.values(data),
-            records => d3.min(records)));
-        const maxDate = new Date( // round maxDate down to day
-            d3.timeFormat("%Y-%m-%d")(d3.max(Object.values(data), records => d3.max(records)))
-        );
+        const minDate = new Date(d3.min(Object.values(data), records => d3.min(records)));
+        minDate.setHours(0, 0, 0, 0); // set start to midnight
+        const maxDate = new Date(d3.max(Object.values(data), records => d3.max(records)));
+        maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateArray = d3.timeDays(minDate, maxDate);
-        this.dateArray.unshift(minDate);
 
         this.maxSum = raw["students"] ? raw["students"] as number : 0; // max value
         this.dateRange = Math.round(

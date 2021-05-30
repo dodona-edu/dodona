@@ -42,6 +42,8 @@ export class CTimeseriesGraph {
     private dateRange: number; // difference between first and last date in days
     private dateArray: Date[];
 
+    // draws the graph's svg (and other) elements on the screen
+    // No more data manipulation is done in this function
     draw(): void {
         d3.timeFormatDefaultLocale(d3Locale);
         const minDate = this.dateArray[0];
@@ -250,6 +252,7 @@ export class CTimeseriesGraph {
         });
     }
 
+    // Displays an error message when there is not enough data
     drawNoData(): void {
         d3.select(this.selector)
             .style("height", "50px")
@@ -258,6 +261,10 @@ export class CTimeseriesGraph {
             .style("margin", "auto");
     }
 
+    // transforms the data into a form usable by the graph +
+    // calculates addinional data
+    // finishes by calling draw
+    // can be called recursively when a 'data not yet available' response is received
     prepareData(raw: Record<string, unknown>, url: string): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url)

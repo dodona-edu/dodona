@@ -20,6 +20,8 @@ export class ViolinGraph {
     private exOrder: string[];
     private exMap : Record<string, string>;
 
+    // draws the graph's svg (and other) elements on the screen
+    // No more data manipulation is done in this function
     draw(): void {
         const min = d3.min(this.data, d => d3.min(d.counts));
         const max = d3.max(this.data, d => d3.max(d.counts));
@@ -234,6 +236,7 @@ export class ViolinGraph {
         svg.on("mousemove", e => onMouseOver(e)).on("mouseout", onMouseOut);
     }
 
+    // Displays an error message when there is not enough data
     drawNoData(): void {
         d3.select(this.selector)
             .style("height", "50px")
@@ -243,6 +246,10 @@ export class ViolinGraph {
     }
 
 
+    // transforms the data into a form usable by the graph +
+    // calculates addinional data
+    // finishes by calling draw
+    // can be called recursively when a 'data not yet available' response is received
     prepareData(raw: Record<string, unknown>, url: string): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then((r: Record<string, unknown>) => {

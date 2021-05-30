@@ -20,6 +20,8 @@ export class StackedStatusGraph {
     private data: { "exercise_id": string; "status": string; "cSum": number; "count": number }[];
     private maxSum: Record<string, number> // total number of submissions per exercise
 
+    // draws the graph's svg (and other) elements on the screen
+    // No more data manipulation is done in this function
     draw(): void {
         const darkMode = window.dodona.darkMode;
         const emptyColor = darkMode ? "#37474F" : "white";
@@ -190,6 +192,7 @@ export class StackedStatusGraph {
         }
     }
 
+    // Displays an error message when there is not enough data
     drawNoData(): void {
         d3.select(this.selector)
             .style("height", "50px")
@@ -198,9 +201,13 @@ export class StackedStatusGraph {
             .style("margin", "auto");
     }
 
+    // transforms the data into a form usable by the graph +
+    // calculates addinional data
+    // finishes by calling draw
+    // can be called recursively when a 'data not yet available' response is received
     prepareData(raw: Record<string, unknown>, url: string): void {
         if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url).then(r => {
+            setTimeout(() => d3.json(url).then((r: Record<string, unknown>) => {
                 this.prepareData(r, url);
             }), 1000);
             return;

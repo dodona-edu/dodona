@@ -23,6 +23,8 @@ export class TimeseriesGraph {
     private maxDate: Date;
     private data: {[exId: string]: {date: Date; sum: number; [index: string]: number | Date}[]}
 
+    // draws the graph's svg (and other) elements on the screen
+    // No more data manipulation is done in this function
     draw(): void {
         d3.timeFormatDefaultLocale(d3Locale);
         const darkMode = window.dodona.darkMode;
@@ -185,6 +187,7 @@ export class TimeseriesGraph {
     }
 
 
+    // Displays an error message when there is not enough data
     drawNoData(): void {
         this.container
             .style("height", "50px")
@@ -193,6 +196,10 @@ export class TimeseriesGraph {
             .style("margin", "auto");
     }
 
+    // transforms the data into a form usable by the graph +
+    // calculates addinional data
+    // finishes by calling draw
+    // can be called recursively when a 'data not yet available' response is received
     prepareData(raw: Record<string, unknown>, url: string): void {
         if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url)
@@ -279,6 +286,9 @@ export class TimeseriesGraph {
         this.draw();
     }
 
+    // Initializes the container for the graph +
+    // puts placeholder text when data isn't loaded +
+    // starts data loading (and transforming) procedure
     init(url: string, containerId: string, containerHeight: number): void {
         this.height = containerHeight;
         this.selector = containerId;

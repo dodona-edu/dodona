@@ -447,19 +447,18 @@ class Submission < ApplicationRecord
     # drop exId in values, create record of date, status and count
     value = value
             .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
-    
+
     # merge with base value
     value = value.merge(base[:value]) do |_k, v1, v2|
-      v2.each do |r|  # iterate each of base value objects
-          # check if the current value already exists in v1 (find record with same date and status)
-          duplicate = v1.select { |e| e[:date] == r[:date] && e[:status] ==  r[:status]}
-          if duplicate.length > 0
-            # it exists, so add the counts
-            duplicate[0][:count] += r[:count]
-          else
-            # it doesn't exist, so just append it
-            v1 << r
-          end
+      v2.each do |r| # iterate each of base value objects
+        # check if the current value already exists in v1 (find record with same date and status)
+        duplicate = v1.select { |e| e[:date] == r[:date] && e[:status] == r[:status] }
+        if duplicate.empty?
+          # it doesn't exist, so just append it
+          v1 << r
+        else
+          # it exists, so add the counts
+          duplicate[0][:count] += r[:count]
         end
       end
     end

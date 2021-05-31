@@ -1,13 +1,8 @@
 import * as d3 from "d3";
-import { formatTitle, d3Locale } from "graph_helper.js";
+import { SeriesGraph } from "series_graph";
 
-export class TimeseriesGraph {
-    private selector = ""; // parent div id
-    private container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
-
+export class TimeseriesGraph extends SeriesGraph {
     private readonly margin = { top: 20, right: 40, bottom: 20, left: 140 };
-    private width = 0;
-    private height = 0;
     private readonly fontSize = 12;
 
     private readonly statusOrder = [
@@ -16,8 +11,6 @@ export class TimeseriesGraph {
     ];
 
     // data
-    private exOrder: string[] // ordering of exercises
-    private exMap: Record<string, string>; // map from exId -> exName
     private maxStack = 0; // largest value (max of colour scale domain)
     private dateRange: number; // difference between first and last date in days
     private minDate: Date;
@@ -27,7 +20,6 @@ export class TimeseriesGraph {
     // draws the graph's svg (and other) elements on the screen
     // No more data manipulation is done in this function
     draw(): void {
-        d3.timeFormatDefaultLocale(d3Locale);
         const darkMode = window.dodona.darkMode;
         const emptyColor = darkMode ? "#37474F" : "white"; // no data in cell
         const lowColor = darkMode ? "#01579B" : "#E3F2FD"; // almost no data in cell
@@ -66,7 +58,7 @@ export class TimeseriesGraph {
             .select(".domain").remove();
         yAxis
             .selectAll(".tick text")
-            .call(formatTitle, this.margin.left-yAxisPadding, this.exMap);
+            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap);
 
         // Show the X scale
         const x = d3.scaleTime()
@@ -196,16 +188,6 @@ export class TimeseriesGraph {
             });
     }
 
-
-    // Displays an error message when there is not enough data
-    drawNoData(): void {
-        this.container
-            .style("height", "50px")
-            .append("div")
-            .text(I18n.t("js.no_data"))
-            .attr("class", "graph_placeholder");
-    }
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
@@ -291,30 +273,5 @@ export class TimeseriesGraph {
         });
 
         this.draw();
-    }
-
-    // Initializes the container for the graph +
-    // puts placeholder text when data isn't loaded +
-    // starts data loading (and transforming) procedure
-    init(url: string, containerId: string): void {
-        this.selector = containerId;
-        this.container = d3.select(this.selector);
-
-        if (!this.height) {
-            this.height = (this.container.node() as HTMLElement).getBoundingClientRect().height - 5;
-        }
-        this.container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`) // prevent shrinking after switching graphs
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
-        this.width = (this.container.node() as Element).getBoundingClientRect().width;
-
-
-        d3.json(url)
-            .then((raw: Record<string, unknown>) => {
-                this.prepareData(raw, url);
-            });
     }
 }

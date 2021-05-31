@@ -1,14 +1,9 @@
 import * as d3 from "d3";
-import { formatTitle } from "graph_helper.js";
+import { SeriesGraph } from "series_graph";
 
 
-export class ViolinGraph {
-    private selector = ""; // id of parant div
-    private container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
-
+export class ViolinGraph extends SeriesGraph {
     private readonly margin = { top: 20, right: 160, bottom: 40, left: 125 };
-    private width = 0;
-    private height = 0;
     private innerWidth = 0;
     private innerHeight = 0;
     private fontSize = 12;
@@ -40,8 +35,6 @@ export class ViolinGraph {
     }[];
     private maxCount = 0; // largest y-value
     private maxFreq = 0; // largest x-value
-    private exOrder: string[]; // list of exercise id's (in correct order)
-    private exMap : Record<string, string>; // Object that maps id -> exname
 
     // draws the graph's svg (and other) elements on the screen
     // No more data manipulation is done in this function
@@ -77,7 +70,7 @@ export class ViolinGraph {
             .select(".domain").remove();
         yAxis
             .selectAll(".tick text")
-            .call(formatTitle, this.margin.left-yAxisPadding, this.exMap, 5);
+            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap, 5);
 
         // y scale per exercise
         const yBin = d3.scaleLinear()
@@ -261,16 +254,6 @@ export class ViolinGraph {
             .attr("opacity", 0);
     }
 
-    // Displays an error message when there is not enough data
-    drawNoData(): void {
-        d3.select(this.selector)
-            .style("height", "50px")
-            .append("div")
-            .text(I18n.t("js.no_data"))
-            .attr("class", "graph_placeholder");
-    }
-
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
@@ -333,28 +316,5 @@ export class ViolinGraph {
         });
 
         this.draw();
-    }
-
-    // Initializes the container for the graph +
-    // puts placeholder text when data isn't loaded +
-    // starts data loading (and transforming) procedure
-    init(url: string, containerId: string): void {
-        this.selector = containerId;
-        this.container = d3.select(this.selector);
-
-        if (!this.height) {
-            this.height = this.container.node().getBoundingClientRect().height - 5;
-        }
-        this.container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`)
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
-
-        this.width = (this.container.node() as Element).getBoundingClientRect().width;
-        d3.json(url).then((r: Record<string, unknown>) => {
-            this.prepareData(r, url);
-        });
     }
 }

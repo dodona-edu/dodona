@@ -1,13 +1,8 @@
 import * as d3 from "d3";
-import { formatTitle } from "graph_helper.js";
+import { SeriesGraph } from "series_graph";
 
-export class StackedStatusGraph {
-    private selector = "" // id of parent div
-    private container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
-
+export class StackedStatusGraph extends SeriesGraph {
     private readonly margin = { top: 20, right: 150, bottom: 40, left: 105 };
-    private width = 0;
-    private height = 0;
     private readonly fontSize = 12;
 
     private readonly statusOrder = [
@@ -16,8 +11,6 @@ export class StackedStatusGraph {
     ];
 
     // data
-    private exOrder: string[]; // array of exId's (in correct order)
-    private exMap: Record<string, string>; // map from exId -> exName
     private data: { "exercise_id": string; "status": string; "cSum": number; "count": number }[];
     private maxSum: Record<string, number> // total number of submissions per exercise
 
@@ -55,7 +48,7 @@ export class StackedStatusGraph {
         yAxis
             .selectAll(".tick text")
             // format and break up exercise titles
-            .call(formatTitle, this.margin.left-yAxisPadding, this.exMap);
+            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap);
 
 
         // Show the X scale
@@ -208,15 +201,6 @@ export class StackedStatusGraph {
         }
     }
 
-    // Displays an error message when there is not enough data
-    drawNoData(): void {
-        d3.select(this.selector)
-            .style("height", "50px")
-            .append("div")
-            .text(I18n.t("js.no_data"))
-            .attr("class", "graph_placeholder");
-    }
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
@@ -258,29 +242,5 @@ export class StackedStatusGraph {
         });
 
         this.draw();
-    }
-
-    // Initializes the container for the graph +
-    // puts placeholder text when data isn't loaded +
-    // starts data loading (and transforming) procedure
-    init(url: string, containerId: string): void {
-        this.selector = containerId;
-        this.container = d3.select(this.selector);
-
-        if (!this.height) {
-            this.height = (this.container.node() as HTMLElement).getBoundingClientRect().height - 5;
-        }
-        this.container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`)
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
-
-        this.width = (this.container.node() as Element).getBoundingClientRect().width;
-
-        d3.json(url).then(r => {
-            this.prepareData(r as Record<string, unknown>, url);
-        });
     }
 }

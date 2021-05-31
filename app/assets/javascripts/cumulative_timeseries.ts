@@ -1,18 +1,13 @@
 import * as d3 from "d3";
-import { d3Locale } from "graph_helper.js";
+import { SeriesGraph } from "series_graph";
 
-export class CTimeseriesGraph {
-    private selector: string;
-
+export class CTimeseriesGraph extends SeriesGraph {
     private readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
-    private width: number; // svg width
-    private height: number; // svg height
     private innerWidth: number; // graph width
     private innerHeight: number; // graph height
     private readonly fontSize = 12;
 
     private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
-    private readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
     // scales
     private x: d3.ScaleTime<number, number>;
@@ -38,15 +33,11 @@ export class CTimeseriesGraph {
     // data
     private data: Record<string, [d3.Bin<Date, Date>, number][]>;
     private maxSum: number; // largest y-value = either subscribed students or max value
-    private exOrder: string[] // ordering of exercises
-    private exMap: Record<string, string>; // map from exId -> exName
-    private dateRange: number; // difference between first and last date in days
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
 
     // draws the graph's svg (and other) elements on the screen
     // No more data manipulation is done in this function
     draw(): void {
-        d3.timeFormatDefaultLocale(d3Locale);
         const minDate = this.dateArray[0];
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
@@ -257,15 +248,6 @@ export class CTimeseriesGraph {
         });
     }
 
-    // Displays an error message when there is not enough data
-    drawNoData(): void {
-        d3.select(this.selector)
-            .style("height", "50px")
-            .append("div")
-            .text(I18n.t("js.no_data"))
-            .attr("class", "graph_placeholder");
-    }
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
@@ -276,6 +258,10 @@ export class CTimeseriesGraph {
                 .then((r: Record<string, unknown>) => this.prepareData(r, url)), 1000);
             return;
         }
+
+        this.innerWidth = this.width - this.margin.left - this.margin.right;
+        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+
         // remove placeholder text
         d3.select(`${this.selector} *`).remove();
 
@@ -309,7 +295,6 @@ export class CTimeseriesGraph {
         this.dateArray = d3.timeDays(minDate, maxDate);
 
         this.maxSum = raw["students"] ? raw["students"] as number : 0; // max value
-        this.dateRange = d3.timeDay.count(minDate, maxDate) + 1; // dateRange in days
         // bin data per day (for each exercise)
         Object.entries(data).forEach(([exId, records]) => {
             const binned = d3.bin()
@@ -327,34 +312,6 @@ export class CTimeseriesGraph {
         });
 
         this.draw();
-    }
-
-    // Initializes the container for the graph +
-    // puts placeholder text when data isn't loaded +
-    // starts data loading (and transforming) procedure
-    init(url: string, containerId: string): void {
-        this.selector = containerId;
-        const container = d3.select(this.selector);
-
-        if (!this.height) {
-            this.height = (container.node() as HTMLElement).getBoundingClientRect().height - 5;
-        }
-        container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`) // prevent shrinking after switching graphs
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
-        this.width = (container.node() as Element).getBoundingClientRect().width;
-
-        this.innerWidth = this.width - this.margin.left - this.margin.right;
-        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
-
-
-        d3.json(url)
-            .then((raw: Record<string, unknown>) => {
-                this.prepareData(raw, url);
-            });
     }
 
     // determine where to put tooltip line

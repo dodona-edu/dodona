@@ -392,6 +392,8 @@ class Submission < ApplicationRecord
     value = value
             .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
+    
+    # merge assumes base[:value] contains data for new users (since there's no way to actually merge the counts)
     value.merge(base[:value]) { |_k, v1, v2| v1 + v2 }
     {
       until: submissions.first.id,
@@ -430,18 +432,37 @@ class Submission < ApplicationRecord
     submissions = submissions.only_students(options[:course])
     return base unless submissions.any?
 
-    value = base[:value]
+    value = {}
 
     submissions.in_batches do |subs|
       value = value.merge(subs.pluck(:exercise_id, :created_at, :status)
-                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] }
-                              .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
+                              .group_by(&:itself) # group duplicates
+                              .transform_values(&:count) # count amount of duplicates
+                          ) { |_k, v1, v2| v1 + v2 }
     end
 
-    value = value.group_by { |k, _| k[0] }
+    # further transformations not in batches since merge would get complicated
+    value = value.group_by { |k, _| k[0] } # group by exId
+    # drop exId in values, create record of date, status and count
     value = value
             .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
+    
+    # merge with base value
+    value = value.merge(base[:value]) do |_k, v1, v2|
+      v2.each do |r|  # iterate each of base value objects
+          # check if the current value already exists in v1 (find record with same date and status)
+          duplicate = v1.select { |e| e[:date] == r[:date] && e[:status] ==  r[:status]}
+          if duplicate.length > 0
+            # it exists, so add the counts
+            duplicate[0][:count] += r[:count]
+          else
+            # it doesn't exist, so just append it
+            v1 << r
+          end
+        end
+      end
+    end
     {
       until: submissions.first.id,
       value: value
@@ -461,10 +482,12 @@ class Submission < ApplicationRecord
 
     submissions.in_batches do |subs|
       value = value.merge(subs.pluck(:exercise_id, :created_at)
-                              .group_by { |d| d[0] }) { |_k, v1, v2| v1 + v2 }
+                              .group_by { |d| d[0] } # group by exId
+                              # drop exId from values
+                              .transform_values { |values| values.map { |v| v[1] } }
+                          ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
+                              
     end
-    value = value
-            .transform_values { |values| values.map { |v| v[1] } }
     {
       until: submissions.first.id,
       value: value

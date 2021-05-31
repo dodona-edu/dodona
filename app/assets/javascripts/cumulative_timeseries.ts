@@ -210,6 +210,8 @@ export class CTimeseriesGraph extends SeriesGraph {
                 this.tooltipIndex = i;
                 this.tooltipLine
                     .attr("opacity", 1)
+                    .transition()
+                    .duration(100)
                     .attr("x1", this.x(date))
                     .attr("x2", this.x(date));
 
@@ -225,10 +227,14 @@ export class CTimeseriesGraph extends SeriesGraph {
                 this.tooltipLabel
                     .attr("opacity", 1)
                     .text(this.longDateFormat(date))
-                    .attr("x", switchLabel ? this.x(date) + 5 : this.x(date) - 5)
-                    .attr("text-anchor", switchLabel ? "start" : "end");
+                    .attr("text-anchor", switchLabel ? "start" : "end")
+                    .transition()
+                    .duration(100)
+                    .attr("x", switchLabel ? this.x(date) + 5 : this.x(date) - 5);
                 this.tooltipDots
                     .attr("opacity", 1)
+                    .transition()
+                    .duration(100)
                     .attr("cx", this.x(date))
                     .attr("cy", d => this.y(d[1][i][1]/this.maxSum));
                 this.tooltipDotLabels
@@ -237,8 +243,10 @@ export class CTimeseriesGraph extends SeriesGraph {
                         d => `${Math.round(d[1][i][1]/this.maxSum*10000)/100}% 
                         (${d[1][i][1]}/${this.maxSum})`
                     )
-                    .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
                     .attr("text-anchor", switchDots ? "end" : "start")
+                    .transition()
+                    .duration(100)
+                    .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
                     .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
             }
         });

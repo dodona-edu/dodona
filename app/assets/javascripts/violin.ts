@@ -215,6 +215,8 @@ export class ViolinGraph extends SeriesGraph {
             this.tooltipIndex = i;
             this.tooltipLine
                 .attr("opacity", 1)
+                .transition()
+                .duration(100)
                 .attr("x1", this.x(i))
                 .attr("x2", this.x(i));
             // check if label doesn't go out of bounds
@@ -226,9 +228,13 @@ export class ViolinGraph extends SeriesGraph {
                 .attr("opacity", 1)
                 .text(labelMsg)
                 .attr("text-anchor", switchSides ? "end" : "start")
+                .transition()
+                .duration(100)
                 .attr("x", switchSides ? this.x(i) - 10 : this.x(i) + 10);
             this.tooltipDots
                 .attr("opacity", 1)
+                .transition()
+                .duration(100)
                 .attr("cx", this.x(i));
             this.tooltipDotLabels
                 .attr("opacity", 1)
@@ -238,6 +244,8 @@ export class ViolinGraph extends SeriesGraph {
                     return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
                 .attr("text-anchor", switchSides ? "end" : "start")
+                .transition()
+                .duration(100)
                 .attr("x", switchSides ? this.x(i) - 5 : this.x(i)+5);
         }
     }

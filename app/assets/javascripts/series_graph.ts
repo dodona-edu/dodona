@@ -1,17 +1,17 @@
 import * as d3 from "d3";
 
-const d3Locale = {
-    "dateTime": I18n.t("time.formats.default"),
-    "date": I18n.t("date.formats.short"),
-    "time": I18n.t("time.formats.short"),
-    "periods": [I18n.t("time.am"), I18n.t("time.pm")],
-    "days": I18n.t("date.day_names"),
-    "shortDays": I18n.t("date.abbr_day_names"),
-    "months": I18n.t("date.month_names").slice(1),
-    "shortMonths": I18n.t("date.abbr_month_names").slice(1)
-};
 
 export abstract class SeriesGraph {
+    private d3Locale = {
+        "dateTime": I18n.t("time.formats.default"),
+        "date": I18n.t("date.formats.short"),
+        "time": I18n.t("time.formats.short"),
+        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
+        "days": I18n.t("date.day_names"),
+        "shortDays": I18n.t("date.abbr_day_names"),
+        "months": I18n.t("date.month_names").slice(1),
+        "shortMonths": I18n.t("date.abbr_month_names").slice(1)
+    }; // when defined as constant variable (outside class) it seems to always default to en
     protected selector = "";
     protected container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
     protected width = 0;
@@ -105,7 +105,7 @@ export abstract class SeriesGraph {
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 
-        d3.timeFormatDefaultLocale(d3Locale);
+        d3.timeFormatDefaultLocale(this.d3Locale);
         d3.json(url).then((r: Record<string, unknown>) => {
             this.prepareData(r, url);
         });

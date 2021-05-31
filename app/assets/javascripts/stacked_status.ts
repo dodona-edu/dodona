@@ -197,7 +197,7 @@ export class StackedStatusGraph extends SeriesGraph {
                 )
                 .attr("text-anchor", "middle")
                 .attr("fill", "currentColor")
-                .style("font-size", "12px");
+                .style("font-size", `${this.fontSize}px`);
         }
     }
 

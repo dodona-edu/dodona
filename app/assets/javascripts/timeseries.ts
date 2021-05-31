@@ -28,7 +28,6 @@ export class TimeseriesGraph extends SeriesGraph {
         const innerHeight = this.height - this.margin.top - this.margin.bottom;
 
         const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
-        const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
         const svg = this.container
             .style("height", `${this.height}px`)
@@ -87,21 +86,6 @@ export class TimeseriesGraph extends SeriesGraph {
             .style("opacity", 0)
             .style("z-index", 5);
 
-        const tooltipLine = graph.append("line")
-            .attr("y1", 0)
-            .attr("y2", innerHeight-y.bandwidth()/2)
-            .style("opacity", 0)
-            .attr("pointer-events", "none")
-            .attr("stroke", "currentColor")
-            .style("width", 40);
-        const tooltipLabel = graph.append("text")
-            .style("opacity", 0)
-            .attr("y", innerHeight-y.bandwidth()/2-5)
-            .attr("dominant-baseline", "center")
-            .attr("text-anchor", "start")
-            .attr("fill", "currentColor")
-            .attr("font-size", "12px");
-
         // add cells
         graph.selectAll(".rectGroup")
             .data(Object.keys(this.data))
@@ -124,30 +108,14 @@ export class TimeseriesGraph extends SeriesGraph {
                         tooltip.transition()
                             .duration(200)
                             .style("opacity", .9);
-                        let message = `${I18n.t("js.submissions")} :<br>Total: ${d["sum"]}`;
+                        let message = `${this.longDateFormat(d["date"])}<br>
+                        ${I18n.t("js.submissions")} :<br>${d["sum"]} ${I18n.t("js.total")}`;
                         this.statusOrder.forEach(s => {
-                            message += `<br>${s}: ${d[s]}`;
+                            if (d[s]) {
+                                message += `<br>${d[s]} ${s}`;
+                            }
                         });
                         tooltip.html(message);
-
-                        // check if label won't go out of bounds
-                        const labelMsg = dateFormat(d["date"]);
-                        const doSwitch = x(d["date"]) +
-                            this.fontSize/2*labelMsg.length +
-                            5 > innerWidth;
-                        tooltipLine
-                            .transition()
-                            .duration(100)
-                            .style("opacity", 1)
-                            .attr("x1", x(d["date"]))
-                            .attr("x2", x(d["date"]));
-                        tooltipLabel
-                            .transition()
-                            .duration(100)
-                            .style("opacity", 1)
-                            .text(dateFormat(d["date"]))
-                            .attr("x", doSwitch ? x(d["date"]) - 5 : x(d["date"]) + 5)
-                            .attr("text-anchor", doSwitch ? "end" : "start");
                     })
                     .on("mousemove", (e, _) => {
                         const bbox = tooltip.node().getBoundingClientRect();
@@ -162,7 +130,6 @@ export class TimeseriesGraph extends SeriesGraph {
                             );
                     })
                     .on("mouseout", () => {
-                        // hide tooltip (box) but leave the line
                         tooltip.transition()
                             .duration(500)
                             .style("opacity", 0);
@@ -172,19 +139,6 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("height", rectSize)
                     .transition().duration(500)
                     .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
-            });
-
-        svg
-            .on("mouseleave", () => {
-                // remove the line
-                tooltipLine
-                    .transition()
-                    .duration(500)
-                    .style("opacity", 0);
-                tooltipLabel
-                    .transition()
-                    .duration(500)
-                    .style("opacity", 0);
             });
     }
 

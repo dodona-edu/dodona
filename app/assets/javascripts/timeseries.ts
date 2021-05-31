@@ -144,26 +144,6 @@ export class TimeseriesGraph extends SeriesGraph {
             });
     }
 
-    insertFakeData(data): void {
-        const end = new Date(data[Object.keys(data)[0]][0].date);
-        const start = new Date(end);
-        start.setDate(start.getDate() - 14);
-        for (const exName of Object.keys(data)) {
-            data[exName] = [];
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
-                for (let i=0; i < this.statusOrder.length; i++) {
-                    if (Math.random() > 0.5) {
-                        data[exName].push({
-                            "date": new Date(d),
-                            "status": this.statusOrder[i],
-                            "count": Math.round(Math.random()*20)
-                        });
-                    }
-                }
-            }
-        }
-    }
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
@@ -198,10 +178,9 @@ export class TimeseriesGraph extends SeriesGraph {
         Object.entries(data).forEach(entry => { // parse dates
             entry[1].forEach(d => {
                 d["date"] = new Date(d["date"]);
+                d["date"].setHours(0, 0, 0, 0);
             });
         });
-
-        this.insertFakeData(data);
 
         this.minDate = new Date(d3.min(Object.values(data),
             records => d3.min(records, d => d["date"] as Date)));
@@ -210,10 +189,7 @@ export class TimeseriesGraph extends SeriesGraph {
             records => d3.max(records, d => d["date"] as Date)));
         this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
-        this.dateRange = Math.round(
-            (this.maxDate.getTime() - this.minDate.getTime()) /
-            (1000 * 3600 * 24)
-        ); // dateRange in days
+        this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
 
         this.data = {};
         Object.entries(data).forEach(entry => {

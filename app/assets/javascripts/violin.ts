@@ -218,7 +218,7 @@ export class ViolinGraph {
     svgMouseMove(e: any, graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>): void {
         const pos = this.x.invert(d3.pointer(e, graph.node())[0]);
         const i = Math.round(pos);
-        if (i !== this.tooltipIndex && this.x(i) <= this.innerWidth) {
+        if (i !== this.tooltipIndex && i > 0 && this.x(i) <= this.innerWidth) {
             this.tooltipIndex = i;
             this.tooltipLine
                 .attr("opacity", 1)

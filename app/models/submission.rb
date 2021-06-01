@@ -392,7 +392,7 @@ class Submission < ApplicationRecord
     value = value
             .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
-    
+
     # merge assumes base[:value] contains data for new users (since there's no way to actually merge the counts)
     value.merge(base[:value]) { |_k, v1, v2| v1 + v2 }
     {
@@ -435,11 +435,12 @@ class Submission < ApplicationRecord
     value = {}
 
     submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:exercise_id, :created_at, :status)
-                              .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
-                              .group_by(&:itself) # group duplicates
-                              .transform_values(&:count) # count amount of duplicates
-                          ) { |_k, v1, v2| v1 + v2 }
+      value = value.merge(
+        subs.pluck(:exercise_id, :created_at, :status)
+          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
+          .group_by(&:itself) # group duplicates
+          .transform_values(&:count) # count amount of duplicates
+      ) { |_k, v1, v2| v1 + v2 }
     end
 
     # further transformations not in batches since merge would get complicated
@@ -480,12 +481,12 @@ class Submission < ApplicationRecord
     value = base[:value]
 
     submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:exercise_id, :created_at)
-                              .group_by { |d| d[0] } # group by exId
-                              # drop exId from values
-                              .transform_values { |values| values.map { |v| v[1] } }
-                          ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
-                              
+      value = value.merge(
+        subs.pluck(:exercise_id, :created_at)
+          .group_by { |d| d[0] } # group by exId
+          # drop exId from values
+          .transform_values { |values| values.map { |v| v[1] } }
+      ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
     end
     {
       until: submissions.first.id,

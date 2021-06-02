@@ -155,7 +155,7 @@ class Course < ApplicationRecord
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
-  scope :by_institution, ->(institution) { where(institution: [institution, nil]) }
+  scope :by_institution, ->(institution) { where(institution: institution) }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5

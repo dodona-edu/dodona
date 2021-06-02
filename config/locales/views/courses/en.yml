@@ -51,6 +51,7 @@ en:
     index:
       title: All courses
       users: "Users"
+      exercises: "Exercises"
     new:
       title: Create course
       empty: "Empty course"

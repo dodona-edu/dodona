@@ -2,17 +2,24 @@
   <table class="table table-index table-resource">
     <thead>
     <tr>
+      <th class="status-icon"></th>
       <th><%= Course.human_attribute_name("name") %></th>
       <th><%= Course.human_attribute_name("teacher") %></th>
       <th><%= Course.human_attribute_name("year") %></th>
       <th><%= Course.human_attribute_name("institution") %></th>
       <th><%= t 'courses.index.users' %></th>
+      <th><%= t 'courses.index.exercises' %></th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <% courses.each do |course| %>
       <tr>
+        <td>
+          <% if current_user.admin_of?(course) %>
+            <span title='<%= t "pages.course_card.course-admin" %>'><i class='mdi mdi-school'></i></span>
+          <% end %>
+        </td>
         <td title="<%= course.name %>" class="text">
           <span><%= link_to course.name, course, target: '_blank' %></span>
         </td>
@@ -20,6 +27,7 @@
         <td><%= course.formatted_year %></td>
         <td><%= course.institution&.name || t('courses.form.no_institution') %></td>
         <td><%= course.subscribed_members_count %></td>
+        <td><%= course.exercises_count %></td>
         <td class="actions">
           <% if policy(course).edit? %>
             <%= link_to edit_course_path(course), class: "btn btn-sm btn-secondary" do %>

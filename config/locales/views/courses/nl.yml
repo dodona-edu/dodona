@@ -51,6 +51,7 @@ nl:
     index:
       title: Alle cursussen
       users: "Gebruikers"
+      exercises: "Oefeningen"
     new:
       title: Cursus aanmaken
       empty: "Lege cursus"

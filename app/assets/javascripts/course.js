@@ -306,11 +306,51 @@ function initCourseNew() {
     init();
 }
 
+function initCoursesListing(firstTab) {
+    let baseUrl = "";
+    initCourseTabs(firstTab);
+
+    function initCourseTabs(firstTab) {
+        const courseTabs = document.getElementById("course-tabs");
+        baseUrl = courseTabs.dataset.baseurl;
+
+        // Switch to clicked tab
+        document.querySelectorAll("#course-tabs li a").forEach(tab => {
+            tab.addEventListener("click", () => selectTab(tab));
+        });
+
+        // Determine which tab to show first
+        const hash = window.location.hash;
+        let tab = document.querySelector(`a[href='${hash}']`);
+        if (!tab) {
+            tab = document.querySelector(`a[href='#${firstTab}']`);
+        }
+        selectTab(tab);
+    }
+
+    function selectTab(tab) {
+        const state = tab.getAttribute("href").substr(1);
+        if (tab.classList.contains("active")) {
+            // The current tab is already loaded, nothing to do
+            return;
+        }
+        loadCourses(state);
+        document.querySelector("#course-tabs a.active")?.classList?.remove("active");
+        tab.classList.add("active");
+    }
+
+    function loadCourses(tab) {
+        const state = tab ?? getURLParameter("tab");
+        setBaseUrl(`${baseUrl}?tab=${state}`);
+    }
+}
+
 export {
     initSeriesReorder,
     initCourseForm,
     initCourseNew,
     initCourseShow,
     initCourseMembers,
+    initCoursesListing,
     loadUsers,
 };

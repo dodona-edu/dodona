@@ -19,11 +19,17 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    case params[:tab]
+    when 'institution'
+      @courses = @courses.where(institution: current_user.institution)
+    when 'my'
+      @courses = current_user.subscribed_courses
+    end
     @courses = apply_scopes(@courses)
-    @copy_courses = params[:copy_courses]
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @institution = Institution.find(params[:institution_id]) if params[:institution_id]
+    @copy_courses = params[:copy_courses]
     @title = I18n.t('courses.index.title')
   end
 

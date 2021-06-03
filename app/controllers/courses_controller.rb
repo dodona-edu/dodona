@@ -20,7 +20,7 @@ class CoursesController < ApplicationController
     authorize Course
     @courses = policy_scope(Course.all)
     @show_my_courses = current_user && current_user.subscribed_courses.count > 0
-    @show_institution_courses = current_user && @courses.where(institution: current_user.institution).count > 0
+    @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
     case params[:tab]
     when 'institution'
       @courses = @courses.where(institution: current_user.institution)

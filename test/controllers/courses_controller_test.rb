@@ -434,6 +434,38 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'signed out users should be able to see the courses listing' do
+    get courses_url
+    assert_response :success
+    # we only expect the "all courses" tab to show for signed out users
+    assert_select '#course-tabs li', 1
+  end
+
+  test 'users should be able to filter courses' do
+    c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    user = @subscribed.first
+    c1.update(institution: user.institution)
+    c2.update(institution: user.institution)
+    sign_in user
+
+    # all courses
+    get courses_url, params: { format: :json }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 3, courses.length
+    # my courses
+    get courses_url, params: { format: :json, tab: 'my' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 1, courses.length
+    # institution courses
+    get courses_url, params: { format: :json, tab: 'institution' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 2, courses.length
+  end
+
   test 'users should be able to favorite subscribed courses' do
     user = @students.first
     sign_in user

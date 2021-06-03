@@ -9,10 +9,10 @@ window.dodona.toggleStats = toggleStats;
 window.dodona.setActiveToggle = setActiveToggle;
 
 const graphFactory = {
-    "violin": () => new ViolinGraph(),
-    "stacked": () => new StackedStatusGraph(),
-    "timeseries": () => new TimeseriesGraph(),
-    "ctimeseries": () => new CTimeseriesGraph(),
+    "violin": (url, containerId) => new ViolinGraph(url, containerId),
+    "stacked": (url, containerId) => new StackedStatusGraph(url, containerId),
+    "timeseries": (url, containerId) => new TimeseriesGraph(url, containerId),
+    "ctimeseries": (url, containerId) => new CTimeseriesGraph(url, containerId),
 };
 
 // function to (de)activate graph mode (switch out ex list for graphs)
@@ -55,8 +55,7 @@ function setActiveToggle(activeNode, title, seriesId, url, selector) {
         const titleSpan = card.find(".graph-title span");
         const info = card.find(".graph-info");
 
-        const graph = graphFactory[title]();
-        graph.init(url+seriesId, selector+seriesId);
+        graphFactory[title](url+seriesId, selector+seriesId);
 
         titleSpan.html(I18n.t(`js.${title}_title`));
         Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {

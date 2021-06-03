@@ -260,27 +260,12 @@ export class CTimeseriesGraph extends SeriesGraph {
     // calculates addinional data
     // finishes by calling draw
     // can be called recursively when a 'data not yet available' response is received
-    prepareData(raw: Record<string, unknown>, url: string): void {
-        if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url)
-                .then((r: Record<string, unknown>) => this.prepareData(r, url)), 1000);
-            return;
-        }
-
+    processData(raw: Record<string, unknown>): void {
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
-        // remove placeholder text
-        d3.select(`${this.selector} *`).remove();
-
         const data = raw["data"] as Record<string, Date[]>;
         this.data = {};
-
-        // No data
-        if (Object.keys(data).length === 0) {
-            this.drawNoData();
-            return;
-        }
 
         // extract id's and reverse order (since graphs are built bottom up)
         this.exOrder = (raw["exercises"] as [string, string][]).map(ex => ex[0]).reverse();

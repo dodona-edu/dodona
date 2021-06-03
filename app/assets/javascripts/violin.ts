@@ -266,21 +266,7 @@ export class ViolinGraph extends SeriesGraph {
     // calculates addinional data
     // finishes by calling draw
     // can be called recursively when a 'data not yet available' response is received
-    prepareData(raw: Record<string, unknown>, url: string): void {
-        if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url).then((r: Record<string, unknown>) => {
-                this.prepareData(r, url);
-            }), 1000);
-            return;
-        }
-        // remove placeholder
-        d3.select(`${this.selector} *`).remove();
-
-        // no data sent
-        if (Object.keys(raw.data).length === 0) {
-            this.drawNoData();
-        }
-
+    processData(raw: Record<string, unknown>): void {
         this.height = 75 * Object.keys(raw.data).length;
 
         // extract id's and reverse order (since graphs are built bottom up)

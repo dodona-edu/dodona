@@ -12,6 +12,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     // scales
     private x: d3.ScaleTime<number, number>;
     private y: d3.ScaleLinear<number, number>;
+    private color: d3.ScaleOrdinal<string, unknown>;
 
     // tooltips things
     private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
@@ -73,7 +74,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .range([0, this.innerWidth]);
 
         // Color scale
-        const color = d3.scaleOrdinal()
+        this.color = d3.scaleOrdinal()
             .range(d3.schemeDark2)
             .domain(this.exOrder);
 
@@ -89,50 +90,17 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // tooltip initialisation
         // -----------------------------------------------------------------------------------------
-        const date = this.dateArray[this.dateArray.length-1];
-        const last = this.dateArray.length-1;
-        this.tooltipLine = graph.append("line")
-            .attr("y1", 0)
-            .attr("y2", this.innerHeight)
-            .attr("x1", this.x(maxDate))
-            .attr("x2", this.x(maxDate))
-            .attr("pointer-events", "none")
-            .attr("stroke", "currentColor")
-            .style("width", 40)
-            .attr("opacity", 0.6);
-
-        this.tooltipLabel = graph.append("text")
-            .attr("y", 0)
-            .attr("x", this.x(date) - 5)
-            .attr("text-anchor", "end")
-            .attr("dominant-baseline", "hanging")
-            .attr("text-anchor", "start")
-            .attr("fill", "currentColor")
-            .attr("font-size", `${this.fontSize}px`)
-            .attr("opacity", 0.6)
-            .text(this.longDateFormat(date));
+        this.tooltipLine = graph.append("line");
+        this.tooltipLabel = graph.append("text");
         this.tooltipDots = graph.selectAll(".tooltipDot")
             .data(Object.entries(this.data), d => d[0])
             .join("circle")
-            .attr("class", "tooltipDot")
-            .attr("r", 4)
-            .style("fill", d => color(d[0]))
-            .attr("opacity", 0.6)
-            .attr("cx", this.x(date))
-            .attr("cy", d => this.y(d[1][last][1]/this.maxSum));
+            .attr("class", "tooltipDot");
         this.tooltipDotLabels = graph.selectAll(".tooltipDotlabel")
             .data(Object.entries(this.data), d => d[0])
             .join("text")
-            .attr("x", this.x(date) + 5)
-            .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5)
-            .attr("class", "tooltipDotlabel")
-            .attr("fill", d => color(d[0]))
-            .attr("font-size", `${this.fontSize}px`)
-            .attr("opacity", 0.6)
-            .attr("text-anchor", "start")
-            .text(
-                d => `${Math.round(d[1][last][1]/this.maxSum*10000)/100}%`
-            );
+            .attr("class", "tooltipDotlabel");
+        this.tooltipDefault();
         // -----------------------------------------------------------------------------------------
 
         // Legend settings
@@ -166,7 +134,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("y", 0)
             .attr("width", 15)
             .attr("height", 15)
-            .attr("fill", ex => color(ex[0]) as string);
+            .attr("fill", ex => this.color(ex[0]) as string);
 
         // add legend text
         legend
@@ -187,7 +155,7 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .data([bins])
                 .enter()
                 .append("path")
-                .style("stroke", color(exId) as string)
+                .style("stroke", this.color(exId) as string)
                 .style("fill", "none")
                 .attr("d", d3.line()
                     .x(p => this.x(p[0]["x0"]))
@@ -254,7 +222,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         });
 
         svg.on("mouseleave", () => {
-            this.tooltipNotFocused();
+            this.tooltipDefault();
         });
     }
 
@@ -340,31 +308,45 @@ export class CTimeseriesGraph extends SeriesGraph {
     /**
      * tooltip settings when mouse is not hovering over svg
     */
-    private tooltipNotFocused(): void {
+    private tooltipDefault(): void {
         this.tooltipIndex = -1;
         const date = this.dateArray[this.dateArray.length-1];
         const last = this.dateArray.length-1;
         this.tooltipLine
-            .attr("opacity", 0.6)
+            .attr("y1", 0)
+            .attr("y2", this.innerHeight)
             .attr("x1", this.x(date))
-            .attr("x2", this.x(date));
+            .attr("x2", this.x(date))
+            .attr("pointer-events", "none")
+            .attr("stroke", "currentColor")
+            .style("width", 40)
+            .attr("opacity", 0.6);
 
         this.tooltipLabel
+            .attr("y", 0)
+            .attr("x", this.x(date) + 5)
+            .attr("text-anchor", "end")
+            .attr("dominant-baseline", "hanging")
+            .attr("text-anchor", "start")
+            .attr("fill", "currentColor")
+            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
-            .text(this.longDateFormat(date))
-            .attr("x", this.x(date) - 5)
-            .attr("text-anchor", "end");
+            .text(this.longDateFormat(date));
         this.tooltipDots
+            .attr("r", 4)
+            .style("fill", d => this.color(d[0]) as string)
             .attr("opacity", 0.6)
             .attr("cx", this.x(date))
             .attr("cy", d => this.y(d[1][last][1]/this.maxSum));
         this.tooltipDotLabels
+            .attr("x", this.x(date) + 5)
+            .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5)
+            .attr("fill", d => this.color(d[0]) as string)
+            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
                 d => `${Math.round(d[1][last][1]/this.maxSum*10000)/100}%`
-            )
-            .attr("x", this.x(date) + 5)
-            .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5);
+            );
     }
 }

@@ -14,8 +14,11 @@ export abstract class SeriesGraph {
     }; // when defined as constant variable (outside class) it seems to always default to en
     protected selector = "";
     protected container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
-    protected width = 0;
-    protected height = 0;
+    protected svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>; // the svg
+    // group for graph itself
+    protected graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
+    protected width = 0; // calculated once
+    protected height = 0; // can change depending on number of exercises
 
     protected exOrder: string[]; // array of exId's (in correct order)
     protected exMap: Record<string, string>; // map from exId -> exName
@@ -23,8 +26,8 @@ export abstract class SeriesGraph {
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
     // abstract functions
-    abstract draw(): void;
-    abstract prepareData(raw: Record<string, unknown>, url: string): void;
+    protected abstract draw(): void;
+    protected abstract processData(raw: Record<string, unknown>): void;
 
     /**
      * Breaks up y-axis labels into multiple lines when they get too long
@@ -36,7 +39,11 @@ export abstract class SeriesGraph {
         selection: d3.Selection<d3.BaseType, unknown, SVGGElement, unknown>,
         width: number, exMap: Record<string, string>
     ): void {
-        selection.each((datum, i, nodeList) => {
+        selection.each((
+            datum: string,
+            i: number,
+            nodeList: d3.BaseType | ArrayLike<d3.BaseType>
+        ) => {
             const text = d3.select(nodeList[i]); // select label i
 
             // find exName corresponding to exId and split on space
@@ -78,7 +85,7 @@ export abstract class SeriesGraph {
     }
 
     // Displays an error message when there is not enough data
-    drawNoData(): void {
+    protected drawNoData(): void {
         d3.select(this.selector)
             .style("height", "50px")
             .append("div")
@@ -86,10 +93,29 @@ export abstract class SeriesGraph {
             .attr("class", "graph_placeholder");
     }
 
+    protected fetchData(url: string, raw: undefined | Record<string, unknown>): void {
+        if (!raw) {
+            d3.json(url)
+                .then((r: Record<string, unknown>) => this.fetchData(url, r));
+        }
+        else if (raw["status"] == "not available yet") {
+            setTimeout(() => d3.json(url)
+                .then((r: Record<string, unknown>) => this.fetchData(url, r)), 1000);
+            return;
+        } else {
+            d3.select(`${this.selector} *`).remove();
+
+            if (Object.keys(raw.data).length === 0) {
+                this.drawNoData();
+            }
+            this.processData(raw);
+        }
+    }
+
     // Initializes the container for the graph +
     // puts placeholder text when data isn't loaded +
     // starts data loading (and transforming) procedure
-    init(url: string, containerId: string): void {
+    constructor(url: string, containerId: string) {
         this.selector = containerId;
         this.container = d3.select(this.selector);
 
@@ -106,8 +132,6 @@ export abstract class SeriesGraph {
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 
         d3.timeFormatDefaultLocale(this.d3Locale);
-        d3.json(url).then((r: Record<string, unknown>) => {
-            this.prepareData(r, url);
-        });
+        this.fetchData(url, undefined);
     }
 }

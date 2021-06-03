@@ -4,11 +4,17 @@ import { SeriesGraph } from "series_graph";
 export class TimeseriesGraph extends SeriesGraph {
     private readonly margin = { top: 20, right: 40, bottom: 20, left: 140 };
     private readonly fontSize = 12;
+    private readonly yAxisPadding = 40; // padding between y axis (labels) and the actual graph
 
     private readonly statusOrder = [
         "correct", "wrong", "compilation error", "runtime error",
         "time limit exceeded", "memory limit exceeded", "output limit exceeded",
     ];
+
+    // axes
+    private y: d3.ScaleBand<string>
+    private x: d3.ScaleTime<number, number>
+    private color: d3.ScaleSequential<string>;
 
     // data
     private maxStack = 0; // largest value (max of colour scale domain)
@@ -17,86 +23,91 @@ export class TimeseriesGraph extends SeriesGraph {
     private maxDate: Date;
     private data: {[exId: string]: {date: Date; sum: number; [index: string]: number | Date}[]}
 
-    // draws the graph's svg (and other) elements on the screen
-    // No more data manipulation is done in this function
-    draw(): void {
+    // svg elements
+    private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
+
+    /**
+     * initializes svg elements. Should only be called once
+     * No more data manipulation is done in this function
+    */
+    protected draw(): void {
         const darkMode = window.dodona.darkMode;
         const emptyColor = darkMode ? "#37474F" : "white"; // no data in cell
         const lowColor = darkMode ? "#01579B" : "#E3F2FD"; // almost no data in cell
         const highColor = darkMode ? "#039BE5" : "#0D47A1"; // a lot of data in cell
-        const innerWidth = this.width - this.margin.left - this.margin.right;
+        this.height = 75 * Object.keys(this.data).length;
         const innerHeight = this.height - this.margin.top - this.margin.bottom;
+        const innerWidth = this.width - this.margin.left - this.margin.right;
 
-        const yAxisPadding = 40; // padding between y axis (labels) and the actual graph
-
-        const svg = this.container
+        this.svg = this.container
             .style("height", `${this.height}px`)
             .append("svg")
-            .attr("width", this.width)
-            .attr("height", this.height);
+            .attr("height", this.height)
+            .attr("width", this.width);
 
         // position graph
-        const graph = svg
+        this.graph = this.svg
             .append("g")
             .attr("transform",
                 "translate(" + this.margin.left + "," + this.margin.top + ")");
 
+        // init scales
         // Y scale for exercises
-        const y = d3.scaleBand()
+        this.y = d3.scaleBand()
             .range([innerHeight, 0])
             .domain(this.exOrder)
             .padding(.5);
 
-        // make sure cell size isn't bigger than bandwidth
-        const rectSize = Math.min(y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
+        // Color scale
+        this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
+            .domain([0, this.maxStack]);
 
-        const yAxis = graph.append("g")
-            .call(d3.axisLeft(y).tickSize(0))
-            .attr("transform", `translate(-${yAxisPadding}, -${y.bandwidth()/2})`);
+        const end = new Date(this.maxDate);
+        end.setHours(0, 0, 0, 0); // bin and domain seem to handle end differently
+
+        // x scale
+        this.x = d3.scaleTime()
+            .domain([this.minDate, end])
+            .range([0, innerWidth]);
+
+
+        // init axes
+        const yAxis = this.graph.append("g").call(d3.axisLeft(this.y).tickSize(0))
+            .attr("transform", `translate(-${this.yAxisPadding}, -${this.y.bandwidth()/2})`);
+
         yAxis
             .select(".domain").remove();
         yAxis
             .selectAll(".tick text")
-            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap);
-
-        // Show the X scale
-        const end = new Date(this.maxDate);
-        end.setDate(end.getDate()-1); // bin and domain seem to handle end differently
-        const x = d3.scaleTime()
-            .domain([this.minDate.getTime(), end.getTime()])
-            .range([0, innerWidth]);
-
+            .call(this.formatTitle, this.margin.left-this.yAxisPadding, this.exMap);
 
         // add x-axis
-        graph.append("g")
-            .attr("transform", `translate(0, ${innerHeight-y.bandwidth()/2})`)
+        this.graph.append("g")
+            .attr("transform", `translate(0, ${innerHeight-this.y.bandwidth()/2})`)
             .call(
-                d3.axisBottom(x)
+                d3.axisBottom(this.x)
                     .ticks(15, I18n.t("date.formats.weekday_short"))
             );
 
-
-        // Color scale
-        const color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
-            .domain([0, this.maxStack]);
-
-
         // init tooltip
-        const tooltip = this.container.append("div")
+        this.tooltip = this.container.append("div")
             .attr("class", "d3-tooltip")
             .attr("pointer-events", "none")
             .style("opacity", 0)
             .style("z-index", 5);
 
+        // make sure cell size isn't bigger than bandwidth
+        const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
         // add cells
-        graph.selectAll(".rectGroup")
+        this.graph.selectAll(".rectGroup")
             .data(Object.keys(this.data))
             .enter()
             .append("g")
             .attr("class", "rectGroup")
             .each((exId: string, i: number, group) => {
-                d3.select(group[i]).selectAll("rect")
-                    .data(this.data[exId])
+                const rect = d3.select(group[i]).selectAll("rect")
+                    .data(this.data[exId], d => d["date"].getTime());
+                rect
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
@@ -104,60 +115,25 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => x(d["date"])-rectSize/2)
-                    .attr("y", y(exId)-rectSize/2)
-                    .on("mouseover", (e, d) => {
-                        tooltip.transition()
-                            .duration(200)
-                            .style("opacity", .9);
-                        let message = `${this.longDateFormat(d["date"])}<br>
-                        ${I18n.t("js.submissions")} :<br>${d["sum"]} ${I18n.t("js.total")}`;
-                        this.statusOrder.forEach(s => {
-                            if (d[s]) {
-                                message += `<br>${d[s]} ${s}`;
-                            }
-                        });
-                        tooltip.html(message);
-                    })
-                    .on("mousemove", (e, _) => {
-                        const bbox = tooltip.node().getBoundingClientRect();
-                        tooltip
-                            .style(
-                                "left",
-                                `${d3.pointer(e, svg.node())[0]-bbox.width * 1.1}px`
-                            )
-                            .style(
-                                "top",
-                                `${d3.pointer(e, svg.node())[1]-bbox.height*1.1}px`
-                            );
-                    })
-                    .on("mouseout", () => {
-                        tooltip.transition()
-                            .duration(500)
-                            .style("opacity", 0);
-                    })
+                    .attr("x", d => this.x(d["date"])-rectSize/2)
+                    .attr("y", this.y(exId)-rectSize/2)
+                    .on("mouseover", this.tooltipHover)
+                    .on("mousemove", this.tooltipMove)
+                    .on("mouseout", this.tooltipOut)
                     .transition().duration(500)
                     .attr("width", rectSize)
                     .attr("height", rectSize)
                     .transition().duration(500)
-                    .attr("fill", d => d["sum"] === 0 ? "" : color(d["sum"]));
+                    .attr("fill", d => d["sum"] === 0 ? "" : this.color(d["sum"]));
+                rect.exit()
+                    .remove();
             });
     }
-
     // transforms the data into a form usable by the graph +
     // calculates addinional data
     // finishes by calling draw
     // can be called recursively when a 'data not yet available' response is received
-    prepareData(raw: Record<string, unknown>, url: string): void {
-        if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url)
-                .then((r: Record<string, unknown>) => this.prepareData(r, url)), 1000);
-            return;
-        }
-
-        d3.select(`${this.selector} *`).remove();
-
-
+    protected processData(raw: Record<string, unknown>): void {
         const data = raw.data as {
             (exId: string): {date: (Date | string); status: string; count: number}[]
         };
@@ -172,8 +148,6 @@ export class TimeseriesGraph extends SeriesGraph {
         if (Object.keys(data).length === 0) {
             this.drawNoData();
         }
-
-        this.height = 75 * Object.keys(raw.data).length;
 
         Object.entries(data).forEach(entry => { // parse dates
             entry[1].forEach(d => {
@@ -227,5 +201,59 @@ export class TimeseriesGraph extends SeriesGraph {
         });
 
         this.draw();
+    }
+
+    // tooptip functions
+
+    /**
+     * Function when mouse is hovered over a rectangle, makes the tooltip appear
+     * and sets the tooltip message
+     * @param {unknown} _  event parameter, not used
+     * @param {Object} d datum for a single rectangle
+     */
+    protected tooltipHover(
+        _: unknown,
+        d: {
+        [index: string]: number | Date;
+        date: Date;
+        sum: number;
+    }): void {
+        this.tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        let message = `${this.longDateFormat(d["date"])}<br>
+        ${I18n.t("js.submissions")} :<br>${d["sum"]} ${I18n.t("js.total")}`;
+        this.statusOrder.forEach(s => {
+            if (d[s]) {
+                message += `<br>${d[s]} ${s}`;
+            }
+        });
+        this.tooltip.html(message);
+    }
+
+    /**
+     * Function when mouse is moved over rectangle, sets the tooltip position
+     * @param {*} e event parameter, used to determine mouse position
+     */
+    private tooltipMove(e: unknown): void {
+        const bbox = this.tooltip.node().getBoundingClientRect();
+        this.tooltip
+            .style(
+                "left",
+                `${d3.pointer(e, this.svg.node())[0]-bbox.width * 1.1}px`
+            )
+            .style(
+                "top",
+                `${d3.pointer(e, this.svg.node())[1]-bbox.height*1.1}px`
+            );
+    }
+
+    /**
+     * Function when mouse is moved out of a rectangle, makes tooltip disappear.
+     */
+    private tooltipOut(): void {
+        this.tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
     }
 }

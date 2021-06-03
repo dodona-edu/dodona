@@ -20,11 +20,11 @@
         <div class="card-tab">
           <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_path %>" role="tablist">
             <% if @show_institution_courses %>
-              <li role="presentation"><a href="#institution">Institution courses</a></li>
+              <li role="presentation"><a href="#institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
             <% end %>
-            <li role="presentation"><a href="#all">All courses</a></li>
+            <li role="presentation"><a href="#all"><%= t '.all_courses' %></a></li>
             <% if @show_my_courses %>
-              <li role="presentation"><a href="#my">My courses</a></li>
+              <li role="presentation"><a href="#my"><%= t '.my_courses' %></a></li>
             <% end %>
           </ul>
         </div>

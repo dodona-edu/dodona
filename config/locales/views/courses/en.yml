@@ -52,6 +52,9 @@ en:
       title: All courses
       users: "Users"
       exercises: "Exercises"
+      institution_courses: "%{institution} courses"
+      all_courses: "All courses"
+      my_courses: "My courses"
     new:
       title: Create course
       empty: "Empty course"

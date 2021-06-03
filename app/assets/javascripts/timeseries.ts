@@ -112,11 +112,11 @@ export class TimeseriesGraph extends SeriesGraph {
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
-                    .classed("empty", d => d["sum"] === 0)
+                    .classed("empty", d => d.sum === 0)
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d["date"])-rectSize/2)
+                    .attr("x", d => this.x(d.date)-rectSize/2)
                     .attr("y", this.y(exId)-rectSize/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
@@ -125,7 +125,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("width", rectSize)
                     .attr("height", rectSize)
                     .transition().duration(500)
-                    .attr("fill", d => d["sum"] === 0 ? "" : this.color(d["sum"]));
+                    .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
                 rect.exit()
                     .remove();
             });
@@ -139,7 +139,7 @@ export class TimeseriesGraph extends SeriesGraph {
      * @param {Object} raw The unprocessed return value of the fetch
      */
     protected processData(
-        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
     ): void {
         const data = raw.data as Record<
             string,
@@ -150,16 +150,16 @@ export class TimeseriesGraph extends SeriesGraph {
 
         Object.entries(data).forEach(entry => { // parse dates
             entry[1].forEach(d => {
-                d["date"] = new Date(d["date"]);
-                d["date"].setHours(0, 0, 0, 0);
+                d.date = new Date(d.date);
+                d.date.setHours(0, 0, 0, 0);
             });
         });
 
         this.minDate = new Date(d3.min(Object.values(data),
-            records => d3.min(records, d => d["date"] as Date)));
+            records => d3.min(records, d => d.date as Date)));
         this.minDate.setHours(0, 0, 0, 0); // set start to midnight
         this.maxDate = new Date(d3.max(Object.values(data),
-            records => d3.max(records, d => d["date"] as Date)));
+            records => d3.max(records, d => d.date as Date)));
         this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
@@ -171,7 +171,7 @@ export class TimeseriesGraph extends SeriesGraph {
 
             // bin per day
             const binned = d3.bin()
-                .value(d => d["date"].getTime())
+                .value(d => d.date.getTime())
                 .thresholds(
                     d3.scaleTime()
                         .domain([this.minDate.getTime(), this.maxDate.getTime()])
@@ -188,9 +188,9 @@ export class TimeseriesGraph extends SeriesGraph {
                 const sum = d3.sum(bin, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
                 this.data[exId].push(bin.reduce((acc, r) => {
-                    acc["date"] = r["date"];
-                    acc["sum"] = sum;
-                    acc[r["status"]] = r["count"];
+                    acc.date = r.date;
+                    acc.sum = sum;
+                    acc[r.status] = r.count;
                     return acc;
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
@@ -218,8 +218,8 @@ export class TimeseriesGraph extends SeriesGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        let message = `${this.longDateFormat(d["date"])}<br>
-        ${I18n.t("js.submissions")} :<br>${d["sum"]} ${I18n.t("js.total")}`;
+        let message = `${this.longDateFormat(d.date)}<br>
+        ${I18n.t("js.submissions")} :<br>${d.sum} ${I18n.t("js.total")}`;
         this.statusOrder.forEach(s => {
             if (d[s]) {
                 message += `<br>${d[s]} ${s}`;

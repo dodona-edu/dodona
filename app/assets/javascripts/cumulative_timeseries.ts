@@ -140,7 +140,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {Object} raw The unprocessed return value of the fetch
      */
     protected processData(
-        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
     ): void {
         const data = raw.data as Record<string, Date[]>;
         this.data = {};
@@ -158,7 +158,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.dateArray = d3.timeDays(minDate, maxDate);
 
-        this.maxSum = raw["students"] ? raw["students"] as number : 0; // max value
+        this.maxSum = raw.students ?? 0; // max value
         // bin data per day (for each exercise)
         Object.entries(data).forEach(([exId, records]) => {
             const binned = d3.bin()

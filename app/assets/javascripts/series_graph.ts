@@ -56,7 +56,7 @@ export abstract class SeriesGraph {
     // abstract functions
     protected abstract draw(): void;
     protected abstract processData(
-        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
     ): void;
 
     /**

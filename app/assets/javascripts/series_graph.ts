@@ -20,8 +20,8 @@ export abstract class SeriesGraph {
     protected width = 0; // calculated once
     protected height = 0; // can change depending on number of exercises
 
-    protected exOrder: string[]; // array of exId's (in correct order)
-    protected exMap: Record<string, string>; // map from exId -> exName
+    protected exOrder: string[] = []; // array of exId's (in correct order)
+    protected exMap: Record<string, string> = {}; // map from exId -> exName
 
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
@@ -55,7 +55,9 @@ export abstract class SeriesGraph {
 
     // abstract functions
     protected abstract draw(): void;
-    protected abstract processData(raw: Record<string, unknown>): void;
+    protected abstract processData(
+        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+    ): void;
 
     /**
      * Breaks up y-axis labels into multiple lines when they get too long
@@ -113,6 +115,23 @@ export abstract class SeriesGraph {
     }
 
     /**
+     * Converts the tuples of exercises into an list of ids indicating the order
+     * and a map form id to title
+     * ids from the list are only added if they appear in the data
+     * @param {[string, string][]} exercises The list of exercise tuples [id, title]
+     * @param {string} keys The ids present in the data
+     */
+    protected parseExercises(exercises: [number, string][], keys: string[]): void {
+        exercises.forEach(([id, title]) => {
+            // only add if the key is present in the data
+            if (keys.indexOf(String(id)) >= 0) {
+                this.exOrder.unshift(String(id));
+                this.exMap[id] = title;
+            }
+        });
+    }
+
+    /**
      * Displays an error message when there is not enough data
     */
     protected drawNoData(): void {
@@ -134,8 +153,7 @@ export abstract class SeriesGraph {
         if (!raw) {
             d3.json(url)
                 .then((r: Record<string, unknown>) => this.fetchData(url, r));
-        }
-        else if (raw["status"] == "not available yet") {
+        } else if (raw["status"] == "not available yet") {
             setTimeout(() => d3.json(url)
                 .then((r: Record<string, unknown>) => this.fetchData(url, r)), 1000);
             return;
@@ -145,7 +163,7 @@ export abstract class SeriesGraph {
             if (Object.keys(raw.data).length === 0) {
                 this.drawNoData();
             }
-            this.processData(raw);
+            this.processData(raw as {data: Record<string, unknown>, exercises: [string, string][]});
         }
     }
 }

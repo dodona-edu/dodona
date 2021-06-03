@@ -31,13 +31,14 @@ export class TimeseriesGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected draw(): void {
+        this.height = 75 * this.exOrder.length;
+        const innerHeight = this.height - this.margin.top - this.margin.bottom;
+        const innerWidth = this.width - this.margin.left - this.margin.right;
+
         const darkMode = window.dodona.darkMode;
         const emptyColor = darkMode ? "#37474F" : "white"; // no data in cell
         const lowColor = darkMode ? "#01579B" : "#E3F2FD"; // almost no data in cell
         const highColor = darkMode ? "#039BE5" : "#0D47A1"; // a lot of data in cell
-        this.height = 75 * Object.keys(this.data).length;
-        const innerHeight = this.height - this.margin.top - this.margin.bottom;
-        const innerWidth = this.width - this.margin.left - this.margin.right;
 
         this.svg = this.container
             .style("height", `${this.height}px`)
@@ -137,21 +138,15 @@ export class TimeseriesGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {Object} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: Record<string, unknown>): void {
-        const data = raw.data as {
-            (exId: string): {date: (Date | string); status: string; count: number}[]
-        };
+    protected processData(
+        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+    ): void {
+        const data = raw.data as Record<
+            string,
+            {date: (Date | string); status: string; count: number}[]
+        >;
 
-        // extract id's and reverse order (since graphs are built bottom up)
-        this.exOrder = (raw.exercises as [string, string][]).map(ex => ex[0]).reverse();
-
-        // convert exercises into object to map id's to exercise names
-        this.exMap = (raw.exercises as [string, string][])
-            .reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
-
-        if (Object.keys(data).length === 0) {
-            this.drawNoData();
-        }
+        this.parseExercises(raw.exercises, Object.keys(data));
 
         Object.entries(data).forEach(entry => { // parse dates
             entry[1].forEach(d => {

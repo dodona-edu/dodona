@@ -41,6 +41,10 @@ export class CTimeseriesGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected draw(): void {
+        this.height = 75 * this.exOrder.length;
+        this.innerWidth = this.width - this.margin.left - this.margin.right;
+        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+
         const minDate = this.dateArray[0];
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
@@ -135,28 +139,17 @@ export class CTimeseriesGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {Object} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: Record<string, unknown>): void {
-        this.innerWidth = this.width - this.margin.left - this.margin.right;
-        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
-
-        const data = raw["data"] as Record<string, Date[]>;
+    protected processData(
+        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+    ): void {
+        const data = raw.data as Record<string, Date[]>;
         this.data = {};
 
-        // extract id's and reverse order (since graphs are built bottom up)
-        this.exOrder = (raw["exercises"] as [string, string][]).map(ex => ex[0]).reverse();
-
-        // convert exercises into object to map id's to exercise names
-        this.exMap = (raw["exercises"] as [string, string][])
-            .reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
-
-        this.height = 75 * Object.keys(raw.data).length;
+        this.parseExercises(raw.exercises, Object.keys(data));
 
         Object.entries(data).forEach(entry => { // parse dates
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
-
-
-        this.insertFakeData(data, raw.students);
 
         const minDate = new Date(d3.min(Object.values(data), records => d3.min(records)));
         minDate.setHours(0, 0, 0, 0); // set start to midnight
@@ -212,6 +205,8 @@ export class CTimeseriesGraph extends SeriesGraph {
             return { "date": a, "i": index-1 };
         }
     }
+
+    // tooltip functions
 
     /**
      * Initializes the tooltip elements along with the settings that never change
@@ -368,25 +363,5 @@ export class CTimeseriesGraph extends SeriesGraph {
             .text(ex => this.exMap[ex[0]])
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
-    }
-
-    insertFakeData(data, maxCount): void {
-        const end = new Date(d3.max(Object.values(data),
-            records => d3.max(records)));
-        const start = new Date(end);
-        start.setDate(start.getDate() - 14);
-        for (const exName of Object.keys(data)) {
-            let count = 0;
-            data[exName] = [];
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
-                const c = Math.round(Math.random()*5);
-                if (count + c <= maxCount) {
-                    count += c;
-                    for (let i = 0; i < c; i++) {
-                        data[exName].push(new Date(d));
-                    }
-                }
-            }
-        }
     }
 }

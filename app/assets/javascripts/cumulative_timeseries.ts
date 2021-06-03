@@ -35,9 +35,11 @@ export class CTimeseriesGraph extends SeriesGraph {
     private maxSum: number; // largest y-value = either subscribed students or max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
 
-    // draws the graph's svg (and other) elements on the screen
-    // No more data manipulation is done in this function
-    draw(): void {
+    /**
+    * draws the graph's svg (and other) elements on the screen
+    * No more data manipulation is done in this function
+    */
+    protected draw(): void {
         const minDate = this.dateArray[0];
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
@@ -256,11 +258,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         });
     }
 
-    // transforms the data into a form usable by the graph +
-    // calculates addinional data
-    // finishes by calling draw
-    // can be called recursively when a 'data not yet available' response is received
-    processData(raw: Record<string, unknown>): void {
+    /**
+     * transforms the data into a form usable by the graph +
+     * calculates addinional data
+     * finishes by calling draw
+     * can be called recursively when a 'data not yet available' response is received
+     * @param {Object} raw The unprocessed return value of the fetch
+     */
+    protected processData(raw: Record<string, unknown>): void {
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
@@ -307,8 +312,12 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.draw();
     }
 
-    // determine where to put tooltip line
-    bisect(mx: number): {"date": Date; "i": number} {
+    /**
+     * determine where to put tooltip line by 'injecting' the cursor position in the date array
+     * @param {number} mx The x position of the mouse cursor
+     * @return {Object} The index of the cursor in the date array + the date of that position
+     */
+    private bisect(mx: number): {"date": Date; "i": number} {
         const min = this.dateArray[0];
         const max = this.dateArray[this.dateArray.length -1];
         if (!this.dateArray) { // probably not necessary, but just to be safe
@@ -328,8 +337,10 @@ export class CTimeseriesGraph extends SeriesGraph {
         }
     }
 
-    // tooltip settings when mouse is not hovering over svg
-    tooltipNotFocused(): void {
+    /**
+     * tooltip settings when mouse is not hovering over svg
+    */
+    private tooltipNotFocused(): void {
         this.tooltipIndex = -1;
         const date = this.dateArray[this.dateArray.length-1];
         const last = this.dateArray.length-1;

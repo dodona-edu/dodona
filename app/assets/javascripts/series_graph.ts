@@ -25,6 +25,34 @@ export abstract class SeriesGraph {
 
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
+
+    /**
+     * Initializes the container for the graph +
+     * puts placeholder text when data isn't loaded +
+     * starts data loading (and transforming) procedure
+     * @param {string} url the url from which to fetch the data
+     * @param {string} containerId the id of the html element in which the svg can be displayed
+     */
+    constructor(url: string, containerId: string) {
+        this.selector = containerId;
+        this.container = d3.select(this.selector);
+
+        if (!this.height) {
+            this.height = this.container.node().getBoundingClientRect().height - 5;
+        }
+        this.container
+            .html("") // clean up possible previous visualisations
+            .style("height", `${this.height}px`)
+            .append("div")
+            .text(I18n.t("js.loading"))
+            .attr("class", "graph_placeholder");
+
+        this.width = (this.container.node() as Element).getBoundingClientRect().width;
+
+        d3.timeFormatDefaultLocale(this.d3Locale);
+        this.fetchData(url, undefined);
+    }
+
     // abstract functions
     protected abstract draw(): void;
     protected abstract processData(raw: Record<string, unknown>): void;
@@ -84,7 +112,9 @@ export abstract class SeriesGraph {
         });
     }
 
-    // Displays an error message when there is not enough data
+    /**
+     * Displays an error message when there is not enough data
+    */
     protected drawNoData(): void {
         d3.select(this.selector)
             .style("height", "50px")
@@ -93,6 +123,13 @@ export abstract class SeriesGraph {
             .attr("class", "graph_placeholder");
     }
 
+    /**
+     * Fetched the data from specified url
+     * If the data has a 'not available' status, wait a second and fetch again
+     * @param {string} url The url from which to fetch the data from
+     * @param {Object} raw The return value of the fetch
+     *  used to check if the data should be fetched again
+     */
     protected fetchData(url: string, raw: undefined | Record<string, unknown>): void {
         if (!raw) {
             d3.json(url)
@@ -110,28 +147,5 @@ export abstract class SeriesGraph {
             }
             this.processData(raw);
         }
-    }
-
-    // Initializes the container for the graph +
-    // puts placeholder text when data isn't loaded +
-    // starts data loading (and transforming) procedure
-    constructor(url: string, containerId: string) {
-        this.selector = containerId;
-        this.container = d3.select(this.selector);
-
-        if (!this.height) {
-            this.height = this.container.node().getBoundingClientRect().height - 5;
-        }
-        this.container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`)
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
-
-        this.width = (this.container.node() as Element).getBoundingClientRect().width;
-
-        d3.timeFormatDefaultLocale(this.d3Locale);
-        this.fetchData(url, undefined);
     }
 }

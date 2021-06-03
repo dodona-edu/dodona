@@ -36,9 +36,11 @@ export class ViolinGraph extends SeriesGraph {
     private maxCount = 0; // largest y-value
     private maxFreq = 0; // largest x-value
 
-    // draws the graph's svg (and other) elements on the screen
-    // No more data manipulation is done in this function
-    draw(): void {
+    /**
+    * draws the graph's svg (and other) elements on the screen
+    * No more data manipulation is done in this function
+    */
+    protected draw(): void {
         const min = d3.min(this.data, d => d3.min(d.counts));
         const max = d3.max(this.data, d => d3.max(d.counts));
         const xTicks = 10;
@@ -208,65 +210,15 @@ export class ViolinGraph extends SeriesGraph {
             .on("mouseout", () => this.svgMouseOut());
     }
 
-    svgMouseMove(e: any, graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>): void {
-        const pos = this.x.invert(d3.pointer(e, graph.node())[0]);
-        const i = Math.round(pos);
-        if (i !== this.tooltipIndex && i > 0 && this.x(i) <= this.innerWidth) {
-            this.tooltipIndex = i;
-            this.tooltipLine
-                .attr("opacity", 1)
-                .transition()
-                .duration(100)
-                .attr("x1", this.x(i))
-                .attr("x2", this.x(i));
-            // check if label doesn't go out of bounds
-            const labelMsg = `${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
-            const switchSides = this.x(i) +
-                this.fontSize/2*labelMsg.length +
-                5 > this.innerWidth;
-            this.tooltipLabel
-                .attr("opacity", 1)
-                .text(labelMsg)
-                .attr("text-anchor", switchSides ? "end" : "start")
-                .transition()
-                .duration(100)
-                .attr("x", switchSides ? this.x(i) - 10 : this.x(i) + 10);
-            this.tooltipDots
-                .attr("opacity", 1)
-                .transition()
-                .duration(100)
-                .attr("cx", this.x(i));
-            this.tooltipDotLabels
-                .attr("opacity", 1)
-                .text(d => {
-                    const freq = d["freq"][Math.max(0, i-1)].length;
-                    // check if plural is needed
-                    return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
-                })
-                .attr("text-anchor", switchSides ? "end" : "start")
-                .transition()
-                .duration(100)
-                .attr("x", switchSides ? this.x(i) - 5 : this.x(i)+5);
-        }
-    }
 
-    svgMouseOut(): void {
-        this.tooltipIndex = -1;
-        this.tooltipLine
-            .attr("opacity", 0);
-        this.tooltipLabel
-            .attr("opacity", 0);
-        this.tooltipDots
-            .attr("opacity", 0);
-        this.tooltipDotLabels
-            .attr("opacity", 0);
-    }
-
-    // transforms the data into a form usable by the graph +
-    // calculates addinional data
-    // finishes by calling draw
-    // can be called recursively when a 'data not yet available' response is received
-    processData(raw: Record<string, unknown>): void {
+    /**
+     * transforms the data into a form usable by the graph +
+     * calculates addinional data
+     * finishes by calling draw
+     * can be called recursively when a 'data not yet available' response is received
+     * @param {Object} raw The unprocessed return value of the fetch
+     */
+    protected processData(raw: Record<string, unknown>): void {
         this.height = 75 * Object.keys(raw.data).length;
 
         // extract id's and reverse order (since graphs are built bottom up)
@@ -310,5 +262,71 @@ export class ViolinGraph extends SeriesGraph {
         });
 
         this.draw();
+    }
+
+    /**
+     * Function when mouse is moved over the svg
+     * moves the tooltip line and sets the tooltip labels
+     * @param {unknown} e  event parameter, not used
+     * @param {d3.Selection} graph The graph selection group
+     */
+    private svgMouseMove(
+        e: unknown, graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
+    ): void {
+        const pos = this.x.invert(d3.pointer(e, graph.node())[0]);
+        const i = Math.round(pos);
+        if (i !== this.tooltipIndex && i > 0 && this.x(i) <= this.innerWidth) {
+            this.tooltipIndex = i;
+            this.tooltipLine
+                .attr("opacity", 1)
+                .transition()
+                .duration(100)
+                .attr("x1", this.x(i))
+                .attr("x2", this.x(i));
+            // check if label doesn't go out of bounds
+            const labelMsg = `${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
+            const switchSides = this.x(i) +
+                this.fontSize/2*labelMsg.length +
+                5 > this.innerWidth;
+            this.tooltipLabel
+                .attr("opacity", 1)
+                .text(labelMsg)
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .transition()
+                .duration(100)
+                .attr("x", switchSides ? this.x(i) - 10 : this.x(i) + 10);
+            this.tooltipDots
+                .attr("opacity", 1)
+                .transition()
+                .duration(100)
+                .attr("cx", this.x(i));
+            this.tooltipDotLabels
+                .attr("opacity", 1)
+                .text(d => {
+                    const freq = d["freq"][Math.max(0, i-1)].length;
+                    // check if plural is needed
+                    return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
+                })
+                .attr("text-anchor", switchSides ? "end" : "start")
+                .transition()
+                .duration(100)
+                .attr("x", switchSides ? this.x(i) - 5 : this.x(i)+5);
+        }
+    }
+
+    /**
+     * Function when mouse is moved out of the svg
+     * makes everything involving the tooltip disappear
+     */
+    private svgMouseOut(): void {
+        this.tooltipIndex = -1;
+        this.tooltipLine
+            .attr("opacity", 0);
+        this.tooltipLabel
+            .attr("opacity", 0);
+        this.tooltipDots
+            .attr("opacity", 0);
+        this.tooltipDotLabels
+            .attr("opacity", 0);
     }
 }

@@ -27,8 +27,8 @@ export class TimeseriesGraph extends SeriesGraph {
     private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
 
     /**
-     * initializes svg elements. Should only be called once
-     * No more data manipulation is done in this function
+    * draws the graph's svg (and other) elements on the screen
+    * No more data manipulation is done in this function
     */
     protected draw(): void {
         const darkMode = window.dodona.darkMode;
@@ -129,10 +129,14 @@ export class TimeseriesGraph extends SeriesGraph {
                     .remove();
             });
     }
-    // transforms the data into a form usable by the graph +
-    // calculates addinional data
-    // finishes by calling draw
-    // can be called recursively when a 'data not yet available' response is received
+
+    /**
+     * transforms the data into a form usable by the graph +
+     * calculates addinional data
+     * finishes by calling draw
+     * can be called recursively when a 'data not yet available' response is received
+     * @param {Object} raw The unprocessed return value of the fetch
+     */
     protected processData(raw: Record<string, unknown>): void {
         const data = raw.data as {
             (exId: string): {date: (Date | string); status: string; count: number}[]
@@ -211,7 +215,7 @@ export class TimeseriesGraph extends SeriesGraph {
      * @param {unknown} _  event parameter, not used
      * @param {Object} d datum for a single rectangle
      */
-    protected tooltipHover(
+    private tooltipHover(
         _: unknown,
         d: {
         [index: string]: number | Date;

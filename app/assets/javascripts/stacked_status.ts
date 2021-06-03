@@ -14,9 +14,11 @@ export class StackedStatusGraph extends SeriesGraph {
     private data: { "exercise_id": string; "status": string; "cSum": number; "count": number }[];
     private maxSum: Record<string, number> // total number of submissions per exercise
 
-    // draws the graph's svg (and other) elements on the screen
-    // No more data manipulation is done in this function
-    draw(): void {
+    /**
+    * draws the graph's svg (and other) elements on the screen
+    * No more data manipulation is done in this function
+    */
+    protected draw(): void {
         const darkMode = window.dodona.darkMode;
         const emptyColor = darkMode ? "#37474F" : "white";
         const innerWidth = this.width - this.margin.left - this.margin.right;
@@ -201,11 +203,14 @@ export class StackedStatusGraph extends SeriesGraph {
         }
     }
 
-    // transforms the data into a form usable by the graph +
-    // calculates addinional data
-    // finishes by calling draw
-    // can be called recursively when a 'data not yet available' response is received
-    processData(raw: Record<string, unknown>): void {
+    /**
+     * transforms the data into a form usable by the graph +
+     * calculates addinional data
+     * finishes by calling draw
+     * can be called recursively when a 'data not yet available' response is received
+     * @param {Object} raw The unprocessed return value of the fetch
+     */
+    protected processData(raw: Record<string, unknown>): void {
         const data = raw.data as Record<string, Record<string, number>>;
 
         // extract id's and reverse order (since graphs are built bottom up)

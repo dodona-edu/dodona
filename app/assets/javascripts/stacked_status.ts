@@ -19,10 +19,11 @@ export class StackedStatusGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected draw(): void {
-        const darkMode = window.dodona.darkMode;
-        const emptyColor = darkMode ? "#37474F" : "white";
+        this.height = 75 * this.exOrder.length;
         const innerWidth = this.width - this.margin.left - this.margin.right;
         const innerHeight = this.height - this.margin.top - this.margin.bottom;
+        const darkMode = window.dodona.darkMode;
+        const emptyColor = darkMode ? "#37474F" : "white";
 
         const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
@@ -210,17 +211,12 @@ export class StackedStatusGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {Object} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: Record<string, unknown>): void {
+    protected processData(
+        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+    ): void {
         const data = raw.data as Record<string, Record<string, number>>;
 
-        // extract id's and reverse order (since graphs are built bottom up)
-        this.exOrder = (raw.exercises as [string, string][]).map(ex => ex[0]).reverse();
-
-        // convert exercises into object to map id's to exercise names
-        this.exMap = (raw.exercises as [string, string][])
-            .reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
-
-        this.height = 75 * Object.keys(data).length;
+        this.parseExercises(raw.exercises, Object.keys(data));
 
         this.maxSum = {};
         this.data = [];

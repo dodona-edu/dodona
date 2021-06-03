@@ -41,12 +41,14 @@ export class ViolinGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected draw(): void {
+        console.log(this.exOrder, this.exOrder.length);
+        this.height = 75 * this.exOrder.length;
+        this.innerWidth = this.width - this.margin.left - this.margin.right;
+        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+
         const min = d3.min(this.data, d => d3.min(d.counts));
         const max = d3.max(this.data, d => d3.max(d.counts));
         const xTicks = 10;
-
-        this.innerWidth = this.width - this.margin.left - this.margin.right;
-        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
         const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
         const svg = this.container
@@ -218,15 +220,10 @@ export class ViolinGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {Object} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: Record<string, unknown>): void {
-        this.height = 75 * Object.keys(raw.data).length;
-
-        // extract id's and reverse order (since graphs are built bottom up)
-        this.exOrder = (raw.exercises as [string, string][]).map(ex => ex[0]).reverse();
-
-        // convert exercises into object to map id's to exercise names
-        this.exMap = (raw.exercises as [string, string][])
-            .reduce((map, [id, name]) => ({ ...map, [id]: name }), {});
+    protected processData(
+        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+    ): void {
+        this.parseExercises(raw.exercises, Object.keys(raw.data));
 
         // transform data into array of records for easier binning
         this.data = Object.keys(raw.data).map(k => ({

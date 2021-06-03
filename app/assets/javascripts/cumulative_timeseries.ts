@@ -44,14 +44,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         const minDate = this.dateArray[0];
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
-        const svg = d3.select(this.selector)
+        this.svg = d3.select(this.selector)
             .style("height", `${this.height}px`)
             .append("svg")
             .attr("width", this.width)
             .attr("height", this.height);
 
         // position graph
-        this.graph = svg
+        this.graph = this.svg
             .append("g")
             .attr("transform",
                 "translate(" + this.margin.left + "," + this.margin.top + ")");
@@ -95,46 +95,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // Legend settings
         // -----------------------------------------------------------------------------------------
-        // calculate legend element offsets
-        const exPosition = [];
-        let pos = 0;
-        this.exOrder.forEach(ex => {
-            exPosition.push([ex, pos]);
-            // rect size (15) + 5 padding + 20 inter-group padding + text length
-            pos += 40 + this.fontSize/2*this.exMap[ex].length;
-        });
-        const legend = svg
-            .append("g")
-            .attr("class", "legend")
-            .attr(
-                "transform",
-                `translate(${this.width/2-pos/2}, ${this.height-this.margin.bottom/2})`
-            )
-            .selectAll("g")
-            .data(exPosition)
-            .enter()
-            .append("g")
-            .attr("transform", d => `translate(${d[1]}, 0)`);
-
-        // add legend colors dots
-
-        legend
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill", ex => this.color(ex[0]) as string);
-
-        // add legend text
-        legend
-            .append("text")
-            .attr("x", 20)
-            .attr("y", 12)
-            .attr("text-anchor", "start")
-            .text(ex => this.exMap[ex[0]])
-            .attr("fill", "currentColor")
-            .style("font-size", `${this.fontSize}px`);
+        this.legendInit();
         // -----------------------------------------------------------------------------------------
 
         // add lines
@@ -160,9 +121,9 @@ export class CTimeseriesGraph extends SeriesGraph {
                 );
         }
 
-        svg.on("mousemove", this.tooltipMove);
+        this.svg.on("mousemove", e => this.tooltipMove(e));
 
-        svg.on("mouseleave", () => {
+        this.svg.on("mouseleave", () => {
             this.tooltipDefault();
         });
     }
@@ -194,6 +155,9 @@ export class CTimeseriesGraph extends SeriesGraph {
             data[entry[0]] = entry[1].map(d => new Date(d));
         });
 
+
+        this.insertFakeData(data, raw.students);
+
         const minDate = new Date(d3.min(Object.values(data), records => d3.min(records)));
         minDate.setHours(0, 0, 0, 0); // set start to midnight
         const maxDate = new Date(d3.max(Object.values(data), records => d3.max(records)));
@@ -220,6 +184,9 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.draw();
     }
+
+
+    // utility functions
 
     /**
      * determine where to put tooltip line by 'injecting' the cursor position in the date array
@@ -255,12 +222,12 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("y2", this.innerHeight)
             .attr("pointer-events", "none")
             .attr("stroke", "currentColor")
-            .style("width", 40)
-            .attr("fill", "currentColor")
-            .attr("font-size", `${this.fontSize}px`);
+            .style("width", 40);
         this.tooltipLabel = this.graph.append("text")
             .attr("y", 0)
-            .attr("dominant-baseline", "hanging");
+            .attr("dominant-baseline", "hanging")
+            .attr("fill", "currentColor")
+            .attr("font-size", `${this.fontSize}px`);
         this.tooltipDots = this.graph.selectAll(".tooltipDot")
             .data(Object.entries(this.data), d => d[0])
             .join("circle")
@@ -287,7 +254,6 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("x1", this.x(date))
             .attr("x2", this.x(date))
             .attr("opacity", 0.6);
-
         this.tooltipLabel
             .attr("x", this.x(date) - 5)
             .attr("text-anchor", "end")
@@ -359,6 +325,68 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .duration(100)
                 .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
                 .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
+        }
+    }
+
+    private legendInit(): void {
+        // calculate legend element offsets
+        const exPosition = [];
+        let pos = 0;
+        this.exOrder.forEach(ex => {
+            exPosition.push([ex, pos]);
+            // rect size (15) + 5 padding + 20 inter-group padding + text length
+            pos += 40 + this.fontSize/2*this.exMap[ex].length;
+        });
+        const legend = this.svg
+            .append("g")
+            .attr("class", "legend")
+            .attr(
+                "transform",
+                `translate(${this.width/2-pos/2}, ${this.height-this.margin.bottom/2})`
+            )
+            .selectAll("g")
+            .data(exPosition)
+            .enter()
+            .append("g")
+            .attr("transform", d => `translate(${d[1]}, 0)`);
+
+        // add legend colors dots
+        legend
+            .append("rect")
+            .attr("x", 0)
+            .attr("y", 0)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", ex => this.color(ex[0]) as string);
+
+        // add legend text
+        legend
+            .append("text")
+            .attr("x", 20)
+            .attr("y", 12)
+            .attr("text-anchor", "start")
+            .text(ex => this.exMap[ex[0]])
+            .attr("fill", "currentColor")
+            .style("font-size", `${this.fontSize}px`);
+    }
+
+    insertFakeData(data, maxCount): void {
+        const end = new Date(d3.max(Object.values(data),
+            records => d3.max(records)));
+        const start = new Date(end);
+        start.setDate(start.getDate() - 14);
+        for (const exName of Object.keys(data)) {
+            let count = 0;
+            data[exName] = [];
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
+                const c = Math.round(Math.random()*5);
+                if (count + c <= maxCount) {
+                    count += c;
+                    for (let i = 0; i < c; i++) {
+                        data[exName].push(new Date(d));
+                    }
+                }
+            }
         }
     }
 }

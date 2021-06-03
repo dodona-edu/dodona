@@ -51,7 +51,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("height", this.height);
 
         // position graph
-        const graph = svg
+        this.graph = svg
             .append("g")
             .attr("transform",
                 "translate(" + this.margin.left + "," + this.margin.top + ")");
@@ -65,7 +65,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .range([this.innerHeight, 0]);
 
         // y axis
-        graph.append("g")
+        this.graph.append("g")
             .call(d3.axisLeft(this.y).ticks(5, ".0%"));
 
         // X scale
@@ -79,7 +79,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .domain(this.exOrder);
 
         // add x-axis
-        graph.append("g")
+        this.graph.append("g")
             .attr("transform", `translate(0, ${this.y(0)})`)
             .call(
                 d3.axisBottom(this.x)
@@ -90,17 +90,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // tooltip initialisation
         // -----------------------------------------------------------------------------------------
-        this.tooltipLine = graph.append("line");
-        this.tooltipLabel = graph.append("text");
-        this.tooltipDots = graph.selectAll(".tooltipDot")
-            .data(Object.entries(this.data), d => d[0])
-            .join("circle")
-            .attr("class", "tooltipDot");
-        this.tooltipDotLabels = graph.selectAll(".tooltipDotlabel")
-            .data(Object.entries(this.data), d => d[0])
-            .join("text")
-            .attr("class", "tooltipDotlabel");
-        this.tooltipDefault();
+        this.tooltipInit();
         // -----------------------------------------------------------------------------------------
 
         // Legend settings
@@ -149,7 +139,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // add lines
         for (const exId of Object.keys(this.data)) {
-            const exGroup = graph.append("g");
+            const exGroup = this.graph.append("g");
             const bins = this.data[exId];
             exGroup.selectAll("path")
                 .data([bins])
@@ -170,56 +160,7 @@ export class CTimeseriesGraph extends SeriesGraph {
                 );
         }
 
-        svg.on("mousemove", e => {
-            if (!this.dateArray) {
-                return;
-            }
-            // find insert point in array
-            const { date, i } = this.bisect(d3.pointer(e, graph.node())[0]);
-            if (i !== this.tooltipIndex) { // check if tooltip position changed
-                this.tooltipIndex = i;
-                this.tooltipLine
-                    .attr("opacity", 1)
-                    .transition()
-                    .duration(100)
-                    .attr("x1", this.x(date))
-                    .attr("x2", this.x(date));
-
-                const labelMsg = this.longDateFormat(date);
-                // check if label won't go out of bounds
-                const switchLabel = this.x(date) -
-                    this.fontSize/2*labelMsg.length -
-                    5 < 0;
-                // use main label as reference for switch condition
-                const switchDots = this.x(date) +
-                this.fontSize/2*labelMsg.length +
-                5 > this.innerWidth;
-                this.tooltipLabel
-                    .attr("opacity", 1)
-                    .text(this.longDateFormat(date))
-                    .attr("text-anchor", switchLabel ? "start" : "end")
-                    .transition()
-                    .duration(100)
-                    .attr("x", switchLabel ? this.x(date) + 5 : this.x(date) - 5);
-                this.tooltipDots
-                    .attr("opacity", 1)
-                    .transition()
-                    .duration(100)
-                    .attr("cx", this.x(date))
-                    .attr("cy", d => this.y(d[1][i][1]/this.maxSum));
-                this.tooltipDotLabels
-                    .attr("opacity", 1)
-                    .text(
-                        d => `${Math.round(d[1][i][1]/this.maxSum*10000)/100}% 
-                        (${d[1][i][1]}/${this.maxSum})`
-                    )
-                    .attr("text-anchor", switchDots ? "end" : "start")
-                    .transition()
-                    .duration(100)
-                    .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
-                    .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
-            }
-        });
+        svg.on("mousemove", this.tooltipMove);
 
         svg.on("mouseleave", () => {
             this.tooltipDefault();
@@ -306,6 +247,36 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     /**
+     * Initializes the tooltip elements along with the settings that never change
+     */
+    private tooltipInit(): void {
+        this.tooltipLine = this.graph.append("line")
+            .attr("y1", 0)
+            .attr("y2", this.innerHeight)
+            .attr("pointer-events", "none")
+            .attr("stroke", "currentColor")
+            .style("width", 40)
+            .attr("fill", "currentColor")
+            .attr("font-size", `${this.fontSize}px`);
+        this.tooltipLabel = this.graph.append("text")
+            .attr("y", 0)
+            .attr("dominant-baseline", "hanging");
+        this.tooltipDots = this.graph.selectAll(".tooltipDot")
+            .data(Object.entries(this.data), d => d[0])
+            .join("circle")
+            .attr("class", "tooltipDot")
+            .attr("r", 4)
+            .style("fill", d => this.color(d[0]) as string);
+        this.tooltipDotLabels = this.graph.selectAll(".tooltipDotlabel")
+            .data(Object.entries(this.data), d => d[0])
+            .join("text")
+            .attr("class", "tooltipDotlabel")
+            .attr("fill", d => this.color(d[0]) as string)
+            .attr("font-size", `${this.fontSize}px`);
+        this.tooltipDefault();
+    }
+
+    /**
      * tooltip settings when mouse is not hovering over svg
     */
     private tooltipDefault(): void {
@@ -313,40 +284,81 @@ export class CTimeseriesGraph extends SeriesGraph {
         const date = this.dateArray[this.dateArray.length-1];
         const last = this.dateArray.length-1;
         this.tooltipLine
-            .attr("y1", 0)
-            .attr("y2", this.innerHeight)
             .attr("x1", this.x(date))
             .attr("x2", this.x(date))
-            .attr("pointer-events", "none")
-            .attr("stroke", "currentColor")
-            .style("width", 40)
             .attr("opacity", 0.6);
 
         this.tooltipLabel
-            .attr("y", 0)
-            .attr("x", this.x(date) + 5)
+            .attr("x", this.x(date) - 5)
             .attr("text-anchor", "end")
-            .attr("dominant-baseline", "hanging")
-            .attr("text-anchor", "start")
-            .attr("fill", "currentColor")
-            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .text(this.longDateFormat(date));
         this.tooltipDots
-            .attr("r", 4)
-            .style("fill", d => this.color(d[0]) as string)
             .attr("opacity", 0.6)
             .attr("cx", this.x(date))
             .attr("cy", d => this.y(d[1][last][1]/this.maxSum));
         this.tooltipDotLabels
             .attr("x", this.x(date) + 5)
             .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5)
-            .attr("fill", d => this.color(d[0]) as string)
-            .attr("font-size", `${this.fontSize}px`)
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
                 d => `${Math.round(d[1][last][1]/this.maxSum*10000)/100}%`
             );
+    }
+
+    /**
+     * Function when mouse is moved over the svg, sets the tooltip position and labels
+     * @param {unknown} e event parameter, used to check mouse cursor position
+     */
+    private tooltipMove(e: unknown): void {
+        if (!this.dateArray) {
+            return;
+        }
+        // find insert point in array
+        const { date, i } = this.bisect(d3.pointer(e, this.graph.node())[0]);
+        if (i !== this.tooltipIndex) { // check if tooltip position changed
+            this.tooltipIndex = i;
+            this.tooltipLine
+                .attr("opacity", 1)
+                .transition()
+                .duration(100)
+                .attr("x1", this.x(date))
+                .attr("x2", this.x(date));
+
+            const labelMsg = this.longDateFormat(date);
+            // check if label won't go out of bounds
+            const switchLabel = this.x(date) -
+                this.fontSize/2*labelMsg.length -
+                5 < 0;
+            // use main label as reference for switch condition
+            const switchDots = this.x(date) +
+            this.fontSize/2*labelMsg.length +
+            5 > this.innerWidth;
+            this.tooltipLabel
+                .attr("opacity", 1)
+                .text(this.longDateFormat(date))
+                .attr("text-anchor", switchLabel ? "start" : "end")
+                .transition()
+                .duration(100)
+                .attr("x", switchLabel ? this.x(date) + 5 : this.x(date) - 5);
+            this.tooltipDots
+                .attr("opacity", 1)
+                .transition()
+                .duration(100)
+                .attr("cx", this.x(date))
+                .attr("cy", d => this.y(d[1][i][1]/this.maxSum));
+            this.tooltipDotLabels
+                .attr("opacity", 1)
+                .text(
+                    d => `${Math.round(d[1][i][1]/this.maxSum*10000)/100}% 
+                    (${d[1][i][1]}/${this.maxSum})`
+                )
+                .attr("text-anchor", switchDots ? "end" : "start")
+                .transition()
+                .duration(100)
+                .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
+                .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
+        }
     }
 }

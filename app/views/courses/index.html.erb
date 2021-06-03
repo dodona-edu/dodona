@@ -19,9 +19,13 @@
       <div class="card-supporting-text">
         <div class="card-tab">
           <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_path %>" role="tablist">
-            <li role="presentation"><a href="#institution">Institution courses</a></li>
+            <% if @show_institution_courses %>
+              <li role="presentation"><a href="#institution">Institution courses</a></li>
+            <% end %>
             <li role="presentation"><a href="#all">All courses</a></li>
-            <li role="presentation"><a href="#my">My courses</a></li>
+            <% if @show_my_courses %>
+              <li role="presentation"><a href="#my">My courses</a></li>
+            <% end %>
           </ul>
         </div>
         <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false } %>
@@ -32,6 +36,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCoursesListing("institution");
+    dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "all" %>');
   });
 </script>

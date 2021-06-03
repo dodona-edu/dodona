@@ -147,8 +147,9 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.parseExercises(raw.exercises, Object.keys(data));
 
-        Object.entries(data).forEach(entry => { // parse dates
-            data[entry[0]] = entry[1].map(d => new Date(d));
+        Object.entries(data).forEach(([id, submissions]) => {
+            // convert dates form strings to actual date objects
+            data[id] = submissions.map(d => new Date(d));
         });
 
         const minDate = new Date(d3.min(Object.values(data), records => d3.min(records)));

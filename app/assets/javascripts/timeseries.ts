@@ -106,9 +106,8 @@ export class TimeseriesGraph extends SeriesGraph {
             .append("g")
             .attr("class", "rectGroup")
             .each((exId: string, i: number, group) => {
-                const rect = d3.select(group[i]).selectAll("rect")
-                    .data(this.data[exId], d => d["date"].getTime());
-                rect
+                d3.select(group[i]).selectAll("rect")
+                    .data(this.data[exId], d => d["date"].getTime())
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
@@ -120,14 +119,12 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("y", this.y(exId)-rectSize/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
-                    .on("mouseout", this.tooltipOut)
+                    .on("mouseout", () => this.tooltipOut())
                     .transition().duration(500)
                     .attr("width", rectSize)
                     .attr("height", rectSize)
                     .transition().duration(500)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
-                rect.exit()
-                    .remove();
             });
     }
 
@@ -148,9 +145,11 @@ export class TimeseriesGraph extends SeriesGraph {
 
         this.parseExercises(raw.exercises, Object.keys(data));
 
-        Object.entries(data).forEach(entry => { // parse dates
+        Object.entries(data).forEach(entry => {
+            // convert dates form strings to actual date objects
             entry[1].forEach(d => {
                 d.date = new Date(d.date);
+                // make sure they are set to midnight
                 d.date.setHours(0, 0, 0, 0);
             });
         });

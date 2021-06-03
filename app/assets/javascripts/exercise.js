@@ -91,7 +91,7 @@ function initLightboxes() {
         $(this).data("image_index", index++);
     });
 
-    $(".activity-description img, a.dodona-lightbox").click(function () {
+    $(".activity-description img, a.dodona-lightbox").on("click", function () {
         const index = $(this).data("image_index");
         window.parentIFrame.sendMessage({
             type: "lightbox",
@@ -157,7 +157,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         initStrip();
 
         // submit source code if button is clicked on editor panel
-        $("#editor-process-btn").click(function () {
+        $("#editor-process-btn").on("click", function () {
             if (!loggedIn) return;
             logToGoogle("submission", "submitted");
             // test submitted source code
@@ -168,7 +168,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 .fail(submissionFailed);
         });
 
-        $("#submission-copy-btn").click(function () {
+        $("#submission-copy-btn").on("click", function () {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             $("#activity-handin-link").tab("show");

@@ -50,7 +50,7 @@ function initCourseMembers() {
             };
 
             // Switch to clicked tab
-            $("#user-tabs li a").click(function () {
+            $("#user-tabs li a").on("click", function () {
                 selectTab($(this));
             });
 
@@ -66,7 +66,7 @@ function initCourseMembers() {
     }
 
     function initLabelsEditModal() {
-        $("#labelsUploadButton").click(() => {
+        $("#labelsUploadButton").on("click", () => {
             const $modal = $("#labelsUploadModal");
             const $input = $("#newCsvFileInput")[0];
             const formData = new FormData();
@@ -137,7 +137,7 @@ function initCourseShow() {
                 offset: 90,
             }).activate();
         }
-        $(window).scroll(scroll);
+        $(window).on("scroll", scroll);
         scroll(); // Load series visible on pageload
     }
 
@@ -239,7 +239,7 @@ function initCourseNew() {
     const $formPanel = $("#form-panel");
 
     function initPanelLogic() {
-        $("#new-course").click(function () {
+        $("#new-course").on("click", function () {
             $choosePanel.addClass("hidden");
             $formPanel.find(".step-circle").html("2");
             $(this)
@@ -258,7 +258,7 @@ function initCourseNew() {
                 .then(resp => eval(resp));
         });
 
-        $("#copy-course").click(function () {
+        $("#copy-course").on("click", function () {
             $choosePanel.removeClass("hidden");
             $choosePanel.find(".panel-collapse").collapse("show");
             $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
@@ -272,7 +272,7 @@ function initCourseNew() {
     }
 
     function copyCoursesLoaded() {
-        $("[data-course_id]").click(function () {
+        $("[data-course_id]").on("click", function () {
             $(this)
                 .find("input[type=\"radio\"]")
                 .prop("checked", true);
@@ -292,7 +292,7 @@ function initCourseNew() {
                 .then(resp => eval(resp));
         });
 
-        $(".copy-course-row .nested-link").click(function (e) {
+        $(".copy-course-row .nested-link").on("click", function (e) {
             e.stopPropagation();
         });
     }

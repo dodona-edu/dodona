@@ -115,7 +115,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $queryFilter.typeahead("val"),
                 filterCollections
             );
-        $queryFilter.keyup(() => delay(window.dodona.index.doSearch, 300));
+        $queryFilter.on("keyup", () => delay(window.dodona.index.doSearch, 300));
         const param = getURLParameter(FILTER_PARAM);
         if (param !== "") {
             $queryFilter.typeahead("val", param);
@@ -212,7 +212,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                         .removeClass("mdi-checkbox-blank-outline")
                         .addClass("mdi-checkbox-marked-outline");
                 }
-                $link.click(() => {
+                $link.on("click", () => {
                     const child = $link.find("i");
                     if (child.hasClass("mdi-checkbox-blank-outline")) {
                         child.removeClass("mdi-checkbox-blank-outline")
@@ -244,12 +244,12 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
                 $link.appendTo($actions.find("ul"));
                 $link.wrap("<li></li>");
                 if (action.action) {
-                    $link.click(() => {
+                    $link.on("click", () => {
                         performAction(action);
                         return false;
                     });
                 } else if (action.js) {
-                    $link.click(() => {
+                    $link.on("click", () => {
                         eval(action.js);
                         return false;
                     });
@@ -421,7 +421,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
 function initFilterButtons() {
     function init() {
         const $filterButtons = $(FILTER_ICONS_CLASS);
-        $filterButtons.click(filter);
+        $filterButtons.on("click", filter);
         $filterButtons.tooltip(); // initialize the tooltips of the buttons
     }
 

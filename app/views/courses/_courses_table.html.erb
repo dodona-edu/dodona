@@ -16,7 +16,7 @@
     <% courses.each do |course| %>
       <tr>
         <td>
-          <% if current_user.admin_of?(course) %>
+          <% if current_user&.admin_of?(course) %>
             <span title='<%= t "pages.course_card.course-admin" %>'><i class='mdi mdi-school'></i></span>
           <% end %>
         </td>

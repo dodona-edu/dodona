@@ -117,8 +117,8 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("fill", emptyColor)
                     .attr("x", d => this.x(d["date"])-rectSize/2)
                     .attr("y", this.y(exId)-rectSize/2)
-                    .on("mouseover", this.tooltipHover)
-                    .on("mousemove", this.tooltipMove)
+                    .on("mouseover", (_e, d) => this.tooltipHover(d))
+                    .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", this.tooltipOut)
                     .transition().duration(500)
                     .attr("width", rectSize)
@@ -212,11 +212,9 @@ export class TimeseriesGraph extends SeriesGraph {
     /**
      * Function when mouse is hovered over a rectangle, makes the tooltip appear
      * and sets the tooltip message
-     * @param {unknown} _  event parameter, not used
      * @param {Object} d datum for a single rectangle
      */
     private tooltipHover(
-        _: unknown,
         d: {
         [index: string]: number | Date;
         date: Date;

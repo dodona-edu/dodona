@@ -22,7 +22,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             }
         });
 
-        $(".tutorlink").click(function () {
+        $(".tutorlink").on("click", function () {
             logToGoogle("tutor", "start", document.title);
             const exerciseId = $(".feedback-table").data("exercise_id");
             const $group = $(this).parents(".group");
@@ -51,7 +51,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
     }
 
     function initFileViewers(activityPath) {
-        $("a.file-link").click(function () {
+        $("a.file-link").on("click", function () {
             const fileName = $(this).text();
             const $tc = $(this).parents(".testcase.contains-file");
             if ($tc.length === 0) return;
@@ -112,7 +112,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
     function initFullScreen() {
         $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
 
-        $("#tutor #fullscreen-button").click(function () {
+        $("#tutor #fullscreen-button").on("click", function () {
             const elem = $("#tutor").get(0);
             if (fullScreenApi.isFullScreen()) {
                 $("#tutor .modal-dialog").removeClass("modal-fullscreen");

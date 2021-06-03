@@ -30,7 +30,7 @@ function initSeriesEdit() {
     }
 
     function initAddButtons() {
-        $("a.add-activity").click(function () {
+        $("a.add-activity").on("click", function () {
             const $addButton = $(this);
             const activityId = $addButton.data("activity_id");
             const activityName = $addButton.data("activity_name");
@@ -63,7 +63,7 @@ function initSeriesEdit() {
     }
 
     function initRemoveButtons() {
-        $("a.remove-activity").click(removeActivity);
+        $("a.remove-activity").on("click", removeActivity);
     }
 
     function removeActivity() {
@@ -84,7 +84,7 @@ function initSeriesEdit() {
 
     function activityAdded($row, $addButton) {
         new Toast(I18n.t("js.activity-added-success"));
-        $row.find("a.remove-activity").click(removeActivity);
+        $row.find("a.remove-activity").on("click", removeActivity);
         $row.removeClass("pending");
         $addButton.addClass("hidden");
     }

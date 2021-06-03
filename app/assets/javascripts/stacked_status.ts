@@ -212,7 +212,7 @@ export class StackedStatusGraph extends SeriesGraph {
      * @param {Object} raw The unprocessed return value of the fetch
      */
     protected processData(
-        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
     ): void {
         const data = raw.data as Record<string, Record<string, number>>;
 

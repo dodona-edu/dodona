@@ -41,7 +41,6 @@ export class ViolinGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected draw(): void {
-        console.log(this.exOrder, this.exOrder.length);
         this.height = 75 * this.exOrder.length;
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
@@ -221,15 +220,14 @@ export class ViolinGraph extends SeriesGraph {
      * @param {Object} raw The unprocessed return value of the fetch
      */
     protected processData(
-        raw: {data: Record<string, unknown>, exercises: [string, string][]}
+        raw: {data: Record<string, number[]>, exercises: [number, string][], students?: number}
     ): void {
         this.parseExercises(raw.exercises, Object.keys(raw.data));
-
         // transform data into array of records for easier binning
-        this.data = Object.keys(raw.data).map(k => ({
+        this.data = Object.keys(raw.data as Record<string, number[]>).map(k => ({
             "ex_id": k,
             // sort so median is calculated correctly
-            "counts": raw.data[k].map(x => parseInt(x)).sort((a: number, b: number) => a-b),
+            "counts": raw.data[k].sort((a: number, b: number) => a-b),
             "freq": [],
             "median": 0,
             "average": 0
@@ -248,11 +246,11 @@ export class ViolinGraph extends SeriesGraph {
         // bin each exercise per frequency
         this.data.forEach(ex => {
             // bin per amount of required submissions
-            ex["freq"] = d3.bin().thresholds(d3.range(1, this.maxCount+1))
+            ex.freq = d3.bin().thresholds(d3.range(1, this.maxCount+1))
                 .domain([1, this.maxCount])(ex.counts);
 
             // largest x-value
-            this.maxFreq = Math.max(this.maxFreq, d3.max(ex["freq"], bin => bin.length));
+            this.maxFreq = Math.max(this.maxFreq, d3.max(ex.freq, bin => bin.length));
 
             ex.median = d3.quantile(ex.counts, .5);
             ex.average = d3.mean(ex.counts);

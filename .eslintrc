@@ -1,10 +1,18 @@
 {
-  "plugins": ["jest"],
+  "plugins": [
+    "jest",
+    "no-jquery"
+  ],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
-  "extends": ["eslint:recommended", "google", "plugin:jest/recommended"],
+  "extends": [
+    "eslint:recommended",
+    "google",
+    "plugin:jest/recommended",
+    "plugin:no-jquery/all"
+  ],
   "rules": {
     "arrow-parens": ["error", "as-needed"],
     "comma-dangle": ["error", {

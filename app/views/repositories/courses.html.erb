@@ -14,7 +14,7 @@
         <h3><%= t(".courses") %></h3>
         <p class="h4-info-text"><%= t(".short_explanation", {name: @repository.name}) %></p>
         <div id="allowed-courses-table-wrapper" class="repository-courses-table-wrapper">
-          <%= render(partial: 'courses/courses_table', locals: {courses: @courses, show_delete_button: true}) %>
+          <%= render(partial: 'courses/repo_courses_table', locals: {courses: @courses, show_delete_button: true}) %>
         </div>
       </div>
       <div class="card-supporting-text">

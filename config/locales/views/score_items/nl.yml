@@ -22,6 +22,7 @@ nl:
     index:
       title: Scoreonderdelen aanpassen
       to_evaluation: Terug naar evaluatie
+      grading_beta_html: Scores geven aan oplossingen is nog in beta. Als je problemen tegenkomt, <a href="https://github.com/dodona-edu/dodona/issues">geef die dan aan</a>.
     new:
       title: Scoreonderdelen configureren
       choose: Wil je punten geven aan oplossingen in Dodona?

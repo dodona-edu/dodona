@@ -22,6 +22,7 @@ en:
     index:
       title: Edit score items
       to_evaluation: Back to evaluation
+      grading_beta_html: Grading submissions is still in beta. If you encounter any issues please <a href="https://github.com/dodona-edu/dodona/issues">report them</a>.
     new:
       title: Configure score items
       choose: Do you want to grade submissions in Dodona?

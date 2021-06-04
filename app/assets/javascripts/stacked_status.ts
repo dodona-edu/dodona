@@ -225,7 +225,8 @@ export class StackedStatusGraph extends SeriesGraph {
         Object.entries(data).forEach(([k, v]: [string, Record<string, number>]) => {
             let sum = 0;
             this.statusOrder.forEach(s => {
-                const c = v[s] ? v[s] : 0;
+                // check if status is present in the data
+                const c = v[s] ?? 0;
                 this.data.push({ "exercise_id": k, "status": s, "cSum": sum, "count": c });
                 sum += c;
             });

@@ -13,22 +13,22 @@ const graphFactory = {
 
 // function to (de)activate graph mode (switch out ex list for graphs)
 export function toggleStats(button, seriesId) {
+    console.log(seriesId);
     const card = document.getElementById(`series-card-${seriesId}`);
     const tabs = card.querySelector(".stats-tab");
     const content = card.querySelector(".series-content");
     const container = card.querySelector(".stats-container");
     const title = card.querySelector(".graph-title");
     const info = card.querySelector(".graph-info");
-    if (tabs.style.display == "none") {
+    console.log(tabs, tabs.style, tabs.style.display);
+    if (getComputedStyle(tabs).display == "none") {
         tabs.style.display = "flex";
         info.style.display = "inline";
         title.style.display = "flex";
         container.style.display = "flex";
         content.style.display = "none";
         setActiveToggle(
-            tabs.querySelector(".violin"), "violin",
-            seriesId, "/nl/stats/violin?series_id=", "#stats-container-"
-        );
+            tabs.querySelector(".violin"), "violin", seriesId, "#stats-container-");
         button.className = button.className.replace("chart-line", "format-list-bulleted");
     } else {
         tabs.style.display = "none";
@@ -43,13 +43,13 @@ export function toggleStats(button, seriesId) {
 
 // function to switch active graph
 // returns true if the active tab switched
-export function setActiveToggle(activeNode, title, seriesId, url, selector) {
+export function setActiveToggle(activeNode, title, seriesId, selector) {
     if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
         const card = document.getElementById(`series-card-${seriesId}`);
         const titleSpan = card.querySelector(".graph-title span");
         const info = card.querySelector(".graph-info");
 
-        graphFactory[title](url+seriesId, selector+seriesId);
+        graphFactory[title](seriesId, selector+seriesId).init();
         titleSpan.textContent = I18n.t(`js.${title}_title`);
         Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
             element.className = element.className.replace(" active", "");

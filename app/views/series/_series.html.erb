@@ -154,33 +154,29 @@
         </a>
       </div>
 
-      <div id="stats-tabs-<%= series.id %>" class="btn-group btn-toggle stats-tab">
+      <div id="stats-tab-<%= series.id %>" class="btn-group btn-toggle stats-tab">
         <button 
           class="btn annotation-toggle violin"
-          onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>,
-          '/nl/stats/violin?series_id=', '#stats-container-')"
+          onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>, '#stats-container-')"
         >
           <%= embedded_svg("violin.svg", {class: "mdi svg-icon-btn"}) %>
         </button>
         <button
           class="btn annotation-toggle stacked"
-          onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>,
-          '/nl/stats/stacked_status?series_id=', '#stats-container-')"
+          onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>, '#stats-container-')"
         >
           <%= embedded_svg("stacked-bar-chart.svg", {class: "mdi svg-icon-btn rotate"}) %>
         </button>
         <button
           class="btn annotation-toggle timeseries"
-          onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>,
-          '/nl/stats/timeseries?series_id=', '#stats-container-')"
+          onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>, '#stats-container-')"
         >
           <%= embedded_svg("heatmap.svg", {class: "mdi svg-icon-btn"}) %>
         
         </button>
         <button
           class="btn annotation-toggle ctimeseries"
-          onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>,
-          '/nl/stats/cumulative_timeseries?series_id=', '#stats-container-')"
+          onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>, '#stats-container-')"
         >
           <%= embedded_svg("stacked-line-chart.svg", {class: "mdi svg-icon-btn"}) %>
         </button>

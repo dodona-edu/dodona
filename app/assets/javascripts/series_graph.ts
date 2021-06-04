@@ -12,6 +12,9 @@ export abstract class SeriesGraph {
         "months": I18n.t("date.month_names").slice(1),
         "shortMonths": I18n.t("date.abbr_month_names").slice(1)
     }; // when defined as constant variable (outside class) it seems to always default to en
+    protected readonly baseUrl!: string;
+    private seriesId: string;
+
     protected selector = "";
     protected container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
     protected svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>; // the svg
@@ -30,10 +33,15 @@ export abstract class SeriesGraph {
      * Initializes the container for the graph +
      * puts placeholder text when data isn't loaded +
      * starts data loading (and transforming) procedure
-     * @param {string} url the url from which to fetch the data
+     * @param {string} seriesId The id of the series
      * @param {string} containerId the id of the html element in which the svg can be displayed
+     * @param {Object} data The data used to draw the graph (unprocessed) (optional)
      */
-    constructor(url: string, containerId: string) {
+    constructor(
+        seriesId: string,
+        containerId: string,
+        data?: {data: Record<string, unknown>, exercises: [number, string][], students?: number}) {
+        this.seriesId = seriesId;
         this.selector = containerId;
         this.container = d3.select(this.selector);
 
@@ -42,15 +50,15 @@ export abstract class SeriesGraph {
         }
         this.container
             .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`)
-            .append("div")
-            .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
+            .style("height", `${this.height}px`);
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 
         d3.timeFormatDefaultLocale(this.d3Locale);
-        this.fetchData(url, undefined);
+        if (data) {
+            this.processData(data);
+            this.draw();
+        }
     }
 
     // abstract functions
@@ -149,21 +157,46 @@ export abstract class SeriesGraph {
      * @param {Object} raw The return value of the fetch
      *  used to check if the data should be fetched again
      */
-    protected fetchData(url: string, raw: undefined | Record<string, unknown>): void {
-        if (!raw) {
-            d3.json(url)
-                .then((r: Record<string, unknown>) => this.fetchData(url, r));
-        } else if (raw["status"] == "not available yet") {
-            setTimeout(() => d3.json(url)
-                .then((r: Record<string, unknown>) => this.fetchData(url, r)), 1000);
-            return;
-        } else {
-            d3.select(`${this.selector} *`).remove();
-
-            if (Object.keys(raw.data).length === 0) {
-                this.drawNoData();
+    protected async fetchData(
+    ): Promise<{data: Record<string, unknown>, exercises: [number, string][]}> {
+        const url = this.baseUrl + this.seriesId;
+        let raw: Record<string, unknown> = undefined;
+        while (!raw || raw["status"] == "not available yet") {
+            raw = await d3.json(url);
+            if (raw["status"] == "not available yet") {
+                await new Promise(resolve => setTimeout(resolve, 1000));
             }
-            this.processData(raw as {data: Record<string, unknown>, exercises: [string, string][]});
         }
+        return raw as {data: Record<string, unknown>, exercises: [number, string][]};
+    }
+
+    /**
+     * Fetches and processes data
+     */
+    init(): void {
+        // add loading placeholder
+        this.container
+            .append("div")
+            .text(I18n.t("js.loading"))
+            .attr("class", "graph_placeholder");
+
+        // fetch data
+        this.fetchData()
+            .then((r: {
+                data: Record<string, unknown>,
+                exercises: [number, string][],
+                students?: number
+            }) => {
+                // once fetched remove placeholder
+                d3.select(`${this.selector} *`).remove();
+
+                if (Object.keys(r.data).length === 0) {
+                    this.drawNoData();
+                }
+                // next process the data
+                this.processData(r);
+                // next draw the graph
+                this.draw();
+            });
     }
 }

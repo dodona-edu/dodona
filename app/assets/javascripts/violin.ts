@@ -3,6 +3,7 @@ import { SeriesGraph } from "series_graph";
 
 
 export class ViolinGraph extends SeriesGraph {
+    protected readonly baseUrl = "/nl/stats/violin?series_id=";
     private readonly margin = { top: 20, right: 160, bottom: 40, left: 125 };
     private innerWidth = 0;
     private innerHeight = 0;
@@ -255,8 +256,6 @@ export class ViolinGraph extends SeriesGraph {
             ex.median = d3.quantile(ex.counts, .5);
             ex.average = d3.mean(ex.counts);
         });
-
-        this.draw();
     }
 
     /**

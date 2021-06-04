@@ -2,6 +2,7 @@ import * as d3 from "d3";
 import { SeriesGraph } from "series_graph";
 
 export class StackedStatusGraph extends SeriesGraph {
+    protected readonly baseUrl = "/nl/stats/stacked_status?series_id=";
     private readonly margin = { top: 20, right: 150, bottom: 40, left: 105 };
     private readonly fontSize = 12;
 
@@ -230,7 +231,5 @@ export class StackedStatusGraph extends SeriesGraph {
             });
             this.maxSum[k] = sum;
         });
-
-        this.draw();
     }
 }

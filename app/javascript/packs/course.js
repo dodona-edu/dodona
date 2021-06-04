@@ -4,6 +4,7 @@ import {
     initCourseForm,
     initCourseNew,
     initCourseShow,
+    initCoursesListing,
     loadUsers,
 } from "course.js";
 
@@ -18,6 +19,7 @@ window.dodona.initCourseForm = initCourseForm;
 window.dodona.initCourseNew = initCourseNew;
 window.dodona.initCourseShow = initCourseShow;
 window.dodona.initCourseMembers = initCourseMembers;
+window.dodona.initCoursesListing = initCoursesListing;
 window.dodona.loadUsers = loadUsers;
 
 window.dodona.questionTable = RefreshingQuestionTable;

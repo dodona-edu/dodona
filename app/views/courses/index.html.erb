@@ -1,4 +1,6 @@
-<% filter_institutions = current_user&.institution.present? && current_user&.institution.courses.any? %>
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'course' %>
+<% end %>
 <div class="row">
   <div class="col-12">
     <div class="page-subtitle">
@@ -14,20 +16,26 @@
       </div>
     </div>
     <div class="card course-search">
-      <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: !filter_institutions} %>
-    </div>
-    <div id="grouped-course-cards-wrapper">
+      <div class="card-supporting-text">
+        <div class="card-tab">
+          <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_path %>" role="tablist">
+            <% if @show_institution_courses %>
+              <li role="presentation"><a href="#institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
+            <% end %>
+            <li role="presentation"><a href="#all"><%= t '.all_courses' %></a></li>
+            <% if @show_my_courses %>
+              <li role="presentation"><a href="#my"><%= t '.my_courses' %></a></li>
+            <% end %>
+          </ul>
+        </div>
+        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false } %>
+        <div id="courses-table-wrapper"></div>
+      </div>
     </div>
   </div>
 </div>
-<% if filter_institutions %>
-  <script type="text/javascript">
-      $(function () {
-          <% if @institution.present? %>
-            dodona.addTokenToSearch("institutions", "<%= @institution.name %>");
-          <% else %>
-            dodona.addTokenToSearch("institutions", "<%= current_user.institution.name %>");
-          <% end %>
-      });
-  </script>
-<% end %>
+<script type="text/javascript">
+  $(function () {
+    dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "all" %>');
+  });
+</script>

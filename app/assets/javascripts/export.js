@@ -27,21 +27,21 @@ function initSelection() {
     }
 
     function initCheckboxes() {
-        $(".selection-row").click(function () {
+        $(".selection-row").on("click", function () {
             const $checkbox = $(this).find("input[type=\"checkbox\"]");
-            $checkbox.prop("checked", !$checkbox.prop("checked")).change();
+            $checkbox.prop("checked", !$checkbox.prop("checked")).trigger("change");
         });
 
-        $checkboxes.click(e => e.stopPropagation());
+        $checkboxes.on("click", e => e.stopPropagation());
 
-        $checkboxes.change(function () {
+        $checkboxes.on("change", function () {
             const amountChecked = filteredCheckboxes().length;
             $selectAll.prop("indeterminate", amountChecked && amountChecked !== $checkboxes.length);
             $selectAll.prop("checked", amountChecked === $checkboxes.length);
             $allSubmissionsInput.prop("value", amountChecked === $checkboxes.length);
         });
 
-        $selectAll.click(function (event) {
+        $selectAll.on("click", function (event) {
             const isChecked = event.target.checked;
             $checkboxes.each(function (_index, checkbox) {
                 $(checkbox).prop("checked", isChecked);
@@ -51,7 +51,7 @@ function initSelection() {
     }
 
     function initContinueButton() {
-        $("#next_step").click(function () {
+        $("#next_step").on("click", function () {
             let formUrl = null;
             const selectedBoxes = filteredCheckboxes();
             if (selectedBoxes.length) {

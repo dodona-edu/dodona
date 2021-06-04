@@ -100,6 +100,17 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert @instance.admins.include? @admin
   end
 
+  test 'allowed courses should render' do
+    course = create :course
+    @instance.allowed_courses << course
+    get courses_repository_url(@instance)
+    assert_response :success
+    user = create :user
+    @instance.admins << user
+    get courses_repository_url(@instance)
+    assert_response :success
+  end
+
   test 'zeus and repository admin should be able to edit allowed courses' do
     course = create :course
 

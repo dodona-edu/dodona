@@ -15,10 +15,12 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def request_public_image
-    get public_repository_url(@instance, 'CodersApprentice.png')
+    get public_repository_url(@instance, 'CodersApprentice.png'), headers: { range: 'bytes=150-300' }
 
     assert_response :success
     assert_equal 'image/png', response.content_type
+    assert_equal 151, response.content_length
+    assert_equal 'bytes', response.headers['accept-ranges']
   end
 
   test_crud_actions

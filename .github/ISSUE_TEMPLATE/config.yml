@@ -1,0 +1,6 @@
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/dodona-edu/dodona/discussions
+    about: Please ask questions or discuss potential feature requests here.
+  - name: Dodona documentation
+    url: https://docs.dodona.be

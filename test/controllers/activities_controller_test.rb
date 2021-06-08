@@ -112,6 +112,18 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal response.content_type, 'image/png'
+    assert_equal 'bytes', response.headers['accept-ranges']
+  end
+
+  test 'should get byte-range of activities media' do
+    Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
+
+    get media_activity_url(@instance, 'icon.png'), headers: { range: 'bytes=150-500' }
+
+    assert_response :success
+    assert_equal response.content_type, 'image/png'
+    assert_equal 351, response.content_length
+    assert_equal 'bytes', response.headers['accept-ranges']
   end
 
   test 'should get public media' do
@@ -122,6 +134,19 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 'image/png', response.content_type
+    assert_equal 'bytes', response.headers['accept-ranges']
+  end
+
+  test 'should get byte-ranges of public media' do
+    @instance.stubs(:media_path).returns(Pathname.new('not-a-real-directory'))
+    Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
+
+    get media_activity_url(@instance, 'code.png'), headers: { range: 'bytes=150-500' }
+
+    assert_response :success
+    assert_equal 'image/png', response.content_type
+    assert_equal 351, response.content_length
+    assert_equal 'bytes', response.headers['accept-ranges']
   end
 
   test 'exercises media should redirect to activities media' do

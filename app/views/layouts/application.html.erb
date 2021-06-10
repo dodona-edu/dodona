@@ -49,12 +49,12 @@
                   window.dodona.darkMode = e.matches;
                   if (e.matches) {
                       document.head.insertAdjacentHTML("beforeend", darkModeCSS);
-                      darkModeIcon.classList.remove("mdi-checkbox-blank-outline");
-                      darkModeIcon.classList.add("mdi-checkbox-marked-outline");
+                      darkModeIcon.classList.remove("mdi-toggle-switch-off");
+                      darkModeIcon.classList.add("mdi-toggle-switch", "text-primary");
                   } else {
                       document.head.insertAdjacentHTML("beforeend", lightModeCSS);
-                      darkModeIcon.classList.remove("mdi-checkbox-marked-outline");
-                      darkModeIcon.classList.add("mdi-checkbox-blank-outline");
+                      darkModeIcon.classList.remove("mdi-toggle-switch", "text-primary");
+                      darkModeIcon.classList.add("mdi-toggle-switch-off");
                   }
               };
               const matcher = window.matchMedia("(prefers-color-scheme: dark)");

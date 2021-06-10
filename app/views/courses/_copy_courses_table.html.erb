@@ -12,7 +12,7 @@
     <% courses.each do |course| %>
       <tr class="copy-course-row" data-course_id="<%= course.id %>" data-answer="<%= course.name %>">
         <td>
-          <input type="radio" name="course-select">
+          <input type="radio" name="course-select" class="form-check-input">
         </td>
         <td>
           <span><%= course.name %> <span class="text-muted">(<%= course.formatted_year %>)</span></span>

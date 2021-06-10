@@ -173,7 +173,10 @@ code {
 .checkbox {
   padding-top: 7px;
 }
-
+.form-check-input,
+.form-check-label {
+  cursor: pointer;
+}
 .has-error {
   .col-form-label,
   .radio,

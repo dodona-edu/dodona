@@ -13,9 +13,17 @@
         <% if policy(RightsRequest).create? %>
           <%= render 'form', rights_request: @rights_request %>
         <% else %>
-          <div class="callout callout-info">
-            <p><%= t '.request_not_possible' %></p>
-          </div>
+          <div class="callout callout-info"><p>
+            <% if !current_user&.student? %>
+              <%= t '.request_not_possible_no_student' %>
+            <% elsif !current_user.rights_request.nil? %>
+              <%= t '.request_not_possible_pending' %>
+            <% elsif !current_user.institution.present? %>
+              <%= t '.request_not_possible_no_institution' %>
+            <% else %>
+              <%= t '.request_not_possible' %>
+            <% end %>
+          </p></div>
         <% end %>
       </div>
     </div>

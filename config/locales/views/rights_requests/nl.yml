@@ -3,6 +3,9 @@ nl:
     new:
       title: Lesgeversrechten aanvragen
       request_not_possible: Het lijkt erop dat je al lesgeversrechten heb of dat er een aanvraag lopende is. Je kan op dit moment geen nieuwe aanvraag doen.
+      request_not_possible_pending: Het lijkt erop dat er nog een aanvraag lopende is, dus je kan momenteel geen nieuwe aanvraag doen.
+      request_not_possible_no_student: Het lijkt erop dat je al lesgeversrechten hebt, dus het is niet nodig om deze opnieuw aan te vragen.
+      request_not_possible_no_institution: Er is geen onderwijsinstelling gekoppeld met je account. Het is niet mogelijk om lesgeversrechten aan te vragen.
     form:
       process_help: We bekijken je aanvraag zo snel mogelijk. Je krijgt een email op het moment dat we je aanvraag verwerkt hebben.
       institution-help: We hebben nog geen naam voor je onderwijsinstelling. Stel er hier een voor.

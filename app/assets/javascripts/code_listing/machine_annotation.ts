@@ -9,9 +9,13 @@ export interface MachineAnnotationData {
 export class MachineAnnotation extends Annotation {
     constructor(data: MachineAnnotationData) {
         // Filter out lines only containing dashes.
-        const text = data.text.split("\n")
+        let text = data.text.split("\n")
             .filter(s => !s.match("^--*$"))
             .join("\n");
+        // use the dom engine to encode the text to html
+        const node = document.createElement("span");
+        node.textContent = text;
+        text = node.innerHTML;
         super(data.row + 1, text, data.type);
     }
 

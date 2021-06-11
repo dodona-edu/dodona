@@ -19,8 +19,8 @@ export abstract class Annotation {
         this.type = type;
     }
 
-    protected get body(): HTMLSpanElement {
-        const body = document.createElement("span") as HTMLSpanElement;
+    protected get body(): HTMLDivElement {
+        const body = document.createElement("div") as HTMLDivElement;
         body.classList.add("annotation-text");
         body.innerHTML = this.text;
         return body;

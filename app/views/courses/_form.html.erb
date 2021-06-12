@@ -75,6 +75,16 @@
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".description-help" %></span>
     </div>
 
+    <div class="field form-group row">
+      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 col-form-label' %>
+      <div class="col-sm-6 pt-2">
+        <div class="form-check <%= "form-switch" unless course.new_record? %>">
+          <%= f.check_box :enabled_questions, class: 'form-check-input' %>
+          <%= f.label :enabled_questions, t(".questions.toggle-label"), class: 'form-check-label' %>
+        </div>
+      </div>
+    </div>
+
     <% if current_user.zeus? %>
       <div class="field form-group row">
         <%= f.label :color, class: 'col-sm-3 col-form-label' %>
@@ -86,17 +96,16 @@
                        {class: 'form-select'} %>
         </div>
       </div>
-    <% end %>
-
-    <div class="field form-group row">
-      <%= f.label :questions, t(".questions.title"), class: 'col-sm-3 col-form-label' %>
-      <div class="col-sm-6 pt-2">
-        <div class="form-check <%= "form-switch" unless course.new_record? %>">
-          <%= f.check_box :enabled_questions, class: 'form-check-input' %>
-          <%= f.label :enabled_questions, t(".questions.toggle-label"), class: 'form-check-label' %>
+      <div class="field form-group row">
+        <%= f.label :featured, t(".featured.title"), class: 'col-sm-3 col-form-label' %>
+        <div class="col-sm-6 pt-2">
+          <div class="form-check">
+            <%= f.check_box :featured, class: 'form-check-input' %>
+            <%= f.label :featured, t(".featured.toggle-label"), class: 'form-check-label' %>
+          </div>
         </div>
       </div>
-    </div>
+    <% end %>
   </div>
 
   <div class="<%= course.new_record? ? "stepper-part stepper-border" : "card-supporting-text card-border" %>">

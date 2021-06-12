@@ -48,6 +48,9 @@ en:
       questions:
         title: Questions
         toggle-label: Allow students to pose questions
+      featured:
+        title: Featured course
+        toggle-label: Feature this course
     index:
       title: All courses
       users: "Users"

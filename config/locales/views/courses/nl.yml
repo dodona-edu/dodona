@@ -48,6 +48,9 @@ nl:
       questions:
         title: Vragen
         toggle-label: Sta toe dat studenten vragen stellen
+      featured:
+        title: Uitgelichte cursus
+        toggle-label: Deze cursus uitlichten
     index:
       title: Alle cursussen
       users: "Gebruikers"

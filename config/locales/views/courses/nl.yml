@@ -56,6 +56,7 @@ nl:
       users: "Gebruikers"
       exercises: "Oefeningen"
       institution_courses: "%{institution} cursussen"
+      featured_courses: Uitgelichte cursussen
       all_courses: "Alle cursussen"
       my_courses: "Mijn cursussen"
     new:

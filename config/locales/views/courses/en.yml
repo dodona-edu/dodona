@@ -56,6 +56,7 @@ en:
       users: "Users"
       exercises: "Exercises"
       institution_courses: "%{institution} courses"
+      featured_courses: Featured courses
       all_courses: "All courses"
       my_courses: "My courses"
     new:

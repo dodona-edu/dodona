@@ -25,6 +25,8 @@ class CoursesController < ApplicationController
       case params[:tab]
       when 'institution'
         @courses = @courses.where(institution: current_user.institution)
+      when 'featured'
+        @courses = @courses.where(featured: true)
       when 'my'
         @courses = current_user.subscribed_courses
       end

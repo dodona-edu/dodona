@@ -2,8 +2,8 @@
   <table class="table table-index table-resource copy-table">
     <thead>
     <tr>
-      <th class="col-md-1">
-        <input type="checkbox" id="check-all">
+      <th class="col-md-1 fs-6">
+        <input type="checkbox" id="check-all" class="form-check-input">
       </th>
       <th>
         <%= data[:table_header_type] %>
@@ -22,7 +22,7 @@
       <% if policy(el).show? %>
         <tr class="selection-row">
           <td class="col-md-1">
-            <input type="checkbox" class="selection-checkbox" value="<%= el.id %>">
+            <input type="checkbox" class="form-check-input selection-checkbox" value="<%= el.id %>">
           </td>
           <td>
             <span> <%= el.name %> </span>

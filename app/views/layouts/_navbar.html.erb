@@ -66,13 +66,13 @@
                 <% if Current.demo_mode %>
                   <li>
                     <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item" do %>
-                      <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i><%= t(".demo_mode") %>
+                      <i class="mdi mdi-toggle-switch text-primary mdi-24 dropdown-box"></i><%= t(".demo_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
                     <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".demo_mode") %>
+                      <i class="mdi mdi-toggle-switch-off mdi-24 dropdown-box"></i> <%= t(".demo_mode") %>
                     <% end %>
                   </li>
                 <% end %>
@@ -81,13 +81,13 @@
                 <% if session[:dark] %>
                   <li>
                     <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-checkbox-marked-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
+                      <i class="mdi mdi-toggle-switch text-primary mdi-24 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
                     <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-checkbox-blank-outline mdi-18 dropdown-box"></i> <%= t(".dark_mode") %>
+                      <i class="mdi mdi-toggle-switch-off mdi-24 dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% end %>

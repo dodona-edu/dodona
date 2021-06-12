@@ -151,9 +151,9 @@ class CoursePolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Course class on create
     if zeus?
-      %i[name year description visibility registration color teacher institution_id moderated enabled_questions featured]
+      %i[name year description visibility registration teacher institution_id moderated enabled_questions color featured]
     elsif course_admin? || (record == Course && user&.admin?)
-      %i[name year description visibility registration color teacher institution_id moderated enabled_questions]
+      %i[name year description visibility registration teacher institution_id moderated enabled_questions]
     else
       []
     end

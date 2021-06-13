@@ -21,16 +21,15 @@ class CoursesController < ApplicationController
     @courses = policy_scope(Course.all)
     @show_my_courses = current_user && current_user.subscribed_courses.count > 0
     @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
-    if current_user
-      case params[:tab]
-      when 'institution'
-        @courses = @courses.where(institution: current_user.institution)
-      when 'featured'
-        @courses = @courses.where(featured: true)
-      when 'my'
-        @courses = current_user.subscribed_courses
-      end
+
+    if current_user && params[:tab] == 'institution'
+      @courses = @courses.where(institution: current_user.institution)
+    elsif current_user && params[:tab] == 'my'
+      @courses = current_user.subscribed_courses
+    elsif params[:tab] == 'featured'
+      @courses = @courses.where(featured: true)
     end
+
     @courses = apply_scopes(@courses)
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]

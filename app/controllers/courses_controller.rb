@@ -28,6 +28,8 @@ class CoursesController < ApplicationController
       @courses = current_user.subscribed_courses
     elsif params[:tab] == 'featured'
       @courses = @courses.where(featured: true)
+    elsif params[:copy_courses]
+      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
     end
 
     @courses = apply_scopes(@courses)

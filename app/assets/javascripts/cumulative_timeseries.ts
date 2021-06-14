@@ -132,7 +132,6 @@ export class CTimeseriesGraph extends SeriesGraph {
      */
     protected override processData({ data, exercises, students }: RawData): void {
         data as {exId: number, exData: (string|Date)[]}[];
-        this.insertFakeData(data, students);
 
         this.parseExercises(exercises, data.map(ex => ex.exId));
 
@@ -148,16 +147,17 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.dateArray = d3.timeDays(minDate, maxDate);
 
-        this.maxSum = raw.students ?? 0; // max value
+        const threshold = d3.scaleTime()
+            .domain([minDate.getTime(), maxDate.getTime()])
+            .ticks(d3.timeDay);
+
+        this.maxSum = students ?? 0; // max value
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()
                 .value(d => d.getTime())
-                .thresholds(
-                    d3.scaleTime()
-                        .domain([minDate.getTime(), maxDate.getTime()])
-                        .ticks(d3.timeDay)
-                ).domain([minDate.getTime(), maxDate.getTime()])(ex.exData);
+                .thresholds(threshold)
+                .domain([minDate.getTime(), maxDate.getTime()])(ex.exData);
             // combine bins with cumsum of the bins
             const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
@@ -169,27 +169,6 @@ export class CTimeseriesGraph extends SeriesGraph {
             this.maxSum = Math.max(cSums[cSums.length-1], this.maxSum);
         });
     }
-
-    insertFakeData(data, maxCount): void {
-        const end = new Date(d3.max(data,
-            ex => d3.max(ex.exData)));
-        const start = new Date(end);
-        start.setDate(start.getDate() - 14);
-        data.forEach(ex => {
-            let count = 0;
-            ex.exData = [];
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
-                const c = Math.round(Math.random()*5);
-                if (count + c <= maxCount) {
-                    count += c;
-                    for (let i = 0; i < c; i++) {
-                        ex.exData.push(new Date(d));
-                    }
-                }
-            }
-        });
-    }
-
 
     // utility functions
 

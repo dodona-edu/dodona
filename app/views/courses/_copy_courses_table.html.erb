@@ -15,7 +15,12 @@
           <input type="radio" name="course-select" class="form-check-input">
         </td>
         <td>
-          <span><%= course.name %> <span class="text-muted">(<%= course.formatted_year %>)</span></span>
+          <span>
+            <% if course.featured %>
+              <span title='<%= Course.human_attribute_name("featured") %>'><i class='mdi mdi-18 mdi-star-outline'></i></span>
+            <% end %>
+            <%= course.name %> <span class="text-muted">(<%= course.formatted_year %>)</span>
+          </span>
           <br/>
           <small class="text-muted"><%= [course.teacher, course.institution&.name].select(&:present?).join(" - ") %></small>
         </td>

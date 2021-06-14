@@ -48,11 +48,15 @@ nl:
       questions:
         title: Vragen
         toggle-label: Sta toe dat studenten vragen stellen
+      featured:
+        title: Uitgelichte cursus
+        toggle-label: Deze cursus uitlichten
     index:
       title: Alle cursussen
       users: "Gebruikers"
       exercises: "Oefeningen"
       institution_courses: "%{institution} cursussen"
+      featured_courses: Uitgelichte cursussen
       all_courses: "Alle cursussen"
       my_courses: "Mijn cursussen"
     new:

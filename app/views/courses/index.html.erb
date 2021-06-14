@@ -22,6 +22,7 @@
             <% if @show_institution_courses %>
               <li role="presentation"><a href="#institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
             <% end %>
+            <li role="presentation"><a href="#featured"><%= t '.featured_courses' %></a></li>
             <li role="presentation"><a href="#all"><%= t '.all_courses' %></a></li>
             <% if @show_my_courses %>
               <li role="presentation"><a href="#my"><%= t '.my_courses' %></a></li>
@@ -36,6 +37,6 @@
 </div>
 <script type="text/javascript">
   $(function () {
-    dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "all" %>');
+    dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "featured" %>');
   });
 </script>

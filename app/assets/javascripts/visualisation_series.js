@@ -13,14 +13,12 @@ const graphFactory = {
 
 // function to (de)activate graph mode (switch out ex list for graphs)
 export function toggleStats(button, seriesId) {
-    console.log(seriesId);
     const card = document.getElementById(`series-card-${seriesId}`);
     const tabs = card.querySelector(".stats-tab");
     const content = card.querySelector(".series-content");
     const container = card.querySelector(".stats-container");
     const title = card.querySelector(".graph-title");
     const info = card.querySelector(".graph-info");
-    console.log(tabs, tabs.style, tabs.style.display);
     if (getComputedStyle(tabs).display == "none") {
         tabs.style.display = "flex";
         info.style.display = "inline";

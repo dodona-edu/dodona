@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SeriesGraph } from "series_graph";
+import { RawData, SeriesGraph } from "series_graph";
 
 export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/nl/stats/cumulative_timeseries?series_id=";
@@ -33,7 +33,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     >;
 
     // data
-    private data: Record<string, [d3.Bin<Date, Date>, number][]>;
+    private data: {exId: string, exData: {bin: d3.Bin<Date, Date>, cSum: number}[]}[] = [];
     private maxSum: number; // largest y-value = either subscribed students or max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
 
@@ -92,39 +92,31 @@ export class CTimeseriesGraph extends SeriesGraph {
             );
 
         // -----------------------------------------------------------------------------------------
-
-        // tooltip initialisation
-        // -----------------------------------------------------------------------------------------
         this.tooltipInit();
-        // -----------------------------------------------------------------------------------------
-
-        // Legend settings
-        // -----------------------------------------------------------------------------------------
         this.legendInit();
-        // -----------------------------------------------------------------------------------------
 
         // add lines
-        for (const exId of Object.keys(this.data)) {
+        this.data.forEach(ex => {
             const exGroup = this.graph.append("g");
-            const bins = this.data[exId];
             exGroup.selectAll("path")
-                .data([bins])
+                // I have no idea why this is necessary but removing the '[]' breaks everything
+                .data([ex.exData])
                 .enter()
                 .append("path")
-                .style("stroke", this.color(exId) as string)
+                .style("stroke", this.color(ex.exId) as string)
                 .style("fill", "none")
                 .attr("d", d3.line()
-                    .x(p => this.x(p[0]["x0"]))
+                    .x(d => this.x(d.bin["x0"]))
                     .y(this.innerHeight)
                     .curve(d3.curveMonotoneX)
                 )
                 .transition().duration(500)
                 .attr("d", d3.line()
-                    .x(p => this.x(p[0]["x0"]))
-                    .y(p => this.y(p[1]/this.maxSum))
+                    .x(d => this.x(d.bin["x0"]))
+                    .y(d => this.y(d.cSum/this.maxSum))
                     .curve(d3.curveMonotoneX)
                 );
-        }
+        });
 
         this.svg.on("mousemove", e => this.tooltipMove(e));
 
@@ -140,41 +132,63 @@ export class CTimeseriesGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {Object} raw The unprocessed return value of the fetch
      */
-    protected processData(
-        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
-    ): void {
-        const data = raw.data as Record<string, Date[]>;
-        this.data = {};
+    protected processData(raw: RawData): void {
+        const data = raw.data as {exId: number, exData: (string|Date)[]}[];
+        this.insertFakeData(data, raw.students);
 
-        this.parseExercises(raw.exercises, Object.keys(data));
+        this.parseExercises(raw.exercises, data.map(ex => ex.exId));
 
-        Object.entries(data).forEach(([id, submissions]) => {
+        data.forEach(ex => {
             // convert dates form strings to actual date objects
-            data[id] = submissions.map(d => new Date(d));
+            ex.exData = ex.exData.map((d: string) => new Date(d));
         });
 
-        const minDate = new Date(d3.min(Object.values(data), records => d3.min(records)));
+        const minDate = new Date(d3.min(data, ex => d3.min(ex.exData as Date[])));
         minDate.setHours(0, 0, 0, 0); // set start to midnight
-        const maxDate = new Date(d3.max(Object.values(data), records => d3.max(records)));
+        const maxDate = new Date(d3.max(data, ex => d3.max(ex.exData as Date[])));
         maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateArray = d3.timeDays(minDate, maxDate);
 
         this.maxSum = raw.students ?? 0; // max value
         // bin data per day (for each exercise)
-        Object.entries(data).forEach(([exId, records]) => {
+        data.forEach(ex => {
             const binned = d3.bin()
                 .value(d => d.getTime())
                 .thresholds(
                     d3.scaleTime()
                         .domain([minDate.getTime(), maxDate.getTime()])
                         .ticks(d3.timeDay)
-                ).domain([minDate.getTime(), maxDate.getTime()])(records);
+                ).domain([minDate.getTime(), maxDate.getTime()])(ex.exData);
             // combine bins with cumsum of the bins
-            this.data[exId] = d3.zip(binned, d3.cumsum(binned, d => d.length));
+            const cSums = d3.cumsum(binned, d => d.length);
+            this.data.push({
+                exId: String(ex.exId),
+                exData: binned.map((bin, i) => ({ bin: bin, cSum: cSums[i] }))
+            });
 
             // if 'students' undefined calculate max value from data
-            this.maxSum = Math.max(this.data[exId][this.data[exId].length-1][1], this.maxSum);
+            this.maxSum = Math.max(cSums[cSums.length-1], this.maxSum);
+        });
+    }
+
+    insertFakeData(data, maxCount): void {
+        const end = new Date(d3.max(data,
+            ex => d3.max(ex.exData)));
+        const start = new Date(end);
+        start.setDate(start.getDate() - 14);
+        data.forEach(ex => {
+            let count = 0;
+            ex.exData = [];
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
+                const c = Math.round(Math.random()*5);
+                if (count + c <= maxCount) {
+                    count += c;
+                    for (let i = 0; i < c; i++) {
+                        ex.exData.push(new Date(d));
+                    }
+                }
+            }
         });
     }
 
@@ -224,16 +238,16 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`);
         this.tooltipDots = this.graph.selectAll(".tooltipDot")
-            .data(Object.entries(this.data), d => d[0])
+            .data(this.data, ex => ex.exId)
             .join("circle")
             .attr("class", "tooltipDot")
             .attr("r", 4)
-            .style("fill", d => this.color(d[0]) as string);
+            .style("fill", ex => this.color(ex.exId) as string);
         this.tooltipDotLabels = this.graph.selectAll(".tooltipDotlabel")
-            .data(Object.entries(this.data), d => d[0])
+            .data(this.data, ex => ex.exId)
             .join("text")
             .attr("class", "tooltipDotlabel")
-            .attr("fill", d => this.color(d[0]) as string)
+            .attr("fill", ex => this.color(ex.exId) as string)
             .attr("font-size", `${this.fontSize}px`);
         this.tooltipDefault();
     }
@@ -257,14 +271,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.tooltipDots
             .attr("opacity", 0.6)
             .attr("cx", this.x(date))
-            .attr("cy", d => this.y(d[1][last][1]/this.maxSum));
+            .attr("cy", ex => this.y(ex.exData[last].cSum/this.maxSum));
         this.tooltipDotLabels
             .attr("x", this.x(date) + 5)
-            .attr("y", d => this.y(d[1][last][1]/this.maxSum)-5)
+            .attr("y", ex => this.y(ex.exData[last].cSum/this.maxSum)-5)
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
-                d => `${Math.round(d[1][last][1]/this.maxSum*10000)/100}%`
+                ex => `${Math.round(ex.exData[last].cSum/this.maxSum*10000)/100}%`
             );
     }
 
@@ -308,18 +322,18 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .transition()
                 .duration(100)
                 .attr("cx", this.x(date))
-                .attr("cy", d => this.y(d[1][i][1]/this.maxSum));
+                .attr("cy", ex => this.y(ex.exData[i].cSum/this.maxSum));
             this.tooltipDotLabels
                 .attr("opacity", 1)
                 .text(
-                    d => `${Math.round(d[1][i][1]/this.maxSum*10000)/100}% 
-                    (${d[1][i][1]}/${this.maxSum})`
+                    ex=> `${Math.round(ex.exData[i].cSum/this.maxSum*10000)/100}% 
+                    (${ex.exData[i].cSum}/${this.maxSum})`
                 )
                 .attr("text-anchor", switchDots ? "end" : "start")
                 .transition()
                 .duration(100)
                 .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
-                .attr("y", d => this.y(d[1][i][1]/this.maxSum)-5);
+                .attr("y", ex => this.y(ex.exData[i].cSum/this.maxSum)-5);
         }
     }
 

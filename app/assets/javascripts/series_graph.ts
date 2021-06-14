@@ -158,7 +158,7 @@ export abstract class SeriesGraph {
      *  used to check if the data should be fetched again
      */
     protected async fetchData(): Promise<RawData> {
-        const url = this.baseUrl + this.seriesId;
+        const url = `/${I18n.locale}` + this.baseUrl + this.seriesId;
         let raw: RawData = undefined;
         while (!raw || raw["status"] == "not available yet") {
             raw = await d3.json(url);

@@ -160,16 +160,16 @@ export class TimeseriesGraph extends SeriesGraph {
         this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
+        const threshold = d3.scaleTime()
+            .domain([this.minDate.getTime(), this.maxDate.getTime()])
+            .ticks(d3.timeDay);
 
         data.forEach(ex => {
             // bin per day
             const binned = d3.bin()
                 .value(d => d.date.getTime())
-                .thresholds(
-                    d3.scaleTime()
-                        .domain([this.minDate.getTime(), this.maxDate.getTime()])
-                        .ticks(d3.timeDay)
-                ).domain([this.minDate.getTime(), this.maxDate.getTime()])(ex.exData);
+                .thresholds(threshold)
+                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex.exData);
 
             const exData = [];
             // reduce bins to a single record per bin (see this.data)

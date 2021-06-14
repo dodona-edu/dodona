@@ -152,11 +152,12 @@ export class TimeseriesGraph extends SeriesGraph {
             });
         });
 
-        this.minDate = new Date(d3.min(data,
-            ex => d3.min(ex.exData, (d: Datum) => d.date as Date)));
-        this.minDate.setHours(0, 0, 0, 0); // set start to midnight
-        this.maxDate = new Date(d3.max(data,
-            ex => d3.max(ex.exData, (d: Datum) => d.date as Date)));
+        const [minDate, maxDate] = d3.extent(
+            data.map(ex => ex.exData).flat(),
+            (d: Datum) => d.date as Date
+        );
+        this.minDate = new Date(minDate);
+        this.maxDate = new Date(maxDate);
         this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days

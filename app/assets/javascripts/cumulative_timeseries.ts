@@ -140,9 +140,10 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.exData = ex.exData.map((d: string) => new Date(d));
         });
 
-        const minDate = new Date(d3.min(data, ex => d3.min(ex.exData as Date[])));
+        let [minDate, maxDate] = d3.extent(data.map(ex => ex.exData).flat()) as Date[];
+        minDate = new Date(minDate);
+        maxDate = new Date(maxDate);
         minDate.setHours(0, 0, 0, 0); // set start to midnight
-        const maxDate = new Date(d3.max(data, ex => d3.max(ex.exData as Date[])));
         maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateArray = d3.timeDays(minDate, maxDate);

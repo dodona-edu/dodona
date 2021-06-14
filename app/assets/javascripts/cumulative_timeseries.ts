@@ -256,7 +256,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
-                ex => `${Math.round(ex.exData[last].cSum/this.maxSum*10000)/100}%`
+                ex => `${d3.format(".2%")(ex.exData[last].cSum/this.maxSum)}`
             );
     }
 
@@ -304,7 +304,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             this.tooltipDotLabels
                 .attr("opacity", 1)
                 .text(
-                    ex=> `${Math.round(ex.exData[i].cSum/this.maxSum*10000)/100}% 
+                    ex=> `${d3.format(".2%")(ex.exData[i].cSum/this.maxSum)}
                     (${ex.exData[i].cSum}/${this.maxSum})`
                 )
                 .attr("text-anchor", switchDots ? "end" : "start")

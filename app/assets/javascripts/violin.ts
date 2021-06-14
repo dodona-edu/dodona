@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SeriesGraph } from "series_graph";
+import { SeriesGraph, RawData } from "series_graph";
 
 
 export class ViolinGraph extends SeriesGraph {
@@ -218,17 +218,15 @@ export class ViolinGraph extends SeriesGraph {
      * calculates addinional data
      * finishes by calling draw
      * can be called recursively when a 'data not yet available' response is received
-     * @param {Object} raw The unprocessed return value of the fetch
+     * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected processData(
-        raw: {data: Record<string, number[]>, exercises: [number, string][], students?: number}
-    ): void {
-        this.parseExercises(raw.exercises, Object.keys(raw.data));
+    protected processData(raw: RawData): void {
+        this.parseExercises(raw.exercises, raw.data.map(ex => ex.exId));
         // transform data into array of records for easier binning
-        this.data = Object.keys(raw.data as Record<string, number[]>).map(k => ({
-            "ex_id": k,
+        this.data = raw.data.map(ex => ({
+            "ex_id": String(ex.exId),
             // sort so median is calculated correctly
-            "counts": raw.data[k].sort((a: number, b: number) => a-b),
+            "counts": ex.exData.sort((a: number, b: number) => a-b),
             "freq": [],
             "median": 0,
             "average": 0

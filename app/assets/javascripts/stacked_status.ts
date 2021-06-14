@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SeriesGraph } from "series_graph";
+import { RawData, SeriesGraph } from "series_graph";
 
 export class StackedStatusGraph extends SeriesGraph {
     protected readonly baseUrl = "/nl/stats/stacked_status?series_id=";
@@ -210,27 +210,27 @@ export class StackedStatusGraph extends SeriesGraph {
      * calculates addinional data
      * finishes by calling draw
      * can be called recursively when a 'data not yet available' response is received
-     * @param {Object} raw The unprocessed return value of the fetch
+     * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected processData(
-        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
-    ): void {
-        const data = raw.data as Record<string, Record<string, number>>;
+    protected processData(raw: RawData): void {
+        const data = raw.data;
 
-        this.parseExercises(raw.exercises, Object.keys(data));
+        this.parseExercises(raw.exercises, data.map(ex => ex.exId));
 
         this.maxSum = {};
         this.data = [];
         // turn data into array of records (one for each exId/status combination)
-        Object.entries(data).forEach(([k, v]: [string, Record<string, number>]) => {
+        data.forEach(ex => {
             let sum = 0;
             this.statusOrder.forEach(s => {
                 // check if status is present in the data
-                const c = v[s] ?? 0;
-                this.data.push({ "exercise_id": k, "status": s, "cSum": sum, "count": c });
+                const c = ex.exData[s] ?? 0;
+                this.data.push({
+                    "exercise_id": String(ex.exId), "status": s, "cSum": sum, "count": c
+                });
                 sum += c;
             });
-            this.maxSum[k] = sum;
+            this.maxSum[ex.exId] = sum;
         });
     }
 }

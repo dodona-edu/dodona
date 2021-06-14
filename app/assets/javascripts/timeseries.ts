@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SeriesGraph } from "series_graph";
+import { RawData, SeriesGraph } from "series_graph";
 
 export class TimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/nl/stats/timeseries?series_id=";
@@ -22,7 +22,10 @@ export class TimeseriesGraph extends SeriesGraph {
     private dateRange: number; // difference between first and last date in days
     private minDate: Date;
     private maxDate: Date;
-    private data: {[exId: string]: {date: Date; sum: number; [index: string]: number | Date}[]}
+    private data: {
+        exId: string,
+        exData:{date: Date; sum: number; [index: string]: number | Date}[]
+    }[] = [];
 
     // svg elements
     private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
@@ -102,13 +105,13 @@ export class TimeseriesGraph extends SeriesGraph {
         const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
         // add cells
         this.graph.selectAll(".rectGroup")
-            .data(Object.keys(this.data))
+            .data(this.data)
             .enter()
             .append("g")
             .attr("class", "rectGroup")
-            .each((exId: string, i: number, group) => {
+            .each((ex, i, group) => {
                 d3.select(group[i]).selectAll("rect")
-                    .data(this.data[exId], d => d["date"].getTime())
+                    .data(ex.exData, d => d["date"].getTime())
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
@@ -117,7 +120,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
                     .attr("x", d => this.x(d.date)-rectSize/2)
-                    .attr("y", this.y(exId)-rectSize/2)
+                    .attr("y", this.y(ex.exId)-rectSize/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
@@ -134,41 +137,34 @@ export class TimeseriesGraph extends SeriesGraph {
      * calculates addinional data
      * finishes by calling draw
      * can be called recursively when a 'data not yet available' response is received
-     * @param {Object} raw The unprocessed return value of the fetch
+     * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected processData(
-        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
-    ): void {
-        const data = raw.data as Record<
-            string,
-            {date: (Date | string); status: string; count: number}[]
-        >;
+    protected processData(raw: RawData): void {
+        // the type of one datum in the exData array
+        type Datum = {date: (Date | string); status: string; count: number};
+        const data = raw.data;
 
-        this.parseExercises(raw.exercises, Object.keys(data));
+        this.parseExercises(raw.exercises, data.map(ex => ex.exId));
 
-        Object.entries(data).forEach(entry => {
+        data.forEach(ex => {
             // convert dates form strings to actual date objects
-            entry[1].forEach(d => {
+            ex.exData.forEach((d: Datum) => {
                 d.date = new Date(d.date);
                 // make sure they are set to midnight
                 d.date.setHours(0, 0, 0, 0);
             });
         });
 
-        this.minDate = new Date(d3.min(Object.values(data),
-            records => d3.min(records, d => d.date as Date)));
+        this.minDate = new Date(d3.min(data,
+            ex => d3.min(ex.exData, (d: Datum) => d.date as Date)));
         this.minDate.setHours(0, 0, 0, 0); // set start to midnight
-        this.maxDate = new Date(d3.max(Object.values(data),
-            records => d3.max(records, d => d.date as Date)));
+        this.maxDate = new Date(d3.max(data,
+            ex => d3.max(ex.exData, (d: Datum) => d.date as Date)));
         this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
         this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
 
-        this.data = {};
-        Object.entries(data).forEach(entry => {
-            const exId = entry[0];
-            let records = entry[1];
-
+        data.forEach(ex => {
             // bin per day
             const binned = d3.bin()
                 .value(d => d.date.getTime())
@@ -176,18 +172,16 @@ export class TimeseriesGraph extends SeriesGraph {
                     d3.scaleTime()
                         .domain([this.minDate.getTime(), this.maxDate.getTime()])
                         .ticks(d3.timeDay)
-                ).domain([this.minDate.getTime(), this.maxDate.getTime()])(records);
+                ).domain([this.minDate.getTime(), this.maxDate.getTime()])(ex.exData);
 
-            records = undefined; // records no longer needed
-
-            this.data[exId] = [];
+            const exData = [];
             // reduce bins to a single record per bin (see this.data)
             binned.forEach((bin, i) => {
                 const newDate = new Date(this.minDate);
                 newDate.setDate(newDate.getDate() + i);
                 const sum = d3.sum(bin, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
-                this.data[exId].push(bin.reduce((acc, r) => {
+                exData.push(bin.reduce((acc, r) => {
                     acc.date = r.date;
                     acc.sum = sum;
                     acc[r.status] = r.count;
@@ -197,6 +191,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     return acc;
                 }, { "date": newDate, "sum": 0 })));
             });
+            this.data.push({ exId: String(ex.exId), exData: exData });
         });
     }
 

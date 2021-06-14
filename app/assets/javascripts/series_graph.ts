@@ -1,5 +1,10 @@
 import * as d3 from "d3";
 
+export type RawData = {
+    data: {exId: number, exData: unknown[]}[],
+    exercises: [number, string][],
+    students?: number
+}
 
 export abstract class SeriesGraph {
     private d3Locale = {
@@ -37,10 +42,7 @@ export abstract class SeriesGraph {
      * @param {string} containerId the id of the html element in which the svg can be displayed
      * @param {Object} data The data used to draw the graph (unprocessed) (optional)
      */
-    constructor(
-        seriesId: string,
-        containerId: string,
-        data?: {data: Record<string, unknown>, exercises: [number, string][], students?: number}) {
+    constructor(seriesId: string, containerId: string, data?: RawData) {
         this.seriesId = seriesId;
         this.selector = containerId;
         this.container = d3.select(this.selector);
@@ -63,9 +65,7 @@ export abstract class SeriesGraph {
 
     // abstract functions
     protected abstract draw(): void;
-    protected abstract processData(
-        raw: {data: Record<string, unknown>, exercises: [number, string][], students?: number}
-    ): void;
+    protected abstract processData(raw: RawData): void;
 
     /**
      * Breaks up y-axis labels into multiple lines when they get too long
@@ -129,10 +129,10 @@ export abstract class SeriesGraph {
      * @param {[string, string][]} exercises The list of exercise tuples [id, title]
      * @param {string} keys The ids present in the data
      */
-    protected parseExercises(exercises: [number, string][], keys: string[]): void {
+    protected parseExercises(exercises: [number, string][], keys: number[]): void {
         exercises.forEach(([id, title]) => {
             // only add if the key is present in the data
-            if (keys.indexOf(String(id)) >= 0) {
+            if (keys.indexOf(id) >= 0) {
                 this.exOrder.unshift(String(id));
                 this.exMap[id] = title;
             }
@@ -157,17 +157,16 @@ export abstract class SeriesGraph {
      * @param {Object} raw The return value of the fetch
      *  used to check if the data should be fetched again
      */
-    protected async fetchData(
-    ): Promise<{data: Record<string, unknown>, exercises: [number, string][]}> {
+    protected async fetchData(): Promise<RawData> {
         const url = this.baseUrl + this.seriesId;
-        let raw: Record<string, unknown> = undefined;
+        let raw: RawData = undefined;
         while (!raw || raw["status"] == "not available yet") {
             raw = await d3.json(url);
             if (raw["status"] == "not available yet") {
                 await new Promise(resolve => setTimeout(resolve, 1000));
             }
         }
-        return raw as {data: Record<string, unknown>, exercises: [number, string][]};
+        return raw as RawData;
     }
 
     /**
@@ -182,11 +181,7 @@ export abstract class SeriesGraph {
 
         // fetch data
         this.fetchData()
-            .then((r: {
-                data: Record<string, unknown>,
-                exercises: [number, string][],
-                students?: number
-            }) => {
+            .then((r: RawData) => {
                 // once fetched remove placeholder
                 d3.select(`${this.selector} *`).remove();
 

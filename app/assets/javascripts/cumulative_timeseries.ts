@@ -174,7 +174,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     // utility functions
 
     /**
-     * determine where to put tooltip line by 'injecting' the cursor position in the date array
+     * Calculates the closest data point near the x-position of the mouse.
      * @param {number} mx The x position of the mouse cursor
      * @return {Object} The index of the cursor in the date array + the date of that position
      */

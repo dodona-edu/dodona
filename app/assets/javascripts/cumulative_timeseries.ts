@@ -61,9 +61,6 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("transform",
                 `translate(${this.margin.left}, ${this.margin.top})`);
 
-        // axis and scale settings
-        // -----------------------------------------------------------------------------------------
-
         // y scale
         this.y = d3.scaleLinear()
             .domain([0, 1])
@@ -91,7 +88,6 @@ export class CTimeseriesGraph extends SeriesGraph {
                     .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
             );
 
-        // -----------------------------------------------------------------------------------------
         this.tooltipInit();
         this.legendInit();
 

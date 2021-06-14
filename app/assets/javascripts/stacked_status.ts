@@ -130,8 +130,8 @@ export class StackedStatusGraph extends SeriesGraph {
                     .duration(200)
                     .style("opacity", .9);
                 tooltip.html(`${d.status}<br> ${
-                    Math.round((d.count) / this.maxSum[d.exercise_id] * 10000) / 100
-                }% (${d.count}/${this.maxSum[d.exercise_id]})`);
+                    d3.format(".2%")((d.count) / this.maxSum[d.exercise_id])
+                } (${d.count}/${this.maxSum[d.exercise_id]})`);
             })
             .on("mousemove", (e, _) => {
                 const bbox = tooltip.node().getBoundingClientRect();

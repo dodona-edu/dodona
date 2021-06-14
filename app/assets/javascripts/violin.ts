@@ -154,7 +154,7 @@ export class ViolinGraph extends SeriesGraph {
 
         for (const ex of this.data) {
             // round to two decimals
-            const t = Math.round(ex.average*100)/100;
+            const t = d3.format(".2f")(ex.average);
             metrics.append("text")
                 .attr("x", (this.margin.right - 20) / 2)
                 .attr("y", y(ex.ex_id) + y.bandwidth()/2)

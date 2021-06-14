@@ -19,7 +19,7 @@ export class StackedStatusGraph extends SeriesGraph {
     * draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
     */
-    protected draw(): void {
+    protected override draw(): void {
         this.height = 75 * this.exOrder.length;
         const innerWidth = this.width - this.margin.left - this.margin.right;
         const innerHeight = this.height - this.margin.top - this.margin.bottom;
@@ -212,7 +212,7 @@ export class StackedStatusGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: RawData): void {
+    protected override processData(raw: RawData): void {
         const data = raw.data;
 
         this.parseExercises(raw.exercises, data.map(ex => ex.exId));

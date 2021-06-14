@@ -126,17 +126,15 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     /**
-     * transforms the data into a form usable by the graph +
-     * calculates addinional data
-     * finishes by calling draw
-     * can be called recursively when a 'data not yet available' response is received
-     * @param {Object} raw The unprocessed return value of the fetch
+     * Transforms the data from the server into a form usable by the graph.
+     *
+     * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected override processData(raw: RawData): void {
-        const data = raw.data as {exId: number, exData: (string|Date)[]}[];
-        this.insertFakeData(data, raw.students);
+    protected override processData({ data, exercises, students }: RawData): void {
+        data as {exId: number, exData: (string|Date)[]}[];
+        this.insertFakeData(data, students);
 
-        this.parseExercises(raw.exercises, data.map(ex => ex.exId));
+        this.parseExercises(exercises, data.map(ex => ex.exId));
 
         data.forEach(ex => {
             // convert dates form strings to actual date objects

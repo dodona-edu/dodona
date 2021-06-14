@@ -2,7 +2,7 @@ import { Toast } from "./toast";
 
 function initFavoriteButtons() {
     function init() {
-        $(".favorite-button").click(toggleFavorite);
+        $(".favorite-button").on("click", toggleFavorite);
     }
 
     function toggleFavorite() {

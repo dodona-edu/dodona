@@ -17,6 +17,7 @@
 #  search            :string(4096)
 #  moderated         :boolean          default(FALSE), not null
 #  enabled_questions :boolean          default(TRUE), not null
+#  featured          :boolean          default(FALSE), not null
 #
 
 require 'test_helper'

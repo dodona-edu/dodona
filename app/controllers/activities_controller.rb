@@ -181,9 +181,16 @@ class ActivitiesController < ApplicationController
     type = Mime::Type.lookup_by_extension File.extname(file)[1..]
     type = 'text/plain; charset=utf-8' if type.nil? || type == 'text/plain'
 
-    # Support If-Modified-Since caching
-    send_file file, disposition: 'inline', type: type \
-      if stale? last_modified: File.mtime(file)
+    Rack::Files.new(nil).serving(request, file).tap do |(status, headers, body)|
+      self.status = status
+      self.response_body = body
+
+      headers.each do |name, value|
+        response.headers[name] = value
+      end
+      response.headers['accept-ranges'] = 'bytes'
+      response.content_type = type
+    end
   end
 
   private

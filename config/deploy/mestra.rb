@@ -20,6 +20,9 @@ namespace :deploy do
   before :restart, :reset_db do
     on roles(:web) do
       within release_path do
+        execute :rm, '-r', 'data/exercises/*'
+        execute :rm, '-r', 'data/judges/*'
+        execute :rm, '-r', 'data/storage/*'
         execute :rake, 'db:reset'
       end
     end

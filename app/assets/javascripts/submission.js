@@ -42,7 +42,7 @@ function initSubmissionShow(parentClass, mediaPath, token) {
     }
 
     function initTabLinks() {
-        $("a.tab-link").click(function () {
+        $("a.tab-link").on("click", function () {
             const tab = $(this).data("tab") || "code";
             const element = $(this).data("element");
             const line = $(this).data("line");

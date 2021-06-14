@@ -181,7 +181,7 @@ function fetch(url, options = {}) {
 function initTokenClickables() {
     const $clickableTokens = $(".clickable-token");
     $clickableTokens.off("click");
-    $clickableTokens.click(function () {
+    $clickableTokens.on("click", function () {
         const $htmlElement = $(this);
         const type = $htmlElement.data("type");
         const name = $htmlElement.data("name");

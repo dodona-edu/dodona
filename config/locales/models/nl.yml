@@ -43,6 +43,7 @@ nl:
         visibility: Zichtbaarheid
         registration: Registratie
         moderated: Gemodereerd
+        featured: Uitgelichte cursus
         visibilities:
           visible_for_all: Zichtbaar voor iedereen
           visible_for_institution: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling

@@ -11,7 +11,7 @@
           <p><%= t('.contact_p3_html') %></p>
         </div>
         <div class="col-lg-6">
-          <% if policy(RightsRequest).create? %>
+          <% if policy(RightsRequest).new? %>
             <div class="callout callout-info">
               <h4><%= t('.rights_request_title') %></h4>
               <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>

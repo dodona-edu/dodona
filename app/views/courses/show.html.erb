@@ -6,6 +6,11 @@
   <div class="col-md-10 col-12 offset-md-1 page-content">
     <div class="card">
       <div class="card-title card-title-colored">
+        <% if @course.featured %>
+          <h2 class='card-title-text float-end' title='<%= Course.human_attribute_name("featured") %>'>
+            <i class="mdi mdi-star-outline"></i>
+          </h2>
+        <% end %>
         <% if !@course.open_for_all? || @course.moderated %>
           <% title = [] %>
           <% title.push t(".registration-#{@course.registration}-info", institution: @course.institution&.name) unless @course.open_for_all? %>

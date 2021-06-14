@@ -104,7 +104,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.5'
+gem 'nokogiri', '~> 1.11.7'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -132,7 +132,7 @@ gem 'rack-mini-profiler', '~> 2.3.2'
 gem 'stackprof', '~> 0.2.17'
 
 # Datadog
-gem 'ddtrace', '~> 0.49.0'
+gem 'ddtrace', '~> 0.50.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

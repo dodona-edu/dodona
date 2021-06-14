@@ -17,9 +17,9 @@
                       remote: true %>
         </div>
 
-        <div>
-          <%= check_box_tag :enable_refresh, "1", @refresh %>
-          <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'checkbox-label' %>
+        <div class='form-check form-switch'>
+          <%= check_box_tag :enable_refresh, "1", @refresh, class: 'form-check-input' %>
+          <%= label_tag :enable_refresh, t('.questions.auto_refresh'), class: 'form-check-label' %>
         </div>
 
         <h4><%= t('.questions.open') %></h4>

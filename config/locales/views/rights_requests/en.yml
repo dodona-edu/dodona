@@ -2,6 +2,10 @@ en:
   rights_requests:
     new:
       title: Request teacher rights
+      request_not_possible: It looks like you already have teacher rights or that a previous request is still pending. You can't make a new request at this time.
+      request_not_possible_pending: It looks like a previous request is still pending, so you can't make a new request at this time.
+      request_not_possible_no_student: It looks like you already have teacher rights, so there's no need to request them again.
+      request_not_possible_no_institution: It looks like there is no institution associated with your account, so unfortunately you can't request teacher rights.
     form:
       process_help: We will check your request as soon as possible. You will receive an email once we've responded to it.
       institution-help: We do not yet have a proper name for your educational institution. Suggest one here.

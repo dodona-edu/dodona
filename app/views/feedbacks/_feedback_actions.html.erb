@@ -30,9 +30,9 @@
   </center>
   <% if @feedback.score_items.empty? %>
     <br>
-    <div class="checkbox-inline">
-      <input id="auto-mark" type="checkbox" name="auto_mark" checked>
-      <label class="checkbox-label"
+    <div class="form-check form-switch">
+      <input id="auto-mark" type="checkbox" class="form-check-input" name="auto_mark" checked>
+      <label class="form-check-label"
              for="auto-mark"
              data-bs-toggle="tooltip"
              data-bs-placement="bottom"
@@ -42,9 +42,9 @@
     </div>
   <% end %>
   <br>
-  <div class="checkbox-inline">
-    <input id="skip-completed" type="checkbox" name="skip-completed" checked>
-    <label class="checkbox-label" for="skip-completed"><%= t('.skip_completed') %></label>
+  <div class="form-check form-switch">
+    <input id="skip-completed" type="checkbox" class="form-check-input" name="skip-completed" checked>
+    <label class="form-check-label" for="skip-completed"><%= t('.skip_completed') %></label>
   </div>
 </div>
 

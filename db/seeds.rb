@@ -85,7 +85,7 @@ if Rails.env.development?
   %w[red pink purple deep-purple indigo teal orange brown blue-grey].each do |color|
     Label.create name: Faker::GreekPhilosophers.unique.name, color: color
   end
-  
+
   puts "Creating programming languages (#{Time.now - start})"
   ICON_MAP = {
     'python' => 'language-python',
@@ -114,6 +114,7 @@ if Rails.env.development?
   courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2020-2021', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
   courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2019-2020', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Featured course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Zonnebloem', featured: true)
 
   puts "Adding users to courses (#{Time.now - start})"
 
@@ -133,7 +134,7 @@ if Rails.env.development?
   # add some students to the moderated course
   pending = students.sample(60)
   courses[2].pending_members.concat(pending - courses[2].enrolled_members)
-  
+
   puts "Adding labels to courses (#{Time.now - start})"
   courses.each do |course|
     cl = CourseLabel.create course_id: course.id, name: Faker::CryptoCoin.unique.coin_name, created_at: Time.now, updated_at: Time.now

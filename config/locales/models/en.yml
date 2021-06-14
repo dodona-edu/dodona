@@ -42,6 +42,7 @@ en:
         visibility: Visibility
         registration: Registration
         moderated: Moderated
+        featured: Featured course
         visibilities:
           visible_for_all: Visible for everyone
           visible_for_institution: Only visible for members of the configured institution

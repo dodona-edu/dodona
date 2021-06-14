@@ -15,10 +15,12 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   def request_public_image
-    get public_repository_url(@instance, 'CodersApprentice.png')
+    get public_repository_url(@instance, 'CodersApprentice.png'), headers: { range: 'bytes=150-300' }
 
     assert_response :success
     assert_equal 'image/png', response.content_type
+    assert_equal 151, response.content_length
+    assert_equal 'bytes', response.headers['accept-ranges']
   end
 
   test_crud_actions
@@ -98,6 +100,17 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
     post remove_admin_repository_url(@instance, user_id: @admin.id)
     assert @instance.admins.include? @admin
+  end
+
+  test 'allowed courses should render' do
+    course = create :course
+    @instance.allowed_courses << course
+    get courses_repository_url(@instance)
+    assert_response :success
+    user = create :user
+    @instance.admins << user
+    get courses_repository_url(@instance)
+    assert_response :success
   end
 
   test 'zeus and repository admin should be able to edit allowed courses' do

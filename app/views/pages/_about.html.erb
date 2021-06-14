@@ -3,16 +3,16 @@
 <% end %>
 <div class="home-cover-img">&nbsp;</div>
 <div class="row">
-  <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1 col-12">
+  <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-12">
     <div class="row home-header">
-      <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-7 col-xxl-8 home-lead">
+      <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 col-xxl-8 home-lead">
         <h1>Dodona</h1>
         <p class='lead'><%= t ".learn-to-code" %><br><%= t ".higher-education" %></p>
         <% unless current_user.present? %>
           <%= link_to t(".sign-in"), sign_in_path, class: 'btn btn-primary btn-lg' %>
         <% end %>
       </div>
-      <div class="d-none d-sm-block col-sm-6 col-md-6 col-lg-6 col-xl-5 col-xxl-4">
+      <div class="d-none d-sm-block col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xxl-4">
         <%= image_tag("home.png", class: 'img-fluid') %>
       </div>
     </div>

@@ -62,12 +62,16 @@
                 </div>
                 <div class="field form-group row">
                   <div class="col-sm-6 offset-sm-3">
-                      <input type="radio" id="only_last_submission" name="only_last_submission" checked value="1">
-                      <label class="checkbox-label" for="only_last_submission"><%= t '.only_last_submission' %>
+                    <div class="form-check">
+                      <input type="radio" id="only_last_submission" class="form-check-input" name="only_last_submission" checked value="1">
+                      <label class="form-check-label" for="only_last_submission"><%= t '.only_last_submission' %>
+                    </div>
                   </div>
                   <div class="col-sm-6 offset-sm-3">
-                      <input type="radio" id="not_only_last_submissions" name="only_last_submission" value="0">
-                      <label class="checkbox-label" for="not_only_last_submissions"><%= t '.all_submissions' %>
+                    <div class="form-check">
+                      <input type="radio" id="not_only_last_submissions" class="form-check-input" name="only_last_submission" value="0">
+                      <label class="form-check-label" for="not_only_last_submissions"><%= t '.all_submissions' %>
+                    </div>
                   </div>
                 </div>
                 <div class="form-group">
@@ -75,13 +79,17 @@
                 </div>
                 <div class="field form-group row">
                   <div class="col-sm-6 offset-sm-3">
-                      <input type="radio" id="with_deadline" name="deadline" checked value="1">
-                      <label class="checkbox-label" for="with_deadline"><%= t '.with_deadline' %>
+                    <div class="form-check">
+                      <input type="radio" id="with_deadline" class="form-check-input" name="deadline" checked value="1">
+                      <label class="form-check-label" for="with_deadline"><%= t '.with_deadline' %>
+                    </div>
                   </div>
                   <span class="help-block offset-sm-3 col-sm-6"><%= t '.with_deadline_help' %></span>
                   <div class="col-sm-6 offset-sm-3">
-                      <input type="radio"  id="no_deadline" name="deadline" value="0">
-                      <label class="checkbox-label" for="no_deadline"><%= t '.no_deadline' %>
+                    <div class="form-check">
+                      <input type="radio"  id="no_deadline" class="form-check-input" name="deadline" value="0">
+                      <label class="form-check-label" for="no_deadline"><%= t '.no_deadline' %>
+                    </div>
                   </div>
                   <span class="help-block offset-sm-3 col-sm-6"><%= t '.no_deadline_help' %></span>
                 </div>
@@ -94,13 +102,17 @@
                   </div>
                   <div class="field form-group row">
                     <div class="col-sm-6 offset-sm-3">
-                        <input type="radio" id="group_by_student" name="group_by" checked value="user">
-                        <label class="checkbox-label" for="group_by_student"><%= t '.group_by_student' %>
+                      <div class="form-check">
+                        <input type="radio" id="group_by_student" class="form-check-input" name="group_by" checked value="user">
+                        <label class="form-check-label" for="group_by_student"><%= t '.group_by_student' %>
+                      </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_student_help' %></span>
                     <div class="col-sm-6 offset-sm-3">
-                        <input type="radio"  id="group_by_exercise" name="group_by" value="exercise">
-                        <label class="checkbox-label" for="group_by_exercise"><%= t '.group_by_exercise' %>
+                      <div class="form-check">
+                        <input type="radio"  id="group_by_exercise" class="form-check-input" name="group_by" value="exercise">
+                        <label class="form-check-label" for="group_by_exercise"><%= t '.group_by_exercise' %>
+                      </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
                   </div>
@@ -109,13 +121,17 @@
                   </div>
                   <div class="field form-group row">
                     <div class="col-sm-6 offset-sm-3">
-                      <input type="radio" id="all_students" name="all_students" checked value="1">
-                      <label class="checkbox-label" for="all_students"><%= t '.all_students' %>
+                      <div class="form-check">
+                        <input type="radio" id="all_students" class="form-check-input" name="all_students" checked value="1">
+                        <label class="form-check-label" for="all_students"><%= t '.all_students' %>
+                      </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.all_students_help' %></span>
                     <div class="col-sm-6 offset-sm-3">
-                      <input type="radio"  id="only_submitted" name="all_students" value="0">
-                      <label class="checkbox-label" for="only_submitted"><%= t '.only_submitted' %>
+                      <div class="form-check">
+                        <input type="radio"  id="only_submitted" class="form-check-input" name="all_students" value="0">
+                        <label class="form-check-label" for="only_submitted"><%= t '.only_submitted' %>
+                      </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.only_submitted_help' %></span>
                   </div>

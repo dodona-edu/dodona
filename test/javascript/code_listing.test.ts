@@ -58,6 +58,12 @@ test("create feedback table with default settings", () => {
     expect(document.querySelectorAll(".annotation").length).toBe(3);
 });
 
+test("html in annotations should be escaped", () => {
+    codeListing.addMachineAnnotations([{ "text": "<b>test</b>", "row": 0, "type": "warning" }]);
+
+    expect(document.querySelector(".annotation .annotation-text").textContent).toBe("<b>test</b>");
+});
+
 test("feedback table should support more than 1 annotation per row (first and last row)", () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },

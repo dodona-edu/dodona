@@ -8,13 +8,13 @@ function initAdminsEdit() {
     function initAddButtons() {
         const $buttons = $(".btn.add-admin");
         $buttons.off("click");
-        $buttons.click(onAddClick);
+        $buttons.on("click", onAddClick);
     }
 
     function initRemoveButtons() {
         const $buttons = $(".btn.remove-admin");
         $buttons.off("click");
-        $buttons.click(onRemoveClick);
+        $buttons.on("click", onRemoveClick);
     }
 
     function onAddClick() {
@@ -54,7 +54,7 @@ function initAdminsEdit() {
         $button.addClass("remove-admin");
         $button.addClass("btn-danger");
         $button.off("click");
-        $button.click(onRemoveClick);
+        $button.on("click", onRemoveClick);
         $("#admin-table-wrapper table tbody").append($oldRow.clone(true));
         $button.remove();
     }
@@ -66,7 +66,7 @@ function initAdminsEdit() {
             $cell.html("<button type='button' class='btn btn-sm add-admin'><i class='mdi mdi-account-plus mdi-18'></i></button>");
             const $button = $cell.find(".add-admin");
             $button.off("click");
-            $button.click(onAddClick);
+            $button.on("click", onAddClick);
         }
     }
 
@@ -83,13 +83,13 @@ function initCoursesEdit() {
     function initAddButtons() {
         const $buttons = $(".btn.add-course");
         $buttons.off("click");
-        $buttons.click(onAddClick);
+        $buttons.on("click", onAddClick);
     }
 
     function initRemoveButtons() {
         const $buttons = $(".btn.remove-course");
         $buttons.off("click");
-        $buttons.click(onRemoveClick);
+        $buttons.on("click", onRemoveClick);
     }
 
     function onAddClick() {
@@ -127,7 +127,7 @@ function initCoursesEdit() {
         $button.addClass("remove-course");
         $button.addClass("btn-danger");
         $button.off("click");
-        $button.click(onRemoveClick);
+        $button.on("click", onRemoveClick);
         $("#allowed-courses-table-wrapper table tbody").append($oldRow.clone(true));
         $button.remove();
     }
@@ -139,7 +139,7 @@ function initCoursesEdit() {
             $cell.html("<button type='button' class='btn btn-sm add-course'><i class='mdi mdi-plus mdi-18'></i> </button>");
             const $button = $cell.find(".add-course");
             $button.off("click");
-            $button.click(onAddClick);
+            $button.on("click", onAddClick);
         }
     }
 

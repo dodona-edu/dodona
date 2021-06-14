@@ -48,9 +48,11 @@
     <h4><%= t('.advanced_settings') %></h4>
     <div class="field form-group row">
       <div class="offset-sm-3 col-sm-6">
-        <input type="hidden" value="1" name="series[progress_enabled]">
-        <%= check_box_tag "series[progress_enabled]", "0", !@series.progress_enabled %>
-        <%= f.label :progress_enabled, t('.class_progress_disable'), class: 'checkbox-label' %>
+        <div class="form-check">
+          <input type="hidden" value="1" name="series[progress_enabled]">
+          <%= check_box_tag "series[progress_enabled]", "0", !@series.progress_enabled, class: "form-check-input" %>
+          <%= f.label :progress_enabled, t('.class_progress_disable'), class: 'form-check-label' %>
+        </div>
       </div>
       <span class="help-block offset-sm-3 col-sm-6">
         <%= t('.class_progress_disable_help') %>
@@ -59,11 +61,9 @@
   <% if series.course.institution == Institution.first %>
     <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
-        <div class="checkbox">
-          <%= f.label :indianio_support do %>
-            <%= f.check_box :indianio_support %>
-            <%= Series.human_attribute_name(:indianio_support) %>
-          <% end %>
+        <div class="form-check">
+          <%= f.check_box :indianio_support, class: "form-check-input" %>
+          <%= f.label :indianio_support, Series.human_attribute_name(:indianio_support), class:"form-check-label" %>
         </div>
       </div>
       <span class="help-block offset-sm-3 col-sm-6">
@@ -73,12 +73,10 @@
   <% end %>
   <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
-        <div class="checkbox">
-          <%= f.label :activities_visible, class: 'checkbox-label' do %>
-            <input type="hidden" value="1" name="series[activities_visible]">
-            <%= check_box_tag "series[activities_visible]", "0", !@series.activities_visible %>
-            <%= t '.hide_activities' %>
-          <% end %>
+        <div class="form-check">
+          <input type="hidden" value="1" name="series[activities_visible]">
+          <%= check_box_tag "series[activities_visible]", "0", !@series.activities_visible, class: "form-check-input" %>
+          <%= f.label :activities_visible, t('.hide_activities'), class:"form-check-label" %>
         </div>
       </div>
       <span class="help-block offset-sm-3 col-sm-6">

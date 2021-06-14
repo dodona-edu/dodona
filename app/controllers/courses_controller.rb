@@ -19,12 +19,24 @@ class CoursesController < ApplicationController
   def index
     authorize Course
     @courses = policy_scope(Course.all)
+    @show_my_courses = current_user && current_user.subscribed_courses.count > 0
+    @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
+
+    if current_user && params[:tab] == 'institution'
+      @courses = @courses.where(institution: current_user.institution)
+    elsif current_user && params[:tab] == 'my'
+      @courses = current_user.subscribed_courses
+    elsif params[:tab] == 'featured'
+      @courses = @courses.where(featured: true)
+    elsif params[:copy_courses]
+      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+    end
+
     @courses = apply_scopes(@courses)
-    @copy_courses = params[:copy_courses]
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
-    @grouped_courses = @courses.group_by(&:year)
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @institution = Institution.find(params[:institution_id]) if params[:institution_id]
+    @copy_courses = params[:copy_courses]
     @title = I18n.t('courses.index.title')
   end
 

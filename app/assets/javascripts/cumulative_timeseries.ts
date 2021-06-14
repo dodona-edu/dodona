@@ -342,7 +342,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         const exPosition = [];
         let pos = 0;
         this.exOrder.forEach(ex => {
-            exPosition.push([ex, pos]);
+            exPosition.push({ exId: ex, pos: pos });
             // rect size (15) + 5 padding + 20 inter-group padding + text length
             pos += 40 + this.fontSize/2*this.exMap[ex].length;
         });
@@ -357,7 +357,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .data(exPosition)
             .enter()
             .append("g")
-            .attr("transform", d => `translate(${d[1]}, 0)`);
+            .attr("transform", d => `translate(${d.pos}, 0)`);
 
         // add legend colors dots
         legend
@@ -366,7 +366,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("y", 0)
             .attr("width", 15)
             .attr("height", 15)
-            .attr("fill", ex => this.color(ex[0]) as string);
+            .attr("fill", ex => this.color(ex.exId) as string);
 
         // add legend text
         legend
@@ -374,7 +374,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("x", 20)
             .attr("y", 12)
             .attr("text-anchor", "start")
-            .text(ex => this.exMap[ex[0]])
+            .text(ex => this.exMap[ex.exId])
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
     }

@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { RawData, SeriesGraph } from "series_graph";
 
 export class CTimeseriesGraph extends SeriesGraph {
-    protected readonly baseUrl = "/nl/stats/cumulative_timeseries?series_id=";
+    protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
     private readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
     private innerWidth: number; // graph width
     private innerHeight: number; // graph height

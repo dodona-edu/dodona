@@ -2,7 +2,7 @@ import * as d3 from "d3";
 import { RawData, SeriesGraph } from "series_graph";
 
 export class TimeseriesGraph extends SeriesGraph {
-    protected readonly baseUrl = "/nl/stats/timeseries?series_id=";
+    protected readonly baseUrl = "/stats/timeseries?series_id=";
     private readonly margin = { top: 20, right: 40, bottom: 20, left: 140 };
     private readonly fontSize = 12;
     private readonly yAxisPadding = 40; // padding between y axis (labels) and the actual graph

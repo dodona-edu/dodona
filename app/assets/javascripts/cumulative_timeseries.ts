@@ -235,8 +235,8 @@ export class CTimeseriesGraph extends SeriesGraph {
     */
     private tooltipDefault(): void {
         this.tooltipIndex = -1;
-        const date = this.dateArray[this.dateArray.length-1];
         const last = this.dateArray.length-1;
+        const date = this.dateArray[last];
         this.tooltipLine
             .attr("x1", this.x(date))
             .attr("x2", this.x(date))

@@ -77,7 +77,7 @@ export class StackedStatusGraph extends SeriesGraph {
         const statePosition = [];
         let pos = 0;
         this.statusOrder.forEach(s => {
-            statePosition.push([s, pos]);
+            statePosition.push({ status: s, pos: pos });
             // rect size (15) + 5 padding + 20 inter-group padding + text length
             pos += 40 + this.fontSize/2*s.length;
         });
@@ -93,7 +93,7 @@ export class StackedStatusGraph extends SeriesGraph {
             .data(statePosition)
             .enter()
             .append("g")
-            .attr("transform", d => `translate(${d[1]}, 0)`);
+            .attr("transform", d => `translate(${d.pos}, 0)`);
 
         // add legend colors dots
         legend
@@ -102,7 +102,7 @@ export class StackedStatusGraph extends SeriesGraph {
             .attr("y", 0)
             .attr("width", 15)
             .attr("height", 15)
-            .attr("fill", s => color(s[0]) as string);
+            .attr("fill", s => color(s.status) as string);
 
         // add legend text
         legend
@@ -110,7 +110,7 @@ export class StackedStatusGraph extends SeriesGraph {
             .attr("x", 20)
             .attr("y", 12)
             .attr("text-anchor", "start")
-            .text(s => s[0])
+            .text(s => s.status)
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
 

@@ -85,7 +85,7 @@
       </div>
     </div>
 
-    <% if current_user.zeus? %>
+    <% if f.permission?(:color) %>
       <div class="field form-group row">
         <%= f.label :color, class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6">
@@ -96,6 +96,8 @@
                        {class: 'form-select'} %>
         </div>
       </div>
+    <% end %>
+    <% if f.permission?(:featured) %>
       <div class="field form-group row">
         <%= f.label :featured, t(".featured.title"), class: 'col-sm-3 col-form-label' %>
         <div class="col-sm-6 pt-2">

@@ -36,7 +36,7 @@ export class StackedStatusGraph extends SeriesGraph {
         const graph = svg
             .append("g")
             .attr("transform",
-                "translate(" + this.margin.left + "," + this.margin.top + ")");
+                `translate(${this.margin.left}, ${this.margin.top})`);
 
         // Show the Y scale
         const y = d3.scaleBand()

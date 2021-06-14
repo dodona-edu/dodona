@@ -59,7 +59,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.graph = this.svg
             .append("g")
             .attr("transform",
-                "translate(" + this.margin.left + "," + this.margin.top + ")");
+                `translate(${this.margin.left}, ${this.margin.top})`);
 
         // axis and scale settings
         // -----------------------------------------------------------------------------------------
@@ -286,8 +286,8 @@ export class CTimeseriesGraph extends SeriesGraph {
                 5 < 0;
             // use main label as reference for switch condition
             const switchDots = this.x(date) +
-            this.fontSize/2*labelMsg.length +
-            5 > this.innerWidth;
+                this.fontSize/2*labelMsg.length +
+                5 > this.innerWidth;
             this.tooltipLabel
                 .attr("opacity", 1)
                 .text(this.longDateFormat(date))

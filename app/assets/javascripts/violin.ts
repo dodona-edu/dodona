@@ -41,7 +41,7 @@ export class ViolinGraph extends SeriesGraph {
     * draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
     */
-    protected draw(): void {
+    protected override draw(): void {
         this.height = 75 * this.exOrder.length;
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
@@ -220,7 +220,7 @@ export class ViolinGraph extends SeriesGraph {
      * can be called recursively when a 'data not yet available' response is received
      * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected processData(raw: RawData): void {
+    protected override processData(raw: RawData): void {
         this.parseExercises(raw.exercises, raw.data.map(ex => ex.exId));
         // transform data into array of records for easier binning
         this.data = raw.data.map(ex => ({

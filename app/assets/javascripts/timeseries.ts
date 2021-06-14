@@ -54,7 +54,7 @@ export class TimeseriesGraph extends SeriesGraph {
         this.graph = this.svg
             .append("g")
             .attr("transform",
-                "translate(" + this.margin.left + "," + this.margin.top + ")");
+                `translate(${this.margin.left}, ${this.margin.top})`);
 
         // init scales
         // Y scale for exercises

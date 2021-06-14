@@ -59,7 +59,7 @@ export class ViolinGraph extends SeriesGraph {
         const graph = svg
             .append("g")
             .attr("transform",
-                "translate(" + this.margin.left + "," + this.margin.top + ")");
+                `translate(${this.margin.left}, ${this.margin.top})`);
 
         // Show the Y scale for the exercises (Big Y scale)
         const y = d3.scaleBand()

@@ -141,7 +141,7 @@ class SeriesController < ApplicationController
       user = User.find_by(email: email)
       if user
         options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
-        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options: options).bundle
+        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options: options, for_user: user).bundle
       else
         render json: { errors: ['Unknown email'] }, status: :not_found
       end

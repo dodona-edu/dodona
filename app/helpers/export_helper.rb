@@ -2,6 +2,8 @@ require 'zip'
 
 module ExportHelper
   class Zipper
+    include Pundit
+
     attr_reader :users, :item, :errors
 
     CONVERT_TO_BOOL = %w[indianio deadline all_students only_last_submission with_info all with_labels].freeze
@@ -19,6 +21,7 @@ module ExportHelper
       @options = get_options(kwargs[:options])
       @list = kwargs[:list]
       @users = kwargs[:users]
+      @for_user = kwargs[:for_user]
       case @item
       when Series
         @list = @item.exercises if all?
@@ -247,7 +250,7 @@ module ExportHelper
     end
 
     def get_submissions_for_series(selected_exercises, users)
-      submissions = Submission.all.where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id)).includes(:user, :exercise)
+      submissions = policy_scope(Submission).all.where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id)).includes(:user, :exercise)
       submissions = submissions.before_deadline(@options[:deadline]) if deadline?
       submissions = submissions.group(:user_id, :exercise_id).most_recent if only_last_submission?
       submissions.sort_by { |s| [selected_exercises.map(&:id).index(s.exercise_id), users.map(&:id).index(s.user_id), s.id] }
@@ -261,7 +264,7 @@ module ExportHelper
     end
 
     def get_submissions_for_user(selected_courses)
-      return Submission.of_user(@item).includes(:user, :exercise) if all? # allow submissions without a course
+      return policy_scope(Submission).of_user(@item).includes(:user, :exercise) if all? # allow submissions without a course
 
       selected_courses.map { |course| get_submissions_for_course(course.series, @users) }.flatten
     end
@@ -284,6 +287,10 @@ module ExportHelper
       options = params.select { |key, _| SUPPORTED_OPTIONS.include? key.to_s }
       CONVERT_TO_BOOL.each { |key| options[key.to_sym] = ActiveModel::Type::Boolean.new.cast(options[key.to_sym].to_s.downcase) }
       options
+    end
+
+    def current_user
+      @for_user
     end
   end
 end

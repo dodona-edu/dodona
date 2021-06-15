@@ -149,6 +149,27 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     assert_zip ActiveStorage::Blob.last.download, options
   end
 
+  test 'should not contain submissions from other courses, especially when rights are not there' do
+    s1 = create :series, :with_submissions, course: @course, exercise_submission_users: @students
+    s2 = create :series, course: (create :course)
+    s2.exercises = s1.exercises
+    s2.course.users = s1.course.users
+    u = create :user
+    s1.course.administrating_members << u
+    create :submission, exercise: s2.exercises.first, course: s2.course, user: @students.first
+    options = {
+      only_last_submission: false,
+      data: @data,
+      solution_count: Submission.all.in_course(@course).count,
+      all: true
+    }
+    sign_in u
+    post courses_exports_path(@course), params: options
+    assert_redirected_to exports_path
+    options[:group_by] = 'series'
+    assert_zip ActiveStorage::Blob.last.download, options
+  end
+
   test 'should download one submission per exercise from each series from course' do
     options = {
       only_last_submission: true,

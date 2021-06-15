@@ -1,7 +1,10 @@
 @include media-breakpoint-up(lg) {
   .feedback-metadata {
     position: sticky;
-    top: 70px !important;
+    top: calc(#{$navbar-height} + 20px) !important;
+    min-height: 100px;
+    max-height: calc(100vh - (#{$navbar-height} + 20px));
+    overflow-y: auto;
   }
 }
 

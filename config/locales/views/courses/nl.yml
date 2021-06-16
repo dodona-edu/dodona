@@ -17,7 +17,7 @@ nl:
       registration-open_for_all-help_html: Iedereen kan zich voor deze cursus registreren.
       registration-open_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen zich voor deze cursus registreren.
       registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
-      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
       visibility-label: Voor wie is deze cursus zichtbaar?
       registration-label: Wie kan zich registreren voor deze cursus?
       moderated-label: Hoe wil je nieuwe registraties goedkeuren?

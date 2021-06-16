@@ -17,7 +17,7 @@ en:
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
-      description-help: A description is optional. Markdown formatting can be used.
+      description-help_html: A description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting can be used.
       visibility-label: For whom is this course visible?
       registration-label: Who can register for this course?
       moderated-label: How do you want to approve new registrations

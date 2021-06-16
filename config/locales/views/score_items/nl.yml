@@ -1,7 +1,7 @@
 nl:
   score_items:
     form:
-      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.
+      description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden. Dit is zichtbaar voor de studenten.
       visible-help: Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is.
       save: Opslaan
       add: Toevoegen

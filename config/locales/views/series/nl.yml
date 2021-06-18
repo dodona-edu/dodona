@@ -1,7 +1,7 @@
 nl:
   series:
     form:
-      description-help: Een beschrijving is optioneel en kan in Markdown geschreven worden.
+      description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
       visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.

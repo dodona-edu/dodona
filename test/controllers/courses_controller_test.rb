@@ -437,8 +437,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'signed out users should be able to see the courses listing' do
     get courses_url
     assert_response :success
-    # we only expect the "all courses" tab to show for signed out users
-    assert_select '#course-tabs li', 1
+    # we only expect the "all courses" and "featured courses" tabs to show for signed out users
+    assert_select '#course-tabs li', 2
   end
 
   test 'users should be able to filter courses' do
@@ -464,6 +464,22 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     courses = JSON.parse response.body
     assert_equal 2, courses.length
+  end
+
+  test 'featured courses should only show featured courses' do
+    get courses_url, params: { format: :json }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 1, courses.length
+    get courses_url, params: { format: :json, tab: 'featured' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 0, courses.length
+    @course.update(featured: true)
+    get courses_url, params: { format: :json, tab: 'featured' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 1, courses.length
   end
 
   test 'users should be able to favorite subscribed courses' do

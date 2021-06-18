@@ -193,8 +193,12 @@ $annotation-info: $info-500;
     }
 
     .annotation-text {
-      display: block;
       word-break: break-word;
+      padding-bottom: 4px;
+
+      p:last-child {
+        margin-bottom: 0;
+      }
 
       // Override the normal pre padding & coloring
       pre {

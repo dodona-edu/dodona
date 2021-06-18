@@ -1,7 +1,7 @@
 en:
   score_items:
     form:
-      description-help: A description is optional. Markdown formatting can be used. This is visible to the students.
+      description-help_html: A description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting can be used. This is visible to the students.
       visible-help: Make the score item visible to students once the evaluation is released.
       save: Save
       add: Add

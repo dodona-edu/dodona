@@ -114,7 +114,7 @@ nl:
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Annotatie bewerken'
-      help: 'Druk Shift + Enter om te verzenden. Markdown wordt ondersteund.'
+      help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a>  wordt ondersteund.'
       fields:
         annotation_text: 'Annotatie tekst'
       delete_confirm: 'Ben je zeker dat je deze annotatie wil verwijderen?'

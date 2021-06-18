@@ -131,7 +131,7 @@ class FeedbackTableRenderer
   def tab_id(t, i)
     prefix = t[:description]&.parameterize
     prefix = 'test' if prefix.blank?
-    "#{prefix}-#{i}"
+    "tab-#{prefix}-#{i}"
   end
 
   def tab_content(t)

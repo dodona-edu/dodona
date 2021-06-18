@@ -1,7 +1,7 @@
 en:
   series:
     form:
-      description-help: Adding a description is optional. Markdown formatting is supported.
+      description-help_html: Adding a description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting is supported.
       visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       indianio-support-help: Allow students' solutions to be extracted by Indianio.

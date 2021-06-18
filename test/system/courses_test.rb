@@ -20,7 +20,7 @@ class CoursesTest < ApplicationSystemTestCase
     sign_in zeus
 
     visit(courses_path)
-    assert_selector '#course-tabs li', count: 3
+    assert_selector '#course-tabs li', count: 4
     assert_selector 'a[href="#institution"].active'
     assert_selector '#courses-table-wrapper tbody tr', count: 2
 

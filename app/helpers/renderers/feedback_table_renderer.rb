@@ -29,7 +29,7 @@ class FeedbackTableRenderer
 
   def parse
     if @result.present?
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
+      @builder.div(class: 'feedback-table', 'data-exercise_id': @exercise.id) do
         if @result[:messages].present?
           @builder.div(class: 'feedback-table-messages') do
             messages(@result[:messages])
@@ -39,7 +39,7 @@ class FeedbackTableRenderer
         init_js
       end.html_safe
     else
-      @builder.div(class: 'feedback-table', "data-exercise_id": @exercise.id) do
+      @builder.div(class: 'feedback-table', 'data-exercise_id': @exercise.id) do
         @builder.div(class: 'feedback-table-messages') do
           messages([{ description: I18n.t('submissions.show.reading_failed'), format: 'plain' }])
         end

@@ -54,7 +54,7 @@ class Course < ApplicationRecord
 
   enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
   enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
-  enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
+  enum color: { red: 0, pink: 1, purple: 2, 'deep-purple': 3, indigo: 4, teal: 5, orange: 6, brown: 7, 'blue-grey': 8 }
 
   # TODO: Remove and use activities?
   has_many :content_pages,

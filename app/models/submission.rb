@@ -25,7 +25,7 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: { unknown: 0, correct: 1, wrong: 2, "time limit exceeded": 3, running: 4, queued: 5, "runtime error": 6, "compilation error": 7, "memory limit exceeded": 8, "internal error": 9, "output limit exceeded": 10 }
+  enum status: { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
 
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
@@ -376,7 +376,7 @@ class Submission < ApplicationRecord
   end
 
   def report_if_internal_error
-    return unless status_changed? && send(:"internal error?")
+    return unless status_changed? && send(:'internal error?')
 
     ExceptionNotifier.notify_exception(
       Exception.new("Submission(#{id}) status was changed to internal error"),

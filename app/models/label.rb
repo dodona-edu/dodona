@@ -11,7 +11,7 @@ class Label < ApplicationRecord
   has_many :activity_labels, dependent: :restrict_with_error
   has_many :activities, through: :activity_labels
 
-  enum color: { red: 0, pink: 1, purple: 2, "deep-purple": 3, indigo: 4, teal: 5, orange: 6, brown: 7, "blue-grey": 8 }
+  enum color: { red: 0, pink: 1, purple: 2, 'deep-purple': 3, indigo: 4, teal: 5, orange: 6, brown: 7, 'blue-grey': 8 }
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
 

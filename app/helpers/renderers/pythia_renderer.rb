@@ -62,8 +62,8 @@ class PythiaRenderer < FeedbackTableRenderer
   def group(g)
     if g.key?(:data)
       @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}",
-                   "data-statements": (g[:data][:statements]).to_s,
-                   "data-stdin": (g[:data][:stdin]).to_s) do
+                   'data-statements': (g[:data][:statements]).to_s,
+                   'data-stdin': (g[:data][:stdin]).to_s) do
         @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
           @builder.div(class: 'tutor-strip-icon') do
             @builder.i('', class: 'mdi mdi-launch mdi-18')
@@ -90,7 +90,7 @@ class PythiaRenderer < FeedbackTableRenderer
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
     end.to_h.to_json
-    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", "data-files": jsonfiles) do
+    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
       testcase_content(tc)
     end
   end
@@ -109,7 +109,7 @@ class PythiaRenderer < FeedbackTableRenderer
 
     # Tutor HTML
     @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade', "data-backdrop": true, tabindex: -1) do
+      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
         @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
           @builder.div(class: 'modal-content') do
             @builder.div(class: 'modal-header') do
@@ -118,7 +118,7 @@ class PythiaRenderer < FeedbackTableRenderer
                 @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
                   @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
                 end
-                @builder.button(type: 'button', class: 'btn btn-link btn-sm', "data-bs-dismiss": 'modal') do
+                @builder.button(type: 'button', class: 'btn btn-link btn-sm', 'data-bs-dismiss': 'modal') do
                   @builder.i('', class: 'mdi mdi-close mdi-18')
                 end
               end

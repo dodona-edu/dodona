@@ -3,6 +3,10 @@ name: Deploy Naos
 on:
   workflow_dispatch:
 
+concurrency: 
+  group: deploy-naos
+  cancel-in-progress: true
+
 jobs:
   deploy:
     environment: 
@@ -10,10 +14,6 @@ jobs:
       url: https://naos.ugent.be
     runs-on: ubuntu-latest
     steps:
-    - name: Cancel previous deployments
-      uses: styfle/cancel-workflow-action@0.9.0
-      with:
-        access_token: ${{ github.token }}
     - name: Install SSH key
       uses: shimataro/ssh-key-action@v2
       with:

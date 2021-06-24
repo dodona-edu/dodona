@@ -152,7 +152,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Get the provider type.
     provider_type = auth_provider_type || request.env['omniauth.error.strategy']&.name || 'OAuth2'
-    set_flash_message :notice, :failure, kind: provider_type, reason: reason
+    set_flash_message :alert, :failure, kind: provider_type, reason: reason
+    flash[:contact] = true
   end
 
   def redirect_to_preferred_provider!
@@ -279,13 +280,5 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def provider_missing!
     flash_failure I18n.t('auth.sign_in.errors.missing-provider')
     redirect_to sign_in_path
-  end
-
-  def find_message(kind, options = {})
-    if kind == :failure
-      # Include the contact us prompt on failure.
-      flash[:contact] = true
-    end
-    super(kind, options)
   end
 end

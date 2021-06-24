@@ -75,7 +75,7 @@ GEM
       execjs (> 0)
     bcrypt (3.1.16)
     bcrypt_pbkdf (1.1.0)
-    bindata (2.4.8)
+    bindata (2.4.10)
     bindex (0.8.1)
     bootsnap (1.7.5)
       msgpack (~> 1.0)

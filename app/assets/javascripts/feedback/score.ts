@@ -76,7 +76,6 @@ export default class ScoreForm {
                     return;
                 }
                 updating = true;
-                console.log("execute");
                 this.sendUpdate(document.activeElement as HTMLElement);
             }, 400);
         });

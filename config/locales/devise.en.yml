@@ -30,7 +30,8 @@ en:
       user_not_created: "user creation failed"
       unknown_failure: "an unknown failure has occurred"
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
-      wrong_provider: "Sorry, we couldn't sign you in with %{tried_provider_type} from %{tried_provider_institution} because the email address is already linked to another Dodona account. Sign in with %{user_provider_type} from %{user_institution} instead."
+      wrong_provider: "The email address you used to log in via %{tried_provider_type} (%{tried_provider_institution}) was used previously to log in via %{user_provider_type} (%{user_institution}). You probably chose the wrong login method."
+      wrong_provider_extra: "Log in via %{user_provider_type}"
       linked: Because you have not signed in to Dodona via Ufora before, we could not execute the requested operation. Now that your UGent-account has successfully been linked, this should work. Retry clicking on the link in Ufora to try again.
       success: "Successfully authenticated from %{kind} account."
     passwords:

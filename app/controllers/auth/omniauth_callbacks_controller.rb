@@ -153,7 +153,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Get the provider type.
     provider_type = auth_provider_type || request.env['omniauth.error.strategy']&.name || 'OAuth2'
     set_flash_message :alert, :failure, kind: provider_type, reason: reason
-    flash[:contact] = true
+    flash[:extra] = { url: contact_path, message: I18n.t('pages.contact.prompt') }
   end
 
   def redirect_to_preferred_provider!
@@ -212,7 +212,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                       tried_provider_institution: tried_provider.institution.name,
                       user_provider_type: user_provider.class.sym.to_s,
                       user_institution: user_provider.institution.name
-    flash[:contact] = true
+    flash[:extra] = { message: I18n.t('devise.omniauth_callbacks.wrong_provider_extra', user_provider_type: user_provider.class.sym.to_s), url: omniauth_authorize_path(:user, user_provider.class.sym, provider: user_provider) }
   end
 
   def redirect_to_target!(user)

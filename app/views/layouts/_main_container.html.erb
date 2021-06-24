@@ -6,7 +6,7 @@
         <div class="alert alert-<%= type %>">
           <strong><%= t("layout.messages.#{type}") %></strong>
           <%= value %>
-          <%= link_to(t('pages.contact.prompt'), contact_path) if flash[:contact] %>
+          <%= link_to(flash[:extra]["message"], flash[:extra]["url"]) if flash[:extra] %>
         </div>
       <% end %>
     <% end %>

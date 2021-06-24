@@ -31,7 +31,7 @@ en:
       no_answer: "No"
       no_explanation: "Continue to the evaluation"
       second_step: "Create a scoring scheme"
-      second_explanation: You can create a grading scheme below for each exercise. You can always change these later.
+      second_explanation: You can create a scoring scheme below for each exercise. You can always change these later.
       summary_html:
         zero: There are <strong>no</strong> score items configured for this evaluation
         one: "There is <strong>one</strong> score item for this evaluation, with a maximum score of <strong>%{score}</strong>."

@@ -192,12 +192,27 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                      .user_unable_to_log_in
                      .deliver_later
 
-    redirect_with_flash! resource.errors.full_messages.to_sentence
+    first_error = resource.errors.first
+    if first_error.attribute == :institution && first_error.type.to_s == 'must be unique'
+      flash_wrong_provider provider, resource.identities.first.provider
+      redirect_to root_path
+    else
+      redirect_with_flash! resource.errors.full_messages.to_sentence
+    end
   end
 
   def redirect_with_flash!(message)
     flash_failure message
     redirect_to root_path
+  end
+
+  def flash_wrong_provider(tried_provider, user_provider)
+    set_flash_message :alert, :wrong_provider,
+                      tried_provider_type: tried_provider.class.sym.to_s,
+                      tried_provider_institution: tried_provider.institution.name,
+                      user_provider_type: user_provider.class.sym.to_s,
+                      user_institution: user_provider.institution.name
+    flash[:contact] = true
   end
 
   def redirect_to_target!(user)

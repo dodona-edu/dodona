@@ -152,7 +152,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Get the provider type.
     provider_type = auth_provider_type || request.env['omniauth.error.strategy']&.name || 'OAuth2'
-    set_flash_message :notice, :failure, kind: provider_type, reason: reason
+    set_flash_message :alert, :failure, kind: provider_type, reason: reason
+    flash[:extra] = { url: contact_path, message: I18n.t('pages.contact.prompt') }
   end
 
   def redirect_to_preferred_provider!
@@ -191,12 +192,27 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                      .user_unable_to_log_in
                      .deliver_later
 
-    redirect_with_flash! resource.errors.full_messages.to_sentence
+    first_error = resource.errors.first
+    if first_error.attribute == :institution && first_error.type.to_s == 'must be unique'
+      flash_wrong_provider provider, resource.identities.first.provider
+      redirect_to root_path
+    else
+      redirect_with_flash! resource.errors.full_messages.to_sentence
+    end
   end
 
   def redirect_with_flash!(message)
     flash_failure message
     redirect_to root_path
+  end
+
+  def flash_wrong_provider(tried_provider, user_provider)
+    set_flash_message :alert, :wrong_provider,
+                      tried_provider_type: tried_provider.class.sym.to_s,
+                      tried_provider_institution: tried_provider.institution.name,
+                      user_provider_type: user_provider.class.sym.to_s,
+                      user_institution: user_provider.institution.name
+    flash[:extra] = { message: I18n.t('devise.omniauth_callbacks.wrong_provider_extra', user_provider_type: user_provider.class.sym.to_s), url: omniauth_authorize_path(:user, user_provider.class.sym, provider: user_provider) }
   end
 
   def redirect_to_target!(user)
@@ -279,13 +295,5 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def provider_missing!
     flash_failure I18n.t('auth.sign_in.errors.missing-provider')
     redirect_to sign_in_path
-  end
-
-  def find_message(kind, options = {})
-    if kind == :failure
-      # Include the contact us prompt on failure.
-      flash[:contact] = true
-    end
-    super(kind, options)
   end
 end

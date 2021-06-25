@@ -79,8 +79,8 @@ nl:
         one: "Één annotatie"
         other: "%{count} annotaties"
       no_submission: "Je had geen tijdige oplossing voor deze oefening"
-      no_grades: "Geen"
       invisible_total: "De totaalscore is niet zichtbaar"
+      no_grading: "Deze oefening staat niet op punten"
     members_table:
       remove_user: Student verwijderen uit evaluatie
       remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"

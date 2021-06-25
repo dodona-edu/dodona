@@ -13,8 +13,9 @@
         <table class="table table-resource grade-feedback-table">
           <thead>
             <tr>
-              <th><%= t('.exercise') %></th>
-              <th colspan="2"><%= t('.feedback') %></th>
+              <th><%= t '.exercise' %></th>
+              <th><%= t '.feedback' %></th>
+              <th><%= t '.grade' %></th>
               <th class="actions"></th>
             </tr>
           </thead>
@@ -30,7 +31,11 @@
                 </td>
                 <td>
                   <% if graded %>
-                    <%= t "feedbacks.score_table.total_score" %>
+                    <% if fb.maximum_score %>
+                      <%= t "feedbacks.score_table.total_score" %>
+                    <% else %>
+                      <%= t ".no_grading" %>
+                    <% end %>
                     <br>
                     <span class="text-muted small">
                       <% if fb.submission.present? %>
@@ -52,7 +57,9 @@
                     <% if fb.maximum_score %>
                       <%= format_score fb.score %> / <%= format_score fb.maximum_score %>
                     <% elsif graded %>
-                      <%= t ".no_grades" %>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
+                        -
+                      </span>
                     <% end %>
                   <% else %>
                     <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">

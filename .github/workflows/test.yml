@@ -139,7 +139,7 @@ jobs:
         bundle exec rails test:system
     - name: Upload screenshot artifacts
       if: failure()
-      uses: actions/upload-artifact@v2.2.3
+      uses: actions/upload-artifact@v2.2.4
       with:
         name: screenshots-failure
         path: tmp/screenshots

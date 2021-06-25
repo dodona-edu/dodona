@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class UserPolicyTest < ActiveSupport::TestCase
+class ScorePolicyTest < ActiveSupport::TestCase
   setup do
     @evaluation = create :evaluation, :with_submissions
     @staff_member = create :staff

@@ -1,12 +1,12 @@
 <div id="main-container" class="<%= content_for?(:container_class) ? yield(:container_class) : "container" %> main">
-  <div class="page-messages hidden-print">
+  <div class="page-messages hidden-print" data-nosnippet>
     <% flash.each do |key, value| %>
       <% type = flash_to_bootstrap(key) %>
       <% if value.present? && type.present? %>
         <div class="alert alert-<%= type %>">
           <strong><%= t("layout.messages.#{type}") %></strong>
           <%= value %>
-          <%= link_to(t('pages.contact.prompt'), contact_path) if flash[:contact] %>
+          <%= link_to(flash[:extra]["message"], flash[:extra]["url"]) if flash[:extra] %>
         </div>
       <% end %>
     <% end %>

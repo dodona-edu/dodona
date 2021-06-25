@@ -298,6 +298,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $("#activity-feedback-link").data("submission_id") === lastSubmission) {
                     loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
                 }
+                showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);
                 new Toast(I18n.t("js.submission-processed"));
                 lastSubmission = null;
@@ -306,11 +307,42 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function enableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", false).removeClass("busy mdi-timer-sand-empty mdi-spin").addClass("mdi-play");
+        $("#editor-process-btn")
+            .prop("disabled", false)
+            .removeClass("busy mdi-timer-sand-empty mdi-spin")
+            .addClass("mdi-play");
     }
 
     function disableSubmitButton() {
-        $("#editor-process-btn").prop("disabled", true).removeClass("mdi-play").addClass("busy mdi-timer-sand-empty mdi-spin");
+        $("#editor-process-btn")
+            .prop("disabled", true)
+            .removeClass("mdi-play")
+            .addClass("busy mdi-timer-sand-empty mdi-spin");
+    }
+
+    function showFABStatus(status) {
+        const fab = document.getElementById("submission-copy-btn");
+        const icon = fab.children[0];
+        icon.classList.remove("mdi-pencil");
+        if (status === "correct") {
+            fab.classList.add("correct");
+            icon.classList.add(getPositiveEmoji());
+        } else {
+            fab.classList.add("wrong");
+            icon.classList.add("mdi-emoticon-sad-outline");
+        }
+        setTimeout(resetFABStatus, 4000);
+    }
+    function resetFABStatus() {
+        const fab = document.getElementById("submission-copy-btn");
+        const icon = fab.children[0];
+        fab.classList.remove("correct", "wrong");
+        icon.classList.remove(...icon.classList);
+        icon.classList.add("mdi", "mdi-36", "mdi-pencil");
+    }
+    function getPositiveEmoji() {
+        const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "shimmer", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
+        return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
     }
 
     function submissionSuccessful(data, userId) {

@@ -24,116 +24,155 @@
           <% if policy(Submission).index? %>
             <li>
               <%= activatable_link_to submissions_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.submissions')  do %>
                 <%= custom_icon 'submissions' %>
-                <%= t('layout.menu.submissions') %>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.submissions') %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Activity).index? %>
             <li>
               <%= activatable_link_to activities_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.activities') do %>
                 <%= custom_icon 'exercises' %>
-                <%= t("layout.menu.activities") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.activities") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(User).index? %>
             <li>
               <%= activatable_link_to users_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.users') do %>
                 <i class="mdi mdi-account-multiple mdi-24"></i>
-                <%= t("layout.menu.users") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.users") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Course).index? %>
             <li>
               <%= activatable_link_to courses_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.courses') do %>
                 <i class="mdi mdi-book-multiple mdi-24"></i>
-                <%= t("layout.menu.courses") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.courses") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Question).index? %>
             <li>
               <%= activatable_link_to questions_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.questions') do %>
                 <i class="mdi mdi-account-question mdi-24"></i>
-                <%= t("layout.menu.questions") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.questions") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Judge).index? %>
             <li>
               <%= activatable_link_to judges_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.judges') do %>
                 <i class="mdi mdi-gavel mdi-24"></i>
-                <%= t("layout.menu.judges") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.judges") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Repository).index? %>
             <li>
               <%= activatable_link_to repositories_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.repositories') do %>
                 <i class="mdi mdi-server mdi-24"></i>
-                <%= t("layout.menu.repositories") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.repositories") %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Label).index? %>
             <li>
               <%= activatable_link_to labels_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.labels') do %>
                 <i class="mdi mdi-palette-swatch mdi-24"></i>
-                <%= t('layout.menu.labels') %>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.labels') %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(ProgrammingLanguage).index? %>
             <li>
               <%= activatable_link_to programming_languages_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.programming_languages') do %>
                 <i class='mdi mdi-code-tags mdi-24'></i>
-                <%= t("layout.menu.programming_languages") %>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.programming_languages") %>
+                </div>
               <% end %>
           <% end %>
           <% if policy(Institution).index? %>
             <li>
               <%= activatable_link_to institutions_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.institutions') do %>
                 <i class="mdi mdi-library mdi-24"></i>
-                <%= t('layout.menu.institutions') %>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.institutions') %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(Event).index? %>
             <li>
               <%= activatable_link_to events_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.events') do %>
                 <i class="mdi mdi-calendar mdi-24"></i>
-                <%= t('layout.menu.events') %>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.events') %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if policy(RightsRequest).index? %>
             <li>
               <%= activatable_link_to rights_requests_path,
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.rights_requests') do %>
                 <i class="mdi mdi-account-plus mdi-24"></i>
-                <%= t('layout.menu.rights_requests') %>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.rights_requests') %>
+                </div>
               <% end %>
             </li>
           <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",
-                                      class: 'drawer-list-item' do %>
+                                      class: 'drawer-list-item',
+                                      title: 'Job queue' do %>
                 <i class="mdi mdi-plus-box-multiple mdi-24"></i>
-                Job queue
+                <div class="drawer-list-ellipsis">
+                  Job queue
+                </div>
               <% end %>
             </li>
           <% end %>
@@ -143,27 +182,42 @@
     <div class="drawer-group">
       <ul class="drawer-list">
         <li><%= activatable_link_to user_path(current_user),
-                                    class: 'drawer-list-item' do %>
+                                    class: 'drawer-list-item',
+                                    title: t('layout.menu.profile') do %>
             <i class="mdi mdi-account-circle mdi-24"></i>
-            <%= t("layout.menu.profile") %>
+            <div class="drawer-list-ellipsis">
+              <%= t("layout.menu.profile") %>
+            </div>
           <% end %>
         </li>
         <li>
-          <%= link_to "https://docs.dodona.be/#{I18n.locale}/news/", class: 'drawer-list-item' do %>
+          <%= link_to "https://docs.dodona.be/#{I18n.locale}/news/",
+                                    class: 'drawer-list-item',
+                                    title: t('layout.menu.news') do %>
             <i class="mdi mdi-alert-decagram mdi-24"></i>
-            <%= t('layout.menu.news') %>
+            <div class="drawer-list-ellipsis">
+              <%= t('layout.menu.news') %>
+            </div>
           <% end %>
         </li>
         <li>
-          <%= link_to "https://docs.dodona.be/#{I18n.locale}", class: 'drawer-list-item' do %>
+          <%= link_to "https://docs.dodona.be/#{I18n.locale}",
+                                    class: 'drawer-list-item',
+                                    title: t('layout.menu.manual') do %>
             <i class="mdi mdi-help-circle mdi-24"></i>
-            <%= t('layout.menu.manual') %>
+            <div class="drawer-list-ellipsis">
+              <%= t('layout.menu.manual') %>
+            </div>
           <% end %>
         </li>
         <li>
-          <%= link_to sign_out_path, method: :delete do %>
+          <%= link_to sign_out_path, method: :delete,
+                                    class: 'drawer-list-item',
+                                    title: t('layout.menu.log_out') do %>
             <i class="mdi mdi-power mdi-24"></i>
-            <%= t('layout.menu.log_out') %>
+            <div class="drawer-list-ellipsis">
+              <%= t('layout.menu.log_out') %>
+            </div>
           <% end %>
         </li>
       </ul>

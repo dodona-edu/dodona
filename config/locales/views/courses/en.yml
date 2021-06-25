@@ -52,7 +52,7 @@ en:
         title: Featured course
         toggle-label: Feature this course
     index:
-      title: All courses
+      title: Courses
       users: "Users"
       exercises: "Exercises"
       institution_courses: "%{institution} courses"

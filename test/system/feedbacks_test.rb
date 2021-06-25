@@ -8,6 +8,9 @@ class FeedbacksTest < ApplicationSystemTestCase
   # Make `assert_*` methods behave like Minitest assertions
   include Capybara::Minitest::Assertions
 
+  # Note for all tests: the score input has a delay before the changes are submitted.
+  # We use selectors with ":not(.in-progress)" to make capybara wait on the refresh
+  # before continuing
   setup do
     result = File.read(Rails.root.join('db/results/python-result.json'))
     code_lines = Faker::Lorem.sentences(number: 5)
@@ -54,9 +57,9 @@ class FeedbacksTest < ApplicationSystemTestCase
     # Check that we can modify existing scores
     first_input.fill_in with: '9.0'
     second_input.click
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
     assert_equal BigDecimal('9.0'), @score.score
@@ -64,7 +67,8 @@ class FeedbacksTest < ApplicationSystemTestCase
     # Add new score for second score_item
     second_input.fill_in with: '10.0'
     first_input.click
-    find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+
+    find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score_item_second.scores.reload
     second_score = @score_item_second.scores.first
@@ -80,8 +84,8 @@ class FeedbacksTest < ApplicationSystemTestCase
     # Submit score using enter key.
     first_input.fill_in with: '16.0'
     first_input.send_keys :enter
-    # :enabled makes capybara wait on the refresh
-    find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
+
+    find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
     assert_equal BigDecimal('16'), @score.score
@@ -100,8 +104,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     first_input.fill_in with: '-9.0'
     second_input.click
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     parent = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.form-group.input')
 
     assert_equal '2', first_input.value
@@ -118,8 +121,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     first_input.fill_in with: '-9.0'
     second_input.click
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     parent = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.form-group.input')
 
     assert_equal '-9', first_input.value
@@ -131,9 +133,8 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     click_button(id: 'zero-button')
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     assert_equal '0', first_input.value
     assert_equal '0', second_input.value
@@ -143,9 +144,8 @@ class FeedbacksTest < ApplicationSystemTestCase
     visit(feedback_path(id: @feedback.id))
     click_button(id: 'max-button')
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     assert_equal @score_item_first.maximum, BigDecimal(first_input.value)
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
@@ -159,9 +159,8 @@ class FeedbacksTest < ApplicationSystemTestCase
     score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.single-max-button')
     score_button.click
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
@@ -175,9 +174,8 @@ class FeedbacksTest < ApplicationSystemTestCase
     score_button = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.single-zero-button')
     score_button.click
 
-    # :enabled makes capybara wait on the refresh
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:enabled')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:enabled')
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal BigDecimal('0'), BigDecimal(second_input.value)

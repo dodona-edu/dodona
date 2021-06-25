@@ -52,7 +52,7 @@ nl:
         title: Uitgelichte cursus
         toggle-label: Deze cursus uitlichten
     index:
-      title: Alle cursussen
+      title: Cursussen
       users: "Gebruikers"
       exercises: "Oefeningen"
       institution_courses: "%{institution} cursussen"

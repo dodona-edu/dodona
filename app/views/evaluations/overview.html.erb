@@ -31,11 +31,13 @@
                 </td>
                 <td>
                   <% if graded %>
-                    <% if fb.maximum_score %>
-                      <%= t "feedbacks.score_table.total_score" %>
-                    <% else %>
-                      <%= t ".no_grading" %>
-                    <% end %>
+                    <strong>
+                      <% if fb.maximum_score %>
+                        <%= t "feedbacks.score_table.total_score" %>
+                      <% else %>
+                        <%= t ".no_grading" %>
+                      <% end %>
+                    </strong>
                     <br>
                     <span class="text-muted small">
                       <% if fb.submission.present? %>
@@ -53,19 +55,21 @@
                   <% end %>
                 </td>
                 <td class="align-top">
-                  <% if show_total %>
-                    <% if fb.maximum_score %>
-                      <%= format_score fb.score %> / <%= format_score fb.maximum_score %>
-                    <% elsif graded %>
-                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
+                  <strong>
+                    <% if show_total %>
+                      <% if fb.maximum_score %>
+                        <%= format_score fb.score %> / <%= format_score fb.maximum_score %>
+                      <% elsif graded %>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
+                          -
+                        </span>
+                      <% end %>
+                    <% else %>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">
                         -
                       </span>
                     <% end %>
-                  <% else %>
-                    <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">
-                      -
-                    </span>
-                  <% end %>
+                  </strong>
                 </td>
                 <td class="actions align-top">
                   <% if fb.submission.present? %>

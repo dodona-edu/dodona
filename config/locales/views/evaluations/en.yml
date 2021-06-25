@@ -76,7 +76,7 @@ en:
       feedback: "Feedback"
       grade: Grade
       annotation_count:
-        zero: "No annotations"
+        zero: "No annotations were added to your solution"
         one: "One annotation"
         other: "%{count} annotations"
       no_submission: "You had no timely submission for this exercise"

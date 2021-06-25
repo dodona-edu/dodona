@@ -75,7 +75,7 @@ nl:
       feedback: "Feedback"
       grade: Score
       annotation_count:
-        zero: "Geen annotaties"
+        zero: "Er werden geen annotaties toegevoegd aan je oplossing"
         one: "Één annotatie"
         other: "%{count} annotaties"
       no_submission: "Je had geen tijdige oplossing voor deze oefening"

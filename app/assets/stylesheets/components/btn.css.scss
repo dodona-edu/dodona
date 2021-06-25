@@ -149,6 +149,18 @@ button.btn-icon {
   opacity: 1;
 }
 
+.btn-fab {
+  &.correct {
+    background-color: $brand-success;
+    border-color: $brand-success;
+  }
+
+  &.wrong {
+    background-color: $brand-danger;
+    border-color: $brand-danger;
+  }
+}
+
 .btn-fab + .btn-fab {
   margin-left: 20px;
 }

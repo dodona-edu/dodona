@@ -80,7 +80,7 @@ en:
         one: "One annotation"
         other: "%{count} annotations"
       no_submission: "You had no timely submission for this exercise"
-      invisible_total: "The total score is not visible"
+      invisible_total: "The total score was not released"
       no_grading: "This exercise is not graded"
     members_table:
       remove_user: Remove student from evaluation

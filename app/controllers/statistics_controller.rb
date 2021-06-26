@@ -22,64 +22,28 @@ class StatisticsController < ApplicationController
   end
 
   def violin
-    series = nil
-    series = Series.find(params[:series_id]) if params.key?(:series_id)
-
-    course = series.course
-    # authorize series
-
-    result = Submission.violin_matrix(course: course, series: series)
-    if result.present?
-      ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
-      data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data }
-    else
-      render json: { status: 'not available yet' }, status: :accepted
-    end
+    series_visualisation(:violin_matrix)
   end
 
   def stacked_status
-    series = nil
-    series = Series.find(params[:series_id]) if params.key?(:series_id)
-
-    course = series.course
-    # authorize series
-
-    result = Submission.stacked_status_matrix(course: course, series: series)
-    if result.present?
-      ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
-      data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data }
-    else
-      render json: { status: 'not available yet' }, status: :accepted
-    end
+    series_visualisation(:stacked_status_matrix)
   end
 
   def timeseries
-    series = nil
-    series = Series.find(params[:series_id]) if params.key?(:series_id)
-
-    course = series.course
-    # authorize series
-
-    result = Submission.timeseries_matrix(course: course, series: series, deadline: series.deadline)
-    if result.present?
-      ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
-      data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data }
-    else
-      render json: { status: 'not available yet' }, status: :accepted
-    end
+    series_visualisation(:timeseries_matrix)
   end
 
   def cumulative_timeseries
-    series = nil
+    series_visualisation(:cumulative_timeseries_matrix)
+  end
+
+  def series_visualisation(visualisation)
     series = Series.find(params[:series_id]) if params.key?(:series_id)
 
     course = series.course
-    # authorize series
+    authorize series
 
-    result = Submission.cumulative_timeseries_matrix(course: course, series: series, deadline: series.deadline)
+    result = Submission.send(visualisation, course: course, series: series, deadline: series.deadline)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }

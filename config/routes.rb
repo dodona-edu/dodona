@@ -251,8 +251,8 @@ Rails.application.routes.draw do
     end
   end
 
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+# For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
-  # Serve websocket cable requests in-process
-  # mount ActionCable.server => '/cable'
+# Serve websocket cable requests in-process
+# mount ActionCable.server => '/cable'
 end

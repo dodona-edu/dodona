@@ -261,10 +261,8 @@
   }
 }
 
-button {
-  &:hover .svg-icon-btn {
-    fill: $text-color;
-  }
+button:hover .svg-icon-btn {
+  fill: $text-color;
 }
 
 .svg-icon-btn {

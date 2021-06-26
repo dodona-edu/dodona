@@ -109,14 +109,8 @@ class SeriesPolicy < ApplicationPolicy
     record.instance_of?(Series) && user&.course_admin?(record&.course)
   end
 
-  private
-
-  def course_member?
-    record.instance_of?(Series) && user&.member_of?(record&.course)
-  end
-
   def statistics?
-    course_admin?
+    course_admin? || true
   end
 
   def violin?
@@ -133,5 +127,11 @@ class SeriesPolicy < ApplicationPolicy
 
   def timeseries?
     statistics?
+  end
+
+  private
+
+  def course_member?
+    record.instance_of?(Series) && user&.member_of?(record&.course)
   end
 end

@@ -52,11 +52,11 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_time_range, ->(start_date, end_date) { where('submissions.created_at >= ? AND submissions.created_at <= ?', start_date.to_date, end_date.to_date) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_date..end_date.to_date) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
-  scope :only_students, ->(course) { where.not(user: CourseMembership.where(course_id: course.id).where(status: 'course_admin').map(&:user)) }
+  scope :only_students, ->(course) { where(user: course.enrolled_members) }
 
   scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
@@ -370,124 +370,76 @@ class Submission < ApplicationRecord
     end
   )
 
-  def self.violin_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options)
+  def self.violin_matrix(options = {})
+    submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
     submissions = submissions.only_students(options[:course])
-    return base unless submissions.any?
 
-    value = {}
-    # part 1: group by exercise and user
-    submissions.in_batches do |subs|
-      value = value.merge(
-        subs.pluck(:exercise_id, :user_id)
-        .group_by(&:itself) # group by exercise and user
-        .transform_values(&:count) # calc amount of submissions per user per exercise
-      ) { |_k, v1, v2| v1 + v2 }
-    end
-
-    # part 2: group by exercise and aggregate amount per user in an array
-    # this can only be done on the complete result since this part drops the user_id
-    value = value
+    value = submissions
+            .pluck(:exercise_id, :user_id)
+            .group_by(&:itself) # group by exercise and user
+            .transform_values(&:count) # calc amount of submissions per user per exercise
             .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
 
-    # merge assumes base[:value] contains data for new users (since there's no way to actually merge the counts)
-    value.merge(base[:value]) { |_k, v1, v2| v1 + v2 }
     {
       until: submissions.first.id,
       value: value
     }
   end
 
-  def self.stacked_status_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options)
+  def self.stacked_status_matrix(options = {})
+    submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
     submissions = submissions.only_students(options[:course])
-    return base unless submissions.any?
 
-    value = base[:value]
-    submissions.in_batches do |subs|
-      value = value.merge(
-        subs.pluck(:exercise_id, :status)
-          .group_by(&:itself)
-          .transform_values(&:count)
-          .group_by { |k, _| k[0] } # group by exercise
-          .transform_values { |v| v.map { |x| [x[0][1], x[1]] }.to_h } # -> ex_id -> { status -> count }
-      ) { |_k, v1, v2| v1.merge(v2) }
-    end
+    value = submissions
+            .pluck(:exercise_id, :status)
+            .group_by(&:itself)
+            .transform_values(&:count)
+            .group_by { |k, _| k[0] } # group by exercise
+            .transform_values { |v| v.map { |x| [x[0][1], x[1]] }.to_h } # -> ex_id -> { status -> count }
     {
       until: submissions.first.id,
       value: value
     }
   end
 
-  def self.timeseries_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options)
+  def self.timeseries_matrix(options = {})
+    submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.only_students(options[:course])
-    return base unless submissions.any?
 
-    value = {}
-
-    submissions.in_batches do |subs|
-      value = value.merge(
-        subs.pluck(:exercise_id, :created_at, :status)
-          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
-          .group_by(&:itself) # group duplicates
-          .transform_values(&:count) # count amount of duplicates
-      ) { |_k, v1, v2| v1 + v2 }
-    end
-
-    # further transformations not in batches since merge would get complicated
-    value = value.group_by { |k, _| k[0] } # group by exId
-    # drop exId in values, create record of date, status and count
-    value = value
+    value = submissions
+            .pluck(:exercise_id, :created_at, :status)
+            .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
+            .group_by(&:itself) # group duplicates
+            .transform_values(&:count) # count amount of duplicates
+            .group_by { |k, _| k[0] } # group by exId
+            # drop exId in values, create record of date, status and count
             .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
-
-    # merge with base value
-    value = value.merge(base[:value]) do |_k, v1, v2|
-      v2.each do |r| # iterate each of base value objects
-        # check if the current value already exists in v1 (find record with same date and status)
-        duplicate = v1.select { |e| e[:date] == r[:date] && e[:status] == r[:status] }
-        if duplicate.empty?
-          # it doesn't exist, so just append it
-          v1 << r
-        else
-          # it exists, so add the counts
-          duplicate[0][:count] += r[:count]
-        end
-      end
-    end
     {
       until: submissions.first.id,
       value: value
     }
   end
 
-  def self.cumulative_timeseries_matrix(options = {}, base = { until: 0, value: {} })
-    submissions = submissions_since(base[:until], options)
+  def self.cumulative_timeseries_matrix(options = {})
+    submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.only_students(options[:course])
-    return base unless submissions.any?
 
-    value = base[:value]
-
-    submissions.in_batches do |subs|
-      value = value.merge(
-        subs.pluck(:exercise_id, :created_at)
-          .group_by { |d| d[0] } # group by exId
-          # drop exId from values
-          .transform_values { |values| values.map { |v| v[1] } }
-      ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
-    end
+    value = submissions.pluck(:exercise_id, :created_at)
+                        .group_by { |d| d[0] } # group by exId
+                        # drop exId from values
+                        .transform_values { |values| values.map { |v| v[1] } }
     {
       until: submissions.first.id,
       value: value

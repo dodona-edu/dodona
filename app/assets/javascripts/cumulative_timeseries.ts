@@ -33,7 +33,8 @@ export class CTimeseriesGraph extends SeriesGraph {
     >;
 
     // data
-    private data: {exId: string, exData: {bin: d3.Bin<Date, Date>, cSum: number}[]}[] = [];
+    // eslint-disable-next-line camelcase
+    private data: {ex_id: string, ex_data: {bin: d3.Bin<Date, Date>, cSum: number}[]}[] = [];
     private maxSum: number; // largest y-value = either subscribed students or max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
 
@@ -92,14 +93,16 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.legendInit();
 
         // add lines
-        this.data.forEach(({ exData, exId }) => {
+        // eslint-disable-next-line camelcase
+        this.data.forEach(({ ex_data, ex_id }) => {
             const exGroup = this.graph.append("g");
             exGroup.selectAll("path")
                 // I have no idea why this is necessary but removing the '[]' breaks everything
-                .data([exData])
+                // eslint-disable-next-line camelcase
+                .data([ex_data])
                 .enter()
                 .append("path")
-                .style("stroke", this.color(exId) as string)
+                .style("stroke", this.color(ex_id) as string)
                 .style("fill", "none")
                 .attr("d", d3.line()
                     .x(d => this.x(d.bin["x0"]))
@@ -126,16 +129,17 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises, students }: RawData): void {
-        data as {exId: number, exData: (string|Date)[]}[];
+        // eslint-disable-next-line camelcase
+        data as {ex_id: number, ex_data: (string|Date)[]}[];
 
-        this.parseExercises(exercises, data.map(ex => ex.exId));
+        this.parseExercises(exercises, data.map(ex => ex.ex_id));
 
         data.forEach(ex => {
             // convert dates form strings to actual date objects
-            ex.exData = ex.exData.map((d: string) => new Date(d));
+            ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.exData)) as Date[];
+        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
         minDate = new Date(minDate);
         maxDate = new Date(maxDate);
         minDate.setHours(0, 0, 0, 0); // set start to midnight
@@ -153,12 +157,12 @@ export class CTimeseriesGraph extends SeriesGraph {
             const binned = d3.bin()
                 .value(d => d.getTime())
                 .thresholds(threshold)
-                .domain([minDate.getTime(), maxDate.getTime()])(ex.exData);
+                .domain([minDate.getTime(), maxDate.getTime()])(ex.ex_data);
             // combine bins with cumsum of the bins
             const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
-                exId: String(ex.exId),
-                exData: binned.map((bin, i) => ({ bin: bin, cSum: cSums[i] }))
+                ex_id: String(ex.ex_id),
+                ex_data: binned.map((bin, i) => ({ bin: bin, cSum: cSums[i] }))
             });
 
             // if 'students' undefined calculate max value from data
@@ -211,16 +215,16 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`);
         this.tooltipDots = this.graph.selectAll(".tooltipDot")
-            .data(this.data, ex => ex.exId)
+            .data(this.data, ex => ex.ex_id)
             .join("circle")
             .attr("class", "tooltipDot")
             .attr("r", 4)
-            .style("fill", ex => this.color(ex.exId) as string);
+            .style("fill", ex => this.color(ex.ex_id) as string);
         this.tooltipDotLabels = this.graph.selectAll(".tooltipDotlabel")
-            .data(this.data, ex => ex.exId)
+            .data(this.data, ex => ex.ex_id)
             .join("text")
             .attr("class", "tooltipDotlabel")
-            .attr("fill", ex => this.color(ex.exId) as string)
+            .attr("fill", ex => this.color(ex.ex_id) as string)
             .attr("font-size", `${this.fontSize}px`);
         this.tooltipDefault();
     }
@@ -244,14 +248,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.tooltipDots
             .attr("opacity", 0.6)
             .attr("cx", this.x(date))
-            .attr("cy", ex => this.y(ex.exData[last].cSum/this.maxSum));
+            .attr("cy", ex => this.y(ex.ex_data[last].cSum/this.maxSum));
         this.tooltipDotLabels
             .attr("x", this.x(date) + 5)
-            .attr("y", ex => this.y(ex.exData[last].cSum/this.maxSum)-5)
+            .attr("y", ex => this.y(ex.ex_data[last].cSum/this.maxSum)-5)
             .attr("opacity", 0.6)
             .attr("text-anchor", "start")
             .text(
-                ex => `${d3.format(".2%")(ex.exData[last].cSum/this.maxSum)}`
+                ex => `${d3.format(".2%")(ex.ex_data[last].cSum/this.maxSum)}`
             );
     }
 
@@ -295,18 +299,18 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .transition()
                 .duration(100)
                 .attr("cx", this.x(date))
-                .attr("cy", ex => this.y(ex.exData[i].cSum/this.maxSum));
+                .attr("cy", ex => this.y(ex.ex_data[i].cSum/this.maxSum));
             this.tooltipDotLabels
                 .attr("opacity", 1)
                 .text(
-                    ex=> `${d3.format(".2%")(ex.exData[i].cSum/this.maxSum)}
-                    (${ex.exData[i].cSum}/${this.maxSum})`
+                    ex=> `${d3.format(".2%")(ex.ex_data[i].cSum/this.maxSum)}
+                    (${ex.ex_data[i].cSum}/${this.maxSum})`
                 )
                 .attr("text-anchor", switchDots ? "end" : "start")
                 .transition()
                 .duration(100)
                 .attr("x", switchDots ? this.x(date) - 5 : this.x(date) + 5)
-                .attr("y", ex => this.y(ex.exData[i].cSum/this.maxSum)-5);
+                .attr("y", ex => this.y(ex.ex_data[i].cSum/this.maxSum)-5);
         }
     }
 
@@ -315,7 +319,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         const exPosition = [];
         let pos = 0;
         this.exOrder.forEach(ex => {
-            exPosition.push({ exId: ex, pos: pos });
+            exPosition.push({ ex_id: ex, pos: pos });
             // rect size (15) + 5 padding + 20 inter-group padding + text length
             pos += 40 + this.fontSize/2*this.exMap[ex].length;
         });
@@ -339,7 +343,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("y", 0)
             .attr("width", 15)
             .attr("height", 15)
-            .attr("fill", ex => this.color(ex.exId) as string);
+            .attr("fill", ex => this.color(ex.ex_id) as string);
 
         // add legend text
         legend
@@ -347,7 +351,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .attr("x", 20)
             .attr("y", 12)
             .attr("text-anchor", "start")
-            .text(ex => this.exMap[ex.exId])
+            .text(ex => this.exMap[ex.ex_id])
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
     }

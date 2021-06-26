@@ -210,22 +210,23 @@ export class StackedStatusGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises }: RawData): void {
-        this.parseExercises(exercises, data.map(ex => ex.exId));
+        this.parseExercises(exercises, data.map(ex => ex.ex_id));
 
         this.maxSum = {};
         this.data = [];
-        // turn data into array of records (one for each exId/status combination)
-        data.forEach(({ exId, exData }) => {
+        // turn data into array of records (one for each ex_id/status combination)
+        // eslint-disable-next-line camelcase
+        data.forEach(({ ex_id, ex_data }) => {
             let sum = 0;
             this.statusOrder.forEach(s => {
                 // check if status is present in the data
-                const c = exData[s] ?? 0;
+                const c = ex_data[s] ?? 0;
                 this.data.push({
-                    "exercise_id": String(exId), "status": s, "cSum": sum, "count": c
+                    "exercise_id": String(ex_id), "status": s, "cSum": sum, "count": c
                 });
                 sum += c;
             });
-            this.maxSum[exId] = sum;
+            this.maxSum[ex_id] = sum;
         });
     }
 }

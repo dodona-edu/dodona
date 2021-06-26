@@ -22,9 +22,10 @@ export class TimeseriesGraph extends SeriesGraph {
     private dateRange: number; // difference between first and last date in days
     private minDate: Date;
     private maxDate: Date;
+
     private data: {
-        exId: string,
-        exData:{date: Date; sum: number; [index: string]: number | Date}[]
+        ex_id: string,
+        ex_data:{date: Date; sum: number; [index: string]: number | Date}[]
     }[] = [];
 
     // svg elements
@@ -109,9 +110,11 @@ export class TimeseriesGraph extends SeriesGraph {
             .enter()
             .append("g")
             .attr("class", "rectGroup")
-            .each(({ exData, exId }, i, group) => {
+
+            // eslint-disable-next-line camelcase
+            .each(({ ex_data, ex_id }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
-                    .data(exData, d => d["date"].getTime())
+                    .data(ex_data, d => d["date"].getTime())
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
@@ -120,7 +123,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
                     .attr("x", d => this.x(d.date)-rectSize/2)
-                    .attr("y", this.y(exId)-rectSize/2)
+                    .attr("y", this.y(ex_id)-rectSize/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
@@ -138,14 +141,14 @@ export class TimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises }: RawData): void {
-        // the type of one datum in the exData array
+        // the type of one datum in the ex_data array
         type Datum = {date: (Date | string); status: string; count: number};
 
-        this.parseExercises(exercises, data.map(ex => ex.exId));
+        this.parseExercises(exercises, data.map(ex => ex.ex_id));
 
         data.forEach(ex => {
             // convert dates form strings to actual date objects
-            ex.exData.forEach((d: Datum) => {
+            ex.ex_data.forEach((d: Datum) => {
                 d.date = new Date(d.date);
                 // make sure they are set to midnight
                 d.date.setHours(0, 0, 0, 0);
@@ -153,7 +156,7 @@ export class TimeseriesGraph extends SeriesGraph {
         });
 
         const [minDate, maxDate] = d3.extent(
-            data.flatMap(ex => ex.exData),
+            data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
         this.minDate = new Date(minDate);
@@ -165,12 +168,13 @@ export class TimeseriesGraph extends SeriesGraph {
             .domain([this.minDate.getTime(), this.maxDate.getTime()])
             .ticks(d3.timeDay);
 
-        data.forEach(({ exId, exData }) => {
+        // eslint-disable-next-line camelcase
+        data.forEach(({ ex_id, ex_data }) => {
             // bin per day
             const binned = d3.bin()
                 .value(d => d.date.getTime())
                 .thresholds(threshold)
-                .domain([this.minDate.getTime(), this.maxDate.getTime()])(exData);
+                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
@@ -189,7 +193,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     return acc;
                 }, { "date": newDate, "sum": 0 })));
             });
-            this.data.push({ exId: String(exId), exData: parsedData });
+            this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
     }
 

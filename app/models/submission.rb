@@ -436,10 +436,11 @@ class Submission < ApplicationRecord
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.only_students(options[:course])
 
-    value = submissions.pluck(:exercise_id, :created_at)
-                        .group_by { |d| d[0] } # group by exId
-                        # drop exId from values
-                        .transform_values { |values| values.map { |v| v[1] } }
+    value = submissions
+            .pluck(:exercise_id, :created_at)
+            .group_by { |d| d[0] } # group by exId
+            # drop exId from values
+            .transform_values { |values| values.map { |v| v[1] } }
     {
       until: submissions.first.id,
       value: value

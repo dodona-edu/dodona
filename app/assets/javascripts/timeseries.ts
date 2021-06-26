@@ -24,7 +24,9 @@ export class TimeseriesGraph extends SeriesGraph {
     private maxDate: Date;
 
     private data: {
+        // eslint-disable-next-line camelcase
         ex_id: string,
+        // eslint-disable-next-line camelcase
         ex_data:{date: Date; sum: number; [index: string]: number | Date}[]
     }[] = [];
 

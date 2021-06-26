@@ -210,22 +210,10 @@
   }
 }
 
-.stats-tab {
-  display: none;
-  justify-content: flex-end;
-  flex-direction: row;
-}
-
 .graph-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.graph-info {
-  margin-left: 5px;
-  display: inline;
-  color: $text-muted
 }
 
 .graph-title {
@@ -235,6 +223,44 @@
   align-items: center;
 }
 
+.graph-info {
+  margin-left: 5px;
+  display: none;
+  color: $text-muted
+}
+
+.stats-tab {
+  display: none;
+  justify-content: flex-end;
+  flex-direction: row;
+}
+
+.stats-container {
+  display: none;
+}
+
+.card.stats-active {
+  .stats-tab {
+    display: flex;
+  }
+
+  .graph-info {
+    display: inline;
+  }
+
+  .graph-title {
+    display: flex;
+  }
+
+  .stats-container {
+    display: flex;
+  }
+
+  .series-content {
+    display: none;
+  }
+}
+
 button {
   &:hover .svg-icon-btn {
     fill: $text-color;
@@ -242,7 +268,9 @@ button {
 }
 
 .svg-icon-btn {
-  fill: $text-secondary;
+  svg {
+    fill: $text-secondary;
+  }
 
   &:hover {
     fill: $text-color;

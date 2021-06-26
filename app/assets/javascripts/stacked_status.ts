@@ -76,10 +76,10 @@ export class StackedStatusGraph extends SeriesGraph {
         // calculate offset for legend elements
         const statePosition = [];
         let pos = 0;
-        this.statusOrder.forEach(s => {
-            statePosition.push({ status: s, pos: pos });
+        this.statusOrder.forEach(status => {
+            statePosition.push({ status: status, pos: pos });
             // rect size (15) + 5 padding + 20 inter-group padding + text length
-            pos += 40 + this.fontSize/2*s.length;
+            pos += 40 + this.fontSize/2*status.length;
         });
         // draw legend
         const legend = svg
@@ -184,11 +184,10 @@ export class StackedStatusGraph extends SeriesGraph {
 
         // metrics data
         for (const ex of this.data) {
-            const t = this.maxSum[ex.exercise_id];
             metrics.append("text")
                 .attr("x", (this.margin.right - 20) / 2)
                 .attr("y", y(ex.exercise_id) + y.bandwidth()/2)
-                .text(`${t}`)
+                .text(this.maxSum[ex.exercise_id])
                 .attr("text-anchor", "middle")
                 .attr("fill", "currentColor")
                 .style("font-size", "14px");
@@ -216,17 +215,17 @@ export class StackedStatusGraph extends SeriesGraph {
         this.maxSum = {};
         this.data = [];
         // turn data into array of records (one for each exId/status combination)
-        data.forEach(ex => {
+        data.forEach(({ exId, exData }) => {
             let sum = 0;
             this.statusOrder.forEach(s => {
                 // check if status is present in the data
-                const c = ex.exData[s] ?? 0;
+                const c = exData[s] ?? 0;
                 this.data.push({
-                    "exercise_id": String(ex.exId), "status": s, "cSum": sum, "count": c
+                    "exercise_id": String(exId), "status": s, "cSum": sum, "count": c
                 });
                 sum += c;
             });
-            this.maxSum[ex.exId] = sum;
+            this.maxSum[exId] = sum;
         });
     }
 }

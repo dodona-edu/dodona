@@ -109,9 +109,9 @@ export class TimeseriesGraph extends SeriesGraph {
             .enter()
             .append("g")
             .attr("class", "rectGroup")
-            .each((ex, i, group) => {
+            .each(({ exData, exId }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
-                    .data(ex.exData, d => d["date"].getTime())
+                    .data(exData, d => d["date"].getTime())
                     .enter()
                     .append("rect")
                     .attr("class", "day-cell")
@@ -120,7 +120,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
                     .attr("x", d => this.x(d.date)-rectSize/2)
-                    .attr("y", this.y(ex.exId)-rectSize/2)
+                    .attr("y", this.y(exId)-rectSize/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
@@ -153,7 +153,7 @@ export class TimeseriesGraph extends SeriesGraph {
         });
 
         const [minDate, maxDate] = d3.extent(
-            data.map(ex => ex.exData).flat(),
+            data.flatMap(ex => ex.exData),
             (d: Datum) => d.date as Date
         );
         this.minDate = new Date(minDate);
@@ -165,21 +165,21 @@ export class TimeseriesGraph extends SeriesGraph {
             .domain([this.minDate.getTime(), this.maxDate.getTime()])
             .ticks(d3.timeDay);
 
-        data.forEach(ex => {
+        data.forEach(({ exId, exData }) => {
             // bin per day
             const binned = d3.bin()
                 .value(d => d.date.getTime())
                 .thresholds(threshold)
-                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex.exData);
+                .domain([this.minDate.getTime(), this.maxDate.getTime()])(exData);
 
-            const exData = [];
+            const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
             binned.forEach((bin, i) => {
                 const newDate = new Date(this.minDate);
                 newDate.setDate(newDate.getDate() + i);
                 const sum = d3.sum(bin, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
-                exData.push(bin.reduce((acc, r) => {
+                parsedData.push(bin.reduce((acc, r) => {
                     acc.date = r.date;
                     acc.sum = sum;
                     acc[r.status] = r.count;
@@ -189,7 +189,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     return acc;
                 }, { "date": newDate, "sum": 0 })));
             });
-            this.data.push({ exId: String(ex.exId), exData: exData });
+            this.data.push({ exId: String(exId), exData: parsedData });
         });
     }
 

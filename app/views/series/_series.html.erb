@@ -150,7 +150,9 @@
       <div class="graph-title">
         <span></span>
         <a class="hidden-print" >
-          <i class="mdi mdi-information graph-info"></i>
+          <i
+            class="mdi mdi-information graph-info"
+          ></i>
         </a>
       </div>
 
@@ -159,26 +161,26 @@
           class="btn annotation-toggle violin"
           onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>, '#stats-container-')"
         >
-          <%= embedded_svg("violin.svg", {class: "mdi svg-icon-btn"}) %>
+          <%= custom_icon("violin", {class: "mdi svg-icon-btn"}) %>
         </button>
         <button
           class="btn annotation-toggle stacked"
           onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>, '#stats-container-')"
         >
-          <%= embedded_svg("stacked-bar-chart.svg", {class: "mdi svg-icon-btn rotate"}) %>
+          <%= custom_icon("stacked-bar-chart", {class: "mdi svg-icon-btn rotate"}) %>
         </button>
         <button
           class="btn annotation-toggle timeseries"
           onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>, '#stats-container-')"
         >
-          <%= embedded_svg("heatmap.svg", {class: "mdi svg-icon-btn"}) %>
+          <%= custom_icon("heatmap", {class: "mdi svg-icon-btn"}) %>
         
         </button>
         <button
           class="btn annotation-toggle ctimeseries"
           onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>, '#stats-container-')"
         >
-          <%= embedded_svg("stacked-line-chart.svg", {class: "mdi svg-icon-btn"}) %>
+          <%= custom_icon("stacked-line-chart", {class: "mdi svg-icon-btn"}) %>
         </button>
       </div>
     </div>

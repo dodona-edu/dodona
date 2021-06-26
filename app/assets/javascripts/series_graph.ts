@@ -172,7 +172,7 @@ export abstract class SeriesGraph {
     /**
      * Fetches and processes data
      */
-    init(): void {
+    async init(): Promise<void> {
         // add loading placeholder
         this.container
             .append("div")
@@ -180,18 +180,16 @@ export abstract class SeriesGraph {
             .attr("class", "graph_placeholder");
 
         // fetch data
-        this.fetchData()
-            .then((r: RawData) => {
-                // once fetched remove placeholder
-                d3.select(`${this.selector} *`).remove();
+        const r: RawData = await this.fetchData();
+        // once fetched remove placeholder
+        this.container.html("");
 
-                if (Object.keys(r.data).length === 0) {
-                    this.drawNoData();
-                }
-                // next process the data
-                this.processData(r);
-                // next draw the graph
-                this.draw();
-            });
+        if (r.data.length === 0) {
+            this.drawNoData();
+        }
+        // next process the data
+        this.processData(r);
+        // next draw the graph
+        this.draw();
     }
 }

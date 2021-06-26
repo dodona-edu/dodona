@@ -92,14 +92,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.legendInit();
 
         // add lines
-        this.data.forEach(ex => {
+        this.data.forEach(({ exData, exId }) => {
             const exGroup = this.graph.append("g");
             exGroup.selectAll("path")
                 // I have no idea why this is necessary but removing the '[]' breaks everything
-                .data([ex.exData])
+                .data([exData])
                 .enter()
                 .append("path")
-                .style("stroke", this.color(ex.exId) as string)
+                .style("stroke", this.color(exId) as string)
                 .style("fill", "none")
                 .attr("d", d3.line()
                     .x(d => this.x(d.bin["x0"]))
@@ -116,9 +116,8 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.svg.on("mousemove", e => this.tooltipMove(e));
 
-        this.svg.on("mouseleave", () => {
-            this.tooltipDefault();
-        });
+        // lambda necessary to prevent rebinding of 'this' keyword
+        this.svg.on("mouseleave", () => this.tooltipDefault());
     }
 
     /**
@@ -136,7 +135,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.exData = ex.exData.map((d: string) => new Date(d));
         });
 
-        let [minDate, maxDate] = d3.extent(data.map(ex => ex.exData).flat()) as Date[];
+        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.exData)) as Date[];
         minDate = new Date(minDate);
         maxDate = new Date(maxDate);
         minDate.setHours(0, 0, 0, 0); // set start to midnight

@@ -221,10 +221,10 @@ export class ViolinGraph extends SeriesGraph {
     protected override processData({ data, exercises }: RawData): void {
         this.parseExercises(exercises, data.map(ex => ex.exId));
         // transform data into array of records for easier binning
-        this.data = data.map(ex => ({
-            "ex_id": String(ex.exId),
+        this.data = data.map(({ exId, exData }) => ({
+            "ex_id": String(exId),
             // sort so median is calculated correctly
-            "counts": ex.exData.sort((a: number, b: number) => a-b),
+            "counts": exData.sort((a: number, b: number) => a-b),
             "freq": [],
             "median": 0,
             "average": 0

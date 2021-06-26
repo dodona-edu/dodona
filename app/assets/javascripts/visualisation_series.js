@@ -2,7 +2,7 @@ import { ViolinGraph } from "violin.ts";
 import { StackedStatusGraph } from "stacked_status.ts";
 import { TimeseriesGraph } from "timeseries.ts";
 import { CTimeseriesGraph } from "cumulative_timeseries.ts";
-import { tooltip } from "util.js";
+import { Tooltip } from "bootstrap";
 
 const graphFactory = {
     "violin": (url, containerId) => new ViolinGraph(url, containerId),
@@ -11,50 +11,55 @@ const graphFactory = {
     "ctimeseries": (url, containerId) => new CTimeseriesGraph(url, containerId),
 };
 
-// function to (de)activate graph mode (switch out ex list for graphs)
+/**
+ * function to (de)activate graph mode (switch out ex list for graphs)
+ * @param {HTMLElement} button Handle for toggle button
+ * @param {string} seriesId The id of the series
+ */
 export function toggleStats(button, seriesId) {
     const card = document.getElementById(`series-card-${seriesId}`);
-    const tabs = card.querySelector(".stats-tab");
-    const content = card.querySelector(".series-content");
-    const container = card.querySelector(".stats-container");
-    const title = card.querySelector(".graph-title");
-    const info = card.querySelector(".graph-info");
-    if (getComputedStyle(tabs).display == "none") {
-        tabs.style.display = "flex";
-        info.style.display = "inline";
-        title.style.display = "flex";
-        container.style.display = "flex";
-        content.style.display = "none";
+    card.classList.toggle("stats-active");
+    if (card.classList.contains("stats-active")) {
+        const tabs = card.querySelector(".stats-tab");
         setActiveToggle(
-            tabs.querySelector(".violin"), "violin", seriesId, "#stats-container-");
-        button.className = button.className.replace("chart-line", "format-list-bulleted");
+            tabs.querySelector(".violin"), "violin", seriesId, "#stats-container-", true);
+        button.classList.replace("mdi-chart-line", "mdi-format-list-bulleted");
     } else {
-        tabs.style.display = "none";
-        info.style.display = "none";
-        title.styledisplay = "none";
-        container.html = "";
-        container.style.display = "none";
-        content.style.display = "block";
-        button.className = button.className.replace("format-list-bulleted", "chart-line");
+        card.querySelector(".stats-container").innerHTML = "";
+        button.classList.replace("mdi-format-list-bulleted", "mdi-chart-line");
     }
 }
 
-// function to switch active graph
-// returns true if the active tab switched
-export function setActiveToggle(activeNode, title, seriesId, selector) {
-    if (!activeNode.className.match(/^(.* )?active( .*)?$/)) {
+/**
+ * function to switch active graph
+ * @param {HTMLElement} activeNode the tab button that has been clicked
+ * @param {string} title The title of the graph
+ * @param {string} seriesId The id of the series
+ * @param {string} selector The selector for the graph container (without id)
+ * @param {boolean} init Boolean indicating no graph has been drawn yet
+ */
+export function setActiveToggle(activeNode, title, seriesId, selector, init=false) {
+    // prevent active graph from being re-drawn except when it's the first time drawing it
+    if (init || !activeNode.classList.contains("active")) {
         const card = document.getElementById(`series-card-${seriesId}`);
         const titleSpan = card.querySelector(".graph-title span");
         const info = card.querySelector(".graph-info");
 
+        // init the graph
         graphFactory[title](seriesId, selector+seriesId).init();
+
+        // set title
         titleSpan.textContent = I18n.t(`js.${title}_title`);
+
+        // set all tab buttons to 'not active'
         Array.from(activeNode.parentElement.getElementsByTagName("button")).forEach(element => {
-            element.className = element.className.replace(" active", "");
+            element.classList.remove("active");
         });
-        info.onmouseover = () => info
-            .setAttribute("data-original-title", I18n.t(`js.${title}_desc`));
-        tooltip(info, I18n.t(`js.${title}_desc`));
-        activeNode.className = activeNode.className + " active";
+        // set current tab button as 'active'
+        activeNode.classList.add("active");
+        // update info description
+        info.setAttribute("title", I18n.t(`js.${title}_desc`));
+        // update tooltip content
+        new Tooltip(info);
     }
 }

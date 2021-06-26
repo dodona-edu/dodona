@@ -219,12 +219,13 @@ export class ViolinGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises }: RawData): void {
-        this.parseExercises(exercises, data.map(ex => ex.exId));
+        this.parseExercises(exercises, data.map(ex => ex.ex_id));
         // transform data into array of records for easier binning
-        this.data = data.map(({ exId, exData }) => ({
-            "ex_id": String(exId),
+        // eslint-disable-next-line camelcase
+        this.data = data.map(({ ex_id, ex_data }) => ({
+            "ex_id": String(ex_id),
             // sort so median is calculated correctly
-            "counts": exData.sort((a: number, b: number) => a-b),
+            "counts": ex_data.sort((a: number, b: number) => a-b),
             "freq": [],
             "median": 0,
             "average": 0

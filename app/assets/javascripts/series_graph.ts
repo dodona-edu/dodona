@@ -1,7 +1,8 @@
 import * as d3 from "d3";
 
 export type RawData = {
-    data: {exId: number, exData: unknown[]}[],
+    // eslint-disable-next-line camelcase
+    data: {ex_id: number, ex_data: unknown[]}[],
     exercises: [number, string][],
     students?: number
 }

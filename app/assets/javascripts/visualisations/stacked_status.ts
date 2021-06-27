@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { RawData, SeriesGraph } from "series_graph";
+import { RawData, SeriesGraph } from "visualisations/series_graph";
 
 export class StackedStatusGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/stacked_status?series_id=";

@@ -1,7 +1,7 @@
-import { ViolinGraph } from "violin.ts";
-import { StackedStatusGraph } from "stacked_status.ts";
-import { TimeseriesGraph } from "timeseries.ts";
-import { CTimeseriesGraph } from "cumulative_timeseries.ts";
+import { ViolinGraph } from "visualisations/violin.ts";
+import { StackedStatusGraph } from "visualisations/stacked_status.ts";
+import { TimeseriesGraph } from "visualisations/timeseries.ts";
+import { CTimeseriesGraph } from "visualisations/cumulative_timeseries.ts";
 import { Tooltip } from "bootstrap";
 
 const graphFactory = {

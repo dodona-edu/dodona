@@ -1,5 +1,5 @@
 import * as d3 from "d3";
-import { SeriesGraph, RawData } from "series_graph";
+import { SeriesGraph, RawData } from "visualisations/series_graph";
 
 
 export class ViolinGraph extends SeriesGraph {

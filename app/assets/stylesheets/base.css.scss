@@ -2,16 +2,16 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-@import "theme/colors";
-@import "bootstrap_variable_overrides";
-@import "mixins";
-@import "vendor";
+@import "theme/colors.css.scss";
+@import "bootstrap_variable_overrides.css.scss";
+@import "mixins.css.scss";
+@import "vendor.scss";
 
 // also loads dark mode stuff
-@import "theme/theme-light";
+@import "theme/theme-light.css.scss";
 
-@import "theme/rouge-light";
-@import "theme/rouge-dark";
+@import "theme/rouge-light.css.scss";
+@import "theme/rouge-dark.css.scss";
 @if $theme == "dark" {
   @include rouge-dark;
 } @else {
@@ -62,14 +62,14 @@
 }
 
 // 5. Add additional custom code here
-@import "bootstrap_style_overrides";
-@import "libraries";
-@import "material_icons";
-@import "layout";
-@import "components";
-@import "pages";
-@import "models";
-@import "print";
+@import "bootstrap_style_overrides.css.scss";
+@import "libraries.css.scss";
+@import "material_icons.css.scss";
+@import "layout.css.scss";
+@import "components.css.scss";
+@import "pages.css.scss";
+@import "models.css.scss";
+@import "print.css.scss";
 
 .field_with_errors input {
   border-color: $danger-fg;

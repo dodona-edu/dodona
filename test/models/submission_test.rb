@@ -287,47 +287,6 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
-  setup do
-    @date = DateTime.new(1302, 7, 11, 13, 37, 42)
-    @exercise = create :exercise
-    @course = create :course
-    @series = create :series, exercises: [@exercise], course: @course
-    3.times do
-      user = create :student, subscribed_courses: [@course]
-      2.times do
-        create :submission, user: user, exercise: @exercise, status: :correct, course: @course, created_at: @date
-      end
-      3.times do
-        create :submission, user: user, exercise: @exercise, status: :wrong, course: @course, created_at: @date
-      end
-    end
-  end
-
-  test 'violin computation correct' do
-    result = Submission.violin_matrix(course: @course, series: @series)[:value]
-    assert_equal result.length, 1 # one key: 1 exercise
-    assert_equal result.values[0], [5, 5, 5]
-  end
-
-  test 'stacked computation correct' do
-    result = Submission.stacked_status_matrix(course: @course, series: @series)[:value]
-    assert_equal result.length, 1 # one key: 1 exercise
-    assert_equal result.values[0], { 'wrong' => 9, 'correct' => 6 }
-  end
-
-  test 'timeseries computation correct' do
-    result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
-    assert_equal result.length, 1 # one key: 1 exercise
-    assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
-    assert_equal result.values[0], [{ date: '1302-07-11', status: 'wrong', count: 9 }, { date: '1302-07-11', status: 'correct', count: 6 }]
-  end
-
-  test 'ctimeseries computation correct' do
-    result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]
-    assert_equal result.length, 1 # one key: 1 exercise
-    assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)
-  end
-
   test 'update to internal error should send exception notification' do
     submission = create :submission
     ExceptionNotifier.expects(:notify_exception).with { |_e, data| data[:data][:url].present? && data[:data][:judge].present? }
@@ -339,5 +298,48 @@ class SubmissionTest < ActiveSupport::TestCase
     assert File.exist?(submission.fs_path)
     submission.destroy
     assert_not File.exist?(submission.fs_path)
+  end
+
+  class StatisticsTest < ActiveSupport::TestCase
+    setup do
+      @date = DateTime.new(1302, 7, 11, 13, 37, 42)
+      @exercise = create :exercise
+      @course = create :course
+      @series = create :series, exercises: [@exercise], course: @course
+      3.times do
+        user = create :student, subscribed_courses: [@course]
+        2.times do
+          create :submission, user: user, exercise: @exercise, status: :correct, course: @course, created_at: @date
+        end
+        3.times do
+          create :submission, user: user, exercise: @exercise, status: :wrong, course: @course, created_at: @date
+        end
+      end
+    end
+
+    test 'violin computation correct' do
+      result = Submission.violin_matrix(course: @course, series: @series)[:value]
+      assert_equal result.length, 1 # one key: 1 exercise
+      assert_equal result.values[0], [5, 5, 5]
+    end
+
+    test 'stacked computation correct' do
+      result = Submission.stacked_status_matrix(course: @course, series: @series)[:value]
+      assert_equal result.length, 1 # one key: 1 exercise
+      assert_equal result.values[0], { 'wrong' => 9, 'correct' => 6 }
+    end
+
+    test 'timeseries computation correct' do
+      result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
+      assert_equal result.length, 1 # one key: 1 exercise
+      assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
+      assert_equal result.values[0], [{ date: '1302-07-11', status: 'wrong', count: 9 }, { date: '1302-07-11', status: 'correct', count: 6 }]
+    end
+
+    test 'ctimeseries computation correct' do
+      result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]
+      assert_equal result.length, 1 # one key: 1 exercise
+      assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)
+    end
   end
 end

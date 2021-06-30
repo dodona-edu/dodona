@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+// @ts-nocheck
 import * as d3 from "d3";
 import { RawData, SeriesGraph } from "visualisations/series_graph";
 

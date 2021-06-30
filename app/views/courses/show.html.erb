@@ -79,7 +79,7 @@
               <% end %>
               <% if policy(@course).copy? %>
                 <li>
-                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}), class: "dropdown-item" do%>
+                  <%= link_to new_course_url(copy_options: {base_id: @course.id}), class: "dropdown-item" do%>
                     <i class="mdi mdi-content-copy mdi-18"></i> <%= t(".copy") %>
                   <% end %>
                 </li>

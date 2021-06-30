@@ -53,11 +53,27 @@
               <span class="caret"></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><%= link_to t("layout.menu.profile"), current_user, class: "dropdown-item" %></li>
-              <li><%= link_to t("layout.menu.my_submissions"), submissions_path(user_id: current_user), class: "dropdown-item"  %></li>
-              <li><%= link_to t("layout.menu.my_questions"), questions_path(user_id: current_user), class: "dropdown-item"  %></li>
+              <li>
+                <%= link_to current_user, class: "dropdown-item" do%>
+                  <i class="mdi mdi-account-circle mdi-18"></i> <%= t("layout.menu.profile") %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to submissions_path(user_id: current_user), class: "dropdown-item" do%>
+                  <%= custom_icon 'exercises' %> <%= t("layout.menu.my_submissions") %>
+                <% end %>
+              </li>
+              <li>
+                <%= link_to questions_path(user_id: current_user), class: "dropdown-item"  do%>
+                  <i class="mdi mdi-account-question mdi-18"> <%= t("layout.menu.my_questions") %>
+                <% end %>
+              </li>
               <% if Export.where(user: current_user).any? %>
-                <li><%= link_to t("layout.menu.my_exports"), exports_path, class: "dropdown-item"  %></li>
+                <li>
+                  <%= link_to exports_path, class: "dropdown-item"  do%>
+                    <i class="mdi mdi-cloud-download mdi-18"> <%= t("layout.menu.my_exports") %>
+                  <% end %>
+                </li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
                 <li role="separator" class="dropdown-divider"></li>
@@ -94,7 +110,9 @@
               <% end %>
               <li role="separator" class="dropdown-divider"></li>
               <li>
-                <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete, class: "dropdown-item"  %>
+                <%= link_to sign_out_path, :method => :delete, class: "dropdown-item"  do%>
+                  <i class="mdi mdi-power mdi-18"> <%= t("layout.menu.log_out") %>
+                <% end %>
               </li>
             </ul>
           </li>

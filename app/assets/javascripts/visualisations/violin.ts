@@ -1,3 +1,6 @@
+// eslint-disable-next-line
+// @ts-nocheck
+
 import * as d3 from "d3";
 import { SeriesGraph, RawData } from "visualisations/series_graph";
 
@@ -34,8 +37,8 @@ export class ViolinGraph extends SeriesGraph {
         "ex_id": string, "counts": number[],
         "freq": d3.Bin<number, number>[], "median": number, "average": number
     }[];
-    private maxCount = 0; // largest y-value
-    private maxFreq = 0; // largest x-value
+    private maxCount = 0; // largest x-value
+    private maxFreq = 0; // largest y-value
 
     /**
     * draws the graph's svg (and other) elements on the screen
@@ -236,7 +239,6 @@ export class ViolinGraph extends SeriesGraph {
             "median": number;
             "average": number;
         }[];
-
         // largest y-value
         this.maxCount = d3.max(this.data, d => d3.max(d.counts));
 

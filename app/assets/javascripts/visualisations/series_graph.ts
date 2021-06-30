@@ -1,3 +1,5 @@
+// eslint-disable-next-line
+// @ts-nocheck
 import * as d3 from "d3";
 
 export type RawData = {
@@ -47,7 +49,6 @@ export abstract class SeriesGraph {
         this.seriesId = seriesId;
         this.selector = containerId;
         this.container = d3.select(this.selector);
-
         if (!this.height) {
             this.height = this.container.node().getBoundingClientRect().height - 5;
         }
@@ -62,6 +63,10 @@ export abstract class SeriesGraph {
             this.processData(data);
             this.draw();
         }
+    }
+
+    private getUrl(): string {
+        return `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
     }
 
     // abstract functions
@@ -144,7 +149,7 @@ export abstract class SeriesGraph {
      * Displays an error message when there is not enough data
     */
     protected drawNoData(): void {
-        d3.select(this.selector)
+        this.container
             .style("height", "50px")
             .append("div")
             .text(I18n.t("js.no_data"))
@@ -159,7 +164,7 @@ export abstract class SeriesGraph {
      *  used to check if the data should be fetched again
      */
     protected async fetchData(): Promise<RawData> {
-        const url = `/${I18n.locale}` + this.baseUrl + this.seriesId;
+        const url = this.getUrl();
         let raw: RawData = undefined;
         while (!raw || raw["status"] == "not available yet") {
             raw = await d3.json(url);
@@ -172,8 +177,10 @@ export abstract class SeriesGraph {
 
     /**
      * Fetches and processes data
+     * @param {boolean} doDraw When false, the graph will not be drawn
+     * (only data fetching and processing)
      */
-    async init(): Promise<void> {
+    async init(doDraw=true): Promise<void> {
         // add loading placeholder
         this.container
             .append("div")
@@ -190,7 +197,9 @@ export abstract class SeriesGraph {
         }
         // next process the data
         this.processData(r);
-        // next draw the graph
-        this.draw();
+        if (doDraw) {
+            // next draw the graph
+            this.draw();
+        }
     }
 }

@@ -136,3 +136,26 @@
 <script type="text/javascript">
     $(dodona.initCourseShow);
 </script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Course",
+    "name": "<%= escape_javascript(@course.name) %>",
+    "teaches": "programming",
+    "educationalUse": "exercises",
+    <% if @course.institution %>
+      "provider": {
+        "@type": "Organization",
+        "name": "<%= escape_javascript(@course.institution.name) %>"
+      },
+    <% end %>
+    <% if @course.teacher %>
+      "author": {
+        "@type": "Person",
+        "name": "<%= escape_javascript(@course.teacher) %>"
+      },
+    <% end %>
+    "description": "<%= escape_javascript(@course.description) %>"
+  }
+</script>

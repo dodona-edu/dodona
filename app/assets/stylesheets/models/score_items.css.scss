@@ -67,3 +67,17 @@ a.option-btn {
   margin-left: 0;
   flex: 1;
 }
+
+.toggleable-icon {
+  .expanded-icon {
+    display: none;
+  }
+  &[aria-expanded="true"] {
+    .expanded-icon {
+      display: initial;
+    }
+    .collapsed-icon {
+      display: none;
+    }
+  }
+}

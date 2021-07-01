@@ -667,7 +667,7 @@ class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest
     }
 
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
-      post webhook_repository_path(@repository, pusher: @pusher), headers: { "X-GitHub-Event": 'push' }
+      post webhook_repository_path(@repository, pusher: @pusher), headers: { 'X-GitHub-Event': 'push' }
     end
     email = ActionMailer::Base.deliveries.last
 

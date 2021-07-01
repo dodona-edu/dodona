@@ -26,7 +26,8 @@ class Export < ApplicationRecord
       item: item,
       users: users,
       list: list,
-      options: params
+      options: params,
+      for_user: user
     ).bundle
 
     archive.attach(

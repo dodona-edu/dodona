@@ -73,12 +73,15 @@ en:
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# annotations"
+      feedback: "Feedback"
       grade: Grade
       annotation_count:
-        zero: "No feedback was given"
+        zero: "No annotations were added to your solution"
         one: "One annotation"
         other: "%{count} annotations"
       no_submission: "You had no timely submission for this exercise"
+      invisible_total: "The total score was not released"
+      no_grading: "This exercise was not graded"
     members_table:
       remove_user: Remove student from evaluation
       remove_user_consequences: "If this student already received feedback, it will be deleted. Are you sure you want to remove this student?"

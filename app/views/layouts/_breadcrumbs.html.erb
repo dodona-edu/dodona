@@ -8,6 +8,7 @@
   <% if !user_signed_in? %>
     <div class="crumb list">
       <%= link_to(t("layout.menu.activities"), activities_path) %>
+      <%= link_to(t("layout.menu.courses"), courses_path) %>
       <%= link_to(t("layout.menu.support_us"), support_us_path) %>
       <%= link_to(t("layout.menu.manual"), "https://docs.dodona.be/#{I18n.locale}") %>
       <%= link_to(t("layout.menu.contact"), contact_path) %>

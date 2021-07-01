@@ -11,7 +11,7 @@ module LtiTestHelper
       iat: iat,
       sub: 'test-user-123',
       nonce: nonce,
-      "https://purl.imsglobal.org/spec/lti/claim/message_type": type,
+      'https://purl.imsglobal.org/spec/lti/claim/message_type': type,
       'https://purl.imsglobal.org/spec/lti/claim/version': '1.3.0',
       'https://purl.imsglobal.org/spec/lti/claim/deployment_id': 'c5899818-7062-44d1-b377-5a08097daeb3',
       'https://purl.imsglobal.org/spec/lti/claim/target_link_uri': target,

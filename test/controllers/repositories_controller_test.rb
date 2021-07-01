@@ -215,7 +215,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
       removed: [],
       modified: ['echo/config.json']
     }]
-    post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { "X-GitHub-Event": 'push' }
+    post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-GitHub-Event': 'push' }
     assert_equal 'private', find_echo.access
   end
 
@@ -231,7 +231,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
       removed: [],
       modified: ['echo/config.json']
     }]
-    post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { "X-Gitlab-Event": 'push' }
+    post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-Gitlab-Event': 'push' }
     assert_equal 'private', find_echo.access
   end
 end

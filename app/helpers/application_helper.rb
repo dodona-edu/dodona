@@ -224,7 +224,7 @@ module ApplicationHelper
     end
 
     def page_number(page)
-      tag :li, link(page, page, rel: rel_value(page), "data-remote": true, class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
+      tag :li, link(page, page, rel: rel_value(page), 'data-remote': true, class: 'page-link'), class: (page == current_page ? 'active page-item' : 'page-item')
     end
 
     def gap
@@ -232,7 +232,7 @@ module ApplicationHelper
     end
 
     def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', "data-remote": true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
+      tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 

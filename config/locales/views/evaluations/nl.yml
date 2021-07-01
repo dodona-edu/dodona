@@ -72,13 +72,15 @@ nl:
       explanation: Een cursusbeheerder evalueerde je oplossingen voor de reeks "%{series}". Voor elke oefening werd je laatst ingediende oplossing voor %{deadline} automatisch geselecteerd, maar de cursusbeheerder selecteerde mogelijks handmatig een andere oplossing. Merk op dat deze evaluatie niet noodzakelijk betekent dat er feedback werd toevoegd aan elk van je oplossingen.
       released: Er werd feedback gegeven op je code
       exercise: Oefening
-      no_annotations: "# annotaties"
+      feedback: "Feedback"
       grade: Score
       annotation_count:
-        zero: "Er werd geen feedback gegeven"
+        zero: "Er werden geen annotaties toegevoegd aan je oplossing"
         one: "Één annotatie"
         other: "%{count} annotaties"
       no_submission: "Je had geen tijdige oplossing voor deze oefening"
+      invisible_total: "De totaalscore werd niet vrijgegeven"
+      no_grading: "Deze oefening staat niet op punten"
     members_table:
       remove_user: Student verwijderen uit evaluatie
       remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"

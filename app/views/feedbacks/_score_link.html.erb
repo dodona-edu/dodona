@@ -6,13 +6,21 @@
 <% total = policy(feedback.evaluation_exercise).show_total? %>
 <% scores = policy_scope(feedback.scores) %>
 <% if total && feedback.score_items.present? %>
-  <%= link_to t("feedbacks.score_link.score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)),
-              "#score-details-#{feedback.id}",
-              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } %>
+  <%= link_to "#score-details-#{feedback.id}",
+              class: 'toggleable-icon',
+              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } do %>
+    <%= t("feedbacks.score_link.score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)) %>
+    <i class="collapsed-icon mdi mdi-chevron-down mdi-12"></i>
+    <i class="expanded-icon mdi mdi-chevron-up mdi-12"></i>
+  <% end %>
 <% elsif scores.present? %>
-  <%= link_to t("feedbacks.score_link.present", count: scores.length),
-              "#score-details-#{feedback.id}",
-              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } %>
+  <%= link_to "#score-details-#{feedback.id}",
+              class: 'toggleable-icon',
+              title: t("feedbacks.score_link.view_breakdown"), data: { 'bs-toggle': "collapse" } do %>
+    <%= t("feedbacks.score_link.present", count: scores.length) %>
+    <i class="collapsed-icon mdi mdi-chevron-down mdi-12"></i>
+    <i class="expanded-icon mdi mdi-chevron-up mdi-12"></i>
+  <% end %>
 <% end %>
 <%# Link to edit screen if needed %>
 <% if policy(feedback).show? && scores.present? %>

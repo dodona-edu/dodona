@@ -8,33 +8,89 @@
         <div class="callout callout-info">
           <%= t('.explanation', series: @evaluation.series.name, deadline: l(@evaluation.deadline, format: :submission)) %>
         </div>
-        <table class="table table-resource">
+        <%# If the user can view any of the grades in this evaluation. %>
+        <% graded = policy_scope(@evaluation.score_items).any? %>
+        <table class="table table-resource grade-feedback-table">
           <thead>
             <tr>
-              <th><%= t('.exercise') %></th>
-              <th><%= t('.no_annotations') %></th>
-              <th><%= t('.grade') %></th>
+              <th><%= t '.exercise' %></th>
+              <th><%= t '.feedback' %></th>
+              <th><%= t '.grade' if graded %></th>
               <th class="actions"></th>
             </tr>
           </thead>
           <tbody>
             <% @feedbacks.each do |fb| %>
+              <% show_total = policy(fb.evaluation_exercise).show_total? %>
+              <% scores = policy_scope(fb.scores).includes(:score_item) %>
               <tr>
-                <td><%= link_to fb.exercise.name, activity_scoped_path(activity: fb.exercise, series: @evaluation.series) %></td>
-                <td><%= fb.submission.present? ? t('.annotation_count', count: fb.submission.annotations.count) : t('.no_submission') %></td>
-                <td><%= render 'feedbacks/score_link', feedback: fb %></td>
-                <td class="actions">
+                <%# The last row is normally borderless, but this doesn't work due to the rowspan. %>
+                <td class="align-top <%= "border-bottom-0" if fb === @feedbacks.last %>"
+                    rowspan="<%= 1 + scores.length %>">
+                  <%= link_to fb.exercise.name, activity_scoped_path(activity: fb.exercise, series: @evaluation.series) %>
+                </td>
+                <td>
+                  <% if graded %>
+                    <strong>
+                      <% if fb.maximum_score %>
+                        <%= t "feedbacks.score_table.total_score" %>
+                      <% else %>
+                        <%= t ".no_grading" %>
+                      <% end %>
+                    </strong>
+                    <br>
+                    <span class="text-muted small">
+                      <% if fb.submission.present? %>
+                        <%= t('.annotation_count', count: fb.submission.annotations.count) %>
+                      <% else %>
+                        <%= t('.no_submission') %>
+                      <% end %>
+                    </span>
+                  <% else %>
+                    <% if fb.submission.present? %>
+                      <%= t('.annotation_count', count: fb.submission.annotations.count) %>
+                    <% else %>
+                      <%= t('.no_submission') %>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td class="align-top">
+                  <strong>
+                    <% if show_total %>
+                      <% if fb.maximum_score %>
+                        <%= format_score fb.score %> / <%= format_score fb.maximum_score %>
+                      <% elsif graded %>
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
+                          -
+                        </span>
+                      <% end %>
+                    <% else %>
+                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">
+                        -
+                      </span>
+                    <% end %>
+                  </strong>
+                </td>
+                <td class="actions align-top">
                   <% if fb.submission.present? %>
                     <%= link_to submission_path(fb.submission, anchor: 'code') do %>
                       <i class="mdi mdi-chevron-right mdi-18"></i>
                     <% end %>
                   <% end %>
               </tr>
-              <tr class="collapse" id="<%= "score-details-#{fb.id}" %>">
-                <td colspan="4">
-                  <%= render 'feedbacks/score_table', feedback: fb %>
-                </td>
-              </tr>
+              <% scores.each do |score| %>
+                <tr>
+                  <td class="subscore-row">
+                    <%= score.score_item.name %>
+                    <br>
+                    <span class="text-muted small"><%= score.score_item.description %></span>
+                  </td>
+                  <td class="align-top">
+                    <%= format_score score.score %> / <%= format_score score.score_item.maximum %>
+                  </td>
+                  <td></td>
+                </tr>
+              <% end %>
             <% end %>
           </tbody>
         </table>

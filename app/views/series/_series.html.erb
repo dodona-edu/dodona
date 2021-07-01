@@ -25,7 +25,7 @@
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
-      <% if policy(Series).statistics? %>
+      <% if policy(series).statistics? %>
         <a class="btn btn-icon hidden-print">
           <i class="mdi mdi-chart-line" onclick="dodona.toggleStats(this, '<%= series.id %>')"></i>
         </a>
@@ -145,7 +145,7 @@
   <% end %>
   
 
-  <% if policy(Series).statistics? %>
+  <% if policy(series).statistics? %>
     <div class="graph-header">
       <div class="graph-title">
         <span></span>

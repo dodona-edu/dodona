@@ -18,7 +18,7 @@ class QuestionsTest < ApplicationSystemTestCase
     sign_in @student
   end
 
-  test 'Can pose question for each line of the available lines of code' do
+  test 'Can ask question for each line of the available lines of code' do
     visit(submission_path(id: @submission.id))
     click_link 'Code'
 
@@ -37,7 +37,7 @@ class QuestionsTest < ApplicationSystemTestCase
     end
   end
 
-  test 'Can pose global question about code' do
+  test 'Can ask global question about code' do
     visit(submission_path(id: @submission.id))
     click_link 'Code'
 

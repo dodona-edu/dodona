@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+    <%= javascript_pack_tag 'visualisations_series' %>
+<% end %>
 <% get_activity_path ||= ->(ex) {course_series_activity_path series.course_id, series.id, ex} %>
 <% unless defined? loaded %>
   <% loaded = true %>
@@ -22,6 +25,11 @@
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions">
+      <% if policy(series).statistics? %>
+        <a class="btn btn-icon hidden-print">
+          <i class="mdi mdi-chart-line" onclick="dodona.toggleStats(this, '<%= series.id %>')"></i>
+        </a>
+      <% end %>
       <div class="btn-group">
         <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
@@ -135,29 +143,75 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <div class="series-description">
-    <%= cache series do %>
-      <%= markdown(series.description) %>
-    <% end %>
-  </div>
+  
 
-  <% if policy(series).overview? && series.activity_count > 0 %>
-    <div class="series-activities-table-wrapper">
-      <% if loaded %>
-        <%= render partial: 'activities/series_activities_table', locals: {
-            series: series,
-            activities: series.activities,
-            get_activity_path: get_activity_path,
-            user: user
-        } %>
-      <% else %>
-        <div class="activity-table-skeleton">
-          <div class="skeleton-head"></div>
-          <% series.activity_count.times do %>
-            <div class="skeleton-row"></div>
-          <% end %>
-        </div>
+  <% if policy(series).statistics? %>
+    <div class="graph-header">
+      <div class="graph-title">
+        <span></span>
+        <a class="hidden-print" >
+          <i
+            class="mdi mdi-information graph-info"
+          ></i>
+        </a>
+      </div>
+
+      <div id="stats-tab-<%= series.id %>" class="btn-group btn-toggle stats-tab">
+        <button 
+          class="btn annotation-toggle violin"
+          onclick="dodona.setActiveToggle(this, 'violin', <%= series.id %>, '#stats-container-')"
+        >
+          <%= custom_icon("violin", {class: "mdi svg-icon-btn"}) %>
+        </button>
+        <button
+          class="btn annotation-toggle stacked"
+          onclick="dodona.setActiveToggle(this, 'stacked', <%= series.id %>, '#stats-container-')"
+        >
+          <%= custom_icon("stacked-bar-chart", {class: "mdi svg-icon-btn rotate"}) %>
+        </button>
+        <button
+          class="btn annotation-toggle timeseries"
+          onclick="dodona.setActiveToggle(this, 'timeseries', <%= series.id %>, '#stats-container-')"
+        >
+          <%= custom_icon("heatmap", {class: "mdi svg-icon-btn"}) %>
+        
+        </button>
+        <button
+          class="btn annotation-toggle ctimeseries"
+          onclick="dodona.setActiveToggle(this, 'ctimeseries', <%= series.id %>, '#stats-container-')"
+        >
+          <%= custom_icon("stacked-line-chart", {class: "mdi svg-icon-btn"}) %>
+        </button>
+      </div>
+    </div>
+    <div class="stats-container" id="stats-container-<%= series.id %>" style="position: relative;"></div>
+  <% end %>
+
+  <div class="series-content">
+    <div class="series-description">
+      <%= cache series do %>
+        <%= markdown(series.description) %>
       <% end %>
     </div>
-  <% end %>
+
+    <% if policy(series).overview? && series.activity_count > 0 %>
+      <div class="series-activities-table-wrapper">
+        <% if loaded %>
+          <%= render partial: 'activities/series_activities_table', locals: {
+              series: series,
+              activities: series.activities,
+              get_activity_path: get_activity_path,
+              user: user
+          } %>
+        <% else %>
+          <div class="activity-table-skeleton">
+            <div class="skeleton-head"></div>
+            <% series.activity_count.times do %>
+              <div class="skeleton-row"></div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
 </div>

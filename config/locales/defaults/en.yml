@@ -24,6 +24,9 @@ en:
     abbr_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     month_names: [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     abbr_month_names: [null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+    formats:
+      weekday_short: "%a %b %d"
+      weekday_long: "%A %B %d"
   time:
     formats:
       annotation: '%B %d, %Y %H:%M'

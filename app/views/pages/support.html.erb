@@ -37,13 +37,15 @@
         <div class="col-12 col-sm-6 sponsor-logos">
           <div class="row">
             <div class="col-6">
-              <%= link_to "https://www.ugent.be/", title: "Universiteit Gent", target: "_blank" do %>
-                <%= image_tag("ugent.png", class: 'img-fluid') %>
+              <%= link_to "https://www.ugent.be/#{I18n.locale}", title: "Universiteit Gent", target: "_blank" do %>
+                <%= image_tag("ugent.#{I18n.locale}.png", class: 'img-fluid light-only') %>
+                <%= image_tag("ugent.#{I18n.locale}.white.png", class: 'img-fluid dark-only') %>
               <% end %>
             </div>
             <div class="col-6">
               <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: "Faculteit Wetenschappen", target: "_blank" do %>
-                <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid') %>
+                <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid light-only') %>
+                <%= image_tag("we.#{I18n.locale}.white.png", class: 'img-fluid dark-only') %>
               <% end %>
             </div>
           </div>

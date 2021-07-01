@@ -197,7 +197,6 @@ describe("General tests", () => {
         expect(document.querySelector("#container").childNodes).toHaveLength(0);
         graph.drawNoData();
         expect(document.querySelector("#container").children.length).toBe(1);
-        console.log(document.querySelector("#container").firstChild.firstChild);
         expect((document.querySelector("#container").firstChild as HTMLElement).innerHTML)
             .toMatch("Er is niet genoeg data om een grafiek te maken.");
     });

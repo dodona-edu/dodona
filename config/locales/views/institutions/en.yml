@@ -10,5 +10,26 @@ en:
     show:
       staff: "Staff"
       edit: "Edit institution"
+      merge: "Merge institution"
       providers:
         number_of_identities: Identities
+    merge:
+      title: "Merge %{name}"
+      pick_institution: "Choose other institution"
+      confirm: "Confirm changes"
+      done: "The institutions were merged"
+    merge_changes:
+      deleted: "%{institution} will be deleted. The following changes will also be performed:"
+      confirm: "Confirm"
+      course_changes:
+        zero: "No courses will change institution."
+        one: "One course will change institution."
+        other: "%{count} courses will change institution."
+      user_changes:
+        zero: "No users will change institution."
+        one: "1 user will change institution."
+        other: "%{count} users will change institution."
+      provider_changes:
+        zero: "No providers will change institution. This shouldn't happen."
+        one: "One provider (%{preferred}) will change institution and will become a secondary provider."
+        other: "%{count} providers will change institution. The preferred provider (%{preferred}) will become a secondary provider."

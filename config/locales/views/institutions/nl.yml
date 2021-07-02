@@ -10,5 +10,26 @@ nl:
     show:
       staff: "Lesgevers"
       edit: "Onderwijsinstelling aanpassen"
+      merge: "Onderwijsinstelling samenvoegen"
       providers:
         number_of_identities: Identiteiten
+    merge:
+      title: "%{name} samenvoegen"
+      pick_institution: "Kies de andere onderwijsinstelling"
+      confirm: "Bevestig de veranderingen"
+      done: "De onderwijsinstellingen werden samengevoegd"
+    merge_changes:
+      confirm: "Bevestigen"
+      deleted: "%{institution} zal verwijderd worden. Daarnaast worden de volgende aanpassingen doorgevoerd:"
+      course_changes:
+        zero: "Er zullen geen cursussen aangepast worden."
+        one: "Een cursus zal van onderwijsinstelling veranderen."
+        other: "%{count} cursussen zullen van onderwijsinstelling veranderen."
+      user_changes:
+        zero: "Er zullen geen gebruikers aangepast worden."
+        one: "Een gebruiker zal van onderwijsinstelling veranderen."
+        other: "%{count} gebruikers zullen van onderwijsinstelling veranderen."
+      provider_changes:
+        zero: "Geen enkele provider wordt aangepast. Dit zou niet mogen gebeuren."
+        one: "Een provider (%{preferred}) zal van onderwijsinstelling veranderen en wordt een secundaire provider."
+        other: "%{count} providers zullen van onderwijsinstelling veranderen. De hoofdprovider (%{preferred}) wordt een secundaire provider."

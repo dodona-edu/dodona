@@ -1,0 +1,26 @@
+<% if institution.errors.present? %>
+  <div class="stepper-part">
+    <div class="callout callout-danger">
+      <h4><%= t('errors.validation_errors', count: institution.errors.count) %></h4>
+      <ul>
+        <% institution.errors.full_messages.each do |m| %>
+          <li><%= m %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
+<div class="stepper-part">
+  <%= t('.deleted', institution: institution.name) %>
+  <ul>
+    <li><%= t('.course_changes', count: institution.courses.count) %></li>
+    <li><%= t('.user_changes', count: institution.users.count) %></li>
+    <li><%= t('.provider_changes', count: institution.providers.count, preferred: institution.providers.find_by(mode: :prefer).identifier_string) %></li>
+  </ul>
+</div>
+<div class="stepper-actions stepper-border">
+  <%= form_with url: merge_institution_url(institution, other_institution_id: other.id) do |f| %>
+    <%= f.submit t('.confirm'), class: "btn btn-text btn-primary" %>
+  <% end %>
+</div>

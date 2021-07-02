@@ -1,0 +1,53 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'institution' %>
+<% end %>
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="institution-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+          <span class="step-circle">1</span>
+          <a role="button" data-bs-toggle="collapse" href="#institution-step">
+            <%= t '.pick_institution' %>
+            <span class="answer">
+            </span>
+          </a>
+          </h4>
+        </div>
+        <div id="institution-step" class="panel-collapse collapse <%= "show" if @institution.errors.blank? %>" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <%= render partial: 'layouts/searchbar' %>
+              <div id="institution-table-wrapper">
+                <%= render partial: 'merge_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts} %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="confirm-panel" class="panel panel-default <%= "hidden" if @institution.errors.blank? %>">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" data-bs-toggle="collapse" href="#confirm-step">
+              <%= t '.confirm' %>
+            </a>
+          </h4>
+        </div>
+        <div id="confirm-step" class="panel-collapse collapse <%= "show" unless @institution.errors.blank? %>" role="tabpanel">
+          <div class="panel-body">
+            <div id="merge-confirm-info-wrapper">
+              <% if @other.present? %>
+                <%= render partial: "merge_changes", locals: { institution: @institution, other: @other } %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function() { dodona.initInstitutionSelectionTable(<%= @institution.id %>) })
+</script>

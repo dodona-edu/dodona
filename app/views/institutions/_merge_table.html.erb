@@ -1,0 +1,43 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+    <tr>
+      <th></th>
+      <th><%= Institution.human_attribute_name(:name) %></th>
+      <th><%= Institution.human_attribute_name(:short_name) %></th>
+      <th><%= t('institutions.index.number_of_users') %></th>
+      <th><%= t('institutions.index.number_of_courses') %></th>
+      <th><%= Institution.human_attribute_name(:providers) %></th>
+      <th class="actions"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% institutions.each do |institution| %>
+      <tr data-institution_id="<%= institution.id %>" data-answer="<%= institution.name %>">
+        <td>
+          <input type="radio" name="course-select" class="form-check-input">
+        </td>
+        <td>
+          <%= link_to institution.name, institution, class: 'nested-link' %>
+          <% if institution.generated_name? %>
+            <span class="generated-name-icon" title="<%= t 'institutions.index.generated_name' %>"><i class="mdi mdi-18 mdi-cogs icon"></i></span>
+          <% end %>
+        </td>
+        <td><%= institution.short_name %></td>
+        <td><%= link_to institution.users.length, users_url(institution_id: institution.id), target: '_blank', class: 'nested-link' %></td>
+        <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id), target: '_blank', class: 'nested-link' %></td>
+        <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
+        <td class="actions">
+          <%= link_to institution_path(institution), target: '_blank', class: 'btn btn-sm btn-secondary nested-link' do %>
+            <i class="mdi mdi-open-in-new mdi-18"></i>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% if institutions.empty? %>
+  <p class="text-center text-muted lead table-placeholder"><%= t 'institutions.index.no_institutions' %></p>
+<% end %>
+<center><%= page_navigation_links institutions, true, 'institutions', {}, 'merge' %></center>

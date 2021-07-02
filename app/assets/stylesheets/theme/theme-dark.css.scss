@@ -110,13 +110,11 @@
 
   $form-select-indicator-color: $text-color !global;
 
-  .activity-description {
-    .light-only {
-      display: none;
-    }
+  .light-only {
+    display: none;
+  }
 
-    .dark-only {
-      display: unset;
-    }
+  .dark-only {
+    display: unset;
   }
 }

@@ -49,8 +49,8 @@
         <div class="supporters row">
           <div class="col-12 col-sm-4 center-vertical">
             <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: t(".we") do %>
-              <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid light-only') %>
-              <%= image_tag("we.#{I18n.locale}.white.png", class: 'img-fluid dark-only') %>
+              <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid light-only', loading: 'lazy') %>
+              <%= image_tag("we.#{I18n.locale}.white.png", class: 'img-fluid dark-only', loading: 'lazy') %>
             <% end %>
           </div>
           <div class="col-12 col-sm-3 center-vertical">

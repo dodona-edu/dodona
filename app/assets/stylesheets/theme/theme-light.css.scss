@@ -193,15 +193,14 @@ $heatmap-hover-fg: $grey-200;
 
 $table-hover-bg: $grey-50;
 
-.activity-description {
-    .dark-only {
-        display: none;
-    }
-
-    .light-only {
-        display: unset;
-    }
+.dark-only {
+    display: none;
 }
+
+.light-only {
+    display: unset;
+}
+
 @if $theme == dark {
     @include theme-dark-other;
 }

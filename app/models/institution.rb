@@ -47,4 +47,22 @@ class Institution < ApplicationRecord
   def unmark_generated
     self.generated_name = false
   end
+
+  def merge_into(other)
+    errors.add(:merge, 'has overlapping usernames') if other.users.exists?(username: users.pluck(:username))
+    errors.add(:merge, 'has link provider') if providers.any?(&:link?)
+    return false if errors.any?
+
+    courses.each { |c| c.update(institution: other) }
+    users.each { |u| u.update(institution: other) }
+    providers.each do |p|
+      if p.prefer?
+        p.update(institution: other, mode: :secondary)
+      else # secondary or redirect
+        p.update(institution: other)
+      end
+    end
+    reload
+    destroy
+  end
 end

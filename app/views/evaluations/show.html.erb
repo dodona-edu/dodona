@@ -31,11 +31,7 @@
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
           <li>
-            <%= link_to evaluation_path(@evaluation),
-                        method: :delete,
-                        class: "dropdown-item",
-                        data: { confirm: t('general.are_you_sure') }
-                        do%>
+            <%= link_to(evaluation_path(@evaluation), method: :delete, class: "dropdown-item", data: { confirm: t('general.are_you_sure') }) do %>
               <i class="mdi mdi-delete mdi-18"></i> <%= t('evaluations.destroy') %>
             <% end %>
           </li>

@@ -186,7 +186,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def redirect_with_errors!(resource)
     logger.info "User was unable to login because of reason: '#{resource.errors.full_messages.to_sentence}'. More info about the request below:\n" \
-        "#{auth_hash.pretty_inspect}"
+                "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: resource.errors.inspect)
                      .user_unable_to_log_in
@@ -273,8 +273,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def institution_created
     logger.info "Institution with identifier #{oauth_provider_id} created (#{auth_provider_type}). " \
-      "See below for more info about the request:\n" \
-      "#{auth_hash.pretty_inspect}"
+                "See below for more info about the request:\n" \
+                "#{auth_hash.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash)
                      .institution_created
@@ -283,9 +283,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def institution_create_failed(errors)
     logger.info "Failed to created institution with identifier #{oauth_provider_id} (#{auth_provider_type}). " \
-      "See below for more info about the request:\n" \
-      "#{auth_hash.pretty_inspect}" \
-      "#{errors}"
+                "See below for more info about the request:\n" \
+                "#{auth_hash.pretty_inspect}" \
+                "#{errors}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed

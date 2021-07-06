@@ -16,7 +16,7 @@
           <%= button_tag class: "btn btn-secondary btn-sm delete-button", type: :button, disabled: !@score_map.key?(score_item.id) do %>
             <i class="mdi mdi-delete mdi-12" aria-hidden='true'></i>
           <% end %>
-          <%= f.number_field :score, required: true,
+          <%= f.number_field :score,
                              class: "form-control score-input",
                              step: 0.25,
                              tabindex: index + 1,

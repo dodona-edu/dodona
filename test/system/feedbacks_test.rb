@@ -180,4 +180,34 @@ class FeedbacksTest < ApplicationSystemTestCase
     assert_equal expected_first, BigDecimal(first_input.value)
     assert_equal BigDecimal('0'), BigDecimal(second_input.value)
   end
+
+  test 'clear button works' do
+    visit(feedback_path(id: @feedback.id))
+
+    delete_button = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.delete-button')
+    accept_confirm do
+      delete_button.click
+    end
+
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+
+    assert_equal '', first_input.value
+    assert_nil Score.find_by(id: @score.id)
+  end
+
+  test 'clearing input field clears score' do
+    visit(feedback_path(id: @feedback.id))
+
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input')
+    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input')
+
+    # Clear the field by sending backspace key strokes.
+    first_input.fill_in with: '', fill_options: { clear: :backspace }
+    second_input.click
+
+    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
+
+    assert_equal '', first_input.value
+    assert_nil Score.find_by(id: @score.id)
+  end
 end

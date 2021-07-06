@@ -130,7 +130,14 @@ export default class ScoreForm {
         }
     }
 
-    private sendUpdate(newFocus: HTMLElement | null = null): void {
+    private sendUpdate(newFocus?: HTMLElement): void {
+        // Special case where the value is empty: do as if
+        // the clear button has been pressed.
+        if (this.input.value === "") {
+            this.delete();
+            return;
+        }
+
         let data;
         if (this.existing) {
             data = {

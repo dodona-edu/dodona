@@ -147,8 +147,8 @@ class Exercise < Activity
     c['evaluation'] ||= {}
     c['evaluation']['memory_limit'] = 500_000_000
     store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
-        "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
-        'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
+                    "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
+                    'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
   end
 
   def self.move_relations(from, to)

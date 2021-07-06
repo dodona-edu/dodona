@@ -60,6 +60,10 @@ export default class ScoreForm {
             e.preventDefault();
         });
         this.input.addEventListener("change", ev => {
+            // If the score is not valid, don't do anything.
+            if (!this.input.reportValidity()) {
+                return;
+            }
             // Mark as busy to show we are aware an update should happen.
             // If we don't do this, we need a difficult balance between waiting
             // long enough so the delay is useful when using the increment/decrement buttons
@@ -69,12 +73,15 @@ export default class ScoreForm {
                 if (valueOnFocus === (ev.target as HTMLInputElement).value) {
                     return;
                 }
-                if (!this.input.reportValidity()) {
-                    return;
-                }
                 if (updating) {
                     return;
                 }
+
+                // This is delayed, so check validity again.
+                if (!this.input.reportValidity()) {
+                    return;
+                }
+
                 updating = true;
                 this.sendUpdate(document.activeElement as HTMLElement);
             }, 400);

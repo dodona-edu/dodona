@@ -77,13 +77,22 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
                       <li>
-                        <%= link_to t(".show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post, class: "dropdown-item" %>
+                        <%= link_to modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post, class: "dropdown-item" do %>
+                          <i class="mdi mdi-eye mdi-18"></i>
+                          <%= t(".show_all") %>
+                        <% end %>
                       </li>
                       <li>
-                        <%= link_to t(".hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post, class: "dropdown-item" %>
+                        <%= link_to modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post, class: "dropdown-item" do %>
+                          <i class="mdi mdi-eye-off mdi-18"></i>
+                          <%= t(".hide_all") %>
+                        <% end %>
                       </li>
                       <li>
-                        <a href="#add-score-item-to-all" data-bs-toggle="modal" class="dropdown-item"><%= t '.add_all' %></a>
+                        <a href="#add-score-item-to-all" data-bs-toggle="modal" class="dropdown-item">
+                          <i class="mdi mdi-table-row-plus-after mdi-18"></i>
+                          <%= t '.add_all' %>
+                        </a>
                       </li>
                     </ul>
                   </div>

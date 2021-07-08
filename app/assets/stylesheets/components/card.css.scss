@@ -57,13 +57,13 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent {
-  color: $header-fg;
+  color: $text-on-bg-color;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 
   .card-subtitle-text {
     margin-top: 3px;
-    color: $header-fg-secondary;
+    color: $text-secondary-on-bg-color;
   }
 
   .card-subtitle-text + .card-subtitle-text {
@@ -76,39 +76,39 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent.accent-red {
-  background-color: $color-red;
+  background-color: $color-red-bg;
 }
 
 .card-title.card-colored-accent.accent-pink {
-  background-color: $color-pink;
+  background-color: $color-pink-bg;
 }
 
 .card-title.card-colored-accent.accent-purple {
-  background-color: $color-purple;
+  background-color: $color-purple-bg;
 }
 
 .card-title.card-colored-accent.accent-deep-purple {
-  background-color: $color-deep-purple;
+  background-color: $color-deep-purple-bg;
 }
 
 .card-title.card-colored-accent.accent-indigo {
-  background-color: $color-indigo;
+  background-color: $color-indigo-bg;
 }
 
 .card-title.card-colored-accent.accent-teal {
-  background-color: $color-teal;
+  background-color: $color-teal-bg;
 }
 
 .card-title.card-colored-accent.accent-orange {
-  background-color: $color-orange;
+  background-color: $color-orange-bg;
 }
 
 .card-title.card-colored-accent.accent-brown {
-  background-color: $color-brown;
+  background-color: $color-brown-bg;
 }
 
 .card-title.card-colored-accent.accent-blue-grey {
-  background-color: $color-blue-grey;
+  background-color: $color-blue-grey-bg;
 }
 
 .card-title.card-title-plain li a {

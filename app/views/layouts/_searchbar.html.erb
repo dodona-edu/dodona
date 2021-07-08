@@ -145,7 +145,7 @@
             multi: true,
             data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
             color: function () {
-                return "light-grey";
+                return "orange";
             },
         };
         <% end %>

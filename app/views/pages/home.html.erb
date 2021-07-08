@@ -2,7 +2,56 @@
   <%= javascript_pack_tag 'favorite_course_buttons' %>
 <% end %>
 <div class="row">
-  <div class="col-12 col-md-6 col-lg-8">
+  <div class="col-3">
+    <h4>Jump back in</h4>
+    <div class="card" style="background: rgb(144 202 249)">
+      <div class="card-title">
+          <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Echo function print</h2>
+          <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
+          <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
+              Series 5: Loops
+          </h3>
+        </div>
+      </div>
+  </div>
+  <div class="col-3">
+    <h4>Upcoming deadlines</h4>
+    <div class="card" style="background: #A5D6A7">
+      <div class="card-title">
+          <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 2: Variables</h2>
+          <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
+          <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
+              2 hours left
+          </h3>
+        </div>
+      </div>
+  </div>
+  <div class="col-3 align-self-end">
+    <div class="card" style="background: #EF9A9A">
+      <div class="card-title">
+          <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 5: Loops</h2>
+          <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
+          <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
+              5 days left
+          </h3>
+        </div>
+      </div>
+  </div>
+  <div class="col-3 align-self-end">
+    <div class="card" style="background: #EF9A9A">
+      <div class="card-title">
+          <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 6: Functions</h2>
+          <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
+          <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
+              2 weeks left
+          </h3>
+        </div>
+      </div>
+  </div>
+</div>
+<div class="row">
+  <h4>My courses</h4>
+  <div class="col-12 col-md-6 col-xl-8">
     <% if @subscribed_courses.empty? %>
       <%= render "getting_started_card" %>
       <%= render 'privacy_disclaimer' %>
@@ -10,7 +59,7 @@
       <div class="row favorites-row">
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
+            <div class="col-12 col-lg-12 col-xl-6">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -32,7 +81,7 @@
         <% end %>
         <div class="row row-<%= year.parameterize %>">
           <% courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
+            <div class="col-12 col-lg-12 col-xl-6">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
             </div>
           <% end %>
@@ -40,7 +89,7 @@
       <% end %>
     <% end %>
   </div>
-  <div class="col-12 col-md-6 col-lg-4">
+  <div class="col-12 col-md-6 col-xl-4">
     <div class="row">
       <div class="col-12">
         <%= render "user_card" %>

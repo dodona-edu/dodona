@@ -30,7 +30,7 @@ class InstitutionsController < ApplicationController
         format.html { redirect_to institutions_url, notice: I18n.t('controllers.updated', model: Institution.model_name.human) }
         format.json { render :show, status: :ok, location: @institution }
       else
-        format.html { render :edit }
+        format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @institution.errors, status: :unprocessable_entity }
       end
     end

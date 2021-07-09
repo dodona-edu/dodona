@@ -22,6 +22,22 @@ class InstitutionControllerTest < ActionDispatch::IntegrationTest
     assert_select 'a[href=?]', institution_path(i2), 0
   end
 
+  test 'should be able to edit provider mode' do
+    create :provider, institution: @instance, mode: :prefer
+    p2 = create :provider, institution: @instance, mode: :secondary
+    put institution_path(@instance, { institution: { providers_attributes: [{ id: p2.id, mode: :redirect }] } })
+    assert_redirected_to institutions_path
+    assert p2.reload.redirect?
+  end
+
+  test 'should not be able to invalidly edit provider mode' do
+    create :provider, institution: @instance, mode: :prefer
+    p2 = create :provider, institution: @instance, mode: :secondary
+    put institution_path(@instance, { institution: { providers_attributes: [{ id: p2.id, mode: :prefer }] } })
+    assert_response :unprocessable_entity
+    assert p2.reload.secondary?
+  end
+
   test 'should render merge page' do
     get merge_institution_path(@instance)
     assert_response :success

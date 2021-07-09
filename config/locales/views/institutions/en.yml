@@ -10,7 +10,7 @@ en:
     show:
       staff: "Staff"
       edit: "Edit institution"
-      merge: "Merge institution"
+      merge: "Merge into other institution"
       providers:
         number_of_identities: Identities
     merge:

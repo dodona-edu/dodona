@@ -10,7 +10,7 @@ nl:
     show:
       staff: "Lesgevers"
       edit: "Onderwijsinstelling aanpassen"
-      merge: "Onderwijsinstelling samenvoegen"
+      merge: "Samenvoegen in andere instelling"
       providers:
         number_of_identities: Identiteiten
     merge:

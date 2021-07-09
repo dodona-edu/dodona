@@ -1,6 +1,6 @@
 import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
-import { getURLParameter } from "./util.js";
+import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
 
 function loadUsers(_baseUrl, _status) {
@@ -246,14 +246,7 @@ function initCourseNew() {
                 .closest(".panel")
                 .find(".answer")
                 .html($(this).data("answer"));
-            fetch("/courses/new.js", {
-                headers: {
-                    "accept": "text/javascript",
-                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                    "x-requested-with": "XMLHttpRequest",
-                },
-                credentials: "same-origin",
-            })
+            fetch("/courses/new.js")
                 .then(req => req.text())
                 .then(resp => eval(resp));
         });
@@ -280,14 +273,7 @@ function initCourseNew() {
                 .closest(".panel")
                 .find(".answer")
                 .html($(this).data("answer"));
-            fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`, {
-                headers: {
-                    "accept": "text/javascript",
-                    "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                    "x-requested-with": "XMLHttpRequest",
-                },
-                credentials: "same-origin",
-            })
+            fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`)
                 .then(req => req.text())
                 .then(resp => eval(resp));
         });

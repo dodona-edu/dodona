@@ -20,7 +20,7 @@
 #  jwks_uri          :string(255)
 #
 class Provider < ApplicationRecord
-  enum mode: { prefer: 0, redirect: 1, link: 2 }
+  enum mode: { prefer: 0, redirect: 1, link: 2, secondary: 3 }
 
   PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Saml, Provider::Smartschool].freeze
 

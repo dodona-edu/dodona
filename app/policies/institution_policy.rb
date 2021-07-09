@@ -21,9 +21,21 @@ class InstitutionPolicy < ApplicationPolicy
     zeus?
   end
 
+  def merge?
+    zeus?
+  end
+
+  def merge_changes?
+    zeus?
+  end
+
+  def do_merge?
+    zeus?
+  end
+
   def permitted_attributes
     if zeus?
-      %i[name short_name]
+      [:name, :short_name, { providers_attributes: %i[id mode] }]
     else
       []
     end

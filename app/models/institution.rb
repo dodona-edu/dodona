@@ -19,6 +19,9 @@ class Institution < ApplicationRecord
   has_many :courses, dependent: :restrict_with_error
 
   validates :logo, :short_name, presence: true
+  validates_associated :providers
+
+  accepts_nested_attributes_for :providers
 
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%").or(where('short_name LIKE ?', "%#{name}%")) }
@@ -46,5 +49,23 @@ class Institution < ApplicationRecord
 
   def unmark_generated
     self.generated_name = false
+  end
+
+  def merge_into(other)
+    errors.add(:merge, 'has overlapping usernames') if other.users.exists?(username: users.pluck(:username))
+    errors.add(:merge, 'has link provider') if providers.any?(&:link?)
+    return false if errors.any?
+
+    courses.each { |c| c.update(institution: other) }
+    users.each { |u| u.update(institution: other) }
+    providers.each do |p|
+      if p.prefer?
+        p.update(institution: other, mode: :secondary)
+      else # secondary or redirect
+        p.update(institution: other)
+      end
+    end
+    reload
+    destroy
   end
 end

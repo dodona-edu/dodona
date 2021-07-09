@@ -193,7 +193,13 @@ Rails.application.routes.draw do
     resources :labels
     resources :programming_languages
 
-    resources :institutions, only: %i[index show edit update]
+    resources :institutions, only: %i[index show edit update] do
+      member do
+        get 'merge'
+        get 'merge_changes'
+        post 'merge', to: 'institutions#do_merge'
+      end
+    end
     resources :events, only: [:index]
     resources :notifications, only: %i[index update destroy] do
       delete 'destroy_all', on: :collection

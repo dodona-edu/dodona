@@ -52,10 +52,56 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'login with existing identity using secondary provider' do
+    AUTH_PROVIDERS.each do |provider_name|
+      # Setup.
+      provider = create provider_name, mode: :secondary, institution: create(:provider).institution
+      user = create :user, institution: provider.institution
+      identity = create :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      # Call the authorization url.
+      get omniauth_url(provider)
+      follow_redirect!
+
+      # Assert successful authentication.
+      assert_redirected_to root_path
+      assert_equal @controller.current_user, user
+
+      # Cleanup.
+      sign_out user
+    end
+  end
+
   test 'login as a new user' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
       provider = create provider_name
+      user = build :user, institution: provider.institution
+      identity = build :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      # Call the authorization url.
+      assert_difference 'User.count', 1 do
+        assert_difference 'Identity.count', 1 do
+          get omniauth_url(provider)
+          follow_redirect!
+        end
+      end
+
+      # Assert successful authentication.
+      assert_redirected_to root_path
+      assert_equal @controller.current_user.email, user.email
+
+      # Cleanup.
+      sign_out user
+    end
+  end
+
+  test 'login as a new user using secondary provider' do
+    AUTH_PROVIDERS.each do |provider_name|
+      # Setup.
+      provider = create provider_name, mode: :secondary, institution: create(:provider).institution
       user = build :user, institution: provider.institution
       identity = build :identity, provider: provider, user: user
       omniauth_mock_identity identity

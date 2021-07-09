@@ -1,20 +1,52 @@
-<%= form_for(institution, :html => {:class => 'form-horizontal'}) do |f| %>
-  <% if institution.errors.any? %>
-    <div class="callout callout-danger" id="error_explanation">
-      <h4><%= t('errors.validation_errors', :count => institution.errors.count) %></h4>
-      <ul>
-        <% institution.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
+<%= form_for(institution, html: { class: 'form-horizontal' }) do |f| %>
+  <div class="card-supporting-text card-border">
+    <% if institution.errors.any? %>
+      <div class="callout callout-danger" id="error_explanation">
+        <h4><%= t('errors.validation_errors', count: institution.errors.count) %></h4>
+        <ul>
+          <% institution.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    <div class="field form-group row">
+      <%= f.label :name, :class => "col-sm-3 col-12 col-form-label" %>
+      <div class="col-sm-6 col-12"><%= f.text_field :name, class: "form-control", disabled: !f.permission?(:name) %></div>
     </div>
-  <% end %>
-  <div class="field form-group row">
-    <%= f.label :name, :class => "col-sm-3 col-12 col-form-label" %>
-    <div class="col-sm-6 col-12"><%= f.text_field :name, class: "form-control", disabled: !f.permission?(:name) %></div>
+    <div class="field form-group row">
+      <%= f.label :short_name, :class => "col-sm-3 col-12 col-form-label" %>
+      <div class="col-sm-6 col-12"><%= f.text_field :short_name, class: "form-control", disabled: !f.permission?(:short_name) %></div>
+    </div>
   </div>
-  <div class="field form-group row">
-    <%= f.label :short_name, :class => "col-sm-3 col-12 col-form-label" %>
-    <div class="col-sm-6 col-12"><%= f.text_field :short_name, class: "form-control", disabled: !f.permission?(:short_name) %></div>
+  <div class="card-supporting-text card-border">
+    <h4 class="card-title-text"><%= Institution.human_attribute_name(:providers) %></h4>
+    <div class="card-supporting-text">
+      <div class="table-scroll-wrapper">
+        <table class="table table-index table-resource">
+          <thead>
+          <tr>
+            <th><%= Provider.human_attribute_name(:type) %></th>
+            <th><%= Provider.human_attribute_name(:mode) %></th>
+            <th><%= Provider.human_attribute_name(:identifier) %></th>
+            <th><%= t('institutions.show.providers.number_of_identities') %></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% institution.providers.each do |provider| %>
+            <%= f.fields_for 'providers_attributes[]', provider do |f| %>
+              <%= f.hidden_field :id %>
+              <tr>
+                <td><%= t("activerecord.attributes.provider.#{provider.class.sym}") %></td>
+                <td><%= f.select :mode, Provider.modes.map {|key, value| [key.humanize, key]}, {}, { class: 'form-select' } %></td>
+                <td><%= provider.identifier_string %></td>
+                <td><%= provider.identities.count %></td>
+              </tr>
+            <% end %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 <% end %>

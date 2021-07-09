@@ -7,38 +7,7 @@
           <%= render 'application/fab_button', form: "edit_institution_#{@institution.id}", icon: 'check' %>
         </div>
       </div>
-      <div class="card-supporting-text">
-        <%= render 'form', institution: @institution %>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= Institution.human_attribute_name(:providers) %></h2>
-      </div>
-      <div class="card-supporting-text">
-        <div class="table-scroll-wrapper">
-          <table class="table table-index table-resource">
-            <thead>
-            <tr>
-              <th><%= Provider.human_attribute_name(:type) %></th>
-              <th><%= Provider.human_attribute_name(:mode) %></th>
-              <th><%= Provider.human_attribute_name(:identifier) %></th>
-              <th><%= t('institutions.show.providers.number_of_identities') %></th>
-            </tr>
-            </thead>
-            <tbody>
-            <% @institution.providers.each do |provider| %>
-              <tr>
-                <td><%= t("activerecord.attributes.provider.#{provider.class.sym}") %></td>
-                <td><%= provider.mode %></td>
-                <td><%= provider.identifier_string %></td>
-                <td><%= provider.identities.count %></td>
-              </tr>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      <%= render 'form', institution: @institution %>
     </div>
   </div>
 </div>

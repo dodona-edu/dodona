@@ -15,7 +15,7 @@ nl:
         number_of_identities: Identiteiten
     merge:
       title: "%{name} samenvoegen"
-      pick_institution: "Kies de andere onderwijsinstelling"
+      pick_institution: "Kies de onderwijsinstelling om in samen te voegen"
       confirm: "Bevestig de veranderingen"
       done: "De onderwijsinstellingen werden samengevoegd"
     merge_changes:

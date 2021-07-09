@@ -15,7 +15,7 @@ en:
         number_of_identities: Identities
     merge:
       title: "Merge %{name}"
-      pick_institution: "Choose other institution"
+      pick_institution: "Choose the institution to merge into"
       confirm: "Confirm changes"
       done: "The institutions were merged"
     merge_changes:
@@ -27,7 +27,7 @@ en:
         other: "%{count} courses will change institution."
       user_changes:
         zero: "No users will change institution."
-        one: "1 user will change institution."
+        one: "One user will change institution."
         other: "%{count} users will change institution."
       provider_changes:
         zero: "No providers will change institution. This shouldn't happen."

@@ -1,0 +1,26 @@
+<% if @feedback.completed %>
+  <div class="text-center">
+    <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<%= t ".evaluation_done" %>
+    <% if @feedback.score_items.empty? %>
+      &nbsp;
+      <%= link_to feedback_path(@feedback, feedback: { completed: false }), method: :patch, remote: true, class: "btn-icon", title: t(".undo") do %>
+        <i class="mdi mdi-undo-variant mdi-18"></i>
+      <% end %>
+    <% end %>
+  </div>
+<% else %>
+  <% if @feedback.score_items.empty? %>
+    <%= button_to feedback_path(@feedback, feedback: { completed: true }),
+                  method: :patch,
+                  class: 'btn-text complete-feedback',
+                  remote: true do %>
+      <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<span><%= t ".mark_as_done" %></span>
+    <% end %>
+  <% else %>
+    <div class="text-center">
+      <span title="<%= t '.done_when_graded' %>" data-bs-toggle="tooltip">
+        <i class="mdi mdi-comment-edit-outline mdi-18"></i>&nbsp;<%= t ".evaluation_not_done_html" %>
+      </span>
+    </div>
+  <% end %>
+<% end %>

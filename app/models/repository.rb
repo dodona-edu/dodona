@@ -94,10 +94,10 @@ class Repository < ApplicationRecord
     activity_dirs_below(full_path)
   end
 
-  def process_activities_email_errors(user: nil, name: nil, email: nil)
+  def process_activities_email_errors(kwargs = {})
     process_activities
   rescue AggregatedConfigErrors => e
-    ErrorMailer.json_error(e, user: user, name: name, email: email).deliver
+    ErrorMailer.json_error(e, **kwargs).deliver
   end
 
   def process_activities

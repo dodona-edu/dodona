@@ -18,7 +18,7 @@
           <input type="radio" name="course-select" class="form-check-input">
         </td>
         <td>
-          <%= link_to institution.name, institution, class: 'nested-link' %>
+          <%= link_to institution.name, institution, class: 'nested-link', target: '_blank' %>
           <% if institution.generated_name? %>
             <span class="generated-name-icon" title="<%= t 'institutions.index.generated_name' %>"><i class="mdi mdi-18 mdi-cogs icon"></i></span>
           <% end %>

@@ -54,7 +54,7 @@ class InstitutionsController < ApplicationController
     @other = Institution.find(params[:other_institution_id])
     authorize @other
     if @institution.merge_into(@other)
-      redirect_to institution_url(@other), notice: I18n.t('views.institutions.merge.done')
+      redirect_to institution_url(@other), notice: I18n.t('institutions.merge.done')
     else
       @institutions = apply_scopes(policy_scope(Institution))
                       .where.not(id: @institution.id)

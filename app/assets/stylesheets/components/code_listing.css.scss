@@ -42,7 +42,7 @@ $annotation-info: $info-500;
       // Highlight for the line numbers.
       .lineno.marked {
         background-color: $code-bg-warning;
-        border-left: 0.3em solid $warning-500;
+        border-left: $code-warning-border-left solid $warning-500;
         // Only do the line number, don't extend to the full height
         background-clip: content-box;
       }

@@ -53,6 +53,8 @@
 
   $code-bg: $body-bg !global;
   $code-light-bg: $body-bg !global;
+  $code-bg-warning: rgba(80, 52, 18, 0.4) !global;
+  $code-warning-border-left: 0.5em !global;
 
   $alert-warning-bg: inherit !global;
   $alert-info-bg: inherit !global;

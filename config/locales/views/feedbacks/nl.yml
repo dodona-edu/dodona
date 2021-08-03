@@ -52,7 +52,7 @@ nl:
       short_title: "Selecteer een andere ingediende oplossing."
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
-      confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."
+      confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
     score_table:
       total_score: Totaalscore
       score_breakdown: Puntenverdeling

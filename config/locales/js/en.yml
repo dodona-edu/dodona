@@ -109,16 +109,16 @@ en:
       copy-to-clipboard: Copy code to clipboard
     user_annotation:
       meta: "%{user} · %{time}"
-      send: 'Annotate'
+      send: 'Comment'
       update: 'Update'
       cancel: 'Cancel'
       delete: 'Delete'
-      edit: 'Edit annotation'
+      edit: 'Edit comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       fields:
-        annotation_text: 'Annotation text'
-      delete_confirm: 'Are you sure you want to delete this annotation?'
-      not_released: This annotation is not yet visible for students
+        annotation_text: 'Comment'
+      delete_confirm: 'Are you sure you want to delete this comment?'
+      not_released: This comment is not yet visible for students
     user_question:
       meta_unanswered: "%{user} · %{time} · %{state}"
       meta_else: "%{user} · %{time} · %{state} by %{last}"

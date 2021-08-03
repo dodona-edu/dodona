@@ -109,11 +109,11 @@ function getURLParameter(_name, _url) {
     if (!results[2]) return "";
     return decodeURIComponent(results[2].replace(/\+/g, " "));
     */
-   const url = new URL(_url || window.location.href);
-   const result = url.searchParams.get(_name);
-   if (!result) return null;
-   console.log(result);
-   return result;
+    const url = new URL(_url || window.location.href);
+    const result = url.searchParams.get(_name);
+    if (!result) return null;
+    console.log(result);
+    return result;
 }
 
 function getArrayURLParameter(name, _url) {

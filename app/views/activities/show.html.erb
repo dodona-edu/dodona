@@ -25,10 +25,12 @@ end %>
 
 <div class="row">
   <% if @activity.exercise? %>
-    <%= link_to '#submission-card', class: "btn btn-lg btn-down col-md-1 d-none d-md-block hidden-print", title: t('.handin') do %>
-      <span class='d-none d-lg-inline'><%= t('.handin') %></span><br>
-      <i class="mdi mdi-chevron-down"></i>
-    <% end %>
+    <div class="col-md-1 p-0">
+      <%= link_to '#submission-card', class: "btn btn-lg btn-down d-none d-md-block hidden-print", title: t('.handin') do %>
+        <span class='d-none d-lg-inline'><%= t('.handin') %></span><br>
+        <i class="mdi mdi-chevron-down"></i>
+      <% end %>
+    </div>
   <% else %>
     <div class="col-md-1 d-none d-md-block hidden-print">&nbsp;</div>
   <% end %>

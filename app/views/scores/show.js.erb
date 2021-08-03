@@ -5,4 +5,4 @@ $("#<%= @score.score_item.id %>-score-form-wrapper")
 $(".user-feedback-row")
     .html("<%= escape_javascript(render 'feedbacks/user_feedback_row', current_feedback: @feedback) %>");
 window.dodona.feedbackActions.initScoreForm("<%= @score.score_item.id %>");
-window.dodona.feedbackActions.setTotal("<%= format_score @total %>");
+window.dodona.feedbackActions.setTotal("<%= format_score @total %>", <%= @feedback.completed %>);

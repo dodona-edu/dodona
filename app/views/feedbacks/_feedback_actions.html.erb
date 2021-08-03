@@ -2,9 +2,25 @@
   <%= javascript_pack_tag 'evaluation' %>
 <% end %>
 
-<div class="card-supporting-text" id="feedback-status">
-  <%= render 'feedbacks/feedback_status', feedback: @feedback %>
-</div>
+<% if @feedback.score_items.empty? %>
+  <div class="card-supporting-text">
+    <% if @feedback.completed %>
+      <span class='uncomplete-feedback'>
+        <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<b><%= t ".evaluation_done" %></b>&nbsp;
+        <%= link_to feedback_path(@feedback, feedback: { completed: false }), method: :patch, remote: true, class: "btn-icon", title: t(".undo") do %>
+          <i class="mdi mdi-undo-variant mdi-18"></i>
+        <% end %>
+      </span>
+    <% else %>
+      <%= button_to feedback_path(@feedback, feedback: { completed: true }),
+                    method: :patch,
+                    class: 'btn-text complete-feedback',
+                    remote: true do %>
+        <i class="mdi mdi-comment-check-outline mdi-18"></i>&nbsp;<span><%= t ".mark_as_done" %></span>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="card-supporting-text card-border">
   <center>

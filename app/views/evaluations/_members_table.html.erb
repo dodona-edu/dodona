@@ -1,5 +1,5 @@
 <div class="table-scroll-wrapper">
-  <table class="table table-index table-resource">
+  <table class="table table-index table-resource evaluation-users-table">
     <thead>
     <tr>
       <th class="status-icon"></th>
@@ -12,56 +12,8 @@
     <tbody>
     <% course_memberships.each do |course_membership| %>
       <% user = course_membership.user %>
-      <tr>
-        <td>
-          <% if @evaluation.users.include?(user) %>
-            <%= button_to remove_user_evaluation_path(@evaluation, user_id: user.id),
-                          remote: true,
-                          title: t('.remove_user'),
-                          data: { confirm: confirm ? t('.remove_user_consequences') : nil },
-                          class: 'btn btn-sm btn-danger' do %>
-              <i class="mdi mdi-delete mdi-18"></i>
-            <% end %>
-          <% else %>
-            <%= button_to add_user_evaluation_path(@evaluation, user_id: user.id),
-                          remote: true,
-                          title: t('.add_user'),
-                          class: 'btn btn-sm btn-success' do %>
-              <i class="mdi mdi-plus mdi-18"></i>
-            <% end %>
-          <% end %>
-        </td>
-
-        <td>
-          <% if course_membership.course_admin? %>
-            <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
-          <% end %>
-          <% if user.username.blank? %>
-            <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
-          <% end %>
-        </td>
-
-        <td>
-          <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
-          <div class="small text-muted">
-            <span><%= user.email %></span>
-          </div>
-        </td>
-
-        <td class='course-membership-labels'>
-          <% course_membership.course_labels.each do |label| %>
-            <span class="badge bg-primary"><%= label.name %></span>
-          <% end %>
-        </td>
-
-        <td>
-          <%= render partial: 'user_progress',
-            locals: {
-              series: @evaluation.series,
-              user: user
-            }
-          %>
-        </td>
+      <tr id="user-row-<%= user.id %>" class="user-row <%= "table-active" if @evaluation.users.include?(user) %>">
+        <%= render partial: 'evaluations/member_row', locals: { user: user, course_membership: course_membership, confirm: confirm } %>
       </tr>
     <% end %>
     </tbody>

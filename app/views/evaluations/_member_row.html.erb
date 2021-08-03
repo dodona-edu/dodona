@@ -1,0 +1,38 @@
+<td>
+  <% if @evaluation.users.include?(user) %>
+    <input class="form-check-input form-check-input-large" type="checkbox" checked data-url="<%= remove_user_evaluation_path(@evaluation, user_id: user.id) %>", data-confirm="<%= t('.remove_user_consequences') if confirm %>">
+  <% else %>
+    <input class="form-check-input form-check-input-large" type="checkbox" data-url="<%= add_user_evaluation_path(@evaluation, user_id: user.id) %>">
+  <% end %>
+</td>
+
+<td>
+  <% if course_membership.course_admin? %>
+    <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
+  <% end %>
+  <% if user.username.blank? %>
+    <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
+  <% end %>
+</td>
+
+<td>
+  <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
+  <div class="small text-muted">
+    <span><%= user.email %></span>
+  </div>
+</td>
+
+<td class='course-membership-labels'>
+  <% course_membership.course_labels.each do |label| %>
+    <span class="badge bg-primary"><%= label.name %></span>
+  <% end %>
+</td>
+
+<td>
+  <%= render partial: 'user_progress',
+    locals: {
+      series: @evaluation.series,
+      user: user
+    }
+  %>
+</td>

@@ -1,0 +1,4 @@
+const row = document.querySelector("#user-row-<%= @user.id %>");
+row.innerHTML = "<%= escape_javascript(render 'evaluations/member_row', course_membership: @course_membership, user: @user, confirm: false) %>";
+row.classList.remove("table-active");
+dodona.initCheckbox(row);

@@ -110,15 +110,17 @@ class EvaluationsController < ApplicationController
   end
 
   def add_user
-    user = @evaluation.series.course.subscribed_members.find(params[:user_id])
-    @evaluation.update(users: @evaluation.users + [user])
-    render 'refresh_users'
+    @course = @evaluation.series.course
+    @course_membership = @course.course_memberships.find_by(user_id: params[:user_id])
+    @user = @course_membership.user
+    @evaluation.update(users: @evaluation.users + [@user])
   end
 
   def remove_user
-    user = @evaluation.series.course.subscribed_members.find(params[:user_id])
-    @evaluation.update(users: @evaluation.users - [user])
-    render 'refresh_users'
+    @course = @evaluation.series.course
+    @course_membership = @course.course_memberships.find_by(user_id: params[:user_id])
+    @user = @course_membership.user
+    @evaluation.update(users: @evaluation.users - [@user])
   end
 
   def mark_undecided_complete

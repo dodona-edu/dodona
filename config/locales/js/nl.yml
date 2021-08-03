@@ -109,7 +109,7 @@ nl:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
       meta: "%{user} · %{time}"
-      send: 'Plaatsen'
+      send: 'Toevoegen'
       update: 'Updaten'
       cancel: 'Annuleren'
       delete: 'Verwijderen'

@@ -83,8 +83,8 @@ nl:
       no_grading: "Deze oefening staat niet op punten"
     members_table:
       remove_user: Student verwijderen uit evaluatie
-      remove_user_consequences: "Als deze student al opmerkingen gekregen had, dan zullen deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"
-      remove_users_consequences: "Als deze studenten al opmerkingen gekregen hadden, dan zullen deze verwijderd worden. Ben je zeker dat je deze studenten wil verwijderen?"
+      remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"
+      remove_users_consequences: "Als deze studenten al feedback gekregen hadden, dan zal deze verwijderd worden. Ben je zeker dat je deze studenten wil verwijderen?"
       add_user: Student toevoegen aan evaluatie
       status: Voortgang
     user_progress:

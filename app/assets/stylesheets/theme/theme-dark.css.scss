@@ -107,6 +107,7 @@
   $table-hover-bg: $body-bg !global;
 
   $input-group-addon-bg: $grey-800 !global;
+  $input-group-addon-border-color: lighten($input-group-addon-bg, 10%) !global;
 
   $form-select-indicator-color: $text-color !global;
 
@@ -116,5 +117,9 @@
 
   .dark-only {
     display: unset;
+  }
+
+  .input-group input {
+    border-color: $input-group-addon-border-color;
   }
 }

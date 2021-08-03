@@ -53,10 +53,10 @@ nl:
         hidden: Verberg correcte tests
       annotations:
         title: Annotaties
-        add_global: Annotatie toevoegen
+        add_global: Globale opmerking toevoegen
         show_all: Toon alle annotaties
         hide_all: Verberg alle annotaties
-        show_errors: Enkel errors en annotaties door gebruikers tonen
+        show_errors: Enkel errors en opmerkingen tonen
         hidden: Verborgen annotaties
       judge_output_too_long: "De judge heeft te veel uitvoer gegenereerd. Dit gebeurt meestal als je ingediende oplossing zelf te veel output genereerde. Probeer de hoeveelheid uitvoer van je ingediende oplossing te verminderen."
       reading_failed: "Er ging iets fout bij het laden van je resultaten. Probeer later opnieuw of dien je oplossing opnieuw in."

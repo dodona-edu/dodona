@@ -72,13 +72,13 @@ en:
       explanation: A course admin evaluated your submissions for the series "%{series}". For each exercise, your last submission before %{deadline} was automatically selected, but the course admin might have manually selected a different one. Note that this evaluation doesn't necessarily mean that feedback was added to all of your submissions.
       released: Feedback was added to your code.
       exercise: Exercise
-      no_annotations: "# annotations"
+      no_annotations: "# comments"
       feedback: "Feedback"
       grade: Grade
       annotation_count:
-        zero: "No annotations were added to your solution"
-        one: "One annotation"
-        other: "%{count} annotations"
+        zero: "No comments were added to your solution"
+        one: "One comment"
+        other: "%{count} comments"
       no_submission: "You had no timely submission for this exercise"
       invisible_total: "The total score was not released"
       no_grading: "This exercise was not graded"

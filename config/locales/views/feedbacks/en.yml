@@ -42,18 +42,18 @@ en:
       give_zero_one: "Assign 0 to this score item"
     overview:
       annotations:
-        count: "Amount of annotations by teacher"
+        count: "Amount of comments"
         amount:
-          zero: "No annotations"
-          one: "One annotation"
-          other: "%{count} annotations"
+          zero: "No comments"
+          one: "One comment"
+          other: "%{count} comments"
       title: "Overview of all submissions that were given feedback"
     edit:
       title: "Change submission of %{user} for %{exercise}"
       short_title: "Select another submission."
     submissions_table:
       update-submission: "Change to this submission"
-      confirm: "Are you sure? All annotations on the previous submission will be deleted."
+      confirm: "Are you sure? All comments on the previous submission will be deleted."
     score_table:
       total_score: Total grade
       score_breakdown: Grade breakdown

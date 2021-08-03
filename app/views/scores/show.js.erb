@@ -7,4 +7,4 @@ $(".user-feedback-row")
 $(".progress-row")
     .html("<%= escape_javascript(render 'feedbacks/progress_row', metadata: @feedback.evaluation_exercise.metadata) %>");
 window.dodona.feedbackActions.initScoreForm("<%= @score.score_item.id %>");
-window.dodona.feedbackActions.setTotal("<%= format_score @total %>");
+window.dodona.feedbackActions.setTotal("<%= format_score @total %>", <%= @feedback.completed %>);

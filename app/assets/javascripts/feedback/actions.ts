@@ -29,7 +29,8 @@ export default class FeedbackActions {
     private readonly skipCompletedCheckBox: HTMLInputElement;
     private readonly allScoresZeroButton: HTMLButtonElement | null;
     private readonly allScoresMaxButton: HTMLButtonElement | null;
-    private readonly scoreSumElement: HTMLSpanElement | null;
+    private readonly scoreSumElement: HTMLInputElement | null;
+    private readonly completedIcon: HTMLTextElement | null;
 
     private scoreForms: ScoreForm[];
     // ID's of the score forms that are updating.
@@ -48,7 +49,8 @@ export default class FeedbackActions {
         this.autoMarkCheckBox = document.getElementById("auto-mark") as HTMLInputElement;
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 
-        this.scoreSumElement = document.getElementById("score-sum");
+        this.scoreSumElement = document.getElementById("score-sum") as HTMLInputElement;
+        this.completedIcon = document.getElementById("completed-button");
 
         // Score forms
         this.scoreForms = [];
@@ -152,10 +154,20 @@ export default class FeedbackActions {
         }
     }
 
-    setTotal(newTotal: string): void {
+    setTotal(newTotal: string, completed: boolean): void {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
-            this.scoreSumElement.innerText = newTotal;
+            this.scoreSumElement.value = newTotal;
+        }
+
+        if (this.completedIcon) {
+            if (completed) {
+                this.completedIcon.classList.add("mdi-check");
+                this.completedIcon.classList.remove("mdi-circle-slice-3");
+            } else {
+                this.completedIcon.classList.add("mdi-circle-slice-3");
+                this.completedIcon.classList.remove("mdi-check");
+            }
         }
     }
 

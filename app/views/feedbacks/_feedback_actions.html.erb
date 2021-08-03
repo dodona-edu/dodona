@@ -58,17 +58,27 @@
         </div>
       </div>
       <div class="row row-no-gutters form-row">
-        <div class="col-8 total-score" data-total="<%= @feedback.score %>">
-          <span id="score-sum"><%= format_score @feedback.score %></span> / <%= format_score @feedback.maximum_score %>
-        </div>
-        <div class="col-4 score-buttons">
-          <div class="btn-group" role="group">
-            <%= button_tag class: "btn btn-secondary btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
-              <i class="mdi mdi-thumb-down-outline mdi-12" aria-hidden='true'></i>
-            <% end %>
-            <%= button_tag class: "btn btn-secondary btn-sm", id: 'max-button', title: t(".give_max_all") do %>
-              <i class="mdi mdi-thumb-up-outline mdi-12" aria-hidden='true'></i>
-            <% end %>
+        <div class="form-group input">
+          <div class="control-wrapper">
+            <div class="input-group">
+              <%= button_tag class: "btn btn-secondary btn-sm", type: :button, disabled: true do %>
+                <% if @feedback.completed %>
+                  <i id="completed-button" class="mdi mdi-check mdi-12" aria-hidden='true'></i>
+                <% else %>
+                  <i id="completed-button" class="mdi mdi-circle-slice-3 mdi-12" aria-hidden='true'></i>
+                <% end %>
+              <% end %>
+              <input id="score-sum" class="form-control" disabled="disabled" value="<%= format_score @feedback.score %>">
+              <%= button_tag class: "btn btn-secondary max-text", disabled: true, type: :button do %>
+                / <%= format_score(@feedback.maximum_score) %>
+              <% end %>
+              <%= button_tag class: "btn btn-secondary btn-sm", id: 'zero-button', title: t(".give_zero_all") do %>
+                <i class="mdi mdi-thumb-down-outline mdi-12" aria-hidden='true'></i>
+              <% end %>
+              <%= button_tag class: "btn btn-secondary btn-sm", id: 'max-button', title: t(".give_max_all") do %>
+                <i class="mdi mdi-thumb-up-outline mdi-12" aria-hidden='true'></i>
+              <% end %>
+            </div>
           </div>
         </div>
       </div>

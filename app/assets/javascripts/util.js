@@ -100,31 +100,16 @@ function updateArrayURLParameter(url, param, _paramVals) {
 }
 
 function getURLParameter(_name, _url) {
-    /*
-    const url = _url || window.location.href;
-    const name = _name.replace(/[[\]]/g, "\\$&");
-    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
-    const results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return "";
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-    */
     const url = new URL(_url || window.location.href);
     const result = url.searchParams.get(_name);
     if (!result) return null;
-    console.log(result);
     return result;
 }
 
 function getArrayURLParameter(name, _url) {
-    const url = _url || window.location.href;
-    const result = [];
-    for (const part of url.split(/[?&]/)) {
-        const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
-        if (regResults && regResults[1]) {
-            result.push(decodeURIComponent(regResults[1]));
-        }
-    }
+    const url = new URL(_url || window.location.href);
+    const result = url.searchParams.getAll(name);
+    if (!result) return [];
     return result;
 }
 

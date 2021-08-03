@@ -16,7 +16,7 @@ class ScoreItemsTest < ApplicationSystemTestCase
     @exercise = @evaluation.evaluation_exercises.first
     @score_item = create :score_item, evaluation_exercise: @exercise,
                                       description: 'Before test',
-                                      maximum: '10.0',
+                                      maximum: '400.0',
                                       visible: false
   end
 
@@ -24,16 +24,16 @@ class ScoreItemsTest < ApplicationSystemTestCase
     visit(evaluation_score_items_path(evaluation_id: @evaluation.id))
 
     # Ensure we don't accidentally test nothing
-    assert_no_text '29'
+    assert_no_text '314.25'
 
     # Click the edit button of the score item
     find("a[href=\"\#edit-form-#{@score_item.id}\"]").click
     # Change value of score item
-    find(id: "#{@exercise.id}_score_item_maximum").fill_in with: '29'
+    find(id: "#{@exercise.id}_score_item_maximum").fill_in with: '314.25'
     # Save our changes to the score item
     find(id: "#{@exercise.id}_edit_score_item_#{@score_item.id}").find('input[type=submit]').click
 
     # Check that the score has been updated on the page
-    assert_text '29'
+    assert_text '314.25'
   end
 end

@@ -23,7 +23,7 @@
   $danger-800: $red-200 !global;
   $danger-500: $red-300 !global;
   $info-500: $light-blue-300 !global;
-  $warning-500: $orange-400 !global;
+  $warning-500: $amber-500 !global;
 
   $body-bg: $blue-grey-800 !global;
   $content-bg: $blue-grey-900 !global;
@@ -53,6 +53,7 @@
 
   $code-bg: $body-bg !global;
   $code-light-bg: $body-bg !global;
+  $code-bg-warning: rgba(80, 52, 18, 0.4) !global;
 
   $alert-warning-bg: inherit !global;
   $alert-info-bg: inherit !global;

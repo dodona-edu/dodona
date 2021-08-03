@@ -65,7 +65,7 @@
                 <% if @feedback.completed %>
                   <i id="completed-button" class="mdi mdi-check mdi-12" aria-hidden='true'></i>
                 <% else %>
-                  <i id="completed-button" class="mdi mdi-pencil mdi-12" aria-hidden='true'></i>
+                  <i id="completed-button" class="mdi mdi-circle-slice-3 mdi-12" aria-hidden='true'></i>
                 <% end %>
               <% end %>
               <input id="score-sum" class="form-control" disabled="disabled" value="<%= format_score @feedback.score %>">

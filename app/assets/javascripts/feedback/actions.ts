@@ -163,9 +163,9 @@ export default class FeedbackActions {
         if (this.completedIcon) {
             if (completed) {
                 this.completedIcon.classList.add("mdi-check");
-                this.completedIcon.classList.remove("mdi-pencil");
+                this.completedIcon.classList.remove("mdi-circle-slice-3");
             } else {
-                this.completedIcon.classList.add("mdi-pencil");
+                this.completedIcon.classList.add("mdi-circle-slice-3");
                 this.completedIcon.classList.remove("mdi-check");
             }
         }

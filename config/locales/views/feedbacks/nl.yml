@@ -37,7 +37,7 @@ nl:
       evaluation_not_done_html: Evaluatie <strong>niet</strong> afgewerkt
       mark_as_done: Evaluatie afwerken
       undo: Ongedaan maken
-      done_when_graded: De evaluatie wordt automatisch afgewerkt als elk scoreonderdeel punten gekregen heeft.
+      done_when_graded: De evalutie wordt automatisch afgewerkt als elk scoreonderdeel punten gekregen heeft.
     score_actions:
       give_max_one: "Geef %{score} aan dit scoreonderdeel"
       give_zero_one: "Geef 0 aan dit scoreonderdeel"

@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+<% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card evaluation-user-select">
@@ -17,3 +20,6 @@
     </div>
   </div>
 </div>
+<script>
+  $(dodona.initCheckboxes)
+</script>

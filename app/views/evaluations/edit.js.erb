@@ -1,2 +1,3 @@
 $("#users-table-wrapper").html("<%= escape_javascript(render partial: 'members_table', locals: {course_memberships: @course_memberships, confirm: true}) %>")
 window.dodona.initTooltips();
+window.dodona.initCheckboxes();

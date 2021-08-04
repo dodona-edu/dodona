@@ -95,6 +95,14 @@
     display: inline-block;
   }
 }
+
+.evaluation-users-table {
+  .form-check-input-large {
+    width: 1.5em;
+    height: 1.5em;
+  }
+}
+
 .feedback {
   padding-bottom: 6px;
   &.correct {

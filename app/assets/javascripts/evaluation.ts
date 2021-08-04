@@ -1,6 +1,6 @@
 import { fetch } from "util.js";
 
-function interceptAddMultiUserClicks(): void {
+export function interceptAddMultiUserClicks(): void {
     let running = false;
     document.querySelectorAll(".user-select-option a").forEach(option => {
         option.addEventListener("click", async event => {
@@ -21,4 +21,21 @@ function interceptAddMultiUserClicks(): void {
     });
 }
 
-export { interceptAddMultiUserClicks };
+export function initCheckboxes(): void {
+    document.querySelectorAll(".evaluation-users-table .user-row").forEach(el => initCheckbox(el));
+}
+
+export function initCheckbox(row: HTMLTableRowElement): void {
+    const checkbox = row.querySelector(".form-check-input") as HTMLInputElement;
+    checkbox.addEventListener("change", async function () {
+        const url = checkbox.getAttribute("data-url");
+        const confirmMessage = checkbox.getAttribute("data-confirm");
+        if (!confirmMessage || confirm(confirmMessage)) {
+            const response = await fetch(url, { method: "POST" });
+            eval(await response.text());
+        } else {
+            // There are no cancelable events for checkbox input, so cancel manually afterwards
+            checkbox.checked = !checkbox.checked;
+        }
+    });
+}

@@ -212,19 +212,12 @@ $annotation-info: $info-500;
         line-height: 20px;
       }
 
-      pre:not(.highlight) {
-        padding: 5px 10px;
-        margin-left: 10px;
-        margin-right: 10px;
-        margin-bottom: 8px;
-        border-radius: 3px;
-      }
-
       // Stylize the embedded code block
-      .highlighter-rouge div.highlight {
+      .highlighter-rouge div.highlight, pre:not(.highlight) {
         padding: 5px 10px;
         margin-left: 10px;
         margin-right: 10px;
+        margin-bottom: 10px;
         background: $code-bg;
         border-radius: 3px;
       }

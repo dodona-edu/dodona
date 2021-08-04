@@ -82,13 +82,13 @@ class FeedbacksTest < ApplicationSystemTestCase
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input')
 
     # Submit score using enter key.
-    first_input.fill_in with: '16.0'
+    first_input.fill_in with: '6.0'
     first_input.send_keys :enter
 
     find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
-    assert_equal BigDecimal('16'), @score.score
+    assert_equal BigDecimal('6'), @score.score
   end
 
   test 'concurrent modifications are shown' do
@@ -101,7 +101,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input')
 
     # Attempt to modify on the page.
-    first_input.fill_in with: '-9.0'
+    first_input.fill_in with: '3.0'
     second_input.click
 
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
@@ -109,23 +109,6 @@ class FeedbacksTest < ApplicationSystemTestCase
 
     assert_equal '2', first_input.value
     assert_includes parent[:class], 'has-warning'
-  end
-
-  test 'invalid value is allowed but show as error' do
-    visit(feedback_path(id: @feedback.id))
-
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input')
-    second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input')
-
-    # Attempt to modify on the page.
-    first_input.fill_in with: '-9.0'
-    second_input.click
-
-    first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
-    parent = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.form-group.input')
-
-    assert_equal '-9', first_input.value
-    assert_includes parent[:class], 'has-error'
   end
 
   test 'all zero works' do

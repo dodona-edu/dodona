@@ -102,14 +102,12 @@ function updateArrayURLParameter(url, param, _paramVals) {
 function getURLParameter(_name, _url) {
     const url = new URL(_url || window.location.href);
     const result = url.searchParams.get(_name);
-    if (!result) return null;
     return result;
 }
 
 function getArrayURLParameter(name, _url) {
     const url = new URL(_url || window.location.href);
     const result = url.searchParams.getAll(name);
-    if (!result) return [];
     return result;
 }
 

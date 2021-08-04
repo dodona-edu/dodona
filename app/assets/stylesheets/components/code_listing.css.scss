@@ -204,7 +204,7 @@ $annotation-info: $info-500;
       // Override the normal pre padding & coloring
       pre {
         padding: 0;
-        background-color: transparent;
+        background-color: $code-bg !important;
         margin-bottom: 0;
         border: none;
         border-radius: 0;
@@ -213,10 +213,11 @@ $annotation-info: $info-500;
       }
 
       // Stylize the embedded code block
-      .highlighter-rouge div.highlight {
+      .highlighter-rouge div.highlight, pre:not(.highlight) {
         padding: 5px 10px;
         margin-left: 10px;
         margin-right: 10px;
+        margin-bottom: 10px;
         background: $code-bg;
         border-radius: 3px;
       }

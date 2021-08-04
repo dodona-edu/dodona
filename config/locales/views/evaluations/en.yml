@@ -86,6 +86,6 @@ en:
       remove_users_consequences: "If these students already received feedback, it will be deleted. Are you sure want to remove these students?"
       status: Progress
     member_row:
-      remove_user_consequences: "If this student already received feedback, it will be deleted. Are you sure you want to remove this student?"
+      remove_user_consequences: "If this student already received feedback, that feedback will be deleted. Are you sure you want to remove this student?"
     user_progress:
       not_submitted: Not submitted

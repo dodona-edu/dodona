@@ -85,6 +85,6 @@ nl:
       remove_users_consequences: "Als deze studenten al feedback gekregen hadden, dan zal deze verwijderd worden. Ben je zeker dat je deze studenten wil verwijderen?"
       status: Voortgang
     member_row:
-      remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"
+      remove_user_consequences: "Als deze student al feedback gekregen had, dan zal deze feedback verwijderd worden. Ben je zeker dat je deze student wil verwijderen?"
     user_progress:
       not_submitted: Niet ingediend

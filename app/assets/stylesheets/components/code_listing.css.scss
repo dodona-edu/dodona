@@ -41,15 +41,14 @@ $annotation-info: $info-500;
 
       // Highlight for the line numbers.
       .lineno.marked {
-        background-color: $code-bg-warning;
-        border-left: $code-warning-border-left solid $warning-500;
+        background-color: $warning-500;
         // Only do the line number, don't extend to the full height
         background-clip: content-box;
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
-        background-color: $code-bg-warning;
+        background-color: $warning-500;
       }
 
       .annotation-button {
@@ -204,10 +203,12 @@ $annotation-info: $info-500;
       // Override the normal pre padding & coloring
       pre {
         padding: 0;
-        background-color: transparent;
+        background-color: $code-bg;
+        margin-left: 10px;
+        margin-right: 10px;
         margin-bottom: 0;
         border: none;
-        border-radius: 0;
+        border-radius: 3px;
         white-space: pre-wrap;
         line-height: 20px;
       }

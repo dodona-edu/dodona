@@ -4,13 +4,7 @@
                namespace: score_item.id,
                html: { class: "form-inline score-form col-12", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
-    <% e = if score&.out_of_bounds?
-             'has-error'
-           elsif @warning.present? && @warning == score&.id&.to_s
-             'has-warning'
-           end
-    %>
-    <div class="form-group input <%= e %>">
+    <div class="form-group input <%= 'has-warning' if @warning.present? && @warning == score&.id&.to_s %>">
       <div class="control-wrapper">
         <div class="input-group">
           <%= button_tag class: "btn btn-secondary btn-sm delete-button", type: :button, disabled: !@score_map.key?(score_item.id) do %>
@@ -20,8 +14,8 @@
                              class: "form-control score-input",
                              step: 0.25,
                              tabindex: index + 1,
-                             min: -999.75,
-                             max: 999.75,
+                             min: 0,
+                             max: score_item.maximum,
                              value: format_score(f.object.score, lang='en', numeric_only=true) %>
           <%= button_tag class: "btn btn-secondary max-text", disabled: true, type: :button, data: { max: format_score(score_item.maximum, lang='en', numeric_only=true) } do %>
             / <%= format_score(score_item.maximum) %>

@@ -24,12 +24,7 @@ class Score < ApplicationRecord
 
   validates :score, presence: true, numericality: { greater_than: -1000, less_than: 1000 }
   validates :score_item_id, uniqueness: { scope: :feedback_id }
-
-  def out_of_bounds?
-    return false if score.nil?
-
-    score < BigDecimal('0') || score > score_item.maximum
-  end
+  validate :not_out_of_bounds
 
   private
 
@@ -40,5 +35,12 @@ class Score < ApplicationRecord
 
   def uncomplete
     feedback.update(completed: false)
+  end
+
+  def not_out_of_bounds
+    return if score.nil?
+    return if score >= BigDecimal('0') && score <= score_item.maximum
+
+    errors.add(:score, 'out of bounds')
   end
 end

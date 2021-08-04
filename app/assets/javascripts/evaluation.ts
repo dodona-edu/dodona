@@ -27,12 +27,15 @@ export function initCheckboxes(): void {
 
 export function initCheckbox(row: HTMLTableRowElement): void {
     const checkbox = row.querySelector(".form-check-input") as HTMLInputElement;
-    checkbox.addEventListener("input", async function () {
+    checkbox.addEventListener("change", async function () {
         const url = checkbox.getAttribute("data-url");
         const confirmMessage = checkbox.getAttribute("data-confirm");
         if (!confirmMessage || confirm(confirmMessage)) {
             const response = await fetch(url, { method: "POST" });
             eval(await response.text());
+        } else {
+            // There are no cancelable events for checkbox input, so cancel manually afterwards
+            checkbox.checked = !checkbox.checked;
         }
     });
 }

@@ -99,14 +99,14 @@ function updateArrayURLParameter(url, param, _paramVals) {
     return baseURL + "?" + newAdditionalURL + rowsTxt;
 }
 
-function getURLParameter(_name, _url) {
-    const url = new URL(_url || window.location.href);
-    const result = url.searchParams.get(_name);
+function getURLParameter(name, _url) {
+    const url = new URL(_url ?? window.location.href);
+    const result = url.searchParams.get(name);
     return result;
 }
 
 function getArrayURLParameter(name, _url) {
-    const url = new URL(_url || window.location.href);
+    const url = new URL(_url ?? window.location.href);
     const result = url.searchParams.getAll(name);
     return result;
 }

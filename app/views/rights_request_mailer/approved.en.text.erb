@@ -1,4 +1,4 @@
-Hi <%= @request.user.first_name %>,
+Hi <%= @request.user.first_name || @request.user.full_name %>,
 
 Great news! Your Dodona account has been granted teacher rights. You
 can now create courses and add exercises to Dodona.

@@ -1,5 +1,5 @@
 <div class="message">
-    <p>Hi <%= @request.user.first_name %>,</p>
+    <p>Hi <%= @request.user.first_name || @request.user.full_name %>,</p>
     <p>
         Great news! Your Dodona account has been granted teacher
         rights. You can now create courses and add exercises to Dodona.

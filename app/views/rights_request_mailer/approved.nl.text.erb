@@ -1,4 +1,4 @@
-Dag <%= @request.user.first_name %>
+Dag <%= @request.user.first_name || @request.user.full_name %>
 
 Goed nieuws! We hebben je Dodona-account lesgeversrechten gegeven.
 Je kan nu cursussen aanmaken en zelf oefeningen aan Dodona toevoegen.

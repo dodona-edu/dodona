@@ -1,5 +1,5 @@
 <div class="message">
-    <p>Dag <%= @request.user.first_name %></p>
+    <p>Dag <%= @request.user.first_name || @request.user.full_name %></p>
     <p>
         Goed nieuws! We hebben je Dodona-account lesgeversrechten gegeven. Je kan nu cursussen aanmaken en zelf oefeningen aan Dodona toevoegen.
     </p>

@@ -1,9 +1,7 @@
 <div class="message">
-    <p>Dag <%= @request.user.full_name %></p>
+    <p>Dag <%= @request.user.first_name %></p>
     <p>
-        Je aanvraag voor lesgeversrechten werd spijtig genoeg niet
-        goedgekeurd. Als je denkt dat dit foutief gebeurde contacteer
-        je ons best via <a href="mailto:<%= Rails.application.config.dodona_email %>"><%= Rails.application.config.dodona_email %></a>.
+        We konden je aanvraag voor lesgeversrechten helaas niet goedkeuren. Als je denkt dat dit foutief gebeurde, contacteer ons dan via <a href="mailto:<%= Rails.application.config.dodona_email %>"><%= Rails.application.config.dodona_email %></a>.
     </p>
     <p>
         Met vriendelijke groeten,<br/>

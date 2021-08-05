@@ -53,7 +53,7 @@ en:
         hidden: Hide correct tests
       annotations:
         title: Annotations
-        add_global: Add global annotation
+        add_global: Add global comment
         show_all: Show all annotations
         hide_all: Hide all annotations
         show_errors: Only show errors

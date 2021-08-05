@@ -25,7 +25,7 @@
   padding-bottom: 5px;
 }
 
-.feedback-metadata .score-form.form-inline {
+.feedback-metadata {
   .form-group.input {
     width: 100%;
     margin-bottom: 0;
@@ -95,6 +95,14 @@
     display: inline-block;
   }
 }
+
+.evaluation-users-table {
+  .form-check-input-large {
+    width: 1.5em;
+    height: 1.5em;
+  }
+}
+
 .feedback {
   padding-bottom: 6px;
   &.correct {

@@ -1,19 +1,20 @@
 <div class="message">
-    <p>Dag <%= @request.user.full_name %></p>
+    <p>Dag <%= @request.user.first_name || @request.user.full_name %></p>
     <p>
-        Goed nieuws! Je Dodona-account heeft lesgeversrechten
-        gekregen. Je kan nu cursussen aanmaken en oefeningen aan het
-        platform toevoegen. Een handleiding over hoe van start te gaan
-        kan je
-        <a href="https://docs.dodona.be/nl/guides/teachers/getting-started/">hier</a>
-        vinden.
+        Goed nieuws! We hebben je Dodona-account lesgeversrechten gegeven. Je kan nu cursussen aanmaken en zelf oefeningen aan Dodona toevoegen.
     </p>
     <p>
-        Als je verdere vragen hebt mag je ons altijd via
-        <a href="mailto:<%= Rails.application.config.dodona_email %>"><%= Rails.application.config.dodona_email %></a> contacteren.
+        <a href="https://docs.dodona.be/nl/guides/teachers/getting-started/">Onze handleiding</a> staat vol tips om vlot van start te gaan. Heb je liever een filmpje, dan geeft Peter je in <a href="https://www.youtube.com/watch?v=IfXrsP1z9OI&t=698s">deze video</a> een uitgebreid overzicht van hoe je Dodona in jouw klas kan gebruiken.
+    </p>
+    <p>
+        Toch nog vragen? Stuur gerust een mailtje naar <a href="mailto:<%= Rails.application.config.dodona_email %>"><%= Rails.application.config.dodona_email %></a>.
     </p>
     <p>
         Met vriendelijke groeten,<br/>
+        Charlotte<br/>
         Team Dodona
+    </p>
+    <p>
+        PS Volg ons snel op <a href="https://twitter.com/DodonaEdu">Twitter</a> of <a href="https://facebook.com/DodonaEdu">Facebook</a> en wees als eerste op de hoogte van onze nieuwste functies.
     </p>
 </div>

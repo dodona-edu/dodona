@@ -79,7 +79,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
-      click_button 'Annotate'
+      click_button 'Comment'
     end
 
     within '.annotation' do
@@ -142,7 +142,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     within 'form.annotation-submission' do
       click_button 'Delete'
-      accept_confirm('Are you sure you want to delete this annotation?')
+      accept_confirm('Are you sure you want to delete this comment?')
     end
 
     assert_no_css '.annotation'
@@ -259,7 +259,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     initial = ''
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
-      click_button 'Annotate'
+      click_button 'Comment'
 
       # Assuming the update did not go trough
       # If the creation went trough, the cancel button would not exist anymore
@@ -284,7 +284,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     initial = Faker::Lorem.words(number: 2048).join(' ')
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
-      click_button 'Annotate'
+      click_button 'Comment'
 
       # Assuming the update did not go trough
       # If the creation went trough, the cancel button would not exist anymore
@@ -305,12 +305,12 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
-    click_button 'Add global annotation'
+    click_button 'Add global comment'
 
     initial = Faker::Lorem.words(number: 128).join(' ')
     within '#feedback-table-global-annotations' do
       find('textarea.annotation-submission-input').fill_in with: initial
-      click_button 'Annotate'
+      click_button 'Comment'
     end
 
     assert_selector '.annotation', count: 1

@@ -72,17 +72,23 @@
             <ul class="dropdown-menu dropdown-menu-end">
               <% if policy(@course).scoresheet? %>
                 <li>
-                  <%= link_to t("courses.scoresheet.scoresheet"), scoresheet_course_url(@course), class: "dropdown-item" %>
+                  <%= link_to scoresheet_course_url(@course), class: "dropdown-item" do %>
+                    <i class="mdi mdi-view-list mdi-18"></i> <%= t("courses.scoresheet.scoresheet") %>
+                  <% end %>
                 </li>
               <% end %>
               <% if policy(@course).copy? %>
                 <li>
-                  <%= link_to t(".copy"), new_course_url(copy_options: {base_id: @course.id}), class: "dropdown-item" %>
+                  <%= link_to new_course_url(copy_options: {base_id: @course.id}), class: "dropdown-item" do %>
+                    <i class="mdi mdi-content-copy mdi-18"></i> <%= t(".copy") %>
+                  <% end %>
                 </li>
               <% end %>
               <% if current_user&.course_admin?(@course) %>
                 <li>
-                  <%= link_to t(".download_submissions"), courses_exports_path(@course), class: "dropdown-item" %>
+                  <%= link_to courses_exports_path(@course), class: "dropdown-item" do %>
+                    <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_submissions") %>
+                  <% end %>
                 </li>
               <% end %>
               <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
@@ -90,7 +96,9 @@
               <% end %>
               <% if policy(@course).download_submissions? %>
                 <li>
-                  <%= link_to t(".download_my_submissions"), courses_exports_path(@course, user_id: current_user.id), class: "dropdown-item" %>
+                  <%= link_to courses_exports_path(@course, user_id: current_user.id), class: "dropdown-item" do %>
+                    <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_my_submissions") %>
+                  <% end %>
                 </li>
               <% end %>
             </ul>
@@ -135,4 +143,27 @@
 </div>
 <script type="text/javascript">
     $(dodona.initCourseShow);
+</script>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Course",
+    "name": "<%= escape_javascript(@course.name) %>",
+    "teaches": "programming",
+    "educationalUse": "exercises",
+    <% if @course.institution %>
+      "provider": {
+        "@type": "Organization",
+        "name": "<%= escape_javascript(@course.institution.name) %>"
+      },
+    <% end %>
+    <% if @course.teacher %>
+      "author": {
+        "@type": "Person",
+        "name": "<%= escape_javascript(@course.teacher) %>"
+      },
+    <% end %>
+    "description": "<%= escape_javascript(@course.description) %>"
+  }
 </script>

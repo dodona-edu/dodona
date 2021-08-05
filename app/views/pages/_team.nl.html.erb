@@ -1,5 +1,8 @@
 <div class="col-12 col-sm-4">
-  <%= image_tag("ugent.png", class: 'img-fluid') %>
+  <%= link_to "https://www.ugent.be/nl", title: "Universiteit Gent", target: "_blank" do %>
+    <%= image_tag("ugent.nl.png", class: 'img-fluid light-only', loading: 'lazy') %>
+    <%= image_tag("ugent.nl.white.png", class: 'img-fluid dark-only', loading: 'lazy') %>
+  <% end %>
 </div>
 <div class="col-12 col-sm-8">
   <h3>Ontwikkeld aan de Universiteit Gent</h3>

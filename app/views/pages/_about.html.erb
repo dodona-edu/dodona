@@ -49,7 +49,8 @@
         <div class="supporters row">
           <div class="col-12 col-sm-4 center-vertical">
             <%= link_to "https://www.ugent.be/we/#{I18n.locale}", title: t(".we") do %>
-              <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid') %>
+              <%= image_tag("we.#{I18n.locale}.png", class: 'img-fluid light-only', loading: 'lazy') %>
+              <%= image_tag("we.#{I18n.locale}.white.png", class: 'img-fluid dark-only', loading: 'lazy') %>
             <% end %>
           </div>
           <div class="col-12 col-sm-3 center-vertical">
@@ -62,3 +63,30 @@
     </div>
   </div>
 </div>
+
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Organization",
+    "name": "Dodona",
+    "url": "https://dodona.ugent.be",
+    "sameAs": [
+      "https://twitter.com/DodonaEdu",
+      "https://github.com/dodona-edu"
+    ],
+    "email": "dodona@ugent.be",
+    "logo": "https://dodona.ugent.be/icon.png",
+    "image": "https://dodona.ugent.be/social-image.png",
+    "slogan": "Learn to code for secondary and higher education."
+  }
+</script>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Website",
+    "name": "Dodona",
+    "url": "https://dodona.ugent.be",
+    "version": "<%= Dodona::Application::VERSION %>",
+    "image": "https://dodona.ugent.be/social-image.png"
+  }
+</script>

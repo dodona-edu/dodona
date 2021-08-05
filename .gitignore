@@ -27,6 +27,7 @@ config/keys.yml
 
 # Ignore exercises
 /data
+!/data/.keep
 
 # Ignore media files
 /public/exercises

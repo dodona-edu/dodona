@@ -1,12 +1,19 @@
-Dag <%= @request.user.full_name %>
+Dag <%= @request.user.first_name || @request.user.full_name %>
 
-Goed nieuws! Je Dodona-account heeft lesgeversrechten gekregen. Je kan
-nu cursussen aanmaken en oefeningen aan het platform toevoegen. Een
-handleiding over hoe van start te gaan kan je hier vinden:
-https://docs.dodona.be/nl/guides/teachers/getting-started/.
+Goed nieuws! We hebben je Dodona-account lesgeversrechten gegeven.
+Je kan nu cursussen aanmaken en zelf oefeningen aan Dodona toevoegen.
 
-Als je verdere vragen hebt mag je ons altijd via <%= Rails.application.config.dodona_email %>
-contacteren.
+Onze handleiding (https://docs.dodona.be/nl/guides/teachers/getting-started/)
+staat vol tips om vlot van start te gaan. Heb je liever een filmpje, dan geeft
+Peter je op https://www.youtube.com/watch?v=IfXrsP1z9OI&t=698s een uitgebreid
+overzicht van hoe je Dodona in jouw klas kan gebruiken.
+
+Toch nog vragen? Stuur gerust een mailtje naar <%= Rails.application.config.dodona_email %>.
 
 Met vriendelijke groeten,
+Charlotte
 Team Dodona
+
+PS Volg ons snel op Twitter (https://twitter.com/DodonaEdu) of Facebook
+(https://facebook.com/DodonaEdu) en wees als eerste op de hoogte van onze
+nieuwste functies.

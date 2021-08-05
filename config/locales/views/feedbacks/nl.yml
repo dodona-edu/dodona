@@ -32,10 +32,11 @@ nl:
       waiting_on_score: Deze oplossing heeft nog niet alle punten gekregen
       completed:
         failure: "De status kon niet ingesteld worden"
-      exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
       total: "Totaal"
       give_max_all: "Geef de maximumscore aan alle scoreonderdelen"
       give_zero_all: "Geef 0 aan alle scoreonderdelen"
+    progress_row:
+      exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
     score_actions:
       give_max_one: "Geef %{score} aan dit scoreonderdeel"
       give_zero_one: "Geef 0 aan dit scoreonderdeel"
@@ -52,7 +53,7 @@ nl:
       short_title: "Selecteer een andere ingediende oplossing."
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
-      confirm: "Ben je zeker? Alle annotaties op de vorige oplossing zullen verwijderd worden."
+      confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
     score_table:
       total_score: Totaalscore
       score_breakdown: Puntenverdeling

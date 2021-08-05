@@ -61,4 +61,14 @@ class ScoreTest < ActiveSupport::TestCase
 
     assert_not score.save
   end
+
+  test 'out of bounds values are rejected' do
+    score = build :score, feedback: @feedback, score_item: @score_item1, score: BigDecimal('-1')
+
+    assert_not score.save
+
+    score.score = BigDecimal('11.0')
+
+    assert_not score.save
+  end
 end

@@ -1,5 +1,5 @@
-@import "theme/development";
-@import "theme/theme-dark";
+@import "theme/development.css";
+@import "theme/theme-dark.css";
 
 // General defines
 $color-red: $red-500;
@@ -76,6 +76,8 @@ $danger: $brand-danger;
 
 $code-bg: $grey-200;
 $code-light-bg: $grey-100;
+$code-bg-warning: $amber-500;
+$code-warning-border-left: 0;
 $code-color: $text-color;
 $page-header-border-color: $black-divider;
 $panel-primary-heading-bg: $primary-500;
@@ -117,6 +119,8 @@ $mark-bg: $primary-300;
 $dropdown-bg: $content-bg;
 
 $form-check-input-border: 1px solid $text-secondary;
+
+$list-group-bg: $content-bg;
 
 // Custom elements
 $divider-color: $hairlinegray;
@@ -193,15 +197,14 @@ $heatmap-hover-fg: $grey-200;
 
 $table-hover-bg: $grey-50;
 
-.activity-description {
-    .dark-only {
-        display: none;
-    }
-
-    .light-only {
-        display: unset;
-    }
+.dark-only {
+    display: none;
 }
+
+.light-only {
+    display: unset;
+}
+
 @if $theme == dark {
     @include theme-dark-other;
 }

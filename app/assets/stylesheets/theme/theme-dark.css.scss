@@ -53,6 +53,8 @@
 
   $code-bg: $body-bg !global;
   $code-light-bg: $body-bg !global;
+  $code-bg-warning: rgba(80, 52, 18, 0.4) !global;
+  $code-warning-border-left: 0.5em !global;
 
   $alert-warning-bg: inherit !global;
   $alert-info-bg: inherit !global;
@@ -93,9 +95,9 @@
   $feedback-diff-table-header-bg: $body-bg !global;
   $feedback-diff-table-header-fg: $text-secondary !global;
   $feedback-diff-table-ins: $green-900 !global;
-  $feedback-diff-table-ins-strong: $green-800 !global;
+  $feedback-diff-table-ins-strong: $green-700 !global;
   $feedback-diff-table-del: $red-900 !global;
-  $feedback-diff-table-del-strong: $red-800 !global;
+  $feedback-diff-table-del-strong: $red-500 !global;
 
   $skeleton-color: $body-bg !global;
 
@@ -107,16 +109,19 @@
   $table-hover-bg: $body-bg !global;
 
   $input-group-addon-bg: $grey-800 !global;
+  $input-group-addon-border-color: lighten($input-group-addon-bg, 10%) !global;
 
   $form-select-indicator-color: $text-color !global;
 
-  .activity-description {
-    .light-only {
-      display: none;
-    }
+  .light-only {
+    display: none;
+  }
 
-    .dark-only {
-      display: unset;
-    }
+  .dark-only {
+    display: unset;
+  }
+
+  .input-group input {
+    border-color: $input-group-addon-border-color;
   }
 }

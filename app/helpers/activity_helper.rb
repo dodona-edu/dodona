@@ -69,7 +69,6 @@ module ActivityHelper
                                    dark: dark).html_safe
     resizeframe = %{
       window.iFrameResize({
-          heightCalculationMethod: 'bodyScroll',
           onResized: dodona.afterResize,
           onMessage: dodona.onFrameMessage,
           onScroll: dodona.onFrameScroll,

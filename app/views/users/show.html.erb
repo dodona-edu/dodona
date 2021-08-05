@@ -101,7 +101,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end">
               <li>
-                <%= link_to t('.download_my_submissions'), users_exports_path(@user), class: "dropdown-item" %>
+                <%= link_to users_exports_path(@user), class: "dropdown-item" do %>
+                  <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_my_submissions") %>
+                <% end %>
               </li>
             </ul>
           <% end %>

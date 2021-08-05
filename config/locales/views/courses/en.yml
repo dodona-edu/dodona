@@ -47,7 +47,7 @@ en:
       secret-link-placeholder: "This link will be generated after creation"
       questions:
         title: Questions
-        toggle-label: Allow students to pose questions
+        toggle-label: Allow students to ask questions
       featured:
         title: Featured course
         toggle-label: Feature this course

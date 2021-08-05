@@ -22,10 +22,10 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = [...new Set(_paramVals)]; // remove duplicate items
-    const url = new URL(_url)
-    paramVals.forEach((paramVal) => {
+    const url = new URL(_url);
+    paramVals.forEach( paramVal => {
         url.searchParams.set(param, paramVal);
-    })
+    });
     return url;
 }
 

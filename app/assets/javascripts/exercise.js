@@ -147,9 +147,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     let lastSubmission;
     let lastTimeout;
 
-    //remove the submission id to get the base submission url
+    // remove the submission id to get the base submission url
     const to = (_baseSubmissionUrl.substr(0, _baseSubmissionUrl.length - 1)).lastIndexOf("/");
-    let baseSubmissionUrl = _baseSubmissionUrl.substring(0, to + 1);
+    const baseSubmissionUrl = _baseSubmissionUrl.substring(0, to + 1);
 
     function init() {
         if (editorShown) {

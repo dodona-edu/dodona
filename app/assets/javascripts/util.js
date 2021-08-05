@@ -20,47 +20,13 @@ function updateURLParameter(_url, param, paramVal) {
     return url;
 }
 
-function updateArrayURLParameter(url, param, _paramVals) {
+function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = [...new Set(_paramVals)]; // remove duplicate items
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] !== `${param}%5B%5D`) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
-    }
-    let rowsTxt = "";
-    for (const paramVal of paramVals) {
-        rowsTxt += `${temp}${param}%5B%5D=${paramVal}`;
-        temp = "&";
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
+    const url = new URL(_url)
+    paramVals.forEach((paramVal) => {
+        url.searchParams.set(param, paramVal);
+    })
+    return url;
 }
 
 function getURLParameter(name, _url) {

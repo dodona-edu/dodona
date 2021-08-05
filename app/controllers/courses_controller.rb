@@ -75,7 +75,10 @@ class CoursesController < ApplicationController
       }.merge(@copy_options).symbolize_keys
     else
       @copy_options = nil
-      @course = Course.new(institution: current_user.institution)
+      @course = Course.new(
+        teacher: current_user.full_name,
+        institution: current_user.institution
+      )
     end
 
     @title = I18n.t('courses.new.title')

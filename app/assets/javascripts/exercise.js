@@ -142,10 +142,14 @@ function initExerciseDescription() {
     centerImagesAndTables();
 }
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline, _baseSubmissionUrl) {
     let editor;
     let lastSubmission;
     let lastTimeout;
+
+    //remove the submission id to get the base submission url
+    const to = (_baseSubmissionUrl.substr(0, _baseSubmissionUrl.length - 1)).lastIndexOf("/");
+    let baseSubmissionUrl = _baseSubmissionUrl.substring(0, to + 1);
 
     function init() {
         if (editorShown) {
@@ -270,7 +274,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 return;
             }
             event.preventDefault();
-            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+            loadFeedback(baseSubmissionUrl + $(this).data("submission_id"), $(this).data("submission_id"));
         });
     }
 
@@ -296,7 +300,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $submissionRow.find(".load-submission").get(0).click();
                 } else if ($("#activity-feedback-link").hasClass("active") &&
                     $("#activity-feedback-link").data("submission_id") === lastSubmission) {
-                    loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
+                    loadFeedback(baseSubmissionUrl + lastSubmission, lastSubmission);
                 }
                 showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);

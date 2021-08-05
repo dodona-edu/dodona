@@ -14,46 +14,10 @@ const delay = (function () {
     };
 })();
 
-function updateURLParameter(url, param, paramVal) {
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-    let i;
-
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] != param) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
-    }
-    let rowsTxt = "";
-    if (paramVal) {
-        rowsTxt += `${temp}${param}=${paramVal}`;
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
+function updateURLParameter(_url, param, paramVal) {
+    const url = new URL(_url);
+    url.searchParams.set(param, paramVal);
+    return url;
 }
 
 function updateArrayURLParameter(url, param, _paramVals) {

@@ -29,6 +29,17 @@ class FeedbacksController < ApplicationController
     # the score_item ID in the `warning` param, it will be rendered with
     # the bootstrap warning classes.
     @warning = params[:warning]
+    # Don't allow browsers to store this page. This prevents the
+    # browser from serving a cached copy when pressing the back
+    # button, which can result in problems if the user entered some
+    # data, goes to the next student, and presses the back button.
+    # See https://github.com/dodona-edu/dodona/issues/2813 for more
+    # context. Note that this does mean we have to retransmit the page
+    # every time, where previously we could rely on ETag to avoid
+    # retransmitting the page if nothing changed.
+    # This should be replaced with a simple `no_store` on the next
+    # rails release: https://github.com/rails/rails/pull/40324
+    response.cache_control = 'no-store'
   end
 
   def edit

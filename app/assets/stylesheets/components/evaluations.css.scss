@@ -170,6 +170,7 @@ $user-column-width: 170px;
   .status-header {
     max-width: 100px;
     min-width: 100px;
+    overflow: hidden;
   }
 
   thead tr th:nth-child(2) {

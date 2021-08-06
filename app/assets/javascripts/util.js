@@ -16,15 +16,20 @@ const delay = (function () {
 
 function updateURLParameter(_url, param, paramVal) {
     const url = new URL(_url);
-    url.searchParams.set(param, paramVal);
+    if (paramVal) {
+        url.searchParams.set(param, paramVal);
+    } else {
+        url.searchParams.delete(param);
+    }
     return url;
 }
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = [...new Set(_paramVals)]; // remove duplicate items
     const url = new URL(_url);
-    paramVals.forEach( paramVal => {
-        url.searchParams.set(param, paramVal);
+    url.searchParams.delete(param);
+    paramVals.forEach(paramVal => {
+        url.searchParams.append(param, paramVal);
     });
     return url;
 }

@@ -62,10 +62,10 @@ class CoursesController < ApplicationController
       @course = Course.new(
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
-        institution: @copy_options[:base].institution,
+        institution: current_user.institution,
         visibility: @copy_options[:base].visibility,
         registration: @copy_options[:base].registration,
-        teacher: @copy_options[:base].teacher
+        teacher: current_user.full_name
       )
       @copy_options = {
         admins: current_user.course_admin?(@copy_options[:base]),

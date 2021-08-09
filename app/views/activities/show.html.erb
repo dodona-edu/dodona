@@ -163,7 +163,7 @@ end %>
             <%= policy(@activity).submit? || !user_signed_in? %>,
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
-            "<%= submission_url %>"
+            "<%= submissions_url %>"
         );
     });
 </script>

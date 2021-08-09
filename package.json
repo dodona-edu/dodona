@@ -6,7 +6,7 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "@babel/core": "^7.14.8",
+    "@babel/core": "^7.15.0",
     "@babel/preset-typescript": "^7.14.5",
     "@popperjs/core": "^2.9.2",
     "@rails/activestorage": "^6.1.4",

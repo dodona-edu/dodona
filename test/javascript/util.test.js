@@ -6,10 +6,10 @@ let twoParameterURL;
 let multipleValueUrl;
 
 beforeEach(() => {
-    noParameterURL = "https://www.dodona.ugent.be/test_functions";
-    oneParameterURL = "https://www.dodona.ugent.be/test_functions?param1=paramVal1";
-    twoParameterURL = "https://www.dodona.ugent.be/test_functions?param1=paramVal1&param2=paramVal2";
-    multipleValueUrl = "https://www.dodona.ugent.be/test_functions?param=paramVal1&param=paramVal2&param=paramVal3";
+    noParameterURL = "https://example.com/test_functions";
+    oneParameterURL = "https://example.com/test_functions?param1=paramVal1";
+    twoParameterURL = "https://example.com/test_functions?param1=paramVal1&param2=paramVal2";
+    multipleValueUrl = "https://example.com/test_functions?param=paramVal1&param=paramVal2&param=paramVal3";
 });
 
 test("return correct parameter value if present", () => {

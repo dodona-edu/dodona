@@ -21,17 +21,17 @@ function updateURLParameter(_url, param, paramVal) {
     } else {
         url.searchParams.delete(param);
     }
-    return url;
+    return url.toString();
 }
 
 function updateArrayURLParameter(_url, param, _paramVals) {
-    const paramVals = [...new Set(_paramVals)]; // remove duplicate items
+    const paramVals = new Set(_paramVals); // remove duplicate items
     const url = new URL(_url);
     url.searchParams.delete(param);
     paramVals.forEach(paramVal => {
         url.searchParams.append(param, paramVal);
     });
-    return url;
+    return url.toString();
 }
 
 function getURLParameter(name, _url) {

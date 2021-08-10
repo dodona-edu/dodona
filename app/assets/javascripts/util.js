@@ -14,111 +14,34 @@ const delay = (function () {
     };
 })();
 
-function updateURLParameter(url, param, paramVal) {
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-    let i;
-
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] != param) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
-    }
-    let rowsTxt = "";
+function updateURLParameter(_url, param, paramVal) {
+    const url = new URL(_url);
     if (paramVal) {
-        rowsTxt += `${temp}${param}=${paramVal}`;
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
-}
-
-function updateArrayURLParameter(url, param, _paramVals) {
-    const paramVals = [...new Set(_paramVals)]; // remove duplicate items
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] !== `${param}%5B%5D`) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
+        url.searchParams.set(param, paramVal);
     } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
+        url.searchParams.delete(param);
     }
-    let rowsTxt = "";
-    for (const paramVal of paramVals) {
-        rowsTxt += `${temp}${param}%5B%5D=${paramVal}`;
-        temp = "&";
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
+    return url.toString();
 }
 
-function getURLParameter(_name, _url) {
-    const url = _url || window.location.href;
-    const name = _name.replace(/[[\]]/g, "\\$&");
-    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
-    const results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return "";
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+function updateArrayURLParameter(_url, param, _paramVals) {
+    const paramVals = new Set(_paramVals); // remove duplicate items
+    const url = new URL(_url);
+    url.searchParams.delete(param);
+    paramVals.forEach(paramVal => {
+        url.searchParams.append(param, paramVal);
+    });
+    return url.toString();
+}
+
+function getURLParameter(name, _url) {
+    const url = new URL(_url ?? window.location.href);
+    return url.searchParams.get(name);
 }
 
 function getArrayURLParameter(name, _url) {
-    const url = _url || window.location.href;
-    const result = [];
-    for (const part of url.split(/[?&]/)) {
-        const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
-        if (regResults && regResults[1]) {
-            result.push(decodeURIComponent(regResults[1]));
-        }
-    }
-    return result;
+    const url = new URL(_url ?? window.location.href);
+    return url.searchParams.getAll(name);
 }
 
 /*

@@ -142,7 +142,7 @@ function initExerciseDescription() {
     centerImagesAndTables();
 }
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline, baseSubmissionsUrl) {
     let editor;
     let lastSubmission;
     let lastTimeout;
@@ -270,7 +270,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 return;
             }
             event.preventDefault();
-            loadFeedback($(this).attr("href"), $(this).data("submission_id"));
+            loadFeedback(baseSubmissionsUrl + $(this).data("submission_id"), $(this).data("submission_id"));
         });
     }
 
@@ -296,7 +296,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     $submissionRow.find(".load-submission").get(0).click();
                 } else if ($("#activity-feedback-link").hasClass("active") &&
                     $("#activity-feedback-link").data("submission_id") === lastSubmission) {
-                    loadFeedback(`/submissions/${lastSubmission}`, lastSubmission);
+                    loadFeedback(baseSubmissionsUrl + lastSubmission, lastSubmission);
                 }
                 showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);

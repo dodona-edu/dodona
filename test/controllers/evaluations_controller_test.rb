@@ -407,7 +407,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
-    assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
+    assert_equal 4 + evaluation.evaluation_exercises.length * 2, header.length
 
     # Get which users will have a score
     # First, the users we added a score for.
@@ -433,7 +433,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
-      assert line[2..].all?(&:empty?)
+      assert line[4..].all?(&:empty?)
     end
 
     sign_out @course_admin

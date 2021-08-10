@@ -10,7 +10,6 @@
 
 .status-table-wrapper {
   overflow-x: auto;
-  margin-left: 200px;
 
   .table {
     border-collapse: separate;
@@ -28,9 +27,7 @@
       overflow: hidden;
     }
     .user-name {
-      position: absolute;
       width: 200px;
-      left: 18px;
       top: auto;
     }
     thead .user-name {

@@ -114,12 +114,15 @@ class Evaluation < ApplicationRecord
   def grades_csv
     sheet = evaluation_sheet
     CSV.generate(force_quotes: true) do |csv|
-      headers = %w[Name Email]
+      headers = ['Name', 'Email', 'Total Score', 'Total Max']
       headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }
       csv << headers
       users.order(last_name: :asc, first_name: :asc).each do |user|
         row = [user.full_name, user.email]
         feedback_l = sheet[:feedbacks][user.id]
+        average = sheet[:averages][user.id]
+        maximum = sheet[:evaluation_exercises].map(&:maximum_score).sum
+        row += [average, maximum]
         row += feedback_l.flat_map { |f| [f.score, f.maximum_score] }
         csv << row
       end

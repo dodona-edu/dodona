@@ -62,10 +62,10 @@ class CoursesController < ApplicationController
       @course = Course.new(
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
-        institution: @copy_options[:base].institution,
+        institution: current_user.institution,
         visibility: @copy_options[:base].visibility,
         registration: @copy_options[:base].registration,
-        teacher: @copy_options[:base].teacher
+        teacher: current_user.full_name
       )
       @copy_options = {
         admins: current_user.course_admin?(@copy_options[:base]),
@@ -75,7 +75,10 @@ class CoursesController < ApplicationController
       }.merge(@copy_options).symbolize_keys
     else
       @copy_options = nil
-      @course = Course.new(institution: current_user.institution)
+      @course = Course.new(
+        teacher: current_user.full_name,
+        institution: current_user.institution
+      )
     end
 
     @title = I18n.t('courses.new.title')

@@ -18,6 +18,8 @@
           <%= link_to t("score_items.new.show_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post %>
           <br>
           <%= link_to t("score_items.new.hide_all"), modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post %>
+          <br>
+          <a href="#add-score-item-to-all" data-bs-toggle="modal"><%= t('score_items.new.add_all') %></a>
         </p>
         <%= link_to t('score_items.index.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary float-end" %>
 

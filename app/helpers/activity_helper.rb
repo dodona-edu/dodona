@@ -122,7 +122,7 @@ module ActivityHelper
     private
 
     def with_nokogiri(html)
-      doc = Nokogiri::HTML::DocumentFragment.parse html
+      doc = Nokogiri::HTML5::DocumentFragment.parse html
       yield doc
       doc.to_html
     end

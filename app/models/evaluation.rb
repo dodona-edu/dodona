@@ -118,11 +118,11 @@ class Evaluation < ApplicationRecord
       headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }
       csv << headers
       users.order(last_name: :asc, first_name: :asc).each do |user|
-        row = [user.full_name, user.email]
+        row = 
         feedback_l = sheet[:feedbacks][user.id]
         total_score = sheet[:averages][user.id]
         total_max = sheet[:evaluation_exercises].map(&:maximum_score).reject(&:nil?).sum
-        row += [total_score, total_max]
+        row = [user.full_name, user.email, total_score, total_max]
         row += feedback_l.flat_map { |f| [f.score, f.maximum_score] }
         csv << row
       end

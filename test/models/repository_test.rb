@@ -26,6 +26,17 @@ class RepositoryTest < ActiveSupport::TestCase
   end
 end
 
+class EmptyRepositoryTest < ActiveSupport::TestCase
+  test 'should be able to handle repositories that are initially empty' do
+    Rails.env.stubs(:production?).returns(true)
+    remote = local_remote
+    repository = create :repository, remote: remote.path
+    remote.write_file('test') { 'test' }
+    assert repository.reset.first
+    assert File.exist?("#{repository.full_path}/test")
+  end
+end
+
 class EchoRepositoryTest < ActiveSupport::TestCase
   def setup
     # ensure we push to the repository

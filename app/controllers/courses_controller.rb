@@ -386,17 +386,18 @@ class CoursesController < ApplicationController
     respond_to do |format|
       format.html
       format.ics do
-        @cal = Icalendar::Calendar.new
-        @cal.x_wr_calname = 'Course deadlines'
-        @series.each do |serie|
-          @cal.event do |e|
+        cal = Icalendar::Calendar.new
+        cal.x_wr_calname = 'Course deadlines'
+        series.each do |serie|
+          cal.event do |e|
             e.dtstart = serie.deadline
             e.dtend = serie.deadline
             e.summary = serie.name
             e.description = serie.description
           end
         end
-        @cal.publish
+        cal.publish
+        render plain: cal.to_ical
       end
     end
   end

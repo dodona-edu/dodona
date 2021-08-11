@@ -450,6 +450,69 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect # Redirect to sign in page
   end
 
+  test 'grade export contains correct data' do
+    # Create an evaluation, a score item and add a score.
+    post evaluations_path, params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    evaluation = @series.evaluation
+    evaluation.update(users: @series.course.enrolled_members)
+    # Add a score to a non-nil submission
+    feedback1 = evaluation.feedbacks.where.not(submission_id: nil).sample
+    exercise1 = feedback1.evaluation_exercise
+    score_item1 = create :score_item, evaluation_exercise: exercise1, maximum: 20
+    score1 = create :score, score_item: score_item1, feedback: feedback1, score: 15
+
+    # Add a score to another submission
+    feedback2 = evaluation.feedbacks.where(evaluation_id: feedback1.evaluation_id).where.not(submission_id: nil, submission_id: feedback1.submission_id).sample
+    exercise2 = feedback2.evaluation_exercise
+    score_item2 = create :score_item, evaluation_exercise: exercise2, maximum: 10
+    score2 = create :score, score_item: score_item2, feedback: feedback2, score: 7.5
+
+    get export_grades_evaluation_path evaluation, format: :csv
+    assert_response :success
+    assert_equal 'text/csv', response.content_type
+
+    # Check the contents of the csv file.
+    csv = CSV.parse response.body
+    header = csv.shift
+
+    # Total score should equal sum of scores, Total max should equal the sum of maximum scores
+    csv.each do |line|
+      # Possible that total maximum is present, but all scores are empty en thus total score is empty
+      if line[2] == ""
+        total_maximum = 0
+        (4...line.length-1).step(2).each do |index|
+          assert_equal line[index], ""
+
+          unless line[index+1] == ""
+            total_maximum += BigDecimal(line[index+1])
+          end
+        end
+
+        assert_equal BigDecimal(line[3]), total_maximum
+      
+      else
+        total_score = 0
+        total_maximum = 0
+        (4..line.length-1).step(2).each do |index|
+          unless line[index] == ""
+            total_score += BigDecimal(line[index])
+          end
+          unless line[index+1] == ""
+            total_maximum += BigDecimal(line[index+1])
+          end
+        end
+
+        assert_equal BigDecimal(line[2]), total_score
+        assert_equal BigDecimal(line[3]), total_maximum
+      end
+    end
+  end
+
   test 'course admins can change grade visibility' do
     evaluation = create :evaluation, :with_submissions
     evaluation.series.course.administrating_members << @course_admin

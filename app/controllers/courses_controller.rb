@@ -380,6 +380,10 @@ class CoursesController < ApplicationController
     end
   end
 
+  def ical
+    @series = Series.where(course_id: @course.id)
+  end
+
   private
 
   def try_to_subscribe_current_user(**args)

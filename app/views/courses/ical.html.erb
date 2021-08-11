@@ -1,0 +1,25 @@
+<%= render partial: 'navbar_links' %>
+<div class="row">
+  <div class="col-md-10 col-12 offset-md-1">
+    <div class="page-subtitle">
+      <h2><%= @course.name %></h2>
+      <div class="flex-spacer"></div>
+    </div>
+  </div>
+  <div class="col-md-10 col-12 offset-md-1">
+    <div class="card">
+      <div class="card-supporting-text">
+        <h4>Series deadlines</h4>
+        <ul>
+            <% @series.each do |serie| %>
+                <% if serie.deadline %>
+                    <li>Dealine of <%= serie.name %> is <%= serie.deadline %></li>
+                <% else %>
+                    <li><%= serie.name %> has no deadline.</li>
+                <% end %>
+            <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

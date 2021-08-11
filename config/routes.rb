@@ -104,6 +104,7 @@ Rails.application.routes.draw do
         get 'manage_series'
         get 'scoresheet'
         get 'questions'
+        get 'ical'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'

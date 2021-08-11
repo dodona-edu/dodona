@@ -13,7 +13,7 @@ module Gitable
   end
 
   def reset
-    _out, error, status = Open3.capture3('git fetch --all && git reset --hard origin/HEAD', chdir: full_path.to_path)
+    _out, error, status = Open3.capture3('git fetch --all && git reset --hard $(git ls-remote -q | grep HEAD | cut -f1)', chdir: full_path.to_path)
     [status.success?, error]
   end
 

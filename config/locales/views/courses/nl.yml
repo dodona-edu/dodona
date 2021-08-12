@@ -130,6 +130,7 @@ nl:
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
+      download_deadlines: "Deadlines van deze cursus exporteren"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       registration-closed: Je kan momenteel niet registreren voor deze cursus.

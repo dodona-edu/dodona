@@ -381,20 +381,23 @@ class CoursesController < ApplicationController
   end
 
   def ical
-    @series = Series.where(course_id: @course.id, visibility: :open)
+    series = @course.series.where(visibility: :open)
 
     cal = Icalendar::Calendar.new
     cal.x_wr_calname = @course.name
-    @series.each do |serie|
+    series.each do |serie|
+      next unless serie.deadline
+
       cal.event do |e|
         e.dtstart = serie.deadline
-        e.dtend = serie.deadline
+        e.dtend = (serie.deadline.to_time + 1.second).to_datetime # value of dtend must be larger than value of dtstart
         e.summary = serie.name
         e.description = series_url(serie)
+        e.url = series_url(serie)
       end
     end
     cal.publish
-    send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: @course.name + "_deadlines.ics"
+    send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@course.name}_deadlines.ics"
   end
 
   private

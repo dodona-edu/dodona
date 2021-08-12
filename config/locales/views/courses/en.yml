@@ -122,6 +122,7 @@ en:
         other: "%{count} pending users are declined."
       copy: "Copy this course"
       manage_series: "Manage series"
+      download_deadlines: "Export course deadlines"
     scoresheet:
       user: User
       at_least_one_started: "Only show users that started at least one exercise"

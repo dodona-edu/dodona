@@ -94,7 +94,7 @@
               <% end %>
               <li>
                 <%= link_to ical_course_path(@course), class: "dropdown-item" do %>
-                  <i class="mdi mdi-calendar-clock mdi-18"></i>Export course deadlines
+                  <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_deadlines") %>
                 <% end %>
               </li>
               <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>

@@ -8,8 +8,13 @@
   background-attachment: local, local, scroll, scroll;
 }
 
+.user-name {
+  height: 42px;
+}
+
 .status-table-wrapper {
   overflow-x: auto;
+  margin-left: 200px;
 
   .table {
     border-collapse: separate;
@@ -27,12 +32,17 @@
       overflow: hidden;
     }
     .user-name {
+      position: absolute;
+      height: 35px;
       width: 200px;
-      min-width: 200px;
+      left: 18px;
       top: auto;
     }
+    .user-name:not(.sticky-column) {
+      height: 42px;
+    }
     thead .user-name {
-      height: auto;
+      height: auto !important;
     }
   }
 }
@@ -104,4 +114,8 @@ tr.gu-mirror {
     text-align: center;
     color: $text-secondary;
   }
+}
+
+#scoresheet-table-wrapper .user-name{
+  height: 35px;
 }

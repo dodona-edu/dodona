@@ -182,4 +182,5 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 # interfacing with docker
 gem 'docker-api', '~> 2.2.0'
 
+# Used for syncing deadlines with an external calendar
 gem "icalendar", "~> 2.7"

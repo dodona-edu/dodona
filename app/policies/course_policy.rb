@@ -143,7 +143,7 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def ical?
-    course_admin?
+    true
   end
 
   def export?

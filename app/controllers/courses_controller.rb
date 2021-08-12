@@ -381,25 +381,20 @@ class CoursesController < ApplicationController
   end
 
   def ical
-    @series = Series.where(course_id: @course.id)
+    @series = Series.where(course_id: @course.id, visibility: :open)
 
-    respond_to do |format|
-      format.html
-      format.ics do
-        cal = Icalendar::Calendar.new
-        cal.x_wr_calname = 'Course deadlines'
-        series.each do |serie|
-          cal.event do |e|
-            e.dtstart = serie.deadline
-            e.dtend = serie.deadline
-            e.summary = serie.name
-            e.description = serie.description
-          end
-        end
-        cal.publish
-        render plain: cal.to_ical
+    cal = Icalendar::Calendar.new
+    cal.x_wr_calname = @course.name
+    @series.each do |serie|
+      cal.event do |e|
+        e.dtstart = serie.deadline
+        e.dtend = serie.deadline
+        e.summary = serie.name
+        e.description = series_url(serie)
       end
     end
+    cal.publish
+    send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: @course.name + "_deadlines.ics"
   end
 
   private

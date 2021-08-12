@@ -8,10 +8,6 @@
   background-attachment: local, local, scroll, scroll;
 }
 
-.user-name {
-  height: 42px;
-}
-
 .status-table-wrapper {
   overflow-x: auto;
   margin-left: 200px;
@@ -33,9 +29,9 @@
     }
     .user-name {
       position: absolute;
-      height: 35px;
       width: 200px;
       left: 18px;
+      height: 35px;
       top: auto;
     }
     .user-name:not(.sticky-column) {

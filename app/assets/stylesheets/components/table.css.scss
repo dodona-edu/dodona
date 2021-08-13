@@ -31,11 +31,14 @@
       position: absolute;
       width: 200px;
       left: 18px;
-      height: 42px;
+      height: auto;
       top: auto;
     }
+    .user-name:not(.sticky-column) {
+      height: 42px;
+    }
     thead .user-name {
-      height: auto;
+      height: auto !important;
     }
   }
 }
@@ -107,4 +110,8 @@ tr.gu-mirror {
     text-align: center;
     color: $text-secondary;
   }
+}
+
+#scoresheet-table-wrapper .user-name {
+  height: 35px;
 }

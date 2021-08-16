@@ -95,9 +95,9 @@ export class ViolinGraph extends SeriesGraph {
 
         // Add X axis label:
         graph.append("text")
-            .attr("text-anchor", "end")
-            .attr("x", -5)
-            .attr("y", this.innerHeight+5)
+            .attr("text-anchor", "middle")
+            .attr("x", this.innerWidth / 2)
+            .attr("y", this.innerHeight + 30)
             .text(I18n.t("js.n_submissions"))
             .attr("class", "violin-label")
             .attr("fill", "currentColor");

@@ -70,7 +70,11 @@ class ScoreItemsController < ApplicationController
       end
     end
 
-    redirect_to new_evaluation_score_item_path(@evaluation)
+    if params[:edit]
+      redirect_to evaluation_score_items_path(@evaluation)
+    else
+      redirect_to new_evaluation_score_item_path(@evaluation)
+    end
   end
 
   def destroy

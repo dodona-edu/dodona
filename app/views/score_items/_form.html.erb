@@ -25,6 +25,9 @@
       <% if score_item&.new_record? && local_assigns[:models] %>
         <%= f.hidden_field :evaluation_exercise_id, value: evaluation_exercise.id %>
       <% end %>
+      <% if local_assigns[:edit_value] %>
+        <%= hidden_field_tag :edit, local_assigns[:edit_value] %>
+      <% end %>
       <div class="field form-group row">
         <%= f.label :name, :class => "col-sm-4 col-form-label" %>
         <div class="col-sm-8"><%= f.text_field :name, required: true, class: "form-control" %></div>

@@ -47,22 +47,22 @@ nl:
     mark_as_unread: Als ongelezen markeren
     question_states: Toestand
     no_data: Er is niet genoeg data om een grafiek te maken.
-    n_submissions: Aantal indieningen
+    n_submissions: Aantal ingediende oplossingen
     user: gebruiker
     users: gebruikers
     with: met
-    submission: indiening
-    submissions: indieningen
+    submission: oplossing
+    submissions: oplossingen
     total: totaal
     mean: gemiddelde
-    violin_title: Aantal indieningen per gebruiker
-    stacked_title: Verdeling van indienigsstatussen
-    timeseries_title: Indieningen over tijd
-    ctimeseries_title: Gebruikers met minstens één correcte indiening
-    violin_desc: Deze grafiek geeft weer hoeveel indieningen gebruikers per oefening gemaakt hebben. De x-as vertegenwoordigd het aantal indieningen en de de dikte van de grafiek geeft aan hoeveel gebruikers x aantal indieningen maakten.
-    stacked_desc: Deze grafiek geeft de verdeling van de indienigsstatussen weer. Met andere woorden, van alle indieningen, hoeveel hebben status x.
-    timeseries_desc: Deze grafiek geeft het aantal indieningen in de loop van de tijd weer. Wanneer de muis boven een cel gehouden wordt, zal zowel het totaal aantal indieningen in die periode als een overzicht per indiedingsstatus weergegeven worden.
-    ctimeseries_desc: Deze grafiek geeft de vooruitgang van de groep weer. Het houdt het aantal gebruikers met ten minste één correcte indiening bij.
+    violin_title: Aantal oplossingen per gebruiker
+    stacked_title: Verdeling van de oplossingsstatus
+    timeseries_title: Ingediende oplossingen over tijd
+    ctimeseries_title: Gebruikers met minstens één correcte oplossing
+    violin_desc: Deze grafiek geeft de verdeling weer van het aantal ingediende oplossingen. Hoe dikker de zone op de grafiek, hoe meer studenten dat aantal pogingen nodig had.
+    stacked_desc: Deze grafiek geeft de verdeling van de oplossingsstatussen per oefening weer.
+    timeseries_desc: Deze grafiek toont op welke dagen het meest aan een bepaalde oefening werd gewerkt.
+    ctimeseries_desc: Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.
     months:
       long:
         jan: Januari

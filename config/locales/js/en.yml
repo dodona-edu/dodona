@@ -46,7 +46,7 @@ en:
     mark_as_read: Mark as read
     mark_as_unread: Mark as unread
     question_states: Status
-    no_data: There is not enough data to create a graph
+    no_data: There is not enough data to create a graph.
     n_submissions: Number of submissions
     user: user
     users: users
@@ -55,14 +55,14 @@ en:
     submissions: submissions
     total: total
     mean: mean
-    violin_title: Amount of submissions per user
+    violin_title: Number of submissions per user
     stacked_title: Distribution of submission statuses
     timeseries_title: Submissions over time
     ctimeseries_title: Users with at least one correct submission
-    violin_desc: This graph displays how many submissions users made for each exercise. The x-axis represents the amount of submissions, while the tickness of the graph represents the amount of users that made x amount of submissions.
-    stacked_desc: This graph displays the distribution of submissions statuses. In other words, of all submissions, how many have status x.
-    timeseries_desc: This graph displays the number of submissions over time. Hovering over one of the cell will display the total amount of submissions in that time period as well as a breakdown per submission status.
-    ctimeseries_desc: This graph displays the group's progress over time. It keeps track of the amount of users with at least one correct submission.
+    violin_desc: This graph shows the distribution of the number of submissions.The larger the zone, the more students submitted that number of solutions.
+    stacked_desc: This graph shows the distribution of submissions statuses.
+    timeseries_desc: This graph shows on which days the students submitted the most solutions.
+    ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.
     months:
       long:
         jan: January

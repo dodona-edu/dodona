@@ -181,10 +181,11 @@ export class ViolinGraph extends SeriesGraph {
             .style("width", 40);
         this.tooltipLabel = graph.append("text")
             .attr("opacity", 0)
-            .attr("y", this.innerHeight - 2)
+            .attr("y", 12)
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`)
+            .attr("font-weight", "bold")
             .attr("class", "d3-tooltip-label");
         this.tooltipLabels = graph.selectAll("ttlabels")
             .data(this.data, d => d["ex_id"])

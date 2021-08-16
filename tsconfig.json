@@ -2,7 +2,7 @@
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "lib": ["es7", "dom"],
     "module": "es6",

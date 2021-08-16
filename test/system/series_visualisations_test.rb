@@ -46,7 +46,7 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
     assert_selector '.btn.annotation-toggle.violin.active' # violin should be active by default
     assert_selector '.btn.annotation-toggle.active', count: 1 # only one buttom active at a time
     within title do
-      assert_text 'Amount of submissions per user'
+      assert_text 'Number of submissions per user'
     end
 
     find('.btn.annotation-toggle.stacked').click
@@ -74,7 +74,7 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
     assert_selector '.btn.annotation-toggle.violin.active' # violin should be active by default
     assert_selector '.btn.annotation-toggle.active', count: 1
     within title do
-      assert_text 'Amount of submissions per user'
+      assert_text 'Number of submissions per user'
     end
   end
 end

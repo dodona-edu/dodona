@@ -51,7 +51,6 @@ describe("Violin tests", () => {
         const datum = violin["data"][0];
         expect(datum["ex_id"]).toBe("1");
         expect(datum["counts"]).toEqual([2, 4, 5]); // same as input, but sorted
-        expect(datum["median"]).toBe(4);
         expect(datum["average"]).toBe((2+4+5)/3);
         expect(datum["freq"]).toHaveLength(5); // bin from 1-5
         expect(violin["maxCount"]).toBe(5);

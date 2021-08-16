@@ -202,6 +202,8 @@ en:
         enabled: Questions are enabled.
         enable: Enable them.
         disable: Disable them.
+    ical:
+      serie_deadline: "Deadline for %{serie_name} of course %{course_name}: %{serie_url}"
   submissions:
     show:
       questions:

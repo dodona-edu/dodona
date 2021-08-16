@@ -198,6 +198,8 @@ nl:
         enabled: Vragen zijn ingeschakeld.
         enable: Schakel vragen in.
         disable: Schakel vragen uit.
+    ical:
+      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}" 
   submissions:
     show:
       questions:

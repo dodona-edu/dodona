@@ -280,7 +280,8 @@ button:hover .svg-icon-btn {
 }
 
 .d3-tooltip-label {
-  font-size: 14px;
+  font-size: 12px;
+  paint-order: stroke;
   stroke: $content-bg;
   stroke-width: 0.5px;
 }

@@ -19,13 +19,7 @@ export class ViolinGraph extends SeriesGraph {
     private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
     private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, any>;
     private tooltipLabel: d3.Selection<SVGTextElement, unknown, HTMLElement, any>;
-    private tooltipDots: d3.Selection<
-        Element | SVGCircleElement | d3.EnterElement | Document | Window | null,
-        unknown,
-        SVGGElement,
-        any
-    >;
-    private tooltipDotLabels: d3.Selection<
+    private tooltipLabels: d3.Selection<
         Element | SVGTextElement | d3.EnterElement | Document | Window | null,
         unknown,
         SVGGElement,
@@ -187,25 +181,18 @@ export class ViolinGraph extends SeriesGraph {
             .style("width", 40);
         this.tooltipLabel = graph.append("text")
             .attr("opacity", 0)
-            .attr("y", this.innerHeight - 10)
+            .attr("y", this.innerHeight - 2)
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`)
             .attr("class", "d3-tooltip-label");
-        this.tooltipDots = graph.selectAll("dots")
-            .data(this.data, d => d["ex_id"])
-            .join("circle")
-            .attr("r", 4)
-            .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
-            .attr("opacity", 0)
-            .style("fill", "currentColor");
-        this.tooltipDotLabels = graph.selectAll("dotlabels")
+        this.tooltipLabels = graph.selectAll("ttlabels")
             .data(this.data, d => d["ex_id"])
             .join("text")
             .attr("text-anchor", "end")
             .attr("fill", "currentColor")
             .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
-            .attr("y", -5)
+            .attr("y", 4)
             .attr("opacity", 0)
             .attr("font-size", `${this.fontSize}px`)
             .attr("class", "d3-tooltip-label");
@@ -287,13 +274,8 @@ export class ViolinGraph extends SeriesGraph {
                 .attr("text-anchor", switchSides ? "end" : "start")
                 .transition()
                 .duration(100)
-                .attr("x", switchSides ? this.x(i) - 10 : this.x(i) + 10);
-            this.tooltipDots
-                .attr("opacity", 1)
-                .transition()
-                .duration(100)
-                .attr("cx", this.x(i));
-            this.tooltipDotLabels
+                .attr("x", switchSides ? this.x(i) - 7 : this.x(i) + 7);
+            this.tooltipLabels
                 .attr("opacity", 1)
                 .text(d => {
                     const freq = d["freq"][Math.max(0, i-1)].length;
@@ -303,7 +285,7 @@ export class ViolinGraph extends SeriesGraph {
                 .attr("text-anchor", switchSides ? "end" : "start")
                 .transition()
                 .duration(100)
-                .attr("x", switchSides ? this.x(i) - 5 : this.x(i)+5);
+                .attr("x", switchSides ? this.x(i) - 7 : this.x(i) + 7);
         }
     }
 
@@ -317,9 +299,7 @@ export class ViolinGraph extends SeriesGraph {
             .attr("opacity", 0);
         this.tooltipLabel
             .attr("opacity", 0);
-        this.tooltipDots
-            .attr("opacity", 0);
-        this.tooltipDotLabels
+        this.tooltipLabels
             .attr("opacity", 0);
     }
 }

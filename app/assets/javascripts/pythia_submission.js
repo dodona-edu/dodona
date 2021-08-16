@@ -93,7 +93,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
 
                 const number = document.createElement("td");
                 number.className = "line-nr";
-                number.textContent = (i === maxLines) ? "": i + 1;
+                number.textContent = (i === maxLines) ? "" : i + 1;
                 tr.appendChild(number);
 
                 const line = document.createElement("td");
@@ -130,6 +130,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             $tutor.removeClass("fullscreen");
             $("#tutorviz").height($("#tutorviz").data("standardheight"));
         } else {
+            $("#tutorviz").data("standardheight", $("#tutorviz").height());
             $tutor.addClass("fullscreen");
             $("#tutorviz").height("100%");
         }

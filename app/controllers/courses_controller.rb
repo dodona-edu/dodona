@@ -389,18 +389,9 @@ class CoursesController < ApplicationController
     series.each do |serie|
       next unless serie.deadline
 
-      cal.timezone do |t|
-        t.tzid = "#{serie.name}/timezone"
-
-        t.standard do |s|
-          s.tzoffsetfrom = "+0000"
-          s.tzoffsetto = serie.deadline.formatted_offset(false)
-        end
-      end
-
       cal.event do |e|
-        e.dtstart = Icalendar::Values::DateTime.new serie.deadline.utc, 'tzid' => "#{serie.name}/timezone"
-        e.dtend = Icalendar::Values::DateTime.new (serie.deadline.to_time + 1.second).to_datetime.utc, 'tzid' => "#{serie.name}/timezone" # value of dtend must be larger than value of dtstart
+        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z"
+        e.dtend = "#{(serie.deadline.to_time + 1.second).to_datetime.utc.strftime('%Y%m%dT%H%M%S')}Z" # value of dtend must be larger than value of dtstart
         e.summary = serie.name
         e.description = t(".serie_deadline", serie_name: serie.name, course_name: @course.name, serie_url: series_url(serie))
         e.url = series_url(serie)

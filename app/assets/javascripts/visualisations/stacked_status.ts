@@ -5,7 +5,7 @@ import { RawData, SeriesGraph } from "visualisations/series_graph";
 
 export class StackedStatusGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/stacked_status?series_id=";
-    private readonly margin = { top: 20, right: 150, bottom: 40, left: 105 };
+    private readonly margin = { top: 20, right: 150, bottom: 40, left: 125 };
     private readonly fontSize = 12;
 
     private readonly statusOrder = [

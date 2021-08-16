@@ -5,9 +5,9 @@ import { RawData, SeriesGraph } from "visualisations/series_graph";
 
 export class TimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/timeseries?series_id=";
-    private readonly margin = { top: 20, right: 40, bottom: 20, left: 140 };
+    private readonly margin = { top: 20, right: 40, bottom: 20, left: 125 };
     private readonly fontSize = 12;
-    private readonly yAxisPadding = 40; // padding between y axis (labels) and the actual graph
+    private readonly yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
     private readonly statusOrder = [
         "correct", "wrong", "compilation error", "runtime error",

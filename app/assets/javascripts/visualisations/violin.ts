@@ -29,7 +29,7 @@ export class ViolinGraph extends SeriesGraph {
     // data
     private data: {
         "ex_id": string, "counts": number[],
-        "freq": d3.Bin<number, number>[], "median": number, "average": number
+        "freq": d3.Bin<number, number>[], "average": number
     }[];
     private maxCount = 0; // largest x-value
     private maxFreq = 0; // largest y-value
@@ -123,15 +123,15 @@ export class ViolinGraph extends SeriesGraph {
                 .curve(d3.curveCatmullRom)
             );
 
-        // median dot
+        // average dot
         graph
-            .selectAll("medianDot")
+            .selectAll("avgDot")
             .data(this.data)
             .enter()
             .append("circle")
             .style("opacity", 0)
             .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
-            .attr("cx", d => this.x(d.median))
+            .attr("cx", d => this.x(d.average))
             .attr("r", 4)
             .attr("fill", "currentColor")
             .attr("pointer-events", "none")
@@ -217,13 +217,11 @@ export class ViolinGraph extends SeriesGraph {
             // sort so median is calculated correctly
             "counts": ex_data.sort((a: number, b: number) => a-b),
             "freq": [],
-            "median": 0,
             "average": 0
         })) as {
             "ex_id": string;
             "counts": number[];
             "freq": d3.Bin<number, number>[];
-            "median": number;
             "average": number;
         }[];
         // largest y-value
@@ -239,7 +237,6 @@ export class ViolinGraph extends SeriesGraph {
             // largest x-value
             this.maxFreq = Math.max(this.maxFreq, d3.max(ex.freq, bin => bin.length));
 
-            ex.median = d3.quantile(ex.counts, .5);
             ex.average = d3.mean(ex.counts);
         });
     }

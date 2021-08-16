@@ -130,7 +130,6 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             $tutor.removeClass("fullscreen");
             $("#tutorviz").height($("#tutorviz").data("standardheight"));
         } else {
-            $("#tutorviz").data("standardheight", $("#tutorviz").height())
             $tutor.addClass("fullscreen");
             $("#tutorviz").height("100%");
         }

@@ -632,4 +632,44 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get questions_course_path(@course)
     assert_select 'title', /\(1\)/
   end
+
+  test 'Icalendar link exports valid and correct ics file' do
+    time1 = DateTime.now
+    time2 = DateTime.now + 1.day + 1.hour + 1.second
+    # Create series
+    serie1 = create :series, course_id: @course.id, name: 'open serie1 + deadline', visibility: :open, deadline: time1
+    create :series, course_id: @course.id, name: 'open serie no deadline', visibility: :open                   # no deadline
+    create :series, course_id: @course.id, name: 'hidden serie', visibility: :hidden, deadline: time1          # hidden
+    create :series, course_id: @course.id, name: 'closed serie', visibility: :closed, deadline: time1          # closed
+    serie2 = create :series, course_id: @course.id, name: 'open serie2 + deadline', visibility: :open, deadline: time2
+
+    # Check content of the ics file
+    get ical_course_url @course, format: :ics
+    assert_response :success
+    assert_equal 'text/calendar', response.content_type
+
+    strict_parser = Icalendar::Parser.new(response.body, true)
+    cals = strict_parser.parse
+    cal = cals.first
+    assert_equal @course.name, cal.x_wr_calname.first
+
+    # Last created serie will be listed first
+    event1 = cal.events.first
+    assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
+    assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
+    assert_equal 'open serie2 + deadline', event1.summary
+    assert_equal t('courses.ical.serie_deadline', serie_name: serie2.name, course_name: @course.name, serie_url: series_url(serie2)), event1.description
+    assert_equal series_url(serie2), event1.url.to_s
+
+    event2 = cal.events.second
+    assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
+    assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
+    assert_equal 'open serie1 + deadline', event2.summary
+    assert_equal t('courses.ical.serie_deadline', serie_name: serie1.name, course_name: @course.name, serie_url: series_url(serie1)), event2.description
+    assert_equal series_url(serie1), event2.url.to_s
+
+    # Series that are hidden, closed or don't have a deadline should not be present in the ics file
+    event3 = cal.events.third
+    assert_nil event3
+  end
 end

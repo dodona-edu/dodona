@@ -118,7 +118,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     location = URI.parse(@response.header['Location'])
     assert_equal @provider.authorization_uri, "#{location.scheme}://#{location.host}#{location.path}"
     params = URI.decode_www_form(location.query).to_h.symbolize_keys
-    assert_equal 'openid', params[:scope]
+    assert params[:scope].include? 'openid'
     assert_equal 'id_token', params[:response_type]
     assert_equal @provider.client_id, params[:client_id]
     assert_equal 'https://www.example.com/users/auth/lti/callback', params[:redirect_uri]

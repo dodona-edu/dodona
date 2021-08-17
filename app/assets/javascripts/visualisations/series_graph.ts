@@ -49,12 +49,6 @@ export abstract class SeriesGraph {
         this.seriesId = seriesId;
         this.selector = containerId;
         this.container = d3.select(this.selector);
-        if (!this.height) {
-            this.height = this.container.node().getBoundingClientRect().height - 5;
-        }
-        this.container
-            .html("") // clean up possible previous visualisations
-            .style("height", `${this.height}px`);
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
 
@@ -182,10 +176,16 @@ export abstract class SeriesGraph {
      */
     async init(doDraw=true): Promise<void> {
         // add loading placeholder
+        const tempHeight = this.container.node().getBoundingClientRect().height;
+        this.container.html("");
         this.container
             .append("div")
             .text(I18n.t("js.loading"))
-            .attr("class", "graph_placeholder");
+            .attr("class", "graph_placeholder")
+            .style("height", `${tempHeight}px`)
+            .style("min-height", "100px")
+            .style("display", "flex")
+            .style("align-items", "center");
 
         // fetch data
         const r: RawData = await this.fetchData();

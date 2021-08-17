@@ -7,7 +7,7 @@ import { SeriesGraph, RawData } from "visualisations/series_graph";
 
 export class ViolinGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/violin?series_id=";
-    private readonly margin = { top: 20, right: 160, bottom: 40, left: 125 };
+    private readonly margin = { top: 20, right: 155, bottom: 40, left: 125 };
     private innerWidth = 0;
     private innerHeight = 0;
     private fontSize = 12;
@@ -49,7 +49,6 @@ export class ViolinGraph extends SeriesGraph {
         const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
         const svg = this.container
-            .style("height", `${this.height}px`)
             .append("svg")
             .attr("width", this.width)
             .attr("height", this.height);
@@ -71,7 +70,7 @@ export class ViolinGraph extends SeriesGraph {
             .select(".domain").remove();
         yAxis
             .selectAll(".tick text")
-            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap, 5);
+            .call(this.formatTitle, this.margin.left - yAxisPadding, this.exMap);
 
         // y scale per exercise
         const yBin = d3.scaleLinear()

@@ -5,7 +5,7 @@ import { RawData, SeriesGraph } from "visualisations/series_graph";
 
 export class StackedStatusGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/stacked_status?series_id=";
-    private readonly margin = { top: 20, right: 150, bottom: 40, left: 125 };
+    private readonly margin = { top: 20, right: 155, bottom: 40, left: 125 };
     private readonly fontSize = 12;
 
     private readonly statusOrder = [
@@ -32,7 +32,6 @@ export class StackedStatusGraph extends SeriesGraph {
 
         const svg = this.container
             .append("svg")
-            .style("height", `${this.height}px`)
             .attr("width", this.width)
             .attr("height", this.height);
         const graph = svg
@@ -54,7 +53,7 @@ export class StackedStatusGraph extends SeriesGraph {
         yAxis
             .selectAll(".tick text")
             // format and break up exercise titles
-            .call(this.formatTitle, this.margin.left-yAxisPadding, this.exMap);
+            .call(this.formatTitle, this.margin.left - yAxisPadding, this.exMap);
 
 
         // Show the X scale

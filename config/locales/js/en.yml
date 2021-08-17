@@ -64,6 +64,14 @@ en:
     stacked_desc: This graph shows the distribution of submissions statuses.
     timeseries_desc: This graph shows on which days the students submitted the most solutions.
     ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.
+    status:
+      correct: correct
+      wrong: wrong
+      compilation_error: compilation error
+      runtime_error: runtime error
+      time_limit_exceeded: time limit exceeded
+      memory_limit_exceeded: memory limit exceeded
+      output_limit_exceeded: output limit exceeded
     months:
       long:
         jan: January

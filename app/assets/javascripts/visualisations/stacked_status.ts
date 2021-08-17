@@ -80,8 +80,13 @@ export class StackedStatusGraph extends SeriesGraph {
         let pos = 0;
         this.statusOrder.forEach(status => {
             statePosition.push({ status: status, pos: pos });
-            // rect size (15) + 5 padding + 20 inter-group padding + text length
-            pos += 40 + this.fontSize/2*status.length;
+            const translatedStatus = I18n.t(`js.status.${status.replaceAll(" ", "_")}`);
+
+            pos += 15 + // rect size
+                5 + // padding
+                5 + // inter-group padding
+                (translatedStatus === "wrong" ? 5 : 0) + // extra spacing for wrong
+                this.fontSize / 2 * translatedStatus.length;
         });
         // draw legend
         const legend = svg
@@ -112,7 +117,7 @@ export class StackedStatusGraph extends SeriesGraph {
             .attr("x", 20)
             .attr("y", 12)
             .attr("text-anchor", "start")
-            .text(s => s.status)
+            .text(s => I18n.t(`js.status.${s.status.replaceAll(" ", "_")}`))
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
 
@@ -131,7 +136,7 @@ export class StackedStatusGraph extends SeriesGraph {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`${d.status}<br> ${
+                tooltip.html(`${I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`)}<br> ${
                     d3.format(".2%")((d.count) / this.maxSum[d.exercise_id])
                 } (${d.count}/${this.maxSum[d.exercise_id]})`);
             })

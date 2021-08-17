@@ -45,7 +45,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected override draw(): void {
-        this.height = 75 * this.exOrder.length;
+        this.height = 300;
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
@@ -53,7 +53,6 @@ export class CTimeseriesGraph extends SeriesGraph {
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
         this.svg = d3.select(this.selector)
-            .style("height", `${this.height}px`)
             .append("svg")
             .attr("width", this.width)
             .attr("height", this.height);

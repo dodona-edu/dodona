@@ -56,6 +56,7 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
+    /*
     Strip.show(content.images, {
         side: "top",
         onShow: function () {
@@ -64,6 +65,10 @@ function showLightbox(content) {
             window.MathJax.typeset([".strp-caption"]);
         }
     }, content.index);
+    */
+    console.log(content);
+    var lightbox = SimpleLightbox.open(content);
+    lightbox.show();
 
     // Transfer focus back to the document body to allow the lightbox to be closed.
     // https://github.com/dodona-edu/dodona/issues/1759.
@@ -81,12 +86,12 @@ function initLightboxes() {
     const images = [];
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-        const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        const imageObject = {
-            url: imagesrc,
-            caption: altText,
-        };
-        images.push(imageObject);
+        //const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
+        //const imageObject = {
+        //    url: imagesrc,
+        //    caption: altText,
+        //};
+        images.push(imagesrc);
 
         $(this).data("image_index", index++);
     });
@@ -96,8 +101,7 @@ function initLightboxes() {
         window.parentIFrame.sendMessage({
             type: "lightbox",
             content: {
-                images: images,
-                index: index,
+                items: images,
             }
         });
         return false;
@@ -154,7 +158,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             enableSubmissionTableLinks();
             swapActionButtons();
         }
-        initStrip();
+        initSimpleLightbox();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {

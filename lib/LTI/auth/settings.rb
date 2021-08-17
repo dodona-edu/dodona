@@ -16,7 +16,7 @@ module LTI
             prompt: :none,
             response_mode: :form_post,
             response_type: :id_token,
-            scope: [:openid]
+            scope: [:openid, :profile]
         }
       end
 

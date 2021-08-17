@@ -49,7 +49,7 @@ function initSubmissionShow(parentClass, mediaPath, token) {
 
             $(".tab-link-marker").removeClass("tab-link-marker");
             $(".feedback-table .nav-tabs > li a").filter(function () {
-                return $(this).attr("href").indexOf(tab) > 0;
+                return $(this).attr("href").indexOf(`#tab-${tab}`) === 0;
             }).tab("show");
             if (element !== undefined) {
                 $("#element").addClass("tab-link-marker");

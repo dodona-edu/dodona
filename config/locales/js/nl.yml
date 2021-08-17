@@ -53,8 +53,9 @@ nl:
     with: met
     submission: oplossing
     submissions: oplossingen
+    attempts: pogingen
     total: totaal
-    mean: gemiddelde
+    mean: gemiddeld aantal
     violin_title: Aantal oplossingen per gebruiker
     stacked_title: Verdeling van de oplossingsstatus
     timeseries_title: Ingediende oplossingen over tijd

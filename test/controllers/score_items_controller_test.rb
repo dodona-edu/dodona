@@ -38,19 +38,31 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'should add score items to all if course administrator' do
     [
       [@staff_member, :ok],
+      [@staff_member, :ok, "true"],
       [create(:student), :no],
       [create(:staff), :no],
       [create(:zeus), :ok],
       [nil, :no]
-    ].each do |user, expected|
+    ].each do |user, expected, edit|
       sign_in user if user.present?
-      post add_all_evaluation_score_items_path(@evaluation), params: {
-        score_item: {
-          name: 'Test',
-          description: 'Test',
-          maximum: '20.0'
+      if edit.present?
+        post add_all_evaluation_score_items_path(@evaluation), params: {
+          edit: edit,
+          score_item: {
+            name: 'Test',
+            description: 'Test',
+            maximum: '20.0'
+          }
         }
-      }
+      else
+        post add_all_evaluation_score_items_path(@evaluation), params: {
+          score_item: {
+            name: 'Test',
+            description: 'Test',
+            maximum: '20.0'
+          }
+        }
+      end
       assert_response :redirect
       @evaluation.evaluation_exercises.reload
       @evaluation.evaluation_exercises.each do |e|

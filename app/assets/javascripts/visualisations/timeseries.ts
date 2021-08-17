@@ -5,7 +5,7 @@ import { RawData, SeriesGraph } from "visualisations/series_graph";
 
 export class TimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/timeseries?series_id=";
-    private readonly margin = { top: 20, right: 40, bottom: 20, left: 125 };
+    private readonly margin = { top: 20, right: 40, bottom: 40, left: 125 };
     private readonly fontSize = 12;
     private readonly yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
@@ -50,7 +50,6 @@ export class TimeseriesGraph extends SeriesGraph {
         const highColor = darkMode ? "#039BE5" : "#0D47A1"; // a lot of data in cell
 
         this.svg = this.container
-            .style("height", `${this.height}px`)
             .append("svg")
             .attr("height", this.height)
             .attr("width", this.width);
@@ -78,13 +77,13 @@ export class TimeseriesGraph extends SeriesGraph {
         // x scale
         this.x = d3.scaleTime()
             .domain([this.minDate, end])
-            .range([0, innerWidth]);
+            .range([5, innerWidth]);
 
 
         // init axes
-        const yAxis = this.graph.append("g").call(d3.axisLeft(this.y).tickSize(0))
-            .attr("transform", `translate(-${this.yAxisPadding}, -${this.y.bandwidth()/2})`);
-
+        const yAxis = this.graph.append("g")
+            .call(d3.axisLeft(this.y).tickSize(0))
+            .attr("transform", `translate(-${this.yAxisPadding}, 0)`);
         yAxis
             .select(".domain").remove();
         yAxis
@@ -93,7 +92,7 @@ export class TimeseriesGraph extends SeriesGraph {
 
         // add x-axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${innerHeight-this.y.bandwidth()/2})`)
+            .attr("transform", `translate(0, ${innerHeight})`)
             .call(
                 d3.axisBottom(this.x)
                     .ticks(15, I18n.t("date.formats.weekday_short"))
@@ -107,7 +106,9 @@ export class TimeseriesGraph extends SeriesGraph {
             .style("z-index", 5);
 
         // make sure cell size isn't bigger than bandwidth
-        const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
+        // this is commented for now awaiting more data
+        //const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
+        const rectSize = this.y.bandwidth();
         // add cells
         this.graph.selectAll(".rectGroup")
             .data(this.data)
@@ -127,7 +128,7 @@ export class TimeseriesGraph extends SeriesGraph {
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
                     .attr("x", d => this.x(d.date)-rectSize/2)
-                    .attr("y", this.y(ex_id)-rectSize/2)
+                    .attr("y", this.y(ex_id))
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())

@@ -82,7 +82,7 @@ export class ViolinGraph extends SeriesGraph {
             .domain([min, max])
             .range([5, this.innerWidth]);
         graph.append("g")
-            .attr("transform", "translate(0," + this.innerHeight + ")")
+            .attr("transform", `translate(0, ${this.innerHeight})`)
             .call(d3.axisBottom(this.x).ticks(xTicks))
             .select(".domain").remove();
 

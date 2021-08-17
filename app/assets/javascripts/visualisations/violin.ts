@@ -124,7 +124,7 @@ export class ViolinGraph extends SeriesGraph {
             );
 
         // average dot
-        graph
+        const dots = graph
             .selectAll("avgDot")
             .data(this.data)
             .enter()
@@ -133,10 +133,12 @@ export class ViolinGraph extends SeriesGraph {
             .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
             .attr("cx", d => this.x(d.average))
             .attr("r", 4)
-            .attr("fill", "currentColor")
-            .attr("pointer-events", "none")
-            .transition().duration(500)
+            .attr("fill", "currentColor");
+        dots.transition()
+            .duration(500)
             .style("opacity", 1);
+        dots.append("title")
+            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
 
         // Additional metrics
         const metrics = graph.append("g")

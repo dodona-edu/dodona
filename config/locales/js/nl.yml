@@ -54,7 +54,7 @@ nl:
     submission: oplossing
     submissions: oplossingen
     attempts: pogingen
-    total: totaal
+    total: totaal aantal
     mean: gemiddeld aantal
     violin_title: Aantal oplossingen per gebruiker
     stacked_title: Verdeling van de oplossingsstatus

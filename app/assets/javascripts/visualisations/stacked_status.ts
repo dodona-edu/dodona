@@ -179,36 +179,27 @@ export class StackedStatusGraph extends SeriesGraph {
         const metrics = graph.append("g")
             .attr("transform", `translate(${innerWidth+10}, 0)`);
 
-        // metrics border
-        metrics.append("rect")
-            .attr("width", this.margin.right - 20)
-            .attr("height", innerHeight)
-            .attr("class", "metric-container")
-            .attr("rx", 5)
-            .attr("ry", 5)
-            .style("fill", "none")
-            .style("stroke-width", 2);
-
         // metrics data
-        for (const ex of this.data) {
+        for (const [ex, sum] of Object.entries(this.maxSum)) {
             metrics.append("text")
                 .attr("x", (this.margin.right - 20) / 2)
-                .attr("y", y(ex.exercise_id) + y.bandwidth()/2)
-                .text(this.maxSum[ex.exercise_id])
+                .attr("y", y(ex) + y.bandwidth() / 2)
+                .text(sum)
                 .attr("text-anchor", "middle")
+                .attr("dominant-baseline", "central")
                 .attr("fill", "currentColor")
-                .style("font-size", "14px");
-
-            metrics.append("text")
-                .attr("x", (this.margin.right - 20) / 2)
-                .attr("y", y(ex.exercise_id) + y.bandwidth())
-                .text(
-                    `${I18n.t("js.total")} ${I18n.t("js.submissions")}`
-                )
-                .attr("text-anchor", "middle")
-                .attr("fill", "currentColor")
-                .style("font-size", `${this.fontSize}px`);
+                .style("font-size", "18px");
         }
+
+        metrics.append("text")
+            .attr("x", (this.margin.right - 20) / 2)
+            .attr("y", 10)
+            .text(
+                `${I18n.t("js.total")} ${I18n.t("js.submissions")}`
+            )
+            .attr("text-anchor", "middle")
+            .attr("fill", "currentColor")
+            .style("font-size", `${this.fontSize}px`);
     }
 
     /**

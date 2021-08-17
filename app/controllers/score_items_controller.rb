@@ -69,12 +69,8 @@ class ScoreItemsController < ApplicationController
         new_score_item.save
       end
     end
-
-    if params[:edit]
-      redirect_to evaluation_score_items_path(@evaluation)
-    else
-      redirect_to new_evaluation_score_item_path(@evaluation)
-    end
+    
+    redirect_back fallback_location: new_evaluation_score_item_path(@evaluation)
   end
 
   def destroy

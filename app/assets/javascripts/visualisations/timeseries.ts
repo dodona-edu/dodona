@@ -107,7 +107,7 @@ export class TimeseriesGraph extends SeriesGraph {
 
         // make sure cell size isn't bigger than bandwidth
         // this is commented for now awaiting more data
-        //const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
+        // const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
         const rectSize = this.y.bandwidth();
         // add cells
         this.graph.selectAll(".rectGroup")

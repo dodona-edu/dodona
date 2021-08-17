@@ -38,7 +38,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'should add score items to all if course administrator' do
     [
       [@staff_member, :ok],
-      [@staff_member, :ok, "true"],
+      [@staff_member, :ok, 'true'],
       [create(:student), :no],
       [create(:staff), :no],
       [create(:zeus), :ok],

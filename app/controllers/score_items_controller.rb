@@ -69,7 +69,7 @@ class ScoreItemsController < ApplicationController
         new_score_item.save
       end
     end
-    
+
     redirect_back fallback_location: new_evaluation_score_item_path(@evaluation)
   end
 

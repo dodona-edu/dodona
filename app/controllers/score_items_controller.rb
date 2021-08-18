@@ -70,7 +70,7 @@ class ScoreItemsController < ApplicationController
       end
     end
 
-    redirect_to new_evaluation_score_item_path(@evaluation)
+    redirect_back fallback_location: new_evaluation_score_item_path(@evaluation)
   end
 
   def destroy

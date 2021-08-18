@@ -4,12 +4,13 @@ import * as d3 from "d3";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
-    data: {ex_id: number, ex_data: unknown[]}[],
+    data: { ex_id: number, ex_data: unknown[] }[],
     exercises: [number, string][],
     students?: number
 }
 
 export abstract class SeriesGraph {
+    // must be defined inside a class for I18n to work
     private d3Locale = {
         "dateTime": I18n.t("time.formats.default"),
         "date": I18n.t("date.formats.short"),
@@ -19,23 +20,30 @@ export abstract class SeriesGraph {
         "shortDays": I18n.t("date.abbr_day_names"),
         "months": I18n.t("date.month_names").slice(1),
         "shortMonths": I18n.t("date.abbr_month_names").slice(1)
-    }; // when defined as constant variable (outside class) it seems to always default to en
+    };
+
+    // settings
     protected readonly baseUrl!: string;
-    private seriesId: string;
+    protected readonly margin = { top: 20, right: 155, bottom: 40, left: 125 };
+    protected readonly fontSize = 12;
+    protected readonly darkMode: boolean;
+    protected readonly width: number;
+    protected height: number;
+    protected innerWidth: number;
+    protected innerHeight: number;
 
-    protected selector = "";
-    protected container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>; // parent div
-    protected svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>; // the svg
-    // group for graph itself
+    // graph stuff
+    protected readonly selector: string;
+    protected readonly container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
+    protected svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
     protected graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
-    protected width = 0; // calculated once
-    protected height = 0; // can change depending on number of exercises
 
+    // data
+    private seriesId: string;
     protected exOrder: string[] = []; // array of exId's (in correct order)
     protected exMap: Record<string, string> = {}; // map from exId -> exName
 
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-
 
     /**
      * Initializes the container for the graph +
@@ -51,6 +59,7 @@ export abstract class SeriesGraph {
         this.container = d3.select(this.selector);
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
+        this.darkMode = window.dodona.darkMode;
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
@@ -64,8 +73,23 @@ export abstract class SeriesGraph {
     }
 
     // abstract functions
-    protected abstract draw(): void;
     protected abstract processData(raw: RawData): void;
+
+
+    protected draw(): void {
+        this.innerWidth = this.width - this.margin.left - this.margin.right;
+        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+
+        this.svg = this.container
+            .append("svg")
+            .attr("width", this.width)
+            .attr("height", this.height);
+
+        this.graph = this.svg
+            .append("g")
+            .attr("transform",
+                `translate(${this.margin.left}, ${this.margin.top})`);
+    }
 
     /**
      * Breaks up y-axis labels into multiple lines when they get too long
@@ -109,7 +133,7 @@ export abstract class SeriesGraph {
                         .attr("x", -0)
                         .attr("y", y)
                         // new line starts a little lower than last one
-                        .attr("dy", `${++lineNumber*lineHeight+dy}em`)
+                        .attr("dy", `${++lineNumber * lineHeight + dy}em`)
                         .text(word)
                         .attr("text-anchor", "end");
                 }
@@ -118,7 +142,7 @@ export abstract class SeriesGraph {
             const tSpans = text.selectAll("tspan");
             const breaks = tSpans.size(); // amount of times the name has been split
             // final y position adjustment so everything is centered
-            tSpans.attr("y", -fontSize*(breaks-1)/2);
+            tSpans.attr("y", -fontSize * (breaks - 1) / 2);
         });
     }
 
@@ -174,7 +198,7 @@ export abstract class SeriesGraph {
      * @param {boolean} doDraw When false, the graph will not be drawn
      * (only data fetching and processing)
      */
-    async init(doDraw=true): Promise<void> {
+    async init(doDraw = true): Promise<void> {
         // add loading placeholder
         const tempHeight = this.container.node().getBoundingClientRect().height;
         this.container.html("");

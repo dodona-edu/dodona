@@ -1,21 +1,18 @@
 // eslint-disable-next-line
 // @ts-nocheck
 import * as d3 from "d3";
-import { RawData, SeriesGraph } from "visualisations/series_graph";
+import { RawData } from "./series_graph";
+import { SeriesExerciseGraph } from "./series_exercise_graph";
 
-export class TimeseriesGraph extends SeriesGraph {
+export class TimeseriesGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/timeseries?series_id=";
-    private readonly margin = { top: 20, right: 40, bottom: 40, left: 125 };
-    private readonly fontSize = 12;
-    private readonly yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
-    private readonly statusOrder = [
-        "correct", "wrong", "compilation error", "runtime error",
-        "time limit exceeded", "memory limit exceeded", "output limit exceeded",
-    ];
+    constructor(seriesId: string, containerId: string, data?: RawData) {
+        super(seriesId, containerId, data);
+        this.margin.right = 40;
+    }
 
     // axes
-    private y: d3.ScaleBand<string>
     private x: d3.ScaleTime<number, number>
     private color: d3.ScaleSequential<string>;
 
@@ -26,10 +23,8 @@ export class TimeseriesGraph extends SeriesGraph {
     private maxDate: Date;
 
     private data: {
-        // eslint-disable-next-line camelcase
-        ex_id: string,
-        // eslint-disable-next-line camelcase
-        ex_data:{date: Date; sum: number; [index: string]: number | Date}[]
+        "ex_id": string,
+        "ex_data": { date: Date; sum: number;[index: string]: number | Date }[]
     }[] = [];
 
     // svg elements
@@ -40,59 +35,28 @@ export class TimeseriesGraph extends SeriesGraph {
     * No more data manipulation is done in this function
     */
     protected override draw(): void {
-        this.height = 75 * this.exOrder.length;
-        const innerHeight = this.height - this.margin.top - this.margin.bottom;
-        const innerWidth = this.width - this.margin.left - this.margin.right;
+        super.draw();
 
-        const darkMode = window.dodona.darkMode;
-        const emptyColor = darkMode ? "#37474F" : "white"; // no data in cell
-        const lowColor = darkMode ? "#01579B" : "#E3F2FD"; // almost no data in cell
-        const highColor = darkMode ? "#039BE5" : "#0D47A1"; // a lot of data in cell
-
-        this.svg = this.container
-            .append("svg")
-            .attr("height", this.height)
-            .attr("width", this.width);
-
-        // position graph
-        this.graph = this.svg
-            .append("g")
-            .attr("transform",
-                `translate(${this.margin.left}, ${this.margin.top})`);
-
-        // init scales
-        // Y scale for exercises
-        this.y = d3.scaleBand()
-            .range([innerHeight, 0])
-            .domain(this.exOrder)
-            .padding(.5);
-
-        // Color scale
-        this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
-            .domain([0, this.maxStack]);
+        // no data in cell
+        const emptyColor = this.darkMode ? "#37474F" : "white";
+        // almost no data in cell
+        const lowColor = this.darkMode ? "#01579B" : "#E3F2FD";
+        // a lot of data in cell
+        const highColor = this.darkMode ? "#039BE5" : "#0D47A1";
 
         const end = new Date(this.maxDate);
         end.setHours(0, 0, 0, 0); // bin and domain seem to handle end differently
 
-        // x scale
+        // Scales
+        this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
+            .domain([0, this.maxStack]);
         this.x = d3.scaleTime()
             .domain([this.minDate, end])
-            .range([5, innerWidth]);
+            .range([5, this.innerWidth]);
 
-
-        // init axes
-        const yAxis = this.graph.append("g")
-            .call(d3.axisLeft(this.y).tickSize(0))
-            .attr("transform", `translate(-${this.yAxisPadding}, 0)`);
-        yAxis
-            .select(".domain").remove();
-        yAxis
-            .selectAll(".tick text")
-            .call(this.formatTitle, this.margin.left-this.yAxisPadding, this.exMap);
-
-        // add x-axis
+        // Axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${innerHeight})`)
+            .attr("transform", `translate(0, ${this.innerHeight})`)
             .call(
                 d3.axisBottom(this.x)
                     .ticks(15, I18n.t("date.formats.weekday_short"))
@@ -107,27 +71,23 @@ export class TimeseriesGraph extends SeriesGraph {
 
         // make sure cell size isn't bigger than bandwidth
         // this is commented for now awaiting more data
-        // const rectSize = Math.min(this.y.bandwidth()*1.5, innerWidth / this.dateRange - 5);
+        // const rectSize = Math.min(this.y.bandwidth()*1.5, this.innerWidth / this.dateRange - 5);
         const rectSize = this.y.bandwidth();
         // add cells
         this.graph.selectAll(".rectGroup")
             .data(this.data)
-            .enter()
-            .append("g")
+            .join("g")
             .attr("class", "rectGroup")
-
-            // eslint-disable-next-line camelcase
             .each(({ ex_data, ex_id }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
                     .data(ex_data, d => d["date"].getTime())
-                    .enter()
-                    .append("rect")
+                    .join("rect")
                     .attr("class", "day-cell")
                     .classed("empty", d => d.sum === 0)
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date)-rectSize/2)
+                    .attr("x", d => this.x(d.date) - rectSize / 2)
                     .attr("y", this.y(ex_id))
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
@@ -135,7 +95,6 @@ export class TimeseriesGraph extends SeriesGraph {
                     .transition().duration(500)
                     .attr("width", rectSize)
                     .attr("height", rectSize)
-                    .transition().duration(500)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
             });
     }
@@ -147,7 +106,7 @@ export class TimeseriesGraph extends SeriesGraph {
      */
     protected override processData({ data, exercises }: RawData): void {
         // the type of one datum in the ex_data array
-        type Datum = {date: (Date | string); status: string; count: number};
+        type Datum = { date: (Date | string); status: string; count: number };
 
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
 
@@ -202,51 +161,42 @@ export class TimeseriesGraph extends SeriesGraph {
         });
     }
 
-    // tooptip functions
-
     /**
-     * Function when mouse is hovered over a rectangle, makes the tooltip appear
-     * and sets the tooltip message
+     * Shows date and number of submissions on mouse over
+     *
      * @param {Object} d datum for a single rectangle
      */
     private tooltipHover(
         d: {
-        [index: string]: number | Date;
-        date: Date;
-        sum: number;
-    }): void {
+            [index: string]: number | Date;
+            date: Date;
+            sum: number;
+        }): void {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        let message = `${this.longDateFormat(d.date)}<br>
-        ${I18n.t("js.submissions")} :<br>${d.sum} ${I18n.t("js.total")}`;
+        let message = `${this.longDateFormat(d.date)}<br>${d.sum} ${I18n.t("js.submissions")}`;
         this.statusOrder.forEach(s => {
             if (d[s]) {
-                message += `<br>${d[s]} ${s}`;
+                message += `<br>${d[s]} ${I18n.t(`js.status.${s.replaceAll(" ", "_")}`)}`;
             }
         });
         this.tooltip.html(message);
     }
 
     /**
-     * Function when mouse is moved over rectangle, sets the tooltip position
+     * Update tooltip position on mouse move
+     *
      * @param {*} e event parameter, used to determine mouse position
      */
     private tooltipMove(e: unknown): void {
-        const bbox = this.tooltip.node().getBoundingClientRect();
         this.tooltip
-            .style(
-                "left",
-                `${d3.pointer(e, this.svg.node())[0]-bbox.width * 1.1}px`
-            )
-            .style(
-                "top",
-                `${d3.pointer(e, this.svg.node())[1]-bbox.height*1.1}px`
-            );
+            .style("left", `${d3.pointer(e, this.svg.node())[0] + 15}px`)
+            .style("top", `${d3.pointer(e, this.svg.node())[1]}px`);
     }
 
     /**
-     * Function when mouse is moved out of a rectangle, makes tooltip disappear.
+     * Hide tooltip on mouse out
      */
     private tooltipOut(): void {
         this.tooltip.transition()

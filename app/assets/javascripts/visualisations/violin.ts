@@ -2,15 +2,11 @@
 // @ts-nocheck
 
 import * as d3 from "d3";
-import { SeriesGraph, RawData } from "visualisations/series_graph";
+import { RawData } from "./series_graph";
+import { SeriesExerciseGraph } from "./series_exercise_graph";
 
-
-export class ViolinGraph extends SeriesGraph {
+export class ViolinGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/violin?series_id=";
-    private readonly margin = { top: 20, right: 155, bottom: 40, left: 125 };
-    private innerWidth = 0;
-    private innerHeight = 0;
-    private fontSize = 12;
 
     // scales
     private x: d3.ScaleLinear<number, number>;
@@ -35,59 +31,29 @@ export class ViolinGraph extends SeriesGraph {
     private maxFreq = 0; // largest y-value
 
     /**
-    * draws the graph's svg (and other) elements on the screen
+    * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
     */
     protected override draw(): void {
-        this.height = 75 * this.exOrder.length;
-        this.innerWidth = this.width - this.margin.left - this.margin.right;
-        this.innerHeight = this.height - this.margin.top - this.margin.bottom;
+        super.draw();
 
         const min = d3.min(this.data, d => d3.min(d.counts));
         const max = d3.max(this.data, d => d3.max(d.counts));
-        const xTicks = 10;
-        const yAxisPadding = 5; // padding between y axis (labels) and the actual graph
 
-        const svg = this.container
-            .append("svg")
-            .attr("width", this.width)
-            .attr("height", this.height);
-        const graph = svg
-            .append("g")
-            .attr("transform",
-                `translate(${this.margin.left}, ${this.margin.top})`);
-
-        // Show the Y scale for the exercises (Big Y scale)
-        const y = d3.scaleBand()
-            .range([this.innerHeight, 0])
-            .domain(this.exOrder)
-            .padding(.5);
-
-        const yAxis = graph.append("g")
-            .call(d3.axisLeft(y).tickSize(0))
-            .attr("transform", `translate(-${yAxisPadding}, 0)`);
-        yAxis
-            .select(".domain").remove();
-        yAxis
-            .selectAll(".tick text")
-            .call(this.formatTitle, this.margin.left - yAxisPadding, this.exMap);
-
-        // y scale per exercise
+        // Y scale per exercise
         const yBin = d3.scaleLinear()
             .domain([0, this.maxFreq])
-            .range([0, y.bandwidth()]);
+            .range([0, this.y.bandwidth()]);
 
-        // Show the X scale
+        // X scale and axis
         this.x = d3.scaleLinear()
             .domain([min, max])
             .range([5, this.innerWidth]);
-        graph.append("g")
+        this.graph.append("g")
             .attr("transform", `translate(0, ${this.innerHeight})`)
-            .call(d3.axisBottom(this.x).ticks(xTicks))
+            .call(d3.axisBottom(this.x))
             .select(".domain").remove();
-
-        // Add X axis label:
-        graph.append("text")
+        this.graph.append("text")
             .attr("text-anchor", "middle")
             .attr("x", this.innerWidth / 2)
             .attr("y", this.innerHeight + 30)
@@ -95,13 +61,12 @@ export class ViolinGraph extends SeriesGraph {
             .attr("class", "violin-label")
             .attr("fill", "currentColor");
 
-        // add the areas
-        graph
-            .selectAll("violins")
+        // Violins
+        this.graph
+            .selectAll(".violin-paths")
             .data(this.data)
-            .enter()
-            .append("g")
-            .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+            .join("g")
+            .attr("transform", d => `translate(0, ${this.y(d.ex_id) + this.y.bandwidth() / 2})`)
             .attr("pointer-events", "none")
             .append("path")
             .datum(ex => {
@@ -109,27 +74,26 @@ export class ViolinGraph extends SeriesGraph {
             })
             .attr("class", "violin-path")
             .attr("d", d3.area()
-                .x((_, i) => this.x(i+1))
+                .x((_, i) => this.x(i + 1))
                 .y0(0)
                 .y1(0)
                 .curve(d3.curveCatmullRom)
             )
             .transition().duration(500)
             .attr("d", d3.area()
-                .x((_, i) => this.x(i+1))
+                .x((_, i) => this.x(i + 1))
                 .y0(d => -yBin(d.length))
                 .y1(d => yBin(d.length))
                 .curve(d3.curveCatmullRom)
             );
 
-        // average dot
-        const dots = graph
+        // Average dots
+        const dots = this.graph
             .selectAll("avgDot")
             .data(this.data)
-            .enter()
-            .append("circle")
+            .join("circle")
             .style("opacity", 0)
-            .attr("cy", d => y(d.ex_id) + y.bandwidth() / 2)
+            .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
             .attr("cx", d => this.x(d.average))
             .attr("r", 4)
             .attr("fill", "currentColor");
@@ -140,62 +104,56 @@ export class ViolinGraph extends SeriesGraph {
             .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
 
         // Additional metrics
-        const metrics = graph.append("g")
-            .attr("transform", `translate(${this.innerWidth+15}, 0)`);
-
+        const metrics = this.graph.append("g")
+            .attr("transform", `translate(${this.innerWidth + 15}, 0)`);
         for (const ex of this.data) {
             metrics.append("text")
                 .attr("x", (this.margin.right - 20) / 2)
-                .attr("y", y(ex.ex_id) + y.bandwidth()/2)
+                .attr("y", this.y(ex.ex_id) + this.y.bandwidth() / 2)
                 .text(d3.format(".1f")(ex.average))
                 .attr("text-anchor", "middle")
                 .attr("dominant-baseline", "central")
                 .attr("fill", "currentColor")
                 .style("font-size", "18px");
         }
-
         metrics.append("text")
             .attr("x", (this.margin.right - 20) / 2)
             .attr("y", 10)
-            .text(
-                `${I18n.t("js.mean")} ${I18n.t("js.attempts")}`
-            )
+            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`)
             .attr("text-anchor", "middle")
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
 
-        // initialize tooltip
-        this.tooltipLine = graph.append("line")
+        // Initialize tooltip
+        this.tooltipLine = this.graph.append("line")
             .attr("y1", 0)
             .attr("y2", this.innerHeight)
-            .attr("pointer-events", "none")
             .attr("opacity", 0)
             .attr("stroke", "currentColor")
-            .style("width", 40);
-        this.tooltipLabel = graph.append("text")
-            .attr("opacity", 0)
+            .attr("pointer-events", "none");
+        this.tooltipLabel = this.graph.append("text")
             .attr("y", 12)
+            .attr("opacity", 0)
             .attr("text-anchor", "start")
             .attr("fill", "currentColor")
             .attr("font-size", `${this.fontSize}px`)
             .attr("font-weight", "bold")
             .attr("class", "d3-tooltip-label");
-        this.tooltipLabels = graph.selectAll("ttlabels")
+        this.tooltipLabels = this.graph.selectAll("ttlabels")
             .data(this.data, d => d["ex_id"])
             .join("text")
             .attr("text-anchor", "end")
             .attr("fill", "currentColor")
-            .attr("transform", d => `translate(0, ${y(d.ex_id) + y.bandwidth() / 2})`)
+            .attr("transform", d => `translate(0, ${this.y(d.ex_id) + this.y.bandwidth() / 2})`)
             .attr("y", 4)
             .attr("opacity", 0)
             .attr("font-size", `${this.fontSize}px`)
             .attr("class", "d3-tooltip-label");
 
-        svg
-            .on("mousemove", e => this.svgMouseMove(e, graph))
+        this.svg
+            .on("mousemove", e => this.svgMouseMove(e, this.graph))
             .on("mouseout", () => this.svgMouseOut());
     }
-
 
     /**
      * Transforms the data from the server into a form usable by the graph.
@@ -209,7 +167,7 @@ export class ViolinGraph extends SeriesGraph {
         this.data = data.map(({ ex_id, ex_data }) => ({
             "ex_id": String(ex_id),
             // sort so median is calculated correctly
-            "counts": ex_data.sort((a: number, b: number) => a-b),
+            "counts": ex_data.sort((a: number, b: number) => a - b),
             "freq": [],
             "average": 0
         })) as {
@@ -225,7 +183,7 @@ export class ViolinGraph extends SeriesGraph {
         // bin each exercise per frequency
         this.data.forEach(ex => {
             // bin per amount of required submissions
-            ex.freq = d3.bin().thresholds(d3.range(1, this.maxCount+1))
+            ex.freq = d3.bin().thresholds(d3.range(1, this.maxCount + 1))
                 .domain([1, this.maxCount])(ex.counts);
 
             // largest x-value
@@ -257,7 +215,7 @@ export class ViolinGraph extends SeriesGraph {
             // check if label doesn't go out of bounds
             const labelMsg = `${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
             const switchSides = this.x(i) +
-                this.fontSize/2*labelMsg.length +
+                this.fontSize / 2 * labelMsg.length +
                 5 > this.innerWidth;
             this.tooltipLabel
                 .attr("opacity", 1)
@@ -269,7 +227,7 @@ export class ViolinGraph extends SeriesGraph {
             this.tooltipLabels
                 .attr("opacity", 1)
                 .text(d => {
-                    const freq = d["freq"][Math.max(0, i-1)].length;
+                    const freq = d["freq"][Math.max(0, i - 1)].length;
                     // check if plural is needed
                     return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
@@ -281,16 +239,12 @@ export class ViolinGraph extends SeriesGraph {
     }
 
     /**
-     * Function when mouse is moved out of the svg
-     * makes everything involving the tooltip disappear
+     * Hides tooltip on mouse out
      */
     private svgMouseOut(): void {
         this.tooltipIndex = -1;
-        this.tooltipLine
-            .attr("opacity", 0);
-        this.tooltipLabel
-            .attr("opacity", 0);
-        this.tooltipLabels
-            .attr("opacity", 0);
+        this.tooltipLine.attr("opacity", 0);
+        this.tooltipLabel.attr("opacity", 0);
+        this.tooltipLabels.attr("opacity", 0);
     }
 }

@@ -87,12 +87,13 @@
       <% score = @score_map.fetch(score_item.id, Score.new(score_item: score_item, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">
-          <i class="mdi mdi-information-outline mdi-12" 
-             data-bs-toggle="tooltip" 
-             data-bs-placement="left" 
-             title="<%=  strip_tags markdown(score_item.description) %>">
-          </i>
-          <strong><%= score_item.name %></strong>
+          <% if score_item.description != '' %>
+            <div data-bs-toggle="tooltip" data-bs-placement="left" title="<%=  strip_tags markdown(score_item.description)  %>">
+              <strong><%= score_item.name %></strong>
+            </div>
+          <% else %>
+            <strong><%= score_item.name %></strong>
+          <% end %>
         </div>
       </div>
       <%= render 'feedbacks/score_actions', score: score, score_item: score_item, index: index %>

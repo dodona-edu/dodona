@@ -15,7 +15,7 @@ const delay = (function () {
 })();
 
 function updateURLParameter(_url, param, paramVal) {
-    const url = new URL(_url);
+    const url = new URL(_url, window.location.origin);
     if (paramVal) {
         url.searchParams.set(param, paramVal);
     } else {
@@ -26,7 +26,7 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = new Set(_paramVals); // remove duplicate items
-    const url = new URL(_url);
+    const url = new URL(_url, window.location.origin);
     url.searchParams.delete(param);
     paramVals.forEach(paramVal => {
         url.searchParams.append(param, paramVal);
@@ -35,12 +35,12 @@ function updateArrayURLParameter(_url, param, _paramVals) {
 }
 
 function getURLParameter(name, _url) {
-    const url = new URL(_url ?? window.location.href);
+    const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.get(name);
 }
 
 function getArrayURLParameter(name, _url) {
-    const url = new URL(_url ?? window.location.href);
+    const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.getAll(name);
 }
 

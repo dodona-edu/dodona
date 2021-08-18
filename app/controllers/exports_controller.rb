@@ -1,6 +1,6 @@
 class ExportsController < ApplicationController
   include SeriesHelper
-  
+
   before_action :set_user,
                 only: %i[new_series_export new_course_export create_series_export create_course_export]
 

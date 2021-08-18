@@ -56,17 +56,6 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
-    /*
-    Strip.show(content.images, {
-        side: "top",
-        onShow: function () {
-            // There might have been math in the image captions, so ask
-            // MathJax to search for new math (but only in the captions).
-            window.MathJax.typeset([".strp-caption"]);
-        }
-    }, content.index);
-    */
-
     const lightbox = SimpleLightbox.open(content);
     lightbox.show();
 
@@ -84,7 +73,7 @@ function onFrameMessage(event) {
 function initLightboxes() {
     let index = 0;
     const images = [];
-    const captions = []
+    const captions = [];
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();

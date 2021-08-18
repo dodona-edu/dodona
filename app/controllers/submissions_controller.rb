@@ -1,4 +1,6 @@
 class SubmissionsController < ApplicationController
+  include SeriesHelper
+
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge]
   before_action :ensure_trailing_slash, only: :show
@@ -41,7 +43,7 @@ class SubmissionsController < ApplicationController
                    [@user.full_name, user_path(@user)]
                  end
     elsif @series
-      @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, @series.hidden? ? series_path(@series) : course_path(@series.course, anchor: @series.anchor)]
+      @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, breadcrumb_series_path(@series, current_user)]
     elsif @course
       @crumbs << [@course.name, course_path(@course)]
     elsif @judge

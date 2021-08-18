@@ -1,4 +1,6 @@
 class ScoreItemsController < ApplicationController
+  include SeriesHelper
+
   before_action :set_score_item, only: %i[destroy update]
   before_action :set_evaluation
 
@@ -94,7 +96,7 @@ class ScoreItemsController < ApplicationController
 
     @crumbs = [
       [@evaluation.series.course.name, course_path(@evaluation.series.course)],
-      [@evaluation.series.name, series_path(@evaluation.series)],
+      [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.show.evaluation'), evaluation_path(@evaluation)]
     ]
   end

@@ -12,7 +12,7 @@ class EvaluationsController < ApplicationController
   def show
     redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
     @feedbacks = @evaluation.evaluation_sheet
-    @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, series_url(@evaluation.series)], [I18n.t('evaluations.show.evaluation'), '#']]
+    @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
   end
 
@@ -42,7 +42,7 @@ class EvaluationsController < ApplicationController
 
     @crumbs = [
       [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, series_url(@evaluation.series)],
+      [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
       [I18n.t('evaluations.edit.title'), '#']
     ]
@@ -55,7 +55,7 @@ class EvaluationsController < ApplicationController
     @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
     @crumbs = [
       [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, series_url(@evaluation.series)],
+      [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
       [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
       [I18n.t('evaluations.add_users.title'), '#']
     ]

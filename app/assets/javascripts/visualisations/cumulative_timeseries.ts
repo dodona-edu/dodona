@@ -32,6 +32,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     >;
 
     // data
+    // eslint-disable-next-line camelcase
     private data: { ex_id: string, ex_data: { bin: d3.Bin<Date, Date>, cSum: number }[] }[] = [];
     private maxSum: number; // largest y-value = either subscribed students or max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)

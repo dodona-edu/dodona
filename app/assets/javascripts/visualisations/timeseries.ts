@@ -78,6 +78,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .data(this.data)
             .join("g")
             .attr("class", "rectGroup")
+            // eslint-disable-next-line camelcase
             .each(({ ex_data, ex_id }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
                     .data(ex_data, d => d["date"].getTime())

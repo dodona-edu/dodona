@@ -1,4 +1,6 @@
 class ExportsController < ApplicationController
+  include SeriesHelper
+  
   before_action :set_user,
                 only: %i[new_series_export new_course_export create_series_export create_course_export]
 
@@ -13,7 +15,7 @@ class ExportsController < ApplicationController
     @series = Series.find(params[:id])
     authorize @series, :export?
     authorize @user, :export? if @user
-    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, series_path(@series)], [I18n.t('exports.download_submissions.title'), '#']]
+    @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, breadcrumb_series_path(@series, current_user)], [I18n.t('exports.download_submissions.title'), '#']]
     @data = { item: @series,
               users: ([@user] if @user),
               list: @series.exercises,

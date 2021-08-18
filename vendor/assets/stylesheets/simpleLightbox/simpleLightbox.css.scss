@@ -117,18 +117,13 @@
   .slbCaption {
     display: inline-block;
     max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
     word-wrap: normal;
     font-size: 1.4em;
     position: absolute;
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 0.71429em 0;
     color: #fff;
-    color: rgba(255, 255, 255, 0.7);
     text-align: center;
   }
   

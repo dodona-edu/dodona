@@ -1,4 +1,4 @@
-/* globals Bloodhound,Strip,ace,ga,initStrip */
+/* globals Bloodhound,ace,ga,SimpleLightbox,initSimpleLightbox */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 
@@ -66,8 +66,8 @@ function showLightbox(content) {
         }
     }, content.index);
     */
-    console.log(content);
-    var lightbox = SimpleLightbox.open(content);
+
+    const lightbox = SimpleLightbox.open(content);
     lightbox.show();
 
     // Transfer focus back to the document body to allow the lightbox to be closed.
@@ -82,16 +82,14 @@ function onFrameMessage(event) {
 }
 
 function initLightboxes() {
-    let index = 1;
+    let index = 0;
     const images = [];
+    const captions = []
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-        //const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        //const imageObject = {
-        //    url: imagesrc,
-        //    caption: altText,
-        //};
+        const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
         images.push(imagesrc);
+        captions.push(altText);
 
         $(this).data("image_index", index++);
     });
@@ -102,6 +100,8 @@ function initLightboxes() {
             type: "lightbox",
             content: {
                 items: images,
+                captions: captions,
+                startAt: index,
             }
         });
         return false;

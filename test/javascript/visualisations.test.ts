@@ -189,7 +189,7 @@ describe("General tests", () => {
 
     test("parseExercises should produce the correct data", () => {
         graph.parseExercises([["2", "test2"], ["3", "test3"], ["1", "test1"]], ["2", "1"]);
-        expect(graph.exOrder).toEqual(["1", "2"]); // should be in reverse order
+        expect(graph.exOrder).toEqual(["2", "1"]);
         expect(graph.exMap).toMatchObject({ "1": "test1", "2": "test2" });
     });
 

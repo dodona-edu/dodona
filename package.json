@@ -24,6 +24,7 @@
     "iframe-resizer": "^4.3.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
+    "simple-lightbox": "^2.1.0",
     "typeahead.js": "^0.11.1",
     "typescript": "^4.3.5"
   },

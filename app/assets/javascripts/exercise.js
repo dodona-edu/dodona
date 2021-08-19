@@ -1,4 +1,4 @@
-/* globals Bloodhound,ace,ga,SimpleLightbox,initSimpleLightbox */
+/* globals Bloodhound,ace,ga */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 
@@ -56,6 +56,11 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
+    var SimpleLightbox = require('simple-lightbox');
+    SimpleLightbox.defaults.nextBtnCaption = I18n.t("lightbox-buttons.next");
+    SimpleLightbox.defaults.prevBtnCaption = I18n.t("lightbox-buttons.previous");
+    SimpleLightbox.defaults.closeBtnCaption = I18n.t("lightbox-buttons.close");
+    SimpleLightbox.defaults.loadingCaption = I18n.t("lightbox-buttons.loading");
     const lightbox = SimpleLightbox.open(content);
     lightbox.show();
 
@@ -147,7 +152,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             enableSubmissionTableLinks();
             swapActionButtons();
         }
-        initSimpleLightbox();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {

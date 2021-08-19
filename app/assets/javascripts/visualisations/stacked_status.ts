@@ -83,7 +83,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`${I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`)}<br> ${d3.format(".1%")((d.count) / this.maxSum[d.exercise_id])} (${d.count}/${this.maxSum[d.exercise_id]})`);
+                tooltip.html(`<b>${I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`)}</b><br> ${d3.format(".1%")((d.count) / this.maxSum[d.exercise_id])} (${d.count}/${this.maxSum[d.exercise_id]})`);
             })
             .on("mousemove", e => {
                 tooltip

@@ -77,7 +77,6 @@ export abstract class SeriesGraph {
 
 
     protected draw(): void {
-        console.log(this.exOrder);
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 

@@ -176,7 +176,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        let message = `${this.longDateFormat(d.date)}<br>${d.sum} ${I18n.t("js.submissions")}`;
+        let message = `<b>${this.longDateFormat(d.date)}</b><br><b>${d.sum} ${I18n.t("js.submissions")}</b>`;
         this.statusOrder.forEach(s => {
             if (d[s]) {
                 message += `<br>${d[s]} ${I18n.t(`js.status.${s.replaceAll(" ", "_")}`)}`;

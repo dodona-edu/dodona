@@ -66,8 +66,11 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.y(0)})`)
             .call(d3.axisBottom(this.x)
-                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
-            );
+                .tickFormat(t => {
+                    if (t.getHours() === 0 && t.getMinutes() === 0)
+                        return d3.timeFormat(I18n.t("date.formats.weekday_short"))(t);
+                    return "";
+                }));
 
         // Color scale
         this.color = d3.scaleOrdinal()
@@ -124,7 +127,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         });
 
         let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
-        minDate = new Date(minDate);
+        minDate = d3.timeDay.offset(new Date(minDate), -1); // start 1 day earlier from 0
         maxDate = new Date(maxDate);
         minDate.setHours(0, 0, 0, 0); // set start to midnight
         maxDate.setHours(23, 59, 59, 99); // set end right before midnight

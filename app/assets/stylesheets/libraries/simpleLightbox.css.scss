@@ -1,0 +1,14 @@
+@import "../../../../node_modules/simple-lightbox/dist/simpleLightbox";
+
+.slbCaption {
+    display: inline-block;
+    max-width: 100%;
+    word-wrap: normal;
+    font-size: 1.3em;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    color: #fff;
+    text-align: center;
+  }

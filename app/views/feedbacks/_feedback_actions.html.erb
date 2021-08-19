@@ -87,8 +87,8 @@
       <% score = @score_map.fetch(score_item.id, Score.new(score_item: score_item, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">
-          <% if score_item.description != '' %>
-            <strong data-bs-toggle="tooltip" data-bs-placement="left" title="<%=  strip_tags markdown(score_item.description)  %>">
+          <% if score_item.description.present? %>
+            <strong data-bs-toggle="tooltip" data-bs-placement="left" title="<%= strip_tags markdown(score_item.description)  %>">
               <%= score_item.name %>
             </strong>
           <% else %>

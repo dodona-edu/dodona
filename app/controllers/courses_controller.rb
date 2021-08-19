@@ -390,7 +390,7 @@ class CoursesController < ApplicationController
       next unless serie.deadline
 
       cal.event do |e|
-        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z" # Set deadlines to their respective UTC time
+        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z" # Set deadline to its respective UTC time
         e.dtend = "#{(serie.deadline.to_time + 1.second).to_datetime.utc.strftime('%Y%m%dT%H%M%S')}Z" # value of dtend must be larger than value of dtstart
         e.summary = serie.name
         e.description = t('.serie_deadline', serie_name: serie.name, course_name: @course.name, serie_url: series_url(serie))
@@ -398,7 +398,7 @@ class CoursesController < ApplicationController
       end
     end
     cal.publish
-    send_data cal.to_ical, type: 'text/calendar', disposition: 'attachment', filename: "#{@course.name}_deadlines.ics"
+    render plain: cal.to_ical
   end
 
   private

@@ -93,7 +93,7 @@
                 </li>
               <% end %>
               <li>
-                <%= link_to ical_course_path(@course), class: "dropdown-item" do %>
+                <%= link_to ical_course_url(@course, protocol: :webcal, format: :ics), class: "dropdown-item" do %>
                   <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_deadlines") %>
                 <% end %>
               </li>

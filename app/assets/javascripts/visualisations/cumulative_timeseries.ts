@@ -66,11 +66,14 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.y(0)})`)
             .call(d3.axisBottom(this.x)
-                .tickFormat(t => {
-                    if (t.getHours() === 0 && t.getMinutes() === 0)
-                        return d3.timeFormat(I18n.t("date.formats.weekday_short"))(t);
-                    return "";
-                }));
+                .tickValues(this.dateArray.filter((e, i, a) => {
+                    if (a.length < 10) return true;
+                    if (i === 0 || i === a.length - 1) return true;
+                    if (i % Math.floor(a.length / 10) === 0) return true;
+                    return false;
+                }))
+                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
+            );
 
         // Color scale
         this.color = d3.scaleOrdinal()

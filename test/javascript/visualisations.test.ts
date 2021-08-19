@@ -168,9 +168,10 @@ describe("CTimeseries tests", () => {
         expect(cTimeseries.data).toHaveLength(1); // 1 exercise
         expect(cTimeseries.data[0]["ex_id"]).toBe("1");
         const datum = cTimeseries.data[0]["ex_data"];
-        expect(datum).toHaveLength(2);
-        expect(datum[0]["cSum"]).toBe(1); // one submissions on day 1
-        expect(datum[1]["cSum"]).toBe(4); // 3 subs on day 2 + sub on day 1
+        expect(datum).toHaveLength(3);
+        expect(datum[0]["cSum"]).toBe(0); // no submissions before on day 0
+        expect(datum[1]["cSum"]).toBe(1); // one submissions on day 1
+        expect(datum[2]["cSum"]).toBe(4); // 3 subs on day 2 + sub on day 1
 
         expect(cTimeseries["maxSum"]).toBe(4);
     });

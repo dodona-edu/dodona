@@ -77,6 +77,7 @@ export abstract class SeriesGraph {
 
 
     protected draw(): void {
+        console.log(this.exOrder);
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
@@ -157,7 +158,7 @@ export abstract class SeriesGraph {
         exercises.forEach(([id, title]) => {
             // only add if the key is present in the data
             if (keys.indexOf(id) >= 0) {
-                this.exOrder.unshift(String(id));
+                this.exOrder.push(String(id));
                 this.exMap[id] = title;
             }
         });

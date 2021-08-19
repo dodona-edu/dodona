@@ -17,7 +17,7 @@ export abstract class SeriesExerciseGraph extends SeriesGraph {
 
         // y-scale for exercises
         this.y = d3.scaleBand()
-            .range([this.innerHeight, 0])
+            .range([0, this.innerHeight])
             .domain(this.exOrder)
             .padding(.5);
 

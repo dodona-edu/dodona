@@ -302,7 +302,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         // calculate legend element offsets
         const exPosition = [];
         let pos = 0;
-        Array.from(this.exOrder).reverse().forEach(ex => {
+        this.exOrder.forEach(ex => {
             exPosition.push({ ex_id: ex, pos: pos });
             // rect size (15) + 5 padding + 20 inter-group padding + text length
             pos += 40 + this.fontSize / 2 * this.exMap[ex].length;

@@ -12,7 +12,7 @@ export abstract class SeriesExerciseGraph extends SeriesGraph {
     ];
 
     protected override draw(): void {
-        this.height = 75 * this.exOrder.length;
+        this.height = 60 * this.exOrder.length + this.margin.top + this.margin.bottom;
         super.draw();
 
         // y-scale for exercises

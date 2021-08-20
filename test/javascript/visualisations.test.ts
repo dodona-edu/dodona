@@ -53,8 +53,7 @@ describe("Violin tests", () => {
         expect(datum["ex_id"]).toBe("1");
         expect(datum["counts"]).toEqual([2, 4, 5]); // same as input, but sorted
         expect(datum["average"]).toBe((2+4+5)/3);
-        expect(datum["freq"]).toHaveLength(5); // bin from 1-5
-        expect(violin["maxCount"]).toBe(5);
+        expect(datum["freq"]).toHaveLength(violin["maxSubmissions"] + 1);
         expect(violin["maxFreq"]).toBe(1);
     });
 });

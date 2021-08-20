@@ -27,8 +27,8 @@ export class ViolinGraph extends SeriesExerciseGraph {
         "ex_id": string, "counts": number[],
         "freq": d3.Bin<number, number>[], "average": number
     }[];
-    private maxCount = 0; // largest x-value
     private maxFreq = 0; // largest y-value
+    private readonly maxSubmissions = 20;
 
     /**
     * Draws the graph's svg (and other) elements on the screen
@@ -37,17 +37,18 @@ export class ViolinGraph extends SeriesExerciseGraph {
     protected override draw(): void {
         super.draw();
 
-        const min = d3.min(this.data, d => d3.min(d.counts));
-        const max = d3.max(this.data, d => d3.max(d.counts));
-
         // Y scale per exercise
         const yBin = d3.scaleLinear()
             .domain([0, this.maxFreq])
             .range([0, this.y.bandwidth()]);
 
+        const color = d3.scaleOrdinal()
+            .range(d3.schemeDark2)
+            .domain(this.exOrder);
+
         // X scale and axis
         this.x = d3.scaleLinear()
-            .domain([min, max])
+            .domain([0, this.maxSubmissions])
             .range([5, this.innerWidth]);
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.innerHeight})`)
@@ -63,28 +64,29 @@ export class ViolinGraph extends SeriesExerciseGraph {
 
         // Violins
         this.graph
-            .selectAll(".violin-paths")
+            .selectAll(".violin-path")
             .data(this.data)
             .join("g")
             .attr("transform", d => `translate(0, ${this.y(d.ex_id) + this.y.bandwidth() / 2})`)
             .attr("pointer-events", "none")
             .append("path")
+            .attr("fill", d => color(d.ex_id))
             .datum(ex => {
                 return ex.freq;
             })
             .attr("class", "violin-path")
             .attr("d", d3.area()
-                .x((_, i) => this.x(i + 1))
+                .x((_, i) => this.x(i))
                 .y0(0)
                 .y1(0)
-                .curve(d3.curveCatmullRom)
+                .curve(d3.curveMonotoneX)
             )
             .transition().duration(500)
             .attr("d", d3.area()
-                .x((_, i) => this.x(i + 1))
+                .x((_, i) => this.x(i))
                 .y0(d => -yBin(d.length))
                 .y1(d => yBin(d.length))
-                .curve(d3.curveCatmullRom)
+                .curve(d3.curveMonotoneX)
             );
 
         // Average dots
@@ -175,16 +177,14 @@ export class ViolinGraph extends SeriesExerciseGraph {
             "counts": number[];
             "freq": d3.Bin<number, number>[];
             "average": number;
-        }[];
-        // largest y-value
-        this.maxCount = d3.max(this.data, d => d3.max(d.counts));
-
+            }[];
 
         // bin each exercise per frequency
         this.data.forEach(ex => {
             // bin per amount of required submissions
-            ex.freq = d3.bin().thresholds(d3.range(1, this.maxCount + 1))
-                .domain([1, this.maxCount])(ex.counts);
+            ex.freq = d3.bin()
+                .thresholds(d3.range(0, this.maxSubmissions + 1))
+                .domain([0, 1000])(ex.counts); // explicitly set domain to force empty bins
 
             // largest x-value
             this.maxFreq = Math.max(this.maxFreq, d3.max(ex.freq, bin => bin.length));
@@ -204,7 +204,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
     ): void {
         const pos = this.x.invert(d3.pointer(e, graph.node())[0]);
         const i = Math.round(pos);
-        if (i !== this.tooltipIndex && i > 0 && this.x(i) <= this.innerWidth) {
+        if (i !== this.tooltipIndex && i >= 0 && this.x(i) <= this.innerWidth) {
             this.tooltipIndex = i;
             this.tooltipLine
                 .attr("opacity", 1)
@@ -213,7 +213,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
                 .attr("x1", this.x(i))
                 .attr("x2", this.x(i));
             // check if label doesn't go out of bounds
-            const labelMsg = `${i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
+            const labelMsg = `${i === this.maxSubmissions ? this.maxSubmissions + "+" : i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
             const switchSides = this.x(i) +
                 this.fontSize / 2 * labelMsg.length +
                 5 > this.innerWidth;
@@ -227,7 +227,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             this.tooltipLabels
                 .attr("opacity", 1)
                 .text(d => {
-                    const freq = d["freq"][Math.max(0, i - 1)].length;
+                    const freq = d["freq"][Math.max(0, i)].length;
                     // check if plural is needed
                     return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })

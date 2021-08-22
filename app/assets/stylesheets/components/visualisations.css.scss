@@ -13,19 +13,18 @@
 }
 
 .day-cell {
-    &.empty {
-      fill: $heatmap-empty-fg;
-    }
-
-    &:hover {
-      stroke: $heatmap-hover-fg;
-      stroke-width: 2;
-    }
+  &.empty {
+    fill: $heatmap-empty-fg;
   }
+
+  &:hover {
+    stroke: $heatmap-hover-fg;
+    stroke-width: 2;
+  }
+}
 
 .stats-container {
   display: flex;
-  align-items: center;
 }
 
 .graph_placeholder {

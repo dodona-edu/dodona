@@ -44,6 +44,11 @@
   }
 }
 
+.series-dropdown {
+  display: flex;
+  align-items: flex-end;
+}
+
 .card.series-overview {
   overflow: visible;
 }
@@ -60,6 +65,10 @@
 
   .card-subtitle h4 small {
     font-size: 65%;
+  }
+
+  .card-subtitle-actions .mdi-format-list-bulleted {
+    vertical-align: text-bottom;
   }
 
   .card-title-icon {
@@ -217,63 +226,22 @@
 }
 
 .graph-title {
-  display: none;
+  display: flex;
   font-size: 16px;
-  margin-right: 5px;
   align-items: center;
+}
+
+.stats-container {
+  position: relative; // needed for the correct positioning of the tooltips
 }
 
 .graph-info {
   margin-left: 5px;
-  display: none;
   color: $text-muted
 }
 
-.stats-tab {
-  display: none;
-  justify-content: flex-end;
-  flex-direction: row;
-}
-
-.stats-container {
-  display: none;
-}
-
-.card.stats-active {
-  .stats-tab {
-    display: flex;
-  }
-
-  .graph-info {
-    display: inline;
-  }
-
-  .graph-title {
-    display: flex;
-  }
-
-  .stats-container {
-    display: flex;
-  }
-
-  .series-content {
-    display: none;
-  }
-}
-
-button:hover .svg-icon-btn {
-  fill: $text-color;
-}
-
 .svg-icon-btn {
-  svg {
-    fill: $text-secondary;
-  }
-
-  &:hover {
-    fill: $text-color;
-  }
-
+  fill: currentColor;
   &.rotate {
     transform: rotate(90deg);
   }

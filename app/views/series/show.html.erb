@@ -1,3 +1,7 @@
+<%= content_for :javascripts do %>
+  <%= javascript_pack_tag 'series' %>
+<% end %>
+
 <% if !current_user&.member_of?(@course) && @lti_launch %>
   <%= render 'courses/not_a_member_dialog' %>
 <% end %>

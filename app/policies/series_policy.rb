@@ -110,7 +110,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def statistics?
-    course_admin? || true
+    course_admin?
   end
 
   def violin?

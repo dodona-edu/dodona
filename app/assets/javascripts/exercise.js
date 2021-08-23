@@ -60,7 +60,6 @@ function showLightbox(content) {
     const lightbox = new GLightbox({
         elements: content.elements,
         startAt: content.startAt,
-        height: "90%",
     });
     lightbox.on("open", () => {
         // There might have been math in the image captions, so ask

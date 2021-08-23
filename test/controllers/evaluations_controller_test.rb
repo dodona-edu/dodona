@@ -407,7 +407,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
-    assert_equal 4 + evaluation.evaluation_exercises.length * 2, header.length
+    assert_equal 8 + evaluation.evaluation_exercises.length * 2, header.length
 
     # Get which users will have a score
     # First, the users we added a score for.
@@ -422,9 +422,9 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     score_item_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
     csv.each do |line|
       # Only one exercise has a score.
-      if users.key?(line[1])
+      if users.key?(line[5])
         exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
-        assert_equal users[line[1]], exported_score
+        assert_equal users[line[5]], exported_score
       else
         exported_score = line.delete_at(score_item_exercise_position)
         assert_equal '', exported_score
@@ -433,7 +433,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
-      assert line[4..].all?(&:empty?)
+      assert line[8..].all?(&:empty?)
     end
 
     sign_out @course_admin
@@ -482,25 +482,24 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     # Total score should equal sum of scores, Total max should equal the sum of maximum scores
     csv.each do |line|
-      puts line
       # Possible that total maximum is present, but all scores are empty en thus total score is empty
       total_maximum = 0
-      if line[2] == ''
-        (4...line.length - 1).step(2).each do |index|
+      if line[6] == ''
+        (8...line.length - 1).step(2).each do |index|
           assert_equal line[index], ''
           total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
         end
       else
         total_score = 0
-        (4..line.length - 1).step(2).each do |index|
+        (8..line.length - 1).step(2).each do |index|
           total_score += BigDecimal(line[index]) unless line[index] == ''
           total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
         end
 
-        assert_equal BigDecimal(line[2]), total_score
+        assert_equal BigDecimal(line[6]), total_score
 
       end
-      assert_equal BigDecimal(line[3]), total_maximum
+      assert_equal BigDecimal(line[7]), total_maximum
     end
   end
 

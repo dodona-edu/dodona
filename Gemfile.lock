@@ -303,7 +303,7 @@ GEM
       rack (>= 2.1.0)
     rack-protection (2.1.0)
       rack
-    rack-proxy (0.6.5)
+    rack-proxy (0.7.0)
       rack
     rack-test (1.1.0)
       rack (>= 1.0, < 3)
@@ -443,7 +443,7 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
-    webpacker (5.4.0)
+    webpacker (5.4.2)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -534,7 +534,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 4.1.20)
   web-console (~> 4.1.0)
-  webpacker (~> 5.4.0)
+  webpacker (~> 5.4.2)
   will_paginate (~> 3.3.1)
 
 RUBY VERSION

@@ -646,7 +646,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     # Check content of the ics file
     get ical_course_url @course, format: :ics
     assert_response :success
-    assert_equal 'text/calendar', response.content_type
+    assert_equal 'text/plain; charset=utf-8', response.content_type
 
     strict_parser = Icalendar::Parser.new(response.body, true)
     cals = strict_parser.parse

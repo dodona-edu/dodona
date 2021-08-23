@@ -43,7 +43,7 @@ class StatisticsController < ApplicationController
     course = series.course
     authorize series
 
-    result = Submission.send(visualisation, course: course, series: series, deadline: series.deadline)
+    result = Submission.send(visualisation, series: series, deadline: series.deadline)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }

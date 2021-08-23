@@ -309,7 +309,11 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(options[:user]) if options[:user].present?
     submissions = submissions.in_course(options[:course]) if options[:course].present?
-    submissions.where(id: (latest + 1)..)
+    if latest > 0
+      submissions.where(id: (latest + 1)..)
+    else
+      submissions
+    end
   end
 
   def self.punchcard_matrix(options, base = { until: 0, value: {} })

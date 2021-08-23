@@ -106,8 +106,11 @@
   <div class="progress-row">
     <%= render partial: 'feedbacks/progress_row', locals: { metadata: @feedback.evaluation_exercise.metadata } %>
   </div>
-
-  <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
+  <div class="d-flex align-items-center">
+    <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
+    <span class="badge bg-danger ms-2"><%= @users_labels[@feedback.user].map(&:name).first %></span>
+  </div>
+  
   <div class="user-feedback-row">
     <%= render partial: 'feedbacks/user_feedback_row', locals: { current_feedback: @feedback } %>
   </div>

@@ -23,6 +23,14 @@ class FeedbacksController < ApplicationController
     ]
     @title = I18n.t('feedbacks.show.feedback')
 
+    @users_labels = @feedback.evaluation
+                             .series
+                             .course
+                             .course_memberships
+                             .includes(:course_labels, :user)
+                             .map { |m| [m.user, m.course_labels] }
+                             .to_h
+
     @score_map = @feedback.scores.index_by(&:score_item_id)
     # If we refresh all scores because of a conflict, we want to make
     # sure the user is aware the update was not successful. By setting

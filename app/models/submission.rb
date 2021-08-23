@@ -378,7 +378,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:course])
+    submissions = submissions.only_students(options[:series].course)
 
     value = {}
     # part 1: group by exercise and user
@@ -405,7 +405,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:course])
+    submissions = submissions.only_students(options[:series].course)
 
     value = {}
     submissions.find_in_batches do |subs|
@@ -428,7 +428,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:course])
+    submissions = submissions.only_students(options[:series].course)
 
     value = {}
 
@@ -458,7 +458,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
-    submissions = submissions.only_students(options[:course])
+    submissions = submissions.only_students(options[:series].course)
 
     value = {}
     submissions.find_in_batches do |subs|

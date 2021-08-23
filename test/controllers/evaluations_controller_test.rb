@@ -482,7 +482,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     # Total score should equal sum of scores, Total max should equal the sum of maximum scores
     csv.each do |line|
-      puts line
       # Possible that total maximum is present, but all scores are empty en thus total score is empty
       total_maximum = 0
       if line[2] == ''

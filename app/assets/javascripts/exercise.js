@@ -1,6 +1,7 @@
 /* globals Bloodhound,ace,ga */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
+import GLightbox from "glightbox";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -56,13 +57,17 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
-    var SimpleLightbox = require('simple-lightbox');
-    SimpleLightbox.defaults.nextBtnCaption = I18n.t("lightbox-buttons.next");
-    SimpleLightbox.defaults.prevBtnCaption = I18n.t("lightbox-buttons.previous");
-    SimpleLightbox.defaults.closeBtnCaption = I18n.t("lightbox-buttons.close");
-    SimpleLightbox.defaults.loadingCaption = I18n.t("lightbox-buttons.loading");
-    const lightbox = SimpleLightbox.open(content);
-    lightbox.show();
+    const lightbox = new GLightbox({
+        elements: content.elements,
+        startAt: content.startAt,
+        height: "90%",
+    });
+    lightbox.on("open", () => {
+        // There might have been math in the image captions, so ask
+        // MathJax to search for new math (but only in the captions).
+        window.MathJax.typeset([".gslide-description"]);
+    });
+    lightbox.open();
 
     // Transfer focus back to the document body to allow the lightbox to be closed.
     // https://github.com/dodona-edu/dodona/issues/1759.
@@ -78,12 +83,14 @@ function onFrameMessage(event) {
 function initLightboxes() {
     let index = 0;
     const images = [];
-    const captions = [];
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
-        images.push(imagesrc);
-        captions.push(altText);
+        const imageObject = {
+            href: imagesrc,
+            title: altText,
+        };
+        images.push(imageObject);
 
         $(this).data("image_index", index++);
     });
@@ -93,8 +100,7 @@ function initLightboxes() {
         window.parentIFrame.sendMessage({
             type: "lightbox",
             content: {
-                items: images,
-                captions: captions,
+                elements: images,
                 startAt: index,
             }
         });

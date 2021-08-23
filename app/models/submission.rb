@@ -411,7 +411,7 @@ class Submission < ApplicationRecord
           .transform_values(&:count)
           .group_by { |k, _| k[0] } # group by exercise
           .transform_values { |v| v.map { |x| [x[0][1], x[1]] }.to_h } # -> ex_id -> { status -> count }
-      ) { |_k, v1, v2| v1.merge(v2) }
+      ) { |_k, v1, v2| v1.merge(v2) { |_k, v1, v2| v1 + v2 } }
     end
     {
       until: submissions.first&.id || 0,

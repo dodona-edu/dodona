@@ -108,8 +108,12 @@
   </div>
   <div class="d-flex align-items-center">
     <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
-    <% if users_labels[@feedback.user] %>
-      <span class="badge bg-danger ms-2"><%= users_labels[@feedback.user].map(&:name).first %></span>
+    <% if @users_labels %>
+      <div class="d-inline-flex flex-column my-1">
+        <% @users_labels[@feedback.user].each do |label| %>
+          <span class="badge bg-danger ms-2 mb-1"><%= label.name %></span>
+        <% end %>
+      </div>
     <% end %>
   </div>
   

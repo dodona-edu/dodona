@@ -87,7 +87,7 @@ function initLightboxes() {
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
         const imageObject = {
             href: imagesrc,
-            title: altText,
+            description: altText,
         };
         images.push(imageObject);
 

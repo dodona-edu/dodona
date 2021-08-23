@@ -318,8 +318,8 @@ class Submission < ApplicationRecord
 
     value = base[:value]
 
-    submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:created_at)
+    submissions.find_in_batches do |subs|
+      value = value.merge(subs.map(&:created_at)
                               .map { |d| d.in_time_zone(options[:timezone]) }
                               .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
                               .group_by(&:itself)
@@ -327,7 +327,7 @@ class Submission < ApplicationRecord
     end
 
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -348,15 +348,15 @@ class Submission < ApplicationRecord
 
     value = base[:value]
 
-    submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:created_at)
+    submissions.find_in_batches do |subs|
+      value = value.merge(subs.map(&:created_at)
                               .map { |d| d.strftime('%Y-%m-%d') }
                               .group_by(&:itself)
                               .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
     end
 
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -378,9 +378,9 @@ class Submission < ApplicationRecord
 
     value = {}
     # part 1: group by exercise and user
-    submissions.in_batches do |subs|
+    submissions.find_in_batches do |subs|
       value = value.merge(
-        subs.pluck(:exercise_id, :user_id)
+        subs.map { |s| [s.exercise_id, s.user_id] }
         .group_by(&:itself) # group by exercise and user
         .transform_values(&:count) # calc amount of submissions per user per exercise
       ) { |_k, v1, v2| v1 + v2 }
@@ -392,7 +392,7 @@ class Submission < ApplicationRecord
             .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -404,9 +404,9 @@ class Submission < ApplicationRecord
     submissions = submissions.only_students(options[:course])
 
     value = {}
-    submissions.in_batches do |subs|
+    submissions.find_in_batches do |subs|
       value = value.merge(
-        subs.pluck(:exercise_id, :status)
+        subs.map { |s| [s.exercise_id, s.status] }
           .group_by(&:itself)
           .transform_values(&:count)
           .group_by { |k, _| k[0] } # group by exercise
@@ -414,7 +414,7 @@ class Submission < ApplicationRecord
       ) { |_k, v1, v2| v1.merge(v2) }
     end
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -428,9 +428,9 @@ class Submission < ApplicationRecord
 
     value = {}
 
-    submissions.in_batches do |subs|
+    submissions.find_in_batches do |subs|
       value = value.merge(
-        subs.pluck(:exercise_id, :created_at, :status)
+        subs.map { |s| [s.exercise_id, s.created_at, s.status] }
           .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
           .group_by(&:itself) # group duplicates
           .transform_values(&:count) # count amount of duplicates
@@ -443,7 +443,7 @@ class Submission < ApplicationRecord
     value = value
             .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -457,16 +457,16 @@ class Submission < ApplicationRecord
     submissions = submissions.only_students(options[:course])
 
     value = {}
-    submissions.in_batches do |subs|
+    submissions.find_in_batches do |subs|
       value = value.merge(
-        subs.pluck(:exercise_id, :created_at)
+        subs.map { |s| [s.exercise_id, s.created_at] }
           .group_by { |d| d[0] } # group by exId
           # drop exId from values
           .transform_values { |values| values.map { |v| v[1] } }
       ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
     end
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end

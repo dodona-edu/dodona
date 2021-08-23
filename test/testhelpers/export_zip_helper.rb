@@ -28,7 +28,7 @@ module SeriesZipHelper
   def check_csv(entry)
     csv = entry.get_input_stream.read
     header = csv.split("\n").first
-    %w[filename id username last_name first_name full_name email status submission_id exercise_id name_nl name_en].each do |h|
+    %w[filename status submission_id exercise_id name_nl name_en].each do |h|
       assert header.include?("\"#{h}\""), "info.csv header did not include #{h}"
     end
   end

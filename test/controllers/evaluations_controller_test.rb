@@ -407,7 +407,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
-    assert_equal 8 + evaluation.evaluation_exercises.length * 2, header.length
+    assert_equal 9 + evaluation.evaluation_exercises.length * 2, header.length
 
     # Get which users will have a score
     # First, the users we added a score for.
@@ -433,7 +433,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
-      assert line[8..].all?(&:empty?)
+      assert line[9..].all?(&:empty?)
     end
 
     sign_out @course_admin
@@ -484,22 +484,22 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     csv.each do |line|
       # Possible that total maximum is present, but all scores are empty en thus total score is empty
       total_maximum = 0
-      if line[6] == ''
-        (8...line.length - 1).step(2).each do |index|
+      if line[7] == ''
+        (9...line.length - 1).step(2).each do |index|
           assert_equal line[index], ''
           total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
         end
       else
         total_score = 0
-        (8..line.length - 1).step(2).each do |index|
+        (9..line.length - 1).step(2).each do |index|
           total_score += BigDecimal(line[index]) unless line[index] == ''
           total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
         end
 
-        assert_equal BigDecimal(line[6]), total_score
+        assert_equal BigDecimal(line[7]), total_score
 
       end
-      assert_equal BigDecimal(line[7]), total_maximum
+      assert_equal BigDecimal(line[8]), total_maximum
     end
   end
 

@@ -40,7 +40,7 @@ class StatisticsController < ApplicationController
   private
 
   def visualise_series(visualisation)
-    series = Series.find(params[:series_id]) if params.key?(:series_id)
+    series = Series.find(params[:series_id])
     authorize series
 
     result = Submission.send(visualisation, series: series, deadline: series.deadline)

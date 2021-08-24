@@ -15,29 +15,6 @@
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
     0 0 8px rgba(102, 175, 233, 0.6);
 }
-.tokenfield .token {
-  $token-height: 32px;
-  display: inline-flex;
-  align-items: center;
-  height: $token-height;
-  border-radius: $token-height/2;
-  padding-left: 12px;
-  padding-right: 8px;
-  border-width: 0px;
-  color: $text-on-bg-color;
-  text-transform: capitalize;
-  white-space: nowrap;
-  margin: 0 8px 8px 0;
-  cursor: default;
-}
-.tokenfield .token .close {
-  margin-left: 8px;
-  color: $text-on-bg-color;
-}
-.tokenfield .token .close:hover {
-  color: $text-color;
-  cursor: pointer;
-}
 .tokenfield .token-input {
   background: none;
   width: 60px;
@@ -133,8 +110,37 @@
   padding-right: 4px;
 }
 
+.tokenfield .token {
+  margin-bottom: 8px;
+  padding-right: 8px;
+}
+.token {
+  $token-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  height: $token-height;
+  border-radius: $token-height/2;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-width: 0px;
+  color: $text-on-bg-color;
+  text-transform: capitalize;
+  white-space: nowrap;
+  cursor: default;
+}
+.token + .token {
+  margin-left: 8px;
+}
+.token .close {
+  margin-left: 8px;
+  color: $text-on-bg-color;
+}
+.token .close:hover {
+  color: $text-color;
+  cursor: pointer;
+}
 
-// these are manually added styles
+
 .token.accent-red {
   background-color: $color-red-bg;
 }
@@ -164,7 +170,6 @@
 }
 
 .tokenfield {
-
   .form-control {
     height: auto;
   }

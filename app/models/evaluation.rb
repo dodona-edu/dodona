@@ -113,12 +113,10 @@ class Evaluation < ApplicationRecord
 
   def grades_csv
     sheet = evaluation_sheet
-    serie = Series.find_by(id: series_id)
-    course = Course.find_by(id: serie.course_id)
-    users_labels = course.course_memberships
-                         .includes(:course_labels, :user)
-                         .map { |m| [m.user, m.course_labels] }
-                         .to_h
+    users_labels = series.course.course_memberships
+                        .includes(:course_labels, :user)
+                        .map { |m| [m.user, m.course_labels] }
+                        .to_h
     CSV.generate(force_quotes: true) do |csv|
       headers = ['id', 'username', 'last_name', 'first_name', 'full_name', 'email', 'labels', 'Total Score', 'Total Max']
       headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }

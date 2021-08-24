@@ -205,13 +205,20 @@ export default class FeedbackActions {
                 return;
             }
             this.disableInputs();
-            console.log(this.updatingForms);
             // Wait for score updates before going away.
             if (this.updatingForms.size > 0) {
                 this.nextAfterScoreUpdate = true;
                 return;
             }
             await this.nextFeedbackAction();
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.ctrlKey && event.code === "Enter") {
+                event.preventDefault();
+                this.nextButton.click();
+                return false;
+            }
         });
 
         this.autoMarkCheckBox?.addEventListener("input", async () => {

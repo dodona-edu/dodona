@@ -4813,6 +4813,11 @@ getpass@^0.1.1:
   dependencies:
     assert-plus "^1.0.0"
 
+glightbox@^3.0.9:
+  version "3.0.9"
+  resolved "https://registry.yarnpkg.com/glightbox/-/glightbox-3.0.9.tgz#3c4e64e1e8b6548dcb7f535fd081aa151644bb9f"
+  integrity sha512-XI5xLiwJAdia/WVcb0ftjLZHz0MAXo6D5NDURFlhIBm1dG3e4XxP5DQFVUutOBa5sNjVXwyVXCAC7ab5uttMLg==
+
 glob-parent@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-3.1.0.tgz#9e6af6299d8d3bd2bd40430832bd113df906c5ae"

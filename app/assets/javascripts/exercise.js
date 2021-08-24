@@ -1,6 +1,7 @@
-/* globals Bloodhound,Strip,ace,ga,initStrip */
+/* globals Bloodhound,ace,ga */
 import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
+import GLightbox from "glightbox";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -56,14 +57,13 @@ function initLabelsEdit(labels, undeletableLabels) {
 }
 
 function showLightbox(content) {
-    Strip.show(content.images, {
-        side: "top",
-        onShow: function () {
-            // There might have been math in the image captions, so ask
-            // MathJax to search for new math (but only in the captions).
-            window.MathJax.typeset([".strp-caption"]);
-        }
-    }, content.index);
+    const lightbox = new GLightbox(content);
+    lightbox.on("open", () => {
+        // There might have been math in the image captions, so ask
+        // MathJax to search for new math (but only in the captions).
+        window.MathJax.typeset([".gslide-description"]);
+    });
+    lightbox.open();
 
     // Transfer focus back to the document body to allow the lightbox to be closed.
     // https://github.com/dodona-edu/dodona/issues/1759.
@@ -77,14 +77,14 @@ function onFrameMessage(event) {
 }
 
 function initLightboxes() {
-    let index = 1;
+    let index = 0;
     const images = [];
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
         const imageObject = {
-            url: imagesrc,
-            caption: altText,
+            href: imagesrc,
+            description: altText,
         };
         images.push(imageObject);
 
@@ -96,8 +96,8 @@ function initLightboxes() {
         window.parentIFrame.sendMessage({
             type: "lightbox",
             content: {
-                images: images,
-                index: index,
+                elements: images,
+                startAt: index,
             }
         });
         return false;
@@ -154,7 +154,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             enableSubmissionTableLinks();
             swapActionButtons();
         }
-        initStrip();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {

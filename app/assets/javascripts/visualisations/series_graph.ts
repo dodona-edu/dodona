@@ -6,7 +6,8 @@ export type RawData = {
     // eslint-disable-next-line camelcase
     data: { ex_id: number, ex_data: unknown[] }[],
     exercises: [number, string][],
-    students?: number
+    // eslint-disable-next-line camelcase
+    student_count: number
 }
 
 export abstract class SeriesGraph {

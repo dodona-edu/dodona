@@ -130,7 +130,8 @@ export class CTimeseriesGraph extends SeriesGraph {
      *
      * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected override processData({ data, exercises, students }: RawData): void {
+    // eslint-disable-next-line camelcase
+    protected override processData({ data, exercises, student_count }: RawData): void {
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
 
@@ -153,7 +154,8 @@ export class CTimeseriesGraph extends SeriesGraph {
             .domain([minDate.getTime(), maxDate.getTime()])
             .ticks(d3.timeDay);
 
-        this.maxSum = students ?? 0; // max value
+        // eslint-disable-next-line camelcase
+        this.maxSum = student_count; // max value
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()

@@ -32,7 +32,7 @@ beforeAll(() => {
 describe("Violin tests", () => {
     let violin;
     const data = {
-        data: [{ ex_id: 1, ex_data: [4, 5, 2] }], exercises: [[1, "test"]], students: 3
+        data: [{ ex_id: 1, ex_data: [4, 5, 2] }], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
         document.body.innerHTML = "<div id='container'></div>";
@@ -65,7 +65,7 @@ describe("Stacked tests", () => {
             // eslint-disable-next-line
             // @ts-ignore
             { ex_id: 1, ex_data: { "wrong": 9, "correct": 6 } }
-        ], exercises: [[1, "test"]], students: 3
+        ], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
         document.body.innerHTML = "<div id='container'></div>";
@@ -103,7 +103,7 @@ describe("Timeseries tests", () => {
                     { date: "1302-07-12", status: "correct", count: 6 }
                 ]
             }
-        ], exercises: [[1, "test"]], students: 3
+        ], exercises: [[1, "test"]], student_count: 3
     };
     let timeseries;
     beforeEach(() => {
@@ -147,7 +147,7 @@ describe("CTimeseries tests", () => {
             }
         ],
         exercises: [[1, "test"]],
-        students: 3
+        student_count: 3
     };
     let cTimeseries;
     beforeEach(() => {

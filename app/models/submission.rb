@@ -56,7 +56,7 @@ class Submission < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
-  scope :only_students, ->(course) { where(user: course.enrolled_members) }
+  scope :from_students, ->(course) { where(user: course.enrolled_members) }
 
   scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
@@ -309,11 +309,8 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(options[:user]) if options[:user].present?
     submissions = submissions.in_course(options[:course]) if options[:course].present?
-    if latest > 0
-      submissions.where(id: (latest + 1)..)
-    else
-      submissions
-    end
+    submissions = submissions.where(id: (latest + 1)..) if latest > 0
+    submissions
   end
 
   def self.punchcard_matrix(options, base = { until: 0, value: {} })
@@ -327,7 +324,7 @@ class Submission < ApplicationRecord
                               .map { |d| d.in_time_zone(options[:timezone]) }
                               .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
                               .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .transform_values(&:count)) { |_key, count1, count2| count1 + count2 }
     end
 
     {
@@ -356,7 +353,7 @@ class Submission < ApplicationRecord
       value = value.merge(subs.map(&:created_at)
                               .map { |d| d.strftime('%Y-%m-%d') }
                               .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .transform_values(&:count)) { |_key, count1, count2| count1 + count2 }
     end
 
     {
@@ -378,7 +375,7 @@ class Submission < ApplicationRecord
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:series].course)
+    submissions = submissions.from_students(options[:series].course)
 
     value = {}
     # part 1: group by exercise and user
@@ -387,14 +384,14 @@ class Submission < ApplicationRecord
         subs.map { |s| [s.exercise_id, s.user_id] }
         .group_by(&:itself) # group by exercise and user
         .transform_values(&:count) # calc amount of submissions per user per exercise
-      ) { |_k, v1, v2| v1 + v2 }
+      ) { |_key, count1, count2| count1 + count2 }
     end
 
     # part 2: group by exercise and aggregate amount per user in an array
     # this can only be done on the complete result since this part drops the user_id
     value = value
-            .group_by { |k, _| k[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
-            .transform_values { |v| v.map { |x| x[1] } } # only retain count (as value)
+            .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
+            .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
     {
       until: submissions.first&.id || 0,
       value: value
@@ -405,17 +402,22 @@ class Submission < ApplicationRecord
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:series].course)
+    submissions = submissions.from_students(options[:series].course)
 
     value = {}
     submissions.find_in_batches do |subs|
-      value = value.merge(
-        subs.map { |s| [s.exercise_id, s.status] }
-          .group_by(&:itself)
-          .transform_values(&:count)
-          .group_by { |k, _| k[0] } # group by exercise
-          .transform_values { |v| v.map { |x| [x[0][1], x[1]] }.to_h } # -> ex_id -> { status -> count }
-      ) { |_k, v1, v2| v1.merge(v2) { |_k, iv1, iv2| iv1 + iv2 } }
+      data = subs.map { |s| [s.exercise_id, s.status] }
+                 .group_by(&:itself)
+                 .transform_values(&:count)
+                 .group_by { |ex_id_status, _| ex_id_status[0] } # group by exercise
+      transformed = data.transform_values do |v|
+        v.map do |ex_id_status_count| # -> ex_id -> { status -> count }
+          status = ex_id_status_count[0][1]
+          count = ex_id_status_count[1]
+          [status, count]
+        end.to_h
+      end
+      value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end
     {
       until: submissions.first&.id || 0,
@@ -428,7 +430,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
-    submissions = submissions.only_students(options[:series].course)
+    submissions = submissions.from_students(options[:series].course)
 
     value = {}
 
@@ -442,10 +444,14 @@ class Submission < ApplicationRecord
     end
 
     # further transformations not in batches since merge would get complicated
-    value = value.group_by { |k, _| k[0] } # group by exId
+    value = value.group_by { |k, _| k[0] } # group by exercise id
     # drop exId in values, create record of date, status and count
-    value = value
-            .transform_values { |values| values.map { |v| { date: v[0][1], status: v[0][2], count: v[1] } } }
+    value = value.transform_values do |values|
+      values.map do |v|
+        { date: v[0][1], status: v[0][2], count: v[1] }
+      end
+    end
+
     {
       until: submissions.first&.id || 0,
       value: value
@@ -458,16 +464,16 @@ class Submission < ApplicationRecord
     submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
-    submissions = submissions.only_students(options[:series].course)
+    submissions = submissions.from_students(options[:series].course)
 
     value = {}
     submissions.find_in_batches do |subs|
       value = value.merge(
         subs.map { |s| [s.exercise_id, s.created_at] }
-          .group_by { |d| d[0] } # group by exId
+          .group_by { |ex_id_date| ex_id_date[0] } # group by exId
           # drop exId from values
           .transform_values { |values| values.map { |v| v[1] } }
-      ) { |_k, v1, v2| v1 | v2 } # prevent duplicate dates
+      )
     end
     {
       until: submissions.first&.id || 0,

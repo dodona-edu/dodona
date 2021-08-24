@@ -13,5 +13,6 @@ module.exports = {
     moduleDirectories: [
         "node_modules",
         "app/assets/javascripts"
-    ]
+    ],
+    transformIgnorePatterns: ["node_modules/?!(d3)"],
 };

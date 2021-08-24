@@ -44,6 +44,11 @@
   }
 }
 
+.series-dropdown {
+  display: flex;
+  align-items: flex-end;
+}
+
 .card.series-overview {
   overflow: visible;
 }
@@ -60,6 +65,10 @@
 
   .card-subtitle h4 small {
     font-size: 65%;
+  }
+
+  .card-subtitle-actions .mdi-format-list-bulleted {
+    vertical-align: text-bottom;
   }
 
   .card-title-icon {
@@ -208,4 +217,39 @@
     calc(100% - 25px) 15px;
     padding-right: 8px;
   }
+}
+
+.graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.graph-title {
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+}
+
+.stats-container {
+  position: relative; // needed for the correct positioning of the tooltips
+}
+
+.graph-info {
+  margin-left: 5px;
+  color: $text-muted
+}
+
+.svg-icon-btn {
+  fill: currentColor;
+  &.rotate {
+    transform: rotate(90deg);
+  }
+}
+
+.d3-tooltip-label {
+  font-size: 12px;
+  paint-order: stroke;
+  stroke: $content-bg;
+  stroke-width: 2px;
 }

@@ -52,9 +52,11 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_date..end_date.to_date) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
+  scope :from_students, ->(course) { where(user: course.enrolled_members) }
 
   scope :judged, -> { where.not(status: %i[running queued]) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
@@ -80,6 +82,18 @@ class Submission < ApplicationRecord
 
   scope :most_recent_correct_per_user, lambda { |*|
     correct.group(:user_id).most_recent
+  }
+
+  scope :least_recent, lambda {
+    submissions = select('MIN(submissions.id) as id')
+    Submission.unscoped.joins <<~HEREDOC
+      JOIN (#{submissions.to_sql}) least_recent
+      ON submissions.id = least_recent.id
+    HEREDOC
+  }
+
+  scope :first_correct_per_ex_per_user, lambda { |*|
+    correct.group(:exercise_id, :user_id).least_recent
   }
 
   def initialize(params)
@@ -295,7 +309,8 @@ class Submission < ApplicationRecord
     submissions = Submission.all
     submissions = submissions.of_user(options[:user]) if options[:user].present?
     submissions = submissions.in_course(options[:course]) if options[:course].present?
-    submissions.where(id: (latest + 1)..)
+    submissions = submissions.where(id: (latest + 1)..) if latest > 0
+    submissions
   end
 
   def self.punchcard_matrix(options, base = { until: 0, value: {} })
@@ -304,16 +319,16 @@ class Submission < ApplicationRecord
 
     value = base[:value]
 
-    submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:created_at)
+    submissions.find_in_batches do |subs|
+      value = value.merge(subs.map(&:created_at)
                               .map { |d| d.in_time_zone(options[:timezone]) }
                               .map { |d| "#{d.wday > 0 ? d.wday - 1 : 6}, #{d.hour}" }
                               .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .transform_values(&:count)) { |_key, count1, count2| count1 + count2 }
     end
 
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -334,15 +349,15 @@ class Submission < ApplicationRecord
 
     value = base[:value]
 
-    submissions.in_batches do |subs|
-      value = value.merge(subs.pluck(:created_at)
+    submissions.find_in_batches do |subs|
+      value = value.merge(subs.map(&:created_at)
                               .map { |d| d.strftime('%Y-%m-%d') }
                               .group_by(&:itself)
-                              .transform_values(&:count)) { |_k, v1, v2| v1 + v2 }
+                              .transform_values(&:count)) { |_key, count1, count2| count1 + count2 }
     end
 
     {
-      until: submissions.first.id,
+      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -355,6 +370,116 @@ class Submission < ApplicationRecord
              user_id: options[:user].present? ? options[:user].id.to_s : 'global')
     end
   )
+
+  def self.violin_matrix(options = {})
+    submissions = submissions_since(0, options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.judged
+    submissions = submissions.from_students(options[:series].course)
+
+    value = {}
+    # part 1: group by exercise and user
+    submissions.find_in_batches do |subs|
+      value = value.merge(
+        subs.map { |s| [s.exercise_id, s.user_id] }
+        .group_by(&:itself) # group by exercise and user
+        .transform_values(&:count) # calc amount of submissions per user per exercise
+      ) { |_key, count1, count2| count1 + count2 }
+    end
+
+    # part 2: group by exercise and aggregate amount per user in an array
+    # this can only be done on the complete result since this part drops the user_id
+    value = value
+            .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
+            .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
+    {
+      until: submissions.first&.id || 0,
+      value: value
+    }
+  end
+
+  def self.stacked_status_matrix(options = {})
+    submissions = submissions_since(0, options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.judged
+    submissions = submissions.from_students(options[:series].course)
+
+    value = {}
+    submissions.find_in_batches do |subs|
+      data = subs.map { |s| [s.exercise_id, s.status] }
+                 .group_by(&:itself)
+                 .transform_values(&:count)
+                 .group_by { |ex_id_status, _| ex_id_status[0] } # group by exercise
+      transformed = data.transform_values do |v|
+        v.map do |ex_id_status_count| # -> ex_id -> { status -> count }
+          status = ex_id_status_count[0][1]
+          count = ex_id_status_count[1]
+          [status, count]
+        end.to_h
+      end
+      value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
+    end
+    {
+      until: submissions.first&.id || 0,
+      value: value
+    }
+  end
+
+  def self.timeseries_matrix(options = {})
+    submissions = submissions_since(0, options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
+    submissions = submissions.judged
+    submissions = submissions.from_students(options[:series].course)
+
+    value = {}
+
+    submissions.find_in_batches do |subs|
+      value = value.merge(
+        subs.map { |s| [s.exercise_id, s.created_at, s.status] }
+          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
+          .group_by(&:itself) # group duplicates
+          .transform_values(&:count) # count amount of duplicates
+      ) { |_k, v1, v2| v1 + v2 }
+    end
+
+    # further transformations not in batches since merge would get complicated
+    value = value.group_by { |k, _| k[0] } # group by exercise id
+    # drop exId in values, create record of date, status and count
+    value = value.transform_values do |values|
+      values.map do |v|
+        { date: v[0][1], status: v[0][2], count: v[1] }
+      end
+    end
+
+    {
+      until: submissions.first&.id || 0,
+      value: value
+    }
+  end
+
+  def self.cumulative_timeseries_matrix(options = {})
+    submissions = submissions_since(0, options)
+    submissions = submissions.in_series(options[:series]) if options[:series].present?
+    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
+    submissions = submissions.judged
+    submissions = submissions.first_correct_per_ex_per_user
+    submissions = submissions.from_students(options[:series].course)
+
+    value = {}
+    submissions.find_in_batches do |subs|
+      value = value.merge(
+        subs.map { |s| [s.exercise_id, s.created_at] }
+          .group_by { |ex_id_date| ex_id_date[0] } # group by exId
+          # drop exId from values
+          .transform_values { |values| values.map { |v| v[1] } }
+      )
+    end
+    {
+      until: submissions.first&.id || 0,
+      value: value
+    }
+  end
 
   private
 

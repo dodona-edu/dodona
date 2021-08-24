@@ -196,7 +196,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
     /**
      * Function when mouse is moved over the svg
      * moves the tooltip line and sets the tooltip labels
-     * @param {unknown} e  event parameter, not used
+     * @param {unknown} e  event parameter
      * @param {d3.Selection} graph The graph selection group
      */
     private svgMouseMove(

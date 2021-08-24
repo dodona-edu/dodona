@@ -176,11 +176,8 @@ export abstract class SeriesGraph {
     }
 
     /**
-     * Fetched the data from specified url
-     * If the data has a 'not available' status, wait a second and fetch again
-     * @param {string} url The url from which to fetch the data from
-     * @param {Object} raw The return value of the fetch
-     *  used to check if the data should be fetched again
+     * Fetched the data from `this.getUrl()`.
+     * If the data has a 'not available' status, wait a second and fetch again.
      */
     protected async fetchData(): Promise<RawData> {
         const url = this.getUrl();

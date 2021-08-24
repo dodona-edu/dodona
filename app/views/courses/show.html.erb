@@ -97,7 +97,6 @@
                   <% end %>
                 </li>
               <% end %>
-
               <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
                 <li role="separator" class="dropdown-divider"></li>
               <% end %>

@@ -32,6 +32,7 @@ en:
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
       show_overview: Show all learning activity descriptions
       evaluation_overview: Show feedback
+      series_overview: Series overview
     edit:
       title: Edit series
       add_activities: Add activities

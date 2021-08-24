@@ -216,12 +216,12 @@ export abstract class SeriesGraph {
 
         if (r.data.length === 0) {
             this.drawNoData();
-        }
-        // next process the data
-        this.processData(r);
-        if (doDraw) {
-            // next draw the graph
-            this.draw();
+        } else {
+            this.processData(r);
+            if (doDraw) {
+                // next draw the graph
+                this.draw();
+            }
         }
     }
 }

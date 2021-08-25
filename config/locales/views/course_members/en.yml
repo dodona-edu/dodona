@@ -7,6 +7,7 @@ en:
       close: "Close"
       save: "Save"
       course_overview: "Course overview for "
+      statistics: "Statistics"
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"

@@ -33,10 +33,6 @@ class CourseMembersController < ApplicationController
     @course_labels = CourseLabel.where(course: @course)
     @series = policy_scope(@course.series)
     @series_loaded = 5
-    @users_labels = @course.course_memberships
-                           .includes(:course_labels, :user)
-                           .map { |m| [m.user, m.course_labels] }
-                           .to_h
   end
 
   def edit

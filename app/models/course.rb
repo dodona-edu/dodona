@@ -329,6 +329,11 @@ class Course < ApplicationRecord
     self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
+  def color
+    colors = %w[blue-grey indigo red purple teal orange pink brown deep-purple]
+    colors[year.to_i % colors.size]
+  end
+
   private
 
   def should_have_institution_when_visible_for_institution

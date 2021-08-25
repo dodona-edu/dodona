@@ -1,8 +1,1 @@
-json.extract! @user,
-              :id,
-              :username,
-              :first_name,
-              :last_name,
-              :email
-json.status @course_membership.status
-json.labels @course_membership.course_labels, :name
+json.partial! 'course_member_data', locals: { user: @user, course_membership: @course_membership }

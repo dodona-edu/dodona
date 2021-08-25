@@ -195,7 +195,7 @@ class CoursesController < ApplicationController
                                 .includes(:course_labels, :user)
                                 .map { |m| [m.user, m.course_labels] }
                                 .to_h
-          columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels']
+          columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns

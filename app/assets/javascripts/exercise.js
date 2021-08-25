@@ -340,7 +340,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         icon.classList.add("mdi", "mdi-36", "mdi-pencil");
     }
     function getPositiveEmoji() {
-        const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "shimmer", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
+        const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
         return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
     }
 

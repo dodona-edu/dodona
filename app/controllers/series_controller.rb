@@ -197,7 +197,7 @@ class SeriesController < ApplicationController
                               .map { |m| [m.user, m.course_labels] }
                               .to_h
         sheet = CSV.generate(force_quotes: true) do |csv|
-          columns = [User.human_attribute_name('id'), User.human_attribute_name('username'), User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('email'), 'labels', @series.name]
+          columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels', @series.name]
           columns.concat(@activities.map(&:name))
           columns.concat(@activities.map { |a| I18n.t('series.scoresheet.status', activity: a.name) })
           csv << columns

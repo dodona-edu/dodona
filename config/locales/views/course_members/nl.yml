@@ -7,7 +7,6 @@ nl:
       close: "Sluiten"
       save: "Opslaan"
       course_overview: "Cursusoverzicht voor "
-      statistics: "Statistieken"
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"

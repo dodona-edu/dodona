@@ -46,6 +46,32 @@ nl:
     mark_as_read: Als gelezen markeren
     mark_as_unread: Als ongelezen markeren
     question_states: Toestand
+    no_data: Er is niet genoeg data om een grafiek te maken.
+    n_submissions: Aantal ingediende oplossingen
+    user: gebruiker
+    users: gebruikers
+    with: met
+    submission: oplossing
+    submissions: oplossingen
+    attempts: pogingen
+    total: totaal aantal
+    mean: gemiddeld aantal
+    violin_title: Aantal oplossingen per gebruiker
+    stacked_title: Verdeling van de oplossingsstatus
+    timeseries_title: Ingediende oplossingen over tijd
+    ctimeseries_title: Gebruikers met minstens één correcte oplossing
+    violin_desc: Deze grafiek geeft de verdeling weer van het aantal ingediende oplossingen. Hoe dikker de zone op de grafiek, hoe meer studenten dat aantal pogingen nodig had.
+    stacked_desc: Deze grafiek geeft de verdeling van de oplossingsstatussen per oefening weer.
+    timeseries_desc: Deze grafiek toont op welke dagen het meest aan een bepaalde oefening werd gewerkt.
+    ctimeseries_desc: Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.
+    status:
+      correct: correct
+      wrong: fout
+      compilation_error: compilatiefout
+      runtime_error: uitvoeringsfout
+      time_limit_exceeded: tijdslimiet overschreden
+      memory_limit_exceeded: geheugenlimiet overschreden
+      output_limit_exceeded: uitvoerlimiet overschreden
     months:
       long:
         jan: Januari

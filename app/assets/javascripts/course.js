@@ -133,7 +133,7 @@ function initCourseShow() {
         const nav = document.getElementById("scrollspy-nav");
         if (nav) {
             new ScrollSpy(nav, {
-                sectionSelector: ".series .anchor, .profile .anchor",
+                sectionSelector: ".series .anchor",
                 offset: 90,
             }).activate();
         }

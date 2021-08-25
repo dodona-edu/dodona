@@ -7,7 +7,6 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <a class="anchor" id="statistics" name="statistics"></a>
           <span class="user-icon float-start"><i class="mdi mdi-36 <%= @course_membership.course_admin? ? "mdi-school" : "mdi-account" %>">
           </i></span>
           <span class="profile-line">
@@ -107,7 +106,6 @@
   <nav id="scrollspy-nav" class="col-md-1 d-none d-md-block hidden-print series-sidebar">
     <ul class="nav" data-offset-bottom="80">
       <li class="header ellipsis-overflow"><%= t "courses.show.exercise_series" %></li>
-      <li><%= link_to t(".statistics"), "#statistics", class: 'ellipsis-overflow nav-link', title: t(".statistics") %> </li>
       <% @series.each do |series| %>
         <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow nav-link', title: series.name %> </li>
       <% end %>

@@ -75,40 +75,43 @@ a.card-title-link:hover {
   }
 }
 
-.card-title.card-colored-accent.accent-red {
-  background-color: $color-red-bg;
-}
-
-.card-title.card-colored-accent.accent-pink {
-  background-color: $color-pink-bg;
-}
-
-.card-title.card-colored-accent.accent-purple {
-  background-color: $color-purple-bg;
-}
-
-.card-title.card-colored-accent.accent-deep-purple {
-  background-color: $color-deep-purple-bg;
-}
-
-.card-title.card-colored-accent.accent-indigo {
-  background-color: $color-indigo-bg;
-}
-
-.card-title.card-colored-accent.accent-teal {
-  background-color: $color-teal-bg;
-}
-
-.card-title.card-colored-accent.accent-orange {
-  background-color: $color-orange-bg;
-}
-
-.card-title.card-colored-accent.accent-brown {
-  background-color: $color-brown-bg;
-}
-
-.card-title.card-colored-accent.accent-blue-grey {
-  background-color: $color-blue-grey-bg;
+.card-title.card-colored-accent {
+  &.accent-red {
+    background-color: $color-red-bg;
+  }
+  &.accent-pink {
+    background-color: $color-pink-bg;
+  }
+  &.accent-purple {
+    background-color: $color-purple-bg;
+  }
+  &.accent-deep-purple {
+    background-color: $color-deep-purple-bg;
+  }
+  &.accent-indigo {
+    background-color: $color-indigo-bg;
+  }
+  &.accent-teal {
+    background-color: $color-teal-bg;
+  }
+  &.accent-orange {
+    background-color: $color-orange-bg;
+  }
+  &.accent-brown {
+    background-color: $color-brown-bg;
+  }
+  &.accent-blue-grey {
+    background-color: $color-blue-grey-bg;
+  }
+  &.accent-blue {
+    background-color: $color-blue-bg;
+  }
+  &.accent-blue-yellow {
+    background-color: $color-yellow-bg;
+  }
+  &.accent-blue-green {
+    background-color: $color-green-bg;
+  }
 }
 
 .card-title.card-title-plain li a {

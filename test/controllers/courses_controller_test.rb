@@ -651,7 +651,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     strict_parser = Icalendar::Parser.new(response.body, true)
     cals = strict_parser.parse
     cal = cals.first
-    assert_equal @course.name, cal.x_wr_calname.first
+    assert_equal "Dodona: #{@course.name}", cal.x_wr_calname.first
 
     # Last created serie will be listed first
     event1 = cal.events.first

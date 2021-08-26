@@ -1,10 +1,4 @@
 <div class="card home-summary-card user">
-  <%= link_to user_path(current_user), class: 'card-title-link' do %>
-    <div class="card-title card-title-colored">
-      <h2 class="card-title-text"><%= current_user.full_name %></h2>
-    </div>
-  <% end %>
-
   <div class="card-supporting-text stats">
     <div class="row">
       <div class="col-6">
@@ -19,10 +13,12 @@
       </div>
     </div>
   </div>
+</div>
 
-  <% deadlines = @homepage_series %>
-  <% if deadlines.any? %>
-    <div class="card-supporting-text card-border deadlines">
+<% deadlines = @homepage_series %>
+<% if deadlines.any? %>
+  <div class="card home-summary-card user">
+    <div class="card-supporting-text deadlines">
       <h5>Deadlines</h5>
       <% deadlines.first(5).each do |series| %>
         <p>
@@ -34,10 +30,12 @@
         </p>
       <% end %>
     </div>
-  <% end %>
+  </div>
+<% end %>
 
-  <% if @recent_exercises.any? %>
-    <div class="card-supporting-text card-border recents">
+<% if @recent_exercises.any? %>
+  <div class="card home-summary-card user">
+    <div class="card-supporting-text recents">
       <h5><%= t ".recent-exercises" %></h5>
       <% @recent_exercises.each do |exercise| %>
         <% submission = exercise.last_submission(current_user) %>
@@ -63,6 +61,5 @@
         </p>
       <% end %>
     </div>
-  <% end %>
-
-</div>
+  </div>
+<% end %>

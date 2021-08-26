@@ -44,7 +44,7 @@ nl:
       <p>Indien je graag toegang wenst voor jouw onderwijsinstelling, neem dan contact met ons op."
       more_info: Meer info over Dodona
       smartschool: 'Smartschool'
-      google_oauth2: 'G Suite'
+      google_oauth2: 'Google Workspace'
       office365: 'Office 365'
       unknown: 'onbekende'
     contact:

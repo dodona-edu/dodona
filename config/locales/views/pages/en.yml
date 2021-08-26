@@ -44,7 +44,7 @@ en:
       <p>If you would like your institution to use Dodona, please get in touch."
       more_info: More info about Dodona
       smartschool: 'Smartschool'
-      google_oauth2: 'G Suite'
+      google_oauth2: 'Google Workspace'
       office365: 'Office 365'
       unknown: 'unknown'
     contact:

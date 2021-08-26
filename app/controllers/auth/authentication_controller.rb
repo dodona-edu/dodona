@@ -10,7 +10,7 @@ class Auth::AuthenticationController < Devise::SessionsController
     @generic_providers = {
       Provider::Smartschool => { image: 'smartschool.png', name: 'Smartschool' },
       Provider::Office365 => { image: 'office365.png', name: 'Office 365' },
-      Provider::GSuite => { image: 'google_oauth2.png', name: 'G Suite' }
+      Provider::GSuite => { image: 'Google-logo.png', name: 'Google Workspace' }
     }
 
     # Calculate some information for these providers.

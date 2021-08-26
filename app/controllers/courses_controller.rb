@@ -384,7 +384,7 @@ class CoursesController < ApplicationController
     series = @course.series.where(visibility: :open)
 
     cal = Icalendar::Calendar.new
-    cal.x_wr_calname = @course.name
+    cal.x_wr_calname = "Dodona: #{@course.name}"
 
     series.each do |serie|
       next unless serie.deadline

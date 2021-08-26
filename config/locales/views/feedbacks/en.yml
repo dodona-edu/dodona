@@ -35,6 +35,7 @@ en:
       total: "Total"
       give_max_all: "Assign the maximal score to all score items"
       give_zero_all: "Assign 0 to all score items"
+      clear_all: "Clear all scores"
     progress_row:
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
     score_actions:

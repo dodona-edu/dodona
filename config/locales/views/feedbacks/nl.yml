@@ -35,6 +35,7 @@ nl:
       total: "Totaal"
       give_max_all: "Geef de maximumscore aan alle scoreonderdelen"
       give_zero_all: "Geef 0 aan alle scoreonderdelen"
+      clear_all: "Verwijder alle scores"
     progress_row:
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluaties afgewerkt"
     score_actions:

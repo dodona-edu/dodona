@@ -165,7 +165,7 @@ export default class ScoreForm {
         this.doRequest(method, data, newFocus);
     }
 
-    private delete(): void {
+    delete(): void {
         this.doRequest("delete", {
             // eslint-disable-next-line camelcase
             expected_score: this.expectedScore.value

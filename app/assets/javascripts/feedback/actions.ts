@@ -29,6 +29,7 @@ export default class FeedbackActions {
     private readonly skipCompletedCheckBox: HTMLInputElement;
     private readonly allScoresZeroButton: HTMLButtonElement | null;
     private readonly allScoresMaxButton: HTMLButtonElement | null;
+    private readonly clearAllScoresButton: HTMLButtonElement | null;
     private readonly scoreSumElement: HTMLInputElement | null;
     private readonly completedIcon: HTMLTextElement | null;
 
@@ -60,6 +61,7 @@ export default class FeedbackActions {
 
         this.allScoresZeroButton = document.getElementById("zero-button") as HTMLButtonElement;
         this.allScoresMaxButton = document.getElementById("max-button") as HTMLButtonElement;
+        this.clearAllScoresButton = document.getElementById("clear-button") as HTMLButtonElement;
 
         this.initialiseNextButtons();
         this.initScoreForms();
@@ -158,6 +160,10 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.value = newTotal;
+            
+            if (this.clearAllScoresButton) {
+                this.clearAllScoresButton.disabled = false;
+            }
         }
 
         if (this.completedIcon) {
@@ -236,8 +242,10 @@ export default class FeedbackActions {
             e.preventDefault();
             this.disableInputs();
             this.scoreForms.forEach(f => {
-                f.markBusy();
-                f.data = "0";
+                if (!f.data) {
+                    f.markBusy();
+                    f.data = "0";
+                }
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
@@ -249,14 +257,31 @@ export default class FeedbackActions {
             e.preventDefault();
             this.disableInputs();
             this.scoreForms.forEach(f => {
-                f.markBusy();
-                f.data = f.getMax();
+                if (!f.data) {
+                    f.markBusy();
+                    f.data = f.getMax();
+                }
             });
+            if (this.clearAllScoresButton) {
+                this.clearAllScoresButton.disabled = false;
+            }
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
+            
+        });
+        this.clearAllScoresButton.addEventListener("click", async e => {
+            e.preventDefault();
+            this.disableInputs();
+            if (window.confirm(I18n.t("js.score.confirm"))) {
+                this.scoreForms.forEach(f => {
+                    if (f.data) {
+                        f.delete();
+                    }
+                })
+            }
         });
     }
 }

@@ -53,8 +53,11 @@
     <% score_items = @feedback.evaluation_exercise.score_items.order(:id) %>
     <% if score_items.length > 1 %>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-12 d-flex justify-content-between align-items-end mb-1">
           <strong><%= t ".total" %></strong>
+          <%= button_tag class: "btn btn-danger btn-sm", id: 'clear-button', title: t(".clear_all"), disabled: @feedback.score.nil? do %>
+            <i class="mdi mdi-delete-outline mdi-12" aria-hidden='true'></i>
+          <% end %>
         </div>
       </div>
       <div class="row row-no-gutters form-row">

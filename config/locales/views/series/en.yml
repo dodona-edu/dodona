@@ -54,7 +54,6 @@ en:
       confirm_evaluation: Note there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will be deleted as well.
     scoresheet:
       user: User
-      explanation: "Showing the number of correctly solved exercises and completed reading activities before the deadline"
       at_least_one_started: "Only show users that started at least one learning activity"
       no_activities_html: "This series doesn't have any learning activities. You can add some on the <a href=%{series_edit_url}>series edit page</a>."
       download: Download scoresheet

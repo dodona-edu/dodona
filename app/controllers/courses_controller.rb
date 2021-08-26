@@ -190,15 +190,18 @@ class CoursesController < ApplicationController
       format.js
       format.json
       format.csv do
-        sheet = CSV.generate do |csv|
-          csv << [I18n.t('courses.scoresheet.explanation')]
-          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
+        sheet = CSV.generate(force_quotes: true) do |csv|
+          users_labels = @course.course_memberships
+                                .includes(:course_labels, :user)
+                                .map { |m| [m.user, m.course_labels] }
+                                .to_h
+          columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
+          csv << ['Maximum', '', '', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
           @users.each do |u|
-            row = [u.first_name, u.last_name, u.username, u.email]
+            row = [u.id, u.username, u.first_name, u.last_name, u.email, users_labels[u].map(&:name).join(';')]
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:started] })
             csv << row

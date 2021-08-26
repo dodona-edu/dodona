@@ -192,15 +192,18 @@ class SeriesController < ApplicationController
       format.js
       format.json
       format.csv do
-        sheet = CSV.generate do |csv|
-          csv << [I18n.t('series.scoresheet.explanation')]
-          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name]
+        users_labels = @course.course_memberships
+                              .includes(:course_labels, :user)
+                              .map { |m| [m.user, m.course_labels] }
+                              .to_h
+        sheet = CSV.generate(force_quotes: true) do |csv|
+          columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels', @series.name]
           columns.concat(@activities.map(&:name))
           columns.concat(@activities.map { |a| I18n.t('series.scoresheet.status', activity: a.name) })
           csv << columns
-          csv << ['Maximum', '', '', '', @activities.count].concat(@activities.map { 1 }).concat(@activities.map { '' })
+          csv << ['Maximum', '', '', '', '', '', @activities.count].concat(@activities.map { 1 }).concat(@activities.map { '' })
           @users.each do |u|
-            row = [u.first_name, u.last_name, u.username, u.email]
+            row = [u.id, u.username, u.first_name, u.last_name, u.email, users_labels[u].map(&:name).join(';')]
             succeeded_exercises = @activities.map do |a|
               if a.exercise?
                 @submissions[[u.id, a.id]]&.accepted ? 1 : 0

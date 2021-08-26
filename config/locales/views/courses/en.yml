@@ -124,7 +124,6 @@ en:
       manage_series: "Manage series"
     scoresheet:
       user: User
-      explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
       scoresheet: Scoresheet

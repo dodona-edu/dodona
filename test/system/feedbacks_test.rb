@@ -119,7 +119,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
-    assert_equal '0', first_input.value
+    assert_equal '6', first_input.value # first input was manually assigned so will be untouched
     assert_equal '0', second_input.value
   end
 
@@ -130,7 +130,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
-    assert_equal @score_item_first.maximum, BigDecimal(first_input.value)
+    assert_equal '6', first_input.value
     assert_equal @score_item_second.maximum, BigDecimal(second_input.value)
   end
 

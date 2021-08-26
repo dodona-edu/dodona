@@ -160,7 +160,7 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.value = newTotal;
-            
+
             if (this.clearAllScoresButton) {
                 this.clearAllScoresButton.disabled = false;
             }
@@ -267,7 +267,6 @@ export default class FeedbackActions {
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
-            
         });
         this.clearAllScoresButton.addEventListener("click", async e => {
             e.preventDefault();
@@ -277,7 +276,7 @@ export default class FeedbackActions {
                     if (f.data) {
                         f.delete();
                     }
-                })
+                });
             }
         });
     }

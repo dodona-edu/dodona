@@ -52,17 +52,6 @@ nl:
           open_for_all: Open voor iedereen
           open_for_institution: Enkel open voor gebruikers van de ingestelde onderwijsinstelling
           closed: Gesloten
-        color: Kleur
-        colors:
-          red: Rood
-          pink: Roze
-          purple: Paars
-          deep-purple: Donkerpaars
-          indigo: Indigo
-          teal: Appelblauwzeegroen
-          orange: Oranje
-          brown: Bruin
-          blue-grey: Blauwgrijs
         institution: Onderwijsinstelling
       activity:
         name: Naam

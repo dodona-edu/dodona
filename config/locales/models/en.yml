@@ -51,17 +51,6 @@ en:
           open_for_all: Open for everyone
           open_for_institution: Only open for members of the configured institution
           closed: Closed
-        color: Color
-        colors:
-          red: Red
-          pink: Pink
-          purple: Purple
-          deep-purple: Deep Purple
-          indigo: Indigo
-          teal: Teal
-          orange: Orange
-          brown: Brown
-          blue-grey: Blue Grey
         institution: Institution
       activity:
         name: Name

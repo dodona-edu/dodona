@@ -106,11 +106,14 @@ a.card-title-link:hover {
   &.accent-blue {
     background-color: $color-blue-bg;
   }
-  &.accent-blue-yellow {
+  &.accent-yellow {
     background-color: $color-yellow-bg;
   }
-  &.accent-blue-green {
+  &.accent-green {
     background-color: $color-green-bg;
+  }
+  &.accent-cyan {
+    background-color: $color-cyan-bg;
   }
 }
 

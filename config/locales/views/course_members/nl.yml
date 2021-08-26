@@ -12,7 +12,7 @@ nl:
       labels_delimiter: "Gebruik een komma om labels te scheiden"
     members_table:
       labels: "Labels"
-      teacher_rights: "Deze persoon heeft lesgever rechten en kan de voorbeeldoplossingen van oefeningen zien, maar heeft geen toegang tot de rechten van de cursus zelf"
+      teacher_rights: "Deze persoon heeft lesgeversrechten op Dodona. Hoewel ze geen beheerder zijn van deze cursus, kunnen ze toch toegang hebben tot the voorbeeldoplossingen van oefeningen."
       member_progress_chart_info_tried:
         one: "Begonnen aan één oefening."
         other: "Begonnen aan %{count} oefeningen."

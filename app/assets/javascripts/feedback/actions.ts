@@ -262,9 +262,6 @@ export default class FeedbackActions {
                     f.data = f.getMax();
                 }
             });
-            if (this.clearAllScoresButton) {
-                this.clearAllScoresButton.disabled = false;
-            }
             const values = this.scoreForms.map(f => f.getDataForNested());
             await this.update({
                 // eslint-disable-next-line camelcase

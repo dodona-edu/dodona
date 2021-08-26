@@ -11,6 +11,7 @@ en:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"
     members_table:
+      teacher_rights: "This person has teacher rights and is able to see example solutions of exercises. Note that this person does not have access to the course itself"
       labels: "Labels"
       member_progress_chart_info_tried:
         one: "Started one exercise."

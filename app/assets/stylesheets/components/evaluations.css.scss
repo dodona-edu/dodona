@@ -25,6 +25,25 @@
   padding-bottom: 5px;
 }
 
+.feedback-metadata .username-row {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  padding-bottom: 5px;
+
+  .name {
+    flex-shrink: 0;
+  }
+
+  .token {
+    display: inline-block;
+    margin-left: 6px;
+    padding-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .feedback-metadata {
   .form-group.input {
     width: 100%;

@@ -106,14 +106,12 @@
   <div class="progress-row">
     <%= render partial: 'feedbacks/progress_row', locals: { metadata: @feedback.evaluation_exercise.metadata } %>
   </div>
-  <div class="d-flex align-items-center">
-    <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
+  <div class="username-row">
+    <h4 class="ellipsis-overflow name" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
     <% if @users_labels %>
-      <div class="d-inline-flex flex-column my-1">
-        <% @users_labels[@feedback.user].each do |label| %>
-          <span class="badge bg-danger ms-2 mb-1"><%= label.name %></span>
-        <% end %>
-      </div>
+      <% @users_labels[@feedback.user].each do |label| %>
+        <span class="token accent-orange" title="<%= label.name %>"><%= label.name %></span>
+      <% end %>
     <% end %>
   </div>
   

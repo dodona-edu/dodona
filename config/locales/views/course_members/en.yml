@@ -11,6 +11,7 @@ en:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"
     members_table:
+      teacher_rights: "This user has teacher rights on Dodona. Although they aren't an administrator of this course, it is possible they can access the sample solutions of exercises."
       labels: "Labels"
       member_progress_chart_info_tried:
         one: "Started one exercise."

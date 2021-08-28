@@ -142,6 +142,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def ical?
+    true
+  end
+
   def export?
     return true if zeus?
 

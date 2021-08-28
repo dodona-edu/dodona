@@ -380,6 +380,27 @@ class CoursesController < ApplicationController
     end
   end
 
+  def ical
+    series = @course.series.where(visibility: :open)
+
+    cal = Icalendar::Calendar.new
+    cal.x_wr_calname = "Dodona: #{@course.name}"
+
+    series.each do |serie|
+      next unless serie.deadline
+
+      cal.event do |e|
+        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z" # Set deadline to its respective UTC time
+        e.dtend = "#{(serie.deadline.to_time + 1.second).to_datetime.utc.strftime('%Y%m%dT%H%M%S')}Z" # value of dtend must be larger than value of dtstart
+        e.summary = serie.name
+        e.description = t('.serie_deadline', serie_name: serie.name, course_name: @course.name, serie_url: series_url(serie))
+        e.url = series_url(serie)
+      end
+    end
+    cal.publish
+    render plain: cal.to_ical
+  end
+
   private
 
   def try_to_subscribe_current_user(**args)

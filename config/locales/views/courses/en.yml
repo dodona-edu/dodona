@@ -122,6 +122,8 @@ en:
         other: "%{count} pending users are declined."
       copy: "Copy this course"
       manage_series: "Manage series"
+      download_deadlines: "Add course to calendar"
+      download_deadlines_tooltip: "Add this link to your calendar application to show the course deadlines in your calendar"
     scoresheet:
       user: User
       at_least_one_started: "Only show users that started at least one exercise"
@@ -201,6 +203,8 @@ en:
         enabled: Questions are enabled.
         enable: Enable them.
         disable: Disable them.
+    ical:
+      serie_deadline: "Deadline for %{serie_name} of course %{course_name}: %{serie_url}"
   submissions:
     show:
       questions:

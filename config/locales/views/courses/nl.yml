@@ -130,6 +130,8 @@ nl:
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
+      download_deadlines: "Cursus toevoegen aan kalender"
+      download_deadlines_tooltip: "Voeg deze link toe aan je agenda-applicatie om de deadlines van deze cursus in je kalender te zien"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       registration-closed: Je kan momenteel niet registreren voor deze cursus.
@@ -197,6 +199,8 @@ nl:
         enabled: Vragen zijn ingeschakeld.
         enable: Schakel vragen in.
         disable: Schakel vragen uit.
+    ical:
+      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}" 
   submissions:
     show:
       questions:

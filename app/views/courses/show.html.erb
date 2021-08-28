@@ -91,15 +91,15 @@
                     <i class="mdi mdi-cloud-download mdi-18"></i> <%= t(".download_submissions") %>
                   <% end %>
                 </li>
-                <li data-bs-toggle="tooltip" data-bs-placement="left" title="<%= t('.download_deadlines_tooltip') %>">
-                  <%= link_to ical_course_url(@course, protocol: :webcal, format: :ics), class: "dropdown-item" do %>
-                    <i class="mdi mdi-calendar mdi-18"></i> <%= t(".download_deadlines") %>
-                  <% end %>
-                </li>
               <% end %>
-              <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
+              <% if policy(@course).copy? || current_user&.course_admin?(@course) %>
                 <li role="separator" class="dropdown-divider"></li>
               <% end %>
+              <li data-bs-toggle="tooltip" data-bs-placement="left" title="<%= t('.download_deadlines_tooltip') %>">
+                <%= link_to ical_course_url(@course, protocol: :webcal, format: :ics), class: "dropdown-item" do %>
+                  <i class="mdi mdi-calendar mdi-18"></i> <%= t(".download_deadlines") %>
+                <% end %>
+              </li>
               <% if policy(@course).download_submissions? %>
                 <li>
                   <%= link_to courses_exports_path(@course, user_id: current_user.id), class: "dropdown-item" do %>

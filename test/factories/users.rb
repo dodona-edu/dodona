@@ -24,7 +24,10 @@ FactoryBot.define do
     username { Faker::Internet.unique.user_name(specifier: 5..32) }
     email { "#{first_name}.#{last_name}.#{username}@ugent.be".downcase.gsub(' ', '_') }
     permission { :student }
-    institution
+
+    trait :with_institution do
+      association :institution
+    end
   end
 
   factory :zeus, parent: :user do

@@ -445,8 +445,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     user = @subscribed.first
-    c1.update(institution: user.institution)
-    c2.update(institution: user.institution)
+    institution = create :institution
+    user.institution = institution
+    user.save
+    c1.update(institution: institution)
+    c2.update(institution: institution)
     sign_in user
 
     # all courses

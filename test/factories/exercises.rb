@@ -49,7 +49,7 @@ FactoryBot.define do
 
       submission_count { 0 }
       submission_users do
-        create_list :user, 5 if submission_count.positive?
+        create_list :user, 3 if submission_count.positive?
       end
     end
 

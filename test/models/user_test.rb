@@ -37,7 +37,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user with username should not have a token' do
-    user = create :user
+    user = create :user, :with_institution
     assert_nil user.token
   end
 
@@ -264,8 +264,8 @@ class UserTest < ActiveSupport::TestCase
     assert_not_equal username, user.username
   end
 
-  test 'institution name should return a name that is not equal to actual institutio name of the user when in demo mode' do
-    user = create :user
+  test 'institution name should return a name that is not equal to actual institution name of the user when in demo mode' do
+    user = create :user, :with_institution
     institution_name = user.institution&.name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal institution_name, user.institution&.name

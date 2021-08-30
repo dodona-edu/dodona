@@ -6,7 +6,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   crud_helpers RightsRequest, attrs: %i[context institution_name]
 
   setup do
-    sign_in create(:student)
+    sign_in create(:student, :with_institution)
   end
 
   test_crud_actions only: %i[new create], except: %i[create_redirect]
@@ -55,7 +55,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'approval should update institution name' do
-    sign_in create(:zeus)
+    sign_in create(:zeus, :with_institution)
     req = create(:rights_request)
     req.update(institution_name: "#{req.user.institution.name}-different")
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do

@@ -24,13 +24,13 @@ class FeedbacksController < ApplicationController
     @title = I18n.t('feedbacks.show.feedback')
 
     @user_labels = @feedback.evaluation
-                             .series
-                             .course
-                             .course_memberships
-                             .find_by(user_id: @feedback.user)
-                             .course_membership_labels
-                             .includes(:course_label)
-                             .map { |m| m.course_label }
+                            .series
+                            .course
+                            .course_memberships
+                            .find_by(user_id: @feedback.user)
+                            .course_membership_labels
+                            .includes(:course_label)
+                            .map { |m| m.course_label }
 
     @score_map = @feedback.scores.index_by(&:score_item_id)
     # If we refresh all scores because of a conflict, we want to make

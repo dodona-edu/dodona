@@ -170,6 +170,6 @@
         "name": "<%= escape_javascript(@course.teacher) %>"
       },
     <% end %>
-    "description": "<%= escape_javascript(@course.description) %>"
+    "description": "<%= raw escape_javascript(strip_tags markdown(@course.description)) %>"
   }
 </script>

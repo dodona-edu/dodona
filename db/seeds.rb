@@ -18,25 +18,31 @@ if Rails.env.development?
   puts "Creating institutions (#{Time.now - start})"
 
   ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png'
-  college_waregem = Institution.create name: 'College Waregem', short_name: 'College Waregem', logo: 'collegewaregem.png'
-  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'collegewaregem.png'
+  artevelde = Institution.create name: 'Artevelde', short_name: 'Artevelde', logo: 'UGent.png'
+  sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'UGent.png'
   slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.nl.png'
   college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png'
   sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
+  elixir = Institution.create name: 'Elixir', short_name: 'Elixir', logo: 'elixir.png'
+  vlaanderen = Institution.create name: 'Vlaamse Overheid', short_name: 'Vlaamse Overheid', logo: 'elixir.png'
 
   puts "Creating providers (#{Time.now - start})"
 
   # Office 365.
-  Provider::Office365.create institution: college_waregem, identifier: '9fdf506a-3be0-4f07-9e03-908ceeae50b4'
+  Provider::Office365.create institution: artevelde, identifier: 'b6e080ea-adb9-4c79-9303-6dcf826fb854'
   Provider::Office365.create institution: sg_paulus, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'
   Provider::Office365.create institution: sint_bavo, identifier: 'a1d4c74b-2a28-46a6-89a5-912641f59eae'
 
   # SAML.
-  Provider::Saml.create institution: ugent, sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://ugent.be'
+  Provider::Saml.create institution: ugent, sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://identity.ugent.be/simplesaml/saml2/idp/metadata.php'
+  Provider::Saml.create institution: elixir, sso_url: 'https://ugent.be', slo_url: 'https://ugent.be', certificate: 'Test certificate please ignore', entity_id: 'https://login.elixir-czech.org/idp/'
 
   # Smartschool.
   Provider::Smartschool.create institution: slo, identifier: 'https://slow.smartschool.be'
   Provider::Smartschool.create institution: college_ieper, identifier: 'https://college-ieper.smartschool.be'
+
+  # OIDC
+  Provider::Oidc.create institution: vlaanderen, client_id: '12345', issuer: 'https://authenticatie.vlaanderen.be/op'
 
   puts "Creating users (#{Time.now - start})"
 
@@ -153,7 +159,7 @@ if Rails.env.development?
   end
 
   raise "Could not initialize python judge, try again or use 'SKIP_PYTHON_JUDGE=true rails db:setup'" if python_judge.nil?
-    
+
 
   # Other judges
 

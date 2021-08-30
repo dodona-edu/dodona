@@ -28,9 +28,7 @@ class FeedbacksController < ApplicationController
                             .course
                             .course_memberships
                             .find_by(user_id: @feedback.user)
-                            .course_membership_labels
-                            .includes(:course_label)
-                            .map(&:course_label)
+                            .course_labels
 
     @score_map = @feedback.scores.index_by(&:score_item_id)
     # If we refresh all scores because of a conflict, we want to make

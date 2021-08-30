@@ -8,31 +8,34 @@
   }
 }
 
-.feedback-metadata .complete-feedback {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: normal;
-  width: 100%;
-}
-.feedback-metadata .uncomplete-feedback {
-  display: flex;
-}
+.feedback-metadata {
+  .complete-feedback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+    width: 100%;
+  }
 
-.feedback-metadata .form-row {
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-}
+  .uncomplete-feedback {
+    display: flex;
+  }
 
-.feedback-metadata .username-row {
-  display: flex;
-  align-items: center;
-  white-space: nowrap;
-  padding-bottom: 5px;
+  .form-row {
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+  }
 
-  .name {
-    flex-shrink: 0;
+  .username-row {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding-bottom: 5px;
+  
+    .name {
+      flex-shrink: 0;
+    }
   }
 
   .token {
@@ -42,9 +45,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
   }
-}
 
-.feedback-metadata {
+  .labels-row {
+    display: flex;
+    white-space: nowrap;
+    margin-top: -6px;
+    margin-bottom: 12px;
+    margin-left: -6px;
+  }
+
   .form-group.input {
     width: 100%;
     margin-bottom: 0;

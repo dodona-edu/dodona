@@ -29,7 +29,10 @@ class CoursesController < ApplicationController
     elsif params[:tab] == 'featured'
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
-      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      @own_courses = @courses.joins("INNER JOIN course_memberships ON courses.id = course_memberships.course_id AND course_memberships.user_id = #{@current_user.id} AND course_memberships.status = 1")
+                             .reorder(featured: :desc, year: :desc, name: :asc)
+      @other_courses = @courses.joins("INNER JOIN course_memberships ON courses.id = course_memberships.course_id AND course_memberships.user_id = #{@current_user.id} AND course_memberships.status != 1")
+                               .reorder(featured: :desc, year: :desc, name: :asc)
     end
 
     @courses = apply_scopes(@courses)

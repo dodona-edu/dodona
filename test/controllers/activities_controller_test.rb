@@ -242,7 +242,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise
     series_exercise = create :exercise, repository: @instance.repository
-    create :exercise # Other exercise that should never show up
+    create :exercise, :generated_repo # Other exercise that should never show up
     series = create :series, course: course, exercises: [series_exercise]
     admin = create :staff, administrating_courses: [course], repositories: [other_exercise.repository]
 

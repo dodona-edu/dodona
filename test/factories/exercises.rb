@@ -38,8 +38,13 @@ FactoryBot.define do
 
     sequence(:path) { |n| "exercise#{n}" }
 
-    association :repository, factory: %i[repository git_stubbed]
+    repository { Repository.find(1) } # load python repo fixture
     judge { repository.judge }
+
+    trait :generated_repo do
+      association :repository, factory: %i[repository git_stubbed]
+      judge { repository.judge }
+    end
 
     transient do
       name { nil }

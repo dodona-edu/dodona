@@ -26,8 +26,10 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = new Set(_paramVals); // remove duplicate items
-    const url = new URL(_url, window.location.origin);
-    url.searchParams.delete(param);
+    let url = new URL(_url, window.location.origin);
+    // decode "%5B%5D" back to "[]" in URL so the parameter can be deleted
+    url = new URL(decodeURI(url));
+    url.searchParams.delete(`${param}[]`);
     paramVals.forEach(paramVal => {
         url.searchParams.append(`${param}[]`, paramVal);
     });

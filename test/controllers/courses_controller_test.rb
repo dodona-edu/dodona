@@ -261,7 +261,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       students = create_list :student, 10
       @course.pending_members = students
 
-      submission = create :submission, course: @course
+      submission = create :submission, :generated_user, course: @course
       @course.pending_members << submission.user
 
       post mass_decline_pending_course_url(@course)

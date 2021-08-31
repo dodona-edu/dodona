@@ -191,14 +191,12 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get activities by type' do
-    cp = create :content_page
-    ex = @instance
+    start_exercises = Activity.exercises.count
+    start_content = Activity.content_pages.count
     get activities_url(format: :json, type: ContentPage.name)
-    assert_equal 1, JSON.parse(response.body).count
-    assert_equal cp.id, JSON.parse(response.body)[0]['id']
+    assert_equal start_content, JSON.parse(response.body).count
     get activities_url(format: :json, type: Exercise.name)
-    assert_equal 1, JSON.parse(response.body).count
-    assert_equal ex.id, JSON.parse(response.body)[0]['id']
+    assert_equal start_exercises, JSON.parse(response.body).count
   end
 
   test 'should get activities with certain description languages available' do
@@ -231,7 +229,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should get activities filtered by judge' do
     judge = @instance.judge
     get activities_url(format: :json, judge_id: judge.id)
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal Activity.where(judge: judge).count, JSON.parse(response.body).count
     assert_equal @instance.id, JSON.parse(response.body)[0]['id']
 
     get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
@@ -239,6 +237,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get available activities for series' do
+    start_exercises = Activity.exercises.count
     course = create :course, usable_repositories: [@instance.repository]
     other_exercise = create :exercise
     series_exercise = create :exercise, repository: @instance.repository
@@ -257,7 +256,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
     assert result_exercises.any? { |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
     assert result_exercises.any? { |ex| ex['id'] == series_exercise.id }, 'should also contain exercises already used by series'
-    assert_equal 3, result_exercises.count, 'should only contain available exercises'
+    assert_equal start_exercises + 2, result_exercises.count, 'should only contain available exercises'
   end
 
   test 'should get available activities for course with labels' do
@@ -584,16 +583,18 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'exercise overview should not include closed, hidden or invalid exercises' do
+    start_activities = Activity.count
     visible = create_exercises_return_valid
 
     get activities_url, params: { format: :json }
 
     exercises = JSON.parse response.body
-    assert_equal 1, exercises.length
+    assert_equal start_activities + 1, exercises.length
     assert_equal visible.id, exercises.first['id']
   end
 
   test 'exercise overview should include everything for admin' do
+    start = Exercise.count
     create_exercises_return_valid
     sign_out :user
     sign_in create(:zeus)
@@ -601,7 +602,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     get activities_url, params: { format: :json }
 
     exercises = JSON.parse response.body
-    assert_equal 3, exercises.length
+    assert_equal 3, exercises.length - start
   end
 
   test 'exercise solved in other course should not take into account solutions from different course' do

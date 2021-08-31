@@ -126,8 +126,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to filter by user' do
-    s1 = create :course_submission
-    s2 = create :course_submission
+    s1 = create :course_submission, :generated_user
+    s2 = create :course_submission, :generated_user
     create :question, submission: s1
     create :question, submission: s2
 

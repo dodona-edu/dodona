@@ -20,10 +20,18 @@ FactoryBot.define do
     evaluate { false }
     skip_rate_limit_check { true }
 
-    user
-    exercise
+    user { User.find(3) } # load student user fixture
+    exercise { Exercise.find(1) } # load python exercise fixture
 
     initialize_with { new(attributes) }
+
+    trait :generated_user do
+      association :user
+    end
+
+    trait :generated_exercise do
+      association :exercise
+    end
 
     trait :correct do
       status { 'correct' }

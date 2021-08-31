@@ -9,7 +9,7 @@ class CoursesTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   test 'Can view courses page with working tabs' do
-    zeus = create(:zeus)
+    zeus = create(:zeus, :with_institution)
     c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     c3 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1

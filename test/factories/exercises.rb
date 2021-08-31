@@ -35,7 +35,6 @@ FactoryBot.define do
     description_en_present { false }
     access { 'public' }
     status { 'ok' }
-    programming_language
 
     sequence(:path) { |n| "exercise#{n}" }
 
@@ -73,6 +72,10 @@ FactoryBot.define do
 
     after :build do |exercise|
       exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1 })
+    end
+
+    trait :with_programming_language do
+      association :programming_language
     end
 
     trait :nameless do

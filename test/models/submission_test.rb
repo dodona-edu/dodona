@@ -37,7 +37,7 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'should not create job for submission which is already queued' do
     submission = nil
     assert_jobs_enqueued(1) do
-      submission = create :submission
+      submission = create :submission, evaluate: true
     end
     assert_jobs_enqueued(0) do
       submission.evaluate_delayed

@@ -13,7 +13,7 @@ beforeEach(() => {
     noParameterURL = "https://example.com/test_functions";
     oneParameterURL = "https://example.com/test_functions?param1=paramVal1";
     twoParameterURL = "https://example.com/test_functions?param1=paramVal1&param2=paramVal2";
-    // "[]"" are converted to "%5B%5D" in a URL
+    // "[]" is converted to "%5B%5D" in a URL
     multipleValueUrl = "https://example.com/test_functions?param%5B%5D=paramVal1&param%5B%5D=paramVal2&param%5B%5D=paramVal3";
 });
 

@@ -10,7 +10,7 @@ class CoursesController < ApplicationController
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
     scope.at_least_one_started_in_course(Course.find(controller.params[:id]))
   end
-  has_scope :by_course_labels, as: 'course_labels', only: :scoresheet do |controller, scope, value|
+  has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, controller.params[:id])
   end
 

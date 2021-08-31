@@ -5,7 +5,7 @@ class CourseMembersController < ApplicationController
   has_scope :by_permission
   has_scope :by_institution, as: 'institution_id'
   has_scope :by_filter, as: 'filter'
-  has_scope :by_course_labels, as: 'course_labels'
+  has_scope :by_course_labels, as: 'course_labels', type: :array
 
   def index
     statuses = if %w[unsubscribed pending].include? params[:status]

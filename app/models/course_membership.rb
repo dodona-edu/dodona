@@ -35,7 +35,6 @@ class CourseMembership < ApplicationRecord
     includes(:course_labels)
       .where(course_labels: { name: course_labels })
       .group(:id)
-      .having('COUNT(DISTINCT(course_membership_labels.course_label_id)) = ?', course_labels.uniq.length)
   }
 
   def subscribed?

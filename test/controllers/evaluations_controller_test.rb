@@ -505,7 +505,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'course admins can change grade visibility' do
     evaluation = create :evaluation, :with_submissions
-    evaluation.series.course.administrating_members << @course_admin
     from = evaluation.evaluation_exercises.first
     s1 = create :score_item, evaluation_exercise: from
     s2 = create :score_item, evaluation_exercise: from

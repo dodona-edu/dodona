@@ -1,0 +1,30 @@
+# == Schema Information
+#
+# Table name: courses
+#
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  year              :string(255)
+#  secret            :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  description       :text(16777215)
+#  visibility        :integer
+#  registration      :integer
+#  color             :integer
+#  teacher           :string(255)
+#  institution_id    :bigint
+#  search            :string(4096)
+#  moderated         :boolean          default(FALSE), not null
+#  enabled_questions :boolean          default(TRUE), not null
+#  featured          :boolean          default(FALSE), not null
+#
+
+course_1:
+  id: 1
+  name: course 1
+  year: 2021-2022
+  description: This is the description of course 1
+  visibility: 0 # visible for all
+  registration: 0 # open for all
+  teacher: Prof. Zonnebloem

@@ -23,7 +23,11 @@ FactoryBot.define do
     sequence(:name) { |n| "Series #{n}" }
     description { Faker::TvShows::DrWho.quote }
     visibility { :open }
-    course
+    course { Course.find(1) } # load course 1 fixture
+
+    trait :generated_course do
+      association :course
+    end
 
     trait :hidden do
       visibility { :hidden }

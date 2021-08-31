@@ -473,7 +473,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get courses_url, params: { format: :json }
     assert_response :success
     courses = JSON.parse response.body
-    assert_equal 1, courses.length
+    assert_equal Course.count, courses.length
     get courses_url, params: { format: :json, tab: 'featured' }
     assert_response :success
     courses = JSON.parse response.body

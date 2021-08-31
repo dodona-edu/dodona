@@ -607,9 +607,9 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'exercise solved in other course should not take into account solutions from different course' do
     ex = create_exercises_return_valid
-    s1 = create :series
+    s1 = create :series, :generated_course
     s1.exercises << ex
-    s2 = create :series
+    s2 = create :series, :generated_course
     s2.exercises << ex
     s1.course.enrolled_members << @user
     s2.course.enrolled_members << @user
@@ -633,9 +633,9 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'reading activity read in other course should not take into account read state from different course' do
     ra = create :content_page
-    s1 = create :series
+    s1 = create :series, :generated_course
     s1.content_pages << ra
-    s2 = create :series
+    s2 = create :series, :generated_course
     s2.content_pages << ra
     s1.course.enrolled_members << @user
     s2.course.enrolled_members << @user

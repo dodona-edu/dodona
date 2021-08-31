@@ -26,7 +26,7 @@ class CoursesTest < ApplicationSystemTestCase
 
     find('#course-tabs').click_link 'All courses'
     assert_selector 'a[href="#all"].active'
-    assert_selector '#courses-table-wrapper tbody tr', count: 3
+    assert_selector '#courses-table-wrapper tbody tr', count: 4
     find('#course-tabs').click_link 'My courses'
     assert_selector 'a[href="#my"].active'
     assert_selector '#courses-table-wrapper tbody tr', count: 1

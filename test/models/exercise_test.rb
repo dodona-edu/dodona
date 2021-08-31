@@ -470,7 +470,7 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'exercise not made within course should not be accepted for that course' do
-    series = create_list :series, 2, exercises: [@exercise]
+    series = create_list :series, 2, :generated_course, exercises: [@exercise]
     courses = series.map(&:course)
 
     create :correct_submission,

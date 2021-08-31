@@ -29,6 +29,32 @@
           <% end %>
         </div>
       </div>
+      <div class="row">
+        <div class="col-12 col-sm-3 admin-card-stat">
+          <%= link_to questions_course_path(@course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter @unanswered + @in_progress + @answered, delimiter: " " %></h1>
+            <%= t "courses.statistics.total_questions" %>
+          <% end %>
+        </div>
+        <div class="col-12 col-sm-3 admin-card-stat">
+          <%= link_to questions_course_path(@course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter @unanswered, delimiter: " " %></h1>
+            <%= t "courses.statistics.unanswered_questions" %>
+          <% end %>
+        </div>
+        <div class="col-12 col-sm-3 admin-card-stat">
+          <%= link_to questions_course_path(@course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter @in_progress, delimiter: " " %></h1>
+            <%= t "courses.statistics.in_progress_questions" %>
+          <% end %>
+        </div>
+        <div class="col-12 col-sm-3 admin-card-stat">
+          <%= link_to questions_course_path(@course), class: 'card-title-link' do %>
+            <h1><%= number_with_delimiter @answered, delimiter: " " %></h1>
+            <%= t "courses.statistics.answered_questions" %>
+          <% end %>
+        </div>
+      </div>
 
       <%= render partial: 'visualizations/punchcard', locals: {course: @course} %>
 

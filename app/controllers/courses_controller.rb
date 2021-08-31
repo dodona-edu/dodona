@@ -171,6 +171,9 @@ class CoursesController < ApplicationController
   def statistics
     @title = I18n.t('courses.statistics.statistics')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), '#']]
+    @unanswered = @course.unanswered_questions.count
+    @in_progress = @course.in_progress_questions.count
+    @answered = @course.answered_questions.count
   end
 
   def scoresheet

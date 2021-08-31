@@ -165,6 +165,10 @@ en:
       failed: "Failed unfavoriting course"
     statistics:
       statistics: "Statistics"
+      total_questions: "Total number of questions"
+      unanswered_questions: "Unanswered questions"
+      in_progress_questions: "Questions in progress"
+      answered_questions: "Answered questions"
     user_stats:
       subscribed_users: Registered users
       submitted_solutions: Submitted solutions

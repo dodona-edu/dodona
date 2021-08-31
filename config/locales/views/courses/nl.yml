@@ -161,6 +161,10 @@ nl:
       failed: "Cursus uit favorieten verwijderen mislukt"
     statistics:
       statistics: "Statistieken"
+      total_questions: "Totaal aantal vragen"
+      unanswered_questions: "Onbeantwoorde vragen"
+      in_progress_questions: "Vragen in behandeling"
+      answered_questions: "Beantwoorde vragen"
     user_stats:
       subscribed_users: Geregistreerde gebruikers
       exercise_count: Oefeningen

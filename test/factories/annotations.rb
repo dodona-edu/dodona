@@ -20,7 +20,7 @@ FactoryBot.define do
     line_nr { 0 }
     annotation_text { 'This code does not contain the right parameters' }
     submission
-    user
+    user { User.find(2) } # load student fixture
 
     factory :question, class: 'Question' do
       # Only the submitter can create questions

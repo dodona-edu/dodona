@@ -19,46 +19,43 @@ require 'test_helper'
 
 class AnnotationTest < ActiveSupport::TestCase
   setup do
-    @user = create :user, {}
-    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user, course: create(:course)
+    @user = users(:student)
+    @annotating_user = users(:staff)
+    course = courses(:course_1)
+    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user, course: course
   end
 
   test 'can create line-bound annotation' do
-    annotating_user = create :user
-    annotation = create :annotation, line_nr: 1, submission: @submission, user: annotating_user
+    annotation = build :annotation, line_nr: 1, submission: @submission, user: @annotating_user
     assert annotation.valid?
   end
 
   test 'can not create annotation with negative line_nr' do
-    annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation = build :annotation, submission: @submission, user: @annotating_user
     annotation.line_nr = -1
     assert_not annotation.valid?
   end
 
   test 'can create global annotation' do
-    annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation = build :annotation, submission: @submission, user: @annotating_user
     annotation.line_nr = nil
     assert annotation.valid?
   end
 
   test 'can not create annotation without some sort of message' do
-    annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation = build :annotation, submission: @submission, user: @annotating_user
     annotation.annotation_text = ''
     assert_not annotation.valid?
   end
 
   test 'can not create annotation with an enormous message' do
-    annotating_user = create :user
-    annotation = create :annotation, submission: @submission, user: annotating_user
+    annotation = build :annotation, submission: @submission, user: @annotating_user
     annotation.annotation_text = 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
     assert_not annotation.valid?
   end
 
   test 'user can create annotation on own submission' do
-    annotation = create :annotation, submission: @submission, user: @user
+    annotation = build :annotation, submission: @submission, user: @user
     assert annotation.valid?
   end
 
@@ -69,7 +66,7 @@ class AnnotationTest < ActiveSupport::TestCase
 
   test 'last_updated_by can be changed' do
     annotation = create :annotation, submission: @submission, user: @user
-    other_user = create :user
+    other_user = @annotating_user
     annotation.update(last_updated_by: other_user)
     annotation.reload
     assert_equal other_user, annotation.last_updated_by

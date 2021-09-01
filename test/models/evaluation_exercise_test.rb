@@ -52,8 +52,8 @@ class EvaluationExerciseTest < ActiveSupport::TestCase
     # max but no average
     assert_equal BigDecimal('17'), @exercise1.reload.maximum_score
     assert_equal BigDecimal('5'), @exercise2.reload.maximum_score
-    assert_nil @exercise1.reload.average_score
-    assert_nil @exercise2.reload.average_score
+    assert_nil @exercise1.average_score
+    assert_nil @exercise2.average_score
 
     add_scores
 
@@ -63,9 +63,9 @@ class EvaluationExerciseTest < ActiveSupport::TestCase
 
     # This exercise has two users, each with scores.
     # ((11+4) + (12+0)) / 2 = (15 + 12) / 2 = 27 / 2 = 13.5
-    assert_equal BigDecimal('13.5'), @exercise1.reload.average_score
+    assert_equal BigDecimal('13.5'), @exercise1.average_score
     # This exercise has two users, but only one feedback with a score.
     # (5+0) / 1 = 5 / 1 = 5
-    assert_equal BigDecimal('5'), @exercise2.reload.average_score
+    assert_equal BigDecimal('5'), @exercise2.average_score
   end
 end

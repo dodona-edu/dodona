@@ -53,7 +53,7 @@
               <p class="help-block"><%= t ".evaluation_details_info_html" %></p>
               <%= render partial: 'layouts/searchbar', locals: { course_labels: @course_labels } %>
               <div id="evaluation-table-wrapper">
-                <%= render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation %>
+                <%= render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users %>
               </div>
             </div>
             <% if @evaluation.graded? %>

@@ -57,13 +57,13 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent {
-  color: $header-fg;
+  color: $text-on-bg-color;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 
   .card-subtitle-text {
     margin-top: 3px;
-    color: $header-fg-secondary;
+    color: $text-secondary-on-bg-color;
   }
 
   .card-subtitle-text + .card-subtitle-text {
@@ -75,40 +75,46 @@ a.card-title-link:hover {
   }
 }
 
-.card-title.card-colored-accent.accent-red {
-  background-color: $color-red;
-}
-
-.card-title.card-colored-accent.accent-pink {
-  background-color: $color-pink;
-}
-
-.card-title.card-colored-accent.accent-purple {
-  background-color: $color-purple;
-}
-
-.card-title.card-colored-accent.accent-deep-purple {
-  background-color: $color-deep-purple;
-}
-
-.card-title.card-colored-accent.accent-indigo {
-  background-color: $color-indigo;
-}
-
-.card-title.card-colored-accent.accent-teal {
-  background-color: $color-teal;
-}
-
-.card-title.card-colored-accent.accent-orange {
-  background-color: $color-orange;
-}
-
-.card-title.card-colored-accent.accent-brown {
-  background-color: $color-brown;
-}
-
-.card-title.card-colored-accent.accent-blue-grey {
-  background-color: $color-blue-grey;
+.card-title.card-colored-accent {
+  &.accent-red {
+    background-color: $color-red-bg;
+  }
+  &.accent-pink {
+    background-color: $color-pink-bg;
+  }
+  &.accent-purple {
+    background-color: $color-purple-bg;
+  }
+  &.accent-deep-purple {
+    background-color: $color-deep-purple-bg;
+  }
+  &.accent-indigo {
+    background-color: $color-indigo-bg;
+  }
+  &.accent-teal {
+    background-color: $color-teal-bg;
+  }
+  &.accent-orange {
+    background-color: $color-orange-bg;
+  }
+  &.accent-brown {
+    background-color: $color-brown-bg;
+  }
+  &.accent-blue-grey {
+    background-color: $color-blue-grey-bg;
+  }
+  &.accent-blue {
+    background-color: $color-blue-bg;
+  }
+  &.accent-yellow {
+    background-color: $color-yellow-bg;
+  }
+  &.accent-green {
+    background-color: $color-green-bg;
+  }
+  &.accent-cyan {
+    background-color: $color-cyan-bg;
+  }
 }
 
 .card-title.card-title-plain li a {

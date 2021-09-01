@@ -23,7 +23,7 @@ require 'test_helper'
 
 class ActivityStatusTest < ActiveSupport::TestCase
   test 'submitting to an exercise should update all activity statuses' do
-    course = courses(:course_1)
+    course = courses(:course1)
     series = create :series, course: course, exercise_count: 1
     activity = series.activities.first
     user = users(:student)

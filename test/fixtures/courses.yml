@@ -20,7 +20,7 @@
 #  featured          :boolean          default(FALSE), not null
 #
 
-course_1:
+course1:
   id: 1
   name: course 1
   year: 2021-2022

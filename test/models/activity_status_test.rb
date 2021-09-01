@@ -23,10 +23,10 @@ require 'test_helper'
 
 class ActivityStatusTest < ActiveSupport::TestCase
   test 'submitting to an exercise should update all activity statuses' do
-    course = create :course
+    course = courses(:course_1)
     series = create :series, course: course, exercise_count: 1
     activity = series.activities.first
-    user = create :user
+    user = users(:student)
     as1 = create :activity_status, user: user, activity: activity, series: nil
     as2 = create :activity_status, user: user, activity: activity, series: series
     assert_not as1.started
@@ -41,8 +41,8 @@ class ActivityStatusTest < ActiveSupport::TestCase
   end
 
   test 'should not be able to create two activity_statuses with series_id nil' do
-    activity = create :exercise
-    user = create :user
+    activity = exercises(:python_exercise)
+    user = users(:student)
     ActivityStatus.create(user: user, activity: activity, series: nil)
     ActivityStatus.create(user: user, activity: activity, series: nil)
     assert_equal 1, ActivityStatus.count

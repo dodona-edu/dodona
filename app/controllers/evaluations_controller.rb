@@ -12,6 +12,8 @@ class EvaluationsController < ApplicationController
   def show
     redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
     @feedbacks = @evaluation.evaluation_sheet
+    @users = apply_scopes(@evaluation.users)
+    @course_labels = CourseLabel.where(course: @course)
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
   end

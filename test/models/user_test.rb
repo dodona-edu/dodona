@@ -50,23 +50,23 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'only zeus and staff should be admin' do
-    assert create(:zeus).admin?
-    assert create(:staff).admin?
-    assert_not create(:user).admin?
+    assert users(:zeus).admin?
+    assert users(:staff).admin?
+    assert_not users(:student).admin?
   end
 
   test 'only zeus should always be course admin' do
-    assert create(:zeus).course_admin? nil
-    assert_not create(:staff).course_admin? nil
-    assert_not create(:user).course_admin? nil
+    assert users(:zeus).course_admin? nil
+    assert_not users(:staff).course_admin? nil
+    assert_not users(:student).course_admin? nil
   end
 
   test 'user and staff can be course admin' do
-    user = create(:user)
-    staff = create(:staff)
-    zeus = create(:zeus)
+    user = users(:student)
+    staff = users(:staff)
+    zeus = users(:zeus)
 
-    course = create(:course)
+    course = courses(:course1)
 
     assert_not user.course_admin?(course)
     assert_not staff.course_admin?(course)
@@ -88,7 +88,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'full name should be n/a when blank' do
-    user = create(:user, first_name: nil, last_name: nil)
+    user = build(:user, first_name: nil, last_name: nil)
     assert_equal 'n/a', user.full_name
 
     user.first_name = ' '
@@ -103,7 +103,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'short name should not be nil' do
-    user = create(:user)
+    user = build(:user)
     assert_equal user.username, user.short_name
 
     user.username = nil
@@ -117,11 +117,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user member_off should tell whether he is in a course or not' do
-    user1 = create(:user)
-    user2 = create(:user)
+    user1 = users(:student)
+    user2 = users(:staff)
 
-    course1 = create(:course)
-    course2 = create(:course)
+    course1 = build(:course)
+    course2 = build(:course)
 
     user1.courses << course1
     user2.courses << course2
@@ -139,11 +139,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user should have correct number of attempted, unfinished and correct exercises' do
-    user = create :user
+    user = users(:student)
     exercise1 = create :exercise
     exercise2 = create :exercise
     exercise3 = create :exercise
-    create :exercise
 
     assert_user_exercises user, 0, 0, 0
 
@@ -222,43 +221,43 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should allow two users with empty usernames' do
-    user1 = create :user
-    user2 = create :user
+    user1 = users(:student)
+    user2 = users(:staff)
 
     assert user1.update(username: '')
     assert user2.update(username: '')
   end
 
   test 'full_name should return a full name that is not equal to actual full name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     full_name = user.full_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal full_name, user.full_name
   end
 
   test 'first_name should return a first_name that is not equal to actual first name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     first_name = user.first_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal first_name, user.first_name
   end
 
   test 'last_name should return a last name that is not equal to actual last name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     last_name = user.last_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal last_name, user.last_name
   end
 
   test 'email should return a email that is not equal to actual email of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     email = user.email
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal email, user.email
   end
 
   test 'username should return a username that is not equal to actual username of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     username = user.username
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal username, user.username
@@ -272,7 +271,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
-    user = create :user
+    user = users(:student)
     exercises = (0..5).map { create :exercise }
     create :series, exercises: exercises
     exercises.each { |e| create :submission, user: user, exercise: e }
@@ -281,7 +280,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'pending_series should return all series of the users courses that have a deadline' do
-    user = create :user
+    user = users(:student)
     course = create :course, users: [user]
     create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
     pending_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
@@ -303,8 +302,8 @@ end
 
 class UserHasManyTest < ActiveSupport::TestCase
   def setup
-    @user = create :user
-    @administrating_course = create :course
+    @user = users(:student)
+    @administrating_course = courses(:course1)
     membership_course_admin = CourseMembership.new(user: @user, course: @administrating_course, status: 'course_admin')
     @administrating_course.course_memberships.concat(membership_course_admin)
     @favorite_course = create :course
@@ -327,12 +326,18 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 3, subscribed_courses.count
   end
 
-  test 'favorite_courses should return the courses in which the user has set as favorite' do
+  test 'course functions should work' do
+    # favorite_courses should return the courses in which the user has set as favorite
     assert_equal [@favorite_course], @user.favorite_courses
-  end
 
-  test 'administrating_courses should return the courses in which the user is an admin' do
+    # administrating_courses should return the courses in which the user is an admin
     assert_equal [@administrating_course], @user.administrating_courses
+
+    # pending_courses should return the courses in which the user is a student
+    assert_equal [@pending_course], @user.pending_courses
+
+    # unsubscribed_courses should return the courses in which the user is a student
+    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
 
   test 'enrolled_courses should return the courses in which the user is a student' do
@@ -340,14 +345,6 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal true, enrolled_courses.include?(@enrolled_course.id)
     assert_equal true, enrolled_courses.include?(@favorite_course.id)
     assert_equal 2, enrolled_courses.count
-  end
-
-  test 'pending_courses should return the courses in which the user is a student' do
-    assert_equal [@pending_course], @user.pending_courses
-  end
-
-  test 'unsubscribed_courses should return the courses in which the user is a student' do
-    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
 
   test 'drawer_courses should not return courses if not subscribed for any' do

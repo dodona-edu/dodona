@@ -26,7 +26,7 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = new Set(_paramVals); // remove duplicate items
-    
+
     // use decodeURI to convert "%5B%5D" back to "[]"
     const url = new URL(decodeURI(_url), window.location.origin);
     url.searchParams.delete(`${param}[]`);

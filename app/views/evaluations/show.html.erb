@@ -40,6 +40,7 @@
     </div>
     <div class="card">
       <div class="card-supporting-text">
+      <%= render partial: 'layouts/searchbar', locals: { course_labels: @course_labels } %>
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" role="tablist">
             <li role="presentation">
@@ -51,7 +52,6 @@
           <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="evaluation-details">
               <p class="help-block"><%= t ".evaluation_details_info_html" %></p>
-              <%= render partial: 'layouts/searchbar', locals: { course_labels: @course_labels } %>
               <div id="evaluation-table-wrapper">
                 <%= render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users %>
               </div>
@@ -70,7 +70,6 @@
                     </div>
                   </div>
                 </div>
-                <%= render partial: 'layouts/searchbar', locals: { course_labels: @course_labels }%>
                 <div id="evaluation-grade-table-wrapper">
                   <%= render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users %>
                 </div>

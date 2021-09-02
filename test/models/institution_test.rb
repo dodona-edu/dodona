@@ -68,6 +68,18 @@ class InstitutionTest < ActiveSupport::TestCase
     assert provider3.redirect?
   end
 
+  test 'should merge if there are smartschool users with no email' do
+    institution_to_merge = create :institution
+    provider = create(:smartschool_provider, institution: institution_to_merge, mode: :prefer)
+    user = create :user, email: nil, institution: institution_to_merge
+    create :identity, provider: provider, user: user
+    institution = create :institution
+    create :provider, institution: institution, mode: :prefer
+    institution_to_merge.merge_into(institution)
+    assert institution_to_merge.destroyed?
+    assert_equal user.reload.institution_id, institution.id
+  end
+
   test 'merge should update users' do
     institution_to_merge = create :institution
     users = create_list :user, 4, institution: institution_to_merge

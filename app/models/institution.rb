@@ -56,8 +56,6 @@ class Institution < ApplicationRecord
     errors.add(:merge, 'has link provider') if providers.any?(&:link?)
     return false if errors.any?
 
-    courses.each { |c| c.update(institution: other) }
-    users.each { |u| u.update(institution: other) }
     providers.each do |p|
       if p.prefer?
         p.update(institution: other, mode: :secondary)
@@ -65,6 +63,8 @@ class Institution < ApplicationRecord
         p.update(institution: other)
       end
     end
+    courses.each { |c| c.update(institution: other) }
+    users.each { |u| u.update(institution: other) }
     reload
     destroy
   end

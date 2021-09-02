@@ -13,24 +13,22 @@ beforeEach(() => {
     noParameterURL = "https://example.com/test_functions";
     oneParameterURL = "https://example.com/test_functions?param1=paramVal1";
     twoParameterURL = "https://example.com/test_functions?param1=paramVal1&param2=paramVal2";
-    multipleValueUrl = "https://example.com/test_functions?param=paramVal1&param=paramVal2&param=paramVal3";
+    // "[]" is converted to "%5B%5D" in a URL
+    multipleValueUrl = "https://example.com/test_functions?param%5B%5D=paramVal1&param%5B%5D=paramVal2&param%5B%5D=paramVal3";
 });
 
-test("return correct parameter value if present", () => {
+test("return correct parameter value", () => {
     expect(getURLParameter("param", relativePathParameter)).toBe("paramVal");
     expect(getURLParameter("param1", oneParameterURL)).toBe("paramVal1");
     expect(getURLParameter("param2", twoParameterURL)).toBe("paramVal2");
-    expect(getURLParameter("param", multipleValueUrl)).toBe("paramVal1");
 
-    expect(getArrayURLParameter("param", relativePathParameter)).toEqual(["paramVal"]);
-    expect(getArrayURLParameter("param1", twoParameterURL)).toEqual(["paramVal1"]);
-    expect(getArrayURLParameter("param", multipleValueUrl)).toEqual(["paramVal1", "paramVal2", "paramVal3"]);
-});
-
-test("return null or empty list when parameter not present", () => {
     expect(getURLParameter("param", relativePath)).toBe(null);
     expect(getURLParameter("param", noParameterURL)).toBe(null);
     expect(getURLParameter("wrongParam", oneParameterURL)).toBe(null);
+});
+
+test("return correct array parameter value if present", () => {
+    expect(getArrayURLParameter("param", multipleValueUrl)).toEqual(["paramVal1", "paramVal2", "paramVal3"]);
 
     expect(getArrayURLParameter("param", relativePath)).toEqual([]);
     expect(getArrayURLParameter("param", noParameterURL)).toEqual([]);
@@ -53,25 +51,23 @@ test("update URL parameter", () => {
     updatedURL = updateURLParameter(twoParameterURL, "param3", "paramVal3");
     expect(updatedURL).toEqual(`${twoParameterURL}&param3=paramVal3`);
 
-    updatedURL = updateURLParameter(multipleValueUrl, "param", "newParamVal");
-    expect(updatedURL).toEqual(`${noParameterURL}?param=newParamVal`);
-
     updatedURL = updateURLParameter(oneParameterURL, "param1");
     expect(updatedURL).toEqual(noParameterURL);
+});
+
+test("Update array URL parameter", () => {
+    let updatedURL;
 
     // test updateArrayURLParameter
     updatedURL = updateArrayURLParameter(relativePath, "param", ["paramVal1", "paramVal1", "paramVal2"]);
-    expect(updatedURL).toEqual(`${window.location.origin}${relativePath}?param=paramVal1&param=paramVal2`)
+    expect(updatedURL).toEqual(`${window.location.origin}${relativePath}?param%5B%5D=paramVal1&param%5B%5D=paramVal2`)
 
     updatedURL = updateArrayURLParameter(noParameterURL, "param", ["paramVal1", "paramVal1", "paramVal2", "paramVal3"]);
-    expect(updatedURL).toEqual(`${noParameterURL}?param=paramVal1&param=paramVal2&param=paramVal3`);
+    expect(updatedURL).toEqual(`${noParameterURL}?param%5B%5D=paramVal1&param%5B%5D=paramVal2&param%5B%5D=paramVal3`);
 
     updatedURL = updateArrayURLParameter(oneParameterURL, "param2", ["paramVal2"]);
-    expect(updatedURL).toEqual(`${oneParameterURL}&param2=paramVal2`);
+    expect(updatedURL).toEqual(`${oneParameterURL}&param2%5B%5D=paramVal2`);
 
     updatedURL = updateArrayURLParameter(multipleValueUrl, "param", ["paramVal1", "paramVal2"]);
-    expect(updatedURL).toEqual(`${noParameterURL}?param=paramVal1&param=paramVal2`);
-
-    updatedURL = updateArrayURLParameter(oneParameterURL, "param1", []);
-    expect(updatedURL).toEqual(noParameterURL);
-});
+    expect(updatedURL).toEqual(`${noParameterURL}?param%5B%5D=paramVal1&param%5B%5D=paramVal2`);
+})

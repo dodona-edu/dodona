@@ -26,10 +26,11 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = new Set(_paramVals); // remove duplicate items
-    const url = new URL(_url, window.location.origin);
-    url.searchParams.delete(param);
+    // convert "%5B%5D" back to "[]"
+    const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
+    url.searchParams.delete(`${param}[]`);
     paramVals.forEach(paramVal => {
-        url.searchParams.append(param, paramVal);
+        url.searchParams.append(`${param}[]`, paramVal);
     });
     return url.toString();
 }
@@ -41,7 +42,7 @@ function getURLParameter(name, _url) {
 
 function getArrayURLParameter(name, _url) {
     const url = new URL(_url ?? window.location.href, window.location.origin);
-    return url.searchParams.getAll(name);
+    return url.searchParams.getAll(`${name}[]`);
 }
 
 /*

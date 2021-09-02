@@ -3,7 +3,7 @@ require 'test_helper'
 class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
   def setup
     @evaluation = create :evaluation, :with_submissions
-    @staff_member = create :staff
+    @staff_member = users(:staff)
     @evaluation.series.course.administrating_members << @staff_member
     sign_in @staff_member
   end
@@ -13,9 +13,9 @@ class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
 
     [
       [@staff_member, :success],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?

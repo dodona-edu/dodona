@@ -3,17 +3,19 @@ require 'test_helper'
 class ExportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_activities!
-    @course = create :course
-    @students = [create(:student), create(:student), create(:student)]
+    @course = courses(:course1)
+    @students = [users(:student), users(:staff)]
     @course.enrolled_members.concat(@students)
     @series = create :series,
                      :with_submissions,
+                     exercise_count: 1,
+                     exercise_submission_count: 1,
                      exercise_submission_users: @students,
                      course: @course,
                      deadline: Time.current
     # make accessing all database-objects easier, no need for querying
     @data = { course: @course, users: @students, series: @series, exercises: @series.exercises, deadline: @series.deadline }
-    sign_in create(:zeus)
+    sign_in users(:zeus)
   end
 
   test 'should retrieve download solutions wizard page' do
@@ -219,7 +221,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not be able to download submissions of other user' do
-    sign_in @students[2]
+    sign_in @students[0]
     other_student = @students[1]
     options = {
       data: @data,

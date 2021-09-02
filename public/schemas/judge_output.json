@@ -63,6 +63,7 @@
         "description": { "$ref": "#/definitions/message" },
         "generated":   { "type": "string" },
         "expected":    { "type": "string" },
+        "format":      { "$ref": "#/definitions/test-format" },
         "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } }
       }
     },
@@ -71,7 +72,7 @@
       "description": "Possibly formatted string as a message to (some) users.",
       "required": ["format", "description"],
       "properties": {
-        "format":      { "$ref": "#/definitions/format" },
+        "format":      { "$ref": "#/definitions/message-format" },
         "description": { "$ref": "#/definitions/description" },
         "permission":  { "$ref": "#/definitions/permission" }
       }
@@ -89,7 +90,14 @@
         "columns": { "$ref": "#/definitions/index" }
       }
     },
-    "format": {
+    "test-format": {
+      "type": "string",
+      "enum": [
+        "text",
+        "csv"
+      ]
+    },
+    "message-format": {
       "type": "string",
       "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted) (or variants 'callout-info', 'callout-warning', 'callout-danger'), 'code' or any programming language (highlighted). Note that the HTML output is sanitised to prevent XSS issues. JavaScript, for example, is not allowed, but most other tags should work."
     },

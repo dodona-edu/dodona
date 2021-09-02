@@ -134,6 +134,10 @@
       color: $feedback-diff-table-header-fg;
       padding-left: 10px;
       padding-right: 10px;
+      width: 0px; /* minimize the width */
+    }
+    .line-nr:empty::before {
+      content: " "; /* make sure the line-height is respected */
     }
     .output {
       width: 100%;
@@ -149,6 +153,16 @@
       line-height: 1.0;
     }
   }
+  table.diff.csv-diff {
+    td, .del, .ins, .unchanged {
+      padding: 2px 6px;
+    }
+  }
+  table.diff.csv-diff:not(.simplified) {
+    td, .del, .ins, .unchanged {
+      white-space: nowrap;
+    }
+  }
   .diffs .unified-diff {
     display: none;
   }
@@ -160,6 +174,14 @@
   }
   .diffs.show-split .split-diff {
     display: table;
+  }
+  .diffs.show-split .split-diff.csv-diff {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+  }
+  .diffs.show-unified .unified-diff.csv-diff {
+    display: inline-block;
   }
 
   .feedback-table-options {

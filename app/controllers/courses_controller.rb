@@ -14,7 +14,7 @@ class CoursesController < ApplicationController
     scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
-    scope.by_course_labels(value, controller.params[:id])
+    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
   end
 
   # GET /courses

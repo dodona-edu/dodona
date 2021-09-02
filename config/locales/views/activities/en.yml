@@ -109,8 +109,6 @@ en:
       judge: Judge
       repository: Repository containing this activity
       repository_path: Path within this repository
-      created: Created
-      updated: Last edited
       ago: ago
       click_here_to_create_one: Click here to create the readme.
       config_set_by: "This value was set by %{file}"

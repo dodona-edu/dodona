@@ -110,8 +110,6 @@ nl:
       judge: Judge
       repository: Repository waar deze leeractiviteit zich in bevindt
       repository_path: Bestandslocatie binnen deze repository
-      created: Aangemaakt
-      updated: Laatst gewijzigd
       ago: geleden
       click_here_to_create_one: Klik hier om de 'readme' informatie aan te maken.
       config_set_by: "Deze waarde werd ingesteld door %{file}"

@@ -91,7 +91,7 @@
     },
     "format": {
       "type": "string",
-      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted), 'code' or any programming language (highlighted). Note that the HTML output is sanitised to prevent XSS issues. JavaScript, for example, is not allowed, but most other tags should work."
+      "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted) (or variants 'callout-info', 'callout-warning', 'callout-danger'), 'code' or any programming language (highlighted). Note that the HTML output is sanitised to prevent XSS issues. JavaScript, for example, is not allowed, but most other tags should work."
     },
     "permission": {
       "type": "string",

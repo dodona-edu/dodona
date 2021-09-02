@@ -66,20 +66,6 @@
                     <%= github_link @repository, @activity.path %>
                     <% end %>
                   </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.created' %>">
-                    <i class="mdi mdi-clock-outline mdi-24"></i>
-                    <span title="<%= l @activity.created_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.created_at) %> <%= t '.ago' %>
-                    </span>
-                  </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.updated' %>">
-                    <i class="mdi mdi-update mdi-24"></i>
-                    <span title="<%= l @activity.updated_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.updated_at) %> <%= t '.ago' %>
-                    </span>
-                  </div>
                 </div>
               </div>
             </div>

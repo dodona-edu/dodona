@@ -88,10 +88,7 @@ class LCSCsvDiffer
             row = old_row chunk, false
 
             unless row.nil?
-              full_row = Array.new(@combined_headers.length) { '<td></td>' }
-              row.each.with_index do |el, idx|
-                full_row[@gen_header_indices[idx]] = el
-              end
+              full_row = Array.new(@combined_headers.length) { |i| @gen_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : row[idx] }
 
               builder << %(<tr>
               <td class="line-nr">#{chunk.old_position + 1}</td>
@@ -104,10 +101,7 @@ class LCSCsvDiffer
 
             next if row.nil?
 
-            full_row = Array.new(@combined_headers.length) { '<td></td>' }
-            row.each.with_index do |el, idx|
-              full_row[@exp_header_indices[idx]] = el
-            end
+            full_row = Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : row[idx] }
 
             builder << %(<tr>
               <td class="line-nr"></td>
@@ -201,11 +195,7 @@ class LCSCsvDiffer
       end
       builder.td(class: 'line-nr')
 
-      full_row = Array.new(@combined_headers.length) { '<td></td>' }
-      gen_cols.each.with_index do |col, idx|
-        full_row[@gen_header_indices[idx]] = %(<td class="del">#{CGI.escape_html col}</td>)
-      end
-      builder << full_row.join
+      builder << Array.new(@combined_headers.length) { |i| @gen_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : %(<td class="del">#{CGI.escape_html gen_cols[idx]}</td>) }.join
     end
 
     exp_cols = CSV.parse(@expected).transpose.map { |col| col.join("\n") }
@@ -215,11 +205,7 @@ class LCSCsvDiffer
         builder << (1..@expected_linecount).to_a.join("\n")
       end
 
-      full_row = Array.new(@combined_headers.length) { '<td></td>' }
-      exp_cols.each.with_index do |col, idx|
-        full_row[@exp_header_indices[idx]] = %(<td class="ins">#{CGI.escape_html col}</td>)
-      end
-      builder << full_row.join
+      builder << Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : %(<td class="ins">#{CGI.escape_html exp_cols[idx]}</td>) }.join
     end
   end
 

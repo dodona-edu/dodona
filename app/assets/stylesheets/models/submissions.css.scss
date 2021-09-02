@@ -134,7 +134,7 @@
       color: $feedback-diff-table-header-fg;
       padding-left: 10px;
       padding-right: 10px;
-      width: 0px; /* minimize the width */
+      width: 0; /* minimize the width */
     }
     .line-nr:empty::before {
       content: " "; /* make sure the line-height is respected */

@@ -255,13 +255,17 @@ class FeedbackTableRenderer
     end
   end
 
+  def differ(t)
+    if t[:format] == 'csv'
+      LCSCsvDiffer
+    else
+      LCSHtmlDiffer
+    end
+  end
+
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      if t[:format] == 'csv'
-        LCSCsvDiffer.render_accepted(@builder, t[:generated])
-      else
-        LCSHtmlDiffer.render_accepted(@builder, t[:generated])
-      end
+      differ(t).render_accepted(@builder, t[:generated])
     end
   end
 
@@ -272,11 +276,7 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    differ = if t[:format] == 'csv'
-               LCSCsvDiffer.new(t[:generated], t[:expected])
-             else
-               LCSHtmlDiffer.new(t[:generated], t[:expected])
-             end
+    differ = differ(t).new(t[:generated], t[:expected])
     @builder.div(class: "diffs show-#{@diff_type}") do
       @builder << differ.split
       @builder << differ.unified

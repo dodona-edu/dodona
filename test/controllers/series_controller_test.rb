@@ -7,7 +7,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   setup do
     @instance = create(:series)
-    sign_in create(:zeus)
+    sign_in users(:zeus)
   end
 
   test_crud_actions except: %i[new index create_redirect update_redirect destroy_redirect]
@@ -20,7 +20,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get new for course' do
-    course = create :course
+    course = courses(:course1)
     get new_course_series_url(course)
     assert_response :success
   end
@@ -32,8 +32,8 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not create series or get new when not course admin' do
     sign_out :user
-    sign_in create(:staff)
-    course = create(:course)
+    sign_in users(:staff)
+    course = courses(:course1)
 
     get new_course_series_url(course)
     assert_response :redirect
@@ -44,7 +44,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'course admin should be able to update course' do
     sign_out :user
-    @admin = create :student
+    @admin = users(:student)
     sign_in @admin
 
     @instance.course.administrating_members << @admin
@@ -110,7 +110,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should add activities to series' do
     stub_all_activities!
-    activity = create :exercise
+    activity = exercises(:python_exercise)
     post add_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
@@ -178,7 +178,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     # https://github.com/dodona-edu/dodona/issues/1765
     sign_out :user
 
-    user = create :staff
+    user = users(:staff)
     token = create :api_token, user: user
     @instance.course.administrating_members << user
 
@@ -201,7 +201,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     # https://github.com/dodona-edu/dodona/issues/1765
     sign_out :user
 
-    user = create :staff
+    user = users(:staff)
     @instance.course.administrating_members << user
 
     updated_description = 'The new description value.'
@@ -221,11 +221,11 @@ end
 
 class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   setup do
-    @series = create :series, activity_count: 2, exercise_submission_count: 2
+    @series = create :series, activity_count: 1, exercise_submission_count: 1
     @course = @series.course
-    @student = create :student
-    @zeus = create :zeus
-    @course_admin = create :student
+    @student = users(:student)
+    @zeus = users(:zeus)
+    @course_admin = users(:staff)
     @course.administrating_members << @course_admin
   end
 
@@ -349,9 +349,10 @@ end
 class SeriesIndianioDownloadControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_activities!
-    @student = create :student
+    @student = users(:student)
     @series = create :series,
-                     :with_submissions,
+                     exercise_count: 1,
+                     exercise_submission_count: 1,
                      indianio_token: 'supergeheimtoken',
                      exercise_submission_users: [@student]
   end

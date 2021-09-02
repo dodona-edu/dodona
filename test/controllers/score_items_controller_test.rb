@@ -3,7 +3,7 @@ require 'test_helper'
 class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @evaluation = create :evaluation, :with_submissions
-    @staff_member = create :staff
+    @staff_member = users(:staff)
     @evaluation.series.course.administrating_members << @staff_member
     sign_in @staff_member
   end
@@ -15,9 +15,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
     [
       [@staff_member, :success],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
       to = create :evaluation_exercise, evaluation: @evaluation
@@ -38,9 +38,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'should add score items to all if course administrator' do
     [
       [@staff_member, :ok],
-      [create(:student), :no],
+      [users(:student), :no],
       [create(:staff), :no],
-      [create(:zeus), :ok],
+      [users(:zeus), :ok],
       [nil, :no]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -72,9 +72,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
     [
       [@staff_member, :success],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -92,9 +92,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'should create score item if course administrator' do
     [
       [@staff_member, :created],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :created],
+      [users(:zeus), :created],
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -150,9 +150,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
     [
       [@staff_member, :success],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
       score_item = create :score_item, evaluation_exercise: exercise,
@@ -173,9 +173,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'add score item page for a feedback session is only available for course admins' do
     [
       [@staff_member, :success],
-      [create(:student), :redirect],
+      [users(:student), :redirect],
       [create(:staff), :redirect],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :redirect]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -188,9 +188,9 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
   test 'score item page for a feedback session is only available for course admins' do
     [
       [@staff_member, :success],
-      [create(:student), :redirect],
+      [users(:student), :redirect],
       [create(:staff), :redirect],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :redirect]
     ].each do |user, expected|
       sign_in user if user.present?

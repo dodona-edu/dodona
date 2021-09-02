@@ -7,11 +7,19 @@ class EvaluationsController < ApplicationController
 
   has_scope :by_institution, as: 'institution_id'
   has_scope :by_filter, as: 'filter'
-  has_scope :by_course_labels, as: 'course_labels', type: :array
+  has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
+    if controller.params[:action] == 'show'
+      scope.by_course_labels(value, Evaluation.find(controller.params[:id]).series.course_id)
+    else
+      scope.by_course_labels(value)
+    end
+  end
 
   def show
     redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
     @feedbacks = @evaluation.evaluation_sheet
+    @users = apply_scopes(@evaluation.users)
+    @course_labels = CourseLabel.where(course: @evaluation.series.course)
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
   end

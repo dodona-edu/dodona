@@ -30,7 +30,7 @@
     </tr>
     </thead>
     <tbody>
-    <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+    <% users.order(last_name: :asc, first_name: :asc).each do |user| %>
       <% feedback_l = feedbacks[:feedbacks][user.id] %>
       <% average = feedbacks[:averages][user.id] %>
       <tr>

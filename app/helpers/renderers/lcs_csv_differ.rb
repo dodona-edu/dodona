@@ -30,14 +30,16 @@ class LCSCsvDiffer
   end
 
   def initialize(generated, expected)
-    @generated = generated || ''
-    @expected = expected || ''
+    @generated = generated.lstrip || ''
+    @expected = expected.lstrip || ''
 
     @gen_headers, @generated = @generated.split("\n", 2)
-    @gen_headers = CSV.parse_line(@gen_headers)
+    @gen_headers = @gen_headers.nil? ? [] : CSV.parse_line(@gen_headers)
+    @generated ||= ''
 
     @exp_headers, @expected = @expected.split("\n", 2)
-    @exp_headers = CSV.parse_line(@exp_headers)
+    @exp_headers = @exp_headers.nil? ? [] : CSV.parse_line(@exp_headers)
+    @expected ||= ''
 
     @generated_linecount = @generated&.lines&.count || 0
     @expected_linecount = @expected&.lines&.count || 0
@@ -85,9 +87,9 @@ class LCSCsvDiffer
           unified_simple builder
         else
           @diff.each do |chunk|
-            row = old_row chunk, false
+            is_empty, row = old_row chunk
 
-            unless row.nil?
+            unless is_empty
               full_row = Array.new(@combined_headers.length) { |i| @gen_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : row[idx] }
 
               builder << %(<tr>
@@ -97,9 +99,9 @@ class LCSCsvDiffer
             </tr>)
             end
 
-            row = new_row chunk, false
+            is_empty, row = new_row chunk
 
-            next if row.nil?
+            next if is_empty
 
             full_row = Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : row[idx] }
 
@@ -139,12 +141,13 @@ class LCSCsvDiffer
           else
             @diff.each do |chunk|
               builder.tr do
-                builder << if chunk.old_element
-                             %(<td class="line-nr">#{chunk.old_position + 1}</td>)
-                           else
+                is_empty, row = old_row chunk
+                builder << if is_empty
                              %(<td class="line-nr"></td>)
+                           else
+                             %(<td class="line-nr">#{chunk.old_position + 1}</td>)
                            end
-                builder << (old_row chunk, true).join
+                builder << row.join
               end
             end
           end
@@ -171,12 +174,13 @@ class LCSCsvDiffer
           else
             @diff.each do |chunk|
               builder.tr do
-                builder << if chunk.new_element
-                             %(<td class="line-nr">#{chunk.new_position + 1}</td>)
-                           else
+                is_empty, row = new_row chunk
+                builder << if is_empty
                              %(<td class="line-nr"></td>)
+                           else
+                             %(<td class="line-nr">#{chunk.new_position + 1}</td>)
                            end
-                builder << (new_row chunk, true).join
+                builder << row.join
               end
             end
           end
@@ -239,28 +243,24 @@ class LCSCsvDiffer
     end
   end
 
-  def old_row(chunk, include_empty)
+  def old_row(chunk)
     old_class = {
       '-' => 'del',
       '+' => '',
       '=' => 'unchanged',
       '!' => 'del'
     }[chunk.action]
-    return nil if old_class.empty? && !include_empty
-
-    chunk.old_element.map { |el| %(<td class="#{old_class}">#{el}</td>) }
+    [old_class.empty?, chunk.old_element.map { |el| %(<td class="#{old_class}">#{el}</td>) }]
   end
 
-  def new_row(chunk, include_empty)
+  def new_row(chunk)
     new_class = {
       '-' => '',
       '+' => 'ins',
       '=' => 'unchanged',
       '!' => 'ins'
     }[chunk.action]
-    return nil if new_class.empty? && !include_empty
-
-    chunk.new_element.map { |el| %(<td class="#{new_class}">#{el}</td>) }
+    [new_class.empty?, chunk.new_element.map { |el| %(<td class="#{new_class}">#{el}</td>) }]
   end
 
   def diff_arrays(generated, expected)

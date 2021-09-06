@@ -160,7 +160,7 @@
   }
   table.diff.csv-diff:not(.simplified) {
     td, .del, .ins, .unchanged {
-      white-space: nowrap;
+      white-space: pre;
     }
   }
   .diffs .unified-diff {

@@ -2,17 +2,47 @@
 
 import { isInIframe } from "iframe";
 
+/**
+ * Create a function that will delay all subsequent calls on the same timer.
+ * You don't necessarily have to call the delayer with the same function.
+ *
+ * In the first example, the typical usage is illustrated. The second example
+ * illustrates what happens with multiple delayers, each with their own timer.
+ *
+ * There is also a pre-made delayer available with a global timer, see `delay`.
+ * @example
+ *  const delay = createDelayer();
+ *  delay(() => console.log(1), 100);
+ *  delay(() => console.log(2), 100);
+ *  // prints 2, since the first invocation is cancelled
+ *
+ * @example
+ *  const delay1 = createDelayer();
+ *  const delay2 = createDelayer();
+ *  delay1(() => console.log(1), 100);
+ *  delay2(() => console.log(2), 100);
+ *  // prints 1 and then 2, since both have their own timer.
+ *
+ *  @return {function(TimerHandler, number): void}
+ */
+function createDelayer() {
+    return (function () {
+        let timer = 0;
+        return function (callback, ms) {
+            clearTimeout(timer);
+            timer = setTimeout(callback, ms);
+        };
+    })();
+}
+
 /*
  * Function to delay some other function until it isn't
- * called for "ms" ms
+ * called for "ms" ms. This runs on a global timer, meaning
+ * the actual function doesn't matter. If you want a delay
+ * specifically for one function, you need to first create
+ * your own "delayer" with `createDelayer`.
  */
-const delay = (function () {
-    let timer = 0;
-    return function (callback, ms) {
-        clearTimeout(timer);
-        timer = setTimeout(callback, ms);
-    };
-})();
+const delay = createDelayer();
 
 function updateURLParameter(_url, param, paramVal) {
     const url = new URL(_url, window.location.origin);
@@ -143,6 +173,7 @@ function setDocumentTitle(title) {
 }
 
 export {
+    createDelayer,
     delay,
     fetch,
     updateURLParameter,

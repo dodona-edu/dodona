@@ -8,7 +8,7 @@
   "dependencies": {
     "@babel/core": "^7.15.0",
     "@babel/preset-typescript": "^7.15.0",
-    "@popperjs/core": "^2.9.3",
+    "@popperjs/core": "^2.10.1",
     "@rails/activestorage": "^6.1.4",
     "@rails/ujs": "^6.1.4",
     "@rails/webpacker": "5.4.2",

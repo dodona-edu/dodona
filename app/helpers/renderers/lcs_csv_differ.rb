@@ -2,26 +2,31 @@ class LCSCsvDiffer
   require 'builder'
 
   def self.render_accepted(builder, generated)
-    generated_header, generated = generated.split("\n", 2)
-    generated_header = CSV.parse_line(generated_header)
+    generated = generated.lstrip || ''
+    gen_headers, generated = generated.split("\n", 2)
+    gen_headers = gen_headers.nil? ? [] : CSV.parse_line(gen_headers)
+    gen_headers = gen_headers.map { |el| el.nil? ? '' : el }
+    generated ||= ''
+
+    return if gen_headers.empty?
 
     builder.div(class: 'diffs show-unified') do
       builder.table(class: 'unified-diff diff csv-diff') do
         builder.colgroup do
           builder.col(class: 'line-nr')
-          builder.col(class: 'del-output-csv', span: generated_header.length)
+          builder.col(class: 'del-output-csv', span: gen_headers.length)
         end
         builder.thead do
           builder.tr do
             builder << "<th class='line-nr'></th>"
-            builder << generated_header.map { |el| %(<th>#{CGI.escape_html el}</th>) }.join
+            builder << gen_headers.map { |el| %(<th>#{CGI.escape_html el}</th>) }.join
           end
         end
         builder.tbody do
           generated.split("\n", -1).each.with_index do |line, idx|
             builder.tr do
               builder << %(<td class="line-nr">#{idx + 1}</td>)
-              builder << (CSV.parse_line(line || '') || Array.new(generated_header.length) { '' }).map { |el| %(<td>#{CGI.escape_html el}</td>) }.join
+              builder << (CSV.parse_line(line || '') || Array.new(gen_headers.length) { '' }).map { |el| %(<td>#{CGI.escape_html el || ''}</td>) }.join
             end
           end
         end
@@ -35,10 +40,12 @@ class LCSCsvDiffer
 
     @gen_headers, @generated = @generated.split("\n", 2)
     @gen_headers = @gen_headers.nil? ? [] : CSV.parse_line(@gen_headers)
+    @gen_headers = @gen_headers.map { |el| el.nil? ? '' : el }
     @generated ||= ''
 
     @exp_headers, @expected = @expected.split("\n", 2)
     @exp_headers = @exp_headers.nil? ? [] : CSV.parse_line(@exp_headers)
+    @exp_headers = @exp_headers.map { |el| el.nil? ? '' : el }
     @expected ||= ''
 
     @generated_linecount = @generated&.lines&.count || 0
@@ -49,8 +56,8 @@ class LCSCsvDiffer
 
     @diff = unless @simplified_table
               Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)).map do |chunk|
-                gen_result = (CSV.parse_line(chunk.old_element || '') || Array.new(@gen_headers.length) { '' })
-                exp_result = (CSV.parse_line(chunk.new_element || '') || Array.new(@exp_headers.length) { '' })
+                gen_result = (CSV.parse_line(chunk.old_element || '') || Array.new(@gen_headers.length) { '' }).map { |el| el.nil? ? '' : el }
+                exp_result = (CSV.parse_line(chunk.new_element || '') || Array.new(@exp_headers.length) { '' }).map { |el| el.nil? ? '' : el }
                 if chunk.action == '!'
                   gen_result, exp_result = diff_arrays(gen_result, exp_result)
                 else

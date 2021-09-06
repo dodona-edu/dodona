@@ -6,7 +6,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   crud_helpers RightsRequest, attrs: %i[context institution_name]
 
   setup do
-    sign_in create(:student)
+    sign_in create(:student, institution: institutions(:ugent))
   end
 
   test_crud_actions only: %i[new create], except: %i[create_redirect]
@@ -28,7 +28,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
 
   test 'zeus should be able to get index' do
     create(:rights_request)
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     get rights_requests_url
     assert_response :success
   end
@@ -40,7 +40,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'zeus should be able to approve' do
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     req = create(:rights_request)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       post approve_rights_request_url(req, format: :js)
@@ -55,7 +55,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'approval should update institution name' do
-    sign_in create(:zeus)
+    sign_in create(:zeus, :with_institution)
     req = create(:rights_request)
     req.update(institution_name: "#{req.user.institution.name}-different")
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
@@ -74,7 +74,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'zeus should be able to reject' do
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     req = create(:rights_request)
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       post reject_rights_request_url(req, format: :js)

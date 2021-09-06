@@ -20,7 +20,7 @@ class FeedbackTest < ActiveSupport::TestCase
     @exercises = @evaluation.series.exercises
     @user_count = @users.count
     @exercise_count = @exercises.count
-    @zeus = create :zeus
+    @zeus = users(:zeus)
   end
 
   test 'Appropriate amount of feedbacks are created when making a session and when updating' do

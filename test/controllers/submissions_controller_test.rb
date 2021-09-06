@@ -9,14 +9,14 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_activities!
     @instance = create :correct_submission
-    @zeus = create(:zeus)
+    @zeus = users(:zeus)
     sign_in @zeus
   end
 
   test_crud_actions only: %i[index show create], except: %i[create_redirect]
 
   test 'should fetch last correct submissions for exercise' do
-    users = create_list :user, 10
+    users = create_list :user, 2
     c = create :course, series_count: 1, activities_per_series: 1
     e = c.series.first.exercises.first
 
@@ -74,9 +74,9 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to search by course label' do
-    u1 = create :user
-    u2 = create :user
-    course = create :course
+    u1 = users(:student)
+    u2 = users(:staff)
+    course = courses(:course1)
     cm = CourseMembership.create(user: u1, course: course, status: :student)
     CourseMembership.create(user: u2, course: course, status: :student)
     CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
@@ -88,10 +88,10 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'normal user should not be able to search by course label' do
-    u1 = create :user
-    u2 = create :user
+    u1 = users(:student)
+    u2 = users(:staff)
     sign_in u2
-    course = create :course
+    course = courses(:course1)
     cm = CourseMembership.create(user: u1, course: course, status: :student)
     CourseMembership.create(user: u2, course: course, status: :student)
     CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
@@ -144,7 +144,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'create submission within course' do
     attrs = generate_attr_hash
-    course = create :course
+    course = courses(:course1)
     course.subscribed_members << @zeus
     course.series << create(:series)
     course.series.first.exercises << Exercise.find(attrs[:exercise_id])
@@ -174,7 +174,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'unregistered user submitting to exercise in hidden series should fail' do
     attrs = generate_attr_hash
-    course = create :course
+    course = courses(:course1)
     exercise = Exercise.find(attrs[:exercise_id])
     course.series << create(:series, visibility: :hidden)
     course.series.first.exercises << exercise

@@ -40,37 +40,21 @@ class EvaluationTest < ActiveSupport::TestCase
     create :score, score_item: @item3, score: '5', feedback: @feedback3
   end
 
-  test 'score items give correct maximum score' do
-    add_score_items
-
-    assert_equal BigDecimal('22'), @evaluation.maximum_score
-  end
-
-  test 'scores give correct maximum score' do
-    add_score_items
-    add_scores
-
-    assert_equal BigDecimal('22'), @evaluation.maximum_score
-  end
-
-  test 'no scores result in no maximum' do
+  test 'max and average are calculated correctly' do
+    # no max or average
     assert_nil @evaluation.maximum_score
-  end
-
-  test 'no scores result in no average' do
     assert_nil @evaluation.average_score_sum
-  end
 
-  test 'score items result in no average' do
     add_score_items
 
+    # max but no average
+    assert_equal BigDecimal('22'), @evaluation.reload.maximum_score
     assert_nil @evaluation.average_score_sum
-  end
 
-  test 'scores give correct averages' do
-    add_score_items
     add_scores
 
+    # max and average
+    assert_equal BigDecimal('22'), @evaluation.reload.maximum_score
     assert_equal BigDecimal('18.5'), @evaluation.average_score_sum
   end
 end

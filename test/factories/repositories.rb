@@ -18,7 +18,11 @@ FactoryBot.define do
   factory :repository do
     name { Faker::Lorem.word + Faker::Number.unique.number(digits: 8).to_s }
     remote { "git@github.com:dodona-edu/#{name}.git" }
-    association :judge, factory: %i[judge git_stubbed]
+    judge { Judge.find(1) } # load python judge fixture
+
+    trait :generated_judge do
+      association :judge, factory: %i[judge git_stubbed]
+    end
 
     trait :git_stubbed do
       path { "#{name}.git" }

@@ -40,41 +40,26 @@ class EvaluationExerciseTest < ActiveSupport::TestCase
     create :score, score_item: @item3, score: '5', feedback: @feedback3
   end
 
-  test 'score items give correct maximum score' do
-    add_score_items
-
-    assert_equal BigDecimal('17'), @exercise1.maximum_score
-    assert_equal BigDecimal('5'), @exercise2.maximum_score
-  end
-
-  test 'scores give correct maximum score' do
-    add_score_items
-    add_scores
-
-    assert_equal BigDecimal('17'), @exercise1.maximum_score
-    assert_equal BigDecimal('5'), @exercise2.maximum_score
-  end
-
-  test 'no scores result in no maximum' do
+  test 'max and average are calculated correctly' do
+    # no max or average
     assert_nil @exercise1.maximum_score
     assert_nil @exercise2.maximum_score
-  end
-
-  test 'no scores result in no average' do
     assert_nil @exercise1.average_score
     assert_nil @exercise2.average_score
-  end
 
-  test 'score items result in no average' do
     add_score_items
 
+    # max but no average
+    assert_equal BigDecimal('17'), @exercise1.reload.maximum_score
+    assert_equal BigDecimal('5'), @exercise2.reload.maximum_score
     assert_nil @exercise1.average_score
     assert_nil @exercise2.average_score
-  end
 
-  test 'scores give correct averages' do
-    add_score_items
     add_scores
+
+    # max and average
+    assert_equal BigDecimal('17'), @exercise1.reload.maximum_score
+    assert_equal BigDecimal('5'), @exercise2.reload.maximum_score
 
     # This exercise has two users, each with scores.
     # ((11+4) + (12+0)) / 2 = (15 + 12) / 2 = 27 / 2 = 13.5

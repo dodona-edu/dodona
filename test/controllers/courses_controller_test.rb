@@ -7,8 +7,8 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Course, attrs: %i[name year description visibility registration]
 
   setup do
-    @instance = create(:course)
-    sign_in create(:zeus)
+    @instance = courses(:course1)
+    sign_in users(:zeus)
   end
 
   test_crud_actions
@@ -26,27 +26,75 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   setup do
-    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    @course = courses(:course1)
 
+    @subscribed = []
+    @not_admins = []
+    @not_subscribed = []
+  end
+
+  def full_setup
+    add_admins
+    add_students
+    add_unsubscribed
+    add_pending
+    add_externals
+  end
+
+  def add_admins
     @course.administrating_members.concat(create_normies)
 
     @course_admins = @course.administrating_members
     @admins = @course_admins
+    @subscribed.concat(@course_admins)
+  end
 
-    @students = create_normies
+  def add_students
+    @students = [users(:student), users(:staff)]
     @course.enrolled_members.concat(@students)
 
+    @subscribed.concat(@students)
+    @not_admins.concat(@students)
+  end
+
+  def add_unsubscribed
     @unsubscribed = create_normies
     @course.unsubscribed_members.concat(@unsubscribed)
 
+    @not_subscribed.concat(@unsubscribed)
+    @not_admins.concat(@unsubscribed)
+  end
+
+  def add_pending
     @pending = create_normies
     @course.pending_members.concat(@pending)
 
-    @subscribed = @students + @course_admins
-    @externals = create_normies
-    @not_subscribed = @externals + @unsubscribed + @pending
+    @not_subscribed.concat(@pending)
+    @not_admins.concat(@pending)
+  end
 
-    @not_admins = @students + @unsubscribed + @pending + @externals + [nil]
+  def add_externals
+    @externals = create_normies + [nil]
+
+    @not_subscribed.concat(@externals)
+    @not_admins.concat(@externals)
+  end
+
+  def add_subscribed
+    add_admins
+    add_students
+  end
+
+  def add_not_subscribed
+    add_unsubscribed
+    add_pending
+    add_externals
+  end
+
+  def add_not_admins
+    add_students
+    add_pending
+    add_externals
   end
 
   # execute the block with each user signed in
@@ -67,21 +115,24 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should subscribe current_user to course' do
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, format: :json)
       assert @course.subscribed_members.include?(user), "#{who} should be able to subscribe"
     end
   end
 
   test 'subscribe should redirect to course' do
-    with_users_signed_in @not_subscribed do |who|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who|
       post subscribe_course_url(@course)
       assert_redirected_to @course, "#{who} should be redirected"
     end
   end
 
   test 'should get course page with secret' do
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
         get course_url(@course, secret: @course.secret, format: :json)
@@ -93,6 +144,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not subscribe when already subscribed' do
+    full_setup
     with_users_signed_in @course.users do |who|
       assert_difference('CourseMembership.count', 0, "#{who} should not be able to create a second membership") do
         post subscribe_course_url(@course, format: :json)
@@ -101,6 +153,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'unsubscribed user should be able to resubscribe' do
+    add_unsubscribed
     with_users_signed_in @unsubscribed do |who, user|
       assert_not user.member_of?(@course), "#{who} was already a member"
       post subscribe_course_url(@course, format: :json)
@@ -108,31 +161,29 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'should get course scoresheet as course admin in html format' do
+  test 'should get course scoresheet as course admin' do
+    add_admins
     sign_in @course_admins.first
     get scoresheet_course_url(@course)
     assert_response :success, 'course_admin should be able to get course scoresheet'
-  end
 
-  test 'should get course scoresheet as course admin in csv format' do
-    sign_in @course_admins.first
     get scoresheet_course_url(@course, format: :csv)
     assert_response :success, 'course_admin should be able to get course scoresheet'
-  end
 
-  test 'should get course scoresheet as course admin in json format' do
-    sign_in @course_admins.first
     get scoresheet_course_url(@course, format: :json)
     assert_response :success, 'course_admin should be able to get course scoresheet'
   end
 
   test 'should not get course scoresheet as normal user' do
+    add_students
     sign_in @students.first
     get scoresheet_course_url(@course)
     assert_response :redirect, 'student should not be able to get course scoresheet'
   end
 
   test 'visiting registration page when subscribed should redirect' do
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    add_subscribed
     with_users_signed_in @subscribed do |who|
       get registration_course_url(@course, @course.secret, format: :json)
       assert_redirected_to @course, "#{who} should be redirected"
@@ -140,7 +191,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'zeus visiting registration page when subscribed should redirect' do
-    zeus = create :zeus
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    add_subscribed
+    zeus = users(:zeus)
     @course.subscribed_members << zeus
     sign_in zeus
 
@@ -150,7 +203,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not subscribe to hidden course with invalid, empty or absent secret' do
     @course.update(visibility: 'hidden')
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, secret: 'the cake is a lie')
       assert_not user.member_of?(@course), "#{who} with invalid secret"
 
@@ -164,7 +218,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not subscribe to closed course' do
     @course.update(registration: 'closed')
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
       assert_not user.member_of?(@course), "#{who} should not be subscribed"
@@ -177,6 +232,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not be on pending list with closed course' do
     @course.update(registration: 'closed')
+    add_externals
     with_users_signed_in @externals do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
@@ -190,7 +246,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should be on pending list with moderated course' do
     @course.update(moderated: true)
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
@@ -198,6 +255,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should be able to withdraw registration request' do
     @course.update(moderated: true)
+    add_pending
     with_users_signed_in @pending do |who, user|
       post unsubscribe_course_url(@course, format: :json)
       assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
@@ -206,13 +264,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should be on pending list with moderated and hidden course' do
     @course.update(moderated: 'true', visibility: 'hidden')
-    with_users_signed_in @not_subscribed do |who, user|
+    add_not_subscribed
+    with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, secret: @course.secret, format: :json)
       assert @course.pending_members.include?(user), "#{who} should be pending"
     end
   end
 
   test 'externals (and not logged in) should be able to see course' do
+    add_externals
     with_users_signed_in(@externals + [nil]) do |who|
       get course_url(@course)
       assert_response :success, "#{who} should be able to see course"
@@ -220,6 +280,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'externals (and not logged in) should not be able to see hidden course' do
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    add_externals
     @course.update(visibility: 'hidden')
     with_users_signed_in(@externals + [nil]) do |who, user|
       get course_url(@course)
@@ -232,6 +294,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admin should be able to accept or decline pending members' do
+    add_admins
+    add_pending
     with_users_signed_in @admins do |who|
       acceptme = create :student
       declineme = create :student
@@ -246,8 +310,10 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admin should be able to mass accept pending members' do
+    add_admins
+    add_pending
     with_users_signed_in @admins do |who|
-      students = create_list :student, 10
+      students = create_list :student, 2
       @course.pending_members = students
       post mass_accept_pending_course_url(@course)
       @course.reload
@@ -257,11 +323,13 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admin should be able to mass decline pending members' do
+    add_admins
+    add_pending
     with_users_signed_in @admins do |who|
-      students = create_list :student, 10
+      students = create_list :student, 2
       @course.pending_members = students
 
-      submission = create :submission, course: @course
+      submission = create :submission, :generated_user, course: @course
       @course.pending_members << submission.user
 
       post mass_decline_pending_course_url(@course)
@@ -274,6 +342,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'students should not be able to accept pending members' do
+    add_students
+    add_pending
     with_users_signed_in @students do |who|
       acceptme = create :student
       declineme = create :student
@@ -288,6 +358,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'course admin staff and zeus should be able to promote and fire members' do
+    add_admins
+    add_students
     super_admins = @admins.reject(&:student?)
     with_users_signed_in super_admins do |who|
       members = create_normies
@@ -303,6 +375,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'all course admins should be able to promote or fire members' do
+    full_setup
     student_admins = @admins.select(&:student?)
     with_users_signed_in student_admins do |who|
       members_student = create_normies
@@ -335,8 +408,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'last course admin should go down with his ship' do
-    @course = create :course
-    admin = create :zeus
+    @course = courses(:course1)
+    admin = users(:zeus)
     @course.administrating_members << admin
     sign_in admin
 
@@ -351,8 +424,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'members should be able to unsubscribe' do
+    add_students
     # add a course admin to prevent the last course admin has to unsubscribe
-    @course.administrating_members << create(:zeus)
+    @course.administrating_members << users(:zeus)
     @course.save
     with_users_signed_in @subscribed do |who, user|
       post unsubscribe_course_url(@course)
@@ -362,6 +436,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'unsubscribing user with solutions for course should keep membership' do
+    add_students
     user = @students.first
     sign_in user
     create :correct_submission,
@@ -373,6 +448,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'unsubscribing user without solutions for course should delete membership' do
+    add_students
     user = @students.first
     sign_in user
 
@@ -381,6 +457,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admins should be able to list members' do
+    add_admins
     with_users_signed_in @admins do |who|
       get course_members_url(@course), xhr: true
       assert_response :success, "#{who} should be able to list members"
@@ -388,6 +465,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'not-admins should not be able to list members' do
+    add_not_admins
     with_users_signed_in @not_admins do |who|
       get course_members_url(@course), xhr: true
       assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to list members"
@@ -395,6 +473,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admins should be able to view members in course' do
+    add_admins
+    add_students
     with_users_signed_in @admins do |who|
       @students.each do |view|
         get course_member_url(@course, view), xhr: true
@@ -404,6 +484,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'not-admins should not be able to view members in course except themselves' do
+    add_not_admins
     with_users_signed_in @not_admins do |who, signed_in|
       @course.users.reject { |u| u == signed_in }.each do |view|
         get course_member_url(@course, view), xhr: true
@@ -413,6 +494,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'admins should be able to view their hidden course in the course overview' do
+    add_admins
     @course.update(visibility: 'hidden')
     with_users_signed_in @admins do |who|
       get courses_url, params: { format: :json }
@@ -422,6 +504,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'not admins should not be able to view hidden courses' do
+    add_not_subscribed
     @course.update(visibility: 'hidden')
     with_users_signed_in @not_subscribed do |who|
       get courses_url, params: { format: :json }
@@ -442,11 +525,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'users should be able to filter courses' do
+    add_subscribed
     c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     user = @subscribed.first
-    c1.update(institution: user.institution)
-    c2.update(institution: user.institution)
+    institution = create :institution
+    user.institution = institution
+    user.save
+    c1.update(institution: institution)
+    c2.update(institution: institution)
     sign_in user
 
     # all courses
@@ -470,7 +557,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get courses_url, params: { format: :json }
     assert_response :success
     courses = JSON.parse response.body
-    assert_equal 1, courses.length
+    assert_equal Course.count, courses.length
     get courses_url, params: { format: :json, tab: 'featured' }
     assert_response :success
     courses = JSON.parse response.body
@@ -483,6 +570,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'users should be able to favorite subscribed courses' do
+    add_students
     user = @students.first
     sign_in user
 
@@ -491,6 +579,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'users should be able to unfavorite favorited courses' do
+    add_students
     user = @students.first
     sign_in user
 
@@ -500,6 +589,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'users should not be able to favorite unsubscribed courses' do
+    add_students
     user = @students.first
     sign_in user
 
@@ -509,6 +599,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'users should not be able to unfavorite unsubscribed courses' do
+    add_students
     user = @students.first
     sign_in user
 
@@ -518,6 +609,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'subscribing to a moderated course when already subscribed should not change status' do
+    add_subscribed
     user = @students.first
     course = create :course, moderated: true
     course.subscribed_members << user
@@ -529,6 +621,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'a course copied by a regular student should not include hidden/closed series' do
+    add_students
     user = @students.first
     user.update(permission: :staff)
     course = create :course
@@ -541,6 +634,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'hidden course page shown to unsubscribed student should include registration url with secret' do
+    add_externals
     @course.update(visibility: :hidden)
     user = @externals.first
     sign_in user
@@ -549,6 +643,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'visible_for_institution course page shown to unsubscribed student of different institution should include registration url with secret' do
+    add_externals
     @course.update(visibility: :visible_for_institution, institution: (create :institution))
     user = @externals.first
     user.update(institution: (create :institution))
@@ -558,6 +653,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'visible_for_institution course page shown to unsubscribed student of same institution should not include registration url with secret' do
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    add_externals
     @course.update(visibility: :visible_for_institution, institution: (create :institution))
     user = @externals.first
     user.update(institution: @course.institution)
@@ -567,12 +664,14 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not destroy course as student' do
+    add_students
     sign_in @students.first
     delete course_url(@course)
     assert_not response.successful?
   end
 
   test 'should destroy course as course admin' do
+    add_admins
     sign_in @course_admins.first
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
@@ -581,6 +680,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not destroy course as course admin if too many submissions' do
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    add_admins
     create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
     sign_in @course_admins.first
     # Assert there are actually too many submissions
@@ -590,8 +691,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy course as zeus even if too many submissions' do
+    @course = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     create_list :exercise, 1, series: @course.series, submission_count: CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY + 1
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     # Assert there are actually too many submissions
     assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     assert_difference 'Course.count', -1 do
@@ -601,6 +703,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'super admins are able to view questions' do
+    add_admins
     super_admins = @admins.reject(&:student?)
     with_users_signed_in super_admins do |who|
       # Create some questions so we actually render something
@@ -614,6 +717,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'not admins cannot view questions' do
+    add_not_admins
     with_users_signed_in @not_admins do |who|
       get questions_course_path(@course)
       assert :ok, "#{who} should not be able to view questions"
@@ -621,6 +725,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'question page title is correct' do
+    add_admins
     sign_in @admins.first
     get questions_course_path(@course)
     assert_select 'title', /^([^0-9]*)$/

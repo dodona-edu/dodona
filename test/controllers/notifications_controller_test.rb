@@ -2,7 +2,7 @@ require 'test_helper'
 
 class NotificationsControllerTest < ActionDispatch::IntegrationTest
   setup do
-    user = create :user
+    user = users(:student)
     sign_in user
     @notification = create :notification, user: user
   end

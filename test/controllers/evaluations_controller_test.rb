@@ -13,10 +13,10 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
         create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: Time.current - 1.hour
       end
     end
-    @no_submission_user = create :user
+    @no_submission_user = users(:student)
     @no_submission_user.enrolled_courses << @series.course
     @users = @submitted_users + [@no_submission_user]
-    @course_admin = create(:staff)
+    @course_admin = users(:staff)
     @course_admin.administrating_courses << @series.course
     sign_in @course_admin
   end
@@ -505,7 +505,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'course admins can change grade visibility' do
     evaluation = create :evaluation, :with_submissions
-    evaluation.series.course.administrating_members << @course_admin
     from = evaluation.evaluation_exercises.first
     s1 = create :score_item, evaluation_exercise: from
     s2 = create :score_item, evaluation_exercise: from

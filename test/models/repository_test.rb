@@ -61,45 +61,32 @@ class EchoRepositoryTest < ActiveSupport::TestCase
            'is not a git repository'
   end
 
-  test 'should process exercises' do
+  test 'should process correctly' do
+    # process exercises
     assert_equal 1, @repository.exercises.count
-  end
 
-  test 'should set exercise judge' do
+    # set exercise judge
     assert_equal @python, @echo.judge
-  end
 
-  test 'should set exercise programming language' do
+    # exercise programming language
     assert_equal ProgrammingLanguage.find_by(name: 'python'), @echo.programming_language
-  end
 
-  test 'should set exercise name_nl' do
+    # exercise name
     assert_equal 'Weergalm', @echo.name_nl
-  end
-
-  test 'should set exercise name_en' do
     assert_equal 'Imitation', @echo.name_en
-  end
 
-  test 'should set exercise description_format' do
+    # exercise description format
     assert_equal 'html', @echo.description_format
-  end
 
-  test 'should set exercise access' do
+    # exercise access
     assert_equal 'public', @echo.access
-  end
 
-  test 'should set exercise status' do
+    # exercise status
     assert_equal 'ok', @echo.status
-  end
 
-  test 'should set exercise labels' do
+    # labels
     assert_equal Label.all, @echo.labels
     assert_equal 3, Label.count
-  end
-
-  test 'should dedupe label arrays' do
-    assert_equal 3, @echo.labels.count
   end
 
   test 'should not create new labels when they are already present' do
@@ -176,6 +163,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should create new exercise when config without token is placed in path of removed exercise' do
+    start = Exercise.all.count
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
@@ -185,10 +173,11 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_activities
     @echo.reload
     assert_equal 'removed', @echo.status
-    assert_equal 2, Exercise.all.count
+    assert_equal 1, Exercise.all.count - start
   end
 
   test 'should create new exercise when exercise is copied' do
+    start = Exercise.all.count
     new_dir = 'echo2'
     @remote.copy_dir(@echo.path, new_dir)
     @remote.commit('copy exercise')
@@ -196,10 +185,11 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_activities
     @echo.reload
     assert_equal 'echo', @echo.path
-    assert_equal 2, Exercise.all.count
+    assert_equal 1, Exercise.all.count - start
   end
 
   test 'should create only 1 new exercise on copy + rename' do
+    start = Exercise.all.count
     new_dir1 = 'echo2'
     new_dir2 = 'echo3'
     @remote.copy_dir(@echo.path, new_dir1)
@@ -209,7 +199,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.process_activities
     @echo.reload
     assert [new_dir1, new_dir2].include?(@echo.path)
-    assert_equal 2, Exercise.all.count
+    assert_equal 1, Exercise.all.count - start
   end
 
   test 'should copy valid token for new exercise' do

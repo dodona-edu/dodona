@@ -16,7 +16,7 @@ require 'test_helper'
 class ScoreItemTest < ActiveSupport::TestCase
   setup do
     series = create :series, exercise_count: 2
-    users = [create(:user), create(:user)]
+    users = [users(:student), users(:staff)]
     users.each do |u|
       series.course.enrolled_members << u
       create :submission, user: u, exercise: series.exercises.first, course: series.course, created_at: Time.current - 1.hour
@@ -79,7 +79,9 @@ class ScoreItemTest < ActiveSupport::TestCase
       assert f.completed?
     end
   end
+end
 
+class SimpleScoreItemTest < ActiveSupport::TestCase
   test 'maximum must be positive' do
     assert_raises ActiveRecord::RecordInvalid do
       create :score_item, maximum: '-10.0'

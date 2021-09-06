@@ -5,7 +5,7 @@ class ProgrammingLanguagesControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @instance = create :programming_language
-    sign_in create :zeus
+    sign_in users(:zeus)
   end
 
   test_crud_actions

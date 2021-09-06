@@ -26,13 +26,11 @@ import { isInIframe } from "iframe";
  *  @return {function(TimerHandler, number): void}
  */
 function createDelayer() {
-    return (function () {
-        let timer = 0;
-        return function (callback, ms) {
-            clearTimeout(timer);
-            timer = setTimeout(callback, ms);
-        };
-    })();
+    let timer = 0;
+    return function (callback, ms) {
+        clearTimeout(timer);
+        timer = setTimeout(callback, ms);
+    };
 }
 
 /*

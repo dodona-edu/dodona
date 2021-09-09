@@ -45,6 +45,7 @@ export function initEvaluationStepper(): void {
 
         document.querySelector("#users-step-finish-button").addEventListener("click", function () {
             userPanel.hide();
+            document.querySelector("#items-panel").classList.remove("hidden");
             scorePanel.show();
         });
     }
@@ -54,7 +55,6 @@ export function initEvaluationStepper(): void {
         initCheckboxes();
         document.querySelector("#deadline-group .btn").classList.add("disabled");
         document.querySelector("#users-panel").classList.remove("hidden");
-        document.querySelector("#items-panel").classList.remove("hidden");
         evalPanel.hide();
         userPanel.show();
     }

@@ -155,10 +155,6 @@
   table.diff.csv-diff {
     td, .del, .ins, .unchanged {
       padding: 2px 6px;
-    }
-  }
-  table.diff.csv-diff:not(.simplified) {
-    td, .del, .ins, .unchanged {
       white-space: pre;
     }
   }

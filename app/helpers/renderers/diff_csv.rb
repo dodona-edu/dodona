@@ -76,7 +76,7 @@ class DiffCsv
 
   def unified
     builder = Builder::XmlMarkup.new
-    builder.table(class: "unified-diff diff csv-diff #{@simplified_table ? 'simplified' : ''}") do
+    builder.table(class: 'unified-diff diff csv-diff') do
       builder.colgroup do
         builder.col(class: 'line-nr')
         builder.col(class: 'line-nr')
@@ -133,7 +133,7 @@ class DiffCsv
 
     builder.div do
       build_table = lambda { |headers, is_old, cls, icon_cls, title|
-        builder.table(class: "split-diff diff csv-diff #{@simplified_table ? 'simplified' : ''}") do
+        builder.table(class: 'split-diff diff csv-diff') do
           builder.colgroup do
             builder.col(class: 'line-nr')
             builder.col(class: cls, span: headers.length)

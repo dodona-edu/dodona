@@ -13,10 +13,10 @@ class DiffCsvTest < ActiveSupport::TestCase
     assert_equal dom1.to_s, dom2.to_s
   end
 
-  def html_output(a_headers, a_body, b_headers, b_body, is_simplified = false)
+  def html_output(a_headers, a_body, b_headers, b_body)
     <<~HTML
       <div>
-          <table class="split-diff diff csv-diff #{is_simplified ? 'simplified' : ''}">
+          <table class="split-diff diff csv-diff">
               <colgroup>
                   <col class="line-nr"/>
                   <col class="del-output-csv" span="#{a_headers.length}"/>
@@ -39,7 +39,7 @@ class DiffCsvTest < ActiveSupport::TestCase
                     end
                   }
           </table>
-          <table class="split-diff diff csv-diff #{is_simplified ? 'simplified' : ''}">
+          <table class="split-diff diff csv-diff">
               <colgroup>
                   <col class="line-nr"/>
                   <col class="ins-output-csv" span="#{b_headers.length}"/>
@@ -317,8 +317,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       ] * nr_columns,
       [
         %(<td class="line-nr">#{(1..nr_rows).to_a.join "\n"}</td>) + %(<td class="ins">#{(1..nr_rows).map { |_| 'BBB' }.join "\n"}</td>) * nr_columns
-      ],
-      true
+      ]
     )
     should_match_html diff, diff_csv.split
   end

@@ -40,6 +40,7 @@ nl:
     edit:
       title: Evaluatie aanpassen
       evaluation_info: Evaluatie-info
+      users_required: Je moet gebruikers toevoegen voor je naar de evaluatie gaat
     edit_users:
       users_selected: geselecteerde studenten
       users_selected_html:

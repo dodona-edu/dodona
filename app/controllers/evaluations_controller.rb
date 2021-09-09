@@ -16,7 +16,11 @@ class EvaluationsController < ApplicationController
   end
 
   def show
-    redirect_to edit_evaluation_path(@evaluation) if @evaluation.users.count == 0
+    if @evaluation.users.count == 0
+      flash[:alert] = I18n.t('evaluations.edit.users_required')
+      redirect_to edit_evaluation_path(@evaluation)
+      return
+    end
     @feedbacks = @evaluation.evaluation_sheet
     @users = apply_scopes(@evaluation.users)
     @course_labels = CourseLabel.where(course: @evaluation.series.course)

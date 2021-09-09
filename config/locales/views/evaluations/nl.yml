@@ -37,7 +37,8 @@ nl:
         other: "<h1>%{count} <small>studenten</small></h1> hebben minstens 1 keer ingediend"
       select_users: "Gebruikers selecteren"
     edit:
-      title: Gebruikers aanpassen
+      title: Evaluatie aanpassen
+      evaluation_info: Evaluatie-info
     edit_users:
       users_selected: geselecteerde studenten
       users_selected_html:

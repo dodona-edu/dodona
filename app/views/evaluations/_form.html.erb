@@ -1,7 +1,7 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'evaluation' %>
 <% end %>
-<%= form_for evaluation, html: { class: "form-horizontal feedback-form" } do |f| %>
+<%= form_for evaluation, html: { class: "form-horizontal feedback-form" }, remote: true do |f| %>
   <div>
     <%= f.hidden_field :series_id %>
     <h4 class="evaluation-form-title"><%= evaluation.series.name %> <span class="small"><%= evaluation.series.course.name %></span></h4>
@@ -17,7 +17,7 @@
       <div class='col-sm-12'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-          <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+          <button class="btn btn-secondary" type="button" data-toggle <%= "disabled" if local_assigns[:readonly] %>><i class='mdi mdi-calendar-blank mdi-18'></i></button>
         </div>
       </div>
       <span class="help-block col-sm-12"><%= t(".deadline-help_html") %></span>

@@ -1,23 +1,75 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+  <%= javascript_pack_tag 'score_item' %>
+  <%= javascript_pack_tag 'index' %>
+<% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
-    <div class="card series-edit">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t(".create_evaluation") %></h2>
-      </div>
-      <div class="card-supporting-text row">
-        <div class="col-lg-6 col-sm-12 order-lg-1">
-          <div class="callout callout-info">
-            <h4><%= t ".explanation_title" %></h4>
-            <%= t ".explanation_html" %>
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="info-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">1</span>
+            <a role="button" data-bs-toggle="collapse" href="#info-step">
+              <%= t(".create_evaluation") %>
+            </a>
+          </h4>
+        </div>
+        <div id="info-step" class="panel-collapse collapse show" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 order-lg-1">
+                  <div class="callout callout-info">
+                    <h4><%= t ".explanation_title" %></h4>
+                    <%= t ".explanation_html" %>
+                  </div>
+                </div>
+                <div class="col-lg-6 col-sm-12 order-lg-0">
+                  <%= render 'form', evaluation: @evaluation %>
+                </div>
+              </div>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <button type="submit" class="btn btn-primary btn-text" form="new_evaluation"><%= t '.next' %></button>
+            </div>
           </div>
         </div>
-        <div class="col-lg-6 col-sm-12 order-lg-0">
-          <%= render 'form', evaluation: @evaluation %>
+      </div>
+      <div id="users-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" data-bs-toggle="collapse" href="#users-step">
+              <%= t("evaluations.add_users.title") %>
+            </a>
+          </h4>
+        </div>
+        <div id="users-step" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <div id="users-step-wrapper"></div>
+            <div class="stepper-actions stepper-border">
+              <button id="users-step-finish-button" class="btn btn-text btn-primary" type="button"><%= t('evaluations.new.next') %></button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-actions card-border">
-        <button type="submit" class="btn btn-primary btn-text" form="new_evaluation"><%= t '.next' %></button>
+
+      <div id="items-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">3</span>
+            <a role="button" data-bs-toggle="collapse" href="#items-step">
+              <%= t 'score_items.index.title' %>
+            </a>
+          </h4>
+        </div>
+        <div id="items-step" class="panel-collapse collapse" role="tabpanel">
+        </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(dodona.initEvaluationStepper)
+</script>

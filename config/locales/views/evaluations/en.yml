@@ -37,7 +37,8 @@ en:
         other: "<h1>%{count} <small>students</small></h1> submitted at least once"
       select_users: "Select these users"
     edit:
-      title: Edit users
+      title: Edit evaluation
+      evaluation_info: Evaluation info
     edit_users:
       users_selected: selected students
       users_selected_html:

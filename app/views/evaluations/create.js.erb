@@ -1,0 +1,4 @@
+$("#users-step-wrapper").html("<%= raw escape_javascript(render partial: 'add_users') %>");
+window.dodona.initTooltips();
+window.dodona.toUsersStep();
+$("#items-step").html("<%= raw escape_javascript(render partial: 'score_items') %>");

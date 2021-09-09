@@ -46,6 +46,10 @@ nl:
         zero: "Je hebt op dit moment <b>geen gebruikers</b> geselecteerd."
         one: "Je hebt op dit moment <b>1 gebruiker</b> geselecteerd."
         other: "Je hebt op dit moment <b>%{count} gebruikers</b> geselecteerd."
+      short_users_selected:
+        zero: "Geen gebruikers geselecteerd"
+        one: "Één gebruiker geselecteerd"
+        other: "%{count} gebruikers geselecteerd"
       to_evaluation: Naar evaluatie
       back_to_evaluation: Terug naar evaluatie
       mass_edit: Welke studenten wil je evalueren?

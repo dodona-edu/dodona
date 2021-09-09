@@ -37,6 +37,9 @@
             <span class="step-circle">1</span>
             <a role="button" data-bs-toggle="collapse" href="#users-step">
               <%= t("evaluations.add_users.title") %>
+              <span id="short-users-count-wrapper" class="answer">
+                <%= t "evaluations.edit_users.short_users_selected", count: @evaluation.users.count %>
+              </span>
             </a>
           </h4>
         </div>

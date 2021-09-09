@@ -2,3 +2,5 @@ const row = document.querySelector("#user-row-<%= @user.id %>");
 row.innerHTML = "<%= escape_javascript(render 'evaluations/member_row', course_membership: @course_membership, user: @user, confirm: false) %>";
 row.classList.remove("table-active");
 dodona.initCheckbox(row);
+$('#users-count-wrapper').html("<%= t('evaluations.edit_users.users_selected_html', count: @evaluation.users.count) %>")
+$('#short-users-count-wrapper').text("<%= t('evaluations.edit_users.short_users_selected', count: @evaluation.users.count) %>")

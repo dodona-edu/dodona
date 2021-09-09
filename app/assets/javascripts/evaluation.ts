@@ -43,11 +43,10 @@ export function initEvaluationStepper(): void {
             userPanel.hide();
         });
 
-
         document.querySelector("#users-step-finish-button").addEventListener("click", function () {
             userPanel.hide();
-            document.querySelector("#items-panel").classList.remove("hidden");
             scorePanel.show();
+            document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
     }
 
@@ -56,7 +55,6 @@ export function initEvaluationStepper(): void {
         interceptAddMultiUserClicks();
         initCheckboxes();
         document.querySelector("#deadline-group .btn").classList.add("disabled");
-        document.querySelector("#users-panel").classList.remove("hidden");
         evalPanel.hide();
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");

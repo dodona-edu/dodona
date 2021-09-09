@@ -46,6 +46,10 @@ en:
         zero: "You have currently selected <b>zero users</b>."
         one: "You have currently selected <b>one user</b>."
         other: "You have currently selected <b>%{count} users</b>."
+      short_users_selected:
+        zero: "Zero users selected"
+        one: "One user selected"
+        other: "%{count} users selected"
       to_evaluation: To evaluation
       back_to_evaluation: Back to evaluation
       mass_edit: Which students do you want to evaluate?

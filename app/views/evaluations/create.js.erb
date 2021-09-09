@@ -1,3 +1,4 @@
+$("#info-panel .answer").text("<%= l @evaluation.deadline, format: :long %>");
 $("#users-step-wrapper").html("<%= raw escape_javascript(render partial: 'add_users') %>");
 window.dodona.initTooltips();
 window.dodona.toUsersStep();

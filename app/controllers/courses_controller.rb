@@ -63,8 +63,8 @@ class CoursesController < ApplicationController
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
         institution: current_user.institution,
-        visibility: @copy_options[:base].visibility,
-        registration: @copy_options[:base].registration,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution,
         teacher: current_user.full_name
       )
       @copy_options = {
@@ -77,7 +77,9 @@ class CoursesController < ApplicationController
       @copy_options = nil
       @course = Course.new(
         teacher: current_user.full_name,
-        institution: current_user.institution
+        institution: current_user.institution,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution
       )
     end
 

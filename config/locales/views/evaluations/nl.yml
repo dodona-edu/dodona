@@ -56,7 +56,7 @@ nl:
     destroy: Evaluatie verwijderen
     download: Punten downloaden
     form:
-      deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
+      deadline-help_html: "<p>Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie.</p><p><b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren.</p>"
     evaluation_table:
       user: Gebruiker
     evaluation_grade_table:

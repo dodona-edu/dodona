@@ -56,7 +56,7 @@ en:
     destroy: Delete evaluation
     download: Download grades
     form:
-      deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
+      deadline-help_html: "<p>The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used.</p><p><b>Warning:</b> You can't change the deadline later, but you can select a different solution for individual students.</p>"
     evaluation_table:
       user: User
     evaluation_grade_table:

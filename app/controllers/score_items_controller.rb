@@ -60,6 +60,7 @@ class ScoreItemsController < ApplicationController
         evaluation_exercise.score_items << new_score_item
       end
     end
+    @evaluation.reload
   end
 
   def destroy

@@ -1,4 +1,4 @@
-class LCSHtmlDiffer
+class DiffText
   require 'builder'
 
   def self.render_accepted(builder, generated)

@@ -1,4 +1,4 @@
-class LCSCsvDiffer
+class DiffCsv
   require 'builder'
 
   def self.render_accepted(builder, generated)

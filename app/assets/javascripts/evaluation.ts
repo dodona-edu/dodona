@@ -55,6 +55,7 @@ export function initEvaluationStepper(): void {
         interceptAddMultiUserClicks();
         initCheckboxes();
         document.querySelector("#deadline-group .btn").classList.add("disabled");
+        evalPanelElement.querySelector(".stepper-actions").remove();
         evalPanel.hide();
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");

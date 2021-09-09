@@ -58,7 +58,9 @@ export function initEvaluationStepper(): void {
         evalPanel.hide();
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");
+        document.querySelector("#users-panel a[role=\"button\"]").classList.remove("disabled");
         document.querySelector("#items-panel a[role=\"button\"]").setAttribute("href", "#items-step");
+        document.querySelector("#items-panel a[role=\"button\"]").classList.remove("disabled");
     }
 
     function interceptAddMultiUserClicks(): void {

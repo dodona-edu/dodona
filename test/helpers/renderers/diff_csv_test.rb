@@ -225,6 +225,43 @@ class DiffCsvTest < ActiveSupport::TestCase
     should_match_html diff, diff_csv.split
   end
 
+  test 'nil value and nil line' do
+    generated = <<~EOS.chomp
+      "BBB",,"BBB"
+
+      "BBB","BBB","BBB"
+    EOS
+    expected = <<~EOS.chomp
+      "BBB","AAA","BBB"
+      "AAA","AAA","AAA"
+      "AAA","AAA","AAA"
+    EOS
+
+    diff_csv = DiffCsv.new(generated, expected)
+
+    diff = html_output(
+      [
+        %(<th>BBB</th>),
+        %(<th class="del"><strong/></th>),
+        %(<th>BBB</th>)
+      ],
+      [
+        %(<td class="line-nr">1</td><td class="del"><strong/></td><td class="del"><strong/></td><td class="del"><strong/></td>),
+        %(<td class="line-nr">2</td><td class="del"><strong>BBB</strong></td><td class="del"><strong>BBB</strong></td><td class="del"><strong>BBB</strong></td>)
+      ],
+      [
+        %(<th>BBB</th>),
+        %(<th class="ins"><strong>AAA</strong></th>),
+        %(<th>BBB</th>)
+      ],
+      [
+        %(<td class="line-nr">1</td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td>),
+        %(<td class="line-nr">2</td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td>)
+      ]
+    )
+    should_match_html diff, diff_csv.split
+  end
+
   test 'nearly simplified view' do
     nr_rows = 100
     nr_columns = 100

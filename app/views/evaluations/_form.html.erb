@@ -7,18 +7,14 @@
 
     <div class="field form-group<%= " has-error" if evaluation.deadline > Time.current %>">
       <div class="row">
-      <div class="col-lg-6 col-sm-12">
-        <br><b>Deadline</b><br>
-        <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
-          <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-          <button class="btn btn-secondary" type="button" data-toggle <%= "disabled" if local_assigns[:readonly] %>><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+        <div class="col-lg-6 col-sm-12">
+          <h6>Deadline</h6>
+          <p><%= t(".deadline-help_html") %></p>
+          <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
+            <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
+            <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-6 col-sm-12">
-        <div class="callout callout-info">
-          <%= t(".deadline-help_html") %>
-        </div>
-      </div>
       </div>
     </div>
   </div>

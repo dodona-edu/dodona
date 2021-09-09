@@ -31,6 +31,11 @@ class EvaluationsController < ApplicationController
     end
     @course = @series.course
     @evaluation = Evaluation.new(series: @series, deadline: @series.deadline || Time.current)
+    @crumbs = [
+      [@series.course.name, course_url(@series.course)],
+      [@series.name, breadcrumb_series_path(@series, current_user)],
+      [I18n.t('evaluations.new.create_evaluation'), '#']
+    ]
     @title = I18n.t('evaluations.new.create_evaluation')
     authorize @evaluation
   end

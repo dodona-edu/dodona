@@ -92,7 +92,7 @@
     },
     "test-format": {
       "type": "string",
-      "description": "Indicates how to show the test output (defaults to 'text').",
+      "description": "Indicates how to diff and show the test output (defaults to 'text').",
       "enum": [
         "text",
         "csv"

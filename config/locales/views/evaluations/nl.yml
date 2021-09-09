@@ -48,7 +48,7 @@ nl:
       to_evaluation: Naar evaluatie
       back_to_evaluation: Terug naar evaluatie
       mass_edit: Welke studenten wil je evalueren?
-      clear: Alle gebruikers verwijderen
+      clear: Alle gebruikers deselecteren
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
     edit_score_items: Scoreonderdelen aanpassen

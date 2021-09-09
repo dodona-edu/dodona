@@ -48,7 +48,7 @@ en:
       to_evaluation: To evaluation
       back_to_evaluation: Back to evaluation
       mass_edit: Which students do you want to evaluate?
-      clear: Remove all users
+      clear: Deselect all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
     edit_score_items: Edit score items

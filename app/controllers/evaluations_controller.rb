@@ -45,7 +45,7 @@ class EvaluationsController < ApplicationController
                           .order(Arel.sql('users.permission ASC'))
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: %i[course_admin student])
-                          .paginate(page: parse_pagination_param(params[:page]))
+                          .paginate(page: parse_pagination_param(params[:page]), per_page: 15)
 
     ActivityStatus.add_status_for_series(@evaluation.series, [:last_submission])
 
@@ -70,7 +70,7 @@ class EvaluationsController < ApplicationController
                           .order(Arel.sql('users.permission ASC'))
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: %i[course_admin student])
-                          .paginate(page: parse_pagination_param(params[:page]))
+                          .paginate(page: parse_pagination_param(params[:page]), per_page: 15)
 
     respond_to do |format|
       if @evaluation.save

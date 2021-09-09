@@ -21,6 +21,7 @@ en:
     new:
       exercises: Exercises
       create_evaluation: Evaluate series
+      pick_deadline: Pick deadline
       explanation_title: "What is an evaluation?"
       explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
       next: Next

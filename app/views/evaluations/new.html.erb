@@ -5,13 +5,39 @@
 <% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @title %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 order-lg-0">
+            <h4 class="evaluation-form-title">
+              <%= @evaluation.series.name %>
+              <span class="small"><%= @evaluation.series.course.name %></span>
+            </h4>
+            <%= render partial: 'exercises_table', locals: {
+              series: @evaluation.series,
+              exercises: @evaluation.series.exercises,
+              } %>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 order-lg-1">
+            <div class="callout callout-info">
+              <h4><%= t ".explanation_title" %></h4>
+              <%= t ".explanation_html" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div id="stepper" class="panel-group stepper" role="tablist">
       <div id="info-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">1</span>
             <a role="button" data-bs-toggle="collapse" href="#info-step">
-              <%= t(".create_evaluation") %>
+              <%= t(".pick_deadline") %>
             </a>
           </h4>
         </div>
@@ -19,15 +45,7 @@
           <div class="panel-body">
             <div class="stepper-part">
               <div class="row">
-                <div class="col-lg-6 col-sm-12 order-lg-1">
-                  <div class="callout callout-info">
-                    <h4><%= t ".explanation_title" %></h4>
-                    <%= t ".explanation_html" %>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-sm-12 order-lg-0">
-                  <%= render 'form', evaluation: @evaluation %>
-                </div>
+                <%= render 'form', evaluation: @evaluation %>
               </div>
             </div>
             <div class="stepper-actions stepper-border">
@@ -36,11 +54,11 @@
           </div>
         </div>
       </div>
-      <div id="users-panel" class="panel panel-default hidden">
+      <div id="users-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">2</span>
-            <a role="button" data-bs-toggle="collapse" href="#users-step">
+            <a role="button" data-bs-toggle="collapse">
               <%= t("evaluations.add_users.title") %>
             </a>
           </h4>
@@ -55,11 +73,11 @@
         </div>
       </div>
 
-      <div id="items-panel" class="panel panel-default hidden">
+      <div id="items-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">3</span>
-            <a role="button" data-bs-toggle="collapse" href="#items-step">
+            <a role="button" data-bs-toggle="collapse">
               <%= t 'score_items.index.title' %>
             </a>
           </h4>

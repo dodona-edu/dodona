@@ -20,6 +20,7 @@ nl:
       grading_details_info_html: Deze tabel toont het puntenoverzicht voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br> Als de punten grijs zijn is de oplossing nog niet afgewerkt.
     new:
       exercises: Oefeningen
+      pick_deadline: Deadline kiezen
       create_evaluation: Reeks evalueren
       explanation_title: "Wat is een evaluatie?"
       explanation_html: "Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft."

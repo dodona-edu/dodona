@@ -4,38 +4,37 @@
 <% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
-    <div id="stepper" class="panel-group stepper" role="tablist">
-      <div id="info-panel" class="panel panel-default">
-        <div class="panel-heading" role="tab">
-          <h4 class="panel-title">
-            <span class="step-circle">1</span>
-            <a role="button" data-bs-toggle="collapse" href="#info-step">
-              <%= t(".evaluation_info") %>
-            </a>
-          </h4>
-        </div>
-        <div id="info-step" class="panel-collapse collapse show" role="tabpanel">
-          <div class="panel-body">
-            <div class="stepper-part">
-              <div class="row">
-                <div class="col-lg-6 col-sm-12 order-lg-1">
-                  <div class="callout callout-info">
-                    <h4><%= t "evaluations.new.explanation_title" %></h4>
-                    <%= t "evaluations.new.explanation_html" %>
-                  </div>
-                </div>
-                <div class="col-lg-6 col-sm-12 order-lg-0">
-                  <%= render 'form', evaluation: @evaluation, readonly: true %>
-                </div>
-              </div>
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @title %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 order-lg-0">
+            <h4 class="evaluation-form-title">
+              <%= @evaluation.series.name %>
+              <span class="small"><%= @evaluation.series.course.name %></span>
+            </h4>
+            <%= render partial: 'exercises_table', locals: {
+              series: @evaluation.series,
+              exercises: @evaluation.series.exercises,
+              } %>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 order-lg-1">
+            <div class="callout callout-info">
+              <h4><%= t "evaluations.new.explanation_title" %></h4>
+              <%= t "evaluations.new.explanation_html" %>
             </div>
           </div>
         </div>
       </div>
+    </div>
+    <div id="stepper" class="panel-group stepper" role="tablist">
       <div id="users-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
-            <span class="step-circle">2</span>
+            <span class="step-circle">1</span>
             <a role="button" data-bs-toggle="collapse" href="#users-step">
               <%= t("evaluations.add_users.title") %>
             </a>
@@ -66,7 +65,7 @@
       <div id="items-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
-            <span class="step-circle">3</span>
+            <span class="step-circle">2</span>
             <a role="button" data-bs-toggle="collapse" href="#items-step">
               <%= t 'score_items.index.title' %>
             </a>

@@ -42,7 +42,11 @@
     <% end %>
   </div>
   <div class="stepper-actions stepper-border">
-    <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+    <% if local_assigns[:back] %>
+      <%= link_to t('evaluations.edit.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+    <% else %>
+      <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+    <% end %>
   </div>
 </div>
 <div class="modal fade" id="add-score-item-to-all" tabindex="-1" role="dialog">

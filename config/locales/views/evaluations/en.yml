@@ -23,7 +23,7 @@ en:
       create_evaluation: Evaluate series
       pick_deadline: Pick deadline
       explanation_title: "What is an evaluation?"
-      explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
+      explanation_html: "<p>Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released.</p>"
       next: Next
     add_users:
       title: Select users
@@ -41,6 +41,8 @@ en:
       title: Edit evaluation
       evaluation_info: Evaluation info
       users_required: You need to add users before going to the evaluation
+      live_edit_explanation_html: "<p>Changes you make here are applied immediately.</p>"
+      back_to_evaluation: "Back to evaluation"
     edit_users:
       users_selected: selected students
       users_selected_html:

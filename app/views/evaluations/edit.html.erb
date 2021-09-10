@@ -25,6 +25,7 @@
             <div class="callout callout-info">
               <h4><%= t "evaluations.new.explanation_title" %></h4>
               <%= t "evaluations.new.explanation_html" %>
+              <%= t ".live_edit_explanation_html" %>
             </div>
           </div>
         </div>
@@ -75,7 +76,7 @@
           </h4>
         </div>
         <div id="items-step" class="panel-collapse collapse show" role="tabpanel">
-          <%= render partial: 'score_items' %>
+          <%= render partial: 'score_items', locals: { back: true } %>
         </div>
       </div>
     </div>

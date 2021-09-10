@@ -99,7 +99,7 @@ class ActivitiesController < ApplicationController
       @read_state = if current_user&.member_of?(@course)
                       @activity.activity_read_states.find_by(user: current_user, course: @course)
                     else
-                      @activity.activity_read_states.find_by(user: current_user)
+                      @activity.activity_read_states.find_by(user: current_user, course: nil)
                     end
     end
 

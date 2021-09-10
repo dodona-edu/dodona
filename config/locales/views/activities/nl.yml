@@ -117,3 +117,4 @@ nl:
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
       config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen.'
       doc_site: 'documentatiesite'
+      activity_invalid: Deze oefening heeft geen geldige configuratie.

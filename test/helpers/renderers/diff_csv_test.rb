@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DiffCsvTest < ActiveSupport::TestCase
+class CsvDifferTest < ActiveSupport::TestCase
   require 'builder'
   require 'nokogiri'
 
@@ -19,7 +19,7 @@ class DiffCsvTest < ActiveSupport::TestCase
           <table class="split-diff diff csv-diff">
               <colgroup>
                   <col class="line-nr"/>
-                  <col class="del-output-csv" span="#{a_headers.length}"/>
+                  <col span="#{a_headers.length}"/>
               </colgroup>
               <thead>
                   <tr>
@@ -42,7 +42,7 @@ class DiffCsvTest < ActiveSupport::TestCase
           <table class="split-diff diff csv-diff">
               <colgroup>
                   <col class="line-nr"/>
-                  <col class="ins-output-csv" span="#{b_headers.length}"/>
+                  <col span="#{b_headers.length}"/>
               </colgroup>
               <thead>
                   <tr>
@@ -78,7 +78,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       "AAA","AAA"
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [
@@ -110,7 +110,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       "AAA","AAA"
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [],
@@ -138,7 +138,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       "BBB","BBB"
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [
@@ -168,7 +168,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       "AAA","AAA"
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [
@@ -202,7 +202,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       #{''}
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [
@@ -235,7 +235,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       "AAA","AAA","AAA"
     EOS
 
-    diff_csv = DiffCsv.new(generated, expected)
+    diff_csv = CsvDiffer.new(generated, expected)
 
     diff = html_output(
       [
@@ -271,7 +271,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       (nr_rows + 1).times { |_i| csv << ['BBB'] * nr_columns }
     end
 
-    diff_csv = DiffCsv.new(csv_string1.chomp, csv_string2.chomp)
+    diff_csv = CsvDiffer.new(csv_string1.chomp, csv_string2.chomp)
 
     diff = html_output(
       [
@@ -301,7 +301,7 @@ class DiffCsvTest < ActiveSupport::TestCase
       (nr_rows + 1).times { |_i| csv << ['BBB'] * nr_columns }
     end
 
-    diff_csv = DiffCsv.new(csv_string1.chomp, csv_string2.chomp)
+    diff_csv = CsvDiffer.new(csv_string1.chomp, csv_string2.chomp)
 
     diff = html_output(
       [

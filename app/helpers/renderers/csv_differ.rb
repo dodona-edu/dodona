@@ -1,4 +1,4 @@
-class DiffCsv
+class CsvDiffer
   require 'builder'
 
   def self.render_accepted(builder, generated)
@@ -7,23 +7,23 @@ class DiffCsv
 
     return if gen_headers.blank?
 
-    builder.div(class: 'diffs show-unified') do
-      builder.table(class: 'unified-diff diff csv-diff') do
+    builder.div(class: 'diffs') do
+      builder.table(class: 'diff csv-diff') do
         builder.colgroup do
           builder.col(class: 'line-nr')
-          builder.col(class: 'del-output-csv', span: gen_headers.length)
+          builder.col(span: gen_headers.length)
         end
         builder.thead do
           builder.tr do
-            builder << "<th class='line-nr'></th>"
+            builder.th(class: 'line-nr')
             builder << gen_headers.map { |el| %(<th>#{CGI.escape_html el}</th>) }.join
           end
         end
         builder.tbody do
           generated.each.with_index do |line, idx|
             builder.tr do
-              builder << %(<td class="line-nr">#{idx + 1}</td>)
-              builder << line.map { |el| %(<td>#{CGI.escape_html el || ''}</td>) }.join
+              builder.th(idx + 1, class: 'line-nr')
+              builder << line.map { |el| %(<td>#{CGI.escape_html el}</td>) }.join
             end
           end
         end
@@ -67,17 +67,21 @@ class DiffCsv
       builder.colgroup do
         builder.col(class: 'line-nr')
         builder.col(class: 'line-nr')
-        builder.col(class: 'output-csv', span: @combined_headers.length)
+        builder.col(span: @combined_headers.length)
       end
       builder.thead do
         builder.tr do
-          builder << "<th class='line-nr' title='#{I18n.t('submissions.show.your_output')}'><i class='mdi mdi-18 mdi-file-account'/></th>"
-          builder << "<th class='line-nr' title='#{I18n.t('submissions.show.expected')}'><i class='mdi mdi-18 mdi-file-check'/></th>"
-          builder << "<th colspan='#{@combined_headers.length}'>#{I18n.t('submissions.show.your_output')}</th>"
+          builder.th(class: 'line-nr', title: I18n.t('submissions.show.your_output')) do
+            builder.i(class: 'mdi mdi-18 mdi-file-account')
+          end
+          builder.th(class: 'line-nr', title: I18n.t('submissions.show.expected')) do
+            builder.i(class: 'mdi mdi-18 mdi-file-check')
+          end
+          builder.th(colspan: @combined_headers.length)
         end
         builder.tr do
-          builder << "<th class='line-nr'></th>"
-          builder << "<th class='line-nr'></th>"
+          builder.th(class: 'line-nr')
+          builder.th(class: 'line-nr')
           builder << @combined_headers.join
         end
       end
@@ -128,27 +132,26 @@ class DiffCsv
 
   def split_build_table(builder, headers, is_old)
     builder.table(class: 'split-diff diff csv-diff') do
-      if is_old
-        cls = 'del-output-csv'
-        icon_cls = 'mdi-file-account'
-        title = I18n.t('submissions.show.your_output')
-      else
-        cls = 'ins-output-csv'
-        icon_cls = 'mdi-file-check'
-        title = I18n.t('submissions.show.expected')
-      end
-
       builder.colgroup do
         builder.col(class: 'line-nr')
-        builder.col(class: cls, span: headers.length)
+        builder.col(span: headers.length)
       end
       builder.thead do
-        builder.tr do
-          builder << "<th class='line-nr' title='#{title}'><i class='mdi mdi-18 #{icon_cls}'/></th>"
-          builder << "<th colspan='#{headers.length}'>#{title}</th>"
+        if is_old
+          icon_cls = 'mdi-file-account'
+          title = I18n.t('submissions.show.your_output')
+        else
+          icon_cls = 'mdi-file-check'
+          title = I18n.t('submissions.show.expected')
         end
         builder.tr do
-          builder << "<th class='line-nr'></th>"
+          builder.th(class: 'line-nr', title: title) do
+            builder.i(class: %(mdi mdi-18 #{icon_cls}))
+          end
+          builder.th(title, colspan: headers.length)
+        end
+        builder.tr do
+          builder.th(class: 'line-nr')
           builder << headers.join
         end
       end

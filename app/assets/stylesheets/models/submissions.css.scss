@@ -158,16 +158,10 @@
       white-space: pre;
     }
   }
-  .diffs .unified-diff {
+  .diffs .unified-diff, .diffs .split-diff {
     display: none;
   }
-  .diffs .split-diff {
-    display: none;
-  }
-  .diffs.show-unified .unified-diff {
-    display: table;
-  }
-  .diffs.show-split .split-diff {
+  .diffs.show-unified .unified-diff, .diffs.show-split .split-diff {
     display: table;
   }
   .diffs.show-split .split-diff.csv-diff {
@@ -175,7 +169,7 @@
     width: 50%;
     vertical-align: top;
   }
-  .diffs.show-unified .unified-diff.csv-diff {
+  .diffs.show-unified .unified-diff.csv-diff, .test-accepted .diffs .diff {
     display: inline-block;
   }
 

@@ -1,4 +1,4 @@
-class DiffText
+class TextDiffer
   require 'builder'
 
   def self.render_accepted(builder, generated)

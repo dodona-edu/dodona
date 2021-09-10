@@ -257,9 +257,9 @@ class FeedbackTableRenderer
 
   def differ(t)
     if t[:format] == 'csv'
-      DiffCsv
+      CsvDiffer
     else
-      DiffText
+      TextDiffer
     end
   end
 

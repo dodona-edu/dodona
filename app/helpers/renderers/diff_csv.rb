@@ -2,13 +2,10 @@ class DiffCsv
   require 'builder'
 
   def self.render_accepted(builder, generated)
-    generated = generated.lstrip || ''
-    gen_headers, generated = generated.split("\n", 2)
-    gen_headers = gen_headers.nil? ? [] : CSV.parse_line(gen_headers)
-    gen_headers = gen_headers.map { |el| el.nil? ? '' : el }
-    generated ||= ''
+    generated = CSV.parse((generated || '').lstrip, nil_value: '')
+    gen_headers, *generated = generated
 
-    return if gen_headers.empty?
+    return if gen_headers.blank?
 
     builder.div(class: 'diffs show-unified') do
       builder.table(class: 'unified-diff diff csv-diff') do
@@ -23,10 +20,10 @@ class DiffCsv
           end
         end
         builder.tbody do
-          generated.split("\n", -1).each.with_index do |line, idx|
+          generated.each.with_index do |line, idx|
             builder.tr do
               builder << %(<td class="line-nr">#{idx + 1}</td>)
-              builder << (CSV.parse_line(line || '') || Array.new(gen_headers.length) { '' }).map { |el| %(<td>#{CGI.escape_html el || ''}</td>) }.join
+              builder << line.map { |el| %(<td>#{CGI.escape_html el || ''}</td>) }.join
             end
           end
         end
@@ -35,34 +32,24 @@ class DiffCsv
   end
 
   def initialize(generated, expected)
-    extract_headers = lambda { |text|
-      text = text.lstrip || ''
-      headers, text = text.split("\n", 2)
-      headers = headers.nil? ? [] : CSV.parse_line(headers)
-      headers = headers.map { |el| el.nil? ? '' : el }
-      text ||= ''
-      [headers, text]
-    }
+    @generated = CSV.parse((generated || '').lstrip, nil_value: '')
+    @expected = CSV.parse((expected || '').lstrip, nil_value: '')
 
-    @gen_headers, @generated = extract_headers.call(generated)
-    @exp_headers, @expected = extract_headers.call(expected)
+    @gen_headers, *@generated = @generated
+    @gen_headers ||= []
+    @exp_headers, *@expected = @expected
+    @exp_headers ||= []
 
-    @generated_linecount = @generated&.lines&.count || 0
-    @expected_linecount = @expected&.lines&.count || 0
-    @simplified_table = @generated_linecount > 100 || @expected_linecount > 100
+    @generated_rowcount = @generated.length
+    @expected_rowcount = @expected.length
+    @simplified_table = @generated_rowcount > 100 || @expected_rowcount > 100
 
     @gen_header_indices, @exp_header_indices, @gen_headers, @exp_headers, @combined_headers = diff_header_indices(@gen_headers, @exp_headers)
 
     @diff = unless @simplified_table
-              csv_text_to_array = lambda { |csv_text, header_length|
-                (
-                  CSV.parse_line(csv_text || '') ||  # parse the line (if no old_element is set, parse '')
-                  Array.new(header_length) { '' }    # if the parsed line returns nil, use an array with empty values instead
-                ).map { |el| el.nil? ? '' : el }     # replace all nil values with ''
-              }
-              Diff::LCS.sdiff(@generated.split("\n", -1), @expected.split("\n", -1)).map do |chunk|
-                gen_result = csv_text_to_array.call(chunk.old_element, @gen_headers.length)
-                exp_result = csv_text_to_array.call(chunk.new_element, @exp_headers.length)
+              Diff::LCS.sdiff(@generated, @expected).map do |chunk|
+                gen_result = chunk.old_element || []
+                exp_result = chunk.new_element || []
                 if chunk.action == '!'
                   gen_result, exp_result = diff_arrays(gen_result, exp_result)
                 else
@@ -132,74 +119,105 @@ class DiffCsv
     builder = Builder::XmlMarkup.new
 
     builder.div do
-      build_table = lambda { |headers, is_old, cls, icon_cls, title|
-        builder.table(class: 'split-diff diff csv-diff') do
-          builder.colgroup do
-            builder.col(class: 'line-nr')
-            builder.col(class: cls, span: headers.length)
-          end
-          builder.thead do
-            builder.tr do
-              builder << "<th class='line-nr' title='#{title}'><i class='mdi mdi-18 #{icon_cls}'/></th>"
-              builder << "<th colspan='#{headers.length}'>#{title}</th>"
-            end
-            builder.tr do
-              builder << "<th class='line-nr'></th>"
-              builder << headers.join
-            end
-          end
-          builder.tbody do
-            if @simplified_table
-              method(is_old ? :simple_old_row : :simple_new_row).call(builder)
-            else
-              @diff.each do |chunk|
-                builder.tr do
-                  is_empty, row = method(is_old ? :old_row : :new_row).call(chunk)
-                  position = is_old ? chunk.old_position : chunk.new_position
-                  builder << %(<td class="line-nr">#{position + 1 unless is_empty}</td>)
-                  builder << row.join
-                end
-              end
-            end
-          end
-        end
-      }
-
-      build_table.call(@gen_headers, true, 'del-output-csv', 'mdi-file-account', I18n.t('submissions.show.your_output'))
-      build_table.call(@exp_headers, false, 'ins-output-csv', 'mdi-file-check', I18n.t('submissions.show.expected'))
+      split_build_table(builder, @gen_headers, true)
+      split_build_table(builder, @exp_headers, false)
     end.html_safe
   end
 
   private
 
+  def split_build_table(builder, headers, is_old)
+    builder.table(class: 'split-diff diff csv-diff') do
+      if is_old
+        cls = 'del-output-csv'
+        icon_cls = 'mdi-file-account'
+        title = I18n.t('submissions.show.your_output')
+      else
+        cls = 'ins-output-csv'
+        icon_cls = 'mdi-file-check'
+        title = I18n.t('submissions.show.expected')
+      end
+
+      builder.colgroup do
+        builder.col(class: 'line-nr')
+        builder.col(class: cls, span: headers.length)
+      end
+      builder.thead do
+        builder.tr do
+          builder << "<th class='line-nr' title='#{title}'><i class='mdi mdi-18 #{icon_cls}'/></th>"
+          builder << "<th colspan='#{headers.length}'>#{title}</th>"
+        end
+        builder.tr do
+          builder << "<th class='line-nr'></th>"
+          builder << headers.join
+        end
+      end
+      builder.tbody do
+        if @simplified_table
+          if is_old
+            simple_old_row(builder)
+          else
+            simple_new_row(builder)
+          end
+        else
+          @diff.each do |chunk|
+            builder.tr do
+              if is_old
+                is_empty, row = old_row(chunk)
+                position = chunk.old_position
+              else
+                is_empty, row = new_row(chunk)
+                position = chunk.new_position
+              end
+              builder << %(<td class="line-nr">#{position + 1 unless is_empty}</td>)
+              builder << row.join
+            end
+          end
+        end
+      end
+    end
+  end
+
   def unified_simple(builder)
-    gen_cols = CSV.parse(@generated).transpose.map { |col| col.join("\n") }
+    gen_cols = @generated.transpose.map { |col| col.join("\n") }
     builder.tr do
       builder.td(class: 'line-nr') do
-        builder << (1..@generated_linecount).to_a.join("\n")
+        builder << (1..@generated_rowcount).to_a.join("\n")
       end
       builder.td(class: 'line-nr')
 
-      builder << Array.new(@combined_headers.length) { |i| @gen_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : %(<td class="del">#{CGI.escape_html gen_cols[idx]}</td>) }.join
+      builder << Array.new(@combined_headers.length) { |i| @gen_header_indices.index(i) }.map do |idx|
+        if idx.nil?
+          '<td></td>'
+        else
+          %(<td class="del">#{CGI.escape_html gen_cols[idx]}</td>)
+        end
+      end.join
     end
 
-    exp_cols = CSV.parse(@expected).transpose.map { |col| col.join("\n") }
+    exp_cols = @expected.transpose.map { |col| col.join("\n") }
     builder.tr do
       builder.td(class: 'line-nr')
       builder.td(class: 'line-nr') do
-        builder << (1..@expected_linecount).to_a.join("\n")
+        builder << (1..@expected_rowcount).to_a.join("\n")
       end
 
-      builder << Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map { |idx| idx.nil? ? '<td></td>' : %(<td class="ins">#{CGI.escape_html exp_cols[idx]}</td>) }.join
+      builder << Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map do |idx|
+        if idx.nil?
+          '<td></td>'
+        else
+          %(<td class="ins">#{CGI.escape_html exp_cols[idx]}</td>)
+        end
+      end.join
     end
   end
 
   def simple_old_row(builder)
-    gen_cols = CSV.parse(@generated).transpose.map { |col| col.join("\n") }
+    gen_cols = @generated.transpose.map { |col| col.join("\n") }
 
     builder.tr do
       builder.td(class: 'line-nr') do
-        builder << (1..@generated_linecount).to_a.join("\n")
+        builder << (1..@generated_rowcount).to_a.join("\n")
       end
       gen_cols.each do |col|
         builder.td(class: 'del') do
@@ -210,11 +228,11 @@ class DiffCsv
   end
 
   def simple_new_row(builder)
-    exp_cols = CSV.parse(@expected).transpose.map { |col| col.join("\n") }
+    exp_cols = @expected.transpose.map { |col| col.join("\n") }
 
     builder.tr do
       builder.td(class: 'line-nr') do
-        builder << (1..@expected_linecount).to_a.join("\n")
+        builder << (1..@expected_rowcount).to_a.join("\n")
       end
       exp_cols.each do |col|
         builder.td(class: 'ins') do

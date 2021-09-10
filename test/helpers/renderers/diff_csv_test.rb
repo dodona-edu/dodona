@@ -210,16 +210,14 @@ class DiffCsvTest < ActiveSupport::TestCase
         %(<th class="del"><strong>AAA</strong></th>)
       ],
       [
-        %(<td class="line-nr">1</td><td class="del"><strong>BBB</strong></td><td class="del"><strong>BBB</strong></td>),
-        %(<td class="line-nr"></td><td class=""></td><td class=""></td>)
+        %(<td class="line-nr">1</td><td class="del"><strong>BBB</strong></td><td class="del"><strong>BBB</strong></td>)
       ],
       [
         %(<th class="ins"><strong>BBB</strong></th>),
         %(<th class="ins"><strong>BBB</strong></th>)
       ],
       [
-        %(<td class="line-nr">1</td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td>),
-        %(<td class="line-nr">2</td><td class="ins"></td><td class="ins"></td>)
+        %(<td class="line-nr">1</td><td class="ins"><strong>AAA</strong></td><td class="ins"><strong>AAA</strong></td>)
       ]
     )
     should_match_html diff, diff_csv.split
@@ -228,7 +226,7 @@ class DiffCsvTest < ActiveSupport::TestCase
   test 'nil value and nil line' do
     generated = <<~EOS.chomp
       "BBB",,"BBB"
-
+      ,,
       "BBB","BBB","BBB"
     EOS
     expected = <<~EOS.chomp

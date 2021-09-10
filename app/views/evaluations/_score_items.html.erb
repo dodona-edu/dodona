@@ -1,0 +1,60 @@
+<div class="panel-body">
+  <div class="stepper-part">
+    <div class="score-item-toolbar">
+      <div class="score-item-toolbar-tools">
+        <p class="description-text">
+          <%= t 'score_items.new.second_explanation' %><br>
+          <span class="summary-text">
+            <%= t('score_items.new.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>
+          </span>
+        </p>
+        <div class="btn-group actions">
+          <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="mdi mdi-dots-vertical"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <%= link_to modify_grading_visibility_evaluation_path(@evaluation, visible: true), method: :post, class: "dropdown-item" do %>
+                <i class="mdi mdi-eye mdi-18"></i>
+                <%= t("score_items.new.show_all") %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to modify_grading_visibility_evaluation_path(@evaluation, visible: false), method: :post, class: "dropdown-item" do %>
+                <i class="mdi mdi-eye-off mdi-18"></i>
+                <%= t("score_items.new.hide_all") %>
+              <% end %>
+            </li>
+            <li>
+              <a href="#add-score-item-to-all" data-bs-toggle="modal" class="dropdown-item">
+                <i class="mdi mdi-table-row-plus-after mdi-18"></i>
+                <%= t 'score_items.new.add_all' %>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <% @evaluation.evaluation_exercises.each do |evaluation_exercise| %>
+      <div id="card-<%= evaluation_exercise.id %>">
+        <%= render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: nil %>
+      </div>
+    <% end %>
+  </div>
+  <div class="stepper-actions stepper-border">
+    <% if local_assigns[:back] %>
+      <%= link_to t('evaluations.edit.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+    <% else %>
+      <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+    <% end %>
+  </div>
+</div>
+<div class="modal fade" id="add-score-item-to-all" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <%= render 'score_items/form',
+               score_item: ScoreItem.new,
+               evaluation_exercise: nil,
+               title: t("score_items.new.add_all"),
+               form_options: { url: add_all_evaluation_score_items_path(@evaluation), remote: true } %>
+  </div>
+</div>

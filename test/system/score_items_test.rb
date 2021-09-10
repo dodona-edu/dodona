@@ -21,7 +21,7 @@ class ScoreItemsTest < ApplicationSystemTestCase
   end
 
   test 'updating score item works' do
-    visit(evaluation_score_items_path(evaluation_id: @evaluation.id))
+    visit(edit_evaluation_path(id: @evaluation.id))
 
     # Ensure we don't accidentally test nothing
     assert_no_text '314.25'

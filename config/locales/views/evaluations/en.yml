@@ -21,8 +21,9 @@ en:
     new:
       exercises: Exercises
       create_evaluation: Evaluate series
+      pick_deadline: Pick deadline
       explanation_title: "What is an evaluation?"
-      explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
+      explanation_html: "<p>Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released.</p>"
       next: Next
     add_users:
       title: Select users
@@ -37,24 +38,32 @@ en:
         other: "<h1>%{count} <small>students</small></h1> submitted at least once"
       select_users: "Select these users"
     edit:
-      title: Edit users
+      title: Edit evaluation
+      evaluation_info: Evaluation info
+      users_required: You need to add users before going to the evaluation
+      live_edit_explanation_html: "<p>Changes you make here are applied immediately.</p>"
+      back_to_evaluation: "Back to evaluation"
     edit_users:
       users_selected: selected students
       users_selected_html:
         zero: "You have currently selected <b>zero users</b>."
         one: "You have currently selected <b>one user</b>."
         other: "You have currently selected <b>%{count} users</b>."
+      short_users_selected:
+        zero: "Zero users selected"
+        one: "One user selected"
+        other: "%{count} users selected"
       to_evaluation: To evaluation
       back_to_evaluation: Back to evaluation
       mass_edit: Which students do you want to evaluate?
-      clear: Remove all users
+      clear: Deselect all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
     edit_score_items: Edit score items
     destroy: Delete evaluation
     download: Download grades
     form:
-      deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
+      deadline-help_html: "<p>The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used.</p><p><b>Warning:</b> You can't change the deadline later, but you can select a different solution for individual students.</p>"
     evaluation_table:
       user: User
     evaluation_grade_table:

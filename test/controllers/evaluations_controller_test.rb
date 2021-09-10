@@ -22,7 +22,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Create session via wizard page' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -30,12 +30,33 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
+  test 'Should render when evaluation invalid' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now + 5.minutes
+      }
+    }
+    assert_response :success
+    assert_nil @series.evaluation
+  end
+
+  test 'Show redirects to edit if no users' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    get evaluation_path(@series.evaluation)
+    assert_redirected_to edit_evaluation_path(@series.evaluation)
+  end
+
   test 'Can remove user from feedback' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -43,7 +64,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
 
     post remove_user_evaluation_path(@series.evaluation, user_id: @users.first.id, format: :js)
@@ -51,7 +71,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Can add user to feedback' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -59,7 +79,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
 
     user = create :user
@@ -70,7 +89,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Can update a feedback's completed status" do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -98,7 +117,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Notifications should be made when a feedback is released' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: { series_id: @series.id, deadline: DateTime.now }
     }
     evaluation = @series.evaluation
@@ -132,7 +151,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'non released annotations are not queryable' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -191,7 +210,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'feedback page only available for course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -220,7 +239,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'feedback page should work even when there are no submissions' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -236,7 +255,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'When there is already a feedback session for this series, we should redirect to the ready made one when a user wants to create a new one' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: { series_id: @series.id,
                     deadline: DateTime.now }
     }
@@ -274,7 +293,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Edit page for a feedback session is only available for course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -304,7 +323,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Feedback page should be available for a course admin, for each feedback with a submission' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -352,7 +371,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Show page should only be available to zeus and course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -384,7 +403,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'grade export is only available for course admins' do
     # Create an evaluation, a score item and add a score.
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -452,7 +471,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'grade export contains correct data' do
     # Create an evaluation, a score item and add a score.
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now

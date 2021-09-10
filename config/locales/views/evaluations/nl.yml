@@ -20,9 +20,10 @@ nl:
       grading_details_info_html: Deze tabel toont het puntenoverzicht voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br> Als de punten grijs zijn is de oplossing nog niet afgewerkt.
     new:
       exercises: Oefeningen
+      pick_deadline: Deadline kiezen
       create_evaluation: Reeks evalueren
       explanation_title: "Wat is een evaluatie?"
-      explanation_html: "Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft."
+      explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p>"
       next: Volgende
     add_users:
       title: Gebruikers selecteren
@@ -37,24 +38,32 @@ nl:
         other: "<h1>%{count} <small>studenten</small></h1> hebben minstens 1 keer ingediend"
       select_users: "Gebruikers selecteren"
     edit:
-      title: Gebruikers aanpassen
+      title: Evaluatie aanpassen
+      evaluation_info: Evaluatie-info
+      users_required: Je moet gebruikers toevoegen voor je naar de evaluatie gaat
+      live_edit_explanation_html: "<p>Aanpassingen die je hier doet worden meteen toegepast.</p>"
+      back_to_evaluation: "Terug naar evaluatie"
     edit_users:
       users_selected: geselecteerde studenten
       users_selected_html:
         zero: "Je hebt op dit moment <b>geen gebruikers</b> geselecteerd."
         one: "Je hebt op dit moment <b>1 gebruiker</b> geselecteerd."
         other: "Je hebt op dit moment <b>%{count} gebruikers</b> geselecteerd."
+      short_users_selected:
+        zero: "Geen gebruikers geselecteerd"
+        one: "Één gebruiker geselecteerd"
+        other: "%{count} gebruikers geselecteerd"
       to_evaluation: Naar evaluatie
       back_to_evaluation: Terug naar evaluatie
       mass_edit: Welke studenten wil je evalueren?
-      clear: Alle gebruikers verwijderen
+      clear: Alle gebruikers deselecteren
       add_enrolled: Alle ingeschreven studenten
       add_submitted: Alle studenten die indienden
     edit_score_items: Scoreonderdelen aanpassen
     destroy: Evaluatie verwijderen
     download: Punten downloaden
     form:
-      deadline-help_html: "Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie. <b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren."
+      deadline-help_html: "<p>Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie.</p><p><b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren.</p>"
     evaluation_table:
       user: Gebruiker
     evaluation_grade_table:

@@ -1,21 +1,83 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'evaluation' %>
+  <%= javascript_pack_tag 'score_item' %>
 <% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
-    <div class="card evaluation-user-select">
+    <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t('.title') %></h2>
+        <h2 class="card-title-text"><%= @title %></h2>
       </div>
       <div class="card-supporting-text">
-        <p class="selected-users">
-          <span id="users-count-wrapper">
-            <%= t("evaluations.edit_users.users_selected_html", count: @evaluation.users.count) %>
-          </span>
-          <%= link_to t('evaluations.edit_users.clear'), set_multi_user_evaluation_path(@evaluation, type: 'none', format: :js), remote: true, method: :post, data: { confirm: t('evaluations.members_table.remove_users_consequences') } %>.
-        </p>
-        <%= link_to t('evaluations.edit_users.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary float-end" %>
-        <%= render partial: 'edit_users', locals: { confirm: true } %>
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 order-lg-0">
+            <h4 class="evaluation-form-title">
+              <%= @evaluation.series.name %>
+              <span class="small"><%= @evaluation.series.course.name %></span>
+            </h4>
+            <%= render partial: 'exercises_table', locals: {
+              series: @evaluation.series,
+              exercises: @evaluation.series.exercises,
+              } %>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 order-lg-1">
+            <div class="callout callout-info">
+              <h4><%= t "evaluations.new.explanation_title" %></h4>
+              <%= t "evaluations.new.explanation_html" %>
+              <%= t ".live_edit_explanation_html" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="users-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">1</span>
+            <a role="button" data-bs-toggle="collapse" href="#users-step">
+              <%= t("evaluations.add_users.title") %>
+              <span id="short-users-count-wrapper" class="answer">
+                <%= t "evaluations.edit_users.short_users_selected", count: @evaluation.users.count %>
+              </span>
+            </a>
+          </h4>
+        </div>
+        <div id="users-step" class="panel-collapse collapse show" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <%= render partial: 'layouts/searchbar', locals: {
+                baseUrl: edit_evaluation_url(@evaluation, confirm: true),
+                eager: false,
+                course_labels: @course_labels,
+                institutions: Institution.of_course_by_members(@course),
+                } %>
+              <div id="users-table-wrapper">
+                <%= render partial: 'members_table',
+                             locals: {
+                               course_memberships: @course_memberships,
+                               pagination_opts: @pagination_opts,
+                               confirm: true
+                             } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="items-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" data-bs-toggle="collapse" href="#items-step">
+              <%= t 'score_items.index.title' %>
+            </a>
+          </h4>
+        </div>
+        <div id="items-step" class="panel-collapse collapse show" role="tabpanel">
+          <%= render partial: 'score_items', locals: { back: true } %>
+        </div>
       </div>
     </div>
   </div>

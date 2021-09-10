@@ -1,0 +1,62 @@
+<div class="stepper-part evaluation-user-select">
+  <div class="row">
+    <div class="col-lg-6 col-md-12 order-lg-1">
+      <div class="callout callout-info">
+        <h4><%= t('evaluations.add_users.explanation_title') %></h4>
+        <p><%= t('evaluations.add_users.explanation_part1') %></p>
+        <p><%= t('evaluations.add_users.explanation_part2') %></p>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 order-lg-0">
+      <div class="card-subtitle">
+        <h4><%= t('evaluations.edit_users.mass_edit') %></h4>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <div class="user-select-option">
+            <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'enrolled', format: :js) do %>
+              <%= t('evaluations.add_users.users_in_course_html', count: @user_count_course) %>
+              <div class="clearfix"></div>
+              <i class="loader mdi mdi-spin mdi-loading hidden"></i>
+              <div class="button btn-text"><%= t('.select_users') %></div>
+            <% end %>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="user-select-option">
+            <%= link_to set_multi_user_evaluation_path(@evaluation, type: 'submitted', format: :js) do %>
+              <%= t('evaluations.add_users.users_submitted_html', count: @user_count_series) %>
+              <div class="clearfix"></div>
+              <i class="loader mdi mdi-spin mdi-loading hidden"></i>
+              <div class="button btn-text"><%= t('.select_users') %></div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <p class="selected-users">
+        <span id="users-count-wrapper">
+          <%= t("evaluations.edit_users.users_selected_html", count: @evaluation.users.count) %>
+        </span>
+        <%= link_to t('evaluations.edit_users.clear'), set_multi_user_evaluation_path(@evaluation, type: 'none', format: :js), remote: true, method: :post %>.
+      </p>
+    </div>
+  </div>
+</div>
+<div class="stepper-part stepper-border">
+  <div class="card-supporting-text">
+    <%= render partial: 'layouts/searchbar', locals: {
+      baseUrl: edit_evaluation_url(@evaluation),
+      eager: false,
+      course_labels: @course_labels,
+      institutions: Institution.of_course_by_members(@course),
+      } %>
+    <div id="users-table-wrapper">
+      <%= render partial: 'members_table',
+                   locals: {
+                     course_memberships: @course_memberships,
+                     pagination_opts: @pagination_opts,
+                     confirm: false
+                   } %>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit add_users update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
+  before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -16,7 +16,11 @@ class EvaluationsController < ApplicationController
   end
 
   def show
-    redirect_to add_users_evaluation_path(@evaluation) if @evaluation.users.count == 0
+    if @evaluation.users.count == 0
+      flash[:alert] = I18n.t('evaluations.edit.users_required')
+      redirect_to edit_evaluation_path(@evaluation)
+      return
+    end
     @feedbacks = @evaluation.evaluation_sheet
     @users = apply_scopes(@evaluation.users)
     @course_labels = CourseLabel.where(course: @evaluation.series.course)
@@ -31,11 +35,17 @@ class EvaluationsController < ApplicationController
     end
     @course = @series.course
     @evaluation = Evaluation.new(series: @series, deadline: @series.deadline || Time.current)
+    @crumbs = [
+      [@series.course.name, course_url(@series.course)],
+      [@series.name, breadcrumb_series_path(@series, current_user)],
+      [I18n.t('evaluations.new.create_evaluation'), '#']
+    ]
     @title = I18n.t('evaluations.new.create_evaluation')
     authorize @evaluation
   end
 
   def edit
+    @should_confirm = params[:confirm].present?
     @course = @evaluation.series.course
     @course_labels = CourseLabel.where(course: @course)
     @course_memberships = apply_scopes(@course.course_memberships)
@@ -44,7 +54,7 @@ class EvaluationsController < ApplicationController
                           .order(Arel.sql('users.permission ASC'))
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: %i[course_admin student])
-                          .paginate(page: parse_pagination_param(params[:page]))
+                          .paginate(page: parse_pagination_param(params[:page]), per_page: 15)
 
     ActivityStatus.add_status_for_series(@evaluation.series, [:last_submission])
 
@@ -57,30 +67,28 @@ class EvaluationsController < ApplicationController
     @title = I18n.t('evaluations.edit.title')
   end
 
-  def add_users
-    edit
-    @user_count_course = @evaluation.series.course.enrolled_members.count
-    @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
-    @crumbs = [
-      [@evaluation.series.course.name, course_url(@evaluation.series.course)],
-      [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)],
-      [I18n.t('evaluations.show.evaluation'), evaluation_url(@evaluation)],
-      [I18n.t('evaluations.add_users.title'), '#']
-    ]
-    @title = I18n.t('evaluations.add_users.title')
-  end
-
   def create
     @evaluation = Evaluation.new(permitted_attributes(Evaluation))
     authorize @evaluation
     @evaluation.exercises = @evaluation.series.exercises
+    @course = @evaluation.series.course
+    @course_labels = CourseLabel.where(course: @course)
+    @course_memberships = apply_scopes(@course.course_memberships)
+                          .includes(:course_labels, user: [:institution])
+                          .order(status: :asc)
+                          .order(Arel.sql('users.permission ASC'))
+                          .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
+                          .where(status: %i[course_admin student])
+                          .paginate(page: parse_pagination_param(params[:page]), per_page: 15)
 
     respond_to do |format|
       if @evaluation.save
-        format.html { redirect_to add_users_evaluation_path(@evaluation) }
+        @user_count_course = @evaluation.series.course.enrolled_members.count
+        @user_count_series = @evaluation.series.course.enrolled_members.where(id: Submission.where(exercise_id: @evaluation.exercises, course_id: @evaluation.series.course_id).select('DISTINCT user_id')).count
+        format.js {}
         format.json { render :show, status: :created, location: @evaluation }
       else
-        format.html { render :new }
+        format.js { render :new }
         format.json { render json: @evaluation.errors, status: :unprocessable_entity }
       end
     end

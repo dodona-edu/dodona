@@ -44,14 +44,13 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
       [nil, :no]
     ].each do |user, expected|
       sign_in user if user.present?
-      post add_all_evaluation_score_items_path(@evaluation), params: {
+      post add_all_evaluation_score_items_path(@evaluation, format: :js), params: {
         score_item: {
           name: 'Test',
           description: 'Test',
           maximum: '20.0'
         }
       }
-      assert_response :redirect
       @evaluation.evaluation_exercises.reload
       @evaluation.evaluation_exercises.each do |e|
         if expected == :ok
@@ -167,36 +166,6 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
 
       sign_out user if user.present?
       exercise.update!(score_items: [])
-    end
-  end
-
-  test 'add score item page for a feedback session is only available for course admins' do
-    [
-      [@staff_member, :success],
-      [users(:student), :redirect],
-      [create(:staff), :redirect],
-      [users(:zeus), :success],
-      [nil, :redirect]
-    ].each do |user, expected|
-      sign_in user if user.present?
-      get new_evaluation_score_item_path(@evaluation)
-      assert_response expected
-      sign_out user if user.present?
-    end
-  end
-
-  test 'score item page for a feedback session is only available for course admins' do
-    [
-      [@staff_member, :success],
-      [users(:student), :redirect],
-      [create(:staff), :redirect],
-      [users(:zeus), :success],
-      [nil, :redirect]
-    ].each do |user, expected|
-      sign_in user if user.present?
-      get evaluation_score_items_path(@evaluation)
-      assert_response expected
-      sign_out user if user.present?
     end
   end
 end

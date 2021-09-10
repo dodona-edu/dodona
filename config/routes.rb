@@ -208,7 +208,6 @@ Rails.application.routes.draw do
 
     resources :evaluations, only: %i[show new edit create update destroy] do
       member do
-        get 'add_users'
         get 'overview'
         get 'export_grades'
         post 'add_user'
@@ -217,7 +216,7 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update index new] do
+      resources :score_items, only: %i[create destroy update] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end

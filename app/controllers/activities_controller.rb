@@ -2,9 +2,9 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
 
-  before_action :set_activity, only: %i[show description edit update media info read]
-  before_action :set_course, only: %i[show edit update media info read]
-  before_action :set_series, only: %i[show edit update info read]
+  before_action :set_activity, only: %i[show description edit update media info]
+  before_action :set_course, only: %i[show edit update media info]
+  before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
   before_action :allow_iframe, only: %i[description]
   before_action :set_lti_message, only: %i[show]
@@ -128,22 +128,6 @@ class ActivitiesController < ApplicationController
     @title = @activity.name
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @activity, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
     @labels = Label.all
-  end
-
-  def read
-    @course = nil if @course.blank? || @course.subscribed_members.exclude?(current_user)
-    read_state = ActivityReadState.new activity: @activity,
-                                       course: @course,
-                                       user: current_user
-    if read_state.save
-      respond_to do |format|
-        format.html { redirect_to helpers.activity_scoped_path(activity: @activity, course: @course, series: @series) }
-        format.js { render 'activities/read', locals: { activity: @activity, course: @course, read_state: read_state, user: current_user } }
-        format.json { head :ok }
-      end
-    else
-      render json: { status: 'failed', errors: read_state.errors }, status: :unprocessable_entity
-    end
   end
 
   def update

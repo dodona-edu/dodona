@@ -52,9 +52,7 @@ Rails.application.routes.draw do
     end
 
     concern :readable do
-      member do
-        post 'read'
-      end
+      resources :activity_read_states, only: %i[index create]
     end
 
     concern :submitable do

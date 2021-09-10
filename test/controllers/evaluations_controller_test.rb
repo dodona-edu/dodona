@@ -33,6 +33,28 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
+  test 'Should render when evaluation invalid' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now + 5.minutes
+      }
+    }
+    assert_response :success
+    assert_nil @series.evaluation
+  end
+
+  test 'Show redirects to edit if no users' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    get evaluation_path(@series.evaluation)
+    assert_redirected_to edit_evaluation_path(@series.evaluation)
+  end
+
   test 'Can remove user from feedback' do
     post evaluations_path(format: :js), params: {
       evaluation: {

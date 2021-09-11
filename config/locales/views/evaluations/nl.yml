@@ -23,7 +23,7 @@ nl:
       pick_deadline: Deadline kiezen
       create_evaluation: Reeks evalueren
       explanation_title: "Wat is een evaluatie?"
-      explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p>"
+      explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p><p>Een handleiding over verbeteren kan vinden op <a href=\"https://docs.dodona.be/nl/guides/teachers/grading/\">onze documentatiesite</a>.</p>"
       next: Volgende
     add_users:
       title: Gebruikers selecteren

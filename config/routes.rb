@@ -178,6 +178,8 @@ Rails.application.routes.draw do
       resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
+    resources :activity_read_states, only: %i[index create]
+
     resources :users do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]

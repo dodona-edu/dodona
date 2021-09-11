@@ -71,16 +71,16 @@ class Evaluation < ApplicationRecord
     fbs = users.map do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
     end.to_h
-    averages = fbs.map do |user_id, feedbacks|
-      average = feedbacks.map(&:score).reject(&:blank?)
-      [user_id, average.present? ? average.sum : nil]
+    totals = fbs.map do |user_id, feedbacks|
+      scores = feedbacks.map(&:score).reject(&:blank?)
+      [user_id, scores.present? ? scores.sum : nil]
     end.to_h
 
     {
       evaluation_exercises: eval_exercises,
       exercises: exercises,
       feedbacks: fbs,
-      averages: averages
+      totals: totals
     }
   end
 
@@ -123,7 +123,7 @@ class Evaluation < ApplicationRecord
       csv << headers
       users.order(last_name: :asc, first_name: :asc).each do |user|
         feedback_l = sheet[:feedbacks][user.id]
-        total_score = sheet[:averages][user.id]
+        total_score = sheet[:totals][user.id]
         total_max = sheet[:evaluation_exercises].map(&:maximum_score).reject(&:nil?).sum
         row = [user.id, user.username, user.first_name, user.last_name, user.full_name, user.email, users_labels[user].map(&:name).join(';'), total_score, total_max]
         row += feedback_l.flat_map { |f| [f.score, f.maximum_score] }

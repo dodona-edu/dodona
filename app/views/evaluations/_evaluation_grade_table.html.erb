@@ -32,13 +32,13 @@
     <tbody>
     <% users.order(last_name: :asc, first_name: :asc).each do |user| %>
       <% feedback_l = feedbacks[:feedbacks][user.id] %>
-      <% average = feedbacks[:averages][user.id] %>
+      <% total = feedbacks[:totals][user.id] %>
       <tr>
         <td class="user-name ellipsis-overflow">
           <%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
         </td>
         <td class="status">
-          <%= format_score average %> / <%= format_score maximum %>
+          <%= format_score total %> / <%= format_score maximum %>
         </td>
         <% feedback_l.each do |feedback| %>
           <td class="status">

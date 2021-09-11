@@ -116,3 +116,4 @@ en:
       description_files: "We found files for these languages in the descriptions folder %{path}"
       config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
       doc_site: 'documentation site'
+      activity_invalid: This exercise's configuration is invalid.

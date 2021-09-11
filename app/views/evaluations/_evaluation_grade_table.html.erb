@@ -3,7 +3,7 @@
     <thead class="sticky-header header">
     <tr class="borderless-row first-header">
       <th class="user-name"></th>
-      <th class="status-header">
+      <th class="status-header total-column">
         <%= t ".total" %>
       </th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
@@ -12,7 +12,7 @@
     </tr>
     <tr class="second-header">
       <th class="user-name"><%= t ".average" %></th>
-      <th class="status">
+      <th class="status total-column">
         <% average = @evaluation.average_score_sum(feedbacks[:evaluation_exercises]) %>
         <%= format_score average %> / <%= format_score @evaluation.maximum_score %>
       </th>
@@ -36,7 +36,7 @@
         <td class="user-name ellipsis-overflow">
           <%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
         </td>
-        <td class="status">
+        <td class="status total-column">
           <%= format_score total %>
         </td>
         <% feedback_l.each do |feedback| %>

@@ -77,10 +77,51 @@
         </div>
       </div>
 
-      <div id="items-panel" class="panel panel-default">
+      <div id="choice-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">3</span>
+            <a class="disabled" role="button" data-bs-toggle="collapse">
+              <%= t('score_items.new.choose') %>
+              <span class="answer"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="choice-step" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body panel-body-transparent">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn" id="yes-grading" data-answer="<%= t('score_items.new.yes_answer') %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('score_items.new.yes_answer') %>
+                      <br>
+                      <small><%= t('score_items.new.yes_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="option-btn" id="no-grading">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('score_items.new.no_answer') %>
+                      <br>
+                      <small><%= t('score_items.new.no_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div id="items-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">4</span>
             <a role="button" class="disabled" data-bs-toggle="collapse">
               <%= t 'score_items.index.title' %>
             </a>

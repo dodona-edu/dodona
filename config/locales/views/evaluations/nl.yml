@@ -67,7 +67,6 @@ nl:
     evaluation_table:
       user: Gebruiker
     evaluation_grade_table:
-      user: Gebruiker
       total: Totaal
       average: Gemiddelde
     feedback_status:

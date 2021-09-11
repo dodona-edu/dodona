@@ -67,7 +67,6 @@ en:
     evaluation_table:
       user: User
     evaluation_grade_table:
-      user: User
       total: Total
       average: Average
     feedback_status:

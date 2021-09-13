@@ -473,7 +473,7 @@ class Submission < ApplicationRecord
           .group_by { |ex_id_date| ex_id_date[0] } # group by exId
           # drop exId from values
           .transform_values { |values| values.map { |v| v[1] } }
-      )
+      ) { |_k, v1, v2| v1 + v2 }
     end
     {
       until: submissions.first&.id || 0,

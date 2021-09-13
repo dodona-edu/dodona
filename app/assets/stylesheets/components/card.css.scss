@@ -225,6 +225,10 @@ a.card-title-link:hover {
   align-items: center;
 }
 
+.card-subtitle-actions .nav.btn-group {
+  flex-wrap: nowrap;
+}
+
 .card-subtitle-actions a {
   color: $text-secondary;
   font-size: 18px;

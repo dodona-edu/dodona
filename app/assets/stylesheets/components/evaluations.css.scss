@@ -201,8 +201,8 @@ $user-column-width: 170px;
     overflow: hidden;
   }
 
-  td.total-column {
-    border-right: 1px solid $border-color;
+  .total-column {
+    border-right: 2px solid $border-color;
   }
 
   thead tr th:nth-child(2) {

@@ -157,6 +157,13 @@
       padding: 2px 6px;
       white-space: pre;
     }
+    td.line-nr, th.line-nr {
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+      vertical-align: top;
+      text-align: right;
+    }
   }
   .diffs .unified-diff, .diffs .split-diff {
     display: none;

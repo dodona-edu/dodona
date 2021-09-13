@@ -26,7 +26,7 @@
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
     "typeahead.js": "^0.11.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.3"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",

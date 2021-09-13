@@ -18,7 +18,7 @@
     <div class="card course-search">
       <div class="card-supporting-text">
         <div class="card-tab">
-          <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_path %>" role="tablist">
+          <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_url %>" role="tablist">
             <% if @show_institution_courses %>
               <li role="presentation"><a href="#institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
             <% end %>

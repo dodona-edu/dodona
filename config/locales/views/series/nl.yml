@@ -32,6 +32,7 @@ nl:
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
       show_overview: Alle opgaven en leesactiviteiten bekijken
       evaluation_overview: Feedback bekijken
+      series_overview: Reeksoverzicht
     edit:
       title: Reeks bewerken
       add_activities: Activiteiten toevoegen
@@ -53,7 +54,6 @@ nl:
       confirm_evaluation: Merk op dat er een evaluatie aan deze reeks gelinked is. Als je de reeks verwijderd zal alle feedback binnen die evaluatie ook verwijderd worden.
     scoresheet:
       user: Gebruiker
-      explanation: "Toont het aantal correct opgeloste oefeningen en afgewerkte leesactiviteiten voor het verstrijken van de deadline"
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één leeractiviteit begonnen zijn"
       no_activities_html: "Deze reeks bevat nog geen leeractiviteiten. Je kan er toevoegen op de <a href=%{series_edit_url}>edit pagina van de reeks</a>."
       download: Statusoverzicht downloaden

@@ -1,0 +1,37 @@
+
+.violin-label {
+    font-size: 11px;
+}
+
+.violin-invisibar {
+    visibility: hidden;
+    fill: none
+}
+
+.metric-container {
+    stroke: $hairlinegray;
+}
+
+.day-cell {
+  &.empty {
+    fill: $heatmap-empty-fg;
+  }
+
+  &:hover {
+    stroke: $heatmap-hover-fg;
+    stroke-width: 2;
+  }
+}
+
+.stats-container {
+  display: flex;
+}
+
+.graph_placeholder {
+  margin: auto;
+}
+
+.metric-container {
+  fill: none;
+  stroke-width: 2;
+}

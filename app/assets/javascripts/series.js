@@ -5,6 +5,11 @@ import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { initTokenClickables } from "./util.js";
 
+import { ViolinGraph } from "visualisations/violin.ts";
+import { StackedStatusGraph } from "visualisations/stacked_status.ts";
+import { TimeseriesGraph } from "visualisations/timeseries.ts";
+import { CTimeseriesGraph } from "visualisations/cumulative_timeseries.ts";
+
 const DRAG_AND_DROP_ARGS = {
     table_selector: ".series-activity-list tbody",
     item_selector: ".series-activity-list a.remove-activity",
@@ -126,4 +131,27 @@ function initDeadlinePicker(selector) {
     init();
 }
 
-export { initSeriesEdit, initDeadlinePicker };
+function initSeriesShow(id) {
+    const graphMapping = {
+        violin: ViolinGraph,
+        stacked: StackedStatusGraph,
+        timeseries: TimeseriesGraph,
+        ctimeseries: CTimeseriesGraph
+    };
+    document.querySelectorAll(`#series-view-${id} .btn.graph-toggle`).forEach(btn => {
+        btn.addEventListener("shown.bs.tab", e => {
+            const type = e.target.dataset.type;
+            const seriesId = e.target.dataset.seriesId;
+
+            new (graphMapping[type])(seriesId, `#stats-container-${seriesId}`).init();
+
+            const card = document.getElementById(`series-card-${seriesId}`);
+            card.querySelector(".graph-title span").textContent = I18n.t(`js.${type}_title`);
+            const info = card.querySelector(".graph-info");
+            info.setAttribute("title", I18n.t(`js.${type}_desc`));
+            new window.bootstrap.Tooltip(info);
+        });
+    });
+}
+
+export { initDeadlinePicker, initSeriesEdit, initSeriesShow };

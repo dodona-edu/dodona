@@ -295,6 +295,11 @@ class FeedbackTableRenderer
         # `markdown` is always safe
         @builder << markdown(m[:description])
       end
+    elsif m[:format].in?(%w[callout-info callout-warning callout-danger])
+      @builder.div(class: "callout #{m[:format]}") do
+        # `markdown` is always safe
+        @builder << markdown(m[:description])
+      end
     elsif m[:format].in?(%w[code])
       @builder.span(class: 'code') do
         @builder.text! m[:description]

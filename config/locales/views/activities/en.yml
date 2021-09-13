@@ -109,8 +109,6 @@ en:
       judge: Judge
       repository: Repository containing this activity
       repository_path: Path within this repository
-      created: Created
-      updated: Last edited
       ago: ago
       click_here_to_create_one: Click here to create the readme.
       config_set_by: "This value was set by %{file}"
@@ -118,3 +116,4 @@ en:
       description_files: "We found files for these languages in the descriptions folder %{path}"
       config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
       doc_site: 'documentation site'
+      activity_invalid: This exercise's configuration is invalid.

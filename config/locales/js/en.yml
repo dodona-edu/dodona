@@ -46,6 +46,32 @@ en:
     mark_as_read: Mark as read
     mark_as_unread: Mark as unread
     question_states: Status
+    no_data: There is not enough data to create a graph.
+    n_submissions: Number of submissions
+    user: user
+    users: users
+    with: with
+    submission: submission
+    submissions: submissions
+    attempts: attempts
+    total: total
+    mean: average
+    violin_title: Number of submissions per user
+    stacked_title: Distribution of submission statuses
+    timeseries_title: Submissions over time
+    ctimeseries_title: Users with at least one correct submission
+    violin_desc: This graph shows the distribution of the number of submissions. The larger the zone, the more students submitted that number of solutions.
+    stacked_desc: This graph shows the distribution of submissions statuses.
+    timeseries_desc: This graph shows on which days the students submitted the most solutions.
+    ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.
+    status:
+      correct: correct
+      wrong: wrong
+      compilation_error: compilation error
+      runtime_error: runtime error
+      time_limit_exceeded: time limit exceeded
+      memory_limit_exceeded: memory limit exceeded
+      output_limit_exceeded: output limit exceeded
     months:
       long:
         jan: January

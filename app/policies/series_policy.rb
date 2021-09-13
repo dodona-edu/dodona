@@ -109,6 +109,26 @@ class SeriesPolicy < ApplicationPolicy
     record.instance_of?(Series) && user&.course_admin?(record&.course)
   end
 
+  def statistics?
+    course_admin?
+  end
+
+  def violin?
+    statistics?
+  end
+
+  def stacked_status?
+    statistics?
+  end
+
+  def cumulative_timeseries?
+    statistics?
+  end
+
+  def timeseries?
+    statistics?
+  end
+
   private
 
   def course_member?

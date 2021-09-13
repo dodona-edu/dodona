@@ -85,18 +85,6 @@
       </div>
     </div>
 
-    <% if f.permission?(:color) %>
-      <div class="field form-group row">
-        <%= f.label :color, class: 'col-sm-3 col-form-label' %>
-        <div class="col-sm-6">
-          <%= f.select :color,
-                       options_for_select(Course.colors.keys.map {|k| [t("activerecord.attributes.course.colors.#{k}"), k]},
-                                          course.color),
-                       {},
-                       {class: 'form-select'} %>
-        </div>
-      </div>
-    <% end %>
     <% if f.permission?(:featured) %>
       <div class="field form-group row">
         <%= f.label :featured, t(".featured.title"), class: 'col-sm-3 col-form-label' %>

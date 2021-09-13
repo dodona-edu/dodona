@@ -38,6 +38,8 @@ class ActiveSupport::TestCase
   include RemoteHelper
   include SeriesZipHelper
 
+  fixtures :all
+
   # Run tests in parallel with specified workers
   parallelize(workers: :number_of_processors)
 

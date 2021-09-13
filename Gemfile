@@ -14,7 +14,7 @@ gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 
-gem 'webpacker', '~> 5.4.0'
+gem 'webpacker', '~> 5.4.2'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.2'
@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.7.7', require: false
+gem 'bootsnap', '~> 1.8.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -40,7 +40,7 @@ gem 'delayed_job_web', '~>1.4.4'
 gem 'sinatra', '~>2.1.0'
 
 # pagination
-gem 'will_paginate', '~>3.3.0'
+gem 'will_paginate', '~>3.3.1'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
@@ -57,7 +57,7 @@ gem 'diff-lcs', '~>1.4'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.2.5'
+gem 'autoprefixer-rails', '~>10.3.3'
 
 # saml authentication
 gem 'devise', '~>4.8.0'
@@ -72,11 +72,11 @@ gem 'omniauth_openid_connect', '~> 0.3.5'
 gem 'jwt', '~> 2.2.3'
 
 # contact mail form
+gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'
-gem 'recaptcha', '~> 5.8.1', require: 'recaptcha/rails'
 
 # authorization
-gem 'pundit', '~> 2.1.0'
+gem 'pundit', '~> 2.1.1'
 
 # impersonate users
 gem 'pretender', '~> 0.3.4'
@@ -104,7 +104,7 @@ gem 'httparty', '~> 0.18.1'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.11.7'
+gem 'nokogiri', '~> 1.12.4'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -123,16 +123,16 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 2.7.11'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.18.0'
+gem 'faker', '~> 2.19.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.2'
+gem 'rack-mini-profiler', '~> 2.3.3'
 gem 'stackprof', '~> 0.2.17'
 
 # Datadog
-gem 'ddtrace', '~> 0.51.1'
+gem 'ddtrace', '~> 0.52.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -156,14 +156,15 @@ end
 
 group :test do
   # For measuring coverage
-  gem 'codecov', '~> 0.5.2', require: false
+  gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
+  gem 'test-prof', '~> 1.0.7'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.6.0'
+  gem 'listen', '~> 3.7.0'
   gem 'web-console', '~> 4.1.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
@@ -181,3 +182,6 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
 gem 'docker-api', '~> 2.2.0'
+
+# Used for syncing deadlines with an external calendar
+gem 'icalendar', '~> 2.7'

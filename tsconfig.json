@@ -2,9 +2,12 @@
   "compilerOptions": {
     "declaration": false,
     "emitDecoratorMetadata": true,
-    "esModuleInterop": false,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
-    "lib": ["es7", "dom"],
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,

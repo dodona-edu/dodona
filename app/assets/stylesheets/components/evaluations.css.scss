@@ -8,24 +8,52 @@
   }
 }
 
-.feedback-metadata .complete-feedback {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  line-height: normal;
-  width: 100%;
-}
-.feedback-metadata .uncomplete-feedback {
-  display: flex;
-}
-
-.feedback-metadata .form-row {
-  display: flex;
-  align-items: center;
-  padding-bottom: 5px;
-}
-
 .feedback-metadata {
+  .complete-feedback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: normal;
+    width: 100%;
+  }
+
+  .uncomplete-feedback {
+    display: flex;
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    padding-bottom: 5px;
+  }
+
+  .username-row {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    padding-bottom: 5px;
+
+    .name {
+      flex-shrink: 0;
+    }
+  }
+
+  .token {
+    display: inline-block;
+    margin-left: 6px;
+    padding-top: 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .labels-row {
+    display: flex;
+    white-space: nowrap;
+    margin-top: -6px;
+    margin-bottom: 12px;
+    margin-left: -6px;
+  }
+
   .form-group.input {
     width: 100%;
     margin-bottom: 0;
@@ -170,6 +198,11 @@ $user-column-width: 170px;
   .status-header {
     max-width: 100px;
     min-width: 100px;
+    overflow: hidden;
+  }
+
+  .total-column {
+    border-right: 2px solid $border-color;
   }
 
   thead tr th:nth-child(2) {

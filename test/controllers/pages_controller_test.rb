@@ -14,13 +14,13 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get signed in homepage' do
-    sign_in(create(:user))
+    sign_in(users(:student))
     get root_url
     assert_response :success
   end
 
   test 'should get signed in homepage when user submitted to content page' do
-    user = create :user
+    user = users(:student)
     activity = create :exercise
     create :submission,
            user: user,
@@ -51,7 +51,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get profile when logged in' do
-    user = create :user
+    user = users(:student)
     sign_in user
     get profile_url
     assert_response :redirect

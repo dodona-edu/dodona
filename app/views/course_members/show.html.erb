@@ -1,5 +1,6 @@
 <%= content_for :javascripts do %>
   <%= javascript_pack_tag 'course' %>
+  <%= javascript_pack_tag 'series' %>
 <% end %>
 
 <div class="row">
@@ -18,7 +19,7 @@
             <% end %>
             <span class="labels">
               <% @course_membership.course_labels.each do |label| %>
-                <span class="badge bg-primary"><%= label.name %></span>
+                <span class="token accent-orange"><%= label.name %></span>
               <% end %>
             </span>
           </span>
@@ -102,6 +103,15 @@
     </div>
 
   </div>
+
+  <nav id="scrollspy-nav" class="col-md-1 d-none d-md-block hidden-print series-sidebar">
+    <ul class="nav" data-offset-bottom="80">
+      <li class="header ellipsis-overflow"><%= t "courses.show.exercise_series" %></li>
+      <% @series.each do |series| %>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow nav-link', title: series.name %> </li>
+      <% end %>
+    </ul>
+  </nav>
 </div>
 
 <script type="text/javascript">

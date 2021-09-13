@@ -23,9 +23,10 @@
   position: absolute;
   background: black;
   border: 0;
-  border-radius: 5px;
+  border-radius: $border-radius-base;
   color: white;
   padding: 5px;
   pointer-events: none;
   max-width: 300px;
+  white-space: nowrap;
 }

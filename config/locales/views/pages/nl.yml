@@ -44,7 +44,7 @@ nl:
       <p>Indien je graag toegang wenst voor jouw onderwijsinstelling, neem dan contact met ons op."
       more_info: Meer info over Dodona
       smartschool: 'Smartschool'
-      google_oauth2: 'G Suite'
+      google_oauth2: 'Google Workspace'
       office365: 'Office 365'
       unknown: 'onbekende'
     contact:
@@ -61,7 +61,7 @@ nl:
       rights_request_redirect_html: Wil je lesgeversrechten aanvragen voor je account? Gebruik dan <strong><a href="%{url}">dit formulier</a></strong>.
       send: Bericht verzenden
     create_contact:
-      captcha_failed: reCAPTCHA kon niet geverifieerd worden, probeer opnieuw.
+      captcha_failed: HCaptcha kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."
     privacy_disclaimer:
       text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"%{your_data}\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\">privacyverklaring</a> vinden."
@@ -82,4 +82,3 @@ nl:
       support_p3_html: "Wenst u een groter bedrag te schenken of kiest u liever voor sponsoring op factuur? Contacteer ons op <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> en we bekijken samen graag de mogelijkheden."
       supported_by: Met de steun van
       supported_p1_html: "Dodona wordt ontwikkeld door een klein team onderzoekers aan de <a href='https://www.ugent.be' target='_blank'>Universiteit Gent</a>. Het platform is volledig open source en alle code is beschikbaar op <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. De hosting wordt aangeboden door de Universiteit Gent. Daarnaast ontving Dodona al steun in de vorm van onderwijsinnovatieprojecten van de Universiteit Gent en de Faculteit Wetenschappen. Ook <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> ondersteunde dit project."
-

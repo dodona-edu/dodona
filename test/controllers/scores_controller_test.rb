@@ -3,7 +3,7 @@ require 'test_helper'
 class ScoresControllerTest < ActionDispatch::IntegrationTest
   def setup
     @evaluation = create :evaluation, :with_submissions
-    @staff_member = create :staff
+    @staff_member = users(:staff)
     @evaluation.series.course.administrating_members << @staff_member
     sign_in @staff_member
     exercise = @evaluation.evaluation_exercises.first
@@ -17,9 +17,9 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   test 'should create score if course admin' do
     [
       [@staff_member, :created],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :created],
+      [users(:zeus), :created],
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -50,9 +50,9 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
     score = create :score, score_item: @score_item, feedback: @feedback
     [
       [@staff_member, :success],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
-      [create(:zeus), :success],
+      [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
       sign_in user if user.present?
@@ -93,7 +93,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
   test 'should delete score if course admin' do
     [
       [@staff_member, :no_content],
-      [create(:student), :forbidden],
+      [users(:student), :forbidden],
       [create(:staff), :forbidden],
       [create(:zeus), :no_content],
       [nil, :unauthorized]

@@ -13,16 +13,16 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
         create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: Time.current - 1.hour
       end
     end
-    @no_submission_user = create :user
+    @no_submission_user = users(:student)
     @no_submission_user.enrolled_courses << @series.course
     @users = @submitted_users + [@no_submission_user]
-    @course_admin = create(:staff)
+    @course_admin = users(:staff)
     @course_admin.administrating_courses << @series.course
     sign_in @course_admin
   end
 
   test 'Create session via wizard page' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -30,12 +30,33 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
   end
 
+  test 'Should render when evaluation invalid' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now + 5.minutes
+      }
+    }
+    assert_response :success
+    assert_nil @series.evaluation
+  end
+
+  test 'Show redirects to edit if no users' do
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    get evaluation_path(@series.evaluation)
+    assert_redirected_to edit_evaluation_path(@series.evaluation)
+  end
+
   test 'Can remove user from feedback' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -43,7 +64,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
 
     post remove_user_evaluation_path(@series.evaluation, user_id: @users.first.id, format: :js)
@@ -51,7 +71,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Can add user to feedback' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -59,7 +79,6 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(users: @users)
 
-    assert_response :redirect
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
 
     user = create :user
@@ -70,7 +89,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "Can update a feedback's completed status" do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -98,7 +117,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Notifications should be made when a feedback is released' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: { series_id: @series.id, deadline: DateTime.now }
     }
     evaluation = @series.evaluation
@@ -132,7 +151,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'non released annotations are not queryable' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -191,7 +210,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'feedback page only available for course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -220,7 +239,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'feedback page should work even when there are no submissions' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -236,7 +255,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'When there is already a feedback session for this series, we should redirect to the ready made one when a user wants to create a new one' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: { series_id: @series.id,
                     deadline: DateTime.now }
     }
@@ -274,7 +293,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Edit page for a feedback session is only available for course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -304,7 +323,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Feedback page should be available for a course admin, for each feedback with a submission' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -352,7 +371,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'Show page should only be available to zeus and course admins' do
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -384,7 +403,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
   test 'grade export is only available for course admins' do
     # Create an evaluation, a score item and add a score.
-    post evaluations_path, params: {
+    post evaluations_path(format: :js), params: {
       evaluation: {
         series_id: @series.id,
         deadline: DateTime.now
@@ -407,7 +426,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
-    assert_equal 2 + evaluation.evaluation_exercises.length * 2, header.length
+    assert_equal 9 + evaluation.evaluation_exercises.length * 2, header.length
 
     # Get which users will have a score
     # First, the users we added a score for.
@@ -422,9 +441,9 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     score_item_exercise_position = header.index { |h| h == "#{exercise.exercise.name} Score" }
     csv.each do |line|
       # Only one exercise has a score.
-      if users.key?(line[1])
+      if users.key?(line[5])
         exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
-        assert_equal users[line[1]], exported_score
+        assert_equal users[line[5]], exported_score
       else
         exported_score = line.delete_at(score_item_exercise_position)
         assert_equal '', exported_score
@@ -433,7 +452,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
-      assert line[2..].all?(&:empty?)
+      assert line[9..].all?(&:empty?)
     end
 
     sign_out @course_admin
@@ -450,9 +469,61 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :redirect # Redirect to sign in page
   end
 
+  test 'grade export contains correct data' do
+    # Create an evaluation, a score item and add a score.
+    post evaluations_path(format: :js), params: {
+      evaluation: {
+        series_id: @series.id,
+        deadline: DateTime.now
+      }
+    }
+    evaluation = @series.evaluation
+    evaluation.update(users: @series.course.enrolled_members)
+    # Add a score to a non-nil submission
+    feedback1 = evaluation.feedbacks.where.not(submission_id: nil).sample
+    exercise1 = feedback1.evaluation_exercise
+    score_item1 = create :score_item, evaluation_exercise: exercise1, maximum: 20
+    create :score, score_item: score_item1, feedback: feedback1, score: 15
+
+    # Add a score to another submission
+    feedback2 = evaluation.feedbacks.where(evaluation_id: feedback1.evaluation_id).where.not(submission_id: feedback1.submission_id).sample
+    exercise2 = feedback2.evaluation_exercise
+    score_item2 = create :score_item, evaluation_exercise: exercise2, maximum: 10
+    create :score, score_item: score_item2, feedback: feedback2, score: 7.5
+
+    get export_grades_evaluation_path evaluation, format: :csv
+    assert_response :success
+    assert_equal 'text/csv', response.content_type
+
+    # Check the contents of the csv file.
+    csv = CSV.parse response.body
+    csv.shift
+
+    # Total score should equal sum of scores, Total max should equal the sum of maximum scores
+    csv.each do |line|
+      # Possible that total maximum is present, but all scores are empty en thus total score is empty
+      total_maximum = 0
+      if line[7] == ''
+        (9...line.length - 1).step(2).each do |index|
+          assert_equal line[index], ''
+          total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
+        end
+      else
+        total_score = 0
+        (9..line.length - 1).step(2).each do |index|
+          total_score += BigDecimal(line[index]) unless line[index] == ''
+          total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
+        end
+
+        assert_equal BigDecimal(line[7]), total_score
+
+      end
+      assert_equal BigDecimal(line[8]), total_maximum
+    end
+  end
+
   test 'course admins can change grade visibility' do
     evaluation = create :evaluation, :with_submissions
-    evaluation.series.course.administrating_members << @course_admin
     from = evaluation.evaluation_exercises.first
     s1 = create :score_item, evaluation_exercise: from
     s2 = create :score_item, evaluation_exercise: from

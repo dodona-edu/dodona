@@ -16,6 +16,6 @@ FactoryBot.define do
   factory :notification do
     message { Faker::Lorem.words(number: 5) }
     notifiable { |n| n.association(:export) }
-    user
+    user { User.find(2) } # load student fixture
   end
 end

@@ -44,7 +44,7 @@ en:
       <p>If you would like your institution to use Dodona, please get in touch."
       more_info: More info about Dodona
       smartschool: 'Smartschool'
-      google_oauth2: 'G Suite'
+      google_oauth2: 'Google Workspace'
       office365: 'Office 365'
       unknown: 'unknown'
     contact:
@@ -62,7 +62,7 @@ en:
       send: Send message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."
-      captcha_failed: reCAPTCHA could not be verified; please try again.
+      captcha_failed: HCaptcha could not be verified; please try again.
     privacy_disclaimer:
       text_html: "Your privacy is important to us. On the <a href=\"%{your_data}\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\">privacy statement</a> contains the legally binding version."
     support:

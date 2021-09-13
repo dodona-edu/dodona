@@ -21,9 +21,28 @@
       <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && loaded ? series.completed_before_deadline?(user) : false} %>
     </h4>
     <div class="flex-spacer"></div>
-    <div class="card-subtitle-actions">
+    <div class="card-subtitle-actions d-flex">
+      <% if policy(series).statistics? %>
+        <div id="series-view-<%= series.id %>" class="btn-group btn-toggle nav d-none d-sm-flex" role="tablist">
+          <button class="btn active" data-bs-target="#series-content-<%= series.id %>" data-bs-toggle="tab" role="tab" title="<%= t("series.show.series_overview") %>">
+            <i class="mdi mdi-format-list-bulleted"></i>
+          </button>
+          <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="violin" role="tab" title="<%= t("js.violin_title") %>">
+            <%= custom_icon("violin", {class: "mdi svg-icon-btn"}) %>
+          </button>
+          <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="stacked" role="tab" title="<%= t("js.stacked_title") %>">
+            <%= custom_icon("stacked-bar-chart", {class: "mdi svg-icon-btn rotate"}) %>
+          </button>
+          <!-- <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="timeseries" role="tab" title="<%= t("js.timeseries_title") %>">
+            <%= custom_icon("heatmap", {class: "mdi svg-icon-btn"}) %>
+          </button> -->
+          <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="ctimeseries" role="tab" title="<%= t("js.ctimeseries_title") %>">
+            <%= custom_icon("stacked-line-chart", {class: "mdi svg-icon-btn"}) %>
+          </button>
+        </div>
+      <% end %>
       <div class="btn-group">
-        <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
+        <a class="btn btn-icon dropdown-toggle series-dropdown hidden-print" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>
         </a>
         <ul class="dropdown-menu dropdown-menu-end">
@@ -135,29 +154,51 @@
       <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
     </div>
   <% end %>
-  <div class="series-description">
-    <%= cache series do %>
-      <%= markdown(series.description) %>
+  <div class="tab-content">
+    <% if policy(series).statistics? %>
+      <div class="tab-pane" id="series-graph-<%= series.id %>">
+        <div class="graph-header">
+          <div class="graph-title">
+            <span></span>
+            <a class="hidden-print" >
+              <i class="mdi mdi-information graph-info"></i>
+            </a>
+          </div>
+        </div>
+        <div class="stats-container" id="stats-container-<%= series.id %>"></div>
+      </div>
     <% end %>
-  </div>
 
-  <% if policy(series).overview? && series.activity_count > 0 %>
-    <div class="series-activities-table-wrapper">
-      <% if loaded %>
-        <%= render partial: 'activities/series_activities_table', locals: {
-            series: series,
-            activities: series.activities,
-            get_activity_path: get_activity_path,
-            user: user
-        } %>
-      <% else %>
-        <div class="activity-table-skeleton">
-          <div class="skeleton-head"></div>
-          <% series.activity_count.times do %>
-            <div class="skeleton-row"></div>
+    <div class="series-content tab-pane active" id="series-content-<%= series.id %>">
+      <div class="series-description">
+        <%= cache series do %>
+          <%= markdown(series.description) %>
+        <% end %>
+      </div>
+
+      <% if policy(series).overview? && series.activity_count > 0 %>
+        <div class="series-activities-table-wrapper">
+          <% if loaded %>
+            <%= render partial: 'activities/series_activities_table', locals: {
+                series: series,
+                activities: series.activities,
+                get_activity_path: get_activity_path,
+                user: user
+            } %>
+          <% else %>
+            <div class="activity-table-skeleton">
+              <div class="skeleton-head"></div>
+              <% series.activity_count.times do %>
+                <div class="skeleton-row"></div>
+              <% end %>
+            </div>
           <% end %>
         </div>
       <% end %>
     </div>
-  <% end %>
+  </div>
 </div>
+
+<script type="text/javascript">
+    $(dodona.initSeriesShow(<%= series.id %>));
+</script>

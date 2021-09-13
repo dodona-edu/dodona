@@ -122,9 +122,10 @@ en:
         other: "%{count} pending users are declined."
       copy: "Copy this course"
       manage_series: "Manage series"
+      download_deadlines: "Add course to calendar"
+      download_deadlines_tooltip: "Add this link to your calendar application to show the course deadlines in your calendar"
     scoresheet:
       user: User
-      explanation: "Showing the number of correctly solved exercises before the deadline"
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
       scoresheet: Scoresheet
@@ -164,6 +165,10 @@ en:
       failed: "Failed unfavoriting course"
     statistics:
       statistics: "Statistics"
+      total_questions: "Total number of questions"
+      unanswered_questions: "Unanswered questions"
+      in_progress_questions: "Questions in progress"
+      answered_questions: "Answered questions"
     user_stats:
       subscribed_users: Registered users
       submitted_solutions: Submitted solutions
@@ -202,6 +207,8 @@ en:
         enabled: Questions are enabled.
         enable: Enable them.
         disable: Disable them.
+    ical:
+      serie_deadline: "Deadline for %{serie_name} of course %{course_name}: %{serie_url}"
   submissions:
     show:
       questions:

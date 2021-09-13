@@ -146,7 +146,14 @@ if Rails.env.development?
 
   puts "Create & clone judge (#{Time.now - start})"
 
-  python_judge = Judge.create name: 'python', image: 'dodona/dodona-python', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
+  if ENV["SKIP_PYTHON_JUDGE"] == 'true'
+    python_judge = Judge.create name: 'python', image: 'dodona/dodona-python', remote: 'git@github.com:dodona-edu/judge-java12.git', renderer: PythiaRenderer
+  else
+    python_judge = Judge.create name: 'python', image: 'dodona/dodona-python', remote: 'git@github.com:dodona-edu/judge-pythia.git', renderer: PythiaRenderer
+  end
+
+  raise "Could not initialize python judge, try again or use 'SKIP_PYTHON_JUDGE=true rails db:setup'" if python_judge.nil?
+    
 
   # Other judges
 

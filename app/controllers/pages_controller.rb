@@ -1,8 +1,9 @@
 class PagesController < ApplicationController
-  content_security_policy only: %i[contact] do |policy|
-    policy.script_src(*(%w[https://www.recaptcha.net https://www.gstatic.com
-                           https://www.google.com] + policy.script_src))
-    policy.frame_src('https://www.google.com', 'https://www.recaptcha.net')
+  content_security_policy only: %i[contact create_contact] do |policy|
+    policy.script_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.script_src))
+    policy.style_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.style_src))
+    policy.connect_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.connect_src))
+    policy.frame_src('https://hcaptcha.com', 'https://*.hcaptcha.com')
   end
 
   def home
@@ -59,7 +60,7 @@ class PagesController < ApplicationController
     @contact_form = ContactForm.new(contact_params)
     @contact_form.request = request # Allows us to also send ip
     @contact_form.validate
-    if verify_recaptcha(model: @contact_form, message: t('.captcha_failed')) && @contact_form.deliver
+    if verify_hcaptcha(model: @contact_form, message: t('.captcha_failed')) && @contact_form.deliver
       redirect_to root_path, notice: t('.mail_sent')
     else
       flash[:error] = @contact_form.errors.full_messages.to_sentence

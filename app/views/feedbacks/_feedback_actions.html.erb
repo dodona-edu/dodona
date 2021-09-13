@@ -22,7 +22,7 @@
   </div>
 <% end %>
 
-<div class="card-supporting-text card-border">
+<div class="card-supporting-text <%= "card-border" if @feedback.score_items.empty? %>">
   <center>
     <%= button_tag class: "btn btn-text btn-primary", id: "next-feedback-button" do %>
       <%= t('.direction.next') %>
@@ -87,7 +87,13 @@
       <% score = @score_map.fetch(score_item.id, Score.new(score_item: score_item, feedback: @feedback)) %>
       <div class="row">
         <div class="col-sm-12">
-          <strong><%= score_item.name %></strong>
+          <% if score_item.description.present? %>
+            <strong data-bs-toggle="tooltip" data-bs-placement="left" title="<%= strip_tags markdown(score_item.description) %>">
+              <%= score_item.name %>
+            </strong>
+          <% else %>
+            <strong><%= score_item.name %></strong>
+          <% end %>
         </div>
       </div>
       <%= render 'feedbacks/score_actions', score: score, score_item: score_item, index: index %>
@@ -100,8 +106,19 @@
   <div class="progress-row">
     <%= render partial: 'feedbacks/progress_row', locals: { metadata: @feedback.evaluation_exercise.metadata } %>
   </div>
-
-  <h4 class="ellipsis-overflow" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
+  <div class="username-row">
+    <h4 class="ellipsis-overflow name" title="<%= @feedback.user.full_name %>"><%= @feedback.user.full_name %></h4>
+    <% if @user_labels.present? %>
+        <span class="token accent-orange" title="<%= @user_labels.first.name %>"><%= @user_labels.first.name %></span>
+    <% end %>
+  </div>
+  <% if @user_labels.present? && @user_labels.length > 1 %>
+    <div class="labels-row">
+      <% @user_labels[1..].each do |label| %>
+        <span class="token accent-orange" title="<%= label.name %>"><%= label.name %></span>
+      <% end %>
+    </div>
+  <% end %>
   <div class="user-feedback-row">
     <%= render partial: 'feedbacks/user_feedback_row', locals: { current_feedback: @feedback } %>
   </div>

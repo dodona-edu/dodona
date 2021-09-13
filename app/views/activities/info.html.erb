@@ -21,7 +21,7 @@
             <p>
             <% @activity.labels.each do |label| %>
               <%= link_to label_path(label) do %>
-                <span class="badge bg-primary"><%= label.name %></span>
+                <span class="token accent-purple"><%= label.name %></span>
               <% end %>
             <% end %>
           </div>
@@ -65,20 +65,6 @@
                     <i class="mdi mdi-file-search mdi-24"></i>
                     <%= github_link @repository, @activity.path %>
                     <% end %>
-                  </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.created' %>">
-                    <i class="mdi mdi-clock-outline mdi-24"></i>
-                    <span title="<%= l @activity.created_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.created_at) %> <%= t '.ago' %>
-                    </span>
-                  </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.updated' %>">
-                    <i class="mdi mdi-update mdi-24"></i>
-                    <span title="<%= l @activity.updated_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.updated_at) %> <%= t '.ago' %>
-                    </span>
                   </div>
                 </div>
               </div>

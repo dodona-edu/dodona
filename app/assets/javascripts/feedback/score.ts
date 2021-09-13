@@ -1,4 +1,4 @@
-import { fetch, delay } from "util.js";
+import { fetch, createDelayer } from "util.js";
 import FeedbackActions from "feedback/actions";
 
 /**
@@ -59,6 +59,7 @@ export default class ScoreForm {
         this.form.addEventListener("submit", e => {
             e.preventDefault();
         });
+        const delay = createDelayer();
         this.input.addEventListener("change", ev => {
             // If the score is not valid, don't do anything.
             if (!this.input.reportValidity()) {

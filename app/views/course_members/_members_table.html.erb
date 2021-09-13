@@ -18,6 +18,8 @@
         <td>
           <% if course_membership.course_admin? %>
             <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
+          <% elsif user.staff? %>
+            <span class="mdi mdi-alert mdi-18" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t(".teacher_rights") %>"></span>
           <% end %>
           <% if user.username.blank? %>
             <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
@@ -45,7 +47,7 @@
         </td>
         <td class='course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>
-            <span class="badge bg-primary"><%= label.name %></span>
+            <span class="token accent-orange"><%= label.name %></span>
           <% end %>
         </td>
         <td class="actions">

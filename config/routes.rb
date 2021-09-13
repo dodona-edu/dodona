@@ -104,6 +104,7 @@ Rails.application.routes.draw do
         get 'manage_series'
         get 'scoresheet'
         get 'questions'
+        get 'ical'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -207,7 +208,6 @@ Rails.application.routes.draw do
 
     resources :evaluations, only: %i[show new edit create update destroy] do
       member do
-        get 'add_users'
         get 'overview'
         get 'export_grades'
         post 'add_user'
@@ -216,7 +216,7 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update index new] do
+      resources :score_items, only: %i[create destroy update] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end
@@ -244,8 +244,11 @@ Rails.application.routes.draw do
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
+      get 'violin', to: 'statistics#violin'
+      get 'stacked_status', to: 'statistics#stacked_status'
+      get 'timeseries', to: 'statistics#timeseries'
+      get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
-
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

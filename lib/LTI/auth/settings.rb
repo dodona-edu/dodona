@@ -23,7 +23,7 @@ module LTI
       def provider_settings(provider)
         raise 'Not an LTI provider.' unless provider.is_a?(Provider::Lti)
 
-        {
+        hash = {
             client_options: {
                 authorization_endpoint: provider.authorization_uri,
                 jwks_uri: provider.jwks_uri,
@@ -31,6 +31,8 @@ module LTI
             },
             issuer: provider.issuer
         }
+        hash[:scope] = [:openid] if (provider.issuer == "https://ufora.ugent.be")
+        hash
       end
     end
   end

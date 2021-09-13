@@ -73,7 +73,6 @@ nl:
       create: "Cursus aanmaken"
     scoresheet:
       user: Gebruiker
-      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
       scoresheet: Statusoverzicht
       download: Statusoverzicht downloaden
@@ -131,6 +130,8 @@ nl:
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
+      download_deadlines: "Cursus toevoegen aan kalender"
+      download_deadlines_tooltip: "Voeg deze link toe aan je agenda-applicatie om de deadlines van deze cursus in je kalender te zien"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       registration-closed: Je kan momenteel niet registreren voor deze cursus.
@@ -160,6 +161,10 @@ nl:
       failed: "Cursus uit favorieten verwijderen mislukt"
     statistics:
       statistics: "Statistieken"
+      total_questions: "Totaal aantal vragen"
+      unanswered_questions: "Onbeantwoorde vragen"
+      in_progress_questions: "Vragen in behandeling"
+      answered_questions: "Beantwoorde vragen"
     user_stats:
       subscribed_users: Geregistreerde gebruikers
       exercise_count: Oefeningen
@@ -198,6 +203,8 @@ nl:
         enabled: Vragen zijn ingeschakeld.
         enable: Schakel vragen in.
         disable: Schakel vragen uit.
+    ical:
+      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}" 
   submissions:
     show:
       questions:

@@ -8,10 +8,10 @@ class CoursesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started_in_course(Course.find(controller.params[:id]))
+    scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
-    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
+    scope.by_course_labels(value, controller.params[:id])
   end
 
   # GET /courses
@@ -62,10 +62,10 @@ class CoursesController < ApplicationController
       @course = Course.new(
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
-        institution: @copy_options[:base].institution,
-        visibility: @copy_options[:base].visibility,
-        registration: @copy_options[:base].registration,
-        teacher: @copy_options[:base].teacher
+        institution: current_user.institution,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution,
+        teacher: current_user.full_name
       )
       @copy_options = {
         admins: current_user.course_admin?(@copy_options[:base]),
@@ -75,7 +75,12 @@ class CoursesController < ApplicationController
       }.merge(@copy_options).symbolize_keys
     else
       @copy_options = nil
-      @course = Course.new(institution: current_user.institution)
+      @course = Course.new(
+        teacher: current_user.full_name,
+        institution: current_user.institution,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution
+      )
     end
 
     @title = I18n.t('courses.new.title')
@@ -168,6 +173,9 @@ class CoursesController < ApplicationController
   def statistics
     @title = I18n.t('courses.statistics.statistics')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), '#']]
+    @unanswered = @course.unanswered_questions.count
+    @in_progress = @course.in_progress_questions.count
+    @answered = @course.answered_questions.count
   end
 
   def scoresheet
@@ -187,15 +195,18 @@ class CoursesController < ApplicationController
       format.js
       format.json
       format.csv do
-        sheet = CSV.generate do |csv|
-          csv << [I18n.t('courses.scoresheet.explanation')]
-          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
+        sheet = CSV.generate(force_quotes: true) do |csv|
+          users_labels = @course.course_memberships
+                                .includes(:course_labels, :user)
+                                .map { |m| [m.user, m.course_labels] }
+                                .to_h
+          columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
+          csv << ['Maximum', '', '', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
           @users.each do |u|
-            row = [u.first_name, u.last_name, u.username, u.email]
+            row = [u.id, u.username, u.first_name, u.last_name, u.email, users_labels[u].map(&:name).join(';')]
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:started] })
             csv << row
@@ -372,6 +383,27 @@ class CoursesController < ApplicationController
       rank = order.find_index(s.id) || 999
       s.update(order: rank)
     end
+  end
+
+  def ical
+    series = @course.series.where(visibility: :open)
+
+    cal = Icalendar::Calendar.new
+    cal.x_wr_calname = "Dodona: #{@course.name}"
+
+    series.each do |serie|
+      next unless serie.deadline
+
+      cal.event do |e|
+        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z" # Set deadline to its respective UTC time
+        e.dtend = "#{(serie.deadline.to_time + 1.second).to_datetime.utc.strftime('%Y%m%dT%H%M%S')}Z" # value of dtend must be larger than value of dtstart
+        e.summary = serie.name
+        e.description = t('.serie_deadline', serie_name: serie.name, course_name: @course.name, serie_url: series_url(serie))
+        e.url = series_url(serie)
+      end
+    end
+    cal.publish
+    render plain: cal.to_ical
   end
 
   private

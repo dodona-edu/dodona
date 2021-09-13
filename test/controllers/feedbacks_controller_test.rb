@@ -14,7 +14,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
                                        maximum: '17.0'
     @feedback = @evaluation.feedbacks.first
 
-    @course_admin = create(:staff)
+    @course_admin = users(:staff)
     @course_admin.administrating_courses << @evaluation.series.course
     sign_in @course_admin
   end

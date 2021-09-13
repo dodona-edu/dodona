@@ -2,20 +2,19 @@
   <table class="table score-table table-resource sticky-column sticky-column-2">
     <thead class="sticky-header header">
     <tr class="borderless-row first-header">
-      <th class="user-name"><%= t('.user') %></th>
-      <th class="status-header">
+      <th class="user-name"></th>
+      <th class="status-header total-column">
         <%= t ".total" %>
       </th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status-header"><%= exercise.exercise.name %></th>
       <% end %>
     </tr>
-    <% maximum = @evaluation.maximum_score %>
-    <% average = @evaluation.average_score_sum(feedbacks[:evaluation_exercises]) %>
     <tr class="second-header">
       <th class="user-name"><%= t ".average" %></th>
-      <th class="status">
-        <%= format_score average %> / <%= format_score maximum %>
+      <th class="status total-column">
+        <% average = @evaluation.average_score_sum(feedbacks[:evaluation_exercises]) %>
+        <%= format_score average %> / <%= format_score @evaluation.maximum_score %>
       </th>
       <% feedbacks[:evaluation_exercises].each do |exercise| %>
         <th class="status">
@@ -30,15 +29,15 @@
     </tr>
     </thead>
     <tbody>
-    <% evaluation.users.order(last_name: :asc, first_name: :asc).each do |user| %>
+    <% users.order(last_name: :asc, first_name: :asc).each do |user| %>
       <% feedback_l = feedbacks[:feedbacks][user.id] %>
-      <% average = feedbacks[:averages][user.id] %>
+      <% total = feedbacks[:totals][user.id] %>
       <tr>
         <td class="user-name ellipsis-overflow">
           <%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %>
         </td>
-        <td class="status">
-          <%= format_score average %> / <%= format_score maximum %>
+        <td class="status total-column">
+          <%= format_score total %>
         </td>
         <% feedback_l.each do |feedback| %>
           <td class="status">

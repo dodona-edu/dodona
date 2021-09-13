@@ -37,35 +37,35 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'course formatted year should not have spaces' do
-    course = create :course, year: '2017 - 2018'
+    course = build :course, year: '2017 - 2018'
     assert_equal '2017–2018', course.formatted_year
   end
 
   test 'course formatted attribution should only have a dot with teacher and institution' do
-    course = create :course, teacher: ''
+    course = build :course, teacher: ''
     assert_equal '', course.formatted_attribution
 
-    course = create :course, teacher: 'teach'
+    course = build :course, teacher: 'teach'
     assert_equal 'teach', course.formatted_attribution
 
-    course = create :course, teacher: '', institution: (create :institution, short_name: 'sn', name: '')
+    course = build :course, teacher: '', institution: (build :institution, short_name: 'sn', name: '')
     assert_equal '', course.formatted_attribution
 
-    course = create :course, teacher: 'teach', institution: (create :institution, short_name: 'sn', name: '')
+    course = build :course, teacher: 'teach', institution: (build :institution, short_name: 'sn', name: '')
     assert_equal 'teach', course.formatted_attribution
 
-    course = create :course, teacher: '', institution: (create :institution, short_name: 'sn', name: 'inst')
+    course = build :course, teacher: '', institution: (build :institution, short_name: 'sn', name: 'inst')
     assert_equal 'inst', course.formatted_attribution
 
-    course = create :course, teacher: 'teach', institution: (create :institution, short_name: 'sn', name: 'inst')
+    course = build :course, teacher: 'teach', institution: (build :institution, short_name: 'sn', name: 'inst')
     assert_equal 'teach · inst', course.formatted_attribution
   end
 
   test 'hidden course should always require secret' do
-    course = create :course, institution: (create :institution), visibility: :hidden
-    user1 = create :user, institution: nil
-    user2 = create :user, institution: course.institution
-    user3 = create :user, institution: (create :institution)
+    course = build :course, institution: (build :institution), visibility: :hidden
+    user1 = build :user, institution: nil
+    user2 = build :user, institution: course.institution
+    user3 = build :user, institution: (build :institution)
 
     assert course.secret_required?
     assert course.secret_required?(user1)
@@ -74,10 +74,10 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'visible_for_institution course should not require secret for user of institution' do
-    course = create :course, institution: (create :institution), visibility: :visible_for_institution
-    user1 = create :user, institution: nil
-    user2 = create :user, institution: course.institution
-    user3 = create :user, institution: (create :institution)
+    course = build :course, institution: (build :institution), visibility: :visible_for_institution
+    user1 = build :user, institution: nil
+    user2 = build :user, institution: course.institution
+    user3 = build :user, institution: (build :institution)
 
     assert course.secret_required?
     assert course.secret_required?(user1)
@@ -86,10 +86,10 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'visible_for_all course should never require secret' do
-    course = create :course, institution: (create :institution), visibility: :visible_for_all
-    user1 = create :user, institution: nil
-    user2 = create :user, institution: course.institution
-    user3 = create :user, institution: (create :institution)
+    course = build :course, institution: (build :institution), visibility: :visible_for_all
+    user1 = build :user, institution: nil
+    user2 = build :user, institution: course.institution
+    user3 = build :user, institution: (build :institution)
 
     assert_not course.secret_required?
     assert_not course.secret_required?(user1)
@@ -98,9 +98,9 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'correct solutions should be updated for submission in course' do
-    course = create :course
-    series = create :series, course: course, activity_count: 2
-    user = create :user
+    course = courses(:course1)
+    series = create :series, course: course, activity_count: 1
+    user = users(:student)
 
     assert_equal 0, course.correct_solutions
 
@@ -120,9 +120,9 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'correct solutions should not be updated for submission outside course' do
-    course = create :course
-    series = create :series, course: course, activity_count: 2
-    user = create :user
+    course = courses(:course1)
+    series = create :series, course: course, activity_count: 1
+    user = users(:student)
 
     assert_equal 0, course.correct_solutions
 
@@ -140,7 +140,7 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'course scoresheet should be correct' do
-    course = create :course
+    course = courses(:course1)
     create_list :series, 2,
                 course: course,
                 exercise_count: 2,
@@ -236,7 +236,7 @@ class CourseTest < ActiveSupport::TestCase
   end
 
   test 'destroying course does not destroy submissions' do
-    course = create :course, series_count: 2, exercises_per_series: 1, submissions_per_exercise: 2
+    course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
     assert_difference 'Submission.count', 0 do
       course.destroy
     end

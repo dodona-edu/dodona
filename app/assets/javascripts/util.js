@@ -2,123 +2,75 @@
 
 import { isInIframe } from "iframe";
 
-/*
- * Function to delay some other function until it isn't
- * called for "ms" ms
+/**
+ * Create a function that will delay all subsequent calls on the same timer.
+ * You don't necessarily have to call the delayer with the same function.
+ *
+ * In the first example, the typical usage is illustrated. The second example
+ * illustrates what happens with multiple delayers, each with their own timer.
+ *
+ * There is also a pre-made delayer available with a global timer, see `delay`.
+ * @example
+ *  const delay = createDelayer();
+ *  delay(() => console.log(1), 100);
+ *  delay(() => console.log(2), 100);
+ *  // prints 2, since the first invocation is cancelled
+ *
+ * @example
+ *  const delay1 = createDelayer();
+ *  const delay2 = createDelayer();
+ *  delay1(() => console.log(1), 100);
+ *  delay2(() => console.log(2), 100);
+ *  // prints 1 and then 2, since both have their own timer.
+ *
+ *  @return {function(TimerHandler, number): void}
  */
-const delay = (function () {
+function createDelayer() {
     let timer = 0;
     return function (callback, ms) {
         clearTimeout(timer);
         timer = setTimeout(callback, ms);
     };
-})();
+}
 
-function updateURLParameter(url, param, paramVal) {
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-    let i;
+/*
+ * Function to delay some other function until it isn't
+ * called for "ms" ms. This runs on a global timer, meaning
+ * the actual function doesn't matter. If you want a delay
+ * specifically for one function, you need to first create
+ * your own "delayer" with `createDelayer`.
+ */
+const delay = createDelayer();
 
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] != param) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
-    } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
-    }
-    let rowsTxt = "";
+function updateURLParameter(_url, param, paramVal) {
+    const url = new URL(_url, window.location.origin);
     if (paramVal) {
-        rowsTxt += `${temp}${param}=${paramVal}`;
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
-}
-
-function updateArrayURLParameter(url, param, _paramVals) {
-    const paramVals = [...new Set(_paramVals)]; // remove duplicate items
-    let TheAnchor = null;
-    let newAdditionalURL = "";
-    let tempArray = url.split("?");
-    let baseURL = tempArray[0];
-    let additionalURL = tempArray[1];
-    let temp = "";
-
-    if (additionalURL) {
-        const tmpAnchor = additionalURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-        if (TheAnchor) {
-            additionalURL = TheParams;
-        }
-        tempArray = additionalURL.split("&");
-        for (let i = 0; i < tempArray.length; i++) {
-            if (tempArray[i].split("=")[0] !== `${param}%5B%5D`) {
-                newAdditionalURL += temp + tempArray[i];
-                temp = "&";
-            }
-        }
+        url.searchParams.set(param, paramVal);
     } else {
-        const tmpAnchor = baseURL.split("#");
-        const TheParams = tmpAnchor[0];
-        TheAnchor = tmpAnchor[1];
-
-        if (TheParams) {
-            baseURL = TheParams;
-        }
+        url.searchParams.delete(param);
     }
-    let rowsTxt = "";
-    for (const paramVal of paramVals) {
-        rowsTxt += `${temp}${param}%5B%5D=${paramVal}`;
-        temp = "&";
-    }
-    if (TheAnchor) {
-        rowsTxt += "#" + TheAnchor;
-    }
-    return baseURL + "?" + newAdditionalURL + rowsTxt;
+    return url.toString();
 }
 
-function getURLParameter(_name, _url) {
-    const url = _url || window.location.href;
-    const name = _name.replace(/[[\]]/g, "\\$&");
-    const regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)");
-    const results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return "";
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+function updateArrayURLParameter(_url, param, _paramVals) {
+    const paramVals = new Set(_paramVals); // remove duplicate items
+    // convert "%5B%5D" back to "[]"
+    const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
+    url.searchParams.delete(`${param}[]`);
+    paramVals.forEach(paramVal => {
+        url.searchParams.append(`${param}[]`, paramVal);
+    });
+    return url.toString();
+}
+
+function getURLParameter(name, _url) {
+    const url = new URL(_url ?? window.location.href, window.location.origin);
+    return url.searchParams.get(name);
 }
 
 function getArrayURLParameter(name, _url) {
-    const url = _url || window.location.href;
-    const result = [];
-    for (const part of url.split(/[?&]/)) {
-        const regResults = new RegExp(`${name}%5B%5D=([^#]+)`).exec(part);
-        if (regResults && regResults[1]) {
-            result.push(decodeURIComponent(regResults[1]));
-        }
-    }
-    return result;
+    const url = new URL(_url ?? window.location.href, window.location.origin);
+    return url.searchParams.getAll(`${name}[]`);
 }
 
 /*
@@ -219,6 +171,7 @@ function setDocumentTitle(title) {
 }
 
 export {
+    createDelayer,
     delay,
     fetch,
     updateURLParameter,

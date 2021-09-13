@@ -31,6 +31,12 @@ class CsvDiffer
     end
   end
 
+  def self.usable?(raw)
+    first_line, = raw.lstrip.split("\n", 2)
+    columncount = CSV.parse_line((first_line || ''), nil_value: '')&.length
+    columncount.nil? || columncount <= 20
+  end
+
   def initialize(generated, expected)
     @generated = CSV.parse((generated || '').lstrip, nil_value: '')
     @expected = CSV.parse((expected || '').lstrip, nil_value: '')

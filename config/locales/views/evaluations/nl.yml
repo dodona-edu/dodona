@@ -5,8 +5,8 @@ nl:
       evaluation: "Evaluatie"
       title: "Evaluatie voor %{series}"
       explanation_title: "Hoe evalueer ik een oplossing?"
-      explanation_part1_html: "In de samenvattende tabel kan je naast een oefening op <i class='mdi mdi-chevron-right mdi-18'></i> klikken. Je komt dan op een nog te bekijken oplossing van een willekeurige student terecht. Vervolgens kan je indien gewenst feedback op de code geven en de oplossing als afgewerkt markeren. Bemerk dat je ook een oplossing als afgewerkt kan markeren zonder feedback achter te laten. We hebben alvast alle oefeningen zonder ingediende oplossing als afgewerkt gemarkeerd."
-      explanation_part2_html: "Ter herinnering, de studenten krijgen de gegeven feedback <b>niet</b> automatisch te zien, daarvoor dien je hieronder op 'Feedback vrijgeven' te klikken."
+      explanation_no_grading_html: "<p>In de samenvattende tabel kan je naast een oefening op <i class='mdi mdi-chevron-right mdi-18'></i> klikken. Je komt dan op een nog te bekijken oplossing van een willekeurige student terecht. Vervolgens kan je indien gewenst feedback op de code geven en de oplossing als afgewerkt markeren. Bemerk dat je ook een oplossing als afgewerkt kan markeren zonder feedback achter te laten. We hebben alvast alle oefeningen zonder ingediende oplossing als afgewerkt gemarkeerd.</p><p>Ter herinnering, de studenten krijgen de gegeven feedback <b>niet</b> automatisch te zien, daarvoor dien je hieronder op 'Feedback vrijgeven' te klikken.</p>"
+      explanation_yes_grading_html: "<p>In de samenvattende tabel kan je naast een oefening op <i class='mdi mdi-chevron-right mdi-18'></i> klikken. Je komt dan op een nog te bekijken oplossing van een willekeurige student terecht. Vervolgens kan je indien gewenst feedback op de code geven en scores toekennen via de scoreonderdelen die je geconfigureerd hebt. Je kan de scores ook invullen zonder feedback achter te laten. Oefeningen zonder ingediende oplossing kan je geen scores geven, deze zullen automatisch een 0 krijgen in het puntenoverzicht.</p><p>Ter herinnering, de studenten krijgen de gegeven feedback en scores <b>niet</b> automatisch te zien, daarvoor dien je hieronder op 'Feedback vrijgeven' te klikken.</p>"
       users: "studenten"
       release: Feedback vrijgeven
       unrelease: Feedback verbergen
@@ -23,7 +23,7 @@ nl:
       pick_deadline: Deadline kiezen
       create_evaluation: Reeks evalueren
       explanation_title: "Wat is een evaluatie?"
-      explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddelijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p>"
+      explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddellijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p><p>Een handleiding over verbeteren kan je vinden op <a href=\"https://docs.dodona.be/nl/guides/teachers/grading/\">onze documentatiesite</a>.</p>"
       next: Volgende
     add_users:
       title: Gebruikers selecteren
@@ -67,7 +67,6 @@ nl:
     evaluation_table:
       user: Gebruiker
     evaluation_grade_table:
-      user: Gebruiker
       total: Totaal
       average: Gemiddelde
     feedback_status:

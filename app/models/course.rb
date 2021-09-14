@@ -132,21 +132,24 @@ class Course < ApplicationRecord
              where question_state: :unanswered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :in_progress_questions,
            lambda {
              where question_state: :in_progress
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :answered_questions,
            lambda {
              where question_state: :answered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   validates :name, presence: true
   validates :year, presence: true

@@ -46,9 +46,7 @@ class CsvDiffer
     @exp_headers, *@expected = @expected
     @exp_headers ||= []
 
-    @generated_rowcount = @generated.length
-    @expected_rowcount = @expected.length
-    @simplified_table = @generated_rowcount > 100 || @expected_rowcount > 100
+    @simplified_table = @generated.length > 100 || @expected.length > 100
 
     @gen_header_indices, @exp_header_indices, @gen_headers, @exp_headers, @combined_headers = diff_header_indices(@gen_headers, @exp_headers)
 
@@ -164,9 +162,9 @@ class CsvDiffer
       builder.tbody do
         if @simplified_table
           if is_old
-            simple_old_row(builder)
+            simple_row(builder, @generated, 'del')
           else
-            simple_new_row(builder)
+            simple_row(builder, @expected, 'ins')
           end
         else
           @diff.each do |chunk|
@@ -191,7 +189,7 @@ class CsvDiffer
     gen_cols = @generated.transpose.map { |col| col.join("\n") }
     builder.tr do
       builder.td(class: 'line-nr') do
-        builder << (1..@generated_rowcount).to_a.join("\n")
+        builder << (1..@generated.length).to_a.join("\n")
       end
       builder.td(class: 'line-nr')
 
@@ -208,7 +206,7 @@ class CsvDiffer
     builder.tr do
       builder.td(class: 'line-nr')
       builder.td(class: 'line-nr') do
-        builder << (1..@expected_rowcount).to_a.join("\n")
+        builder << (1..@expected.length).to_a.join("\n")
       end
 
       builder << Array.new(@combined_headers.length) { |i| @exp_header_indices.index(i) }.map do |idx|
@@ -221,30 +219,15 @@ class CsvDiffer
     end
   end
 
-  def simple_old_row(builder)
-    gen_cols = @generated.transpose.map { |col| col.join("\n") }
+  def simple_row(builder, data, cls)
+    gen_cols = data.transpose.map { |col| col.join("\n") }
 
     builder.tr do
       builder.td(class: 'line-nr') do
-        builder << (1..@generated_rowcount).to_a.join("\n")
+        builder << (1..data.length).to_a.join("\n")
       end
       gen_cols.each do |col|
-        builder.td(class: 'del') do
-          builder << CGI.escape_html(col)
-        end
-      end
-    end
-  end
-
-  def simple_new_row(builder)
-    exp_cols = @expected.transpose.map { |col| col.join("\n") }
-
-    builder.tr do
-      builder.td(class: 'line-nr') do
-        builder << (1..@expected_rowcount).to_a.join("\n")
-      end
-      exp_cols.each do |col|
-        builder.td(class: 'ins') do
+        builder.td(class: cls) do
           builder << CGI.escape_html(col)
         end
       end

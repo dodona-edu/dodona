@@ -134,14 +134,14 @@ class CsvDiffer
 
   private
 
-  def split_build_table(builder, headers, is_old)
+  def split_build_table(builder, headers, is_generated_output)
     builder.table(class: 'split-diff diff csv-diff') do
       builder.colgroup do
         builder.col(class: 'line-nr')
         builder.col(span: headers.length)
       end
       builder.thead do
-        if is_old
+        if is_generated_output
           icon_cls = 'mdi-file-account'
           title = I18n.t('submissions.show.your_output')
         else
@@ -161,7 +161,7 @@ class CsvDiffer
       end
       builder.tbody do
         if @simplified_table
-          if is_old
+          if is_generated_output
             simple_row(builder, @generated, 'del')
           else
             simple_row(builder, @expected, 'ins')
@@ -169,7 +169,7 @@ class CsvDiffer
         else
           @diff.each do |chunk|
             builder.tr do
-              if is_old
+              if is_generated_output
                 is_empty, row = old_row(chunk)
                 position = chunk.old_position
               else

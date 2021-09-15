@@ -31,8 +31,8 @@ class CsvDiffer
     end
   end
 
-  def self.usable?(raw)
-    first_line, = raw.lstrip.split("\n", 2)
+  def self.limited_columns?(raw)
+    first_line = raw.lstrip.lines.first
     columncount = CSV.parse_line((first_line || ''), nil_value: '')&.length
     columncount.nil? || columncount <= 20
   end

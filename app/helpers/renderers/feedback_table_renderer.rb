@@ -256,7 +256,7 @@ class FeedbackTableRenderer
   end
 
   def differ(t)
-    if t[:format] == 'csv' && CsvDiffer.usable?(t[:generated]) && CsvDiffer.usable?(t[:expected])
+    if t[:format] == 'csv' && CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
       CsvDiffer
     else
       TextDiffer

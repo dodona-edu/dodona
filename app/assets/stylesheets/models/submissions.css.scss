@@ -135,6 +135,9 @@
       padding-left: 10px;
       padding-right: 10px;
     }
+    .line-nr:empty::before {
+      content: " "; /* make sure the line-height is respected */
+    }
     .output {
       width: 100%;
     }
@@ -149,17 +152,32 @@
       line-height: 1.0;
     }
   }
-  .diffs .unified-diff {
+  table.diff.csv-diff {
+    td, .del, .ins, .unchanged {
+      padding: 2px 6px;
+      white-space: pre;
+    }
+    td.line-nr, th.line-nr {
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+      vertical-align: top;
+      text-align: right;
+    }
+  }
+  .diffs .unified-diff, .diffs .split-diff {
     display: none;
   }
-  .diffs .split-diff {
-    display: none;
-  }
-  .diffs.show-unified .unified-diff {
+  .diffs.show-unified .unified-diff, .diffs.show-split .split-diff {
     display: table;
   }
-  .diffs.show-split .split-diff {
-    display: table;
+  .diffs.show-split .split-diff.csv-diff {
+    display: inline-block;
+    width: 50%;
+    vertical-align: top;
+  }
+  .diffs.show-unified .unified-diff.csv-diff, .test-accepted .diffs .diff {
+    display: inline-block;
   }
 
   .feedback-table-options {

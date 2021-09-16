@@ -241,4 +241,12 @@ class CourseTest < ActiveSupport::TestCase
       course.destroy
     end
   end
+
+  test 'destroying course should move submission files' do
+    course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
+    submission = Submission.first
+    code = submission.code
+    course.destroy
+    assert_equal code, submission.reload.code
+  end
 end

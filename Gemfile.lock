@@ -332,7 +332,7 @@ GEM
     rails-dom-testing (2.0.3)
       activesupport (>= 4.2.0)
       nokogiri (>= 1.6)
-    rails-html-sanitizer (1.4.1)
+    rails-html-sanitizer (1.4.2)
       loofah (~> 2.3)
     rails-i18n (6.0.0)
       i18n (>= 0.7, < 2)
@@ -447,7 +447,7 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
-    webpacker (5.4.2)
+    webpacker (5.4.3)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
@@ -540,7 +540,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 4.1.20)
   web-console (~> 4.1.0)
-  webpacker (~> 5.4.2)
+  webpacker (~> 5.4.3)
   will_paginate (~> 3.3.1)
 
 RUBY VERSION

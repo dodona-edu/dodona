@@ -41,6 +41,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
         const legend = this.container
             .append("div")
             .attr("class", "legend")
+            .style("margin-top", "-20px")
             .selectAll("div")
             .data(this.statusOrder)
             .enter()

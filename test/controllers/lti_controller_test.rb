@@ -1,6 +1,6 @@
 require 'test_helper'
 
-# In these tests we don't want to hit the network to get jwsk content.
+# In these tests we don't want to hit the network to get jwks content.
 module LTI::JWK
   def get_jwks_content(_uri)
     LtiTestHelper.jwks_content

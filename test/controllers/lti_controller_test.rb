@@ -2,7 +2,7 @@ require 'test_helper'
 
 # In these tests we don't want to hit the network to get jwsk content.
 module LTI::JWK
-  def get_jwsk_content(_uri)
+  def get_jwks_content(_uri)
     LtiTestHelper.jwks_content
   end
 end
@@ -71,7 +71,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
     # Change the kid in the original key, so we can simulate the rotation used by Ufora.
     LTI::JWK.module_eval do
-      def get_jwsk_content(_uri)
+      def get_jwks_content(_uri)
         LtiTestHelper.jwks_content('kid')
       end
     end
@@ -82,7 +82,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
     # Restore the module
     LTI::JWK.module_eval do
-      def get_jwsk_content(_uri)
+      def get_jwks_content(_uri)
         LtiTestHelper.jwks_content
       end
     end

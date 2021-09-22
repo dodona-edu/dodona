@@ -23,7 +23,8 @@ module OIDC
           client_options: {
             identifier: provider.client_id
           },
-          issuer: provider.issuer
+          issuer: provider.issuer,
+          state: lambda { format("%d-%s", provider.id, SecureRandom::hex(16)) }
         }
       end
     end

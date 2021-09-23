@@ -3,6 +3,8 @@ require 'omniauth'
 module OIDC
   module Auth
     module Settings
+      KEY_PATH = '/home/dodona/key.pem'.freeze
+
       def base_settings
         # Support only third-parties that are discoverable.
         {
@@ -20,12 +22,24 @@ module OIDC
         raise 'Not an OIDC provider.' unless provider.is_a?(Provider::Oidc)
 
         {
+          client_auth_method: :jwt_bearer,
           client_options: {
-            identifier: provider.client_id
+            identifier: provider.client_id,
+            private_key: private_key
           },
           issuer: provider.issuer,
           state: lambda { format("%d-%s", provider.id, SecureRandom::hex(16)) }
         }
+      end
+
+      private
+
+      def private_key
+        # Only load the key if it exists (staging / production).
+        return nil unless File.file?(KEY_PATH)
+
+        # Parse the key.
+        @private_key ||= OpenSSL::PKey::RSA.new File.read(KEY_PATH)
       end
     end
   end

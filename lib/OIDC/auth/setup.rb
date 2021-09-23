@@ -63,7 +63,7 @@ module OIDC
           return nil unless state.count == 2
 
           # Attempt to parse the id as an integer.
-          parsed = state[1].to_i
+          parsed = state[0].to_i
           parsed > 0 ? parsed : nil
         end
       end

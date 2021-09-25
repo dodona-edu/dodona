@@ -132,7 +132,7 @@ class User < ApplicationRecord
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
   def provider_allows_blank_email
-    return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
+    return if institution&.uses_lti? || institution&.uses_smartschool?
 
     errors.add(:email, 'should not be blank') if email.blank?
   end

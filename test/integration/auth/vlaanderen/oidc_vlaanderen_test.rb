@@ -135,7 +135,10 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
       iss: ISSUER,
       kid: KEY_ID,
       nonce: session['omniauth.nonce'],
-      sub: SecureRandom.uuid
+      sub: SecureRandom.uuid,
+      vo_doelgroepcode: 'GID',
+      vo_doelgroepnaam: 'VO-medewerkers',
+      vo_email: Faker::Internet.email
     }
     id_token = encode_jwt id_token_body, KEY_ID
 
@@ -180,5 +183,6 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     current_user = @controller.current_user
     assert_equal id_token_body[:given_name], current_user.first_name
     assert_equal id_token_body[:family_name], current_user.last_name
+    assert_equal id_token_body[:vo_email], current_user.email
   end
 end

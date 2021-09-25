@@ -19,7 +19,10 @@ module OmniAuth
       def user_info
         return @user_info if @user_info
 
-        @user_info = ::OpenIDConnect::ResponseObject::UserInfo.new(decode_id_token(access_token.id_token).raw_attributes)
+        # Set the email address alias.
+        decoded = decode_id_token(access_token.id_token).raw_attributes
+        decoded["email"] = decoded["vo_email"]
+        @user_info = ::OpenIDConnect::ResponseObject::UserInfo.new(decoded)
       end
     end
   end

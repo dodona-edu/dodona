@@ -107,8 +107,8 @@ class User < ApplicationRecord
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
-  validate :email_only_blank_if_smartschool
   validate :max_one_institution
+  validate :provider_allows_blank_email
 
   token_generator :token
 
@@ -131,8 +131,10 @@ class User < ApplicationRecord
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
-  def email_only_blank_if_smartschool
-    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.uses_smartschool? && !institution&.uses_lti?
+  def provider_allows_blank_email
+    return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
+
+    errors.add(:email, 'should not be blank') if email.blank?
   end
 
   def max_one_institution

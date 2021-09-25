@@ -1,5 +1,6 @@
 require_relative '../client.rb'
 require 'openid_connect'
+require 'openid_connect/response_object'
 
 # This strategy enables OIDC to be used by Dodona.
 module OmniAuth
@@ -16,11 +17,9 @@ module OmniAuth
       private
 
       def user_info
-        decoded = decode_id_token(access_token.id_token)
-        Rails.logger.info access_token.id_token
-        Rails.logger.info decoded
-        Rails.logger.info decoded.raw_attributes
-        super
+        return @user_info if @user_info
+
+        @user_info = ::OpenIDConnect::ResponseObject::UserInfo.new(decode_id_token(access_token.id_token).raw_attributes)
       end
     end
   end

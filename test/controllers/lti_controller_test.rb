@@ -3,11 +3,12 @@ require 'test_helper'
 # In these tests we don't want to hit the network to get jwks content.
 module LTI::JWK
   def get_jwks_content(_uri)
-    LtiTestHelper.jwks_content
+    JwksHelper.jwks_content
   end
 end
 
 class LtiControllerTest < ActionDispatch::IntegrationTest
+  include JwksHelper
   include LtiTestHelper
   include LtiHelper
 
@@ -36,7 +37,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     series = create :series, exercise_count: 1
     payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
 
-    key = File.read(FILES_LOCATION.join('private_key.pem'))
+    key = File.read(JwksHelper.private_key_path)
     File.stubs(:file?).returns(true)
     File.stubs(:read).returns(key)
 
@@ -72,7 +73,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     # Change the kid in the original key, so we can simulate the rotation used by Ufora.
     LTI::JWK.module_eval do
       def get_jwks_content(_uri)
-        LtiTestHelper.jwks_content('kid')
+        JwksHelper.jwks_content('kid')
       end
     end
 
@@ -83,13 +84,14 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     # Restore the module
     LTI::JWK.module_eval do
       def get_jwks_content(_uri)
-        LtiTestHelper.jwks_content
+        JwksHelper.jwks_content
       end
     end
   end
 end
 
 class LtiFlowTest < ActionDispatch::IntegrationTest
+  include JwksHelper
   include LtiTestHelper
 
   def setup

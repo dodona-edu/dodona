@@ -34,12 +34,17 @@ module OIDC
 
       private
 
+      def private_key_path
+        # This function allows to override the key path in tests.
+        KEY_PATH
+      end
+
       def private_key
         # Only load the key if it exists (staging / production).
-        return nil unless File.file?(KEY_PATH)
+        return nil unless File.file?(private_key_path)
 
         # Parse the key.
-        @private_key ||= OpenSSL::PKey::RSA.new File.read(KEY_PATH)
+        @private_key ||= OpenSSL::PKey::RSA.new File.read(private_key_path)
       end
     end
   end

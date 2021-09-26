@@ -104,10 +104,23 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .curve(d3.curveMonotoneX)(ex.ex_data)
             );
 
+        // tooltip functionality
         this.svg.on("mouseover", e => this.tooltipOver(e));
         this.svg.on("mousemove", e => this.tooltipMove(e));
         this.svg.on("mouseleave", () => this.tooltipOut());
-        this.svg.on("click", () => this.yRangeToggle());
+
+        // y range toggle functionality
+        // add a rect behind y-axis for bigger clickable area
+        const yBackground = this.graph.append("rect")
+            .attr("width", 50)
+            .attr("height", this.innerHeight+10)
+            .attr("x", -50)
+            .attr("y", -10)
+            .attr("fill", "none")
+            .attr("pointer-events", "all");
+        yBackground
+            .on("click", () => this.yRangeToggle())
+            .on("mouseover", () => yBackground.style("cursor", "pointer"));
 
         this.drawUpdate(animation);
     }

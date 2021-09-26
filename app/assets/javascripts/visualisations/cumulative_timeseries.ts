@@ -187,9 +187,6 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-
-        this.insertFakeData(data, student_count);
-
         let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
         minDate = d3.timeDay.offset(new Date(minDate), -1); // start 1 day earlier from 0
         maxDate = new Date(maxDate);

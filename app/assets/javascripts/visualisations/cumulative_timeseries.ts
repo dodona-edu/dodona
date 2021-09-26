@@ -35,7 +35,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     private studentCount: number; // amount of subscribed students
     private maxSum = 0; // largest y-value == max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
-    private y100 = true; // Whether y range goes to 100% (true) of max of the data (false)
+    private y100 = false; // Whether y range goes to 100% (true) of max of the data (false)
 
     /**
     * Draws the graph's svg (and other) elements that never change on the screen

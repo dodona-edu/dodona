@@ -14,6 +14,10 @@ export class CTimeseriesGraph extends SeriesGraph {
     private y: d3.ScaleLinear<number, number>;
     private color: d3.ScaleOrdinal<string, unknown>;
 
+    // axes
+    private xAxis: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
+    private yAxis: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
+
     // tooltips things
     private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
     private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
@@ -28,11 +32,13 @@ export class CTimeseriesGraph extends SeriesGraph {
     // data
     // eslint-disable-next-line camelcase
     private data: { ex_id: string, ex_data: { bin: d3.Bin<Date, Date>, cSum: number }[] }[] = [];
-    private maxSum: number; // largest y-value = either subscribed students or max value
+    private studentCount: number; // amount of subscribed students
+    private maxSum = 0; // largest y-value == max value
     private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
+    private y100 = true; // Whether y range goes to 100% (true) of max of the data (false)
 
     /**
-    * Draws the graph's svg (and other) elements on the screen
+    * Draws the graph's svg (and other) elements that never change on the screen
     * No more data manipulation is done in this function
     * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
@@ -43,14 +49,12 @@ export class CTimeseriesGraph extends SeriesGraph {
         const minDate = this.dateArray[0];
         const maxDate = this.dateArray[this.dateArray.length - 1];
 
-        // Y scale
         this.y = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
             .range([this.innerHeight, 0]);
 
         // Y axis
-        this.graph.append("g")
-            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
+        this.yAxis = this.graph.append("g");
 
         // X scale
         this.x = d3.scaleTime()
@@ -58,17 +62,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .range([0, this.innerWidth]);
 
         // add x-axis
-        this.graph.append("g")
-            .attr("transform", `translate(0, ${this.y(0)})`)
-            .call(d3.axisBottom(this.x)
-                .tickValues(this.dateArray.filter((e, i, a) => {
-                    if (a.length < 10) return true;
-                    if (i === 0 || i === a.length - 1) return true;
-                    if (i % Math.floor(a.length / 10) === 0) return true;
-                    return false;
-                }))
-                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
-            );
+        this.xAxis = this.graph.append("g");
 
         // Color scale
         this.color = d3.scaleOrdinal()
@@ -98,32 +92,69 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.legendInit();
 
         // add lines
-        // eslint-disable-next-line camelcase
-        this.data.forEach(({ ex_data, ex_id }) => {
-            const exGroup = this.graph.append("g");
-            exGroup.selectAll("path")
-                // I have no idea why this is necessary but removing the '[]' breaks everything
-                // eslint-disable-next-line camelcase
-                .data([ex_data])
-                .join("path")
-                .style("stroke", this.color(ex_id) as string)
-                .style("fill", "none")
-                .attr("d", d3.line()
-                    .x(d => this.x(d.bin["x0"]))
-                    .y(this.innerHeight)
-                    .curve(d3.curveMonotoneX)
-                )
-                .transition().duration(animation ? 500 : 0)
-                .attr("d", d3.line()
-                    .x(d => this.x(d.bin["x0"]))
-                    .y(d => this.y(d.cSum / this.maxSum))
-                    .curve(d3.curveMonotoneX)
-                );
-        });
+        this.graph.selectAll(".line")
+            .data(this.data, ex => ex.ex_id )
+            .join("path")
+            .attr("class", "line")
+            .style("stroke", ex => this.color(ex.ex_id) as string)
+            .style("fill", "none")
+            .attr("d", ex => d3.line()
+                .x(d => this.x(d.bin["x0"]))
+                .y(this.innerHeight)
+                .curve(d3.curveMonotoneX)(ex.ex_data)
+            );
 
         this.svg.on("mouseover", e => this.tooltipOver(e));
         this.svg.on("mousemove", e => this.tooltipMove(e));
         this.svg.on("mouseleave", () => this.tooltipOut());
+        this.svg.on("click", () => this.yRangeToggle());
+
+        this.drawUpdate(animation);
+    }
+
+    private drawUpdate(animation=true): void {
+        const minDate = this.dateArray[0];
+        const maxDate = this.dateArray[this.dateArray.length - 1];
+
+        // update Y scale
+        this.y = d3.scaleLinear()
+            .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
+            .range([this.innerHeight, 0]);
+
+        this.yAxis
+            .transition().duration(animation ? 500: 0)
+            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
+
+        // update X scale
+        this.x = d3.scaleTime()
+            .domain([minDate, maxDate])
+            .range([0, this.innerWidth]);
+
+        this.xAxis
+            .attr("transform", `translate(0, ${this.y(0)})`)
+            .call(d3.axisBottom(this.x)
+                .tickValues(this.dateArray.filter((e, i, a) => {
+                    if (a.length < 10) return true;
+                    if (i === 0 || i === a.length - 1) return true;
+                    if (i % Math.floor(a.length / 10) === 0) return true;
+                    return false;
+                }))
+                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
+            );
+
+        // add lines
+        this.graph.selectAll(".line")
+            .data(this.data, ex => ex.ex_id )
+            .join("path")
+            // .attr("class", "line")
+            // .style("stroke", ex => this.color(ex.ex_id) as string)
+            // .style("fill", "none")
+            .transition().duration(animation ? 500: 0)
+            .attr("d", ex => d3.line()
+                .x(d => this.x(d.bin["x0"]))
+                .y(d => this.y(d.cSum / this.studentCount))
+                .curve(d3.curveMonotoneX)(ex.ex_data)
+            );
     }
 
     /**
@@ -143,6 +174,9 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
+
+        this.insertFakeData(data, student_count);
+
         let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
         minDate = d3.timeDay.offset(new Date(minDate), -1); // start 1 day earlier from 0
         maxDate = new Date(maxDate);
@@ -156,7 +190,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .ticks(d3.timeDay);
 
         // eslint-disable-next-line camelcase
-        this.maxSum = student_count; // max value
+        this.studentCount = student_count; // max value
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()
@@ -235,7 +269,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.tooltipDots
             .attr("cx", this.x(date))
-            .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.maxSum));
+            .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.studentCount));
     }
 
     /**
@@ -272,7 +306,7 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .duration(100)
                 .attr("opacity", 1)
                 .attr("cx", this.x(date))
-                .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.maxSum));
+                .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.studentCount));
         }
     }
 
@@ -280,10 +314,17 @@ export class CTimeseriesGraph extends SeriesGraph {
         let result = `<b>${this.longDateFormat(this.dateArray[this.tooltipIndex])}</b>`;
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
-            result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.maxSum)}
-                    (${ex.ex_data[i].cSum}/${this.maxSum})`;
+            result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
+                    (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
         return result;
+    }
+
+    private yRangeToggle(): void {
+        this.y100 = !this.y100;
+
+        this.tooltipOut();
+        this.drawUpdate();
     }
 
     private legendInit(): void {

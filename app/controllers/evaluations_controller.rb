@@ -161,6 +161,7 @@ class EvaluationsController < ApplicationController
     @feedbacks = Feedback.joins(:evaluation_user)
                          .where(evaluation: @evaluation, evaluation_users: { user: current_user })
                          .includes(:evaluation_exercise, scores: :score_item)
+                         .order('evaluation_exercises.id')
     @feedbacks = policy_scope(@feedbacks)
   end
 

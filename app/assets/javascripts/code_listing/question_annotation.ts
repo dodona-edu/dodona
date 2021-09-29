@@ -14,15 +14,19 @@ interface QuestionAnnotationPermissionData extends UserAnnotationPermissionData 
 export interface QuestionAnnotationData extends UserAnnotationData {
     // eslint-disable-next-line camelcase
     question_state: QuestionState;
+    // eslint-disable-next-line camelcase
+    newer_submission_url: string | null;
 }
 
 export class QuestionAnnotation extends UserAnnotation {
     public readonly permissions: QuestionAnnotationPermissionData;
     private readonly questionState: QuestionState;
+    private readonly newerSubmissionUrl: string | null;
 
     constructor(data: QuestionAnnotationData, editFn: UserAnnotationEditor) {
         super(data, editFn, "question");
         this.questionState = data.question_state;
+        this.newerSubmissionUrl = data.newer_submission_url;
         this.permissions = data.permission as QuestionAnnotationPermissionData;
     }
 
@@ -45,6 +49,14 @@ export class QuestionAnnotation extends UserAnnotation {
                 last: this.lastUpdatedBy.name
             });
         }
+    }
+
+    protected get hasWarning(): boolean {
+        return this.newerSubmissionUrl !== null;
+    }
+
+    protected get warningUrl(): string | null {
+        return this.newerSubmissionUrl;
     }
 
     public transitionable(to: QuestionState): boolean {

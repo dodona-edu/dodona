@@ -191,6 +191,10 @@ $annotation-info: $info-500;
         }
         margin-left: 4px;
       }
+
+      .annotation-warning::before {
+        vertical-align: bottom;
+      }
     }
 
     .annotation-text {

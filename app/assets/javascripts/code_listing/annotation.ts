@@ -59,6 +59,20 @@ export abstract class Annotation {
             meta.appendChild(icon);
         }
 
+        if (this.hasWarning) {
+            const span = document.createElement("span");
+            span.textContent = " ·";
+            const url = document.createElement("a");
+            url.href = this.warningUrl;
+            url.setAttribute("target", "_blank");
+            const icon = document.createElement("i");
+            icon.classList.add("mdi", "mdi-alert", "mdi-18", "colored-warning", "annotation-warning");
+            icon.title = I18n.t("js.user_question.has_newer_submission");
+            url.appendChild(icon);
+            span.appendChild(url);
+            meta.appendChild(span);
+        }
+
         // Update button.
         if (this.modifiable) {
             const link = document.createElement("a");
@@ -174,6 +188,14 @@ export abstract class Annotation {
 
     protected get editTitle(): string {
         return "";
+    }
+
+    protected get hasWarning(): boolean {
+        return false;
+    }
+
+    protected get warningUrl(): string | null {
+        return null;
     }
 
     public async update(data): Promise<Annotation> {

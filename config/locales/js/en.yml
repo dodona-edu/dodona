@@ -157,6 +157,7 @@ en:
       unresolve: 'Re-open question'
       deleted: This question was deleted by another user
       conflict: The status of this question was already changed by another user
+      has_newer_submission: This student already submitted a newer solution since asking this question. Click here to go to their newest submission.
     score:
       conflict: This score was already changed by another user
       unknown: An unexpected error occured when saving the score

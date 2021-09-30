@@ -15,8 +15,8 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
     * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        super.draw(animation);
 
         const emptyColor = this.darkMode ? "#37474F" : "white";
 
@@ -84,7 +84,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
                     .duration(500)
                     .style("opacity", 0);
             })
-            .transition().duration(500)
+            .transition().duration(animation ? 500 : 0)
             .attr("x", d => x((d.cSum) / this.maxSum[d.exercise_id])) // relative numbers
             .attr("width", d => x(d.count / this.maxSum[d.exercise_id])) // relative numbers
             .attr("fill", d => color(d.status) as string);

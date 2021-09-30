@@ -34,8 +34,9 @@ export class CTimeseriesGraph extends SeriesGraph {
     /**
     * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
+     * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
+    protected override draw(animation=true): void {
         this.height = 400;
         super.draw();
 

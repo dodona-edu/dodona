@@ -34,8 +34,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     * draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        super.draw(animation);
 
         // no data in cell
         const emptyColor = this.darkMode ? "#37474F" : "white";
@@ -93,7 +93,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
-                    .transition().duration(500)
+                    .transition().duration(animation ? 500 : 0)
                     .attr("width", rectSize)
                     .attr("height", rectSize)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));

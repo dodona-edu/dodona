@@ -51,12 +51,16 @@ export class QuestionAnnotation extends UserAnnotation {
         }
     }
 
-    protected get hasWarning(): boolean {
+    protected get hasNotice(): boolean {
         return this.newerSubmissionUrl !== null;
     }
 
-    protected get warningUrl(): string | null {
+    protected get noticeUrl(): string | null {
         return this.newerSubmissionUrl;
+    }
+
+    protected get noticeInfo(): string | null {
+        return I18n.t("js.user_question.has_newer_submission");
     }
 
     public transitionable(to: QuestionState): boolean {

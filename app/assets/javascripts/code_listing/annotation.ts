@@ -59,15 +59,17 @@ export abstract class Annotation {
             meta.appendChild(icon);
         }
 
-        if (this.hasWarning) {
+        if (this.hasNotice) {
             const span = document.createElement("span");
             span.textContent = " ·";
             const url = document.createElement("a");
-            url.href = this.warningUrl;
+            url.href = this.noticeUrl;
             url.setAttribute("target", "_blank");
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-alert", "mdi-18", "colored-warning", "annotation-warning");
-            icon.title = I18n.t("js.user_question.has_newer_submission");
+            icon.classList.add("mdi", "mdi-information", "mdi-18", "colored-info", "annotation-warning");
+            icon.dataset.bsToggle = "tooltip";
+            icon.dataset.bsPlacement = "top";
+            icon.title = this.noticeInfo;
             url.appendChild(icon);
             span.appendChild(url);
             meta.appendChild(span);
@@ -190,11 +192,15 @@ export abstract class Annotation {
         return "";
     }
 
-    protected get hasWarning(): boolean {
+    protected get hasNotice(): boolean {
         return false;
     }
 
-    protected get warningUrl(): string | null {
+    protected get noticeUrl(): string | null {
+        return null;
+    }
+
+    protected get noticeInfo(): string | null {
         return null;
     }
 

@@ -11,6 +11,13 @@ module OmniAuth
       option :name, 'oidc'
 
       def client
+        # This logic was added specifically for Vlaamse Overheid. By default,
+        # the audience will be set to the token endpoint (which is compliant to
+        # the OIDC specification). However, Vlaamse Overheid wants this to be
+        # equal to the issuer.
+        #
+        # Token endpoint: https://authenticatie-ti.vlaanderen.be/op/v1/token.
+        # Vlaamse Overheid wants: https://authenticatie-ti.vlaanderen.be/op.
         @client ||= ::OIDC::Client.new(client_options.merge(audience: options.issuer))
       end
 

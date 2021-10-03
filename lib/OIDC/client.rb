@@ -3,6 +3,10 @@ require "rack/oauth2/client/grant/authorization_code"
 
 module OIDC
   class Client < OpenIDConnect::Client
+    # By default, the JWT grant will set the `grant type` to `jwtbearer`.
+    # However, Vlaamse Overheid expects this to be authorization_code; hence we
+    # implement a custom client.
+
     attr_optional :audience
 
     def authorization_code=(code)

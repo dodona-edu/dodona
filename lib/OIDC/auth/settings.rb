@@ -21,6 +21,8 @@ module OIDC
       def provider_settings(provider)
         raise 'Not an OIDC provider.' unless provider.is_a?(Provider::Oidc)
 
+        # The id of the provider is encoded into the state, so that we can know
+        # the provider during the callback phase.
         {
           client_auth_method: :jwt_bearer,
           client_options: {

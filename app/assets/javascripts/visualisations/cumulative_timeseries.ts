@@ -113,7 +113,7 @@ export class CTimeseriesGraph extends SeriesGraph {
                     .y(this.innerHeight)
                     .curve(d3.curveMonotoneX)
                 )
-                .transition().duration(500)
+                .transition().duration(animation ? 500 : 0)
                 .attr("d", d3.line()
                     .x(d => this.x(d.bin["x0"]))
                     .y(d => this.y(d.cSum / this.maxSum))

@@ -108,7 +108,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     assert_equal 'code', parameters[:response_type].first
 
     # Scope must contain openid and profile.
-    assert_equal 'openid profile', parameters[:scope].first
+    assert_equal 'openid profile vo', parameters[:scope].first
 
     # State must not be empty and must start with the id of the provider so that
     # we can reconstruct this in the callback phase.

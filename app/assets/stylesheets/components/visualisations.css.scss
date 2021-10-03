@@ -41,6 +41,7 @@
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex-wrap: wrap;
 
   .legend-item {
     margin-left: 8px;
@@ -50,6 +51,7 @@
     align-items: center;
 
     .legend-box {
+      min-width: 15px;
       width: 15px;
       height: 15px;
       border-radius: 5px;

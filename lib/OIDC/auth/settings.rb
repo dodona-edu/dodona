@@ -14,7 +14,7 @@ module OIDC
           discovery: true,
           response_mode: :form_post,
           response_type: :code,
-          scope: [:openid, :profile]
+          scope: [:openid, :profile, :vo]
         }
       end
 

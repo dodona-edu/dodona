@@ -1,6 +1,9 @@
 ## LTI.
 require_relative '../../lib/LTI/auth.rb'
 
+## OIDC.
+require_relative '../../lib/OIDC/auth.rb'
+
 ## SAML.
 require_relative '../../lib/SAML/strategy.rb'
 require_relative '../../lib/SAML/setup.rb'
@@ -260,6 +263,8 @@ Devise.setup do |config|
   config.omniauth :office365,
                   Rails.application.credentials.office365_client_id,
                   Rails.application.credentials.office365_client_secret
+
+  config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
 
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 

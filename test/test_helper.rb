@@ -12,6 +12,9 @@ require 'faker'
 require 'rails/test_help'
 require 'mocha/minitest'
 
+require 'webmock/minitest'
+WebMock.allow_net_connect!
+
 require 'testhelpers/constants'
 require 'testhelpers/stub_helper'
 require 'testhelpers/delayed_job_helper'
@@ -19,6 +22,7 @@ require 'testhelpers/crud_helper'
 require 'testhelpers/git_helper'
 require 'testhelpers/remote_helper'
 require 'testhelpers/export_zip_helper'
+require 'testhelpers/jwks_helper'
 require 'testhelpers/lti_test_helper'
 require 'testhelpers/cache_helper'
 

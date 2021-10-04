@@ -39,6 +39,13 @@ FactoryBot.define do
     identifier { SecureRandom.uuid }
   end
 
+  factory :oidc_provider, class: 'Provider::Oidc' do
+    institution
+
+    client_id { SecureRandom.uuid }
+    issuer { Faker::Internet.url }
+  end
+
   factory :provider, aliases: [:saml_provider], class: 'Provider::Saml' do
     institution
 

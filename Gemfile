@@ -160,6 +160,9 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
   gem 'test-prof', '~> 1.0.7'
+
+  # Mocking HTTP requests to third parties.
+  gem 'webmock'
 end
 
 group :development do

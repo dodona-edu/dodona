@@ -114,6 +114,8 @@ GEM
     codecov (0.6.0)
       simplecov (>= 0.15, < 0.22)
     concurrent-ruby (1.1.9)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     css_parser (1.7.1)
       addressable
@@ -169,6 +171,7 @@ GEM
     has_scope (0.8.0)
       actionpack (>= 5.2)
       activesupport (>= 5.2)
+    hashdiff (1.0.1)
     hashie (4.1.0)
     hcaptcha (7.1.0)
       json
@@ -447,6 +450,10 @@ GEM
     webfinger (1.1.0)
       activesupport
       httpclient (>= 2.4)
+    webmock (3.14.0)
+      addressable (>= 2.8.0)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     webpacker (5.4.3)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
@@ -540,6 +547,7 @@ DEPENDENCIES
   tzinfo-data
   uglifier (>= 4.1.20)
   web-console (~> 4.1.0)
+  webmock
   webpacker (~> 5.4.3)
   will_paginate (~> 3.3.1)
 

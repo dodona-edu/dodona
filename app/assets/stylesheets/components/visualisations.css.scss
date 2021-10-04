@@ -25,6 +25,7 @@
 
 .stats-container {
   display: flex;
+  flex-direction: column;
 }
 
 .graph_placeholder {
@@ -34,4 +35,30 @@
 .metric-container {
   fill: none;
   stroke-width: 2;
+}
+
+.legend {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  overflow: hidden;
+
+  .legend-item {
+    margin-left: 8px;
+    margin-right: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .legend-box {
+      width: 15px;
+      height: 15px;
+      border-radius: 5px;
+    }
+
+    .legend-text {
+      margin-left: 4px;
+    }
+  } 
 }

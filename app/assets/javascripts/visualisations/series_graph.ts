@@ -86,15 +86,14 @@ export abstract class SeriesGraph {
             .attr("width", this.width)
             .attr("height", this.height);
 
-        d3.select(window)
-            .on("resize", () => {
-                // just redraw the whole thing on a resize
-                // could also do it with viewBox, but this would require a lot of updates
-                // to keep apparent sizes consistent with redraws on graph switches
-                this.width = (this.container.node() as Element).getBoundingClientRect().width;
-                (this.container.node() as Element).innerHTML = "";
-                this.draw(false); // redraw without animations
-            });
+        window.onresize = () => {
+            // just redraw the whole thing on a resize
+            // could also do it with viewBox, but this would require a lot of updates
+            // to keep apparent sizes consistent with redraws on graph switches
+            this.width = (this.container.node() as Element).getBoundingClientRect().width;
+            (this.container.node() as Element).innerHTML = "";
+            this.draw(false); // redraw without animations
+        };
 
         this.graph = this.svg
             .append("g")

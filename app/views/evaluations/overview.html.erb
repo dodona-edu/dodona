@@ -22,7 +22,7 @@
           <tbody>
             <% @feedbacks.each do |fb| %>
               <% show_total = policy(fb.evaluation_exercise).show_total? %>
-              <% scores = policy_scope(fb.scores).includes(:score_item) %>
+              <% scores = policy_scope(fb.scores).includes(:score_item).order('score_items.id') %>
               <tr>
                 <%# The last row is normally borderless, but this doesn't work due to the rowspan. %>
                 <td class="align-top <%= "border-bottom-0" if fb === @feedbacks.last %>"

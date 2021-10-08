@@ -88,6 +88,7 @@ en:
           other: "You can't remove a course with more than %{count} submissions yourself."
         contact_html: "<a href=\"%{contact_url}\">Contact us</a> if you want to delete the course anyway."
     show:
+      has_private_exercises: "This course uses private exercises that it hasn't been granted the rights to."
       course: Course
       hidden_show_link: "Secret link"
       visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."
@@ -175,8 +176,6 @@ en:
       exercise_count: Exercises
       content_count: Reading activities
       more_statistics: "More statistics >"
-    create:
-      added_private_exercises: "Private exercises were added while creating this course. To use these exercises, this course will need to be granted permission from the relevant repositories."
     copy_courses_table:
       info: "Course"
       users: "# users"

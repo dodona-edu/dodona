@@ -47,6 +47,7 @@ class CoursesController < ApplicationController
       redirect_unless_secret_correct
       return if performed?
     end
+    flash[:alert] = I18n.t('courses.show.has_private_exercises') if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
     @series_loaded = params[:secret].present? ? @course.series.count : 2
@@ -134,7 +135,6 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }

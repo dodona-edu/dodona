@@ -47,7 +47,13 @@ class CoursesController < ApplicationController
       redirect_unless_secret_correct
       return if performed?
     end
-    flash[:alert] = I18n.t('courses.show.has_private_exercises') if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
+    if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
+      flash[:alert] = I18n.t('courses.show.has_private_exercises')
+      flash[:extra] = {
+        'message' => I18n.t('courses.show.has_private_help'),
+        'url' => contact_url
+      }
+    end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
     @series_loaded = params[:secret].present? ? @course.series.count : 2

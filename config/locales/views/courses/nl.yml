@@ -97,6 +97,7 @@ nl:
         contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
       has_private_exercises: "Deze cursus gebruikt privé oefeningen waartoe die geen rechten heeft."
+      has_private_help: "Contacteer ons als je niet weet hoe je dit kan oplossen."
       course: Cursus
       hidden_show_link: 'Geheime link'
       visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'

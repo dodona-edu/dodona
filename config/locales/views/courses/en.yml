@@ -89,6 +89,7 @@ en:
         contact_html: "<a href=\"%{contact_url}\">Contact us</a> if you want to delete the course anyway."
     show:
       has_private_exercises: "This course uses private exercises that it hasn't been granted the rights to."
+      has_private_help: "Contact us if you don't know how to solve this."
       course: Course
       hidden_show_link: "Secret link"
       visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."

@@ -1,0 +1,18 @@
+changelog:
+  exclude:
+    labels:
+      - dependencies
+      - no-release-notes
+  categories:
+    - title: "🚀 New Features"
+      labels:
+        - feature
+    - title: "🐛 Bug Fixes"
+      labels:
+        - bug
+    - title: "🧰 Maintenance"
+      labels:
+        - chore
+    - title: "✨ Changes"
+      labels:
+        - "*"

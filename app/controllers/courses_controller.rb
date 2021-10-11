@@ -48,8 +48,8 @@ class CoursesController < ApplicationController
       return if performed?
     end
     if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
-      flash[:alert] = I18n.t('courses.show.has_private_exercises')
-      flash[:extra] = {
+      flash.now[:alert] = I18n.t('courses.show.has_private_exercises')
+      flash.now[:extra] = {
         'message' => I18n.t('courses.show.has_private_help'),
         'url' => contact_url
       }

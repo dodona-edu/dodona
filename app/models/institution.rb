@@ -43,6 +43,10 @@ class Institution < ApplicationRecord
     providers.any? { |provider| provider.type == Provider::Lti.name }
   end
 
+  def uses_oidc?
+    providers.any? { |provider| provider.type == Provider::Oidc.name }
+  end
+
   def uses_smartschool?
     providers.any? { |provider| provider.type == Provider::Smartschool.name }
   end

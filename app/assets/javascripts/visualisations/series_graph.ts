@@ -169,8 +169,8 @@ export abstract class SeriesGraph {
     */
     protected drawNoData(): void {
         this.container
-            .style("height", "50px")
             .append("div")
+            .style("height", "50px")
             .text(I18n.t("js.no_data"))
             .attr("class", "graph_placeholder");
     }

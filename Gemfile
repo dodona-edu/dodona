@@ -8,13 +8,13 @@ gem 'rails', '~> 6.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.4.0'
+gem 'puma', '~> 5.5.0'
 # Use sass for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 
-gem 'webpacker', '~> 5.4.2'
+gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.2'
@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.8.1', require: false
+gem 'bootsnap', '~> 1.9.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -45,7 +45,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.26.0'
+gem 'rouge', '3.26.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -100,11 +100,11 @@ gem 'rails-i18n', '~> 6.0.0'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.1'
-gem 'httparty', '~> 0.18.1'
+gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.12.4'
+gem 'nokogiri', '~> 1.12.5'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -160,6 +160,9 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
   gem 'test-prof', '~> 1.0.7'
+
+  # Mocking HTTP requests to third parties.
+  gem 'webmock'
 end
 
 group :development do
@@ -169,7 +172,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.11.3'
+  gem 'rubocop-rails', '~> 2.12.2'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

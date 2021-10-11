@@ -287,43 +287,24 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     private legendInit(): void {
         // calculate legend element offsets
-        const exPosition = [];
-        let pos = 0;
-        this.exOrder.forEach(ex => {
-            exPosition.push({ ex_id: ex, pos: pos });
-            // rect size (15) + 5 padding + 20 inter-group padding + text length
-            pos += 40 + this.fontSize / 2 * this.exMap[ex].length;
-        });
-        const legend = this.svg
-            .append("g")
+        const legend = this.container
+            .append("div")
             .attr("class", "legend")
-            .attr(
-                "transform",
-                `translate(${this.width / 2 - pos / 2}, ${this.height - this.margin.bottom / 2})`
-            )
-            .selectAll("g")
-            .data(exPosition)
+            .style("margin-top", "-50px")
+            .selectAll("div")
+            .data(this.exOrder)
             .enter()
-            .append("g")
-            .attr("transform", d => `translate(${d.pos}, 0)`);
-
-        // add legend colors dots
+            .append("div")
+            .attr("class", "legend-item");
         legend
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill", ex => this.color(ex.ex_id) as string);
-
-        // add legend text
+            .append("div")
+            .attr("class", "legend-box")
+            .style("background", exId => this.color(exId));
         legend
-            .append("text")
-            .attr("x", 20)
-            .attr("y", 12)
-            .attr("text-anchor", "start")
-            .text(ex => this.exMap[ex.ex_id])
-            .attr("fill", "currentColor")
+            .append("span")
+            .attr("class", "legend-text")
+            .text(exId => this.exMap[exId])
+            .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
     }
 }

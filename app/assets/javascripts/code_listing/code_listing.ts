@@ -1,3 +1,4 @@
+import { initTooltips } from "util.js";
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import {
@@ -151,6 +152,7 @@ export class CodeListing {
             (a, cb) => this.createUpdateAnnotationForm(a, cb))
             .then(annotations => {
                 annotations.forEach(annotation => this.addAnnotation(annotation));
+                initTooltips();
             });
     }
 

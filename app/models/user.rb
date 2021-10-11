@@ -103,12 +103,12 @@ class User < ApplicationRecord
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
 
-  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 saml smartschool]
+  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
-  validate :email_only_blank_if_smartschool
   validate :max_one_institution
+  validate :provider_allows_blank_email
 
   token_generator :token
 
@@ -131,8 +131,10 @@ class User < ApplicationRecord
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
-  def email_only_blank_if_smartschool
-    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.uses_smartschool? && !institution&.uses_lti?
+  def provider_allows_blank_email
+    return if institution&.uses_lti? || institution&.uses_smartschool?
+
+    errors.add(:email, 'should not be blank') if email.blank?
   end
 
   def max_one_institution

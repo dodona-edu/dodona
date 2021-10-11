@@ -121,7 +121,7 @@ GEM
       addressable
     daemons (1.4.0)
     dalli (2.7.11)
-    ddtrace (0.52.0)
+    ddtrace (0.53.0)
       ffi (~> 1.0)
       msgpack
     delayed_job (4.1.9)
@@ -164,7 +164,7 @@ GEM
       multipart-post (>= 1.2, < 3)
       ruby2_keywords
     faraday-net_http (1.0.1)
-    ffi (1.15.3)
+    ffi (1.15.4)
     flamegraph (0.9.5)
     globalid (0.5.2)
       activesupport (>= 5.0)
@@ -487,7 +487,7 @@ DEPENDENCIES
   capybara (~> 3.35.3)
   codecov (~> 0.6.0)
   dalli (~> 2.7.11)
-  ddtrace (~> 0.52.0)
+  ddtrace (~> 0.53.0)
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)
   devise (~> 4.8.0)

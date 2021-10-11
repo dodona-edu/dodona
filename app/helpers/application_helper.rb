@@ -196,10 +196,6 @@ module ApplicationHelper
     }[klass]
   end
 
-  # rubocop:disable Rails/ContentTag
-  # tag here is not the rails `tag` function, but a WillPaginate
-  # function that does not allow the `tag.ul` syntax that the rails
-  # `tag` function does.
   class BootstrapLinkRenderer < ::ActionView::Base::LinkRenderer
     protected
 
@@ -239,7 +235,6 @@ module ApplicationHelper
       tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
-  # rubocop:enable Rails/ContentTag
 
   # rubocop:disable Metrics/ParameterLists
   def page_navigation_links(pages, remote = false, controller = '', params = {}, action = 'index', param_name = 'page')

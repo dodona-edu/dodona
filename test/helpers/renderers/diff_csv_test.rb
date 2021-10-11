@@ -264,11 +264,11 @@ class CsvDifferTest < ActiveSupport::TestCase
     nr_rows = 100
     nr_columns = 100
     csv_string1 = CSV.generate do |csv|
-      (nr_rows + 1).times { |_i| csv << ['AAA'] * nr_columns }
+      (nr_rows + 1).times { |_i| csv << (['AAA'] * nr_columns) }
     end
 
     csv_string2 = CSV.generate do |csv|
-      (nr_rows + 1).times { |_i| csv << ['BBB'] * nr_columns }
+      (nr_rows + 1).times { |_i| csv << (['BBB'] * nr_columns) }
     end
 
     diff_csv = CsvDiffer.new(csv_string1.chomp, csv_string2.chomp)
@@ -278,13 +278,13 @@ class CsvDifferTest < ActiveSupport::TestCase
         %(<th class="del"><strong>AAA</strong></th>)
       ] * nr_columns,
       (1..nr_rows).map do |i|
-        %(<td class="line-nr">#{i}</td>) + %(<td class="del"><strong>AAA</strong></td>) * nr_columns
+        %(<td class="line-nr">#{i}</td>) + (%(<td class="del"><strong>AAA</strong></td>) * nr_columns)
       end,
       [
         %(<th class="ins"><strong>BBB</strong></th>)
       ] * nr_columns,
       (1..nr_rows).map do |i|
-        %(<td class="line-nr">#{i}</td>) + %(<td class="ins"><strong>BBB</strong></td>) * nr_columns
+        %(<td class="line-nr">#{i}</td>) + (%(<td class="ins"><strong>BBB</strong></td>) * nr_columns)
       end
     )
     should_match_html diff, diff_csv.split
@@ -294,11 +294,11 @@ class CsvDifferTest < ActiveSupport::TestCase
     nr_rows = 101
     nr_columns = 100
     csv_string1 = CSV.generate do |csv|
-      (nr_rows + 1).times { |_i| csv << ['AAA'] * nr_columns }
+      (nr_rows + 1).times { |_i| csv << (['AAA'] * nr_columns) }
     end
 
     csv_string2 = CSV.generate do |csv|
-      (nr_rows + 1).times { |_i| csv << ['BBB'] * nr_columns }
+      (nr_rows + 1).times { |_i| csv << (['BBB'] * nr_columns) }
     end
 
     diff_csv = CsvDiffer.new(csv_string1.chomp, csv_string2.chomp)
@@ -308,13 +308,13 @@ class CsvDifferTest < ActiveSupport::TestCase
         %(<th class="del"><strong>AAA</strong></th>)
       ] * nr_columns,
       [
-        %(<td class="line-nr">#{(1..nr_rows).to_a.join "\n"}</td>) + %(<td class="del">#{(1..nr_rows).map { |_| 'AAA' }.join "\n"}</td>) * nr_columns
+        %(<td class="line-nr">#{(1..nr_rows).to_a.join "\n"}</td>) + (%(<td class="del">#{(1..nr_rows).map { |_| 'AAA' }.join "\n"}</td>) * nr_columns)
       ],
       [
         %(<th class="ins"><strong>BBB</strong></th>)
       ] * nr_columns,
       [
-        %(<td class="line-nr">#{(1..nr_rows).to_a.join "\n"}</td>) + %(<td class="ins">#{(1..nr_rows).map { |_| 'BBB' }.join "\n"}</td>) * nr_columns
+        %(<td class="line-nr">#{(1..nr_rows).to_a.join "\n"}</td>) + (%(<td class="ins">#{(1..nr_rows).map { |_| 'BBB' }.join "\n"}</td>) * nr_columns)
       ]
     )
     should_match_html diff, diff_csv.split

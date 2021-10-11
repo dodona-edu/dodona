@@ -30,7 +30,7 @@ class Exercise < Activity
   USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
   USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   SOLUTION_DIR = 'solution'.freeze
-  SOLUTION_MAX_BYTES = 2**16 - 1
+  SOLUTION_MAX_BYTES = (2**16) - 1
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   belongs_to :judge

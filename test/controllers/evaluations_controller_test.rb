@@ -426,7 +426,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
-    assert_equal 9 + evaluation.evaluation_exercises.length * 2, header.length
+    assert_equal 9 + (evaluation.evaluation_exercises.length * 2), header.length
 
     # Get which users will have a score
     # First, the users we added a score for.

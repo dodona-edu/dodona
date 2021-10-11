@@ -199,7 +199,7 @@ GEM
       bindata
     json-schema (2.8.1)
       addressable (>= 2.4)
-    jwt (2.2.3)
+    jwt (2.3.0)
     kramdown (2.3.1)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -506,7 +506,7 @@ DEPENDENCIES
   image_processing (~> 1.12.1)
   jbuilder (~> 2.11.2)
   json-schema (~> 2.8.1)
-  jwt (~> 2.2.3)
+  jwt (~> 2.3.0)
   kramdown (~> 2.3.1)
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.7.0)

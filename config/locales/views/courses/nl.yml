@@ -96,6 +96,8 @@ nl:
           other: "Je kan een cursus met meer dan %{count} oplossingen niet zelf verwijderen."
         contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
+      has_private_exercises: "Deze cursus gebruikt privé-oefeningen waartoe die geen rechten heeft."
+      has_private_help: "Contacteer ons als je niet weet hoe je dit kan oplossen."
       course: Cursus
       hidden_show_link: 'Geheime link'
       visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
@@ -171,8 +173,6 @@ nl:
       content_count: Leesactiviteiten
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
-    create:
-      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van deze cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
     copy_courses_table:
       info: "Cursus"
       users: "# gebruikers"
@@ -204,7 +204,7 @@ nl:
         enable: Schakel vragen in.
         disable: Schakel vragen uit.
     ical:
-      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}" 
+      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}"
   submissions:
     show:
       questions:

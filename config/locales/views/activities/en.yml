@@ -117,3 +117,6 @@ en:
       config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
       doc_site: 'documentation site'
       activity_invalid: This exercise's configuration is invalid.
+    series_activities_table:
+      course_has_no_rights_with_fix: This course is not allowed to use this private exercise. Click here to grant this course those rights.
+      course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.

@@ -33,6 +33,8 @@ nl:
       annotation: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'
       question: '%d %B %Y %H:%M:%S'
+      day_time_short: '%d/%m %H:%M'
+      day_time_long: '%A %d/%m %H:%M'
   controllers:
     created: "%{model} werd succesvol aangemaakt."
     updated: "%{model} werd succesvol aangepast."

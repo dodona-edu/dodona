@@ -32,6 +32,8 @@ en:
       annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
+      day_time_short: '%m/%d %H:%M'
+      day_time_long: '%A %m/%d %H:%M'
   controllers:
     created: "%{model} was successfully created."
     updated: "%{model} was successfully updated."

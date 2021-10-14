@@ -12,6 +12,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.margin.right = 40;
     }
 
+    private format: (d: Date) => string;
+
     // axes
     private x: d3.ScaleTime<number, number>
     private color: d3.ScaleSequential<string>;
@@ -54,7 +56,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .domain([0, this.maxStack]);
         this.x = d3.scaleBand()
             .domain(this.binTicks)
-            .range([5, this.innerWidth]);
+            .range([0, this.innerWidth]);
 
         // Axis
         this.graph.append("g")
@@ -62,12 +64,12 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .call(
                 d3.axisBottom(this.x)
                     .tickValues(this.binTicks)
-                    .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
-                    // .ticks(15, I18n.t("date.formats.weekday_short"))
+                    .tickFormat(this.binStep > 24 ?
+                        d3.timeFormat(I18n.t("date.formats.weekday_short")):
+                        d3.timeFormat(I18n.t("time.formats.day_time_short")))
             )
             .selectAll("text")
             .style("text-anchor", "end")
-            // .attr("dx", "-.8em")
             .attr("dy", ".7em")
             .attr("transform", "rotate(-25)");
 
@@ -81,9 +83,11 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("z-index", 5);
 
         // make sure cell size isn't bigger than bandwidth
-        // this is commented for now awaiting more data
-        // const rectSize = Math.min(this.y.bandwidth()*1.5, this.innerWidth / this.dateRange - 5);
-        const rectSize = this.y.bandwidth();
+        const rectSize = Math.min(
+            this.y.bandwidth()*1.5,
+            this.innerWidth / this.binTicks.length - 5
+        );
+        // const rectSize = this.y.bandwidth();
         // add cells
         this.graph.selectAll(".rectGroup")
             .data(this.data)
@@ -99,8 +103,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date.getTime()) + rectSize/2 + 5)
-                    .attr("y", this.y(ex_id))
+                    .attr("x", d => this.x(d.date.getTime()) + (this.x.bandwidth() - rectSize)/2)
+                    .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize)/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
@@ -186,10 +190,13 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
+        const format = this.binStep > 24 ?
+            this.longDateFormat:
+            d3.timeFormat(I18n.t("time.formats.day_time_long"));
         let message = `
-            <b>From:</b> ${this.longDateFormat(d.date)}
+            <b>From:</b> ${format(d.date)}
             <br>
-            <b>To:  </b> ${this.longDateFormat(new Date(d.date.getTime()+this.binStep*3600000))}
+            <b>To:  </b> ${format(new Date(d.date.getTime()+this.binStep*3600000))}
             <br>
             <b>${d.sum} ${I18n.t("js.submissions")}</b>
             `;
@@ -223,15 +230,20 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
     insertFakeData(data): void {
         const end = new Date(data[0].ex_data[0].date);
-        const start = new Date(end);
-        start.setDate(start.getDate() - 365);
+        const start = new Date(end.getTime() - 100 * 24 * 3600000);
+        // start.setDate(start.getDate() - 365);
         for (const ex of data) {
             ex.ex_data = [];
-            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
+            for (
+                let d = new Date(start);
+                d <= end;
+                d = new Date(d.getTime() + (1 + Math.random()*2) * 24 * 3600000)
+            ) {
+                console.log(d);
                 for (let i=0; i < this.statusOrder.length; i++) {
                     if (Math.random() > 0.5) {
                         ex.ex_data.push({
-                            "date": new Date(d),
+                            "date": new Date(d.getTime()),
                             "status": this.statusOrder[i],
                             "count": Math.round(Math.random()*20)
                         });

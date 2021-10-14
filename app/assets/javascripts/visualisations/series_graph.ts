@@ -156,11 +156,20 @@ export abstract class SeriesGraph {
         });
     }
 
-    protected findBinTime(minDate: Date, maxDate: date): [number, Array<number>] {
+    /**
+     * Finds the best predefined bin step (range of bins) for the given date range
+     * The 'best' bin step will produce somewhere around 17 bins.
+     * Produces the best bin step (in hours), an array with the bin boundaries
+     * and a new start date alligned to the step size
+     * @param {Date} minDate The start of the date range
+     * @param {Date} maxDate The end of the date range
+     * @return {[number, Array<number>, Date]} Bin step, bin boundaries, aligned start
+     */
+    protected findBinTime(minDate: Date, maxDate: date): [number, Array<number>, Date] {
         // 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
         const timeBins = [1, 4, 12, 24, 48, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
-        const targetBinStep = diff/15; // desired binStep to have ~15 bins
+        const targetBinStep = diff/17; // desired binStep to have ~17 bins
         let bestDiff = Infinity;
         let currDiff = Math.abs(timeBins[0]-targetBinStep);
         let i = 0;
@@ -181,10 +190,19 @@ export abstract class SeriesGraph {
         return [resultBin, binTicks, alignedStart];
     }
 
+    /**
+     * Bins a list of objects using a certain step size (using dates as separators)
+     * @param {Array<unknown>} data The list of objects
+     * @param {Date} minDate The start of the date range
+     * @param {Date} maxDate The end of the date range
+     * @param {number} binStep Distance between two bins (= range of a bin) in hours
+     * @param {function(unknown): Date} accessor How to access the date from a list item
+     * @return {Array<{date: Array<unknown>, timeStamp: Date, count: number}>} List of bins
+     */
     protected binTime(
         data: Array<unknown>, minDate: Date, maxDate: date, binStep: number,
         accessor=(d => d)
-    ): Array<Array<unknown>> {
+    ): Array<{date: Array<unknown>, timeStamp: Date, count: number}> {
         const binStepMili = binStep * 3600000; // back to miliseconds
         let stamp = minDate.getTime();
         const bins = [];

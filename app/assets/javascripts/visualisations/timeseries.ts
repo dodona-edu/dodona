@@ -87,7 +87,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             this.y.bandwidth()*1.5,
             this.innerWidth / this.binTicks.length - 5
         );
-        // const rectSize = this.y.bandwidth();
         // add cells
         this.graph.selectAll(".rectGroup")
             .data(this.data)
@@ -135,7 +134,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
-        this.insertFakeData(data);
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
@@ -148,7 +146,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .ticks(20);
 
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate);
-        console.log(binStep, binTicks, allignedStart);
         this.binStep = binStep;
         this.binTicks = binTicks;
         this.minDate = allignedStart;
@@ -156,7 +153,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
             const binned = this.binTime(ex_data, this.minDate, this.maxDate, binStep, d => d.date);
-            console.log(binned);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
@@ -226,30 +222,5 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
-    }
-
-    insertFakeData(data): void {
-        const end = new Date(data[0].ex_data[0].date);
-        const start = new Date(end.getTime() - 100 * 24 * 3600000);
-        // start.setDate(start.getDate() - 365);
-        for (const ex of data) {
-            ex.ex_data = [];
-            for (
-                let d = new Date(start);
-                d <= end;
-                d = new Date(d.getTime() + (1 + Math.random()*2) * 24 * 3600000)
-            ) {
-                console.log(d);
-                for (let i=0; i < this.statusOrder.length; i++) {
-                    if (Math.random() > 0.5) {
-                        ex.ex_data.push({
-                            "date": new Date(d.getTime()),
-                            "status": this.statusOrder[i],
-                            "count": Math.round(Math.random()*20)
-                        });
-                    }
-                }
-            }
-        }
     }
 }

@@ -51,6 +51,8 @@ nl:
     user: gebruiker
     users: gebruikers
     with: met
+    from: van
+    to: tot
     submission: oplossing
     submissions: oplossingen
     attempts: pogingen

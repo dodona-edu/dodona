@@ -51,6 +51,8 @@ en:
     user: user
     users: users
     with: with
+    from: from
+    to: to
     submission: submission
     submissions: submissions
     attempts: attempts

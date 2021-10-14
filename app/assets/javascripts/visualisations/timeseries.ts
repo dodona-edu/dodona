@@ -189,10 +189,12 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         const format = this.binStep > 24 ?
             this.longDateFormat:
             d3.timeFormat(I18n.t("time.formats.day_time_long"));
+        const from = I18n.t("js.from");
+        const to = I18n.t("js.to");
         let message = `
-            <b>From:</b> ${format(d.date)}
+            <b>${from[0].toUpperCase()+from.slice(1)}:</b> ${format(d.date)}
             <br>
-            <b>To:  </b> ${format(new Date(d.date.getTime()+this.binStep*3600000))}
+            <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date.getTime()+this.binStep*3600000))}
             <br>
             <b>${d.sum} ${I18n.t("js.submissions")}</b>
             `;

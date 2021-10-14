@@ -21,6 +21,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     private minDate: Date;
     private maxDate: Date;
     private binTicks: Array<number>;
+    private binStep: number;
 
     private data: {
         "ex_id": string,
@@ -144,6 +145,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate);
         console.log(binStep, binTicks, allignedStart);
+        this.binStep = binStep;
         this.binTicks = binTicks;
         this.minDate = allignedStart;
 
@@ -158,7 +160,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 const sum = d3.sum(bin.data, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
                 parsedData.push(bin.data.reduce((acc, r) => {
-                    // acc.date = bin.timeStamp;
                     acc.sum = sum;
                     acc[r.status] = r.count;
                     return acc;
@@ -185,7 +186,13 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        let message = `<b>${this.longDateFormat(d.date)}</b><br><b>${d.sum} ${I18n.t("js.submissions")}</b>`;
+        let message = `
+            <b>From:</b> ${this.longDateFormat(d.date)}
+            <br>
+            <b>To:  </b> ${this.longDateFormat(new Date(d.date.getTime()+this.binStep*3600000))}
+            <br>
+            <b>${d.sum} ${I18n.t("js.submissions")}</b>
+            `;
         this.statusOrder.forEach(s => {
             if (d[s]) {
                 message += `<br>${d[s]} ${I18n.t(`js.status.${s.replaceAll(" ", "_")}`)}`;

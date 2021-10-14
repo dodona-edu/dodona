@@ -57,13 +57,20 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         // Axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${this.innerHeight})`)
+            .attr("transform", `translate(0, ${this.innerHeight-this.y.bandwidth()/2})`)
             .call(
                 d3.axisBottom(this.x)
-                    // .tickValues(this.data[0].ex_data.map(datum => datum.date))
+                    .tickValues(this.binTicks)
                     .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
                     // .ticks(15, I18n.t("date.formats.weekday_short"))
-            );
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            // .attr("dx", "-.8em")
+            .attr("dy", ".7em")
+            .attr("transform", "rotate(-25)");
+
+        this.graph.select(".domain").remove();
 
         // init tooltip
         this.tooltip = this.container.append("div")
@@ -91,7 +98,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date.getTime()) + rectSize / 2)
+                    .attr("x", d => this.x(d.date.getTime()) + rectSize/2 + 5)
                     .attr("y", this.y(ex_id))
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))

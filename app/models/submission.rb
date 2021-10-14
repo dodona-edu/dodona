@@ -437,7 +437,7 @@ class Submission < ApplicationRecord
     submissions.find_in_batches do |subs|
       value = value.merge(
         subs.map { |s| [s.exercise_id, s.created_at, s.status] }
-          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
+          .map { |d| [d[0], d[1], d[2]] } # exId, created_at, status
           .group_by(&:itself) # group duplicates
           .transform_values(&:count) # count amount of duplicates
       ) { |_k, v1, v2| v1 + v2 }

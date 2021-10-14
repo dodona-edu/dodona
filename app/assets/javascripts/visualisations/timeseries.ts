@@ -18,9 +18,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
     // data
     private maxStack = 0; // largest value (max of colour scale domain)
-    private dateRange: number; // difference between first and last date in days
     private minDate: Date;
     private maxDate: Date;
+    private binTicks: Array<number>;
 
     private data: {
         "ex_id": string,
@@ -51,8 +51,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         // Scales
         this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
             .domain([0, this.maxStack]);
-        this.x = d3.scaleTime()
-            .domain([this.minDate, end])
+        this.x = d3.scaleBand()
+            .domain(this.binTicks)
             .range([5, this.innerWidth]);
 
         // Axis
@@ -60,7 +60,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .attr("transform", `translate(0, ${this.innerHeight})`)
             .call(
                 d3.axisBottom(this.x)
-                    .ticks(15, I18n.t("date.formats.weekday_short"))
+                    // .tickValues(this.data[0].ex_data.map(datum => datum.date))
+                    .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
+                    // .ticks(15, I18n.t("date.formats.weekday_short"))
             );
 
         // init tooltip
@@ -89,7 +91,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date) - rectSize / 2)
+                    .attr("x", d => this.x(d.date.getTime()) + rectSize / 2)
                     .attr("y", this.y(ex_id))
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
@@ -121,43 +123,41 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
+        this.insertFakeData(data);
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
         this.minDate = new Date(minDate);
         this.maxDate = new Date(maxDate);
-        this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
-        this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
-        const threshold = d3.scaleTime()
+        this.x = d3.scaleTime()
             .domain([this.minDate.getTime(), this.maxDate.getTime()])
-            .ticks(d3.timeDay);
+            .ticks(20);
+
+        const [binStep, binTicks] = this.findBinTime(this.minDate, this.maxDate);
+        console.log(binStep, binTicks);
+        this.binTicks = binTicks;
 
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
-            // bin per day
-            const binned = d3.bin()
-                .value(d => d.date.getTime())
-                .thresholds(threshold)
-                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
+            const binned = this.binTime(ex_data, this.minDate, this.maxDate, binStep, d => d.date);
+            console.log(binned);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
-            binned.forEach((bin, i) => {
-                const newDate = new Date(this.minDate);
-                newDate.setDate(newDate.getDate() + i);
-                const sum = d3.sum(bin, r => r["count"]);
+            binned.forEach(bin => {
+                const sum = d3.sum(bin.data, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
-                parsedData.push(bin.reduce((acc, r) => {
-                    acc.date = r.date;
+                parsedData.push(bin.data.reduce((acc, r) => {
+                    // acc.date = bin.timeStamp;
                     acc.sum = sum;
                     acc[r.status] = r.count;
                     return acc;
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
                     return acc;
-                }, { "date": newDate, "sum": 0 })));
+                }, { "date": bin.timeStamp, "sum": 0 })));
             });
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
@@ -204,5 +204,25 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
+    }
+
+    insertFakeData(data): void {
+        const end = new Date(data[0].ex_data[0].date);
+        const start = new Date(end);
+        start.setDate(start.getDate() - 30);
+        for (const ex of data) {
+            ex.ex_data = [];
+            for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {
+                for (let i=0; i < this.statusOrder.length; i++) {
+                    if (Math.random() > 0.5) {
+                        ex.ex_data.push({
+                            "date": new Date(d),
+                            "status": this.statusOrder[i],
+                            "count": Math.round(Math.random()*20)
+                        });
+                    }
+                }
+            }
+        }
     }
 }

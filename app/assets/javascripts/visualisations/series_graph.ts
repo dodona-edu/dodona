@@ -156,6 +156,55 @@ export abstract class SeriesGraph {
         });
     }
 
+    protected findBinTime(minDate: Date, maxDate: date): [number, Array<number>] {
+        const timeBins = [1, 4, 12, 24, 48, 168, 336];
+        const diff = (maxDate - minDate) / 3600000; // timediff in hours
+        const targetBinStep = diff/17.5; // desired binStep to have ~17.5 bins
+        let bestDiff = Infinity;
+        let currDiff = Math.abs(timeBins[0]-targetBinStep);
+        let i = 0;
+        // find the predefined binStep that most closely resembles the target binStep
+        while (i < timeBins.length && currDiff < bestDiff) {
+            i++;
+            bestDiff = currDiff;
+            currDiff = Math.abs(timeBins[i]-targetBinStep);
+        }
+
+        const binStepMili = timeBins[i-1] * 3600000;
+        const binTicks = [];
+        for (let i = minDate.getTime(); i <= maxDate.getTime(); i += binStepMili) {
+            binTicks.push(i);
+        }
+        return [timeBins[i-1], binTicks];
+    }
+
+    protected binTime(
+        data: Array<unknown>, minDate: Date, maxDate: date, binStep: number,
+        accessor=(d => d)
+    ): Array<Array<unknown>> {
+        const binStepMili = binStep * 3600000; // back to miliseconds
+        let stamp = minDate.getTime();
+        const bins = [];
+        let currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
+        data.forEach(d => {
+            const date = accessor(d).getTime();
+            while (date - stamp >= binStepMili) {
+                bins.push(currBin);
+                stamp += binStepMili;
+                currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
+            }
+            currBin.data.push(d);
+            currBin.count += 1;
+        });
+
+        while (stamp <= maxDate.getTime()) {
+            bins.push(currBin);
+            stamp += binStepMili;
+            currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
+        }
+        return bins;
+    }
+
     /**
      * Converts the tuples of exercises into an list of ids indicating the order
      * and a map form id to title

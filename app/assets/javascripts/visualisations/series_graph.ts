@@ -157,9 +157,10 @@ export abstract class SeriesGraph {
     }
 
     protected findBinTime(minDate: Date, maxDate: date): [number, Array<number>] {
-        const timeBins = [1, 4, 12, 24, 48, 168, 336];
+        // 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
+        const timeBins = [1, 4, 12, 24, 48, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
-        const targetBinStep = diff/17.5; // desired binStep to have ~17.5 bins
+        const targetBinStep = diff/15; // desired binStep to have ~15 bins
         let bestDiff = Infinity;
         let currDiff = Math.abs(timeBins[0]-targetBinStep);
         let i = 0;
@@ -169,13 +170,15 @@ export abstract class SeriesGraph {
             bestDiff = currDiff;
             currDiff = Math.abs(timeBins[i]-targetBinStep);
         }
-
-        const binStepMili = timeBins[i-1] * 3600000;
+        const resultBin = timeBins[i-1];
+        const binStepMili = resultBin * 3600000;
         const binTicks = [];
         for (let i = minDate.getTime(); i <= maxDate.getTime(); i += binStepMili) {
             binTicks.push(i);
         }
-        return [timeBins[i-1], binTicks];
+
+        const alignedStart = new Date(Math.floor(minDate.getTime() / (binStepMili) * binStepMili));
+        return [resultBin, binTicks, alignedStart];
     }
 
     protected binTime(

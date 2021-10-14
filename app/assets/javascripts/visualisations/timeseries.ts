@@ -135,9 +135,10 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .domain([this.minDate.getTime(), this.maxDate.getTime()])
             .ticks(20);
 
-        const [binStep, binTicks] = this.findBinTime(this.minDate, this.maxDate);
-        console.log(binStep, binTicks);
+        const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate);
+        console.log(binStep, binTicks, allignedStart);
         this.binTicks = binTicks;
+        this.minDate = allignedStart;
 
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
@@ -209,7 +210,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     insertFakeData(data): void {
         const end = new Date(data[0].ex_data[0].date);
         const start = new Date(end);
-        start.setDate(start.getDate() - 30);
+        start.setDate(start.getDate() - 365);
         for (const ex of data) {
             ex.ex_data = [];
             for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1 + Math.random()*2)) {

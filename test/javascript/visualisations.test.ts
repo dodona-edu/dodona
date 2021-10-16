@@ -98,9 +98,9 @@ describe("Timeseries tests", () => {
             {
                 ex_id: 1,
                 ex_data: [
-                    { date: "1302-07-11", status: "wrong", count: 9 },
-                    { date: "1302-07-11", status: "correct", count: 3 },
-                    { date: "1302-07-12", status: "correct", count: 6 }
+                    { date: "1302-07-11 00:00", status: "wrong", count: 9 },
+                    { date: "1302-07-11 4:00", status: "correct", count: 3 },
+                    { date: "1302-07-15 00:00", status: "correct", count: 6 }
                 ]
             }
         ], exercises: [[1, "test"]], student_count: 3
@@ -121,14 +121,14 @@ describe("Timeseries tests", () => {
     test("TimeseriesGraph should correctly transform data", () => {
         timeseries.processData(data);
         expect(timeseries.data).toHaveLength(1); // one exercise
+        expect(timeseries.binStep).toBe(4); // 4 hours per bin
         const ex = timeseries.data[0];
         expect(ex["ex_id"]).toBe("1");
         const datum = ex["ex_data"];
-        expect(datum).toHaveLength(2);
-        expect(datum[0]["sum"]).toBe(12); // day 1
-        expect(datum[1]["sum"]).toBe(6); // day 2
+        expect(datum).toHaveLength(25); // 25 bins total
+        expect(datum[0]["sum"]).toBe(12); // first two should get binned together
+        expect(datum[24]["sum"]).toBe(6); // last datum should be put in last bin
 
-        expect(timeseries["dateRange"]).toBe(2);
         expect(timeseries["maxStack"]).toBe(12);
     });
 });

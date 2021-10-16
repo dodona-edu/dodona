@@ -180,11 +180,7 @@ export abstract class SeriesGraph {
             currDiff = Math.abs(timeBins[i]-targetBinStep);
         }
         const resultStep = timeBins[i-1];
-        const binStepMili = resultStep * 3600000;
-        const binTicks = [];
-        for (let j = minDate.getTime(); j <= maxDate.getTime(); j += binStepMili) {
-            binTicks.push(j);
-        }
+        const binStepMili = resultStep * 3600000; // binStep in miliseconds
 
         const alignedStart = new Date(minDate.getTime());
         alignedStart.setMinutes(0, 0, 0);
@@ -203,43 +199,12 @@ export abstract class SeriesGraph {
                 alignedStart.setDate(minDate.getDate() - (minDate.getDay() + 6) % 7);
             }
         }
-        return [resultStep, binTicks, alignedStart];
-    }
 
-    /**
-     * Bins a list of objects using a certain step size (using dates as separators)
-     * @param {Array<unknown>} data The list of objects
-     * @param {Date} minDate The start of the date range
-     * @param {Date} maxDate The end of the date range
-     * @param {number} binStep Distance between two bins (= range of a bin) in hours
-     * @param {function(unknown): Date} accessor How to access the date from a list item
-     * @return {Array<{date: Array<unknown>, timeStamp: Date, count: number}>} List of bins
-     */
-    protected binTime(
-        data: Array<unknown>, minDate: Date, maxDate: date, binStep: number,
-        accessor=(d => d)
-    ): Array<{date: Array<unknown>, timeStamp: Date, count: number}> {
-        const binStepMili = binStep * 3600000; // back to miliseconds
-        let stamp = minDate.getTime();
-        const bins = [];
-        let currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
-        data.forEach(d => {
-            const date = accessor(d).getTime();
-            while (date - stamp >= binStepMili) {
-                bins.push(currBin);
-                stamp += binStepMili;
-                currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
-            }
-            currBin.data.push(d);
-            currBin.count += 1;
-        });
-
-        while (stamp <= maxDate.getTime()) {
-            bins.push(currBin);
-            stamp += binStepMili;
-            currBin = { data: [], timeStamp: new Date(stamp), count: 0 };
+        const binTicks = [];
+        for (let j = alignedStart.getTime(); j <= maxDate.getTime(); j += binStepMili) {
+            binTicks.push(j);
         }
-        return bins;
+        return [resultStep, binTicks, alignedStart];
     }
 
     /**

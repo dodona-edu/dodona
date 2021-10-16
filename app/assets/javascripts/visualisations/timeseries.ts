@@ -95,14 +95,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             // eslint-disable-next-line camelcase
             .each(({ ex_data, ex_id }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
-                    .data(ex_data, d => d["date"].getTime())
+                    .data(ex_data, d => d.date)
                     .join("rect")
                     .attr("class", "day-cell")
                     .classed("empty", d => d.sum === 0)
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date.getTime()) + (this.x.bandwidth() - rectSize)/2)
+                    .attr("x", d => this.x(d.date) + (this.x.bandwidth() - rectSize)/2)
                     .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize)/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
@@ -134,6 +134,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
+        this.insertFakeData(data);
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
@@ -152,21 +153,24 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
-            const binned = this.binTime(ex_data, this.minDate, this.maxDate, binStep, d => d.date);
+            const binned = d3.bin()
+                .value(d => d.date.getTime())
+                .thresholds(binTicks)
+                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
             binned.forEach(bin => {
-                const sum = d3.sum(bin.data, r => r["count"]);
+                const sum = d3.sum(bin, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
-                parsedData.push(bin.data.reduce((acc, r) => {
+                parsedData.push(bin.reduce((acc, r) => {
                     acc.sum = sum;
                     acc[r.status] = r.count;
                     return acc;
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
                     return acc;
-                }, { "date": bin.timeStamp, "sum": 0 })));
+                }, { "date": bin.x0, "sum": 0 })));
             });
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
@@ -194,7 +198,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         let message = `
             <b>${from[0].toUpperCase()+from.slice(1)}:</b> ${format(d.date)}
             <br>
-            <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date.getTime()+this.binStep*3600000))}
+            <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date+this.binStep*3600000))}
             <br>
             <b>${d.sum} ${I18n.t("js.submissions")}</b>
             `;

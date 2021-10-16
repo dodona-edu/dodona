@@ -179,15 +179,30 @@ export abstract class SeriesGraph {
             bestDiff = currDiff;
             currDiff = Math.abs(timeBins[i]-targetBinStep);
         }
-        const resultBin = timeBins[i-1];
-        const binStepMili = resultBin * 3600000;
+        const resultStep = timeBins[i-1];
+        const binStepMili = resultStep * 3600000;
         const binTicks = [];
-        for (let i = minDate.getTime(); i <= maxDate.getTime(); i += binStepMili) {
-            binTicks.push(i);
+        for (let j = minDate.getTime(); j <= maxDate.getTime(); j += binStepMili) {
+            binTicks.push(j);
         }
 
-        const alignedStart = new Date(Math.floor(minDate.getTime() / (binStepMili) * binStepMili));
-        return [resultBin, binTicks, alignedStart];
+        const alignedStart = new Date(minDate.getTime());
+        alignedStart.setMinutes(0, 0, 0);
+        // if binStep is per hour, align to a multiple of that size
+        if (resultStep < 24) {
+            alignedStart.setHours(Math.floor(minDate.getHours / resultStep) * resultStep);
+        } else {
+            alignedStart.setHours(0);
+            if (resultStep < 168) { // if binStep is per day, align to a multiple of that size
+                const diff = minDate.getDate() % resultStep;
+                if (diff !== 0) {
+                    alignedStart.setDate(minDate.getDate()-diff);
+                }
+            } else { // if binStep is per week, align to mondays
+                alignedStart.setDate(minDate.getDate() - (minDate.getDay() + 6) % 7);
+            }
+        }
+        return [resultStep, binTicks, alignedStart];
     }
 
     /**

@@ -134,7 +134,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
-        this.insertFakeData(data);
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date

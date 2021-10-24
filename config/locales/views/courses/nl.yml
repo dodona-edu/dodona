@@ -132,7 +132,7 @@ nl:
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
-      download_deadlines: "Cursus toevoegen aan kalender"
+      download_deadlines: "Cursus toevoegen aan agenda"
       download_deadlines_tooltip: "Voeg deze link toe aan je agenda-applicatie om de deadlines van deze cursus in je kalender te zien"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.

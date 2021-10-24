@@ -160,7 +160,6 @@ if Rails.env.development?
 
   raise "Could not initialize python judge, try again or use 'SKIP_PYTHON_JUDGE=true rails db:setup'" if python_judge.nil?
 
-
   # Other judges
 
   # prolog-judge = Judge.create name: 'prolog', image: 'dodona-prolog', remote: 'git@github.com:dodona-edu/judge-prolog.git', renderer: FeedbackTableRenderer

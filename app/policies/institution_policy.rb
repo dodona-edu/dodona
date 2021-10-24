@@ -35,7 +35,7 @@ class InstitutionPolicy < ApplicationPolicy
 
   def permitted_attributes
     if zeus?
-      [:name, :short_name, { providers_attributes: %i[id mode] }]
+      [:name, :short_name, :logo, :category, { providers_attributes: %i[id mode] }]
     else
       []
     end

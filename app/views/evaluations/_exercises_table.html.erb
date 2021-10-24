@@ -11,7 +11,7 @@
     <% local_assigns[:exercises].each do |exercise| %>
       <tr>
         <td class='type-icon'>
-          <i class="<%= "mdi mdi-#{exercise.programming_language&.icon} mdi-18"%>" title="<%= "#{t "activities.index.type.exercise_language", language: exercise.programming_language&.name&.titleize}" %>"></i>
+          <%= show_type_icon(meta[:exercise]) %>
         </td>
 
         <td>

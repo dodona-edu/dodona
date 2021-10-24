@@ -96,7 +96,7 @@ en:
       submission_count: Submitted solutions
       submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
-      sample_solutions_hint: Click on one of the tabs above to view a sample solution.
+      sample_solutions_hint: Click on one of the tabs above to view a sample solution. These files are visible for all users with approved teacher rights.
       sample_solution_submit: Submit this solution
       no_solutions: This exercise does not yet have a sample solution.
       no_solutions_admin: Add your sample solutions to the repository and they will be shown here.
@@ -114,7 +114,7 @@ en:
       config_set_by: "This value was set by %{file}"
       config_default: "This is the default value."
       description_files: "We found files for these languages in the descriptions folder %{path}"
-      config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
+      config_info: 'Take a look at the %{doc_site} for more information about configuring exercises. This information is visible for all users with approved teacher rights.'
       doc_site: 'documentation site'
       activity_invalid: This exercise's configuration is invalid.
     series_activities_table:

@@ -11,7 +11,15 @@
   <div class="col-lg-10 offset-lg-1 col-12">
     <div class="card activity-info">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @activity.name %></h2>
+        <h2 class="card-title-text">
+          <% if @activity.exercise? %>
+            <i class="<%= "mdi mdi-#{@activity.programming_language&.icon} mdi-24" %>" title="<%= "#{t "activities.index.type.exercise_language", language: @activity.programming_language&.name&.titleize}" %>"></i>
+          <% elsif @activity.content_page? %>
+            <i class="mdi mdi-book-open-variant mdi-24" title="<%= t "activities.index.type.content" %>"></i>
+          <% end %>
+          &nbsp;
+          <%= @activity.name %>
+        </h2>
       </div>
 
       <div class="card-supporting-text card-border">

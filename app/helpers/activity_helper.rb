@@ -101,9 +101,9 @@ module ActivityHelper
 
   def show_type_icon(activity, size = 18)
     if activity.exercise?
-      content_tag(:i, '', class:"mdi mdi-#{activity.programming_language&.icon} mdi-#{size}", title: "#{t 'activities.index.type.exercise_language', language: activity.programming_language&.name&.titleize}")
+      content_tag(:i, '', class: "mdi mdi-#{activity.programming_language&.icon} mdi-#{size}", title: "#{t 'activities.index.type.exercise_language', language: activity.programming_language&.name&.titleize}")
     elsif activity.content_page?
-      content_tag(:i, '', class:"mdi mdi-book-open-variant mdi-#{size}", title: "#{t 'activities.index.type.content'}")
+      content_tag(:i, '', class: "mdi mdi-book-open-variant mdi-#{size}", title: "#{t 'activities.index.type.content'}")
     end
   end
 

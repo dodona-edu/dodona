@@ -372,7 +372,10 @@ export class CodeListing {
         const maxLength = 10_000;
         form.innerHTML = `
           <textarea autofocus required class="form-control annotation-submission-input" rows="3" minlength="1" maxlength="${maxLength}"></textarea>
-          <span class='help-block'>${I18n.t("js.user_annotation.help")}<span class="used-characters">0</span> / ${I18n.l("number", maxLength)}</span>
+          <div class="clearfix annotation-help-block">
+            <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
+            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.toNumber(maxLength, { precision: 0 })}</span>
+          </div>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">
@@ -397,6 +400,15 @@ export class CodeListing {
             inputField.rows = annotation.rawText.split("\n").length + 1;
             inputField.textContent = annotation.rawText;
         }
+
+        const usedCharacters = form.querySelector(".used-characters");
+        // Initial value.
+        usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+        // Update value while typing.
+        inputField.addEventListener("input", () => {
+            console.log("Input received...");
+            usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+        });
 
         // Cancellation handler.
         cancelButton.addEventListener("click", () => onCancel(form));

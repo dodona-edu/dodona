@@ -89,6 +89,23 @@ class AnnotationsTest < ApplicationSystemTestCase
     assert_no_css 'form.annotation-submission'
   end
 
+  test 'Character counter updates when typing' do
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    find('tr#line-1').hover
+    find('button.annotation-button').click
+
+    initial = 'This is a single line comment'
+    within 'form.annotation-submission' do
+      find('textarea.annotation-submission-input').fill_in with: initial
+    end
+
+    within '.used-characters' do
+      assert_text initial.length
+    end
+  end
+
   test 'Cancel annotation form' do
     visit(submission_path(id: @instance.id))
     click_link 'Code'

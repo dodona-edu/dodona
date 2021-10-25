@@ -136,6 +136,7 @@ en:
         name: Name
         short_name: Short name
         providers: Login types
+        category: Category
       provider:
         saml: SAML
         office365: Office 365

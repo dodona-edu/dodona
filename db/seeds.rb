@@ -17,14 +17,14 @@ if Rails.env.development?
 
   puts "Creating institutions (#{Time.now - start})"
 
-  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png'
-  artevelde = Institution.create name: 'Artevelde', short_name: 'Artevelde', logo: 'artevelde.png'
+  ugent = Institution.create name: 'Universiteit Gent (login werkt niet in develop)', short_name: 'UGent', logo: 'UGent.png', category: 1
+  artevelde = Institution.create name: 'Artevelde', short_name: 'Artevelde', logo: 'artevelde.png', category: 1
   sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'UGent.png'
   slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.nl.png'
   college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png'
   sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
-  elixir = Institution.create name: 'Elixir', short_name: 'Elixir', logo: 'elixir.png'
-  vlaanderen = Institution.create name: 'Vlaamse Overheid', short_name: 'Vlaamse Overheid', logo: 'vlaamse-overheid.png'
+  elixir = Institution.create name: 'Elixir', short_name: 'Elixir', logo: 'elixir.png', category: 2
+  vlaanderen = Institution.create name: 'Vlaamse Overheid', short_name: 'Vlaamse Overheid', logo: 'vlaamse-overheid.png', category: 2
 
   puts "Creating providers (#{Time.now - start})"
 
@@ -159,7 +159,6 @@ if Rails.env.development?
   end
 
   raise "Could not initialize python judge, try again or use 'SKIP_PYTHON_JUDGE=true rails db:setup'" if python_judge.nil?
-
 
   # Other judges
 

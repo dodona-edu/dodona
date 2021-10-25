@@ -8,48 +8,19 @@
         <h1><%= t("layout.menu.log_in") %><br>
           <small><%= t ".select-institution" %></small>
         </h1>
-
-        <h2><%= t ".higher-education" %></h2>
       </div>
     </div>
+    <div class="sign-in-divider row">
+        <div class="sign-in-dialog-footer">
+          <h2><%= t ".higher-education" %></h2>
+        </div>
+    </div>
     <div class="sign-in-dialog-institutions row">
-      <%
-          # TODO: This distinction is no longer required as saml uses omniauth
-          #       now. However, this is kept for now to retain the previous order
-          #       of institutions. Remove this when restyling the sign-in page.
-      %>
-      <% @providers.saml.each do |provider| %>
-        <% institution = provider.institution %>
-        <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in col-md-6 col-xl-4' do %>
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag "idp/#{institution.logo}", class: "img-fluid" %>
-            </div>
-            <div class="option-btn-title">
-              <h3><%= institution.short_name %><br>
-                <small><%= institution.name %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        <% end %>
+      <% @universities.each do |provider| %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
       <% end %>
-      <% {'Hogeschool West-Vlaanderen' => 'Howest.jpg', 'UC Leuven Limburg' => 'ucll.png',
-          'Arteveldehogeschool' => 'artevelde.png', 'Vrije Universiteit Brussel' => 'vub.jpg',
-          'Universiteit Antwerpen' => 'ua.png', 'Thomas More' => 'ThomasMore.png'}.each do |school, logo| %>
-        <%= link_to omniauth_authorize_path(:user, Provider::Office365.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag "idp/#{logo}", class: "img-fluid" %>
-            </div>
-            <div class="option-btn-title">
-              <h3><%= school %><br>
-                <small><%= t('.sign-in-with', provider: 'Office 365') %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        <% end %>
+      <% @colleges.each do |provider| %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
       <% end %>
     </div>
     <div class="sign-in-divider row">
@@ -87,6 +58,17 @@
         <input class="typeahead" type="text" placeholder="<%= t ".institution-search" %>">
       </div>
       <a class="btn btn-primary btn-lg login-button" id="sign-in" href="" disabled=true><%= t 'layout.menu.log_in' %></a>
+    </div>
+
+    <div class="sign-in-divider row">
+        <div class="sign-in-dialog-footer">
+          <h2><%= t ".other" %></h2>
+        </div>
+    </div>
+    <div class="sign-in-dialog-institutions row">
+      <% @other.each do |provider| %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+      <% end %>
     </div>
   </div>
 </div>

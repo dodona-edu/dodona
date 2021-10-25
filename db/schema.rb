@@ -287,7 +287,7 @@ ActiveRecord::Schema.define(version: 2021_10_24_154602) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "generated_name", default: true, null: false
-    t.integer "category", default: 0
+    t.integer "category", default: 0, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

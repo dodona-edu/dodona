@@ -96,7 +96,7 @@ nl:
       submission_count: Ingediende oplossingen
       submission_details: "Deze oefening heeft %{total} inzendingen door %{users} unieke gebruikers, hiervan waren %{correct} inzendingen correct."
       sample_solutions: Voorbeeldoplossingen
-      sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken. Deze bestanden zijn zichtbaar voor alle gebruikers met goedgekeurde lesgeversrechten.
+      sample_solutions_hint: Klik op een tab hierboven om een voorbeeldoplossing te bekijken.
       sample_solution_submit: Deze oplossing indienen
       no_solutions: Deze oefening heeft nog geen voorbeeldoplossingen.
       no_solutions_admin: Voeg je voorbeeldoplossingen toe aan de repository om ze hier te laten verschijnen.
@@ -115,7 +115,7 @@ nl:
       config_set_by: "Deze waarde werd ingesteld door %{file}"
       config_default: "Dit is de standaardwaarde."
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
-      config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen. Onderstaande informatie is zichtbaar voor alle gebruikers met goedgekeurde lesgeversrechten.'
+      config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen.'
       doc_site: 'documentatiesite'
       activity_invalid: Deze oefening heeft geen geldige configuratie.
     series_activities_table:

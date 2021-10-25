@@ -368,9 +368,11 @@ export class CodeListing {
 
         form.classList.add("annotation-submission");
         form.id = id;
+        // Min and max of the annotation text is defined in the annotation model.
+        const maxLength = 10_000;
         form.innerHTML = `
-          <textarea autofocus class="form-control annotation-submission-input" rows="3"></textarea>
-          <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
+          <textarea autofocus required class="form-control annotation-submission-input" rows="3" minlength="1" maxlength="${maxLength}"></textarea>
+          <span class='help-block'>${I18n.t("js.user_annotation.help")}<span class="used-characters">0</span> / ${I18n.l("number", maxLength)}</span>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">
@@ -443,6 +445,11 @@ export class CodeListing {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
             inputField.classList.remove("validation-error");
 
+            // Run client side validations.
+            if (!inputField.reportValidity()) {
+                return; // Something is wrong, abort.
+            }
+
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
                 "line_nr": (line === null ? null : line - 1),
@@ -468,6 +475,11 @@ export class CodeListing {
         callback: CallableFunction): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+
+            // Run client side validations.
+            if (!inputField.reportValidity()) {
+                return; // Something is wrong, abort.
+            }
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,

@@ -185,28 +185,13 @@ class AnnotationsTest < ApplicationSystemTestCase
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.characters number: 10_010
     assert_selector 'form.annotation-submission', count: 1
+    # Attempt to type more than 10.000 characters.
     within 'form.annotation-submission' do
-      find('textarea.annotation-submission-input').fill_in with: replacement
-      click_button 'Update'
-    end
-
-    within 'form.annotation-submission' do
-      click_button 'Cancel'
-    end
-
-    assert_selector '.annotation', count: 1
-    within '.annotation' do
-      assert_text annot.annotation_text
-      assert_no_text replacement
-    end
-
-    # After reload, make sure no replacing has taken place
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-    assert_selector '.annotation', count: 1
-    within '.annotation' do
-      assert_text annot.annotation_text
-      assert_no_text replacement
+      input_field = find('textarea.annotation-submission-input')
+      # Attempt to fill in with more characters than allowed.
+      input_field.fill_in with: replacement
+      # The client-side restrictions should have stopped it.
+      assert_equal 10_000, input_field.value.length
     end
   end
 
@@ -283,22 +268,13 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do
-      find('textarea.annotation-submission-input').fill_in with: initial
-      click_button 'Comment'
+      input = find('textarea.annotation-submission-input')
 
-      # Assuming the update did not go trough
-      # If the creation went trough, the cancel button would not exist anymore
-      click_button 'Cancel'
+      # Attempt to write too much input
+      input.fill_in with: initial
+      # Client should stop it
+      assert_equal 10_000, input.value.length
     end
-
-    assert_selector '.annotation', count: 0
-    assert_no_text initial
-
-    # After reload, make sure no creation has taken place
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-    assert_selector '.annotation', count: 0
-    assert_no_text initial
   end
 
   test 'Enter global annotation' do

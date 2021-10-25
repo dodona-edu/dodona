@@ -3,7 +3,11 @@
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @activity.name %></h2>
+        <h2 class="card-title-text">
+          <%= activity_icon(@activity, 24) %>
+          &nbsp;
+          <%= @activity.name %>
+        </h2>
         <div class="card-title-fab">
           <%= render 'application/fab_button', form: "edit_activity_#{@activity.id}", icon: 'check' %>
         </div>

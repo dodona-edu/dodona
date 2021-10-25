@@ -1,7 +1,7 @@
 nl:
   auth:
     sign_in:
-      select-institution: "Selecteer je onderwijsinstelling"
+      select-institution: "Selecteer je onderwijsinstelling of organisatie om aan te melden. Je Dodona-account wordt automatisch aangemaakt."
       sign_in: "Aanmelden"
       sign-in-with: "Inloggen met %{provider}"
       sign-in-help: "Weet je niet welke login je moet gebruiken? Zoek hieronder je school en klik op aanmelden:"
@@ -9,6 +9,7 @@ nl:
       ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen via de i-Learn website."
       higher-education: "Hoger onderwijs"
       secondary-education: "Secundair onderwijs"
+      other: "Andere organisaties"
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

@@ -33,9 +33,10 @@ export class ViolinGraph extends SeriesExerciseGraph {
     /**
     * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
+    * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        super.draw(animation);
 
         // Y scale per exercise
         const yBin = d3.scaleLinear()
@@ -81,7 +82,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
                 .y1(0)
                 .curve(d3.curveMonotoneX)
             )
-            .transition().duration(500)
+            .transition().duration(animation ? 500 : 0)
             .attr("d", d3.area()
                 .x((_, i) => this.x(i))
                 .y0(d => -yBin(d.length))
@@ -100,7 +101,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .attr("r", 4)
             .attr("fill", "currentColor");
         dots.transition()
-            .duration(500)
+            .duration(animation ? 500 : 0)
             .style("opacity", 1);
         dots.append("title")
             .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);

@@ -249,4 +249,15 @@ class CourseTest < ActiveSupport::TestCase
     assert course.destroy
     assert_equal code, submission.reload.code
   end
+
+  test 'all_activities_accessible? should be correct' do
+    course = create :course, series_count: 1, exercises_per_series: 0
+    ex = create :exercise, access: :public
+    course.series.first.exercises << ex
+    assert course.all_activities_accessible?
+    ex.update(access: :private)
+    assert_not course.all_activities_accessible?
+    course.usable_repositories << ex.repository
+    assert course.all_activities_accessible?
+  end
 end

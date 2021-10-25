@@ -137,7 +137,8 @@ class ResultConstructor
     escalate_status(status: status)
     @test[:accepted] = if accepted.nil?
                        then status[:enum] == 'correct'
-                       else accepted
+                       else
+                         accepted
                        end
     @testcase[:accepted] &&= @test[:accepted]
     (@testcase[:tests] ||= []) << @test

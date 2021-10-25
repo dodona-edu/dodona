@@ -211,6 +211,10 @@ class Course < ApplicationRecord
     true
   end
 
+  def all_activities_accessible?
+    activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
+  end
+
   def invalidate_subscribed_members_count_cache
     Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end

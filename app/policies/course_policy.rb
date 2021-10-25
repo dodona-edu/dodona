@@ -35,11 +35,12 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def copy?
-    create? &&
+    create? && (
       user&.zeus? ||
       record.visible_for_all? ||
       (record.visible_for_institution? && record.institution == user&.institution) ||
       record.subscribed_members.include?(user)
+    )
   end
 
   def download_submissions?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_12_104516) do
+ActiveRecord::Schema.define(version: 2021_10_24_154602) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -287,6 +287,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "generated_name", default: true, null: false
+    t.integer "category", default: 0, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

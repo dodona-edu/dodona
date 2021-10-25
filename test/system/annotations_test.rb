@@ -183,7 +183,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
 
     find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
-    replacement = (Faker::Lorem.words number: 512).join(' ')
+    replacement = Faker::Lorem.characters number: 10_010
     assert_selector 'form.annotation-submission', count: 1
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
@@ -281,7 +281,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     find('tr#line-1').hover
     find('button.annotation-button').click
 
-    initial = Faker::Lorem.words(number: 2048).join(' ')
+    initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Comment'

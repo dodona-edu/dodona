@@ -120,7 +120,7 @@ GEM
     css_parser (1.7.1)
       addressable
     daemons (1.4.0)
-    dalli (3.0.2)
+    dalli (3.0.3)
     ddtrace (0.53.0)
       ffi (~> 1.0)
       msgpack
@@ -487,7 +487,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.7.6)
   capybara (~> 3.35.3)
   codecov (~> 0.6.0)
-  dalli (~> 3.0.2)
+  dalli (~> 3.0.3)
   ddtrace (~> 0.53.0)
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)

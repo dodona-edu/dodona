@@ -56,14 +56,14 @@
             <%= link_to activity.name, activity_path(activity) %>
           <% else %>
             <%= activity.name %>
-            <% if current_user.course_admin?(@course) && current_user.repository_admin?(activity.repository) %>
+            <% if current_user&.course_admin?(@course) && current_user&.repository_admin?(activity.repository) %>
               <%= form_with url: add_course_repository_path(activity.repository) do |form| %>
                 <%= form.hidden_field :course_id, value: @course.id %>
                 <button type="submit" class="btn btn-icon">
                   <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
                 </button>
               <% end %>
-            <% elsif current_user.course_admin?(@course) %>
+            <% elsif current_user&.course_admin?(@course) %>
               <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
             <% end %>
           <% end %>

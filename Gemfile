@@ -120,7 +120,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.0.2'
+gem 'dalli', '~> 3.0.3'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -151,7 +151,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.35.3'
-  gem 'selenium-webdriver', '~> 4.0.0'
+  gem 'selenium-webdriver', '~> 4.0.3'
 end
 
 group :test do

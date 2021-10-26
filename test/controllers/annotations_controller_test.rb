@@ -223,7 +223,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
-        annotation_text: 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
+        annotation_text: 'A' * 10_001 # max length of annotation text is 10.000 -> trigger failure
       },
       format: :json
     }
@@ -235,7 +235,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     put annotation_url(annotation), params: {
       annotation: {
-        annotation_text: 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
+        annotation_text: 'A' * 10_001 # max length of annotation text is 10.000 -> trigger failure
       },
       format: :json
     }

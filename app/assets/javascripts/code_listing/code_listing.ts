@@ -406,7 +406,6 @@ export class CodeListing {
         usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
         // Update value while typing.
         inputField.addEventListener("input", () => {
-            console.log("Input received...");
             usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
         });
 

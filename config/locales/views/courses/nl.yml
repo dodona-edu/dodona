@@ -29,7 +29,7 @@ nl:
       registration-closed_html: Niemand
       no_institution: "Geen onderwijsinstelling"
       copy_admins: "Cursusbeheerders"
-      copy_options: "Opties voor het kopieren"
+      copy_options: "Opties voor het kopiëren"
       copy_options_details: "Welke items wil je overnemen van de geselecteerde cursus?"
       copy_admins_details: "Bij nieuwe cursussen word je zelf altijd toegevoegd als cursusbeheerder. Met deze instelling kan je aanvullend de cursusbeheerders uit het originele vak toevoegen."
       copy_exercises: "Oefeningen"

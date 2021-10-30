@@ -29,6 +29,12 @@ nl:
       weekday_short: "%a %d %b"
       weekday_long: "%A %d %B"
   time:
+    time_units:
+      sec: ["seconde", "seconden"]
+      min: ["minuut", "minuten"]
+      hour: ["uur", "uren"]
+      day: ["dag", "dagen"]
+      week: ["week", "weken"]
     formats:
       annotation: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'

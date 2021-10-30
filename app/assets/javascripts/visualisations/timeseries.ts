@@ -112,6 +112,34 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("height", rectSize)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
             });
+        const unitTl = I18n.t("time.time_units");
+        const divs = [60, 60, 24, 7];
+        const units = ["sec", "min", "hour", "day", "week"];
+        let step = this.binStep * 3600; // in seconds
+        let i = 0;
+        while (i < divs.length && step / divs[i] >= 1) {
+            step /= divs[i];
+            i++;
+        }
+        const legend = this.container
+            .append("div")
+            .attr("class", "legend")
+            .append("div")
+            .attr("class", "legend-item");
+
+        legend.append("span")
+            .text("1 x ")
+            .style("margin-right", "4px");
+
+        legend.append("div")
+            .attr("class", "legend-box")
+            .style("width", "30px")
+            .style("height", "30px")
+            .style("background", highColor);
+
+        legend.append("span")
+            .text(` = ${step} ${step > 1 ? unitTl[units[i]][1] : unitTl[units[i]][0]}`)
+            .attr("class", "legend-text");
     }
 
     /**
@@ -246,8 +274,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
     // timeseries
     // insertFakeData(data): void {
-    //     const timeDelta = 24*100; // in hours
-    //     const timeStep = 24; // in hours
+    //     const timeDelta = 20; // in hours
+    //     const timeStep = .5; // in hours
     //     const end = new Date(data[0].ex_data[0].date);
     //     const start = new Date(end.getTime() - timeDelta * 3600000);
     //     // start.setDate(start.getDate() - 365);

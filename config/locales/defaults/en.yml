@@ -28,6 +28,12 @@ en:
       weekday_short: "%a %b %d"
       weekday_long: "%A %B %d"
   time:
+    time_units:
+      sec: ["second", "seconds"]
+      min: ["minute", "minutes"]
+      hour: ["hour", "hours"]
+      day: ["day", "days"]
+      week: ["week", "weeks"]
     formats:
       annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'

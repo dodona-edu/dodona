@@ -156,15 +156,18 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 .value(d => d.date.getTime())
                 .thresholds(binTicks)
                 .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
+            console.log(binned);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
             binned.forEach(bin => {
                 const sum = d3.sum(bin, r => r["count"]);
+                console.log(sum);
+                console.log(bin);
                 this.maxStack = Math.max(this.maxStack, sum);
                 parsedData.push(bin.reduce((acc, r) => {
                     acc.sum = sum;
-                    acc[r.status] = r.count;
+                    acc[r.status] += r.count;
                     return acc;
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts

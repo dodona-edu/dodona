@@ -111,16 +111,15 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // y range toggle functionality
         // add a rect behind y-axis for bigger clickable area
-        const yBackground = this.graph.append("rect")
+        this.graph.append("rect")
             .attr("width", 50)
             .attr("height", this.innerHeight+10)
             .attr("x", -50)
             .attr("y", -10)
             .attr("fill", "none")
-            .attr("pointer-events", "all");
-        yBackground
-            .on("click", () => this.yRangeToggle())
-            .on("mouseover", () => yBackground.style("cursor", "pointer"));
+            .attr("pointer-events", "all")
+            .style("cursor", "pointer")
+            .on("click", () => this.yRangeToggle());
 
         this.drawUpdate(animation);
     }
@@ -159,9 +158,6 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.graph.selectAll(".line")
             .data(this.data, ex => ex.ex_id )
             .join("path")
-            // .attr("class", "line")
-            // .style("stroke", ex => this.color(ex.ex_id) as string)
-            // .style("fill", "none")
             .transition().duration(animation ? 500: 0)
             .attr("d", ex => d3.line()
                 .x(d => this.x(d.bin["x0"]))

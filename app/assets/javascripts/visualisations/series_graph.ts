@@ -187,7 +187,6 @@ export abstract class SeriesGraph {
         // if binStep is per hour, align to a multiple of that size
         if (resultStep < 24) {
             alignedStart.setHours(Math.floor(minDate.getHours() / resultStep) * resultStep);
-            console.log(alignedStart);
         } else {
             alignedStart.setHours(0);
             if (resultStep < 168) { // if binStep is per day, align to a multiple of that size

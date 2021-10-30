@@ -64,9 +64,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .call(
                 d3.axisBottom(this.x)
                     .tickValues(this.binTicks)
-                    .tickFormat(this.binStep > 24 ?
+                    .tickFormat(this.binStep >= 24 ?
                         d3.timeFormat(I18n.t("date.formats.weekday_short")):
-                        d3.timeFormat(I18n.t("time.formats.day_time_short")))
+                        d3.timeFormat(I18n.t("time.formats.plain_time")))
             )
             .selectAll("text")
             .style("text-anchor", "end")
@@ -134,6 +134,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
+        // this.insertFakeData(data);
+
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
@@ -156,14 +158,11 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 .value(d => d.date.getTime())
                 .thresholds(binTicks)
                 .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
-            console.log(binned);
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
             binned.forEach(bin => {
                 const sum = d3.sum(bin, r => r["count"]);
-                console.log(sum);
-                console.log(bin);
                 this.maxStack = Math.max(this.maxStack, sum);
                 parsedData.push(bin.reduce((acc, r) => {
                     acc.sum = sum;
@@ -192,16 +191,29 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        const format = this.binStep > 24 ?
-            this.longDateFormat:
-            d3.timeFormat(I18n.t("time.formats.day_time_long"));
-        const from = I18n.t("js.from");
-        const to = I18n.t("js.to");
-        let message = `
-            <b>${from[0].toUpperCase()+from.slice(1)}:</b> ${format(d.date)}
-            <br>
-            <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date+this.binStep*3600000))}
-            <br>
+        let message = "";
+        if (this.binStep === 24) { // binning per day
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            let subs = I18n.t("js.submissions_on");
+            subs = subs[0].toUpperCase() + subs.slice(1);
+            message += `
+                ${subs} ${format(d.date)}:
+                <br>
+            `;
+        } else {
+            const format = this.binStep > 24 ?
+                d3.timeFormat(I18n.t("date.formats.weekday_long")):
+                d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const from = I18n.t("js.from");
+            const to = I18n.t("js.to");
+            message += `
+                <b>${from[0].toUpperCase()+from.slice(1)}:</b> ${format(d.date)}
+                <br>
+                <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date+this.binStep*3600000))}
+                <br>
+            `;
+        }
+        message += `
             <b>${d.sum} ${I18n.t("js.submissions")}</b>
             `;
         this.statusOrder.forEach(s => {
@@ -231,4 +243,31 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .duration(500)
             .style("opacity", 0);
     }
+
+    // timeseries
+    // insertFakeData(data): void {
+    //     const timeDelta = 24*100; // in hours
+    //     const timeStep = 24; // in hours
+    //     const end = new Date(data[0].ex_data[0].date);
+    //     const start = new Date(end.getTime() - timeDelta * 3600000);
+    //     // start.setDate(start.getDate() - 365);
+    //     for (const ex of data) {
+    //         ex.ex_data = [];
+    //         for (
+    //             let d = new Date(start);
+    //             d <= end;
+    //             d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
+    //         ) {
+    //             for (let i=0; i < this.statusOrder.length; i++) {
+    //                 if (Math.random() > 0.5) {
+    //                     ex.ex_data.push({
+    //                         "date": new Date(d.getTime()),
+    //                         "status": this.statusOrder[i],
+    //                         "count": Math.round(Math.random()*20)
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     }
+    // }
 }

@@ -190,7 +190,7 @@ export abstract class SeriesGraph {
         } else {
             alignedStart.setHours(0);
             if (resultStep < 168) { // if binStep is per day, align to a multiple of that size
-                const diff = minDate.getDate() % resultStep;
+                const diff = minDate.getDate() % (resultStep/24);
                 if (diff !== 0) {
                     alignedStart.setDate(minDate.getDate()-diff);
                 }

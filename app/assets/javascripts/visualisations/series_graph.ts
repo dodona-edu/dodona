@@ -183,19 +183,29 @@ export abstract class SeriesGraph {
         const binStepMili = resultStep * 3600000; // binStep in miliseconds
 
         const alignedStart = new Date(minDate.getTime());
-        alignedStart.setMinutes(0, 0, 0);
-        // if binStep is per hour, align to a multiple of that size
-        if (resultStep < 24) {
-            alignedStart.setHours(Math.floor(minDate.getHours() / resultStep) * resultStep);
+        // binStep per x-amount of minutes
+        if (resultStep < 1) {
+            const minuteStep = resultStep * 60;
+            alignedStart.setMinutes(
+                Math.floor(minDate.getMinutes() / minuteStep) * minuteStep,
+                0,
+                0
+            );
         } else {
-            alignedStart.setHours(0);
-            if (resultStep < 168) { // if binStep is per day, align to a multiple of that size
-                const diff = minDate.getDate() % (resultStep/24);
-                if (diff !== 0) {
-                    alignedStart.setDate(minDate.getDate()-diff);
+            alignedStart.setMinutes(0, 0, 0);
+            // if binStep is per hour, align to a multiple of that size
+            if (resultStep < 24) {
+                alignedStart.setHours(Math.floor(minDate.getHours() / resultStep) * resultStep);
+            } else {
+                alignedStart.setHours(0);
+                if (resultStep < 168) { // if binStep is per day, align to a multiple of that size
+                    const diff = minDate.getDate() % (resultStep/24);
+                    if (diff !== 0) {
+                        alignedStart.setDate(minDate.getDate()-diff);
+                    }
+                } else { // if binStep is per week, align to mondays
+                    alignedStart.setDate(minDate.getDate() - (minDate.getDay() + 6) % 7);
                 }
-            } else { // if binStep is per week, align to mondays
-                alignedStart.setDate(minDate.getDate() - (minDate.getDay() + 6) % 7);
             }
         }
 

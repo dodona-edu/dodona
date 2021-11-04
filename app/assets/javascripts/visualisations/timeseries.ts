@@ -157,8 +157,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             // convert dates form strings to actual date objects
             ex.ex_data.forEach((d: Datum) => {
                 d.date = new Date(d.date);
-                // make sure they are set to midnight
-                d.date.setHours(0, 0, 0, 0);
             });
         });
 

@@ -163,13 +163,18 @@ export abstract class SeriesGraph {
      * and a new start date alligned to the step size
      * @param {Date} minDate The start of the date range
      * @param {Date} maxDate The end of the date range
+     * @param {number} targetBins The amount of bins the search should aim for.
      * @return {[number, Array<number>, Date]} Bin step, bin boundaries, aligned start
      */
-    protected findBinTime(minDate: Date, maxDate: date): [number, Array<number>, Date] {
+    protected findBinTime(
+        minDate: Date,
+        maxDate: date,
+        targetBins: number
+    ): [number, Array<number>, Date] {
         // 5m, 15m, 1/2h, 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
         const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
-        const targetBinStep = diff/17; // desired binStep to have ~17 bins
+        const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
         let bestDiff = Infinity;
         let currDiff = Math.abs(timeBins[0]-targetBinStep);
         let i = 0;

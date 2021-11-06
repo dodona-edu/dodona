@@ -167,10 +167,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.minDate = new Date(minDate);
         this.maxDate = new Date(maxDate);
 
-        this.x = d3.scaleTime()
-            .domain([this.minDate.getTime(), this.maxDate.getTime()])
-            .ticks(20);
-
         // aim for 17 bins (between 15 and 20)
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
         this.binStep = binStep;

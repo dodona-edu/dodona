@@ -29,6 +29,10 @@ beforeAll(() => {
     window.dodona = { darkMode: false };
 });
 
+afterAll(() => {
+    jest.restoreAllMocks();
+});
+
 describe("Violin tests", () => {
     let violin;
     const data = {
@@ -93,14 +97,31 @@ describe("Stacked tests", () => {
 });
 
 describe("Timeseries tests", () => {
+    const tzOffset = new Date("2020-07-11 00:00Z").getTimezoneOffset() * 60000;
+    // make sure we're using the defined dateTimes in local time
     const data = {
         data: [
             {
                 ex_id: 1,
                 ex_data: [
-                    { date: "1302-07-11 00:00", status: "wrong", count: 9 },
-                    { date: "1302-07-11 4:00", status: "correct", count: 3 },
-                    { date: "1302-07-15 00:00", status: "correct", count: 6 }
+                    {
+                        date: new Date(
+                            new Date("2020-07-11 00:00Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "wrong", count: 9
+                    },
+                    {
+                        date: new Date(
+                            new Date("2020-07-11 03:59Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "correct", count: 3
+                    },
+                    {
+                        date: new Date(
+                            new Date("2020-07-15 00:00Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "correct", count: 6
+                    }
                 ]
             }
         ], exercises: [[1, "test"]], student_count: 3

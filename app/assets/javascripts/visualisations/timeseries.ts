@@ -162,8 +162,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
-        this.insertFakeData(data);
-
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
@@ -272,31 +270,5 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
-    }
-
-    insertFakeData(data): void {
-        const timeDelta = 8; // in hours
-        const timeStep = .25; // in hours
-        const end = new Date(data[0].ex_data[0].date);
-        const start = new Date(end.getTime() - timeDelta * 3600000);
-        // start.setDate(start.getDate() - 365);
-        for (const ex of data) {
-            ex.ex_data = [];
-            for (
-                let d = new Date(start);
-                d <= end;
-                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
-            ) {
-                for (let i=0; i < this.statusOrder.length; i++) {
-                    if (Math.random() > 0.3) {
-                        ex.ex_data.push({
-                            "date": new Date(d.getTime()),
-                            "status": this.statusOrder[i],
-                            "count": Math.round(Math.random()*20)
-                        });
-                    }
-                }
-            }
-        }
     }
 }

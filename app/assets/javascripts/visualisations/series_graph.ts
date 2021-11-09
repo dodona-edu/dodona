@@ -185,7 +185,6 @@ export abstract class SeriesGraph {
             i++;
             bestDiff = currDiff;
             currDiff = Math.abs(timeBins[i]-targetBinStep);
-            console.log(timeBins[i], currDiff);
         }
         const resultStep = timeBins[i-1];
         const binStepMili = resultStep * 3600000; // binStep in miliseconds

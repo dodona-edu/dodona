@@ -123,23 +123,24 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         }
         const legend = this.container
             .append("div")
-            .attr("class", "legend")
+            .style("position", "absolute")
+            .style("top", `${this.innerHeight}px`)
             .append("div")
-            .attr("class", "legend-item");
-
-        legend.append("span")
-            .text("1 x ")
-            .style("margin-right", "4px");
+            .style("display", "flex")
+            .style("align-items", "center");
 
         legend.append("div")
-            .attr("class", "legend-box")
+            .style("border-radius", "5px")
             .style("width", "30px")
             .style("height", "30px")
-            .style("background", highColor);
+            .style("border-style", "solid")
+            .style("border-width", "2px")
+            .style("border-color", highColor);
 
         legend.append("span")
-            .text(` = ${step} ${step > 1 ? unitTl[units[i]][1] : unitTl[units[i]][0]}`)
-            .attr("class", "legend-text");
+            .text(`${step} ${step > 1 ? unitTl[units[i]][1] : unitTl[units[i]][0]}`)
+            .attr("class", "legend-text")
+            .style("margin-left", "5px");
     }
 
     /**
@@ -159,6 +160,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 d.date = new Date(d.date);
             });
         });
+
+        this.insertFakeData(data);
 
         const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
@@ -263,5 +266,57 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
+    }
+
+    insertFakeData(data): void {
+        const timeDelta = 1; // in hours
+        const timeStep = 1/12; // in hours
+        const end = new Date(data[0].ex_data[0].date);
+        const start = new Date(end.getTime() - timeDelta * 3600000);
+        // start.setDate(start.getDate() - 365);
+        for (const ex of data) {
+            ex.ex_data = [];
+            for (
+                let d = new Date(start);
+                d <= end;
+                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
+            ) {
+                for (let i=0; i < this.statusOrder.length; i++) {
+                    if (Math.random() > 0.5) {
+                        ex.ex_data.push({
+                            "date": new Date(d.getTime()),
+                            "status": this.statusOrder[i],
+                            "count": Math.round(Math.random()*20)
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    insertFakeData(data): void {
+        const timeDelta = 20; // in hours
+        const timeStep = 1; // in hours
+        const end = new Date(data[0].ex_data[0].date);
+        const start = new Date(end.getTime() - timeDelta * 3600000);
+        // start.setDate(start.getDate() - 365);
+        for (const ex of data) {
+            ex.ex_data = [];
+            for (
+                let d = new Date(start);
+                d <= end;
+                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
+            ) {
+                for (let i=0; i < this.statusOrder.length; i++) {
+                    if (Math.random() > 0.5) {
+                        ex.ex_data.push({
+                            "date": new Date(d.getTime()),
+                            "status": this.statusOrder[i],
+                            "count": Math.round(Math.random()*20)
+                        });
+                    }
+                }
+            }
+        }
     }
 }

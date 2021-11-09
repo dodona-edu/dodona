@@ -102,6 +102,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
+                    .attr("stroke", highColor)
                     .attr("x", d => this.x(d.date) + (this.x.bandwidth() - rectSize)/2)
                     .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize)/2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
@@ -274,8 +275,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     }
 
     insertFakeData(data): void {
-        const timeDelta = 7*24*17; // in hours
-        const timeStep = 24*7; // in hours
+        const timeDelta = 8; // in hours
+        const timeStep = .25; // in hours
         const end = new Date(data[0].ex_data[0].date);
         const start = new Date(end.getTime() - timeDelta * 3600000);
         // start.setDate(start.getDate() - 365);

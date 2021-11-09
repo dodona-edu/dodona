@@ -216,29 +216,34 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .duration(200)
             .style("opacity", .9);
         let message = "";
-        if (this.binStep === 24) { // binning per day
+        if (this.binStep < 24) {
+            const on = I18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date+this.binStep*3600000))}
+                <br>${on} ${dateFormat(d.date)}<br>
+            `;
+        } else if (this.binStep === 24) { // binning per day
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            let subs = I18n.t("js.submissions_on");
-            subs = subs[0].toUpperCase() + subs.slice(1);
-            message += `
-                ${subs} ${format(d.date)}:
+            message = `${format(d.date)}:<br>`;
+        } else if (this.binStep < 168) {
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${format(d.date)} - ${format(new Date(d.date+this.binStep*3600000))}
                 <br>
             `;
         } else {
-            const format = this.binStep > 24 ?
-                d3.timeFormat(I18n.t("date.formats.weekday_long")):
-                d3.timeFormat(I18n.t("time.formats.plain_time"));
-            const from = I18n.t("js.from");
-            const to = I18n.t("js.to");
-            message += `
-                <b>${from[0].toUpperCase()+from.slice(1)}:</b> ${format(d.date)}
-                <br>
-                <b>${to[0].toUpperCase()+to.slice(1)}:  </b> ${format(new Date(d.date+this.binStep*3600000))}
+            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            message = `
+                <b>${weekDay(d.date)} - ${monthDay(new Date(d.date+this.binStep*3600000))}
                 <br>
             `;
         }
+        const subString = d.sum === 1 ? I18n.t("js.submission") : I18n.t("js.submissions");
         message += `
-            <b>${d.sum} ${I18n.t("js.submissions")}</b>
+            <b>${d.sum} ${subString}</b>
             `;
         this.statusOrder.forEach(s => {
             if (d[s]) {
@@ -269,8 +274,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     }
 
     insertFakeData(data): void {
-        const timeDelta = 1; // in hours
-        const timeStep = 1/12; // in hours
+        const timeDelta = 7*24*17; // in hours
+        const timeStep = 24*7; // in hours
         const end = new Date(data[0].ex_data[0].date);
         const start = new Date(end.getTime() - timeDelta * 3600000);
         // start.setDate(start.getDate() - 365);
@@ -282,33 +287,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
             ) {
                 for (let i=0; i < this.statusOrder.length; i++) {
-                    if (Math.random() > 0.5) {
-                        ex.ex_data.push({
-                            "date": new Date(d.getTime()),
-                            "status": this.statusOrder[i],
-                            "count": Math.round(Math.random()*20)
-                        });
-                    }
-                }
-            }
-        }
-    }
-
-    insertFakeData(data): void {
-        const timeDelta = 20; // in hours
-        const timeStep = 1; // in hours
-        const end = new Date(data[0].ex_data[0].date);
-        const start = new Date(end.getTime() - timeDelta * 3600000);
-        // start.setDate(start.getDate() - 365);
-        for (const ex of data) {
-            ex.ex_data = [];
-            for (
-                let d = new Date(start);
-                d <= end;
-                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
-            ) {
-                for (let i=0; i < this.statusOrder.length; i++) {
-                    if (Math.random() > 0.5) {
+                    if (Math.random() > 0.3) {
                         ex.ex_data.push({
                             "date": new Date(d.getTime()),
                             "status": this.statusOrder[i],

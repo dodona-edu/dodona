@@ -28,6 +28,7 @@ nl:
     formats:
       weekday_short: "%a %d %b"
       weekday_long: "%A %d %B"
+      monthday_long: "%B %d"
   time:
     time_units:
       sec: ["seconde", "seconden"]

@@ -34,7 +34,7 @@ en:
     getting_started_card:
       title: Hi there,
       text: It looks like you're new here. To get started, register for a course.
-      action: view courses
+      action: View courses
     pending_courses_card:
       pending-courses: Awaiting approval
     institution_not_supported:

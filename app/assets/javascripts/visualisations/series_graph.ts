@@ -174,7 +174,7 @@ export abstract class SeriesGraph {
         // find best bin step
         // -------------------
         // 5m, 15m, 1/2h, 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
-        const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 168, 336, 672];
+        const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 96, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
         const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
         let bestDiff = Infinity;
@@ -185,6 +185,7 @@ export abstract class SeriesGraph {
             i++;
             bestDiff = currDiff;
             currDiff = Math.abs(timeBins[i]-targetBinStep);
+            console.log(timeBins[i], currDiff);
         }
         const resultStep = timeBins[i-1];
         const binStepMili = resultStep * 3600000; // binStep in miliseconds

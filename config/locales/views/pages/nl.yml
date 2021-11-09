@@ -34,7 +34,7 @@ nl:
     getting_started_card:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
-      action: verken cursussen
+      action: Verken cursussen
     pending_courses_card:
       pending-courses: In afwachting
     institution_not_supported:

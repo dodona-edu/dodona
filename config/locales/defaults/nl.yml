@@ -21,7 +21,7 @@
 
 nl:
   date:
-    day_names: ["Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag"]
+    day_names: ["zondag", "maandag", "dinsdag", "woensdag", "donderdag", "vrijdag", "zaterdag"]
     abbr_day_names: ["Zo", "Ma", "Di", "Wo", "Do", "Vr", "Za"]
     month_names: [null, "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december"]
     abbr_month_names: [null, "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
@@ -30,7 +30,7 @@ nl:
       weekday_long: "%A %d %B"
       monthday_long: "%B %d"
   time:
-    time_units:
+    units:
       sec: ["seconde", "seconden"]
       min: ["minuut", "minuten"]
       hour: ["uur", "uren"]

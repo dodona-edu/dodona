@@ -60,7 +60,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         // Axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${this.innerHeight-this.y.bandwidth()/2})`)
+            .attr("transform", `translate(0, ${this.innerHeight-this.y.bandwidth() / 2})`)
             .call(
                 d3.axisBottom(this.x)
                     .tickValues(this.binTicks)
@@ -84,7 +84,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         // make sure cell size isn't bigger than bandwidth
         const rectSize = Math.min(
-            this.y.bandwidth()*1.5,
+            this.y.bandwidth() * 1.5,
             this.innerWidth / this.binTicks.length - 5
         );
         // add cells
@@ -113,7 +113,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("height", rectSize)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
             });
-        const unitTl = I18n.t("time.time_units");
+        const unitStrings = I18n.t("time.units");
         const divs = [60, 60, 24, 7];
         const units = ["sec", "min", "hour", "day", "week"];
         let step = this.binStep * 3600; // in seconds
@@ -139,7 +139,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("border-color", highColor);
 
         legend.append("span")
-            .text(`${step} ${step > 1 ? unitTl[units[i]][1] : unitTl[units[i]][0]}`)
+            .text(`${step} ${step > 1 ? unitStrings[units[i]][1] : unitStrings[units[i]][0]}`)
             .attr("class", "legend-text")
             .style("margin-left", "5px");
     }

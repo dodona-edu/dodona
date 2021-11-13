@@ -7,6 +7,7 @@ nl:
       close: "Sluiten"
       save: "Opslaan"
       course_overview: "Cursusoverzicht voor "
+      send_mail: "Stuur een e-mail naar deze gebruiker."
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"
@@ -19,6 +20,7 @@ nl:
       member_progress_chart_info_correct:
         one: "Één oefening correct opgelost."
         other: "%{count} oefeningen correct opgelost."
+      send_mail: "Stuur een e-mail naar deze gebruiker."
     index:
       close: "Sluiten"
       upload: "Aanpassingen uploaden"

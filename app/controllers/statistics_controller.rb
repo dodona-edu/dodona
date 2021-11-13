@@ -43,7 +43,29 @@ class StatisticsController < ApplicationController
     series = Series.find(params[:series_id])
     authorize series
 
-    result = Submission.send(visualisation, series: series, deadline: series.deadline)
+    if params[:end].present?
+      begin
+        stop = Time.zone.parse(params[:end])
+      rescue ArgumentError
+        render json: { status: 'invalid argument' }, status: :bad_request
+        return
+      end
+    else
+      stop = series.deadline.to_date
+    end
+
+    if params[:start].present?
+      begin
+        start = Time.zone.parse(params[:start])
+      rescue ArgumentError
+        render json: { status: 'invalid argument' }, status: :bad_request
+        return
+      end
+    else
+      start = stop - 2.weeks
+    end
+
+    result = Submission.send(visualisation, series: series, start: start, end: stop)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }

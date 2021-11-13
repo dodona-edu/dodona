@@ -70,7 +70,7 @@ export abstract class SeriesGraph {
     }
 
     private getUrl(): string {
-        return `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
+        return `/${I18n.locale}${this.baseUrl}${this.seriesId}&start=${new Date("2021-03-19").toISOString()}&end=${new Date().toISOString()}`;
     }
 
     // abstract functions

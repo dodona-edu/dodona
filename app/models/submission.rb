@@ -52,7 +52,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date..end_date) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
@@ -428,7 +428,7 @@ class Submission < ApplicationRecord
   def self.timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
+    submissions = submissions.in_time_range(options[:start], options[:end])
     submissions = submissions.judged
     submissions = submissions.from_students(options[:series].course)
 
@@ -460,7 +460,7 @@ class Submission < ApplicationRecord
   def self.cumulative_timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
+    submissions = submissions.in_time_range(options[:start], options[:end])
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.from_students(options[:series].course)

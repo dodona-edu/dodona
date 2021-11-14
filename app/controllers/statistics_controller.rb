@@ -42,11 +42,11 @@ class StatisticsController < ApplicationController
   def visualise_series(visualisation)
     series = Series.find(params[:series_id])
     authorize series
-
+    valid_iso = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z$/
     if params[:end].present?
-      begin
+      if params[:end].match(valid_iso)
         stop = Time.zone.parse(params[:end])
-      rescue ArgumentError
+      else
         render json: { status: 'invalid argument' }, status: :bad_request
         return
       end
@@ -55,9 +55,9 @@ class StatisticsController < ApplicationController
     end
 
     if params[:start].present?
-      begin
+      if params[:start].match(valid_iso)
         start = Time.zone.parse(params[:start])
-      rescue ArgumentError
+      else
         render json: { status: 'invalid argument' }, status: :bad_request
         return
       end

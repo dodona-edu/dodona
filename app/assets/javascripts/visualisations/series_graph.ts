@@ -1,6 +1,8 @@
 // eslint-disable-next-line
 // @ts-nocheck
 import * as d3 from "d3";
+import flatpickr from "flatpickr";
+import { Dutch } from "flatpickr/dist/l10n/nl.js";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
@@ -46,6 +48,11 @@ export abstract class SeriesGraph {
 
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
+    // scope stuff
+    private fpStart: Instance | Instance[];
+    private fpEnd: Instance | Instance[];
+    private scopeApply: HTMLButtonElement;
+
     /**
      * Initializes the container for the graph +
      * puts placeholder text when data isn't loaded +
@@ -62,6 +69,24 @@ export abstract class SeriesGraph {
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         this.darkMode = window.dodona.darkMode;
 
+        console.log(I18n.t("time.formats.flatpickr_short"));
+
+        const options = {
+            enableTime: true,
+            dateFormat: I18n.t("time.formats.flatpickr_short"),
+            altInput: true,
+            altFormat: I18n.t("time.formats.flatpickr_long")
+        };
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
+        this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
+        this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
+        console.log(this.scopeApply);
+        // this.scopeApply.onclick = this.applyScope();
+        this.scopeApply.onclick = () => this.applyScope();
+
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
             this.processData(data);
@@ -70,7 +95,15 @@ export abstract class SeriesGraph {
     }
 
     private getUrl(): string {
-        return `/${I18n.locale}${this.baseUrl}${this.seriesId}&start=${new Date("2021-03-19").toISOString()}&end=${new Date().toISOString()}`;
+        let url = `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
+        if (this.fpStart && this.fpStart.selectedDates.length > 0) {
+            url += `&start=${new Date(this.fpStart.selectedDates[0]).toISOString()}`;
+            // &start=test&end=${new Date().toISOString()}`
+        }
+        if (this.fpEnd && this.fpEnd.selectedDates.length > 0) {
+            url += `&end=${new Date(this.fpEnd.selectedDates[0]).toISOString()}`;
+        }
+        return url;
     }
 
     // abstract functions
@@ -154,6 +187,10 @@ export abstract class SeriesGraph {
             // final y position adjustment so everything is centered
             tSpans.attr("y", -fontSize * (breaks - 1) / 2);
         });
+    }
+
+    applyScope(): void {
+        this.init();
     }
 
     /**

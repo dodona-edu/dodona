@@ -50,7 +50,7 @@ class StatisticsController < ApplicationController
         render json: { status: 'invalid argument' }, status: :bad_request
         return
       end
-    else
+    elsif series.deadline
       stop = series.deadline.to_date
     end
 
@@ -61,7 +61,7 @@ class StatisticsController < ApplicationController
         render json: { status: 'invalid argument' }, status: :bad_request
         return
       end
-    else
+    elsif stop
       start = stop - 2.weeks
     end
 

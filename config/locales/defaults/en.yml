@@ -36,6 +36,8 @@ en:
       day: ["day", "days"]
       week: ["week", "weeks"]
     formats:
+      flatpickr_short: 'm/d/Y H:i'
+      flatpickr_long: F j Y H:i
       annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'

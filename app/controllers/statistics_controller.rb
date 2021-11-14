@@ -52,6 +52,7 @@ class StatisticsController < ApplicationController
       end
     elsif series.deadline
       stop = series.deadline.to_date
+      start = stop - 2.weeks
     end
 
     if params[:start].present?
@@ -61,8 +62,6 @@ class StatisticsController < ApplicationController
         render json: { status: 'invalid argument' }, status: :bad_request
         return
       end
-    elsif stop
-      start = stop - 2.weeks
     end
 
     result = Submission.send(visualisation, series: series, start: start, end: stop)

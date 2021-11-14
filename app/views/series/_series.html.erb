@@ -165,10 +165,16 @@
             </a>
           </div>
         </div>
-        <div style="display: flex">
-          <input type="text" id="scope-start-<%= series.id %>">
-          <input type="text" id="scope-end-<%= series.id %>">
-          <button id="scope-apply-<%= series.id %>">Apply</button>
+        <div class="daterange-picker">
+          <div class="input-group date-picker" id="scope-start-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+          </div>
+          <div class="input-group date-picker" id="scope-end-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+          </div>
+          <button class="btn btn-primary" id="scope-apply-<%= series.id %>">Apply</button>
         </div>
         <div class="stats-container" id="stats-container-<%= series.id %>"></div>
       </div>

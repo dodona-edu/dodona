@@ -72,9 +72,6 @@ export abstract class SeriesGraph {
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         this.darkMode = window.dodona.darkMode;
-        console.log(this.darkMode);
-
-        console.log(I18n.t("time.formats.flatpickr_short"));
 
         const options = {
             wrap: true,

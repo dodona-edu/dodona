@@ -460,6 +460,7 @@ class Submission < ApplicationRecord
   def self.cumulative_timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
+    # below is treated as a one-sided limit when one is nil and is ignored when both are nil
     submissions = submissions.in_time_range(options[:start], options[:end])
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user

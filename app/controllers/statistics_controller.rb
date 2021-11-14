@@ -44,9 +44,8 @@ class StatisticsController < ApplicationController
     authorize series
     valid_iso = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z$/
     if params[:end].present?
-      puts params
       if params[:end].match(valid_iso)
-        stop = Time.zone.parse(params[:end])
+        stop = Time.zone.parse(params[:end]) # == nil when params[:end] == ""
       else
         render json: { status: 'invalid argument' }, status: :bad_request
         return
@@ -58,7 +57,7 @@ class StatisticsController < ApplicationController
 
     if params[:start].present?
       if params[:start].match(valid_iso)
-        start = Time.zone.parse(params[:start])
+        start = Time.zone.parse(params[:start]) # == nil when params[:start] == ""
       else
         render json: { status: 'invalid argument' }, status: :bad_request
         return

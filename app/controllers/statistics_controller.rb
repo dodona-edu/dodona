@@ -44,6 +44,7 @@ class StatisticsController < ApplicationController
     authorize series
     valid_iso = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z$/
     if params[:end].present?
+      puts params
       if params[:end].match(valid_iso)
         stop = Time.zone.parse(params[:end])
       else
@@ -68,7 +69,7 @@ class StatisticsController < ApplicationController
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data, student_count: series.course.enrolled_members.length }
+      render json: { data: data, exercises: ex_data, student_count: series.course.enrolled_members.length, deadline: series.deadline }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

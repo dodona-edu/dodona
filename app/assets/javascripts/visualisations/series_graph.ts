@@ -9,7 +9,8 @@ export type RawData = {
     data: { ex_id: number, ex_data: unknown[] }[],
     exercises: [number, string][],
     // eslint-disable-next-line camelcase
-    student_count: number
+    student_count: number,
+    deadline: string
 }
 
 export abstract class SeriesGraph {
@@ -43,6 +44,7 @@ export abstract class SeriesGraph {
 
     // data
     private seriesId: string;
+    private deadline: Date;
     protected exOrder: string[] = []; // array of exId's (in correct order)
     protected exMap: Record<string, string> = {}; // map from exId -> exName
 
@@ -52,6 +54,8 @@ export abstract class SeriesGraph {
     private fpStart: Instance | Instance[];
     private fpEnd: Instance | Instance[];
     private scopeApply: HTMLButtonElement;
+    private dateStart: string = undefined;
+    private dateEnd: string = undefined; // default (deadline) when undefined, no limit when ""
 
     /**
      * Initializes the container for the graph +
@@ -96,20 +100,19 @@ export abstract class SeriesGraph {
         }
     }
 
+    // abstract functions
+    protected abstract processData(raw: RawData): void;
+
     private getUrl(): string {
         let url = `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
-        if (this.fpStart && this.fpStart.selectedDates.length > 0) {
-            url += `&start=${new Date(this.fpStart.selectedDates[0]).toISOString()}`;
-            // &start=test&end=${new Date().toISOString()}`
+        if (this.dateStart !== undefined) { // should always both be true or both be false
+            url += `&start=${this.dateStart}`;
         }
-        if (this.fpEnd && this.fpEnd.selectedDates.length > 0) {
-            url += `&end=${new Date(this.fpEnd.selectedDates[0]).toISOString()}`;
+        if (this.dateEnd !== undefined) {
+            url += `&end=${this.dateEnd}`;
         }
         return url;
     }
-
-    // abstract functions
-    protected abstract processData(raw: RawData): void;
 
 
     protected draw(animation=true): void {
@@ -192,6 +195,10 @@ export abstract class SeriesGraph {
     }
 
     applyScope(): void {
+        this.dateStart = this.fpStart.selectedDates.length > 0 ?
+            new Date(this.fpStart.selectedDates[0]).toISOString() : "";
+        this.dateEnd = this.fpEnd.selectedDates.length > 0 ?
+            new Date(this.fpEnd.selectedDates[0]).toISOString() : "";
         this.init();
     }
 
@@ -279,6 +286,7 @@ export abstract class SeriesGraph {
      * @param {string} keys The ids present in the data
      */
     protected parseExercises(exercises: [number, string][], keys: number[]): void {
+        this.exOrder = [];
         exercises.forEach(([id, title]) => {
             // only add if the key is present in the data
             if (keys.indexOf(id) >= 0) {
@@ -337,6 +345,7 @@ export abstract class SeriesGraph {
         const r: RawData = await this.fetchData();
         // once fetched remove placeholder
         this.container.html("");
+        this.deadline = r.deadline;
 
         if (r.data.length === 0) {
             this.drawNoData();

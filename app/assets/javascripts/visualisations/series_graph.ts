@@ -86,7 +86,6 @@ export abstract class SeriesGraph {
         this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
         this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
         this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
-        console.log(this.scopeApply);
         // this.scopeApply.onclick = this.applyScope();
         this.scopeApply.onclick = () => this.applyScope();
 

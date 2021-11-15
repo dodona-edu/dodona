@@ -27,6 +27,11 @@ beforeAll(() => {
         }[arg]) as string);
     I18n.locale = "nl";
     window.dodona = { darkMode: false };
+
+
+    document.body.innerHTML = "<div id='scope-start-1' data-wrap=true><input data-input></div>" +
+                                "<div id='scope-end-1' data-wrap=true><input data-input></div>" +
+                                "<button id='scope-apply-1'></button>";
 });
 
 afterAll(() => {
@@ -39,7 +44,7 @@ describe("Violin tests", () => {
         data: [{ ex_id: 1, ex_data: [4, 5, 2] }], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         violin = new ViolinGraph(
             "1", "#container"
         );
@@ -72,7 +77,7 @@ describe("Stacked tests", () => {
         ], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         stacked = new StackedStatusGraph(
             "1", "#container"
         );
@@ -128,7 +133,7 @@ describe("Timeseries tests", () => {
     };
     let timeseries;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         timeseries = new TimeseriesGraph(
             "1", "#container"
         );
@@ -178,7 +183,7 @@ describe("CTimeseries tests", () => {
     };
     let cTimeseries;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         cTimeseries = new CTimeseriesGraph(
             "1", "#container"
         );
@@ -208,7 +213,7 @@ describe("CTimeseries tests", () => {
 describe("General tests", () => {
     let graph;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         // eslint-disable-next-line
         // @ts-ignore
         graph = new SeriesGraph(

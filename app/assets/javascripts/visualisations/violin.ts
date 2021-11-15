@@ -97,7 +97,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .join("circle")
             .style("opacity", 0)
             .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
-            .attr("cx", d => this.x(d.average))
+            .attr("cx", d => this.x(Math.min(d.average, this.maxSubmissions)))
             .attr("r", 4)
             .attr("fill", "currentColor");
         dots.transition()

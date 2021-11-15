@@ -181,6 +181,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      */
     // eslint-disable-next-line camelcase
     protected override processData({ data, exercises, student_count }: RawData): void {
+        this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
 

@@ -10,7 +10,8 @@ export type RawData = {
     exercises: [number, string][],
     // eslint-disable-next-line camelcase
     student_count: number,
-    deadline: string
+    // eslint-disable-next-line camelcase
+    series_update: string
 }
 
 export abstract class SeriesGraph {
@@ -78,7 +79,7 @@ export abstract class SeriesGraph {
             enableTime: true,
             dateFormat: I18n.t("time.formats.flatpickr_short"),
             altInput: true,
-            altFormat: I18n.t("time.formats.flatpickr_long")
+            altFormat: I18n.t("time.formats.flatpickr_long"),
         };
         if (I18n.locale === "nl") {
             options.locale = Dutch;
@@ -91,6 +92,7 @@ export abstract class SeriesGraph {
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
+            this.setPickerDefault(data);
             this.processData(data);
             this.draw();
         }
@@ -98,6 +100,12 @@ export abstract class SeriesGraph {
 
     // abstract functions
     protected abstract processData(raw: RawData): void;
+
+
+    private setPickerDefault(raw: RawData): void {
+        this.fpStart.jumpToDate(new Date(raw.series_update));
+        this.fpEnd.jumpToDate(new Date(raw.series_update));
+    }
 
     private getUrl(): string {
         let url = `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
@@ -346,6 +354,7 @@ export abstract class SeriesGraph {
         if (r.data.length === 0) {
             this.drawNoData();
         } else {
+            this.setPickerDefault(r);
             this.processData(r);
             if (doDraw) {
                 // next draw the graph

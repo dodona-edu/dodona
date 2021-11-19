@@ -68,7 +68,8 @@ class StatisticsController < ApplicationController
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data, student_count: series.course.enrolled_members.length, deadline: series.deadline }
+      # update is used to init the time pickers around a sensible moment
+      render json: { data: data, exercises: ex_data, student_count: series.course.enrolled_members.length, series_update: series.updated_at }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

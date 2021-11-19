@@ -30,7 +30,7 @@
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>
-            <%= @user.email %>
+            <%= mail_to(@user.email, nil, { class: 'text-muted', title: t('course_members.show.send_mail') }) %>
           </span>
           <p class="timezone">
             <%= t ".timezone" %> <b><%= @user.time_zone %></b>.

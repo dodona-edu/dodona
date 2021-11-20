@@ -43,6 +43,7 @@ nl:
       in: "in"
       by: "door"
       submission_for: "Oplossing voor"
+      copy_submission_link : "Kopieer indieningslink naar het klembord."
       output: Uitvoer
       correct_tests: Correcte testen
       diff:

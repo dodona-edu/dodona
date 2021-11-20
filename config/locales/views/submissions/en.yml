@@ -43,6 +43,7 @@ en:
       in: "in"
       by: "by"
       submission_for: "Submission for"
+      copy_submission_link : "Copy submission link to clipboard."
       output: Output
       correct_tests: Correct tests
       diff:

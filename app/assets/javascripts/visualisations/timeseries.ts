@@ -60,7 +60,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         // Axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${this.innerHeight-this.y.bandwidth() / 2})`)
+            .attr("transform", `translate(0, ${this.innerHeight - this.y.bandwidth() / 2})`)
             .call(
                 d3.axisBottom(this.x)
                     .tickValues(this.binTicks)
@@ -103,8 +103,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
                     .attr("stroke", highColor)
-                    .attr("x", d => this.x(d.date) + (this.x.bandwidth() - rectSize)/2)
-                    .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize)/2)
+                    .attr("x", d => this.x(d.date) + (this.x.bandwidth() - rectSize) / 2)
+                    .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize) / 2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
@@ -220,7 +220,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date+this.binStep*3600000))}
+                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}
                 <br>${on} ${dateFormat(d.date)}<br>
             `;
         } else if (this.binStep === 24) { // binning per day
@@ -229,14 +229,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         } else if (this.binStep < 168) {
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${format(d.date)} - ${format(new Date(d.date+this.binStep*3600000))}
+                <b>${format(d.date)} - ${format(new Date(d.date + this.binStep * 3600000))}
                 <br>
             `;
         } else {
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `
-                <b>${weekDay(d.date)} - ${monthDay(new Date(d.date+this.binStep*3600000))}
+                <b>${weekDay(d.date)} - ${monthDay(new Date(d.date + this.binStep * 3600000))}
                 <br>
             `;
         }

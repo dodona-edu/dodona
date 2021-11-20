@@ -93,17 +93,34 @@ export class ViolinGraph extends SeriesExerciseGraph {
         // Average dots
         const dots = this.graph
             .selectAll("avgDot")
-            .data(this.data)
+            .data(this.data.filter(d => d.average <= 20))
             .join("circle")
+            .attr("class", "avgIcon")
             .style("opacity", 0)
             .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
-            .attr("cx", d => this.x(Math.min(d.average, this.maxSubmissions)))
+            .attr("cx", d => this.x(d.average))
             .attr("r", 4)
             .attr("fill", "currentColor");
         dots.transition()
             .duration(animation ? 500 : 0)
             .style("opacity", 1);
         dots.append("title")
+            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
+
+        // average > 20 -> arrows instead of dots
+        const arrows = this.graph
+            .selectAll("avgArrow")
+            .data(this.data.filter(d => d.average > 20))
+            .join("path")
+            .style("opacity", 0)
+            .attr("d", d3.symbol().type(d3.symbolTriangle))
+            .attr("fill", "currentColor")
+            .attr("transform", d => `translate(${this.x(20)}, ${this.y(d.ex_id) + this.y.bandwidth()/2}) rotate(90)`);
+
+        arrows.transition()
+            .duration(animation ? 500 : 0)
+            .style("opacity", 1);
+        arrows.append("title")
             .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
 
         // Additional metrics
@@ -165,6 +182,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
      */
     protected override processData({ data, exercises }: RawData): void {
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
+        this.insertFakeData(data);
         // transform data into array of records for easier binning
         // eslint-disable-next-line camelcase
         this.data = data.map(({ ex_id, ex_data }) => ({
@@ -247,5 +265,18 @@ export class ViolinGraph extends SeriesExerciseGraph {
         this.tooltipLine.attr("opacity", 0);
         this.tooltipLabel.attr("opacity", 0);
         this.tooltipLabels.attr("opacity", 0);
+    }
+
+    private insertFakeData(data): void {
+        data.forEach(ex => {
+            const students = 20 + parseInt(Math.random() * 50);
+            let i = 0;
+            const exData = [];
+            while (i < students) {
+                exData.push(parseInt(5 + Math.random()*30));
+                i++;
+            }
+            ex.ex_data = exData;
+        });
     }
 }

@@ -215,6 +215,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .duration(200)
             .style("opacity", .9);
         let message = "";
+        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
@@ -225,14 +226,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             `;
         } else if (this.binStep === 24) { // binning per day
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            message = `${format(d.date)}:<br>`;
-        } else if (this.binStep < 168) {
+            message = `${capitalize(format(d.date))}:<br>`;
+        } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
                 <b>${format(d.date)} - ${format(new Date(d.date + this.binStep * 3600000))}
                 <br>
             `;
-        } else {
+        } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `

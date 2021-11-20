@@ -30,7 +30,11 @@
   </span>
   <div class="row">
     <div class="col-md-6">
-      <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
+      <span class='status-icon float-start'>
+        <button class="btn btn-icon" data-clipboard-text="<%= submission.id %>" title="Copy submission link to clipboard.">
+          <%= submission_status_icon(submission, 36) %>
+        </button>
+      </span>
       <span class="status-line">
         <%= Submission.human_enum_name(:status, submission.status) %>
         <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>

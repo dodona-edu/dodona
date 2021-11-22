@@ -459,7 +459,7 @@ GEM
       public_suffix
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.1.0)
+    web-console (4.2.0)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -563,7 +563,7 @@ DEPENDENCIES
   test-prof (~> 1.0.7)
   tzinfo-data
   uglifier (>= 4.1.20)
-  web-console (~> 4.1.0)
+  web-console (~> 4.2.0)
   webmock
   webpacker (~> 5.4.3)
   will_paginate (~> 3.3.1)

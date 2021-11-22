@@ -60,7 +60,7 @@ en:
     stacked_title: Distribution of submission statuses
     timeseries_title: Submissions over time
     ctimeseries_title: Users with at least one correct submission
-    violin_desc: This graph shows the distribution of the number of submissions. The larger the zone, the more students submitted that number of solutions.
+    violin_desc: This graph shows the distribution of the number of submissions. The larger the zone, the more students submitted that number of solutions. The dot indicates the average. When the average is larger than 20, the dot is replaced by an arrow.
     stacked_desc: This graph shows the distribution of submissions statuses.
     timeseries_desc: This graph shows on which days the students submitted the most solutions.
     ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.

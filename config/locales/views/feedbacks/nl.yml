@@ -2,7 +2,7 @@ nl:
   feedbacks:
     show:
       feedback: "Feedback geven"
-      no_linked_submission: "Deze gebruiker heeft geen oplossing voor deze oefening ingediend voor de deadline van de evaluatie."
+      no_linked_submission: "Deze gebruiker heeft geen oplossing voor deze oefening ingediend voor de evaluatiedeadline."
       submission_for: "Oplossing voor"
       by: "door"
       submission:

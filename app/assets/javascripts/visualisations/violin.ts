@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // eslint-disable-next-line
 // @ts-nocheck
 
@@ -129,7 +130,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .attr("fill", "transparent")
             .attr("stroke", "currentColor")
             .attr("stroke-width", 4)
-            .attr("transform", d => `translate(${this.x(20)}, ${this.y(d.ex_id) + this.y.bandwidth()/2})`)
+            .attr("transform", d => `translate(${this.x(20)}, ${this.y(d.ex_id) + this.y.bandwidth()/2})`);
 
 
         arrows.transition()
@@ -197,7 +198,6 @@ export class ViolinGraph extends SeriesExerciseGraph {
      */
     protected override processData({ data, exercises }: RawData): void {
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
-        this.insertFakeData(data);
         // transform data into array of records for easier binning
         // eslint-disable-next-line camelcase
         this.data = data.map(({ ex_id, ex_data }) => ({
@@ -280,18 +280,5 @@ export class ViolinGraph extends SeriesExerciseGraph {
         this.tooltipLine.attr("opacity", 0);
         this.tooltipLabel.attr("opacity", 0);
         this.tooltipLabels.attr("opacity", 0);
-    }
-
-    private insertFakeData(data): void {
-        data.forEach(ex => {
-            const students = 20 + parseInt(Math.random() * 50);
-            let i = 0;
-            const exData = [];
-            while (i < students) {
-                exData.push(parseInt(5 + Math.random()*30));
-                i++;
-            }
-            ex.ex_data = exData;
-        });
     }
 }

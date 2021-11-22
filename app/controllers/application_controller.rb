@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   MAX_STORED_URL_LENGTH = 1024
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
+  rescue_from ActionController::ParameterMissing, with: :bad_request
 
   protect_from_forgery with: :null_session
 
@@ -118,6 +120,12 @@ class ApplicationController < ActionController::Base
         redirect_to(root_path)
       end
     end
+  end
+
+  def bad_request
+    # rubocop:disable Rails/RenderInline
+    render status: :bad_request, inline: 'Bad request'
+    # rubocop:enable Rails/RenderInline
   end
 
   def set_locale

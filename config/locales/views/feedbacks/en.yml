@@ -2,7 +2,7 @@ en:
   feedbacks:
     show:
       feedback: "Give feedback"
-      no_linked_submission: "We couldn't find a submission of this user for this exercise that was made before the deadline of this evaluation."
+      no_linked_submission: "This user did not submit a solution for this exercise before the evaluation deadline."
       submission_for: "Submission for"
       by: "by"
       submission:

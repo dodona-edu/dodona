@@ -10,6 +10,9 @@
 
 <div class="submission-summary clearfix">
   <span class="description">
+    <button class="btn btn-icon" data-clipboard-text="<%= submission_url(submission) %>" title="<%= t 'submissions.show.copy_submission_link' %>">
+      <i class="mdi mdi-36 mdi-link float-start"></i>
+    </button>
     <%= t "submissions.show.submission_for" %>
     <% if submission.course.nil? %>
       <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
@@ -30,11 +33,7 @@
   </span>
   <div class="row">
     <div class="col-md-6">
-      <span class='status-icon float-start'>
-        <button class="btn btn-icon" data-clipboard-text="<%= submission_url(submission) %>" title="<%= t "submissions.show.copy_submission_link" %>">
-          <%= submission_status_icon(submission, 36) %>
-        </button>
-      </span>
+      <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
       <span class="status-line">
         <%= Submission.human_enum_name(:status, submission.status) %>
         <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>

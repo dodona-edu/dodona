@@ -135,11 +135,16 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'create submission should respond bad_request without an exercise' do
+  test 'create submission should respond unprocessable_entity without an exercise' do
     attrs = generate_attr_hash
     attrs.delete(:exercise_id)
     create_request(attr_hash: attrs)
     assert_response :unprocessable_entity
+  end
+
+  test 'create submission should respond bad_request without a hash' do
+    post submissions_url
+    assert_response :bad_request
   end
 
   test 'create submission within course' do

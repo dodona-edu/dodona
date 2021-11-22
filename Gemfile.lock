@@ -122,9 +122,10 @@ GEM
       addressable
     daemons (1.4.0)
     dalli (3.0.4)
-    ddtrace (0.53.0)
-      ffi (~> 1.0)
+    ddtrace (0.54.0)
+      debase-ruby_core_source (= 0.10.12)
       msgpack
+    debase-ruby_core_source (0.10.12)
     delayed_job (4.1.9)
       activesupport (>= 3.0, < 6.2)
     delayed_job_active_record (4.1.6)
@@ -504,7 +505,7 @@ DEPENDENCIES
   capybara (~> 3.36.0)
   codecov (~> 0.6.0)
   dalli (~> 3.0.4)
-  ddtrace (~> 0.53.0)
+  ddtrace (~> 0.54.0)
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)
   devise (~> 4.8.0)

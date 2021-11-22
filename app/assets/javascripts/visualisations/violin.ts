@@ -53,7 +53,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .range([5, this.innerWidth]);
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.innerHeight})`)
-            .call(d3.axisBottom(this.x))
+            .call(d3.axisBottom(this.x).tickFormat(t => t === this.maxSubmissions ? `${t}+` : t))
             .select(".domain").remove();
         this.graph.append("text")
             .attr("text-anchor", "middle")

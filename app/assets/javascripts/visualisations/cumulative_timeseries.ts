@@ -142,7 +142,11 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.xAxis
             .attr("transform", `translate(0, ${this.y(0)})`)
             .call(d3.axisBottom(this.x)
-                .tickValues(this.binTicks)
+                .tickValues(
+                    this.binTicks.length >= 20 ?
+                        this.binTicks.filter((_, i) => !(i % 2)) :
+                        this.binTicks
+                )
                 .tickFormat(this.binStep >= 24 ?
                     d3.timeFormat(I18n.t("date.formats.weekday_short")):
                     d3.timeFormat(I18n.t("time.formats.plain_time")))

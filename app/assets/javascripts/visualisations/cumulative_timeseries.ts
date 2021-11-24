@@ -7,7 +7,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
     protected readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
 
-    private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
+    private readonly bisector = d3.bisector((d: number) => d).left;
 
     // scales
     private x: d3.ScaleTime<number, number>;
@@ -57,7 +57,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.yAxis = this.graph.append("g");
 
         // X scale
-        this.x = d3.scaleBand()
+        this.x = d3.scaleTime()
             .domain(this.binTicks)
             .range([0, this.innerWidth]);
 
@@ -135,8 +135,8 @@ export class CTimeseriesGraph extends SeriesGraph {
             .call(d3.axisLeft(this.y).ticks(5, ".0%"));
 
         // updateX scale
-        this.x = d3.scaleBand()
-            .domain(this.binTicks)
+        this.x = d3.scaleTime()
+            .domain([this.minDate, this.maxDate])
             .range([0, this.innerWidth]);
 
         this.xAxis
@@ -189,6 +189,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.binStep = binStep;
         this.binTicks = binTicks;
         this.minDate = allignedStart;
+        this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
@@ -219,22 +220,22 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @return {Object} The index of the cursor in the date array + the date of that position
      */
     private bisect(mx: number): { "date": Date; "i": number } {
-        const min = this.dateArray[0];
-        const max = this.dateArray[this.dateArray.length - 1];
-        if (!this.dateArray) { // probably not necessary, but just to be safe
+        const min = this.minDate.getTime();
+        const max = this.maxDate.getTime();
+        if (!this.binTicks) { // probably not necessary, but just to be safe
             return { "date": new Date(0), "i": 0 };
         }
         const date = this.x.invert(mx);
-        const index = this.bisector(this.dateArray, date, 1);
-        const a = index > 0 ? this.dateArray[index - 1] : min;
-        const b = index < this.dateArray.length ? this.dateArray[index] : max;
+        const index = this.bisector(this.binTicks, date, 1);
+        const a = index > 0 ? this.binTicks[index - 1] : min;
+        const b = index < this.binTicks.length ? this.binTicks[index] : max;
         if (
-            index < this.dateArray.length &&
-            date.getTime() - a.getTime() > b.getTime() - date.getTime()
+            index < this.binTicks.length &&
+            date.getTime() - a > b - date.getTime()
         ) {
-            return { "date": b, "i": index };
+            return { "date": new Date(b), "i": index };
         } else {
-            return { "date": a, "i": index - 1 };
+            return { "date": new Date(a), "i": index - 1 };
         }
     }
 
@@ -254,7 +255,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipOver(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -279,7 +280,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipMove(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -312,7 +313,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     private tooltipText(i: number): string {
-        let result = `<b>${this.longDateFormat(this.dateArray[this.tooltipIndex])}</b>`;
+        let result = `<b>${this.longDateFormat(this.binTicks[this.tooltipIndex])}</b>`;
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
             result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}

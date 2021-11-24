@@ -313,13 +313,38 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     private tooltipText(i: number): string {
-        let result = `<b>${this.longDateFormat(this.binTicks[this.tooltipIndex])}</b>`;
+        const date = this.binTicks[i];
+        let message = "";
+        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+        if (this.binStep < 24) {
+            const on = I18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${timeFormat(date)} - ${timeFormat(new Date(date + this.binStep * 3600000))}
+                <br>${on} ${dateFormat(date)}:
+            `;
+        } else if (this.binStep === 24) { // binning per day
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `${capitalize(format(date))}:`;
+        } else if (this.binStep < 168) { // binning per multiple days
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${capitalize(format(date))} - ${format(new Date(date + this.binStep * 3600000))}:
+            `;
+        } else { // binning per week(s)
+            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            message = `
+                <b>${capitalize(weekDay(date))} - ${monthDay(new Date(date + this.binStep * 3600000))}:
+            `;
+        }
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
-            result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
+            message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
                     (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
-        return result;
+        return message;
     }
 
     private yRangeToggle(): void {
@@ -354,8 +379,8 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     // ctimeseries
     private insertFakeData(data, maxCount): void {
-        const timeDelta = 1; // in hours
-        const timeStep = 1/12; // in hours
+        const timeDelta = 20*24*2; // in hours
+        const timeStep = 24*2; // in hours
         const end = new Date(d3.max(data,
             ex => d3.max(ex.ex_data)));
         const start = new Date(end.getTime() - timeDelta * 3600000);

@@ -51,6 +51,7 @@ en:
     user: user
     users: users
     with: with
+    date_on: "on"
     submission: submission
     submissions: submissions
     attempts: attempts

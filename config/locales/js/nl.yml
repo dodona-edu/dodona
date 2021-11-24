@@ -51,6 +51,7 @@ nl:
     user: gebruiker
     users: gebruikers
     with: met
+    date_on: op
     submission: oplossing
     submissions: oplossingen
     attempts: pogingen

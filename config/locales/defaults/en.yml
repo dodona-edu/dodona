@@ -27,11 +27,19 @@ en:
     formats:
       weekday_short: "%a %b %d"
       weekday_long: "%A %B %d"
+      monthday_long: "%B %d"
   time:
+    units:
+      sec: ["second", "seconds"]
+      min: ["minute", "minutes"]
+      hour: ["hour", "hours"]
+      day: ["day", "days"]
+      week: ["week", "weeks"]
     formats:
       annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
+      plain_time: '%H:%M'
   controllers:
     created: "%{model} was successfully created."
     updated: "%{model} was successfully updated."

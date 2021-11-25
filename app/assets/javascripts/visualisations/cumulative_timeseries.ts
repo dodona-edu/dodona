@@ -217,6 +217,9 @@ export class CTimeseriesGraph extends SeriesGraph {
                 binned.pop();
             }
             const cSums = d3.cumsum(binned, d => d.length);
+            if (meta["initial"]) {
+                cSums[0] += meta["initial"][ex.ex_id] ?? 0;
+            }
             this.data.push({
                 ex_id: String(ex.ex_id),
                 ex_data: binned.map((bin, i) => ({ x1: bin["x1"], cSum: cSums[i] }))

@@ -131,9 +131,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("align-items", "center");
 
         legend.append("div")
-            .style("border-radius", "5px")
-            .style("width", "30px")
-            .style("height", "30px")
+            .style("border-radius", "3.3px")
+            .style("width", "20px")
+            .style("height", "20px")
             .style("border-style", "solid")
             .style("border-width", "2px")
             .style("border-color", highColor);

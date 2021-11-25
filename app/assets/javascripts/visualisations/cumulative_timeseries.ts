@@ -180,7 +180,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     // eslint-disable-next-line camelcase
-    protected override processData({ data, exercises, student_count }: RawData): void {
+    protected override processData({ data, exercises, student_count, meta }: RawData): void {
         this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];

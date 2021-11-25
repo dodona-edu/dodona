@@ -11,7 +11,7 @@ export type RawData = {
     // eslint-disable-next-line camelcase
     student_count: number,
     // eslint-disable-next-line camelcase
-    series_update: string
+    meta: Record
 }
 
 export abstract class SeriesGraph {
@@ -95,7 +95,6 @@ export abstract class SeriesGraph {
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
-            this.setPickerDefault(data);
             this.processData(data);
             this.draw();
         }
@@ -105,10 +104,20 @@ export abstract class SeriesGraph {
     protected abstract processData(raw: RawData): void;
 
 
-    private setPickerDefault(raw: RawData): void {
+    /**
+     * Sets picker limits, default calendar page and default start and end dates
+     * @param {Date} minDate Cannot pick a date earlier than this
+     * @param {Date} medianDate Could be used to mark interesting dates on the calendar
+     * @param {Date} start Default selected start date
+     * @param {Date} end Default selected end date
+     * @return {void}
+     */
+    protected setPickerDates(minDate: Date, medianDate: Date, start: Date, end: Date): void {
         if (!this.isTimeGraph()) return;
-        this.fpStart.jumpToDate(new Date(raw.series_update));
-        this.fpEnd.jumpToDate(new Date(raw.series_update));
+        this.fpStart.set("minDate", Math.min(minDate, start));
+        this.fpEnd.set("minDate", minDate);
+        this.fpStart.setDate(start);
+        this.fpEnd.setDate(end);
     }
 
     private getUrl(): string {
@@ -204,9 +213,9 @@ export abstract class SeriesGraph {
 
     applyScope(): void {
         this.dateStart = this.fpStart.selectedDates.length > 0 ?
-            new Date(this.fpStart.selectedDates[0]).toISOString() : "";
+            new Date(this.fpStart.selectedDates[0]).toISOString() : undefined;
         this.dateEnd = this.fpEnd.selectedDates.length > 0 ?
-            new Date(this.fpEnd.selectedDates[0]).toISOString() : "";
+            new Date(this.fpEnd.selectedDates[0]).toISOString() : undefined;
         this.init();
     }
 
@@ -358,7 +367,6 @@ export abstract class SeriesGraph {
         if (r.data.length === 0) {
             this.drawNoData();
         } else {
-            this.setPickerDefault(r);
             this.processData(r);
             if (doDraw) {
                 // next draw the graph

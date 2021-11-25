@@ -393,7 +393,6 @@ class Submission < ApplicationRecord
             .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -420,7 +419,6 @@ class Submission < ApplicationRecord
       value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -430,7 +428,7 @@ class Submission < ApplicationRecord
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
     submissions = submissions.from_students(options[:series].course)
-    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end]
+    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 
     value = {}
 
@@ -452,7 +450,6 @@ class Submission < ApplicationRecord
     end
 
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -463,7 +460,10 @@ class Submission < ApplicationRecord
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.from_students(options[:series].course)
-    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end]
+
+    first_sub = submissions.least_recent.first.created_at
+    init_subs = options[:start].present? ? submissions.before_deadline(options[:start]) : submissions.before_deadline(first_sub)
+    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 
     value = {}
     submissions.find_in_batches do |subs|
@@ -474,9 +474,20 @@ class Submission < ApplicationRecord
           .transform_values { |values| values.map { |v| v[1] } }
       ) { |_k, v1, v2| v1 + v2 }
     end
+
+    initial = {}
+    init_subs.find_in_batches do |subs|
+      initial = initial.merge(
+        subs.map { |s| [s.exercise_id, s.created_at] }
+          .group_by { |ex_id_date| ex_id_date[0] } # group by exId
+          # drop exId from values
+          .transform_values(&:count)
+      ) { |_k, v1, v2| v1 + v2 }
+    end
     {
-      until: submissions.first&.id || 0,
-      value: value
+      value: value,
+      initial: initial,
+      first_sub: first_sub
     }
   end
 

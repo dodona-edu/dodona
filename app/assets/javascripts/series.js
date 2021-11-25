@@ -143,7 +143,14 @@ function initSeriesShow(id) {
             const type = e.target.dataset.type;
             const seriesId = e.target.dataset.seriesId;
 
-            new (graphMapping[type])(seriesId, `#stats-container-${seriesId}`).init();
+            const graph = new (graphMapping[type])(seriesId, `#stats-container-${seriesId}`);
+            console.log(graph.isTimeGraph());
+            if (graph.isTimeGraph()) {
+                document.getElementById(`daterange-${seriesId}`).hidden = false;
+            } else {
+                document.getElementById(`daterange-${seriesId}`).hidden = true;
+            }
+            graph.init();
 
             const card = document.getElementById(`series-card-${seriesId}`);
             card.querySelector(".graph-title span").textContent = I18n.t(`js.${type}_title`);

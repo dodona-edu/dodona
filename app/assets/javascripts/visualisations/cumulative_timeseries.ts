@@ -404,4 +404,13 @@ export class CTimeseriesGraph extends SeriesGraph {
             .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
     }
+
+    /**
+     * Whether the graph will use the time picker
+     * Seems to get overwritten if it's a property
+     * @return {boolean}
+     */
+    public isTimeGraph(): boolean {
+        return true;
+    }
 }

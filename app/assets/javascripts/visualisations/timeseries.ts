@@ -302,4 +302,13 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         }[status] || ["alert", "warning"];
         return `<i class="mdi mdi-${icon} mdi-${size} colored-${color}" style="margin-right: 5px"></i>`;
     }
+
+    /**
+     * Whether the graph will use the time picker
+     * Seems to get overwritten if it's a property
+     * @return {boolean}
+     */
+    public isTimeGraph(): boolean {
+        return true;
+    }
 }

@@ -74,21 +74,24 @@ export abstract class SeriesGraph {
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         this.darkMode = window.dodona.darkMode;
 
-        const options = {
-            wrap: true,
-            enableTime: true,
-            dateFormat: I18n.t("time.formats.flatpickr_short"),
-            altInput: true,
-            altFormat: I18n.t("time.formats.flatpickr_long"),
-        };
-        if (I18n.locale === "nl") {
-            options.locale = Dutch;
+        console.log(this.isTimeGraph());
+        if (this.isTimeGraph()) {
+            const options = {
+                wrap: true,
+                enableTime: true,
+                dateFormat: I18n.t("time.formats.flatpickr_short"),
+                altInput: true,
+                altFormat: I18n.t("time.formats.flatpickr_long"),
+            };
+            if (I18n.locale === "nl") {
+                options.locale = Dutch;
+            }
+            console.log(document.getElementById(`scope-start-${seriesId}`));
+            this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
+            this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
+            this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
+            this.scopeApply.onclick = () => this.applyScope();
         }
-        this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
-        this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
-        this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
-        // this.scopeApply.onclick = this.applyScope();
-        this.scopeApply.onclick = () => this.applyScope();
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
@@ -103,6 +106,7 @@ export abstract class SeriesGraph {
 
 
     private setPickerDefault(raw: RawData): void {
+        if (!this.isTimeGraph()) return;
         this.fpStart.jumpToDate(new Date(raw.series_update));
         this.fpEnd.jumpToDate(new Date(raw.series_update));
     }
@@ -361,5 +365,14 @@ export abstract class SeriesGraph {
                 this.draw();
             }
         }
+    }
+
+    /**
+     * Whether the graph will use the time picker
+     * Seems to get overwritten if it's a property
+     * @return {boolean}
+     */
+    public isTimeGraph(): boolean {
+        return false;
     }
 }

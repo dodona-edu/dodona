@@ -94,49 +94,20 @@ export class ViolinGraph extends SeriesExerciseGraph {
         // Average dots
         const dots = this.graph
             .selectAll("avgDot")
-            .data(this.data.filter(d => d.average <= 20))
+            .data(this.data)
             .join("circle")
             .attr("class", "avgIcon")
             .style("opacity", 0)
             .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
-            .attr("cx", d => this.x(d.average))
+            .attr("cx", d => this.x(Math.min(20, d.average)))
             .attr("r", 4)
-            .attr("fill", "currentColor");
+            .attr("fill", d => d.average <= 20 ? "currentColor" : "transparent")
+            .attr("stroke", "currentColor")
+            .attr("stroke-width", 2);
         dots.transition()
             .duration(animation ? 500 : 0)
             .style("opacity", 1);
         dots.append("title")
-            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
-
-        // average > 20 -> arrows instead of dots
-        // const arrows = this.graph
-        //     .selectAll("avgArrow")
-        //     .data(this.data.filter(d => d.average > 20))
-        //     .join("path")
-        //     .style("opacity", 0)
-        //     .attr("d", d3.symbol().type(d3.symbolTriangle))
-        //     .attr("fill", "currentColor")
-        //     .attr("transform", d => `translate(${this.x(20)}, ${this.y(d.ex_id) + this.y.bandwidth()/2}) rotate(90)`);
-
-        const customArrow = (size: number): string => {
-            return `M -${size/2} -${size} c ${size} ${size + size / 4}, ${size} ${size - size/4}, 0 ${2 * size}`;
-        };
-
-        const arrows = this.graph.selectAll("avgArrow")
-            .data(this.data.filter(d => d.average > 20))
-            .join("path")
-            .attr("d", customArrow(8))
-            .style("opacity", 0)
-            .attr("fill", "transparent")
-            .attr("stroke", "currentColor")
-            .attr("stroke-width", 4)
-            .attr("transform", d => `translate(${this.x(20)}, ${this.y(d.ex_id) + this.y.bandwidth()/2})`);
-
-
-        arrows.transition()
-            .duration(animation ? 500 : 0)
-            .style("opacity", 1);
-        arrows.append("title")
             .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
 
         // Additional metrics

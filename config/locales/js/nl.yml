@@ -60,7 +60,7 @@ nl:
     stacked_title: Verdeling van de oplossingsstatus
     timeseries_title: Ingediende oplossingen over tijd
     ctimeseries_title: Gebruikers met minstens één correcte oplossing
-    violin_desc: Deze grafiek geeft de verdeling weer van het aantal ingediende oplossingen. Hoe dikker de zone op de grafiek, hoe meer studenten dat aantal pogingen nodig had.
+    violin_desc: Deze grafiek geeft de verdeling weer van het aantal ingediende oplossingen. Hoe dikker de zone op de grafiek, hoe meer studenten dat aantal pogingen nodig had. Het bolletje geeft het gemiddelde aan. Wanneer het gemiddelde groter dan 20 is, wordt het bolletje hol.
     stacked_desc: Deze grafiek geeft de verdeling van de oplossingsstatussen per oefening weer.
     timeseries_desc: Deze grafiek toont op welke dagen het meest aan een bepaalde oefening werd gewerkt.
     ctimeseries_desc: Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.

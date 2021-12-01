@@ -9,7 +9,7 @@ nl:
     failure:
       already_authenticated: "Je bent al ingelogd."
       inactive: "Je account is nog niet geactiveerd."
-      invalid: "Er was een probleem bij het aanmelden. Vermoedelijk is je emailadres veranderd. Neem contact op om dit probleem op te lossen."
+      invalid: "Er was een probleem bij het aanmelden. Vermoedelijk is je e-mailadres veranderd. Neem contact op om dit probleem op te lossen."
       invalid_token: "Ongeldig authenticiteit token."
       locked: "Je account is vergrendeld."
       not_found_in_database: "Ongeldig e-mail of wachtwoord."
@@ -28,7 +28,7 @@ nl:
       user_not_created: "kan gebruiker niet aanmaken"
       unknown_failure: "een onbekende fout is opgetreden"
       failure: "Kan je niet aanmelden met %{kind}, reden: \"%{reason}\"."
-      wrong_provider: "Het emailadres waarmee je probeerde aan te melden via %{tried_provider_type} (%{tried_provider_institution}) werd al eerder gebruikt om aan te melden via %{user_provider_type} (%{user_institution}). Waarschijnlijk koos je per ongeluk de foute inlogmethode."
+      wrong_provider: "Het e-mailadres waarmee je probeerde aan te melden via %{tried_provider_type} (%{tried_provider_institution}) werd al eerder gebruikt om aan te melden via %{user_provider_type} (%{user_institution}). Waarschijnlijk koos je per ongeluk de foute inlogmethode."
       wrong_provider_extra: "Aanmelden via %{user_provider_type}."
       linked: Omdat je nog niet eerder op Dodona inlogde vanaf Ufora, konden we de gevraagde actie niet uitvoeren. Nu we je UGent-account gekoppeld hebben, zou dit wel moeten lukken. Klik opnieuw op de link in Ufora om opnieuw te proberen.
       success: "Succesvol geautoriseerd met %{kind} account."
@@ -42,7 +42,7 @@ nl:
       destroyed: "Tot ziens! Je account is succesvol verwijderd."
       signed_up: "Welkom, u bent succesvol ingelogd"
       signed_up_but_inactive: "Je bent succesvol ingelogd, echter kunnen we nog niet inloggen, omdat je account nog niet is geactiveerd."
-      signed_up_but_locked: "Je bent succesvol ingelogd, echter kunnen we nog niet inloggen, omdat je account is geblokeerd."
+      signed_up_but_locked: "Je bent succesvol ingelogd, echter kunnen we nog niet inloggen, omdat je account is geblokkeerd."
       signed_up_but_unconfirmed: "Een e-mail met een bevestigings URL is verstuurd. Gebruik de URL om je account te activeren."
       update_needs_confirmation: "Je account is succesvol gewijzigd, echter hebben moet je nog wel je e-mail adres verifiëren."
       updated: "Je account is succesvol gewijzigd"
@@ -53,7 +53,7 @@ nl:
     unlocks:
       send_instructions: "Je zult een e-mail met instructies ontvangen over hoe je jouw account moet unlocken over een paar minuten."
       send_paranoid_instructions: "Als je e-mail bestaat in onze database, zul je een e-mail met instructies ontvangen over hoe je jouw account moet unlocken over een paar minuten."
-      unlocked: "Je account is succesvol geunlockt. Log in om verder te gaan."
+      unlocked: "Je account is succesvol geünlockt. Log in om verder te gaan."
   errors:
     messages:
       already_confirmed: "is al bevestigd, probeer in te loggen"

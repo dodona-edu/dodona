@@ -25,7 +25,7 @@ class Annotation < ApplicationRecord
   belongs_to :last_updated_by, class_name: 'User'
 
   validates :user, presence: true
-  validates :annotation_text, presence: true, length: { minimum: 1, maximum: 2048 }
+  validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
   validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }

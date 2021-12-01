@@ -137,6 +137,7 @@ nl:
         name: Naam
         short_name: Korte naam
         providers: Logintypes
+        category: Categorie
       provider:
         saml: SAML
         office365: Office 365

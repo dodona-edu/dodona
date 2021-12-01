@@ -36,8 +36,8 @@ class CsvDiffer
     end
   end
 
-  # Determine if the numer of columns is lower than 20. Such a table is considered
-  # 'renderable' using this differ, otherwise the perfomance penaly might be too high.
+  # Determine if the number of columns is lower than 20. Such a table is considered
+  # 'renderable' using this differ, otherwise the performance penalty might be too high.
   #
   # @param [String] raw The csv-encoded output as received from the judge
   # @return [Boolean]   Is the number of columns 'limited'?
@@ -224,7 +224,7 @@ class CsvDiffer
   # Build a simplified version of the unified table body
   #
   # This simplified view combines all rows in a column into 1 row with newlines.
-  # The columns are still seperate, but the diff is less accurate.
+  # The columns are still separate, but the diff is less accurate.
   #
   # @param [Builder::XmlMarkup] builder The xml builder that is used to generate the html
   # @return [Builder::XmlMarkup]        The table contents as an xml object
@@ -265,7 +265,7 @@ class CsvDiffer
   # Build a simplified version of the split table body
   #
   # This simplified view combines all rows in a column into 1 row with newlines.
-  # The columns are still seperate, but the diff is less accurate.
+  # The columns are still separate, but the diff is less accurate.
   #
   # @param [Builder::XmlMarkup]   builder The xml builder that is used to generate the html
   # @param [Array<Array<String>>] data    The table contents as a decoded (not yet html escaped) 2D array

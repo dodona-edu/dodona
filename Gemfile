@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 2.7.2'
+ruby '~> 2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.5.0'
+gem 'puma', '~> 5.5.2'
 # Use sass for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
@@ -17,7 +17,7 @@ gem 'uglifier', '>= 4.1.20'
 gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11.2'
+gem 'jbuilder', '~> 2.11.3'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.9.1', require: false
+gem 'bootsnap', '~> 1.9.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -65,7 +65,7 @@ gem 'ruby-saml', '~> 1.12.2'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
-gem 'omniauth-oauth2', '~> 1.7.1'
+gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
 # Json webtokens
@@ -120,7 +120,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 2.7.11'
+gem 'dalli', '~> 3.0.4'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -132,7 +132,7 @@ gem 'rack-mini-profiler', '~> 2.3.3'
 gem 'stackprof', '~> 0.2.17'
 
 # Datadog
-gem 'ddtrace', '~> 0.53.0'
+gem 'ddtrace', '~> 0.54.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -150,8 +150,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.35.3'
-  gem 'selenium-webdriver', '~> 3.142.7'
+  gem 'capybara', '~> 3.36.0'
+  gem 'selenium-webdriver', '~> 4.1.0'
 end
 
 group :test do
@@ -168,11 +168,11 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.7.0'
-  gem 'web-console', '~> 4.1.0'
+  gem 'web-console', '~> 4.2.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.12.3'
+  gem 'rubocop-rails', '~> 2.12.4'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

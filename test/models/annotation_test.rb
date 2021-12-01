@@ -50,7 +50,7 @@ class AnnotationTest < ActiveSupport::TestCase
 
   test 'can not create annotation with an enormous message' do
     annotation = build :annotation, submission: @submission, user: @annotating_user
-    annotation.annotation_text = 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
+    annotation.annotation_text = 'A' * 10_001 # max length of annotation text is 10.000 -> trigger failure
     assert_not annotation.valid?
   end
 

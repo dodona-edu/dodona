@@ -6,5 +6,5 @@ window.dodona.afterResize = afterResize;
 window.dodona.onFrameMessage = onFrameMessage;
 window.dodona.onFrameScroll = onFrameScroll;
 
-// will automaticaly bind to window.iFrameResize()
+// will automatically bind to window.iFrameResize()
 require("iframe-resizer"); // eslint-disable-line no-undef

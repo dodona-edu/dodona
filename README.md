@@ -14,7 +14,7 @@ The documentation for end users can be found at [https://docs.dodona.be](https:/
 
 ## Supporting Dodona
 
-Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundeds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
+Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundreds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
 
 ## Contacting us
 
@@ -46,7 +46,7 @@ If you want to help with development, issues tagged with the [student label](htt
 4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=true rails db:setup`
 5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
-6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
+6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database from step 4)
    - `http://dodona.localhost:3000/nl/users/1/token/zeus`
    - `http://dodona.localhost:3000/nl/users/2/token/staff`
    - `http://dodona.localhost:3000/nl/users/3/token/student`
@@ -82,7 +82,7 @@ This has one letdown: debugging with `byebug` is broken.
 
 #### Localhost subdomain
 
-Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
+Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed). We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
 
 If this does not work out of the box you can add the following lines to your `/etc/hosts` file:
 ```

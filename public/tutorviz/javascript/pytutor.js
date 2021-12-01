@@ -3389,7 +3389,7 @@ function(objID, stepNum, d3DomElement, isTopLevel) {
             tbl.append('<tr></tr>');
           }
 
-          var curTr = tbl.find('tr:last');
+          var curTr = tbl.children().last();
           curTr.append('<td class="setElt"></td>');
           myViz.renderNestedObject(val, stepNum, curTr.find('td:last'));
         });

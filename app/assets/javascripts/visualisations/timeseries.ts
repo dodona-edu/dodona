@@ -245,9 +245,13 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         message += `
             <b>${d.sum} ${subString}</b>
             `;
-        this.statusOrder.forEach(s => {
-            if (d[s]) {
-                message += `<br>${d[s]} ${I18n.t(`js.status.${s.replaceAll(" ", "_")}`)}`;
+        this.statusOrder.forEach(status => {
+            console.log(status, this.submissionStatusIcon(status));
+            if (d[status]) {
+                message += `    
+                <span style="display: flex; justify-items: center">
+                ${this.submissionStatusIcon(status)}${d[status]} ${I18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
+                </span>`;
             }
         });
         this.tooltip.html(message);
@@ -271,5 +275,18 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
+    }
+
+    private submissionStatusIcon(status, size = 18): string {
+        const [icon, color] = {
+            "correct": ["check", "correct"],
+            "wrong": ["close", "wrong"],
+            "time limit exceeded": ["alarm", "wrong"],
+            "runtime error": ["flash", "wrong"],
+            "compilation error": ["flash-circle", "wrong"],
+            "memory limit exceeded": ["memory", "wrong"],
+            "output limit exceeded": ["script-text", "wrong"]
+        }[status] || ["alert", "warning"];
+        return `<i class="mdi mdi-${icon} mdi-${size} colored-${color}" style="margin-right: 5px"></i>`;
     }
 }

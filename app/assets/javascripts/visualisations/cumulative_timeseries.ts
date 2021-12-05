@@ -140,17 +140,19 @@ export class CTimeseriesGraph extends SeriesGraph {
             .range([0, this.innerWidth]);
 
         this.xAxis
-            .attr("transform", `translate(0, ${this.y(0)})`)
+            .attr("transform", `translate(0, ${this.innerHeight})`)
             .call(d3.axisBottom(this.x)
                 .tickValues(
-                    this.binTicks.length >= 20 ?
-                        this.binTicks.filter((_, i) => !(i % 2)) :
-                        this.binTicks
+                    this.binTicks
                 )
                 .tickFormat(this.binStep >= 24 ?
                     d3.timeFormat(I18n.t("date.formats.weekday_short")):
                     d3.timeFormat(I18n.t("time.formats.plain_time")))
-            );
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dy", ".7em")
+            .attr("transform", "rotate(-25)");
 
         // add lines
         this.graph.selectAll(".line")

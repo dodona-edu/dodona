@@ -52,7 +52,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_date..end_date.to_date) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }

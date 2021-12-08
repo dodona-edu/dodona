@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 2.7.2'
+ruby '~> 2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.4'
@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.3'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.9.1', require: false
+gem 'bootsnap', '~> 1.9.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -151,7 +151,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.36.0'
-  gem 'selenium-webdriver', '~> 4.0.3'
+  gem 'selenium-webdriver', '~> 4.1.0'
 end
 
 group :test do

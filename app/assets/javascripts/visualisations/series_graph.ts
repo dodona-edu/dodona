@@ -168,7 +168,7 @@ export abstract class SeriesGraph {
      */
     protected findBinTime(
         minDate: Date,
-        maxDate: date,
+        maxDate: Date,
         targetBins: number
     ): [number, Array<number>, Date] {
         // find best bin step

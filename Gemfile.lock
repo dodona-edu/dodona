@@ -121,7 +121,7 @@ GEM
     css_parser (1.7.1)
       addressable
     daemons (1.4.0)
-    dalli (3.0.4)
+    dalli (3.1.1)
     ddtrace (0.54.1)
       debase-ruby_core_source (= 0.10.12)
       msgpack
@@ -504,7 +504,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.7.6)
   capybara (~> 3.36.0)
   codecov (~> 0.6.0)
-  dalli (~> 3.0.4)
+  dalli (~> 3.1.1)
   ddtrace (~> 0.54.1)
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)

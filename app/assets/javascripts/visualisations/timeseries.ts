@@ -221,7 +221,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}
+                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}</b>
                 <br>${on} ${dateFormat(d.date)}:<br>
             `;
         } else if (this.binStep === 24) { // binning per day
@@ -230,14 +230,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${capitalize(format(d.date))} - ${format(new Date(d.date + this.binStep * 3600000))}:
+                <b>${capitalize(format(d.date))} - ${format(new Date(d.date + this.binStep * 3600000))}:</b>
                 <br>
             `;
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `
-                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date + this.binStep * 3600000))}:
+                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date + this.binStep * 3600000))}:</b>
                 <br>
             `;
         }
@@ -250,7 +250,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             if (d[status]) {
                 message += `    
                 <span style="display: flex; justify-items: center">
-                ${this.submissionStatusIcon(status)}${d[status]} ${I18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
+                ${this.submissionStatusIcon(status)}
+                <b style="margin-right: 4px">${d[status]}</b>
+                ${I18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
                 </span>`;
             }
         });

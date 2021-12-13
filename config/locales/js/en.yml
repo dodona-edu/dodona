@@ -51,6 +51,7 @@ en:
     user: user
     users: users
     with: with
+    date_on: "on"
     submission: submission
     submissions: submissions
     attempts: attempts
@@ -62,7 +63,7 @@ en:
     ctimeseries_title: Users with at least one correct submission
     violin_desc: This graph shows the distribution of the number of submissions. The larger the zone, the more students submitted that number of solutions. The dot indicates the average. When the average is larger than 20, the dot turns hollow.
     stacked_desc: This graph shows the distribution of submissions statuses.
-    timeseries_desc: This graph shows on which days the students submitted the most solutions.
+    timeseries_desc: This graph shows on which moments the students submitted the most solutions.
     ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.
     status:
       correct: correct

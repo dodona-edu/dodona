@@ -437,7 +437,6 @@ class Submission < ApplicationRecord
     submissions.find_in_batches do |subs|
       value = value.merge(
         subs.map { |s| [s.exercise_id, s.created_at, s.status] }
-          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
           .group_by(&:itself) # group duplicates
           .transform_values(&:count) # count amount of duplicates
       ) { |_k, v1, v2| v1 + v2 }
@@ -461,7 +460,7 @@ class Submission < ApplicationRecord
   def self.cumulative_timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
+    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.from_students(options[:series].course)

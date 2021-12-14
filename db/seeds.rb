@@ -169,10 +169,10 @@ if Rails.env.development?
 
   puts "Create & clone activity repository (#{Time.now - start})"
 
-  activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
+  activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
   activity_repo.process_activities
 
-  big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
+  big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
 
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }

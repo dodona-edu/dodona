@@ -120,7 +120,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.0.4'
+gem 'dalli', '~> 3.1.1'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -132,7 +132,7 @@ gem 'rack-mini-profiler', '~> 2.3.3'
 gem 'stackprof', '~> 0.2.17'
 
 # Datadog
-gem 'ddtrace', '~> 0.54.0'
+gem 'ddtrace', '~> 0.54.1'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

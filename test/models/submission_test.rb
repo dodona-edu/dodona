@@ -356,7 +356,7 @@ class SubmissionTest < ActiveSupport::TestCase
       result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
-      assert_equal result.values[0], [{ date: '1302-07-11', status: 'correct', count: 6 }, { date: '1302-07-11', status: 'wrong', count: 9 }]
+      assert_equal result.values[0], [{ date: @date, status: 'correct', count: 6 }, { date: @date, status: 'wrong', count: 9 }]
 
       # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]

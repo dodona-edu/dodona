@@ -60,7 +60,7 @@ gem 'ace-rails-ap', '~>4.4'
 gem 'autoprefixer-rails', '~>10.3.3'
 
 # saml authentication
-gem 'devise', '~>4.8.0'
+gem 'devise', '~>4.8.1'
 gem 'ruby-saml', '~> 1.12.2'
 
 # omniauth

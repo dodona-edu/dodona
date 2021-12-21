@@ -99,7 +99,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .style("stroke", ex => this.color(ex.ex_id) as string)
             .style("fill", "none")
             .attr("d", ex => d3.line()
-                .x(d => this.x(d.x0))
+                .x(d => this.x(d.x1))
                 .y(this.innerHeight)
                 .curve(d3.curveMonotoneX)(ex.ex_data)
             );
@@ -160,7 +160,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .join("path")
             .transition().duration(animation ? 500: 0)
             .attr("d", ex => d3.line()
-                .x(d => this.x(d.x0))
+                .x(d => this.x(d.x1))
                 .y(d => this.y(d.cSum / this.studentCount))
                 .curve(d3.curveMonotoneX)(ex.ex_data)
             );
@@ -183,6 +183,8 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
+        this.insertFakeData(data, student_count);
+
         const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
         this.minDate = new Date(minDate);
         this.maxDate = new Date(maxDate);
@@ -201,12 +203,16 @@ export class CTimeseriesGraph extends SeriesGraph {
             const binned = d3.bin()
                 .value(d => d.getTime())
                 .thresholds(binTicks)
-                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex.ex_data);
+                .domain([0, this.maxDate.getTime()])(ex.ex_data);
             // combine bins with cumsum of the bins
+            const binAmount = binned.length;
+            if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
+                binned.pop();
+            }
             const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
                 ex_id: String(ex.ex_id),
-                ex_data: binned.map((bin, i) => ({ x0: bin["x0"], cSum: cSums[i] }))
+                ex_data: binned.map((bin, i) => ({ x1: bin["x1"], cSum: cSums[i] }))
             });
 
             // if 'students' undefined calculate max value from data
@@ -317,31 +323,43 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     private tooltipText(i: number): string {
         const date = this.binTicks[i];
-        let message = "";
+        let startMessage = ""; // formatted start moment
+        let endMessage = ""; // formatted end moment
+        let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
         const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+
+        if (i === 0) {
+            startMessage = capitalize(I18n.t("js.date_before"));
+        }
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            message = `
-                <b>${timeFormat(date)} - ${timeFormat(new Date(date + this.binStep * 3600000))}
-                <br>${on} ${dateFormat(date)}:
-            `;
+            startMessage = i ?
+                `${timeFormat(new Date(date - this.binStep * 3600000))} -` :
+                startMessage;
+            endMessage = timeFormat(date);
+            extraMessage = `<br>${on} ${dateFormat(date)}`;
         } else if (this.binStep === 24) { // binning per day
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            message = `${capitalize(format(date))}:`;
+            endMessage = `${i === 0 ? format(date) : capitalize(format(date))}:`;
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            message = `
-                <b>${capitalize(format(date))} - ${format(new Date(date + this.binStep * 3600000))}:
-            `;
+            startMessage = i ?
+                `${capitalize(format(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = format(date);
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
-            message = `
-                <b>${capitalize(weekDay(date))} - ${monthDay(new Date(date + this.binStep * 3600000))}:
-            `;
+            startMessage = i ?
+                `${capitalize(weekDay(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = i ?
+                monthDay(date):
+                weekDay(date);
         }
+        let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
             message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
@@ -378,5 +396,31 @@ export class CTimeseriesGraph extends SeriesGraph {
             .text(exId => this.exMap[exId])
             .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
+    }
+
+
+    private insertFakeData(data, maxCount): void {
+        const timeDelta = 24*7*20; // in hours
+        const timeStep = 24*7; // in hours
+        const end = new Date(d3.max(data,
+            ex => d3.max(ex.ex_data)));
+        const start = new Date(end.getTime() - timeDelta * 3600000);
+        data.forEach(ex => {
+            let count = 0;
+            ex.ex_data = [];
+            for (
+                let d = new Date(start);
+                d <= end;
+                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
+            ) {
+                const c = Math.round(Math.random()*5);
+                if (count + c <= maxCount) {
+                    count += c;
+                    for (let i = 0; i < c; i++) {
+                        ex.ex_data.push(new Date(d));
+                    }
+                }
+            }
+        });
     }
 }

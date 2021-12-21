@@ -221,9 +221,13 @@ export abstract class SeriesGraph {
 
         // Generate thresholds
         // --------------------
-        const binTicks = [];
-        for (let j = alignedStart.getTime(); j <= maxDate.getTime(); j += binStepMili) {
-            binTicks.push(j);
+        const binTicks = [alignedStart.getTime()];
+        for (
+            let j = alignedStart.getTime();
+            j <= maxDate.getTime();
+            j += binStepMili
+        ) {
+            binTicks.push(j+binStepMili);
         }
         return [resultStep, binTicks, alignedStart];
     }

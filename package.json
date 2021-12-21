@@ -10,7 +10,7 @@
     "@babel/preset-typescript": "^7.16.5",
     "@popperjs/core": "^2.11.0",
     "@rails/activestorage": "^6.1.4",
-    "@rails/ujs": "^6.1.4",
+    "@rails/ujs": "^7.0.0",
     "@rails/webpacker": "5.4.3",
     "@types/d3": "^7.1.0",
     "@types/jquery": "^3.5.10",

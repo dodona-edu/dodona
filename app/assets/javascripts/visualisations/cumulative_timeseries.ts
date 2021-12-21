@@ -5,7 +5,7 @@ import { RawData, SeriesGraph } from "./series_graph";
 
 export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
-    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
+    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 50 };
 
     private readonly bisector = d3.bisector((d: number) => d).left;
 
@@ -380,7 +380,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         const legend = this.container
             .append("div")
             .attr("class", "legend")
-            .style("margin-top", "-50px")
+            .style("margin-top", "-30px")
             .selectAll("div")
             .data(this.exOrder)
             .enter()

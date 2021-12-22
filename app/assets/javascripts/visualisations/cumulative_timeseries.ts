@@ -183,8 +183,6 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        this.insertFakeData(data, student_count);
-
         const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
         this.minDate = new Date(minDate);
         this.maxDate = new Date(maxDate);
@@ -396,31 +394,5 @@ export class CTimeseriesGraph extends SeriesGraph {
             .text(exId => this.exMap[exId])
             .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
-    }
-
-
-    private insertFakeData(data, maxCount): void {
-        const timeDelta = 24*7*20; // in hours
-        const timeStep = 24*7; // in hours
-        const end = new Date(d3.max(data,
-            ex => d3.max(ex.ex_data)));
-        const start = new Date(end.getTime() - timeDelta * 3600000);
-        data.forEach(ex => {
-            let count = 0;
-            ex.ex_data = [];
-            for (
-                let d = new Date(start);
-                d <= end;
-                d = new Date(d.getTime() + (1 + Math.random()*2) * timeStep * 3600000)
-            ) {
-                const c = Math.round(Math.random()*5);
-                if (count + c <= maxCount) {
-                    count += c;
-                    for (let i = 0; i < c; i++) {
-                        ex.ex_data.push(new Date(d));
-                    }
-                }
-            }
-        });
     }
 }

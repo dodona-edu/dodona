@@ -55,6 +55,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
             .domain([0, this.maxStack]);
         this.x = d3.scaleBand()
+            // dropping first bin since the before bin isn't used
             .domain(this.binTicks)
             .range([0, this.innerWidth]);
 
@@ -174,13 +175,21 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.binStep = binStep;
         this.binTicks = binTicks;
         this.minDate = allignedStart;
+        this.maxDate = new Date(this.binTicks[this.binTicks.length-1]);
 
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
-            const binned = d3.bin()
+            let binned = d3.bin()
                 .value(d => d.date.getTime())
                 .thresholds(binTicks)
-                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
+                .domain([0, this.maxDate.getTime()])(ex_data);
+
+            binned = binned.slice(1); // remove the 'before' bin
+            const binAmount = binned.length;
+            // begin and end points of last bin are the same moment at times
+            if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
+                binned.pop();
+            }
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
@@ -194,10 +203,13 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
                     return acc;
-                }, { "date": bin.x0, "sum": 0 })));
+                }, { "date": bin.x1, "sum": 0 })));
             });
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
+
+        // remove first element since we don't need it anymore
+        this.binTicks = this.binTicks.slice(1);
     }
 
     /**
@@ -221,7 +233,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}</b>
+                <b>${timeFormat(new Date(d.date - this.binStep * 3600000))} - ${timeFormat(d.date)}</b>
                 <br>${on} ${dateFormat(d.date)}:<br>
             `;
         } else if (this.binStep === 24) { // binning per day
@@ -230,14 +242,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${capitalize(format(d.date))} - ${format(new Date(d.date + this.binStep * 3600000))}:</b>
+                <b>${capitalize(format(new Date(d.date - this.binStep * 3600000)))} - ${format(d.date)}:</b>
                 <br>
             `;
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `
-                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date + this.binStep * 3600000))}:</b>
+                <b>${capitalize(weekDay(new Date(d.date - this.binStep * 3600000)))} - ${monthDay(d.date)}:</b>
                 <br>
             `;
         }
@@ -246,7 +258,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             <b>${d.sum} ${subString}</b>
             `;
         this.statusOrder.forEach(status => {
-            console.log(status, this.submissionStatusIcon(status));
             if (d[status]) {
                 message += `    
                 <span style="display: flex; justify-items: center">

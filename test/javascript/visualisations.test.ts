@@ -195,9 +195,11 @@ describe("CTimeseries tests", () => {
         expect(cTimeseries.data[0]["ex_id"]).toBe("1");
         expect(cTimeseries.binStep).toBe(4);
         const datum = cTimeseries.data[0]["ex_data"];
-        expect(datum).toHaveLength(25); // 25 bins total
-        expect(datum[0]["cSum"]).toBe(2); // two submissions in first bin
-        expect(datum[24]["cSum"]).toBe(3); // 2 subs from first bin + 1 from last
+        expect(datum).toHaveLength(26); // 25 bins total + 1 for 'before' section
+        expect(datum[0]["cSum"]).toBe(0); // 'before' bin should be empty
+        expect(datum[1]["cSum"]).toBe(2); // two submissions in first normal bin
+        const last = datum.length - 1;
+        expect(datum[last]["cSum"]).toBe(3); // 2 subs from first bin + 1 from last
 
         expect(cTimeseries["maxSum"]).toBe(3);
     });

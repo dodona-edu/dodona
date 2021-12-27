@@ -96,7 +96,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 6.0.0'
+gem 'rails-i18n', '~> 7.0.1'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.1'

@@ -63,7 +63,7 @@ If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
 
 1. Install and start `docker`.
-2. run `docker pull dodona/dodona-python`
+2. Run `docker pull dodona/dodona-python`
 
 If you want to build the docker images yourself:
 1. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).

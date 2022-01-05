@@ -36,11 +36,6 @@ If you want to help with development, issues tagged with the [student label](htt
     ```
 3. Create a `dodona` user with access to the `dodona` and `dodona_test-N` databases. You will need as much test databases as hou have CPU threads.
     ```sql
-    CREATE DATABASE dodona;
-    CREATE DATABASE dodona_test;
-    CREATE DATABASE `dodona_test-0`;
-    ...
-    CREATE DATABASE `dodona_test-N`;
     CREATE USER 'dodona'@'localhost' IDENTIFIED BY 'dodona';
     GRANT ALL ON dodona.* TO 'dodona'@'localhost';
     GRANT ALL ON dodona_test.* TO 'dodona'@'localhost';
@@ -48,7 +43,7 @@ If you want to help with development, issues tagged with the [student label](htt
     ...
     GRANT ALL ON `dodona_test-N`.* TO 'dodona'@'localhost';
     ```
-4. Install the correct `ruby` version using [RVM](https://rvm.io/) and install `rails`
+4. Install the correct `ruby` version using [RVM](https://rvm.io/)
 5. Install the correct `node` version using `nvm` and [yarn](https://yarnpkg.com/)
 6. Run `bundle install` and `yarn install`
 7. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)

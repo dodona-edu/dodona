@@ -13,6 +13,7 @@ require 'rails/test_help'
 require 'mocha/minitest'
 
 require 'webmock/minitest'
+WebMock.enable!
 WebMock.allow_net_connect!
 
 require 'testhelpers/constants'

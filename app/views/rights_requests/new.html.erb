@@ -3,14 +3,14 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
-        <% if policy(RightsRequest).create? or current_user&.rights_request.errors.any?%>
+        <% if policy(RightsRequest).create? or @rights_request.errors.any? %>
           <div class="card-title-fab">
             <%= render 'fab_button', form: 'new_rights_request', icon: 'send' %>
           </div>
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <% if policy(RightsRequest).create?  or current_user&.rights_request.errors.any?%>
+        <% if policy(RightsRequest).create?  or @rights_request.errors.any? %>
           <%= render 'form', rights_request: @rights_request %>
         <% else %>
           <div class="callout callout-info"><p>

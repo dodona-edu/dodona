@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class CoursesController < ApplicationController
   include SetLtiMessage
 
@@ -30,6 +32,8 @@ class CoursesController < ApplicationController
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      # use index to force stable sorting
+      @courses = @courses.sort_by.with_index { |course, i| [current_user.course_admin?(course) ? 0 : 1, i] }
     end
 
     @courses = apply_scopes(@courses)

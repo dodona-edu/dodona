@@ -1,5 +1,3 @@
-require 'will_paginate/array'
-
 class CoursesController < ApplicationController
   include SetLtiMessage
 
@@ -34,7 +32,7 @@ class CoursesController < ApplicationController
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
       @own_courses = @courses.select { |course| current_user.course_admin?(course) }
       @other_courses = @courses.reject { |course| current_user.course_admin?(course) }
-      @courses = @own_courses + @other_courses
+      @courses = @own_courses.concat(@other_courses)
     end
 
     @courses = apply_scopes(@courses)

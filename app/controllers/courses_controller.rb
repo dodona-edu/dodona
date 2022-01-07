@@ -32,8 +32,9 @@ class CoursesController < ApplicationController
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
-      # use index to force stable sorting
-      @courses = @courses.sort_by.with_index { |course, i| [current_user.course_admin?(course) ? 0 : 1, i] }
+      @own_courses = @courses.select { |course| current_user.course_admin?(course) }
+      @other_courses = @courses.reject { |course| current_user.course_admin?(course) }
+      @courses = @own_courses + @other_courses
     end
 
     @courses = apply_scopes(@courses)

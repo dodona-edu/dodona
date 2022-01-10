@@ -411,11 +411,11 @@ class Submission < ApplicationRecord
                  .transform_values(&:count)
                  .group_by { |ex_id_status, _| ex_id_status[0] } # group by exercise
       transformed = data.transform_values do |v|
-        v.map do |ex_id_status_count| # -> ex_id -> { status -> count }
+        v.to_h do |ex_id_status_count| # -> ex_id -> { status -> count }
           status = ex_id_status_count[0][1]
           count = ex_id_status_count[1]
           [status, count]
-        end.to_h
+        end
       end
       value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end

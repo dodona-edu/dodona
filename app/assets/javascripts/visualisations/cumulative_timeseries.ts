@@ -147,7 +147,12 @@ export class CTimeseriesGraph extends SeriesGraph {
                 )
                 .tickFormat(t => {
                     const asDate = new Date(t);
-                    return this.binStep >= 24 || (asDate.getHours() === 0 && asDate.getMinutes() === 0) ?
+                    const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
+                    return this.binStep >= 24 ||
+                        (
+                            asDate.getHours() === (24 - timeZoneDiff) % 24 &&
+                            asDate.getMinutes() === 0
+                        ) ?
                         d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
                         d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
                 })

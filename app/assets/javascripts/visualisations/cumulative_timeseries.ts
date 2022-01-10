@@ -132,7 +132,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.yAxis
             .transition().duration(animation ? 500: 0)
-            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
+            .call(d3.axisLeft(this.y).ticks(5, "%"));
 
         // updateX scale
         this.x = d3.scaleTime()
@@ -145,9 +145,12 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .tickValues(
                     this.binTicks
                 )
-                .tickFormat(this.binStep >= 24 ?
-                    d3.timeFormat(I18n.t("date.formats.weekday_short")):
-                    d3.timeFormat(I18n.t("time.formats.plain_time")))
+                .tickFormat(t => {
+                    const asDate = new Date(t);
+                    return this.binStep >= 24 || (asDate.getHours() === 0 && asDate.getMinutes() === 0) ?
+                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                })
             )
             .selectAll("text")
             .style("text-anchor", "end")

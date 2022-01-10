@@ -300,6 +300,30 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not File.exist?(submission.fs_path)
   end
 
+  test 'time range should include correct submissions' do
+    start = Time.zone.local(2021, 10, 10, 13, 5, 0)
+    stop = Time.zone.local(2021, 11, 15, 9, 21, 0)
+    create :submission, id: 1, created_at: Time.zone.local(2020, 10, 11, 13, 10, 0) # not included
+    create :submission, id: 2, created_at: Time.zone.local(2021, 10, 10, 12, 0, 0) # not included
+    create :submission, id: 3, created_at: Time.zone.local(2021, 10, 10, 13, 3, 0) # not included
+    create :submission, id: 4, created_at: Time.zone.local(2021, 10, 10, 13, 15, 0) # included
+    create :submission, id: 5, created_at: Time.zone.local(2021, 10, 10, 14, 0, 0) # included
+    create :submission, id: 6, created_at: Time.zone.local(2021, 10, 20, 12, 0, 0) # included
+    create :submission, id: 7, created_at: Time.zone.local(2021, 11, 15, 8, 0, 0) # included
+    create :submission, id: 8, created_at: Time.zone.local(2021, 11, 15, 9, 18, 0) # included
+    create :submission, id: 9, created_at: Time.zone.local(2021, 11, 15, 9, 25, 0) # not included
+    create :submission, id: 10, created_at: Time.zone.local(2021, 11, 15, 10, 0, 0) # not included
+    create :submission, id: 11, created_at: Time.zone.local(2022, 11, 14, 8, 0, 0) # not included
+
+    subs = Submission.all
+    assert_equal 11, subs.length
+    subs = subs.in_time_range(start, stop)
+    assert_equal 5, subs.length
+    subs.each do |sub|
+      assert_includes 4..8, sub.id
+    end
+  end
+
   class StatisticsTest < ActiveSupport::TestCase
     setup do
       @date = DateTime.new(1302, 7, 11, 13, 37, 42)

@@ -282,8 +282,8 @@ class UserTest < ActiveSupport::TestCase
   test 'pending_series should return all series of the users courses that have a deadline' do
     user = users(:student)
     course = create :course, users: [user]
-    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    pending_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
+    create :series, course: course, activity_count: 2, deadline: 2.minutes.ago # Not pending series
+    pending_series = create :series, course: course, activity_count: 2, deadline: 2.minutes.from_now
     assert_equal [pending_series], user.pending_series
   end
 

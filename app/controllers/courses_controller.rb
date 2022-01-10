@@ -207,8 +207,8 @@ class CoursesController < ApplicationController
         sheet = CSV.generate(force_quotes: true) do |csv|
           users_labels = @course.course_memberships
                                 .includes(:course_labels, :user)
-                                .map { |m| [m.user, m.course_labels] }
-                                .to_h
+                                .to_h { |m| [m.user, m.course_labels] }
+
           columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })

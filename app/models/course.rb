@@ -181,7 +181,7 @@ class Course < ApplicationRecord
   def homepage_series(passed_series = 1)
     with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
+                       .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
   end
@@ -283,7 +283,7 @@ class Course < ApplicationRecord
                                      .order(permission: :asc)
                                      .order(last_name: :asc, first_name: :asc)
 
-    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
+    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).to_h do |series_info, user|
       scores = series_info[1]
       data = {
         accepted: series_info[0].activities.count do |a|
@@ -302,7 +302,7 @@ class Course < ApplicationRecord
         end
       }
       [[user.id, series_info[0].id], data]
-    end.to_h
+    end
 
     {
       users: sorted_users,

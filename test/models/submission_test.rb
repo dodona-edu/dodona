@@ -50,7 +50,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, :rate_limited, user: user
     assert_not submission.valid?
 
-    later = Time.zone.now + 10.seconds
+    later = 10.seconds.from_now
 
     Time.stubs(:now).returns(later)
 

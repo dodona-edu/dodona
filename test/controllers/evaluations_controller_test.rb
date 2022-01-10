@@ -10,7 +10,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     @submitted_users.each do |user|
       user.enrolled_courses << @series.course
       @exercises.each do |ex|
-        create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: Time.current - 1.hour
+        create :submission, exercise: ex, user: user, course: @series.course, status: :correct, created_at: 1.hour.ago
       end
     end
     @no_submission_user = users(:student)

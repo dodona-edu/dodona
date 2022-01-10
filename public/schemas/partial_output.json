@@ -85,6 +85,7 @@
             "row":     { "$ref": "#/definitions/index" },
             "column":  { "$ref": "#/definitions/index" },
             "text":    { "type": "string" },
+            "externalUrl":  { "type": "string" },
             "type":    { "$ref": "#/definitions/severity" },
             "rows":    { "$ref": "#/definitions/index" },
             "columns": { "$ref": "#/definitions/index" }

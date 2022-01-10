@@ -14,7 +14,7 @@ class RightsRequestPolicy < ApplicationPolicy
   end
 
   def create?
-    user&.student? && user.institution.present? && user.rights_request.nil?
+    user&.student? && user.institution.present? && (user.rights_request.nil? || !user.rights_request.persisted?)
   end
 
   def approve?

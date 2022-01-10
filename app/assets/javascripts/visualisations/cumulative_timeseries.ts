@@ -5,9 +5,9 @@ import { RawData, SeriesGraph } from "./series_graph";
 
 export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
-    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
+    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 50 };
 
-    private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
+    private readonly bisector = d3.bisector((d: number) => d).left;
 
     // scales
     private x: d3.ScaleTime<number, number>;
@@ -34,7 +34,10 @@ export class CTimeseriesGraph extends SeriesGraph {
     private data: { ex_id: string, ex_data: { bin: d3.Bin<Date, Date>, cSum: number }[] }[] = [];
     private studentCount: number; // amount of subscribed students
     private maxSum = 0; // largest y-value == max value
-    private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
+    private minDate: Date;
+    private maxDate: Date;
+    private binTicks: Array<number>;
+    private binStep: number;
     private y100 = false; // Whether y range goes to 100% (true) of max of the data (false)
 
     /**
@@ -46,9 +49,6 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.height = 400;
         super.draw();
 
-        const minDate = this.dateArray[0];
-        const maxDate = this.dateArray[this.dateArray.length - 1];
-
         this.y = d3.scaleLinear()
             .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
             .range([this.innerHeight, 0]);
@@ -58,7 +58,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // X scale
         this.x = d3.scaleTime()
-            .domain([minDate, maxDate])
+            .domain(this.binTicks)
             .range([0, this.innerWidth]);
 
         // add x-axis
@@ -99,7 +99,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .style("stroke", ex => this.color(ex.ex_id) as string)
             .style("fill", "none")
             .attr("d", ex => d3.line()
-                .x(d => this.x(d.bin["x0"]))
+                .x(d => this.x(d.x1))
                 .y(this.innerHeight)
                 .curve(d3.curveMonotoneX)(ex.ex_data)
             );
@@ -125,9 +125,6 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     private drawUpdate(animation=true): void {
-        const minDate = this.dateArray[0];
-        const maxDate = this.dateArray[this.dateArray.length - 1];
-
         // update Y scale
         this.y = d3.scaleLinear()
             .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
@@ -135,24 +132,35 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.yAxis
             .transition().duration(animation ? 500: 0)
-            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
+            .call(d3.axisLeft(this.y).ticks(5, "%"));
 
-        // update X scale
+        // updateX scale
         this.x = d3.scaleTime()
-            .domain([minDate, maxDate])
+            .domain([this.minDate, this.maxDate])
             .range([0, this.innerWidth]);
 
         this.xAxis
-            .attr("transform", `translate(0, ${this.y(0)})`)
+            .attr("transform", `translate(0, ${this.innerHeight})`)
             .call(d3.axisBottom(this.x)
-                .tickValues(this.dateArray.filter((e, i, a) => {
-                    if (a.length < 10) return true;
-                    if (i === 0 || i === a.length - 1) return true;
-                    if (i % Math.floor(a.length / 10) === 0) return true;
-                    return false;
-                }))
-                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
-            );
+                .tickValues(
+                    this.binTicks
+                )
+                .tickFormat(t => {
+                    const asDate = new Date(t);
+                    const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
+                    return this.binStep >= 24 ||
+                        (
+                            asDate.getHours() === (24 - timeZoneDiff) % 24 &&
+                            asDate.getMinutes() === 0
+                        ) ?
+                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                })
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dy", ".7em")
+            .attr("transform", "rotate(-25)");
 
         // add lines
         this.graph.selectAll(".line")
@@ -160,7 +168,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             .join("path")
             .transition().duration(animation ? 500: 0)
             .attr("d", ex => d3.line()
-                .x(d => this.x(d.bin["x0"]))
+                .x(d => this.x(d.x1))
                 .y(d => this.y(d.cSum / this.studentCount))
                 .curve(d3.curveMonotoneX)(ex.ex_data)
             );
@@ -183,17 +191,16 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
-        minDate = d3.timeDay.offset(new Date(minDate), -1); // start 1 day earlier from 0
-        maxDate = new Date(maxDate);
-        minDate.setHours(0, 0, 0, 0); // set start to midnight
-        maxDate.setHours(23, 59, 59, 99); // set end right before midnight
+        const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+        this.minDate = new Date(minDate);
+        this.maxDate = new Date(maxDate);
 
-        this.dateArray = d3.timeDays(minDate, maxDate);
-
-        const threshold = d3.scaleTime()
-            .domain([minDate.getTime(), maxDate.getTime()])
-            .ticks(d3.timeDay);
+        // aim for 17 bins (between 15 and 20)
+        const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
+        this.binStep = binStep;
+        this.binTicks = binTicks;
+        this.minDate = allignedStart;
+        this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
@@ -201,13 +208,17 @@ export class CTimeseriesGraph extends SeriesGraph {
         data.forEach(ex => {
             const binned = d3.bin()
                 .value(d => d.getTime())
-                .thresholds(threshold)
-                .domain([minDate.getTime(), maxDate.getTime()])(ex.ex_data);
+                .thresholds(binTicks)
+                .domain([0, this.maxDate.getTime()])(ex.ex_data);
             // combine bins with cumsum of the bins
+            const binAmount = binned.length;
+            if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
+                binned.pop();
+            }
             const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
                 ex_id: String(ex.ex_id),
-                ex_data: binned.map((bin, i) => ({ bin: bin, cSum: cSums[i] }))
+                ex_data: binned.map((bin, i) => ({ x1: bin["x1"], cSum: cSums[i] }))
             });
 
             // if 'students' undefined calculate max value from data
@@ -224,22 +235,22 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @return {Object} The index of the cursor in the date array + the date of that position
      */
     private bisect(mx: number): { "date": Date; "i": number } {
-        const min = this.dateArray[0];
-        const max = this.dateArray[this.dateArray.length - 1];
-        if (!this.dateArray) { // probably not necessary, but just to be safe
+        const min = this.minDate.getTime();
+        const max = this.maxDate.getTime();
+        if (!this.binTicks) { // probably not necessary, but just to be safe
             return { "date": new Date(0), "i": 0 };
         }
         const date = this.x.invert(mx);
-        const index = this.bisector(this.dateArray, date, 1);
-        const a = index > 0 ? this.dateArray[index - 1] : min;
-        const b = index < this.dateArray.length ? this.dateArray[index] : max;
+        const index = this.bisector(this.binTicks, date, 1);
+        const a = index > 0 ? this.binTicks[index - 1] : min;
+        const b = index < this.binTicks.length ? this.binTicks[index] : max;
         if (
-            index < this.dateArray.length &&
-            date.getTime() - a.getTime() > b.getTime() - date.getTime()
+            index < this.binTicks.length &&
+            date.getTime() - a > b - date.getTime()
         ) {
-            return { "date": b, "i": index };
+            return { "date": new Date(b), "i": index };
         } else {
-            return { "date": a, "i": index - 1 };
+            return { "date": new Date(a), "i": index - 1 };
         }
     }
 
@@ -259,7 +270,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipOver(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -284,7 +295,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipMove(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -317,13 +328,50 @@ export class CTimeseriesGraph extends SeriesGraph {
     }
 
     private tooltipText(i: number): string {
-        let result = `<b>${this.longDateFormat(this.dateArray[this.tooltipIndex])}</b>`;
+        const date = this.binTicks[i];
+        let startMessage = ""; // formatted start moment
+        let endMessage = ""; // formatted end moment
+        let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
+        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+
+        if (i === 0) {
+            startMessage = capitalize(I18n.t("js.date_before"));
+        }
+        if (this.binStep < 24) {
+            const on = I18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            startMessage = i ?
+                `${timeFormat(new Date(date - this.binStep * 3600000))} -` :
+                startMessage;
+            endMessage = timeFormat(date);
+            extraMessage = `<br>${on} ${dateFormat(date)}`;
+        } else if (this.binStep === 24) { // binning per day
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            endMessage = `${i === 0 ? format(date) : capitalize(format(date))}:`;
+        } else if (this.binStep < 168) { // binning per multiple days
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            startMessage = i ?
+                `${capitalize(format(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = format(date);
+        } else { // binning per week(s)
+            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            startMessage = i ?
+                `${capitalize(weekDay(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = i ?
+                monthDay(date):
+                weekDay(date);
+        }
+        let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
-            result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
+            message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
                     (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
-        return result;
+        return message;
     }
 
     private yRangeToggle(): void {
@@ -338,7 +386,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         const legend = this.container
             .append("div")
             .attr("class", "legend")
-            .style("margin-top", "-50px")
+            .style("margin-top", "-30px")
             .selectAll("div")
             .data(this.exOrder)
             .enter()

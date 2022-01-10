@@ -42,13 +42,13 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'deadline? and pending? with deadlines in the future' do
-    @series.deadline = Time.current + 2.minutes
+    @series.deadline = 2.minutes.from_now
     assert_equal true, @series.deadline?
     assert_equal true, @series.pending?
   end
 
   test 'deadline? and pending? with deadlines in the past' do
-    @series.deadline = Time.current - 2.minutes
+    @series.deadline = 2.minutes.ago
     assert_equal true, @series.deadline?
     assert_equal false, @series.pending?
   end
@@ -70,7 +70,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'changing deadline should invalidate exercise statuses' do
     course = create :course
-    series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+    series = create :series, course: course, deadline: 1.day.from_now, exercise_count: 1
     user = create :user
 
     create :correct_submission,
@@ -82,7 +82,7 @@ class SeriesTest < ActiveSupport::TestCase
     assert series.completed_before_deadline?(user)
     travel 1.second
 
-    series.update(deadline: Time.zone.now - 1.day)
+    series.update(deadline: 1.day.ago)
 
     ActivityStatus.clear_status_store
 
@@ -92,7 +92,7 @@ class SeriesTest < ActiveSupport::TestCase
   test 'submitting should invalidate exercise status for series with deadline' do
     with_cache do
       course = create :course
-      series = create :series, course: course, deadline: Time.zone.now + 1.day, exercise_count: 1
+      series = create :series, course: course, deadline: 1.day.from_now, exercise_count: 1
       user = create :user
 
       create :wrong_submission,
@@ -104,7 +104,7 @@ class SeriesTest < ActiveSupport::TestCase
       assert_not series.completed_before_deadline?(user)
 
       create :correct_submission,
-             created_at: Time.zone.now + 1.hour,
+             created_at: 1.hour.from_now,
              course: course,
              exercise: series.exercises[0],
              user: user
@@ -114,7 +114,7 @@ class SeriesTest < ActiveSupport::TestCase
   end
 
   test 'changing deadline and restoring should restore completion status' do
-    original_deadline = Time.zone.now + 1.day
+    original_deadline = 1.day.from_now
 
     course = create :course
     series = create :series, course: course, deadline: original_deadline

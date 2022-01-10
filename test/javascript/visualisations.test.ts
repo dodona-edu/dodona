@@ -155,15 +155,21 @@ describe("Timeseries tests", () => {
 });
 
 describe("CTimeseries tests", () => {
+    const tzOffset = new Date("2020-07-11 00:00Z").getTimezoneOffset() * 60000;
     const data = {
         data: [
             {
                 ex_id: 1,
                 ex_data: [
-                    new Date(2021, 7, 29).getTime(),
-                    new Date(2021, 7, 30).getTime(),
-                    new Date(2021, 7, 30).getTime(),
-                    new Date(2021, 7, 30).getTime(),
+                    new Date(
+                        new Date("2020-07-11 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
+                        new Date("2020-07-11 03:59Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
+                        new Date("2020-07-15 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
                 ]
             }
         ],
@@ -187,13 +193,15 @@ describe("CTimeseries tests", () => {
         cTimeseries.processData(data);
         expect(cTimeseries.data).toHaveLength(1); // 1 exercise
         expect(cTimeseries.data[0]["ex_id"]).toBe("1");
+        expect(cTimeseries.binStep).toBe(4);
         const datum = cTimeseries.data[0]["ex_data"];
-        expect(datum).toHaveLength(3);
-        expect(datum[0]["cSum"]).toBe(0); // no submissions before on day 0
-        expect(datum[1]["cSum"]).toBe(1); // one submissions on day 1
-        expect(datum[2]["cSum"]).toBe(4); // 3 subs on day 2 + sub on day 1
+        expect(datum).toHaveLength(26); // 25 bins total + 1 for 'before' section
+        expect(datum[0]["cSum"]).toBe(0); // 'before' bin should be empty
+        expect(datum[1]["cSum"]).toBe(2); // two submissions in first normal bin
+        const last = datum.length - 1;
+        expect(datum[last]["cSum"]).toBe(3); // 2 subs from first bin + 1 from last
 
-        expect(cTimeseries["maxSum"]).toBe(4);
+        expect(cTimeseries["maxSum"]).toBe(3);
     });
 });
 

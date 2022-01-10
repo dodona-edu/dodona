@@ -17,7 +17,7 @@ gem 'uglifier', '>= 4.1.20'
 gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11.4'
+gem 'jbuilder', '~> 2.11.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -51,13 +51,13 @@ gem 'rouge', '3.27.0'
 gem 'builder', '~>3.2.4'
 
 # generate diffs
-gem 'diff-lcs', '~>1.4'
+gem 'diff-lcs', '~>1.5'
 
 # code editor
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.3.3'
+gem 'autoprefixer-rails', '~>10.4.0'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
@@ -96,7 +96,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 6.0.0'
+gem 'rails-i18n', '~> 7.0.1'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.1'
@@ -104,7 +104,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.12.5'
+gem 'nokogiri', '~> 1.13.0'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -120,7 +120,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.1.5'
+gem 'dalli', '~> 3.2.0'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -172,7 +172,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.12.4'
+  gem 'rubocop-rails', '~> 2.13.1'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

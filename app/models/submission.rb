@@ -52,7 +52,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_date..end_date.to_date) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
@@ -132,7 +132,7 @@ class Submission < ApplicationRecord
 
   def result=(result)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
-    File.open(File.join(fs_path, RESULT_FILENAME), 'wb') { |f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))) }
+    File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
   def clean_messages(messages, levels)
@@ -411,11 +411,11 @@ class Submission < ApplicationRecord
                  .transform_values(&:count)
                  .group_by { |ex_id_status, _| ex_id_status[0] } # group by exercise
       transformed = data.transform_values do |v|
-        v.map do |ex_id_status_count| # -> ex_id -> { status -> count }
+        v.to_h do |ex_id_status_count| # -> ex_id -> { status -> count }
           status = ex_id_status_count[0][1]
           count = ex_id_status_count[1]
           [status, count]
-        end.to_h
+        end
       end
       value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end

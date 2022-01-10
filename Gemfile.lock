@@ -142,7 +142,7 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    diff-lcs (1.4.4)
+    diff-lcs (1.5.0)
     docile (1.4.0)
     docker-api (2.2.0)
       excon (>= 0.47.0)
@@ -510,7 +510,7 @@ DEPENDENCIES
   delayed_job_active_record (~> 4.1.6)
   delayed_job_web (~> 1.4.4)
   devise (~> 4.8.1)
-  diff-lcs (~> 1.4)
+  diff-lcs (~> 1.5)
   docker-api (~> 2.2.0)
   ed25519
   exception_notification (~> 4.4.1)

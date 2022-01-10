@@ -132,7 +132,7 @@ class Submission < ApplicationRecord
 
   def result=(result)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
-    File.open(File.join(fs_path, RESULT_FILENAME), 'wb') { |f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))) }
+    File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
   def clean_messages(messages, levels)

@@ -63,6 +63,7 @@ export default class ScoreForm {
         this.input.addEventListener("change", ev => {
             // If the score is not valid, don't do anything.
             if (!this.input.reportValidity()) {
+                this.input.classList.add("is-invalid");
                 return;
             }
             // Mark as busy to show we are aware an update should happen.

@@ -85,7 +85,7 @@
         border-bottom-right-radius: 0;
       }
 
-      .score-input{
+      .score-input.is-valid, .score-input.is-invalid{
         border-color: $border-color;
       }
 

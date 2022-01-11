@@ -4,7 +4,7 @@
                namespace: score_item.id,
                html: { class: "form-inline score-form col-12", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
-    <div class="form-group input <%= 'has-warning' if @warning.present? && @warning == score&.id&.to_s %> has-feedback">
+    <div class="form-group input <%= 'has-warning' if @warning.present? && @warning == score&.id&.to_s %>">
       <div class="control-wrapper">
         <div class="input-group">
           <%= button_tag class: "btn btn-secondary btn-sm delete-button", type: :button, disabled: !@score_map.key?(score_item.id) do %>

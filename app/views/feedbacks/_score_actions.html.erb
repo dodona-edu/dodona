@@ -4,19 +4,23 @@
                namespace: score_item.id,
                html: { class: "form-inline score-form col-12", data: { url: url, new: score.persisted? } } do |f| %>
     <%= f.hidden_field :expected_score, value: score.score, class: "expected-score" %>
-    <div class="form-group input <%= 'has-warning' if @warning.present? && @warning == score&.id&.to_s %>">
+    <div class="form-group input <%= 'has-warning' if @warning.present? && @warning == score&.id&.to_s %> has-feedback">
       <div class="control-wrapper">
         <div class="input-group">
           <%= button_tag class: "btn btn-secondary btn-sm delete-button", type: :button, disabled: !@score_map.key?(score_item.id) do %>
             <i class="mdi mdi-delete-outline mdi-12" aria-hidden='true'></i>
           <% end %>
           <%= f.number_field :score,
-                             class: "form-control score-input",
+                             class: "form-control score-input " + (score.score.nil? ? ' is-invalid' : ' is-valid') ,
                              step: 0.25,
                              tabindex: index + 1,
                              min: 0,
                              max: score_item.maximum,
-                             value: format_score(f.object.score, lang='en', numeric_only=true) %>
+                             value: format_score(f.object.score, lang='en', numeric_only=true) do %>
+          <%end %>
+          <%#= button_tag class: "btn btn-secondary", type: :button, disabled: true do %>
+<!--            <i class="mdi mdi-circle-small mdi-12 valid <%#= score.score.nil? ? ' colored-secondary' : ' colored-info' %>"  aria-hidden='true'></i>-->
+          <%# end %>
           <%= button_tag class: "btn btn-secondary max-text", disabled: true, type: :button, data: { max: format_score(score_item.maximum, lang='en', numeric_only=true) } do %>
             / <%= format_score(score_item.maximum) %>
           <% end %>

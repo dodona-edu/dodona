@@ -32,7 +32,7 @@ export default class ScoreForm {
 
         this.form = element.querySelector(".score-form") as HTMLFormElement;
         this.input = this.form.querySelector("input.score-input");
-        this.scoreState= this.form.querySelector(".score-state");
+        this.scoreState = this.form.querySelector(".score-state");
         this.expectedScore = this.form.querySelector(".score-form input.expected-score");
         this.deleteButton = this.form.parentElement.querySelector(".delete-button");
         this.zeroButton = this.form.parentElement.querySelector(".single-zero-button");

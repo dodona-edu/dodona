@@ -161,7 +161,7 @@ nl:
       conflict: De status van deze vraag is al aangepast door een andere gebruiker
       has_newer_submission: Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.
     machine_annotation:
-        external_url: Klik hier voor meer informatie.
+        external_url: meer informatie
     score:
       conflict: Deze score is al aangepast door een andere gebruiker
       unknown: Een onverwachte fout trad op bij het opslaan van de score

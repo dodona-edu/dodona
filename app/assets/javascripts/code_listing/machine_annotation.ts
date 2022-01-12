@@ -46,4 +46,8 @@ export class MachineAnnotation extends Annotation {
     protected get noticeInfo(): string | null {
         return I18n.t("js.machine_annotation.external_url");
     }
+
+    protected get useNoticeIcon(): boolean {
+        return false;
+    }
 }

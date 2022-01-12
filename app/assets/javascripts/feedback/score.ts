@@ -69,7 +69,7 @@ export default class ScoreForm {
             // If we don't do this, we need a difficult balance between waiting
             // long enough so the delay is useful when using the increment/decrement buttons
             // and the case where we type the value and don't want to wait.
-            this.markBusy();
+            this.visualiseUpdating();
             delay(() => {
                 if (valueOnFocus === (ev.target as HTMLInputElement).value) {
                     return;
@@ -204,13 +204,13 @@ export default class ScoreForm {
     }
 
     private visualiseUpdating(): void {
+        this.parent.registerUpdating(this.scoreItemId);
         this.input.classList.add("in-progress");
         this.maxText.classList.add("in-progress");
         this.spinner.style.visibility = "visible";
     }
 
     public markBusy(): void {
-        this.parent.registerUpdating(this.scoreItemId);
         this.disableInputs();
         this.visualiseUpdating();
     }

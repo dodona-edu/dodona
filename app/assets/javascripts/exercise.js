@@ -58,7 +58,7 @@ function initLabelsEdit(labels, undeletableLabels) {
 
 function showLightbox(content) {
     const lightbox = new GLightbox(content);
-    lightbox.on("open", () => {
+    lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).
         window.MathJax.typeset([".gslide-description"]);

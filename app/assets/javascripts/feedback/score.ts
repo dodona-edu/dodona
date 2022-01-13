@@ -14,7 +14,7 @@ import FeedbackActions from "feedback/actions";
 export default class ScoreForm {
     private readonly input: HTMLInputElement;
     private readonly expectedScore: HTMLInputElement;
-    private readonly spinner: HTMLElement;
+    private readonly scoreState: HTMLElement;
     private readonly deleteButton: HTMLButtonElement;
     private readonly zeroButton: HTMLButtonElement;
     private readonly maxButton: HTMLButtonElement;
@@ -32,7 +32,7 @@ export default class ScoreForm {
 
         this.form = element.querySelector(".score-form") as HTMLFormElement;
         this.input = this.form.querySelector("input.score-input");
-        this.spinner = this.form.querySelector(".dodona-progress");
+        this.scoreState = this.form.querySelector(".score-state");
         this.expectedScore = this.form.querySelector(".score-form input.expected-score");
         this.deleteButton = this.form.parentElement.querySelector(".delete-button");
         this.zeroButton = this.form.parentElement.querySelector(".single-zero-button");
@@ -61,8 +61,12 @@ export default class ScoreForm {
         });
         const delay = createDelayer();
         this.input.addEventListener("change", ev => {
-            // If the score is not valid, don't do anything.
+            // If the score is not valid, show warning.
             if (!this.input.reportValidity()) {
+                const icon = document.createElement("i");
+                icon.classList.add("mdi", "mdi-alert-circle-outline", "mdi-18", "colored-wrong");
+                icon.setAttribute("aria-hidden", "true");
+                this.scoreState.replaceChildren(icon);
                 return;
             }
             // Mark as busy to show we are aware an update should happen.
@@ -207,7 +211,11 @@ export default class ScoreForm {
         this.parent.registerUpdating(this.scoreItemId);
         this.input.classList.add("in-progress");
         this.maxText.classList.add("in-progress");
-        this.spinner.style.visibility = "visible";
+
+        const span = document.createElement("span");
+        span.classList.add("spinner-border", "spinner-border-sm", "colored-warning");
+        span.setAttribute("aria-hidden", "true");
+        this.scoreState.replaceChildren(span);
     }
 
     public markBusy(): void {

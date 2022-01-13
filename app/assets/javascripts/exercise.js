@@ -98,6 +98,7 @@ function initLightboxes() {
             content: {
                 elements: images,
                 startAt: index,
+                moreLength: 0,
             }
         });
         return false;

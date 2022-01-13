@@ -15,9 +15,9 @@ export default class ScoreForm {
     private readonly input: HTMLInputElement;
     private readonly expectedScore: HTMLInputElement;
     private readonly scoreState: HTMLElement;
-    private readonly deleteButton: HTMLElement;
-    private readonly zeroButton: HTMLElement;
-    private readonly maxButton: HTMLElement;
+    private readonly deleteButton: HTMLButtonElement;
+    private readonly zeroButton: HTMLButtonElement;
+    private readonly maxButton: HTMLButtonElement;
     private readonly maxText: HTMLElement;
     private readonly form: HTMLFormElement;
 
@@ -208,6 +208,7 @@ export default class ScoreForm {
     }
 
     private visualiseUpdating(): void {
+        this.parent.registerUpdating(this.scoreItemId);
         this.input.classList.add("in-progress");
         this.maxText.classList.add("in-progress");
 
@@ -218,12 +219,14 @@ export default class ScoreForm {
     }
 
     public markBusy(): void {
-        this.parent.registerUpdating(this.scoreItemId);
         this.disableInputs();
         this.visualiseUpdating();
     }
 
     public disableInputs(): void {
         this.input.disabled = true;
+        this.deleteButton.disabled = true;
+        this.zeroButton.disabled = true;
+        this.maxButton.disabled = true;
     }
 }

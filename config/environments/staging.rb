@@ -18,7 +18,7 @@ Rails.application.configure do
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
   # Where we host our assets (a single domain, for caching)
-  config.action_controller.asset_host = 'naos.ugent.be'
+  config.action_controller.asset_host = '/'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

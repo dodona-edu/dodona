@@ -85,9 +85,13 @@
         border-bottom-right-radius: 0;
       }
 
+      .form-control{
+        border-color: $border-color;
+        line-height: initial;
+      }
+
       .score-input{
         border-right: none;
-        border-color: $border-color;
         margin-right: -28px;
         padding-right: 28px;
       }

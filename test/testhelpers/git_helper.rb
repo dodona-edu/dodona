@@ -3,6 +3,11 @@ require 'fileutils'
 
 require 'concerns/gitable'
 module Gitable
+  # Don't delay cloning in tests
+  def clone_repo_delayed
+    clone_repo
+  end
+
   def git_repository
     GitRepository.new full_path
   end

@@ -3,9 +3,10 @@ module StubHelper
   def stub_git(obj)
     obj.stubs(:pull)
     obj.stubs(:reset)
+    obj.stubs(:create_full_path)
     obj.stubs(:clone_repo)
     obj.stubs(:clone_repo_delayed)
-    obj.stubs(:clone_complete).returns(true)
+    obj.stubs(:clone_complete?).returns(true)
     obj.stubs(:repo_is_accessible).returns(true)
   end
 

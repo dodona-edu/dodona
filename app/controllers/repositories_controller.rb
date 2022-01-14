@@ -50,7 +50,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if saved
-        format.html { redirect_to @repository, notice: I18n.t('controllers.created', model: Judge.model_name.human) }
+        format.html { redirect_to @repository, notice: I18n.t('controllers.created', model: Repository.model_name.human) }
         format.json { render :show, status: :created, location: @repository }
       else
         format.html { render :new }

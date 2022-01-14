@@ -14,3 +14,4 @@ en:
       webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> on GitHub, Dodona will automatically update your judge on each commit:"
       all_submissions: "Submissions for this judge"
       all_exercises: "Exercises for this judge"
+      clone_incomplete: "Cloning in progress. It can take a few minutes before the judge is uploaded to the server and ready for use."

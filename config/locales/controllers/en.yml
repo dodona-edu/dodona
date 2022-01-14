@@ -1,5 +1,0 @@
-en:
-  repositories:
-    created: "Repository was successfully created. It can take a few minutes before all exercises are uploaded to the server. Reprocess te repository once the upload is complete."
-  judges:
-    created: "Judge was successfully created. It can take a few minutes before the judge is uploaded to the server and ready for use."

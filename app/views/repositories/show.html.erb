@@ -2,6 +2,11 @@
 <% content_for :javascripts do %>
   <%= javascript_pack_tag 'activities' %>
 <% end %>
+<% unless @repository.clone_complete? %>
+  <div class="callout callout-warning">
+        <span><%= t ".clone_incomplete" %></span>
+  </div>
+<% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card">

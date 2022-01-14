@@ -32,6 +32,12 @@ module Gitable
     end
   end
 
+  def clone_complete?
+    out, error, status = Open3.capture3('ls', chdir: full_path.to_path)
+    errors.add(:remote, error) unless status.success?
+    out != ''
+  end
+
   def repo_is_accessible
     cmd = ['git', 'ls-remote', remote.shellescape]
     _out, error, status = Open3.capture3(*cmd)

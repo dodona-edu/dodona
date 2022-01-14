@@ -38,7 +38,7 @@ class JudgesController < ApplicationController
 
     respond_to do |format|
       if @judge.save
-        format.html { redirect_to @judge, notice: I18n.t('controllers.created', model: Judge.model_name.human) }
+        format.html { redirect_to @judge, notice: I18n.t('judges.created') }
         format.json { render :show, status: :created, location: @judge }
       else
         format.html { render :new }

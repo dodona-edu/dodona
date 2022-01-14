@@ -22,12 +22,14 @@ module Gitable
     # If file (or directory) already exists, append '_'
     self.path += '_' while File.exist? full_path
     full_path.mkpath
-    cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path.to_path]
-    _out, error, status = Open3.capture3(*cmd)
-    return if status.success?
-
-    errors.add(:base, "cloning failed: #{error}")
-    throw :abort
+    Thread.new do
+      cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path.to_path]
+      _out, error, status = Open3.capture3(*cmd)
+      unless status.success?
+        errors.add(:base, "cloning failed: #{error}")
+        throw :abort
+      end
+    end
   end
 
   def repo_is_accessible

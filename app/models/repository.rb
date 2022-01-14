@@ -25,7 +25,8 @@ class Repository < ApplicationRecord
 
   validate :repo_is_accessible, on: :create
 
-  before_create :clone_repo
+  before_create :create_full_path
+  after_create :clone_repo_delayed
 
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error

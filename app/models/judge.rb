@@ -25,7 +25,8 @@ class Judge < ApplicationRecord
   validate :renderer_is_renderer
   validate :repo_is_accessible, on: :create
 
-  before_create :clone_repo
+  before_create :create_full_path
+  after_create :clone_repo_delayed
 
   has_many :repositories, dependent: :restrict_with_error
   has_many :exercises, dependent: :restrict_with_error

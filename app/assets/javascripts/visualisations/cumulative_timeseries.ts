@@ -192,9 +192,13 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
+        this.insertFakeData(data, student_count);
+
         const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
-        this.minDate = new Date(minDate);
-        this.maxDate = new Date(maxDate);
+        this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
+        this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
+
+        console.log(this.minDate, this.maxDate, this.dateStart);
 
         // aim for 17 bins (between 15 and 20)
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
@@ -415,5 +419,55 @@ export class CTimeseriesGraph extends SeriesGraph {
      */
     public isTimeGraph(): boolean {
         return true;
+    }
+
+
+    private xmur3(str) {
+        let h = 1779033703 ^ str.length;
+        for (let i = 0; i < str.length; i++) {
+            h = Math.imul(h ^ str.charCodeAt(i), 3432918353);
+            h = h << 13 | h >>> 19;
+        } return function () {
+            h = Math.imul(h ^ (h >>> 16), 2246822507);
+            h = Math.imul(h ^ (h >>> 13), 3266489909);
+            return (h ^= h >>> 16) >>> 0;
+        };
+    }
+
+    private mulberry32(a) {
+        return function () {
+            let t = a += 0x6D2B79F5;
+            t = Math.imul(t ^ t >>> 15, t | 1);
+            t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+            return ((t ^ t >>> 14) >>> 0) / 4294967296;
+        };
+    }
+
+
+    // ctimeseries
+    private insertFakeData(data, maxCount): void {
+        const rand = this.mulberry32(this.xmur3("test")());
+        const timeDelta = 24*14; // in hours
+        const timeStep = 1; // in hours
+        const end = new Date(d3.max(data,
+            ex => d3.max(ex.ex_data)));
+        const start = new Date(end.getTime() - timeDelta * 3600000);
+        data.forEach(ex => {
+            let count = 0;
+            ex.ex_data = [];
+            for (
+                let d = new Date(start);
+                d <= end;
+                d = new Date(d.getTime() + (1 + rand()*2) * timeStep * 3600000)
+            ) {
+                const c = Math.round(rand()*5);
+                if ((d.getDate() === start.getDate() || d.getDate() === end.getDate()) && count + c <= maxCount) {
+                    count += c;
+                    for (let i = 0; i < c; i++) {
+                        ex.ex_data.push(new Date(d));
+                    }
+                }
+            }
+        });
     }
 }

@@ -55,8 +55,8 @@ export abstract class SeriesGraph {
     private fpStart: Instance | Instance[];
     private fpEnd: Instance | Instance[];
     private scopeApply: HTMLButtonElement;
-    private dateStart: string = undefined;
-    private dateEnd: string = undefined; // default (deadline) when undefined, no limit when ""
+    protected dateStart: string = undefined;
+    protected dateEnd: string = undefined;
 
     /**
      * Initializes the container for the graph +
@@ -212,6 +212,7 @@ export abstract class SeriesGraph {
     }
 
     applyScope(): void {
+        console.log(this.fpStart.selectedDates);
         this.dateStart = this.fpStart.selectedDates.length > 0 ?
             new Date(this.fpStart.selectedDates[0]).toISOString() : undefined;
         this.dateEnd = this.fpEnd.selectedDates.length > 0 ?

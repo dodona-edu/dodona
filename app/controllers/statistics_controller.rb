@@ -42,37 +42,14 @@ class StatisticsController < ApplicationController
   def visualise_series(visualisation)
     series = Series.find(params[:series_id])
     authorize series
-    valid_iso = /^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}Z$/
-    if params[:end].present?
-      if params[:end].match(valid_iso)
-        stop = Time.zone.parse(params[:end]) # == nil when params[:end] == ""
-      else
-        render json: { status: 'invalid argument' }, status: :bad_request
-        return
-      end
-    elsif series.deadline
-      stop = series.deadline.to_date
-      start = stop - 2.weeks
-    end
 
-    if params[:start].present?
-      if params[:start].match(valid_iso)
-        start = Time.zone.parse(params[:start]) # == nil when params[:start] == ""
-      else
-        render json: { status: 'invalid argument' }, status: :bad_request
-        return
-      end
-    end
-
-    result = Submission.send(visualisation, series: series, start: start, end: stop)
+    result = Submission.send(visualisation, series: series)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
       # intitial: used by cumulative graph to set the value for first tick (everthing that came before)
-      # first sub & last sub: used to set time pickers
       render json: {
-        data: data, exercises: ex_data, student_count: series.course.enrolled_members.length,
-        meta: { initial: result[:initial], first_sub: result[:first_sub], last_sub: result[:last_sub] }
+        data: data, exercises: ex_data, student_count: series.course.enrolled_members.length
       }
     else
       render json: { status: 'not available yet' }, status: :accepted

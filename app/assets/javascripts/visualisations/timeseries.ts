@@ -167,8 +167,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
-        this.minDate = new Date(minDate);
-        this.maxDate = new Date(maxDate);
+
+        this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
+        this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 
         // aim for 17 bins (between 15 and 20)
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
@@ -176,6 +177,11 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.binTicks = binTicks;
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length-1]);
+
+
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
 
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {

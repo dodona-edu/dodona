@@ -180,7 +180,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     // eslint-disable-next-line camelcase
-    protected override processData({ data, exercises, student_count, meta }: RawData): void {
+    protected override processData({ data, exercises, student_count }: RawData): void {
         this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
@@ -203,6 +203,10 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
+
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
         // bin data per day (for each exercise)
@@ -216,15 +220,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
                 binned.pop();
             }
-            let cSums = undefined;
-            if (meta["initial"]) {
-                cSums = d3.cumsum(
-                    binned, (d, i) =>
-                        i === 0 ? meta["initial"][ex.ex_id] ?? 0 : d.length
-                );
-            } else {
-                cSums = d3.cumsum(binned, d => d.length);
-            }
+            const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
                 ex_id: String(ex.ex_id),
                 ex_data: binned.map((bin, i) => ({ x1: bin["x1"], cSum: cSums[i] }))

@@ -467,11 +467,6 @@ class Submission < ApplicationRecord
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.from_students(options[:series].course)
 
-    first_sub = submissions.least_recent.first.created_at
-    last_sub = submissions.most_recent.first.created_at
-    init_subs = options[:start].present? ? submissions.before_deadline(options[:start]) : submissions.before_deadline(first_sub)
-    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
-
     # fetching regular data to be shown on the graph
     value = {}
     submissions.find_in_batches do |subs|
@@ -482,22 +477,8 @@ class Submission < ApplicationRecord
           .transform_values { |values| values.map { |v| v[1] } }
       ) { |_k, v1, v2| v1 + v2 }
     end
-
-    # fetching data to initialize the graph with (zero moment data)
-    initial = {}
-    init_subs.find_in_batches do |subs|
-      initial = initial.merge(
-        subs.map { |s| [s.exercise_id, s.created_at] }
-          .group_by { |ex_id_date| ex_id_date[0] } # group by exId
-          # drop exId from values
-          .transform_values(&:count)
-      ) { |_k, v1, v2| v1 + v2 }
-    end
     {
-      value: value,
-      initial: initial,
-      first_sub: first_sub,
-      last_sub: last_sub
+      value: value
     }
   end
 

@@ -10,6 +10,8 @@ beforeAll(() => {
         .mockImplementation(arg => ({
             "time.formats.default": "%d-%m-%Y",
             "date.formats.short": "%e %b",
+            "time.formats.flatpickr_long": "F j Y H:i",
+            "time.formats.flatpickr_short": "m/d/Y H:i",
             "time.am": "'s ochtends",
             "time.pm": "'s middags",
             "date.day_names": [
@@ -167,6 +169,9 @@ describe("CTimeseries tests", () => {
                 ex_id: 1,
                 ex_data: [
                     new Date(
+                        new Date("2020-07-09 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
                         new Date("2020-07-11 00:00Z").getTime() + tzOffset
                     ).toUTCString(),
                     new Date(
@@ -180,11 +185,20 @@ describe("CTimeseries tests", () => {
         ],
         exercises: [[1, "test"]],
         student_count: 3,
-        meta: { initial: { 1: 3 } }
     };
     let cTimeseries;
     beforeEach(() => {
-        document.body.innerHTML += "<div id='container'></div>";
+        document.body.innerHTML += "" +
+        "<div class='daterange-picker' id='daterange-<%= series.id %>'>" +
+            "<div class='input-group date-picker' id='scope-start-<%= series.id %>'>" +
+                "<input type='text' class='form-control' data-input>" +
+            "</div>" +
+            "<div class='input-group date-picker' id='scope-end-<%= series.id %>'>" +
+                "<input type='text' class='form-control' data-input>" +
+            "</div>" +
+            "<button class='btn btn-secondary' id='scope-apply-<%= series.id %>'></button>" +
+        "</div>" +
+        "<div id='container'></div>";
         cTimeseries = new CTimeseriesGraph(
             "1", "#container"
         );
@@ -196,18 +210,19 @@ describe("CTimeseries tests", () => {
     });
 
     test("CTimeseriesGraph should correctly transform data", () => {
+        cTimeseries.dateStart = new Date("2020-07-11 00:00Z").toISOString();
         cTimeseries.processData(data);
         expect(cTimeseries.data).toHaveLength(1); // 1 exercise
         expect(cTimeseries.data[0]["ex_id"]).toBe("1");
         expect(cTimeseries.binStep).toBe(4);
         const datum = cTimeseries.data[0]["ex_data"];
         expect(datum).toHaveLength(26); // 25 bins total + 1 for 'before' section
-        expect(datum[0]["cSum"]).toBe(3); // 'before' bin should contain 3 submissions
-        expect(datum[1]["cSum"]).toBe(5); // two submissions in first normal bin + 3 from before
+        expect(datum[0]["cSum"]).toBe(1); // 'before' bin should contain 1 submission
+        expect(datum[1]["cSum"]).toBe(3); // two submissions in first normal bin + 1 from before
         const last = datum.length - 1;
-        expect(datum[last]["cSum"]).toBe(6); // 5 subs from former bins + 1 from last
+        expect(datum[last]["cSum"]).toBe(4); // 3 subs from former bins + 1 from last
 
-        expect(cTimeseries["maxSum"]).toBe(6);
+        expect(cTimeseries["maxSum"]).toBe(4);
     });
 });
 

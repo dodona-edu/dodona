@@ -10,8 +10,6 @@ export type RawData = {
     exercises: [number, string][],
     // eslint-disable-next-line camelcase
     student_count: number,
-    // eslint-disable-next-line camelcase
-    meta: Record
 }
 
 export abstract class SeriesGraph {
@@ -109,7 +107,7 @@ export abstract class SeriesGraph {
      * @param {Date} end Default selected end date
      * @return {void}
      */
-    private setPickerDates(start: Date, end: Date): void {
+    protected setPickerDates(start: Date, end: Date): void {
         this.fpStart.set("minDate", start);
         this.fpEnd.set("minDate", start);
         this.fpStart.setDate(start);
@@ -119,14 +117,7 @@ export abstract class SeriesGraph {
     }
 
     private getUrl(): string {
-        let url = `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
-        if (this.dateStart !== undefined) { // should always both be true or both be false
-            url += `&start=${this.dateStart}`;
-        }
-        if (this.dateEnd !== undefined) {
-            url += `&end=${this.dateEnd}`;
-        }
-        return url;
+        return `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
     }
 
 
@@ -234,8 +225,8 @@ export abstract class SeriesGraph {
     ): [number, Array<number>, Date] {
         // find best bin step
         // -------------------
-        // 5m, 15m, 1/2h, 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
-        const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 96, 168, 336, 672];
+        // 5m, 15m, 1/2h, 1h, 4h, 8h, 12h, 1d, 2d, 1w, 2w, 4w
+        const timeBins = [1/12, .25, .5, 1, 4, 8, 12, 24, 48, 96, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
         const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
         let bestDiff = Infinity;
@@ -365,9 +356,6 @@ export abstract class SeriesGraph {
         if (r.data.length === 0) {
             this.drawNoData();
         } else {
-            if (this.isTimeGraph() && !this.dateStart) {
-                this.setPickerDates(new Date(r.meta.first_sub), new Date(r.meta.last_sub));
-            }
             this.processData(r);
             if (doDraw) {
                 // next draw the graph

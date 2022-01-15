@@ -320,6 +320,7 @@ class SubmissionTest < ActiveSupport::TestCase
     subs = subs.in_time_range(start, stop)
     assert_equal 5, subs.length
     subs.each do |sub|
+      puts sub.id, sub.created_at
       assert_includes 4..8, sub.id
     end
   end

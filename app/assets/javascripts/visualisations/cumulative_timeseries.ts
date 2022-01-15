@@ -216,9 +216,14 @@ export class CTimeseriesGraph extends SeriesGraph {
             if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
                 binned.pop();
             }
-            const cSums = d3.cumsum(binned, d => d.length);
+            let cSums = undefined;
             if (meta["initial"]) {
-                cSums[0] += meta["initial"][ex.ex_id] ?? 0;
+                cSums = d3.cumsum(
+                    binned, (d, i) =>
+                        i === 0 ? meta["initial"][ex.ex_id] ?? 0 : d.length
+                );
+            } else {
+                cSums = d3.cumsum(binned, d => d.length);
             }
             this.data.push({
                 ex_id: String(ex.ex_id),

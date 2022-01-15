@@ -179,7 +179,8 @@ describe("CTimeseries tests", () => {
             }
         ],
         exercises: [[1, "test"]],
-        student_count: 3
+        student_count: 3,
+        meta: { initial: { 1: 3 } }
     };
     let cTimeseries;
     beforeEach(() => {
@@ -201,12 +202,12 @@ describe("CTimeseries tests", () => {
         expect(cTimeseries.binStep).toBe(4);
         const datum = cTimeseries.data[0]["ex_data"];
         expect(datum).toHaveLength(26); // 25 bins total + 1 for 'before' section
-        expect(datum[0]["cSum"]).toBe(0); // 'before' bin should be empty
-        expect(datum[1]["cSum"]).toBe(2); // two submissions in first normal bin
+        expect(datum[0]["cSum"]).toBe(3); // 'before' bin should contain 3 submissions
+        expect(datum[1]["cSum"]).toBe(5); // two submissions in first normal bin + 3 from before
         const last = datum.length - 1;
-        expect(datum[last]["cSum"]).toBe(3); // 2 subs from first bin + 1 from last
+        expect(datum[last]["cSum"]).toBe(6); // 5 subs from former bins + 1 from last
 
-        expect(cTimeseries["maxSum"]).toBe(3);
+        expect(cTimeseries["maxSum"]).toBe(6);
     });
 });
 

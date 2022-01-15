@@ -74,7 +74,6 @@ export abstract class SeriesGraph {
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         this.darkMode = window.dodona.darkMode;
 
-        console.log(this.isTimeGraph());
         if (this.isTimeGraph()) {
             const options = {
                 wrap: true,
@@ -86,7 +85,6 @@ export abstract class SeriesGraph {
             if (I18n.locale === "nl") {
                 options.locale = Dutch;
             }
-            console.log(document.getElementById(`scope-start-${seriesId}`));
             this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
             this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
             this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
@@ -106,18 +104,18 @@ export abstract class SeriesGraph {
 
     /**
      * Sets picker limits, default calendar page and default start and end dates
-     * @param {Date} minDate Cannot pick a date earlier than this
-     * @param {Date} medianDate Could be used to mark interesting dates on the calendar
+     * Should only be called after the first data fetch
      * @param {Date} start Default selected start date
      * @param {Date} end Default selected end date
      * @return {void}
      */
-    protected setPickerDates(minDate: Date, medianDate: Date, start: Date, end: Date): void {
-        if (!this.isTimeGraph()) return;
-        this.fpStart.set("minDate", Math.min(minDate, start));
-        this.fpEnd.set("minDate", minDate);
+    private setPickerDates(start: Date, end: Date): void {
+        this.fpStart.set("minDate", start);
+        this.fpEnd.set("minDate", start);
         this.fpStart.setDate(start);
         this.fpEnd.setDate(end);
+        this.dateStart = new Date(start).toISOString();
+        this.dateEnd = new Date(end).toISOString();
     }
 
     private getUrl(): string {
@@ -212,7 +210,6 @@ export abstract class SeriesGraph {
     }
 
     applyScope(): void {
-        console.log(this.fpStart.selectedDates);
         this.dateStart = this.fpStart.selectedDates.length > 0 ?
             new Date(this.fpStart.selectedDates[0]).toISOString() : undefined;
         this.dateEnd = this.fpEnd.selectedDates.length > 0 ?
@@ -368,6 +365,9 @@ export abstract class SeriesGraph {
         if (r.data.length === 0) {
             this.drawNoData();
         } else {
+            if (this.isTimeGraph() && !this.dateStart) {
+                this.setPickerDates(new Date(r.meta.first_sub), new Date(r.meta.last_sub));
+            }
             this.processData(r);
             if (doDraw) {
                 // next draw the graph

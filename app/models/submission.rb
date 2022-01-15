@@ -428,6 +428,10 @@ class Submission < ApplicationRecord
     submissions = submissions.in_series(options[:series]) if options[:series].present?
     submissions = submissions.judged
     submissions = submissions.from_students(options[:series].course)
+
+    first_sub = submissions.least_recent.first.created_at
+    last_sub = submissions.most_recent.first.created_at
+
     submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 
     value = {}
@@ -450,7 +454,9 @@ class Submission < ApplicationRecord
     end
 
     {
-      value: value
+      value: value,
+      first_sub: first_sub,
+      last_sub: last_sub
     }
   end
 
@@ -462,9 +468,11 @@ class Submission < ApplicationRecord
     submissions = submissions.from_students(options[:series].course)
 
     first_sub = submissions.least_recent.first.created_at
+    last_sub = submissions.most_recent.first.created_at
     init_subs = options[:start].present? ? submissions.before_deadline(options[:start]) : submissions.before_deadline(first_sub)
     submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 
+    # fetching regular data to be shown on the graph
     value = {}
     submissions.find_in_batches do |subs|
       value = value.merge(
@@ -475,6 +483,7 @@ class Submission < ApplicationRecord
       ) { |_k, v1, v2| v1 + v2 }
     end
 
+    # fetching data to initialize the graph with (zero moment data)
     initial = {}
     init_subs.find_in_batches do |subs|
       initial = initial.merge(
@@ -487,7 +496,8 @@ class Submission < ApplicationRecord
     {
       value: value,
       initial: initial,
-      first_sub: first_sub
+      first_sub: first_sub,
+      last_sub: last_sub
     }
   end
 

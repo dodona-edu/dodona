@@ -68,10 +68,11 @@ class StatisticsController < ApplicationController
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      # update is used to init the time pickers around a sensible moment
+      # intitial: used by cumulative graph to set the value for first tick (everthing that came before)
+      # first sub & last sub: used to set time pickers
       render json: { 
         data: data, exercises: ex_data, student_count: series.course.enrolled_members.length,
-        meta: { initial: result[:initial], first_sub: result[:first_sub]}
+        meta: { initial: result[:initial], first_sub: result[:first_sub], last_sub: result[:last_sub]}
       }
     else
       render json: { status: 'not available yet' }, status: :accepted

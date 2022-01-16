@@ -171,8 +171,7 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .x(d => this.x(d.x1))
                 .y(d => this.y(d.cSum / this.studentCount))
                 .curve(d3.curveMonotoneX)(ex.ex_data)
-            )
-            .attr("data-index", ex => ex.ex_id);
+            );
     }
 
     /**
@@ -392,12 +391,11 @@ export class CTimeseriesGraph extends SeriesGraph {
             .data(this.exOrder)
             .enter()
             .append("div")
-            .attr("data-index", exId => exId)
             .attr("class", "legend-item")
-            .on("mouseover", e => {
-                const lines = this.graph
-                    .selectAll(`.line:not([data-index='${e.target.dataset.index}'])`);
-                lines.style("opacity", 0.2);
+            .on("mouseover", (_, legendId) => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", lineEx => legendId !== lineEx.ex_id ? .2 : 1);
             })
             .on("mouseout", () => {
                 this.graph

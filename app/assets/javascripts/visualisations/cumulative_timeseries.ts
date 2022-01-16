@@ -171,7 +171,8 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .x(d => this.x(d.x1))
                 .y(d => this.y(d.cSum / this.studentCount))
                 .curve(d3.curveMonotoneX)(ex.ex_data)
-            );
+            )
+            .attr("data-index", ex => ex.ex_id);
     }
 
     /**
@@ -391,16 +392,29 @@ export class CTimeseriesGraph extends SeriesGraph {
             .data(this.exOrder)
             .enter()
             .append("div")
-            .attr("class", "legend-item");
+            .attr("data-index", exId => exId)
+            .attr("class", "legend-item")
+            .on("mouseover", e => {
+                const lines = this.graph
+                    .selectAll(`.line:not([data-index='${e.target.dataset.index}'])`);
+                lines.style("opacity", 0.2);
+            })
+            .on("mouseout", () => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", 1);
+            });
         legend
             .append("div")
             .attr("class", "legend-box")
-            .style("background", exId => this.color(exId));
+            .style("background", exId => this.color(exId))
+            .style("pointer-events", "none");
         legend
             .append("span")
             .attr("class", "legend-text")
             .text(exId => this.exMap[exId])
             .style("color", "currentColor")
-            .style("font-size", `${this.fontSize}px`);
+            .style("font-size", `${this.fontSize}px`)
+            .style("pointer-events", "none");
     }
 }

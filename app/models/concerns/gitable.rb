@@ -25,7 +25,7 @@ module Gitable
   end
 
   def clone_repo_delayed
-    delay(queue: 'git_clone').clone_repo
+    delay(queue: 'git').clone_repo
   end
 
   def clone_repo

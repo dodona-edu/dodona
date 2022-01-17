@@ -210,7 +210,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
                     return acc;
-                }, { "date": bin.x1, "sum": 0 })));
+                }, { "date": bin.x0, "sum": 0 })));
             });
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });

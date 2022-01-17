@@ -39,6 +39,11 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
     protected override draw(animation=true): void {
+        if (this.binTicks.length < 2) {
+            this.drawNoData();
+            return;
+        }
+
         super.draw(animation);
 
         // no data in cell
@@ -185,6 +190,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length-1]);
 
+        if (this.binTicks.length < 2) {
+            return;
+        }
 
         if (!this.dateStart) {
             this.setPickerDates(this.minDate, this.maxDate);

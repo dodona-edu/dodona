@@ -46,6 +46,10 @@ export class CTimeseriesGraph extends SeriesGraph {
     * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
     protected override draw(animation=true): void {
+        if (this.binTicks.length < 2) {
+            this.drawNoData();
+            return;
+        }
         this.height = 400;
         super.draw();
 
@@ -205,6 +209,11 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         if (!this.dateStart) {
             this.setPickerDates(this.minDate, this.maxDate);
+        }
+
+
+        if (this.binTicks.length < 2) {
+            return;
         }
 
         // eslint-disable-next-line camelcase

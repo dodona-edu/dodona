@@ -288,9 +288,11 @@ export abstract class SeriesGraph {
      * Displays an error message when there is not enough data
     */
     protected drawNoData(): void {
+        this.container.html("");
         this.container
             .append("div")
             .style("height", "50px")
+            .style("margin-top", "10px")
             .text(I18n.t("js.no_data"))
             .attr("class", "graph_placeholder");
     }

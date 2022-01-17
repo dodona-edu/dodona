@@ -31,9 +31,16 @@ beforeAll(() => {
     window.dodona = { darkMode: false };
 
 
-    document.body.innerHTML = "<div id='scope-start-1' data-wrap=true><input data-input></div>" +
-                                "<div id='scope-end-1' data-wrap=true><input data-input></div>" +
-                                "<button id='scope-apply-1'></button>";
+    document.body.innerHTML = "" +
+    "<div class='daterange-picker' id='daterange-<%= series.id %>'>" +
+        "<div class='input-group date-picker' id='scope-start-<%= series.id %>'>" +
+            "<input type='text' class='form-control' data-input>" +
+        "</div>" +
+        "<div class='input-group date-picker' id='scope-end-<%= series.id %>'>" +
+            "<input type='text' class='form-control' data-input>" +
+        "</div>" +
+        "<button class='btn btn-secondary' id='scope-apply-<%= series.id %>'></button>" +
+    "</div>";
 });
 
 afterAll(() => {
@@ -147,6 +154,7 @@ describe("Timeseries tests", () => {
     });
 
     test("TimeseriesGraph should correctly transform data", () => {
+        timeseries.dateStart = new Date("2020-07-11 00:00Z").toISOString();
         timeseries.processData(data);
         expect(timeseries.data).toHaveLength(1); // one exercise
         expect(timeseries.binStep).toBe(4); // 4 hours per bin
@@ -188,17 +196,7 @@ describe("CTimeseries tests", () => {
     };
     let cTimeseries;
     beforeEach(() => {
-        document.body.innerHTML += "" +
-        "<div class='daterange-picker' id='daterange-<%= series.id %>'>" +
-            "<div class='input-group date-picker' id='scope-start-<%= series.id %>'>" +
-                "<input type='text' class='form-control' data-input>" +
-            "</div>" +
-            "<div class='input-group date-picker' id='scope-end-<%= series.id %>'>" +
-                "<input type='text' class='form-control' data-input>" +
-            "</div>" +
-            "<button class='btn btn-secondary' id='scope-apply-<%= series.id %>'></button>" +
-        "</div>" +
-        "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         cTimeseries = new CTimeseriesGraph(
             "1", "#container"
         );

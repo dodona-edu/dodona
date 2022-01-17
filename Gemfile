@@ -143,9 +143,6 @@ group :development, :test do
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
 
-  # I18N default locale & better test reporter
-  gem 'minitest-utils', '~> 0.4.6'
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
@@ -163,6 +160,9 @@ group :test do
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
+
+  # I18N default locale & better test reporter
+  gem 'minitest-utils', '~> 0.4.6'
 end
 
 group :development do

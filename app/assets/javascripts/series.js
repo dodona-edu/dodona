@@ -144,11 +144,7 @@ function initSeriesShow(id) {
             const seriesId = e.target.dataset.seriesId;
 
             const graph = new (graphMapping[type])(seriesId, `#stats-container-${seriesId}`);
-            if (graph.isTimeGraph()) {
-                document.getElementById(`daterange-${seriesId}`).hidden = false;
-            } else {
-                document.getElementById(`daterange-${seriesId}`).hidden = true;
-            }
+            document.getElementById(`daterange-${seriesId}`).hidden = true;
             graph.init();
 
             const card = document.getElementById(`series-card-${seriesId}`);

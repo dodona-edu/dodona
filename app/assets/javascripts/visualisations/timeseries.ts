@@ -309,12 +309,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         return `<i class="mdi mdi-${icon} mdi-${size} colored-${color}" style="margin-right: 5px"></i>`;
     }
 
-    /**
-     * Whether the graph will use the time picker
-     * Seems to get overwritten if it's a property
-     * @return {boolean}
-     */
-    public isTimeGraph(): boolean {
-        return true;
+    protected override init(draw = true, data = undefined): void {
+        this.initTimePickers();
+        super.init(draw, data);
     }
 }

@@ -43,7 +43,6 @@ export abstract class SeriesGraph {
 
     // data
     private seriesId: string;
-    private deadline: Date;
     protected exOrder: string[] = []; // array of exId's (in correct order)
     protected exMap: Record<string, string> = {}; // map from exId -> exName
 
@@ -52,7 +51,7 @@ export abstract class SeriesGraph {
     // scope stuff
     private fpStart: Instance | Instance[];
     private fpEnd: Instance | Instance[];
-    private scopeApply: HTMLButtonElement;
+    private scopeApplyButton: HTMLButtonElement;
     protected dateStart: string = undefined;
     protected dateEnd: string = undefined;
 
@@ -72,26 +71,9 @@ export abstract class SeriesGraph {
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
         this.darkMode = window.dodona.darkMode;
 
-        if (this.isTimeGraph()) {
-            const options = {
-                wrap: true,
-                enableTime: true,
-                dateFormat: I18n.t("time.formats.flatpickr_short"),
-                altInput: true,
-                altFormat: I18n.t("time.formats.flatpickr_long"),
-            };
-            if (I18n.locale === "nl") {
-                options.locale = Dutch;
-            }
-            this.fpStart = flatpickr(`#scope-start-${seriesId}`, options);
-            this.fpEnd = flatpickr(`#scope-end-${seriesId}`, options);
-            this.scopeApply = document.getElementById(`scope-apply-${seriesId}`);
-            this.scopeApply.onclick = () => this.applyScope();
-        }
-
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
-            this.processData(data);
+            this.init(data);
             this.draw();
         }
     }
@@ -332,9 +314,10 @@ export abstract class SeriesGraph {
     /**
      * Fetches and processes data
      * @param {boolean} doDraw When false, the graph will not be drawn
+     * @param {unknown} data Pre-fetched data
      * (only data fetching and processing)
      */
-    async init(doDraw = true): Promise<void> {
+    async init(doDraw = true, data = undefined): Promise<void> {
         // add loading placeholder
         const tempHeight = this.container.node().getBoundingClientRect().height;
         this.container.html("");
@@ -348,10 +331,9 @@ export abstract class SeriesGraph {
             .style("align-items", "center");
 
         // fetch data
-        const r: RawData = await this.fetchData();
+        const r: RawData = data ?? await this.fetchData();
         // once fetched remove placeholder
         this.container.html("");
-        this.deadline = r.deadline;
 
         if (r.data.length === 0) {
             this.drawNoData();
@@ -365,11 +347,23 @@ export abstract class SeriesGraph {
     }
 
     /**
-     * Whether the graph will use the time picker
-     * Seems to get overwritten if it's a property
-     * @return {boolean}
+     * Initializes the time pickers
      */
-    public isTimeGraph(): boolean {
-        return false;
+    protected initTimePickers(): void {
+        document.getElementById(`daterange-${this.seriesId}`).hidden = false;
+        const options = {
+            wrap: true,
+            enableTime: true,
+            dateFormat: I18n.t("time.formats.flatpickr_short"),
+            altInput: true,
+            altFormat: I18n.t("time.formats.flatpickr_long"),
+        };
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        this.fpStart = flatpickr(`#scope-start-${this.seriesId}`, options);
+        this.fpEnd = flatpickr(`#scope-end-${this.seriesId}`, options);
+        this.scopeApplyButton = document.getElementById(`scope-apply-${this.seriesId}`);
+        this.scopeApplyButton.onclick = () => this.applyScope();
     }
 }

@@ -55,7 +55,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
             .domain([0, this.maxStack]);
         this.x = d3.scaleBand()
-            // dropping first bin since the before bin isn't used
             .domain(this.binTicks)
             .range([0, this.innerWidth]);
 
@@ -64,10 +63,18 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .attr("transform", `translate(0, ${this.innerHeight - this.y.bandwidth() / 2})`)
             .call(
                 d3.axisBottom(this.x)
-                    .tickValues(this.binTicks)
-                    .tickFormat(this.binStep >= 24 ?
-                        d3.timeFormat(I18n.t("date.formats.weekday_short")):
-                        d3.timeFormat(I18n.t("time.formats.plain_time")))
+                    .tickValues(this.binTicks.slice(0, this.binTicks.length-1))
+                    .tickFormat(t => {
+                        const asDate = new Date(t);
+                        const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
+                        return this.binStep >= 24 ||
+                            (
+                                asDate.getHours() === (24 - timeZoneDiff) % 24 &&
+                                asDate.getMinutes() === 0
+                            ) ?
+                            d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                            d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                    })
             )
             .selectAll("text")
             .style("text-anchor", "end")
@@ -189,9 +196,11 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             let binned = d3.bin()
                 .value(d => d.date.getTime())
                 .thresholds(binTicks)
-                .domain([0, this.maxDate.getTime()])(ex_data);
+                .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
 
-            binned = binned.slice(1); // remove the 'before' bin
+            if (binned[0].x0 < this.minDate.getTime()) {
+                binned = binned.slice(1); // remove the 'before' bin
+            }
             const binAmount = binned.length;
             // begin and end points of last bin are the same moment at times
             if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
@@ -212,11 +221,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     return acc;
                 }, { "date": bin.x0, "sum": 0 })));
             });
+
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
-
-        // remove first element since we don't need it anymore
-        this.binTicks = this.binTicks.slice(1);
     }
 
     /**
@@ -240,7 +247,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${timeFormat(new Date(d.date - this.binStep * 3600000))} - ${timeFormat(d.date)}</b>
+                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}</b>
                 <br>${on} ${dateFormat(d.date)}:<br>
             `;
         } else if (this.binStep === 24) { // binning per day
@@ -249,14 +256,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${capitalize(format(new Date(d.date - this.binStep * 3600000)))} - ${format(d.date)}:</b>
+                <b>${capitalize(format(d.date))} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `
-                <b>${capitalize(weekDay(new Date(d.date - this.binStep * 3600000)))} - ${monthDay(d.date)}:</b>
+                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         }

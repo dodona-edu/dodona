@@ -183,6 +183,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             this.setPickerDates(this.minDate, this.maxDate);
         }
 
+        this.data = [];
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
             let binned = d3.bin()

@@ -79,7 +79,7 @@ gem 'mail_form', '~> 1.9.0'
 gem 'pundit', '~> 2.1.1'
 
 # impersonate users
-gem 'pretender', '~> 0.3.4'
+gem 'pretender', '~> 0.4.0'
 
 # db annotations
 gem 'annotate', '~> 3.1.1'

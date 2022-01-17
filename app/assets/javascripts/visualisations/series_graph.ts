@@ -207,8 +207,8 @@ export abstract class SeriesGraph {
     ): [number, Array<number>, Date] {
         // find best bin step
         // -------------------
-        // 5m, 15m, 1/2h, 1h, 4h, 8h, 12h, 1d, 2d, 1w, 2w, 4w
-        const timeBins = [1/12, .25, .5, 1, 4, 8, 12, 24, 48, 96, 168, 336, 672];
+        // 5m, 10m, 15m, 1/2h, 1h, 4h, 8h, 12h, 1d, 2d, 1w, 2w, 4w
+        const timeBins = [1/12, 1/6, .25, .5, 1, 4, 8, 12, 24, 48, 96, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
         const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
         let bestDiff = Infinity;

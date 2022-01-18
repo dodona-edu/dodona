@@ -14,4 +14,4 @@ nl:
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de judge op Dodona automatisch geüpdatet wordt bij elke commit:"
       all_submissions: "Inzendingen voor deze judge"
       all_exercises: "Oefeningen voor deze judge"
-      clone_incomplete: "Wij zijn uw judge aan het toevoegen aan Dodona. Dit kan tot 5 minuten duren."
+      clone_incomplete: "We zijn je judge nu aan het toevoegen aan Dodona. Het kan tot 5 minuten duren eer hij beschikbaar is."

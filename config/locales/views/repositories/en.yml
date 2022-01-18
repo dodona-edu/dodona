@@ -25,7 +25,7 @@ en:
       public_files_placeholder: This repository has no public files.
       file_name: File name
       file_url: URL
-      clone_incomplete: "We are adding your repository to Dodona. This can take up to five minutes."
+      clone_incomplete: "We are now adding your repository to Dodona. It can take up to five minutes until your exercises show up."
     admins:
       admins: "Administrators"
       admin_explanation: "The users listed below are repository administrators. These users can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."

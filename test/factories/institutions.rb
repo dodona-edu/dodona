@@ -9,7 +9,7 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  generated_name :boolean          default(TRUE), not null
-#  category       :integer          default("secondary")
+#  category       :integer          default("secondary"), not null
 #
 
 FactoryBot.define do

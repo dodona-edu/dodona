@@ -19,6 +19,7 @@ class ActivityReadState < ApplicationRecord
 
   after_save :invalidate_caches
 
+  scope :of_content_page, ->(activity) { where activity_id: activity.id }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(activity: series.content_pages) }
   scope :of_user, ->(user) { where user_id: user.id }

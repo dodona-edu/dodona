@@ -38,6 +38,7 @@ en:
     formats:
       annotation: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
+      read_state: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
       plain_time: '%H:%M'
   controllers:

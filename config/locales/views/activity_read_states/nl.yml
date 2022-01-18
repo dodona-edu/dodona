@@ -1,0 +1,12 @@
+nl:
+  activity_read_states:
+    index:
+      title: Leesactiviteit log
+      for: voor
+      from: van
+      user: Gebruiker
+      exercise: Oefening
+      time: Tijdstip
+      ago: geleden
+      filter-by-user: "Toon enkel logs van deze gebruiker"
+      filter-by-exercise: "Toon enkel logs voor deze oefening"

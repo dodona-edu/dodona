@@ -1,0 +1,12 @@
+en:
+  activity_read_states:
+    index:
+      title: Read activity log
+      for: for
+      from: from
+      user: User
+      exercise: Exercise
+      time: Time
+      ago: ago
+      filter-by-user: "Only show logs from this user"
+      filter-by-exercise: "Only show logs for this exercise"

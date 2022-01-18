@@ -10,6 +10,7 @@
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
 #  remote     :string(255)
+#  status     :integer
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

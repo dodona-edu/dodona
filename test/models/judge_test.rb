@@ -10,6 +10,7 @@
 #  updated_at :datetime         not null
 #  renderer   :string(255)      not null
 #  remote     :string(255)
+#  status     :integer
 #
 
 require 'test_helper'

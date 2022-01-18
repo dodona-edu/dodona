@@ -41,6 +41,11 @@
               <span><%= t ".clone_incomplete" %></span>
             </div>
           <% end %>
+          <% if @judge.clone_failed? %>
+            <div class="callout callout-danger">
+              <span><%= t ".clone_failed" %></span>
+            </div>
+          <% end %>
           <div class="callout callout-info">
             <h4>Webhook</h4>
             <p><%= t ".webhook_html" %></p>

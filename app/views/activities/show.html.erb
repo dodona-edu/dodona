@@ -38,6 +38,8 @@ end %>
     <div class="card activity-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
+          <%= activity_icon(@activity, 24) %>
+          &nbsp;
           <%= @activity.name %>
         </h2>
         <% if @series.present? %>

@@ -116,12 +116,13 @@ class ActivitiesController < ApplicationController
   def info
     @title = @activity.name
     @repository = @activity.repository
-    @config = @activity.merged_config
-    @config_locations = @activity.merged_config_locations
+    @config = @activity.ok? ? @activity.merged_config : {}
+    @config_locations = @activity.ok? ? @activity.merged_config_locations : {}
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @activity, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
     @courses_series = policy_scope(@activity.series).group_by(&:course).sort do |a, b|
       [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
     end
+    flash[:alert] = I18n.t('activities.info.activity_invalid') if @activity.not_valid?
   end
 
   def edit

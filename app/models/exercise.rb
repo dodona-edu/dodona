@@ -30,7 +30,7 @@ class Exercise < Activity
   USERS_CORRECT_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_correct'.freeze
   USERS_TRIED_CACHE_STRING = '/course/%<course_id>s/exercise/%<id>s/users_tried'.freeze
   SOLUTION_DIR = 'solution'.freeze
-  SOLUTION_MAX_BYTES = 2**16 - 1
+  SOLUTION_MAX_BYTES = (2**16) - 1
   BOILERPLATE_DIR = File.join(DESCRIPTION_DIR, 'boilerplate').freeze
 
   belongs_to :judge
@@ -47,8 +47,7 @@ class Exercise < Activity
     (full_path + SOLUTION_DIR)
       .yield_self { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
-      .map { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
-      .to_h
+      .to_h { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
   end
 
   def boilerplate_localized(lang = I18n.locale.to_s)

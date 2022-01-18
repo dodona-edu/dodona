@@ -44,7 +44,7 @@ FactoryBot.define do
     end
 
     after :create do |series, e|
-      content_page_count = e.content_page_count || e.activity_count / 2
+      content_page_count = e.content_page_count || (e.activity_count / 2)
       exercise_count = e.exercise_count || (e.activity_count - content_page_count)
       exercise_count.times do
         create :exercise,

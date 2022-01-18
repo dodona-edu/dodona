@@ -34,7 +34,7 @@ nl:
     getting_started_card:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.
-      action: verken cursussen
+      action: Verken cursussen
     pending_courses_card:
       pending-courses: In afwachting
     institution_not_supported:
@@ -77,7 +77,7 @@ nl:
       intro_p2_html: "Dodona wordt <strong>gratis</strong> aangeboden aan scholen en onderwijsinstellingen en met uw steun willen we dat graag zou houden! Het online houden van dit platform vergt heel wat tijd, net als de ondersteuning voor honderden scholen en duizenden studenten. Uw steun gaat <strong>integraal naar personeel</strong> (zoals bijvoorbeeld jobstudenten) die meehelpen met het ontwikkelen van nieuwe features en het ondersteunen van gebruikers."
       intro_p3_html: "Contacteer ons gerust op <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> voor meer info over dit project."
       how_to_support: Hoe kunt u ons steunen?
-      support_p1_html: "Dankzij het <a href='https://www.ugent.be/schenken/nl' target='_blank'>Universiteitsfonds</a> van de Universiteit Gent kunt u <strong>fiscaal voordelig schenken</strong> aan Dodona. Voor giften vanaf 40 euro ontvangt u een fiscaal attest waarmee u 45% van uw gift recupereert in uw belastingsaangifte. Uw gift komt bovendien <strong>integraal bij ons</strong> terecht."
+      support_p1_html: "Dankzij het <a href='https://www.ugent.be/schenken/nl' target='_blank'>Universiteitsfonds</a> van de Universiteit Gent kunt u <strong>fiscaal voordelig schenken</strong> aan Dodona. Voor giften vanaf 40 euro ontvangt u een fiscaal attest waarmee u 45% van uw gift recupereert in uw belastingaangifte. Uw gift komt bovendien <strong>integraal bij ons</strong> terecht."
       support_p2_html: "Giften kunnen worden overgemaakt op het rekeningnummer van het Universiteitsfonds zijnde <code>390-0965803-29</code> of IBAN <code>BE26 3900 9658 0329</code> (BIC: <code>BBRUBEBB</code>) met als mededeling <code>Dodona</code>."
       support_p3_html: "Wenst u een groter bedrag te schenken of kiest u liever voor sponsoring op factuur? Contacteer ons op <a href='mailto:dodona@ugent.be'>dodona@ugent.be</a> en we bekijken samen graag de mogelijkheden."
       supported_by: Met de steun van

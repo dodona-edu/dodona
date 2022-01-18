@@ -22,7 +22,7 @@
   </div>
 <% end %>
 
-<div class="card-supporting-text card-border">
+<div class="card-supporting-text <%= "card-border" if @feedback.score_items.empty? %>">
   <center>
     <%= button_tag class: "btn btn-text btn-primary", id: "next-feedback-button" do %>
       <%= t('.direction.next') %>

@@ -51,6 +51,14 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should show activity info when config is invalid' do
+    stub_all_activities!
+    Exercise.any_instance.stubs(:merged_config).raises(StandardError.new('ALL CAPS'))
+    @instance.update(status: :not_valid)
+    get info_activity_url(@instance)
+    assert_response :success
+  end
+
   test 'should rescue from exercise not found' do
     not_id = Random.rand(10_000)
     begin

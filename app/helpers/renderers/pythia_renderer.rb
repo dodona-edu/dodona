@@ -85,11 +85,11 @@ class PythiaRenderer < FeedbackTableRenderer
   def testcase(tc)
     return super(tc) unless tc[:data] && tc[:data][:files]
 
-    jsonfiles = tc[:data][:files].to_a.map do |key, value|
+    jsonfiles = tc[:data][:files].to_a.to_h do |key, value|
       value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" \
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
-    end.to_h.to_json
+    end.to_json
     @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
       testcase_content(tc)
     end
@@ -268,7 +268,8 @@ class PythiaRenderer < FeedbackTableRenderer
     {
       row: message[:line] - 1,
       type: convert_lint_type(message[:type]),
-      text: message[:description]
+      text: message[:description],
+      externalUrl: message[:externalUrl]
     }
   end
 

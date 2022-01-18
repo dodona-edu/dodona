@@ -14,9 +14,10 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
     /**
     * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
+    * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        super.draw(animation);
 
         const emptyColor = this.darkMode ? "#37474F" : "white";
 
@@ -37,36 +38,25 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
             .style("opacity", 0)
             .style("z-index", 5);
 
-        // calculate offset for legend elements
-        const { maxPosition, offsets } = this.calculateLegendOffsets();
-
         // Legend
-        const legend = this.svg
-            .append("g")
+        const legend = this.container
+            .append("div")
             .attr("class", "legend")
-            .attr(
-                "transform",
-                `translate(${this.width / 2 - maxPosition / 2}, ${this.height - this.margin.bottom / 2})`
-            )
-            .selectAll("g")
-            .data(offsets)
+            .style("margin-top", "-20px")
+            .selectAll("div")
+            .data(this.statusOrder)
             .enter()
-            .append("g")
-            .attr("transform", d => `translate(${d.pos}, 0)`);
+            .append("div")
+            .attr("class", "legend-item");
         legend
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill", s => color(s.status) as string);
+            .append("div")
+            .attr("class", "legend-box")
+            .style("background", status => color(status) as string);
         legend
-            .append("text")
-            .attr("x", 20)
-            .attr("y", 12)
-            .attr("text-anchor", "start")
-            .text(s => I18n.t(`js.status.${s.status.replaceAll(" ", "_")}`))
-            .attr("fill", "currentColor")
+            .append("span")
+            .attr("class", "legend-text")
+            .text(status => I18n.t(`js.status.${status.replaceAll(" ", "_")}`))
+            .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
 
         // Bars
@@ -95,7 +85,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
                     .duration(500)
                     .style("opacity", 0);
             })
-            .transition().duration(500)
+            .transition().duration(animation ? 500 : 0)
             .attr("x", d => x((d.cSum) / this.maxSum[d.exercise_id])) // relative numbers
             .attr("width", d => x(d.count / this.maxSum[d.exercise_id])) // relative numbers
             .attr("fill", d => color(d.status) as string);
@@ -159,21 +149,5 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
             });
             this.maxSum[ex_id] = sum;
         });
-    }
-
-    private calculateLegendOffsets(): { maxPosition: number, offsets: { status: string, pos: number }[] } {
-        const statePosition: { status: string, pos: number }[] = [];
-        let pos = 0;
-        this.statusOrder.forEach(status => {
-            statePosition.push({ status: status, pos: pos });
-            const translatedStatus = I18n.t(`js.status.${status.replaceAll(" ", "_")}`);
-
-            pos += 15 + // rect size
-                5 + // padding
-                5 + // inter-group padding
-                (translatedStatus === "wrong" ? 5 : 0) + // extra spacing for wrong
-                this.fontSize / 2 * translatedStatus.length;
-        });
-        return { maxPosition: pos, offsets: statePosition };
     }
 }

@@ -191,6 +191,10 @@ $annotation-info: $info-500;
         }
         margin-left: 4px;
       }
+
+      .annotation-warning::before {
+        vertical-align: bottom;
+      }
     }
 
     .annotation-text {
@@ -288,6 +292,7 @@ $annotation-info: $info-500;
 
     .help-block {
       float: left;
+      margin-bottom: 0;
     }
 
     .annotation-submission-button-container {

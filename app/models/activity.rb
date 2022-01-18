@@ -264,7 +264,6 @@ class Activity < ApplicationRecord
       else
         return false unless course.visible_activities.pluck(:id).include? id
       end
-      return true if user&.repository_admin? repository
       return false unless access_public? \
           || repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.member_of? course

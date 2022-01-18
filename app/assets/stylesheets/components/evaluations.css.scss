@@ -32,7 +32,7 @@
     align-items: center;
     white-space: nowrap;
     padding-bottom: 5px;
-  
+
     .name {
       flex-shrink: 0;
     }
@@ -75,7 +75,7 @@
         color: $text-color;
         text-align: center;
         background-color: $input-group-addon-bg;
-        border: 1px solid $input-group-addon-border-color;
+        border: 1px solid $border-color;
         opacity: 1;
         cursor: auto;
       }
@@ -83,6 +83,23 @@
       .form-control.in-progress, .input-group-addon.in-progress {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
+      }
+
+      .form-control{
+        border-color: $border-color;
+        line-height: initial;
+      }
+
+      .score-input{
+        border-right: none;
+        margin-right: -28px;
+        padding-right: 28px;
+      }
+      .score-state{
+        border-left: none;
+        width: 28px;
+        background-color: $input-bg;
+        padding: 0;
       }
 
       .dodona-progress .bar {
@@ -199,6 +216,10 @@ $user-column-width: 170px;
     max-width: 100px;
     min-width: 100px;
     overflow: hidden;
+  }
+
+  .total-column {
+    border-right: 2px solid $border-color;
   }
 
   thead tr th:nth-child(2) {

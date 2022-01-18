@@ -1,6 +1,13 @@
 name: Test
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
+    tags:
+      - '*'
+  pull_request:
 
 jobs:
   ruby:
@@ -109,7 +116,7 @@ jobs:
         bundle exec rails test:system
     - name: Upload screenshot artifacts
       if: failure()
-      uses: actions/upload-artifact@v2.2.4
+      uses: actions/upload-artifact@v2.3.1
       with:
         name: screenshots-failure
         path: tmp/screenshots

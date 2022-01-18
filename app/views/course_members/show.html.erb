@@ -32,7 +32,7 @@
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>
-            <%= @user.email %>
+            <%= mail_to(@user.email, nil, { title: t('.send_mail'), class: 'text-muted' }) %>
           </span>
         </div>
         <div class="row">

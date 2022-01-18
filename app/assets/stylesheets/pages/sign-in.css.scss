@@ -13,7 +13,7 @@
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
     height: 45px;
-}
+  }
 }
 
 .sign-in-dialog-wrapper h1 {
@@ -40,6 +40,7 @@
 
 .sign-in-dialog-header {
   padding: 15px;
+  padding-bottom: 0;
 }
 
 a.institution-sign-in {
@@ -65,7 +66,7 @@ input:focus {
   .card {
     margin-bottom: 0;
   }
-  margin-bottom: 150px;
+  margin-bottom: 16px;
   .tt-menu {
     max-height: 150px;
     overflow-y: auto;

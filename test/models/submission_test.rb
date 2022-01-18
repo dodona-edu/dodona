@@ -50,7 +50,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, :rate_limited, user: user
     assert_not submission.valid?
 
-    later = Time.zone.now + 10.seconds
+    later = 10.seconds.from_now
 
     Time.stubs(:now).returns(later)
 
@@ -179,7 +179,7 @@ class SubmissionTest < ActiveSupport::TestCase
     Submission.destroy_all
     Submission.update_heatmap_matrix
 
-    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
+    create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current)
     Rails.cache.expects(:write).once
     Submission.update_heatmap_matrix
   end
@@ -189,7 +189,7 @@ class SubmissionTest < ActiveSupport::TestCase
     Submission.destroy_all
     Submission.update_punchcard_matrix(timezone: Time.zone)
 
-    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
+    create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current)
     Rails.cache.expects(:write).once
     Submission.update_punchcard_matrix(timezone: Time.zone)
   end
@@ -205,18 +205,18 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'update_heatmap_matrix should write an updated value to cache when fetch returns something' do
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_heatmap_matrix
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     Rails.cache.expects(:fetch).returns(to_update)
     Rails.cache.expects(:write).with(format(Submission::HEATMAP_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global'), Submission.old_heatmap_matrix)
     Submission.update_heatmap_matrix
   end
 
   test 'update_punchcard_matrix should write an updated value to cache when fetch returns something' do
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     Rails.cache.expects(:fetch).returns(to_update)
     Rails.cache.expects(:write).with(format(Submission::PUNCHCARD_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global', timezone: Time.zone.utc_offset), Submission.old_punchcard_matrix(timezone: Time.zone))
     Submission.update_punchcard_matrix(timezone: Time.zone)
@@ -240,50 +240,50 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'clean calculate and update should give the same result for punchcard' do
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_punchcard_matrix({ timezone: Time.zone }, to_update)
     assert_equal updated, Submission.old_punchcard_matrix(timezone: Time.zone)
   end
 
   test 'clean calculate and update should give the same result for heatmap' do
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_heatmap_matrix
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_heatmap_matrix({}, to_update)
     assert_equal updated, Submission.old_heatmap_matrix
   end
 
   test 'user option should work for punchcard' do
     temp = users(:student)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
     assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
   end
 
   test 'user option should work for heatmap' do
     temp = users(:student)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
     assert_equal 3, Submission.old_heatmap_matrix(user: user)[:value].values.sum
   end
 
   test 'course option should work for punchcard' do
     temp = courses(:course1)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
     assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
   end
 
   test 'course option should work for heatmap' do
     temp = courses(:course1)
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
     assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
@@ -298,6 +298,30 @@ class SubmissionTest < ActiveSupport::TestCase
     assert File.exist?(submission.fs_path)
     submission.destroy
     assert_not File.exist?(submission.fs_path)
+  end
+
+  test 'time range should include correct submissions' do
+    start = Time.zone.local(2021, 10, 10, 13, 5, 0)
+    stop = Time.zone.local(2021, 11, 15, 9, 21, 0)
+    create :submission, id: 1, created_at: Time.zone.local(2020, 10, 11, 13, 10, 0) # not included
+    create :submission, id: 2, created_at: Time.zone.local(2021, 10, 10, 12, 0, 0) # not included
+    create :submission, id: 3, created_at: Time.zone.local(2021, 10, 10, 13, 3, 0) # not included
+    create :submission, id: 4, created_at: Time.zone.local(2021, 10, 10, 13, 15, 0) # included
+    create :submission, id: 5, created_at: Time.zone.local(2021, 10, 10, 14, 0, 0) # included
+    create :submission, id: 6, created_at: Time.zone.local(2021, 10, 20, 12, 0, 0) # included
+    create :submission, id: 7, created_at: Time.zone.local(2021, 11, 15, 8, 0, 0) # included
+    create :submission, id: 8, created_at: Time.zone.local(2021, 11, 15, 9, 18, 0) # included
+    create :submission, id: 9, created_at: Time.zone.local(2021, 11, 15, 9, 25, 0) # not included
+    create :submission, id: 10, created_at: Time.zone.local(2021, 11, 15, 10, 0, 0) # not included
+    create :submission, id: 11, created_at: Time.zone.local(2022, 11, 14, 8, 0, 0) # not included
+
+    subs = Submission.all
+    assert_equal 11, subs.length
+    subs = subs.in_time_range(start, stop)
+    assert_equal 5, subs.length
+    subs.each do |sub|
+      assert_includes 4..8, sub.id
+    end
   end
 
   class StatisticsTest < ActiveSupport::TestCase
@@ -332,7 +356,7 @@ class SubmissionTest < ActiveSupport::TestCase
       result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
-      assert_equal result.values[0], [{ date: '1302-07-11', status: 'correct', count: 6 }, { date: '1302-07-11', status: 'wrong', count: 9 }]
+      assert_equal result.values[0], [{ date: @date, status: 'correct', count: 6 }, { date: @date, status: 'wrong', count: 9 }]
 
       # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]

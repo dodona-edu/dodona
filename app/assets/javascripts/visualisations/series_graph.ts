@@ -77,7 +77,7 @@ export abstract class SeriesGraph {
     protected abstract processData(raw: RawData): void;
 
 
-    protected draw(): void {
+    protected draw(animation=true): void {
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 
@@ -85,6 +85,15 @@ export abstract class SeriesGraph {
             .append("svg")
             .attr("width", this.width)
             .attr("height", this.height);
+
+        window.onresize = () => {
+            // just redraw the whole thing on a resize
+            // could also do it with viewBox, but this would require a lot of updates
+            // to keep apparent sizes consistent with redraws on graph switches
+            this.width = (this.container.node() as Element).getBoundingClientRect().width;
+            (this.container.node() as Element).innerHTML = "";
+            this.draw(false); // redraw without animations
+        };
 
         this.graph = this.svg
             .append("g")
@@ -148,6 +157,82 @@ export abstract class SeriesGraph {
     }
 
     /**
+     * Finds the best predefined bin step (range of bins) for the given date range
+     * The 'best' bin step will produce somewhere around 17 bins.
+     * Produces the best bin step (in hours), an array with the bin boundaries
+     * and a new start date alligned to the step size
+     * @param {Date} minDate The start of the date range
+     * @param {Date} maxDate The end of the date range
+     * @param {number} targetBins The amount of bins the search should aim for.
+     * @return {[number, Array<number>, Date]} Bin step, bin boundaries, aligned start
+     */
+    protected findBinTime(
+        minDate: Date,
+        maxDate: Date,
+        targetBins: number
+    ): [number, Array<number>, Date] {
+        // find best bin step
+        // -------------------
+        // 5m, 15m, 1/2h, 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
+        const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 96, 168, 336, 672];
+        const diff = (maxDate - minDate) / 3600000; // timediff in hours
+        const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
+        let bestDiff = Infinity;
+        let currDiff = Math.abs(timeBins[0]-targetBinStep);
+        let i = 0;
+        // find the predefined binStep that most closely resembles the target binStep
+        while (i < timeBins.length && currDiff < bestDiff) {
+            i++;
+            bestDiff = currDiff;
+            currDiff = Math.abs(timeBins[i]-targetBinStep);
+        }
+        const resultStep = timeBins[i-1];
+        const binStepMili = resultStep * 3600000; // binStep in miliseconds
+
+
+        // create new aligned start moment
+        // --------------------------------
+        const alignedStart = new Date(minDate);
+        // binStep per x-amount of minutes
+        if (resultStep < 1) {
+            const minuteStep = resultStep * 60;
+            alignedStart.setMinutes(
+                Math.floor(minDate.getMinutes() / minuteStep) * minuteStep,
+                0,
+                0
+            );
+        } else {
+            alignedStart.setMinutes(0, 0, 0);
+            // if binStep is per hour, align to a multiple of that size
+            if (resultStep < 24) {
+                alignedStart.setHours(Math.floor(minDate.getHours() / resultStep) * resultStep);
+            } else {
+                alignedStart.setHours(0);
+                if (resultStep < 168) { // if binStep is per day, align to a multiple of that size
+                    const diff = minDate.getDate() % (resultStep/24);
+                    if (diff !== 0) {
+                        alignedStart.setDate(minDate.getDate()-diff);
+                    }
+                } else { // if binStep is per week, align to mondays
+                    alignedStart.setDate(minDate.getDate() - (minDate.getDay() + 6) % 7);
+                }
+            }
+        }
+
+        // Generate thresholds
+        // --------------------
+        const binTicks = [alignedStart.getTime()];
+        for (
+            let j = alignedStart.getTime();
+            j <= maxDate.getTime();
+            j += binStepMili
+        ) {
+            binTicks.push(j+binStepMili);
+        }
+        return [resultStep, binTicks, alignedStart];
+    }
+
+    /**
      * Converts the tuples of exercises into an list of ids indicating the order
      * and a map form id to title
      * ids from the list are only added if they appear in the data
@@ -169,8 +254,8 @@ export abstract class SeriesGraph {
     */
     protected drawNoData(): void {
         this.container
-            .style("height", "50px")
             .append("div")
+            .style("height", "50px")
             .text(I18n.t("js.no_data"))
             .attr("class", "graph_placeholder");
     }

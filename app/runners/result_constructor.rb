@@ -97,12 +97,13 @@ class ResultConstructor
     @level = :testcase
   end
 
-  def start_test(description: nil, expected: nil, channel: nil)
+  def start_test(description: nil, expected: nil, channel: nil, format: nil)
     check_level(:testcase, 'test started')
     @test = {}
     @test[:description] = description unless description.nil?
     @test[:expected] = expected
     @test[:channel] = channel unless channel.nil?
+    @test[:format] = format unless format.nil?
     @level = :test
   end
 
@@ -118,7 +119,8 @@ class ResultConstructor
       row: values[:row] || 0,
       rows: values[:rows] || 1,
       column: values[:column] || 0,
-      columns: values[:columns] || 1
+      columns: values[:columns] || 1,
+      externalUrl: values[:externalUrl] || nil
     }
   end
 
@@ -136,7 +138,8 @@ class ResultConstructor
     escalate_status(status: status)
     @test[:accepted] = if accepted.nil?
                        then status[:enum] == 'correct'
-                       else accepted
+                       else
+                         accepted
                        end
     @testcase[:accepted] &&= @test[:accepted]
     (@testcase[:tests] ||= []) << @test

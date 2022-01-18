@@ -13,6 +13,21 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
+  test 'should render with inaccessible activities' do
+    @instance.series << create(:series)
+    @instance.series.first.activities << create(:exercise, access: :private)
+    get course_url(@instance)
+    assert_response :success
+  end
+
+  test 'should render with inaccessible activities when no user' do
+    @instance.series << create(:series)
+    @instance.series.first.activities << create(:exercise, access: :private)
+    sign_out :user
+    get course_url(@instance)
+    assert_response :success
+  end
+
   test 'should reset token' do
     old_secret = @instance.secret
     post reset_token_course_url(@instance)

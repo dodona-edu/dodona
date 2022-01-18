@@ -30,6 +30,9 @@ class CoursesController < ApplicationController
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      @own_courses = @courses.select { |course| current_user.course_admin?(course) }
+      @other_courses = @courses.reject { |course| current_user.course_admin?(course) }
+      @courses = @own_courses.concat(@other_courses)
     end
 
     @courses = apply_scopes(@courses)
@@ -46,6 +49,13 @@ class CoursesController < ApplicationController
     if @course.secret_required?(current_user)
       redirect_unless_secret_correct
       return if performed?
+    end
+    if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
+      flash.now[:alert] = I18n.t('courses.show.has_private_exercises')
+      flash.now[:extra] = {
+        'message' => I18n.t('courses.show.has_private_help'),
+        'url' => contact_url
+      }
     end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
@@ -134,7 +144,6 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
@@ -198,8 +207,8 @@ class CoursesController < ApplicationController
         sheet = CSV.generate(force_quotes: true) do |csv|
           users_labels = @course.course_memberships
                                 .includes(:course_labels, :user)
-                                .map { |m| [m.user, m.course_labels] }
-                                .to_h
+                                .to_h { |m| [m.user, m.course_labels] }
+
           columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })

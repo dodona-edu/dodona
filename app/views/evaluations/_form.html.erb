@@ -8,7 +8,6 @@
     <div class="field form-group<%= " has-error" if evaluation.deadline > Time.current %>">
       <div class="row">
         <div class="col-lg-6 col-sm-12">
-          <h6>Deadline</h6>
           <%= t(".deadline-help_html") %>
           <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
             <%= f.text_field :deadline, class: "form-control", 'data-input': true %>

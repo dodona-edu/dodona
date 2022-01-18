@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // eslint-disable-next-line
 // @ts-nocheck
 
@@ -33,9 +34,10 @@ export class ViolinGraph extends SeriesExerciseGraph {
     /**
     * Draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
+    * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        super.draw(animation);
 
         // Y scale per exercise
         const yBin = d3.scaleLinear()
@@ -52,7 +54,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .range([5, this.innerWidth]);
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.innerHeight})`)
-            .call(d3.axisBottom(this.x))
+            .call(d3.axisBottom(this.x).tickFormat(t => t === this.maxSubmissions ? `${t}+` : t))
             .select(".domain").remove();
         this.graph.append("text")
             .attr("text-anchor", "middle")
@@ -81,7 +83,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
                 .y1(0)
                 .curve(d3.curveMonotoneX)
             )
-            .transition().duration(500)
+            .transition().duration(animation ? 500 : 0)
             .attr("d", d3.area()
                 .x((_, i) => this.x(i))
                 .y0(d => -yBin(d.length))
@@ -94,13 +96,16 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .selectAll("avgDot")
             .data(this.data)
             .join("circle")
+            .attr("class", "avgIcon")
             .style("opacity", 0)
             .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
-            .attr("cx", d => this.x(d.average))
+            .attr("cx", d => this.x(Math.min(20, d.average)))
             .attr("r", 4)
-            .attr("fill", "currentColor");
+            .attr("fill", d => d.average <= 20 ? "currentColor" : "transparent")
+            .attr("stroke", "currentColor")
+            .attr("stroke-width", 2);
         dots.transition()
-            .duration(500)
+            .duration(animation ? 500 : 0)
             .style("opacity", 1);
         dots.append("title")
             .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);

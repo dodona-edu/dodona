@@ -103,9 +103,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   test 'should push commits to remote' do
     assert_difference('@remote.commit_count', 1) do
-      File.open(@echo.config_file, 'w') do |f|
-        f.write('FUCK THE SYSTEM!!1! ANARCHY!!!!')
-      end
+      File.write(@echo.config_file, 'FUCK THE SYSTEM!!1! ANARCHY!!!!')
       @repository.commit 'vandalize echo config'
     end
   end

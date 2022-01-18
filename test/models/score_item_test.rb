@@ -19,7 +19,7 @@ class ScoreItemTest < ActiveSupport::TestCase
     users = [users(:student), users(:staff)]
     users.each do |u|
       series.course.enrolled_members << u
-      create :submission, user: u, exercise: series.exercises.first, course: series.course, created_at: Time.current - 1.hour
+      create :submission, user: u, exercise: series.exercises.first, course: series.course, created_at: 1.hour.ago
     end
     @evaluation = create :evaluation, series: series, users: users, exercises: series.exercises
   end

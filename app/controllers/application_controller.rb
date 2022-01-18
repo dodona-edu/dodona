@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   MAX_STORED_URL_LENGTH = 1024
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
+  rescue_from ActionController::ParameterMissing, with: :bad_request
 
   protect_from_forgery with: :null_session
 
@@ -53,9 +55,9 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.uses_smartschool? && !user.institution&.uses_lti?
+    if user.email.blank? && !user.institution&.uses_lti? && !user.institution&.uses_oidc? && !user.institution&.uses_smartschool?
       raise "User with id #{user.id} should not have a blank email " \
-            'if the provider is not smartschool and not LTI'
+            'if the provider is not LTI, OIDC or Smartschool'
     end
   end
 
@@ -118,6 +120,12 @@ class ApplicationController < ActionController::Base
         redirect_to(root_path)
       end
     end
+  end
+
+  def bad_request
+    # rubocop:disable Rails/RenderInline
+    render status: :bad_request, inline: 'Bad request'
+    # rubocop:enable Rails/RenderInline
   end
 
   def set_locale

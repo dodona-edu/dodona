@@ -9,10 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  generated_name :boolean          default(TRUE), not null
+#  category       :integer          default("secondary")
 #
 
 class Institution < ApplicationRecord
   NEW_INSTITUTION_NAME = 'n/a'.freeze
+
+  enum category: { secondary: 0, higher: 1, other: 2 }
 
   has_many :users, dependent: :restrict_with_error
   has_many :providers, inverse_of: :institution, dependent: :restrict_with_error
@@ -41,6 +44,10 @@ class Institution < ApplicationRecord
 
   def uses_lti?
     providers.any? { |provider| provider.type == Provider::Lti.name }
+  end
+
+  def uses_oidc?
+    providers.any? { |provider| provider.type == Provider::Oidc.name }
   end
 
   def uses_smartschool?

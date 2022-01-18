@@ -1,23 +1,23 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 2.7.2'
+ruby '~> 2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 6.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.4.0'
+gem 'puma', '~> 5.5.2'
 # Use sass for stylesheets
 gem 'sassc-rails', '~> 2.1.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 
-gem 'webpacker', '~> 5.4.2'
+gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11.2'
+gem 'jbuilder', '~> 2.11.5'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.2'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.8.1', require: false
+gem 'bootsnap', '~> 1.10.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -45,31 +45,31 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.26.0'
+gem 'rouge', '3.27.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
 
 # generate diffs
-gem 'diff-lcs', '~>1.4'
+gem 'diff-lcs', '~>1.5'
 
 # code editor
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.3.3'
+gem 'autoprefixer-rails', '~>10.4.2'
 
 # saml authentication
-gem 'devise', '~>4.8.0'
+gem 'devise', '~>4.8.1'
 gem 'ruby-saml', '~> 1.12.2'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
-gem 'omniauth-oauth2', '~> 1.7.1'
+gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.3.5'
 
 # Json webtokens
-gem 'jwt', '~> 2.2.3'
+gem 'jwt', '~> 2.3.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -79,7 +79,7 @@ gem 'mail_form', '~> 1.9.0'
 gem 'pundit', '~> 2.1.1'
 
 # impersonate users
-gem 'pretender', '~> 0.3.4'
+gem 'pretender', '~> 0.4.0'
 
 # db annotations
 gem 'annotate', '~> 3.1.1'
@@ -96,15 +96,15 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 6.0.0'
+gem 'rails-i18n', '~> 7.0.1'
 
 # email exceptions
 gem 'exception_notification', '~> 4.4.1'
-gem 'httparty', '~> 0.18.1'
+gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.12.4'
+gem 'nokogiri', '~> 1.13.1'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -120,7 +120,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 2.7.11'
+gem 'dalli', '~> 3.2.0'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -132,7 +132,7 @@ gem 'rack-mini-profiler', '~> 2.3.3'
 gem 'stackprof', '~> 0.2.17'
 
 # Datadog
-gem 'ddtrace', '~> 0.52.0'
+gem 'ddtrace', '~> 0.54.1'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -143,15 +143,12 @@ group :development, :test do
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
 
-  # I18N default locale & better test reporter
-  gem 'minitest-utils', '~> 0.4.6'
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.35.3'
-  gem 'selenium-webdriver', '~> 3.142.7'
+  gem 'capybara', '~> 3.36.0'
+  gem 'selenium-webdriver', '~> 4.1.0'
 end
 
 group :test do
@@ -160,16 +157,22 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
   gem 'test-prof', '~> 1.0.7'
+
+  # Mocking HTTP requests to third parties.
+  gem 'webmock'
+
+  # I18N default locale & better test reporter
+  gem 'minitest-utils', '~> 0.4.7'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.7.0'
-  gem 'web-console', '~> 4.1.0'
+  gem 'listen', '~> 3.7.1'
+  gem 'web-console', '~> 4.2.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.11.3'
+  gem 'rubocop-rails', '~> 2.13.2'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

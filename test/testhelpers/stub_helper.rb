@@ -6,7 +6,8 @@ module StubHelper
     obj.stubs(:create_full_path)
     obj.stubs(:clone_repo)
     obj.stubs(:clone_repo_delayed)
-    obj.stubs(:clone_complete?).returns(true)
+    obj.stubs(:clone_incomplete?).returns(false)
+    obj.stubs(:clone_failed?).returns(false)
     obj.stubs(:repo_is_accessible).returns(true)
   end
 

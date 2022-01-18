@@ -61,7 +61,7 @@ gem 'autoprefixer-rails', '~>10.4.0'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
-gem 'ruby-saml', '~> 1.12.2'
+gem 'ruby-saml', '~> 1.13.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'

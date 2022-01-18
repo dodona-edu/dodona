@@ -79,7 +79,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length
     assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
 
-    @series.update(deadline: Time.current + 2.years)
+    @series.update(deadline: 2.years.from_now)
     post series_exports_path(@series), params: { all: true, deadline: true }
     assert_redirected_to exports_path
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length

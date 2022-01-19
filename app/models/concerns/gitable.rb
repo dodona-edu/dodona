@@ -2,7 +2,7 @@ module Gitable
   extend ActiveSupport::Concern
 
   included do
-    enum status: { unknown: 0, 'clone queued': 1, cloning: 2, 'clone complete': 3, 'clone failed': 4 }
+    enum clone_status: { queued: 1, running: 2, complete: 3, failed: 4 }, _prefix: :clone
   end
 
   def full_path
@@ -30,28 +30,24 @@ module Gitable
 
   def clone_repo_delayed
     delay(queue: 'git').clone_repo
-    update(status: 'clone queued')
+    update(clone_status: 'queued')
   end
 
   def clone_repo
-    update(status: 'cloning')
+    update(clone_status: 'running')
     cmd = ['git', 'clone', '--depth', '1', remote.shellescape, full_path.to_path]
     _out, error, status = Open3.capture3(*cmd)
     if status.success?
-      update(status: 'clone complete')
+      update(clone_status: 'complete')
     else
-      update(status: 'clone failed')
+      update(clone_status: 'failed')
       errors.add(:base, "cloning failed: #{error}")
       throw :abort
     end
   end
 
   def clone_incomplete?
-    status.in?(['clone queued', 'cloning'])
-  end
-
-  def clone_failed?
-    status == 'clone failed'
+    clone_queued? || clone_running?
   end
 
   def repo_is_accessible

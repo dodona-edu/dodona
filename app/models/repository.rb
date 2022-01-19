@@ -2,14 +2,14 @@
 #
 # Table name: repositories
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  remote     :string(255)
-#  path       :string(255)
-#  judge_id   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  status     :integer
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  remote       :string(255)
+#  path         :string(255)
+#  judge_id     :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  clone_status :integer          default("complete"), not null
 #
 require 'open3'
 require 'pathname'

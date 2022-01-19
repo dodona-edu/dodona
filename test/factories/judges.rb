@@ -2,15 +2,15 @@
 #
 # Table name: judges
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  image      :string(255)
-#  path       :string(255)
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  renderer   :string(255)      not null
-#  remote     :string(255)
-#  status     :integer
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  image        :string(255)
+#  path         :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  renderer     :string(255)      not null
+#  remote       :string(255)
+#  clone_status :integer          default("complete"), not null
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

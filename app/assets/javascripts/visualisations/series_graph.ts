@@ -51,7 +51,6 @@ export abstract class SeriesGraph {
     // scope stuff
     private fpStart: Instance | Instance[];
     private fpEnd: Instance | Instance[];
-    private scopeApplyButton: HTMLButtonElement;
     protected dateStart: string = undefined;
     protected dateEnd: string = undefined;
 
@@ -365,7 +364,7 @@ export abstract class SeriesGraph {
         }
         this.fpStart = flatpickr(`#scope-start-${this.seriesId}`, options);
         this.fpEnd = flatpickr(`#scope-end-${this.seriesId}`, options);
-        this.scopeApplyButton = document.getElementById(`scope-apply-${this.seriesId}`);
-        this.scopeApplyButton.onclick = () => this.applyScope();
+        this.fpStart.config.onChange.push(() => this.applyScope());
+        this.fpEnd.config.onChange.push(() => this.applyScope());
     }
 }

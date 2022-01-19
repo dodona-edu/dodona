@@ -35,15 +35,15 @@
           <td>
             <i class="mdi mdi-filter-outline mdi-18 filter-icon"
                title="<%= t('.filter-by-exercise') %>"
-               data-filter="<%= read_state.exercise.name %>"
+               data-filter="<%= read_state.activity.name %>"
                data-bs-toggle="tooltip"
                data-bs-placement="top"
             >
             </i>
             <% if read_state.course.nil? %>
-              <%= link_to read_state.exercise.name, activity_path(read_state.exercise) %>
+              <%= link_to read_state.activity.name, activity_path(read_state.activity) %>
             <% else %>
-              <%= link_to read_state.exercise.name, course_activity_path(read_state.course, read_state.exercise) %>
+              <%= link_to read_state.activity.name, course_activity_path(read_state.course, read_state.activity) %>
             <% end %>
           </td>
         <% end %>

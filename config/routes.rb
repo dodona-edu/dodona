@@ -92,6 +92,7 @@ Rails.application.routes.draw do
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection

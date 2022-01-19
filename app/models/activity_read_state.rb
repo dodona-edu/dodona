@@ -25,6 +25,17 @@ class ActivityReadState < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
 
+  scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
+  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_filter, lambda { |filter, skip_user:, skip_content_page:|
+    filter.split.map(&:strip).select(&:present?).map do |part|
+      scopes = []
+      scopes << by_activity_name(part) unless skip_content_page
+      scopes << by_username(part) unless skip_user
+      scopes.any? ? merge(scopes.reduce(&:or)) : self
+    end.reduce(&:merge)
+  }
+
   def invalidate_caches
     activity.invalidate_delayed_users_read
     activity.activity_statuses_for(user, course).each(&:update_values)

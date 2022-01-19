@@ -4,6 +4,7 @@ en:
       title: Read activity log
       for: for
       from: from
+    read_states_table:
       user: User
       exercise: Exercise
       time: Time

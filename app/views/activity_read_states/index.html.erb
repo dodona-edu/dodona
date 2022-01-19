@@ -28,64 +28,8 @@
       </div>
       <div class="card-supporting-text" id="refresh_element">
         <%= render partial: 'layouts/searchbar', locals: {actions: [], course_labels: @course_labels,  refresh_element: "#refresh_element"} %>
-        <div >
-          <div class="table-scroll-wrapper">
-            <table class="table table-resource">
-              <thead>
-              <tr>
-                <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
-                  <th><%= t ".user" %></th>
-                <% end %>
-                <% unless @activity.present? %>
-                  <th><%= t ".exercise" %></th>
-                <% end %>
-                <th><%= t ".time" %></th>
-                <th></th>
-              </tr>
-              </thead>
-              <tbody>
-              <% @read_states.each do |read_state| %>
-                <tr id="read_state_<%= read_state.id %>">
-                  <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
-                    <td>
-                      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-                         title="<%= t('.filter-by-user') %>"
-                         data-filter="<%= read_state.user.full_name %>"
-                         data-bs-toggle="tooltip"
-                         data-bs-placement="top"
-                      >
-                      </i>
-                      <% if read_state.course.nil? %>
-                        <%= read_state.user.full_name %>
-                      <% else %>
-                        <%= link_to read_state.user.full_name, course_member_path(read_state.course, read_state.user), title: read_state.user.full_name, class: "ellipsis-overflow" %>
-                      <% end %>
-                    </td>
-                  <% end %>
-                  <% unless @activity.present? %>
-                    <td>
-                      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-                         title="<%= t('.filter-by-exercise') %>"
-                         data-filter="<%= read_state.exercise.name %>"
-                         data-bs-toggle="tooltip"
-                         data-bs-placement="top"
-                      >
-                      </i>
-                      <% if read_state.course.nil? %>
-                        <%= link_to read_state.exercise.name, activity_path(read_state.exercise) %>
-                      <% else %>
-                        <%= link_to read_state.exercise.name, course_activity_path(read_state.course, read_state.exercise) %>
-                      <% end %>
-                    </td>
-                  <% end %>
-                  <td>
-                    <span title="<%= l read_state.created_at, format: :read_state %>"><%= time_ago_in_words read_state.created_at %> <%= t ".ago" %></span>
-                  </td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
-          </div>
+        <div id="read-states-table-wrapper">
+          <%= render partial: 'read_states_table', locals: { read_states: @read_states, activity: @activity, course: @course, user: @user} %>
         </div>
       </div>
     </div>

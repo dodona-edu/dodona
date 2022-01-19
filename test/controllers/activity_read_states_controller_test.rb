@@ -6,6 +6,66 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
+  test 'should be able to search by activity name' do
+    u = create :user
+    sign_in u
+    a1 = create :content_page, name_en: 'abcd'
+    a2 = create :content_page, name_en: 'efgh'
+    create :activity_read_state, activity: a1, user: u
+    create :activity_read_state, activity: a2, user: u
+
+    get activity_read_states_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by user name' do
+    u1 = create :user, last_name: 'abcd'
+    u2 = create :user, last_name: 'efgh'
+    a1 = create :content_page, name_en: 'test'
+    create :activity_read_state, activity: a1, user: u1
+    create :activity_read_state, activity: a1, user: u2
+
+    get activity_read_states_url, params: { filter: 'abcd', format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'should be able to search by course label' do
+    u1 = users(:student)
+    u2 = users(:staff)
+    course = courses(:course1)
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
+    a1 = create :content_page, name_en: 'test'
+    series = create :series, course: course
+    series.exercises << a1
+    create :activity_read_state,  user: u1, activity: a1, course: course
+    create :activity_read_state,  user: u2, activity: a1, course: course
+    get course_activity_read_states_url course, params: { course_labels: ['test'], format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
+  test 'normal user should not be able to search by course label' do
+    u1 = users(:student)
+    u2 = users(:staff)
+    sign_in u2
+    course = courses(:course1)
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
+    a1 = create :content_page, name_en: 'test'
+    series = create :series, course: course
+    series.exercises << a1
+    create :activity_read_state,  user: u1, activity: a1, course: course
+    create :activity_read_state,  user: u2, activity: a1, course: course
+    get course_activity_read_states_url course, params: { course_labels: ['test'], format: :json }
+
+    assert_equal 1, JSON.parse(response.body).count
+  end
+
   test 'should not mark content_page as read twice' do
     cp = create :content_page
     create :activity_read_state, activity: cp, user: @user

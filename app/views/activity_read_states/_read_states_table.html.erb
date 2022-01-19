@@ -17,13 +17,15 @@
       <tr id="read_state_<%= read_state.id %>">
         <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
           <td>
-            <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-               title="<%= t('.filter-by-user') %>"
-               data-filter="<%= read_state.user.full_name %>"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-            >
-            </i>
+            <% unless @activity.present? %>
+              <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+                 title="<%= t('.filter-by-user') %>"
+                 data-filter="<%= read_state.user.full_name %>"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+              >
+              </i>
+            <% end %>
             <% if read_state.course.nil? %>
               <%= read_state.user.full_name %>
             <% else %>

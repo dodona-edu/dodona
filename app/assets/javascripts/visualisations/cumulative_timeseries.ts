@@ -391,16 +391,28 @@ export class CTimeseriesGraph extends SeriesGraph {
             .data(this.exOrder)
             .enter()
             .append("div")
-            .attr("class", "legend-item");
+            .attr("class", "legend-item")
+            .on("mouseover", (_, legendId) => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", lineEx => legendId !== lineEx.ex_id ? .2 : 1);
+            })
+            .on("mouseout", () => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", 1);
+            });
         legend
             .append("div")
             .attr("class", "legend-box")
-            .style("background", exId => this.color(exId));
+            .style("background", exId => this.color(exId))
+            .style("pointer-events", "none");
         legend
             .append("span")
             .attr("class", "legend-text")
             .text(exId => this.exMap[exId])
             .style("color", "currentColor")
-            .style("font-size", `${this.fontSize}px`);
+            .style("font-size", `${this.fontSize}px`)
+            .style("pointer-events", "none");
     }
 }

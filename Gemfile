@@ -27,7 +27,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.9.3', require: false
+gem 'bootsnap', '~> 1.10.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -57,7 +57,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.0'
+gem 'autoprefixer-rails', '~>10.4.2'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
@@ -79,7 +79,7 @@ gem 'mail_form', '~> 1.9.0'
 gem 'pundit', '~> 2.1.1'
 
 # impersonate users
-gem 'pretender', '~> 0.3.4'
+gem 'pretender', '~> 0.4.0'
 
 # db annotations
 gem 'annotate', '~> 3.1.1'
@@ -104,7 +104,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.0'
+gem 'nokogiri', '~> 1.13.1'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -143,9 +143,6 @@ group :development, :test do
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
 
-  # I18N default locale & better test reporter
-  gem 'minitest-utils', '~> 0.4.6'
-
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
@@ -163,16 +160,19 @@ group :test do
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
+
+  # I18N default locale & better test reporter
+  gem 'minitest-utils', '~> 0.4.7'
 end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.7.0'
+  gem 'listen', '~> 3.7.1'
   gem 'web-console', '~> 4.2.0'
   # Spring speeds up development by keeping your application running in the background.
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.13.1'
+  gem 'rubocop-rails', '~> 2.13.2'
   gem 'spring', '~> 2.1.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 

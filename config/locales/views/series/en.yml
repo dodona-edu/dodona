@@ -33,6 +33,7 @@ en:
       show_overview: Show all learning activity descriptions
       evaluation_overview: Show feedback
       series_overview: Series overview
+      apply: apply
     edit:
       title: Edit series
       add_activities: Add activities

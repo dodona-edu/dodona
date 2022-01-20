@@ -62,3 +62,19 @@
     }
   } 
 }
+
+.daterange-picker {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  .date-picker {
+    margin-right: 10px;
+    width: 20em;
+
+    input {
+      border-top-left-radius: 0.25rem !important;
+      border-bottom-left-radius: 0.25rem !important;
+    }
+  }
+}

@@ -1,13 +1,15 @@
 // eslint-disable-next-line
 // @ts-nocheck
 import * as d3 from "d3";
+import flatpickr from "flatpickr";
+import { Dutch } from "flatpickr/dist/l10n/nl.js";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
     data: { ex_id: number, ex_data: unknown[] }[],
     exercises: [number, string][],
     // eslint-disable-next-line camelcase
-    student_count: number
+    student_count: number,
 }
 
 export abstract class SeriesGraph {
@@ -46,6 +48,12 @@ export abstract class SeriesGraph {
 
     protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
 
+    // scope stuff
+    private fpStart: Instance | Instance[];
+    private fpEnd: Instance | Instance[];
+    protected dateStart: string = undefined;
+    protected dateEnd: string = undefined;
+
     /**
      * Initializes the container for the graph +
      * puts placeholder text when data isn't loaded +
@@ -64,17 +72,34 @@ export abstract class SeriesGraph {
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
-            this.processData(data);
+            this.init(data);
             this.draw();
         }
+    }
+
+    // abstract functions
+    protected abstract processData(raw: RawData): void;
+
+
+    /**
+     * Sets picker limits, default calendar page and default start and end dates
+     * Should only be called after the first data fetch
+     * @param {Date} start Default selected start date
+     * @param {Date} end Default selected end date
+     * @return {void}
+     */
+    protected setPickerDates(start: Date, end: Date): void {
+        this.fpStart.set("minDate", start);
+        this.fpEnd.set("minDate", start);
+        this.fpStart.setDate(start);
+        this.fpEnd.setDate(end);
+        this.dateStart = new Date(start).toISOString();
+        this.dateEnd = new Date(end).toISOString();
     }
 
     private getUrl(): string {
         return `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
     }
-
-    // abstract functions
-    protected abstract processData(raw: RawData): void;
 
 
     protected draw(animation=true): void {
@@ -156,6 +181,14 @@ export abstract class SeriesGraph {
         });
     }
 
+    applyScope(): void {
+        this.dateStart = this.fpStart.selectedDates.length > 0 ?
+            new Date(this.fpStart.selectedDates[0]).toISOString() : undefined;
+        this.dateEnd = this.fpEnd.selectedDates.length > 0 ?
+            new Date(this.fpEnd.selectedDates[0]).toISOString() : undefined;
+        this.init();
+    }
+
     /**
      * Finds the best predefined bin step (range of bins) for the given date range
      * The 'best' bin step will produce somewhere around 17 bins.
@@ -173,8 +206,8 @@ export abstract class SeriesGraph {
     ): [number, Array<number>, Date] {
         // find best bin step
         // -------------------
-        // 5m, 15m, 1/2h, 1h, 4h, 12h, 1d, 2d, 1w, 2w, 4w
-        const timeBins = [1/12, .25, .5, 1, 4, 12, 24, 48, 96, 168, 336, 672];
+        // 5m, 10m, 15m, 1/2h, 1h, 4h, 8h, 12h, 1d, 2d, 1w, 2w, 4w
+        const timeBins = [1/12, 1/6, .25, .5, 1, 4, 8, 12, 24, 48, 96, 168, 336, 672];
         const diff = (maxDate - minDate) / 3600000; // timediff in hours
         const targetBinStep = diff/targetBins; // desired binStep to have ~17 bins
         let bestDiff = Infinity;
@@ -240,6 +273,7 @@ export abstract class SeriesGraph {
      * @param {string} keys The ids present in the data
      */
     protected parseExercises(exercises: [number, string][], keys: number[]): void {
+        this.exOrder = [];
         exercises.forEach(([id, title]) => {
             // only add if the key is present in the data
             if (keys.indexOf(id) >= 0) {
@@ -253,9 +287,11 @@ export abstract class SeriesGraph {
      * Displays an error message when there is not enough data
     */
     protected drawNoData(): void {
+        this.container.html("");
         this.container
             .append("div")
             .style("height", "50px")
+            .style("margin-top", "10px")
             .text(I18n.t("js.no_data"))
             .attr("class", "graph_placeholder");
     }
@@ -279,9 +315,10 @@ export abstract class SeriesGraph {
     /**
      * Fetches and processes data
      * @param {boolean} doDraw When false, the graph will not be drawn
+     * @param {unknown} data Pre-fetched data
      * (only data fetching and processing)
      */
-    async init(doDraw = true): Promise<void> {
+    async init(doDraw = true, data = undefined): Promise<void> {
         // add loading placeholder
         const tempHeight = this.container.node().getBoundingClientRect().height;
         this.container.html("");
@@ -295,7 +332,7 @@ export abstract class SeriesGraph {
             .style("align-items", "center");
 
         // fetch data
-        const r: RawData = await this.fetchData();
+        const r: RawData = data ?? await this.fetchData();
         // once fetched remove placeholder
         this.container.html("");
 
@@ -308,5 +345,26 @@ export abstract class SeriesGraph {
                 this.draw();
             }
         }
+    }
+
+    /**
+     * Initializes the time pickers
+     */
+    protected initTimePickers(): void {
+        document.getElementById(`daterange-${this.seriesId}`).hidden = false;
+        const options = {
+            wrap: true,
+            enableTime: true,
+            dateFormat: I18n.t("time.formats.flatpickr_short"),
+            altInput: true,
+            altFormat: I18n.t("time.formats.flatpickr_long"),
+        };
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        this.fpStart = flatpickr(`#scope-start-${this.seriesId}`, options);
+        this.fpEnd = flatpickr(`#scope-end-${this.seriesId}`, options);
+        this.fpStart.config.onClose.push(() => this.applyScope());
+        this.fpEnd.config.onClose.push(() => this.applyScope());
     }
 }

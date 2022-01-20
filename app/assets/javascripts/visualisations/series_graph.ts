@@ -364,7 +364,7 @@ export abstract class SeriesGraph {
         }
         this.fpStart = flatpickr(`#scope-start-${this.seriesId}`, options);
         this.fpEnd = flatpickr(`#scope-end-${this.seriesId}`, options);
-        this.fpStart.config.onChange.push(() => this.applyScope());
-        this.fpEnd.config.onChange.push(() => this.applyScope());
+        this.fpStart.config.onClose.push(() => this.applyScope());
+        this.fpEnd.config.onClose.push(() => this.applyScope());
     }
 }

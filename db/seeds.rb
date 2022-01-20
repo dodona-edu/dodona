@@ -168,12 +168,12 @@ if Rails.env.development?
   Judge.create name: 'javascript', image: 'dodona/dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
 
   puts "Create & clone activity repository (#{Time.now - start})"
-
+  Delayed::Worker.delay_jobs = ->(job) { 'git' != job.queue }
   activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
   activity_repo.process_activities
 
   big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
-
+  Delayed::Worker.delay_jobs = true
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }
       .each do |dir|

@@ -9,7 +9,7 @@
 #  judge_id     :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  clone_status :integer          default("complete"), not null
+#  clone_status :integer          default("queued"), not null
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

@@ -10,7 +10,7 @@
 #  updated_at   :datetime         not null
 #  renderer     :string(255)      not null
 #  remote       :string(255)
-#  clone_status :integer          default("complete"), not null
+#  clone_status :integer          default("queued"), not null
 #
 
 class Judge < ApplicationRecord

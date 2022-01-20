@@ -9,7 +9,7 @@
 #  judge_id     :integer
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  clone_status :integer          default("complete"), not null
+#  clone_status :integer          default("queued"), not null
 #
 require 'open3'
 require 'pathname'

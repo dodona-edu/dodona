@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_18_102810) do
+ActiveRecord::Schema.define(version: 2022_01_20_102810) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -298,7 +298,7 @@ ActiveRecord::Schema.define(version: 2022_01_18_102810) do
     t.datetime "updated_at", null: false
     t.string "renderer", null: false
     t.string "remote"
-    t.integer "clone_status", default: 3, null: false
+    t.integer "clone_status", default: 1, null: false
     t.index ["name"], name: "index_judges_on_name", unique: true
   end
 
@@ -357,7 +357,7 @@ ActiveRecord::Schema.define(version: 2022_01_18_102810) do
     t.integer "judge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "clone_status", default: 3, null: false
+    t.integer "clone_status", default: 1, null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true

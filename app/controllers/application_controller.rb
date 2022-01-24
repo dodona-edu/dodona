@@ -27,6 +27,8 @@ class ApplicationController < ActionController::Base
 
   around_action :user_time_zone, if: :current_user
 
+  after_action :set_user_seen_at, if: :current_user
+
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
@@ -59,6 +61,7 @@ class ApplicationController < ActionController::Base
       raise "User with id #{user.id} should not have a blank email " \
             'if the provider is not LTI, OIDC or Smartschool'
     end
+    user.touch(:sign_in_at)
   end
 
   Warden::Manager.after_set_user do |user, _auth, _opts|
@@ -194,5 +197,9 @@ class ApplicationController < ActionController::Base
     # This variable counts for which services the dot in the favicon should be shown.
     # On most pages this will be empty or contain :notifications
     @dot_icon = @unread_notifications.any? ? %i[notifications] : []
+  end
+
+  def set_user_seen_at
+    current_user.touch(:seen_at)
   end
 end

@@ -25,6 +25,8 @@ nl:
       public_files_placeholder: "Deze repository bevat geen publieke bestanden"
       file_name: Bestandsnaam
       file_url: URL
+      clone_incomplete: "We zijn je repository nu aan het toevoegen aan Dodona. Het kan tot 5 minuten duren eer je oefeningen beschikbaar zijn."
+      clone_failed: "Het clonen van de repository is mislukt. Kijk na of Dodona lees- en schrijfrechten heeft op jouw repository."
     admins:
       admins: "Beheerders"
       admin_explanation: "De gebruikers die hieronder staan opgelijst zijn de beheerders van deze repository. Deze gebruikers kunnen anderen repository beheerder maken, privé oefeningen uit deze repository zien, oefeningen uit deze repository aanpassen en beheren welke cursussen privé oefeningen uit deze repository gebruiken."

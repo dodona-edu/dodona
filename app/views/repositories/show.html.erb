@@ -33,14 +33,19 @@
           <p>
             <strong><%= t(".content_pages") %>:</strong> <%= @repository.content_pages.count %>
           </p>
-          <% if policy(@repository).reprocess? %>
-            <div class="float-end">
-              <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
-            </div>
-          <% end %>
         </div>
         <% if current_user.repository_admin?(@repository) %>
           <div class="col-sm-6 col-12">
+            <% if @repository.clone_incomplete? %>
+              <div class="callout callout-warning">
+                <span><%= t ".clone_incomplete" %></span>
+              </div>
+            <% end %>
+            <% if @repository.clone_failed? %>
+              <div class="callout callout-danger">
+                <span><%= t ".clone_failed" %></span>
+              </div>
+            <% end %>
             <div class="callout callout-info">
               <h4>Webhook</h4>
               <p><%= t ".webhook_html" %></p>
@@ -48,6 +53,13 @@
                 <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
                 <%= clipboard_button_for :webhook_link %>
               </div>
+            </div>
+          </div>
+        <% end %>
+        <% if policy(@repository).reprocess? %>
+          <div class="col-12">
+            <div class="float-end">
+              <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
             </div>
           </div>
         <% end %>

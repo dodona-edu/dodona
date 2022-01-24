@@ -323,4 +323,45 @@ class User < ApplicationRecord
     self.first_name = parts[0]
     self.last_name = parts[1]
   end
+
+  def institution_id
+    identities.map(&:provider).map(&:institution_id).uniq.pop
+  end
+
+  def merge_into(other, force: false)
+    course_memberships_with_different_status = other.course_memberships.join()
+    errors.add(:merge, 'User belongs to different institution') if other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
+    unless force
+      errors.add(:merge, 'User has different permissions') if other.permission != permission
+    end
+    return false if errors.any?
+
+    activity_read_states.each { |ars| ars.update(user: other) }
+    submissions.each { |s| s.update(user: other) }
+
+    api_tokens.each { |at| at.update(user: other) }
+    identities.each { |i| i.update(user: other) }
+    events.each { |e| e.update(user: other) }
+    exports.each { |e| e.update(user: other) }
+    notifications.each { |n| n.update(user: other) }
+    rights_request.update(user: other)
+
+
+    courses.each { |c| c.update(user: other) }
+    course_memberships.each { |cm| cm.update(user: other) }
+    # subscribed_courses.each { |c| c.update(user: other) }
+    # favorite_courses.each { |c| c.update(user: other) }
+    # administrating_courses.each { |c| c.update(user: other) }
+    # enrolled_courses.each { |c| c.update(user: other) }
+    # pending_courses.each { |c| c.update(user: other) }
+    # unsubscribed_courses.each { |c| c.update(user: other) }
+    #
+    repositories.each { |r| r.update(user: other) }
+    repository_admins.each { |ra| ra.update(user: other) }
+
+    annotations.each { |a| a.update(user: other) }
+    questions.each { |q| q.update(user: other) }
+
+
+  end
 end

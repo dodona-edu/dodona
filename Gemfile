@@ -99,7 +99,7 @@ gem 'i18n-js', '~> 3.9.0'
 gem 'rails-i18n', '~> 7.0.1'
 
 # email exceptions
-gem 'exception_notification', '~> 4.4.1'
+gem 'exception_notification', '~> 4.5.0'
 gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 

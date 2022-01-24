@@ -15,6 +15,8 @@
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :bigint
 #  search         :string(4096)
+#  seen_at        :datetime
+#  sign_in_at     :datetime
 #
 
 FactoryBot.define do

@@ -165,6 +165,16 @@
             </a>
           </div>
         </div>
+        <div class="daterange-picker" id="daterange-<%= series.id %>">
+          <div class="input-group date-picker" id="scope-start-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-start mdi-18'></i></button>
+          </div>
+          <div class="input-group date-picker" id="scope-end-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-end mdi-18'></i></button>
+          </div>
+        </div>
         <div class="stats-container" id="stats-container-<%= series.id %>"></div>
       </div>
     <% end %>

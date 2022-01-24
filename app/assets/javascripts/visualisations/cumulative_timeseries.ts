@@ -46,6 +46,10 @@ export class CTimeseriesGraph extends SeriesGraph {
     * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
     protected override draw(animation=true): void {
+        if (this.binTicks.length < 2) {
+            this.drawNoData();
+            return;
+        }
         this.height = 400;
         super.draw();
 
@@ -181,6 +185,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      */
     // eslint-disable-next-line camelcase
     protected override processData({ data, exercises, student_count }: RawData): void {
+        this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
 
@@ -192,8 +197,8 @@ export class CTimeseriesGraph extends SeriesGraph {
         });
 
         const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
-        this.minDate = new Date(minDate);
-        this.maxDate = new Date(maxDate);
+        this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
+        this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 
         // aim for 17 bins (between 15 and 20)
         const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
@@ -201,6 +206,15 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.binTicks = binTicks;
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
+
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
+
+
+        if (this.binTicks.length < 2) {
+            return;
+        }
 
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
@@ -414,5 +428,10 @@ export class CTimeseriesGraph extends SeriesGraph {
             .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`)
             .style("pointer-events", "none");
+    }
+
+    protected override init(draw = true, data = undefined): void {
+        this.initTimePickers();
+        super.init(draw, data);
     }
 }

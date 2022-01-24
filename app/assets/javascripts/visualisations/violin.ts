@@ -168,6 +168,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises }: RawData): void {
+        this.data = [];
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
         // transform data into array of records for easier binning
         // eslint-disable-next-line camelcase

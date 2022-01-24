@@ -37,6 +37,8 @@ nl:
       day: ["dag", "dagen"]
       week: ["week", "weken"]
     formats:
+      flatpickr_short: 'd/m/Y H:i'
+      flatpickr_long: j F Y H:i
       annotation: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'
       read_state: '%d %B %Y %H:%M:%S'

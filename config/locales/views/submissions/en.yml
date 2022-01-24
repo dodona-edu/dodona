@@ -17,6 +17,7 @@ en:
       title: All submissions
       for: for
       from: from
+      read-states: Read activity log
       most_recent_correct: Most recent correct submissions per user
       watch_submissions: Automatically reload submissions
       reevaluate_submissions: Retest submissions

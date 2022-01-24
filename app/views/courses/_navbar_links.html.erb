@@ -12,10 +12,6 @@
                   title: t('.submissions'),
                   custom_icon: 'submissions',
                   if: current_user&.course_admin?(@course) %>
-  <%= navbar_link url: course_activity_read_states_path(@course),
-                  title: t('.read-states'),
-                  icon: 'playlist-check',
-                  if: current_user&.course_admin?(@course) %>
   <%= navbar_link url: statistics_course_path(@course),
                   title: t('.statistics'),
                   icon: 'trending-up',

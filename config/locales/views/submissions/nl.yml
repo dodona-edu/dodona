@@ -17,6 +17,7 @@ nl:
       title: Alle oplossingen
       for: voor
       from: van
+      read-states: Leesactiviteit log
       watch_submissions: Oplossingen automatisch herladen
       most_recent_correct: Meest recente correcte oplossing per gebruiker
       reevaluate_submissions: Oplossingen hertesten

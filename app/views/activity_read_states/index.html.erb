@@ -4,7 +4,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text">
+        <h2 class="card-title-text float-start">
           <span>
             <% if @course %>
               <%= "#{@course.name} - " %>
@@ -25,6 +25,13 @@
             <% end %>
           </span>
         </h2>
+        <% unless @activity %>
+          <div class="float-end hidden-print">
+            <%= link_to @course.present? ? course_submissions_path(@course) : submissions_path, class: 'btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+              <%= custom_icon 'submissions' %>
+            <% end %>
+          </div>
+        <% end %>
       </div>
       <div class="card-supporting-text" id="refresh_element">
         <%= render partial: 'layouts/searchbar', locals: {actions: [], course_labels: @course_labels,  refresh_element: "#refresh_element"} %>

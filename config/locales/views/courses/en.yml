@@ -5,7 +5,6 @@ en:
       members: Registered members
       edit: Edit course
       submissions: Submissions for this course
-      read-states: Read activity log
       statistics: "Statistics of this course"
       questions: Questions from students
     form:

@@ -4,6 +4,7 @@ en:
       title: Read activity log
       for: for
       from: from
+      submissions: Submissions for this course
     read_states_table:
       user: User
       exercise: Exercise

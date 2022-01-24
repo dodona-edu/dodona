@@ -4,6 +4,7 @@ nl:
       title: Leesactiviteit log
       for: voor
       from: van
+      submissions: Ingediende oplossingen
     read_states_table:
       user: Gebruiker
       exercise: Oefening

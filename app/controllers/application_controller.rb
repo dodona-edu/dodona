@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
   around_action :user_time_zone, if: :current_user
 
-  after_action :set_user_seen_at, if: :current_user
+  after_action :set_user_seen_at, if: -> { current_user && !js_request? }
 
   before_action :set_time_zone_offset
 
@@ -80,6 +80,10 @@ class ApplicationController < ActionController::Base
 
   def remote_request?
     request.format.js? || request.format.json?
+  end
+
+  def js_request?
+    request.format.js?
   end
 
   def parse_pagination_param(page)

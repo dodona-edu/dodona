@@ -61,6 +61,8 @@ class ActivityReadStatesController < ApplicationController
 
   private
 
+  # The logic here is very similar to that of set_submissions in submissions_controller
+  # changes made here are potentially applicable to both functions
   def set_activity_read_states
     @read_states = apply_scopes(policy_scope(ActivityReadState))
 

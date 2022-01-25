@@ -133,6 +133,8 @@ class SubmissionsController < ApplicationController
     authorize @submission
   end
 
+  # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
+  # changes made here are potentially applicable to both functions
   def set_submissions
     @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
     if params[:user_id]

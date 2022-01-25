@@ -290,6 +290,51 @@ class User < ApplicationRecord
     self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 
+  def merge_into(other, force: false)
+    errors.add(:merge, 'User belongs to different institution') if other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
+    errors.add(:merge, 'User has different permissions') if other.permission != permission && !force
+    return false if errors.any?
+
+    other.permission = permission if (permission == "staff" && other.permission == "student") \
+                                  || (permission == "zeus" && other.permission != "zeus")
+
+    activity_read_states.each { |ars| ars.update(user: other) }
+    submissions.each { |s| s.update(user: other) }
+
+    api_tokens.each { |at| at.update(user: other) }
+    identities.each { |i| i.update(user: other) unless other.identities.find { |oi| oi.provider_id == i.provider_id } }
+    events.each { |e| e.update(user: other) }
+    exports.each { |e| e.update(user: other) }
+    notifications.each { |n| n.update(user: other) }
+
+    rights_request.update(user: other) if !rights_request.nil? && other.permission == "student" && other.rights_request.nil?
+
+    course_memberships.each do |cm|
+      other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
+      if other_cm.nil?
+        cm.update(user: other)
+      elsif other_cm.status == cm.status \
+        || other_cm.status == "pending" \
+        || (other_cm.status == "unsubscribed" && cm.status == "pending") \
+        || (other_cm.status == "student" && cm.status != "course_admin")
+        other_cm.update(favorite: true) if cm.favorite
+        cm.delete
+      else
+        cm.update(favorite: true) if other_cm.favorite
+        cm.update(user: other)
+        other_cm.delete
+      end
+    end
+
+    repository_admins.each { |ra| ra.update(user: other) unless other.repositories.find(ra.repository_id) }
+
+    annotations.each { |a| a.update(user: other) }
+    questions.each { |q| q.update(user: other) }
+
+    reload
+    destroy
+  end
+
   private
 
   def set_token
@@ -324,44 +369,4 @@ class User < ApplicationRecord
     self.last_name = parts[1]
   end
 
-  def institution_id
-    identities.map(&:provider).map(&:institution_id).uniq.pop
-  end
-
-  def merge_into(other, force: false)
-    course_memberships_with_different_status = other.course_memberships.join()
-    errors.add(:merge, 'User belongs to different institution') if other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
-    unless force
-      errors.add(:merge, 'User has different permissions') if other.permission != permission
-    end
-    return false if errors.any?
-
-    activity_read_states.each { |ars| ars.update(user: other) }
-    submissions.each { |s| s.update(user: other) }
-
-    api_tokens.each { |at| at.update(user: other) }
-    identities.each { |i| i.update(user: other) }
-    events.each { |e| e.update(user: other) }
-    exports.each { |e| e.update(user: other) }
-    notifications.each { |n| n.update(user: other) }
-    rights_request.update(user: other)
-
-
-    courses.each { |c| c.update(user: other) }
-    course_memberships.each { |cm| cm.update(user: other) }
-    # subscribed_courses.each { |c| c.update(user: other) }
-    # favorite_courses.each { |c| c.update(user: other) }
-    # administrating_courses.each { |c| c.update(user: other) }
-    # enrolled_courses.each { |c| c.update(user: other) }
-    # pending_courses.each { |c| c.update(user: other) }
-    # unsubscribed_courses.each { |c| c.update(user: other) }
-    #
-    repositories.each { |r| r.update(user: other) }
-    repository_admins.each { |ra| ra.update(user: other) }
-
-    annotations.each { |a| a.update(user: other) }
-    questions.each { |q| q.update(user: other) }
-
-
-  end
 end

@@ -295,28 +295,53 @@ class User < ApplicationRecord
     errors.add(:merge, 'User has different permissions') if other.permission != permission && !force
     return false if errors.any?
 
-    other.permission = permission if (permission == "staff" && other.permission == "student") \
-                                  || (permission == "zeus" && other.permission != "zeus")
+    other.permission = permission if (permission == 'staff' && other.permission == 'student') \
+                                  || (permission == 'zeus' && other.permission != 'zeus')
 
-    activity_read_states.each { |ars| ars.update(user: other) }
+    other.institution_id = institution_id if other.institution_id.nil?
+
+    rights_request.update(user: other) if !rights_request.nil? && other.permission == 'student' && other.rights_request.nil?
+
     submissions.each { |s| s.update(user: other) }
-
     api_tokens.each { |at| at.update(user: other) }
-    identities.each { |i| i.update(user: other) unless other.identities.find { |oi| oi.provider_id == i.provider_id } }
     events.each { |e| e.update(user: other) }
     exports.each { |e| e.update(user: other) }
     notifications.each { |n| n.update(user: other) }
+    annotations.each { |a| a.update(user: other, last_updated_by_id: other.id) }
+    questions.each { |q| q.update(user: other) }
 
-    rights_request.update(user: other) if !rights_request.nil? && other.permission == "student" && other.rights_request.nil?
+    activity_read_states.each do |ars|
+      if other.activity_read_states.find { |oars| oars.activity_id == ars.activity_id }
+        ars.delete
+      else
+        ars.update(user: other)
+      end
+    end
+
+    identities.each do |i|
+      if other.identities.find { |oi| oi.provider_id == i.provider_id }
+        i.delete
+      else
+        i.update(user: other)
+      end
+    end
+
+    repository_admins.each do |ra|
+      if other.repositories.find(ra.repository_id)
+        other.delete
+      else
+        ra.update(user: other)
+      end
+    end
 
     course_memberships.each do |cm|
       other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
       if other_cm.nil?
         cm.update(user: other)
       elsif other_cm.status == cm.status \
-        || other_cm.status == "pending" \
-        || (other_cm.status == "unsubscribed" && cm.status == "pending") \
-        || (other_cm.status == "student" && cm.status != "course_admin")
+        || other_cm.status == 'pending' \
+        || (other_cm.status == 'unsubscribed' && cm.status == 'pending') \
+        || (other_cm.status == 'student' && cm.status != 'course_admin')
         other_cm.update(favorite: true) if cm.favorite
         cm.delete
       else
@@ -325,11 +350,6 @@ class User < ApplicationRecord
         other_cm.delete
       end
     end
-
-    repository_admins.each { |ra| ra.update(user: other) unless other.repositories.find(ra.repository_id) }
-
-    annotations.each { |a| a.update(user: other) }
-    questions.each { |q| q.update(user: other) }
 
     reload
     destroy

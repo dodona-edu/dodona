@@ -365,4 +365,120 @@ class UserHasManyTest < ActiveSupport::TestCase
     @user.subscribed_courses.first.update(year: '2')
     assert_equal [@user.subscribed_courses.first], @user.drawer_courses
   end
+
+  test 'user should be removed after merge' do
+    u1 = create :user
+    u2 = create :user
+    u1.merge_into(u2)
+
+    assert_not u1.persisted?
+  end
+
+  test 'merge should fail if institutions are different' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user, institution: i2
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should succeed if only one institution is set' do
+    i1 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal i1, u2.institution
+  end
+
+  test 'merge should fail if permissions are different' do
+    u1 = create :user, permission: 'student'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should take highest permission if force is used' do
+    u1 = create :user, permission: 'zeus'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2, force: true)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 'zeus', u2.permission
+  end
+
+  test 'merge should transfer all associated objects to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    [u1, u2].each do |u|
+      c = create :course
+      s = create :submission, user: u, course: c
+      create :api_token, user: u
+      create :event, user: u
+      create :export, user: u
+      create :notification, user: u
+      create :annotation, user: u, submission: s
+      create :question, submission: s
+    end
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.submissions.count
+    assert_equal 2, u2.api_tokens.count
+    assert_equal 2, u2.events.count
+    assert_equal 2, u2.exports.count
+    assert_equal 4, u2.notifications.count
+    assert_equal 4, u2.annotations.count
+    assert_equal 2, u2.questions.count
+  end
+
+  test 'merge should only transfer unique read states to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    a1 = create :content_page
+    a2 = create :content_page
+    create :activity_read_state, user: u1, activity: a1
+    create :activity_read_state, user: u2, activity: a1
+    create :activity_read_state, user: u1, activity: a2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.activity_read_states.count
+  end
+
+  test 'merge should only transfer unique identities to the other user' do
+    i1 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user, institution: i1
+
+    p1 = create :provider, institution: i1, mode: :prefer
+    p2 = create :provider, institution: i1, mode: :secondary
+    create :identity, user: u1, provider: p1
+    create :identity, user: u2, provider: p1
+    create :identity, user: u1, provider: p2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.identities.count
+  end
 end

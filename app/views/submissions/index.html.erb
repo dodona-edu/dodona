@@ -25,9 +25,9 @@
             <% end %>
           </span>
         </h2>
-        <% unless @activity %>
+        <% if !@activity && @activity_read_states_path %>
           <div class="float-end hidden-print">
-            <%= link_to @course.present? ? course_activity_read_states_path(@course) : activity_read_states_path, class: 'btn-icon-inverted', title: t('.read-states'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+            <%= link_to @activity_read_states_path, class: 'btn-icon-inverted', title: t('.read-states'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
               <i class="mdi mdi-playlist-check"></i>
             <% end %>
           </div>

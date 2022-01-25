@@ -21,6 +21,7 @@ class ActivityReadStatesController < ApplicationController
     @read_states = @read_states.paginate(page: parse_pagination_param(params[:page]))
 
     @title = I18n.t('activity_read_states.index.title')
+    @submissions_path = submissions_path
     @crumbs = []
     if @user
       @crumbs << if @course.present?
@@ -28,10 +29,13 @@ class ActivityReadStatesController < ApplicationController
                  else
                    [@user.full_name, user_path(@user)]
                  end
+      @submissions_path = user_submissions_path(@user)
     elsif @series
       @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, breadcrumb_series_path(@series, current_user)]
+      @submissions_path = nil
     elsif @course
       @crumbs << [@course.name, course_path(@course)]
+      @submissions_path = course_submissions_path(@course)
     end
     @crumbs << [@content_page.name, helpers.activity_scoped_path(activity: @content_page, series: @series, course: @course)] if @content_page
     @crumbs << [I18n.t('activity_read_states.index.title'), '#']

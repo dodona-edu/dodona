@@ -25,9 +25,9 @@
             <% end %>
           </span>
         </h2>
-        <% unless @activity %>
+        <% if !@activity && @submissions_path %>
           <div class="float-end hidden-print">
-            <%= link_to @course.present? ? course_submissions_path(@course) : submissions_path, class: 'btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+            <%= link_to @submissions_path, class: 'btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
               <%= custom_icon 'submissions' %>
             <% end %>
           </div>

@@ -184,6 +184,7 @@ Rails.application.routes.draw do
     resources :users do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       get 'stop_impersonating', on: :collection
       get 'available_for_repository', on: :collection
       member do

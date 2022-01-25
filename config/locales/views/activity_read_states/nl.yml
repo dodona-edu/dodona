@@ -1,7 +1,7 @@
 nl:
   activity_read_states:
     index:
-      title: Leesactiviteit log
+      title: Gelezen activiteiten
       for: voor
       from: van
       submissions: Ingediende oplossingen

@@ -54,19 +54,6 @@
                 <% end %>
               </li>
             <% end %>
-            <% if policy(series).destroy? %>
-              <li>
-                <%
-                    confirm = t('series.delete.confirm')
-                    if series.evaluation.present?
-                      confirm += " " + t('series.delete.confirm_evaluation')
-                    end
-                 %>
-                <%= link_to series_path(series), method: :delete, data: {confirm: confirm}, class: "dropdown-item" do %>
-                  <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
-                <% end %>
-              </li>
-            <% end %>
             <% if policy(series).create_evaluation? %>
               <li>
                 <% if series.evaluation.present? %>
@@ -106,6 +93,19 @@
               <li>
                 <%= link_to mass_rejudge_series_path(series), method: :post, remote: true, data: {confirm: t("submissions.index.confirm_reevaluate_submissions")}, class: "dropdown-item" do %>
                   <i class='mdi mdi-replay mdi-18'></i> <%= t("submissions.index.reevaluate_submissions") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).destroy? %>
+              <li>
+                <%
+                    confirm = t('series.delete.confirm')
+                    if series.evaluation.present?
+                      confirm += " " + t('series.delete.confirm_evaluation')
+                    end
+                 %>
+                <%= link_to series_path(series), method: :delete, data: {confirm: confirm}, class: "dropdown-item" do %>
+                  <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
                 <% end %>
               </li>
             <% end %>

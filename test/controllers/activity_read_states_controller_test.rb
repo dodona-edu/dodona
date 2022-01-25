@@ -12,6 +12,26 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions only: %i[index]
 
+  test 'should be able to get activity scoped page' do
+    course = courses(:course1)
+    a1 = create :content_page, name_en: 'test'
+    series = create :series, course: course
+    series.exercises << a1
+    get course_activity_activity_read_states_url(course, a1)
+    assert_response :success
+  end
+
+  test 'should be able to get course scoped index page' do
+    course = courses(:course1)
+    get course_activity_read_states_url course
+    assert_response :success
+  end
+
+  test 'should be able to get user scoped index page' do
+    get user_activity_read_states_url @user
+    assert_response :success
+  end
+
   test 'should be able to search by activity name' do
     u = create :user
     sign_in u

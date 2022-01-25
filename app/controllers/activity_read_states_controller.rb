@@ -46,7 +46,7 @@ class ActivityReadStatesController < ApplicationController
     args = permitted_attributes(ActivityReadState)
     args[:user_id] = current_user.id
     course = Course.find(args[:course_id]) if args[:course_id].present?
-    args.delete[:course_id] if args[:course_id].present? && course.subscribed_members.exclude?(current_user)
+    args.delete(:course_id) if args[:course_id].present? && course.subscribed_members.exclude?(current_user)
     read_state = ActivityReadState.new args
     can_read = Pundit.policy!(current_user, read_state.activity).read?
     if can_read && read_state.save

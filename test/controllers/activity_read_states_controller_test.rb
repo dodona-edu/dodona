@@ -1,10 +1,16 @@
 require 'test_helper'
 
 class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
+  extend CRUDTest
+
+  crud_helpers ActivityReadState, attrs: %i[activity_id]
+
   def setup
     @user = users(:zeus)
     sign_in @user
   end
+
+  test_crud_actions only: %i[index]
 
   test 'should be able to search by activity name' do
     u = create :user

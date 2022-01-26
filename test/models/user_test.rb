@@ -465,15 +465,14 @@ class UserHasManyTest < ActiveSupport::TestCase
   end
 
   test 'merge should only transfer unique identities to the other user' do
-    i1 = create :institution
-    u1 = create :user, institution: i1
-    u2 = create :user, institution: i1
+    u1 = create :user
+    u2 = create :user
 
-    p1 = create :provider, institution: i1, mode: :prefer
-    p2 = create :provider, institution: i1, mode: :secondary
-    create :identity, user: u1, provider: p1
-    create :identity, user: u2, provider: p1
-    create :identity, user: u1, provider: p2
+    p1 = create :provider
+    p2 = create :provider
+    Identity.create user: u1, provider: p1, identifier: 'a'
+    Identity.create user: u2, provider: p1, identifier: 'b'
+    Identity.create user: u1, provider: p2, identifier: 'c'
 
     result = u1.merge_into(u2)
 

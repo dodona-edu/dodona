@@ -6,6 +6,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   setup do
     @activity = create :exercise
+    @content_page = create :content_page
     @series = create :series, exercises: [@activity]
     @course = @series.course
   end
@@ -51,6 +52,19 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     assert_equal course_series_activity_submissions_path(I18n.locale, @course, @series, @activity),
                  submissions_scoped_path(exercise: @activity, course: @course, series: @series)
+  end
+
+  test 'activity_read_states_scoped_path' do
+    assert_equal activity_read_states_path(I18n.locale), activity_read_states_scoped_path
+
+    assert_equal activity_activity_read_states_path(I18n.locale, @content_page),
+                 activity_read_states_scoped_path(content_page: @content_page)
+
+    assert_equal course_activity_activity_read_states_path(I18n.locale, @course, @content_page),
+                 activity_read_states_scoped_path(content_page: @content_page, course: @course)
+
+    assert_equal course_series_activity_activity_read_states_path(I18n.locale, @course, @series, @content_page),
+                 activity_read_states_scoped_path(content_page: @content_page, course: @course, series: @series)
   end
 
   test 'sanitize helper should filter dangerous tags' do

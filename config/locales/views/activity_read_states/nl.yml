@@ -1,0 +1,14 @@
+nl:
+  activity_read_states:
+    index:
+      title: Gelezen activiteiten
+      for: voor
+      from: van
+      submissions: Ingediende oplossingen
+    read_states_table:
+      user: Gebruiker
+      exercise: Oefening
+      time: Tijdstip
+      ago: geleden
+      filter-by-user: "Toon enkel logs van deze gebruiker"
+      filter-by-exercise: "Toon enkel logs voor deze oefening"

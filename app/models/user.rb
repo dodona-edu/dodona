@@ -388,5 +388,4 @@ class User < ApplicationRecord
     self.first_name = parts[0]
     self.last_name = parts[1]
   end
-
 end

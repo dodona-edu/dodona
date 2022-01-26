@@ -481,4 +481,56 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_not u1.persisted?
     assert_equal 2, u2.identities.count
   end
+
+  test 'merge should only transfer unique repositories to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    r1 = create :repository, :git_stubbed
+    r2 = create :repository, :git_stubbed
+    RepositoryAdmin.create user: u1, repository: r1
+    RepositoryAdmin.create user: u2, repository: r1
+    RepositoryAdmin.create user: u1, repository: r2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.repository_admins.count
+  end
+
+  test 'merge should transfer course membership with most rights to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    c1 = create :course
+    c2 = create :course
+    c3 = create :course
+    c4 = create :course
+    c5 = create :course
+    CourseMembership.create user: u1, course: c1, status: 'student', favorite: true
+    CourseMembership.create user: u1, course: c2, status: 'pending'
+    CourseMembership.create user: u1, course: c3, status: 'unsubscribed'
+    CourseMembership.create user: u1, course: c4, status: 'student'
+    CourseMembership.create user: u1, course: c5, status: 'course_admin'
+
+    CourseMembership.create user: u2, course: c2, status: 'pending'
+    CourseMembership.create user: u2, course: c3, status: 'course_admin', favorite: true
+    CourseMembership.create user: u2, course: c4, status: 'unsubscribed'
+    CourseMembership.create user: u2, course: c5, status: 'student'
+
+    result = u1.merge_into(u2)
+
+    assert_equal 0, u1.course_memberships.count
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 5, u2.course_memberships.count
+    assert_equal 4, u2.subscribed_courses.count
+    assert_equal 2, u2.favorite_courses.count
+    assert_equal 2, u2.administrating_courses.count
+    assert_equal 2, u2.enrolled_courses.count
+    assert_equal 1, u2.pending_courses.count
+    assert_equal 0, u2.unsubscribed_courses.count
+  end
 end

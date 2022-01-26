@@ -327,8 +327,8 @@ class User < ApplicationRecord
     end
 
     repository_admins.each do |ra|
-      if other.repositories.find(ra.repository_id)
-        other.delete
+      if other.repository_admins.find { |ora| ora.repository_id == ra.repository_id }
+        ra.delete
       else
         ra.update(user: other)
       end
@@ -339,15 +339,15 @@ class User < ApplicationRecord
       if other_cm.nil?
         cm.update(user: other)
       elsif other_cm.status == cm.status \
-        || other_cm.status == 'pending' \
-        || (other_cm.status == 'unsubscribed' && cm.status == 'pending') \
-        || (other_cm.status == 'student' && cm.status != 'course_admin')
+        || other_cm.status == 'course_admin' \
+        || (other_cm.status == 'student' && cm.status != 'course_admin') \
+        || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
         other_cm.update(favorite: true) if cm.favorite
         cm.delete
       else
         cm.update(favorite: true) if other_cm.favorite
-        cm.update(user: other)
         other_cm.delete
+        cm.update(user: other)
       end
     end
 

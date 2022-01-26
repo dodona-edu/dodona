@@ -5,6 +5,7 @@ nl:
       show: Activiteit bekijken
       edit: Activiteit bewerken
       submissions: Oplossingen voor deze oefening
+      read_states: Log voor deze leesactiviteit
     activity:
       count_tooltip: Aantal studenten die deze oefening correct hebben
       read_tooltip: Aantal studenten die dit gelezen hebben

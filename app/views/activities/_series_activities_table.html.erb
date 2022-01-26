@@ -118,6 +118,14 @@
                 <i class="mdi mdi-chevron-right mdi-18"></i>
               <% end %>
             <% end %>
+            <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
+              <% options = current_user == user ? {} : {user_id: user.id} %>
+              <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                          title: t('activities.navbar_links.read_states'),
+                          class: 'btn-icon' do %>
+                <i class="mdi mdi-chevron-right mdi-18"></i>
+              <% end %>
+            <% end %>
           </td>
         <% end %>
       </tr>

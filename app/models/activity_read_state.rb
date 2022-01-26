@@ -19,10 +19,24 @@ class ActivityReadState < ApplicationRecord
 
   after_save :invalidate_caches
 
+  scope :of_content_page, ->(activity) { where activity_id: activity.id }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(activity: series.content_pages) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
+
+  scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
+  scope :by_username, ->(name) { where(user: User.by_filter(name)) }
+  scope :by_filter, lambda { |filter, skip_user:, skip_content_page:|
+    filter.split.map(&:strip).select(&:present?).map do |part|
+      scopes = []
+      scopes << by_activity_name(part) unless skip_content_page
+      scopes << by_username(part) unless skip_user
+      scopes.any? ? merge(scopes.reduce(&:or)) : self
+    end.reduce(&:merge)
+  }
+
+  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
 
   def invalidate_caches
     activity.invalidate_delayed_users_read

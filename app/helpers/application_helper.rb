@@ -74,6 +74,19 @@ module ApplicationHelper
     end
   end
 
+  def activity_read_states_scoped_path(content_page: nil, series: nil, course: nil, options: nil)
+    if content_page.nil?
+      activity_read_states_path(I18n.locale, options)
+    elsif series.present?
+      course ||= series.course
+      course_series_activity_activity_read_states_path(I18n.locale, course, series, content_page, options)
+    elsif course.present?
+      course_activity_activity_read_states_path(I18n.locale, course, content_page, options)
+    else
+      activity_activity_read_states_path(I18n.locale, content_page, options)
+    end
+  end
+
   def navbar_link(options)
     return unless options.delete(:if)
 

@@ -27,10 +27,12 @@ puts ''
 c = ''
 until %W[\r \n y n f].include? c
   u1, u2 = u2, u1 if c == 's'
-  puts "Invalid input #{c}" unless c == 's'
+  puts "Invalid input #{c}" unless ['s', ''].include?(c)
   puts "Are you sure you want to merge #{u1.username} into #{u2.username}? (y)es|(N)o|(f)orce|(s)wap"
   c = $stdin.getch.downcase
 end
+
+puts ''
 
 if %W[\r \n n].include? c
   puts 'Merge cancelled'

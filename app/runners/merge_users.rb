@@ -1,3 +1,4 @@
+# rubocop:disable Rails/Output
 LABEL_WIDTH = 20
 USER_WIDTH = 50
 
@@ -32,7 +33,7 @@ until %W[\r \n y n f].include? c
 end
 
 if %W[\r \n n].include? c
-  puts "Merge cancelled"
+  puts 'Merge cancelled'
   return
 end
 
@@ -41,7 +42,7 @@ if success
   puts "Successfully merged #{u1.username} into #{u2.username}"
   print_users u2
 else
-  puts "Merge failed"
+  puts 'Merge failed'
   puts u1.errors.full_messages.join('\n')
 end
-
+# rubocop:enable Rails/Output

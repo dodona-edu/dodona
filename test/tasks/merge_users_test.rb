@@ -3,7 +3,6 @@ require 'rake'
 require 'stringio'
 
 class MergeUserTest < ActiveSupport::TestCase
-
   def stub_stdin(*chars)
     string_io = StringIO.new
     string_io.puts chars.join

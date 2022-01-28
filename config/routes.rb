@@ -39,7 +39,7 @@ Rails.application.routes.draw do
 
     concern :mediable do
       member do
-        constraints host: Rails.configuration.default_host do
+        constraints host: Rails.configuration.web_hosts do
           get 'media/*media', to: 'activities#media', constraints: {media: /.*/}, as: :media
         end
       end

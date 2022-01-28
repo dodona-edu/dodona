@@ -6,9 +6,11 @@ Rails.application.configure do
 
   # The main webapp
   config.default_host = 'naos.ugent.be'
-  
+
   # alternative host name
   config.alt_host = 'naos.dodona.be'
+
+  config.web_hosts = [config.default_host, config.alt_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'

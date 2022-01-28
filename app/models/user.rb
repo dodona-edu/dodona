@@ -290,8 +290,9 @@ class User < ApplicationRecord
     self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 
-  def merge_into(other, force: false)
-    errors.add(:merge, 'User belongs to different institution') if other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
+  # Be careful when using force institution id. This expects the providers to be updated externally
+  def merge_into(other, force: false, force_institution_id: nil)
+    errors.add(:merge, 'User belongs to different institution') if force_institution_id.nil? && other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
     errors.add(:merge, 'User has different permissions') if other.permission != permission && !force
     return false if errors.any?
 
@@ -299,7 +300,8 @@ class User < ApplicationRecord
       other.permission = permission if (permission == 'staff' && other.permission == 'student') \
                                     || (permission == 'zeus' && other.permission != 'zeus')
 
-      other.institution_id = institution_id if other.institution_id.nil?
+      other.institution_id = institution_id if other.institution_id.nil? && force_institution_id.nil?
+      other.institution_id = force_institution_id unless force_institution_id.nil?
 
       rights_request.update(user: other) if !rights_request.nil? && other.permission == 'student' && other.rights_request.nil?
 

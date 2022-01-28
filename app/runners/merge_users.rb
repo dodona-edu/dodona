@@ -19,7 +19,7 @@ class MergeUsers
     @output.puts 'Repositories: '.ljust(LABEL_WIDTH) + users.map { |u| u.repositories.count.to_s.ljust(USER_WIDTH) }.join
   end
 
-  def merge_users_interactive(u1_id, u2_id, force_institution_id: nil)
+  def merge_users_interactive(u1_id, u2_id, force_institution: false)
     u1 = User.find(u1_id)
     u2 = User.find(u2_id)
 
@@ -42,7 +42,7 @@ class MergeUsers
       return
     end
 
-    success = u1.merge_into(u2, force: c == 'f', force_institution_id: force_institution_id)
+    success = u1.merge_into(u2, force: c == 'f', force_institution: force_institution)
     if success
       @output.puts "Successfully merged #{u1.username} into #{u2.username}"
       print_users u2

@@ -51,7 +51,7 @@ class MergeInstitutions
         i1.users.where(username: i2.users.pluck(:username)).each do |u1|
           u2 = i2.users.find(username: u1.username)
           unless u2.nil?
-            success = MergeUsers.new(@input, @output).merge_users_interactive(i1, u2, i2.id)
+            success = MergeUsers.new(@input, @output).merge_users_interactive(i1, u2, true)
             raise ActiveRecord::Rollback unless success
           end
         end

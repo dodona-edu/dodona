@@ -19,7 +19,7 @@ Rails.application.configure do
   # Allowed hostnames
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
-  # Where we host our assets (a single domain, for caching)
+  # Where we host our assets, can be / for current host or a domain
   config.action_controller.asset_host = '/'
 
   # In the development environment your application's code is reloaded on

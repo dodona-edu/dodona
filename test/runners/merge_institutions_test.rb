@@ -3,6 +3,8 @@ require 'stringio'
 require 'merge_users'
 
 class MergeInstitutionsTest < ActiveSupport::TestCase
+  FILE_LOCATION = Rails.root.join('test/files/output.json')
+
   def stub_stdin(*chars)
     string_io = StringIO.new
     chars.each { |c| string_io.print c }
@@ -218,5 +220,23 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
       u.max_one_institution
       assert_equal 0, u.errors.count
     end
+  end
+
+  test 'The script should also rollback filesystem changes' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, username: 'test', institution: i1
+    create :user, username: 'test', institution: i2
+    create :user, username: 'test1', institution: i1
+    create :user, username: 'test1', institution: i2
+
+    s = create :correct_submission, user: u1, code: "print(input())\n", result: FILE_LOCATION.read
+    assert s.on_filesystem?
+
+    merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y', 'n'
+
+    assert Institution.exists?(i1.id)
+    assert Institution.exists?(i2.id)
+    assert s.on_filesystem?
   end
 end

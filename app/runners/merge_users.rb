@@ -8,6 +8,7 @@ class MergeUsers
   end
 
   def print_users(*users)
+    @output.puts 'Id: '.ljust(LABEL_WIDTH) + users.map { |u| u.id.to_s.ljust(USER_WIDTH) }.join
     @output.puts 'Username: '.ljust(LABEL_WIDTH) + users.map { |u| u.username.to_s.ljust(USER_WIDTH) }.join
     @output.puts 'Email: '.ljust(LABEL_WIDTH) + users.map { |u| u.email.to_s.ljust(USER_WIDTH) }.join
     @output.puts 'Name: '.ljust(LABEL_WIDTH) + users.map { |u| u.full_name.to_s.ljust(USER_WIDTH) }.join
@@ -32,7 +33,7 @@ class MergeUsers
     until %W[\r \n y n f].include? c
       u1, u2 = u2, u1 if c == 's'
       @output.puts "Invalid input #{c}" unless ['s', ''].include?(c)
-      @output.puts "Are you sure you want to merge #{u1.username} into #{u2.username}? (y)es|(N)o|(f)orce|(s)wap"
+      @output.puts "Are you sure you want to merge #{u1.id} into #{u2.id}? (y)es|(N)o|(f)orce|(s)wap"
       c = @input.getch.downcase
     end
 

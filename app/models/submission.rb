@@ -497,8 +497,10 @@ class Submission < ApplicationRecord
     new_path = fs_path
     return if old_path == new_path
 
-    FileUtils.mkdir_p File.dirname new_path
-    FileUtils.move old_path, new_path
+    AfterCommitEverywhere.after_commit do
+      FileUtils.mkdir_p File.dirname new_path
+      FileUtils.move old_path, new_path
+    end
   end
 
   def report_if_internal_error

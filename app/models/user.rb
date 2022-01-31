@@ -44,6 +44,7 @@ class User < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
 
   has_many :subscribed_courses,
@@ -310,6 +311,14 @@ class User < ApplicationRecord
       notifications.each { |n| n.update(user: other) }
       annotations.each { |a| a.update(user: other, last_updated_by_id: other.id) }
       questions.each { |q| q.update(user: other) }
+
+      evaluation_users.each do |eu|
+        if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }
+          eu.delete
+        else
+          eu.update(user: other)
+        end
+      end
 
       activity_read_states.each do |ars|
         if other.activity_read_states.find { |oars| oars.activity_id == ars.activity_id }

@@ -498,6 +498,23 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 2, u2.repository_admins.count
   end
 
+  test 'merge should only transfer unique evaluations to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    e1 = create :evaluation
+    e2 = create :evaluation
+    EvaluationUser.create user: u1, evaluation: e1
+    EvaluationUser.create user: u2, evaluation: e1
+    EvaluationUser.create user: u1, evaluation: e2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.evaluation_users.count
+  end
+
   test 'merge should transfer course membership with most rights to the other user' do
     u1 = create :user
     u2 = create :user
@@ -531,5 +548,52 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 2, u2.enrolled_courses.count
     assert_equal 1, u2.pending_courses.count
     assert_equal 0, u2.unsubscribed_courses.count
+  end
+
+  test 'merge should transfer update cached values' do
+    u1 = create :user
+    u2 = create :user
+
+    c = create :course
+    c2 = create :course
+    CourseMembership.create user: u1, course: c, status: 'student'
+    CourseMembership.create user: u2, course: c, status: 'student'
+    s1 = create :series, course: c, exercise_count: 0
+    s2 = create :series, course: c2,  exercise_count: 0
+    e1 = create :exercise
+    e2 = create :exercise
+    e3 = create :exercise
+    SeriesMembership.create series: s1, activity: e1
+    SeriesMembership.create series: s1, activity: e2
+    SeriesMembership.create series: s2, activity: e3
+    create :correct_submission, user: u2, course: c, exercise: e1
+    create :wrong_submission, user: u2, course: c, exercise: e2
+    create :correct_submission, user: u1, course: c, exercise: e1
+    create :correct_submission, user: u1, course: c, exercise: e2
+    create :wrong_submission, user: u1, course: c2, exercise: e3
+
+    assert_equal 3, c.correct_solutions
+    assert_equal 2, c.subscribed_members_count
+    assert_equal 1, u2.correct_exercises
+    assert_equal 2, u2.attempted_exercises
+    assert_equal 2, e1.users_correct
+    assert_equal 2, e1.users_tried
+    assert_equal false, s1.completed?(user: u2)
+    assert_equal false, s2.started?(user: u2)
+    assert_equal false, s2.wrong?(user: u2)
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 1, c.subscribed_members_count
+    assert_equal 2, c.correct_solutions
+    assert_equal 2, u2.correct_exercises
+    assert_equal 3, u2.attempted_exercises
+    assert_equal 1, e1.users_correct
+    assert_equal 1, e1.users_tried
+    assert_equal true, s1.completed?(user: u2)
+    assert_equal true, s2.started?(user: u2)
+    assert_equal true, s2.wrong?(user: u2)
   end
 end

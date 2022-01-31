@@ -304,7 +304,7 @@ class User < ApplicationRecord
 
       identities.each do |i|
         if other.identities.find { |oi| oi.provider_id == i.provider_id }
-          i.delete
+          i.destroy
         else
           i.update(user: other)
         end
@@ -321,10 +321,10 @@ class User < ApplicationRecord
           || (other_cm.status == 'student' && cm.status != 'course_admin') \
           || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
           other_cm.update(favorite: true) if cm.favorite
-          cm.delete
+          cm.destroy
         else
           cm.update(favorite: true) if other_cm.favorite
-          other_cm.delete
+          other_cm.destroy
           cm.update(user: other)
         end
       end
@@ -339,7 +339,7 @@ class User < ApplicationRecord
 
       evaluation_users.each do |eu|
         if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }
-          eu.delete
+          eu.destroy
         else
           eu.update(user: other)
         end
@@ -347,7 +347,7 @@ class User < ApplicationRecord
 
       activity_read_states.each do |ars|
         if other.activity_read_states.find { |oars| oars.activity_id == ars.activity_id }
-          ars.delete
+          ars.destroy
         else
           ars.update(user: other)
         end
@@ -355,7 +355,7 @@ class User < ApplicationRecord
 
       repository_admins.each do |ra|
         if other.repository_admins.find { |ora| ora.repository_id == ra.repository_id }
-          ra.delete
+          ra.destroy
         else
           ra.update(user: other)
         end

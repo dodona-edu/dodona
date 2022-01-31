@@ -189,4 +189,34 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     u1.reload
     assert_equal i2, u1.institution
   end
+
+  test 'The script should rollback all changes if institution merge failed' do
+    i1 = create :institution
+    i2 = create :institution
+    create :provider, institution: i1
+    create :provider, institution: i1, mode: 'link'
+    overlapping_users_i1 = (1..5).map { |i| create :user, username: "test#{i}", institution: i1 }
+    overlapping_users_i2 = (1..5).map { |i| create :user, username: "test#{i}", institution: i2 }
+    unique_users_i1 = (1..5).map { |i| create :user, username: "foo#{i}", institution: i1 }
+    unique_users_i2 = (1..5).map { |i| create :user, username: "bar#{i}", institution: i2 }
+
+    merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y', 'y', 'y', 'y', 'y'
+
+    assert Institution.exists?(i1.id)
+    assert Institution.exists?(i2.id)
+    (overlapping_users_i1 + unique_users_i1).each do |u|
+      assert User.exists?(u.id)
+      u.reload
+      assert_equal i1, u.institution
+      u.max_one_institution
+      assert_equal 0, u.errors.count
+    end
+    (overlapping_users_i2 + unique_users_i2).each do |u|
+      assert User.exists?(u.id)
+      u.reload
+      assert_equal i2, u.institution
+      u.max_one_institution
+      assert_equal 0, u.errors.count
+    end
+  end
 end

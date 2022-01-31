@@ -25,6 +25,7 @@ class MergeUsers
     @output.puts 'Submissions: '.ljust(LABEL_WIDTH) + users.map { |u| u.submissions.count.to_s.ljust(USER_WIDTH) }.join
     @output.puts 'Read states: '.ljust(LABEL_WIDTH) + users.map { |u| u.activity_read_states.count.to_s.ljust(USER_WIDTH) }.join
     @output.puts 'Repositories: '.ljust(LABEL_WIDTH) + users.map { |u| u.repositories.count.to_s.ljust(USER_WIDTH) }.join
+    @output.puts 'Evaluations: '.ljust(LABEL_WIDTH) + users.map { |u| u.evaluation_users.count.to_s.ljust(USER_WIDTH) }.join
   end
 
   def merge_users_interactive(u1_id, u2_id)

@@ -595,5 +595,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal true, s1.completed?(user: u2)
     assert_equal true, s2.started?(user: u2)
     assert_equal true, s2.wrong?(user: u2)
+    assert_equal true, s3.completed?(user: u2)
+    assert_equal 1, c2.correct_solutions(user_id: u2.id)
   end
 end

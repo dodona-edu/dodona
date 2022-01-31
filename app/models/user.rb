@@ -302,7 +302,32 @@ class User < ApplicationRecord
 
       other.institution_id = institution_id if other.institution_id.nil?
 
+      identities.each do |i|
+        if other.identities.find { |oi| oi.provider_id == i.provider_id }
+          i.delete
+        else
+          i.update(user: other)
+        end
+      end
+
       rights_request.update(user: other) if !rights_request.nil? && other.permission == 'student' && other.rights_request.nil?
+
+      course_memberships.each do |cm|
+        other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
+        if other_cm.nil?
+          cm.update(user: other)
+        elsif other_cm.status == cm.status \
+          || other_cm.status == 'course_admin' \
+          || (other_cm.status == 'student' && cm.status != 'course_admin') \
+          || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
+          other_cm.update(favorite: true) if cm.favorite
+          cm.delete
+        else
+          cm.update(favorite: true) if other_cm.favorite
+          other_cm.delete
+          cm.update(user: other)
+        end
+      end
 
       submissions.each { |s| s.update(user: other) }
       api_tokens.each { |at| at.update(user: other) }
@@ -328,36 +353,11 @@ class User < ApplicationRecord
         end
       end
 
-      identities.each do |i|
-        if other.identities.find { |oi| oi.provider_id == i.provider_id }
-          i.delete
-        else
-          i.update(user: other)
-        end
-      end
-
       repository_admins.each do |ra|
         if other.repository_admins.find { |ora| ora.repository_id == ra.repository_id }
           ra.delete
         else
           ra.update(user: other)
-        end
-      end
-
-      course_memberships.each do |cm|
-        other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
-        if other_cm.nil?
-          cm.update(user: other)
-        elsif other_cm.status == cm.status \
-          || other_cm.status == 'course_admin' \
-          || (other_cm.status == 'student' && cm.status != 'course_admin') \
-          || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
-          other_cm.update(favorite: true) if cm.favorite
-          cm.delete
-        else
-          cm.update(favorite: true) if other_cm.favorite
-          other_cm.delete
-          cm.update(user: other)
         end
       end
 

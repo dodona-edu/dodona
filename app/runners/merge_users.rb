@@ -46,7 +46,7 @@ class MergeUsers
 
     success = u1.merge_into(u2, force: c == 'f', force_institution: force_institution)
     if success
-      @output.puts "Successfully merged #{u1.username} into #{u2.username}"
+      @output.puts "Successfully merged #{u1.id} into #{u2.id}"
       print_users u2
     else
       @output.puts 'Merge failed'

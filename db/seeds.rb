@@ -68,7 +68,7 @@ if Rails.env.development?
                 institution: ugent
   end
 
-  overlapping_students_ugent = Array.new(10) do |i|
+  overlapping_students_ugent = Array.new(3) do |i|
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
     username = "test" + i.to_s
@@ -80,7 +80,7 @@ if Rails.env.development?
                 institution: ugent
   end
 
-  overlapping_students_artevelde = Array.new(10) do |i|
+  overlapping_students_artevelde = Array.new(3) do |i|
     first_name = Faker::Name.first_name
     last_name = Faker::Name.last_name
     username = "test" + i.to_s

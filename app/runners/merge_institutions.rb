@@ -49,7 +49,7 @@ class MergeInstitutions
         return unless c == 'y'
 
         i1.users.where(username: i2.users.pluck(:username)).each do |u1|
-          u2 = i2.users.find { |u2| u2.username == u1.username }
+          u2 = i2.users.find { |u| u.username == u1.username }
           unless u2.nil?
             success = MergeUsers.new(@input, @output).merge_users_interactive(u1.id, u2.id, force_institution: true)
             raise ActiveRecord::Rollback unless success

@@ -46,6 +46,7 @@ class User < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
 
   has_many :subscribed_courses,
@@ -290,6 +291,81 @@ class User < ApplicationRecord
 
   def set_search
     self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
+  end
+
+  def merge_into(other, force: false)
+    errors.add(:merge, 'User belongs to different institution') if other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
+    errors.add(:merge, 'User has different permissions') if other.permission != permission && !force
+    return false if errors.any?
+
+    transaction do
+      other.permission = permission if (permission == 'staff' && other.permission == 'student') \
+                                    || (permission == 'zeus' && other.permission != 'zeus')
+
+      other.institution_id = institution_id if other.institution_id.nil?
+
+      identities.each do |i|
+        if other.identities.find { |oi| oi.provider_id == i.provider_id }
+          i.destroy!
+        else
+          i.update!(user: other)
+        end
+      end
+
+      rights_request.update!(user: other) if !rights_request.nil? && other.permission == 'student' && other.rights_request.nil?
+
+      course_memberships.each do |cm|
+        other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
+        if other_cm.nil?
+          cm.update!(user: other)
+        elsif other_cm.status == cm.status \
+          || other_cm.status == 'course_admin' \
+          || (other_cm.status == 'student' && cm.status != 'course_admin') \
+          || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
+          other_cm.update!(favorite: true) if cm.favorite
+          cm.destroy!
+        else
+          cm.update!(favorite: true) if other_cm.favorite
+          other_cm.destroy!
+          cm.update!(user: other)
+        end
+      end
+
+      submissions.each { |s| s.update!(user: other) }
+      api_tokens.each { |at| at.update!(user: other) }
+      events.each { |e| e.update!(user: other) }
+      exports.each { |e| e.update!(user: other) }
+      notifications.each { |n| n.update!(user: other) }
+      annotations.each { |a| a.update!(user: other, last_updated_by_id: other.id) }
+      questions.each { |q| q.update!(user: other) }
+
+      evaluation_users.each do |eu|
+        if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }
+          eu.destroy!
+        else
+          eu.update!(user: other)
+        end
+      end
+
+      activity_read_states.each do |ars|
+        if other.activity_read_states.find { |oars| oars.activity_id == ars.activity_id }
+          ars.destroy!
+        else
+          ars.update!(user: other)
+        end
+      end
+
+      repository_admins.each do |ra|
+        if other.repository_admins.find { |ora| ora.repository_id == ra.repository_id }
+          ra.destroy!
+        else
+          ra.update!(user: other)
+        end
+      end
+
+      reload
+      destroy!
+    end
   end
 
   private

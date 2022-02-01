@@ -6,7 +6,7 @@ Rails.application.configure do
 
   # The main webapp
   config.default_host = 'naos.ugent.be'
-  
+
   # alternative host name
   config.alt_host = 'naos.dodona.be'
 

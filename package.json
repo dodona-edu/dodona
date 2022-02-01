@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build:css": "./bin/build-css"
   },
   "dependencies": {
     "@babel/core": "^7.16.12",
@@ -24,6 +25,7 @@
     "iframe-resizer": "^4.3.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
+    "sass": "^1.49.4",
     "typeahead.js": "^0.11.1",
     "typescript": "^4.5.5"
   },

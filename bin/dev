@@ -1,9 +1,4 @@
-#!/usr/bin/env bash
-
-if ! command -v foreman &> /dev/null
-then
-  echo "Installing foreman..."
-  gem install foreman
-fi
-
-foreman start -f Procfile.dev
+#!/bin/bash
+bundle install
+yarn install
+bundle exec rails s -p 3000 & bundle exec rails jobs:work & yarn build:css --watch

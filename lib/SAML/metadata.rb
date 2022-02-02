@@ -13,6 +13,7 @@ module OmniAuth
         # Return SP metadata based on the settings.
         # @param pretty_print [Boolean] Pretty print or not the response
         #                               (No pretty print if you gonna validate the signature)
+        # @param host [String] The hostname to be used in the metadata for redirect and entityId
         # @return [String] XML Metadata of the Service Provider
         #
         def self.generate(pretty_print = false, host = Rails.configuration.default_host)

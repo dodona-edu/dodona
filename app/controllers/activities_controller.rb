@@ -6,7 +6,6 @@ class ActivitiesController < ApplicationController
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
-  before_action :allow_iframe, only: %i[description]
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
   # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.

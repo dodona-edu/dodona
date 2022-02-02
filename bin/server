@@ -1,5 +1,4 @@
 #!/bin/bash
 bundle install
 yarn install
-yarn build:css
-bundle exec rails s -p 3000 & bundle exec rails jobs:work
+bundle exec rails s -p 3000 & bundle exec rails jobs:work & yarn build:css --watch

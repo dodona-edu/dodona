@@ -70,10 +70,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def default_url
-    "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
-  end
-
   def remote_request?
     request.format.js? || request.format.json?
   end

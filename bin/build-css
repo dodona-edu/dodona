@@ -8,4 +8,5 @@
   --load-path=node_modules \
   --load-path=./app/assets/stylesheets/ \
   --load-path=./vendor/assets/stylesheets/ \
+  --style compressed \
   $@

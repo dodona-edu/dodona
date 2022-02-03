@@ -1,3 +1,5 @@
+require_relative 'merge_users.rb'
+
 class MergeInstitutions
   LABEL_WIDTH = 20
   INSTITUTION_WIDTH = 50

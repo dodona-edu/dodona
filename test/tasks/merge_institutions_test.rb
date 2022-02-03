@@ -1,6 +1,6 @@
 require 'test_helper'
 require 'stringio'
-require 'merge_users'
+require './lib/tasks/merge_institutions'
 
 class MergeInstitutionsTest < ActiveSupport::TestCase
   FILE_LOCATION = Rails.root.join('test/files/output.json')

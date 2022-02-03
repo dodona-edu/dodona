@@ -389,17 +389,17 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (!_deadline) {
             return;
         }
-        const $deadlineWarning = $("#deadline-warning");
-        const $deadlineInfo = $("#deadline-info");
+        const deadlineWarningElement = document.getElementById("deadline-warning");
+        const deadlineInfoElement = document.getElementById("deadline-info");
         const deadline = new Date(_deadline);
         const infoDeadline = new Date(deadline - (5 * 60 * 1000));
 
         function showDeadlineAlerts() {
             if (deadline < new Date()) {
-                $deadlineInfo.hide();
-                $deadlineWarning.show();
+                deadlineInfoElement.hidden = true;
+                deadlineWarningElement.hidden = false;
             } else if (infoDeadline < new Date()) {
-                $deadlineInfo.show();
+                deadlineInfoElement.hidden = false;
                 setTimeout(showDeadlineAlerts, Math.min(
                     Math.max(10, (deadline - new Date()) / 10),
                     10 * 60 * 1000));

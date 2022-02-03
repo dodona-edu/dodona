@@ -1,5 +1,5 @@
 /* globals Bloodhound,ace,ga */
-import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
+import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 
@@ -159,7 +159,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {
             if (!loggedIn) return;
-            logToGoogle("submission", "submitted");
             // test submitted source code
             const source = editor.getValue();
             disableSubmitButton();

@@ -73,15 +73,6 @@ function getArrayURLParameter(name, _url) {
     return url.searchParams.getAll(`${name}[]`);
 }
 
-/*
- * Logs data to Google Analytics. Category and action are mandatory.
- */
-function logToGoogle(category, action, label, value) {
-    if (typeof (ga) !== "undefined") {
-        ga("send", "event", category, action, label, value);
-    }
-}
-
 function checkTimeZone(offset) {
     if (offset !== new Date().getTimezoneOffset()) {
         $("#time-zone-warning").removeClass("hidden");
@@ -178,7 +169,6 @@ export {
     updateArrayURLParameter,
     getURLParameter,
     getArrayURLParameter,
-    logToGoogle,
     checkTimeZone,
     checkIframe,
     initCSRF,

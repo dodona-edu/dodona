@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_24_145930) do
+ActiveRecord::Schema.define(version: 2022_02_03_085509) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -181,7 +181,6 @@ ActiveRecord::Schema.define(version: 2022_01_24_145930) do
     t.text "description", size: :medium
     t.integer "visibility"
     t.integer "registration"
-    t.integer "color"
     t.string "teacher"
     t.bigint "institution_id"
     t.string "search", limit: 4096

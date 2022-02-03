@@ -15,8 +15,7 @@ Rails.application.config.content_security_policy do |policy|
                        'https://*.googleapis.com',
                        'http://localhost:3035', 'ws://localhost:3035'
   else
-    policy.connect_src :self, Rails.configuration.tutor_url.to_s,
-                       'https://*.googleapis.com'
+    policy.connect_src :self, Rails.configuration.tutor_url.to_s
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',

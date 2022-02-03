@@ -1,7 +1,6 @@
 require 'test_helper'
 require 'stringio'
-require 'rake'
-load './lib/tasks/merge_users.rake'
+require './lib/tasks/merge_users'
 
 class MergeUserTest < ActiveSupport::TestCase
   def stub_stdin(*chars)

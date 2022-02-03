@@ -1,5 +1,3 @@
-/* globals ga */
-
 import { isInIframe } from "iframe";
 
 /**

@@ -4,14 +4,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 2.7.5'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.0.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.1'
 
-# Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.0.0'
+# Use dart-sass for stylesheets temporarily a few commits ahead of release to fix `assets:precompile` not defined bug
+gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
+
+# Load sprockets ourselves for now => planned fo remove this soon
+gem "sprockets-rails"
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
@@ -83,8 +86,8 @@ gem 'pundit', '~> 2.1.1'
 # impersonate users
 gem 'pretender', '~> 0.4.0'
 
-# db annotations
-gem 'annotate', '~> 3.1.1'
+# db annotations Temporary use of github branch to support rails 7, should be reverted on new release
+gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
@@ -175,8 +178,7 @@ group :development do
   # Read more: https://github.com/rails/spring
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-rails', '~> 2.13.2'
-  gem 'spring', '~> 2.1.1'
-  gem 'spring-watcher-listen', '~> 2.0.1'
+  gem 'spring', '~> 4.0.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.7.0'

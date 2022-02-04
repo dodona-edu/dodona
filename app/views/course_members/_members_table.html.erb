@@ -18,7 +18,7 @@
         <td>
           <% if course_membership.course_admin? %>
             <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
-          <% elsif user.staff? || user.zeus? %>
+          <% elsif user.admin? %>
             <span class="mdi mdi-alert mdi-18" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t(".teacher_rights") %>"></span>
           <% end %>
           <% if user.username.blank? %>

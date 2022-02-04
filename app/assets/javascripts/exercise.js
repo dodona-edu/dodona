@@ -58,7 +58,7 @@ function initLabelsEdit(labels, undeletableLabels) {
 
 function showLightbox(content) {
     const lightbox = new GLightbox(content);
-    lightbox.on("open", () => {
+    lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).
         window.MathJax.typeset([".gslide-description"]);
@@ -98,6 +98,7 @@ function initLightboxes() {
             content: {
                 elements: images,
                 startAt: index,
+                moreLength: 0,
             }
         });
         return false;
@@ -388,17 +389,17 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (!_deadline) {
             return;
         }
-        const $deadlineWarning = $("#deadline-warning");
-        const $deadlineInfo = $("#deadline-info");
+        const deadlineWarningElement = document.getElementById("deadline-warning");
+        const deadlineInfoElement = document.getElementById("deadline-info");
         const deadline = new Date(_deadline);
         const infoDeadline = new Date(deadline - (5 * 60 * 1000));
 
         function showDeadlineAlerts() {
             if (deadline < new Date()) {
-                $deadlineInfo.hide();
-                $deadlineWarning.show();
+                deadlineInfoElement.hidden = true;
+                deadlineWarningElement.hidden = false;
             } else if (infoDeadline < new Date()) {
-                $deadlineInfo.show();
+                deadlineInfoElement.hidden = false;
                 setTimeout(showDeadlineAlerts, Math.min(
                     Math.max(10, (deadline - new Date()) / 10),
                     10 * 60 * 1000));

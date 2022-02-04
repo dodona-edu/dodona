@@ -52,7 +52,7 @@ class Submission < ApplicationRecord
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
-  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_date..end_date.to_date) }
+  scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
@@ -132,7 +132,7 @@ class Submission < ApplicationRecord
 
   def result=(result)
     FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
-    File.open(File.join(fs_path, RESULT_FILENAME), 'wb') { |f| f.write(ActiveSupport::Gzip.compress(result.force_encoding('UTF-8'))) }
+    File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
   def clean_messages(messages, levels)
@@ -393,7 +393,6 @@ class Submission < ApplicationRecord
             .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -411,16 +410,15 @@ class Submission < ApplicationRecord
                  .transform_values(&:count)
                  .group_by { |ex_id_status, _| ex_id_status[0] } # group by exercise
       transformed = data.transform_values do |v|
-        v.map do |ex_id_status_count| # -> ex_id -> { status -> count }
+        v.to_h do |ex_id_status_count| # -> ex_id -> { status -> count }
           status = ex_id_status_count[0][1]
           count = ex_id_status_count[1]
           [status, count]
-        end.to_h
+        end
       end
       value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -428,16 +426,19 @@ class Submission < ApplicationRecord
   def self.timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline]) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.from_students(options[:series].course)
+
+    first_sub = submissions.least_recent.first.created_at
+    last_sub = submissions.most_recent.first.created_at
+
+    submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 
     value = {}
 
     submissions.find_in_batches do |subs|
       value = value.merge(
         subs.map { |s| [s.exercise_id, s.created_at, s.status] }
-          .map { |d| [d[0], d[1].strftime('%Y-%m-%d'), d[2]] } # exId, created_at (string), status
           .group_by(&:itself) # group duplicates
           .transform_values(&:count) # count amount of duplicates
       ) { |_k, v1, v2| v1 + v2 }
@@ -453,19 +454,20 @@ class Submission < ApplicationRecord
     end
 
     {
-      until: submissions.first&.id || 0,
-      value: value
+      value: value,
+      first_sub: first_sub,
+      last_sub: last_sub
     }
   end
 
   def self.cumulative_timeseries_matrix(options = {})
     submissions = submissions_since(0, options)
     submissions = submissions.in_series(options[:series]) if options[:series].present?
-    submissions = submissions.in_time_range(options[:deadline] - 2.weeks, options[:deadline] + 1.day) if options[:deadline].present?
     submissions = submissions.judged
     submissions = submissions.first_correct_per_ex_per_user
     submissions = submissions.from_students(options[:series].course)
 
+    # fetching regular data to be shown on the graph
     value = {}
     submissions.find_in_batches do |subs|
       value = value.merge(
@@ -476,7 +478,6 @@ class Submission < ApplicationRecord
       ) { |_k, v1, v2| v1 + v2 }
     end
     {
-      until: submissions.first&.id || 0,
       value: value
     }
   end
@@ -496,8 +497,11 @@ class Submission < ApplicationRecord
     new_path = fs_path
     return if old_path == new_path
 
-    FileUtils.mkdir_p File.dirname new_path
-    FileUtils.move old_path, new_path
+    # Only apply the changes on the filesystem, after the complete transaction has executed successfully
+    AfterCommitEverywhere.after_commit do
+      FileUtils.mkdir_p File.dirname new_path
+      FileUtils.move old_path, new_path
+    end
   end
 
   def report_if_internal_error

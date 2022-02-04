@@ -9,6 +9,13 @@
 %>
 <div class="row">
   <div class="col-lg-10 offset-lg-1 col-12">
+    <div class="alert alert-info">
+      <% if @activity.exercise? && @activity.solutions.any? %>
+        <%= t '.visibility_solution_warning' %>
+      <% else %>
+        <%= t '.visibility_warning' %>
+      <% end %>
+    </div>
     <div class="card activity-info">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">

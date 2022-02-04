@@ -28,15 +28,15 @@ module ExportHelper
         @users_labels = @item.course
                              .course_memberships
                              .includes(:course_labels, :user)
-                             .map { |m| [m.user, m.course_labels] }
-                             .to_h
+                             .to_h { |m| [m.user, m.course_labels] }
+
         @users = @users_labels.keys if users.nil?
       when Course
         @list = @item.series if all?
         @users_labels = @item.course_memberships
                              .includes(:course_labels, :user)
-                             .map { |m| [m.user, m.course_labels] }
-                             .to_h
+                             .to_h { |m| [m.user, m.course_labels] }
+
         @users = @users_labels.keys if users.nil?
         initialize_series_per_exercise # depends on @list
       when User

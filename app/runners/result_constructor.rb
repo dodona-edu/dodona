@@ -119,7 +119,8 @@ class ResultConstructor
       row: values[:row] || 0,
       rows: values[:rows] || 1,
       column: values[:column] || 0,
-      columns: values[:columns] || 1
+      columns: values[:columns] || 1,
+      externalUrl: values[:externalUrl] || nil
     }
   end
 

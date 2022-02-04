@@ -1,0 +1,44 @@
+<%= render 'activities/navbar_links' if @activity %>
+<%= render 'courses/navbar_links' if @course && !@activity %>
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text float-start">
+          <span>
+            <% if @course %>
+              <%= "#{@course.name} - " %>
+            <% end %>
+            <%= t ".title" %>
+            <% if @activity %>
+              <%= t ".for" %> <%= @activity.name %>
+            <% end %>
+            <% if @user %>
+              <%= t ".from" %>
+              <% if @course_membership.present? && policy(@course_membership).show? %>
+                <%= link_to @user.full_name, course_member_path(@course, @user) %>
+              <% elsif policy(@user).show? %>
+                <%= link_to @user.full_name, user_path(@user) %>
+              <% else %>
+                <%= @user.full_name %>
+              <% end %>
+            <% end %>
+          </span>
+        </h2>
+        <% if !@activity && @submissions_path %>
+          <div class="float-end hidden-print">
+            <%= link_to @submissions_path, class: 'btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+              <%= custom_icon 'submissions' %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text" id="refresh_element">
+        <%= render partial: 'layouts/searchbar', locals: {actions: [], course_labels: @course_labels,  refresh_element: "#refresh_element"} %>
+        <div id="read-states-table-wrapper">
+          <%= render partial: 'read_states_table', locals: { read_states: @read_states, activity: @activity, course: @course, user: @user} %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

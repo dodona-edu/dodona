@@ -194,8 +194,8 @@ class SeriesController < ApplicationController
       format.csv do
         users_labels = @course.course_memberships
                               .includes(:course_labels, :user)
-                              .map { |m| [m.user, m.course_labels] }
-                              .to_h
+                              .to_h { |m| [m.user, m.course_labels] }
+
         sheet = CSV.generate(force_quotes: true) do |csv|
           columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels', @series.name]
           columns.concat(@activities.map(&:name))

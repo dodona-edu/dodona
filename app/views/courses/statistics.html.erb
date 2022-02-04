@@ -23,7 +23,7 @@
           <% end %>
         </div>
         <div class="col-12 col-sm-3 admin-card-stat">
-          <%= link_to course_path(@course), class: 'card-title-link' do %>
+          <%= link_to course_activity_read_states_path(@course), class: 'card-title-link' do %>
             <h1><%= number_with_delimiter @course.content_pages_count, delimiter: " " %></h1>
             <%= t "courses.user_stats.content_count" %>
           <% end %>

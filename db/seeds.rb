@@ -68,6 +68,44 @@ if Rails.env.development?
                 institution: ugent
   end
 
+  overlapping_students_ugent = Array.new(3) do |i|
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = "test" + i.to_s
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
+                permission: :student,
+                institution: ugent
+  end
+
+  overlapping_students_artevelde = Array.new(3) do |i|
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = "test" + i.to_s
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@Artevelde.BE".downcase,
+                permission: :student,
+                institution: artevelde
+  end
+
+  unique_students_artevelde = Array.new(50) do
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = Faker::Internet.unique.user_name()
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@Artevelde.BE".downcase,
+                permission: :student,
+                institution: artevelde
+  end
+
+  students = students + overlapping_students_ugent + overlapping_students_artevelde + unique_students_artevelde
+
   puts "Creating identities (#{Time.now - start})"
 
   User.find_each do |user|
@@ -168,12 +206,12 @@ if Rails.env.development?
   Judge.create name: 'javascript', image: 'dodona/dodona-nodejs', remote: 'git@github.com:dodona-edu/judge-javascript.git', renderer: FeedbackTableRenderer
 
   puts "Create & clone activity repository (#{Time.now - start})"
-
-  activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
+  Delayed::Worker.delay_jobs = ->(job) { 'git' != job.queue }
+  activity_repo = Repository.create name: 'Example Python Activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
   activity_repo.process_activities
 
-  big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge
-
+  big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
+  Delayed::Worker.delay_jobs = true
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }
       .each do |dir|

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // eslint-disable-next-line
 // @ts-nocheck
 
@@ -53,7 +54,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .range([5, this.innerWidth]);
         this.graph.append("g")
             .attr("transform", `translate(0, ${this.innerHeight})`)
-            .call(d3.axisBottom(this.x))
+            .call(d3.axisBottom(this.x).tickFormat(t => t === this.maxSubmissions ? `${t}+` : t))
             .select(".domain").remove();
         this.graph.append("text")
             .attr("text-anchor", "middle")
@@ -95,11 +96,14 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .selectAll("avgDot")
             .data(this.data)
             .join("circle")
+            .attr("class", "avgIcon")
             .style("opacity", 0)
             .attr("cy", d => this.y(d.ex_id) + this.y.bandwidth() / 2)
-            .attr("cx", d => this.x(d.average))
+            .attr("cx", d => this.x(Math.min(20, d.average)))
             .attr("r", 4)
-            .attr("fill", "currentColor");
+            .attr("fill", d => d.average <= 20 ? "currentColor" : "transparent")
+            .attr("stroke", "currentColor")
+            .attr("stroke-width", 2);
         dots.transition()
             .duration(animation ? 500 : 0)
             .style("opacity", 1);
@@ -164,6 +168,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     protected override processData({ data, exercises }: RawData): void {
+        this.data = [];
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
         // transform data into array of records for easier binning
         // eslint-disable-next-line camelcase

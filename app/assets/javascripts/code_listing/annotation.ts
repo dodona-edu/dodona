@@ -65,12 +65,16 @@ export abstract class Annotation {
             const url = document.createElement("a");
             url.href = this.noticeUrl;
             url.setAttribute("target", "_blank");
-            const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-information", "mdi-18", "colored-info", "annotation-warning");
-            icon.dataset.bsToggle = "tooltip";
-            icon.dataset.bsPlacement = "top";
-            icon.title = this.noticeInfo;
-            url.appendChild(icon);
+            if (this.useNoticeIcon) {
+                const icon = document.createElement("i");
+                icon.classList.add("mdi", "mdi-information", "mdi-18", "colored-info", "annotation-warning");
+                icon.dataset.bsToggle = "tooltip";
+                icon.dataset.bsPlacement = "top";
+                icon.title = this.noticeInfo;
+                url.appendChild(icon);
+            } else {
+                url.textContent = " " + this.noticeInfo;
+            }
             span.appendChild(url);
             meta.appendChild(span);
         }
@@ -202,6 +206,10 @@ export abstract class Annotation {
 
     protected get noticeInfo(): string | null {
         return null;
+    }
+
+    protected get useNoticeIcon(): boolean {
+        return true;
     }
 
     public async update(data): Promise<Annotation> {

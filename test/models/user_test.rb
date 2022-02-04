@@ -15,6 +15,8 @@
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :bigint
 #  search         :string(4096)
+#  seen_at        :datetime
+#  sign_in_at     :datetime
 #
 
 require 'test_helper'
@@ -282,8 +284,8 @@ class UserTest < ActiveSupport::TestCase
   test 'pending_series should return all series of the users courses that have a deadline' do
     user = users(:student)
     course = create :course, users: [user]
-    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    pending_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
+    create :series, course: course, activity_count: 2, deadline: 2.minutes.ago # Not pending series
+    pending_series = create :series, course: course, activity_count: 2, deadline: 2.minutes.from_now
     assert_equal [pending_series], user.pending_series
   end
 
@@ -364,5 +366,236 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     @user.subscribed_courses.first.update(year: '2')
     assert_equal [@user.subscribed_courses.first], @user.drawer_courses
+  end
+
+  test 'user should be removed after merge' do
+    u1 = create :user
+    u2 = create :user
+    u1.merge_into(u2)
+
+    assert_not u1.persisted?
+  end
+
+  test 'merge should fail if institutions are different' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user, institution: i2
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should succeed if only one institution is set' do
+    i1 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal i1, u2.institution
+  end
+
+  test 'merge should fail if permissions are different' do
+    u1 = create :user, permission: 'student'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should take highest permission if force is used' do
+    u1 = create :user, permission: 'zeus'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2, force: true)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 'zeus', u2.permission
+  end
+
+  test 'merge should transfer all associated objects to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    [u1, u2].each do |u|
+      c = create :course
+      s = create :submission, user: u, course: c
+      create :api_token, user: u
+      create :event, user: u
+      create :export, user: u
+      create :notification, user: u
+      create :annotation, user: u, submission: s
+      create :question, submission: s
+    end
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.submissions.count
+    assert_equal 2, u2.api_tokens.count
+    assert_equal 2, u2.events.count
+    assert_equal 2, u2.exports.count
+    assert_equal 4, u2.notifications.count
+    assert_equal 4, u2.annotations.count
+    assert_equal 2, u2.questions.count
+  end
+
+  test 'merge should only transfer unique read states to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    a1 = create :content_page
+    a2 = create :content_page
+    create :activity_read_state, user: u1, activity: a1
+    create :activity_read_state, user: u2, activity: a1
+    create :activity_read_state, user: u1, activity: a2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.activity_read_states.count
+  end
+
+  test 'merge should only transfer unique identities to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    p1 = create :provider
+    p2 = create :provider
+    Identity.create user: u1, provider: p1, identifier: 'a'
+    Identity.create user: u2, provider: p1, identifier: 'b'
+    Identity.create user: u1, provider: p2, identifier: 'c'
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.identities.count
+  end
+
+  test 'merge should only transfer unique repositories to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    r1 = create :repository, :git_stubbed
+    r2 = create :repository, :git_stubbed
+    RepositoryAdmin.create user: u1, repository: r1
+    RepositoryAdmin.create user: u2, repository: r1
+    RepositoryAdmin.create user: u1, repository: r2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.repository_admins.count
+  end
+
+  test 'merge should only transfer unique evaluations to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    e1 = create :evaluation
+    e2 = create :evaluation
+    EvaluationUser.create user: u1, evaluation: e1
+    EvaluationUser.create user: u2, evaluation: e1
+    EvaluationUser.create user: u1, evaluation: e2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.evaluation_users.count
+  end
+
+  test 'merge should transfer course membership with most rights to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    c1 = create :course
+    c2 = create :course
+    c3 = create :course
+    c4 = create :course
+    c5 = create :course
+    CourseMembership.create user: u1, course: c1, status: 'student', favorite: true
+    CourseMembership.create user: u1, course: c2, status: 'pending'
+    CourseMembership.create user: u1, course: c3, status: 'unsubscribed'
+    CourseMembership.create user: u1, course: c4, status: 'student'
+    CourseMembership.create user: u1, course: c5, status: 'course_admin'
+
+    CourseMembership.create user: u2, course: c2, status: 'pending'
+    CourseMembership.create user: u2, course: c3, status: 'course_admin', favorite: true
+    CourseMembership.create user: u2, course: c4, status: 'unsubscribed'
+    CourseMembership.create user: u2, course: c5, status: 'student'
+
+    result = u1.merge_into(u2)
+
+    assert_equal 0, u1.course_memberships.count
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 5, u2.course_memberships.count
+    assert_equal 4, u2.subscribed_courses.count
+    assert_equal 2, u2.favorite_courses.count
+    assert_equal 2, u2.administrating_courses.count
+    assert_equal 2, u2.enrolled_courses.count
+    assert_equal 1, u2.pending_courses.count
+    assert_equal 0, u2.unsubscribed_courses.count
+  end
+
+  test 'merge should transfer update cached values' do
+    u1 = create :user
+    u2 = create :user
+
+    c = create :course
+    c2 = create :course
+    CourseMembership.create user: u1, course: c, status: 'student'
+    CourseMembership.create user: u2, course: c, status: 'student'
+    s1 = create :series, course: c, exercise_count: 0
+    s2 = create :series, course: c2,  exercise_count: 0
+    e1 = create :exercise
+    e2 = create :exercise
+    e3 = create :exercise
+    SeriesMembership.create series: s1, activity: e1
+    SeriesMembership.create series: s1, activity: e2
+    SeriesMembership.create series: s2, activity: e3
+    create :correct_submission, user: u2, course: c, exercise: e1
+    create :wrong_submission, user: u2, course: c, exercise: e2
+    create :correct_submission, user: u1, course: c, exercise: e1
+    create :correct_submission, user: u1, course: c, exercise: e2
+    create :wrong_submission, user: u1, course: c2, exercise: e3
+
+    assert_equal 3, c.correct_solutions
+    assert_equal 2, c.subscribed_members_count
+    assert_equal 1, u2.correct_exercises
+    assert_equal 2, u2.attempted_exercises
+    assert_equal 2, e1.users_correct
+    assert_equal 2, e1.users_tried
+    assert_equal false, s1.completed?(user: u2)
+    assert_equal false, s2.started?(user: u2)
+    assert_equal false, s2.wrong?(user: u2)
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 1, c.subscribed_members_count
+    assert_equal 2, c.correct_solutions
+    assert_equal 2, u2.correct_exercises
+    assert_equal 3, u2.attempted_exercises
+    assert_equal 1, e1.users_correct
+    assert_equal 1, e1.users_tried
+    assert_equal true, s1.completed?(user: u2)
+    assert_equal true, s2.started?(user: u2)
+    assert_equal true, s2.wrong?(user: u2)
   end
 end

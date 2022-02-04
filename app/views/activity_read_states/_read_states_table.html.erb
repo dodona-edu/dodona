@@ -1,0 +1,67 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-resource">
+    <thead>
+    <tr>
+      <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
+        <th><%= t ".user" %></th>
+      <% end %>
+      <% unless @activity.present? %>
+        <th><%= t ".exercise" %></th>
+      <% end %>
+      <th><%= t ".time" %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% @read_states.each do |read_state| %>
+      <tr id="read_state_<%= read_state.id %>">
+        <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
+          <td>
+            <% unless @activity.present? %>
+              <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+                 title="<%= t('.filter-by-user') %>"
+                 data-filter="<%= read_state.user.full_name %>"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
+              >
+              </i>
+            <% end %>
+            <% if read_state.course.nil? %>
+              <%= read_state.user.full_name %>
+            <% else %>
+              <%= link_to read_state.user.full_name, course_member_path(read_state.course, read_state.user), title: read_state.user.full_name, class: "ellipsis-overflow" %>
+            <% end %>
+          </td>
+        <% end %>
+        <% unless @activity.present? %>
+          <td>
+            <i class="mdi mdi-filter-outline mdi-18 filter-icon"
+               title="<%= t('.filter-by-exercise') %>"
+               data-filter="<%= read_state.activity.name %>"
+               data-bs-toggle="tooltip"
+               data-bs-placement="top"
+            >
+            </i>
+            <% if read_state.course.nil? %>
+              <%= link_to read_state.activity.name, activity_path(read_state.activity) %>
+            <% else %>
+              <%= link_to read_state.activity.name, course_activity_path(read_state.course, read_state.activity) %>
+            <% end %>
+          </td>
+        <% end %>
+        <td>
+          <span title="<%= l read_state.created_at, format: :read_state %>"><%= time_ago_in_words read_state.created_at %> <%= t ".ago" %></span>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  $(function () {
+    if (dodona.initFilterButtons){
+      dodona.initFilterButtons();
+    }
+  });
+</script>

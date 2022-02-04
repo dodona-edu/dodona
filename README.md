@@ -14,7 +14,7 @@ The documentation for end users can be found at [https://docs.dodona.be](https:/
 
 ## Supporting Dodona
 
-Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundeds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
+Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundreds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
 
 ## Contacting us
 
@@ -37,16 +37,19 @@ If you want to help with development, issues tagged with the [student label](htt
 3. Create a `dodona` user with access to the `dodona` and `dodona_test-N` databases. You will need as much test databases as hou have CPU threads.
     ```sql
     CREATE USER 'dodona'@'localhost' IDENTIFIED BY 'dodona';
-    GRANT ALL ON dodona.* TO 'dodona';
-    GRANT ALL ON dodona_test.* TO 'dodona';
-    GRANT ALL ON dodona_test-0.* TO 'dodona';
+    GRANT ALL ON dodona.* TO 'dodona'@'localhost';
+    GRANT ALL ON dodona_test.* TO 'dodona'@'localhost';
+    GRANT ALL ON `dodona_test-0`.* TO 'dodona'@'localhost';
     ...
-    GRANT ALL ON dodona_test-3.* TO 'dodona';
+    GRANT ALL ON `dodona_test-N`.* TO 'dodona'@'localhost';
     ```
-4. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
+4. Install the correct `ruby` version using [RVM](https://rvm.io/)
+5. Install the correct `node` version using `nvm` and [yarn](https://yarnpkg.com/)
+6. Run `bundle install` and `yarn install`
+7. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=true rails db:setup`
-5. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
-6. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database form step 4)
+8. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
+9. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database from step 4)
    - `http://dodona.localhost:3000/nl/users/1/token/zeus`
    - `http://dodona.localhost:3000/nl/users/2/token/staff`
    - `http://dodona.localhost:3000/nl/users/3/token/student`
@@ -55,8 +58,11 @@ If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
 
 1. Install and start `docker`.
-2. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
-3. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-python` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-python" -f "dodona-python.dockerfile" .`.
+2. Run `docker pull dodona/dodona-python`
+
+If you want to build the docker images yourself:
+1. Clone the [docker-images repository](https://github.com/dodona-edu/docker-images).
+2. Build a docker image. The `build.sh` scripts builds all images. But with the initial data, only `dodona-python` is needed. You can build this image with `docker build --pull --force-rm -t "dodona-python" -f "dodona-python.dockerfile" .`.
 
 #### Loading visualisations locally
 These steps are not required to run the server, but are needed to let the visualisations load.
@@ -82,7 +88,7 @@ This has one letdown: debugging with `byebug` is broken.
 
 #### Localhost subdomain
 
-Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed. We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
+Dodona uses subdomains in order to sandbox exercise descriptions (which are arbitrary HTML pages and could be used for malicious purposes if not properly sandboxed). We serve the main application in development from http://dodona.localhost:3000 and exercise descriptions from http://sandbox.localhost:3000.
 
 If this does not work out of the box you can add the following lines to your `/etc/hosts` file:
 ```

@@ -156,7 +156,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'missed deadlines should have correct class' do
-    series = create :series, deadline: Time.zone.now - 1.day
+    series = create :series, deadline: 1.day.ago
     create :exercise, series: [series]
 
     get series_url(series)
@@ -166,7 +166,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'upcoming deadlines should have correct class' do
-    series = create :series, deadline: Time.zone.now + 1.day
+    series = create :series, deadline: 1.day.from_now
     create :exercise, series: [series]
 
     get series_url(series)

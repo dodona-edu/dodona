@@ -34,7 +34,7 @@
       height: auto;
       top: auto;
     }
-    .user-name:not(.sticky-column) {
+    td:not(.sticky-column) {
       height: 42px;
     }
     thead .user-name {
@@ -112,6 +112,6 @@ tr.gu-mirror {
   }
 }
 
-#scoresheet-table-wrapper .user-name {
-  height: 35px;
+#scoresheet-table-wrapper td {
+  height: 37px;
 }

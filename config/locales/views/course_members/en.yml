@@ -7,6 +7,7 @@ en:
       close: "Close"
       save: "Save"
       course_overview: "Course overview for "
+      send_mail: "Send an email to this user."
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"
@@ -19,6 +20,7 @@ en:
       member_progress_chart_info_correct:
         one: "Solved one exercise."
         other: "Solved %{count} exercises."
+      send_mail: "Send an email to this user."
     index:
       close: "Close"
       upload: "Upload changes"

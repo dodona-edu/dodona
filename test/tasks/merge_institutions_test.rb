@@ -239,4 +239,20 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert Institution.exists?(i2.id)
     assert s.on_filesystem?
   end
+
+  test 'The script should also merge case insensitive equal usernames' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, username: 'test', institution: i1
+    u2 = create :user, username: 'Test', institution: i2
+
+    merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y'
+
+    assert_not Institution.exists?(i1.id)
+    assert Institution.exists?(i2.id)
+    assert_not User.exists?(u1.id)
+    assert User.exists?(u2.id)
+    u2.reload
+    assert_equal i2, u2.institution
+  end
 end

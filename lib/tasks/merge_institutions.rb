@@ -51,7 +51,7 @@ class MergeInstitutions
         return unless c == 'y'
 
         i1.users.where(username: i2.users.pluck(:username)).each do |u1|
-          u2 = i2.users.find { |u| u.username == u1.username }
+          u2 = i2.users.find { |u| u.username.downcase == u1.username.downcase }
           next if u2.nil?
 
           @output.puts ''

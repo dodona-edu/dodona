@@ -12,13 +12,10 @@ Rails.application.config.content_security_policy do |policy|
   if Rails.env.development?
     # Allow webpack-dev-server
     policy.connect_src :self, Rails.configuration.tutor_url.to_s,
-                       'https://www.google-analytics.com',
                        'https://*.googleapis.com',
                        'http://localhost:3035', 'ws://localhost:3035'
   else
-    policy.connect_src :self, Rails.configuration.tutor_url.to_s,
-                       'https://www.google-analytics.com',
-                       'https://*.googleapis.com'
+    policy.connect_src :self, Rails.configuration.tutor_url.to_s
   end
 
   policy.font_src    :self, 'https://fonts.gstatic.com',
@@ -30,7 +27,6 @@ Rails.application.config.content_security_policy do |policy|
   policy.object_src  :none
 
   policy.script_src  :self, :unsafe_inline, :unsafe_eval,
-                     'https://www.google-analytics.com',
                      'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
   policy.style_src   :self, :unsafe_inline,

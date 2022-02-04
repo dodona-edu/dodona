@@ -1,5 +1,3 @@
-import { logToGoogle } from "util.js";
-
 function initSubmissionShow(parentClass, mediaPath, token) {
     function init() {
         initDiffSwitchButtons();
@@ -20,7 +18,6 @@ function initSubmissionShow(parentClass, mediaPath, token) {
             diffs.removeClass("show-split");
             diffs.removeClass("show-unified");
             diffs.addClass(button.data("show_class"));
-            logToGoogle("feedback", "diff", button.data("show_class"));
         });
     }
 
@@ -37,7 +34,6 @@ function initSubmissionShow(parentClass, mediaPath, token) {
             } else {
                 tab.find(".group.correct").hide();
             }
-            logToGoogle("feedback", "correct", `${button.data("show")}`);
         });
     }
 

@@ -1,5 +1,3 @@
-require 'will_paginate/array'
-
 class CoursesController < ApplicationController
   include SetLtiMessage
 
@@ -31,10 +29,7 @@ class CoursesController < ApplicationController
     elsif params[:tab] == 'featured'
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
-      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
-      @own_courses = @courses.select { |course| current_user.course_admin?(course) }
-      @other_courses = @courses.reject { |course| current_user.course_admin?(course) }
-      @courses = @own_courses.concat(@other_courses)
+      @courses = @courses.reorder(Arel.sql("id in (#{current_user.administrating_courses.pluck(:id).join(', ')}) DESC"), featured: :desc, year: :desc, name: :asc)
     end
 
     @courses = apply_scopes(@courses)

@@ -17,7 +17,7 @@ class CourseMembersController < ApplicationController
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
                           .order(status: :asc)
-                          .order(Arel.sql('users.permission ASC'))
+                          .order(Arel.sql('users.permission DESC'))
                           .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: statuses)
                           .paginate(page: parse_pagination_param(params[:page]))

@@ -1,5 +1,3 @@
-/* globals ga */
-
 import { isInIframe } from "iframe";
 
 /**
@@ -71,15 +69,6 @@ function getURLParameter(name, _url) {
 function getArrayURLParameter(name, _url) {
     const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.getAll(`${name}[]`);
-}
-
-/*
- * Logs data to Google Analytics. Category and action are mandatory.
- */
-function logToGoogle(category, action, label, value) {
-    if (typeof (ga) !== "undefined") {
-        ga("send", "event", category, action, label, value);
-    }
 }
 
 function checkTimeZone(offset) {
@@ -178,7 +167,6 @@ export {
     updateArrayURLParameter,
     getURLParameter,
     getArrayURLParameter,
-    logToGoogle,
     checkTimeZone,
     checkIframe,
     initCSRF,

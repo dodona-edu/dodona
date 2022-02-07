@@ -68,6 +68,44 @@ if Rails.env.development?
                 institution: ugent
   end
 
+  overlapping_students_ugent = Array.new(3) do |i|
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = "test" + i.to_s
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@UGent.BE".downcase,
+                permission: :student,
+                institution: ugent
+  end
+
+  overlapping_students_artevelde = Array.new(3) do |i|
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = "test" + i.to_s
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@Artevelde.BE".downcase,
+                permission: :student,
+                institution: artevelde
+  end
+
+  unique_students_artevelde = Array.new(50) do
+    first_name = Faker::Name.first_name
+    last_name = Faker::Name.last_name
+    username = Faker::Internet.unique.user_name()
+    User.create first_name: first_name,
+                last_name: last_name,
+                username: username,
+                email: "#{first_name}.#{last_name}.#{username}@Artevelde.BE".downcase,
+                permission: :student,
+                institution: artevelde
+  end
+
+  students = students + overlapping_students_ugent + overlapping_students_artevelde + unique_students_artevelde
+
   puts "Creating identities (#{Time.now - start})"
 
   User.find_each do |user|

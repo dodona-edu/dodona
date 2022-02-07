@@ -139,6 +139,9 @@ gem 'stackprof', '~> 0.2.17'
 # Datadog
 gem 'ddtrace', '~> 0.54.2'
 
+# Make sure filesystem changes only happen at the end of a transaction
+gem 'after_commit_everywhere', '~> 1.1.0'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.13.0'

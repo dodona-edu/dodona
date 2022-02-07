@@ -1,5 +1,5 @@
-/* globals Bloodhound,ace,ga */
-import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
+/* globals Bloodhound,ace */
+import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 
@@ -159,7 +159,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {
             if (!loggedIn) return;
-            logToGoogle("submission", "submitted");
             // test submitted source code
             const source = editor.getValue();
             disableSubmitButton();
@@ -225,7 +224,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function submitSolution(code) {
-        ga("send", "pageview");
         return $.post("/submissions.json", {
             submission: {
                 code: code,
@@ -236,7 +234,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function feedbackLoaded(submissionId) {
-        ga("send", "pageview");
         $("#feedback").removeClass("hidden");
         const $exerciseFeedbackLink = $("#activity-feedback-link");
         $exerciseFeedbackLink.removeClass("hidden");
@@ -283,7 +280,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 setTimeout(function () {
                     lastTimeout = (lastTimeout || 0) + 1000;
                     lastTimeout = lastTimeout >= 5000 ? 4000 : lastTimeout;
-                    ga("send", "pageview");
                     let url = `/submissions.js?user_id=${userId}&activity_id=${exerciseId}`;
                     if (courseId !== undefined) {
                         url += `&course_id=${courseId}`;
@@ -348,7 +344,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
         new Toast(I18n.t("js.submission-saved"));
-        ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
@@ -389,17 +384,17 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (!_deadline) {
             return;
         }
-        const $deadlineWarning = $("#deadline-warning");
-        const $deadlineInfo = $("#deadline-info");
+        const deadlineWarningElement = document.getElementById("deadline-warning");
+        const deadlineInfoElement = document.getElementById("deadline-info");
         const deadline = new Date(_deadline);
         const infoDeadline = new Date(deadline - (5 * 60 * 1000));
 
         function showDeadlineAlerts() {
             if (deadline < new Date()) {
-                $deadlineInfo.hide();
-                $deadlineWarning.show();
+                deadlineInfoElement.hidden = true;
+                deadlineWarningElement.hidden = false;
             } else if (infoDeadline < new Date()) {
-                $deadlineInfo.show();
+                deadlineInfoElement.hidden = false;
                 setTimeout(showDeadlineAlerts, Math.min(
                     Math.max(10, (deadline - new Date()) / 10),
                     10 * 60 * 1000));

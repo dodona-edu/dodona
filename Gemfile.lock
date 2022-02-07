@@ -87,6 +87,9 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     aes_key_wrap (1.1.0)
+    after_commit_everywhere (1.1.0)
+      activerecord (>= 4.2)
+      activesupport
     airbrussh (1.4.0)
       sshkit (>= 1.6.1, != 1.7.0)
     ast (2.4.2)
@@ -523,6 +526,7 @@ PLATFORMS
 
 DEPENDENCIES
   ace-rails-ap (~> 4.4)
+  after_commit_everywhere (~> 1.1.0)
   annotate!
   autoprefixer-rails (~> 10.4.2)
   bcrypt_pbkdf

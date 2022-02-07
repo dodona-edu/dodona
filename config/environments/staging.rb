@@ -6,7 +6,7 @@ Rails.application.configure do
 
   # The main webapp
   config.default_host = 'naos.ugent.be'
-  
+
   # alternative host name
   config.alt_host = 'naos.dodona.be'
 
@@ -69,7 +69,6 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   config.assets.js_compressor = Uglifier.new(harmony: true) if defined? Uglifier
-  config.assets.css_compressor = :sass
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.

@@ -1,3 +1,4 @@
+@use "sass:math";
 $navbar-height: 50px;
 
 .dodona-navbar {
@@ -59,16 +60,16 @@ $navbar-height: 50px;
       max-width: calc(100vw - 240px);
     }
     @include media-breakpoint-up(md) {
-      max-width: map-get($container-max-widths, "md") / 12 * 10;
+      max-width: math.div(map-get($container-max-widths, "md"), 12) * 10;
     }
     @include media-breakpoint-up(lg) {
-      max-width: map-get($container-max-widths, "lg") / 12 * 10;
+      max-width: math.div(map-get($container-max-widths, "lg"), 12) * 10;
     }
     @include media-breakpoint-up(xl) {
-      max-width: map-get($container-max-widths, "xl") / 12 * 10;
+      max-width: math.div(map-get($container-max-widths, "xl"), 12) * 10;
     }
     @include media-breakpoint-up(xxl) {
-      max-width: map-get($container-max-widths, "xxl") / 12 * 10;
+      max-width: math.div(map-get($container-max-widths, "xxl"), 12) * 10;
     }
   }
 

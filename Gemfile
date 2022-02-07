@@ -9,8 +9,10 @@ gem 'rails', '~> 6.1.4'
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.1'
-# Use sass for stylesheets
-gem 'sassc-rails', '~> 2.1.2'
+
+# Use dart-sass for stylesheets
+gem 'cssbundling-rails', '~> 1.0.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 

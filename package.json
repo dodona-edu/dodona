@@ -7,7 +7,7 @@
     "build:css": "./bin/build-css"
   },
   "dependencies": {
-    "@babel/core": "^7.16.12",
+    "@babel/core": "^7.17.0",
     "@babel/preset-typescript": "^7.16.7",
     "@popperjs/core": "^2.11.2",
     "@rails/activestorage": "^6.1.4",

@@ -29,10 +29,7 @@ class CoursesController < ApplicationController
     elsif params[:tab] == 'featured'
       @courses = @courses.where(featured: true)
     elsif params[:copy_courses]
-      @own_courses = @courses.joins(:administrating_members).where(users: current_user)
-      @other_courses = @courses.joins(:administrating_members).where.not(users: current_user)
-      @courses = @own_courses.or(@other_courses)
-      @courses = @courses.reorder('users.id': :asc, featured: :desc, year: :desc, name: :asc)
+      @courses = @courses.reorder(Arel.sql("id in (#{current_user.administrating_courses.pluck(:id).join(', ')}) DESC"), featured: :desc, year: :desc, name: :asc)
     end
 
     @courses = apply_scopes(@courses)

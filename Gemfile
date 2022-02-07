@@ -14,7 +14,7 @@ gem 'puma', '~> 5.6.1'
 gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
 
 # Load sprockets ourselves for now => planned fo remove this soon
-gem "sprockets-rails"
+gem 'sprockets-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'

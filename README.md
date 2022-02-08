@@ -80,10 +80,10 @@ This means you use WSL for the database, memcached, git, Docker, etc.
 The simplest way to start the server is with the `rails s` command. But this will not process the submission queue, and javascript will be compiled by webpack in the background (without output when something goes wrong).
 
 - To process the submission queue, delayed job needs to be started with the `bin/delayed_job start` command.
-- With `bin/webpack-dev-server` your javascript is reloaded live and you can see development output.
 - With `yarn build:css --watch` your css is reloaded live
+- With `yarn build:js --watch` your javascript is reloaded live
 
-To start the rails server, delayed job, css bundling and the webpack dev server at the same time, simply run `bin/server`.
+To start the rails server, delayed job, css bundling and js bundling at the same time, simply run `bin/server`.
 
 This has one letdown: debugging with `byebug` is broken.
 

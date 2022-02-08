@@ -9,6 +9,7 @@
   "dependencies": {
     "@babel/core": "^7.17.5",
     "@babel/preset-typescript": "^7.16.7",
+    "@dodona/papyros": "^0.1.41",
     "@popperjs/core": "^2.11.2",
     "@rails/activestorage": "^7.0.2-2",
     "@rails/ujs": "^7.0.2-2",

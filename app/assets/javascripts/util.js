@@ -1,4 +1,5 @@
 import { isInIframe } from "iframe";
+console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.

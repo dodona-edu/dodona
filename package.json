@@ -5,7 +5,8 @@
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
     "test": "jest --coverage",
     "build:css": "./bin/build-css",
-    "build:js": "webpack --config ./config/webpack/webpack.config.js"
+    "build:js": "webpack --config ./config/webpack/webpack.config.js",
+    "build": "yarn build:js"
   },
   "babel": {
     "presets": [

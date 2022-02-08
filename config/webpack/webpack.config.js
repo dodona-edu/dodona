@@ -22,7 +22,7 @@ const config = {
         ],
     },
     optimization: {
-        moduleIds: "hashed",
+        moduleIds: "deterministic",
     },
     entry,
     output: {

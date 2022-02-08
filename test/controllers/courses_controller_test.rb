@@ -541,8 +541,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'users should be able to filter courses' do
     add_subscribed
-    c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
-    c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
+    c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1, name: 'The greatest course'
+    c2 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1, name: 'The worst course'
     user = @subscribed.first
     institution = create :institution
     user.institution = institution
@@ -566,6 +566,26 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     courses = JSON.parse response.body
     assert_equal 2, courses.length
+    # copy courses
+    get courses_url, params: { format: :json, copy_courses: true }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 3, courses.length
+    # copy courses filtered
+    get courses_url, params: { format: :json, copy_courses: true, filter: 'course' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 2, courses.length
+    # All courses filtered
+    get courses_url, params: { format: :json, filter: 'greatest' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 1, courses.length
+    # Institution courses filtered
+    get courses_url, params: { format: :json, filter: 'worst' }
+    assert_response :success
+    courses = JSON.parse response.body
+    assert_equal 1, courses.length
   end
 
   test 'featured courses should only show featured courses' do

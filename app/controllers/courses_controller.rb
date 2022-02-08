@@ -24,7 +24,14 @@ class CoursesController < ApplicationController
     @show_my_courses = current_user && current_user.subscribed_courses.count > 0
     @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
 
-    if params[:tab]
+    if params[:copy_courses]
+      @courses = apply_scopes(@courses)
+      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      @own_courses = @courses.select { |course| current_user.admin_of?(course) }
+      @other_courses = @courses.reject { |course| current_user.admin_of?(course) }
+      @courses = @own_courses.concat(@other_courses)
+    else
+      params[:tab]
       if current_user && params[:tab] == 'institution'
         @courses = @courses.where(institution: current_user.institution)
       elsif current_user && params[:tab] == 'my'
@@ -33,12 +40,6 @@ class CoursesController < ApplicationController
         @courses = @courses.where(featured: true)
       end
       @courses = apply_scopes(@courses)
-    elsif params[:copy_courses]
-      @courses = apply_scopes(@courses)
-      @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
-      @own_courses = @courses.select { |course| current_user.admin_of?(course) }
-      @other_courses = @courses.reject { |course| current_user.admin_of?(course) }
-      @courses = @own_courses.concat(@other_courses)
     end
 
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))

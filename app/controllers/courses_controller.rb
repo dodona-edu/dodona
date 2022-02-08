@@ -31,7 +31,6 @@ class CoursesController < ApplicationController
       @other_courses = @courses.reject { |course| current_user.admin_of?(course) }
       @courses = @own_courses.concat(@other_courses)
     else
-      params[:tab]
       if current_user && params[:tab] == 'institution'
         @courses = @courses.where(institution: current_user.institution)
       elsif current_user && params[:tab] == 'my'

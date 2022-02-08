@@ -57,5 +57,3 @@ dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
 window.dodona = dodona;
-
-console.log("=====================================================================================================================");

@@ -2,7 +2,14 @@ const path = require("path");
 const glob = require("glob");
 const webpack = require("webpack");
 
-let config = {
+const entry = glob.sync("./app/javascript/packs/**.js").reduce(function (obj, el) {
+    obj[path.parse(el).name] = el;
+    return obj;
+}, {});
+
+// entry.assets_application = "./app/assets/javascripts/assets_application.js";
+
+const config = {
     mode: "production",
     module: {
         rules: [
@@ -17,10 +24,7 @@ let config = {
         moduleIds: "hashed",
     },
     // https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
-    entry: glob.sync("./app/javascript/packs/**.js").reduce(function (obj, el) {
-        obj[path.parse(el).name] = el;
-        return obj;
-    }, {}),
+    entry,
     output: {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map",

@@ -13,13 +13,13 @@ gem 'puma', '~> 5.6.1'
 # Use dart-sass for stylesheets temporarily a few commits ahead of release to fix `assets:precompile` not defined bug
 gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
 
+gem 'jsbundling-rails', '~> 1.0.0'
+
 # Load sprockets ourselves for now => planned fo remove this soon
 gem 'sprockets-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
-
-gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'

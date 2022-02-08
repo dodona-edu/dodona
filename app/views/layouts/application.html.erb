@@ -72,11 +72,12 @@
     </script>
   <% end %>
 
-  <%= javascript_pack_tag 'application' %>
+  <%= javascript_include_tag 'application' %>
   <%= javascript_include_tag 'application' %>
   <%= yield :javascripts %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
 </head>
 <body tabindex="-1">
 <div id="page-wrapper">

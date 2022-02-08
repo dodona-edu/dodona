@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'activities' %>
+  <%= javascript_include_tag 'activities' %>
 <% end %>
 <% get_activity_path ||= method(:activity_path) %>
 <% if defined? user

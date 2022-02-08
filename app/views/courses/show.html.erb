@@ -1,6 +1,6 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
-  <%= javascript_pack_tag 'series' %>
+  <%= javascript_include_tag 'course' %>
+  <%= javascript_include_tag 'series' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">

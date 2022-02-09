@@ -32,7 +32,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.10.2', require: false
+gem 'bootsnap', '~> 1.10.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -50,7 +50,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.27.0'
+gem 'rouge', '3.28.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'

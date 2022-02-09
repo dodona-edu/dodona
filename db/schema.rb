@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "created_at", null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.text "metadata", size: :medium
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.datetime "created_at", precision: 6, null: false
+    t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -43,8 +43,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
   create_table "activities", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name_nl"
     t.string "name_en"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "path"
     t.string "description_format"
     t.integer "repository_id"
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.boolean "accepted_before_deadline", default: false, null: false
     t.boolean "solved", default: false, null: false
     t.boolean "started", default: false, null: false
-    t.datetime "solved_at", precision: 6
+    t.datetime "solved_at"
     t.integer "activity_id", null: false
     t.integer "series_id"
     t.integer "user_id", null: false
@@ -131,8 +131,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.bigint "user_id"
     t.string "token_digest"
     t.string "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["token_digest"], name: "index_api_tokens_on_token_digest"
     t.index ["user_id", "description"], name: "index_api_tokens_on_user_id_and_description", unique: true
     t.index ["user_id"], name: "index_api_tokens_on_user_id"
@@ -141,8 +141,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
   create_table "course_labels", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "course_id", null: false
     t.string "name", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["course_id", "name"], name: "index_course_labels_on_course_id_and_name", unique: true
   end
 
@@ -157,8 +157,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.integer "course_id", null: false
     t.integer "user_id", null: false
     t.integer "status", default: 2, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "favorite", default: false
     t.index ["course_id"], name: "index_course_memberships_on_course_id"
     t.index ["user_id", "course_id"], name: "index_course_memberships_on_user_id_and_course_id", unique: true
@@ -176,8 +176,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "name"
     t.string "year"
     t.string "secret"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.text "description", size: :medium
     t.integer "visibility"
     t.integer "registration"
@@ -196,13 +196,13 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.integer "attempts", default: 0, null: false
     t.text "handler", size: :medium, null: false
     t.text "last_error", size: :medium
-    t.datetime "run_at", precision: 6
-    t.datetime "locked_at", precision: 6
-    t.datetime "failed_at", precision: 6
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
     t.string "locked_by"
     t.string "queue"
-    t.datetime "created_at", precision: 6
-    t.datetime "updated_at", precision: 6
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
@@ -230,7 +230,7 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
   create_table "evaluations", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "series_id"
     t.boolean "released", default: false, null: false
-    t.datetime "deadline", precision: 6, null: false
+    t.datetime "deadline", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["series_id"], name: "index_evaluations_on_series_id"
@@ -240,8 +240,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.integer "event_type", null: false
     t.integer "user_id"
     t.string "message", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["event_type"], name: "index_events_on_event_type"
     t.index ["user_id"], name: "fk_rails_0cb5590091"
   end
@@ -283,8 +283,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "name"
     t.string "short_name"
     t.string "logo"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "generated_name", default: true, null: false
     t.integer "category", default: 0, null: false
   end
@@ -293,8 +293,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "name"
     t.string "image"
     t.string "path"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "renderer", null: false
     t.string "remote"
     t.integer "clone_status", default: 1, null: false
@@ -323,8 +323,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "name", null: false
     t.string "editor_name", null: false
     t.string "extension", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "icon"
     t.string "renderer_name", null: false
     t.index ["name"], name: "index_programming_languages_on_name", unique: true
@@ -354,8 +354,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "remote"
     t.string "path"
     t.integer "judge_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "clone_status", default: 1, null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
@@ -408,9 +408,9 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.text "description", size: :medium
     t.integer "visibility"
     t.integer "order", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.datetime "deadline", precision: 6
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "deadline"
     t.string "access_token"
     t.string "indianio_token"
     t.boolean "progress_enabled", default: true, null: false
@@ -428,8 +428,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.integer "series_id"
     t.integer "activity_id"
     t.integer "order", default: 999
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id"], name: "index_series_memberships_on_activity_id"
     t.index ["series_id", "activity_id"], name: "index_series_memberships_on_series_id_and_activity_id", unique: true
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
@@ -439,8 +439,8 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.integer "exercise_id"
     t.integer "user_id"
     t.string "summary"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "status"
     t.boolean "accepted", default: false
     t.integer "course_id"
@@ -461,15 +461,15 @@ ActiveRecord::Schema.define(version: 2022_02_03_123959) do
     t.string "last_name"
     t.string "email"
     t.integer "permission", default: 0
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "lang", default: "nl"
     t.string "token"
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
     t.string "search", limit: 4096
-    t.datetime "seen_at", precision: 6
-    t.datetime "sign_in_at", precision: 6
+    t.datetime "seen_at"
+    t.datetime "sign_in_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"

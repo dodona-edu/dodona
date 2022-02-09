@@ -1,3 +1,4 @@
+import { initTooltips } from "util.js";
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import {
@@ -151,6 +152,7 @@ export class CodeListing {
             (a, cb) => this.createUpdateAnnotationForm(a, cb))
             .then(annotations => {
                 annotations.forEach(annotation => this.addAnnotation(annotation));
+                initTooltips();
             });
     }
 
@@ -366,9 +368,14 @@ export class CodeListing {
 
         form.classList.add("annotation-submission");
         form.id = id;
+        // Min and max of the annotation text is defined in the annotation model.
+        const maxLength = 10_000;
         form.innerHTML = `
-          <textarea autofocus class="form-control annotation-submission-input" rows="3"></textarea>
-          <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
+          <textarea autofocus required class="form-control annotation-submission-input" rows="3" minlength="1" maxlength="${maxLength}"></textarea>
+          <div class="clearfix annotation-help-block">
+            <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
+            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.toNumber(maxLength, { precision: 0 })}</span>
+          </div>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
                   <button class="btn-text annotation-control-button annotation-delete-button" type="button">
@@ -393,6 +400,14 @@ export class CodeListing {
             inputField.rows = annotation.rawText.split("\n").length + 1;
             inputField.textContent = annotation.rawText;
         }
+
+        const usedCharacters = form.querySelector(".used-characters");
+        // Initial value.
+        usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+        // Update value while typing.
+        inputField.addEventListener("input", () => {
+            usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+        });
 
         // Cancellation handler.
         cancelButton.addEventListener("click", () => onCancel(form));
@@ -441,6 +456,11 @@ export class CodeListing {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
             inputField.classList.remove("validation-error");
 
+            // Run client side validations.
+            if (!inputField.reportValidity()) {
+                return; // Something is wrong, abort.
+            }
+
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
                 "line_nr": (line === null ? null : line - 1),
@@ -466,6 +486,11 @@ export class CodeListing {
         callback: CallableFunction): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+
+            // Run client side validations.
+            if (!inputField.reportValidity()) {
+                return; // Something is wrong, abort.
+            }
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,

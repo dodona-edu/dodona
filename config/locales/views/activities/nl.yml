@@ -5,6 +5,7 @@ nl:
       show: Activiteit bekijken
       edit: Activiteit bewerken
       submissions: Oplossingen voor deze oefening
+      read_states: Log voor deze leesactiviteit
     activity:
       count_tooltip: Aantal studenten die deze oefening correct hebben
       read_tooltip: Aantal studenten die dit gelezen hebben
@@ -117,3 +118,9 @@ nl:
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
       config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen.'
       doc_site: 'documentatiesite'
+      activity_invalid: Deze oefening heeft geen geldige configuratie.
+      visibility_solution_warning: Deze pagina is enkel toegankelijk voor lesgevers. Studenten hebben dus geen toegang tot de voorbeeldoplossingen.
+      visibility_warning: Deze pagina is enkel toegankelijk voor lesgevers en niet voor studenten.
+    series_activities_table:
+      course_has_no_rights_with_fix: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Klik hier om deze rechten te geven.
+      course_has_no_rights_with_contact: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Contacteer de auteur of verwijder deze oefening uit de cursus.

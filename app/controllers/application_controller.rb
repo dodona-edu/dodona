@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   MAX_STORED_URL_LENGTH = 1024
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
+  rescue_from ActionController::ParameterMissing, with: :bad_request
 
   protect_from_forgery with: :null_session
 
@@ -24,6 +26,8 @@ class ApplicationController < ActionController::Base
   before_action :look_for_token, unless: :current_user
 
   around_action :user_time_zone, if: :current_user
+
+  after_action :set_user_seen_at, if: -> { current_user && !js_request? }
 
   before_action :set_time_zone_offset
 
@@ -53,10 +57,11 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.uses_smartschool? && !user.institution&.uses_lti?
+    if user.email.blank? && !user.institution&.uses_lti? && !user.institution&.uses_oidc? && !user.institution&.uses_smartschool?
       raise "User with id #{user.id} should not have a blank email " \
-            'if the provider is not smartschool and not LTI'
+            'if the provider is not LTI, OIDC or Smartschool'
     end
+    user.touch(:sign_in_at)
   end
 
   Warden::Manager.after_set_user do |user, _auth, _opts|
@@ -75,6 +80,10 @@ class ApplicationController < ActionController::Base
 
   def remote_request?
     request.format.js? || request.format.json?
+  end
+
+  def js_request?
+    request.format.js?
   end
 
   def parse_pagination_param(page)
@@ -118,6 +127,12 @@ class ApplicationController < ActionController::Base
         redirect_to(root_path)
       end
     end
+  end
+
+  def bad_request
+    # rubocop:disable Rails/RenderInline
+    render status: :bad_request, inline: 'Bad request'
+    # rubocop:enable Rails/RenderInline
   end
 
   def set_locale
@@ -186,5 +201,9 @@ class ApplicationController < ActionController::Base
     # This variable counts for which services the dot in the favicon should be shown.
     # On most pages this will be empty or contain :notifications
     @dot_icon = @unread_notifications.any? ? %i[notifications] : []
+  end
+
+  def set_user_seen_at
+    current_user.touch(:seen_at)
   end
 end

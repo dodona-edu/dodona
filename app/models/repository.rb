@@ -2,13 +2,14 @@
 #
 # Table name: repositories
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  remote     :string(255)
-#  path       :string(255)
-#  judge_id   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  remote       :string(255)
+#  path         :string(255)
+#  judge_id     :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  clone_status :integer          default("queued"), not null
 #
 require 'open3'
 require 'pathname'
@@ -25,7 +26,8 @@ class Repository < ApplicationRecord
 
   validate :repo_is_accessible, on: :create
 
-  before_create :clone_repo
+  before_create :create_full_path
+  after_create :clone_repo_delayed
 
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error

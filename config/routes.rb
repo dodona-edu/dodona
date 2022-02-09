@@ -52,9 +52,7 @@ Rails.application.routes.draw do
     end
 
     concern :readable do
-      member do
-        post 'read'
-      end
+      resources :activity_read_states, only: %i[index create]
     end
 
     concern :submitable do
@@ -94,6 +92,7 @@ Rails.application.routes.draw do
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
@@ -180,9 +179,12 @@ Rails.application.routes.draw do
       resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
+    resources :activity_read_states, only: %i[index create]
+
     resources :users do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       get 'stop_impersonating', on: :collection
       get 'available_for_repository', on: :collection
       member do
@@ -208,7 +210,6 @@ Rails.application.routes.draw do
 
     resources :evaluations, only: %i[show new edit create update destroy] do
       member do
-        get 'add_users'
         get 'overview'
         get 'export_grades'
         post 'add_user'
@@ -217,7 +218,7 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update index new] do
+      resources :score_items, only: %i[create destroy update] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end

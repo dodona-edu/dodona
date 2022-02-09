@@ -5,9 +5,8 @@ en:
       evaluation: "Evaluation"
       title: "Evaluation for %{series}"
       explanation_title: "How do I evaluate a submission?"
-      explanation_part1_html: "In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incompleted submission of a random student.
-      If you wish, you can leave feedback on the code and mark the submission as completed. Note that you can also mark a submission as completed without leaving feedback. To get started, we already marked all exercises without submissions as completed."
-      explanation_part2_html: "As a reminder, students will <b>not</b> be able see the given feedback until you click on the 'release feedback' button below."
+      explanation_no_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incompleted submission of a random student. If you wish, you can leave feedback on the code and mark the submission as completed. Note that you can also mark a submission as completed without leaving feedback. To get started, we already marked all exercises without submissions as completed.</p><p>As a reminder, students will <b>not</b> be able see the given feedback until you click on the 'release feedback' button below.</p>"
+      explanation_yes_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incomplete submission of a random student. If you wish, you can leave feedback on the code and assign scores using the score items you configured. Note that you can also assign scores without leaving feedback. You can not give scores to exercises without submissions, these are automatically assigned a 0 in the grade overview.</p><p>As a reminder, students will <b>not</b> be able see the given feedback and scores until you click on the 'Release feedback' button below.</p>"
       release: Release feedback
       unrelease: Unrelease feedback
       deadline_html: This evaluation of <b>%{users} students</b> contains the submissions of <b>%{exercises} exercises</b> with <b>%{deadline}</b> as a deadline.
@@ -17,12 +16,13 @@ en:
       evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was completed already.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
       grading_details: Grade overview
-      grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br> If the score is gray, the submission is not yet completed.
+      grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br>If not all scores for a submission have been entered, the score is shown in gray.
     new:
       exercises: Exercises
       create_evaluation: Evaluate series
+      pick_deadline: Pick deadline
       explanation_title: "What is an evaluation?"
-      explanation_html: "Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released."
+      explanation_html: "<p>Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released.</p>"
       next: Next
     add_users:
       title: Select users
@@ -37,28 +37,35 @@ en:
         other: "<h1>%{count} <small>students</small></h1> submitted at least once"
       select_users: "Select these users"
     edit:
-      title: Edit users
+      title: Edit evaluation
+      evaluation_info: Evaluation info
+      users_required: You need to add users before going to the evaluation
+      live_edit_explanation_html: "<p>Changes you make here are applied immediately.</p>"
+      back_to_evaluation: "Back to evaluation"
     edit_users:
       users_selected: selected students
       users_selected_html:
         zero: "You have currently selected <b>zero users</b>."
         one: "You have currently selected <b>one user</b>."
         other: "You have currently selected <b>%{count} users</b>."
+      short_users_selected:
+        zero: "Zero users selected"
+        one: "One user selected"
+        other: "%{count} users selected"
       to_evaluation: To evaluation
       back_to_evaluation: Back to evaluation
       mass_edit: Which students do you want to evaluate?
-      clear: Remove all users
+      clear: Deselect all users
       add_enrolled: All enrolled students
       add_submitted: All students with submissions
     edit_score_items: Edit score items
     destroy: Delete evaluation
     download: Download grades
     form:
-      deadline-help_html: "The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used. <b>Warning:</b> You can't change the deadline later."
+      deadline-help_html: "<p>The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used.</p><p><b>Warning:</b> You can't change the deadline later, but you can select a different solution for individual students.</p>"
     evaluation_table:
       user: User
     evaluation_grade_table:
-      user: User
       total: Total
       average: Average
     feedback_status:

@@ -7,12 +7,15 @@ Rails.application.configure do
   # The main webapp
   config.default_host = 'naos.ugent.be'
 
+  # alternative host name
+  config.alt_host = 'naos.dodona.be'
+
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
 
   # Allowed hostnames
-  config.hosts << config.default_host << config.sandbox_host
+  config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
   # Where we host our assets (a single domain, for caching)
   config.action_controller.asset_host = 'naos.ugent.be'
@@ -66,7 +69,6 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   config.assets.js_compressor = Uglifier.new(harmony: true) if defined? Uglifier
-  config.assets.css_compressor = :sass
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.

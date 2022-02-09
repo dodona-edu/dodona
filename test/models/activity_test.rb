@@ -26,18 +26,13 @@
 require 'test_helper'
 
 class ActivityTest < ActiveSupport::TestCase
-  setup do
-    @date = DateTime.new(1302, 7, 11, 13, 37, 42)
-    @user = create :user
-    @exercise = create :exercise
-  end
-
   test 'factory should create exercise' do
-    assert_not_nil @exercise
+    exercise = create :exercise
+    assert_not_nil exercise
   end
 
   test 'users_read' do
-    e = create :exercise
+    e = exercises(:python_exercise)
     course1 = create :course
     create :series, course: course1, exercises: [e]
     course2 = create :course
@@ -63,9 +58,9 @@ class ActivityTest < ActiveSupport::TestCase
   end
 
   test 'converting an exercise to a content page and back should retain submissions' do
-    exercise = create :exercise, submission_count: 10
+    exercise = create :exercise, submission_count: 2
     exercise_id = exercise.id
-    assert_equal 10, exercise.submissions.count
+    assert_equal 2, exercise.submissions.count
 
     # Convert the Exercise to a ContentPage.
     exercise.update(type: ContentPage.name)
@@ -82,6 +77,6 @@ class ActivityTest < ActiveSupport::TestCase
     # Fetch the Exercise from the database.
     exercise_activity = Activity.find(exercise_id)
     assert_instance_of Exercise, exercise_activity
-    assert_equal 10, exercise_activity.submissions.count
+    assert_equal 2, exercise_activity.submissions.count
   end
 end

@@ -62,6 +62,7 @@
         "properties": {
             "command":     { "enum": ["start-test"] },
             "expected":    { "type": "string" },
+            "format":      { "$ref": "#/definitions/test-format" },
             "description": { "$ref": "#/definitions/message" },
             "channel":     { "type": "string" }
         }
@@ -84,6 +85,7 @@
             "row":     { "$ref": "#/definitions/index" },
             "column":  { "$ref": "#/definitions/index" },
             "text":    { "type": "string" },
+            "externalUrl":  { "type": "string" },
             "type":    { "$ref": "#/definitions/severity" },
             "rows":    { "$ref": "#/definitions/index" },
             "columns": { "$ref": "#/definitions/index" }
@@ -152,12 +154,20 @@
       "description": "Possibly formatted string as a message to (some) users.",
       "required": ["format", "description"],
       "properties": {
-        "format":      { "$ref": "#/definitions/format" },
+        "format":      { "$ref": "#/definitions/message-format" },
         "description": { "$ref": "#/definitions/description" },
         "permission":  { "$ref": "#/definitions/permission" }
       }
     },
-    "format": {
+    "test-format": {
+      "type": "string",
+      "description": "Indicates how to diff and show the test output (defaults to 'text').",
+      "enum": [
+        "text",
+        "csv"
+      ]
+    },
+    "message-format": {
       "type": "string",
       "description": "Either 'plain' (or 'text'), 'html' (formatted), 'markdown' (formatted), 'callout' (formatted) (or variants 'callout-info', 'callout-warning', 'callout-danger'), 'code' or any programming language (highlighted). Note that the HTML output is sanitised to prevent XSS issues. JavaScript, for example, is not allowed, but most other tags should work."
     },

@@ -30,7 +30,7 @@ class EvaluationExercise < ApplicationRecord
   end
 
   def average_score
-    mapped = feedbacks.map(&:score).reject(&:nil?)
+    mapped = feedbacks.map(&:score).compact
     mapped.sum / mapped.count if mapped.any?
   end
 end

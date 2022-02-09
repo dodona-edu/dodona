@@ -46,11 +46,7 @@
         </td>
 
         <td class='type-icon'>
-          <% if activity.exercise? %>
-            <i class="<%= "mdi mdi-#{activity.programming_language&.icon} mdi-18" %>" title="<%= "#{t "activities.index.type.exercise_language", language: activity.programming_language&.name&.titleize}" %>"></i>
-          <% elsif activity.content_page? %>
-            <i class="mdi mdi-book-open-variant mdi-18" title="<%= t "activities.index.type.content" %>"></i>
-          <% end %>
+          <%= activity_icon(activity) %>
         </td>
 
         <td>
@@ -60,6 +56,16 @@
             <%= link_to activity.name, activity_path(activity) %>
           <% else %>
             <%= activity.name %>
+            <% if current_user&.course_admin?(@course) && current_user&.repository_admin?(activity.repository) %>
+              <%= form_with url: add_course_repository_path(activity.repository) do |form| %>
+                <%= form.hidden_field :course_id, value: @course.id %>
+                <button type="submit" class="btn btn-icon">
+                  <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+                </button>
+              <% end %>
+            <% elsif current_user&.course_admin?(@course) %>
+              <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+            <% end %>
           <% end %>
         </td>
 
@@ -108,6 +114,14 @@
               <% options = current_user == user ? {} : {user_id: user.id} %>
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
+                          class: 'btn-icon' do %>
+                <i class="mdi mdi-chevron-right mdi-18"></i>
+              <% end %>
+            <% end %>
+            <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
+              <% options = current_user == user ? {} : {user_id: user.id} %>
+              <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                          title: t('activities.navbar_links.read_states'),
                           class: 'btn-icon' do %>
                 <i class="mdi mdi-chevron-right mdi-18"></i>
               <% end %>

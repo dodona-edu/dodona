@@ -45,7 +45,7 @@ class RepositoriesController < ApplicationController
     if saved
       Event.create(event_type: :exercise_repository, user: current_user, message: "#{@repository.name} (id: #{@repository.id})")
       RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
-      @repository.delay.process_activities_email_errors(user: current_user)
+      @repository.delay(queue: 'git').process_activities_email_errors(user: current_user)
     end
 
     respond_to do |format|
@@ -173,7 +173,7 @@ class RepositoriesController < ApplicationController
       do_reprocess = true
       user_hash[:user] = @repository.admins.first
     end
-    @repository.delay.process_activities_email_errors(**user_hash) if do_reprocess
+    @repository.delay(queue: 'git').process_activities_email_errors(**user_hash) if do_reprocess
 
     render plain: msg, status: :ok
   end
@@ -197,12 +197,12 @@ class RepositoriesController < ApplicationController
         toast = t('controllers.updated', model: model.model_name.human)
         format.json { head :no_content }
         format.js { render locals: { toast: toast } }
-        format.html { redirect_to return_path, notice: toast }
+        format.html { redirect_back fallback_location: return_path, notice: toast }
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
         format.json { head :unprocessable_entity }
         format.js { render status: :bad_request, locals: { toast: alert } }
-        format.html { redirect_to return_path, alert: alert }
+        format.html { redirect_back fallback_location: return_path, alert: alert }
       end
     end
   end

@@ -9,8 +9,11 @@
           <div class="col-lg-6 col-md-12 order-lg-1">
             <div class="callout callout-info">
               <h4><%= t ".explanation_title" %></h4>
-              <p><%= t ".explanation_part1_html" %></p>
-              <p><%= t ".explanation_part2_html" %></p>
+              <% if @evaluation.score_items.empty? %>
+                <%= t ".explanation_no_grading_html" %>
+              <% else %>
+                <%= t ".explanation_yes_grading_html" %>
+              <% end %>
             </div>
           </div>
           <div class="col-lg-6 col-md-12 order-lg-0">
@@ -20,7 +23,6 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('evaluations.edit_score_items'), evaluation_score_items_path(@evaluation), class: "btn-text" %>
         <%= link_to t('evaluations.edit.title'), edit_evaluation_path(@evaluation), class: "btn-text" %>
         <%= link_to (@evaluation.released ? t('.unrelease') : t('.release')),
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),

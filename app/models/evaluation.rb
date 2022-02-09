@@ -68,19 +68,19 @@ class Evaluation < ApplicationRecord
     users = evaluation_users.includes(:user).map(&:user)
 
     all_feedbacks = feedbacks.includes(:submission, :scores, evaluation_exercise: %i[exercise score_items], evaluation_user: [:user]).to_a
-    fbs = users.map do |user|
+    fbs = users.to_h do |user|
       [user.id, all_feedbacks.select { |fb| fb.evaluation_user.user == user }.sort_by { |fb| exercise_ids.find_index fb.evaluation_exercise.exercise.id }]
-    end.to_h
-    averages = fbs.map do |user_id, feedbacks|
-      average = feedbacks.map(&:score).reject(&:blank?)
-      [user_id, average.present? ? average.sum : nil]
-    end.to_h
+    end
+    totals = fbs.to_h do |user_id, feedbacks|
+      scores = feedbacks.map(&:score).compact_blank
+      [user_id, scores.present? ? scores.sum : nil]
+    end
 
     {
       evaluation_exercises: eval_exercises,
       exercises: exercises,
       feedbacks: fbs,
-      averages: averages
+      totals: totals
     }
   end
 
@@ -98,7 +98,7 @@ class Evaluation < ApplicationRecord
   # It is recommended to preload the feedbacks & scores.
   def average_score_sum(eval_execs = nil)
     # This is the sum of the averages of each exercise in this evaluation.
-    mapped = (eval_execs || evaluation_exercises.includes(feedbacks: [:scores])).map(&:average_score).reject(&:nil?)
+    mapped = (eval_execs || evaluation_exercises.includes(feedbacks: [:scores])).map(&:average_score).compact
     mapped.sum if mapped.any?
   end
 
@@ -115,16 +115,16 @@ class Evaluation < ApplicationRecord
     sheet = evaluation_sheet
     users_labels = series.course.course_memberships
                          .includes(:course_labels, :user)
-                         .map { |m| [m.user, m.course_labels] }
-                         .to_h
+                         .to_h { |m| [m.user, m.course_labels] }
+
     CSV.generate(force_quotes: true) do |csv|
       headers = ['id', 'username', 'last_name', 'first_name', 'full_name', 'email', 'labels', 'Total Score', 'Total Max']
       headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }
       csv << headers
       users.order(last_name: :asc, first_name: :asc).each do |user|
         feedback_l = sheet[:feedbacks][user.id]
-        total_score = sheet[:averages][user.id]
-        total_max = sheet[:evaluation_exercises].map(&:maximum_score).reject(&:nil?).sum
+        total_score = sheet[:totals][user.id]
+        total_max = sheet[:evaluation_exercises].map(&:maximum_score).compact.sum
         row = [user.id, user.username, user.first_name, user.last_name, user.full_name, user.email, users_labels[user].map(&:name).join(';'), total_score, total_max]
         row += feedback_l.flat_map { |f| [f.score, f.maximum_score] }
         csv << row

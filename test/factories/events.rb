@@ -13,7 +13,7 @@
 FactoryBot.define do
   factory :event do
     event_type { Event.event_types.keys.sample }
-    user
+    user { User.find(2) } # load student fixture
     message { Faker::Lorem.words 5 }
   end
 end

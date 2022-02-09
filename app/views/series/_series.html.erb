@@ -33,9 +33,9 @@
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="stacked" role="tab" title="<%= t("js.stacked_title") %>">
             <%= custom_icon("stacked-bar-chart", class: "mdi svg-icon-btn rotate") %>
           </button>
-          <!-- <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="timeseries" role="tab" title="<%= t("js.timeseries_title") %>">
+          <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="timeseries" role="tab" title="<%= t("js.timeseries_title") %>">
             <%= custom_icon("heatmap", class: "mdi svg-icon-btn") %>
-          </button> -->
+          </button>
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="ctimeseries" role="tab" title="<%= t("js.ctimeseries_title") %>">
             <%= custom_icon("stacked-line-chart", class: "mdi svg-icon-btn") %>
           </button>
@@ -163,6 +163,16 @@
             <a class="hidden-print" >
               <i class="mdi mdi-information graph-info"></i>
             </a>
+          </div>
+        </div>
+        <div class="daterange-picker" id="daterange-<%= series.id %>">
+          <div class="input-group date-picker" id="scope-start-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-start mdi-18'></i></button>
+          </div>
+          <div class="input-group date-picker" id="scope-end-<%= series.id %>" data-wrap=true data-enable-time=true>
+            <input type="text" class="form-control" data-input autocomplete="off">
+            <button class="btn btn-secondary" data-toggle><i class='mdi mdi-calendar-end mdi-18'></i></button>
           </div>
         </div>
         <div class="stats-container" id="stats-container-<%= series.id %>"></div>

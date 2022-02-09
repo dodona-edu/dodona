@@ -43,11 +43,14 @@ class StatisticsController < ApplicationController
     series = Series.find(params[:series_id])
     authorize series
 
-    result = Submission.send(visualisation, series: series, deadline: series.deadline)
+    result = Submission.send(visualisation, series: series)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      render json: { data: data, exercises: ex_data, student_count: series.course.enrolled_members.length }
+      # intitial: used by cumulative graph to set the value for first tick (everthing that came before)
+      render json: {
+        data: data, exercises: ex_data, student_count: series.course.enrolled_members.length
+      }
     else
       render json: { status: 'not available yet' }, status: :accepted
     end

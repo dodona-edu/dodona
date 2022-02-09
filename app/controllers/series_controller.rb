@@ -8,7 +8,7 @@ class SeriesController < ApplicationController
   before_action :set_lti_provider, only: %i[show]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started_in_series(Series.find(controller.params[:id]))
+    scope.at_least_one_started_in_series(Series.find(controller.params[:id])).or(scope.at_least_one_read_in_series(Series.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
@@ -194,8 +194,8 @@ class SeriesController < ApplicationController
       format.csv do
         users_labels = @course.course_memberships
                               .includes(:course_labels, :user)
-                              .map { |m| [m.user, m.course_labels] }
-                              .to_h
+                              .to_h { |m| [m.user, m.course_labels] }
+
         sheet = CSV.generate(force_quotes: true) do |csv|
           columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels', @series.name]
           columns.concat(@activities.map(&:name))

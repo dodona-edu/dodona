@@ -4,16 +4,6 @@ class ScoreItemsController < ApplicationController
   before_action :set_score_item, only: %i[destroy update]
   before_action :set_evaluation
 
-  def index
-    @crumbs << [I18n.t('score_items.index.title'), '#']
-    @title = I18n.t('score_items.index.title')
-  end
-
-  def new
-    @crumbs << [I18n.t('score_items.new.title'), '#']
-    @title = I18n.t('score_items.new.title')
-  end
-
   def copy
     from = EvaluationExercise.find(params[:copy][:from])
     to = EvaluationExercise.find(params[:copy][:to])
@@ -67,12 +57,10 @@ class ScoreItemsController < ApplicationController
     @evaluation.transaction do
       @evaluation.evaluation_exercises.each do |evaluation_exercise|
         new_score_item = @score_item.dup
-        new_score_item.evaluation_exercise = evaluation_exercise
-        new_score_item.save
+        evaluation_exercise.score_items << new_score_item
       end
     end
-
-    redirect_back fallback_location: new_evaluation_score_item_path(@evaluation)
+    @evaluation.reload
   end
 
   def destroy

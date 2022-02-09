@@ -15,6 +15,8 @@
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :bigint
 #  search         :string(4096)
+#  seen_at        :datetime
+#  sign_in_at     :datetime
 #
 
 require 'securerandom'
@@ -44,6 +46,7 @@ class User < ApplicationRecord
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
 
   has_many :subscribed_courses,
@@ -103,12 +106,12 @@ class User < ApplicationRecord
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
 
-  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 saml smartschool]
+  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
-  validate :email_only_blank_if_smartschool
   validate :max_one_institution
+  validate :provider_allows_blank_email
 
   token_generator :token
 
@@ -127,10 +130,14 @@ class User < ApplicationRecord
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
   scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
   scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
+  scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
+  scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
-  def email_only_blank_if_smartschool
-    errors.add(:email, 'should not be blank when institution does not use smartschool') if email.blank? && !institution&.uses_smartschool? && !institution&.uses_lti?
+  def provider_allows_blank_email
+    return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
+
+    errors.add(:email, 'should not be blank') if email.blank?
   end
 
   def max_one_institution
@@ -284,6 +291,82 @@ class User < ApplicationRecord
 
   def set_search
     self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
+  end
+
+  # Be careful when using force institution. This expects the providers to be updated externally
+  def merge_into(other, force: false, force_institution: false)
+    errors.add(:merge, 'User belongs to different institution') if !force_institution && other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
+    errors.add(:merge, 'User has different permissions') if other.permission != permission && !force
+    return false if errors.any?
+
+    transaction do
+      other.permission = permission if (permission == 'staff' && other.permission == 'student') \
+                                    || (permission == 'zeus' && other.permission != 'zeus')
+
+      other.institution_id = institution_id if other.institution_id.nil?
+
+      identities.each do |i|
+        if other.identities.find { |oi| oi.provider_id == i.provider_id }
+          i.destroy!
+        else
+          i.update!(user: other)
+        end
+      end
+
+      rights_request.update!(user: other) if !rights_request.nil? && other.permission == 'student' && other.rights_request.nil?
+
+      course_memberships.each do |cm|
+        other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
+        if other_cm.nil?
+          cm.update!(user: other)
+        elsif other_cm.status == cm.status \
+          || other_cm.status == 'course_admin' \
+          || (other_cm.status == 'student' && cm.status != 'course_admin') \
+          || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
+          other_cm.update!(favorite: true) if cm.favorite
+          cm.destroy!
+        else
+          cm.update!(favorite: true) if other_cm.favorite
+          other_cm.destroy!
+          cm.update!(user: other)
+        end
+      end
+
+      submissions.each { |s| s.update!(user: other) }
+      api_tokens.each { |at| at.update!(user: other) }
+      events.each { |e| e.update!(user: other) }
+      exports.each { |e| e.update!(user: other) }
+      notifications.each { |n| n.update!(user: other) }
+      annotations.each { |a| a.update!(user: other, last_updated_by_id: other.id) }
+      questions.each { |q| q.update!(user: other) }
+
+      evaluation_users.each do |eu|
+        if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }
+          eu.destroy!
+        else
+          eu.update!(user: other)
+        end
+      end
+
+      activity_read_states.each do |ars|
+        if other.activity_read_states.find { |oars| oars.activity_id == ars.activity_id }
+          ars.destroy!
+        else
+          ars.update!(user: other)
+        end
+      end
+
+      repository_admins.each do |ra|
+        if other.repository_admins.find { |ora| ora.repository_id == ra.repository_id }
+          ra.destroy!
+        else
+          ra.update!(user: other)
+        end
+      end
+
+      reload
+      destroy!
+    end
   end
 
   private

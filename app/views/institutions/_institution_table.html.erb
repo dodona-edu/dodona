@@ -2,6 +2,7 @@
   <table class="table table-index table-resource">
     <thead>
     <tr>
+      <th></th>
       <th><%= Institution.human_attribute_name(:name) %></th>
       <th><%= Institution.human_attribute_name(:short_name) %></th>
       <th><%= t('institutions.index.number_of_users') %></th>
@@ -13,6 +14,10 @@
     <tbody>
     <% institutions.each do |institution| %>
       <tr>
+        <td>
+          <% if institution.other? %><i class="mdi mdi-18 mdi-domain" title="Other"></i><% end %>
+          <% if institution.higher? %><i class="mdi mdi-18 mdi-school" title="Higher"></i><% end %>
+        </td>
         <td>
           <%= link_to institution.name, institution %>
           <% if institution.generated_name? %>

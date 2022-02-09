@@ -17,7 +17,7 @@ nl:
     new:
       title: Reeks aanmaken
     show:
-      copy: 'Om te kopieren: Ctrl+c, Enter'
+      copy: 'Om te kopiëren: Ctrl+c, Enter'
       indianio_token: 'Indianio-token'
       token_link: 'Geheime link'
       series: Reeks
@@ -33,6 +33,7 @@ nl:
       show_overview: Alle opgaven en leesactiviteiten bekijken
       evaluation_overview: Feedback bekijken
       series_overview: Reeksoverzicht
+      apply: toepassen
     edit:
       title: Reeks bewerken
       add_activities: Activiteiten toevoegen

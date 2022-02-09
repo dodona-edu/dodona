@@ -2,8 +2,8 @@ require 'test_helper'
 
 class AnnotationControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: create(:course)
-    @zeus = create(:zeus)
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: courses(:course1)
+    @zeus = users(:zeus)
     sign_in @zeus
   end
 
@@ -46,7 +46,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
   test 'pagination is generated correctly' do
     submission = create :submission, :within_course
-    create_list :question, 31, submission: submission
+    Question.per_page = 1
+    create_list :question, 2, submission: submission
     get questions_url, params: { everything: true }
     assert_select 'a[href=?]', questions_path(page: 2, everything: true)
   end
@@ -54,29 +55,26 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'questions should from courses should be shown to course admins' do
     u = create :user
     sign_in u
-    s1 = create :course_submission, user: u
-    s2 = create :course_submission, user: u
-    s3 = create :course_submission, user: u
+    s1 = create :course_submission, user: u, course: create(:course)
+    s2 = create :course_submission, user: u, course: create(:course)
     create :question, submission: s1
     create :question, submission: s2
-    create :question, submission: s3
     admin = create :user
     admin.administrating_courses << s1.course
-    admin.administrating_courses << s2.course
 
     sign_in admin
     get questions_url(format: :json)
 
-    assert_equal 2, JSON.parse(response.body).count
+    assert_equal 1, JSON.parse(response.body).count
   end
 
   test 'should be able to search by exercise name' do
-    u = create :user
+    u = users(:student)
     sign_in u
     e1 = create :exercise, name_en: 'abcd'
     e2 = create :exercise, name_en: 'efgh'
-    s1 = create :submission, exercise: e1, user: u, course: create(:course)
-    s2 = create :submission, exercise: e2, user: u, course: create(:course)
+    s1 = create :submission, exercise: e1, user: u, course: courses(:course1)
+    s2 = create :submission, exercise: e2, user: u, course: courses(:course1)
     create :question, submission: s1
     create :question, submission: s2
 
@@ -88,8 +86,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   test 'should be able to search by user name' do
     u1 = create :user, last_name: 'abcd'
     u2 = create :user, last_name: 'efgh'
-    s1 = create :submission, user: u1, course: create(:course)
-    s2 = create :submission, user: u2, course: create(:course)
+    s1 = create :submission, user: u1, course: courses(:course1)
+    s2 = create :submission, user: u2, course: courses(:course1)
     create :question, submission: s1
     create :question, submission: s2
 
@@ -99,9 +97,9 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to filter by status' do
-    u = create :user
+    u = users(:student)
     sign_in u
-    s = create :submission, user: u, course: create(:course)
+    s = create :submission, user: u, course: courses(:course1)
     create :question, question_state: :in_progress, submission: s
     create :question, question_state: :unanswered, submission: s
     create :question, question_state: :answered, submission: s
@@ -112,7 +110,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to filter by course' do
-    u = create :user
+    u = users(:student)
     sign_in u
     s1 = create :course_submission, user: u
     s2 = create :course_submission, user: u
@@ -126,8 +124,8 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should be able to filter by user' do
-    s1 = create :course_submission
-    s2 = create :course_submission
+    s1 = create :course_submission, :generated_user
+    s2 = create :course_submission, :generated_user
     create :question, submission: s1
     create :question, submission: s2
 
@@ -138,9 +136,9 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'annotation index should contain all annotations user can see' do
-    user = create :user
+    user = users(:student)
     other_user = create :user
-    course = create :course
+    course = courses(:course1)
     course_admin = create :user
     course_admin.update(administrating_courses: [course])
 
@@ -163,7 +161,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'annotation index should be filterable by user' do
-    user = create :user
+    user = users(:student)
     other_user = create :user
 
     create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
@@ -225,7 +223,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
-        annotation_text: 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
+        annotation_text: 'A' * 10_001 # max length of annotation text is 10.000 -> trigger failure
       },
       format: :json
     }
@@ -237,7 +235,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     put annotation_url(annotation), params: {
       annotation: {
-        annotation_text: 'A' * 2049 # max length of annotation text is 2048 -> trigger failure
+        annotation_text: 'A' * 10_001 # max length of annotation text is 10.000 -> trigger failure
       },
       format: :json
     }
@@ -246,7 +244,6 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'can query the index of all annotations on a submission' do
-    create :annotation, submission: @submission, user: @zeus
     create :annotation, submission: @submission, user: @zeus
     create :annotation, submission: @submission, user: @zeus
 
@@ -259,9 +256,10 @@ end
 # Separate class, since this needs separate setup
 class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   def setup
+    user = users(:student)
     questionable_course = create :course, enabled_questions: true
-    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: questionable_course
-    sign_in @submission.user
+    @submission = create :correct_submission, code: "line1\nline2\nline3\n", course: questionable_course, user: user
+    sign_in user
   end
 
   test 'not logged in is rejected' do
@@ -334,7 +332,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'zeus cannot create question' do
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     post submission_annotations_url(@submission), params: {
       annotation: {
         line_nr: 1,
@@ -347,7 +345,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'staff cannot create question' do
-    sign_in create(:staff)
+    sign_in users(:staff)
     post submission_annotations_url(@submission), params: {
       question: {
         line_nr: 1,
@@ -359,7 +357,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'course admin cannot create question' do
-    admin = create(:staff)
+    admin = users(:staff)
     @submission.course.administrating_members = [admin]
     sign_in admin
     post submission_annotations_url(@submission), params: {
@@ -374,7 +372,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'even zeus cannot create an annotation on a submission outside of a course' do
-    sign_in create(:zeus)
+    sign_in users(:zeus)
     post submission_annotations_url(create(:submission, course: nil)), params: {
       annotation: {
         line_nr: 1,
@@ -386,8 +384,8 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'questions can transition from unanswered' do
-    zeus = create :zeus
-    staff = create :staff
+    zeus = users(:zeus)
+    staff = users(:staff)
     @submission.course.administrating_members = [create(:staff)]
     admin = @submission.course.administrating_members[0]
     random = create :user
@@ -470,8 +468,8 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'questions can transition from in_progress' do
-    zeus = create :zeus
-    staff = create :staff
+    zeus = users(:zeus)
+    staff = users(:staff)
     @submission.course.administrating_members = [create(:staff)]
     admin = @submission.course.administrating_members[0]
     random = create :user
@@ -531,7 +529,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'question cannot transition if already changed' do
-    sign_in create :zeus
+    sign_in users(:zeus)
 
     question = create :question, submission: @submission, question_state: :unanswered
     patch annotation_path(question), params: {
@@ -571,8 +569,8 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'questions can transition from answered' do
-    zeus = create :zeus
-    staff = create :staff
+    zeus = users(:zeus)
+    staff = users(:staff)
     @submission.course.administrating_members = [create(:staff)]
     admin = @submission.course.administrating_members[0]
     random = create :user

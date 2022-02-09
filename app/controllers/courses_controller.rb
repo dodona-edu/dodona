@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class CoursesController < ApplicationController
   include SetLtiMessage
 
@@ -8,7 +10,7 @@ class CoursesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started_in_course(Course.find(controller.params[:id]))
+    scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, controller.params[:id])
@@ -22,17 +24,23 @@ class CoursesController < ApplicationController
     @show_my_courses = current_user && current_user.subscribed_courses.count > 0
     @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
 
-    if current_user && params[:tab] == 'institution'
-      @courses = @courses.where(institution: current_user.institution)
-    elsif current_user && params[:tab] == 'my'
-      @courses = current_user.subscribed_courses
-    elsif params[:tab] == 'featured'
-      @courses = @courses.where(featured: true)
-    elsif params[:copy_courses]
+    if params[:copy_courses]
+      @courses = apply_scopes(@courses)
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      @own_courses = @courses.select { |course| current_user.admin_of?(course) }
+      @other_courses = @courses.reject { |course| current_user.admin_of?(course) }
+      @courses = @own_courses.concat(@other_courses)
+    else
+      if current_user && params[:tab] == 'institution'
+        @courses = @courses.where(institution: current_user.institution)
+      elsif current_user && params[:tab] == 'my'
+        @courses = current_user.subscribed_courses
+      elsif params[:tab] == 'featured'
+        @courses = @courses.where(featured: true)
+      end
+      @courses = apply_scopes(@courses)
     end
 
-    @courses = apply_scopes(@courses)
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @institution = Institution.find(params[:institution_id]) if params[:institution_id]
@@ -46,6 +54,13 @@ class CoursesController < ApplicationController
     if @course.secret_required?(current_user)
       redirect_unless_secret_correct
       return if performed?
+    end
+    if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
+      flash.now[:alert] = I18n.t('courses.show.has_private_exercises')
+      flash.now[:extra] = {
+        'message' => I18n.t('courses.show.has_private_help'),
+        'url' => contact_url
+      }
     end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
@@ -63,8 +78,8 @@ class CoursesController < ApplicationController
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
         institution: current_user.institution,
-        visibility: @copy_options[:base].visibility,
-        registration: @copy_options[:base].registration,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution,
         teacher: current_user.full_name
       )
       @copy_options = {
@@ -77,7 +92,9 @@ class CoursesController < ApplicationController
       @copy_options = nil
       @course = Course.new(
         teacher: current_user.full_name,
-        institution: current_user.institution
+        institution: current_user.institution,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution
       )
     end
 
@@ -132,7 +149,6 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
@@ -196,8 +212,8 @@ class CoursesController < ApplicationController
         sheet = CSV.generate(force_quotes: true) do |csv|
           users_labels = @course.course_memberships
                                 .includes(:course_labels, :user)
-                                .map { |m| [m.user, m.course_labels] }
-                                .to_h
+                                .to_h { |m| [m.user, m.course_labels] }
+
           columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })

@@ -18,7 +18,7 @@
         <td>
           <% if course_membership.course_admin? %>
             <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
-          <% elsif user.staff? %>
+          <% elsif user.admin? %>
             <span class="mdi mdi-alert mdi-18" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t(".teacher_rights") %>"></span>
           <% end %>
           <% if user.username.blank? %>
@@ -32,7 +32,7 @@
             <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
           <% end %>
         </td>
-        <td><%= user.email %></td>
+        <td><%= mail_to(user.email, nil, { title: t('.send_mail') }) %></td>
         <td><%= user.institution&.name %></td>
         <td class="d-none d-sm-table-cell">
           <%= render partial: 'application/progress_chart',

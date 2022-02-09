@@ -17,49 +17,32 @@
 FactoryBot.define do
   factory :submission do
     code { Faker::Lorem.paragraph }
-    evaluate { true }
+    evaluate { false }
     skip_rate_limit_check { true }
-    result { nil }
 
-    transient do
-      status { nil }
-      summary { nil }
-    end
-
-    # When created, the submission is queued and the status,
-    # result and summary are overwritten.
-    # Overwrite them again if explicitly given
-    after(:create) do |submission, e|
-      attrs = {}
-      attrs[:result] = e.result if e.result
-      attrs[:status] = e.status if e.status
-      attrs[:summary] = e.summary if e.summary
-      submission.update(attrs)
-    end
-
-    user
-    exercise
+    user { User.find(3) } # load student user fixture
+    exercise { Exercise.find(1) } # load python exercise fixture
 
     initialize_with { new(attributes) }
 
+    trait :generated_user do
+      association :user
+    end
+
+    trait :generated_exercise do
+      association :exercise
+    end
+
     trait :correct do
-      after(:create) do |submission|
-        submission.update(
-          status: 'correct',
-          summary: 'Good job!',
-          accepted: true
-        )
-      end
+      status { 'correct' }
+      summary { 'Good job!' }
+      accepted { true }
     end
 
     trait :wrong do
-      after(:create) do |submission|
-        submission.update(
-          status: 'wrong',
-          summary: 'You used the wrong programming language',
-          accepted: false
-        )
-      end
+      status { 'wrong' }
+      summary { 'You used the wrong programming language' }
+      accepted { false }
     end
 
     trait :within_course do

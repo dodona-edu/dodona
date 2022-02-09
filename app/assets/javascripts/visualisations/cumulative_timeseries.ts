@@ -5,14 +5,18 @@ import { RawData, SeriesGraph } from "./series_graph";
 
 export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
-    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 40 };
+    protected readonly margin = { top: 20, right: 50, bottom: 80, left: 50 };
 
-    private readonly bisector = d3.bisector((d: Date) => d.getTime()).left;
+    private readonly bisector = d3.bisector((d: number) => d).left;
 
     // scales
     private x: d3.ScaleTime<number, number>;
     private y: d3.ScaleLinear<number, number>;
     private color: d3.ScaleOrdinal<string, unknown>;
+
+    // axes
+    private xAxis: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
+    private yAxis: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
 
     // tooltips things
     private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
@@ -28,46 +32,41 @@ export class CTimeseriesGraph extends SeriesGraph {
     // data
     // eslint-disable-next-line camelcase
     private data: { ex_id: string, ex_data: { bin: d3.Bin<Date, Date>, cSum: number }[] }[] = [];
-    private maxSum: number; // largest y-value = either subscribed students or max value
-    private dateArray: Date[]; // an array of dates from minDate -> maxDate (in days)
+    private studentCount: number; // amount of subscribed students
+    private maxSum = 0; // largest y-value == max value
+    private minDate: Date;
+    private maxDate: Date;
+    private binTicks: Array<number>;
+    private binStep: number;
+    private y100 = false; // Whether y range goes to 100% (true) of max of the data (false)
 
     /**
-    * Draws the graph's svg (and other) elements on the screen
+    * Draws the graph's svg (and other) elements that never change on the screen
     * No more data manipulation is done in this function
+    * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
+    protected override draw(animation=true): void {
+        if (this.binTicks.length < 2) {
+            this.drawNoData();
+            return;
+        }
         this.height = 400;
         super.draw();
 
-        const minDate = this.dateArray[0];
-        const maxDate = this.dateArray[this.dateArray.length - 1];
-
-        // Y scale
         this.y = d3.scaleLinear()
-            .domain([0, 1])
+            .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
             .range([this.innerHeight, 0]);
 
         // Y axis
-        this.graph.append("g")
-            .call(d3.axisLeft(this.y).ticks(5, ".0%"));
+        this.yAxis = this.graph.append("g");
 
         // X scale
         this.x = d3.scaleTime()
-            .domain([minDate, maxDate])
+            .domain(this.binTicks)
             .range([0, this.innerWidth]);
 
         // add x-axis
-        this.graph.append("g")
-            .attr("transform", `translate(0, ${this.y(0)})`)
-            .call(d3.axisBottom(this.x)
-                .tickValues(this.dateArray.filter((e, i, a) => {
-                    if (a.length < 10) return true;
-                    if (i === 0 || i === a.length - 1) return true;
-                    if (i % Math.floor(a.length / 10) === 0) return true;
-                    return false;
-                }))
-                .tickFormat(d3.timeFormat(I18n.t("date.formats.weekday_short")))
-            );
+        this.xAxis = this.graph.append("g");
 
         // Color scale
         this.color = d3.scaleOrdinal()
@@ -97,32 +96,86 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.legendInit();
 
         // add lines
-        // eslint-disable-next-line camelcase
-        this.data.forEach(({ ex_data, ex_id }) => {
-            const exGroup = this.graph.append("g");
-            exGroup.selectAll("path")
-                // I have no idea why this is necessary but removing the '[]' breaks everything
-                // eslint-disable-next-line camelcase
-                .data([ex_data])
-                .join("path")
-                .style("stroke", this.color(ex_id) as string)
-                .style("fill", "none")
-                .attr("d", d3.line()
-                    .x(d => this.x(d.bin["x0"]))
-                    .y(this.innerHeight)
-                    .curve(d3.curveMonotoneX)
-                )
-                .transition().duration(500)
-                .attr("d", d3.line()
-                    .x(d => this.x(d.bin["x0"]))
-                    .y(d => this.y(d.cSum / this.maxSum))
-                    .curve(d3.curveMonotoneX)
-                );
-        });
+        this.graph.selectAll(".line")
+            .data(this.data, ex => ex.ex_id )
+            .join("path")
+            .attr("class", "line")
+            .style("stroke", ex => this.color(ex.ex_id) as string)
+            .style("fill", "none")
+            .attr("d", ex => d3.line()
+                .x(d => this.x(d.x1))
+                .y(this.innerHeight)
+                .curve(d3.curveMonotoneX)(ex.ex_data)
+            );
 
+        // tooltip functionality
         this.svg.on("mouseover", e => this.tooltipOver(e));
         this.svg.on("mousemove", e => this.tooltipMove(e));
         this.svg.on("mouseleave", () => this.tooltipOut());
+
+        // y range toggle functionality
+        // add a rect behind y-axis for bigger clickable area
+        this.graph.append("rect")
+            .attr("width", 50)
+            .attr("height", this.innerHeight+10)
+            .attr("x", -50)
+            .attr("y", -10)
+            .attr("fill", "none")
+            .attr("pointer-events", "all")
+            .style("cursor", "pointer")
+            .on("click", () => this.yRangeToggle());
+
+        this.drawUpdate(animation);
+    }
+
+    private drawUpdate(animation=true): void {
+        // update Y scale
+        this.y = d3.scaleLinear()
+            .domain([0, this.y100 ? 1 : this.maxSum / this.studentCount])
+            .range([this.innerHeight, 0]);
+
+        this.yAxis
+            .transition().duration(animation ? 500: 0)
+            .call(d3.axisLeft(this.y).ticks(5, "%"));
+
+        // updateX scale
+        this.x = d3.scaleTime()
+            .domain([this.minDate, this.maxDate])
+            .range([0, this.innerWidth]);
+
+        this.xAxis
+            .attr("transform", `translate(0, ${this.innerHeight})`)
+            .call(d3.axisBottom(this.x)
+                .tickValues(
+                    this.binTicks
+                )
+                .tickFormat(t => {
+                    const asDate = new Date(t);
+                    const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
+                    return this.binStep >= 24 ||
+                        (
+                            asDate.getHours() === (24 - timeZoneDiff) % 24 &&
+                            asDate.getMinutes() === 0
+                        ) ?
+                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                })
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dy", ".7em")
+            .attr("transform", "rotate(-25)");
+
+        // add lines
+        this.graph.selectAll(".line")
+            .data(this.data, ex => ex.ex_id )
+            .join("path")
+            .transition().duration(animation ? 500: 0)
+            .attr("d", ex => d3.line()
+                .x(d => this.x(d.x1))
+                .y(d => this.y(d.cSum / this.studentCount))
+                .curve(d3.curveMonotoneX)(ex.ex_data)
+            );
     }
 
     /**
@@ -132,6 +185,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      */
     // eslint-disable-next-line camelcase
     protected override processData({ data, exercises, student_count }: RawData): void {
+        this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
 
@@ -142,31 +196,43 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
-        minDate = d3.timeDay.offset(new Date(minDate), -1); // start 1 day earlier from 0
-        maxDate = new Date(maxDate);
-        minDate.setHours(0, 0, 0, 0); // set start to midnight
-        maxDate.setHours(23, 59, 59, 99); // set end right before midnight
+        const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+        this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
+        this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 
-        this.dateArray = d3.timeDays(minDate, maxDate);
+        // aim for 17 bins (between 15 and 20)
+        const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
+        this.binStep = binStep;
+        this.binTicks = binTicks;
+        this.minDate = allignedStart;
+        this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
-        const threshold = d3.scaleTime()
-            .domain([minDate.getTime(), maxDate.getTime()])
-            .ticks(d3.timeDay);
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
+
+
+        if (this.binTicks.length < 2) {
+            return;
+        }
 
         // eslint-disable-next-line camelcase
-        this.maxSum = student_count; // max value
+        this.studentCount = student_count; // max value
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()
                 .value(d => d.getTime())
-                .thresholds(threshold)
-                .domain([minDate.getTime(), maxDate.getTime()])(ex.ex_data);
+                .thresholds(binTicks)
+                .domain([0, this.maxDate.getTime()])(ex.ex_data);
             // combine bins with cumsum of the bins
+            const binAmount = binned.length;
+            if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
+                binned.pop();
+            }
             const cSums = d3.cumsum(binned, d => d.length);
             this.data.push({
                 ex_id: String(ex.ex_id),
-                ex_data: binned.map((bin, i) => ({ bin: bin, cSum: cSums[i] }))
+                ex_data: binned.map((bin, i) => ({ x1: bin["x1"], cSum: cSums[i] }))
             });
 
             // if 'students' undefined calculate max value from data
@@ -183,22 +249,22 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @return {Object} The index of the cursor in the date array + the date of that position
      */
     private bisect(mx: number): { "date": Date; "i": number } {
-        const min = this.dateArray[0];
-        const max = this.dateArray[this.dateArray.length - 1];
-        if (!this.dateArray) { // probably not necessary, but just to be safe
+        const min = this.minDate.getTime();
+        const max = this.maxDate.getTime();
+        if (!this.binTicks) { // probably not necessary, but just to be safe
             return { "date": new Date(0), "i": 0 };
         }
         const date = this.x.invert(mx);
-        const index = this.bisector(this.dateArray, date, 1);
-        const a = index > 0 ? this.dateArray[index - 1] : min;
-        const b = index < this.dateArray.length ? this.dateArray[index] : max;
+        const index = this.bisector(this.binTicks, date, 1);
+        const a = index > 0 ? this.binTicks[index - 1] : min;
+        const b = index < this.binTicks.length ? this.binTicks[index] : max;
         if (
-            index < this.dateArray.length &&
-            date.getTime() - a.getTime() > b.getTime() - date.getTime()
+            index < this.binTicks.length &&
+            date.getTime() - a > b - date.getTime()
         ) {
-            return { "date": b, "i": index };
+            return { "date": new Date(b), "i": index };
         } else {
-            return { "date": a, "i": index - 1 };
+            return { "date": new Date(a), "i": index - 1 };
         }
     }
 
@@ -218,7 +284,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipOver(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -234,7 +300,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         this.tooltipDots
             .attr("cx", this.x(date))
-            .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.maxSum));
+            .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.studentCount));
     }
 
     /**
@@ -243,7 +309,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {unknown} e The mouse event
      */
     private tooltipMove(e: unknown): void {
-        if (!this.dateArray) {
+        if (!this.binTicks) {
             return;
         }
         // find insert point in array
@@ -271,59 +337,101 @@ export class CTimeseriesGraph extends SeriesGraph {
                 .duration(100)
                 .attr("opacity", 1)
                 .attr("cx", this.x(date))
-                .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.maxSum));
+                .attr("cy", ex => this.y(ex.ex_data[i].cSum / this.studentCount));
         }
     }
 
     private tooltipText(i: number): string {
-        let result = `<b>${this.longDateFormat(this.dateArray[this.tooltipIndex])}</b>`;
+        const date = this.binTicks[i];
+        let startMessage = ""; // formatted start moment
+        let endMessage = ""; // formatted end moment
+        let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
+        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+
+        if (i === 0) {
+            startMessage = capitalize(I18n.t("js.date_before"));
+        }
+        if (this.binStep < 24) {
+            const on = I18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            startMessage = i ?
+                `${timeFormat(new Date(date - this.binStep * 3600000))} -` :
+                startMessage;
+            endMessage = timeFormat(date);
+            extraMessage = `<br>${on} ${dateFormat(date)}`;
+        } else if (this.binStep === 24) { // binning per day
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            endMessage = `${i === 0 ? format(date) : capitalize(format(date))}:`;
+        } else if (this.binStep < 168) { // binning per multiple days
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            startMessage = i ?
+                `${capitalize(format(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = format(date);
+        } else { // binning per week(s)
+            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            startMessage = i ?
+                `${capitalize(weekDay(new Date(date - this.binStep * 3600000)))} -` :
+                startMessage;
+            endMessage = i ?
+                monthDay(date):
+                weekDay(date);
+        }
+        let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
-            result += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.maxSum)}
-                    (${ex.ex_data[i].cSum}/${this.maxSum})`;
+            message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
+                    (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
-        return result;
+        return message;
+    }
+
+    private yRangeToggle(): void {
+        this.y100 = !this.y100;
+
+        this.tooltipOut();
+        this.drawUpdate();
     }
 
     private legendInit(): void {
         // calculate legend element offsets
-        const exPosition = [];
-        let pos = 0;
-        this.exOrder.forEach(ex => {
-            exPosition.push({ ex_id: ex, pos: pos });
-            // rect size (15) + 5 padding + 20 inter-group padding + text length
-            pos += 40 + this.fontSize / 2 * this.exMap[ex].length;
-        });
-        const legend = this.svg
-            .append("g")
+        const legend = this.container
+            .append("div")
             .attr("class", "legend")
-            .attr(
-                "transform",
-                `translate(${this.width / 2 - pos / 2}, ${this.height - this.margin.bottom / 2})`
-            )
-            .selectAll("g")
-            .data(exPosition)
+            .style("margin-top", "-30px")
+            .selectAll("div")
+            .data(this.exOrder)
             .enter()
-            .append("g")
-            .attr("transform", d => `translate(${d.pos}, 0)`);
-
-        // add legend colors dots
+            .append("div")
+            .attr("class", "legend-item")
+            .on("mouseover", (_, legendId) => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", lineEx => legendId !== lineEx.ex_id ? .2 : 1);
+            })
+            .on("mouseout", () => {
+                this.graph
+                    .selectAll(".line")
+                    .style("opacity", 1);
+            });
         legend
-            .append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", 15)
-            .attr("height", 15)
-            .attr("fill", ex => this.color(ex.ex_id) as string);
-
-        // add legend text
+            .append("div")
+            .attr("class", "legend-box")
+            .style("background", exId => this.color(exId))
+            .style("pointer-events", "none");
         legend
-            .append("text")
-            .attr("x", 20)
-            .attr("y", 12)
-            .attr("text-anchor", "start")
-            .text(ex => this.exMap[ex.ex_id])
-            .attr("fill", "currentColor")
-            .style("font-size", `${this.fontSize}px`);
+            .append("span")
+            .attr("class", "legend-text")
+            .text(exId => this.exMap[exId])
+            .style("color", "currentColor")
+            .style("font-size", `${this.fontSize}px`)
+            .style("pointer-events", "none");
+    }
+
+    protected override init(draw = true, data = undefined): void {
+        this.initTimePickers();
+        super.init(draw, data);
     }
 }

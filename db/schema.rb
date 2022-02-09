@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_12_104516) do
+ActiveRecord::Schema.define(version: 2022_02_03_085509) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -181,7 +181,6 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.text "description", size: :medium
     t.integer "visibility"
     t.integer "registration"
-    t.integer "color"
     t.string "teacher"
     t.bigint "institution_id"
     t.string "search", limit: 4096
@@ -287,6 +286,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "generated_name", default: true, null: false
+    t.integer "category", default: 0, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.datetime "updated_at", null: false
     t.string "renderer", null: false
     t.string "remote"
+    t.integer "clone_status", default: 1, null: false
     t.index ["name"], name: "index_judges_on_name", unique: true
   end
 
@@ -355,6 +356,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "judge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "clone_status", default: 1, null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true
@@ -466,6 +468,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
     t.string "search", limit: 4096
+    t.datetime "seen_at"
+    t.datetime "sign_in_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"

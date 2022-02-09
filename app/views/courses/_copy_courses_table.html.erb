@@ -16,6 +16,9 @@
         </td>
         <td>
           <span>
+            <% if current_user&.admin_of?(course) %>
+              <span title='<%= t "pages.course_card.course-admin" %>'><i class='mdi mdi-18 mdi-school'></i></span>
+            <% end %>
             <% if course.featured %>
               <span title='<%= Course.human_attribute_name("featured") %>'><i class='mdi mdi-18 mdi-star-outline'></i></span>
             <% end %>

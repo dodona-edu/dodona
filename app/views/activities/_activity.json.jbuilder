@@ -10,6 +10,8 @@ if activity.exercise?
     json.last_solution_is_best activity.best_is_last_submission?(current_user, series)
     json.has_solution activity.started_for?(current_user, series)
     json.has_correct_solution activity.solved_for?(current_user, series)
+    json.accepted activity.accepted_for?(current_user, series)
+    json.accepted_before_deadline activity.accepted_before_deadline_for?(current_user, series)
   end
 elsif activity.content_page?
   json.has_read activity.solved_for?(current_user, series) if current_user

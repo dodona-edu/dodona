@@ -7,6 +7,7 @@ nl:
       close: "Sluiten"
       save: "Opslaan"
       course_overview: "Cursusoverzicht voor "
+      send_mail: "Stuur een e-mail naar deze gebruiker."
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"
@@ -19,12 +20,13 @@ nl:
       member_progress_chart_info_correct:
         one: "Één oefening correct opgelost."
         other: "%{count} oefeningen correct opgelost."
+      send_mail: "Stuur een e-mail naar deze gebruiker."
     index:
       close: "Sluiten"
       upload: "Aanpassingen uploaden"
       edit_all_labels: "Alle labels bewerken"
       first_download_labels: "Download een lijst van alle gebruikers en hun labels als een CSV bestand."
-      then_edit: "Open het tekstbestand dat je net gedownload hebt, en pas de labels aan. Enkel wijzigingen aan de labels kolom zullen doorgevoerd worden. Merk op dat de labels in één veld zitten, gescheiden met puntkommas."
+      then_edit: "Open het tekstbestand dat je net gedownload hebt, en pas de labels aan. Enkel wijzigingen aan de labels kolom zullen doorgevoerd worden. Merk op dat de labels in één veld zitten, gescheiden met puntkomma's."
       finally_upload: "Als je tevreden bent met je aanpassingen, selecteer hieronder dan het aangepaste bestand."
       download: "Lijst downloaden"
       could_not_find_labels_column: "We konden de kolom met labels van de gebruiker met ID %{user_id} niet vinden. Controleer of het aangepaste bestand aan de voorwaarden voldoet."

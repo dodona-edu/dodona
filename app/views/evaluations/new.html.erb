@@ -1,23 +1,138 @@
+<% content_for :javascripts do %>
+  <%= javascript_pack_tag 'evaluation' %>
+  <%= javascript_pack_tag 'score_item' %>
+  <%= javascript_pack_tag 'index' %>
+<% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
-    <div class="card series-edit">
+    <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t(".create_evaluation") %></h2>
+        <h2 class="card-title-text"><%= @title %></h2>
       </div>
-      <div class="card-supporting-text row">
-        <div class="col-lg-6 col-sm-12 order-lg-1">
-          <div class="callout callout-info">
-            <h4><%= t ".explanation_title" %></h4>
-            <%= t ".explanation_html" %>
+      <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-lg-6 col-sm-12 order-lg-0">
+            <h4 class="evaluation-form-title">
+              <%= @evaluation.series.name %>
+              <span class="small"><%= @evaluation.series.course.name %></span>
+            </h4>
+            <%= render partial: 'exercises_table', locals: {
+              series: @evaluation.series,
+              exercises: @evaluation.series.exercises,
+              } %>
+          </div>
+
+          <div class="col-lg-6 col-sm-12 order-lg-1">
+            <div class="callout callout-info">
+              <h4><%= t ".explanation_title" %></h4>
+              <%= t ".explanation_html" %>
+            </div>
           </div>
         </div>
-        <div class="col-lg-6 col-sm-12 order-lg-0">
-          <%= render 'form', evaluation: @evaluation %>
+      </div>
+    </div>
+    <div id="stepper" class="panel-group stepper" role="tablist">
+      <div id="info-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">1</span>
+            <a role="button" data-bs-toggle="collapse" href="#info-step">
+              <%= t(".pick_deadline") %>
+              <span class="answer">
+              </span>
+            </a>
+          </h4>
+        </div>
+        <div id="info-step" class="panel-collapse collapse show" role="tabpanel">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <div class="row">
+                <%= render 'form', evaluation: @evaluation %>
+              </div>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <button type="submit" class="btn btn-primary btn-text" form="new_evaluation"><%= t '.next' %></button>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="card-actions card-border">
-        <button type="submit" class="btn btn-primary btn-text" form="new_evaluation"><%= t '.next' %></button>
+      <div id="users-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">2</span>
+            <a role="button" class="disabled" data-bs-toggle="collapse">
+              <%= t("evaluations.add_users.title") %>
+              <span id="short-users-count-wrapper" class="answer hidden">
+              </span>
+            </a>
+          </h4>
+        </div>
+        <div id="users-step" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body">
+            <div id="users-step-wrapper"></div>
+            <div class="stepper-actions stepper-border">
+              <button id="users-step-finish-button" class="btn btn-text btn-primary" type="button"><%= t('evaluations.new.next') %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="choice-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">3</span>
+            <a class="disabled" role="button" data-bs-toggle="collapse">
+              <%= t('score_items.new.choose') %>
+              <span class="answer"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="choice-step" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body panel-body-transparent">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn" id="yes-grading" data-answer="<%= t('score_items.new.yes_answer') %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('score_items.new.yes_answer') %>
+                      <br>
+                      <small><%= t('score_items.new.yes_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="option-btn" id="no-grading">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= t('score_items.new.no_answer') %>
+                      <br>
+                      <small><%= t('score_items.new.no_explanation') %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div id="items-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">4</span>
+            <a role="button" class="disabled" data-bs-toggle="collapse">
+              <%= t 'score_items.index.title' %>
+            </a>
+          </h4>
+        </div>
+        <div id="items-step" class="panel-collapse collapse" role="tabpanel">
+        </div>
       </div>
     </div>
   </div>
 </div>
+<script>
+  $(dodona.initEvaluationStepper)
+</script>

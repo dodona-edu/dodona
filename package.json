@@ -3,21 +3,21 @@
   "private": true,
   "scripts": {
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "build:css": "./bin/build-css"
   },
   "dependencies": {
-    "@babel/core": "^7.15.0",
-    "@babel/preset-typescript": "^7.15.0",
-    "@popperjs/core": "^2.9.3",
+    "@babel/core": "^7.17.0",
+    "@babel/preset-typescript": "^7.16.7",
+    "@popperjs/core": "^2.11.2",
     "@rails/activestorage": "^6.1.4",
     "@rails/ujs": "^6.1.4",
-    "@rails/webpacker": "5.4.2",
-    "@types/d3": "^7.0.0",
-    "@types/jquery": "^3.5.6",
-    "bootstrap": "^5.1.0",
-    "chalk": "^4.1.2",
-    "clipboard": "^2.0.8",
-    "d3": "^7.0.1",
+    "@rails/webpacker": "5.4.3",
+    "@types/d3": "^7.1.0",
+    "@types/jquery": "^3.5.13",
+    "bootstrap": "^5.1.3",
+    "clipboard": "^2.0.10",
+    "d3": "^7.3.0",
     "dragula": "^3.7.3",
     "first-input-delay": "^0.1.3",
     "flatpickr": "^4.6.9",
@@ -25,22 +25,23 @@
     "iframe-resizer": "^4.3.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
+    "sass": "^1.49.7",
     "typeahead.js": "^0.11.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.5.5"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.1",
-    "@typescript-eslint/eslint-plugin": "^4.29.3",
-    "@typescript-eslint/parser": "^4.29.3",
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^4.33.0",
+    "@typescript-eslint/parser": "^4.33.0",
     "eslint": "^7.32.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^24.4.0",
-    "eslint-plugin-no-jquery": "^2.6.0",
+    "eslint-plugin-jest": "^25.7.0",
+    "eslint-plugin-no-jquery": "^2.7.0",
     "jest": "^26.6.3",
-    "jest-junit": "^12.2.0",
+    "jest-junit": "^13.0.0",
     "ts-jest": "^26.5.6",
     "webpack": "4.46.0",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "3.11.2"
+    "webpack-dev-server": "3.11.3"
   }
 }

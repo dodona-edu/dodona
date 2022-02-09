@@ -11,7 +11,6 @@
 #  description       :text(16777215)
 #  visibility        :integer
 #  registration      :integer
-#  color             :integer
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)
@@ -35,6 +34,9 @@ class Course < ApplicationRecord
   EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
   CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
+  before_create :generate_secret
+  before_destroy :nullify_submissions
+
   belongs_to :institution, optional: true
 
   has_many :course_memberships, dependent: :destroy
@@ -45,7 +47,7 @@ class Course < ApplicationRecord
   has_many :series_memberships, through: :series
 
   has_many :activity_read_states, dependent: :destroy
-  has_many :submissions, dependent: :nullify
+  has_many :submissions, dependent: :restrict_with_error
   has_many :users, through: :course_memberships
 
   has_many :usable_repositories, through: :course_repositories, source: :repository
@@ -132,21 +134,24 @@ class Course < ApplicationRecord
              where question_state: :unanswered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :in_progress_questions,
            lambda {
              where question_state: :in_progress
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :answered_questions,
            lambda {
              where question_state: :answered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   validates :name, presence: true
   validates :year, presence: true
@@ -159,8 +164,6 @@ class Course < ApplicationRecord
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5
-
-  before_create :generate_secret
 
   # Default year & enum values
   after_initialize do |course|
@@ -177,7 +180,7 @@ class Course < ApplicationRecord
   def homepage_series(passed_series = 1)
     with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
+                       .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
   end
@@ -205,6 +208,10 @@ class Course < ApplicationRecord
     return false if visible_for_institution? && user&.institution == institution
 
     true
+  end
+
+  def all_activities_accessible?
+    activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
   end
 
   def invalidate_subscribed_members_count_cache
@@ -275,7 +282,7 @@ class Course < ApplicationRecord
                                      .order(permission: :asc)
                                      .order(last_name: :asc, first_name: :asc)
 
-    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
+    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).to_h do |series_info, user|
       scores = series_info[1]
       data = {
         accepted: series_info[0].activities.count do |a|
@@ -294,7 +301,7 @@ class Course < ApplicationRecord
         end
       }
       [[user.id, series_info[0].id], data]
-    end.to_h
+    end
 
     {
       users: sorted_users,
@@ -333,6 +340,16 @@ class Course < ApplicationRecord
   end
 
   private
+
+  def nullify_submissions
+    # We can't use rails' `dependent: :nullify`, since this skips the
+    # submission's callbacks
+    submissions.each { |s| s.update(course_id: nil) }
+    # Because we update the submissions above, we need to make sure
+    # this object knows it doesn't have submissions anymore, otherwise
+    # the course isn't actually removed
+    reload
+  end
 
   def should_have_institution_when_visible_for_institution
     errors.add(:institution, 'should not be blank when only visible for institution') if visible_for_institution? && institution.blank?

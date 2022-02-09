@@ -35,6 +35,7 @@ class SubmissionsController < ApplicationController
     return unless request.format.html?
 
     @title = I18n.t('submissions.index.title')
+    @activity_read_states_path = activity_read_states_path
     @crumbs = []
     if @user
       @crumbs << if @course.present?
@@ -42,12 +43,16 @@ class SubmissionsController < ApplicationController
                  else
                    [@user.full_name, user_path(@user)]
                  end
+      @activity_read_states_path = user_activity_read_states_path(@user)
     elsif @series
       @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, breadcrumb_series_path(@series, current_user)]
+      @activity_read_states_path = nil
     elsif @course
       @crumbs << [@course.name, course_path(@course)]
+      @activity_read_states_path = course_activity_read_states_path(@course)
     elsif @judge
       @crumbs << [@judge.name, judge_path(@judge)]
+      @activity_read_states_path = nil
     end
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']
@@ -128,6 +133,8 @@ class SubmissionsController < ApplicationController
     authorize @submission
   end
 
+  # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
+  # changes made here are potentially applicable to both functions
   def set_submissions
     @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
     if params[:user_id]

@@ -12,15 +12,18 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.margin.right = 40;
     }
 
+    private format: (d: Date) => string;
+
     // axes
     private x: d3.ScaleTime<number, number>
     private color: d3.ScaleSequential<string>;
 
     // data
     private maxStack = 0; // largest value (max of colour scale domain)
-    private dateRange: number; // difference between first and last date in days
     private minDate: Date;
     private maxDate: Date;
+    private binTicks: Array<number>;
+    private binStep: number;
 
     private data: {
         "ex_id": string,
@@ -33,9 +36,15 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     /**
     * draws the graph's svg (and other) elements on the screen
     * No more data manipulation is done in this function
+    * @param {Boolean} animation Whether to play animations (disabled on a resize redraw)
     */
-    protected override draw(): void {
-        super.draw();
+    protected override draw(animation=true): void {
+        if (this.binTicks.length < 2) {
+            this.drawNoData();
+            return;
+        }
+
+        super.draw(animation);
 
         // no data in cell
         const emptyColor = this.darkMode ? "#37474F" : "white";
@@ -50,17 +59,34 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         // Scales
         this.color = d3.scaleSequential(d3.interpolate(lowColor, highColor))
             .domain([0, this.maxStack]);
-        this.x = d3.scaleTime()
-            .domain([this.minDate, end])
-            .range([5, this.innerWidth]);
+        this.x = d3.scaleBand()
+            .domain(this.binTicks)
+            .range([0, this.innerWidth]);
 
         // Axis
         this.graph.append("g")
-            .attr("transform", `translate(0, ${this.innerHeight})`)
+            .attr("transform", `translate(0, ${this.innerHeight - this.y.bandwidth() / 2})`)
             .call(
                 d3.axisBottom(this.x)
-                    .ticks(15, I18n.t("date.formats.weekday_short"))
-            );
+                    .tickValues(this.binTicks.slice(0, this.binTicks.length-1))
+                    .tickFormat(t => {
+                        const asDate = new Date(t);
+                        const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
+                        return this.binStep >= 24 ||
+                            (
+                                asDate.getHours() === (24 - timeZoneDiff) % 24 &&
+                                asDate.getMinutes() === 0
+                            ) ?
+                            d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                            d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                    })
+            )
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dy", ".7em")
+            .attr("transform", "rotate(-25)");
+
+        this.graph.select(".domain").remove();
 
         // init tooltip
         this.tooltip = this.container.append("div")
@@ -70,9 +96,10 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("z-index", 5);
 
         // make sure cell size isn't bigger than bandwidth
-        // this is commented for now awaiting more data
-        // const rectSize = Math.min(this.y.bandwidth()*1.5, this.innerWidth / this.dateRange - 5);
-        const rectSize = this.y.bandwidth();
+        const rectSize = Math.min(
+            this.y.bandwidth() * 1.5,
+            this.innerWidth / this.binTicks.length - 5
+        );
         // add cells
         this.graph.selectAll(".rectGroup")
             .data(this.data)
@@ -81,23 +108,53 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             // eslint-disable-next-line camelcase
             .each(({ ex_data, ex_id }, i, group) => {
                 d3.select(group[i]).selectAll("rect")
-                    .data(ex_data, d => d["date"].getTime())
+                    .data(ex_data, d => d.date)
                     .join("rect")
                     .attr("class", "day-cell")
                     .classed("empty", d => d.sum === 0)
                     .attr("rx", 6)
                     .attr("ry", 6)
                     .attr("fill", emptyColor)
-                    .attr("x", d => this.x(d.date) - rectSize / 2)
-                    .attr("y", this.y(ex_id))
+                    .attr("stroke", highColor)
+                    .attr("x", d => this.x(d.date) + (this.x.bandwidth() - rectSize) / 2)
+                    .attr("y", this.y(ex_id) + (this.y.bandwidth() - rectSize) / 2)
                     .on("mouseover", (_e, d) => this.tooltipHover(d))
                     .on("mousemove", e => this.tooltipMove(e))
                     .on("mouseout", () => this.tooltipOut())
-                    .transition().duration(500)
+                    .transition().duration(animation ? 500 : 0)
                     .attr("width", rectSize)
                     .attr("height", rectSize)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
             });
+        const unitStrings = I18n.t("time.units");
+        const divs = [60, 60, 24, 7];
+        const units = ["sec", "min", "hour", "day", "week"];
+        let step = this.binStep * 3600; // in seconds
+        let i = 0;
+        while (i < divs.length && step / divs[i] >= 1) {
+            step /= divs[i];
+            i++;
+        }
+        const legend = this.container
+            .append("div")
+            .style("position", "absolute")
+            .style("top", `${this.innerHeight}px`)
+            .append("div")
+            .style("display", "flex")
+            .style("align-items", "center");
+
+        legend.append("div")
+            .style("border-radius", "3.3px")
+            .style("width", "20px")
+            .style("height", "20px")
+            .style("border-style", "solid")
+            .style("border-width", "2px")
+            .style("border-color", highColor);
+
+        legend.append("span")
+            .text(`${step} ${step > 1 ? unitStrings[units[i]][1] : unitStrings[units[i]][0]}`)
+            .attr("class", "legend-text")
+            .style("margin-left", "5px");
     }
 
     /**
@@ -115,8 +172,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             // convert dates form strings to actual date objects
             ex.ex_data.forEach((d: Datum) => {
                 d.date = new Date(d.date);
-                // make sure they are set to midnight
-                d.date.setHours(0, 0, 0, 0);
             });
         });
 
@@ -124,40 +179,57 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
-        this.minDate = new Date(minDate);
-        this.maxDate = new Date(maxDate);
-        this.maxDate.setHours(23, 59, 59, 99); // set end right before midnight
 
-        this.dateRange = d3.timeDay.count(this.minDate, this.maxDate) + 1; // dateRange in days
-        const threshold = d3.scaleTime()
-            .domain([this.minDate.getTime(), this.maxDate.getTime()])
-            .ticks(d3.timeDay);
+        this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
+        this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 
+        // aim for 17 bins (between 15 and 20)
+        const [binStep, binTicks, allignedStart] = this.findBinTime(this.minDate, this.maxDate, 17);
+        this.binStep = binStep;
+        this.binTicks = binTicks;
+        this.minDate = allignedStart;
+        this.maxDate = new Date(this.binTicks[this.binTicks.length-1]);
+
+        if (this.binTicks.length < 2) {
+            return;
+        }
+
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
+
+        this.data = [];
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
-            // bin per day
-            const binned = d3.bin()
+            let binned = d3.bin()
                 .value(d => d.date.getTime())
-                .thresholds(threshold)
+                .thresholds(binTicks)
                 .domain([this.minDate.getTime(), this.maxDate.getTime()])(ex_data);
+
+            if (binned[0].x0 < this.minDate.getTime()) {
+                binned = binned.slice(1); // remove the 'before' bin
+            }
+            const binAmount = binned.length;
+            // begin and end points of last bin are the same moment at times
+            if (binned[binAmount-1].x0 === binned[binAmount-1].x1) {
+                binned.pop();
+            }
 
             const parsedData = [];
             // reduce bins to a single record per bin (see this.data)
-            binned.forEach((bin, i) => {
-                const newDate = new Date(this.minDate);
-                newDate.setDate(newDate.getDate() + i);
+            binned.forEach(bin => {
                 const sum = d3.sum(bin, r => r["count"]);
                 this.maxStack = Math.max(this.maxStack, sum);
                 parsedData.push(bin.reduce((acc, r) => {
-                    acc.date = r.date;
                     acc.sum = sum;
-                    acc[r.status] = r.count;
+                    acc[r.status] += r.count;
                     return acc;
                 }, this.statusOrder.reduce((acc, s) => {
                     acc[s] = 0; // make sure record is initialized with 0 counts
                     return acc;
-                }, { "date": newDate, "sum": 0 })));
+                }, { "date": bin.x0, "sum": 0 })));
             });
+
             this.data.push({ ex_id: String(ex_id), ex_data: parsedData });
         });
     }
@@ -176,10 +248,45 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(200)
             .style("opacity", .9);
-        let message = `<b>${this.longDateFormat(d.date)}</b><br><b>${d.sum} ${I18n.t("js.submissions")}</b>`;
-        this.statusOrder.forEach(s => {
-            if (d[s]) {
-                message += `<br>${d[s]} ${I18n.t(`js.status.${s.replaceAll(" ", "_")}`)}`;
+        let message = "";
+        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+        if (this.binStep < 24) {
+            const on = I18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}</b>
+                <br>${on} ${dateFormat(d.date)}:<br>
+            `;
+        } else if (this.binStep === 24) { // binning per day
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `${capitalize(format(d.date))}:<br>`;
+        } else if (this.binStep < 168) { // binning per multiple days
+            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            message = `
+                <b>${capitalize(format(d.date))} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
+                <br>
+            `;
+        } else { // binning per week(s)
+            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            message = `
+                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
+                <br>
+            `;
+        }
+        const subString = d.sum === 1 ? I18n.t("js.submission") : I18n.t("js.submissions");
+        message += `
+            <b>${d.sum} ${subString}</b>
+            `;
+        this.statusOrder.forEach(status => {
+            if (d[status]) {
+                message += `    
+                <span style="display: flex; justify-items: center">
+                ${this.submissionStatusIcon(status)}
+                <b style="margin-right: 4px">${d[status]}</b>
+                ${I18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
+                </span>`;
             }
         });
         this.tooltip.html(message);
@@ -203,5 +310,23 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         this.tooltip.transition()
             .duration(500)
             .style("opacity", 0);
+    }
+
+    private submissionStatusIcon(status, size = 18): string {
+        const [icon, color] = {
+            "correct": ["check", "correct"],
+            "wrong": ["close", "wrong"],
+            "time limit exceeded": ["alarm", "wrong"],
+            "runtime error": ["flash", "wrong"],
+            "compilation error": ["flash-circle", "wrong"],
+            "memory limit exceeded": ["memory", "wrong"],
+            "output limit exceeded": ["script-text", "wrong"]
+        }[status] || ["alert", "warning"];
+        return `<i class="mdi mdi-${icon} mdi-${size} colored-${color}" style="margin-right: 5px"></i>`;
+    }
+
+    protected override init(draw = true, data = undefined): void {
+        this.initTimePickers();
+        super.init(draw, data);
     }
 }

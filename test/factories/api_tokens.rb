@@ -13,6 +13,6 @@
 FactoryBot.define do
   factory :api_token do
     description { Faker::Lorem.unique.sentence }
-    user
+    user { User.find(3) } # load student fixture
   end
 end

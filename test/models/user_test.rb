@@ -15,6 +15,8 @@
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :bigint
 #  search         :string(4096)
+#  seen_at        :datetime
+#  sign_in_at     :datetime
 #
 
 require 'test_helper'
@@ -37,7 +39,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user with username should not have a token' do
-    user = create :user
+    user = create :user, :with_institution
     assert_nil user.token
   end
 
@@ -50,23 +52,23 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'only zeus and staff should be admin' do
-    assert create(:zeus).admin?
-    assert create(:staff).admin?
-    assert_not create(:user).admin?
+    assert users(:zeus).admin?
+    assert users(:staff).admin?
+    assert_not users(:student).admin?
   end
 
   test 'only zeus should always be course admin' do
-    assert create(:zeus).course_admin? nil
-    assert_not create(:staff).course_admin? nil
-    assert_not create(:user).course_admin? nil
+    assert users(:zeus).course_admin? nil
+    assert_not users(:staff).course_admin? nil
+    assert_not users(:student).course_admin? nil
   end
 
   test 'user and staff can be course admin' do
-    user = create(:user)
-    staff = create(:staff)
-    zeus = create(:zeus)
+    user = users(:student)
+    staff = users(:staff)
+    zeus = users(:zeus)
 
-    course = create(:course)
+    course = courses(:course1)
 
     assert_not user.course_admin?(course)
     assert_not staff.course_admin?(course)
@@ -88,7 +90,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'full name should be n/a when blank' do
-    user = create(:user, first_name: nil, last_name: nil)
+    user = build(:user, first_name: nil, last_name: nil)
     assert_equal 'n/a', user.full_name
 
     user.first_name = ' '
@@ -103,7 +105,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'short name should not be nil' do
-    user = create(:user)
+    user = build(:user)
     assert_equal user.username, user.short_name
 
     user.username = nil
@@ -117,11 +119,11 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user member_off should tell whether he is in a course or not' do
-    user1 = create(:user)
-    user2 = create(:user)
+    user1 = users(:student)
+    user2 = users(:staff)
 
-    course1 = create(:course)
-    course2 = create(:course)
+    course1 = build(:course)
+    course2 = build(:course)
 
     user1.courses << course1
     user2.courses << course2
@@ -139,11 +141,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'user should have correct number of attempted, unfinished and correct exercises' do
-    user = create :user
+    user = users(:student)
     exercise1 = create :exercise
     exercise2 = create :exercise
     exercise3 = create :exercise
-    create :exercise
 
     assert_user_exercises user, 0, 0, 0
 
@@ -222,57 +223,57 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'should allow two users with empty usernames' do
-    user1 = create :user
-    user2 = create :user
+    user1 = users(:student)
+    user2 = users(:staff)
 
     assert user1.update(username: '')
     assert user2.update(username: '')
   end
 
   test 'full_name should return a full name that is not equal to actual full name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     full_name = user.full_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal full_name, user.full_name
   end
 
   test 'first_name should return a first_name that is not equal to actual first name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     first_name = user.first_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal first_name, user.first_name
   end
 
   test 'last_name should return a last name that is not equal to actual last name of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     last_name = user.last_name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal last_name, user.last_name
   end
 
   test 'email should return a email that is not equal to actual email of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     email = user.email
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal email, user.email
   end
 
   test 'username should return a username that is not equal to actual username of the user when in demo mode' do
-    user = create :user
+    user = users(:student)
     username = user.username
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal username, user.username
   end
 
-  test 'institution name should return a name that is not equal to actual institutio name of the user when in demo mode' do
-    user = create :user
+  test 'institution name should return a name that is not equal to actual institution name of the user when in demo mode' do
+    user = create :user, :with_institution
     institution_name = user.institution&.name
     Current.any_instance.stubs(:demo_mode).returns(true)
     assert_not_equal institution_name, user.institution&.name
   end
 
   test 'recent_exercises should return the 3 most recent exercises submissions have been submitted' do
-    user = create :user
+    user = users(:student)
     exercises = (0..5).map { create :exercise }
     create :series, exercises: exercises
     exercises.each { |e| create :submission, user: user, exercise: e }
@@ -281,10 +282,10 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'pending_series should return all series of the users courses that have a deadline' do
-    user = create :user
+    user = users(:student)
     course = create :course, users: [user]
-    create :series, course: course, activity_count: 2, deadline: Time.current - 2.minutes # Not pending series
-    pending_series = create :series, course: course, activity_count: 2, deadline: Time.current + 2.minutes
+    create :series, course: course, activity_count: 2, deadline: 2.minutes.ago # Not pending series
+    pending_series = create :series, course: course, activity_count: 2, deadline: 2.minutes.from_now
     assert_equal [pending_series], user.pending_series
   end
 
@@ -303,8 +304,8 @@ end
 
 class UserHasManyTest < ActiveSupport::TestCase
   def setup
-    @user = create :user
-    @administrating_course = create :course
+    @user = users(:student)
+    @administrating_course = courses(:course1)
     membership_course_admin = CourseMembership.new(user: @user, course: @administrating_course, status: 'course_admin')
     @administrating_course.course_memberships.concat(membership_course_admin)
     @favorite_course = create :course
@@ -327,12 +328,18 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 3, subscribed_courses.count
   end
 
-  test 'favorite_courses should return the courses in which the user has set as favorite' do
+  test 'course functions should work' do
+    # favorite_courses should return the courses in which the user has set as favorite
     assert_equal [@favorite_course], @user.favorite_courses
-  end
 
-  test 'administrating_courses should return the courses in which the user is an admin' do
+    # administrating_courses should return the courses in which the user is an admin
     assert_equal [@administrating_course], @user.administrating_courses
+
+    # pending_courses should return the courses in which the user is a student
+    assert_equal [@pending_course], @user.pending_courses
+
+    # unsubscribed_courses should return the courses in which the user is a student
+    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
 
   test 'enrolled_courses should return the courses in which the user is a student' do
@@ -340,14 +347,6 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal true, enrolled_courses.include?(@enrolled_course.id)
     assert_equal true, enrolled_courses.include?(@favorite_course.id)
     assert_equal 2, enrolled_courses.count
-  end
-
-  test 'pending_courses should return the courses in which the user is a student' do
-    assert_equal [@pending_course], @user.pending_courses
-  end
-
-  test 'unsubscribed_courses should return the courses in which the user is a student' do
-    assert_equal [@unsubscribed_course], @user.unsubscribed_courses
   end
 
   test 'drawer_courses should not return courses if not subscribed for any' do
@@ -367,5 +366,236 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     @user.subscribed_courses.first.update(year: '2')
     assert_equal [@user.subscribed_courses.first], @user.drawer_courses
+  end
+
+  test 'user should be removed after merge' do
+    u1 = create :user
+    u2 = create :user
+    u1.merge_into(u2)
+
+    assert_not u1.persisted?
+  end
+
+  test 'merge should fail if institutions are different' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user, institution: i2
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should succeed if only one institution is set' do
+    i1 = create :institution
+    u1 = create :user, institution: i1
+    u2 = create :user
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal i1, u2.institution
+  end
+
+  test 'merge should fail if permissions are different' do
+    u1 = create :user, permission: 'student'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2)
+
+    assert_not result
+    assert u1.persisted?
+  end
+
+  test 'merge should take highest permission if force is used' do
+    u1 = create :user, permission: 'zeus'
+    u2 = create :user, permission: 'staff'
+
+    result = u1.merge_into(u2, force: true)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 'zeus', u2.permission
+  end
+
+  test 'merge should transfer all associated objects to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    [u1, u2].each do |u|
+      c = create :course
+      s = create :submission, user: u, course: c
+      create :api_token, user: u
+      create :event, user: u
+      create :export, user: u
+      create :notification, user: u
+      create :annotation, user: u, submission: s
+      create :question, submission: s
+    end
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.submissions.count
+    assert_equal 2, u2.api_tokens.count
+    assert_equal 2, u2.events.count
+    assert_equal 2, u2.exports.count
+    assert_equal 4, u2.notifications.count
+    assert_equal 4, u2.annotations.count
+    assert_equal 2, u2.questions.count
+  end
+
+  test 'merge should only transfer unique read states to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    a1 = create :content_page
+    a2 = create :content_page
+    create :activity_read_state, user: u1, activity: a1
+    create :activity_read_state, user: u2, activity: a1
+    create :activity_read_state, user: u1, activity: a2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.activity_read_states.count
+  end
+
+  test 'merge should only transfer unique identities to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    p1 = create :provider
+    p2 = create :provider
+    Identity.create user: u1, provider: p1, identifier: 'a'
+    Identity.create user: u2, provider: p1, identifier: 'b'
+    Identity.create user: u1, provider: p2, identifier: 'c'
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.identities.count
+  end
+
+  test 'merge should only transfer unique repositories to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    r1 = create :repository, :git_stubbed
+    r2 = create :repository, :git_stubbed
+    RepositoryAdmin.create user: u1, repository: r1
+    RepositoryAdmin.create user: u2, repository: r1
+    RepositoryAdmin.create user: u1, repository: r2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.repository_admins.count
+  end
+
+  test 'merge should only transfer unique evaluations to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    e1 = create :evaluation
+    e2 = create :evaluation
+    EvaluationUser.create user: u1, evaluation: e1
+    EvaluationUser.create user: u2, evaluation: e1
+    EvaluationUser.create user: u1, evaluation: e2
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.evaluation_users.count
+  end
+
+  test 'merge should transfer course membership with most rights to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    c1 = create :course
+    c2 = create :course
+    c3 = create :course
+    c4 = create :course
+    c5 = create :course
+    CourseMembership.create user: u1, course: c1, status: 'student', favorite: true
+    CourseMembership.create user: u1, course: c2, status: 'pending'
+    CourseMembership.create user: u1, course: c3, status: 'unsubscribed'
+    CourseMembership.create user: u1, course: c4, status: 'student'
+    CourseMembership.create user: u1, course: c5, status: 'course_admin'
+
+    CourseMembership.create user: u2, course: c2, status: 'pending'
+    CourseMembership.create user: u2, course: c3, status: 'course_admin', favorite: true
+    CourseMembership.create user: u2, course: c4, status: 'unsubscribed'
+    CourseMembership.create user: u2, course: c5, status: 'student'
+
+    result = u1.merge_into(u2)
+
+    assert_equal 0, u1.course_memberships.count
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 5, u2.course_memberships.count
+    assert_equal 4, u2.subscribed_courses.count
+    assert_equal 2, u2.favorite_courses.count
+    assert_equal 2, u2.administrating_courses.count
+    assert_equal 2, u2.enrolled_courses.count
+    assert_equal 1, u2.pending_courses.count
+    assert_equal 0, u2.unsubscribed_courses.count
+  end
+
+  test 'merge should transfer update cached values' do
+    u1 = create :user
+    u2 = create :user
+
+    c = create :course
+    c2 = create :course
+    CourseMembership.create user: u1, course: c, status: 'student'
+    CourseMembership.create user: u2, course: c, status: 'student'
+    s1 = create :series, course: c, exercise_count: 0
+    s2 = create :series, course: c2,  exercise_count: 0
+    e1 = create :exercise
+    e2 = create :exercise
+    e3 = create :exercise
+    SeriesMembership.create series: s1, activity: e1
+    SeriesMembership.create series: s1, activity: e2
+    SeriesMembership.create series: s2, activity: e3
+    create :correct_submission, user: u2, course: c, exercise: e1
+    create :wrong_submission, user: u2, course: c, exercise: e2
+    create :correct_submission, user: u1, course: c, exercise: e1
+    create :correct_submission, user: u1, course: c, exercise: e2
+    create :wrong_submission, user: u1, course: c2, exercise: e3
+
+    assert_equal 3, c.correct_solutions
+    assert_equal 2, c.subscribed_members_count
+    assert_equal 1, u2.correct_exercises
+    assert_equal 2, u2.attempted_exercises
+    assert_equal 2, e1.users_correct
+    assert_equal 2, e1.users_tried
+    assert_equal false, s1.completed?(user: u2)
+    assert_equal false, s2.started?(user: u2)
+    assert_equal false, s2.wrong?(user: u2)
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 1, c.subscribed_members_count
+    assert_equal 2, c.correct_solutions
+    assert_equal 2, u2.correct_exercises
+    assert_equal 3, u2.attempted_exercises
+    assert_equal 1, e1.users_correct
+    assert_equal 1, e1.users_tried
+    assert_equal true, s1.completed?(user: u2)
+    assert_equal true, s2.started?(user: u2)
+    assert_equal true, s2.wrong?(user: u2)
   end
 end

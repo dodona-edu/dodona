@@ -10,6 +10,8 @@ beforeAll(() => {
         .mockImplementation(arg => ({
             "time.formats.default": "%d-%m-%Y",
             "date.formats.short": "%e %b",
+            "time.formats.flatpickr_long": "F j Y H:i",
+            "time.formats.flatpickr_short": "m/d/Y H:i",
             "time.am": "'s ochtends",
             "time.pm": "'s middags",
             "date.day_names": [
@@ -27,6 +29,22 @@ beforeAll(() => {
         }[arg]) as string);
     I18n.locale = "nl";
     window.dodona = { darkMode: false };
+
+
+    document.body.innerHTML = "" +
+    "<div class='daterange-picker' id='daterange-<%= series.id %>'>" +
+        "<div class='input-group date-picker' id='scope-start-<%= series.id %>'>" +
+            "<input type='text' class='form-control' data-input>" +
+        "</div>" +
+        "<div class='input-group date-picker' id='scope-end-<%= series.id %>'>" +
+            "<input type='text' class='form-control' data-input>" +
+        "</div>" +
+        "<button class='btn btn-secondary' id='scope-apply-<%= series.id %>'></button>" +
+    "</div>";
+});
+
+afterAll(() => {
+    jest.restoreAllMocks();
 });
 
 describe("Violin tests", () => {
@@ -35,7 +53,7 @@ describe("Violin tests", () => {
         data: [{ ex_id: 1, ex_data: [4, 5, 2] }], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         violin = new ViolinGraph(
             "1", "#container"
         );
@@ -68,7 +86,7 @@ describe("Stacked tests", () => {
         ], exercises: [[1, "test"]], student_count: 3
     };
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         stacked = new StackedStatusGraph(
             "1", "#container"
         );
@@ -93,21 +111,38 @@ describe("Stacked tests", () => {
 });
 
 describe("Timeseries tests", () => {
+    const tzOffset = new Date("2020-07-11 00:00Z").getTimezoneOffset() * 60000;
+    // make sure we're using the defined dateTimes in local time
     const data = {
         data: [
             {
                 ex_id: 1,
                 ex_data: [
-                    { date: "1302-07-11", status: "wrong", count: 9 },
-                    { date: "1302-07-11", status: "correct", count: 3 },
-                    { date: "1302-07-12", status: "correct", count: 6 }
+                    {
+                        date: new Date(
+                            new Date("2020-07-11 00:00Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "wrong", count: 9
+                    },
+                    {
+                        date: new Date(
+                            new Date("2020-07-11 03:59Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "correct", count: 3
+                    },
+                    {
+                        date: new Date(
+                            new Date("2020-07-15 00:00Z").getTime() + tzOffset
+                        ).toUTCString(),
+                        status: "correct", count: 6
+                    }
                 ]
             }
         ], exercises: [[1, "test"]], student_count: 3
     };
     let timeseries;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         timeseries = new TimeseriesGraph(
             "1", "#container"
         );
@@ -119,39 +154,49 @@ describe("Timeseries tests", () => {
     });
 
     test("TimeseriesGraph should correctly transform data", () => {
+        timeseries.dateStart = new Date("2020-07-11 00:00Z").toISOString();
         timeseries.processData(data);
         expect(timeseries.data).toHaveLength(1); // one exercise
+        expect(timeseries.binStep).toBe(4); // 4 hours per bin
         const ex = timeseries.data[0];
         expect(ex["ex_id"]).toBe("1");
         const datum = ex["ex_data"];
-        expect(datum).toHaveLength(2);
-        expect(datum[0]["sum"]).toBe(12); // day 1
-        expect(datum[1]["sum"]).toBe(6); // day 2
+        expect(datum).toHaveLength(25); // 25 bins total
+        expect(datum[0]["sum"]).toBe(12); // first two should get binned together
+        expect(datum[24]["sum"]).toBe(6); // last datum should be put in last bin
 
-        expect(timeseries["dateRange"]).toBe(2);
         expect(timeseries["maxStack"]).toBe(12);
     });
 });
 
 describe("CTimeseries tests", () => {
+    const tzOffset = new Date("2020-07-11 00:00Z").getTimezoneOffset() * 60000;
     const data = {
         data: [
             {
                 ex_id: 1,
                 ex_data: [
-                    new Date(2021, 7, 29).getTime(),
-                    new Date(2021, 7, 30).getTime(),
-                    new Date(2021, 7, 30).getTime(),
-                    new Date(2021, 7, 30).getTime(),
+                    new Date(
+                        new Date("2020-07-09 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
+                        new Date("2020-07-11 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
+                        new Date("2020-07-11 03:59Z").getTime() + tzOffset
+                    ).toUTCString(),
+                    new Date(
+                        new Date("2020-07-15 00:00Z").getTime() + tzOffset
+                    ).toUTCString(),
                 ]
             }
         ],
         exercises: [[1, "test"]],
-        student_count: 3
+        student_count: 3,
     };
     let cTimeseries;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         cTimeseries = new CTimeseriesGraph(
             "1", "#container"
         );
@@ -163,14 +208,17 @@ describe("CTimeseries tests", () => {
     });
 
     test("CTimeseriesGraph should correctly transform data", () => {
+        cTimeseries.dateStart = new Date("2020-07-11 00:00Z").toISOString();
         cTimeseries.processData(data);
         expect(cTimeseries.data).toHaveLength(1); // 1 exercise
         expect(cTimeseries.data[0]["ex_id"]).toBe("1");
+        expect(cTimeseries.binStep).toBe(4);
         const datum = cTimeseries.data[0]["ex_data"];
-        expect(datum).toHaveLength(3);
-        expect(datum[0]["cSum"]).toBe(0); // no submissions before on day 0
-        expect(datum[1]["cSum"]).toBe(1); // one submissions on day 1
-        expect(datum[2]["cSum"]).toBe(4); // 3 subs on day 2 + sub on day 1
+        expect(datum).toHaveLength(26); // 25 bins total + 1 for 'before' section
+        expect(datum[0]["cSum"]).toBe(1); // 'before' bin should contain 1 submission
+        expect(datum[1]["cSum"]).toBe(3); // two submissions in first normal bin + 1 from before
+        const last = datum.length - 1;
+        expect(datum[last]["cSum"]).toBe(4); // 3 subs from former bins + 1 from last
 
         expect(cTimeseries["maxSum"]).toBe(4);
     });
@@ -179,7 +227,7 @@ describe("CTimeseries tests", () => {
 describe("General tests", () => {
     let graph;
     beforeEach(() => {
-        document.body.innerHTML = "<div id='container'></div>";
+        document.body.innerHTML += "<div id='container'></div>";
         // eslint-disable-next-line
         // @ts-ignore
         graph = new SeriesGraph(

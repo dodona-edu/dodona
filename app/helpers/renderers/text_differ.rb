@@ -1,5 +1,9 @@
-class LCSHtmlDiffer
+class TextDiffer
   require 'builder'
+
+  def self.render_accepted(builder, generated)
+    builder.span(generated, class: 'output')
+  end
 
   def initialize(generated, expected)
     @generated = generated || ''

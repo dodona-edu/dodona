@@ -24,8 +24,8 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'submission with content_page as exercise is not valid' do
-    submission = create :submission
-    content_page = create :content_page
+    submission = build :submission
+    content_page = build :content_page
 
     assert_raises ActiveRecord::AssociationTypeMismatch do
       submission.exercise = content_page
@@ -37,7 +37,7 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'should not create job for submission which is already queued' do
     submission = nil
     assert_jobs_enqueued(1) do
-      submission = create :submission
+      submission = create :submission, evaluate: true
     end
     assert_jobs_enqueued(0) do
       submission.evaluate_delayed
@@ -45,12 +45,12 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'submissions should be rate limited for a user' do
-    user = create :user
+    user = users(:student)
     create :submission, user: user
     submission = build :submission, :rate_limited, user: user
     assert_not submission.valid?
 
-    later = Time.zone.now + 10.seconds
+    later = 10.seconds.from_now
 
     Time.stubs(:now).returns(later)
 
@@ -59,8 +59,8 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'submissions should not be rate limited for different users' do
-    user = create :user
-    other = create :user
+    user = users(:student)
+    other = users(:staff)
     create :submission, user: user
     submission = build :submission, :rate_limited, user: other
     assert submission.valid?
@@ -90,32 +90,32 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove staff tabs for students' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json, status: :correct
-    user = create :user, permission: :student
+    submission = build :submission, result: json, status: :correct
+    user = users(:student)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 1, result[:groups].count
   end
 
   test 'safe_result should remove zeus tabs for staff' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json, status: :correct
-    user = create :user, permission: :staff
+    submission = build :submission, result: json, status: :correct
+    user = users(:staff)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:groups].count
   end
 
   test 'safe_result should display all tabs to zeus' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json, status: :correct
-    user = create :zeus
+    submission = build :submission, result: json, status: :correct
+    user = users(:zeus)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 3, result[:groups].count
   end
 
   test 'safe_result should remove staff and zeus messages for students' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json, status: :correct
-    user = create :user, permission: :student
+    submission = build :submission, result: json, status: :correct
+    user = users(:student)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:messages].count
     assert_equal 2, result[:groups][0][:messages].count
@@ -126,8 +126,8 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'safe_result should remove zeus message for staff' do
     json = FILE_LOCATION.read
-    submission = create :submission, result: json, status: :correct
-    user = create :user, permission: :staff
+    submission = build :submission, result: json, status: :correct
+    user = users(:staff)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
     assert_equal 2, result[:groups].count
     assert_equal 3, result[:messages].count
@@ -179,7 +179,7 @@ class SubmissionTest < ActiveSupport::TestCase
     Submission.destroy_all
     Submission.update_heatmap_matrix
 
-    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
+    create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current)
     Rails.cache.expects(:write).once
     Submission.update_heatmap_matrix
   end
@@ -189,7 +189,7 @@ class SubmissionTest < ActiveSupport::TestCase
     Submission.destroy_all
     Submission.update_punchcard_matrix(timezone: Time.zone)
 
-    create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current)
+    create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current)
     Rails.cache.expects(:write).once
     Submission.update_punchcard_matrix(timezone: Time.zone)
   end
@@ -205,18 +205,18 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'update_heatmap_matrix should write an updated value to cache when fetch returns something' do
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_heatmap_matrix
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     Rails.cache.expects(:fetch).returns(to_update)
     Rails.cache.expects(:write).with(format(Submission::HEATMAP_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global'), Submission.old_heatmap_matrix)
     Submission.update_heatmap_matrix
   end
 
   test 'update_punchcard_matrix should write an updated value to cache when fetch returns something' do
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     Rails.cache.expects(:fetch).returns(to_update)
     Rails.cache.expects(:write).with(format(Submission::PUNCHCARD_MATRIX_CACHE_STRING, course_id: 'global', user_id: 'global', timezone: Time.zone.utc_offset), Submission.old_punchcard_matrix(timezone: Time.zone))
     Submission.update_punchcard_matrix(timezone: Time.zone)
@@ -240,50 +240,50 @@ class SubmissionTest < ActiveSupport::TestCase
   end
 
   test 'clean calculate and update should give the same result for punchcard' do
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_punchcard_matrix({ timezone: Time.zone }, to_update)
     assert_equal updated, Submission.old_punchcard_matrix(timezone: Time.zone)
   end
 
   test 'clean calculate and update should give the same result for heatmap' do
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     to_update = Submission.old_heatmap_matrix
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current) }
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_heatmap_matrix({}, to_update)
     assert_equal updated, Submission.old_heatmap_matrix
   end
 
   test 'user option should work for punchcard' do
-    temp = create :user
-    49.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
-    user = create :user
-    50.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
-    assert_equal 50, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
+    temp = users(:student)
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
+    user = users(:staff)
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
+    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
   end
 
   test 'user option should work for heatmap' do
-    temp = create :user
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: temp }
-    user = create :user
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), user: user }
+    temp = users(:student)
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
+    user = users(:staff)
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
     assert_equal 3, Submission.old_heatmap_matrix(user: user)[:value].values.sum
   end
 
   test 'course option should work for punchcard' do
-    temp = create :course
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    temp = courses(:course1)
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
     assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
   end
 
   test 'course option should work for heatmap' do
-    temp = create :course
-    2.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: temp }
+    temp = courses(:course1)
+    2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: Time.current - 5.years, to: Time.current), course: course }
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
     assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
@@ -300,11 +300,35 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_not File.exist?(submission.fs_path)
   end
 
+  test 'time range should include correct submissions' do
+    start = Time.zone.local(2021, 10, 10, 13, 5, 0)
+    stop = Time.zone.local(2021, 11, 15, 9, 21, 0)
+    create :submission, id: 1, created_at: Time.zone.local(2020, 10, 11, 13, 10, 0) # not included
+    create :submission, id: 2, created_at: Time.zone.local(2021, 10, 10, 12, 0, 0) # not included
+    create :submission, id: 3, created_at: Time.zone.local(2021, 10, 10, 13, 3, 0) # not included
+    create :submission, id: 4, created_at: Time.zone.local(2021, 10, 10, 13, 15, 0) # included
+    create :submission, id: 5, created_at: Time.zone.local(2021, 10, 10, 14, 0, 0) # included
+    create :submission, id: 6, created_at: Time.zone.local(2021, 10, 20, 12, 0, 0) # included
+    create :submission, id: 7, created_at: Time.zone.local(2021, 11, 15, 8, 0, 0) # included
+    create :submission, id: 8, created_at: Time.zone.local(2021, 11, 15, 9, 18, 0) # included
+    create :submission, id: 9, created_at: Time.zone.local(2021, 11, 15, 9, 25, 0) # not included
+    create :submission, id: 10, created_at: Time.zone.local(2021, 11, 15, 10, 0, 0) # not included
+    create :submission, id: 11, created_at: Time.zone.local(2022, 11, 14, 8, 0, 0) # not included
+
+    subs = Submission.all
+    assert_equal 11, subs.length
+    subs = subs.in_time_range(start, stop)
+    assert_equal 5, subs.length
+    subs.each do |sub|
+      assert_includes 4..8, sub.id
+    end
+  end
+
   class StatisticsTest < ActiveSupport::TestCase
     setup do
       @date = DateTime.new(1302, 7, 11, 13, 37, 42)
-      @exercise = create :exercise
-      @course = create :course
+      @exercise = exercises(:python_exercise)
+      @course = courses(:course1)
       @series = create :series, exercises: [@exercise], course: @course
       3.times do
         user = create :student, subscribed_courses: [@course]
@@ -317,26 +341,24 @@ class SubmissionTest < ActiveSupport::TestCase
       end
     end
 
-    test 'violin computation correct' do
+    test 'visualisation computations correct' do
+      # violin
       result = Submission.violin_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0], [5, 5, 5]
-    end
 
-    test 'stacked computation correct' do
+      # stacked
       result = Submission.stacked_status_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0], { 'wrong' => 9, 'correct' => 6 }
-    end
 
-    test 'timeseries computation correct' do
+      # time series
       result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
-      assert_equal result.values[0], [{ date: '1302-07-11', status: 'correct', count: 6 }, { date: '1302-07-11', status: 'wrong', count: 9 }]
-    end
+      assert_equal result.values[0], [{ date: @date, status: 'correct', count: 6 }, { date: @date, status: 'wrong', count: 9 }]
 
-    test 'ctimeseries computation correct' do
+      # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)

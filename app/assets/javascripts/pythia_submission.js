@@ -1,6 +1,5 @@
 /* globals fullScreenApi */
 import { showInfoModal } from "./modal.js";
-import { logToGoogle } from "./util.js";
 
 function initPythiaSubmissionShow(submissionCode, activityPath) {
     function init() {
@@ -23,7 +22,6 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
         });
 
         $(".tutorlink").on("click", function () {
-            logToGoogle("tutor", "start", document.title);
             const exerciseId = $(".feedback-table").data("exercise_id");
             const $group = $(this).parents(".group");
             const stdin = $group.data("stdin").slice(0, -1);

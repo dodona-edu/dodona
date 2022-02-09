@@ -26,6 +26,9 @@ require 'testhelpers/jwks_helper'
 require 'testhelpers/lti_test_helper'
 require 'testhelpers/cache_helper'
 
+# automatically set locale for all routes
+require 'minitest/utils/rails/locale'
+
 # Always generate the same testdata
 Faker::Config.random = Random.new(42)
 

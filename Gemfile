@@ -13,10 +13,12 @@ gem 'puma', '~> 5.6.1'
 # Use dart-sass for stylesheets temporarily a few commits ahead of release to fix `assets:precompile` not defined bug
 gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
 
+# Use jsbundling to bundle javascript in app/javascript with webpack
 gem 'jsbundling-rails', '~> 1.0.0'
 
-# Load sprockets ourselves for now => planned fo remove this soon
-gem 'sprockets-rails'
+# Load sprockets ourselves because rails 7 no longer autoloads this
+# This is still used for all javascript in app/assets/javascripts
+gem 'sprockets-rails', '~> 3.4.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'

@@ -10,8 +10,8 @@ gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.1'
 
-# Use dart-sass for stylesheets temporarily a few commits ahead of release to fix `assets:precompile` not defined bug
-gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
+# Use dart-sass for stylesheets
+gem 'cssbundling-rails', '~> 1.0.0'
 
 # Load sprockets ourselves for now => planned fo remove this soon
 gem 'sprockets-rails'

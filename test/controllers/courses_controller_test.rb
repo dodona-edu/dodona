@@ -28,6 +28,16 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should render manage series' do
+    @instance.series << create(:series)
+    @instance.series.first.activities << create(:exercise, access: :private)
+    user = create :staff
+    @instance.administrating_members << user
+    sign_in user
+    get manage_series_course_url(@instance)
+    assert_response :success
+  end
+
   test 'should reset token' do
     old_secret = @instance.secret
     post reset_token_course_url(@instance)

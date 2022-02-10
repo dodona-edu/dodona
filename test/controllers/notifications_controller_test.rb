@@ -12,6 +12,11 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should render index' do
+    get notifications_url
+    assert_response :success
+  end
+
   test 'should update notification' do
     patch notification_url(@notification, format: :json), params: { notification: { read: true } }
     assert_response :success

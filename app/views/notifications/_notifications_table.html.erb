@@ -17,7 +17,7 @@
         <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
       </td>
       <td>
-        <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
+        <span><%= t 'notifications.index.created', when: time_ago_in_words(n.created_at) %></span>
       </td>
       <td class="actions">
         <span class="btn btn-sm btn-secondary read-toggle-button" >

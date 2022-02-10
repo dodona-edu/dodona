@@ -5,11 +5,11 @@ module OIDC
     module Settings
       KEY_PATH = '/home/dodona/key.pem'.freeze
 
-      def base_settings
+      def base_settings(host = Rails.configuration.default_host)
         # Support only third-parties that are discoverable.
         {
           client_options: {
-            redirect_uri: "https://#{Rails.configuration.default_host}/users/auth/oidc/callback"
+            redirect_uri: "https://#{host}/users/auth/oidc/callback"
           },
           discovery: true,
           response_mode: :form_post,

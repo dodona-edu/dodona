@@ -70,14 +70,6 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def allow_iframe
-    response.headers['X-Frame-Options'] = "allow-from #{default_url}"
-  end
-
-  def default_url
-    "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
-  end
-
   def remote_request?
     request.format.js? || request.format.json?
   end

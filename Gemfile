@@ -86,8 +86,8 @@ gem 'pundit', '~> 2.1.1'
 # impersonate users
 gem 'pretender', '~> 0.4.0'
 
-# db annotations Temporary use of github branch to support rails 7, should be reverted on new release
-gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
+# db annotations
+gem 'annotate','~> 3.2.0'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'

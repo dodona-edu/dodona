@@ -109,7 +109,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
   test 'correct OpenID Connect Launch flow works' do
     target = 'http://www.example.com/target'
     # Described by section 5.1.1.1 of the IMS Security Framework.
-    post '/users/auth/lti', params: {
+    post user_lti_omniauth_authorize_path, params: {
       iss: @provider.issuer,
       login_hint: 'login hint test',
       target_link_uri: target
@@ -137,7 +137,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
 
     # The LTI platform says OK, do the callback.
     # Described in section 5.1.1.3 of the IMS Security Framework
-    post '/users/auth/lti/callback', params: {
+    post user_lti_omniauth_callback_path, params: {
       id_token: id_token,
       state: params[:state]
     }
@@ -153,7 +153,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
   test 'content selection is redirected even if target is wrong' do
     target = 'blip blop'
 
-    post '/users/auth/lti', params: {
+    post user_lti_omniauth_authorize_path, params: {
       iss: @provider.issuer,
       login_hint: 'login hint test',
       target_link_uri: target
@@ -166,7 +166,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     payload = lti_payload(params[:nonce], target, 'LtiDeepLinkingRequest')
     id_token = encode_jwt(payload)
 
-    post '/users/auth/lti/callback', params: {
+    post user_lti_omniauth_callback_path, params: {
       id_token: id_token,
       state: params[:state]
     }

@@ -10,8 +10,8 @@ gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.1'
 
-# Use dart-sass for stylesheets temporarily a few commits ahead of release to fix `assets:precompile` not defined bug
-gem 'cssbundling-rails', github: 'rails/cssbundling-rails', ref: 'fa6151d'
+# Use dart-sass for stylesheets
+gem 'cssbundling-rails', '~> 1.0.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
 gem 'jsbundling-rails', '~> 1.0.0'
@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.10.2', require: false
+gem 'bootsnap', '~> 1.10.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.27.0'
+gem 'rouge', '3.28.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -88,8 +88,8 @@ gem 'pundit', '~> 2.1.1'
 # impersonate users
 gem 'pretender', '~> 0.4.0'
 
-# db annotations Temporary use of github branch to support rails 7, should be reverted on new release
-gem 'annotate', github: 'dabit/annotate_models', branch: 'rails-7'
+# db annotations
+gem 'annotate', '~> 3.2.0'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'

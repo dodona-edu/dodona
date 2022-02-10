@@ -173,7 +173,7 @@ class RepositoriesController < ApplicationController
       do_reprocess = true
       user_hash[:user] = @repository.admins.first
     end
-    @repository.delay(queue: 'git').process_activities_email_errors(user: user_hash[:user], name: user_hash[:name], email: user_hash[:email]) if do_reprocess
+    @repository.delay(queue: 'git').process_activities_email_errors(**user_hash) if do_reprocess
 
     render plain: msg, status: :ok
   end

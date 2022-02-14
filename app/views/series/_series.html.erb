@@ -28,16 +28,16 @@
             <i class="mdi mdi-format-list-bulleted"></i>
           </button>
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="violin" role="tab" title="<%= t("js.violin_title") %>">
-            <%= custom_icon("violin", {class: "mdi svg-icon-btn"}) %>
+            <%= custom_icon("violin", class: "mdi svg-icon-btn") %>
           </button>
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="stacked" role="tab" title="<%= t("js.stacked_title") %>">
-            <%= custom_icon("stacked-bar-chart", {class: "mdi svg-icon-btn rotate"}) %>
+            <%= custom_icon("stacked-bar-chart", class: "mdi svg-icon-btn rotate") %>
           </button>
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="timeseries" role="tab" title="<%= t("js.timeseries_title") %>">
-            <%= custom_icon("heatmap", {class: "mdi svg-icon-btn"}) %>
+            <%= custom_icon("heatmap", class: "mdi svg-icon-btn") %>
           </button>
           <button class="btn graph-toggle" data-bs-target="#series-graph-<%= series.id %>" data-bs-toggle="tab" data-series-id="<%= series.id %>" data-type="ctimeseries" role="tab" title="<%= t("js.ctimeseries_title") %>">
-            <%= custom_icon("stacked-line-chart", {class: "mdi svg-icon-btn"}) %>
+            <%= custom_icon("stacked-line-chart", class: "mdi svg-icon-btn") %>
           </button>
         </div>
       <% end %>

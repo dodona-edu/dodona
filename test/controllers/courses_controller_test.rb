@@ -28,6 +28,16 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'should render manage series' do
+    @instance.series << create(:series)
+    @instance.series.first.activities << create(:exercise, access: :private)
+    user = create :staff
+    @instance.administrating_members << user
+    sign_in user
+    get manage_series_course_url(@instance)
+    assert_response :success
+  end
+
   test 'should reset token' do
     old_secret = @instance.secret
     post reset_token_course_url(@instance)
@@ -798,14 +808,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
     assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
     assert_equal 'open serie2 + deadline', event1.summary
-    assert_equal t('courses.ical.serie_deadline', serie_name: serie2.name, course_name: @course.name, serie_url: series_url(serie2)), event1.description
+    expected = I18n.t('courses.ical.serie_deadline', serie_name: serie2.name, course_name: @course.name, serie_url: series_url(serie2))
+    assert_equal expected, event1.description
     assert_equal series_url(serie2), event1.url.to_s
 
     event2 = cal.events.second
     assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
     assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
     assert_equal 'open serie1 + deadline', event2.summary
-    assert_equal t('courses.ical.serie_deadline', serie_name: serie1.name, course_name: @course.name, serie_url: series_url(serie1)), event2.description
+    assert_equal I18n.t('courses.ical.serie_deadline', serie_name: serie1.name, course_name: @course.name, serie_url: series_url(serie1)), event2.description
     assert_equal series_url(serie1), event2.url.to_s
 
     # Series that are hidden, closed or don't have a deadline should not be present in the ics file

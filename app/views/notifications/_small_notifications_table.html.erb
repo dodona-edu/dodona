@@ -9,7 +9,7 @@
         <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
         <div class="text-muted">
           <small>
-            <span><%= t 'notifications.index.created', {when: time_ago_in_words(n.created_at)} %></span>
+            <span><%= t 'notifications.index.created', when: time_ago_in_words(n.created_at) %></span>
           </small>
         </div>
       </td>

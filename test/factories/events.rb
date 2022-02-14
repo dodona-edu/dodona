@@ -14,6 +14,6 @@ FactoryBot.define do
   factory :event do
     event_type { Event.event_types.keys.sample }
     user { User.find(2) } # load student fixture
-    message { Faker::Lorem.words 5 }
+    message { Faker::Lorem.words(number: 5) }
   end
 end

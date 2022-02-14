@@ -48,12 +48,13 @@ If you want to help with development, issues tagged with the [student label](htt
 6. Run `bundle install` and `yarn install`
 7. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=true rails db:setup`
-8. Run `bin/build-css` to build the stylesheets.
-9. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
-10. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database from step 4)
-   - `http://dodona.localhost:3000/nl/users/1/token/zeus`
-   - `http://dodona.localhost:3000/nl/users/2/token/staff`
-   - `http://dodona.localhost:3000/nl/users/3/token/student`
+8. Run `yarn build:css` to build the stylesheets.
+9. Run `yarn build:js` to build the javascript.
+10. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
+11. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database from step 4)
+12. `http://dodona.localhost:3000/nl/users/1/token/zeus`
+13. `http://dodona.localhost:3000/nl/users/2/token/staff`
+14. `http://dodona.localhost:3000/nl/users/3/token/student`
 
 #### Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.

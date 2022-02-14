@@ -10,6 +10,8 @@ Rails.application.configure do
   # alternative host name
   config.alt_host = 'naos.dodona.be'
 
+  config.web_hosts = [config.default_host, config.alt_host]
+
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
@@ -17,8 +19,8 @@ Rails.application.configure do
   # Allowed hostnames
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
-  # Where we host our assets (a single domain, for caching)
-  config.action_controller.asset_host = 'naos.ugent.be'
+  # Where we host our assets, can be / for current host or a domain
+  config.action_controller.asset_host = '/'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

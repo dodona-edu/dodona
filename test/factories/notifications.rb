@@ -14,7 +14,7 @@
 
 FactoryBot.define do
   factory :notification do
-    message { Faker::Lorem.words(number: 5) }
+    message { ['annotations.index.new_annotation', 'exports.index.ready_for_download'].sample }
     notifiable { |n| n.association(:export) }
     user { User.find(2) } # load student fixture
   end

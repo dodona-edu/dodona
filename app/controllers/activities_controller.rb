@@ -6,7 +6,6 @@ class ActivitiesController < ApplicationController
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
-  before_action :allow_iframe, only: %i[description]
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
   # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
@@ -27,7 +26,7 @@ class ActivitiesController < ApplicationController
   end
 
   content_security_policy only: %i[description] do |policy|
-    policy.frame_ancestors -> { default_url }
+    policy.frame_ancestors -> { allowed_frame_ancestors }
   end
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -201,5 +200,11 @@ class ActivitiesController < ApplicationController
     @series = Series.find(params[:series_id])
     @crumbs << [@series.name, breadcrumb_series_path(@series, current_user)]
     authorize @series
+  end
+
+  def allowed_frame_ancestors
+    Rails.configuration.web_hosts.map do |web_host|
+      "#{request.protocol}#{web_host}:#{request.port}"
+    end
   end
 end

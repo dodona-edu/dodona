@@ -18,6 +18,11 @@ Rails.application.configure do
   config.default_host = 'dodona.ugent.be'
   config.action_mailer.default_url_options = { host: 'dodona.ugent.be' }
 
+  # alternative host name
+  config.alt_host = 'dodona.be'
+
+  config.web_hosts = [config.default_host, config.alt_host]
+
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')

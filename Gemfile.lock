@@ -262,7 +262,6 @@ GEM
     mime-types-data (3.2022.0105)
     mini_magick (4.11.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.7.1)
     minitest (5.15.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
@@ -295,8 +294,7 @@ GEM
       timeout
     net-ssh (6.1.0)
     nio4r (2.5.8)
-    nokogiri (1.13.1)
-      mini_portile2 (~> 2.7.0)
+    nokogiri (1.13.1-x86_64-linux)
       racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -343,7 +341,7 @@ GEM
     pretender (0.4.0)
       actionpack (>= 5.2)
     public_suffix (4.0.6)
-    puma (5.6.1)
+    puma (5.6.2)
       nio4r (~> 2.0)
     pundit (2.1.1)
       activesupport (>= 3.0.0)
@@ -509,7 +507,7 @@ GEM
     zeitwerk (2.5.4)
 
 PLATFORMS
-  ruby
+  x86_64-linux
 
 DEPENDENCIES
   ace-rails-ap (~> 4.4)
@@ -566,7 +564,7 @@ DEPENDENCIES
   omniauth_openid_connect (~> 0.3.5)
   premailer-rails (~> 1.11.1)
   pretender (~> 0.4.0)
-  puma (~> 5.6.1)
+  puma (~> 5.6.2)
   pundit (~> 2.1.1)
   rack-mini-profiler (~> 2.3.3)
   rails (~> 7.0.1)
@@ -593,7 +591,7 @@ DEPENDENCIES
   will_paginate (~> 3.3.1)
 
 RUBY VERSION
-   ruby 2.7.5p203
+   ruby 3.0.3p157
 
 BUNDLED WITH
-   2.1.4
+   2.2.32

@@ -144,6 +144,9 @@ gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.1.0'
 
+# Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
+gem 'io-wait', '~> 0.2.0'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.13.0'

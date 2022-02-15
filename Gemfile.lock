@@ -401,7 +401,7 @@ GEM
       rack (>= 1.1)
       rubocop (>= 1.7.0, < 2.0)
     ruby-progressbar (1.11.0)
-    ruby-saml (1.12.2)
+    ruby-saml (1.14.0)
       nokogiri (>= 1.10.5)
       rexml
     ruby-vips (2.1.4)
@@ -553,7 +553,7 @@ DEPENDENCIES
   rb-readline (~> 0.5.5)
   rouge (= 3.28.0)
   rubocop-rails (~> 2.13.2)
-  ruby-saml (~> 1.12.2)
+  ruby-saml (~> 1.14.0)
   rubyzip (~> 2.3.2)
   selenium-webdriver (~> 4.1.0)
   simplecov (~> 0.21.2)

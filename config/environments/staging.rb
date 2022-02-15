@@ -6,9 +6,11 @@ Rails.application.configure do
 
   # The main webapp
   config.default_host = 'naos.ugent.be'
-  
+
   # alternative host name
   config.alt_host = 'naos.dodona.be'
+
+  config.web_hosts = [config.default_host, config.alt_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'
@@ -17,8 +19,8 @@ Rails.application.configure do
   # Allowed hostnames
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
-  # Where we host our assets (a single domain, for caching)
-  config.action_controller.asset_host = 'naos.ugent.be'
+  # Where we host our assets, can be / for current host or a domain
+  config.action_controller.asset_host = '/'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -69,7 +71,6 @@ Rails.application.configure do
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   config.assets.js_compressor = Uglifier.new(harmony: true) if defined? Uglifier
-  config.assets.css_compressor = :sass
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.

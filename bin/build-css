@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+./node_modules/sass/sass.js \
+  ./app/assets/stylesheets/application.sass.scss:./app/assets/builds/application.css \
+  ./app/assets/stylesheets/application-dark.sass.scss:./app/assets/builds/application-dark.css \
+  ./app/assets/stylesheets/mails.sass.scss:./app/assets/builds/mails.css \
+  --no-source-map \
+  --load-path=node_modules \
+  --load-path=./app/assets/stylesheets/ \
+  --load-path=./vendor/assets/stylesheets/ \
+  --style compressed \
+  $@

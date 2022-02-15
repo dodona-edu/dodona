@@ -8,9 +8,11 @@ gem 'rails', '~> 6.1.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.1'
-# Use sass for stylesheets
-gem 'sassc-rails', '~> 2.1.2'
+gem 'puma', '~> 5.6.2'
+
+# Use dart-sass for stylesheets
+gem 'cssbundling-rails', '~> 1.0.0'
+
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
 
@@ -27,7 +29,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.1'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.10.2', require: false
+gem 'bootsnap', '~> 1.10.3', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -45,7 +47,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.3.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.27.0'
+gem 'rouge', '3.28.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'

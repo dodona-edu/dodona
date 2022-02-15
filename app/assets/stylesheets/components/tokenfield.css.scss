@@ -3,6 +3,8 @@
  * https://github.com/sliptree/bootstrap-tokenfield
  * Copyright 2013-2014 Sliptree and other contributors; Licensed MIT
  */
+@use "sass:math";
+
 .tokenfield {
   height: auto;
   min-height: 34px;
@@ -119,7 +121,7 @@
   display: inline-flex;
   align-items: center;
   height: $token-height;
-  border-radius: $token-height/2;
+  border-radius: math.div($token-height, 2);
   padding-left: 12px;
   padding-right: 12px;
   border-width: 0px;

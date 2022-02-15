@@ -14,7 +14,7 @@ module LTI
 
         def setup
           @env['omniauth.params'] ||= {}
-          @env['omniauth.strategy'].options.merge!(base_settings)
+          @env['omniauth.strategy'].options.merge!(base_settings(@env['HTTP_HOST']))
           @env['omniauth.strategy'].options.merge!(configure)
         end
 

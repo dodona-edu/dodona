@@ -15,6 +15,8 @@ Rails.application.configure do
   config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
   config.action_mailer.default_url_options = { host: ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost:3000' }
 
+  config.web_hosts = [config.default_host]
+
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'
   config.tutor_url = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: '/cgi-bin/build_trace.py')

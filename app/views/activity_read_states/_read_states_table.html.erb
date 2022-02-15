@@ -58,6 +58,14 @@
   </table>
 </div>
 
+<%
+  params = {}
+  params[:activity_id] = local_assigns[:activity].id if local_assigns[:activity].present?
+  params[:user_id] = local_assigns[:user].id if local_assigns[:user].present?
+%>
+
+<center><%= page_navigation_links read_states, true, 'activity_read_states', params %></center>
+
 <script type="text/javascript">
   $(function () {
     if (dodona.initFilterButtons){

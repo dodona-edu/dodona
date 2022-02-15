@@ -175,6 +175,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
         this.data = data.map(({ ex_id, ex_data }) => ({
             "ex_id": String(ex_id),
             // sort so median is calculated correctly
+            // eslint-disable-next-line camelcase
             "counts": ex_data.sort((a: number, b: number) => a - b),
             "freq": [],
             "average": 0

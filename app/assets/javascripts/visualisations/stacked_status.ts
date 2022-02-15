@@ -9,7 +9,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
 
     // data
     private data: { "exercise_id": string; "status": string; "cSum": number; "count": number }[];
-    private maxSum: Record<string, number> // total number of submissions per exercise
+    private maxSum: Record<string, number>; // total number of submissions per exercise
 
     /**
     * Draws the graph's svg (and other) elements on the screen
@@ -141,12 +141,14 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
             let sum = 0;
             this.statusOrder.forEach(s => {
                 // check if status is present in the data
+                // eslint-disable-next-line camelcase
                 const c = ex_data[s] ?? 0;
                 this.data.push({
                     "exercise_id": String(ex_id), "status": s, "cSum": sum, "count": c
                 });
                 sum += c;
             });
+            // eslint-disable-next-line camelcase
             this.maxSum[ex_id] = sum;
         });
     }

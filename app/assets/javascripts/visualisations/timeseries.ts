@@ -15,7 +15,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
     private format: (d: Date) => string;
 
     // axes
-    private x: d3.ScaleTime<number, number>
+    private x: d3.ScaleTime<number, number>;
     private color: d3.ScaleSequential<string>;
 
     // data
@@ -281,7 +281,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             `;
         this.statusOrder.forEach(status => {
             if (d[status]) {
-                message += `    
+                message += `
                 <span style="display: flex; justify-items: center">
                 ${this.submissionStatusIcon(status)}
                 <b style="margin-right: 4px">${d[status]}</b>

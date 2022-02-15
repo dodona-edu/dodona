@@ -120,7 +120,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return [identity, identity.user] if identity.present? && auth_uid.present?
 
     # No username was provided, try to find the user using the email address.
-    user = User.from_email(auth_email)
+    user = User.from_email_and_institution(auth_email, provider.institution_id)
     return [nil, nil] if user.blank?
 
     # Find an identity for the user at the current provider.

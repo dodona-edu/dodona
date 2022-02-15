@@ -39,7 +39,7 @@ export abstract class SeriesGraph {
     protected readonly selector: string;
     protected readonly container: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
     protected svg: d3.Selection<SVGSVGElement, unknown, HTMLElement, unknown>;
-    protected graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>
+    protected graph: d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
 
     // data
     private seriesId: string;

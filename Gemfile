@@ -66,12 +66,12 @@ gem 'autoprefixer-rails', '~>10.4.2'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
-gem 'ruby-saml', '~> 1.12.2'
+gem 'ruby-saml', '~> 1.14.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 0.8.2'
 gem 'omniauth-oauth2', '~> 1.7.2'
-gem 'omniauth_openid_connect', '~> 0.3.5'
+gem 'omniauth_openid_connect', '~> 0.4.0'
 
 # Json webtokens
 gem 'jwt', '~> 2.3.0'
@@ -81,7 +81,7 @@ gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'
 
 # authorization
-gem 'pundit', '~> 2.1.1'
+gem 'pundit', '~> 2.2.0'
 
 # impersonate users
 gem 'pretender', '~> 0.4.0'

@@ -90,8 +90,8 @@ const TABLE_WRAPPER_SELECTOR = ".series-activities-table-wrapper";
 const SKELETON_TABLE_SELECTOR = ".activity-table-skeleton";
 
 class Series {
-    static findAll(cards_selector = ".series.card") {
-        const $cards = $(cards_selector);
+    static findAll(cardsSelector = ".series.card") {
+        const $cards = $(cardsSelector);
         return $.map($cards, card => new Series(card));
     }
 

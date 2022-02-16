@@ -2,7 +2,7 @@ require 'zip'
 
 module ExportHelper
   class Zipper
-    include Pundit
+    include Pundit::Authorization
 
     attr_reader :users, :item, :errors
 

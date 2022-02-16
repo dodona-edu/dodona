@@ -21,7 +21,7 @@ function setParam(
 }
 
 export class QuestionTable {
-    refreshUrl: string
+    refreshUrl: string;
 
     /**
      * Initiate the question table. The table containing the questions should have the html id
@@ -109,7 +109,7 @@ export class QuestionTable {
 }
 
 export class RefreshingQuestionTable extends QuestionTable {
-    timeout: InactiveTimeout
+    timeout: InactiveTimeout;
 
     constructor(refreshUrl: string, autoStart: boolean) {
         super(refreshUrl, true);

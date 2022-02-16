@@ -429,8 +429,8 @@ class Submission < ApplicationRecord
     submissions = submissions.judged
     submissions = submissions.from_students(options[:series].course)
 
-    first_sub = submissions.least_recent.first.created_at
-    last_sub = submissions.most_recent.first.created_at
+    first_sub = submissions.present? ? submissions.least_recent.first.created_at : nil
+    last_sub = submissions.present? ? submissions.most_recent.first.created_at : nil
 
     submissions = submissions.in_time_range(options[:start], options[:end]) if options[:end].present?
 

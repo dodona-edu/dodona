@@ -86,12 +86,7 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-          # Allow resolving the required service worker
-          member do
-            get 'inputServiceWorker.js', to: 'activities#isw', as: 'isw'
-          end
-        end
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
@@ -132,8 +127,6 @@ Rails.application.routes.draw do
                 as: 'description_media'
           end
         end
-        # Allow resolving the required service worker
-        get 'inputServiceWorker.js', to: 'activities#isw', as: 'isw'
       end
     end
 

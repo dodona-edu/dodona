@@ -271,7 +271,7 @@ if Rails.env.development?
       series_exercises = exercises_list.sample(rand(3) + 2)
       s.exercises << series_exercises
       series_exercises.each do |exercise|
-        course.enrolled_members.sample(5).each do |student|
+        course.enrolled_members.sample(25).each do |student|
           status = if rand() < 0.5
                      :correct
                    else
@@ -284,6 +284,7 @@ if Rails.env.development?
                             skip_rate_limit_check: true,
                             status: status,
                             accepted: status == :correct,
+                            created_at: (Time.now - 1.day).beginning_of_day + 6.hour + rand(0..540).minutes + rand(0..540).minutes,
                             summary: submission_summary(status),
                             code: "print(input())\n",
                             result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))

@@ -11,7 +11,6 @@ class ActivitiesController < ApplicationController
   # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
   skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
-  protect_from_forgery except: :isw # Allow serving JavaScript service worker file
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
@@ -105,10 +104,25 @@ class ActivitiesController < ApplicationController
 
     @title = @activity.name
     @crumbs << [@activity.name, '#']
+
+    if @activity.exercise?
+      # Enable SharedArrayBuffers on exercise pages
+      response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
+      response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
+    end
   end
 
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
+    if @activity.exercise?
+      # CORP, allow sandbox to fetch from dodona
+      response.set_header 'Cross-Origin-Resource-Policy', 'cross-origin'
+      # COEP, allow sandbox to work with Papyros present
+      response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
+      # Potential future improvement for iframes? https://github.com/camillelamy/explainers/blob/main/anonymous_iframes.md
+      # Limit allowed origins to prevent abuse of CORP header
+      response.set_header 'Access-Control-Allow-Origin', "#{Rails.configuration.sandbox_host} #{Rails.configuration.default_host}"
+    end
 
     render layout: 'frame'
   end
@@ -176,13 +190,6 @@ class ActivitiesController < ApplicationController
       response.headers['accept-ranges'] = 'bytes'
       response.content_type = type
     end
-  end
-
-  # Serve the inputServiceWorker file required to handle input in Papyros
-  def isw
-    send_file(Rails.root.join('node_modules', '@dodona', 'papyros', 'dist', 'inputServiceWorker.js'),
-    :filename => 'inputServiceWorker.js',
-    :type => 'text/javascript')
   end
 
   private

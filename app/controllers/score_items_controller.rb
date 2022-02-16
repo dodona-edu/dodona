@@ -93,7 +93,6 @@ class ScoreItemsController < ApplicationController
     # Reload the evaluation, since one of the items changed.
     @evaluation.score_items.reload
     # Preload the stuff for one exercise and an existing instance.
-    ActiveRecord::Associations::Preloader.new(records: item.evaluation_exercise, associations: [score_items: :scores])
-    item.evaluation_exercise
+    EvaluationExercise.includes({score_items: :scores}).find(item.evaluation_exercise.id)
   end
 end

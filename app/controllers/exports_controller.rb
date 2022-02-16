@@ -86,7 +86,9 @@ class ExportsController < ApplicationController
       params.delete(:with_labels)
     end
 
-    Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params.to_unsafe_h)
+    params.permit(:selected_ids,:with_labels, :all_students, :only_last_submission, :data, :solution_count, :all, :controller, :action, :locale, :id )
+
+    Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params)
     respond_to do |format|
       format.html do
         flash[:notice] = I18n.t('exports.index.export_started')

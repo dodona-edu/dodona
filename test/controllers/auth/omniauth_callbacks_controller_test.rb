@@ -323,7 +323,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     OAUTH_PROVIDERS.each do |provider_name|
       # Setup.
       provider = create provider_name
-      user = create :temporary_user
+      user = create :temporary_user, institution: provider.institution
       identity = build :identity, provider: provider, user: user
       username = 'real_username'
       omniauth_mock_identity identity,

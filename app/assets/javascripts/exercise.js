@@ -2,6 +2,8 @@
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
+import { InputMode, Papyros, plFromString, ProgrammingLanguage } from "@dodona/papyros";
+import { Exception } from "sass";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -148,6 +150,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     let lastSubmission;
     let lastTimeout;
 
+    let papyros;
+    let launched = false;
+
     function init() {
         if (editorShown) {
             initEditor();
@@ -182,6 +187,37 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
+
+        // Papyros should have access to the Dodona editor
+        try {
+            const pl = plFromString(programmingLanguage);
+            papyros = Papyros.fromElement(
+                document.getElementById("papyros-wrapper"),
+                {
+                    programmingLanguage: pl,
+                    standAlone: false,
+                    locale: "nl",
+                    inputMode: InputMode.Interactive,
+                    gridStyle: "rows"
+                }
+            );
+            
+            $("#papyros-offcanvas-show-btn").on("click", async function () {
+                if (!launched) {
+                    await Papyros.configureInput(false);
+                    await papyros.launch();
+                    launched = true;
+                }
+            });
+
+            $("#papyros-code-copy-btn").on("click", function () {
+                editor.setValue(papyros.getCode());
+            });
+        } catch (_e) {
+            // Unsupported programming language, so do not initialize Papyros
+            // Hide button that shows the off-canvas
+            $("#papyros-offcanvas-show-btn").addClass("hidden");
+        }
 
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;

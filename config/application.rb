@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 6.1
+    config.load_defaults 7.0
 
     config.dodona_email = 'dodona@ugent.be'
     # Configuration for the application, engines, and railties goes here.
@@ -17,6 +17,8 @@ module Dodona
     # These settings can be overridden in specific environments using the files
     # in config/environments, which are processed later.
     #
+    # config.time_zone = "Central Time (US & Canada)"
+    # config.eager_load_paths << Rails.root.join("extras")
     # Application hosts
 
     # The main webapp

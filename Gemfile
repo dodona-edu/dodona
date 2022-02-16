@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.1.4'
+gem 'rails', '~> 7.0.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
@@ -12,6 +12,9 @@ gem 'puma', '~> 5.6.2'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.0.0'
+
+# Load sprockets ourselves for now => planned fo remove this soon
+gem 'sprockets-rails'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
@@ -133,11 +136,14 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 2.3.3'
 gem 'stackprof', '~> 0.2.17'
 
-# Datadog
-gem 'ddtrace', '~> 0.54.2'
+# Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available
+gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.1.0'
+
+# Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
+gem 'io-wait', '~> 0.2.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -174,12 +180,9 @@ group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.7.1'
   gem 'web-console', '~> 4.2.0'
-  # Spring speeds up development by keeping your application running in the background.
-  # Read more: https://github.com/rails/spring
+
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-rails', '~> 2.13.2'
-  gem 'spring', '~> 2.1.1'
-  gem 'spring-watcher-listen', '~> 2.0.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.7.0'

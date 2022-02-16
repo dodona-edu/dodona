@@ -86,9 +86,10 @@ class ExportsController < ApplicationController
       params.delete(:with_labels)
     end
 
-    params.permit(:selected_ids,:with_labels, :all_students, :only_last_submission, :data, :solution_count, :all, :controller, :action, :locale, :id )
+    # Only retain supported options from the received function parameters
+    options = params.permit(Export::Zipper::SUPPORTED_OPTIONS)
 
-    Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), params)
+    Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), options)
     respond_to do |format|
       format.html do
         flash[:notice] = I18n.t('exports.index.export_started')

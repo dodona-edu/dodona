@@ -1,5 +1,23 @@
 require "active_support/core_ext/integer/time"
 
+class AssetHeaders
+  # Source: https://gist.github.com/ryanb/4157256
+  def initialize(app)
+    @app = app
+  end
+
+  def call(env)
+    request = Rack::Request.new(env)
+    response = @app.call(env)
+    if request.path =~ /^\/assets\//
+      # COEP does not seem required
+      #response[1]['Cross-Origin-Embedder-Policy'] = 'require-corp'
+      response[1]['Cross-Origin-Resource-Policy'] = 'cross-origin'
+    end
+    response
+  end
+end
+
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -41,14 +59,19 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
+
+  config.public_file_server.headers = {
+     # 'Cross-Origin-Embedder-Policy' => 'require-corp',
+    'Cross-Origin-Resource-Policy' => 'cross-origin'
+  }
   if Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :mem_cache_store, { namespace: :"2" }
-    config.public_file_server.headers = {
+    config.public_file_server.headers.merge!({
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
-    }
+    })
   else
     config.action_controller.perform_caching = false
 
@@ -100,6 +123,9 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
+
+  # Use correct headers on /assets
+  config.middleware.use AssetHeaders
 
   # Regenerate js translation files
   config.middleware.use I18n::JS::Middleware

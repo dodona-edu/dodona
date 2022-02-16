@@ -2,8 +2,7 @@
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
-import { InputMode, Papyros, plFromString, ProgrammingLanguage } from "@dodona/papyros";
-import { Exception } from "sass";
+import { InputMode, Papyros, plFromString } from "@dodona/papyros";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -196,7 +195,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 {
                     programmingLanguage: pl,
                     standAlone: false,
-                    locale: "nl",
+                    locale: I18n.locale,
                     inputMode: InputMode.Interactive,
                     gridStyle: "rows"
                 }

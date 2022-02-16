@@ -114,6 +114,7 @@ class ActivitiesController < ApplicationController
 
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
+
     if @activity.exercise?
       # CORP, allow sandbox to fetch from dodona
       response.set_header 'Cross-Origin-Resource-Policy', 'cross-origin'

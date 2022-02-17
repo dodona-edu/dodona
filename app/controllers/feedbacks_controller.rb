@@ -67,11 +67,7 @@ class FeedbacksController < ApplicationController
     attrs = permitted_attributes(@feedback)
     attrs['scores_attributes'].each { |s| s['last_updated_by_id'] = current_user.id } if attrs['scores_attributes'].present?
 
-    # Reset scores if a new exercise is chosen
-    @feedback.scores.each { |s| s.destroy } if attrs['submission_id'].present? && attrs['submission_id'] != @feedback.submission_id
-
     updated = @feedback.update(attrs)
-
     # We might have updated scores, so recalculate the map.
     @score_map = @feedback.scores.index_by(&:score_item_id)
 

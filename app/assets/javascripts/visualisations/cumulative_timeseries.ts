@@ -150,16 +150,15 @@ export class CTimeseriesGraph extends SeriesGraph {
                     this.binTicks
                 )
                 .tickFormat(t => {
-                    const binStart = t - this.binStep * 3600000;
-                    const asDate = new Date(binStart);
+                    const asDate = new Date(t);
                     const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
                     return this.binStep >= 24 ||
                         (
                             asDate.getHours() === (24 - timeZoneDiff) % 24 &&
                             asDate.getMinutes() === 0
                         ) ?
-                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(binStart):
-                        d3.timeFormat(I18n.t("time.formats.plain_time"))(binStart);
+                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
+                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
                 })
             )
             .selectAll("text")
@@ -345,45 +344,19 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     private tooltipText(i: number): string {
         const date = this.binTicks[i];
-        let startMessage = ""; // formatted start moment
-        let endMessage = ""; // formatted end moment
-        let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
         const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
-        const startDate = new Date(date - this.binStep * 3600000);
-        const endDate = new Date(date - 60000); // One minute before real end for display purposes
+        let message = "<b>";
 
-        if (i === 0) {
-            startMessage = capitalize(I18n.t("js.date_before"));
-        }
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
-            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            startMessage = i ?
-                `${timeFormat(startDate)} -` :
-                startMessage;
-            endMessage = timeFormat(endDate);
-            extraMessage = `<br>${on} ${dateFormat(endDate)}`;
-        } else if (this.binStep === 24) { // binning per day
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            endMessage = `${i === 0 ? format(endDate) : capitalize(format(endDate))}:`;
-        } else if (this.binStep < 168) { // binning per multiple days
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            startMessage = i ?
-                `${capitalize(format(startDate))} -` :
-                startMessage;
-            endMessage = format(endDate);
-        } else { // binning per week(s)
-            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
-            startMessage = i ?
-                `${capitalize(weekDay(startDate))} -` :
-                startMessage;
-            endMessage = i ?
-                monthDay(endDate):
-                weekDay(endDate);
+            message += timeFormat(date);
+            message += ` ${on} `;
         }
-        let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
+
+        const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+        message += capitalize(weekDay(date));
+
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
             message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}

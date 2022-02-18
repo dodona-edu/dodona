@@ -107,7 +107,7 @@ class Feedback < ApplicationRecord
     return unless submission_id_changed? && submission_id_was.present?
 
     Submission.find(submission_id_was).annotations.where(evaluation_id: evaluation_id).destroy_all
-    scores.each { |s| s.destroy }
+    scores.each(&:destroy)
   end
 
   def destroy_related_annotations

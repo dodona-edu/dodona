@@ -364,7 +364,7 @@ class SubmissionTest < ActiveSupport::TestCase
       assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)
     end
 
-    test 'visualisation work return empty list on empty series' do
+    test 'visualisation return empty list on empty series' do
       exercise = create :exercise
       series = create :series, exercises: [exercise], course: @course
 

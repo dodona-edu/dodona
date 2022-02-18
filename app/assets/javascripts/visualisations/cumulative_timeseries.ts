@@ -150,15 +150,16 @@ export class CTimeseriesGraph extends SeriesGraph {
                     this.binTicks
                 )
                 .tickFormat(t => {
-                    const asDate = new Date(t);
+                    const binStart = t - this.binStep * 3600000;
+                    const asDate = new Date(binStart);
                     const timeZoneDiff = (asDate.getTimezoneOffset() - this.minDate.getTimezoneOffset()) / 60;
                     return this.binStep >= 24 ||
                         (
                             asDate.getHours() === (24 - timeZoneDiff) % 24 &&
                             asDate.getMinutes() === 0
                         ) ?
-                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
-                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(binStart):
+                        d3.timeFormat(I18n.t("time.formats.plain_time"))(binStart);
                 })
             )
             .selectAll("text")
@@ -218,6 +219,7 @@ export class CTimeseriesGraph extends SeriesGraph {
 
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
+        this.maxSum = 0;
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()
@@ -347,6 +349,8 @@ export class CTimeseriesGraph extends SeriesGraph {
         let endMessage = ""; // formatted end moment
         let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
         const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+        const startDate = new Date(date - this.binStep * 3600000);
+        const endDate = new Date(date - 60000); // One minute before real end for display purposes
 
         if (i === 0) {
             startMessage = capitalize(I18n.t("js.date_before"));
@@ -356,28 +360,28 @@ export class CTimeseriesGraph extends SeriesGraph {
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
             const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             startMessage = i ?
-                `${timeFormat(new Date(date - this.binStep * 3600000))} -` :
+                `${timeFormat(startDate)} -` :
                 startMessage;
-            endMessage = timeFormat(date);
-            extraMessage = `<br>${on} ${dateFormat(date)}`;
+            endMessage = timeFormat(endDate);
+            extraMessage = `<br>${on} ${dateFormat(endDate)}`;
         } else if (this.binStep === 24) { // binning per day
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            endMessage = `${i === 0 ? format(date) : capitalize(format(date))}:`;
+            endMessage = `${i === 0 ? format(endDate) : capitalize(format(endDate))}:`;
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             startMessage = i ?
-                `${capitalize(format(new Date(date - this.binStep * 3600000)))} -` :
+                `${capitalize(format(startDate))} -` :
                 startMessage;
-            endMessage = format(date);
+            endMessage = format(endDate);
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             startMessage = i ?
-                `${capitalize(weekDay(new Date(date - this.binStep * 3600000)))} -` :
+                `${capitalize(weekDay(startDate))} -` :
                 startMessage;
             endMessage = i ?
-                monthDay(date):
-                weekDay(date);
+                monthDay(endDate):
+                weekDay(endDate);
         }
         let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
         this.exOrder.forEach(e => {

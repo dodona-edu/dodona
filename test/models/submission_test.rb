@@ -363,5 +363,26 @@ class SubmissionTest < ActiveSupport::TestCase
       assert_equal result.length, 1 # one key: 1 exercise
       assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)
     end
+
+    test 'visualisation work return empty list on empty series' do
+      exercise = create :exercise
+      series = create :series, exercises: [exercise], course: @course
+
+      # violin
+      result = Submission.violin_matrix(course: @course, series: series)[:value]
+      assert_equal result.length, 0
+
+      # stacked
+      result = Submission.stacked_status_matrix(course: @course, series: series)[:value]
+      assert_equal result.length, 0
+
+      # time series
+      result = Submission.timeseries_matrix(course: @course, series: series)[:value]
+      assert_equal result.length, 0
+
+      # ctimeseries
+      result = Submission.cumulative_timeseries_matrix(course: @course, series: series)[:value]
+      assert_equal result.length, 0
+    end
   end
 end

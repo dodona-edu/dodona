@@ -362,6 +362,7 @@ export class CTimeseriesGraph extends SeriesGraph {
             message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
                     (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
+        message += "</b>";
         return message;
     }
 

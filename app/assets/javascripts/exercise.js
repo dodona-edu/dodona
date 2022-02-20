@@ -191,13 +191,26 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         try {
             const pl = plFromString(programmingLanguage);
             papyros = Papyros.fromElement(
-                document.getElementById("papyros-wrapper"),
                 {
                     programmingLanguage: pl,
                     standAlone: false,
                     locale: I18n.locale,
                     inputMode: InputMode.Interactive,
-                    gridStyle: "rows"
+                }, {
+                    code: {
+                        parentElementId: "papyros-editor-wrapper",
+                        attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                    },
+                    panel: {
+                        parentElementId: "papyros-panel-wrapper"
+                    },
+                    output: {
+                        parentElementId: "papyros-output-wrapper",
+                        attributes: new Map([["style", "max-height: 28vh;"]])
+                    },
+                    input: {
+                        parentElementId: "papyros-input-wrapper"
+                    }
                 }
             );
             
@@ -212,10 +225,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             $("#papyros-code-copy-btn").on("click", function () {
                 editor.setValue(papyros.getCode());
             });
-        } catch (_e) {
+        } catch (e) {
             // Unsupported programming language, so do not initialize Papyros
             // Hide button that shows the off-canvas
             $("#papyros-offcanvas-show-btn").addClass("hidden");
+            console.log("Error during initialization of Papyros", e);
         }
 
         // export function

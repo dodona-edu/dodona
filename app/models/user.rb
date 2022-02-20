@@ -283,10 +283,10 @@ class User < ApplicationRecord
     end
   end
 
-  def self.from_email(email)
-    return nil if email.blank?
+  def self.from_email_and_institution(email, institution_id)
+    return nil if email.blank? || institution_id.nil?
 
-    find_by(email: email)
+    find_by(email: email, institution_id: institution_id)
   end
 
   def set_search

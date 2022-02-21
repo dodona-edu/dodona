@@ -197,21 +197,21 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     locale: I18n.locale,
                     inputMode: InputMode.Interactive,
                 }, {
-                    code: {
-                        parentElementId: "papyros-editor-wrapper",
-                        attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
-                    },
-                    panel: {
-                        parentElementId: "papyros-panel-wrapper"
-                    },
-                    output: {
-                        parentElementId: "papyros-output-wrapper",
-                        attributes: new Map([["style", "max-height: 28vh;"]])
-                    },
-                    input: {
-                        parentElementId: "papyros-input-wrapper"
-                    }
+                code: {
+                    parentElementId: "papyros-editor-wrapper",
+                    attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                },
+                panel: {
+                    parentElementId: "papyros-panel-wrapper"
+                },
+                output: {
+                    parentElementId: "papyros-output-wrapper",
+                    attributes: new Map([["style", "max-height: 28vh;"]])
+                },
+                input: {
+                    parentElementId: "papyros-input-wrapper"
                 }
+            }
             );
 
             $("#papyros-offcanvas-show-btn").on("click", async function () {
@@ -219,6 +219,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     await Papyros.configureInput(false);
                     await papyros.launch();
                     launched = true;
+                }
+                const initialCode = editor.getValue();
+                if (initialCode) {
+                    papyros.setCode(initialCode);
                 }
             });
 

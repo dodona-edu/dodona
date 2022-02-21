@@ -138,7 +138,7 @@ GEM
     crass (1.0.6)
     css_parser (1.11.0)
       addressable
-    cssbundling-rails (1.0.0)
+    cssbundling-rails (1.1.0)
       railties (>= 6.0.0)
     daemons (1.4.1)
     dalli (3.2.1)
@@ -532,7 +532,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.7.6)
   capybara (~> 3.36.0)
   codecov (~> 0.6.0)
-  cssbundling-rails (~> 1.0.0)
+  cssbundling-rails (~> 1.1.0)
   dalli (~> 3.2.1)
   ddtrace!
   delayed_job_active_record (~> 4.1.7)

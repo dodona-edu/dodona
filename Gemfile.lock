@@ -551,7 +551,6 @@ DEPENDENCIES
   i18n-js (~> 3.9.0)
   icalendar (~> 2.7)
   image_processing (~> 1.12.1)
-  io-wait (~> 0.2.1)
   jbuilder (~> 2.11.5)
   json-schema (~> 2.8.1)
   jwt (~> 2.3.0)

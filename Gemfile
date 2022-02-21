@@ -127,7 +127,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.2.0'
+gem 'dalli', '~> 3.2.1'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'

@@ -345,7 +345,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     private tooltipText(i: number): string {
         const date = this.binTicks[i];
         const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
-        let message = "<b>";
+        let message = "";
 
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
@@ -362,8 +362,8 @@ export class CTimeseriesGraph extends SeriesGraph {
             message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
                     (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
-        message += "</b>";
-        return message;
+
+        return "<b>" + message + "</b>";
     }
 
     private yRangeToggle(): void {

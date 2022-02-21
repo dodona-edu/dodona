@@ -49,7 +49,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         // no data in cell
         const emptyColor = this.darkMode ? "#37474F" : "white";
         // almost no data in cell
-        const lowColor = this.darkMode ? "#01579B" : "#E3F2FD";
+        const lowColor = this.darkMode ? "#364953" : "#E3F2FD";
         // a lot of data in cell
         const highColor = this.darkMode ? "#039BE5" : "#0D47A1";
 

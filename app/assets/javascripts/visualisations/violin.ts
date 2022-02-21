@@ -196,7 +196,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             // largest x-value
             this.maxFreq = Math.max(this.maxFreq, d3.max(ex.freq, bin => bin.length));
 
-            ex.average = d3.mean(ex.counts);
+            ex.average = d3.mean(ex.counts) || 0;
         });
     }
 

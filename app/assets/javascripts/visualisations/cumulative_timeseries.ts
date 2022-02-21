@@ -344,7 +344,6 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     private tooltipText(i: number): string {
         const date = this.binTicks[i];
-        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
         let message = "";
 
         if (this.binStep < 24) {
@@ -355,7 +354,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         }
 
         const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-        message += capitalize(weekDay(date));
+        message += weekDay(date);
 
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);

@@ -105,11 +105,11 @@ class ActivitiesController < ApplicationController
     @title = @activity.name
     @crumbs << [@activity.name, '#']
 
-    if @activity.exercise?
-      # Enable SharedArrayBuffers on exercise pages
-      response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
-      response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
-    end
+    return unless @activity.exercise?
+
+    # Enable SharedArrayBuffers on exercise pages
+    response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
+    response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
   end
 
   def description

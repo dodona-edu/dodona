@@ -213,7 +213,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     }
                 }
             );
-            
+
             $("#papyros-offcanvas-show-btn").on("click", async function () {
                 if (!launched) {
                     await Papyros.configureInput(false);

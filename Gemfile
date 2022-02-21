@@ -42,7 +42,7 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
-gem 'sinatra', '~>2.1.0'
+gem 'sinatra', '~>2.2.0'
 
 # pagination
 gem 'will_paginate', '~>3.3.1'

@@ -11,7 +11,7 @@ gem 'mysql2', '~> 0.5.3'
 gem 'puma', '~> 5.6.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.0.0'
+gem 'cssbundling-rails', '~> 1.1.0'
 
 # Load sprockets ourselves for now => planned fo remove this soon
 gem 'sprockets-rails'

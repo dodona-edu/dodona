@@ -306,7 +306,7 @@ if Rails.env.development?
     s.exercises << series_exercises
 
     series_exercises.each do |exercise|
-      visualisation_test.enrolled_members.sample(12).each do |student|
+      visualisation_test.enrolled_members.sample(rand(25)).each do |student|
         rand(1..10).times do
           status = if rand() < 0.5
                      :correct

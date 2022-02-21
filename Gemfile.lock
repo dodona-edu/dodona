@@ -271,7 +271,7 @@ GEM
     minitest (5.15.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
-    minitest-utils (0.4.7)
+    minitest-utils (0.4.8)
       minitest
     mocha (1.13.0)
     msgpack (1.4.4)
@@ -562,7 +562,7 @@ DEPENDENCIES
   mail_form (~> 1.9.0)
   memory_profiler (~> 1.0.0)
   minitest-ci (~> 3.4.0)
-  minitest-utils (~> 0.4.7)
+  minitest-utils (~> 0.4.8)
   mocha (~> 1.13.0)
   mysql2 (~> 0.5.3)
   nokogiri (~> 1.13.1)

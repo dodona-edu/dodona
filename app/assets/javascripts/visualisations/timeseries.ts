@@ -199,6 +199,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         }
 
         this.data = [];
+        this.maxStack = 0;
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
             let binned = d3.bin()

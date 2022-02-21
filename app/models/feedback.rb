@@ -26,7 +26,7 @@ class Feedback < ApplicationRecord
   delegate :exercise, to: :evaluation_exercise
 
   before_save :uncomplete, if: :submission_id_changed?
-  before_save :manage_annotations_after_submission_update
+  before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
   before_destroy :destroy_related_annotations
@@ -103,10 +103,11 @@ class Feedback < ApplicationRecord
     self.completed = false
   end
 
-  def manage_annotations_after_submission_update
+  def reset_feedback_after_submission_update
     return unless submission_id_changed? && submission_id_was.present?
 
     Submission.find(submission_id_was).annotations.where(evaluation_id: evaluation_id).destroy_all
+    scores.each(&:destroy)
   end
 
   def destroy_related_annotations

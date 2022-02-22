@@ -241,16 +241,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  committer: {
-                    name: 'Deter Pawyndt',
-                    email: 'deter.pawyndt@ugent.be',
-                    username: 'dpawyndt'
-                  },
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
       pusher: {
         name: 'Deter Pawyndt',
         email: 'a@ugent.be',
@@ -269,13 +269,13 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
-        user_name: 'Deter Pawyndt',
-        user_email: 'a@ugent.be'
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt',
+      user_email: 'a@ugent.be'
     }
     post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
 
@@ -291,16 +291,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  committer: {
-                    name: 'Deter Pawyndt',
-                    email: 'deter.pawyndt@ugent.be',
-                    username: 'dpawyndt'
-                  },
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
       pusher: {
         name: 'Deter Pawyndt',
         username: 'dpawyndt'
@@ -320,16 +320,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  committer: {
-                    name: 'Deter Pawyndt',
-                    email: 'deter.pawyndt@ugent.be',
-                    username: 'dpawyndt'
-                  },
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
       pusher: {
         name: 'Deter Pawyndt',
         email: 'a.ugent.be',
@@ -350,16 +350,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  committer: {
-                    name: 'Deter Pawyndt',
-                    email: 'deter.pawyndt@ugent.be',
-                    username: 'dpawyndt'
-                  },
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
       user_name: 'Deter Pawyndt'
     }
     post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
@@ -376,16 +376,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     end
     params = {
       commits: [{
-                  committer: {
-                    name: 'Deter Pawyndt',
-                    email: 'deter.pawyndt@ugent.be',
-                    username: 'dpawyndt'
-                  },
-                  message: 'Write invalid config',
-                  added: ['{"invalid json",,}'],
-                  removed: [],
-                  modified: ['dirconfig.json']
-                }],
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
       user_name: 'Deter Pawyndt',
       user_email: 'a.ugent.be'
     }

@@ -46,8 +46,8 @@ class StatisticsController < ApplicationController
     result = Submission.send(visualisation, series: series)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
-      data = result[:value].map { |k, v| { ex_id: k, ex_data: v } }
-      # intitial: used by cumulative graph to set the value for first tick (everthing that came before)
+      data = series.exercises.map { |ex| { ex_id: ex.id, ex_data: result[:value][ex.id] || [] } }
+
       render json: {
         data: data, exercises: ex_data, student_count: series.course.enrolled_members.length
       }

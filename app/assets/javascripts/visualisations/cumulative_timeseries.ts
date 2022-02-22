@@ -207,13 +207,12 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
-        if (!this.dateStart) {
-            this.setPickerDates(this.minDate, this.maxDate);
-        }
-
-
         if (this.binTicks.length < 2) {
             return;
+        }
+
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
         }
 
         // eslint-disable-next-line camelcase

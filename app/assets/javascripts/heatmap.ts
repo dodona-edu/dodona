@@ -64,7 +64,7 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
 function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year: string | undefined): void {
     const darkMode = window.dodona.darkMode;
     const emptyColor = darkMode ? "#37474F" : "white";
-    const lowColor = darkMode ? "#01579B" : "#E3F2FD";
+    const lowColor = darkMode ? "#364953" : "#E3F2FD";
     const highColor = darkMode ? "#039BE5" : "#0D47A1";
 
     const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));

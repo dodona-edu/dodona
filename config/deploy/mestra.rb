@@ -13,6 +13,8 @@ set :delayed_job_workers, 1
 
 set :bundle_without, ''
 
+set :rake, lambda { "#{fetch(:bundle_cmd, "bundle")} exec rake" }
+
 # Override ['config/master.key'] from main deploy file, we don't need it on mestra
 set :linked_files, []
 

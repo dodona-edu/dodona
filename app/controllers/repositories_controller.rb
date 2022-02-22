@@ -150,7 +150,7 @@ class RepositoriesController < ApplicationController
         do_reprocess = true
         if current_user
           user_hash[:user] = current_user
-        elsif payload.key?('pusher')
+        elsif payload.key?('pusher') && payload['pusher']['email'].present? && payload['pusher']['email'].match(URI::MailTo::EMAIL_REGEXP)
           pusher = payload['pusher']
           user_hash[:name] = pusher['name']
           user_hash[:email] = pusher['email']
@@ -163,7 +163,7 @@ class RepositoriesController < ApplicationController
       do_reprocess = true
       if current_user
         user_hash[:user] = current_user
-      elsif payload.key?('user_name') && payload.key?('user_email')
+      elsif payload.key?('user_name') && payload.key?('user_email') && payload['user_email'].match(URI::MailTo::EMAIL_REGEXP)
         user_hash[:name] = payload['user_name']
         user_hash[:email] = payload['user_email']
       else

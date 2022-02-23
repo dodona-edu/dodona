@@ -78,8 +78,10 @@
             <% if @files.present?%>
                 <table class="table table-index table-resource">
                   <thead>
-                    <td><%= t ".file_name"%></td>
-                    <td><%= t ".file_url" %></td>
+                    <tr>
+                      <th><%= t ".file_name"%></th>
+                      <th><%= t ".file_url" %></th>
+                    </tr>
                   </thead>
                   <tbody>
                     <% @files.each do |file| %>

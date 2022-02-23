@@ -151,7 +151,7 @@
   <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.activities_not_visible" %>
-      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {activities_visible: true}), method: :patch) %>
     </div>
   <% end %>
   <div class="tab-content">

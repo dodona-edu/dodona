@@ -2,7 +2,7 @@
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
-import { InputMode, Papyros, plFromString } from "@dodona/papyros";
+import { initCodingScratchpad } from "coding_scratchpad.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -149,9 +149,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     let lastSubmission;
     let lastTimeout;
 
-    let papyros;
-    let launched = false;
-
     function init() {
         if (editorShown) {
             initEditor();
@@ -187,54 +184,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             $(this).attr("rel", "noopener");
         });
 
-        // Papyros should have access to the Dodona editor
-        try {
-            const pl = plFromString(programmingLanguage);
-            papyros = Papyros.fromElement(
-                {
-                    programmingLanguage: pl,
-                    standAlone: false,
-                    locale: I18n.locale,
-                    inputMode: InputMode.Interactive,
-                }, {
-                code: {
-                    parentElementId: "papyros-editor-wrapper",
-                    attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
-                },
-                panel: {
-                    parentElementId: "papyros-panel-wrapper"
-                },
-                output: {
-                    parentElementId: "papyros-output-wrapper",
-                    attributes: new Map([["style", "max-height: 28vh;"]])
-                },
-                input: {
-                    parentElementId: "papyros-input-wrapper"
-                }
-            }
-            );
-
-            $("#papyros-offcanvas-show-btn").on("click", async function () {
-                if (!launched) {
-                    await Papyros.configureInput(false);
-                    await papyros.launch();
-                    launched = true;
-                }
-                const initialCode = editor.getValue();
-                if (initialCode) {
-                    papyros.setCode(initialCode);
-                }
-            });
-
-            $("#papyros-code-copy-btn").on("click", function () {
-                editor.setValue(papyros.getCode());
-            });
-        } catch (e) {
-            // Unsupported programming language, so do not initialize Papyros
-            // Hide button that shows the off-canvas
-            $("#papyros-offcanvas-show-btn").addClass("hidden");
-            console.log("Error during initialization of Papyros", e);
-        }
+        initCodingScratchpad(programmingLanguage, editor);
 
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;

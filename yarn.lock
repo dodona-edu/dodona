@@ -1308,10 +1308,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/convert-colors/-/convert-colors-1.4.0.tgz#ad495dc41b12e75d588c6db8b9834f08fa131eb7"
   integrity sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw==
 
-"@dodona/papyros@^0.1.41":
-  version "0.1.41"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.41.tgz#74797a108c86d135495588c940d39a30a9e4fd1b"
-  integrity sha512-PEmN0uHaxD+qdiqQna8GqCaw+AquJre/syyp+yiWW/7h5fM/3qWig6ZXjLLIIJEmw5Fa7iS7FURfXi1V8kud5g==
+"@dodona/papyros@^0.1.43":
+  version "0.1.43"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.43.tgz#b44efdf8ff8b2ccce0dd1415b05bcafeca45113a"
+  integrity sha512-qN+akaPwjJ0+CEkU4Ottz6EuChLTpS12CD/cUNlM8GQHRH/kyZ7ITa+tgfmEUhOSOMoTCd51ANGffmcAqjulZw==
   dependencies:
     "@codemirror/autocomplete" "^0.19.8"
     "@codemirror/closebrackets" "^0.19.0"

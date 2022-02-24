@@ -1,0 +1,34 @@
+
+<% content_for :javascripts do %>
+    <%= javascript_pack_tag 'coding_scratchpad' %>
+<% end %>
+<button class="btn btn-primary btn-fab mdi mdi-pencil mdi-36" type="button" data-bs-toggle="offcanvas"
+data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyros-offcanvas-show-btn">
+</button>
+<div class="offcanvas offcanvas-end papyros-offcanvas" tabindex="-1" id="papyros-offcanvas">
+    <div class="card-title papyros-header">
+        <div class="card-subtitle margin-bottom-11">
+            <h2 class="card-title-text">
+                <%= activity_icon(@activity, 24) %>
+                &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
+            </h2>
+            <div class="flex-spacer"></div>
+            <button type="button" class="btn-close btn-close-white" 
+            data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
+            </button>
+        </div>
+    </div>
+    <span class="header-info-text papyros-info">
+        <i class="mdi mdi-information mdi-18"></i>
+        <%= t ".experimental_feature" %>
+    </span>
+    <div class="offcanvas-body">
+        <div id="papyros-editor-wrapper"></div>
+        <div id="papyros-panel-wrapper"></div>
+        <div id="papyros-output-wrapper"></div>
+        <div id="papyros-input-wrapper"></div>
+        <button class="btn btn-primary btn-fab mdi mdi-content-copy mdi-36"
+            id="papyros-code-copy-btn" title="<%= t '.copy_code' %>">
+        </button>
+    </div>
+</div>

@@ -80,11 +80,6 @@ en:
         next: Next activity
       mark_as_read: Mark as read
       read_at: "Marked as read at %{timestamp}"
-      papyros:
-        papyros: Papyros
-        experimental_feature: Papyros is an experimental feature that allows you to run your code in the browser and help you during your learning process. Suggestions and issues can be reported to team Dodona. 
-        copy_code: Copy code to Dodona
-        close: Close
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
     edit:
@@ -128,3 +123,8 @@ en:
     series_activities_table:
       course_has_no_rights_with_fix: This course is not allowed to use this private exercise. Click here to grant this course those rights.
       course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.
+    coding_scratchpad:
+      title: "Run %{programming_language} code in your browser"
+      experimental_feature: Papyros is an experimental feature that allows you to run your code in the browser and help you during your learning process. Suggestions and issues can be reported to team Dodona. 
+      copy_code: Copy code to Dodona
+      close: Close

@@ -340,7 +340,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @admins do |who|
       students = create_list :student, 2
       @course.pending_members = students
-      post mass_accept_pending_course_url(@course)
+      post mass_accept_pending_course_url(@course), params: { format: :json }
+      assert_response 200
+
       @course.reload
       assert @course.pending_members.empty?, "#{who} should be able to accept pending"
       assert (students - @course.enrolled_members), "students should be enrolled for #{who}"
@@ -357,7 +359,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       submission = create :submission, :generated_user, course: @course
       @course.pending_members << submission.user
 
-      post mass_decline_pending_course_url(@course)
+      post mass_decline_pending_course_url(@course), params: { format: :json }
+      assert_response 200
+
       @course.reload
       assert @course.pending_members.empty?, "#{who} should be able to decline pending"
       assert CourseMembership.where(course: @course, user: students).empty?, "memberships should be deleted for #{who}"

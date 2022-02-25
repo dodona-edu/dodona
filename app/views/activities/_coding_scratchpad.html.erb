@@ -14,6 +14,9 @@ data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyro
                 &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
             </h2>
             <div class="flex-spacer"></div>
+            <span class="beta-label">
+                <%= t '.beta' %>
+            </span>
             <button type="button" class="btn-close btn-close-white" 
             data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
             </button>

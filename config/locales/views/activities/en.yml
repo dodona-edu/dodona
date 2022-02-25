@@ -125,7 +125,7 @@ en:
       course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.
     coding_scratchpad:
       title: "Run %{programming_language} code in your browser"
-      experimental_feature: Papyros is an experimental feature that allows you to run your code in the browser and help you during your learning process. Suggestions and issues can be reported to team Dodona. 
+      experimental_feature_html: This experimental feature lets you write and run code in your browser to get you started immediately. Please report any suggestions and issues to <a href="%{url}">team Dodona</a>.
       copy_code: Copy code to Dodona
       close: Close
       start_coding: Start coding

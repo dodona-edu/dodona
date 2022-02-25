@@ -2,8 +2,9 @@
 <% content_for :javascripts do %>
     <%= javascript_pack_tag 'coding_scratchpad' %>
 <% end %>
-<button class="btn btn-primary btn-fab mdi mdi-pencil mdi-36" type="button" data-bs-toggle="offcanvas"
+<button class="btn btn-primary btn-txt offcanvas-show-btn" type="button" data-bs-toggle="offcanvas"
 data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyros-offcanvas-show-btn">
+    <%= t '.start_coding' %>
 </button>
 <div class="offcanvas offcanvas-end papyros-offcanvas" tabindex="-1" id="papyros-offcanvas">
     <div class="card-title papyros-header">

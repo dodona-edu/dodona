@@ -10,3 +10,14 @@
     color: $header-fg;
     background-color: $header-bg;
 }
+
+.beta-label {
+    background-color: rgb(255, 0, 106);
+    color: white;
+    border-radius: 12px;
+    margin-right: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}

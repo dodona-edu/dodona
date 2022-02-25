@@ -49,10 +49,7 @@ class StatisticsController < ApplicationController
       data = series.exercises.map { |ex| { ex_id: ex.id, ex_data: result[:value][ex.id] || [] } }
 
       render json: {
-        data: data,
-        exercises: ex_data,
-        student_count: series.course.enrolled_members.length,
-        deadline: series.deadline
+        data: data, exercises: ex_data, student_count: series.course.enrolled_members.length
       }
     else
       render json: { status: 'not available yet' }, status: :accepted

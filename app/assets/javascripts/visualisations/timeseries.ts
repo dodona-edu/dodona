@@ -162,7 +162,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
      *
      * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected override processData({ data, exercises, deadline }: RawData): void {
+    protected override processData({ data, exercises }: RawData): void {
         // the type of one datum in the ex_data array
         type Datum = { date: (Date | string); status: string; count: number };
 
@@ -175,14 +175,10 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
-        let [minDate, maxDate] = d3.extent(
+        const [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
-
-        if (deadline) {
-            maxDate = deadline;
-        }
 
         this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
         this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);

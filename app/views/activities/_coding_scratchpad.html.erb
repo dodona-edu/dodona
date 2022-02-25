@@ -19,10 +19,10 @@ data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyro
             </button>
         </div>
     </div>
-    <span class="header-info-text papyros-info">
+    <div class="header-info-text papyros-info">
         <i class="mdi mdi-information mdi-18"></i>
-        <%= t ".experimental_feature" %>
-    </span>
+        <%= t ".experimental_feature_html", :url => contact_path %>
+    </div>
     <div class="offcanvas-body">
         <div id="papyros-editor-wrapper"></div>
         <div id="papyros-panel-wrapper"></div>

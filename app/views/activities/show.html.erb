@@ -129,7 +129,9 @@ end %>
           <div class="tab-pane fade hidden" id="feedback">
             <div id="submission-wrapper"></div>
           </div>
-          <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
+          <% if @activity.scratchpad? %>
+            <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
+          <% end %>
         </div>
       </div>
     </div>

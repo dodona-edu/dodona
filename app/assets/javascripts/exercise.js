@@ -183,7 +183,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
-
         initCodingScratchpad(programmingLanguage, editor);
 
         // export function

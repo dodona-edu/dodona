@@ -1,36 +1,35 @@
-import { InputMode, Papyros, plFromString } from "@dodona/papyros";
+import { InputMode, Papyros } from "@dodona/papyros";
 
 function initCodingScratchpad(programmingLanguage, editor = undefined) {
-    let papyrosLaunched = false;
-    try {
-        const pl = plFromString(programmingLanguage);
+    if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
+        let papyrosLaunched = false;
         const papyros = Papyros.fromElement(
             {
-                programmingLanguage: pl,
+                programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),
                 standAlone: false,
                 locale: I18n.locale,
                 inputMode: InputMode.Interactive,
             }, {
-            code: {
-                parentElementId: "papyros-editor-wrapper",
-                attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
-            },
-            panel: {
-                parentElementId: "papyros-panel-wrapper"
-            },
-            output: {
-                parentElementId: "papyros-output-wrapper",
-                attributes: new Map([["style", "max-height: 28vh;"]])
-            },
-            input: {
-                parentElementId: "papyros-input-wrapper"
+                code: {
+                    parentElementId: "papyros-editor-wrapper",
+                    attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                },
+                panel: {
+                    parentElementId: "papyros-panel-wrapper"
+                },
+                output: {
+                    parentElementId: "papyros-output-wrapper",
+                    attributes: new Map([["style", "max-height: 28vh;"]])
+                },
+                input: {
+                    parentElementId: "papyros-input-wrapper"
+                }
             }
-        }
         );
 
         $("#papyros-offcanvas-show-btn").on("click", async function () {
             if (!papyrosLaunched) {
-                await Papyros.configureInput(false);
+                await papyros.configureInput(false, "http://dodona.localhost:3000/", "inputServiceWorker.js");
                 await papyros.launch();
                 papyrosLaunched = true;
             }
@@ -50,12 +49,6 @@ function initCodingScratchpad(programmingLanguage, editor = undefined) {
         } else {
             $codeCopyButton.addClass("hidden");
         }
-
-    } catch (e) {
-        // Unsupported programming language, so do not initialize Papyros
-        // Hide button that shows the off-canvas
-        $("#papyros-offcanvas-show-btn").addClass("hidden");
-        console.log("Error during initialization of Papyros", e);
     }
 }
 

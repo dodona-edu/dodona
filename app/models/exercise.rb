@@ -80,6 +80,10 @@ class Exercise < Activity
     programming_language&.extension || 'txt'
   end
 
+  def scratchpad?
+    programming_language&.name == 'python'
+  end
+
   def users_correct(options)
     subs = submissions.where(status: :correct)
     subs = subs.in_course(options[:course]) if options[:course].present?

@@ -199,8 +199,8 @@ class ActivitiesController < ApplicationController
   # Must be updated when a change happens to the default worker in Papyros
   def isw
     send_file(Rails.root.join('app/assets/javascripts/inputServiceWorker.js'),
-              :filename => 'inputServiceWorker.js',
-              :type => 'text/javascript')
+              filename: 'inputServiceWorker.js',
+              type: 'text/javascript')
   end
 
   private

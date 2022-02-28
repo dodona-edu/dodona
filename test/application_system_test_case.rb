@@ -13,7 +13,7 @@ Capybara.register_driver :chrome do |app|
   options.add_argument('--headless')
 
   client = Selenium::WebDriver::Remote::Http::Default.new
-  client.read_timeout = 180 # instead of the default 60 end
+  client.read_timeout = 240 # instead of the default 60 end
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
                                  options: options, http_client: client)

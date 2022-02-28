@@ -196,6 +196,7 @@ class ActivitiesController < ApplicationController
 
   # Serve the inputServiceWorker file required to handle input in Papyros
   # Could potentially changed to a Dodona-specific service worker importing a Papyros-function
+  # Must be updated when a change happens to the default worker in Papyros
   def isw
     send_file(Rails.root.join('app', 'assets', 'javascripts', 'inputServiceWorker.js'),
     :filename => 'inputServiceWorker.js',

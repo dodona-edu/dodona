@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'evaluation' %>
+  <%= javascript_include_tag 'evaluation' %>
 <% end %>
 
 <% if @feedback.score_items.empty? %>

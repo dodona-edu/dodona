@@ -17,7 +17,7 @@ Rails.application.configure do
 
   config.action_controller.asset_host = nil
 
-  config.cache_classes = false
+  config.cache_classes = true
   config.action_view.cache_template_loading = true
 
   # Do not eager load code on boot. This avoids loading your whole application

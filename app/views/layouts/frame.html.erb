@@ -26,7 +26,7 @@
     <%= stylesheet_link_tag "application#{'-dark' if params[:dark] == 'true'}", media: 'all' %>
   <% end %>
   <%= javascript_include_tag 'frame' %>
-  <%= javascript_include_tag 'assets_application' %>
+  <%= javascript_include_tag 'application_old' %>
   <%= yield :javascripts %>
 </head>
 <body>

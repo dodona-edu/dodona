@@ -95,8 +95,7 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_to_default_host
-    redirect_to host: Rails.configuration.default_host,
-                params: request.query_parameters
+    redirect_to({ host: Rails.configuration.default_host, params: request.query_parameters }, { allow_other_host: true })
   end
 
   def user_not_authorized

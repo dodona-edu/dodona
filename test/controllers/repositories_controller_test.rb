@@ -234,4 +234,164 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-Gitlab-Event': 'push' }
     assert_equal 'private', find_echo.access
   end
+
+  test 'github webhook with incorrect commit should email pusher' do
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        email: 'a@ugent.be',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ['a@ugent.be'], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email pusher' do
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt',
+      user_email: 'a@ugent.be'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ['a@ugent.be'], email.to
+  end
+
+  test 'github webhook with incorrect commit should email first admin when no mail is present' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'github webhook with incorrect commit should email first admin when no mail is invalid' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        email: 'a.ugent.be',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email first admin when no mail is present' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email first admin when no mail is invalid' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt',
+      user_email: 'a.ugent.be'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
 end

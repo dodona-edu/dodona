@@ -11,7 +11,7 @@ gem 'mysql2', '~> 0.5.3'
 gem 'puma', '~> 5.6.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.0.0'
+gem 'cssbundling-rails', '~> 1.1.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
 gem 'jsbundling-rails', '~> 1.0.0'
@@ -44,7 +44,7 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
-gem 'sinatra', '~>2.1.0'
+gem 'sinatra', '~>2.2.0'
 
 # pagination
 gem 'will_paginate', '~>3.3.1'
@@ -94,7 +94,7 @@ gem 'annotate', '~> 3.2.0'
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.1', group: :development
-gem 'capistrano-rails', '~> 1.6.1', group: :development
+gem 'capistrano-rails', '~> 1.6.2', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.1'
+gem 'nokogiri', '~> 1.13.3'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -127,7 +127,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.2.0'
+gem 'dalli', '~> 3.2.1'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.19.0'
@@ -135,8 +135,8 @@ gem 'faker', '~> 2.19.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.3'
-gem 'stackprof', '~> 0.2.17'
+gem 'rack-mini-profiler', '~> 3.0.0'
+gem 'stackprof', '~> 0.2.19'
 
 # Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available
 gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version'
@@ -175,7 +175,7 @@ group :test do
   gem 'webmock'
 
   # I18N default locale & better test reporter
-  gem 'minitest-utils', '~> 0.4.7'
+  gem 'minitest-utils', '~> 0.4.8'
 end
 
 group :development do

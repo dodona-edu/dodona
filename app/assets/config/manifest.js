@@ -1,3 +1,3 @@
 //= link_tree ../images
-//= link assets_application.js
+//= link application_old.js
 //= link_tree ../builds

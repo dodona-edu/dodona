@@ -292,6 +292,46 @@ if Rails.env.development?
     end
   end
 
+  puts "Create Visualisation Test course (#{Time.now - start})"
+  visualisation_test = Course.create(name: 'Visualisation Test', year: '2021-2022', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Stijn Taff', administrating_members: [zeus, staff])
+  visualisation_test.enrolled_members.concat(students.sample(50))
+  big_activity_repo.allowed_courses << visualisation_test
+  activity_repo.allowed_courses << visualisation_test
+
+  3.times do |i|
+    s = Series.create(name: "Reeks #{i}",
+                      description: Faker::Lorem.paragraph(sentence_count: 25),
+                      course: visualisation_test)
+    series_exercises = exercises_list.sample(rand(3) + 2)
+    s.exercises << series_exercises
+
+    series_exercises.each do |exercise|
+      visualisation_test.enrolled_members.sample(rand(25)).each do |student|
+        rand(1..10).times do
+          status = if rand() < 0.5
+                     :correct
+                   else
+                     :wrong
+                   end
+          Submission.create user: student,
+                            course: s.course,
+                            exercise: exercise,
+                            evaluate: false,
+                            skip_rate_limit_check: true,
+                            status: status,
+                            accepted: status == :correct,
+                            summary: submission_summary(status),
+                            # Normally distributed submissions between 6am and 12pm yesterday, with a peek around 3pm
+                            created_at: Date.yesterday + 6.hour + rand(0..540).minutes + rand(0..540).minutes,
+                            code: "print(input())\n",
+                            result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+        end
+      end
+    end
+  end
+
+
+
   puts "Create Status Test course (#{Time.now - start})"
 
   status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])

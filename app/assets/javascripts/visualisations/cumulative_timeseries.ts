@@ -184,7 +184,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     // eslint-disable-next-line camelcase
-    protected override processData({ data, exercises, student_count }: RawData): void {
+    protected override processData({ data, exercises, student_count, deadline }: RawData): void {
         this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
@@ -196,7 +196,12 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+
+        if (deadline) {
+            maxDate = deadline;
+        }
+
         this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
         this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 
@@ -207,17 +212,17 @@ export class CTimeseriesGraph extends SeriesGraph {
         this.minDate = allignedStart;
         this.maxDate = new Date(this.binTicks[this.binTicks.length - 1]);
 
-        if (!this.dateStart) {
-            this.setPickerDates(this.minDate, this.maxDate);
-        }
-
-
         if (this.binTicks.length < 2) {
             return;
         }
 
+        if (!this.dateStart) {
+            this.setPickerDates(this.minDate, this.maxDate);
+        }
+
         // eslint-disable-next-line camelcase
         this.studentCount = student_count; // max value
+        this.maxSum = 0;
         // bin data per day (for each exercise)
         data.forEach(ex => {
             const binned = d3.bin()
@@ -343,49 +348,25 @@ export class CTimeseriesGraph extends SeriesGraph {
 
     private tooltipText(i: number): string {
         const date = this.binTicks[i];
-        let startMessage = ""; // formatted start moment
-        let endMessage = ""; // formatted end moment
-        let extraMessage = ""; // extra formatted moment (e.g. the day in case of per minute binning)
-        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
+        let message = "";
 
-        if (i === 0) {
-            startMessage = capitalize(I18n.t("js.date_before"));
-        }
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
-            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            startMessage = i ?
-                `${timeFormat(new Date(date - this.binStep * 3600000))} -` :
-                startMessage;
-            endMessage = timeFormat(date);
-            extraMessage = `<br>${on} ${dateFormat(date)}`;
-        } else if (this.binStep === 24) { // binning per day
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            endMessage = `${i === 0 ? format(date) : capitalize(format(date))}:`;
-        } else if (this.binStep < 168) { // binning per multiple days
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            startMessage = i ?
-                `${capitalize(format(new Date(date - this.binStep * 3600000)))} -` :
-                startMessage;
-            endMessage = format(date);
-        } else { // binning per week(s)
-            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
-            startMessage = i ?
-                `${capitalize(weekDay(new Date(date - this.binStep * 3600000)))} -` :
-                startMessage;
-            endMessage = i ?
-                monthDay(date):
-                weekDay(date);
+            message += timeFormat(date);
+            message += ` ${on} `;
         }
-        let message = `<b>${startMessage} ${endMessage} ${extraMessage}`;
+
+        const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+        message += weekDay(date);
+
         this.exOrder.forEach(e => {
             const ex = this.data.find(ex => ex.ex_id === e);
             message += `<br><span style="color: ${this.color(e)}">&FilledSmallSquare;</span> ${d3.format(".1%")(ex.ex_data[i].cSum / this.studentCount)}
                     (${ex.ex_data[i].cSum}/${this.studentCount})`;
         });
-        return message;
+
+        return "<b>" + message + "</b>";
     }
 
     private yRangeToggle(): void {

@@ -27,8 +27,8 @@ class CoursesController < ApplicationController
     if params[:copy_courses]
       @courses = apply_scopes(@courses)
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
-      @own_courses = @courses.select { |course| current_user.admin_of?(course) }
-      @other_courses = @courses.reject { |course| current_user.admin_of?(course) }
+      @own_courses = @courses.select { |course| current_user&.admin_of?(course) }
+      @other_courses = @courses.reject { |course| current_user&.admin_of?(course) }
       @courses = @own_courses.concat(@other_courses)
     else
       if current_user && params[:tab] == 'institution'

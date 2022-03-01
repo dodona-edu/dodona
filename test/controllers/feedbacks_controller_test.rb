@@ -39,4 +39,21 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
   end
+
+  test 'Scores are reset when a submission is changed' do
+    create :score, feedback: @feedback, score_item: @score_item1
+    @feedback.reload
+    assert_equal 1, @feedback.scores.count
+
+    s = create :submission, exercise: @feedback.exercise, user: @feedback.user
+
+    patch evaluation_feedback_path(@evaluation, @feedback), params: {
+      feedback: {
+        submission_id: s.id
+      }
+    }
+    @feedback.reload
+    assert_equal s.id, @feedback.submission_id
+    assert_equal 0, @feedback.scores.count
+  end
 end

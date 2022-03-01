@@ -49,7 +49,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         // no data in cell
         const emptyColor = this.darkMode ? "#37474F" : "white";
         // almost no data in cell
-        const lowColor = this.darkMode ? "#01579B" : "#E3F2FD";
+        const lowColor = this.darkMode ? "#364953" : "#E3F2FD";
         // a lot of data in cell
         const highColor = this.darkMode ? "#039BE5" : "#0D47A1";
 
@@ -162,7 +162,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
      *
      * @param {RawData} raw The unprocessed return value of the fetch
      */
-    protected override processData({ data, exercises }: RawData): void {
+    protected override processData({ data, exercises, deadline }: RawData): void {
         // the type of one datum in the ex_data array
         type Datum = { date: (Date | string); status: string; count: number };
 
@@ -175,10 +175,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             });
         });
 
-        const [minDate, maxDate] = d3.extent(
+        let [minDate, maxDate] = d3.extent(
             data.flatMap(ex => ex.ex_data),
             (d: Datum) => d.date as Date
         );
+
+        if (deadline) {
+            maxDate = deadline;
+        }
 
         this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
         this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
@@ -199,6 +203,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         }
 
         this.data = [];
+        this.maxStack = 0;
         // eslint-disable-next-line camelcase
         data.forEach(({ ex_id, ex_data }) => {
             let binned = d3.bin()
@@ -249,7 +254,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .duration(200)
             .style("opacity", .9);
         let message = "";
-        const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
         if (this.binStep < 24) {
             const on = I18n.t("js.date_on");
             const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
@@ -260,18 +264,18 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             `;
         } else if (this.binStep === 24) { // binning per day
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            message = `${capitalize(format(d.date))}:<br>`;
+            message = `${format(d.date)}:<br>`;
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             message = `
-                <b>${capitalize(format(d.date))} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
+                <b>${format(d.date)} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
             message = `
-                <b>${capitalize(weekDay(d.date))} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
+                <b>${weekDay(d.date)} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         }

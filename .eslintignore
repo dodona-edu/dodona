@@ -1,5 +1,5 @@
 app/assets/config/manifest.js
-app/assets/javascripts/assets_application.js
+app/assets/javascripts/application_old.js
 app/assets/javascripts/i18n/translations.js
 app/assets/javascripts/types/index.d.ts
 app/assets/javascripts/inputServiceWorker.js

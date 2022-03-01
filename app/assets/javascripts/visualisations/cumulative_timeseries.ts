@@ -184,7 +184,7 @@ export class CTimeseriesGraph extends SeriesGraph {
      * @param {RawData} raw The unprocessed return value of the fetch
      */
     // eslint-disable-next-line camelcase
-    protected override processData({ data, exercises, student_count }: RawData): void {
+    protected override processData({ data, exercises, student_count, deadline }: RawData): void {
         this.data = [];
         // eslint-disable-next-line camelcase
         data as { ex_id: number, ex_data: (string | Date)[] }[];
@@ -196,7 +196,12 @@ export class CTimeseriesGraph extends SeriesGraph {
             ex.ex_data = ex.ex_data.map((d: string) => new Date(d));
         });
 
-        const [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+        let [minDate, maxDate] = d3.extent(data.flatMap(ex => ex.ex_data)) as Date[];
+
+        if (deadline) {
+            maxDate = deadline;
+        }
+
         this.minDate = this.dateStart ? new Date(this.dateStart) : new Date(minDate);
         this.maxDate = this.dateEnd ? new Date(this.dateEnd) : new Date(maxDate);
 

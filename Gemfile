@@ -133,7 +133,7 @@ gem 'faker', '~> 2.19.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.3'
+gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
 # Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available

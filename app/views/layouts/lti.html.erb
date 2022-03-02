@@ -32,8 +32,8 @@
     </script>
   <% end %>
 
-  <%= javascript_pack_tag 'application' %>
-  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'application_pack' %>
+  <%= javascript_include_tag 'application_old' %>
   <%= yield :javascripts %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>

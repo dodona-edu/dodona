@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <% javascript_pack_tag 'course_membership' %>
+  <% javascript_include_tag 'course_membership' %>
 <% end %>
 <%= form_for(course_membership, :url => course_member_path(course, user), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if course_membership.errors.any? %>

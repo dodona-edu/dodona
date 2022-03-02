@@ -13,13 +13,15 @@ gem 'puma', '~> 5.6.2'
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.0'
 
-# Load sprockets ourselves for now => planned fo remove this soon
-gem 'sprockets-rails'
+# Use jsbundling to bundle javascript in app/javascript with webpack
+gem 'jsbundling-rails', '~> 1.0.0'
+
+# Load sprockets ourselves because rails 7 no longer autoloads this
+# This is still used for all javascript in app/assets/javascripts
+gem 'sprockets-rails', '~> 3.4.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
-
-gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'

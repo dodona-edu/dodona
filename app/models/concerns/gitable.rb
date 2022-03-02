@@ -1,3 +1,4 @@
+require 'open3'
 module Gitable
   extend ActiveSupport::Concern
 

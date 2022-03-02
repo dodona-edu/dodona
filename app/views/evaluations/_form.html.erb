@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'evaluation' %>
+  <%= javascript_include_tag 'evaluation' %>
 <% end %>
 <%= form_for evaluation, html: { class: "form-horizontal feedback-form" }, remote: true do |f| %>
   <div>

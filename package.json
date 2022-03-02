@@ -8,12 +8,6 @@
     "build:js": "webpack --config ./config/webpack/webpack.config.js",
     "build": "yarn build:js"
   },
-  "babel": {
-    "presets": [
-      "@babel/env",
-      "@babel/preset-typescript"
-    ]
-  },
   "dependencies": {
     "@babel/core": "^7.17.5",
     "@babel/plugin-transform-runtime": "^7.17.0",

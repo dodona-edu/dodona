@@ -1,6 +1,6 @@
 <% content_for :javascripts do %>
   <% # TODO rename pack to activity %>
-  <% javascript_pack_tag 'exercise' %>
+  <% javascript_include_tag 'exercise' %>
 <% end %>
 <%= form_for(activity.becomes(Activity), :url => activity_scoped_path(activity: activity, course: @course, series: @series), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if activity.errors.any? %>

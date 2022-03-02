@@ -13,13 +13,15 @@ gem 'puma', '~> 5.6.2'
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.0'
 
-# Load sprockets ourselves for now => planned fo remove this soon
-gem 'sprockets-rails'
+# Use jsbundling to bundle javascript in app/javascript with webpack
+gem 'jsbundling-rails', '~> 1.0.0'
+
+# Load sprockets ourselves because rails 7 no longer autoloads this
+# This is still used for all javascript in app/assets/javascripts
+gem 'sprockets-rails', '~> 3.4.2'
 
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 4.1.20'
-
-gem 'webpacker', '~> 5.4.3'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'
@@ -29,7 +31,7 @@ gem 'jbuilder', '~> 2.11.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.12.1'
+gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.10.3', require: false
@@ -109,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.1'
+gem 'nokogiri', '~> 1.13.3'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -133,8 +135,8 @@ gem 'faker', '~> 2.19.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
-gem 'rack-mini-profiler', '~> 2.3.3'
-gem 'stackprof', '~> 0.2.18'
+gem 'rack-mini-profiler', '~> 3.0.0'
+gem 'stackprof', '~> 0.2.19'
 
 # Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available
 gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version'

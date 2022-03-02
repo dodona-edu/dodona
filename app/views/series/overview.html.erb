@@ -1,6 +1,6 @@
 <% user = @user || current_user %>
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'series_overview' %>
+  <%= javascript_include_tag 'series_overview' %>
 <% end %>
 
 <div class="col-md-10 offset-md-1 col-12">

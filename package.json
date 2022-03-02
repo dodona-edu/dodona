@@ -4,44 +4,51 @@
   "scripts": {
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
     "test": "jest --coverage",
-    "build:css": "./bin/build-css"
+    "build:css": "./bin/build-css",
+    "build:js": "webpack --config ./config/webpack/webpack.config.js",
+    "build": "yarn build:js"
   },
   "dependencies": {
     "@babel/core": "^7.17.5",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
     "@popperjs/core": "^2.11.2",
     "@rails/activestorage": "^7.0.2-2",
     "@rails/ujs": "^7.0.2-2",
     "@rails/webpacker": "5.4.3",
     "@types/d3": "^7.1.0",
-    "@types/jquery": "^3.5.13",
+    "@types/jquery": "^3.5.14",
+    "babel-loader": "^8.2.3",
+    "babel-plugin-macros": "^3.1.0",
     "bootstrap": "^5.1.3",
     "clipboard": "^2.0.10",
+    "core-js": "^3.21.0",
     "d3": "^7.3.0",
     "dragula": "^3.7.3",
     "first-input-delay": "^0.1.3",
     "flatpickr": "^4.6.9",
     "glightbox": "^3.1.0",
+    "glob": "^7.2.0",
     "iframe-resizer": "^4.3.2",
     "jquery": "^3.6.0",
     "moment": "^2.29.1",
-    "sass": "^1.49.8",
+    "sass": "^1.49.9",
     "typeahead.js": "^0.11.1",
-    "typescript": "^4.5.5"
+    "typescript": "^4.5.5",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.12.0",
-    "@typescript-eslint/parser": "^5.12.0",
-    "eslint": "^8.9.0",
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^8.10.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^26.1.1",
     "eslint-plugin-no-jquery": "^2.7.0",
     "jest": "^26.6.3",
     "jest-junit": "^13.0.0",
-    "ts-jest": "^26.5.6",
-    "webpack": "4.46.0",
-    "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "3.11.3"
+    "ts-jest": "^26.5.6"
   }
 }

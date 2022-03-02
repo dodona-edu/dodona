@@ -1,6 +1,5 @@
 const path = require("path");
 const glob = require("glob");
-const webpack = require("webpack");
 
 const config = {
     mode: "production",
@@ -26,11 +25,6 @@ const config = {
         sourceMapFilename: "[name].js.map",
         path: path.resolve(__dirname, "..", "..", "app/assets/builds"),
     },
-    plugins: [
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1
-        })
-    ],
     resolve: {
         modules: ["node_modules", "app/assets/javascripts"],
         extensions: [".tsx", ".ts", ".mjs", ".js", ".sass", ".scss", ".css", ".module.sass", ".module.scss", ".module.css", ".png", ".svg", ".gif", ".jpeg", ".jpg"]

@@ -29,7 +29,7 @@ gem 'jbuilder', '~> 2.11.5'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.12.1'
+gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.10.3', require: false

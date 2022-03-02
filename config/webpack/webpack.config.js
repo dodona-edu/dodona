@@ -1,6 +1,5 @@
 const path = require("path");
 const glob = require("glob");
-const webpack = require("webpack");
 
 const config = {
     mode: "production",

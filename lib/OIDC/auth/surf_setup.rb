@@ -17,7 +17,7 @@ module OIDC
               secret: Rails.application.credentials.surf_client_secret,
               redirect_uri: "https://naos.ugent.be/users/auth/surf/callback"
             },
-            issuer: 'https://connect.test.surfconext.nl/oidc'
+            issuer: 'https://connect.test.surfconext.nl'
           }
         end
       end

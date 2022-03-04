@@ -15,5 +15,6 @@ module OmniAuth
     end
   end
 end
-
+Rack::OAuth2.debug!
+Rack::OAuth2.logger = Rails.logger
 OmniAuth.config.add_camelization 'surf', 'Surf'

@@ -10,7 +10,7 @@ module OmniAuth
       option :name, 'surf'
 
       def client
-        @client ||= ::OIDC::Client.new(client_options)
+        @client ||= ::OIDC::Client.new(client_options.merge(audience:'https://connect.test.surfconext.nl/oidc/token'))
       end
     end
   end

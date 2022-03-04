@@ -7,7 +7,7 @@ class Provider::Surf < Provider::Oidc
   SURF_SUFFIX = '.nl'.freeze
 
   def self.extract_institution_name(auth_hash)
-    institution = auth_hash&.extra&.raw_info&.schac_home_organization
+    institution = auth_hash&.info&.institution
 
     # Sanity check
     return Provider.extract_institution_name(auth_hash) unless institution =~ URI::DEFAULT_PARSER.make_regexp

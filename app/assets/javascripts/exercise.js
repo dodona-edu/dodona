@@ -2,7 +2,6 @@
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
-import { initCodingScratchpad } from "coding_scratchpad.js";
 
 function initLabelsEdit(labels, undeletableLabels) {
     const colorMap = {};
@@ -183,8 +182,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
-        initCodingScratchpad(programmingLanguage, editor);
-
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }

@@ -31,9 +31,16 @@ data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyro
         <div id="papyros-panel-wrapper"></div>
         <div id="papyros-output-wrapper"></div>
         <div id="papyros-input-wrapper"></div>
-        <button class="btn with-text btn-primary btn-fab-extended">
+        <button id="papyros-code-copy-btn" class="btn with-text btn-primary btn-fab-extended">
             <i class="mdi mdi-content-copy icon"></i>
             <span class="text"><%= t '.copy_code' %></span>
         </button>
     </div>
 </div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initCodingScratchpad(
+            "<%= @activity.programming_language&.name %>"
+        );
+    });
+</script>

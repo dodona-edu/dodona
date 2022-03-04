@@ -1,3 +1,3 @@
-import { initCodingScratchpad } from "coding_scratchpad.js";
+import { initCodingScratchpad } from "coding_scratchpad.ts";
 
 window.dodona.initCodingScratchpad = initCodingScratchpad;

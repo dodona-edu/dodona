@@ -129,9 +129,6 @@ end %>
           <div class="tab-pane fade hidden" id="feedback">
             <div id="submission-wrapper"></div>
           </div>
-          <% if @activity.scratchpad? %>
-            <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
-          <% end %>
         </div>
       </div>
     </div>
@@ -158,6 +155,9 @@ end %>
     </div>
   </div>
 </div>
+<% end %>
+<% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+  <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
 <% end %>
 <script type="text/javascript">
     $(function () {

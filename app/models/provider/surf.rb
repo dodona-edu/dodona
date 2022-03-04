@@ -8,14 +8,9 @@ class Provider::Surf < Provider
   end
 
   def self.extract_institution_name(auth_hash)
-    institution = auth_hash&.info&.institution
-
-    # Sanity check
-    return Provider.extract_institution_name(auth_hash) unless institution =~ URI::DEFAULT_PARSER.make_regexp
-
-    uri = URI.parse(institution)
-    host = uri.host
-    school_name = host.split('.')[0]
+    institution_hostname = auth_hash&.info&.institution
+    # Take the first part of the hostname as institution name
+    school_name = institution_hostname.split('.')[0]
     [school_name, school_name]
   end
 end

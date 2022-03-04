@@ -20,10 +20,7 @@ module Surf
         def configure
           {
             discovery: true,
-            client_auth_method: :basic,
-            scope: [:openid],
             response_mode: :form_post,
-            response_type: :code,
             client_options: {
               host: 'connect.test.surfconext.nl',
               identifier: Rails.application.credentials.surf_client_id,

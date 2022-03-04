@@ -1,6 +1,20 @@
-import { InputMode, Papyros } from "@dodona/papyros";
+import { InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 
-function initCodingScratchpad(programmingLanguage, editor = undefined) {
+/**
+ * Custom interface to not have to add the ace package as dependency
+ */
+interface Editor {
+    setValue(v: string): void;
+    getValue(): string;
+}
+
+const CODE_EDITOR_PARENT_ID = "papyros-editor-wrapper";
+const PANEL_PARENT_ID = "papyros-panel-wrapper";
+const CODE_OUTPUT_PARENT_ID = "papyros-output-wrapper";
+const CODE_INPUT_PARENT_ID = "papyros-input-wrapper";
+
+function initCodingScratchpad(programmingLanguage: ProgrammingLanguage, editor?: Editor): void {
+
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyrosLaunched = false;
         const papyros = Papyros.fromElement(
@@ -11,25 +25,25 @@ function initCodingScratchpad(programmingLanguage, editor = undefined) {
                 inputMode: InputMode.Interactive,
             }, {
                 code: {
-                    parentElementId: "papyros-editor-wrapper",
+                    parentElementId: CODE_EDITOR_PARENT_ID,
                     attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
                 },
                 panel: {
-                    parentElementId: "papyros-panel-wrapper"
+                    parentElementId: PANEL_PARENT_ID
                 },
                 output: {
-                    parentElementId: "papyros-output-wrapper",
+                    parentElementId: CODE_OUTPUT_PARENT_ID,
                     attributes: new Map([["style", "max-height: 28vh;"]])
                 },
                 input: {
-                    parentElementId: "papyros-input-wrapper"
+                    parentElementId: CODE_INPUT_PARENT_ID
                 }
             }
         );
 
-        $("#papyros-offcanvas-show-btn").on("click", async function () {
+        document.getElementById("#papyros-offcanvas-show-btn").addEventListener("click", async function () {
             if (!papyrosLaunched) {
-                await papyros.configureInput(false, "http://dodona.localhost:3000/", "inputServiceWorker.js");
+                await papyros.configureInput(false, location.origin, "inputServiceWorker.js");
                 await papyros.launch();
                 papyrosLaunched = true;
             }
@@ -41,13 +55,13 @@ function initCodingScratchpad(programmingLanguage, editor = undefined) {
                 papyros.setCode(initialCode);
             }
         });
-        const $codeCopyButton = $("#papyros-code-copy-btn");
+        const codeCopyButton = document.getElementById("#papyros-code-copy-btn");
         if (editor) {
-            $codeCopyButton.on("click", function () {
+            codeCopyButton.addEventListener("click", function () {
                 editor.setValue(papyros.getCode());
             });
         } else {
-            $codeCopyButton.addClass("hidden");
+            codeCopyButton.classList.add("hidden");
         }
     }
 }

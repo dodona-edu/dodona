@@ -9,9 +9,9 @@ module OmniAuth
       include Rails.application.routes.url_helpers
       option :name, 'surf'
 
-      def client
-        @client ||= ::OIDC::Client.new(client_options.merge(audience:'https://connect.test.surfconext.nl/oidc/token'))
-      end
+      # def client
+      #   @client ||= ::OIDC::Client.new(client_options.merge(audience:'https://connect.test.surfconext.nl/oidc/token'))
+      # end
     end
   end
 end

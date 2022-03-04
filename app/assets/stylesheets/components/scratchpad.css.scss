@@ -11,7 +11,7 @@
 }
 
 .scratchpad-info {
-    margin-left: 5px;
+    padding-left: 20px;
     font-size: 14px;
     color: $text-muted;
 }
@@ -23,6 +23,7 @@
     line-height: normal;
     overflow: hidden;
     margin: 0;
+    margin-bottom: 5px;
     height: $navbar-height;
     padding-left: 16px;
     padding-right: 16px;

@@ -11,7 +11,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
         <h4>
             <%= activity_icon(@activity, 24) %>
             &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
-            <sup class="beta-label"><%= t '.beta' %></sup>
+            <sup><%= t '.beta' %></sup>
         </h4>
         <div class="flex-spacer"></div>
         <button type="button" class="btn-close btn-close-white" 

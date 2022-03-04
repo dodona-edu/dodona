@@ -5,7 +5,7 @@ module OIDC
         def configure
           {
             discovery: false,
-            client_auth_method: :jwt_bearer,
+            client_auth_method: :basic,
             scope: [:openid],
             client_options: {
               host: 'connect.test.surfconext.nl',

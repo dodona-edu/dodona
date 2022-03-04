@@ -15,55 +15,57 @@ const CODE_INPUT_PARENT_ID = "scratchpad-input-wrapper";
 const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 
-function initCodingScratchpad(programmingLanguage: ProgrammingLanguage, editor?: Editor): void {
+function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
-        let papyrosLaunched = false;
-        const papyros = Papyros.fromElement(
-            {
-                programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),
-                standAlone: false,
-                locale: I18n.locale,
-                inputMode: InputMode.Interactive,
-            }, {
-                code: {
-                    parentElementId: CODE_EDITOR_PARENT_ID,
-                    attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
-                },
-                panel: {
-                    parentElementId: PANEL_PARENT_ID
-                },
-                output: {
-                    parentElementId: CODE_OUTPUT_PARENT_ID,
-                    attributes: new Map([["style", "max-height: 28vh;"]])
-                },
-                input: {
-                    parentElementId: CODE_INPUT_PARENT_ID
-                }
-            }
-        );
+        let papyros: Papyros | undefined = undefined;
 
         document.getElementById(SHOW_OFFCANVAS_BUTTON_ID).addEventListener("click", async function () {
-            if (!papyrosLaunched) {
+            const editor: Editor | undefined = window.dodona.editor;
+            if (!papyros) { // Only create Papyros once per session, but only when required
+                papyros = new Papyros(
+                    {
+                        programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),
+                        standAlone: false,
+                        locale: I18n.locale,
+                        inputMode: InputMode.Interactive,
+                    });
+                // Shortcut to copy code to clipboard
+                papyros.addButton(
+                    {
+                        id: CODE_COPY_BUTTON_ID,
+                        buttonText: I18n.t("js.coding_scratchpad.copy_code"),
+                        extraClasses: "copy-code-button"
+                    },
+                    () => navigator.clipboard.writeText(papyros.getCode())
+                );
+                // Render once new button is added
+                papyros.render({
+                    code: {
+                        parentElementId: CODE_EDITOR_PARENT_ID,
+                        attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                    },
+                    panel: {
+                        parentElementId: PANEL_PARENT_ID
+                    },
+                    output: {
+                        parentElementId: CODE_OUTPUT_PARENT_ID,
+                        attributes: new Map([["style", "max-height: 28vh;"]])
+                    },
+                    input: {
+                        parentElementId: CODE_INPUT_PARENT_ID
+                    }
+                }
+                );
                 await papyros.configureInput(false, location.origin, "inputServiceWorker.js");
                 await papyros.launch();
-                papyrosLaunched = true;
             }
-            if (!editor) {
-                return;
-            }
-            const initialCode = editor.getValue();
-            if (initialCode) {
-                papyros.setCode(initialCode);
+            if (editor) { // Start with code from the editor, if there is any
+                const initialCode = editor.getValue();
+                if (initialCode) {
+                    papyros.setCode(initialCode);
+                }
             }
         });
-        const codeCopyButton = document.getElementById(CODE_COPY_BUTTON_ID);
-        if (editor) {
-            codeCopyButton.addEventListener("click", function () {
-                editor.setValue(papyros.getCode());
-            });
-        } else {
-            codeCopyButton.classList.add("hidden");
-        }
     }
 }
 

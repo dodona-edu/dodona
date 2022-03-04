@@ -168,3 +168,5 @@ nl:
       confirm: Bent u zeker?
     score_item:
       error: Fout bij bijwerken
+    coding_scratchpad:
+      copy_code: Kopieer

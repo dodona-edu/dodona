@@ -110,7 +110,7 @@ class ActivitiesController < ApplicationController
 
     # Enable SharedArrayBuffers on exercise pages
     response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
-    #response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
+    response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
   end
 
   def description

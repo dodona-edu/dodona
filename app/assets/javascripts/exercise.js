@@ -201,6 +201,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
         editor.on("focus", enableSubmitButton);
+        // Make editor available globally
+        window.dodona.editor = editor;
     }
 
     function swapActionButtons() {

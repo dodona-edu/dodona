@@ -127,7 +127,6 @@ nl:
     coding_scratchpad:
       title: "Voer %{programming_language} code uit in je browser"
       experimental_feature_html: Deze experimentele toepassing laat je toe om code te schrijven en uit te voeren in je browser, zodat je meteen kan beginnen. Suggesties en problemen kan je melden bij <a href="%{url}">team Dodona</a>.
-      copy_code: Kopieer je code naar Dodona
       close: Sluiten
       start_coding: Begin met coderen
       beta: BETA

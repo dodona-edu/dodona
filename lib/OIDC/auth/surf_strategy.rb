@@ -12,7 +12,7 @@ module OmniAuth
 
       info do
         {
-          institution: user_info.raw_attributes.schac_home_organization,
+          institution: user_info.raw_attributes["schac_home_organization"],
         }
       end
     end

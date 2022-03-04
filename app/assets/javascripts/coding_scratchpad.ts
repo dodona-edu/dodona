@@ -8,12 +8,12 @@ interface Editor {
     getValue(): string;
 }
 
-const CODE_EDITOR_PARENT_ID = "papyros-editor-wrapper";
-const PANEL_PARENT_ID = "papyros-panel-wrapper";
-const CODE_OUTPUT_PARENT_ID = "papyros-output-wrapper";
-const CODE_INPUT_PARENT_ID = "papyros-input-wrapper";
-const SHOW_OFFCANVAS_BUTTON_ID = "papyros-offcanvas-show-btn";
-const CODE_COPY_BUTTON_ID = "papyros-code-copy-btn";
+const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
+const PANEL_PARENT_ID = "scratchpad-panel-wrapper";
+const CODE_OUTPUT_PARENT_ID = "scratchpad-output-wrapper";
+const CODE_INPUT_PARENT_ID = "scratchpad-input-wrapper";
+const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
+const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage, editor?: Editor): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {

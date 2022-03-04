@@ -3,35 +3,31 @@
     <%= javascript_include_tag 'coding_scratchpad' %>
 <% end %>
 <button class="btn btn-primary btn-txt offcanvas-show-btn" type="button" data-bs-toggle="offcanvas"
-data-bs-target="#papyros-offcanvas" aria-controls="papyros-offcanvas" id="papyros-offcanvas-show-btn">
+data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
     <%= t '.start_coding' %>
 </button>
-<div class="offcanvas offcanvas-end" tabindex="-1" id="papyros-offcanvas">
-    <div class="card-title papyros-header">
-        <div class="card-subtitle margin-bottom-11">
-            <h2 class="card-title-text">
-                <%= activity_icon(@activity, 24) %>
-                &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
-            </h2>
-            <div class="flex-spacer"></div>
-            <span class="beta-label">
-                <%= t '.beta' %>
-            </span>
-            <button type="button" class="btn-close btn-close-white" 
-            data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
-            </button>
-        </div>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="scratchpad-offcanvas">
+    <div class="scratchpad-header">
+        <h4>
+            <%= activity_icon(@activity, 24) %>
+            &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
+            <sup class="beta-label"><%= t '.beta' %></sup>
+        </h4>
+        <div class="flex-spacer"></div>
+        <button type="button" class="btn-close btn-close-white" 
+        data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
+        </button>
     </div>
-    <div class="papyros-info">
+    <div class="scratchpad-info">
         <i class="mdi mdi-information mdi-18"></i>
         <%= t ".experimental_feature_html", :url => contact_path %>
     </div>
     <div class="offcanvas-body">
-        <div id="papyros-editor-wrapper"></div>
-        <div id="papyros-panel-wrapper"></div>
-        <div id="papyros-output-wrapper"></div>
-        <div id="papyros-input-wrapper"></div>
-        <button id="papyros-code-copy-btn" class="btn with-text btn-primary btn-fab-extended">
+        <div id="scratchpad-editor-wrapper"></div>
+        <div id="scratchpad-panel-wrapper"></div>
+        <div id="scratchpad-output-wrapper"></div>
+        <div id="scratchpad-input-wrapper"></div>
+        <button id="scratchpad-code-copy-btn" class="btn with-text btn-primary btn-fab-extended">
             <i class="mdi mdi-content-copy icon"></i>
             <span class="text"><%= t '.copy_code' %></span>
         </button>

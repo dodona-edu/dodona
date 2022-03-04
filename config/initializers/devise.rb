@@ -266,6 +266,8 @@ Devise.setup do |config|
 
   config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
 
+  config.omniauth :surf, setup: OIDC::Auth::OmniAuth::SurfSetup
+
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 
   config.omniauth :smartschool,

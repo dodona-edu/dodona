@@ -16,7 +16,6 @@ const SHOW_OFFCANVAS_BUTTON_ID = "papyros-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "papyros-code-copy-btn";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage, editor?: Editor): void {
-
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyrosLaunched = false;
         const papyros = Papyros.fromElement(
@@ -26,21 +25,21 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage, editor?:
                 locale: I18n.locale,
                 inputMode: InputMode.Interactive,
             }, {
-            code: {
-                parentElementId: CODE_EDITOR_PARENT_ID,
-                attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
-            },
-            panel: {
-                parentElementId: PANEL_PARENT_ID
-            },
-            output: {
-                parentElementId: CODE_OUTPUT_PARENT_ID,
-                attributes: new Map([["style", "max-height: 28vh;"]])
-            },
-            input: {
-                parentElementId: CODE_INPUT_PARENT_ID
+                code: {
+                    parentElementId: CODE_EDITOR_PARENT_ID,
+                    attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                },
+                panel: {
+                    parentElementId: PANEL_PARENT_ID
+                },
+                output: {
+                    parentElementId: CODE_OUTPUT_PARENT_ID,
+                    attributes: new Map([["style", "max-height: 28vh;"]])
+                },
+                input: {
+                    parentElementId: CODE_INPUT_PARENT_ID
+                }
             }
-        }
         );
 
         document.getElementById(SHOW_OFFCANVAS_BUTTON_ID).addEventListener("click", async function () {

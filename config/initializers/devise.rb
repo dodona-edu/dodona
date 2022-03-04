@@ -8,6 +8,10 @@ require_relative '../../lib/OIDC/auth.rb'
 require_relative '../../lib/SAML/strategy.rb'
 require_relative '../../lib/SAML/setup.rb'
 
+## Surf.
+require_relative '../../lib/Surf/strategy.rb'
+require_relative '../../lib/Surf/setup.rb'
+
 # Error handling.
 require_relative('../../lib/devise/custom_failure.rb')
 
@@ -266,7 +270,7 @@ Devise.setup do |config|
 
   config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
 
-  config.omniauth :surf, setup: OIDC::Auth::OmniAuth::SurfSetup
+  config.omniauth :surf, setup: Surf::Auth::OmniAuth::Setup
 
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 

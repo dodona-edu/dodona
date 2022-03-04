@@ -1,14 +1,12 @@
-require_relative '../client.rb'
 require 'openid_connect'
 require 'openid_connect/response_object'
 
-# This strategy enables OIDC to be used by Dodona.
+# This strategy enables Surf to be used by Dodona.
+# It adds a smal change to the default open id connect, introducing the user institution
 module OmniAuth
   module Strategies
     class Surf < OmniAuth::Strategies::OpenIDConnect
-      include Rails.application.routes.url_helpers
       option :name, 'surf'
-
 
       info do
         {
@@ -18,6 +16,3 @@ module OmniAuth
     end
   end
 end
-Rack::OAuth2.debug!
-Rack::OAuth2.logger = Rails.logger
-OmniAuth.config.add_camelization 'surf', 'Surf'

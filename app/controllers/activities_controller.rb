@@ -110,7 +110,7 @@ class ActivitiesController < ApplicationController
 
     # Enable SharedArrayBuffers on exercise pages
     response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
-    response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
+    #response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
   end
 
   def description
@@ -198,7 +198,7 @@ class ActivitiesController < ApplicationController
   # Could potentially changed to a Dodona-specific service worker importing a Papyros-function
   # Must be updated when a change happens to the default worker in Papyros
   def isw
-    send_file(Rails.root.join('app/assets/javascripts/inputServiceWorker.js'),
+    send_file(Rails.root.join('app/assets/builds/inputServiceWorker.js'),
               filename: 'inputServiceWorker.js',
               type: 'text/javascript')
   end

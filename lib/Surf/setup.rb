@@ -26,10 +26,6 @@ module Surf
             response_type: :code,
             client_options: {
               host: 'connect.test.surfconext.nl',
-              authorization_endpoint: '/oidc/authorize',
-              token_endpoint: '/oidc/token',
-              userinfo_endpoint: '/oidc/userinfo',
-              jwks_uri: '/oidc/certs',
               identifier: Rails.application.credentials.surf_client_id,
               secret: Rails.application.credentials.surf_client_secret,
               redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/surf/callback"

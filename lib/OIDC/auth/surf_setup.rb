@@ -6,6 +6,7 @@ module OIDC
           {
             discovery: false,
             client_auth_method: :jwt_bearer,
+            scope: [:openid],
             client_options: {
               host: 'connect.test.surfconext.nl',
               authorization_endpoint: '/oidc/authorize',

@@ -4,7 +4,7 @@ module OIDC
       class SurfSetup < OIDC::Auth::OmniAuth::Setup
         def configure
           {
-            discovery: false,
+            discovery: true,
             client_auth_method: :basic,
             scope: [:openid],
             client_options: {

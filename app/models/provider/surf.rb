@@ -9,6 +9,9 @@ class Provider::Surf < Provider
 
   def self.extract_institution_name(auth_hash)
     institution_hostname = auth_hash&.info&.institution
+
+    return Provider.extract_institution_name(auth_hash) if institution_hostname.nil?
+
     # Take the first part of the hostname as institution name
     school_name = institution_hostname.split('.')[0]
     [school_name, school_name]

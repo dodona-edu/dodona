@@ -121,6 +121,29 @@ class ProviderTest < ActiveSupport::TestCase
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))
   end
 
+  test 'Surf extracts name of institution' do
+    provider = Provider::Surf
+    hash = {
+      provider: 'surf',
+      uid: 'something',
+      info: {
+        username: 'janj',
+        first_name: 'Jan',
+        last_name: 'Janssens',
+        email: 'foo@bar.nl',
+        institution: 'example.nl'
+      }
+    }
+    hash = OmniAuth::AuthHash.new(hash)
+    assert_equal %w[example example], provider.extract_institution_name(hash)
+
+    hash.info.institution = 'test.org'
+    assert_equal %w[test test], provider.extract_institution_name(hash)
+
+    assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
+    assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))
+  end
+
   test 'other providers use default' do
     [Provider::Lti, Provider::Saml].each do |provider|
       assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))

@@ -35,7 +35,7 @@ class Auth::AuthenticationController < Devise::SessionsController
       Provider::Smartschool => { image: 'smartschool.png', name: 'Smartschool' },
       Provider::Office365 => { image: 'office365.png', name: 'Office 365' },
       Provider::GSuite => { image: 'Google-logo.png', name: 'Google Workspace' },
-      Provider::Surf => { image: 'surfnet.png', name: 'SURF NET' }
+      Provider::Surf => { image: 'surf-logo.svg', name: 'SURFconext' }
     }
 
     # Calculate some information for these providers.

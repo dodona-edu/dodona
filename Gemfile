@@ -14,7 +14,7 @@ gem 'puma', '~> 5.6.2'
 gem 'cssbundling-rails', '~> 1.1.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.0'
+gem 'jsbundling-rails', '~> 1.0.2'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -103,7 +103,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 7.0.2'
+gem 'rails-i18n', '~> 7.0.3'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -130,7 +130,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.1'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.19.0'
+gem 'faker', '~> 2.20.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'

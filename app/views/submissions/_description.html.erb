@@ -47,6 +47,9 @@
           <%= render 'feedbacks/score_link', feedback: feedback %>
         </span>
       <% end %>
+      <div style="overflow-x: scroll; display: flex; flex-direction: row-reverse;">
+        <div id="timeline"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -59,3 +62,5 @@
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
+
+<%= javascript_include_tag 'visualisations' %>

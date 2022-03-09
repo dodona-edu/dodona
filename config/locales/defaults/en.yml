@@ -25,9 +25,12 @@ en:
     month_names: [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     abbr_month_names: [null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
     formats:
+      weekday: "%a"
       weekday_short: "%a %b %d"
       weekday_long: "%A %B %d"
       monthday_long: "%B %d"
+      monthday_short: "%m/%d"
+      yearday_short: "%m/%d/%y"
   time:
     units:
       sec: ["second", "seconds"]
@@ -43,6 +46,7 @@ en:
       read_state: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
       plain_time: '%H:%M'
+      hour: '%I %p'
   controllers:
     created: "%{model} was successfully created."
     updated: "%{model} was successfully updated."

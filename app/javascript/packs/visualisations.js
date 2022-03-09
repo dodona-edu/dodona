@@ -1,7 +1,7 @@
 import { initHeatmap } from "heatmap.ts";
 import { initPunchcard } from "punchcard.js";
-import { testData, draw } from "visualisations/temp.ts";
+import { initTimeline } from "visualisations/submission_timeline.ts";
 
 window.dodona.initHeatmap = initHeatmap;
 window.dodona.initPunchcard = initPunchcard;
-draw(testData);
+window.dodona.initTimeline = initTimeline;

@@ -64,3 +64,6 @@
 <% end %>
 
 <%= javascript_include_tag 'visualisations' %>
+<script>
+  window.dodona.initTimeline(<%= submission.exercise.id %>)
+</script>

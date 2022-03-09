@@ -20,6 +20,21 @@ function timeString(isoDate): string {
     return d3.timeFormat(I18n.t("time.formats.hour"))(date);
 }
 
+function getElemPos(element): {x: number, y: number} {
+    let elem = element;
+    let xPos = 0;
+    let yPos = 0;
+
+    while (elem) {
+        xPos += (elem.offsetLeft - elem.scrollLeft + elem.clientLeft);
+        yPos += (elem.offsetTop - elem.scrollTop + elem.clientTop);
+        elem = elem.offsetParent;
+    }
+
+    return { x: xPos, y: yPos };
+}
+
+
 const statusIconMap = {
     "runtime error": "\u{F0241}",
     "correct": "\u{F012C}",
@@ -148,14 +163,23 @@ function draw(data: RawData): void {
         message += formattedTime;
 
         Tooltip
-            .html(message)
-            .style("left", (event.pageX - width - margin.left) + "px")
-            .style("top", (event.pageY - height - margin.top) + "px");
+            .html(message);
     }
     function mouseLeave(event, d): void {
         Tooltip.transition()
             .duration(500)
             .style("opacity", 0);
+    }
+    const container = document.getElementById("timeline_container");
+    function mouseMove(e, d): void {
+        // Tooltip
+        //     .style("left", `${d3.pointer(e, svg.node())[0] + 15}px`)
+        //     .style("top", `${d3.pointer(e, svg.node())[1]}px`);
+        const { x, y } = getElemPos(container);
+
+        Tooltip
+            .style("left", `${e.pageX - x + container.offsetWidth+50}px`)
+            .style("top", `${e.pageY - y + container.offsetHeight+50}px`);
     }
 
 
@@ -173,6 +197,7 @@ function draw(data: RawData): void {
         .attr("y", d => y(d.exercise) + 15)
         .on("mouseover", mouseOver)
         .on("mouseout", mouseLeave)
+        .on("mousemove", mouseMove)
         .text(d => statusIconMap[d.status])
         .style("fill", d => statusColorMap[d.status]);
 }

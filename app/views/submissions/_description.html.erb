@@ -42,14 +42,18 @@
       </span>
     </div>
     <div class="col-md-6">
+      <div id="timeline_container">
+        <div style="overflow-x: scroll; display: flex; flex-direction: row-reverse; max-width: fit-content">
+          <div id="timeline"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
       <% @feedbacks.each do |feedback| %>
         <span class="score">
           <%= render 'feedbacks/score_link', feedback: feedback %>
         </span>
       <% end %>
-      <div style="overflow-x: scroll; display: flex; flex-direction: row-reverse;">
-        <div id="timeline"></div>
-      </div>
     </div>
   </div>
 </div>

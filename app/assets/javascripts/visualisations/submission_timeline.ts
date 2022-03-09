@@ -25,7 +25,11 @@ const statusIconMap = {
     "correct": "\u{F012C}",
     "wrong": "\u{F0156}",
     "compilation error": "\u{F0820}",
-    "time limit exceeded": "\u{F0020}"
+    "time limit exceeded": "\u{F0020}",
+    "memory limit exceeded": "\u{F035B}",
+    "output_limit_exceeded": "\u{F0BC2}",
+    "running": "\u{F06AD}",
+    "queued": "\u{F06AD}"
 };
 
 const statusColorMap = {
@@ -33,7 +37,11 @@ const statusColorMap = {
     "runtime error": "#e57373",
     "wrong": "#e57373",
     "compilation error": "#e57373",
-    "time limit exceeded": "#e57373"
+    "time limit exceeded": "#e57373",
+    "memory limit exceeded": "#e57373",
+    "output_limit_exceeded": "#e57373",
+    "running": "#FF8F00FF",
+    "queued": "#FF8F00FF"
 };
 
 const margin = { top: 20, right: 10, bottom: 0, left: 10 };
@@ -133,11 +141,11 @@ function draw(data: RawData): void {
 
         const translatedStatus = capitalize(I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`));
         const formattedTime = d3.timeFormat(I18n.t("time.formats.submission"))(new Date(d.created_at));
-        const message = `
-                <b>${translatedStatus}:</b><br/>
-                ${d.summary}<br/>
-                ${formattedTime}
-        `;
+        let message = `<b>${translatedStatus}:</b><br/>`;
+        if (d.summary) {
+            message += `${d.summary}<br/>`;
+        }
+        message += formattedTime;
 
         Tooltip
             .html(message)

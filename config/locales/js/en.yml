@@ -67,6 +67,8 @@ en:
     timeseries_desc: This graph shows on which moments the students submitted the most solutions.
     ctimeseries_desc: This graph shows the evolution of the percentage of students that correctly solved each exercise.
     status:
+      running: running
+      queued: running
       correct: correct
       wrong: wrong
       compilation_error: compilation error

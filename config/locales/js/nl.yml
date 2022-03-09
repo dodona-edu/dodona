@@ -67,6 +67,8 @@ nl:
     timeseries_desc: Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.
     ctimeseries_desc: Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.
     status:
+      running: bezig
+      queued: bezig
       correct: correct
       wrong: fout
       compilation_error: compilatiefout

@@ -94,7 +94,6 @@ function draw(data: RawData): void {
             prev = time;
         }
     });
-    console.log(timeSteps.map(d => timeString(sortedData[d].created_at)));
 
     svg.append("g")
         .attr("transform", "translate(0," + (0) + ")")
@@ -113,17 +112,59 @@ function draw(data: RawData): void {
         .padding(0)
         .domain(sortedData.map(d => d.exercise));
 
+    // create a tooltip
+    const Tooltip = d3.select("#timeline")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "d3-tooltip")
+        .attr("pointer-events", "none")
+        .style("opacity", 0)
+        .style("z-index", 5);
+
+    // Three function that change the tooltip when user hover / move / leave a cell
+    function mouseOver(event, d): void {
+        Tooltip
+            .transition()
+            .duration(200)
+            .style("opacity", 0.9);
+        function capitalize(string): string {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        const translatedStatus = capitalize(I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`));
+        const formattedTime = d3.timeFormat(I18n.t("time.formats.submission"))(new Date(d.created_at));
+        const message = `
+                <b>${translatedStatus}:</b><br/>
+                ${d.summary}<br/>
+                ${formattedTime}
+        `;
+
+        Tooltip
+            .html(message)
+            .style("left", (event.pageX - width - margin.left) + "px")
+            .style("top", (event.pageY - height - margin.top) + "px");
+    }
+    function mouseLeave(event, d): void {
+        Tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+    }
+
 
     svg.append("g")
         .selectAll("dot")
         .data(sortedData)
         .enter()
+        .append("a")
+        .attr("xlink:href", d => "/submissions/" + d.id)
         .append("text")
         .attr("font-family", "Material Design Icons")
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "central")
         .attr("x", (d, i) => x(i))
         .attr("y", d => y(d.exercise) + 15)
+        .on("mouseover", mouseOver)
+        .on("mouseout", mouseLeave)
         .text(d => statusIconMap[d.status])
         .style("fill", d => statusColorMap[d.status]);
 }

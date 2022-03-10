@@ -55,14 +55,21 @@
       </div>
       <div>
         <% @submissions.each_with_index do |s, i| %>
+          <% if s.id == submission.id %>
+            <b>
+          <% end %>
           <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block;'  %>
-          <span class='status-icon'><%= submission_status_icon(s, 12) %></span>
+          <span class='status-icon' id="history-<%= s.id%>"><%= submission_status_icon(s, 12) %></span>
           <span>
             <%= Submission.human_enum_name(:status, s.status) %>
             <% if s.summary.present? and s.summary.downcase != Submission.human_enum_name(:status, s.status).downcase %>
               &middot; <span class='text-muted'><%= s.summary %></span>
             <% end %>
           </span>
+
+          <% if s.id == submission.id %>
+            </b>
+          <% end %>
           <br/>
         <% end %>
       </div>
@@ -85,3 +92,7 @@
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
+
+<script>
+  window.dodona.initSubmissionHistory(<%= submission.id %>)
+</script>

@@ -30,16 +30,42 @@
   </span>
   <div class="row">
     <div class="col-md-6">
-      <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
+      <span class='status-icon float-start'><%= submission_status_icon(submission, 48) %></span>
       <span class="status-line">
         <%= Submission.human_enum_name(:status, submission.status) %>
         <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
-          &middot; <span class='text-muted'><%= submission.summary %></span>
+          <br/><span class='text-muted'><%= submission.summary %></span>
         <% end %>
       </span>
       <span class="by-line">
         <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
       </span>
+    </div>
+    <div class="col-md-6" style="display: flex; max-height: 75px; overflow-y: scroll">
+      <% prev = nil %>
+      <div style="text-align: right; margin-right: 0.5em">
+        <% @submissions.each do |s| %>
+          <% current = s.created_at.before?(1.day.ago) ? (time_ago_in_words s.created_at) + " " + (t "submissions.show.ago") : (t "submissions.show.today")%>
+          <% if current != prev %>
+            <% prev = current %>
+            <span class="text-muted small" title="<%= l s.created_at, format: :submission %>"><%= current %></span>
+          <% end %>
+          <br/>
+        <% end %>
+      </div>
+      <div>
+        <% @submissions.each_with_index do |s, i| %>
+          <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block;'  %>
+          <span class='status-icon'><%= submission_status_icon(s, 12) %></span>
+          <span>
+            <%= Submission.human_enum_name(:status, s.status) %>
+            <% if s.summary.present? and s.summary.downcase != Submission.human_enum_name(:status, s.status).downcase %>
+              &middot; <span class='text-muted'><%= s.summary %></span>
+            <% end %>
+          </span>
+          <br/>
+        <% end %>
+      </div>
     </div>
     <div class="col-md-6">
       <% @feedbacks.each do |feedback| %>

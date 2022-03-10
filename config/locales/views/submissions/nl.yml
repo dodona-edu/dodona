@@ -33,6 +33,7 @@ nl:
       course: Cursus
       handed_in: Ingediend
       ago: geleden
+      today: vandaag
       status: Status
       result: Resultaat
       code: Code

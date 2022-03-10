@@ -73,9 +73,9 @@ export type RawData = [
     }
 ];
 
-export async function initTimeline(activityId: number): Promise<void> {
+export async function initTimeline(activityId: number, submissionId: Number): Promise<void> {
     const data: RawData = await fetchData(activityId);
-    draw(data);
+    draw(data, submissionId);
 }
 
 async function fetchData(activityId: number): Promise<RawData> {
@@ -90,7 +90,7 @@ async function fetchData(activityId: number): Promise<RawData> {
     return raw as RawData;
 }
 
-function draw(data: RawData): void {
+function draw(data: RawData, submissionId: number): void {
     const sortedData = data.sort((a, b) => Date.parse(a.created_at) - Date.parse(b.created_at));
 
     const width = 20*sortedData.length;
@@ -191,6 +191,7 @@ function draw(data: RawData): void {
         .attr("xlink:href", d => "/submissions/" + d.id)
         .append("text")
         .attr("font-family", "Material Design Icons")
+        .attr("font-size", d => d.id == submissionId ? "1.5em" : "1em" )
         .attr("text-anchor", "middle")
         .attr("dominant-baseline", "central")
         .attr("x", (d, i) => x(i))

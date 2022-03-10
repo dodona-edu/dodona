@@ -73,7 +73,7 @@ export type RawData = [
     }
 ];
 
-export async function initTimeline(activityId: number, submissionId: Number): Promise<void> {
+export async function initTimeline(activityId: number, submissionId: number): Promise<void> {
     const data: RawData = await fetchData(activityId);
     draw(data, submissionId);
 }

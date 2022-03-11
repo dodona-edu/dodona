@@ -42,16 +42,16 @@
       </span>
     </div>
     <% if @feedbacks.blank? %>
-      <div class="col-md-6" style="display: flex; max-height: 75px; overflow-y: auto; margin-bottom: 12px">
-        <div style="text-align: right; margin-right: 0.5em">
+      <div class="col-md-6 submission-history">
+        <div class="timestamp-col">
           <% @submissions_time_stamps.each do |t| %>
-            <span class="text-muted small" style="display: inline-block; <%= t.present? ? 'margin-top: 6px;' : '' %>"><%= t %></span>
+            <span class="text-muted small submission-history-row" style="<%= t.present? ? 'margin-top: 6px;' : '' %>"><%= t %></span>
             <br/>
           <% end %>
         </div>
         <div>
           <% @submissions.each_with_index do |s, i| %>
-            <span style="display: inline-block; <%= s.id == submission.id ? 'font-weight: bold;' : '' %> <%= @submissions_time_stamps[i].present? ? ' margin-top: 6px;' : '' %>">
+            <span class="submission-history-row" style="<%= s.id == submission.id ? 'font-weight: bold;' : '' %> <%= @submissions_time_stamps[i].present? ? ' margin-top: 6px;' : '' %>">
               <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block; margin-right:6px;' %>
               <span class='status-icon' id="history-<%= s.id %>"><%= submission_status_icon(s, 12) %></span>
               <span>

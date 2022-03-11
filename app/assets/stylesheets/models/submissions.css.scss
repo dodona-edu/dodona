@@ -311,3 +311,19 @@ iframe.file {
 .score-details {
   padding-bottom: 10px;
 }
+
+.submission-history{
+  display: flex;
+  max-height: 75px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+
+  .timestamp-col{
+    text-align: right;
+    margin-right: 0.5em;
+  }
+
+  .submission-history-row{
+    display: inline-block;
+  }
+}

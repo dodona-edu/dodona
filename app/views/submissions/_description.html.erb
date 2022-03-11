@@ -52,7 +52,7 @@
         <div>
           <% @submissions.each_with_index do |s, i| %>
             <span class="submission-history-row" style="<%= s.id == submission.id ? 'font-weight: bold;' : '' %> <%= @submissions_time_stamps[i].present? ? ' margin-top: 6px;' : '' %>">
-              <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block; margin-right:6px;' %>
+              <%= link_to "##{@submissions.length - i}", submission_path(s), class: 'submission-link' %>
               <span class='status-icon' id="history-<%= s.id %>"><%= submission_status_icon(s, 12) %></span>
               <span>
                 <%= Submission.human_enum_name(:status, s.status) %>

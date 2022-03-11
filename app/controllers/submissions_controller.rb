@@ -68,6 +68,7 @@ class SubmissionsController < ApplicationController
                 [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
     @submissions = @submissions.of_exercise(@submission.exercise)
+    @submissions = @submissions.of_user(@submission.user)
     @submissions = @submissions.in_course(course) if course.present?
 
     @submissions_time_stamps = []

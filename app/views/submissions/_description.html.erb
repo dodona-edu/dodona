@@ -41,46 +41,39 @@
         <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
       </span>
     </div>
-    <div class="col-md-6" style="display: flex; max-height: 75px; overflow-y: scroll">
-      <% prev = nil %>
-      <div style="text-align: right; margin-right: 0.5em">
-        <% @submissions.each do |s| %>
-          <% current = s.created_at.before?(1.day.ago) ? (time_ago_in_words s.created_at) + " " + (t "submissions.show.ago") : (t "submissions.show.today")%>
-          <% if current != prev %>
-            <% prev = current %>
-            <span class="text-muted small" title="<%= l s.created_at, format: :submission %>"><%= current %></span>
+    <% if @feedbacks.blank? %>
+      <div class="col-md-6" style="display: flex; max-height: 75px; overflow-y: auto; margin-bottom: 12px">
+        <div style="text-align: right; margin-right: 0.5em">
+          <% @submissions_time_stamps.each do |t| %>
+            <span class="text-muted small" style="display: inline-block; <%= t.present? ? 'margin-top: 6px;' : '' %>"><%= t %></span>
+            <br/>
           <% end %>
-          <br/>
-        <% end %>
+        </div>
+        <div>
+          <% @submissions.each_with_index do |s, i| %>
+            <span style="display: inline-block; <%= s.id == submission.id ? 'font-weight: bold;' : '' %> <%= @submissions_time_stamps[i].present? ? ' margin-top: 6px;' : '' %>">
+              <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block; margin-right:6px;' %>
+              <span class='status-icon' id="history-<%= s.id %>"><%= submission_status_icon(s, 12) %></span>
+              <span>
+                <%= Submission.human_enum_name(:status, s.status) %>
+                  <% if s.summary.present? and s.summary.downcase != Submission.human_enum_name(:status, s.status).downcase %>
+                  &middot; <span class='text-muted'><%= s.summary %></span>
+                <% end %>
+              </span>
+            </span>
+            <br/>
+          <% end %>
+        </div>
       </div>
-      <div>
-        <% @submissions.each_with_index do |s, i| %>
-          <% if s.id == submission.id %>
-            <b>
-          <% end %>
-          <%= link_to "##{@submissions.length - i}", submission_path(s), style: 'min-width: 24px; display: inline-block;'  %>
-          <span class='status-icon' id="history-<%= s.id%>"><%= submission_status_icon(s, 12) %></span>
-          <span>
-            <%= Submission.human_enum_name(:status, s.status) %>
-            <% if s.summary.present? and s.summary.downcase != Submission.human_enum_name(:status, s.status).downcase %>
-              &middot; <span class='text-muted'><%= s.summary %></span>
-            <% end %>
+    <% else %>
+      <div class="col-md-6">
+        <% @feedbacks.each do |feedback| %>
+          <span class="score">
+            <%= render 'feedbacks/score_link', feedback: feedback %>
           </span>
-
-          <% if s.id == submission.id %>
-            </b>
-          <% end %>
-          <br/>
         <% end %>
       </div>
-    </div>
-    <div class="col-md-6">
-      <% @feedbacks.each do |feedback| %>
-        <span class="score">
-          <%= render 'feedbacks/score_link', feedback: feedback %>
-        </span>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 </div>
 <% @feedbacks.each do |feedback | %>

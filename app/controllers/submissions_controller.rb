@@ -73,7 +73,7 @@ class SubmissionsController < ApplicationController
     @submissions_time_stamps = []
     prev = nil
     @submissions.each do |s|
-      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t 'submissions.show.ago'}" : (t "submissions.show.today")
+      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t 'submissions.show.ago'}" : (t 'submissions.show.today')
       if current == prev
         @submissions_time_stamps.push nil
       else

@@ -375,7 +375,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get isw_activity_path(@instance)
     assert_response :success
     assert_equal response.content_type, 'text/javascript'
-    
+
     series = create :series
     series.exercises << @instance
 

@@ -68,9 +68,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
             if (editor) { // Start with code from the editor, if there is any
                 const editorCode = editor.getValue();
                 const currentCode = papyros.getCode();
-                if (!currentCode // Papyros empty
+                if (!currentCode || // Papyros empty
                     // Neither code areas are empty, but they differ
-                    || (editorCode && currentCode !== editorCode &&
+                    (editorCode && currentCode !== editorCode &&
                         // and user chooses to overwrite current code with editor value
                         confirm(I18n.t("js.coding_scratchpad.overwrite_code")))) {
                     papyros.setCode(editorCode);

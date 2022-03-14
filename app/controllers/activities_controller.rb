@@ -198,7 +198,7 @@ class ActivitiesController < ApplicationController
   # Asset has been preprocessed and built internally
   # Redirecting to the asset is not possible due to browser security policy
   def isw
-    send_file(Rails.application.assets["inputServiceWorker.js"].filename,
+    send_file(Rails.application.assets['inputServiceWorker.js'].filename,
               filename: 'inputServiceWorker.js',
               type: 'text/javascript')
   end

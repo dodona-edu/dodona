@@ -170,3 +170,4 @@ nl:
       error: Fout bij bijwerken
     coding_scratchpad:
       copy_code: Kopieer
+      overwrite_code: Wil je de code in het kladblok overschrijven met je huidige oplossing?

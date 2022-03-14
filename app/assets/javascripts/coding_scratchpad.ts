@@ -1,4 +1,6 @@
-import { InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
+import { Papyros } from "@dodona/papyros";
+import { InputMode } from "@dodona/papyros";
+import { ProgrammingLanguage } from "@dodona/papyros";
 
 /**
  * Custom interface to not have to add the ace package as dependency
@@ -8,6 +10,7 @@ interface Editor {
     getValue(): string;
 }
 
+/** Identifiers used in HTML for relevant elements */
 const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
 const PANEL_PARENT_ID = "scratchpad-panel-wrapper";
 const CODE_OUTPUT_PARENT_ID = "scratchpad-output-wrapper";
@@ -29,40 +32,48 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         locale: I18n.locale,
                         inputMode: InputMode.Interactive,
                     });
-                // Shortcut to copy code to clipboard
-                papyros.addButton(
-                    {
-                        id: CODE_COPY_BUTTON_ID,
-                        buttonText: I18n.t("js.coding_scratchpad.copy_code"),
-                        extraClasses: "copy-code-button"
-                    },
-                    () => navigator.clipboard.writeText(papyros.getCode())
-                );
+                if (editor) {
+                    // Shortcut to copy code to ACE editor
+                    papyros.addButton(
+                        {
+                            id: CODE_COPY_BUTTON_ID,
+                            buttonText: I18n.t("js.coding_scratchpad.copy_code"),
+                            extraClasses: "copy-code-button"
+                        },
+                        () => editor.setValue(papyros.getCode())
+                    );
+                }
+
                 // Render once new button is added
                 papyros.render({
-                    code: {
+                    codeEditorOptions: {
                         parentElementId: CODE_EDITOR_PARENT_ID,
                         attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
                     },
-                    panel: {
+                    statusPanelOptions: {
                         parentElementId: PANEL_PARENT_ID
                     },
-                    output: {
+                    outputOptions: {
                         parentElementId: CODE_OUTPUT_PARENT_ID,
                         attributes: new Map([["style", "max-height: 28vh;"]])
                     },
-                    input: {
+                    inputOptions: {
                         parentElementId: CODE_INPUT_PARENT_ID
                     }
                 }
                 );
-                await papyros.configureInput(false, location.origin, "inputServiceWorker.js");
+                await papyros.configureInput(location.href, "inputServiceWorker.js", false);
                 await papyros.launch();
             }
             if (editor) { // Start with code from the editor, if there is any
-                const initialCode = editor.getValue();
-                if (initialCode) {
-                    papyros.setCode(initialCode);
+                const editorCode = editor.getValue();
+                const currentCode = papyros.getCode();
+                if (!currentCode // Papyros empty
+                    // Neither code areas are empty, but they differ
+                    || (editorCode && currentCode !== editorCode &&
+                        // and user chooses to overwrite current code with editor value
+                        confirm(I18n.t("js.coding_scratchpad.overwrite_code")))) {
+                    papyros.setCode(editorCode);
                 }
             }
         });

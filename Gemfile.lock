@@ -95,7 +95,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bindata (2.4.10)
     bindex (0.8.1)
-    bootsnap (1.10.3)
+    bootsnap (1.11.1)
       msgpack (~> 1.2)
     bootstrap_tokenfield_rails (0.12.1)
     builder (3.2.4)
@@ -277,7 +277,7 @@ GEM
     minitest-utils (0.4.8)
       minitest
     mocha (1.13.0)
-    msgpack (1.4.4)
+    msgpack (1.4.5)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
@@ -517,7 +517,7 @@ DEPENDENCIES
   annotate (~> 3.2.0)
   autoprefixer-rails (~> 10.4.2)
   bcrypt_pbkdf
-  bootsnap (~> 1.10.3)
+  bootsnap (~> 1.11.1)
   bootstrap_tokenfield_rails (~> 0.12.1)
   builder (~> 3.2.4)
   byebug (~> 11.1.3)

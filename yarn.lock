@@ -960,9 +960,9 @@
     minimist "^1.2.0"
 
 "@codemirror/autocomplete@^0.19.0", "@codemirror/autocomplete@^0.19.8":
-  version "0.19.13"
-  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-0.19.13.tgz#33253750605ffa94a8880636df514fa49821485f"
-  integrity sha512-fI6lgTH2PlyTQqF2eWKDRBRUC+9MqvS2TfvE7aJ4Pu1oHM1w8JI16J9Qvwrd0iabJeF/QodU51Clok98c7fpCQ==
+  version "0.19.14"
+  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-0.19.14.tgz#5f61b0fced56e7960791063d03b21d11a63f0ec5"
+  integrity sha512-4PqJG7GGTePc+FQF387RFebDV4ERvKj23gQBmzNtu64ZSHlYEGulwP5EIIfulBiaWEmei9TYVaMFmTdNfofpRQ==
   dependencies:
     "@codemirror/language" "^0.19.0"
     "@codemirror/state" "^0.19.4"
@@ -1077,9 +1077,9 @@
     "@lezer/lr" "^0.15.0"
 
 "@codemirror/lint@^0.19.0":
-  version "0.19.5"
-  resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-0.19.5.tgz#e5e4171df98ea66a7acb7c76084498e72a8c09c3"
-  integrity sha512-J6AnEj2WyQfejWmlm4TS5ItVDAe2R+1cO79138HEUJnAN0CX6pVG6zI9cUhoy6V6dsV0hTwFmu6TzGe6vNhkXA==
+  version "0.19.6"
+  resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-0.19.6.tgz#0379688da3e16739db4a6304c73db857ca85d7ec"
+  integrity sha512-Pbw1Y5kHVs2J+itQ0uez3dI4qY9ApYVap7eNfV81x1/3/BXgBkKfadaw0gqJ4h4FDG7OnJwb0VbPsjJQllHjaA==
   dependencies:
     "@codemirror/gutter" "^0.19.4"
     "@codemirror/panel" "^0.19.0"
@@ -1108,9 +1108,9 @@
     "@codemirror/view" "^0.19.0"
 
 "@codemirror/rangeset@^0.19.0", "@codemirror/rangeset@^0.19.1", "@codemirror/rangeset@^0.19.5":
-  version "0.19.8"
-  resolved "https://registry.yarnpkg.com/@codemirror/rangeset/-/rangeset-0.19.8.tgz#f9b572c287bcef08d150b4a539e0128db62b2091"
-  integrity sha512-1vusIkxSD0vK5KQ22JO/4Ejfww5268PgM/CpKNBSpTpWZEFlZbmOPyRiY4HXO2oEzOpypbA/walMiNInWnrT0Q==
+  version "0.19.9"
+  resolved "https://registry.yarnpkg.com/@codemirror/rangeset/-/rangeset-0.19.9.tgz#e80895de93c39dc7899f5be31d368c9d88aa4efc"
+  integrity sha512-V8YUuOvK+ew87Xem+71nKcqu1SXd5QROMRLMS/ljT5/3MCxtgrRie1Cvild0G/Z2f1fpWxzX78V0U4jjXBorBQ==
   dependencies:
     "@codemirror/state" "^0.19.0"
 
@@ -1156,9 +1156,9 @@
     "@codemirror/view" "^0.19.0"
 
 "@codemirror/view@^0.19.0", "@codemirror/view@^0.19.22", "@codemirror/view@^0.19.23", "@codemirror/view@^0.19.34", "@codemirror/view@^0.19.44":
-  version "0.19.46"
-  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-0.19.46.tgz#ee39f908bb536a4e4f1b3f8cd160dac90b20dec4"
-  integrity sha512-gnIRJ4OrHt7RIC8q+NNOJeUy+nah6IOM/BPbS0uNnYPhfhpO938HCKbEE2CDLnD6LqcIBLD6u2xCKHYD9g5pTw==
+  version "0.19.47"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-0.19.47.tgz#2163c3016d7680bf50dd695c0e3abdaf80f45363"
+  integrity sha512-SfbagKvJQl5dtt+9wYpo9sa3ZkMgUxTq+/hXDf0KVwIx+zu3cJIqfEm9xSx6yXkq7it7RsPGHaPasApNffF/8g==
   dependencies:
     "@codemirror/rangeset" "^0.19.5"
     "@codemirror/state" "^0.19.3"
@@ -1171,10 +1171,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.6.tgz#d5e0706cf8c6acd8c6032f8d54070af261bbbb2f"
   integrity sha512-ws57AidsDvREKrZKYffXddNkyaF14iHNHm8VQnZH6t99E8gczjNN0GpvcGny0imC80yQ0tHz1xVUKk/KFQSUyA==
 
-"@dodona/papyros@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.8.tgz#391704970dce57c05cc65c49700d6147e9a746b6"
-  integrity sha512-ZtucE1EIFc11Fd/5C+WPhAbZEGZ6xDASd6FrPqvXkSNqqQZTuZ9PfVouasNAUZIEaexPTu5mxPCsysfN75qDtg==
+"@dodona/papyros@^0.1.90":
+  version "0.1.90"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.90.tgz#1b8b882299f1f8ddca4a75b0b4d09d262da5a86b"
+  integrity sha512-7liV4+CNxxUa8VogaBlWmAl95JqfMAytw3TH66bEy4zWuUi+Yq8In4/wFawSmGfuHDmQRarBcbbqFj9BQE6bOQ==
   dependencies:
     "@codemirror/autocomplete" "^0.19.8"
     "@codemirror/closebrackets" "^0.19.0"
@@ -1845,6 +1845,11 @@
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/@types/prettier/-/prettier-2.4.4.tgz#5d9b63132df54d8909fce1c3f8ca260fdd693e17"
   integrity sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==
+
+"@types/serviceworker@^0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.37.tgz#5dc693e5b093258552876ad1d4c4a26ce9fa08b2"
+  integrity sha512-tRJVA2RkqKIC+juWsTeL9JfhYHujA23znRr7po/eN2G8gar1ATbsB3/Glkrh21QApTBCqcLIzQIVzjmQl2hmFA==
 
 "@types/sizzle@*":
   version "2.3.3"

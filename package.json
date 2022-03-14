@@ -13,7 +13,7 @@
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
-    "@dodona/papyros": "^0.1.8",
+    "@dodona/papyros": "^0.1.90",
     "@popperjs/core": "^2.11.2",
     "@rails/activestorage": "^7.0.2-2",
     "@rails/ujs": "^7.0.2-2",
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
+    "@types/serviceworker": "^0.0.37",
     "@typescript-eslint/eslint-plugin": "^5.13.0",
     "@typescript-eslint/parser": "^5.13.0",
     "eslint": "^8.10.0",

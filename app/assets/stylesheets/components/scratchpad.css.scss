@@ -31,7 +31,32 @@
 }
 
 .copy-code-button {
-    background-color: $brand-success;
+    background-color: $grey-500;
     color: white;
     width: fit-content;
+}
+
+.scratchpad-content {
+    // Allow children to fill up remaining content
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+#scratchpad-editor-wrapper {
+    height: 100%;
+    max-height: 100%;
+    margin-bottom: 20px;
+    // Make editor take up this space
+    flex: 1 1 auto;
+}
+
+.cm-editor {
+    // Inform editor of height preferences
+    height: 100%;
+}
+
+#scratchpad-output-wrapper {
+    max-height: 20vh;
+    margin-bottom: 10px;
 }

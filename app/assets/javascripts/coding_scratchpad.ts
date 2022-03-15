@@ -47,15 +47,13 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                 // Render once new button is added
                 papyros.render({
                     codeEditorOptions: {
-                        parentElementId: CODE_EDITOR_PARENT_ID,
-                        attributes: new Map([["style", "max-height: 40vh; margin-bottom: 20px"]])
+                        parentElementId: CODE_EDITOR_PARENT_ID
                     },
                     statusPanelOptions: {
                         parentElementId: PANEL_PARENT_ID
                     },
                     outputOptions: {
-                        parentElementId: CODE_OUTPUT_PARENT_ID,
-                        attributes: new Map([["style", "max-height: 28vh;"]])
+                        parentElementId: CODE_OUTPUT_PARENT_ID
                     },
                     inputOptions: {
                         parentElementId: CODE_INPUT_PARENT_ID

@@ -312,22 +312,22 @@ iframe.file {
   padding-bottom: 10px;
 }
 
-.submission-history{
+.submission-history {
   display: flex;
   max-height: 75px;
   overflow-y: auto;
   margin-bottom: 12px;
 
-  .timestamp-col{
+  .timestamp-col {
     text-align: right;
     margin-right: 0.5em;
   }
 
-  .submission-history-row{
+  .submission-history-row {
     display: inline-block;
   }
 
-  .submission-link{
+  .submission-link {
     min-width: 24px;
     display: inline-block;
     margin-right:6px;

@@ -91,8 +91,9 @@ function initCorrectSubmissionToNextLink(status) {
         return;
     }
     const message = document.getElementById("submission-motivational-message");
+    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 6)}`;
     message.innerHTML = `
-        Proficiat! <a href="${link.href}">${link.dataset.title}</a>
+        ${I18n.t(congrats)} <a href="${link.href}">${link.dataset.title}</a>
     `;
 }
 

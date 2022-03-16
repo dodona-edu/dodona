@@ -93,7 +93,13 @@ function initCorrectSubmissionToNextLink(status) {
     const message = document.getElementById("submission-motivational-message");
     const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 6)}`;
     message.innerHTML = `
-        ${I18n.t(congrats)} <a href="${link.href}">${link.dataset.title}</a>
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <span>${I18n.t(congrats)}</span>
+            <a href="${link.href}" class="m-1">
+                ${link.dataset.title}
+                <i class="mdi mdi-chevron-right"></i>
+            </a>
+        </div>
     `;
 }
 

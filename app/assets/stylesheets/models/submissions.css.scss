@@ -325,6 +325,10 @@ iframe.file {
 
   .submission-history-row {
     display: inline-block;
+
+    &.current-submission {
+      font-weight: bold;
+    }
   }
 
   .submission-link {

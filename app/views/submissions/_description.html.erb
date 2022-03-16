@@ -40,6 +40,7 @@
       <span class="by-line">
         <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
       </span>
+      <div id='submission-motivational-message'></div>
     </div>
     <div class="col-md-6">
       <% @feedbacks.each do |feedback| %>
@@ -59,3 +60,7 @@
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
+
+<script>
+  dodona.initCorrectSubmissionToNextLink("<%= submission.status %>");
+</script>

@@ -82,4 +82,18 @@ function contextualizeMediaPaths(parentClass, exercisePath, token) {
     });
 }
 
-export { initSubmissionShow };
+function initCorrectSubmissionToNextLink(status) {
+    if (status !== "correct") {
+        return;
+    }
+    const link = document.getElementById("next-exercise-link");
+    if (!link) {
+        return;
+    }
+    const message = document.getElementById("submission-motivational-message");
+    message.innerHTML = `
+        Proficiat! <a href="${link.href}">${link.dataset.title}</a>
+    `;
+}
+
+export { initSubmissionShow, initCorrectSubmissionToNextLink };

@@ -291,3 +291,11 @@ form.button_to {
 .option-btn:hover {
   @include shadow-z4;
 }
+
+.single-zero-button:hover, #zero-button:hover{
+  background-color: $brand-danger;
+}
+
+.single-max-button:hover, #max-button:hover{
+  background-color: $brand-success;
+}

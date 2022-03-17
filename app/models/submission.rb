@@ -97,6 +97,10 @@ class Submission < ApplicationRecord
     correct.group(:exercise_id, :user_id).least_recent
   }
 
+  trigger.before(:insert) do
+    "SET NEW.number = (SELECT COUNT(*)+1 FROM submissions WHERE user_id = NEW.user_id AND exercise_id = NEW.exercise_id AND (course_id = NEW.course_id OR (course_id IS NULL and NEW.course_id IS NULL)));"
+  end
+
   def initialize(params)
     raise 'please explicitly tell whether you want to evaluate this submission' unless params.key? :evaluate
 

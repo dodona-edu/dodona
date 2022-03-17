@@ -98,7 +98,7 @@ class Submission < ApplicationRecord
   }
 
   trigger.before(:insert) do
-    "SET NEW.number = (SELECT COUNT(*)+1 FROM submissions WHERE user_id = NEW.user_id AND exercise_id = NEW.exercise_id AND (course_id = NEW.course_id OR (course_id IS NULL and NEW.course_id IS NULL)));"
+    'SET NEW.number = (SELECT COUNT(*)+1 FROM submissions WHERE user_id = NEW.user_id AND exercise_id = NEW.exercise_id AND (course_id = NEW.course_id OR (course_id IS NULL and NEW.course_id IS NULL)));'
   end
 
   def initialize(params)

@@ -13,6 +13,7 @@ nl:
       result: Resultaat
       summary: Samenvatting
       annotated: Deze oplossing heeft opmerkingen.
+      number: "Nummer"
     index:
       title: Alle oplossingen
       for: voor

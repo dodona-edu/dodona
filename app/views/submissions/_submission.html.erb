@@ -7,6 +7,11 @@
       <% end %>
     <% end %>
   </td>
+  <td>
+    <% if submission.number.present? %>
+      <%= link_to "##{submission.number}", submission_path(submission) %>
+    <% end %>
+  </td>
   <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
     <td>
       <i class="mdi mdi-filter-outline mdi-18 filter-icon"

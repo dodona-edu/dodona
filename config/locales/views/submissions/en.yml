@@ -13,6 +13,7 @@ en:
       result: Result
       summary: Summary
       annotated: This submission has remarks.
+      number: "Number"
     index:
       title: All submissions
       for: for

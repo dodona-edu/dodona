@@ -12,6 +12,7 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  number      :integer
 #
 
 require 'test_helper'

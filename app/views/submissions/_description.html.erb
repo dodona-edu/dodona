@@ -10,7 +10,13 @@
 
 <div class="submission-summary clearfix">
   <span class="description">
-    <%= t "submissions.show.submission_for" %>
+    <% if submission.number.nil? %>
+      <%= t "submissions.show.submission_for" %>
+    <% else %>
+      <%= t "submissions.show.submission" %>
+      <%= link_to "##{submission.number}", submission_path(submission) %>
+      <%= t "submissions.show.for" %>
+    <% end %>
     <% if submission.course.nil? %>
       <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
     <% else %>

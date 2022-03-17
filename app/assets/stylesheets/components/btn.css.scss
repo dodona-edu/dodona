@@ -292,10 +292,22 @@ form.button_to {
   @include shadow-z4;
 }
 
-.single-zero-button:hover, #zero-button:hover{
-  background-color: $brand-danger;
+.single-zero-button, #zero-button{
+  color: normal;
+  transition: color 3s;
 }
 
-.single-max-button:hover, #max-button:hover{
-  background-color: $brand-success;
+.single-max-button, #max-button{
+  color: normal;
+  transition: color 3s;
+}
+
+.single-zero-button:active, #zero-button:active{
+  color: $brand-danger;
+  transition: color 0s;
+}
+
+.single-max-button:active, #max-button:active{
+  color: $brand-success;
+  transition: color 0s;
 }

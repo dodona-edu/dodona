@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2.2'
+gem 'rails', '~> 7.0.2.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.10.3', require: false
+gem 'bootsnap', '~> 1.11.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -138,8 +138,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-# Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available
-gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version'
+gem 'ddtrace', '~> 1.0.0.beta1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.1.0'

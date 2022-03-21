@@ -33,6 +33,7 @@ en:
       course: Course
       handed_in: Handed in
       ago: ago
+      today: today
       status: Status
       result: Result
       code: Code

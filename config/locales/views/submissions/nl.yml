@@ -1,6 +1,7 @@
 nl:
   submissions:
     submission:
+      submission: Oplossing
       ago: geleden
       view_solution: Oplossing bekijken
       filter-submissions-by-user: "Toon enkel inzendingen van deze gebruiker"
@@ -13,7 +14,6 @@ nl:
       result: Resultaat
       summary: Samenvatting
       annotated: Deze oplossing heeft opmerkingen.
-      number: "Nummer"
     index:
       title: Alle oplossingen
       for: voor

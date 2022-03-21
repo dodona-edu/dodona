@@ -1,8 +1,9 @@
 class SubmissionsController < ApplicationController
   include SeriesHelper
+  include ActionView::Helpers::DateHelper
 
   before_action :set_submission, only: %i[show download evaluate edit media]
-  before_action :set_submissions, only: %i[index mass_rejudge]
+  before_action :set_submissions, only: %i[index mass_rejudge show]
   before_action :ensure_trailing_slash, only: :show
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
@@ -66,6 +67,22 @@ class SubmissionsController < ApplicationController
               else
                 [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
+    @submissions = @submissions.of_exercise(@submission.exercise)
+    @submissions = @submissions.of_user(@submission.user)
+    @submissions = @submissions.in_course(course) if course.present?
+
+    @submissions_time_stamps = []
+    prev = nil
+    @submissions.each do |s|
+      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t 'submissions.show.ago'}" : (t 'submissions.show.today')
+      if current == prev
+        @submissions_time_stamps.push nil
+      else
+        @submissions_time_stamps.push current
+        prev = current
+      end
+    end
+
     @feedbacks = policy_scope(@submission.feedbacks).preload(scores: :score_item)
   end
 

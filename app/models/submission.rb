@@ -521,7 +521,7 @@ class Submission < ApplicationRecord
   end
 
   def set_number
-    submissions = Submission.of_user(self.user).of_exercise(self.exercise)
+    submissions = Submission.of_user(user).of_exercise(exercise)
     submissions = submissions.where(course_id: course&.id)
     self.number = submissions.length + 1
   end

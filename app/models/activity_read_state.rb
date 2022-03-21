@@ -14,7 +14,7 @@ class ActivityReadState < ApplicationRecord
   belongs_to :course, optional: true
   belongs_to :user
 
-  validates :activity, uniqueness: { scope: %i[user course], message: 'already read' }
+  validates :activity, uniqueness: { scope: %i[user course], message: I18n.t('activerecord.errors.models.activity_read_states.already_read') }
   validate :activity_accessible_for_user?, on: :create
 
   after_save :invalidate_caches

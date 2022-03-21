@@ -6,6 +6,8 @@ en:
           at_least_one_admin: The course should always have at least one course administrator.
         api_token:
           not_permitted: You are not permitted to create a token for this user.
+        activity_read_states:
+          already_read: You have already read this activity
     models:
       course: Course
       activity: Activity

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_17_145048) do
+ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -533,10 +533,4 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_145048) do
   add_foreign_key "submissions", "courses"
   add_foreign_key "submissions", "users"
   add_foreign_key "users", "institutions"
-  create_trigger("submissions_before_insert_row_tr", :generated => true, :compatibility => 1).
-      on("submissions").
-      before(:insert) do
-    "SET NEW.number = (SELECT COUNT(*)+1 FROM submissions WHERE user_id = NEW.user_id AND exercise_id = NEW.exercise_id AND (course_id = NEW.course_id OR (course_id IS NULL and NEW.course_id IS NULL)));"
-  end
-
 end

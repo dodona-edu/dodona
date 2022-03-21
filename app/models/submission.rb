@@ -41,6 +41,7 @@ class Submission < ApplicationRecord
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
   before_save :report_if_internal_error
+  before_create :set_number
   after_create :evaluate_delayed, if: :evaluate?
   before_update :update_fs
   after_destroy :invalidate_caches
@@ -96,10 +97,6 @@ class Submission < ApplicationRecord
   scope :first_correct_per_ex_per_user, lambda { |*|
     correct.group(:exercise_id, :user_id).least_recent
   }
-
-  trigger.before(:insert) do
-    'SET NEW.number = (SELECT COUNT(*)+1 FROM submissions WHERE user_id = NEW.user_id AND exercise_id = NEW.exercise_id AND (course_id = NEW.course_id OR (course_id IS NULL and NEW.course_id IS NULL)));'
-  end
 
   def initialize(params)
     raise 'please explicitly tell whether you want to evaluate this submission' unless params.key? :evaluate
@@ -521,5 +518,11 @@ class Submission < ApplicationRecord
         url: Rails.application.routes.url_helpers.submission_url('en', self, host: Rails.application.config.default_host)
       }
     )
+  end
+
+  def set_number
+    submissions = Submission.of_user(self.user).of_exercise(self.exercise)
+    submissions = submissions.where(course_id: course&.id)
+    self.number = submissions.length + 1
   end
 end

@@ -6,8 +6,10 @@ nl:
           at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
         api_token:
           not_permitted: Je hebt geen rechten om een token voor deze user te maken.
-        activity_read_states:
-          already_read: Je hebt deze activiteit al gelezen
+        activity_read_state:
+          attributes:
+            activity:
+              taken: Je hebt deze activiteit al gelezen
     models:
       course: Cursus
       activity: Activiteit

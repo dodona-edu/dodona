@@ -184,7 +184,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.13.2'
+  gem 'rubocop-rails', '~> 2.14.2'
 
   # for opening letters
   gem 'letter_opener', '~> 1.7.0'

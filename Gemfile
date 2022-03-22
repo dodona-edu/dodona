@@ -50,7 +50,7 @@ gem 'sinatra', '~>2.2.0'
 gem 'will_paginate', '~>3.3.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.3.1'
+gem 'kramdown', '~>2.3.2'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '3.28.0'
 

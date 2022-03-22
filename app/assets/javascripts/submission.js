@@ -103,4 +103,9 @@ function initCorrectSubmissionToNextLink(status) {
     `;
 }
 
-export { initSubmissionShow, initCorrectSubmissionToNextLink };
+function initSubmissionHistory(id) {
+    const element = document.getElementById("history-"+id);
+    element.scrollIntoView({ block: "center", inline: "nearest" });
+}
+
+export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink };

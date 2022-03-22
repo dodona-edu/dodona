@@ -1,4 +1,4 @@
-import { initSubmissionShow, initCorrectSubmissionToNextLink } from "submission.js";
+import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory } from "submission.js";
 import { initMathJax } from "exercise.js";
 import { CodeListing } from "code_listing/code_listing.ts";
 import { attachClipboard } from "copy";
@@ -8,3 +8,4 @@ window.dodona.codeListingClass = CodeListing;
 window.dodona.attachClipboard = attachClipboard;
 window.dodona.initMathJax = initMathJax;
 window.dodona.initCorrectSubmissionToNextLink = initCorrectSubmissionToNextLink;
+window.dodona.initSubmissionHistory = initSubmissionHistory;

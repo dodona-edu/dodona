@@ -523,6 +523,6 @@ class Submission < ApplicationRecord
   def set_number
     submissions = Submission.of_user(user).of_exercise(exercise)
     submissions = submissions.where(course_id: course&.id)
-    self.number = submissions.length + 1
+    self.number = submissions.count + 1
   end
 end

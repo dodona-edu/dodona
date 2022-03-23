@@ -1,4 +1,5 @@
 /* globals Bloodhound */
+import "components/DropdownFilter"
 import { Toast } from "./toast";
 import {
     delay,
@@ -13,6 +14,7 @@ import { InactiveTimeout } from "./auto_reload";
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
+const DROPDOWN_FILTERS_ID = "dropdown-filters";
 
 /* constants for element-keys that are used when filtering */
 const FILTER_ICONS_CLASS = ".filter-icon";
@@ -33,8 +35,10 @@ function setBaseUrl(_baseUrl) {
 
 function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
     const updateAddressBar = !_baseUrl;
+    const dropdownFilters = {};
 
     function init() {
+        initDropdownFilters();
         initTokens();
 
         if (doInitFilter) {
@@ -46,6 +50,19 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         }
 
         initRefresh();
+    }
+
+    function initDropdownFilters() {
+        Object.entries(filterCollections).forEach(([type, value]) => {
+            const dropdownFilter = document.createElement("dodona-dropdown-filter");
+            dropdownFilter.labels = value.data;
+            dropdownFilter.color = value.color(value.data[0]);
+            dropdownFilter.type = type;
+            dropdownFilter.multi = value.multi;
+            dropdownFilter.selected = [];
+            document.getElementById(DROPDOWN_FILTERS_ID).appendChild(dropdownFilter);
+            dropdownFilters[type] = dropdownFilter;
+        });
     }
 
     function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
@@ -285,9 +302,16 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             return valid;
         }
 
-        function disableLabel() {
+        function disableLabel(e) {
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(window.dodona.index.doSearch, 100);
+
+            const dropdownFilter = dropdownFilters[e.attrs.type];
+            if (!dropdownFilter) {
+                return;
+            }
+
+            dropdownFilter.selected = dropdownFilter.selected.filter( x => x!==e.attrs.name);
         }
 
         function enableLabel(e) {
@@ -370,9 +394,36 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
 
             $field.tokenfield("createToken", element);
+
+            const dropdownFilter = dropdownFilters[type];
+            if (!dropdownFilter) {
+                return;
+            }
+
+            if (collection.multi) {
+                const selected = new Set(dropdownFilter.selected);
+                selected.add(name);
+                dropdownFilter.selected = Array.from(selected);
+            } else {
+                dropdownFilter.selected = [name];
+            }
+        }
+
+        function deleteTokenFromSearch(type, name) {
+            const tokens = $field.tokenfield("getTokens");
+            $field.tokenfield("setTokens", tokens.filter(t => !(t.type === type && t.name === name)));
+
+            const dropdownFilter = dropdownFilters[type];
+            if (!dropdownFilter) {
+                return;
+            }
+
+            dropdownFilter.selected = dropdownFilter.selected.filter( x => x!==name);
+            delay(window.dodona.index.doSearch, 100);
         }
 
         dodona.addTokenToSearch = addTokenToSearch;
+        dodona.deleteTokenFromSearch = deleteTokenFromSearch;
 
         // Temporarily disable automatic searching when adding new labels
         const temp = window.dodona.index.doSearch;

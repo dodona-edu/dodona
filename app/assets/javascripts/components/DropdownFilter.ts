@@ -12,7 +12,7 @@ export class DropdownFilter extends LitElement {
     @property()
         color: string;
     @property( { type: Array } )
-        selected: [string | number];
+        selected: [string];
     @property()
         type: string;
 
@@ -26,14 +26,23 @@ export class DropdownFilter extends LitElement {
         return this;
     }
 
-    selectLabel(name): void {
-        if (dodona.addTokenToSearch) {
-            dodona.addTokenToSearch(this.type, name);
+    toggleLabel(s: {id: string | number, name: string}): void {
+        if (this.isSelected(s)) {
+            if (dodona.deleteTokenFromSearch) {
+                dodona.deleteTokenFromSearch(this.type, s.name);
+            }
+        } else {
+            if (dodona.addTokenToSearch) {
+                dodona.addTokenToSearch(this.type, s.name);
+            }
         }
     }
 
+    isSelected(s: {id: string | number, name: string}): boolean{
+        return this.selected.includes(s.name);
+    }
+
     render(): TemplateResult {
-        console.log(this);
         return html`
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,21 +53,25 @@ export class DropdownFilter extends LitElement {
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     ${this.labels.map(s => html`
-                        <li><a class="dropdown-item ${this.selected.includes(s.id) ? "active" : ""}" href="#" @click="${() => this.selectLabel(s.name)}">
-                            ${this.multi ?
-        html`
+                        ${this.multi ?
+                            html`
+                                <li><a class="dropdown-item " href="#">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                                        <label class="form-check-label" for="flexCheckDefault">
-                                            ${ s.name } <span class="badge rounded-pill bg-info float-end">130</span>
+                                        <input class="form-check-input" type="checkbox" .value=${this.isSelected(s)}
+                                               @click="${() => this.toggleLabel(s)}" id="check-${this.type}-${s.id}">
+                                        <label class="form-check-label" for="check-${this.type}-${s.id}">
+                                            ${s.name} <span class="badge rounded-pill bg-info float-end">130</span>
                                         </label>
                                     </div>
-                                ` :
-        html`
-                                    ${ s.name }  <span class="badge rounded-pill bg-info float-end">130</span>
-                                `
-}
-                        </a></li>
+                                </a></li>
+                            ` :
+                            html`
+                                <li><a class="dropdown-item ${this.isSelected(s) ? "active" : ""}" href="#"
+                                       @click="${() => this.toggleLabel(s)}">
+                                    ${s.name} <span class="badge rounded-pill bg-info float-end">130</span>
+                                </a></li>
+                            `
+                        }
                     `)}
                 </ul>
             </div>

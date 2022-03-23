@@ -23,8 +23,6 @@
     <% end %>
   </div>
   <div id="dropdown-filters">
-    <dodona-dropdown-filter labels='[{"id": "en", "name": "English"}, {"id": "nl", "name": "Dutch"}]' color="pink" selected="[1]" type="description_languages">
-    </dodona-dropdown-filter>
   </div>
 </div>
 
@@ -52,12 +50,6 @@
                 return "teal";
             },
         };
-        const dropdownFilter =  document.createElement('dodona-dropdown-filter');
-        dropdownFilter.labels = <%= raw render template: 'programming_languages/index', formats: :json %>;
-        dropdownFilter.color = "teal"
-        dropdownFilter.type = "programming_languages"
-        dropdownFilter.selected = []
-        document.getElementById("dropdown-filters").appendChild(dropdownFilter)
         <% end %>
         <% if local_assigns.fetch :repositories, false %>
         filterCollections["repositories"] = {

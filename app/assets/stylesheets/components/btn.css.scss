@@ -293,21 +293,33 @@ form.button_to {
 }
 
 .single-zero-button, #zero-button{
-  color: normal;
-  transition: color 3s;
+  background-color: unset;
+  color: unset;
+  transition: background-color 2s;
 }
 
 .single-max-button, #max-button{
-  color: normal;
-  transition: color 3s;
+  background-color: unset;
+  color: unset;
+  transition: background-color 2s;
+}
+
+.single-zero-button:hover:not(:focus), #zero-button:hover:not(:focus){
+  color: $brand-danger;
+}
+
+.single-max-button:hover:not(:focus), #max-button:hover:not(:focus){
+  color: $brand-success;
 }
 
 .single-zero-button:active, #zero-button:active{
-  color: $brand-danger;
-  transition: color 0s;
+  background-color: $brand-danger;
+  color: unset;
+  transition: background-color 0s;
 }
 
 .single-max-button:active, #max-button:active{
-  color: $brand-success;
-  transition: color 0s;
+  background-color: $brand-success;
+  color: unset;
+  transition: background-color 0s;
 }

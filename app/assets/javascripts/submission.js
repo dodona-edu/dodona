@@ -97,7 +97,6 @@ function initCorrectSubmissionToNextLink(status) {
             <span>${I18n.t(congrats)}</span>
             <a href="${link.href}" class="m-1">
                 ${link.dataset.title}
-                <i class="mdi mdi-chevron-right"></i>
             </a>
         </div>
     `;

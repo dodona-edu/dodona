@@ -12,6 +12,7 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  number      :integer
 #
 
 class Submission < ApplicationRecord
@@ -40,6 +41,7 @@ class Submission < ApplicationRecord
   validate :not_rate_limited?, on: :create, unless: :skip_rate_limit_check?
 
   before_save :report_if_internal_error
+  before_create :set_number
   after_create :evaluate_delayed, if: :evaluate?
   before_update :update_fs
   after_destroy :invalidate_caches
@@ -516,5 +518,11 @@ class Submission < ApplicationRecord
         url: Rails.application.routes.url_helpers.submission_url('en', self, host: Rails.application.config.default_host)
       }
     )
+  end
+
+  def set_number
+    submissions = Submission.of_user(user).of_exercise(exercise)
+    submissions = submissions.where(course_id: course&.id)
+    self.number = submissions.count + 1
   end
 end

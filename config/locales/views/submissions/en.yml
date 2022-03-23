@@ -1,6 +1,7 @@
 en:
   submissions:
     submission:
+      submission: Submission
       ago: ago
       view_solution: View solution
       filter-submissions-by-user: "Only show submissions from this user"
@@ -66,3 +67,4 @@ en:
       message_zeus: This message is only visible for administrators
       tab_staff: This tab is only visible for course admins
       tab_zeus: This tab is only visisble for administrators
+      for: "for"

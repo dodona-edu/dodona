@@ -78,6 +78,8 @@ nl:
         back_to_course: Terug naar cursus
         previous: Vorige activiteit
         next: Volgende activiteit
+        next_actionable: Ga naar de volgende oefening
+        back_to_course_actionable: Ga terug naar de cursus
       mark_as_read: Markeren als gelezen
       read_at: "Gelezen op %{timestamp}"
     series_activities_add_table:

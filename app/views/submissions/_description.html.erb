@@ -9,6 +9,7 @@
 
 
 <div class="submission-summary clearfix">
+  <div id='submission-motivational-message'></div>
   <span class="description">
     <% if submission.number.nil? %>
       <%= t "submissions.show.submission_for" %>
@@ -93,5 +94,6 @@
 <% end %>
 
 <script>
-  window.dodona.initSubmissionHistory(<%= submission.id %>)
+  dodona.initCorrectSubmissionToNextLink("<%= submission.status %>");
+  dodona.initSubmissionHistory(<%= submission.id %>);
 </script>

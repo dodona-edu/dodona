@@ -1,12 +1,10 @@
-import { html, css, LitElement, TemplateResult } from "lit";
+import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
 type Label = {id: string | number, name: string};
 
 @customElement("dodona-dropdown-filter")
 export class DropdownFilter extends LitElement {
-    // @property()
-    // paramVal: (s: {id: number, name: string}) => unknown;
     @property({ type: Boolean })
         multi: boolean;
     @property( { type: Array } )
@@ -17,11 +15,6 @@ export class DropdownFilter extends LitElement {
         selected: [string];
     @property()
         type: string;
-
-
-    isAnySelected(): boolean {
-        return this.selected.length > 0;
-    }
 
     // don't use shadow dom
     createRenderRoot(): Element {
@@ -49,6 +42,10 @@ export class DropdownFilter extends LitElement {
     }
 
     render(): TemplateResult {
+        if (this.labels.length === 0) {
+            return html``;
+        }
+
         return html`
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">

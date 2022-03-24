@@ -1,5 +1,4 @@
 /* globals Bloodhound */
-import "components/DropdownFilter"
 import { Toast } from "./toast";
 import {
     delay,

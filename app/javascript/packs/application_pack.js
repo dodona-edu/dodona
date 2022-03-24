@@ -28,7 +28,7 @@ window.bootstrap = bootstrap;
 
 import "polyfills.js";
 
-import "components/DropdownFilter";
+import "components/dropdown_filter";
 
 import { Drawer } from "drawer";
 import { Toast } from "toast";

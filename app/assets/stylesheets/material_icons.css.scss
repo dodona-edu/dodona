@@ -8,6 +8,11 @@
   line-height: 14px;
 }
 
+.mdi.mdi-16::before {
+  font-size: 16px;
+  line-height: 18px;
+}
+
 .mdi.mdi-18::before {
   font-size: 18px;
   line-height: 20px;
@@ -139,6 +144,15 @@ a.btn-fab .mdi::before {
   position: relative;
   top: 3px; // move the icon downwards
   margin-right: 3px; // add spacing between text and the icon
+
+  &:hover {
+    color: $text-color;
+  }
+}
+
+.sort-icon {
+  color: $text-secondary;
+  cursor: pointer;
 
   &:hover {
     color: $text-color;

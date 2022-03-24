@@ -32,12 +32,15 @@ function setBaseUrl(_baseUrl) {
     window.dodona.index.doSearch();
 }
 
-function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
+function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null, showDropdowns = true) {
     const updateAddressBar = !_baseUrl;
     const dropdownFilters = {};
 
     function init() {
-        initDropdownFilters();
+        if (showDropdowns) {
+            initDropdownFilters();
+        }
+
         initTokens();
 
         if (doInitFilter) {

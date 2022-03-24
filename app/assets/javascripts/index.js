@@ -301,7 +301,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             if (valid && collection.multi) {
                 // if multi, we can have multiple labels but we do not want duplication
                 // therefore we use an id to distinguish labels and prevent the same label from appearing twice
-                const newElementId = e.attrs.id.toString(); // ensure comparison is String-based
+                const newElementId =e.attrs.id.toString() + e.attrs.type; // ensure comparison is String-based
                 // The labels have the token html class so we obtain all labels via this query
                 valid = $(".token").filter(function (_index, el) {
                     // check if a label with this id is not yet present
@@ -322,7 +322,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             const collection = filterCollections[e.attrs.type];
             $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`)
             // add an attribute to identify duplicate labels in the suggestions @see validateLabel
-                .attr(LABEL_UNIQUE_ATTR, e.attrs.id);
+                .attr(LABEL_UNIQUE_ATTR, e.attrs.id.toString() + e.attrs.type);
             if (!collection.multi) {
                 const tokens = $field.tokenfield("getTokens");
                 const newTokens = tokens

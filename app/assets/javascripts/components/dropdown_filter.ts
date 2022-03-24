@@ -1,20 +1,20 @@
-import {html, LitElement, TemplateResult} from "lit";
-import {customElement, property} from "lit/decorators.js";
+import { html, LitElement, TemplateResult } from "lit";
+import { customElement, property } from "lit/decorators.js";
 
 type Label = { id: string | number, name: string };
 
 @customElement("dodona-dropdown-filter")
 export class DropdownFilter extends LitElement {
-    @property({type: Boolean})
-    multi: boolean;
-    @property({type: Array})
-    labels: Array<Label> = [];
+    @property({ type: Boolean })
+        multi: boolean;
+    @property({ type: Array })
+        labels: Array<Label> = [];
     @property()
-    color: (s: Label) => string;
-    @property({type: Array})
-    selected: string[];
+        color: (s: Label) => string;
+    @property({ type: Array })
+        selected: string[];
     @property()
-    type: string;
+        type: string;
 
     // don't use shadow dom
     createRenderRoot(): Element {

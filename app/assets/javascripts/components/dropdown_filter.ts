@@ -12,7 +12,7 @@ export class DropdownFilter extends LitElement {
     @property()
         color: (s: Label) => string;
     @property( { type: Array } )
-        selected: [string];
+        selected: string[];
     @property()
         type: string;
 

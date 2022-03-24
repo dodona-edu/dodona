@@ -1,20 +1,20 @@
-import { html, LitElement, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import {html, LitElement, TemplateResult} from "lit";
+import {customElement, property} from "lit/decorators.js";
 
-type Label = {id: string | number, name: string};
+type Label = { id: string | number, name: string };
 
 @customElement("dodona-dropdown-filter")
 export class DropdownFilter extends LitElement {
-    @property({ type: Boolean })
-        multi: boolean;
-    @property( { type: Array } )
-        labels: Array<Label>=[];
+    @property({type: Boolean})
+    multi: boolean;
+    @property({type: Array})
+    labels: Array<Label> = [];
     @property()
-        color: (s: Label) => string;
-    @property( { type: Array } )
-        selected: string[];
+    color: (s: Label) => string;
+    @property({type: Array})
+    selected: string[];
     @property()
-        type: string;
+    type: string;
 
     // don't use shadow dom
     createRenderRoot(): Element {
@@ -56,25 +56,20 @@ export class DropdownFilter extends LitElement {
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     ${this.labels.map(s => html`
-                        ${this.multi ?
-                            html`
-                                <li><span class="dropdown-item-text ">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" .checked=${this.isSelected(s)}
-                                               @click="${() => this.toggleLabel(s)}" id="check-${this.type}-${s.id}">
-                                        <label class="form-check-label" for="check-${this.type}-${s.id}">
-                                            ${s.name}
-                                        </label>
-                                    </div>
-                                </span></li>
-                            ` :
-                            html`
-                                <li><a class="dropdown-item ${this.isSelected(s) ? "active" : ""}" href="#"
-                                       @click="${() => this.toggleLabel(s)}">
-                                    ${s.name}
-                                </a></li>
-                            `
-                        }
+                        ${this.multi ? html`
+                            <li><span class="dropdown-item-text ">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" .checked=${this.isSelected(s)} @click="${() => this.toggleLabel(s)}" id="check-${this.type}-${s.id}">
+                                    <label class="form-check-label" for="check-${this.type}-${s.id}">
+                                        ${s.name}
+                                    </label>
+                                </div>
+                            </span></li>
+                        ` : html`
+                            <li><a class="dropdown-item ${this.isSelected(s) ? "active" : ""}" href="#" @click="${() => this.toggleLabel(s)}">
+                                ${s.name}
+                            </a></li>
+                        `}
                     `)}
                 </ul>
             </div>

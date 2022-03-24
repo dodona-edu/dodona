@@ -303,7 +303,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             if (valid && collection.multi) {
                 // if multi, we can have multiple labels but we do not want duplication
                 // therefore we use an id to distinguish labels and prevent the same label from appearing twice
-                const newElementId =e.attrs.id.toString() + e.attrs.type; // ensure comparison is String-based
+                const newElementId = e.attrs.id.toString() + e.attrs.type; // ensure comparison is String-based
                 // The labels have the token html class so we obtain all labels via this query
                 valid = $(".token").filter(function (_index, el) {
                     // check if a label with this id is not yet present

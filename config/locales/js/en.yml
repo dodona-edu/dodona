@@ -168,3 +168,10 @@ en:
       confirm: Are you sure?
     score_item:
       error: Error while updating
+    submission_motivational_message:
+      1: Congratulations!
+      2: You did it!
+      3: Keep up the good work!
+      4: Nice!
+      5: Good job!
+      6: Well done!

@@ -168,3 +168,10 @@ nl:
       confirm: Bent u zeker?
     score_item:
       error: Fout bij bijwerken
+    submission_motivational_message:
+      1: Proficiat!
+      2: Goed bezig!
+      3: Doe zo verder!
+      4: Mooi!
+      5: Puik werk!
+      6: Goed gedaan!

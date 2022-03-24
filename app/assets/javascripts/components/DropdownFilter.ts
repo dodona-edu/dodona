@@ -1,6 +1,8 @@
 import { html, css, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
+type Label = {id: string | number, name: string};
+
 @customElement("dodona-dropdown-filter")
 export class DropdownFilter extends LitElement {
     // @property()
@@ -8,9 +10,9 @@ export class DropdownFilter extends LitElement {
     @property({ type: Boolean })
         multi: boolean;
     @property( { type: Array } )
-        labels: Array<{id: string | number, name: string}>=[];
+        labels: Array<Label>=[];
     @property()
-        color: string;
+        color: (s: Label) => string;
     @property( { type: Array } )
         selected: [string];
     @property()
@@ -26,7 +28,7 @@ export class DropdownFilter extends LitElement {
         return this;
     }
 
-    toggleLabel(s: {id: string | number, name: string}): void {
+    toggleLabel(s: Label): void {
         if (this.isSelected(s)) {
             if (dodona.deleteTokenFromSearch) {
                 dodona.deleteTokenFromSearch(this.type, s.name);
@@ -38,8 +40,12 @@ export class DropdownFilter extends LitElement {
         }
     }
 
-    isSelected(s: {id: string | number, name: string}): boolean{
+    isSelected(s: Label): boolean {
         return this.selected.includes(s.name);
+    }
+
+    getSelectedLabels(): Array<Label> {
+        return this.labels.filter(s => this.isSelected(s));
     }
 
     render(): TemplateResult {
@@ -47,7 +53,7 @@ export class DropdownFilter extends LitElement {
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     ${I18n.t(`js.${this.type}`)}
-                    ${this.isAnySelected() ? html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color}"></i>`: ""}
+                    ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)}"></i>`)}
                     <i class="mdi mdi-chevron-down mdi-12"></i>
                 </a>
 
@@ -55,20 +61,20 @@ export class DropdownFilter extends LitElement {
                     ${this.labels.map(s => html`
                         ${this.multi ?
                             html`
-                                <li><a class="dropdown-item " href="#">
+                                <li><span class="dropdown-item-text ">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" .value=${this.isSelected(s)}
+                                        <input class="form-check-input" type="checkbox" .checked=${this.isSelected(s)}
                                                @click="${() => this.toggleLabel(s)}" id="check-${this.type}-${s.id}">
                                         <label class="form-check-label" for="check-${this.type}-${s.id}">
-                                            ${s.name} <span class="badge rounded-pill bg-info float-end">130</span>
+                                            ${s.name}
                                         </label>
                                     </div>
-                                </a></li>
+                                </span></li>
                             ` :
                             html`
                                 <li><a class="dropdown-item ${this.isSelected(s) ? "active" : ""}" href="#"
                                        @click="${() => this.toggleLabel(s)}">
-                                    ${s.name} <span class="badge rounded-pill bg-info float-end">130</span>
+                                    ${s.name}
                                 </a></li>
                             `
                         }

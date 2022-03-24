@@ -56,7 +56,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         Object.entries(filterCollections).forEach(([type, value]) => {
             const dropdownFilter = document.createElement("dodona-dropdown-filter");
             dropdownFilter.labels = value.data;
-            dropdownFilter.color = value.color(value.data[0]);
+            dropdownFilter.color = value.color;
             dropdownFilter.type = type;
             dropdownFilter.multi = value.multi;
             dropdownFilter.selected = [];
@@ -278,6 +278,15 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initTokens() {
         const $field = $(TOKENS_FILTER_ID);
 
+        function updateDropdownFilter(type) {
+            const dropdownFilter = dropdownFilters[type];
+            if (!dropdownFilter) {
+                return;
+            }
+            const tokens = $field.tokenfield("getTokens").filter(el => el.type === type);
+            dropdownFilter.selected = tokens.map(el => el.name);
+        }
+
         window.dodona.index.doSearch = function () {
             search(updateAddressBar, window.dodona.index.baseUrl, "", filterCollections);
         };
@@ -306,12 +315,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(window.dodona.index.doSearch, 100);
 
-            const dropdownFilter = dropdownFilters[e.attrs.type];
-            if (!dropdownFilter) {
-                return;
-            }
-
-            dropdownFilter.selected = dropdownFilter.selected.filter( x => x!==e.attrs.name);
+            updateDropdownFilter(e.attrs.type);
         }
 
         function enableLabel(e) {
@@ -333,6 +337,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(window.dodona.index.doSearch, 100);
+
+            updateDropdownFilter(e.attrs.type);
         }
 
         function customWhitespaceTokenizer(datum) {
@@ -394,31 +400,13 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
 
             $field.tokenfield("createToken", element);
-
-            const dropdownFilter = dropdownFilters[type];
-            if (!dropdownFilter) {
-                return;
-            }
-
-            if (collection.multi) {
-                const selected = new Set(dropdownFilter.selected);
-                selected.add(name);
-                dropdownFilter.selected = Array.from(selected);
-            } else {
-                dropdownFilter.selected = [name];
-            }
         }
 
         function deleteTokenFromSearch(type, name) {
             const tokens = $field.tokenfield("getTokens");
             $field.tokenfield("setTokens", tokens.filter(t => !(t.type === type && t.name === name)));
 
-            const dropdownFilter = dropdownFilters[type];
-            if (!dropdownFilter) {
-                return;
-            }
-
-            dropdownFilter.selected = dropdownFilter.selected.filter( x => x!==name);
+            updateDropdownFilter(type);
             delay(window.dodona.index.doSearch, 100);
         }
 
@@ -447,6 +435,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
         });
         $field.tokenfield("setTokens", allTokens);
+        Object.keys(dropdownFilters).forEach(updateDropdownFilter);
         window.dodona.index.doSearch = temp;
     }
 

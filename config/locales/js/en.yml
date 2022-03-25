@@ -169,5 +169,5 @@ en:
     score_item:
       error: Error while updating
     coding_scratchpad:
-      copy_code: Copy
-      overwrite_code: Do you want to overwrite the code in the scratchpad with current solution?
+      copy_code: Copy to Dodona
+      overwrite_code: Do you want to overwrite the code in the scratchpad with your current solution?

@@ -169,5 +169,5 @@ nl:
     score_item:
       error: Fout bij bijwerken
     coding_scratchpad:
-      copy_code: Kopieer
+      copy_code: Kopieer naar Dodona
       overwrite_code: Wil je de code in het kladblok overschrijven met je huidige oplossing?

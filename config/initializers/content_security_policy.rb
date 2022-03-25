@@ -28,8 +28,7 @@ Rails.application.configure do
     policy.object_src  :none
 
     policy.script_src  :self, :unsafe_inline, :unsafe_eval,
-                       'https://cdn.jsdelivr.net/npm/mathjax@3/',
-                       'https://cdn.jsdelivr.net/pyodide/'
+                       'https://cdn.jsdelivr.net/npm/mathjax@3/'
 
     policy.style_src   :self, :unsafe_inline,
                        'https://fonts.googleapis.com',

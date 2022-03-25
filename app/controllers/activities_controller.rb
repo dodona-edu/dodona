@@ -25,7 +25,8 @@ class ActivitiesController < ApplicationController
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
     # Allow fetching Pyodide and related packages
-    policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.script_src))
+    policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/] + policy.script_src))
+    policy.connect_src(*(%w[https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.connect_src))
   end
 
   content_security_policy only: %i[description] do |policy|

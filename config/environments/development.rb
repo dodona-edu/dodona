@@ -1,5 +1,6 @@
 require "active_support/core_ext/integer/time"
 
+# Middleware to add required headers to assets
 class AssetHeaders
   # Source: https://gist.github.com/ryanb/4157256
   def initialize(app)
@@ -10,8 +11,6 @@ class AssetHeaders
     request = Rack::Request.new(env)
     response = @app.call(env)
     if request.path =~ /^\/assets\//
-      # COEP does not seem required
-      #response[1]['Cross-Origin-Embedder-Policy'] = 'require-corp'
       response[1]['Cross-Origin-Resource-Policy'] = 'cross-origin'
     end
     response
@@ -58,7 +57,6 @@ Rails.application.configure do
   # Run rails dev:cache to toggle caching.
 
   config.public_file_server.headers = {
-     # 'Cross-Origin-Embedder-Policy' => 'require-corp',
     'Cross-Origin-Resource-Policy' => 'cross-origin'
   }
   if Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?

@@ -9,7 +9,7 @@
     "build": "yarn build:js"
   },
   "dependencies": {
-    "@babel/core": "^7.17.5",
+    "@babel/core": "^7.17.8",
     "@babel/plugin-transform-runtime": "^7.17.0",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-typescript": "^7.16.7",
@@ -42,11 +42,11 @@
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@types/serviceworker": "^0.0.37",
-    "@typescript-eslint/eslint-plugin": "^5.14.0",
-    "@typescript-eslint/parser": "^5.13.0",
+    "@typescript-eslint/eslint-plugin": "^5.16.0",
+    "@typescript-eslint/parser": "^5.15.0",
     "eslint": "^8.11.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^26.1.1",
+    "eslint-plugin-jest": "^26.1.2",
     "eslint-plugin-no-jquery": "^2.7.0",
     "jest": "^26.6.3",
     "jest-junit": "^13.0.0",

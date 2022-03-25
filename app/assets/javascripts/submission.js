@@ -82,9 +82,29 @@ function contextualizeMediaPaths(parentClass, exercisePath, token) {
     });
 }
 
+function initCorrectSubmissionToNextLink(status) {
+    if (status !== "correct") {
+        return;
+    }
+    const link = document.getElementById("next-exercise-link");
+    if (!link) {
+        return;
+    }
+    const message = document.getElementById("submission-motivational-message");
+    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 6)}`;
+    message.innerHTML = `
+        <div class="alert alert-success" role="alert">
+            <span>${I18n.t(congrats)}</span>
+            <a href="${link.href}" class="m-1">
+                ${link.dataset.title}
+            </a>
+        </div>
+    `;
+}
+
 function initSubmissionHistory(id) {
     const element = document.getElementById("history-"+id);
     element.scrollIntoView({ block: "center", inline: "nearest" });
 }
 
-export { initSubmissionShow, initSubmissionHistory };
+export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink };

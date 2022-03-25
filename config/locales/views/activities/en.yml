@@ -78,6 +78,8 @@ en:
         back_to_course: Back to course
         previous: Previous activity
         next: Next activity
+        next_actionable: Go to the next exercise
+        back_to_course_actionable: Go back to course
       mark_as_read: Mark as read
       read_at: "Marked as read at %{timestamp}"
     series_activities_add_table:

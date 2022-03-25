@@ -171,3 +171,10 @@ nl:
     coding_scratchpad:
       copy_code: Kopieer naar Dodona
       overwrite_code: Wil je de code in het kladblok overschrijven met je huidige oplossing?
+    submission_motivational_message:
+      1: Proficiat!
+      2: Goed bezig!
+      3: Doe zo verder!
+      4: Mooi!
+      5: Puik werk!
+      6: Goed gedaan!

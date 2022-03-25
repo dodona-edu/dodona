@@ -21,6 +21,7 @@
   previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
   next_link = next_activity || breadcrumb_series_path(@series, current_user)
   next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
+  next_tooltip_actionable = next_activity ? t('.navigation.next_actionable') : t('.navigation.back_to_course_actionable')
 end %>
 
 <div class="row">
@@ -47,7 +48,7 @@ end %>
             <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
             <% end %>
-            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
+            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top', title: next_tooltip_actionable}, id: 'next-exercise-link' do %>
                 <i class="mdi mdi-chevron-right"></i>
             <% end %>
           </div>

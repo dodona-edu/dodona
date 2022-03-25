@@ -50,7 +50,7 @@ gem 'sinatra', '~>2.2.0'
 gem 'will_paginate', '~>3.3.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.3.1'
+gem 'kramdown', '~>2.3.2'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '3.28.0'
 
@@ -183,10 +183,10 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.13.2'
+  gem 'rubocop-rails', '~> 2.14.2'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.7.0'
+  gem 'letter_opener', '~> 1.8.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

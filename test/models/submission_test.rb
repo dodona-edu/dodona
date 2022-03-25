@@ -12,6 +12,7 @@
 #  accepted    :boolean          default(FALSE)
 #  course_id   :integer
 #  fs_key      :string(24)
+#  number      :integer
 #
 
 require 'test_helper'
@@ -383,6 +384,26 @@ class SubmissionTest < ActiveSupport::TestCase
       # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: series)[:value]
       assert_equal result.length, 0
+    end
+
+    test 'submissions should be numbered by user, exercise and course' do
+      users = create_list :user, 2
+      exercises = create_list :exercise, 2
+      courses = create_list :course, 2
+      courses << nil
+
+      users.each do |u|
+        exercises.each do |e|
+          courses.each do |c|
+            s = create :submission, user: u, exercise: e, course: c
+            s.reload
+            assert_equal 1, s.number
+            s = create :submission, user: u, exercise: e, course: c
+            s.reload
+            assert_equal 2, s.number
+          end
+        end
+      end
     end
   end
 end

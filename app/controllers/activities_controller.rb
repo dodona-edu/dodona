@@ -11,7 +11,7 @@ class ActivitiesController < ApplicationController
   # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
   skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
-  protect_from_forgery except: :isw # Allow serving JavaScript service worker file
+  protect_from_forgery except: :input_service_worker # Allow serving JavaScript service worker file
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
@@ -24,6 +24,8 @@ class ActivitiesController < ApplicationController
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
+    # Allow fetching Pyodide and related packages
+    policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.script_src))
   end
 
   content_security_policy only: %i[description] do |policy|
@@ -197,7 +199,7 @@ class ActivitiesController < ApplicationController
   # Serve the inputServiceWorker asset required to handle input in Papyros
   # Asset has been preprocessed and built internally
   # Redirecting to the asset is not possible due to browser security policy
-  def isw
+  def input_service_worker
     send_file(Rails.application.assets['inputServiceWorker.js'].filename,
               filename: 'inputServiceWorker.js',
               type: 'text/javascript')

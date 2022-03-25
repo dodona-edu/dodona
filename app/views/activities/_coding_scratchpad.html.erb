@@ -32,7 +32,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
 <script type="text/javascript">
     $(function () {
         dodona.initCodingScratchpad(
-            "<%= @activity.programming_language&.name %>"
+            "<%= escape_javascript @activity.programming_language&.name %>"
         );
     });
 </script>

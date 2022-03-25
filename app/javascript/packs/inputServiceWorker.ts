@@ -1,5 +1,5 @@
 // Specifically import service worker provided by the Papyros-package
-// Due to Webpack bundling, we need to do this to prevent other 
+// Due to Webpack bundling, we need to do this to prevent other
 // parts of the Papyros code to be included as well, as that would cause
 // the code to fail due to missing dependencies in a WebWorker environment
 import { InputWorker } from "@dodona/papyros/dist/workers/input/InputWorker";

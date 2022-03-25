@@ -14,13 +14,9 @@ Rails.application.configure do
       # Allow webpack-dev-server
       policy.connect_src :self, Rails.configuration.tutor_url.to_s,
                          'https://*.googleapis.com',
-                         'http://localhost:3035', 'ws://localhost:3035',
-                         # Pyodide and related packages
-                         'https://cdn.jsdelivr.net/pyodide/', 'https://pypi.org/pypi/', 'https://files.pythonhosted.org/packages/'
+                         'http://localhost:3035', 'ws://localhost:3035'
     else
-      policy.connect_src :self, Rails.configuration.tutor_url.to_s,
-      # Pyodide and related packages
-      'https://cdn.jsdelivr.net/pyodide/', 'https://pypi.org/pypi/', 'https://files.pythonhosted.org/packages/'
+      policy.connect_src :self, Rails.configuration.tutor_url.to_s
     end
   
     policy.font_src    :self, 'https://fonts.gstatic.com',

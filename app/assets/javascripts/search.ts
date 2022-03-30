@@ -1,4 +1,4 @@
-import { fetch, updateArrayURLParameter, updateURLParameter } from "util.js";
+import { createDelayer, fetch, updateArrayURLParameter, updateURLParameter } from "util.js";
 
 
 export class QueryParameters<T> {
@@ -15,7 +15,6 @@ export class QueryParameters<T> {
     }
 
     updateParam(key: string, value: T ): void {
-        console.log(key, value);
         const old: T = this.params.get(key);
         this.params.set(key, value);
 
@@ -58,8 +57,9 @@ export class SearchQuery {
                 this.query_params.updateParam(key, url.searchParams.get(key));
             }
         }
-        this.array_query_params.subscribe(k => this.search(k));
-        this.query_params.subscribe(k => this.search(k));
+        const delay = createDelayer();
+        this.array_query_params.subscribe(k => delay(() => this.search(k), 100));
+        this.query_params.subscribe(k => delay(() => this.search(k), 100));
     }
 
     addParametersToUrl(baseUrl?: string): string {

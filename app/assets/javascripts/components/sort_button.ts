@@ -9,23 +9,24 @@ export class SortQuery {
 
     constructor() {
         const sortParams = [...dodona.search_query.query_params.params.entries()].filter(
-            ([k, v]) => k.startsWith("sort_by_") && (v=== "ASC" || v === "DESC")
+            ([k, v]) => k.startsWith("order_by_") && (v=== "ASC" || v === "DESC")
         );
 
         if (sortParams.length > 0) {
-            this.active_column = sortParams[0][0].substring(8);
+            this.active_column = sortParams[0][0].substring(9);
             this.ascending = sortParams[0][1] === "ASC";
+            console.log(this.active_column, this.ascending);
             sortParams.slice(1).forEach(([k, _]) => {
                 dodona.search_query.query_params.updateParam(k, undefined);
             });
         }
         dodona.search_query.query_params.subscribe((k, o, n) => {
             if (
-                k.startsWith("sort_by_") &&
+                k.startsWith("order_by_") &&
                 !(k === this.getQueryKey() && n === this.getQueryValue()) &&
                 (n === "ASC" || n === "DESC")
             ) {
-                this.active_column = k.substring(8);
+                this.active_column = k.substring(9);
                 this.ascending = n === "ASC";
                 this.notifySortButtons();
             }
@@ -33,7 +34,7 @@ export class SortQuery {
     }
 
     getQueryKey(): string {
-        return "sort_by_" + this.active_column;
+        return "order_by_" + this.active_column;
     }
 
     getQueryValue(): string {

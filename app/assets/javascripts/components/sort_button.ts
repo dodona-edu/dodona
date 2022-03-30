@@ -8,6 +8,17 @@ export class SortQuery {
     buttons: Array<SortButton> = [];
 
     constructor() {
+        const sortParams = [...dodona.search_query.query_params.params.entries()].filter(
+            ([k, v]) => k.startsWith("sort_by_") && (v=== "ASC" || v === "DESC")
+        );
+
+        if (sortParams.length > 0) {
+            this.active_column = sortParams[0][0].substring(8);
+            this.ascending = sortParams[0][1] === "ASC";
+            sortParams.slice(1).forEach(([k, _]) => {
+                dodona.search_query.query_params.updateParam(k, undefined);
+            });
+        }
         dodona.search_query.query_params.subscribe((k, o, n) => {
             if (
                 k.startsWith("sort_by_") &&

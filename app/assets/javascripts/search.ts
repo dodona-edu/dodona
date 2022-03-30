@@ -48,8 +48,17 @@ export class SearchQuery {
     query_params: QueryParameters<string> = new QueryParameters<string>();
 
     constructor(baseUrl?: string) {
-        this.baseUrl = baseUrl || window.location.href;
-        this.array_query_params.subscribe(this.search);
+        const _url = baseUrl || window.location.href;
+        const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
+        this.baseUrl = url.href;
+        for (const key of url.searchParams.keys()) {
+            if (key.endsWith("[]")) {
+                this.array_query_params.updateParam(key.substring(0, -2), url.searchParams.getAll(key));
+            } else {
+                this.query_params.updateParam(key, url.searchParams.get(key));
+            }
+        }
+        this.array_query_params.subscribe(k => this.search(k));
         this.query_params.subscribe(k => this.search(k));
     }
 

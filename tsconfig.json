@@ -12,6 +12,7 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "target": "es5",
+    "downlevelIteration": true,
     "baseUrl": "app",
     "paths": {
       "*": ["assets/javascripts/*"]

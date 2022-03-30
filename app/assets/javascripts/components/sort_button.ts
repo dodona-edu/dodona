@@ -5,7 +5,7 @@ import { customElement, property } from "lit/decorators.js";
 export class SortQuery {
     active_column: string;
     ascending: boolean;
-    buttons: Array<SortButton> = [];
+    listeners: Array<(c: string, a: boolean) => void> = [];
 
     constructor() {
         const sortParams = [...dodona.search_query.query_params.params.entries()].filter(
@@ -28,7 +28,7 @@ export class SortQuery {
             ) {
                 this.active_column = k.substring(9);
                 this.ascending = n === "ASC";
-                this.notifySortButtons();
+                this.notify();
             }
         });
     }
@@ -41,19 +41,16 @@ export class SortQuery {
         return this.ascending ? "ASC" : "DESC";
     }
 
-    registerSortButton(b: SortButton): void {
-        this.buttons.push(b);
+    subscribe(listener: (c: string, a: boolean) => void): void {
+        this.listeners.push(listener);
     }
 
-    notifySortButtons(): void {
-        this.buttons.forEach(b => {
-            b.active_column = this.active_column;
-            b.ascending = this.ascending;
-        });
+    notify(): void {
+        this.listeners.forEach(f => f(this.active_column, this.ascending));
     }
 
     sortBy(column: string, ascending: boolean): void {
-        if (this.active_column === column && this.ascending === ascending){
+        if (this.active_column === column && this.ascending === ascending) {
             return;
         }
 
@@ -62,8 +59,10 @@ export class SortQuery {
             this.active_column = column;
         }
         this.ascending = ascending;
-        this.notifySortButtons();
-        dodona.search_query.query_params.updateParam(this.getQueryKey(), this.getQueryValue());
+        this.notify();
+        if (this.active_column) {
+            dodona.search_query.query_params.updateParam(this.getQueryKey(), this.getQueryValue());
+        }
     }
 }
 dodona.state = {};
@@ -73,10 +72,9 @@ dodona.state.sort_query = new SortQuery();
 export class SortButton extends LitElement {
     @property({ type: String })
         column: string;
-    // @state()
-        active_column: string;
-    // @state()
-        ascending: boolean;
+
+    active_column: string;
+    ascending: boolean;
 
     // don't use shadow dom
     createRenderRoot(): Element {
@@ -92,14 +90,23 @@ export class SortButton extends LitElement {
     }
 
     sort(): void {
-        dodona.state.sort_query.sortBy(this.column, !this.isActive() || !this.ascending);
+        if (!this.isActive()) {
+            dodona.state.sort_query.sortBy(this.column, true);
+        } else if (this.ascending) {
+            dodona.state.sort_query.sortBy(this.column, false);
+        } else {
+            dodona.state.sort_query.sortBy(undefined, undefined);
+        }
     }
 
     constructor() {
         super();
-        dodona.state.sort_query.registerSortButton(this);
         this.ascending = dodona.state.sort_query.ascending;
         this.active_column = dodona.state.sort_query.active_column;
+        dodona.state.sort_query.subscribe((c, a) => {
+            this.active_column = c;
+            this.ascending = a;
+        });
     }
 
     render(): TemplateResult {

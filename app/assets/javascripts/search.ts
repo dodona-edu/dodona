@@ -1,4 +1,6 @@
-import { createDelayer, fetch, updateArrayURLParameter, updateURLParameter } from "util.js";
+import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
+import { InactiveTimeout } from "auto_reload";
+const RELOAD_SECONDS = 2;
 
 
 export class QueryParameters<T> {
@@ -41,15 +43,35 @@ export class QueryParameters<T> {
 
 export class SearchQuery {
     baseUrl: string;
+    refreshElement: string;
+    periodicReload: InactiveTimeout;
     searchIndex = 0;
     appliedIndex = 0;
     array_query_params: QueryParameters<string[]> = new QueryParameters<string[]>();
     query_params: QueryParameters<string> = new QueryParameters<string>();
 
-    constructor(baseUrl?: string) {
+    setRefreshElement(refreshElement: string): void {
+        this.refreshElement = refreshElement;
+
+        if (this.refreshElement) {
+            this.periodicReload = new InactiveTimeout(
+                document.querySelector(this.refreshElement),
+                RELOAD_SECONDS * 1000,
+                () => {
+                    this.search();
+                }
+            );
+            this.refresh(this.query_params.params.get("refresh"));
+        } else {
+            this.periodicReload = undefined;
+        }
+    }
+
+    constructor(baseUrl?: string, refreshElement?: string) {
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
+        // initialise present parameters
         for (const key of url.searchParams.keys()) {
             if (key.endsWith("[]")) {
                 this.array_query_params.updateParam(key.substring(0, -2), url.searchParams.getAll(key));
@@ -57,9 +79,14 @@ export class SearchQuery {
                 this.query_params.updateParam(key, url.searchParams.get(key));
             }
         }
+
+        // subscribe relevant listeners
         const delay = createDelayer();
         this.array_query_params.subscribe(k => delay(() => this.search(k), 100));
         this.query_params.subscribe(k => delay(() => this.search(k), 100));
+        this.query_params.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
+
+        this.setRefreshElement(refreshElement);
     }
 
     addParametersToUrl(baseUrl?: string): string {
@@ -73,6 +100,17 @@ export class SearchQuery {
     resetAllQueryParams(): void {
         this.query_params.resetParams();
         this.array_query_params.resetParams();
+    }
+
+    refresh(value: string): void {
+        console.log(value);
+        if (this.periodicReload) {
+            if (value === "true") {
+                this.periodicReload.start();
+            } else {
+                this.periodicReload.end();
+            }
+        }
     }
 
     search(key?: string): void {

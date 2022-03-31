@@ -42,10 +42,10 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         }
 
         if (actions) {
-            initActions();
+            // initActions();
         }
 
-        initRefresh();
+        // initRefresh();
     }
 
     function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {

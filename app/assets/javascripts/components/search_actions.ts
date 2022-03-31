@@ -14,13 +14,16 @@ type SearchAction = {
     icon: string
 };
 
+const isSearchOption = (opt): opt is SearchOption => (opt as SearchOption).search !== undefined;
+const isSearchAction= (action): action is SearchAction => (action as SearchAction).js !== undefined || (action as SearchAction).action !== undefined || (action as SearchAction).url !== undefined;
+
 @customElement("dodona-search-option")
 export class SearchOptionElement extends LitElement {
-    @property()
-    searchOption: SearchOption;
-    @property()
-    key: number;
-    @state()
+    @property({ type: Object })
+        searchOption: SearchOption;
+    @property( { type: Number })
+        key: number;
+
     private _active = false;
 
     // don't use shadow dom
@@ -28,23 +31,33 @@ export class SearchOptionElement extends LitElement {
         return this;
     }
 
-    constructor() {
-        super();
-        Object.keys(this.searchOption.search).forEach(k => {
-            dodona.search_query.query_params.subscribeByKey(k, () => this.setActive());
-        });
+    update(changedProperties: Map<string, unknown>): void {
+        if (changedProperties.has("searchOption") && this.searchOption) {
+            console.log(this.searchOption);
+            this.setActive();
+            Object.keys(this.searchOption.search).forEach(k => {
+                dodona.search_query.query_params.subscribeByKey(k, () => this.setActive());
+            });
+        }
+        super.update(changedProperties);
     }
 
     setActive(): void {
         this._active = Object.entries(this.searchOption.search).every(([key, value]) => {
-            return dodona.search_query.query_params.params.get(key) == value;
+            return dodona.search_query.query_params.params.get(key) == value.toString();
         });
     }
 
     performSearch(): void {
-        Object.entries(this.searchOption.search).forEach(([key, value]) => {
-            dodona.search_query.query_params.updateParam(key, value);
-        });
+        if (!this._active) {
+            Object.entries(this.searchOption.search).forEach(([key, value]) => {
+                dodona.search_query.query_params.updateParam(key, value.toString());
+            });
+        } else {
+            Object.keys(this.searchOption.search).forEach(key => {
+                dodona.search_query.query_params.updateParam(key, undefined);
+            });
+        }
     }
 
     render(): TemplateResult {
@@ -69,10 +82,16 @@ export class SearchOptionElement extends LitElement {
 
 @customElement("dodona-search-actions")
 export class SearchActions extends LitElement {
-    @property()
-        searchOptions: Array<SearchOption>;
-    @property()
-        searchActions: Array<SearchAction>;
+    @property({ type: Array })
+        actions: (SearchOption|SearchAction)[] = [];
+
+    getSearchOptions(): Array<SearchOption> {
+        return this.actions.filter(isSearchOption);
+    }
+
+    getSearchActions(): Array<SearchAction> {
+        return this.actions.filter(isSearchAction);
+    }
 
     // don't use shadow dom
     createRenderRoot(): Element {
@@ -111,23 +130,23 @@ export class SearchActions extends LitElement {
 
     render(): TemplateResult {
         return html`
-            <div class="btn-group hidden actions" id="kebab-menu">
+            <div class="btn-group actions" id="kebab-menu">
                 <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="mdi mdi-dots-vertical"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    ${this.searchOptions.length > 0 ? html`
+                    ${this.getSearchOptions().length > 0 ? html`
                         <li><h6 class='dropdown-header'>${I18n.t("js.options")}</h6></li>
                     ` : html``}
-                    ${this.searchOptions.map((opt, id) => html`
-                        <dodona-search-option .searchoption=${opt} .key=${id}>
+                    ${this.getSearchOptions().map((opt, id) => html`
+                        <dodona-search-option .searchOption=${opt} .key=${id}>
                         </dodona-search-option>
                     `)}
 
-                    ${this.searchActions.length > 0 ? html`
+                    ${this.getSearchActions().length > 0 ? html`
                         <li><h6 class='dropdown-header'>${I18n.t("js.actions")}</h6></li>
                     ` : html``}
-                    ${this.searchActions.map(action => html`
+                    ${this.getSearchActions().map(action => html`
                         <li>
                             <a class="action dropdown-item"
                                href='${action.url ? action.url : "#"}'

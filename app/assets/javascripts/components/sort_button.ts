@@ -15,7 +15,6 @@ export class SortQuery {
         if (sortParams.length > 0) {
             this.active_column = sortParams[0][0].substring(9);
             this.ascending = sortParams[0][1] === "ASC";
-            console.log(this.active_column, this.ascending);
             sortParams.slice(1).forEach(([k, _]) => {
                 dodona.search_query.query_params.updateParam(k, undefined);
             });

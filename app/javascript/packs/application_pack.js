@@ -29,6 +29,7 @@ window.bootstrap = bootstrap;
 import "polyfills.js";
 
 import "components/sort_button.ts";
+import "components/search_actions.ts";
 
 import { Drawer } from "drawer";
 import { Toast } from "toast";

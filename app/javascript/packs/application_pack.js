@@ -30,6 +30,7 @@ import "polyfills.js";
 
 import "components/sort_button.ts";
 import "components/search_actions.ts";
+import "components/search_field.ts";
 
 import { Drawer } from "drawer";
 import { Toast } from "toast";

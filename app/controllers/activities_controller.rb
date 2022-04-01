@@ -25,8 +25,10 @@ class ActivitiesController < ApplicationController
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
     # Allow fetching Pyodide and related packages
+    # The data: urls is specifically to allow fetching the Python dependencies via a bundled tar that
+    # is extracted into the Pyodide environment at runtime
     policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/] + policy.script_src))
-    policy.connect_src(*(%w[https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.connect_src))
+    policy.connect_src(*(%w[data: https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.connect_src))
   end
 
   content_security_policy only: %i[description] do |policy|

@@ -2,6 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, LitElement, TemplateResult } from "lit";
 import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { ref } from "lit/directives/ref.js";
 
 type Label = {id: string, name: string};
 export abstract class SearchFieldSuggestion extends LitElement {
@@ -15,6 +16,8 @@ export abstract class SearchFieldSuggestion extends LitElement {
         paramVal: (l: Label) => string;
     @property()
         param: string;
+    @property({ type: Number })
+        index: number;
 
     abstract select(label: string): void;
     abstract isSelected(label: string): boolean;
@@ -110,7 +113,20 @@ export class SearchField extends LitElement {
 
     @property({ state: true })
         filter?: string = "";
+    @property({ state: true })
+        suggestionFields: SearchFieldSuggestion[] = [];
+    @property({ state: true })
+        hasSuggestions: boolean;
+
     delay: (f: () => void, s: number) => void;
+
+    tabComplete(): void {
+        if (this.hasSuggestions) {
+            const field = this.suggestionFields.find(s => s.getFilteredLabels().length > 0);
+            field.select(field.getFilteredLabels()[0].name);
+            this.filter = "";
+        }
+    }
 
     // don't use shadow dom
     createRenderRoot(): Element {
@@ -131,9 +147,25 @@ export class SearchField extends LitElement {
         super.update(changedProperties);
     }
 
+    keydown(e: KeyboardEvent): void {
+        if (e.key === "Tab") {
+            e.preventDefault();
+        }
+    }
+
     keyup(e: KeyboardEvent): void {
         this.filter = (e.target as HTMLInputElement).value;
+        if (e.key === "Tab") {
+            this.tabComplete();
+        }
         this.delay(() => dodona.search_query.query_params.updateParam("filter", this.filter), 300);
+    }
+
+    suggestionFieldChanged(field?: SearchFieldSuggestion): void {
+        if (field) {
+            this.suggestionFields[field.index] = field;
+            this.hasSuggestions = this.suggestionFields.some(s => s.getFilteredLabels().length > 0);
+        }
     }
 
     render(): TemplateResult {
@@ -146,15 +178,18 @@ export class SearchField extends LitElement {
                 autocomplete="off"
                 .value=${this.filter}
                 @keyup=${e => this.keyup(e)}
+                @keydown=${e => this.keydown(e)}
             />
-            <ul class="dropdown-menu ${this.filter ? "show-search-dropdown" : ""}">
-                ${Object.entries(this.filterCollections).map(([type, c]) => c.multi ? html`
+            <ul class="dropdown-menu ${this.filter && this.hasSuggestions ? "show-search-dropdown" : ""}">
+                ${Object.entries(this.filterCollections).map(([type, c], i) => c.multi ? html`
                     <dodona-multi-search-field-suggestion
                         .labels=${c.data}
                         .type=${type}
                         .filter=${this.filter}
                         .paramVal=${c.paramVal}
                         .param=${c.param}
+                        .index=${i}
+                        ${ref(this.suggestionFieldChanged)}
                     >
                     </dodona-multi-search-field-suggestion>
                 ` : html`
@@ -164,6 +199,8 @@ export class SearchField extends LitElement {
                         .filter=${this.filter}
                         .paramVal=${c.paramVal}
                         .param=${c.param}
+                        .index=${i}
+                        ${ref(this.suggestionFieldChanged)}
                     >
                     </dodona-single-search-field-suggestion>
                 `)}

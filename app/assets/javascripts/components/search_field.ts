@@ -29,7 +29,7 @@ export abstract class SearchFieldSuggestion extends LitElement {
     }
 
     update(changedProperties: Map<string, unknown>): void {
-        if (changedProperties.has("type") && this.type) {
+        if (changedProperties.has("param") && this.param) {
             this.subscribeToQueryParams();
         }
         super.update(changedProperties);
@@ -123,7 +123,7 @@ export class SearchField extends LitElement {
     tabComplete(): void {
         if (this.hasSuggestions) {
             const field = this.suggestionFields.find(s => s.getFilteredLabels().length > 0);
-            field.select(field.getFilteredLabels()[0].name);
+            field.select(field.paramVal(field.getFilteredLabels()[0]));
             this.filter = "";
         }
     }
@@ -169,6 +169,10 @@ export class SearchField extends LitElement {
     }
 
     render(): TemplateResult {
+        if (!this.filterCollections) {
+            return html``;
+        }
+
         return html`
             <input
                 type='text'

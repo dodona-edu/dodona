@@ -68,6 +68,7 @@ export class SingleSearchFieldSuggestion extends SearchFieldSuggestion {
 
     select(label: string): void {
         dodona.search_query.query_params.updateParam(this.param, label);
+        dodona.search_query.query_params.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {
@@ -87,6 +88,7 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
 
     select(label: string): void {
         dodona.search_query.array_query_params.updateParam(this.param, [...this.selected, label]);
+        dodona.search_query.query_params.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {

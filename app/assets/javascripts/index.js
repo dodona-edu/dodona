@@ -35,7 +35,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     const updateAddressBar = !_baseUrl;
 
     function init() {
-        initTokens();
+        // initTokens();
 
         if (doInitFilter) {
             initFilter(updateAddressBar, _baseUrl, eager, filterCollections);

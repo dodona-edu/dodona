@@ -4,9 +4,9 @@
 <div class='table-toolbar'>
   <div class='table-toolbar-tools'>
     <i class="mdi mdi-magnify"></i>
-    <form class='search' onsubmit="return false;">
+    <form class='search' onsubmit="return false;" id="test-long-id-x12d59f4">
       <input type='text' id='filter-query' placeholder='<%= t("layout.search.search") %>' name='filter' autocomplete="off"/>
-      <dodona-search-field placeholder='<%= t("layout.search.search") %>'></dodona-search-field>
+<!--      <dodona-search-field placeholder='<%#= t("layout.search.search") %>'></dodona-search-field>-->
       <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
         <div class="progressbar bar bar1" style="width: 0%;"></div>
         <div class="bufferbar bar bar2" style="width: 100%;"></div>
@@ -187,5 +187,12 @@
             "<%= local_assigns.fetch :refresh_element, "" %>"
         );
         dodona.search_query.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+
+        const searchField = document.createElement("dodona-search-field");
+        searchField.filterCollections = filterCollections;
+        searchField.eager = <%= local_assigns.fetch :eager, false %>;
+        searchField.placeholder = '<%#= t("layout.search.search") %>';
+
+        document.getElementById("test-long-id-x12d59f4").appendChild(searchField);
     });
 </script>

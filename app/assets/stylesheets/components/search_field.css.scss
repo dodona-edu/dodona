@@ -1,0 +1,7 @@
+.search-filter:focus + .show-search-dropdown {
+  display: block;
+}
+
+.show-search-dropdown:focus, .show-search-dropdown:active, .show-search-dropdown:target {
+  display: block;
+}

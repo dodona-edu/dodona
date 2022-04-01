@@ -74,7 +74,7 @@ export class SearchQuery {
         // initialise present parameters
         for (const key of url.searchParams.keys()) {
             if (key.endsWith("[]")) {
-                this.array_query_params.updateParam(key.substring(0, -2), url.searchParams.getAll(key));
+                this.array_query_params.updateParam(key.substring(0, key.length-2), url.searchParams.getAll(key));
             } else {
                 this.query_params.updateParam(key, url.searchParams.get(key));
             }

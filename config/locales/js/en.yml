@@ -34,7 +34,7 @@ en:
     statuses: Statuses
     event_types: Event types
     activity_types: Activity types
-    description_languages: Languages for which there is a description available
+    description_languages: Language of the description
     en: English
     nl: Dutch
     courses: Courses

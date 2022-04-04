@@ -22,9 +22,6 @@
   white-space: nowrap;
   cursor: default;
 }
-.token + .token {
-  margin-left: 8px;
-}
 .token .close {
   margin-left: 8px;
   color: $text-on-bg-color;

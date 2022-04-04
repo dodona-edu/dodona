@@ -18,13 +18,7 @@
         <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
           <td>
             <% unless @activity.present? %>
-              <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-                 title="<%= t('.filter-by-user') %>"
-                 data-filter="<%= read_state.user.full_name %>"
-                 data-bs-toggle="tooltip"
-                 data-bs-placement="top"
-              >
-              </i>
+              <dodona-filter-icon title="<%= t('.filter-by-user') %>" value="<%= read_state.user.full_name %>"></dodona-filter-icon>
             <% end %>
             <% if read_state.course.nil? %>
               <%= read_state.user.full_name %>
@@ -35,13 +29,7 @@
         <% end %>
         <% unless @activity.present? %>
           <td>
-            <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-               title="<%= t('.filter-by-exercise') %>"
-               data-filter="<%= read_state.activity.name %>"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-            >
-            </i>
+            <dodona-filter-icon title="<%= t('.filter-by-exercise') %>" value="<%= read_state.activity.name %>"></dodona-filter-icon>
             <% if read_state.course.nil? %>
               <%= link_to read_state.activity.name, activity_path(read_state.activity) %>
             <% else %>
@@ -65,11 +53,3 @@
 %>
 
 <center><%= page_navigation_links read_states, true, 'activity_read_states', params %></center>
-
-<script type="text/javascript">
-  $(function () {
-    if (dodona.initFilterButtons){
-      dodona.initFilterButtons();
-    }
-  });
-</script>

@@ -37,7 +37,7 @@ export abstract class SearchToken extends LitElement {
             ${ this.getSelectedLabels().map( label => html`
                 <div class="token accent-${this.color(label)}">
                     <span class="token-label">${label.name}</span>
-                    <a href="#" class="close" tabindex="-1"  @click=${() => this.unSelect(label.name)}>×</a>
+                    <a href="#" class="close" tabindex="-1"  @click=${() => this.unSelect(this.paramVal(label))}>×</a>
                 </div>
             `)}
         `;

@@ -103,7 +103,6 @@ export class SearchQuery {
     }
 
     refresh(value: string): void {
-        console.log(value);
         if (this.periodicReload) {
             if (value === "true") {
                 this.periodicReload.start();

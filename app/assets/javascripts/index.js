@@ -38,7 +38,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         // initTokens();
 
         if (doInitFilter) {
-            initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
+            // initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
         }
 
         if (actions) {

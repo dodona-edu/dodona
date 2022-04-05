@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, LitElement, TemplateResult } from "lit";
+import { css, html, LitElement, TemplateResult } from "lit";
 import { Tooltip } from "bootstrap";
 import { ref } from "lit/directives/ref.js";
 
@@ -11,6 +11,12 @@ export class FilterButton extends LitElement {
         value: string;
     @property({ type: Boolean })
         multi = false;
+
+    static styles = css`
+        :host {
+          cursor: pointer;
+        }
+    `;
 
     addFilter(): void {
         if (this.multi) {

@@ -3,7 +3,6 @@ import { Dutch } from "flatpickr/dist/l10n/nl.js";
 
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
-import { initTokenClickables } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin.ts";
 import { StackedStatusGraph } from "visualisations/stacked_status.ts";
@@ -23,14 +22,12 @@ const DRAG_AND_DROP_ARGS = {
 
 function initSeriesEdit() {
     function init() {
-        initAddButtons();
-        initTokenClickables();
+        initAddButtons()
         initRemoveButtons();
         initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
         dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
-            initTokenClickables();
         };
     }
 

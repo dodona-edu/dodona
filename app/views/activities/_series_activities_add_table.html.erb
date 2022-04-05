@@ -33,13 +33,15 @@
         </span>
         <div class="text-muted ellipsis-overflow">
           <small>
-            <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
+            <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>" >
+                <%= activity.repository.name %>: <%= activity.path %>
+            </dodona-filter-button>
           </small>
         </div>
       </td>
       <td class="description-languages">
         <div class="text-muted">
-          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+          <%= raw activity.description_languages.map {|language| "<dodona-filter-button param='description_languages' value='#{language}' multi><span class='clickable-token' title='#{t("js.#{language}")}'>#{language}</span></dodona-filter-button> "}.join(", ") %>
         </div>
       </td>
       <td class="series-activities-table-labels">

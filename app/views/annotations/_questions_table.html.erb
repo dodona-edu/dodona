@@ -20,9 +20,9 @@
           <%= link_to question.user.full_name, course_member_path(question.submission.course, question.user), title: question.user.full_name, class: "ellipsis-overflow" %>
           <% unless @course.present? %>
           <div class="ellipsis-overflow text-muted icon-indent">
-            <span class="clickable-token" title="<%= question.submission.course.name %>" data-type="courses" data-name="<%= question.submission.course.name %>">
-              <%= question.submission.course.name %>
-            </span>
+            <dodona-filter-button param="course_id" value="<%= question.submission.course.id %>" title="<%= question.submission.course.name %>">
+                <%= question.submission.course.name %>
+            </dodona-filter-button>
           </div>
           <% end %>
         </td>
@@ -35,9 +35,9 @@
         </td>
         <td>
           <% status = Question.human_enum_name(:question_state, question.question_state) %>
-          <span class="clickable-token" title="<%= status %>" data-type="question_states" data-name="<%= status %>">
+          <dodona-filter-button title="<%= status %>" param="question_state" value="<%= question.question_state %>">
             <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>
-          </span>
+          </dodona-filter-button>
         </td>
         <td>
           <span title="<%= l question.created_at, format: :question %>">
@@ -76,7 +76,6 @@
 <% end %>
 <script type="text/javascript">
     $(function () {
-        dodona.initTokenClickables();
         new window.dodona.questionTable("<%= questions_path %>");
     });
 </script>

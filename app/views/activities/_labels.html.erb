@@ -1,6 +1,6 @@
 <% if activity.programming_language %>
   <dodona-filter-button param="programming_language" value="<%= activity.programming_language&.name %>">
-    <span class="clickable-token"><%= activity.programming_language&.name%></span>
+    <%= activity.programming_language&.name%>
   </dodona-filter-button>
 <% end %>
 <div class="text-muted">
@@ -11,14 +11,14 @@
       <span title="<%= labels.map(&:name).join(", ") %>">
         <% labels.first(5).each do |label| %>
           <dodona-filter-button param="labels" value="<%= label.name %>" multi>
-            <span class='clickable-token'><%= label.name %></span>,
+            <%= label.name %>,
           </dodona-filter-button>
         <% end %>
         ...</span>
     <% elsif labels.any? %>
       <% labels.each do |label| %>
         <dodona-filter-button param="labels" value="<%= label.name %>" multi>
-          <span class='clickable-token'><%= label.name %></span>,
+          <%= label.name %>,
         </dodona-filter-button>
       <% end %>
     <% end %>

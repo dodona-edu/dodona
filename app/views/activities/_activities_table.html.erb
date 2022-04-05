@@ -67,15 +67,19 @@
           <% if policy(activity).info? %>
             <div class="text-muted ellipsis-overflow">
               <small>
-                <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
-              </small>
+                  <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>">
+                    <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" >
+                      <%= activity.repository.name %>: <%= activity.path %>
+                    </span>
+                  </dodona-filter-button>
+                </small>
             </div>
           <% end %>
         </td>
 
         <td class="description-languages">
           <div class="text-muted">
-            <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+            <%= raw activity.description_languages.map {|language| "<dodona-filter-button param='description_languages' value='#{language}' multi><span class='clickable-token' title='#{t("js.#{language}")}'>#{language}</span></dodona-filter-button> "}.join(", ") %>
           </div>
         </td>
 
@@ -150,8 +154,3 @@
 <% if activities.try(:total_pages) %>
   <center><%= page_navigation_links activities, true, "activities" %></center>
 <% end %>
-<script type="text/javascript">
-    $(function () {
-        dodona.initTokenClickables();
-    });
-</script>

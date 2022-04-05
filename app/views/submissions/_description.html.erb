@@ -9,8 +9,15 @@
 
 
 <div class="submission-summary clearfix">
+  <div id='submission-motivational-message'></div>
   <span class="description">
-    <%= t "submissions.show.submission_for" %>
+    <% if submission.number.nil? %>
+      <%= t "submissions.show.submission_for" %>
+    <% else %>
+      <%= t "submissions.show.submission" %>
+      <%= link_to "##{submission.number}", submission_path(submission) %>
+      <%= t "submissions.show.for" %>
+    <% end %>
     <% if submission.course.nil? %>
       <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
     <% else %>
@@ -30,24 +37,50 @@
   </span>
   <div class="row">
     <div class="col-md-6">
-      <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
+      <span class='status-icon float-start'><%= submission_status_icon(submission, 48) %></span>
       <span class="status-line">
         <%= Submission.human_enum_name(:status, submission.status) %>
         <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
-          &middot; <span class='text-muted'><%= submission.summary %></span>
+          <br/><span class='text-muted'><%= submission.summary %></span>
         <% end %>
       </span>
       <span class="by-line">
         <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
       </span>
     </div>
-    <div class="col-md-6">
-      <% @feedbacks.each do |feedback| %>
-        <span class="score">
-          <%= render 'feedbacks/score_link', feedback: feedback %>
-        </span>
-      <% end %>
-    </div>
+    <% if @feedbacks.blank? %>
+      <div class="col-md-6 submission-history">
+        <div class="timestamp-col">
+          <% @submissions_time_stamps.each do |t| %>
+            <span class="text-muted small submission-history-row <%= t.present? ? 'mt-1' : '' %>"><%= t %></span>
+            <br/>
+          <% end %>
+        </div>
+        <div>
+          <% @submissions.each_with_index do |s, i| %>
+            <span class="submission-history-row <%= @submissions_time_stamps[i].present? ? 'mt-1' : '' %> <%= s.id == submission.id ? 'current-submission' : '' %>">
+              <%= link_to "##{@submissions.length - i}", submission_path(s), class: 'submission-link' %>
+              <span class='status-icon' id="history-<%= s.id %>"><%= submission_status_icon(s, 12) %></span>
+              <span>
+                <%= Submission.human_enum_name(:status, s.status) %>
+                <% if s.summary.present? and s.summary.downcase != Submission.human_enum_name(:status, s.status).downcase %>
+                  &middot; <span class='text-muted'><%= s.summary %></span>
+                <% end %>
+              </span>
+            </span>
+            <br/>
+          <% end %>
+        </div>
+      </div>
+    <% else %>
+      <div class="col-md-6">
+        <% @feedbacks.each do |feedback| %>
+          <span class="score">
+            <%= render 'feedbacks/score_link', feedback: feedback %>
+          </span>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
 <% @feedbacks.each do |feedback | %>
@@ -59,3 +92,8 @@
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
+
+<script>
+  dodona.initCorrectSubmissionToNextLink("<%= submission.status %>");
+  dodona.initSubmissionHistory(<%= submission.id %>);
+</script>

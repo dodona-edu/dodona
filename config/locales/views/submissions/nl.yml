@@ -1,6 +1,7 @@
 nl:
   submissions:
     submission:
+      submission: Oplossing
       ago: geleden
       view_solution: Oplossing bekijken
       filter-submissions-by-user: "Toon enkel inzendingen van deze gebruiker"
@@ -33,6 +34,7 @@ nl:
       course: Cursus
       handed_in: Ingediend
       ago: geleden
+      today: vandaag
       status: Status
       result: Resultaat
       code: Code
@@ -65,3 +67,4 @@ nl:
       message_zeus: Dit bericht is enkel zichtbaar voor admins
       tab_staff: Dit tabblad is enkel zichtbaar voor cursusbeheerders
       tab_zeus: Dit tabblad is enkel zichtbaar voor admins
+      for: "voor"

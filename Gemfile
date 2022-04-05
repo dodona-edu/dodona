@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2.2'
+gem 'rails', '~> 7.0.2.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
@@ -14,7 +14,7 @@ gem 'puma', '~> 5.6.2'
 gem 'cssbundling-rails', '~> 1.1.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.0'
+gem 'jsbundling-rails', '~> 1.0.2'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.10.3', require: false
+gem 'bootsnap', '~> 1.11.1', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 2.8.1'
@@ -50,7 +50,7 @@ gem 'sinatra', '~>2.2.0'
 gem 'will_paginate', '~>3.3.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.3.1'
+gem 'kramdown', '~>2.3.2'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '3.28.0'
 
@@ -103,7 +103,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 3.9.0'
-gem 'rails-i18n', '~> 7.0.2'
+gem 'rails-i18n', '~> 7.0.3'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -130,7 +130,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.1'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.19.0'
+gem 'faker', '~> 2.20.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -138,8 +138,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-# Datadog temporarily fixed by git pull https://github.com/DataDog/dd-trace-rb/pull/1830 switch to 0.55.0 when available
-gem 'ddtrace', github: 'kbacha/dd-trace-rb', branch: 'fixes-dalli-server-version'
+gem 'ddtrace', '~> 1.0.0.beta1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.1.0'
@@ -184,10 +183,10 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.13.2'
+  gem 'rubocop-rails', '~> 2.14.2'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.7.0'
+  gem 'letter_opener', '~> 1.8.1'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

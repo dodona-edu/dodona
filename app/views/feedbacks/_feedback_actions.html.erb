@@ -88,7 +88,7 @@
       <div class="row">
         <div class="col-sm-12">
           <% if score_item.description.present? %>
-            <strong data-bs-toggle="tooltip" data-bs-placement="left" title="<%= strip_tags markdown(score_item.description) %>">
+            <strong data-bs-toggle="tooltip" data-bs-placement="left" data-bs-html="true" title="<%= strip_tags markdown(score_item.description) %>">
               <%= score_item.name %>
             </strong>
           <% else %>

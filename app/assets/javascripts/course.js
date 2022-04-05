@@ -293,21 +293,17 @@ function initCourseNew() {
 }
 
 function initCoursesListing(firstTab) {
-    let baseUrl = "";
     initCourseTabs(firstTab);
 
     function initCourseTabs(firstTab) {
-        const courseTabs = document.getElementById("course-tabs");
-        baseUrl = courseTabs.dataset.baseurl;
-
         document.querySelectorAll("#course-tabs li a").forEach(tab => {
             tab.addEventListener("click", () => selectTab(tab));
         });
 
         // If the url hash is a valid tab, use that, otherwise use the given tab
-        const hash = window.location.hash;
-        const tab = document.querySelector(`a[href='${hash}']`) ??
-            document.querySelector(`a[href='#${firstTab}']`);
+        const hash = dodona.search_query.query_params.params.get("tab");
+        const tab = document.querySelector(`a[data-tab='${hash}']`) ??
+            document.querySelector(`a[data-tab='${firstTab}']`);
         selectTab(tab);
     }
 
@@ -315,14 +311,14 @@ function initCoursesListing(firstTab) {
         // If the current tab is already loaded or if it's blank, do nothing
         if (!tab || tab.classList.contains("active")) return;
 
-        const state = tab.getAttribute("href").substr(1);
+        const state = tab.getAttribute("data-tab");
         loadCourses(state);
         document.querySelector("#course-tabs a.active")?.classList?.remove("active");
         tab.classList.add("active");
     }
 
     function loadCourses(tab) {
-        setBaseUrl(`${baseUrl}?tab=${tab}`);
+        dodona.search_query.query_params.updateParam("tab", tab);
     }
 }
 

@@ -22,12 +22,12 @@ module Surf
             discovery: true,
             response_mode: :form_post,
             client_options: {
-              host: 'connect.test.surfconext.nl',
+              host: 'connect.surfconext.nl',
               identifier: Rails.application.credentials.surf_client_id,
               secret: Rails.application.credentials.surf_client_secret,
               redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/surf/callback"
             },
-            issuer: 'https://connect.test.surfconext.nl'
+            issuer: 'https://connect.surfconext.nl'
           }
         end
       end

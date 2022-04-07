@@ -150,7 +150,7 @@ export class SearchActions extends LitElement {
                         <li>
                             <a class="action dropdown-item"
                                href='${action.url ? action.url : "#"}'
-                               ${action.type ? "data-type=" + action.type : ""}
+                               data-type="${action.type}"
                                @click=${() => this.performAction(action)}
                             >
                                 <i class='mdi mdi-${action.icon} mdi-18'></i>

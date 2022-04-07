@@ -3,6 +3,7 @@ import { html, LitElement, TemplateResult } from "lit";
 import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
+import { searchQuery } from "search";
 
 type Label = {id: string, name: string};
 export abstract class SearchFieldSuggestion extends LitElement {
@@ -67,8 +68,8 @@ export class SingleSearchFieldSuggestion extends SearchFieldSuggestion {
         selected = "";
 
     select(label: string): void {
-        dodona.search_query.query_params.updateParam(this.param, label);
-        dodona.search_query.query_params.updateParam("filter", undefined);
+        searchQuery.query_params.updateParam(this.param, label);
+        searchQuery.query_params.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {
@@ -76,8 +77,8 @@ export class SingleSearchFieldSuggestion extends SearchFieldSuggestion {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = dodona.search_query.query_params.params.get(this.param);
-        dodona.search_query.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
+        this.selected = searchQuery.query_params.params.get(this.param);
+        searchQuery.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
     }
 }
 
@@ -87,8 +88,8 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
         selected: string[] = [];
 
     select(label: string): void {
-        dodona.search_query.array_query_params.updateParam(this.param, [...this.selected, label]);
-        dodona.search_query.query_params.updateParam("filter", undefined);
+        searchQuery.array_query_params.updateParam(this.param, [...this.selected, label]);
+        searchQuery.query_params.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {
@@ -96,8 +97,8 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = dodona.search_query.array_query_params.params.get(this.param) || [];
-        dodona.search_query.array_query_params.subscribeByKey(this.param, (k, o, n) => {
+        this.selected = searchQuery.array_query_params.params.get(this.param) || [];
+        searchQuery.array_query_params.subscribeByKey(this.param, (k, o, n) => {
             this.selected = n || [];
         });
     }
@@ -137,14 +138,14 @@ export class SearchField extends LitElement {
 
     constructor() {
         super();
-        dodona.search_query.query_params.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
-        this.filter = dodona.search_query.query_params.params.get("filter") || "";
+        searchQuery.query_params.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
+        this.filter = searchQuery.query_params.params.get("filter") || "";
         this.delay = createDelayer();
     }
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("eager") && this.eager) {
-            dodona.search_query.search();
+            searchQuery.search();
         }
         super.update(changedProperties);
     }
@@ -160,7 +161,7 @@ export class SearchField extends LitElement {
         if (e.key === "Tab") {
             this.tabComplete();
         }
-        this.delay(() => dodona.search_query.query_params.updateParam("filter", this.filter), 300);
+        this.delay(() => searchQuery.query_params.updateParam("filter", this.filter), 300);
     }
 
     suggestionFieldChanged(field?: SearchFieldSuggestion): void {

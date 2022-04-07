@@ -1,5 +1,6 @@
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
+import { searchQuery } from "search";
 
 type Label = {id: string, name: string};
 export abstract class SearchToken extends LitElement {
@@ -50,7 +51,7 @@ export class SingleSearchToken extends SearchToken {
         selected = "";
 
     unSelect(): void {
-        dodona.search_query.query_params.updateParam(this.param, undefined);
+        searchQuery.query_params.updateParam(this.param, undefined);
     }
 
     isSelected(label: string): boolean {
@@ -58,8 +59,8 @@ export class SingleSearchToken extends SearchToken {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = dodona.search_query.query_params.params.get(this.param);
-        dodona.search_query.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
+        this.selected = searchQuery.query_params.params.get(this.param);
+        searchQuery.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
     }
 }
 
@@ -69,7 +70,7 @@ export class MultiSearchToken extends SearchToken {
         selected: string[] = [];
 
     unSelect(label: string): void {
-        dodona.search_query.array_query_params.updateParam(this.param, this.selected.filter(s => s !== label));
+        searchQuery.array_query_params.updateParam(this.param, this.selected.filter(s => s !== label));
     }
 
     isSelected(label: string): boolean {
@@ -77,8 +78,8 @@ export class MultiSearchToken extends SearchToken {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = dodona.search_query.array_query_params.params.get(this.param) || [];
-        dodona.search_query.array_query_params.subscribeByKey(this.param, (k, o, n) => {
+        this.selected = searchQuery.array_query_params.params.get(this.param) || [];
+        searchQuery.array_query_params.subscribeByKey(this.param, (k, o, n) => {
             this.selected = n || [];
         });
     }

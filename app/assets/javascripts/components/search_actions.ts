@@ -2,6 +2,7 @@ import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch } from "util.js";
+import { searchQuery } from "search";
 
 type SearchOption = {search: Record<string, string>, type: string, text: string};
 type SearchAction = {
@@ -36,7 +37,7 @@ export class SearchOptionElement extends LitElement {
             console.log(this.searchOption);
             this.setActive();
             Object.keys(this.searchOption.search).forEach(k => {
-                dodona.search_query.query_params.subscribeByKey(k, () => this.setActive());
+                searchQuery.query_params.subscribeByKey(k, () => this.setActive());
             });
         }
         super.update(changedProperties);
@@ -44,18 +45,18 @@ export class SearchOptionElement extends LitElement {
 
     setActive(): void {
         this._active = Object.entries(this.searchOption.search).every(([key, value]) => {
-            return dodona.search_query.query_params.params.get(key) == value.toString();
+            return searchQuery.query_params.params.get(key) == value.toString();
         });
     }
 
     performSearch(): void {
         if (!this._active) {
             Object.entries(this.searchOption.search).forEach(([key, value]) => {
-                dodona.search_query.query_params.updateParam(key, value.toString());
+                searchQuery.query_params.updateParam(key, value.toString());
             });
         } else {
             Object.keys(this.searchOption.search).forEach(key => {
-                dodona.search_query.query_params.updateParam(key, undefined);
+                searchQuery.query_params.updateParam(key, undefined);
             });
         }
     }
@@ -109,7 +110,7 @@ export class SearchActions extends LitElement {
         }
 
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            const url: string = dodona.search_query.addParametersToUrl(action.action);
+            const url: string = searchQuery.addParametersToUrl(action.action);
 
             fetch(url, {
                 method: "POST",
@@ -119,7 +120,7 @@ export class SearchActions extends LitElement {
                 if (data.js) {
                     eval(data.js);
                 } else {
-                    dodona.search_query.resetAllQueryParams();
+                    searchQuery.resetAllQueryParams();
                 }
             });
         }

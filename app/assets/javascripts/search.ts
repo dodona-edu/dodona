@@ -148,4 +148,4 @@ export class SearchQuery {
     }
 }
 
-dodona.search_query = new SearchQuery();
+export const searchQuery = new SearchQuery();

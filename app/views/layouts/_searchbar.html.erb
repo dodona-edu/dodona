@@ -1,3 +1,6 @@
+<%= content_for :javascripts do %>
+  <%= javascript_include_tag 'search' %>
+<% end %>
 <div class='table-toolbar'>
   <dodona-search-tokens></dodona-search-tokens>
   <div class='table-toolbar-tools'>
@@ -167,8 +170,8 @@
             }
         };
         <% end %>
-        dodona.search_query.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
-        dodona.search_query.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+        dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
 
         const searchFields = Array.from(document.getElementsByTagName("dodona-search-field"));
         searchFields.forEach( searchField => {

@@ -1,10 +1,11 @@
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
+import { searchQuery } from "./search";
 
 function loadUsers(_baseUrl, _status) {
     const status = _status || getURLParameter("status");
-    dodona.search_query.query_params.updateParam("status", status);
+    searchQuery.query_params.updateParam("status", status);
 }
 
 function initCourseMembers() {
@@ -53,7 +54,7 @@ function initCourseMembers() {
             });
 
             // Determine which tab to show first
-            const status = dodona.search_query.query_params.params.get("status");
+            const status = searchQuery.query_params.params.get("status");
             let $tab = $("a[data-status='" + status + "']");
             if ($tab.length === 0) {
                 // Default to enrolled (subscribed)
@@ -299,7 +300,7 @@ function initCoursesListing(firstTab) {
         });
 
         // If the url hash is a valid tab, use that, otherwise use the given tab
-        const hash = dodona.search_query.query_params.params.get("tab");
+        const hash = searchQuery.query_params.params.get("tab");
         const tab = document.querySelector(`a[data-tab='${hash}']`) ??
             document.querySelector(`a[data-tab='${firstTab}']`);
         selectTab(tab);
@@ -316,7 +317,7 @@ function initCoursesListing(firstTab) {
     }
 
     function loadCourses(tab) {
-        dodona.search_query.query_params.updateParam("tab", tab);
+        searchQuery.query_params.updateParam("tab", tab);
     }
 }
 

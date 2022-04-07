@@ -2,6 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { Tooltip } from "bootstrap";
 import { ref } from "lit/directives/ref.js";
+import { searchQuery } from "search";
 
 @customElement("dodona-filter-button")
 export class FilterButton extends LitElement {
@@ -20,11 +21,11 @@ export class FilterButton extends LitElement {
 
     addFilter(): void {
         if (this.multi) {
-            const selected = new Set(dodona.search_query.array_query_params.params.get(this.param));
+            const selected = new Set(searchQuery.array_query_params.params.get(this.param));
             selected.add(this.value);
-            dodona.search_query.array_query_params.updateParam(this.param, Array.from(selected));
+            searchQuery.array_query_params.updateParam(this.param, Array.from(selected));
         } else {
-            dodona.search_query.query_params.updateParam(this.param, this.value);
+            searchQuery.query_params.updateParam(this.param, this.value);
         }
     }
 

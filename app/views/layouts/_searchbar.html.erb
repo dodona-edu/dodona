@@ -170,15 +170,16 @@
             }
         };
         <% end %>
-        dodona.initFilterIndex(
-            "<%= local_assigns.fetch :baseUrl, "" %>",
-            <%= local_assigns.fetch :eager, false %>,
-            <%= raw (local_assigns.fetch :actions, false).to_json %>,
-            <%= local_assigns.fetch :init_filter, true %>,
-            filterCollections,
-            "<%= local_assigns.fetch :refresh_element, "" %>"
-        );
+<!--        dodona.initFilterIndex(-->
+<!--            "<%#= local_assigns.fetch :baseUrl, "" %>",-->
+<!--            <%#= local_assigns.fetch :eager, false %>,-->
+<!--            <%#= raw (local_assigns.fetch :actions, false).to_json %>,-->
+<!--            <%#= local_assigns.fetch :init_filter, true %>,-->
+<!--            filterCollections,-->
+<!--            "<%#= local_assigns.fetch :refresh_element, "" %>"-->
+<!--        );-->
         dodona.search_query.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+        dodona.search_query.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
 
         const searchFields = Array.from(document.getElementsByTagName("dodona-search-field"));
         searchFields.forEach( searchField => {

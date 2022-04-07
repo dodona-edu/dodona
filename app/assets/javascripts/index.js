@@ -21,32 +21,11 @@ const FILTER_DATA = "filter";
 const LABEL_UNIQUE_ATTR = "label-id";
 const RELOAD_SECONDS = 2;
 
-window.dodona.index = {};
-window.dodona.index.baseUrl = window.location.href;
-window.dodona.index.periodicReload = null;
-window.dodona.index.doSearch = () => { };
-
-function setBaseUrl(_baseUrl) {
-    window.dodona.index.baseUrl = _baseUrl;
-    window.dodona.index.doSearch();
-}
 
 function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
     const updateAddressBar = !_baseUrl;
 
-    function init() {
-        // initTokens();
 
-        if (doInitFilter) {
-            // initFilter(updateAddressBar, _baseUrl, eager, filterCollections);
-        }
-
-        if (actions) {
-            // initActions();
-        }
-
-        // initRefresh();
-    }
 
     function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
         const filterCollections = _filterCollections || {};
@@ -418,27 +397,5 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     init();
 }
 
-function initFilterButtons() {
-    function init() {
-        const $filterButtons = $(FILTER_ICONS_CLASS);
-        $filterButtons.on("click", filter);
-        $filterButtons.tooltip(); // initialize the tooltips of the buttons
-    }
-
-    function filter() {
-        const $element = $(this);
-        const $searchbar = $(QUERY_FILTER_ID);
-        $searchbar.typeahead("val", $element.data(FILTER_DATA)); // search for value requested by user
-        $(".tooltip").tooltip("hide"); // prevent tooltip from displaying when table is re-rendered
-        window.dodona.index.doSearch();
-    }
-
-    init();
-}
 
 
-function toggleIndexReload() {
-    window.dodona.index.periodicReload.toggle();
-}
-
-export { initFilterButtons, initFilterIndex, setBaseUrl, toggleIndexReload };

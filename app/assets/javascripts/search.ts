@@ -42,6 +42,7 @@ export class QueryParameters<T> {
 }
 
 export class SearchQuery {
+    updateAddressBar= true;
     baseUrl: string;
     refreshElement: string;
     periodicReload: InactiveTimeout;
@@ -67,7 +68,8 @@ export class SearchQuery {
         }
     }
 
-    constructor(baseUrl?: string, refreshElement?: string) {
+    setBaseUrl(baseUrl?: string): void {
+        this.updateAddressBar = !baseUrl;
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
@@ -79,6 +81,10 @@ export class SearchQuery {
                 this.query_params.updateParam(key, url.searchParams.get(key));
             }
         }
+    }
+
+    constructor(baseUrl?: string, refreshElement?: string) {
+        this.setBaseUrl(baseUrl);
 
         // subscribe relevant listeners
         const delay = createDelayer();
@@ -121,8 +127,9 @@ export class SearchQuery {
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;
 
-        // TODO CHECK REASON FOR if (updateAddressBar)
-        window.history.replaceState(null, "Dodona", url);
+        if (this.updateAddressBar) {
+            window.history.replaceState(null, "Dodona", url);
+        }
         document.getElementById("progress-filter").style.visibility = "visible";
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {

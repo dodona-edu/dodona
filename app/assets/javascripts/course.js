@@ -1,12 +1,10 @@
-import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
 
 function loadUsers(_baseUrl, _status) {
-    const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
     const status = _status || getURLParameter("status");
-    setBaseUrl(baseUrl + "?status=" + status);
+    dodona.search_query.query_params.updateParam("status", status);
 }
 
 function initCourseMembers() {
@@ -23,7 +21,7 @@ function initCourseMembers() {
             // Select tab and load users
             const selectTab = $tab => {
                 const $kebab = $("#kebab-menu");
-                const status = $tab.attr("href").substr(1);
+                const status = $tab.attr("data-status");
                 const $kebabItems = $kebab.find("li a.action");
                 let anyShown = false;
                 for (const item of $kebabItems) {
@@ -55,11 +53,11 @@ function initCourseMembers() {
             });
 
             // Determine which tab to show first
-            const hash = window.location.hash;
-            let $tab = $("a[href='" + hash + "']");
+            const status = dodona.search_query.query_params.params.get("status");
+            let $tab = $("a[data-status='" + status + "']");
             if ($tab.length === 0) {
                 // Default to enrolled (subscribed)
-                $tab = $("a[href='#enrolled']");
+                $tab = $("a[data-status='enrolled']");
             }
             selectTab($tab);
         }

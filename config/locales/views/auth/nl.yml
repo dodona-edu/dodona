@@ -8,7 +8,7 @@ nl:
       institution-search: "Typ om jouw school te vinden"
       ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen via de i-Learn website."
       higher-education: "Hoger onderwijs"
-      secondary-education: "Secundair onderwijs"
+      other-education: "Andere onderwijsinstellingen"
       other: "Andere organisaties"
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.

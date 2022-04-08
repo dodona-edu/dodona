@@ -34,7 +34,6 @@ export class SearchOptionElement extends LitElement {
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("searchOption") && this.searchOption) {
-            console.log(this.searchOption);
             this.setActive();
             Object.keys(this.searchOption.search).forEach(k => {
                 searchQuery.query_params.subscribeByKey(k, () => this.setActive());

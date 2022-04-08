@@ -18,6 +18,10 @@ export class QueryParameters<T> {
 
     updateParam(key: string, value: T ): void {
         const old: T = this.params.get(key);
+        if (old === value) {
+            return;
+        }
+
         this.params.set(key, value);
 
         this.listeners.forEach(f => f(key, old, value));
@@ -81,6 +85,17 @@ export class SearchQuery {
                 this.query_params.updateParam(key, url.searchParams.get(key));
             }
         }
+    }
+
+    initPagination(): void {
+        const remotePaginationButtons = document.querySelectorAll(".page-link[data-remote=true]");
+        remotePaginationButtons.forEach( button => button.addEventListener("click", () => {
+            const href = button.getAttribute("href");
+            const page = getURLParameter("page", href);
+            this.query_params.updateParam("page", page);
+            const url = this.addParametersToUrl();
+            window.history.replaceState(null, "Dodona", url);
+        }));
     }
 
     constructor(baseUrl?: string, refreshElement?: string) {
@@ -148,4 +163,5 @@ export class SearchQuery {
     }
 }
 
-export const searchQuery = new SearchQuery();
+dodona.searchQuery = dodona.searchQuery || new SearchQuery();
+export const searchQuery = dodona.searchQuery;

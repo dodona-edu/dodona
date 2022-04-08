@@ -22,7 +22,7 @@ const DRAG_AND_DROP_ARGS = {
 
 function initSeriesEdit() {
     function init() {
-        initAddButtons()
+        initAddButtons();
         initRemoveButtons();
         initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function

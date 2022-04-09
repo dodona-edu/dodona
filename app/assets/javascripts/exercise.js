@@ -349,6 +349,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             url += `&course_id=${data.course_id}`;
         }
         $.get(url);
+        $("#activity-submission-link").removeClass("hidden")
         $("#activity-submission-link").tab("show");
     }
 

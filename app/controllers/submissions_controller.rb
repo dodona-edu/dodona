@@ -21,7 +21,6 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  has_scope :order_by_number
   has_scope :order_by_user
   has_scope :order_by_exercise
   has_scope :order_by_created_at

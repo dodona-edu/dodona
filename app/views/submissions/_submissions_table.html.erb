@@ -3,7 +3,7 @@
     <thead>
     <tr>
       <th class="status-column"></th>
-      <th><dodona-sort-button column="number"></dodona-sort-button></th>
+      <th></th>
       <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
         <th><dodona-sort-button column="user"></dodona-sort-button> <%= t ".user" %></th>
       <% end %>

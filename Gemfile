@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.2.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.2'
+gem 'puma', '~> 5.6.4'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.0'
@@ -102,7 +102,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.9.0'
+gem 'i18n-js', '~> 3.9.2'
 gem 'rails-i18n', '~> 7.0.3'
 
 # email exceptions
@@ -141,7 +141,7 @@ gem 'stackprof', '~> 0.2.19'
 gem 'ddtrace', '~> 1.0.0.beta1'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.1.0'
+gem 'after_commit_everywhere', '~> 1.2.0'
 
 # Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
 gem 'io-wait', '~> 0.2.0'
@@ -168,7 +168,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.0.7'
+  gem 'test-prof', '~> 1.0.8'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

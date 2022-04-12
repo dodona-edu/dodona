@@ -28,6 +28,7 @@ class Series < ApplicationRecord
   USER_COMPLETED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/completed/%<updated_at>s/%<deadline>s'.freeze
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started/%<updated_at>s'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong/%<updated_at>s'.freeze
+  PLAGIARISM_EXPORT_OPTIONS = { all_students: false, group_by: 'exercise', only_last_submission: true, with_info: true, with_labels: true }.freeze
 
   enum visibility: { open: 0, hidden: 1, closed: 2 }
 
@@ -179,5 +180,20 @@ class Series < ApplicationRecord
     invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
+  end
+
+  def plagiarism_check_delayed(exercises, teacher)
+    delay(queue: 'exports').plagiarism_check(exercises, teacher)
+  end
+
+  private
+
+  def plagiarism_check(exercises, teacher)
+    export = Export.create(user: teacher)
+                   .make_archive(self, exercises, nil, PLAGIARISM_EXPORT_OPTIONS)
+  end
+
+  def push_export(export)
+
   end
 end

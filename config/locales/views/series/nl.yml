@@ -24,6 +24,7 @@ nl:
       activities: Leeractiviteiten
       download_submissions: Mijn oplossingen exporteren
       download_all_solutions: Oplossingen van studenten exporteren
+      plagiarism_check: Controleer op plagiaat
       make_visible_html: "<a href=%{series_url} data-method=\"patch\">Maak zichtbaar</a> voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
@@ -85,3 +86,5 @@ nl:
         other: "%{count} leeractiviteiten"
       name: "Naam"
       deadline: "Deadline"
+    plagiarism_check:
+      title: Controleer op plagiaat

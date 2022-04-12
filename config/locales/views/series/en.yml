@@ -24,6 +24,7 @@ en:
       activities: Learning activities
       download_submissions: Export my submissions
       download_all_solutions: Export student submissions
+      plagiarism_check: Check for plagiarism
       make_visible_html: "<a href=%{series_url} data-method=\"patch\">Make visible</a> for students."
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
@@ -83,3 +84,5 @@ en:
         other: "%{count} activities"
       name: "Name"
       deadline: "Deadline"
+    plagiarism_check:
+      title: Check for plagiarism

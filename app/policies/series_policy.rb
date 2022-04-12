@@ -129,6 +129,18 @@ class SeriesPolicy < ApplicationPolicy
     statistics?
   end
 
+  def plagiarism_check?
+    Rails.configuration.plagiarism_check_allowed_ids.include?(@user.id) && course_admin?
+  end
+
+  def create_plagiarism_check?
+    plagiarism_check?
+  end
+
+  def plagiarism_check_wait?
+    plagiarism_check?
+  end
+
   private
 
   def course_member?

@@ -95,6 +95,13 @@
                 <% end %>
               </li>
             <% end %>
+            <% if policy(series).plagiarism_check? %>
+              <li>
+                <%= link_to plagiarism_check_series_path(series), class: "dropdown-item" do %>
+                  <i class='mdi mdi-graph mdi-18'></i> <%= t("series.show.plagiarism_check") %>
+                <% end %>
+              </li>
+            <% end %>
             <% if policy(series).download_submissions? && current_user.course_admin?(series.course) %>
               <li>
                 <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?)), class: "dropdown-item" do %>

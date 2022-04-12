@@ -1,0 +1,20 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card series-edit">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t '.title' %></h2>
+        <div class="card-title-fab">
+          <%= render 'fab_button', form: "create_plagiarism_check", icon: 'check' %>
+        </div>
+      </div>
+      <div class="card-supporting-text card-border">
+        <%= form_with id: 'create_plagiarism_check' do %>
+        <h4>Select exercises</h4>
+        <%= render partial: 'exports/selection_table', locals: { data: @data, input_name: 'exercises[]' } %>
+        <% end %>
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+    $(dodona.initSelection);
+</script>

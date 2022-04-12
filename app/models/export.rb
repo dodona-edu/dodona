@@ -22,6 +22,14 @@ class Export < ApplicationRecord
   default_scope { order(id: :desc) }
 
   def start(item, list, users, params)
+    make_archive(item, list, users, params)
+
+    delay(queue: 'cleaning', run_at: AUTOMATICALLY_DELETE_AFTER.from_now).destroy
+    notification = Notification.new(user: user, message: 'exports.index.ready_for_download')
+    update(status: :finished, notification: notification)
+  end
+
+  def make_archive(item, list, users, params)
     bundle = Zipper.new(
       item: item,
       users: users,
@@ -36,9 +44,5 @@ class Export < ApplicationRecord
       content_type: 'application/zip',
       identify: false
     )
-
-    delay(queue: 'cleaning', run_at: AUTOMATICALLY_DELETE_AFTER.from_now).destroy
-    notification = Notification.new(user: user, message: 'exports.index.ready_for_download')
-    update(status: :finished, notification: notification)
   end
 end

@@ -47,5 +47,7 @@ module Dodona
     config.active_storage.queues.purge    = :default
 
     config.action_view.default_form_builder = "StandardFormBuilder"
+
+    config.plagiarism_check_allowed_ids = [ 1 ]
   end
 end

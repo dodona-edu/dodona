@@ -22,7 +22,15 @@
       <% if policy(el).show? %>
         <tr class="selection-row">
           <td class="col-md-1">
-            <input type="checkbox" class="form-check-input selection-checkbox" value="<%= el.id %>">
+            <input type="checkbox"
+                   class="form-check-input selection-checkbox"
+                   <% if defined?(input_name) %>
+                     name="<%= input_name %>"
+                   <% end %>
+                   <% if defined?(form_id) %>
+                     form="<%= form_id %>"
+                   <% end %>
+                   value="<%= el.id %>">
           </td>
           <td>
             <span> <%= el.name %> </span>

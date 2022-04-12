@@ -71,6 +71,9 @@ Rails.application.routes.draw do
         post 'remove_activity'
         post 'reorder_activities'
         post 'reset_token'
+        get 'plagiarism_check'
+        post 'plagiarism_check', to: 'series#create_plagiarism_check', as: 'create_plagiarism_check'
+        get 'plagiarism_check_wait/:export_id', to: 'series#plagiarism_check_wait', as: 'plagiarism_check_wait'
       end
     end
     get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'

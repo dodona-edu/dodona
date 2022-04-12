@@ -236,6 +236,23 @@ class SeriesController < ApplicationController
     Submission.rejudge_delayed(@submissions)
   end
 
+  def plagiarism_check
+    @data = { item: @series,
+              list: @series.exercises,
+              course: @series.course,
+              table_header_type: t('exports.download_submissions.exercise'),
+              is_series?: true }
+  end
+
+  def create_plagiarism_check
+    @exercises = Exercise.where(id: params[:exercises])
+    @series.plagiarism_check_delayed(@exercises, current_user)
+  end
+
+  def plagiarism_check_wait
+    @export = Export.find(params[:export_id])
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.

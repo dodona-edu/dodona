@@ -99,10 +99,11 @@ class Submission < ApplicationRecord
   }
 
   scope :order_by_user, ->(direction) { includes(:user).reorder 'users.first_name': direction, 'users.last_name': direction, id: :desc }
-  scope :order_by_exercise, ->(direction) {
-    if I18n.locale == :nl
+  scope :order_by_exercise, lambda { |direction|
+    case I18n.locale
+    when :nl
       includes(:exercise).reorder 'activities.name_nl': direction, id: :desc
-    elsif I18n.locale == :en
+    when :en
       includes(:exercise).reorder 'activities.name_en': direction, id: :desc
     end
   }

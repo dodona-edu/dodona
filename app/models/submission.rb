@@ -99,7 +99,13 @@ class Submission < ApplicationRecord
   }
 
   scope :order_by_user, ->(direction) { includes(:user).reorder 'users.first_name': direction, 'users.last_name': direction, id: :desc }
-  scope :order_by_exercise, ->(direction) { includes(:exercise).reorder 'activities.name_nl': direction, id: :desc }
+  scope :order_by_exercise, ->(direction) {
+    if I18n.locale == :nl
+      includes(:exercise).reorder 'activities.name_nl': direction, id: :desc
+    elsif I18n.locale == :en
+      includes(:exercise).reorder 'activities.name_en': direction, id: :desc
+    end
+  }
   scope :order_by_created_at, ->(direction) { reorder created_at: direction, id: :desc }
   scope :order_by_status, ->(direction) { reorder status: direction, id: :desc }
 

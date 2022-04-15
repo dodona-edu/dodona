@@ -127,7 +127,7 @@ en:
       course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.
     coding_scratchpad:
       title: "Run %{programming_language} code in your browser"
-      experimental_feature_html: This experimental feature lets you write and run code in your browser to get you started immediately. Please report any suggestions and issues to <a href="%{url}">team Dodona</a>.
+      experimental_feature_html: This window allows you to run Python code without installing a thing. The code you write here is <b>not</b> automatically submitted to Dodona. This feature is still in full development, so we're happy to hear about your suggestions and issues using <a href="%{url}">the contact form</a>.
       close: Close
-      start_coding: Start coding
+      start_coding: Run your code
       beta: BETA

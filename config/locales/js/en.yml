@@ -170,7 +170,7 @@ en:
       error: Error while updating
     coding_scratchpad:
       copy_code: Copy to Dodona
-      overwrite_code: Do you want to overwrite the code in the scratchpad with your current solution?
+      overwrite_code: Do you want to overwrite the code in the scratchpad with your latest changes?
     submission_motivational_message:
       1: Congratulations!
       2: You did it!

@@ -4,34 +4,44 @@
     bottom: 100px;
     transform-origin: 0% 100%;
     transform: rotate(270deg);
-    width: fit-content;
+    white-space: nowrap;
     padding-top: 10px;
     padding-bottom: 10px;
     font-size: 16px;
+    background-color: $content-bg;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.scratchpad-header {
+    color: $header-fg;
+    background-color: $header-bg;
+    height: $navbar-height;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    margin: 0;
+    margin-bottom: 5px;
+    padding-left: 16px;
+    padding-right: 16px;
+    align-items: center;
 }
 
 .scratchpad-info {
     padding-left: 20px;
     font-size: 14px;
     color: $text-muted;
-}
-
-.scratchpad-header {
-    color: $header-fg;
-    background-color: $header-bg;
-    line-height: normal;
-    margin: 0;
-    margin-bottom: 5px;
-    height: $navbar-height;
-    padding-left: 16px;
-    padding-right: 16px;
-    align-items: center;
+    // Header has absolute position, simulate its height using margin-top
+    margin-top: $navbar-height + 5;
 }
 
 .copy-code-button {
-    background-color: $grey-500;
+    background-color: $grey-300;
     color: white;
-    width: fit-content;
+    white-space: nowrap;
 }
 
 .scratchpad-content {
@@ -57,4 +67,8 @@
 #scratchpad-output-wrapper {
     max-height: 20vh;
     margin-bottom: 10px;
+}
+
+#scratchpad-offcanvas.show {
+    @include shadow-z3;
 }

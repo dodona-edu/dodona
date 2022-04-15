@@ -43,7 +43,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def destroy
-    @annotation.destroy
-    render json: {}, status: :no_content
+    Announcement.destroy(params[:id])
+    redirect_to action: :index
   end
 end

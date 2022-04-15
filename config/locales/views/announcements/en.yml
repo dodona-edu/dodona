@@ -4,3 +4,8 @@ en:
       title: Create new announcement
     announcements:
       dismiss: dismiss announcement
+      shown_to_institution: This announcement is shown to %{user_group} of institution %{institution}
+      shown_to: This announcement is shown to %{user_group}
+      start_delivering_at: from %{start_delivering_at}
+      stop_delivering_at: until %{stop_delivering_at}
+      destroy: Permanently remove this announcement

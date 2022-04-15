@@ -1,3 +1,19 @@
-<div class="row announcements-row">
-  <%= render partial: "announcements/announcements", locals: {announcements: @announcements} %>
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if current_user.zeus? %>
+          <div class="card-title-fab">
+              <%= link_to new_announcement_path, class: 'btn btn-primary btn-fab', title: t('.new') do %>
+                <i class="mdi mdi-plus mdi-36"></i>
+              <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <%= render partial: "announcements/announcements", locals: {announcements: @announcements} %>
+      </div>
+    </div>
+  </div>
 </div>

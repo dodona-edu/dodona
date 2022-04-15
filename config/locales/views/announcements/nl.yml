@@ -2,6 +2,9 @@ nl:
   announcements:
     new:
       title: Maak een nieuwe aankondiging
+    index:
+      title: Aankondigingen
+      new: Maak een nieuwe aankondiging
     announcements:
       dismiss: sluit aankondiging
       shown_to_institution: Deze aankondiging wordt getoond aan %user_group% van de onderwijsinstelling %institution%

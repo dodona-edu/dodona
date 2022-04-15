@@ -2,6 +2,9 @@ en:
   announcements:
     new:
       title: Create new announcement
+    index:
+      title: Announcements
+      new: Create new announcement
     announcements:
       dismiss: dismiss announcement
       shown_to_institution: This announcement is shown to %{user_group} of institution %{institution}

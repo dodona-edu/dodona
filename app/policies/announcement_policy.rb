@@ -8,7 +8,7 @@ class AnnouncementPolicy < ApplicationPolicy
         @scope = all_scopes.where(user_group: :all)
         @scope = scope.or(all_scopes.where(user_group: :students)) if user.student?
         @scope = scope.or(all_scopes.where(user_group: :staff)) if user.staff?
-        scope.is_active.unread_by(user)
+        scope.is_active
       else
         scope.none
       end

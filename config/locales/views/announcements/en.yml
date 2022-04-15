@@ -2,5 +2,5 @@ en:
   announcements:
     new:
       title: Create new announcement
-    index:
+    announcements:
       dismiss: dismiss announcement

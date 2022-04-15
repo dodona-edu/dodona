@@ -1,0 +1,12 @@
+<% announcements.each do |announcement| %>
+  <div class="announcement alert alert-<%= announcement.style %>" role="alert">
+    <div style="display: flex; flex-direction: row;  justify-content: space-between;">
+      <div>
+        <%= markdown(announcement.text) %>
+      </div>
+      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, title: t(".dismiss") do %>
+        <i class="mdi mdi-close mdi-18"></i>
+      <% end %>
+    </div>
+  </div>
+<% end %>

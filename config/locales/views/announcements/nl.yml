@@ -2,5 +2,5 @@ nl:
   announcements:
     new:
       title: Maak een nieuwe aankondiging
-    index:
+    announcements:
       dismiss: sluit aankondiging

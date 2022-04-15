@@ -1,10 +1,13 @@
 class AnnouncementsController < ApplicationController
+  protect_from_forgery except: :index
 
+  has_scope :unread, as: 'unread', type: :boolean do |controller, scope|
+    scope.unread_by(controller.current_user)
+  end
 
   def index
     authorize Announcement
     @announcements = apply_scopes(policy_scope(Announcement.all))
-    Rails.logger.info @announcements
   end
 
   def mark_as_read
@@ -14,6 +17,7 @@ class AnnouncementsController < ApplicationController
       if announcement
         if AnnouncementView.where(user_id: current_user.id, announcement_id: announcement.id).first_or_create(user_id: current_user.id, announcement_id: announcement.id)
           format.json { render json: :ok }
+          format.js { redirect_to action: :index, unread: true }
         else
           format.json { render json: nil, status: :unprocessable_entity }
         end

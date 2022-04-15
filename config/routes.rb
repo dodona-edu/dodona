@@ -234,6 +234,12 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :announcements, only: %i[index new create] do
+      member do
+        post 'mark_as_read'
+      end
+    end
+
     scope 'lti', controller: 'lti' do
       get 'redirect', to: 'lti#redirect', as: 'lti_redirect'
       get 'do_redirect', to: 'lti#do_redirect', as: 'lti_do_redirect'

@@ -1,0 +1,11 @@
+.announcement {
+  .mdi::before {
+    position: unset;
+    top: 0;
+    margin-right: 0;
+  }
+
+  p:last-child{
+    margin-bottom: 0;
+  }
+}

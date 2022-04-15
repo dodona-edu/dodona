@@ -37,7 +37,7 @@ class AnnouncementPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[name image renderer remote]
+      %i[text start_delivering_at stop_delivering_at user_group institution_id style]
     else
       []
     end

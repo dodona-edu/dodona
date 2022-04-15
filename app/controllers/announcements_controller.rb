@@ -1,9 +1,10 @@
-class AnnouncementController < ApplicationController
+class AnnouncementsController < ApplicationController
 
 
   def index
     authorize Announcement
-    @announcements = apply_scopes(policy_scope(Annotation.all))
+    @announcements = apply_scopes(policy_scope(Announcement.all))
+    Rails.logger.info @announcements
   end
 
   def mark_as_read
@@ -24,19 +25,16 @@ class AnnouncementController < ApplicationController
 
   def new
     authorize Announcement
-    @title = I18n.t('announcements.new.title')
     @announcement = Announcement.new
   end
 
   def create
     authorize Announcement
     @announcement = Announcement.new(permitted_attributes(Announcement))
-    respond_to do |format|
-      if @announcement.save
-        format.json { render :show, status: :created, location: @announcement }
-      else
-        format.json { render json: @announcement.errors, status: :unprocessable_entity }
-      end
+    if @announcement.save
+      redirect_to action: :index
+    else
+      render :new, status: :unprocessable_entity
     end
   end
 

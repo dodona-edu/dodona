@@ -183,3 +183,15 @@ en:
         description: Description
         maximum: Maximum
         visible: Visible
+      announcement:
+        text: Text
+        start_delivering_at: Start delivering at
+        stop_delivering_at: Stop delivering at
+        user_group: User group
+        user_groups:
+          all_users: All users
+          students: Students
+          staff: Staff
+          zeus: Zeus
+        institution_id: Institution id
+        style: Bootstrap style

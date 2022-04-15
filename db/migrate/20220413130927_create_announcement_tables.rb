@@ -12,13 +12,12 @@ class CreateAnnouncementTables < ActiveRecord::Migration[7.0]
       name: 'announcement_view_index'
     )
     create_table :announcements do |t|
-      t.text :title
-      t.text :body
+      t.text :text, null: false
       t.datetime :start_delivering_at
       t.datetime :stop_delivering_at
-      t.int :user_group
-      t.int :institution_id
-      t.int :style
+      t.integer :user_group, null: false
+      t.integer :institution_id
+      t.integer :style, null: false
       t.timestamps
     end
   end

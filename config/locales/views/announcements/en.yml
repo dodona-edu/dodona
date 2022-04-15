@@ -1,0 +1,6 @@
+en:
+  announcements:
+    new:
+      title: Create new announcement
+    index:
+      dismiss: dismiss announcement

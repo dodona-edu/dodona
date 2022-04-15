@@ -35,6 +35,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     try_login!
   end
 
+  def surf
+    try_login!
+  end
+
   def saml
     try_login!
   end

@@ -15,15 +15,16 @@ const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
 const PANEL_PARENT_ID = "scratchpad-panel-wrapper";
 const CODE_OUTPUT_PARENT_ID = "scratchpad-output-wrapper";
 const CODE_INPUT_PARENT_ID = "scratchpad-input-wrapper";
+const OFFCANVAS_ID = "scratchpad-offcanvas";
 const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
+
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyros: Papyros | undefined = undefined;
-
+        let editor: Editor | undefined = undefined;
         document.getElementById(SHOW_OFFCANVAS_BUTTON_ID).addEventListener("click", async function () {
-            const editor: Editor | undefined = window.dodona.editor;
             if (!papyros) { // Only create Papyros once per session, but only when required
                 papyros = new Papyros(
                     {
@@ -32,6 +33,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         locale: I18n.locale,
                         inputMode: InputMode.Interactive,
                     });
+                editor ||= window.dodona.editor;
                 if (editor) {
                     // Shortcut to copy code to ACE editor
                     papyros.addButton(
@@ -60,9 +62,13 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     }
                 }
                 );
-                await papyros.configureInput(location.href, "inputServiceWorker.js", false);
+                await papyros.configureInput(location.href, "inputServiceWorker.js");
                 await papyros.launch();
             }
+        });
+        // Ask user to choose after offcanvas is shown
+        document.getElementById(OFFCANVAS_ID).addEventListener("shown.bs.offcanvas", () => {
+            editor ||= window.dodona.editor;
             if (editor) { // Start with code from the editor, if there is any
                 const editorCode = editor.getValue();
                 const currentCode = papyros.getCode();
@@ -74,7 +80,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     papyros.setCode(editorCode);
                 }
             }
-        });
+        })
     }
 }
 

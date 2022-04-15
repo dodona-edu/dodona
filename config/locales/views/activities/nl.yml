@@ -128,7 +128,7 @@ nl:
       course_has_no_rights_with_contact: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Contacteer de auteur of verwijder deze oefening uit de cursus.
     coding_scratchpad:
       title: "Voer %{programming_language} code uit in je browser"
-      experimental_feature_html: experimental_feature_html: In dit venster kan je Python-code uitvoeren zonder iets te moeten installeren. De code die je hier schrijft wordt <b>niet</b> automatisch ingediend in Dodona. Deze functie is nog in volle ontwikkeling. We horen graag je suggesties en problemen via <a href="%{url}">het contactformulier</a>.
+      experimental_feature_html: In dit venster kan je Python-code uitvoeren zonder iets te moeten installeren. De code die je hier schrijft wordt <b>niet</b> automatisch ingediend in Dodona. Deze functie is nog in volle ontwikkeling. We horen graag je suggesties en problemen via <a href="%{url}">het contactformulier</a>.
       close: Sluiten
       start_coding: Code uitvoeren
       beta: BETA

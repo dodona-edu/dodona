@@ -131,22 +131,7 @@
   integrity sha512-7cRisGlVtiVqZ0MW0/yFB4atgpGLWEHUVYnb448hZK4x+vih0YO5UoS11XIYtZYqHd0dIPMdUSv8q5K4LdMnIg==
   dependencies:
     "@babel/template" "^7.16.7"
-    "@babel/types" "^7.16.7"
-
-"@babel/helper-function-name@^7.17.9":
-  version "7.17.9"
-  resolved "https://registry.yarnpkg.com/@babel/helper-function-name/-/helper-function-name-7.17.9.tgz#136fcd54bc1da82fcb47565cf16fd8e444b1ff12"
-  integrity sha512-7cRisGlVtiVqZ0MW0/yFB4atgpGLWEHUVYnb448hZK4x+vih0YO5UoS11XIYtZYqHd0dIPMdUSv8q5K4LdMnIg==
-  dependencies:
-    "@babel/template" "^7.16.7"
     "@babel/types" "^7.17.0"
-
-"@babel/helper-get-function-arity@^7.16.7":
-  version "7.16.7"
-  resolved "https://registry.yarnpkg.com/@babel/helper-get-function-arity/-/helper-get-function-arity-7.16.7.tgz#ea08ac753117a669f1508ba06ebcc49156387419"
-  integrity sha512-flc+RLSOBXzNzVhcLu6ujeHUrD6tANAOU5ojrRx/as+tbzf8+stUCj7+IfRRoAbEZqj/ahXEMsjhOhgeZsrnTw==
-  dependencies:
-    "@babel/types" "^7.16.7"
 
 "@babel/helper-hoist-variables@^7.16.7":
   version "7.16.7"
@@ -1178,10 +1163,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.1.926-tar":
-  version "0.1.926-tar"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.926-tar.tgz#02536a06d3a0596ec7a2ad7917059c8ff5c1b2ed"
-  integrity sha512-w2jaQRsD5bBM2PKqJiY+GFk58fVgTN3C3HRmlwHlylCBbua+6csGM/r7lgwVwMZNeAAJxpSCNrMV6Z5sO/ir6g==
+"@dodona/papyros@^0.1.93":
+  version "0.1.93"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.93.tgz#d0c15fc61f5a361c8c9c75f22d1c726e9d45cecd"
+  integrity sha512-CoKf69pg5jt7pziFEamscrGffGr6gFTmrwPbEO1VFKFDBz89uhV2iDOOT0o2qYL2luZIWK5laCO2z0k/K5l/3w==
   dependencies:
     "@codemirror/autocomplete" "^0.19.8"
     "@codemirror/closebrackets" "^0.19.0"

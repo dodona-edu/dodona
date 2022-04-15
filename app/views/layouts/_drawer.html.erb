@@ -164,6 +164,18 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(Announcement).index? %>
+            <li>
+              <%= activatable_link_to announcements_path,
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.announcements') do %>
+                <i class="mdi mdi-bullhorn mdi-24"></i>
+                <div class="drawer-list-ellipsis">
+                  <%= t('layout.menu.announcements') %>
+                </div>
+              <% end %>
+            </li>
+          <% end %>
           <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to "/dj/overview",

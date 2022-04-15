@@ -7,8 +7,8 @@ nl:
       new: Maak een nieuwe aankondiging
     announcements:
       dismiss: sluit aankondiging
-      shown_to_institution: Deze aankondiging wordt getoond aan %user_group% van de onderwijsinstelling %institution%
-      shown_to: Deze aankondiging wordt getoond aan %user_group%
-      start_delivering_at: vanaf %start_delivering_at%
-      stop_delivering_at: tot %stop_delivering_at%
+      shown_to_institution: Deze aankondiging wordt getoond aan %{user_group} van de onderwijsinstelling %{institution}
+      shown_to: Deze aankondiging wordt getoond aan %{user_group}
+      start_delivering_at: vanaf %{start_delivering_at}
+      stop_delivering_at: tot %{stop_delivering_at}
       destroy: Verwijder deze aankondiging permanent

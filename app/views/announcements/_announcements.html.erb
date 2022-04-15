@@ -19,10 +19,10 @@
             <%= t ".shown_to", user_group: announcement.user_group %>
           <% end %>
           <% if announcement.start_delivering_at.present? %>
-            <%= t ".start_delivering_at", start_delivering_at: I18n.localize(announcement.start_delivering_at) %>
+            <%= t ".start_delivering_at", start_delivering_at: I18n.localize(announcement.start_delivering_at, format: :announcement) %>
           <% end %>
           <% if announcement.stop_delivering_at.present? %>
-            <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at) %>
+            <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at, format: :announcement) %>
           <% end %>
         </div>
         <%= link_to announcement_path(announcement), :method => :delete, title: t(".destroy") do %>

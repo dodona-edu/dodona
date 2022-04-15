@@ -1,4 +1,6 @@
 import { isInIframe } from "iframe";
+import { Dutch } from "flatpickr/dist/l10n/nl";
+import flatpickr from "flatpickr";
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.
@@ -159,6 +161,22 @@ function setDocumentTitle(title) {
     document.title = title;
 }
 
+/**
+ * Initiates a datepicker using flatpicker
+ * @param {string} selector the selector of div containing the input field and buttons
+ */
+function initDatePicker(selector) {
+    function init() {
+        const options = {};
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        flatpickr(selector, options);
+    }
+
+    init();
+}
+
 export {
     createDelayer,
     delay,
@@ -175,5 +193,6 @@ export {
     initTokenClickables,
     makeInvisible,
     makeVisible,
-    setDocumentTitle
+    setDocumentTitle,
+    initDatePicker
 };

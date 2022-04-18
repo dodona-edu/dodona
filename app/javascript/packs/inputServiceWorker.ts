@@ -6,7 +6,7 @@ import { InputWorker } from "@dodona/papyros/dist/workers/input/InputWorker";
 const inputHandler = new InputWorker();
 
 const SYNC_MESSAGE_URL_SUFFIX = "__SyncMessageServiceWorkerInput__";
-function isServiceWorkerRequest(event: FetchEvent) {
+function isServiceWorkerRequest(event: FetchEvent): boolean {
     return event.request.url.includes(SYNC_MESSAGE_URL_SUFFIX);
 }
 

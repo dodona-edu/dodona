@@ -8,7 +8,7 @@ const inputHandler = new InputWorker();
 
 addEventListener("fetch", async function (event: FetchEvent) {
     if (isServiceWorkerRequest(event)) {
-        await inputHandler.handleInputRequest(event)
+        await inputHandler.handleInputRequest(event);
     } else {
         // Not a Papyros-specific request
         // Fetch as we would handle a normal request

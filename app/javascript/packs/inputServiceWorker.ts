@@ -3,11 +3,13 @@
 // parts of the Papyros code to be included as well, as that would cause
 // the code to fail due to missing dependencies in a WebWorker environment
 import { InputWorker } from "@dodona/papyros/dist/workers/input/InputWorker";
-
+import { isServiceWorkerRequest } from "sync-message";
 const inputHandler = new InputWorker();
 
 addEventListener("fetch", async function (event: FetchEvent) {
-    if (!await inputHandler.handleInputRequest(event)) {
+    if (isServiceWorkerRequest(event)) {
+        await inputHandler.handleInputRequest(event)
+    } else {
         // Not a Papyros-specific request
         // Fetch as we would handle a normal request
         return; // Default to nothing, browser will handle fetch itself

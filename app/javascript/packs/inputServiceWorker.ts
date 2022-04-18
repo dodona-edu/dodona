@@ -3,8 +3,12 @@
 // parts of the Papyros code to be included as well, as that would cause
 // the code to fail due to missing dependencies in a WebWorker environment
 import { InputWorker } from "@dodona/papyros/dist/workers/input/InputWorker";
-import { isServiceWorkerRequest } from "sync-message";
 const inputHandler = new InputWorker();
+
+const SYNC_MESSAGE_URL_SUFFIX = "__SyncMessageServiceWorkerInput__";
+function isServiceWorkerRequest(event: FetchEvent) {
+    return event.request.url.includes(SYNC_MESSAGE_URL_SUFFIX);
+}
 
 addEventListener("fetch", async function (event: FetchEvent) {
     if (isServiceWorkerRequest(event)) {

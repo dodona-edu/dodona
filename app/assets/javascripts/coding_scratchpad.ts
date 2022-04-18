@@ -19,6 +19,7 @@ const OFFCANVAS_ID = "scratchpad-offcanvas";
 const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
+const SUBMIT_TAB_ID = "activity-handin-link";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
@@ -45,6 +46,8 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         () => {
                             editor.setValue(papyros.getCode());
                             document.getElementById(CLOSE_BUTTON_ID).click();
+                            // Open submit panel if possible
+                            document.getElementById(SUBMIT_TAB_ID)?.click();
                         }
                     );
                 }

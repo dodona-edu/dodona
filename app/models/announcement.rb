@@ -34,5 +34,4 @@ class Announcement < ApplicationRecord
   }
 
   default_scope { order('start_delivering_at ASC') }
-
 end

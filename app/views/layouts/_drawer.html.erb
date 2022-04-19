@@ -164,7 +164,7 @@
               <% end %>
             </li>
           <% end %>
-          <% if policy(Announcement).index? %>
+          <% if current_user.zeus? %>
             <li>
               <%= activatable_link_to announcements_path,
                                       class: 'drawer-list-item',

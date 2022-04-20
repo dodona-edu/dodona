@@ -1,9 +1,10 @@
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 type Label = {id: string, name: string};
-export abstract class SearchToken extends LitElement {
+export abstract class SearchToken extends ShadowlessLitElement {
     @property()
         labels: Label[] = [];
     @property()
@@ -16,11 +17,6 @@ export abstract class SearchToken extends LitElement {
     abstract unSelect(label: string): void;
     abstract isSelected(label: string): boolean;
     abstract subscribeToQueryParams(): void;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("param") && this.param) {
@@ -86,14 +82,9 @@ export class MultiSearchToken extends SearchToken {
 }
 
 @customElement("dodona-search-tokens")
-export class SearchTokens extends LitElement {
+export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
         filterCollections: Record<string, { data: Label[], multi: boolean, color: (l: Label) => string, paramVal: (l: Label) => string, param: string }>;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     render(): TemplateResult {
         if (!this.filterCollections) {

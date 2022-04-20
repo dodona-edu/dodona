@@ -4,9 +4,10 @@ import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
+import {ShadowlessLitElement} from "components/shadowless_lit_element";
 
 type Label = {id: string, name: string};
-export abstract class SearchFieldSuggestion extends LitElement {
+export abstract class SearchFieldSuggestion extends ShadowlessLitElement {
     @property()
         labels: Label[] = [];
     @property()
@@ -23,11 +24,6 @@ export abstract class SearchFieldSuggestion extends LitElement {
     abstract select(label: string): void;
     abstract isSelected(label: string): boolean;
     abstract subscribeToQueryParams(): void;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("param") && this.param) {
@@ -106,7 +102,7 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
 
 
 @customElement("dodona-search-field")
-export class SearchField extends LitElement {
+export class SearchField extends ShadowlessLitElement {
     @property({ type: String })
         placeholder: string;
     @property({ type: Boolean })
@@ -129,11 +125,6 @@ export class SearchField extends LitElement {
             field.select(field.paramVal(field.getFilteredLabels()[0]));
             this.filter = "";
         }
-    }
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
     }
 
     constructor() {

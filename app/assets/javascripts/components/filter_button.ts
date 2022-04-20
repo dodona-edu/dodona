@@ -3,6 +3,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { Tooltip } from "bootstrap";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
+import {ShadowlessLitElement} from "components/shadowless_lit_element";
 
 @customElement("dodona-filter-button")
 export class FilterButton extends LitElement {
@@ -35,18 +36,13 @@ export class FilterButton extends LitElement {
 }
 
 @customElement("dodona-filter-icon")
-export class FilterIcon extends LitElement {
+export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })
         value: string;
     @property({ type: String })
         title: string;
 
     element: Element;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     initialiseTooltip(e: Element): void {
         if (e) {

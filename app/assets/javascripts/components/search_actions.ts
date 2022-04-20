@@ -3,6 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch } from "util.js";
 import { searchQuery } from "search";
+import {ShadowlessLitElement} from "components/shadowless_lit_element";
 
 type SearchOption = {search: Record<string, string>, type: string, text: string};
 type SearchAction = {
@@ -19,18 +20,13 @@ const isSearchOption = (opt): opt is SearchOption => (opt as SearchOption).searc
 const isSearchAction= (action): action is SearchAction => (action as SearchAction).js !== undefined || (action as SearchAction).action !== undefined || (action as SearchAction).url !== undefined;
 
 @customElement("dodona-search-option")
-export class SearchOptionElement extends LitElement {
+export class SearchOptionElement extends ShadowlessLitElement {
     @property({ type: Object })
         searchOption: SearchOption;
     @property( { type: Number })
         key: number;
 
     private _active = false;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("searchOption") && this.searchOption) {
@@ -81,7 +77,7 @@ export class SearchOptionElement extends LitElement {
 }
 
 @customElement("dodona-search-actions")
-export class SearchActions extends LitElement {
+export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
         actions: (SearchOption|SearchAction)[] = [];
 
@@ -91,11 +87,6 @@ export class SearchActions extends LitElement {
 
     getSearchActions(): Array<SearchAction> {
         return this.actions.filter(isSearchAction);
-    }
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
     }
 
     performAction(action: SearchAction): boolean {

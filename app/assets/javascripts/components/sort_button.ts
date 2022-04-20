@@ -2,6 +2,7 @@ import "search.ts";
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
+import {ShadowlessLitElement} from "components/shadowless_lit_element";
 
 export class SortQuery {
     active_column: string;
@@ -68,17 +69,12 @@ export class SortQuery {
 export const sortQuery = new SortQuery();
 
 @customElement("dodona-sort-button")
-export class SortButton extends LitElement {
+export class SortButton extends ShadowlessLitElement {
     @property({ type: String })
         column: string;
 
     active_column: string;
     ascending: boolean;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
 
     isActive(): boolean {
         return this.column === this.active_column;

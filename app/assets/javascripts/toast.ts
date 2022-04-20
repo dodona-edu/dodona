@@ -35,7 +35,7 @@ export class Toast {
 
     private generateToastHTML(content: string, loading: boolean): Element {
         const element = this.htmlToElement(
-            `<div class='toast toast-show'>${content}</div>`
+            `<output role='status' class='toast toast-show'>${content}</output>`
         );
         if (loading) {
             element.appendChild(this.htmlToElement("<div class='spinner'></div>"));

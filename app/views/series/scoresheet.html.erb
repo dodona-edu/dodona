@@ -35,7 +35,7 @@
               course_labels: @course_labels
           } %>
           <div id="scoresheet-table-wrapper">
-            <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, activities: @activities, users: @users, submissions: @submissions, read_states: @read_states} %>
+            <%= render partial: "scoresheet_table", locals: {course: @course, series: @series, activities: @activities, users: @users, submissions: @submissions, read_states: @read_states, statuses: @statuses, read_state_counts: @read_state_counts, submission_counts: @submission_counts} %>
           </div>
         <% else %>
           <span><%= t('.no_exercises_html', series_edit_url: edit_series_path(@series)) %></span>

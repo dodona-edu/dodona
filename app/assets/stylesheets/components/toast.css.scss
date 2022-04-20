@@ -3,6 +3,7 @@
   left: 24px;
   position: fixed;
   z-index: 1000;
+  pointer-events: none;
 }
 
 .toasts .toast {

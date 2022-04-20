@@ -11,10 +11,9 @@
       <% end %>
     <% end %>
     <% if user_signed_in? %>
-      <div class="row" id="announcements-row"></div>
-      <script>
-        dodona.fetchAnnouncements();
-      </script>
+      <div class="row" id="announcements-row">
+        <%= render partial: 'announcements/announcements', locals: { announcements: @announcements } %>
+      </div>
       <div class='alert alert-warning hidden' id="time-zone-warning">
         <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.time_zone_html", time_zone: current_user.time_zone, profile_edit: edit_user_path(current_user)) %>
       </div>

@@ -32,6 +32,7 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
+  before_action :set_announcements, if: :user_signed_in?
 
   impersonates :user
 
@@ -192,6 +193,11 @@ class ApplicationController < ActionController::Base
     # This variable counts for which services the dot in the favicon should be shown.
     # On most pages this will be empty or contain :notifications
     @dot_icon = @unread_notifications.any? ? %i[notifications] : []
+  end
+
+  def set_announcements
+    authorize Announcement, :index?
+    @announcements = AnnouncementPolicy::Scope.new(current_user, Announcement.all).resolve.unread_by current_user
   end
 
   def set_user_seen_at

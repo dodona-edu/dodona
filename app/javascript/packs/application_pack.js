@@ -33,7 +33,6 @@ import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
-import { fetchAnnouncements } from "../../assets/javascripts/announcement";
 
 // Initialize clipboard.js
 initClipboard();
@@ -57,5 +56,4 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
-dodona.fetchAnnouncements = fetchAnnouncements;
 window.dodona = dodona;

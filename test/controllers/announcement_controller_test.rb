@@ -17,9 +17,9 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to announcements_url
   end
 
-  def count_announcements(user, unread = true)
+  def count_announcements(user)
     sign_in user
-    get announcements_url, params: { unread: unread }
+    get root_url
     response.body.scan(/class="announcement/).size
   end
 

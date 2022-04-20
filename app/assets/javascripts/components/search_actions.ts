@@ -17,7 +17,7 @@ type SearchAction = {
 };
 
 const isSearchOption = (opt): opt is SearchOption => (opt as SearchOption).search !== undefined;
-const isSearchAction= (action): action is SearchAction => (action as SearchAction).js !== undefined || (action as SearchAction).action !== undefined || (action as SearchAction).url !== undefined;
+const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !== undefined || (act as SearchAction).action !== undefined || (act as SearchAction).url !== undefined;
 
 @customElement("dodona-search-option")
 export class SearchOptionElement extends ShadowlessLitElement {

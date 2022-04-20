@@ -39,6 +39,14 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     assert_equal 1, count_announcements(b)
   end
 
+  test 'Staff should only see announcements for their own institution' do
+    create :announcement, institution_id: 1
+    a = create :staff, institution_id: 1
+    b = create :staff, institution_id: (create :institution).id
+    assert_equal 2, count_announcements(a)
+    assert_equal 1, count_announcements(b)
+  end
+
   test 'Announcements should be filtered by user group' do
     create :announcement, user_group: :all_users
     student = create :student

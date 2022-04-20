@@ -71,4 +71,34 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     assert_equal 3, count_announcements(staff)
     assert_equal 5, count_announcements(zeus)
   end
+
+  test 'only active announcements should be shown' do
+    create :announcement, start_delivering_at: 1.day.ago
+    student = create :student
+    assert_equal 2, count_announcements(student)
+
+    create :announcement, start_delivering_at: 1.day.from_now
+    student = create :student
+    assert_equal 2, count_announcements(student)
+
+    create :announcement, stop_delivering_at: 1.day.from_now
+    student = create :student
+    assert_equal 3, count_announcements(student)
+
+    create :announcement, stop_delivering_at: 1.day.ago
+    student = create :student
+    assert_equal 3, count_announcements(student)
+
+    create :announcement, start_delivering_at: 1.day.ago, stop_delivering_at: 1.day.from_now
+    student = create :student
+    assert_equal 4, count_announcements(student)
+
+    create :announcement, start_delivering_at: 2.days.ago, stop_delivering_at: 1.day.ago
+    student = create :student
+    assert_equal 4, count_announcements(student)
+
+    create :announcement, start_delivering_at: 1.day.from_now, stop_delivering_at: 2.days.from_now
+    student = create :student
+    assert_equal 4, count_announcements(student)
+  end
 end

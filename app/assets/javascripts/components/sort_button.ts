@@ -2,7 +2,7 @@ import "search.ts";
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
-import {ShadowlessLitElement} from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 export class SortQuery {
     active_column: string;

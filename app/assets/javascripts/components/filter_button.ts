@@ -3,7 +3,7 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { Tooltip } from "bootstrap";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
-import {ShadowlessLitElement} from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 @customElement("dodona-filter-button")
 export class FilterButton extends LitElement {

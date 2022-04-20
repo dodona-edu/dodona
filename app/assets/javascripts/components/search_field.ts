@@ -4,7 +4,7 @@ import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
-import {ShadowlessLitElement} from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 type Label = {id: string, name: string};
 export abstract class SearchFieldSuggestion extends ShadowlessLitElement {

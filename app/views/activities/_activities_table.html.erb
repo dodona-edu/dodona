@@ -64,10 +64,10 @@
           <% if policy(activity).info? %>
             <div class="text-muted ellipsis-overflow">
               <small>
-                  <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>" >
-                      <%= activity.repository.name %>: <%= activity.path %>
-                  </dodona-filter-button>
-                </small>
+                <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>">
+                  <%= activity.repository.name %>: <%= activity.path %>
+                </dodona-filter-button>
+              </small>
             </div>
           <% end %>
         </td>

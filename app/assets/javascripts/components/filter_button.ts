@@ -22,11 +22,11 @@ export class FilterButton extends LitElement {
 
     addFilter(): void {
         if (this.multi) {
-            const selected = new Set(searchQuery.array_query_params.params.get(this.param));
+            const selected = new Set(searchQuery.arrayQueryParams.params.get(this.param));
             selected.add(this.value);
-            searchQuery.array_query_params.updateParam(this.param, Array.from(selected));
+            searchQuery.arrayQueryParams.updateParam(this.param, Array.from(selected));
         } else {
-            searchQuery.query_params.updateParam(this.param, this.value);
+            searchQuery.queryParams.updateParam(this.param, this.value);
         }
     }
 

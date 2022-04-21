@@ -10,7 +10,7 @@ export class SortQuery {
     listeners: Array<(c: string, a: boolean) => void> = [];
 
     constructor() {
-        const sortParams = [...searchQuery.query_params.params.entries()].filter(
+        const sortParams = [...searchQuery.queryParams.params.entries()].filter(
             ([k, v]) => k.startsWith("order_by_") && (v=== "ASC" || v === "DESC")
         );
 
@@ -18,10 +18,10 @@ export class SortQuery {
             this.active_column = sortParams[0][0].substring(9);
             this.ascending = sortParams[0][1] === "ASC";
             sortParams.slice(1).forEach(([k, _]) => {
-                searchQuery.query_params.updateParam(k, undefined);
+                searchQuery.queryParams.updateParam(k, undefined);
             });
         }
-        searchQuery.query_params.subscribe((k, o, n) => {
+        searchQuery.queryParams.subscribe((k, o, n) => {
             if (
                 k.startsWith("order_by_") &&
                 !(k === this.getQueryKey() && n === this.getQueryValue()) &&
@@ -56,13 +56,13 @@ export class SortQuery {
         }
 
         if (this.active_column !== column) {
-            searchQuery.query_params.updateParam(this.getQueryKey(), undefined);
+            searchQuery.queryParams.updateParam(this.getQueryKey(), undefined);
             this.active_column = column;
         }
         this.ascending = ascending;
         this.notify();
         if (this.active_column) {
-            searchQuery.query_params.updateParam(this.getQueryKey(), this.getQueryValue());
+            searchQuery.queryParams.updateParam(this.getQueryKey(), this.getQueryValue());
         }
     }
 }

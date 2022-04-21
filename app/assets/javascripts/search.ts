@@ -52,8 +52,8 @@ export class SearchQuery {
     periodicReload: InactiveTimeout;
     searchIndex = 0;
     appliedIndex = 0;
-    array_query_params: QueryParameters<string[]> = new QueryParameters<string[]>();
-    query_params: QueryParameters<string> = new QueryParameters<string>();
+    arrayQueryParams: QueryParameters<string[]> = new QueryParameters<string[]>();
+    queryParams: QueryParameters<string> = new QueryParameters<string>();
 
     setRefreshElement(refreshElement: string): void {
         this.refreshElement = refreshElement;
@@ -66,7 +66,7 @@ export class SearchQuery {
                     this.search();
                 }
             );
-            this.refresh(this.query_params.params.get("refresh"));
+            this.refresh(this.queryParams.params.get("refresh"));
         } else {
             this.periodicReload = undefined;
         }
@@ -80,9 +80,9 @@ export class SearchQuery {
         // initialise present parameters
         for (const key of url.searchParams.keys()) {
             if (key.endsWith("[]")) {
-                this.array_query_params.updateParam(key.substring(0, key.length-2), url.searchParams.getAll(key));
+                this.arrayQueryParams.updateParam(key.substring(0, key.length-2), url.searchParams.getAll(key));
             } else {
-                this.query_params.updateParam(key, url.searchParams.get(key));
+                this.queryParams.updateParam(key, url.searchParams.get(key));
             }
         }
     }
@@ -92,7 +92,7 @@ export class SearchQuery {
         remotePaginationButtons.forEach( button => button.addEventListener("click", () => {
             const href = button.getAttribute("href");
             const page = getURLParameter("page", href);
-            this.query_params.updateParam("page", page);
+            this.queryParams.updateParam("page", page);
             const url = this.addParametersToUrl();
             window.history.replaceState(null, "Dodona", url);
         }));
@@ -103,24 +103,24 @@ export class SearchQuery {
 
         // subscribe relevant listeners
         const delay = createDelayer();
-        this.array_query_params.subscribe(k => delay(() => this.search(k), 100));
-        this.query_params.subscribe(k => delay(() => this.search(k), 100));
-        this.query_params.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
+        this.arrayQueryParams.subscribe(k => delay(() => this.search(k), 100));
+        this.queryParams.subscribe(k => delay(() => this.search(k), 100));
+        this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
 
         this.setRefreshElement(refreshElement);
     }
 
     addParametersToUrl(baseUrl?: string): string {
         let url: string = baseUrl || this.baseUrl;
-        this.query_params.params.forEach((v, k) => url = updateURLParameter(url, k, v));
-        this.array_query_params.params.forEach((v, k) => url = updateArrayURLParameter(url, k, v));
+        this.queryParams.params.forEach((v, k) => url = updateURLParameter(url, k, v));
+        this.arrayQueryParams.params.forEach((v, k) => url = updateArrayURLParameter(url, k, v));
 
         return url;
     }
 
     resetAllQueryParams(): void {
-        this.query_params.resetParams();
-        this.array_query_params.resetParams();
+        this.queryParams.resetParams();
+        this.arrayQueryParams.resetParams();
     }
 
     refresh(value: string): void {
@@ -137,7 +137,7 @@ export class SearchQuery {
         if (key === "page") {
             return;
         }
-        this.query_params.updateParam("page", "1");
+        this.queryParams.updateParam("page", "1");
 
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;

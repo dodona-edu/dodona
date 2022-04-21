@@ -64,8 +64,8 @@ export class SingleSearchFieldSuggestion extends SearchFieldSuggestion {
         selected = "";
 
     select(label: string): void {
-        searchQuery.query_params.updateParam(this.param, label);
-        searchQuery.query_params.updateParam("filter", undefined);
+        searchQuery.queryParams.updateParam(this.param, label);
+        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {
@@ -73,8 +73,8 @@ export class SingleSearchFieldSuggestion extends SearchFieldSuggestion {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = searchQuery.query_params.params.get(this.param);
-        searchQuery.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
+        this.selected = searchQuery.queryParams.params.get(this.param);
+        searchQuery.queryParams.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
     }
 }
 
@@ -84,8 +84,8 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
         selected: string[] = [];
 
     select(label: string): void {
-        searchQuery.array_query_params.updateParam(this.param, [...this.selected, label]);
-        searchQuery.query_params.updateParam("filter", undefined);
+        searchQuery.arrayQueryParams.updateParam(this.param, [...this.selected, label]);
+        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     isSelected(label: string): boolean {
@@ -93,8 +93,8 @@ export class MultiSearchFieldSuggestion extends SearchFieldSuggestion {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = searchQuery.array_query_params.params.get(this.param) || [];
-        searchQuery.array_query_params.subscribeByKey(this.param, (k, o, n) => {
+        this.selected = searchQuery.arrayQueryParams.params.get(this.param) || [];
+        searchQuery.arrayQueryParams.subscribeByKey(this.param, (k, o, n) => {
             this.selected = n || [];
         });
     }
@@ -129,8 +129,8 @@ export class SearchField extends ShadowlessLitElement {
 
     constructor() {
         super();
-        searchQuery.query_params.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
-        this.filter = searchQuery.query_params.params.get("filter") || "";
+        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
+        this.filter = searchQuery.queryParams.params.get("filter") || "";
         this.delay = createDelayer();
     }
 
@@ -152,7 +152,7 @@ export class SearchField extends ShadowlessLitElement {
         if (e.key === "Tab") {
             this.tabComplete();
         }
-        this.delay(() => searchQuery.query_params.updateParam("filter", this.filter), 300);
+        this.delay(() => searchQuery.queryParams.updateParam("filter", this.filter), 300);
     }
 
     suggestionFieldChanged(field?: SearchFieldSuggestion): void {

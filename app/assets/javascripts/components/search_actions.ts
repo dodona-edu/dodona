@@ -32,7 +32,7 @@ export class SearchOptionElement extends ShadowlessLitElement {
         if (changedProperties.has("searchOption") && this.searchOption) {
             this.setActive();
             Object.keys(this.searchOption.search).forEach(k => {
-                searchQuery.query_params.subscribeByKey(k, () => this.setActive());
+                searchQuery.queryParams.subscribeByKey(k, () => this.setActive());
             });
         }
         super.update(changedProperties);
@@ -40,18 +40,18 @@ export class SearchOptionElement extends ShadowlessLitElement {
 
     setActive(): void {
         this._active = Object.entries(this.searchOption.search).every(([key, value]) => {
-            return searchQuery.query_params.params.get(key) == value.toString();
+            return searchQuery.queryParams.params.get(key) == value.toString();
         });
     }
 
     performSearch(): void {
         if (!this._active) {
             Object.entries(this.searchOption.search).forEach(([key, value]) => {
-                searchQuery.query_params.updateParam(key, value.toString());
+                searchQuery.queryParams.updateParam(key, value.toString());
             });
         } else {
             Object.keys(this.searchOption.search).forEach(key => {
-                searchQuery.query_params.updateParam(key, undefined);
+                searchQuery.queryParams.updateParam(key, undefined);
             });
         }
     }

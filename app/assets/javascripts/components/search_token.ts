@@ -47,7 +47,7 @@ export class SingleSearchToken extends SearchToken {
         selected = "";
 
     unSelect(): void {
-        searchQuery.query_params.updateParam(this.param, undefined);
+        searchQuery.queryParams.updateParam(this.param, undefined);
     }
 
     isSelected(label: string): boolean {
@@ -55,8 +55,8 @@ export class SingleSearchToken extends SearchToken {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = searchQuery.query_params.params.get(this.param);
-        searchQuery.query_params.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
+        this.selected = searchQuery.queryParams.params.get(this.param);
+        searchQuery.queryParams.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
     }
 }
 
@@ -66,7 +66,7 @@ export class MultiSearchToken extends SearchToken {
         selected: string[] = [];
 
     unSelect(label: string): void {
-        searchQuery.array_query_params.updateParam(this.param, this.selected.filter(s => s !== label));
+        searchQuery.arrayQueryParams.updateParam(this.param, this.selected.filter(s => s !== label));
     }
 
     isSelected(label: string): boolean {
@@ -74,8 +74,8 @@ export class MultiSearchToken extends SearchToken {
     }
 
     subscribeToQueryParams(): void {
-        this.selected = searchQuery.array_query_params.params.get(this.param) || [];
-        searchQuery.array_query_params.subscribeByKey(this.param, (k, o, n) => {
+        this.selected = searchQuery.arrayQueryParams.params.get(this.param) || [];
+        searchQuery.arrayQueryParams.subscribeByKey(this.param, (k, o, n) => {
             this.selected = n || [];
         });
     }

@@ -162,7 +162,7 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
-  def submission_status_icon(submission, size = 18)
+  def status_icon(status, size = 18)
     icon, color = {
       nil => %w[remove default],
       'correct' => %w[check correct],
@@ -174,8 +174,12 @@ module ApplicationHelper
       'compilation error' => %w[flash-circle wrong],
       'memory limit exceeded' => %w[memory wrong],
       'output limit exceeded' => %w[script-text wrong]
-    }[submission&.status] || %w[alert warning]
+    }[status] || %w[alert warning]
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
+  end
+
+  def submission_status_icon(submission, size = 18)
+    status_icon(submission&.status, size)
   end
 
   def locale=(language_code)

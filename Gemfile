@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.3'
+gem 'nokogiri', '~> 1.13.4'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -138,7 +138,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-gem 'ddtrace', '~> 1.0.0.beta1'
+gem 'ddtrace', '~> 1.0.0.beta2'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.0'

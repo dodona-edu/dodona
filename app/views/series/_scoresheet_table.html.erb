@@ -10,7 +10,7 @@
     </thead>
     <tbody>
     <tr class="summary-row">
-      <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', :count => users.length) %></td>
+      <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
       <% activities.each do |activity| %>
         <% if activity.exercise? %>
           <td class="status">

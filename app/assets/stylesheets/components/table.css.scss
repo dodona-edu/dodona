@@ -115,3 +115,9 @@ tr.gu-mirror {
 #scoresheet-table-wrapper td {
   height: 37px;
 }
+
+#scoresheet-table-wrapper .summary-row td {
+  height: 35px;
+  font-size: 12px;
+  color: $text-secondary;
+}

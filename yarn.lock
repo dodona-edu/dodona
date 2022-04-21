@@ -1015,7 +1015,7 @@
     "@codemirror/state" "^0.19.0"
     "@codemirror/view" "^0.19.23"
 
-"@codemirror/highlight@^0.19.7":
+"@codemirror/highlight@^0.19.0", "@codemirror/highlight@^0.19.7":
   version "0.19.8"
   resolved "https://registry.yarnpkg.com/@codemirror/highlight/-/highlight-0.19.8.tgz#a95aee8ae4389b01f820aa79c48f7b4388087d92"
   integrity sha512-v/lzuHjrYR8MN2mEJcUD6fHSTXXli9C1XGYpr+ElV6fLBIUhMTNKR3qThp611xuWfXfwDxeL7ppcbkM/MzPV3A==
@@ -1139,6 +1139,15 @@
   resolved "https://registry.yarnpkg.com/@codemirror/text/-/text-0.19.6.tgz#9adcbd8137f69b75518eacd30ddb16fd67bbac45"
   integrity sha512-T9jnREMIygx+TPC1bOuepz18maGq/92q2a+n4qTqObKwvNMg+8cMTslb8yxeEDEq7S3kpgGWxgO1UWbQRij0dA==
 
+"@codemirror/theme-one-dark@^0.19.0":
+  version "0.19.1"
+  resolved "https://registry.yarnpkg.com/@codemirror/theme-one-dark/-/theme-one-dark-0.19.1.tgz#648b9cbe37186a2b7bd2a83fb483dc7aa18ce218"
+  integrity sha512-8gc4c2k2o/EhyHoWkghCxp5vyDT96JaFGtRy35PHwIom0LZdx7aU4AbDUnITvwiFB+0+i54VO+WQjBqgTyJvqg==
+  dependencies:
+    "@codemirror/highlight" "^0.19.0"
+    "@codemirror/state" "^0.19.0"
+    "@codemirror/view" "^0.19.0"
+
 "@codemirror/tooltip@^0.19.12", "@codemirror/tooltip@^0.19.16":
   version "0.19.16"
   resolved "https://registry.yarnpkg.com/@codemirror/tooltip/-/tooltip-0.19.16.tgz#6ba2c43f9d8e3d943d9d7bbae22bf800f7726a22"
@@ -1163,10 +1172,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.1.94":
-  version "0.1.94"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.94.tgz#99a9a4b96606ed6edbe385dae17fd6f993ebdb0b"
-  integrity sha512-M+JHKCQFLXLiwod1aQYQHUdUgERaZp7knAGPVlV0ZAy4WsJKtYTk2jZnHLEHcDal79RmzEgsKIMGQ6jloYJOKw==
+"@dodona/papyros@^0.1.95-darkmode":
+  version "0.1.95-darkmode"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.95-darkmode.tgz#a7a28df9d8a1d97f5bb50b34455dc5115dec7163"
+  integrity sha512-qgCevPdNr2FjNdQPJBQVA/s/ZSGz4ttLYTUNmcmWireqNee0cHQZlj8Qt+HPmDVbr5kwiaGJ08imdzBMZ1qRUg==
   dependencies:
     "@codemirror/autocomplete" "^0.19.8"
     "@codemirror/closebrackets" "^0.19.0"
@@ -1181,6 +1190,7 @@
     "@codemirror/rectangular-selection" "^0.19.1"
     "@codemirror/search" "^0.19.3"
     "@codemirror/state" "^0.19.6"
+    "@codemirror/theme-one-dark" "^0.19.0"
     comlink "^4.3.1"
     comsync "^0.0.8"
     escape-html "^1.0.3"

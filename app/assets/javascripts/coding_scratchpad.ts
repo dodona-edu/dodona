@@ -41,7 +41,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         {
                             id: CODE_COPY_BUTTON_ID,
                             buttonText: I18n.t("js.coding_scratchpad.copy_code"),
-                            extraClasses: "copy-code-button"
+                            classNames: "copy-code-button"
                         },
                         () => {
                             editor.setValue(papyros.getCode());
@@ -65,9 +65,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     },
                     inputOptions: {
                         parentElementId: CODE_INPUT_PARENT_ID
-                    }
-                }
-                );
+                    },
+                    darkMode: window.dodona.darkMode
+                });
                 await papyros.configureInput(location.href, "inputServiceWorker.js");
                 await papyros.launch();
             }

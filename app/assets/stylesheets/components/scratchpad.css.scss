@@ -64,6 +64,11 @@
     height: 100%;
 }
 
+.cm-gutters {
+    // Height 100% seems to not work on the gutters, so override the default
+    height: auto !important;
+}
+
 #scratchpad-output-wrapper {
     max-height: 20vh;
     margin-bottom: 10px;

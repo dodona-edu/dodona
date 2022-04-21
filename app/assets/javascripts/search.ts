@@ -73,7 +73,7 @@ export class SearchQuery {
     }
 
     setBaseUrl(baseUrl?: string): void {
-        this.updateAddressBar = !baseUrl;
+        this.updateAddressBar = baseUrl === undefined || baseUrl === "";
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;

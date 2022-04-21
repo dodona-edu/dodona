@@ -291,3 +291,36 @@ form.button_to {
 .option-btn:hover {
   @include shadow-z4;
 }
+
+.single-zero-button, #zero-button {
+  background-color: unset;
+  color: unset;
+  transition: background-color 1s ease-out;
+}
+
+.single-max-button, #max-button {
+  background-color: unset;
+  color: unset;
+  transition: background-color 1s ease-out;
+}
+
+.single-zero-button:hover:not(:focus), #zero-button:hover:not(:focus) {
+  color: $brand-danger;
+}
+
+.single-max-button:hover:not(:focus), #max-button:hover:not(:focus) {
+  color: $brand-success;
+}
+
+.single-zero-button:active, #zero-button:active {
+  background-color: rgba($danger, 0.6);
+  color: unset;
+  transition: background-color 0s;
+}
+
+.single-max-button:active, #max-button:active {
+  background-color: rgba($success, 0.6);
+  color: unset;
+  transition: background-color 0s;
+}
+

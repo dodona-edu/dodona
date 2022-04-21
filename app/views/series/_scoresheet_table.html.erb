@@ -10,15 +10,22 @@
     </thead>
     <tbody>
     <tr class="summary-row">
-      <td class="user-name ellipsis-overflow"><%= users.length %></td>
+      <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', :count => users.length) %></td>
       <% activities.each do |activity| %>
         <% if activity.exercise? %>
           <td class="status">
+            <% i = 0 %>
             <% statuses.each do |status| %>
               <% count = submission_counts[[activity.id, status]] %>
               <% if count > 0 %>
-                <%= count %>
-                <%= status_icon(status, 12) %>
+                <% if i > 0 %>
+                  &middot;
+                <% end %>
+                <% i += 1 %>
+                <span data-bs-toggle="tooltip" title="<%= count %> <%= Submission.human_enum_name(:status, status) %>">
+                  <%= count %>
+                  <%= status_icon(status, 12) %>
+                </span>
               <% else %>
               <% end %>
             <% end %>

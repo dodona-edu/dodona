@@ -77,6 +77,15 @@ export class SearchQuery {
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
+
+        // Reset old params
+        for (const key of this.arrayQueryParams.params.keys()) {
+            this.arrayQueryParams.updateParam(key, undefined);
+        }
+        for (const key of this.queryParams.params.keys()) {
+            this.queryParams.updateParam(key, undefined);
+        }
+
         // initialise present parameters
         for (const key of url.searchParams.keys()) {
             if (key.endsWith("[]")) {
@@ -93,8 +102,6 @@ export class SearchQuery {
             const href = button.getAttribute("href");
             const page = getURLParameter("page", href);
             this.queryParams.updateParam("page", page);
-            const url = this.addParametersToUrl();
-            window.history.replaceState(null, "Dodona", url);
         }));
     }
 
@@ -102,10 +109,11 @@ export class SearchQuery {
         this.setBaseUrl(baseUrl);
 
         // subscribe relevant listeners
-        const delay = createDelayer();
-        this.arrayQueryParams.subscribe(k => delay(() => this.search(k), 100));
-        this.queryParams.subscribe(k => delay(() => this.search(k), 100));
+        this.arrayQueryParams.subscribe(k => this.paramChange(k));
+        this.queryParams.subscribe(k => this.paramChange(k));
         this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
+
+        window.onpopstate = () => this.setBaseUrl();
 
         this.setRefreshElement(refreshElement);
     }
@@ -133,18 +141,41 @@ export class SearchQuery {
         }
     }
 
-    search(key?: string): void {
-        if (key === "page") {
+    updateHistory(push: boolean): void {
+        if (!this.updateAddressBar) {
             return;
         }
-        this.queryParams.updateParam("page", "1");
+        const url = this.addParametersToUrl();
+        if (url === window.location.href) {
+            return;
+        }
+        if (push) {
+            window.history.pushState(null, "Dodona", url);
+        } else {
+            window.history.replaceState(null, "Dodona", url);
+        }
+    }
 
+    paramChangeDelayer = createDelayer();
+    changedParams = [];
+    paramChange(key: string): void {
+        this.changedParams.push(key);
+        this.paramChangeDelayer(() => {
+            if (this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
+                this.queryParams.updateParam("page", "1");
+                this.changedParams = [];
+                return;
+            }
+            this.updateHistory(this.changedParams.some(k => k ==="page"));
+            this.search();
+            this.changedParams = [];
+        }, 100);
+    }
+
+    search(): void {
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;
 
-        if (this.updateAddressBar) {
-            window.history.replaceState(null, "Dodona", url);
-        }
         document.getElementById("progress-filter").style.visibility = "visible";
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {

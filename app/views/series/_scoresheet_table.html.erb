@@ -9,6 +9,40 @@
     </tr>
     </thead>
     <tbody>
+    <tr class="summary-row">
+      <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
+      <% activities.each do |activity| %>
+        <% if activity.exercise? %>
+          <td class="status">
+            <% i = 0 %>
+            <% statuses.each do |status| %>
+              <% count = submission_counts[[activity.id, status]] %>
+              <% if count > 0 %>
+                <% if i > 0 %>
+                  &middot;
+                <% end %>
+                <% i += 1 %>
+                <span data-bs-toggle="tooltip" title="<%= count %> <%= Submission.human_enum_name(:status, status) %>">
+                  <%= count %>
+                  <%= status_icon(status, 12) %>
+                </span>
+              <% else %>
+              <% end %>
+            <% end %>
+          </td>
+        <% elsif activity.content_page? %>
+          <% count = read_state_counts[activity.id] %>
+          <td class="status">
+            <% if count > 0 %>
+              <%= count %>
+              <i class="mdi mdi-12 mdi-check colored-correct"></i>
+            <% else %>
+            <% end %>
+          </td>
+        <% end %>
+      <% end %>
+    </tr>
+
     <% users.each do |student| %>
       <tr>
         <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>

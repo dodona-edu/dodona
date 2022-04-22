@@ -184,6 +184,19 @@ class SeriesController < ApplicationController
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]
+    @statuses = Submission.statuses.keys
+
+    @submission_counts = Hash.new(0)
+    @read_state_counts = Hash.new(0)
+    @users.each do |user|
+      @activities.each do |activity|
+        if activity.exercise? && @submissions[[user.id, activity.id]].present?
+          @submission_counts[[activity.id, @submissions[[user.id, activity.id]].status]] += 1
+        elsif activity.content_page? && @read_states[[user.id, activity.id]].present?
+          @read_state_counts[activity.id] += 1
+        end
+      end
+    end
 
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
 

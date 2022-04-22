@@ -25,7 +25,10 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyros: Papyros | undefined = undefined;
         let editor: Editor | undefined = undefined;
-        document.getElementById(SHOW_OFFCANVAS_BUTTON_ID).addEventListener("click", async function () {
+        const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
+        showButton.classList.add("offcanvas-show-btn");
+        showButton.classList.remove("hidden");
+        showButton.addEventListener("click", async function () {
             if (!papyros) { // Only create Papyros once per session, but only when required
                 papyros = new Papyros(
                     {

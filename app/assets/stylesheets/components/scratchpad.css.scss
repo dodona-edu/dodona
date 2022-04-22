@@ -1,16 +1,16 @@
 .offcanvas-show-btn {
-    position: fixed;
-    left: 100%;
-    bottom: 100px;
-    transform-origin: 0% 100%;
-    transform: rotate(270deg);
     white-space: nowrap;
-    padding-top: 10px;
-    padding-bottom: 10px;
     font-size: 16px;
     background-color: $content-bg;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: fixed;
+    bottom: 100px;
+    left: 100%;
+    transform-origin: 0% 100%;
+    transform: rotate(270deg);
 }
 
 .scratchpad-header {

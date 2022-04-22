@@ -25,6 +25,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyros: Papyros | undefined = undefined;
         let editor: Editor | undefined = undefined;
+        /* */
         const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
         showButton.classList.add("offcanvas-show-btn");
         showButton.classList.remove("hidden");

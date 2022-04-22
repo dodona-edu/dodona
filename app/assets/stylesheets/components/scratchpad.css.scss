@@ -38,9 +38,9 @@
     margin-top: $navbar-height + 5;
 }
 
-.copy-code-button {
-    background-color: $grey-300;
-    color: $black-text;
+#scratchpad-code-copy-btn {
+    color: white;
+    background-color: $color-blue-grey;
     white-space: nowrap;
 }
 
@@ -64,7 +64,8 @@
     height: 100%;
 }
 
-.cm-gutters {
+// More specific selector to override !important property from Papyros
+div .cm-gutters {
     // Height 100% seems to not work on the gutters, so override the default
     height: auto !important;
     min-height: 100% !important;

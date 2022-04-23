@@ -24,12 +24,12 @@ class ScratchpadTest < ApplicationSystemTestCase
     assert_selector '#scratchpad-offcanvas-show-btn'
     find('#scratchpad-offcanvas-show-btn').click
 
-    assert_selector 'scratchpad-editor-wrapper'
-    find('scratchpad-editor-wrapper').send_keys 'print("Hello World!")'
+    assert_selector '#scratchpad-editor-wrapper'
+    find('#scratchpad-editor-wrapper').send_keys 'print("Hello World!")'
 
-    find('__papyros-run-code-btn').click
+    find('#__papyros-run-code-btn').click
     begin
-      output_area = find('scratchpad-output-wrapper')
+      output_area = find('#scratchpad-output-wrapper')
       within output_area do
         wait_until { output_area.find('span', 'Hello World!').visible? }
       end

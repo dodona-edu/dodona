@@ -25,10 +25,9 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('#scratchpad-offcanvas-show-btn').click
 
     assert_selector '.cm-editor'
-    editor = find('.cm-editor')
+    find('.cm-editor').click
     # Focus editor
-    editor.click
-    editor.send_keys 'print("Hello World!")'
+    find('.cm-content').send_keys 'print("Hello World!")'
 
     find('#__papyros-run-code-btn').click
     begin

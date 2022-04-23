@@ -11,9 +11,8 @@ class ScratchpadTest < ApplicationSystemTestCase
   setup do
     @zeus = create(:zeus)
     @course = create :course
-    @exercise = create(:exercise, programming_language_id: ProgrammingLanguage.where(name: 'python').first)
-    puts @exercise.inspect
-    puts @exercise.programming_language&.inspect
+    @programming_language = create(:programming_language, name: 'python')
+    @exercise = create(:exercise, programming_language_id: @programming_language.id)
     @course.series << create(:series)
     @course.series.first.activities << @exercise
 

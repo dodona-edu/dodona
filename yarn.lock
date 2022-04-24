@@ -1172,10 +1172,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.1.954-darkmode":
-  version "0.1.954-darkmode"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.954-darkmode.tgz#3f300467dcbf575cb24dab4e0b75fd1b735fe6ae"
-  integrity sha512-p5uTOLFqPqRVQD5NojPfBCSgCioGq9GkJy4tM78MUE4uZW9qUsDIE3gdh/0c/GGdDtqfhmGIbku60zJ6h9GDJw==
+"@dodona/papyros@^0.1.955-darkmode":
+  version "0.1.955-darkmode"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.1.955-darkmode.tgz#f557f7251e928fd18acbb2f86703ca173aa08905"
+  integrity sha512-sBoslOib1+xBciOa9jE97aQcl/MP9HjyJa631qEy4z39qCjLDAWDsKL1FLcDUxRS7JEv+s6f7DmDXxx80DXtAA==
   dependencies:
     "@codemirror/autocomplete" "^0.19.8"
     "@codemirror/closebrackets" "^0.19.0"

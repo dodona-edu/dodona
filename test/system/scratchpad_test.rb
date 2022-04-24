@@ -32,6 +32,6 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('#__papyros-run-code-btn').click
 
     output_area = find('#scratchpad-output-wrapper')
-    output_area.find('span', 'Hello World!')
+    output_area.find('span', text: 'Hello World!')
   end
 end

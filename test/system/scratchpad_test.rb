@@ -65,7 +65,8 @@ class ScratchpadTest < ApplicationSystemTestCase
     output_area.find('span', text: 'Start')
     output_area.find('span', text: 'Stop')
 
-    run_code(code)
+    # Ensure Papyros is initialized to have predictable waiting times
+    find('#__papyros-run-code-btn').click
     sleep(1)
     find_button('__papyros-stop-btn', disabled: false).click
     output_area.find('span', text: 'Start')

@@ -37,9 +37,9 @@ class ScratchpadTest < ApplicationSystemTestCase
     ## Hello World!
     code = "print(\"Hello World!\")\n"
     run_code code
-    # First run, so wait longer
-    output_area = find('#scratchpad-output-wrapper', wait: 20)
-    output_area.find('span', text: 'Hello World!')
+    output_area = find('#scratchpad-output-wrapper')
+    # First run, so wait longer for output to appear
+    output_area.find('span', text: 'Hello World!', wait: 20)
 
     # Scratchpad can process user input in interactive mode
     scratchpad_input = 'Echo'

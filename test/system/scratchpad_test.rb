@@ -21,14 +21,12 @@ class ScratchpadTest < ApplicationSystemTestCase
     assert_selector '#scratchpad-offcanvas-show-btn'
   end
 
-  def run_code(code); end
-
   test 'Scratchpad can run Hello World!' do
     find('#scratchpad-offcanvas-show-btn').click
     assert_selector '.cm-editor'
     # Focus editor
     find('.cm-editor').click
-    find('.cm-content').send_keys 'Hello World!'
+    find('.cm-content').send_keys 'print("Hello World!")'
     find('#__papyros-run-code-btn').click
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: 'Hello World!')
@@ -42,8 +40,8 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('.cm-content').send_keys 'print(input())'
     find('#__papyros-run-code-btn').click
     scratchpad_input = 'Echo'
-    find('#__papyros-code-input-area:enabled').send_keys scratchpad_input
-    find('#__papyros-send-input-btn:enabled').click
+    find_field('#__papyros-code-input-area', disabled: false).send_keys scratchpad_input
+    find_button('#__papyros-send-input-btn', disabled: false).click
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: scratchpad_input)
   end

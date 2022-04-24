@@ -30,13 +30,8 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('.cm-content').send_keys 'print("Hello World!")'
 
     find('#__papyros-run-code-btn').click
-    begin
-      output_area = find('#scratchpad-output-wrapper')
-      within output_area do
-        wait_until { output_area.find('span', 'Hello World!').visible? }
-      end
-    rescue Capybara::TimeoutError
-      flunk 'Expected Hello World! to be printed.'
+    within find('#scratchpad-output-wrapper') do
+      assert_text 'Hello World!'
     end
   end
 end

@@ -17,6 +17,8 @@ class ScratchpadTest < ApplicationSystemTestCase
     @course.series.first.activities << @exercise
 
     sign_in @zeus
+    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
+    assert_selector '#scratchpad-offcanvas-show-btn'
   end
 
   def run_code(code)
@@ -28,8 +30,6 @@ class ScratchpadTest < ApplicationSystemTestCase
   end
 
   test 'Scratchpad can run Hello World!' do
-    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
-    assert_selector '#scratchpad-offcanvas-show-btn'
     find('#scratchpad-offcanvas-show-btn').click
     run_code('Hello World!')
     output_area = find('#scratchpad-output-wrapper')
@@ -37,13 +37,11 @@ class ScratchpadTest < ApplicationSystemTestCase
   end
 
   test 'Scratchpad can process user input' do
-    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
-    assert_selector '#scratchpad-offcanvas-show-btn'
     find('#scratchpad-offcanvas-show-btn').click
     run_code('print(input())')
     scratchpad_input = 'Echo'
-    find('__papyros-code-input-area').send_keys scratchpad_input
-    find('__papyros-send-input-btn').click
+    find('#__papyros-code-input-area').send_keys scratchpad_input
+    find('#__papyros-send-input-btn').click
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: scratchpad_input)
   end

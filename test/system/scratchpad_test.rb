@@ -19,19 +19,37 @@ class ScratchpadTest < ApplicationSystemTestCase
     sign_in @zeus
   end
 
-  test 'Scratchpad can correctly run code' do
+  test 'Scratchpad can run Hello World!' do
     visit(course_activity_path(course_id: @course.id, id: @exercise.id))
     assert_selector '#scratchpad-offcanvas-show-btn'
     find('#scratchpad-offcanvas-show-btn').click
 
     assert_selector '.cm-editor'
-    find('.cm-editor').click
     # Focus editor
+    find('.cm-editor').click
     find('.cm-content').send_keys 'print("Hello World!")'
-
     find('#__papyros-run-code-btn').click
 
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: 'Hello World!')
+  end
+
+  test 'Scratchpad can process user input' do
+    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
+    assert_selector '#scratchpad-offcanvas-show-btn'
+    find('#scratchpad-offcanvas-show-btn').click
+
+    assert_selector '.cm-editor'
+    # Focus editor
+    find('.cm-editor').click
+    find('.cm-content').send_keys 'print(input())'
+    find('#__papyros-run-code-btn').click
+
+    scratchpad_input = 'Echo'
+    find_field('__papyros-code-input-area', disabled: false).send_keys scratchpad_input
+    find_button('__papyros-send-input-btn', disabled: false).click
+
+    output_area = find('#scratchpad-output-wrapper')
+    output_area.find('span', text: scratchpad_input)
   end
 end

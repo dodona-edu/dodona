@@ -39,14 +39,36 @@ class ScratchpadTest < ApplicationSystemTestCase
     output_area.find('span', text: 'Hello World!')
   end
 
-  test 'Scratchpad can process user input' do
-    run_code 'print(input())'
-
+  test 'Scratchpad can process user input in interactive mode' do
+    # Interactive input
     scratchpad_input = 'Echo'
+    run_code 'print(input())'
     find_field('__papyros-code-input-area', disabled: false).send_keys scratchpad_input
     find_button('__papyros-send-input-btn', disabled: false).click
-
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: scratchpad_input)
+  end
+
+  test 'Scratchpad can process user input in batch mode' do
+    scratchpad_input = 'Batch'
+    find('#__papyros-switch-input-mode').click
+    find_field('__papyros-code-input-area').send_keys scratchpad_input
+    run_code 'print(input())'
+    output_area = find('#scratchpad-output-wrapper')
+    output_area.find('span', text: scratchpad_input)
+  end
+
+  test 'Scratchpad can sleep and be interrupted' do
+    code = "import time\nprint(\"Start\")\ntime.sleep(3)\nprint(\"Stop\")"
+    run_code(code)
+    output_area = find('#scratchpad-output-wrapper')
+    output_area.find('span', text: 'Start')
+    output_area.find('span', text: 'Stop')
+
+    run_code(code)
+    sleep(1)
+    find_button('__papyros-stop-btn', disabled: false).click
+    output_area.find('span', text: 'Start')
+    assert output_area.has_no_xpath?('.//span', text: 'Stop')
   end
 end

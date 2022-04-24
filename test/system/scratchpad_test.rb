@@ -35,7 +35,7 @@ class ScratchpadTest < ApplicationSystemTestCase
 
   test 'Scratchpad can run code' do
     ## Hello World!
-    code = 'print("Hello World!")\n'
+    code = "print(\"Hello World!\")\n"
     run_code code
     # First run, so wait longer
     output_area = find('#scratchpad-output-wrapper', wait: 20)
@@ -43,7 +43,7 @@ class ScratchpadTest < ApplicationSystemTestCase
 
     # Scratchpad can process user input in interactive mode
     scratchpad_input = 'Echo'
-    code = 'print(input())\n'
+    code = "print(input())\n"
     run_code code
     # Enter the input during the run
     find_field('__papyros-code-input-area', disabled: false).send_keys scratchpad_input

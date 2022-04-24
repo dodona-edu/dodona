@@ -53,6 +53,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     scratchpad_input = 'Batch'
     find('#__papyros-switch-input-mode').click
     find_field('__papyros-code-input-area').send_keys scratchpad_input
+    find('#__papyros-user-input-wrapper').find_field('__papyros-code-input-area', with: scratchpad_input)
     run_code 'print(input())'
     output_area = find('#scratchpad-output-wrapper')
     output_area.find('span', text: scratchpad_input)

@@ -30,8 +30,8 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('.cm-content').send_keys 'print("Hello World!")'
 
     find('#__papyros-run-code-btn').click
-    within find('#scratchpad-output-wrapper') do
-      assert_text 'Hello World!'
-    end
+
+    output_area = find('#scratchpad-output-wrapper')
+    output_area.find('span', 'Hello World!')
   end
 end

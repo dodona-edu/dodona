@@ -16,7 +16,7 @@ const config = {
         moduleIds: "deterministic",
     },
     // https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
-    entry: glob.sync("./app/javascript/packs/**.js").reduce(function (obj, el) {
+    entry: glob.sync("./app/javascript/packs/**.{js,ts}").reduce(function (obj, el) {
         obj[path.parse(el).name] = el;
         return obj;
     }, {}),

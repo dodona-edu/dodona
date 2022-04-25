@@ -168,6 +168,9 @@ nl:
       confirm: Bent u zeker?
     score_item:
       error: Fout bij bijwerken
+    coding_scratchpad:
+      copy_code: Kopieer naar Dodona
+      overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
     submission_motivational_message:
       1: Proficiat!
       2: Goed bezig!

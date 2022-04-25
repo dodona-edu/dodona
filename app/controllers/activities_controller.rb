@@ -209,7 +209,7 @@ class ActivitiesController < ApplicationController
     filename = if Rails.application.assets
                  Rails.application.assets[INPUT_SERVICE_WORKER].filename
                else
-                 Rails.root.join(
+                 File.join(
                    Rails.application.assets_manifest.directory,
                    Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
                  )

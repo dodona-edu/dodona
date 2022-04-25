@@ -8,10 +8,11 @@ class ActivitiesController < ApplicationController
   before_action :ensure_trailing_slash, only: :show
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
-  # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
-  skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
-  protect_from_forgery except: :input_service_worker # Allow serving JavaScript service worker file
+  # Some activity descriptions load JavaScript from their description. Rails has
+  # extra protections against loading unprivileged javascript. We also need to
+  # make sure the Papyros service worker can be loaded.
+  protect_from_forgery except: %i[media input_service_worker]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }

@@ -206,6 +206,9 @@ class ActivitiesController < ApplicationController
   # Asset has been preprocessed and built internally
   # Redirecting to the asset is not possible due to browser security policy
   def input_service_worker
+    # Which assets are available depends on the mode of the environment
+    # The else-block is only reachable in production
+    # :nocov:
     filename = if Rails.application.assets
                  Rails.application.assets[INPUT_SERVICE_WORKER].filename
                else
@@ -214,6 +217,7 @@ class ActivitiesController < ApplicationController
                    Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
                  )
                end
+    # :nocov:
     send_file(filename,
               filename: INPUT_SERVICE_WORKER,
               type: 'text/javascript')

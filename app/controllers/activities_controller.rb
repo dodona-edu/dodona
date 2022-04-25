@@ -2,6 +2,8 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
 
+  INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
+
   before_action :set_activity, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
@@ -204,9 +206,13 @@ class ActivitiesController < ApplicationController
   # Asset has been preprocessed and built internally
   # Redirecting to the asset is not possible due to browser security policy
   def input_service_worker
-    assets = Rails.application.assets || Rails.application.assets_manifest.assets
-    send_file(assets['inputServiceWorker.js'].filename,
-              filename: 'inputServiceWorker.js',
+    filename = if Rails.application.assets
+                 Rails.application.assets[INPUT_SERVICE_WORKER].filename
+               else
+                 Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
+               end
+    send_file(filename,
+              filename: INPUT_SERVICE_WORKER,
               type: 'text/javascript')
   end
 

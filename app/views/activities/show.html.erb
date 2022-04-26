@@ -157,6 +157,9 @@ end %>
   </div>
 </div>
 <% end %>
+<% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+  <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
+<% end %>
 <script type="text/javascript">
     $(function () {
         dodona.initExerciseShow(

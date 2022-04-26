@@ -18,7 +18,7 @@ Rails.application.configure do
     else
       policy.connect_src :self, Rails.configuration.tutor_url.to_s
     end
-
+  
     policy.font_src    :self, 'https://fonts.gstatic.com',
                        'https://cdn.jsdelivr.net/npm/@mdi/font@5.x/',
                        'https://cdn.jsdelivr.net/npm/mathjax@3/'

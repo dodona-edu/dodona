@@ -175,3 +175,30 @@ en:
       4: Nice!
       5: Good job!
       6: Well done!
+    dropdown:
+      multi:
+        labels: Labels
+        programming_languages: Programming Languages
+        judges: Judges
+        repositories: Repositories
+        institutions: Institutions
+        course_labels: Member labels
+        statuses: Statusses
+        event_types: Event types
+        activity_types: Activity types
+        description_languages: Languages
+        courses: Courses
+        question_states: Statusses
+      single:
+        labels: Label
+        programming_languages: Programming Language
+        judges: Judge
+        repositories: Repository
+        institutions: Institution
+        course_labels: Member label
+        statuses: Status
+        event_types: Event type
+        activity_types: Activity type
+        description_languages: Language
+        courses: Course
+        question_states: Status

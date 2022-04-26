@@ -175,3 +175,30 @@ nl:
       4: Mooi!
       5: Puik werk!
       6: Goed gedaan!
+    dropdown:
+      multi:
+        labels: Labels
+        programming_languages: Programmeertalen
+        judges: Judges
+        repositories: Repository's
+        institutions: Onderwijsinstellingen
+        course_labels: Gebruikerlabels
+        statuses: Statussen
+        event_types: Event types
+        activity_types: Activiteitstypes
+        description_languages: Talen
+        courses: Cursussen
+        question_states: Toestanden
+      single:
+        labels: Label
+        programming_languages: Programmeertaal
+        judges: Judge
+        repositories: Repository
+        institutions: Onderwijsinstelling
+        course_labels: Gebruikerlabel
+        statuses: Status
+        event_types: Event type
+        activity_types: Activiteitstype
+        description_languages: Taal
+        courses: Cursus
+        question_states: Toestand

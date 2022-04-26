@@ -49,7 +49,7 @@ export class DropdownFilter extends LitElement {
         return html`
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    ${I18n.t(`js.${this.type}`)}
+                    ${I18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
                     ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)}"></i>`)}
                     <i class="mdi mdi-chevron-down mdi-12"></i>
                 </a>

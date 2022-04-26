@@ -61,6 +61,10 @@ en:
       course_view: Course scoresheet
       select_view: Select view
       status: "Status %{activity}"
+      users:
+        zero: No users
+        one: 1 user
+        other: "%{count} users"
     series_status:
       completed_after_deadline_missed: You completed all learning activities, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still incorrect exercises.

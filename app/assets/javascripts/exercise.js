@@ -182,7 +182,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
-
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
@@ -202,6 +201,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
         editor.on("focus", enableSubmitButton);
+        // Make editor available globally
+        window.dodona.editor = editor;
     }
 
     function swapActionButtons() {

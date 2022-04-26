@@ -186,12 +186,12 @@ en:
         repositories: Repositories
         institutions: Institutions
         course_labels: Member labels
-        statuses: Statusses
+        statuses: Statuses
         event_types: Event types
         activity_types: Activity types
         description_languages: Languages
         courses: Courses
-        question_states: Statusses
+        question_states: Statuses
       single:
         labels: Label
         programming_languages: Programming Language

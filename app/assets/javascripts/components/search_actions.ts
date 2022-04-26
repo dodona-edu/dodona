@@ -1,4 +1,4 @@
-import { html, LitElement, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch } from "util.js";

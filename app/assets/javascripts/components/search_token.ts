@@ -1,4 +1,4 @@
-import { html, LitElement, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";

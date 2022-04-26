@@ -32,7 +32,7 @@ function setBaseUrl(_baseUrl) {
     window.dodona.index.doSearch();
 }
 
-function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
+function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null, noDropdownFilters = []) {
     const updateAddressBar = !_baseUrl;
     const dropdownFilters = {};
 
@@ -53,7 +53,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     }
 
     function initDropdownFilters() {
-        Object.entries(filterCollections).forEach(([type, value]) => {
+        Object.entries(filterCollections).filter(([type, _]) => !noDropdownFilters.includes(type)).forEach(([type, value]) => {
             const dropdownFilter = document.createElement("dodona-dropdown-filter");
             dropdownFilter.labels = value.data;
             dropdownFilter.color = value.color;

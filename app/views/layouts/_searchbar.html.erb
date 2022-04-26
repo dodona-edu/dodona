@@ -183,7 +183,8 @@
             <%= raw (local_assigns.fetch :actions, false).to_json %>,
             <%= local_assigns.fetch :init_filter, true %>,
             filterCollections,
-            "<%= local_assigns.fetch :refresh_element, "" %>"
+            "<%= local_assigns.fetch :refresh_element, "" %>",
+            <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>,
         );
     });
 </script>

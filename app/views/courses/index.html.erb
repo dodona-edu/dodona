@@ -29,7 +29,7 @@
             <% end %>
           </ul>
         </div>
-        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false } %>
+        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false, no_dropdown_for: ["institutions"] } %>
         <div id="courses-table-wrapper"></div>
       </div>
     </div>

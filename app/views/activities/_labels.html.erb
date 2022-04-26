@@ -1,6 +1,6 @@
 <% if activity.programming_language %>
-  <dodona-filter-button param="programming_language" value="<%= activity.programming_language&.name %>">
-    <%= activity.programming_language&.name%>
+  <dodona-filter-button param="programming_language" value="<%= activity.programming_language.name %>">
+    <%= activity.programming_language.name%>
   </dodona-filter-button>
 <% end %>
 <div class="text-muted">

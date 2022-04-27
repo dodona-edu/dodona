@@ -148,7 +148,7 @@ gem 'io-wait', '~> 0.2.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.13.0'
+  gem 'mocha', '~> 1.14.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 

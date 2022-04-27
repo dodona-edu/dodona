@@ -4,6 +4,11 @@ import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
+/**
+ * This is a very simple clickable component
+ * It sets a given query param to a given value when clicked
+ * multi should be specified in case of array query params
+ */
 @customElement("dodona-filter-button")
 export class FilterButton extends LitElement {
     @property({ type: String })
@@ -34,6 +39,10 @@ export class FilterButton extends LitElement {
     }
 }
 
+/**
+ * This is a clickable filter icon
+ * When clicked it sets the query param 'filter' to the given value
+ */
 @customElement("dodona-filter-icon")
 export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })

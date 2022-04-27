@@ -1855,10 +1855,10 @@
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.1.tgz#d8f1c0d0dc23afad6dc16a9e993a0865774b4065"
   integrity sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g==
 
-"@types/serviceworker@^0.0.41":
-  version "0.0.41"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.41.tgz#e1b2bc6faa69a1f886afe664460fdea2fd39ad9e"
-  integrity sha512-NQ2rf5hZ6Ohb4Iazq1o4LJZW/agTV29fCh1JHF437jO4h+eIpPNVyVVuxI85QFGchvY5DYgwse1J0Gj+HGLq7g==
+"@types/serviceworker@^0.0.42":
+  version "0.0.42"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.42.tgz#d099010b5166bda3d14fd1bae96fa3e52a58969f"
+  integrity sha512-PBUOL/6sdL1F1Zlecvzm0MygBTJLVWeAH1D2ze5OcibTAMqbieEEKBj5tVgJ+0XHBd+/amGkYLm7kXoHhpyomw==
 
 "@types/sizzle@*":
   version "2.3.3"

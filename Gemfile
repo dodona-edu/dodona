@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2.3'
+gem 'rails', '~> 7.0.2.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.3'
 # Use Puma as the app server
@@ -50,7 +50,7 @@ gem 'sinatra', '~>2.2.0'
 gem 'will_paginate', '~>3.3.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.3.2'
+gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '3.28.0'
 
@@ -148,7 +148,7 @@ gem 'io-wait', '~> 0.2.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.13.0'
+  gem 'mocha', '~> 1.14.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 

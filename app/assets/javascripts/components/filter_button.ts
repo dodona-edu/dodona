@@ -1,6 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, TemplateResult } from "lit";
-import { Tooltip } from "bootstrap";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
@@ -47,15 +46,15 @@ export class FilterIcon extends ShadowlessLitElement {
     initialiseTooltip(e: Element): void {
         if (e) {
             this.element = e;
-            const tooltip = Tooltip.getInstance(this.element);
+            const tooltip = window.bootstrap.Tooltip.getInstance(this.element);
             if (!tooltip) {
-                new Tooltip(this.element);
+                new window.bootstrap.Tooltip(this.element);
             }
         }
     }
 
     disconnectedCallback(): void {
-        const tooltip = Tooltip.getInstance(this.element);
+        const tooltip = window.bootstrap.Tooltip.getInstance(this.element);
         tooltip.hide();
         super.disconnectedCallback();
     }

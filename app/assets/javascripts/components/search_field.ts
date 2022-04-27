@@ -48,7 +48,9 @@ export abstract class SearchFieldSuggestion extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return this.getFilteredLabels().length == 0 ? html`` : html`
-            <li><h6 class='dropdown-header'>${I18n.t(`js.${this.type}`)}</h6></li>
+            <li>
+                <h6 class='dropdown-header'>${I18n.t(`js.${this.type}`)}</h6>
+            </li>
             ${ this.getFilteredLabels().map( label => html`
                 <li><a class="dropdown-item" href="#" @click=${() => this.select(this.paramVal(label))}>
                     ${unsafeHTML(this.getHighlightedLabel(label.name))}

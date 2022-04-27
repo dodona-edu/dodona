@@ -237,7 +237,7 @@ GEM
     json-schema (2.8.1)
       addressable (>= 2.4)
     jwt (2.3.0)
-    kramdown (2.3.2)
+    kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
       kramdown (~> 2.0)
@@ -548,7 +548,7 @@ DEPENDENCIES
   jsbundling-rails (~> 1.0.2)
   json-schema (~> 2.8.1)
   jwt (~> 2.3.0)
-  kramdown (~> 2.3.2)
+  kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.8.1)
   listen (~> 3.7.1)

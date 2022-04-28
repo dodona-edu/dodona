@@ -98,7 +98,7 @@ export class SearchQuery {
 
     initPagination(): void {
         const remotePaginationButtons = document.querySelectorAll(".page-link[data-remote=true]");
-        remotePaginationButtons.forEach( button => button.addEventListener("click", () => {
+        remotePaginationButtons.forEach(button => button.addEventListener("click", () => {
             const href = button.getAttribute("href");
             const page = getURLParameter("page", href);
             this.queryParams.updateParam("page", page);

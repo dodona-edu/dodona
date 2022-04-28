@@ -113,7 +113,7 @@ export class SearchQuery {
         this.queryParams.subscribe(k => this.paramChange(k));
         this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
 
-        window.onpopstate = () => this.setBaseUrl();
+        window.onpopstate = e => e.state && this.setBaseUrl();
 
         this.setRefreshElement(refreshElement);
     }
@@ -150,9 +150,9 @@ export class SearchQuery {
             return;
         }
         if (push) {
-            window.history.pushState(null, "Dodona", url);
+            window.history.pushState(true, "Dodona", url);
         } else {
-            window.history.replaceState(null, "Dodona", url);
+            window.history.replaceState(true, "Dodona", url);
         }
     }
 
@@ -162,8 +162,8 @@ export class SearchQuery {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
             if (this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
-                this.queryParams.updateParam("page", "1");
                 this.changedParams = [];
+                this.queryParams.updateParam("page", "1");
                 return;
             }
             this.updateHistory(this.changedParams.some(k => k ==="page"));

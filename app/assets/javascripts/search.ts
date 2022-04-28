@@ -166,7 +166,7 @@ export class SearchQuery {
                 this.queryParams.updateParam("page", "1");
                 return;
             }
-            this.updateHistory(this.changedParams.some(k => k ==="page"));
+            this.updateHistory(this.changedParams.some(k => k === "page"));
             this.search();
             this.changedParams = [];
         }, 100);

@@ -157,10 +157,18 @@ export class SearchField extends ShadowlessLitElement {
         this.delay(() => searchQuery.queryParams.updateParam("filter", this.filter), 300);
     }
 
+    updated(): void {
+        this.setHasSuggestions();
+    }
+
+    setHasSuggestions(): void {
+        this.hasSuggestions = this.suggestionFields.some(s => s.getFilteredLabels().length > 0);
+    }
+
     suggestionFieldChanged(field?: SearchFieldSuggestion): void {
         if (field) {
             this.suggestionFields[field.index] = field;
-            this.hasSuggestions = this.suggestionFields.some(s => s.getFilteredLabels().length > 0);
+            this.setHasSuggestions();
         }
     }
 

@@ -1,22 +1,5 @@
 require "active_support/core_ext/integer/time"
 
-# Middleware to add required headers to assets
-class AssetHeaders
-  # Source: https://gist.github.com/ryanb/4157256
-  def initialize(app)
-    @app = app
-  end
-
-  def call(env)
-    request = Rack::Request.new(env)
-    response = @app.call(env)
-    if request.path =~ /^\/assets\//
-      response[1]['Cross-Origin-Resource-Policy'] = 'cross-origin'
-    end
-    response
-  end
-end
-
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -118,9 +101,6 @@ Rails.application.configure do
 
   # Annotate rendered view with file names.
   # config.action_view.annotate_rendered_view_with_filenames = true
-
-  # Use correct headers on /assets
-  config.middleware.use AssetHeaders
 
   # Regenerate js translation files
   config.middleware.use I18n::JS::Middleware

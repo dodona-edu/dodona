@@ -20,8 +20,8 @@ gem 'jsbundling-rails', '~> 1.0.2'
 # This is still used for all javascript in app/assets/javascripts
 gem 'sprockets-rails', '~> 3.4.2'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 4.1.20'
+# Use Terser as compressor for JavaScript assets
+gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'

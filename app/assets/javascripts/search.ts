@@ -16,7 +16,7 @@ export class QueryParameters<T> {
         });
     }
 
-    updateParam(key: string, value: T ): void {
+    updateParam(key: string, value: T): void {
         const old: T = this.params.get(key);
         if (old === value) {
             return;

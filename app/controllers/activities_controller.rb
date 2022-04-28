@@ -113,26 +113,10 @@ class ActivitiesController < ApplicationController
 
     @title = @activity.name
     @crumbs << [@activity.name, '#']
-
-    return unless @activity.exercise?
-
-    # Enable SharedArrayBuffers on exercise pages
-    response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
-    response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
   end
 
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
-
-    if @activity.exercise?
-      # CORP, allow sandbox to fetch from dodona
-      response.set_header 'Cross-Origin-Resource-Policy', 'cross-origin'
-      # COEP, allow sandbox to work with Papyros present
-      response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
-      # Potential future improvement for iframes? https://github.com/camillelamy/explainers/blob/main/anonymous_iframes.md
-      # Limit allowed origins to prevent abuse of CORP header
-      response.set_header 'Access-Control-Allow-Origin', "#{Rails.configuration.sandbox_host} #{Rails.configuration.default_host}"
-    end
 
     render layout: 'frame'
   end

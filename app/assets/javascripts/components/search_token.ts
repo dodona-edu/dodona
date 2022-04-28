@@ -81,10 +81,18 @@ export class MultiSearchToken extends SearchToken {
     }
 }
 
+type filterCollection = {
+    data: Label[],
+    multi: boolean,
+    color: (l: Label) => string,
+    paramVal: (l: Label) => string,
+    param: string
+};
+
 @customElement("dodona-search-tokens")
 export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
-        filterCollections: Record<string, { data: Label[], multi: boolean, color: (l: Label) => string, paramVal: (l: Label) => string, param: string }>;
+        filterCollections: Record<string, filterCollection>;
 
     render(): TemplateResult {
         if (!this.filterCollections) {

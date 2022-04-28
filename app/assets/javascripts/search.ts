@@ -16,7 +16,7 @@ export class QueryParameters<T> {
         });
     }
 
-    updateParam(key: string, value: T ): void {
+    updateParam(key: string, value: T): void {
         const old: T = this.params.get(key);
         if (old === value) {
             return;
@@ -98,7 +98,7 @@ export class SearchQuery {
 
     initPagination(): void {
         const remotePaginationButtons = document.querySelectorAll(".page-link[data-remote=true]");
-        remotePaginationButtons.forEach( button => button.addEventListener("click", () => {
+        remotePaginationButtons.forEach(button => button.addEventListener("click", () => {
             const href = button.getAttribute("href");
             const page = getURLParameter("page", href);
             this.queryParams.updateParam("page", page);
@@ -166,7 +166,7 @@ export class SearchQuery {
                 this.queryParams.updateParam("page", "1");
                 return;
             }
-            this.updateHistory(this.changedParams.some(k => k ==="page"));
+            this.updateHistory(this.changedParams.some(k => k === "page"));
             this.search();
             this.changedParams = [];
         }, 100);

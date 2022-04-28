@@ -10,7 +10,7 @@ export class SortQuery {
 
     constructor() {
         const sortParams = [...searchQuery.queryParams.params.entries()].filter(
-            ([k, v]) => k.startsWith("order_by_") && (v=== "ASC" || v === "DESC")
+            ([k, v]) => k.startsWith("order_by_") && (v === "ASC" || v === "DESC")
         );
 
         if (sortParams.length > 0) {

@@ -1,8 +1,7 @@
 import "search.ts";
-import { html, TemplateResult } from "lit";
+import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 export class SortQuery {
     active_column: string;
@@ -69,19 +68,61 @@ export class SortQuery {
 export const sortQuery = new SortQuery();
 
 @customElement("dodona-sort-button")
-export class SortButton extends ShadowlessLitElement {
+export class SortButton extends LitElement {
     @property({ type: String })
         column: string;
 
     active_column: string;
     ascending: boolean;
 
+    static styles = css`
+        :host {
+            cursor: pointer;
+        }
+
+        .mdi::before {
+            display: inline-block;
+            font: normal normal normal 24px/1 "Material Design Icons";
+            text-rendering: auto;
+            box-sizing: border-box;
+            line-height: 18px;
+            font-size: 16px;
+        }
+
+        .mdi-none::before {
+          display: none;
+        }
+
+        :host(:hover) .mdi-none::before {
+            opacity: 0.7;
+            display: inline-block;
+            content: "\\F0045";
+        }
+
+        .mdi-arrow-down::before {
+          content: "\\F0045";
+        }
+
+        :host(:hover) .mdi-arrow-down::before {
+            opacity: 0.7;
+            content: "\\F005D";
+        }
+
+        .mdi-arrow-up::before {
+          content: "\\F005D";
+        }
+
+        :host(:hover) .mdi-arrow-up::before {
+            visibility: hidden;
+        }
+    `;
+
     isActive(): boolean {
         return this.column === this.active_column;
     }
 
     getSortIcon(): string {
-        return this.isActive() ? this.ascending ? "sort-ascending" : "sort-descending" : "sort";
+        return this.isActive() ? this.ascending ? "arrow-down" : "arrow-up" : "none";
     }
 
     sort(): void {
@@ -102,11 +143,13 @@ export class SortButton extends ShadowlessLitElement {
             this.active_column = c;
             this.ascending = a;
         });
+        this.addEventListener("click", () => this.sort());
     }
 
     render(): TemplateResult {
         return html`
-            <i class="mdi mdi-16 mdi-${this.getSortIcon()} sort-icon" @click=${() => this.sort()}></i>
+            <i class="mdi mdi-${this.getSortIcon()}"></i>
+            <slot></slot>
         `;
     }
 }

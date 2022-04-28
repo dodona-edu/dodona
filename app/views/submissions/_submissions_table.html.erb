@@ -5,13 +5,13 @@
       <th class="status-column"></th>
       <th></th>
       <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
-        <th><dodona-sort-button column="user"></dodona-sort-button> <%= t ".user" %></th>
+        <th><dodona-sort-button column="user"><%= t ".user" %></dodona-sort-button></th>
       <% end %>
       <% unless exercise.present? %>
-        <th><dodona-sort-button column="exercise"></dodona-sort-button><%= t ".exercise" %></th>
+        <th><dodona-sort-button column="exercise"><%= t ".exercise" %></dodona-sort-button></th>
       <% end %>
-      <th><dodona-sort-button column="created_at"></dodona-sort-button><%= t ".time" %></th>
-      <th><dodona-sort-button column="status"></dodona-sort-button><%= t ".status" %></th>
+      <th><dodona-sort-button column="created_at"><%= t ".time" %></dodona-sort-button></th>
+      <th><dodona-sort-button column="status"><%= t ".status" %></dodona-sort-button></th>
       <th><%= t ".summary" %></th>
       <th></th>
     </tr>

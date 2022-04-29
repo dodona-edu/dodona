@@ -1,29 +1,19 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { queryParamSelectionMixin } from "mixins/query_param_selection_mixin";
+import { FilterCollectionElement, Label } from "components/filter_collection_element";
 
-type Label = {id: string, name: string};
 @customElement("dodona-search-token")
-export abstract class SearchToken extends queryParamSelectionMixin(ShadowlessLitElement) {
+export abstract class SearchToken extends FilterCollectionElement {
     @property()
-        labels: Label[] = [];
-    @property()
-        color: (l: Label) => string;
-    @property()
-        paramVal: (l: Label) => string;
-
-    getSelectedLabels(): Label[] {
-        return this.labels.filter( l => this.isSelected(this.paramVal(l).toString()));
-    }
+    color: (l: Label) => string;
 
     render(): TemplateResult {
         return html`
             ${ this.getSelectedLabels().map( label => html`
                 <div class="token accent-${this.color(label)}">
                     <span class="token-label">${label.name}</span>
-                    <a href="#" class="close" tabindex="-1"  @click=${() => this.unSelect(this.paramVal(label).toString())}>×</a>
+                    <a href="#" class="close" tabindex="-1"  @click=${() => this.unSelect(label)}>×</a>
                 </div>
             `)}
         `;

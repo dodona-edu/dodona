@@ -1,30 +1,13 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { queryParamSelectionMixin } from "mixins/query_param_selection_mixin";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
-
-type Label = { id: string | number, name: string };
+import { Label, FilterCollectionElement } from "components/filter_collection_element";
 
 @customElement("dodona-dropdown-filter")
-export class DropdownFilter extends queryParamSelectionMixin(ShadowlessLitElement) {
-    @property({ type: Array })
-    labels: Array<Label> = [];
+export class DropdownFilter extends FilterCollectionElement {
     @property()
     color: (s: Label) => string;
     @property()
     type: string;
-
-    @property()
-    paramVal: (l: Label) => string;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
-
-    getSelectedLabels(): Array<Label> {
-        return this.labels.filter(s => this.isSelected(this.paramVal(s)));
-    }
 
     render(): TemplateResult {
         if (this.labels.length === 0) {
@@ -43,7 +26,7 @@ export class DropdownFilter extends queryParamSelectionMixin(ShadowlessLitElemen
                     ${this.labels.map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(this.paramVal(s))} @click="${() => this.toggle(this.paramVal(s))}" id="check-${this.param}-${s.id}">
+                                    <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
                                     <label class="form-check-label" for="check-${this.param}-${s.id}">
                                         ${s.name}
                                     </label>

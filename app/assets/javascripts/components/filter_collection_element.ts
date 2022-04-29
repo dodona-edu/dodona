@@ -3,6 +3,14 @@ import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 export type Label = {id: string, name: string};
+export type FilterCollection = {
+    data: Label[],
+    multi: boolean,
+    color: (l: Label) => string,
+    paramVal: (l: Label) => string,
+    param: string
+};
+
 export class FilterCollectionElement extends ShadowlessLitElement {
     @property()
     param: string;

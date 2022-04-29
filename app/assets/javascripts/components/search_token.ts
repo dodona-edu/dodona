@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { FilterCollectionElement, Label } from "components/filter_collection_element";
+import { FilterCollection, FilterCollectionElement, Label } from "components/filter_collection_element";
 
 @customElement("dodona-search-token")
 export abstract class SearchToken extends FilterCollectionElement {
@@ -20,18 +20,10 @@ export abstract class SearchToken extends FilterCollectionElement {
     }
 }
 
-type filterCollection = {
-    data: Label[],
-    multi: boolean,
-    color: (l: Label) => string,
-    paramVal: (l: Label) => string,
-    param: string
-};
-
 @customElement("dodona-search-tokens")
 export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
-        filterCollections: Record<string, filterCollection>;
+        filterCollections: Record<string, FilterCollection>;
 
     render(): TemplateResult {
         if (!this.filterCollections) {

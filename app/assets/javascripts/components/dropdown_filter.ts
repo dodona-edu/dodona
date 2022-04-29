@@ -1,6 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { Label, FilterCollectionElement } from "components/filter_collection_element";
+import { FilterCollection, Label, FilterCollectionElement } from "components/filter_collection_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 @customElement("dodona-dropdown-filter")
 export class DropdownFilter extends FilterCollectionElement {
@@ -35,6 +36,32 @@ export class DropdownFilter extends FilterCollectionElement {
                     `)}
                 </ul>
             </div>
+        `;
+    }
+}
+
+@customElement("dodona-dropdown-filters")
+export class DropdownFilters extends ShadowlessLitElement {
+    @property( { type: Array })
+    filterCollections: [string, FilterCollection][];
+
+    render(): TemplateResult {
+        if (!this.filterCollections) {
+            return html``;
+        }
+
+        return html`
+            ${this.filterCollections.map(([type, c]) => html`
+                <dodona-dropdown-filter
+                    .labels=${c.data}
+                    .color=${c.color}
+                    .paramVal=${c.paramVal}
+                    .param=${c.param}
+                    .multi=${c.multi}
+                    .type=${type}
+                >
+                </dodona-dropdown-filter>
+            `)}
         `;
     }
 }

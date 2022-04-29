@@ -70,7 +70,7 @@ export const sortQuery = new SortQuery();
 @customElement("dodona-sort-button")
 export class SortButton extends LitElement {
     @property({ type: String })
-        column: string;
+    column: string;
 
     active_column: string;
     ascending: boolean;

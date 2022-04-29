@@ -47,18 +47,18 @@ export abstract class SearchFieldSuggestion extends FilterCollectionElement {
 @customElement("dodona-search-field")
 export class SearchField extends ShadowlessLitElement {
     @property({ type: String })
-        placeholder: string;
+    placeholder: string;
     @property({ type: Boolean })
-        eager: boolean;
+    eager: boolean;
     @property( { type: Array })
-        filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
+    filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
 
     @property({ state: true })
-        filter?: string = "";
+    filter?: string = "";
     @property({ state: true })
-        suggestionFields: SearchFieldSuggestion[] = [];
+    suggestionFields: SearchFieldSuggestion[] = [];
     @property({ state: true })
-        hasSuggestions: boolean;
+    hasSuggestions: boolean;
 
     delay: (f: () => void, s: number) => void;
 

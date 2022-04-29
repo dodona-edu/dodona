@@ -23,7 +23,7 @@ export abstract class SearchToken extends FilterCollectionElement {
 @customElement("dodona-search-tokens")
 export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
-        filterCollections: Record<string, FilterCollection>;
+    filterCollections: Record<string, FilterCollection>;
 
     render(): TemplateResult {
         if (!this.filterCollections) {

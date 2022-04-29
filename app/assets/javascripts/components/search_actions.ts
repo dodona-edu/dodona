@@ -22,9 +22,9 @@ const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !=
 @customElement("dodona-search-option")
 export class SearchOptionElement extends ShadowlessLitElement {
     @property({ type: Object })
-        searchOption: SearchOption;
+    searchOption: SearchOption;
     @property( { type: Number })
-        key: number;
+    key: number;
 
     private _active = false;
 
@@ -79,7 +79,7 @@ export class SearchOptionElement extends ShadowlessLitElement {
 @customElement("dodona-search-actions")
 export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
-        actions: (SearchOption|SearchAction)[] = [];
+    actions: (SearchOption|SearchAction)[] = [];
 
     getSearchOptions(): Array<SearchOption> {
         return this.actions.filter(isSearchOption);

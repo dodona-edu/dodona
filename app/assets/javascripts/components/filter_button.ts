@@ -12,11 +12,11 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 @customElement("dodona-filter-button")
 export class FilterButton extends LitElement {
     @property({ type: String })
-        param: string;
+    param: string;
     @property({ type: String })
-        value: string;
+    value: string;
     @property({ type: Boolean })
-        multi = false;
+    multi = false;
 
     static styles = css`
         :host {
@@ -46,9 +46,9 @@ export class FilterButton extends LitElement {
 @customElement("dodona-filter-icon")
 export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })
-        value: string;
+    value: string;
     @property({ type: String })
-        title: string;
+    title: string;
 
     element: Element;
 

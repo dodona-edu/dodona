@@ -2,28 +2,17 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { queryParamSelectionMixin } from "mixins/query_param_selection_mixin";
 
 type Label = {id: string, name: string};
-export abstract class SearchToken extends ShadowlessLitElement {
+@customElement("dodona-search-token")
+export abstract class SearchToken extends queryParamSelectionMixin(ShadowlessLitElement) {
     @property()
         labels: Label[] = [];
     @property()
         color: (l: Label) => string;
     @property()
         paramVal: (l: Label) => string;
-    @property()
-        param: string;
-
-    abstract unSelect(label: string): void;
-    abstract isSelected(label: string): boolean;
-    abstract subscribeToQueryParams(): void;
-
-    update(changedProperties: Map<string, unknown>): void {
-        if (changedProperties.has("param") && this.param) {
-            this.subscribeToQueryParams();
-        }
-        super.update(changedProperties);
-    }
 
     getSelectedLabels(): Label[] {
         return this.labels.filter( l => this.isSelected(this.paramVal(l).toString()));
@@ -38,46 +27,6 @@ export abstract class SearchToken extends ShadowlessLitElement {
                 </div>
             `)}
         `;
-    }
-}
-
-@customElement("dodona-single-search-token")
-export class SingleSearchToken extends SearchToken {
-    @property({ state: true })
-        selected = "";
-
-    unSelect(): void {
-        searchQuery.queryParams.updateParam(this.param, undefined);
-    }
-
-    isSelected(label: string): boolean {
-        return this.selected === label;
-    }
-
-    subscribeToQueryParams(): void {
-        this.selected = searchQuery.queryParams.params.get(this.param);
-        searchQuery.queryParams.subscribeByKey(this.param, (k, o, n) => this.selected = n || "");
-    }
-}
-
-@customElement("dodona-multi-search-token")
-export class MultiSearchToken extends SearchToken {
-    @property({ state: true })
-        selected: string[] = [];
-
-    unSelect(label: string): void {
-        searchQuery.arrayQueryParams.updateParam(this.param, this.selected.filter(s => s !== label));
-    }
-
-    isSelected(label: string): boolean {
-        return this.selected.includes(label);
-    }
-
-    subscribeToQueryParams(): void {
-        this.selected = searchQuery.arrayQueryParams.params.get(this.param) || [];
-        searchQuery.arrayQueryParams.subscribeByKey(this.param, (k, o, n) => {
-            this.selected = n || [];
-        });
     }
 }
 
@@ -100,22 +49,15 @@ export class SearchTokens extends ShadowlessLitElement {
         }
 
         return html`
-            ${Object.values(this.filterCollections).map(c => c.multi ? html`
-                <dodona-multi-search-token
+            ${Object.values(this.filterCollections).map(c => html`
+                <dodona-search-token
                     .labels=${c.data}
                     .color=${c.color}
                     .paramVal=${c.paramVal}
                     .param=${c.param}
+                    .multi=${c.multi}
                 >
-                </dodona-multi-search-token>
-            ` : html`
-                <dodona-single-search-token
-                    .labels=${c.data}
-                    .color=${c.color}
-                    .paramVal=${c.paramVal}
-                    .param=${c.param}
-                >
-                </dodona-single-search-token>
+                </dodona-search-token>
             `)}
         `;
     }

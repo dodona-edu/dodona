@@ -17,6 +17,8 @@
       <dodona-search-actions actions='<%= raw (local_assigns.fetch :actions, false).to_json %>'></dodona-search-actions>
     <% end %>
   </div>
+  <div id="dropdown-filters" class="dropdown-filters">
+  </div>
 </div>
 
 <script type="text/javascript">
@@ -182,5 +184,17 @@
 
         const searchTokens = Array.from(document.getElementsByTagName("dodona-search-tokens"));
         searchTokens.forEach(st => st.filterCollections = filterCollections);
+
+        const noDropdownFilters = <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>;
+        Object.entries(filterCollections).filter(([type, _]) => !noDropdownFilters.includes(type)).forEach(([type, value]) => {
+          const dropdownFilter = document.createElement("dodona-dropdown-filter");
+          dropdownFilter.labels = value.data;
+          dropdownFilter.color = value.color;
+          dropdownFilter.type = type;
+          dropdownFilter.param = value.param;
+          dropdownFilter.paramVal = value.paramVal;
+          dropdownFilter.multi = value.multi;
+          document.getElementById("dropdown-filters").appendChild(dropdownFilter);
+        });
     });
 </script>

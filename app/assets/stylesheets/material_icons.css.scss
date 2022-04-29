@@ -198,3 +198,45 @@ a.btn-fab .mdi::before {
     height: 48px;
   }
 }
+
+.mdi.mdi-colored-accent {
+  &.accent-red {
+    color: $color-red-bg;
+  }
+  &.accent-pink {
+    color: $color-pink-bg;
+  }
+  &.accent-purple {
+    color: $color-purple-bg;
+  }
+  &.accent-deep-purple {
+    color: $color-deep-purple-bg;
+  }
+  &.accent-indigo {
+    color: $color-indigo-bg;
+  }
+  &.accent-teal {
+    color: $color-teal-bg;
+  }
+  &.accent-orange {
+    color: $color-orange-bg;
+  }
+  &.accent-brown {
+    color: $color-brown-bg;
+  }
+  &.accent-blue-grey {
+    color: $color-blue-grey-bg;
+  }
+  &.accent-blue {
+    color: $color-blue-bg;
+  }
+  &.accent-yellow {
+    color: $color-yellow-bg;
+  }
+  &.accent-green {
+    color: $color-green-bg;
+  }
+  &.accent-cyan {
+    color: $color-cyan-bg;
+  }
+}

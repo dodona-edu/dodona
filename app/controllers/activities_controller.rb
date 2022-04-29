@@ -2,6 +2,8 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
 
+  INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
+
   before_action :set_activity, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
@@ -111,26 +113,10 @@ class ActivitiesController < ApplicationController
 
     @title = @activity.name
     @crumbs << [@activity.name, '#']
-
-    return unless @activity.exercise?
-
-    # Enable SharedArrayBuffers on exercise pages
-    response.set_header 'Cross-Origin-Opener-Policy', 'same-origin'
-    response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
   end
 
   def description
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
-
-    if @activity.exercise?
-      # CORP, allow sandbox to fetch from dodona
-      response.set_header 'Cross-Origin-Resource-Policy', 'cross-origin'
-      # COEP, allow sandbox to work with Papyros present
-      response.set_header 'Cross-Origin-Embedder-Policy', 'require-corp'
-      # Potential future improvement for iframes? https://github.com/camillelamy/explainers/blob/main/anonymous_iframes.md
-      # Limit allowed origins to prevent abuse of CORP header
-      response.set_header 'Access-Control-Allow-Origin', "#{Rails.configuration.sandbox_host} #{Rails.configuration.default_host}"
-    end
 
     render layout: 'frame'
   end
@@ -204,9 +190,20 @@ class ActivitiesController < ApplicationController
   # Asset has been preprocessed and built internally
   # Redirecting to the asset is not possible due to browser security policy
   def input_service_worker
-    assets = Rails.application.assets || Rails.application.assets_manifest.assets
-    send_file(assets['inputServiceWorker.js'].filename,
-              filename: 'inputServiceWorker.js',
+    # Which assets are available depends on the mode of the environment
+    # The else-block is only reachable in production
+    # :nocov:
+    filename = if Rails.application.assets
+                 Rails.application.assets[INPUT_SERVICE_WORKER].filename
+               else
+                 File.join(
+                   Rails.application.assets_manifest.directory,
+                   Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
+                 )
+               end
+    # :nocov:
+    send_file(filename,
+              filename: INPUT_SERVICE_WORKER,
               type: 'text/javascript')
   end
 

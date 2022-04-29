@@ -24,10 +24,19 @@
 
             <div class="field form-group row">
               <div class="col-sm-3 col-form-label">
-                <%= f.label :text %>
+                <%= f.label :text_nl %>
               </div>
               <div class="col-sm-9">
-                <%= f.text_area :text, class: 'form-control' %>
+                <%= f.text_area :text_nl, class: 'form-control' %>
+              </div>
+            </div>
+
+            <div class="field form-group row">
+              <div class="col-sm-3 col-form-label">
+                <%= f.label :text_en %>
+              </div>
+              <div class="col-sm-9">
+                <%= f.text_area :text_en, class: 'form-control' %>
               </div>
             </div>
 

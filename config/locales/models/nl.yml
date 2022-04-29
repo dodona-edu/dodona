@@ -186,7 +186,8 @@ nl:
         maximum: Maximum
         visible: Zichtbaar
       announcement:
-        text: Tekst
+        text_nl: Nederelands aankondiging
+        text_en: Engelse aankondiging
         start_delivering_at: Start aankondiging op
         stop_delivering_at: Stop aankondiging op
         user_group: Gebruikers groep

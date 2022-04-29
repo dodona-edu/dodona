@@ -3,7 +3,8 @@
 # Table name: announcements
 #
 #  id                  :bigint           not null, primary key
-#  text                :text(65535)      not null
+#  text_nl             :text(65535)      not null
+#  text_en             :text(65535)      not null
 #  start_delivering_at :datetime
 #  stop_delivering_at  :datetime
 #  user_group          :integer          not null
@@ -17,7 +18,8 @@ class Announcement < ApplicationRecord
   enum user_group: { all_users: 0, students: 1, staff: 2, zeus: 3 }
   enum style: { primary: 0, success: 1, danger: 2, warning: 3, info: 4 }
 
-  validates :text, presence: true
+  validates :text_nl, presence: true
+  validates :text_en, presence: true
   validates :user_group, presence: true
   validates :style, presence: true
 
@@ -34,4 +36,20 @@ class Announcement < ApplicationRecord
   }
 
   default_scope { order('start_delivering_at ASC') }
+
+  def text
+    send("text_#{I18n.locale}")
+  end
+
+  def active
+    (start_delivering_at.nil? || start_delivering_at < Time.current) && (stop_delivering_at.nil? || stop_delivering_at > Time.current)
+  end
+
+  def unread_by(user)
+    announcement_views.find(user: user).nil?
+  end
+
+  def number_of_reads
+    announcement_views.count
+  end
 end

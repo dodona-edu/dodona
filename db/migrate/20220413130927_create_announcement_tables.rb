@@ -12,7 +12,8 @@ class CreateAnnouncementTables < ActiveRecord::Migration[7.0]
       name: 'announcement_view_index'
     )
     create_table :announcements do |t|
-      t.text :text, null: false
+      t.text :text_nl, null: false
+      t.text :text_en, null: false
       t.datetime :start_delivering_at
       t.datetime :stop_delivering_at
       t.integer :user_group, null: false

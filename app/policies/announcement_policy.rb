@@ -37,7 +37,7 @@ class AnnouncementPolicy < ApplicationPolicy
 
   def permitted_attributes
     if user&.zeus?
-      %i[text start_delivering_at stop_delivering_at user_group institution_id style]
+      %i[text_nl text_en start_delivering_at stop_delivering_at user_group institution_id style]
     else
       []
     end

@@ -185,7 +185,8 @@ en:
         maximum: Maximum
         visible: Visible
       announcement:
-        text: Text
+        text_en: English announcement
+        text_nl: Dutch announcement
         start_delivering_at: Start delivering at
         stop_delivering_at: Stop delivering at
         user_group: User group

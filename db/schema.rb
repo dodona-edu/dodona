@@ -135,7 +135,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_13_130927) do
   end
 
   create_table "announcements", charset: "utf8mb4", force: :cascade do |t|
-    t.text "text", null: false
+    t.text "text_nl", null: false
+    t.text "text_en", null: false
     t.datetime "start_delivering_at"
     t.datetime "stop_delivering_at"
     t.integer "user_group", null: false

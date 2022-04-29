@@ -22,7 +22,19 @@
         "exports": "only-multiline",
         "functions": "never"
     }],
-    "indent": ["error", 4],
+    "indent": "off",
+    "@typescript-eslint/indent": [
+      "error",
+      4,
+      {
+        "ignoredNodes": [
+          "FunctionExpression > .params[decorators.length > 0]",
+          "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
+          "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key",
+          "TSTypeParameterInstantiation"
+        ]
+      }
+    ],
     "max-len": ["warn", { "code": 100 }],
     "no-invalid-this": "warn",
     "no-param-reassign": ["error", { "props": false }],

@@ -184,7 +184,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             "counts": number[];
             "freq": d3.Bin<number, number>[];
             "average": number;
-            }[];
+        }[];
 
         // bin each exercise per frequency
         this.data.forEach(ex => {

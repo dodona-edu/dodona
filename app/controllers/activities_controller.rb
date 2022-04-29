@@ -2,15 +2,19 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
 
+  INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
+
   before_action :set_activity, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
   before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
-  # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
-  skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
+  # Some activity descriptions load JavaScript from their description. Rails has
+  # extra protections against loading unprivileged javascript. We also need to
+  # make sure the Papyros service worker can be loaded.
+  protect_from_forgery except: %i[media input_service_worker]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
@@ -22,7 +26,12 @@ class ActivitiesController < ApplicationController
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
-    policy.worker_src -> { ['blob:'] }
+    policy.worker_src -> { ['blob:', "'self'"] }
+    # Allow fetching Pyodide and related packages
+    # The data: urls is specifically to allow fetching the Python dependencies via a bundled tar that
+    # is extracted into the Pyodide environment at runtime
+    policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/] + policy.script_src))
+    policy.connect_src(*(%w[data: https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.connect_src))
   end
 
   content_security_policy only: %i[description] do |policy|
@@ -175,6 +184,27 @@ class ActivitiesController < ApplicationController
       response.headers['accept-ranges'] = 'bytes'
       response.content_type = type
     end
+  end
+
+  # Serve the inputServiceWorker asset required to handle input in Papyros
+  # Asset has been preprocessed and built internally
+  # Redirecting to the asset is not possible due to browser security policy
+  def input_service_worker
+    # Which assets are available depends on the mode of the environment
+    # The else-block is only reachable in production
+    # :nocov:
+    filename = if Rails.application.assets
+                 Rails.application.assets[INPUT_SERVICE_WORKER].filename
+               else
+                 File.join(
+                   Rails.application.assets_manifest.directory,
+                   Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
+                 )
+               end
+    # :nocov:
+    send_file(filename,
+              filename: INPUT_SERVICE_WORKER,
+              type: 'text/javascript')
   end
 
   private

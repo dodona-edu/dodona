@@ -1,0 +1,38 @@
+
+<% content_for :javascripts do %>
+    <%= javascript_include_tag 'coding_scratchpad' %>
+<% end %>
+<button class="btn btn-secondary hidden" type="button" data-bs-toggle="offcanvas"
+data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
+    <%= t '.start_coding' %>
+</button>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="scratchpad-offcanvas">
+    <div class="scratchpad-header">
+        <h4>
+            <%= activity_icon(@activity, 24) %>
+            &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
+            <sup><%= t '.beta' %></sup>
+        </h4>
+        <div class="flex-spacer"></div>
+        <button type="button" class="btn-close btn-close-white" id="scratchpad-offcanvas-close-btn"
+        data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
+        </button>
+    </div>
+    <div class="scratchpad-info">
+        <i class="mdi mdi-information mdi-18"></i>
+        <%= t ".experimental_feature_html", :url => contact_path %>
+    </div>
+    <div class="offcanvas-body scratchpad-content">
+        <div id="scratchpad-editor-wrapper"></div>
+        <div id="scratchpad-panel-wrapper"></div>
+        <div id="scratchpad-output-wrapper"></div>
+        <div id="scratchpad-input-wrapper"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        dodona.initCodingScratchpad(
+            "<%= escape_javascript @activity.programming_language&.name %>"
+        );
+    });
+</script>

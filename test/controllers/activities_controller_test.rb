@@ -369,6 +369,24 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal response.content_type, 'text/plain; charset=utf-8'
   end
+
+  test 'should retrieve input serviceworker script' do
+    @instance = create(:exercise)
+    get input_service_worker_activity_path(@instance)
+    assert_response :success
+    assert_equal response.content_type, 'text/javascript'
+
+    series = create :series
+    series.exercises << @instance
+
+    get course_activity_input_service_worker_path(series.course, @instance)
+    assert_response :success
+    assert_equal response.content_type, 'text/javascript'
+
+    get course_series_activity_input_service_worker_path(series.course, series, @instance)
+    assert_response :success
+    assert_equal response.content_type, 'text/javascript'
+  end
 end
 
 class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest

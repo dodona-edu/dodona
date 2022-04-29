@@ -61,6 +61,10 @@ nl:
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
       status: "Status %{activity}"
+      users:
+        zero: Geen gebruikers
+        one: 1 gebruiker
+        other: "%{count} gebruikers"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

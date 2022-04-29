@@ -1,0 +1,34 @@
+
+.dropdown-filter {
+  margin: 8px;
+  display: inline-block;
+
+  .dropdown-toggle{
+    display: inline-flex;
+    padding-top: 0;
+    padding-left: 16px;
+    padding-right: 16px;
+    font-size: 14px;
+    line-height: 36px;
+    height: 36px;
+    white-space: nowrap;
+    box-shadow: none;
+    .mdi::before{
+      line-height: 36px;
+    }
+
+    .left-icon::before {
+      margin-left: -8px;
+      margin-right: 8px;
+    }
+
+    .right-icon::before {
+      margin-left: 8px;
+      margin-right: -8px;
+    }
+  }
+
+  .form-check-label{
+    width: 100%;
+  }
+}

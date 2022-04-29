@@ -149,6 +149,7 @@ nl:
         google_oauth2: Google Workspace
         oidc: OpenID Connect
         lti: LTI
+        surf: SURFconext
       event:
         event_type: Type
         user: Gebruiker

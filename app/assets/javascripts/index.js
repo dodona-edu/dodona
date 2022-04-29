@@ -13,6 +13,7 @@ import { InactiveTimeout } from "./auto_reload";
 const FILTER_PARAM = "filter";
 const TOKENS_FILTER_ID = "#filter-query";
 const QUERY_FILTER_ID = "#filter-query-tokenfield";
+const DROPDOWN_FILTERS_ID = "dropdown-filters";
 
 /* constants for element-keys that are used when filtering */
 const FILTER_ICONS_CLASS = ".filter-icon";
@@ -31,10 +32,13 @@ function setBaseUrl(_baseUrl) {
     window.dodona.index.doSearch();
 }
 
-function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null) {
+function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollections, refreshElement = null, noDropdownFilters = []) {
     const updateAddressBar = !_baseUrl;
+    const dropdownFilters = {};
 
     function init() {
+        initDropdownFilters();
+
         initTokens();
 
         if (doInitFilter) {
@@ -46,6 +50,19 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
         }
 
         initRefresh();
+    }
+
+    function initDropdownFilters() {
+        Object.entries(filterCollections).filter(([type, _]) => !noDropdownFilters.includes(type)).forEach(([type, value]) => {
+            const dropdownFilter = document.createElement("dodona-dropdown-filter");
+            dropdownFilter.labels = value.data;
+            dropdownFilter.color = value.color;
+            dropdownFilter.type = type;
+            dropdownFilter.multi = value.multi;
+            dropdownFilter.selected = [];
+            document.getElementById(DROPDOWN_FILTERS_ID).appendChild(dropdownFilter);
+            dropdownFilters[type] = dropdownFilter;
+        });
     }
 
     function addParametersToUrl(baseUrl, _query, _filterCollections, _extraParams) {
@@ -261,6 +278,15 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
     function initTokens() {
         const $field = $(TOKENS_FILTER_ID);
 
+        function updateDropdownFilter(type) {
+            const dropdownFilter = dropdownFilters[type];
+            if (!dropdownFilter) {
+                return;
+            }
+            const tokens = $field.tokenfield("getTokens").filter(el => el.type === type);
+            dropdownFilter.selected = tokens.map(el => el.name);
+        }
+
         window.dodona.index.doSearch = function () {
             search(updateAddressBar, window.dodona.index.baseUrl, "", filterCollections);
         };
@@ -275,7 +301,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             if (valid && collection.multi) {
                 // if multi, we can have multiple labels but we do not want duplication
                 // therefore we use an id to distinguish labels and prevent the same label from appearing twice
-                const newElementId = e.attrs.id.toString(); // ensure comparison is String-based
+                const newElementId = e.attrs.id.toString() + e.attrs.type; // ensure comparison is String-based
                 // The labels have the token html class so we obtain all labels via this query
                 valid = $(".token").filter(function (_index, el) {
                     // check if a label with this id is not yet present
@@ -285,16 +311,18 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             return valid;
         }
 
-        function disableLabel() {
+        function disableLabel(e) {
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(window.dodona.index.doSearch, 100);
+
+            updateDropdownFilter(e.attrs.type);
         }
 
         function enableLabel(e) {
             const collection = filterCollections[e.attrs.type];
             $(e.relatedTarget).addClass(`accent-${collection.color(e.attrs)}`)
             // add an attribute to identify duplicate labels in the suggestions @see validateLabel
-                .attr(LABEL_UNIQUE_ATTR, e.attrs.id);
+                .attr(LABEL_UNIQUE_ATTR, e.attrs.id.toString() + e.attrs.type);
             if (!collection.multi) {
                 const tokens = $field.tokenfield("getTokens");
                 const newTokens = tokens
@@ -309,6 +337,8 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
             // We need to delay, otherwise tokenfield hasn't finished setting all the right values
             delay(window.dodona.index.doSearch, 100);
+
+            updateDropdownFilter(e.attrs.type);
         }
 
         function customWhitespaceTokenizer(datum) {
@@ -372,7 +402,16 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             $field.tokenfield("createToken", element);
         }
 
+        function deleteTokenFromSearch(type, name) {
+            const tokens = $field.tokenfield("getTokens");
+            $field.tokenfield("setTokens", tokens.filter(t => !(t.type === type && t.name === name)));
+
+            updateDropdownFilter(type);
+            delay(window.dodona.index.doSearch, 100);
+        }
+
         dodona.addTokenToSearch = addTokenToSearch;
+        dodona.deleteTokenFromSearch = deleteTokenFromSearch;
 
         // Temporarily disable automatic searching when adding new labels
         const temp = window.dodona.index.doSearch;
@@ -396,6 +435,7 @@ function initFilterIndex(_baseUrl, eager, actions, doInitFilter, filterCollectio
             }
         });
         $field.tokenfield("setTokens", allTokens);
+        Object.keys(dropdownFilters).forEach(updateDropdownFilter);
         window.dodona.index.doSearch = temp;
     }
 

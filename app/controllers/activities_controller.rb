@@ -27,6 +27,8 @@ class ActivitiesController < ApplicationController
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
+    # Safari ignores worker_src and falls back to child_src
+    policy.child_src -> { ['blob:', "'self'"] }
     # Allow fetching Pyodide and related packages
     # The data: urls is specifically to allow fetching the Python dependencies via a bundled tar that
     # is extracted into the Pyodide environment at runtime

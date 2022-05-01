@@ -27,7 +27,8 @@ class ActivitiesController < ApplicationController
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
-    # Safari ignores worker_src and falls back to child_src
+    # Safari doesn't support worker_src and falls back to child_src
+    # This should be fixed in Safari 15.5 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/worker-src#browser_compatibility
     policy.child_src -> { ['blob:', "'self'"] }
     # Allow fetching Pyodide and related packages
     # The data: urls is specifically to allow fetching the Python dependencies via a bundled tar that

@@ -71,6 +71,8 @@ export const sortQuery = new SortQuery();
 export class SortButton extends LitElement {
     @property({ type: String })
     column: string;
+    @property({ type: Boolean })
+    default = false;
 
     active_column: string;
     ascending: boolean;
@@ -113,12 +115,14 @@ export class SortButton extends LitElement {
         }
 
         :host(:hover) .mdi-arrow-up::before {
-            visibility: hidden;
+            opacity: 0.7;
+            content: "\\F0045";
         }
     `;
 
     isActive(): boolean {
-        return this.column === this.active_column;
+        return this.column === this.active_column ||
+            (this.active_column === undefined && this.default);
     }
 
     getSortIcon(): string {
@@ -126,12 +130,10 @@ export class SortButton extends LitElement {
     }
 
     sort(): void {
-        if (!this.isActive()) {
+        if (!this.isActive() || !this.ascending) {
             sortQuery.sortBy(this.column, true);
-        } else if (this.ascending) {
-            sortQuery.sortBy(this.column, false);
         } else {
-            sortQuery.sortBy(undefined, undefined);
+            sortQuery.sortBy(this.column, false);
         }
     }
 
@@ -148,8 +150,8 @@ export class SortButton extends LitElement {
 
     render(): TemplateResult {
         return html`
-            <i class="mdi mdi-${this.getSortIcon()}"></i>
             <slot></slot>
+            <i class="mdi mdi-${this.getSortIcon()}"></i>
         `;
     }
 }

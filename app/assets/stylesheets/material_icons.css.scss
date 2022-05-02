@@ -150,6 +150,15 @@ a.btn-fab .mdi::before {
   }
 }
 
+.sort-icon {
+  color: $text-secondary;
+  cursor: pointer;
+
+  &:hover {
+    color: $text-color;
+  }
+}
+
 .custom-material-icons {
   display: inline-block;
   width: 24px;

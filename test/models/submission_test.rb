@@ -325,54 +325,6 @@ class SubmissionTest < ActiveSupport::TestCase
     end
   end
 
-  test 'Should be able to order submissions by user' do
-    first = create :submission, user: create(:user, first_name: 'Antoon', last_name: 'Adams')
-    third = create :submission, user: create(:user, first_name: 'Bart', last_name: 'Adams')
-    second = create :submission, user: create(:user, first_name: 'Antoon', last_name: 'Bettens')
-
-    assert_equal second.id, Submission.first&.id
-    assert_equal first.id, Submission.order_by_user('ASC').first&.id
-    assert_equal third.id, Submission.order_by_user('DESC').first&.id
-  end
-
-  test 'Should be able to order submissions by exercise' do
-    first = create :submission, exercise: create(:exercise, name_nl: 'Oefening A', name_en: 'Activity C')
-    third = create :submission, exercise: create(:exercise, name_nl: 'Oefening C', name_en: 'Activity A')
-    second = create :submission, exercise: create(:exercise, name_nl: 'Oefening B', name_en: 'Activity B')
-
-    I18n.with_locale :nl do
-      assert_equal second.id, Submission.first&.id
-      assert_equal first.id, Submission.order_by_exercise('ASC').first&.id
-      assert_equal third.id, Submission.order_by_exercise('DESC').first&.id
-    end
-
-    I18n.with_locale :en do
-      assert_equal second.id, Submission.first&.id
-      assert_equal third.id, Submission.order_by_exercise('ASC').first&.id
-      assert_equal first.id, Submission.order_by_exercise('DESC').first&.id
-    end
-  end
-
-  test 'Should be able to order submissions by created_at' do
-    first = create :submission, created_at: 3.days.ago
-    third = create :submission, created_at: 1.day.ago
-    second = create :submission, created_at: 2.days.ago
-
-    assert_equal second.id, Submission.first&.id
-    assert_equal first.id, Submission.order_by_created_at('ASC').first&.id
-    assert_equal third.id, Submission.order_by_created_at('DESC').first&.id
-  end
-
-  test 'Should be able to order submissions by status' do
-    first = create :submission, status: :correct
-    third = create :submission, status: :running
-    second = create :submission, status: :wrong
-
-    assert_equal second.id, Submission.first&.id
-    assert_equal first.id, Submission.order_by_status('ASC').first&.id
-    assert_equal third.id, Submission.order_by_status('DESC').first&.id
-  end
-
   class StatisticsTest < ActiveSupport::TestCase
     setup do
       @date = DateTime.new(1302, 7, 11, 13, 37, 42)

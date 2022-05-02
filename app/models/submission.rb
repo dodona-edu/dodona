@@ -98,11 +98,6 @@ class Submission < ApplicationRecord
     correct.group(:exercise_id, :user_id).least_recent
   }
 
-  scope :order_by_user, ->(direction) { includes(:user).reorder 'users.first_name': direction, 'users.last_name': direction, id: :desc }
-  scope :order_by_exercise, ->(direction) { includes(:exercise).reorder "activities.name_#{I18n.locale}": direction, id: :desc }
-  scope :order_by_created_at, ->(direction) { reorder created_at: direction, id: :desc }
-  scope :order_by_status, ->(direction) { reorder status: direction, id: :desc }
-
   def initialize(params)
     raise 'please explicitly tell whether you want to evaluate this submission' unless params.key? :evaluate
 

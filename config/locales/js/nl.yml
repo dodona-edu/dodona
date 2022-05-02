@@ -171,6 +171,8 @@ nl:
     coding_scratchpad:
       copy_code: Kopieer naar Dodona
       overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
+      service_worker_error: Er liep iets fout bij het laden van de service worker.
+      papyros_error: Er liep iets fout bij het laden van Papyros. Wil je Papyros herladen?
     submission_motivational_message:
       1: Proficiat!
       2: Goed bezig!

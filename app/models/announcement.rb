@@ -41,8 +41,16 @@ class Announcement < ApplicationRecord
     send("text_#{I18n.locale}")
   end
 
-  def active
+  def active?
     (start_delivering_at.nil? || start_delivering_at < Time.current) && (stop_delivering_at.nil? || stop_delivering_at > Time.current)
+  end
+
+  def waiting?
+    start_delivering_at.present? && start_delivering_at > Time.current
+  end
+
+  def stopped?
+    start_delivering_at.present? && stop_delivering_at < Time.current
   end
 
   def unread_by(user)

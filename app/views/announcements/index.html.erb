@@ -3,16 +3,82 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
-        <% if current_user.zeus? %>
+        <% if policy(Announcement).new? %>
           <div class="card-title-fab">
-              <%= link_to new_announcement_path, class: 'btn btn-primary btn-fab', title: t('.new') do %>
-                <i class="mdi mdi-plus mdi-36"></i>
-              <% end %>
+            <%= render 'fab_link', url: new_announcement_path, icon: 'plus' %>
           </div>
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <%= render partial: "announcements/announcements", locals: {announcements: @announcements} %>
+        <div class="table-scroll-wrapper">
+          <table class="table table-index table-resource">
+            <thead>
+            <tr>
+              <th><%= t ".style" %></th>
+              <% if current_user&.zeus? %>
+                <th><%= t ".status" %></th>
+                <th><%= t ".start" %></th>
+                <th><%= t ".stop" %></th>
+                <th><%= t ".number_of_reads" %></th>
+                <th><%= Announcement.human_attribute_name("user_group") %></th>
+                <th><%= Announcement.human_attribute_name("institution_id") %></th>
+              <% end %>
+              <th><%= t ".text" %></th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @announcements.each do |announcement| %>
+              <tr>
+                <td><%= style_icon announcement.style %>></td>
+                <% if current_user&.zeus? %>
+                  <td>
+                    <% if announcement.waiting? %>
+                      <i class="mdi mdi-alarm mdi-18" title="<%= t ".waiting" %>"></i>
+                    <% elsif announcement.active? %>
+                      <i class="mdi mdi-bullhorn mdi-18" title="<%= t ".active" %>"></i>
+                    <% elsif announcement.stopped? %>
+                      <i class="mdi mdi-pause-octagon mdi-18" title="<%= t ".stopped" %>"></i>
+                    <% end %>
+                  </td>
+                  <td>
+                    <span title="<%= l announcement.start_delivering_at, format: :submission %>">
+                      <% readable_time = time_ago_in_words announcement.start_delivering_at %>
+                      <%= announcement.start_delivering_at.before?(Time.now) ? t ".ago", readable_time: readable_time : t ".from_now", readable_time: readable_time %>
+                    </span>
+                  </td>
+                  <td>
+                    <span title="<%= l announcement.stop_delivering_at, format: :submission %>">
+                      <% readable_time = time_ago_in_words announcement.stop_delivering_at %>
+                      <%= announcement.stop_delivering_at.before?(Time.now) ? t ".ago", readable_time: readable_time : t ".from_now", readable_time: readable_time %>
+                    </span>
+                  </td>
+                  <td><%= Announcement.human_enum_name("user_group", announcement.user_group) %></td>
+                  <td><%= announcement.institution_id %></td>
+                <% end %>
+                <th><%= announcement.text %></th>
+                <td class="actions">
+                  <% if policy(announcement).mark_as_read? %>
+                    <%= link_to mark_as_read_announcement_path(announcement), class: "btn btn-sm btn-secondary" , remote: true, method: :post, title: t(".dismiss") do %>
+                      <i class="mdi mdi-close mdi-18"></i>
+                    <% end %>
+                  <% end %>
+                  <% if policy(announcement).edit? %>
+                    <%= link_to edit_announcement_path(announcement), class: "btn btn-sm btn-secondary" do %>
+                      <i class="mdi mdi-pencil mdi-18"></i>
+                    <% end %>
+                  <% end %>
+                  <% if policy(announcement).destroy? %>
+                    <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
+                      <i class="mdi mdi-delete mdi-18"></i>
+                    <% end %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>

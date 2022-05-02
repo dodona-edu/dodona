@@ -11,13 +11,13 @@
       <div class="card-supporting-text card-border">
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= course_members_path(@course) %>" role="tablist">
-            <li role="presentation" class="active"><a href="#enrolled"><%= t 'courses.show.subscribed' %></a></li>
+            <li role="presentation" class="active"><a href="#" data-status="enrolled"><%= t 'courses.show.subscribed' %></a></li>
             <% if @course.moderated || !@course.pending_members.empty? %>
-              <li role="presentation"><a href="#pending"><%= t 'courses.show.pending' %>
+              <li role="presentation"><a href="#" data-status="pending"><%= t 'courses.show.pending' %>
                 <span class="badge rounded-pill badge-pending" id="pending-count"><%= @course.pending_members.count unless @course.pending_members.empty? %></span></a>
               </li>
             <% end %>
-            <li role="presentation"><a href="#unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
+            <li role="presentation"><a href="#" data-status="unsubscribed"><%= t 'courses.show.unsubscribed' %></a></li>
           </ul>
         </div>
         <% content_for :modal do %>

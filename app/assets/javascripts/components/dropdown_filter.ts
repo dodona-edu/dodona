@@ -1,45 +1,14 @@
-import { html, LitElement, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-
-type Label = { id: string | number, name: string };
+import { FilterCollection, Label, FilterCollectionElement } from "components/filter_collection_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
 @customElement("dodona-dropdown-filter")
-export class DropdownFilter extends LitElement {
-    @property({ type: Boolean })
-    multi: boolean;
-    @property({ type: Array })
-    labels: Array<Label> = [];
+export class DropdownFilter extends FilterCollectionElement {
     @property()
     color: (s: Label) => string;
-    @property({ type: Array })
-    selected: string[];
     @property()
     type: string;
-
-    // don't use shadow dom
-    createRenderRoot(): Element {
-        return this;
-    }
-
-    toggleLabel(s: Label): void {
-        if (this.isSelected(s)) {
-            if (dodona.deleteTokenFromSearch) {
-                dodona.deleteTokenFromSearch(this.type, s.name);
-            }
-        } else {
-            if (dodona.addTokenToSearch) {
-                dodona.addTokenToSearch(this.type, s.name);
-            }
-        }
-    }
-
-    isSelected(s: Label): boolean {
-        return this.selected.includes(s.name);
-    }
-
-    getSelectedLabels(): Array<Label> {
-        return this.labels.filter(s => this.isSelected(s));
-    }
 
     render(): TemplateResult {
         if (this.labels.length === 0) {
@@ -58,8 +27,8 @@ export class DropdownFilter extends LitElement {
                     ${this.labels.map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggleLabel(s)}" id="check-${this.type}-${s.id}">
-                                    <label class="form-check-label" for="check-${this.type}-${s.id}">
+                                    <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
+                                    <label class="form-check-label" for="check-${this.param}-${s.id}">
                                         ${s.name}
                                     </label>
                                 </div>
@@ -67,6 +36,32 @@ export class DropdownFilter extends LitElement {
                     `)}
                 </ul>
             </div>
+        `;
+    }
+}
+
+@customElement("dodona-dropdown-filters")
+export class DropdownFilters extends ShadowlessLitElement {
+    @property( { type: Array })
+    filterCollections: [string, FilterCollection][];
+
+    render(): TemplateResult {
+        if (!this.filterCollections) {
+            return html``;
+        }
+
+        return html`
+            ${this.filterCollections.map(([type, c]) => html`
+                <dodona-dropdown-filter
+                    .labels=${c.data}
+                    .color=${c.color}
+                    .paramVal=${c.paramVal}
+                    .param=${c.param}
+                    .multi=${c.multi}
+                    .type=${type}
+                >
+                </dodona-dropdown-filter>
+            `)}
         `;
     }
 }

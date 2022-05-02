@@ -1,11 +1,12 @@
-<% content_for :javascripts do %>
-  <%= javascript_include_tag 'index' %>
+<%= content_for :javascripts do %>
+  <%= javascript_include_tag 'search' %>
 <% end %>
 <div class='table-toolbar'>
+  <dodona-search-tokens class="search-tokens"></dodona-search-tokens>
   <div class='table-toolbar-tools'>
     <i class="mdi mdi-magnify"></i>
     <form class='search' onsubmit="return false;">
-      <input type='text' id='filter-query' placeholder='<%= t("layout.search.search") %>' name='filter' autocomplete="off"/>
+      <dodona-search-field placeholder="<%= t("layout.search.search") %>"></dodona-search-field>
       <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
         <div class="progressbar bar bar1" style="width: 0%;"></div>
         <div class="bufferbar bar bar2" style="width: 100%;"></div>
@@ -13,17 +14,10 @@
       </div>
     </form>
     <% if local_assigns[:actions]&.any? %>
-      <div class="btn-group hidden actions" id="kebab-menu">
-        <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-          <i class="mdi mdi-dots-vertical"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-        </ul>
-      </div>
+      <dodona-search-actions actions='<%= raw (local_assigns.fetch :actions, false).to_json %>'></dodona-search-actions>
     <% end %>
   </div>
-  <div id="dropdown-filters" class="dropdown-filters">
-  </div>
+  <dodona-dropdown-filters class="dropdown-filters"></dodona-dropdown-filters>
 </div>
 
 <script type="text/javascript">
@@ -32,7 +26,7 @@
         <% if local_assigns.fetch :labels, false %>
         filterCollections["labels"] = {
             param: "labels",
-            paramVal: function(l) { return l.name; },
+            paramVal: function(l) { return l.name.toString(); },
             multi: true,
             data: <%= raw render template: 'labels/index', formats: :json %>,
             color: function (label) {
@@ -43,7 +37,7 @@
         <% if local_assigns.fetch :programming_languages, false %>
         filterCollections["programming_languages"] = {
             param: "programming_language",
-            paramVal: function(p) { return p.name; },
+            paramVal: function(p) { return p.name.toString(); },
             multi: false,
             data: <%= raw render template: 'programming_languages/index', formats: :json %>,
             color: function () {
@@ -54,7 +48,7 @@
         <% if local_assigns.fetch :repositories, false %>
         filterCollections["repositories"] = {
             param: "repository_id",
-            paramVal: function(r) { return r.id; },
+            paramVal: function(r) { return r.id.toString(); },
             multi: false,
             data: <%= raw render template: 'repositories/index', formats: :json %>,
             color: function () {
@@ -65,7 +59,7 @@
         <% if local_assigns.fetch(:institutions, []).length > 1 %>
         filterCollections["institutions"] = {
             param: "institution_id",
-            paramVal: function(i) { return i.id; },
+            paramVal: function(i) { return i.id.toString(); },
             multi: false,
             data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
             color: function () {
@@ -77,7 +71,7 @@
         filterCollections["course_labels"] = {
             param: "course_labels",
             paramVal: function (cl) {
-                return cl.name;
+                return cl.name.toString();
             },
             multi: true,
             data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
@@ -90,7 +84,7 @@
         filterCollections["statuses"] = {
             param: "status",
             paramVal: function (s) {
-                return s.id;
+                return s.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
@@ -103,7 +97,7 @@
         filterCollections["question_states"] = {
             param: "question_state",
             paramVal: function (s) {
-                return s.id;
+                return s.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
@@ -116,7 +110,7 @@
         filterCollections["event_types"] = {
             param: "type",
             paramVal: function (s) {
-                return s.id;
+                return s.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
@@ -129,7 +123,7 @@
         filterCollections["activity_types"] = {
             param: "type",
             paramVal: function (s) {
-                return s.id;
+                return s.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:activity_types, []).map{|s| {id: s.name, name: s.model_name.human}}.to_json %>,
@@ -142,7 +136,7 @@
         filterCollections["description_languages"] = {
             param: "description_languages",
             paramVal: function (lang) {
-                return lang.id;
+                return lang.id.toString();
             },
             multi: true,
             data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
@@ -155,7 +149,7 @@
         filterCollections["judges"] = {
             param: "judge_id",
             paramVal: function(judge) {
-                return judge.id;
+                return judge.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:judges, []).map{|judge| {id: judge.id, name: "#{judge.name}-judge"}}.to_json %>,
@@ -168,7 +162,7 @@
         filterCollections["courses"] = {
             param: "course_id",
             paramVal: function(course) {
-                return course.id;
+                return course.id.toString();
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: course.name}}.to_json %>,
@@ -177,14 +171,23 @@
             }
         };
         <% end %>
-        dodona.initFilterIndex(
-            "<%= local_assigns.fetch :baseUrl, "" %>",
-            <%= local_assigns.fetch :eager, false %>,
-            <%= raw (local_assigns.fetch :actions, false).to_json %>,
-            <%= local_assigns.fetch :init_filter, true %>,
-            filterCollections,
-            "<%= local_assigns.fetch :refresh_element, "" %>",
-            <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>,
-        );
+        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+        dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+
+        const searchFields = Array.from(document.getElementsByTagName("dodona-search-field"));
+        searchFields.forEach( searchField => {
+          searchField.filterCollections = filterCollections;
+          searchField.eager = <%= local_assigns.fetch :eager, false %>;
+          searchField.placeholder = '<%= t("layout.search.search") %>';
+        });
+
+        const searchTokens = Array.from(document.getElementsByTagName("dodona-search-tokens"));
+        searchTokens.forEach(st => st.filterCollections = filterCollections);
+
+        const noDropdownFilters = <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>;
+        const dropdownFilterCollections = Object.entries(filterCollections).filter(([type, _]) => !noDropdownFilters.includes(type))
+        const dropdownFilters = Array.from(document.getElementsByTagName("dodona-dropdown-filters"));
+        dropdownFilters.forEach(df => df.filterCollections = dropdownFilterCollections);
+
     });
 </script>

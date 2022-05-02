@@ -8,7 +8,7 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { FilterCollectionElement, Label } from "components/filter_collection_element";
 
 @customElement("dodona-search-field-suggestion")
-export abstract class SearchFieldSuggestion extends FilterCollectionElement {
+export class SearchFieldSuggestion extends FilterCollectionElement {
     @property()
     type: string;
     @property()

@@ -87,8 +87,8 @@ export class SortButton extends LitElement {
             font: normal normal normal 24px/1 "Material Design Icons";
             text-rendering: auto;
             box-sizing: border-box;
-            line-height: 18px;
-            font-size: 16px;
+            line-height: 15px;
+            font-size: 15px;
         }
 
         .mdi-none::before {
@@ -150,8 +150,8 @@ export class SortButton extends LitElement {
 
     render(): TemplateResult {
         return html`
-            <slot></slot>
             <i class="mdi mdi-${this.getSortIcon()}"></i>
+            <slot></slot>
         `;
     }
 }

@@ -13,7 +13,6 @@ import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from 
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
-import "polyfills.js";
 import { initTooltips } from "util.js";
 import { initClipboard } from "copy";
 

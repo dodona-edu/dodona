@@ -1,7 +1,6 @@
 import { Papyros } from "@dodona/papyros";
 import { InputMode } from "@dodona/papyros";
 import { ProgrammingLanguage } from "@dodona/papyros";
-import { Toast } from "./toast";
 
 /**
  * Custom interface to not have to add the ace package as dependency
@@ -40,6 +39,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         standAlone: false,
                         locale: I18n.locale,
                         inputMode: InputMode.Interactive,
+                        channelOptions: {
+                            serviceWorkerName: "inputServiceWorker.js"
+                        }
                     });
                 editor ||= window.dodona.editor;
                 if (editor) {
@@ -74,21 +76,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     },
                     darkMode: window.dodona.darkMode
                 });
-                try {
-                    await papyros.configureInput(location.href, "inputServiceWorker.js");
-                    await papyros.launch();
-                } catch (error: any) {
-                    if (error instanceof TypeError) {
-                        // Failing to load yields TypeError: failed to fetch
-                        closeButton.click();
-                        new Toast(I18n.t("js.coding_scratchpad.service_worker_error"));
-                    } else {
-                        // Prompt user to retry
-                        if (confirm(I18n.t("js.coding_scratchpad.papyros_error"))) {
-                            await papyros.launch();
-                        }
-                    }
-                }
+                await papyros.launch();
             }
         });
         // Ask user to choose after offcanvas is shown

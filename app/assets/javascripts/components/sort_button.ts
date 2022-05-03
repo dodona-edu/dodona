@@ -73,15 +73,24 @@ export class SortButton extends LitElement {
     column: string;
     @property({ type: Boolean })
     default = false;
+    @property({ type: Boolean })
+    disabled= false;
 
     active_column: string;
     ascending: boolean;
 
-    static styles = css`
-        :host {
-            cursor: pointer;
+    update(changedProperties: Map<string, unknown>): void {
+        if ( changedProperties.has("disabled") ) {
+            if (!this.disabled) {
+                this.addEventListener("click", this.sort);
+            } else {
+                this.removeEventListener("click", this.sort);
+            }
         }
+        super.update(changedProperties);
+    }
 
+    static styles = css`
         .mdi::before {
             display: inline-block;
             font: normal normal normal 24px/1 "Material Design Icons";
@@ -145,12 +154,14 @@ export class SortButton extends LitElement {
             this.active_column = c;
             this.ascending = a;
         });
-        this.addEventListener("click", () => this.sort());
     }
 
     render(): TemplateResult {
         return html`
-            <i class="mdi mdi-${this.getSortIcon()}"></i>
+            ${this.disabled? "": html`
+                <style>:host {cursor: pointer;}</style>
+                <i class="mdi mdi-${this.getSortIcon()}"></i>
+            `}
             <slot></slot>
         `;
     }

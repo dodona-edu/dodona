@@ -254,13 +254,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn")
             .prop("disabled", false)
             .removeClass("busy mdi-timer-sand-empty mdi-spin")
-            .addClass("mdi-play");
+            .addClass("mdi-send");
     }
 
     function disableSubmitButton() {
         $("#editor-process-btn")
             .prop("disabled", true)
-            .removeClass("mdi-play")
+            .removeClass("mdi-send")
             .addClass("busy mdi-timer-sand-empty mdi-spin");
     }
 

@@ -14,13 +14,7 @@
   </td>
   <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-         title="<%= t('.filter-submissions-by-user') %>"
-         data-filter="<%= submission.user.full_name %>"
-         data-bs-toggle="tooltip"
-         data-bs-placement="top"
-      >
-      </i>
+      <dodona-filter-icon title="<%= t('.filter-submissions-by-user') %>" value="<%= submission.user.full_name %>"></dodona-filter-icon>
       <% if submission.course.nil? %>
         <%= submission.user.full_name %>
       <% else %>
@@ -30,13 +24,7 @@
   <% end %>
   <% if !exercise %>
     <td>
-      <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-        title="<%= t('.filter-submissions-by-exercise') %>"
-        data-filter="<%= submission.exercise.name %>"
-        data-bs-toggle="tooltip"
-        data-bs-placement="top"
-      >
-      </i>
+      <dodona-filter-icon title="<%= t('.filter-submissions-by-exercise') %>" value="<%= submission.exercise.name %>"></dodona-filter-icon>
       <% if submission.course.nil? %>
         <%= link_to submission.exercise.name, activity_path(submission.exercise) %>
       <% else %>

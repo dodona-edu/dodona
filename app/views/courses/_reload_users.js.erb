@@ -4,4 +4,4 @@
 <% end %>
 <% count = @course.pending_members.count %>
 $("#pending-count").text('<%= count if count.nonzero? %>');
-dodona.loadUsers();
+dodona.searchQuery.search();

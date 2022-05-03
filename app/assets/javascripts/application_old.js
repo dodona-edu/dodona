@@ -20,5 +20,3 @@
 
 //= require bootstrap-tokenfield
 //= require typeahead.js/dist/typeahead.bundle.js
-
-//= require first-input-delay/dist/first-input-delay.min.js

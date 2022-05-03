@@ -248,7 +248,15 @@ module ApplicationHelper
     protected
 
     def html_container(html)
-      tag :ul, html, container_attributes
+      container = tag :ul, html, container_attributes
+      %(
+        #{container}
+        <script>
+        if(dodona.searchQuery){
+            dodona.searchQuery.initPagination();
+        }
+        </script>
+      )
     end
 
     def page_number(page)

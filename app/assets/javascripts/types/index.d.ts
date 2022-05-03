@@ -1,5 +1,6 @@
 declare interface Window {
     dodona: any;
+    bootstrap: { Alert: any, Button: any, Collapse: any, Dropdown: any, Modal: any, Popover: any, Tab: any, Tooltip: any };
     MathJax: MathJaxObject;
 }
 

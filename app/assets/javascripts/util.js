@@ -119,22 +119,6 @@ function fetch(url, options = {}) {
 }
 
 /**
- * Initializes any element with the clickable-token class to use its data for searching
- */
-function initTokenClickables() {
-    const $clickableTokens = $(".clickable-token");
-    $clickableTokens.off("click");
-    $clickableTokens.on("click", function () {
-        const $htmlElement = $(this);
-        const type = $htmlElement.data("type");
-        const name = $htmlElement.data("name");
-        if (dodona.addTokenToSearch) {
-            dodona.addTokenToSearch(type, name);
-        }
-    });
-}
-
-/**
  * Make an element invisible by applying "visibility: hidden".
  *
  * @param {HTMLElement} element The element to hide.
@@ -190,7 +174,6 @@ export {
     initCSRF,
     tooltip,
     initTooltips,
-    initTokenClickables,
     makeInvisible,
     makeVisible,
     setDocumentTitle,

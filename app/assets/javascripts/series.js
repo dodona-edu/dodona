@@ -1,6 +1,6 @@
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
-import { initDatePicker, initTokenClickables } from "./util.js";
+import { initDatePicker } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin.ts";
 import { StackedStatusGraph } from "visualisations/stacked_status.ts";
@@ -21,13 +21,11 @@ const DRAG_AND_DROP_ARGS = {
 function initSeriesEdit() {
     function init() {
         initAddButtons();
-        initTokenClickables();
         initRemoveButtons();
         initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
         dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
-            initTokenClickables();
         };
     }
 

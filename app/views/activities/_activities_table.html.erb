@@ -1,6 +1,3 @@
-<% content_for :javascripts do %>
-  <%= javascript_include_tag 'activities' %>
-<% end %>
 <% get_activity_path ||= method(:activity_path) %>
 <% if defined? user
      user = user || current_user
@@ -67,7 +64,9 @@
           <% if policy(activity).info? %>
             <div class="text-muted ellipsis-overflow">
               <small>
-                <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
+                <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>">
+                  <%= activity.repository.name %>: <%= activity.path %>
+                </dodona-filter-button>
               </small>
             </div>
           <% end %>
@@ -75,7 +74,7 @@
 
         <td class="description-languages">
           <div class="text-muted">
-            <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+            <%= raw activity.description_languages.map {|language| "<dodona-filter-button param='description_languages' value='#{language}' multi title='#{t("js.#{language}")}'>#{language}</dodona-filter-button> "}.join(", ") %>
           </div>
         </td>
 
@@ -150,8 +149,3 @@
 <% if activities.try(:total_pages) %>
   <center><%= page_navigation_links activities, true, "activities" %></center>
 <% end %>
-<script type="text/javascript">
-    $(function () {
-        dodona.initTokenClickables();
-    });
-</script>

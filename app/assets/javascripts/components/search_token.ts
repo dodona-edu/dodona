@@ -4,7 +4,7 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { FilterCollection, FilterCollectionElement, Label } from "components/filter_collection_element";
 
 @customElement("dodona-search-token")
-export abstract class SearchToken extends FilterCollectionElement {
+export class SearchToken extends FilterCollectionElement {
     @property()
     color: (l: Label) => string;
 

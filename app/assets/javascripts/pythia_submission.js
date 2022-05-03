@@ -114,7 +114,7 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             const elem = $("#tutor").get(0);
             if (fscreen.fullscreenElement) {
                 $("#tutor .modal-dialog").removeClass("modal-fullscreen");
-                fscreen.exitFullscreen(elem);
+                fscreen.exitFullscreen();
             } else {
                 $("#tutor .modal-dialog").addClass("modal-fullscreen");
                 fscreen.requestFullscreen(elem);

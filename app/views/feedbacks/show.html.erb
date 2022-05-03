@@ -73,6 +73,7 @@
           </div>
         </div>
         <% if @feedback.submission.present? %>
+          <%= render 'saved_annotations/modal' %>
           <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
             <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
           </div>

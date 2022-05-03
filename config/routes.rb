@@ -171,6 +171,8 @@ Rails.application.routes.draw do
 
     resources :annotations, only: %i[index show create update destroy]
 
+    resources :saved_annotations, only: %i[index show create update destroy]
+
     get 'questions', to: 'annotations#question_index'
 
     resources :submissions, only: %i[index show create edit] do

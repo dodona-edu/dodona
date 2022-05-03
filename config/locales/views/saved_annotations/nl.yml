@@ -1,0 +1,7 @@
+nl:
+  saved_annotations:
+    form:
+      annotation_text-help_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
+    modal:
+      save: "Opslaan"
+      title: "Opmerking opslaan om later te hergebruiken"

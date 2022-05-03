@@ -1,0 +1,16 @@
+<div class="modal fade" id="save-annotation" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"><%= t ".title" %></h4>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <%= render 'saved_annotations/form', model: SavedAnnotation.new %>
+      </div>
+      <div class="modal-footer">
+        <button id="save-annotation-submit" type="button" class="btn btn-primary btn-text"><%= t ".save" %></button>
+      </div>
+    </div>
+  </div>
+</div>

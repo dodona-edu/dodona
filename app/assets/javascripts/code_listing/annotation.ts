@@ -34,6 +34,10 @@ export abstract class Annotation {
         // Do nothing.
     }
 
+    protected save(): void {
+        // Do nothing.
+    }
+
     public get global(): boolean {
         return this.line === null;
     }
@@ -81,16 +85,27 @@ export abstract class Annotation {
 
         // Update button.
         if (this.modifiable) {
-            const link = document.createElement("a");
-            link.addEventListener("click", () => this.edit());
-            link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            link.title = this.editTitle;
+            const edit_link = document.createElement("a");
+            edit_link.addEventListener("click", () => this.edit());
+            edit_link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
+            edit_link.title = this.editTitle;
 
-            const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-pencil");
-            link.appendChild(icon);
+            const edit_icon = document.createElement("i");
+            edit_icon.classList.add("mdi", "mdi-pencil");
+            edit_link.appendChild(edit_icon);
 
-            header.appendChild(link);
+            header.appendChild(edit_link);
+
+            const save_link = document.createElement("a");
+            save_link.addEventListener("click", () => this.save());
+            save_link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
+            save_link.title = this.saveTitle;
+
+            const save_icon = document.createElement("i");
+            save_icon.classList.add("mdi", "mdi-content-save");
+            save_link.appendChild(save_icon);
+
+            header.appendChild(save_link);
         }
 
         if (this.transitionable("answered")) {
@@ -193,6 +208,10 @@ export abstract class Annotation {
     protected abstract get title(): string;
 
     protected get editTitle(): string {
+        return "";
+    }
+
+    protected get saveTitle(): string {
         return "";
     }
 

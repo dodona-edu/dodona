@@ -1,0 +1,12 @@
+<%= form_for(model, html: { class: 'form' }) do |f| %>
+  <%= hidden_field_tag 'from', nil, id: "save-annotation-from" %>
+  <div class="field form-group row">
+    <%= f.label :title, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8"><%= f.text_field :title, required: true, class: "form-control" %></div>
+  </div>
+  <div class="field form-group row">
+    <%= f.label :annotation_text, class: "col-sm-4 col-form-label" %>
+    <div class="col-sm-8"><%= f.text_area :annotation_text, required: true, class: "form-control", rows: "4", id: "save-annotation-text" %></div>
+    <span class="help-block offset-sm-4 col-sm-8"><%= t ".annotation_text-help_html" %></span>
+  </div>
+<% end %>

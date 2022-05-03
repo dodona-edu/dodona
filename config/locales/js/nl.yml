@@ -142,7 +142,8 @@ nl:
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
-      help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a>  wordt ondersteund.'
+      save: 'Opmerking opslaan'
+      help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       fields:
         annotation_text: 'Opmerking'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'

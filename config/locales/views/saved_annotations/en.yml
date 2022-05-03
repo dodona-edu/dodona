@@ -1,0 +1,7 @@
+en:
+  saved_annotations:
+    form:
+      annotation_text-help_html: '<a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
+    modal:
+      save: "Save"
+      title: "Save comment for re-use"

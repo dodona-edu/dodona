@@ -2,18 +2,19 @@
 #
 # Table name: annotations
 #
-#  id                 :bigint           not null, primary key
-#  line_nr            :integer
-#  submission_id      :integer
-#  user_id            :integer
-#  annotation_text    :text(16777215)
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  evaluation_id      :bigint
-#  type               :string(255)      default("Annotation"), not null
-#  question_state     :integer
-#  last_updated_by_id :integer          not null
-#  course_id          :integer          not null
+#  id                  :bigint           not null, primary key
+#  line_nr             :integer
+#  submission_id       :integer
+#  user_id             :integer
+#  annotation_text     :text(16777215)
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  evaluation_id       :bigint
+#  type                :string(255)      default("Annotation"), not null
+#  question_state      :integer
+#  last_updated_by_id  :integer          not null
+#  course_id           :integer          not null
+#  saved_annotation_id :bigint
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
@@ -22,6 +23,7 @@ class Annotation < ApplicationRecord
   belongs_to :submission
   belongs_to :user
   belongs_to :evaluation, optional: true
+  belongs_to :saved_annotation, optional: true
   belongs_to :last_updated_by, class_name: 'User'
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }

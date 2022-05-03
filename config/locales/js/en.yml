@@ -142,6 +142,7 @@ en:
       cancel: 'Cancel'
       delete: 'Delete'
       edit: 'Edit comment'
+      save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       fields:
         annotation_text: 'Comment'

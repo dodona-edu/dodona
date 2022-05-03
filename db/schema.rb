@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
+ActiveRecord::Schema[7.0].define(version: 2022_05_02_130036) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -119,9 +119,11 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
     t.integer "question_state"
     t.integer "last_updated_by_id", null: false
     t.integer "course_id", null: false
+    t.bigint "saved_annotation_id"
     t.index ["course_id", "type", "question_state"], name: "index_annotations_on_course_id_and_type_and_question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"
+    t.index ["saved_annotation_id"], name: "index_annotations_on_saved_annotation_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
   end
@@ -377,6 +379,18 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
     t.index ["user_id"], name: "index_rights_requests_on_user_id"
   end
 
+  create_table "saved_annotations", charset: "utf8mb4", force: :cascade do |t|
+    t.string "title", null: false
+    t.text "annotation_text", size: :medium
+    t.integer "user_id", null: false
+    t.integer "exercise_id", null: false
+    t.integer "course_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["course_id"], name: "index_saved_annotations_on_course_id"
+    t.index ["exercise_id"], name: "index_saved_annotations_on_exercise_id"
+  end
+
   create_table "score_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_exercise_id", null: false
     t.decimal "maximum", precision: 5, scale: 2, null: false
@@ -492,6 +506,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
   add_foreign_key "activity_statuses", "users", on_delete: :cascade
   add_foreign_key "annotations", "courses"
   add_foreign_key "annotations", "evaluations"
+  add_foreign_key "annotations", "saved_annotations"
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"
   add_foreign_key "annotations", "users", column: "last_updated_by_id"
@@ -522,6 +537,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_03_17_120756) do
   add_foreign_key "repository_admins", "repositories"
   add_foreign_key "repository_admins", "users"
   add_foreign_key "rights_requests", "users"
+  add_foreign_key "saved_annotations", "activities", column: "exercise_id"
+  add_foreign_key "saved_annotations", "courses"
   add_foreign_key "score_items", "evaluation_exercises"
   add_foreign_key "scores", "feedbacks"
   add_foreign_key "scores", "score_items"

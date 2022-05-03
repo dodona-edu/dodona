@@ -90,6 +90,7 @@
 <% end %>
 
 <% unless submission.queued? or submission.running? %>
+  <%= render 'saved_annotations/modal' %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
 

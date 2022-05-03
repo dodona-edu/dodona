@@ -74,10 +74,12 @@ div .cm-gutters {
     height: auto !important;
     min-height: 100% !important;
 }
-
-#scratchpad-output-wrapper {
-    max-height: 20vh;
+#scrathcpad-output-wrapper {
     margin-bottom: 10px;
+}
+// First child is the output area, limit its size
+#scratchpad-output-wrapper > div:first-child {
+    max-height: 20vh;
 }
 
 #scratchpad-offcanvas.show {

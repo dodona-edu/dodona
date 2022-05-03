@@ -101,12 +101,13 @@ export class SortButton extends LitElement {
         }
 
         .mdi-none::before {
-          display: none;
+           content: "\\F0045";
+           visibility: hidden;
         }
 
         :host(:hover) .mdi-none::before {
             opacity: 0.7;
-            display: inline-block;
+            visibility: visible;
             content: "\\F0045";
         }
 
@@ -158,11 +159,11 @@ export class SortButton extends LitElement {
 
     render(): TemplateResult {
         return html`
+            <slot></slot>
             ${this.disabled? "": html`
                 <style>:host {cursor: pointer;}</style>
                 <i class="mdi mdi-${this.getSortIcon()}"></i>
             `}
-            <slot></slot>
         `;
     }
 }

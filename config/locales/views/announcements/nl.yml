@@ -2,6 +2,9 @@ nl:
   announcements:
     new:
       title: Maak een nieuwe aankondiging
+    edit:
+      title: Bewerk aankondiging
+    form:
       markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formaat wordt ondersteund.
     index:
       title: Aankondigingen

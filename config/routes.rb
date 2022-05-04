@@ -239,7 +239,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :announcements, only: %i[index new create destroy] do
+    resources :announcements, only: %i[index new create destroy edit update] do
       member do
         post 'mark_as_read'
       end

@@ -3,9 +3,9 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".title" %></h2>
-          <div class="card-title-fab">
-            <%= render 'fab_button', form: 'new_announcement', icon: 'send' %>
-          </div>
+        <div class="card-title-fab">
+          <%= render 'fab_button', form: "edit_announcement_#{@announcement.id}", icon: 'send' %>
+        </div>
       </div>
       <div class="card-supporting-text mt-3">
         <div class="col-sm-12">

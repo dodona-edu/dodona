@@ -32,6 +32,14 @@ class AnnouncementPolicy < ApplicationPolicy
     user&.zeus?
   end
 
+  def edit?
+    user&.zeus?
+  end
+
+  def update?
+    user&.zeus?
+  end
+
   def destroy?
     user&.zeus?
   end

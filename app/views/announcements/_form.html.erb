@@ -1,0 +1,87 @@
+<%= javascript_include_tag 'announcement' %>
+<%= form_for(announcement, :html => { :class => 'form-horizontal' }) do |f| %>
+  <% if announcement.errors.any? %>
+    <div class="callout callout-danger" id="error_explanation">
+      <h4><%= t('errors.validation_errors', count: @announcement.errors.count) %></h4>
+      <ul>
+        <% announcement.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :text_nl %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.text_area :text_nl, class: 'form-control' %>
+      <span><%=t ".markdown_html" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :text_en %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.text_area :text_en, class: 'form-control' %>
+      <span><%=t ".markdown_html" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <%= f.label :start_delivering_at, :class => "col-sm-3 col-form-label" %>
+    <div class='col-sm-6'>
+      <div class="input-group" id='start-delivering-at-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <%= f.text_field :start_delivering_at, class: "form-control", 'data-input': true %>
+        <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+        <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <%= f.label :stop_delivering_at, :class => "col-sm-3 col-form-label" %>
+    <div class='col-sm-6'>
+      <div class="input-group" id='stop-delivering-at-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <%= f.text_field :stop_delivering_at, class: "form-control", 'data-input': true %>
+        <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+        <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :user_group %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.select :user_group, Announcement.user_groups.map {|key, value| [Announcement.human_enum_name(:user_group, key), key]}, {}, {:class => 'form-select'} %>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :institution_id %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.number_field :institution_id, class: 'form-control' %>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :style %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.select :style, Announcement.styles.keys.to_a, {}, {:class => 'form-select'} %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  dodona.initDatePicker('#stop-delivering-at-group');
+  dodona.initDatePicker('#start-delivering-at-group');
+</script>

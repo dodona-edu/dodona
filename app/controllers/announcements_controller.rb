@@ -27,6 +27,12 @@ class AnnouncementsController < ApplicationController
     end
   end
 
+  def edit
+    authorize Announcement
+    @announcement = Announcement.find(params[:id])
+    authorize @announcement
+  end
+
   def new
     authorize Announcement
     @announcement = Announcement.new
@@ -39,6 +45,17 @@ class AnnouncementsController < ApplicationController
       redirect_to action: :index
     else
       render :new, status: :unprocessable_entity
+    end
+  end
+
+  def update
+    authorize Announcement
+    @announcement = Announcement.find(params[:id])
+    authorize @announcement
+    if @announcement.update(permitted_attributes(@announcement))
+      redirect_to action: :index
+    else
+      render :edit, status: :unprocessable_entity
     end
   end
 

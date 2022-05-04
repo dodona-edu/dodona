@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
-  before_action :set_announcement, if: :user_signed_in?
+  before_action :set_announcement
 
   impersonates :user
 
@@ -196,7 +196,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_announcement
-    authorize Announcement, :show?
     @unread_announcement = AnnouncementPolicy::Scope.new(current_user, Announcement.all).resolve.unread_by(current_user).first
   end
 

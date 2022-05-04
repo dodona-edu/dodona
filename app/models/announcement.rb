@@ -32,7 +32,7 @@ class Announcement < ApplicationRecord
     joins("LEFT JOIN announcement_views ON
 				announcement_views.announcement_id = announcements.id AND
 				announcement_views.user_id = #{sanitize_sql_for_conditions(current_user.id)}")
-      .where('announcement_views.announcement_id IS NULL AND announcement_views.user_id IS NULL')
+      .where('announcement_views.announcement_id IS NULL AND announcement_views.user_id IS NULL') if current_user.present?
   }
 
   default_scope { order('start_delivering_at ASC') }

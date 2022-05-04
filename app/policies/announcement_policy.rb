@@ -16,10 +16,6 @@ class AnnouncementPolicy < ApplicationPolicy
     end
   end
 
-  def show?
-    true
-  end
-
   def index?
     user.present?
   end

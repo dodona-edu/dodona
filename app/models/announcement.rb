@@ -50,7 +50,7 @@ class Announcement < ApplicationRecord
   end
 
   def stopped?
-    start_delivering_at.present? && stop_delivering_at < Time.current
+    stop_delivering_at.present? && stop_delivering_at < Time.current
   end
 
   def unread_by(user)

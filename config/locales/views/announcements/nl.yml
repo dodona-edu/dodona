@@ -11,7 +11,7 @@ nl:
       text: Tekst
       waiting: Gepland
       active: Actief
-      stopped: Beindigd
+      stopped: Beeindigd
       ago: "%{readable_time} geleden"
       from_now: "over %{readable_time}"
       users_from_institution: "%{users} van onderwijsinstelling %{institution}"

@@ -26,8 +26,6 @@ import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from 
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
-import "polyfills.js";
-
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";

@@ -65,7 +65,7 @@ en:
       hide_correct: hide correct
       correct: correct
       wrong: wrong
-      hand_in_tooltip: Click the play button to hand in and test your solution.
+      hand_in_tooltip: Click the send button to hand in and test your solution.
       not_found: Sorry, we can't find this exercise.
       not_accessible: This exercise isn't accessible to students.
       not_visible: This exercise isn't visible for students without the correct link.

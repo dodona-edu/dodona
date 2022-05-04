@@ -196,7 +196,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_announcement
-    authorize Announcement, :index?
+    authorize Announcement, :show?
     @unread_announcement = AnnouncementPolicy::Scope.new(current_user, Announcement.all).resolve.unread_by(current_user).first
   end
 

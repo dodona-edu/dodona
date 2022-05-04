@@ -11,9 +11,13 @@ class AnnouncementPolicy < ApplicationPolicy
         @scope = scope.or(all_scopes.where(user_group: :staff)) if user.staff?
         scope.is_active
       else
-        scope.where(institution_id: nil).where(user_group: :everyone)
+        scope.where(institution_id: nil).where(user_group: :everyone).is_active
       end
     end
+  end
+
+  def show?
+    true
   end
 
   def index?

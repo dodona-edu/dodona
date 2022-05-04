@@ -15,6 +15,11 @@
     justify-content: space-between;
   }
 
+  .markdown-col{
+    overflow: auto;
+    max-width: 25vw;
+  }
+
   .status-col{
     width: 0
   }

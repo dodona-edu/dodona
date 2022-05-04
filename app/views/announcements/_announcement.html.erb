@@ -1,5 +1,5 @@
 <div class="announcement alert alert-<%= announcement.style %>" role="alert">
-  <div style="display: flex; flex-direction: row;  justify-content: space-between;">
+  <div class="flex-placement-container">
     <div>
       <%= markdown(announcement.text) %>
     </div>
@@ -11,7 +11,7 @@
   </div>
   <% if current_user&.zeus? %>
     <hr>
-    <div style="display: flex; flex-direction: row;  justify-content: space-between;">
+    <div class="flex-placement-container">
       <div>
         <i class="mdi mdi-android mdi-18"></i>
         <% if announcement.institution_id.present? %>

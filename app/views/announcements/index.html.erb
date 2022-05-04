@@ -28,7 +28,7 @@
             <tbody>
             <% @announcements.each do |announcement| %>
               <tr class="announcement">
-                <td>
+                <td class="status-col">
                   <%= style_icon announcement.style %>
                   <% if current_user&.zeus? %>
                     <% if announcement.waiting? %>

@@ -8,4 +8,14 @@
   p:last-child{
     margin-bottom: 0;
   }
+
+  .flex-placement-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .status-col{
+    width: 0
+  }
 }

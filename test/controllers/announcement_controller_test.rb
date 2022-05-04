@@ -3,14 +3,14 @@ require 'test_helper'
 class AnnouncementControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers Announcement, attrs: %i[text user_group institution_id style]
+  crud_helpers Announcement, attrs: %i[text_nl text_en user_group institution_id style]
 
   setup do
     sign_in create(:zeus, institution: institutions(:ugent))
     @instance = create :announcement
   end
 
-  test_crud_actions only: %i[new create destroy index], except: %i[destroy_redirect create_redirect]
+  test_crud_actions only: %i[new create destroy index edit update], except: %i[destroy_redirect create_redirect update_redirect]
 
   test 'create should redirect to index' do
     create_request_expect
@@ -19,8 +19,8 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
 
   def count_announcements(user)
     sign_in user
-    get root_url
-    response.body.scan(/class="announcement/).size
+    get announcements_url, params: { unread: true }
+    response.body.scan(/<tr class="announcement">/).size
   end
 
   test 'Mark as read should work' do

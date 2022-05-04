@@ -191,6 +191,7 @@ en:
         stop_delivering_at: Stop delivering at
         user_group: User group
         user_groups:
+          everyone: Everyone
           all_users: All users
           students: Students
           staff: Staff

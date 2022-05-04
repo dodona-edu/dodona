@@ -17,7 +17,7 @@ class AnnouncementsController < ApplicationController
       if announcement
         if AnnouncementView.where(user_id: current_user.id, announcement_id: announcement.id).first_or_create(user_id: current_user.id, announcement_id: announcement.id)
           format.json { render json: :ok }
-          format.js { redirect_to action: :index, unread: true }
+          format.js { render inline: "location.reload();" }
         else
           format.json { render json: nil, status: :unprocessable_entity }
         end

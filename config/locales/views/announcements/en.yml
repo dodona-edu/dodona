@@ -15,7 +15,7 @@ en:
       ago: "%{readable_time} ago"
       from_now: "%{readable_time} from now"
       users_from_institution: "%{users} from institution %{institution}"
-    announcements:
+    announcement:
       dismiss: dismiss announcement
       shown_to_institution: This announcement is shown to %{user_group} of institution %{institution}
       shown_to: This announcement is shown to %{user_group}

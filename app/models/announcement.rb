@@ -15,7 +15,7 @@
 #
 class Announcement < ApplicationRecord
   has_many :announcement_views, dependent: :destroy
-  enum user_group: { all_users: 0, students: 1, staff: 2, zeus: 3 }
+  enum user_group: { everyone: 0, all_users: 1, students: 2, staff: 3, zeus: 4 }
   enum style: { primary: 0, success: 1, danger: 2, warning: 3, info: 4 }
 
   validates :text_nl, presence: true

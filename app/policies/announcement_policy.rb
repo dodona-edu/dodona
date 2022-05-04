@@ -6,11 +6,12 @@ class AnnouncementPolicy < ApplicationPolicy
       elsif user.present?
         all_scopes = scope.where(institution_id: user.institution_id).or(scope.where(institution_id: nil))
         @scope = all_scopes.where(user_group: :all_users)
+        @scope = scope.or(all_scopes.where(user_group: :everyone))
         @scope = scope.or(all_scopes.where(user_group: :students)) if user.student?
         @scope = scope.or(all_scopes.where(user_group: :staff)) if user.staff?
         scope.is_active
       else
-        scope.none
+        scope.where(institution_id: nil).where(user_group: :everyone)
       end
     end
   end

@@ -69,7 +69,7 @@
                 <%= f.label :user_group %>
               </div>
               <div class="col-sm-9">
-                <%= f.select :user_group, Announcement.user_groups.keys.to_a, class: 'form-control' %>
+                <%= f.select :user_group, Announcement.user_groups.map {|key, value| [Announcement.human_enum_name(:user_group, key), key]}, {}, {:class => 'form-select'} %>
               </div>
             </div>
 
@@ -87,7 +87,7 @@
                 <%= f.label :style %>
               </div>
               <div class="col-sm-9">
-                <%= f.select :style, Announcement.styles.keys.to_a, class: 'form-control' %>
+                <%= f.select :style, Announcement.styles.keys.to_a, {}, {:class => 'form-select'} %>
               </div>
             </div>
           <% end %>

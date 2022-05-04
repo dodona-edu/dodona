@@ -136,7 +136,7 @@ export class SortButton extends LitElement {
     }
 
     getSortIcon(): string {
-        return this.isActive() ? this.ascending ? "arrow-down" : "arrow-up" : "none";
+        return this.isActive() ? this.ascending ? "arrow-up" : "arrow-down" : "none";
     }
 
     sort(): void {

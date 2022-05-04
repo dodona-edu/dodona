@@ -15,9 +15,9 @@
       <div>
         <i class="mdi mdi-android mdi-18"></i>
         <% if announcement.institution_id.present? %>
-          <%= t ".shown_to_institution", user_group: announcement.user_group, institution: announcement.institution_id %>
+          <%= t ".shown_to_institution", user_group: Announcement.human_enum_name(:user_group, announcement.user_group), institution: announcement.institution_id %>
         <% else %>
-          <%= t ".shown_to", user_group: announcement.user_group %>
+          <%= t ".shown_to", user_group: Announcement.human_enum_name(:user_group, announcement.user_group) %>
         <% end %>
         <% if announcement.start_delivering_at.present? %>
           <%= t ".start_delivering_at", start_delivering_at: I18n.localize(announcement.start_delivering_at, format: :announcement) %>

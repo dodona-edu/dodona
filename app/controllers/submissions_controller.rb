@@ -21,10 +21,10 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  has_scope :order_by_user
-  has_scope :order_by_exercise
-  has_scope :order_by_created_at
-  has_scope :order_by_status
+  has_scope :order_by_user, if: ->(c) { %w[ASC DESC].include?(c.params[:order_by_user]) }
+  has_scope :order_by_exercise, if: ->(c) { %w[ASC DESC].include?(c.params[:order_by_exercise]) }
+  has_scope :order_by_created_at, if: ->(c) { %w[ASC DESC].include?(c.params[:order_by_created_at]) }
+  has_scope :order_by_status, if: ->(c) { %w[ASC DESC].include?(c.params[:order_by_status]) }
 
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed tutor

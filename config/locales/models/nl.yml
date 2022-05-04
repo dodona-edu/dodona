@@ -192,7 +192,7 @@ nl:
         stop_delivering_at: Stop aankondiging op
         user_group: Gebruikers groep
         user_groups:
-          all_users: Alle grbuikers
+          all_users: Alle gebruikers
           students: Studenten
           staff: Lesgevers
           zeus: Zeus

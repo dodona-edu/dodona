@@ -5,6 +5,16 @@ nl:
     index:
       title: Aankondigingen
       new: Maak een nieuwe aankondiging
+      start: Start
+      stop: Einde
+      number_of_reads: "#Gelezen"
+      text: Tekst
+      waiting: Gepland
+      active: Actief
+      stopped: Beindigd
+      ago: "%{readable_time} geleden"
+      from_now: "over %{readable_time}"
+      users_from_institution: "%{users} van onderwijsinstelling %{institution}"
     announcements:
       dismiss: sluit aankondiging
       shown_to_institution: Deze aankondiging wordt getoond aan %{user_group} van de onderwijsinstelling %{institution}

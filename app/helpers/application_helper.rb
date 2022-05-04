@@ -186,7 +186,7 @@ module ApplicationHelper
       'warning' => 'alert',
       'info' => 'information',
     }[style]
-    "<i class=\"mdi mdi-#{icon} mdi-#{size}\"></i>".html_safe
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} text-#{style}\" ></i>".html_safe
   end
 
   def submission_status_icon(submission, size = 18)

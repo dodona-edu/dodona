@@ -5,6 +5,16 @@ en:
     index:
       title: Announcements
       new: Create new announcement
+      start: Start
+      stop: End
+      number_of_reads: "#Reads"
+      text: Text
+      waiting: Scheduled
+      active: Active
+      stopped: Ended
+      ago: "%{readable_time} ago"
+      from_now: "%{readable_time} from now"
+      users_from_institution: "%{users} from institution %{institution}"
     announcements:
       dismiss: dismiss announcement
       shown_to_institution: This announcement is shown to %{user_group} of institution %{institution}

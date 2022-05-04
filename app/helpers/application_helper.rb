@@ -184,7 +184,7 @@ module ApplicationHelper
       'success' => 'check',
       'danger' => 'close-octagon',
       'warning' => 'alert',
-      'info' => 'information',
+      'info' => 'information'
     }[style]
     "<i class=\"mdi mdi-#{icon} mdi-#{size} text-#{style}\" ></i>".html_safe
   end

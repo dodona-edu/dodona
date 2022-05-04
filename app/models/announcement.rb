@@ -29,13 +29,15 @@ class Announcement < ApplicationRecord
   }
 
   scope :unread_by, lambda { |current_user|
-    joins("LEFT JOIN announcement_views ON
-				announcement_views.announcement_id = announcements.id AND
-				announcement_views.user_id = #{sanitize_sql_for_conditions(current_user.id)}")
-      .where('announcement_views.announcement_id IS NULL AND announcement_views.user_id IS NULL') if current_user.present?
+    if current_user.present?
+      joins("LEFT JOIN announcement_views ON
+      announcement_views.announcement_id = announcements.id AND
+      announcement_views.user_id = #{sanitize_sql_for_conditions(current_user.id)}")
+        .where('announcement_views.announcement_id IS NULL AND announcement_views.user_id IS NULL')
+    end
   }
 
-  default_scope { order('start_delivering_at ASC') }
+  default_scope { order(Arel.sql('COALESCE(announcements.start_delivering_at, announcements.created_at) DESC')) }
 
   def text
     send("text_#{I18n.locale}")

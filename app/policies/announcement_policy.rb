@@ -17,7 +17,7 @@ class AnnouncementPolicy < ApplicationPolicy
   end
 
   def index?
-    user.present?
+    true
   end
 
   def mark_as_read?

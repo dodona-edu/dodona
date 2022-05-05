@@ -25,6 +25,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyros: Papyros | undefined = undefined;
         let editor: Editor | undefined = undefined;
+        const closeButton = document.getElementById(CLOSE_BUTTON_ID);
         // To prevent horizontal scrollbar issues, we delay rendering the button
         // until after the page is loaded
         const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
@@ -38,6 +39,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         standAlone: false,
                         locale: I18n.locale,
                         inputMode: InputMode.Interactive,
+                        channelOptions: {
+                            serviceWorkerName: "inputServiceWorker.js"
+                        }
                     });
                 editor ||= window.dodona.editor;
                 if (editor) {
@@ -49,7 +53,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         },
                         () => {
                             editor.setValue(papyros.getCode());
-                            document.getElementById(CLOSE_BUTTON_ID).click();
+                            closeButton.click();
                             // Open submit panel if possible
                             document.getElementById(SUBMIT_TAB_ID)?.click();
                         }
@@ -72,7 +76,6 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     },
                     darkMode: window.dodona.darkMode
                 });
-                await papyros.configureInput(location.href, "inputServiceWorker.js");
                 await papyros.launch();
             }
         });

@@ -22,8 +22,8 @@ class SeriesController < ApplicationController
         scope.order_by_status_in_course_and_name direction
       else
         series = Series.find(controller.params[:id])
-        exercise = series.activities.find(column)
-        if exercise.present?
+        if series.activities.exists? id: column
+          exercise = series.activities.find(column)
           scope.order_by_exercise_submission_status_in_series(direction, exercise, series)
         else
           scope

@@ -136,7 +136,7 @@ class User < ApplicationRecord
 
   scope :order_by_status_in_course_and_name, ->(direction) { reorder 'course_memberships.status': direction, permission: direction, last_name: direction, first_name: direction }
   scope :order_by_exercise_submission_status_in_series, lambda { |direction, exercise, series|
-    submissions = Submission.of_exercise(exercise)
+    submissions = Submission.in_series(series).of_exercise(exercise)
     submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
     submissions = submissions.group(:user_id).most_recent
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")

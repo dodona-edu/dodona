@@ -142,6 +142,13 @@ class User < ApplicationRecord
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
       .reorder 'submissions.status': direction
   }
+  scope :order_by_solved_exercises_in_series, lambda { |direction, series|
+    submissions = Submission.in_series(series)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.group(:user_id).select(:user_id, 'COUNT(*) AS count')
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder 'submissions.count': direction
+  }
 
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?

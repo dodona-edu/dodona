@@ -4,7 +4,9 @@
     <tr>
       <th class="user-name"><dodona-sort-button column="status_in_course_and_name" default="ASC"><%= t('courses.scoresheet.user') %></dodona-sort-button></th>
       <% series.each do |s| %>
-      <th class="status-header ellipsis-overflow" title="<%= s.name %>"><%= s.name %></th>
+      <th class="status-header ellipsis-overflow" title="<%= s.name %>">
+        <dodona-sort-button  column="<%= s.id %>"><%= s.name %></dodona-sort-button>
+      </th>
       <% end %>
     </tr>
     </thead>

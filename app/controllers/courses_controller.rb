@@ -16,6 +16,15 @@ class CoursesController < ApplicationController
     scope.by_course_labels(value, controller.params[:id])
   end
 
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[status_in_course_and_name].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
+  end
+
   # GET /courses
   # GET /courses.json
   def index

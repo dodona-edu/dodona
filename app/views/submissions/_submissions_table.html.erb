@@ -10,7 +10,7 @@
       <% unless exercise.present? %>
         <th><dodona-sort-button column="exercise" <%= "disabled" unless course.present? %>><%= t ".exercise" %></dodona-sort-button></th>
       <% end %>
-      <th><dodona-sort-button column="created_at" default <%= "disabled" unless course.present? %>><%= t ".time" %></dodona-sort-button></th>
+      <th><dodona-sort-button column="created_at" default="DESC" <%= "disabled" unless course.present? %>><%= t ".time" %></dodona-sort-button></th>
       <th><dodona-sort-button column="status" <%= "disabled" unless course.present? %>><%= t ".status" %></dodona-sort-button></th>
       <th><%= t ".summary" %></th>
       <th></th>

@@ -52,8 +52,8 @@ export const sortQuery = new SortQuery();
 export class SortButton extends LitElement {
     @property({ type: String })
     column: string;
-    @property({ type: Boolean })
-    default = false;
+    @property({ type: String })
+    default: string;
     @property({ type: Boolean })
     disabled= false;
 
@@ -67,6 +67,12 @@ export class SortButton extends LitElement {
             } else {
                 this.removeEventListener("click", this.sort);
             }
+        }
+        if ( changedProperties.has("default") &&
+            (this.default === "ASC" || this.default === "DESC" ) &&
+            this.active_column === undefined) {
+            this.active_column = this.column;
+            this.ascending = this.default === "ASC";
         }
         super.update(changedProperties);
     }
@@ -112,8 +118,7 @@ export class SortButton extends LitElement {
     `;
 
     isActive(): boolean {
-        return this.column === this.active_column ||
-            (this.active_column === undefined && this.default);
+        return this.column === this.active_column;
     }
 
     getSortIcon(): string {

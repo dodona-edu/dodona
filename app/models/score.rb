@@ -34,7 +34,7 @@ class Score < ApplicationRecord
   end
 
   def uncomplete
-    feedback.update(completed: false)
+    feedback.update(completed: false) if feedback.completed
   end
 
   def not_out_of_bounds

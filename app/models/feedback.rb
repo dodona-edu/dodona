@@ -25,7 +25,7 @@ class Feedback < ApplicationRecord
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
-  before_save :uncomplete, if: :submission_id_changed?
+  before_save :uncomplete, if: :will_save_change_to_submission_id?
   before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
@@ -104,9 +104,9 @@ class Feedback < ApplicationRecord
   end
 
   def reset_feedback_after_submission_update
-    return unless submission_id_changed? && submission_id_was.present?
+    return unless will_save_change_to_submission_id? && submission_id_in_database.present?
 
-    Submission.find(submission_id_was).annotations.where(evaluation_id: evaluation_id).destroy_all
+    Submission.find(submission_id_in_database).annotations.where(evaluation_id: evaluation_id).destroy_all
     scores.each(&:destroy)
   end
 

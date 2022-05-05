@@ -2,7 +2,7 @@
   <table class="table">
     <thead>
     <tr>
-      <th class="user-name"><%= t('series.scoresheet.user') %></th>
+      <th class="user-name"><dodona-sort-button  column="status_in_course_and_name" default="ASC"> <%= t('series.scoresheet.user') %></dodona-sort-button></th>
       <% activities.each do |activity| %>
         <th class="status-header ellipsis-overflow" title="<%= activity.name %>"><%= activity.name %></th>
       <% end %>

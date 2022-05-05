@@ -15,6 +15,15 @@ class SeriesController < ApplicationController
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
 
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[status_in_course_and_name].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
+  end
+
   content_security_policy only: %i[overview] do |policy|
     policy.frame_src -> { sandbox_url }
   end

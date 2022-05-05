@@ -4,4 +4,6 @@
 <% end %>
 <% count = @course.pending_members.count %>
 $("#pending-count").text('<%= count if count.nonzero? %>');
-dodona.searchQuery.search();
+if(window.dodona.searchQuery !== undefined) {
+    window.dodona.searchQuery.search();
+}

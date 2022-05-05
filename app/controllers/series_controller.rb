@@ -189,7 +189,7 @@ class SeriesController < ApplicationController
     @course_labels = CourseLabel.where(course: @course)
 
     scores = @series.scoresheet
-    @users = apply_scopes(scores[:users])
+    @users = apply_scopes(scores[:users]).order_by_exercise_submission_status_in_series('DESC', scores[:activities].first, @series)
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]

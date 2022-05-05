@@ -135,6 +135,13 @@ class User < ApplicationRecord
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
   scope :order_by_status_in_course_and_name, ->(direction) { reorder 'course_memberships.status': direction, permission: direction, last_name: direction, first_name: direction }
+  scope :order_by_exercise_submission_status_in_series, lambda { |direction, exercise, series|
+    submissions = Submission.of_exercise(exercise)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id).most_recent
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder 'submissions.status': direction
+  }
 
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?

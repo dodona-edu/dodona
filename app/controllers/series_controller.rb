@@ -15,10 +15,20 @@ class SeriesController < ApplicationController
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
 
-  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |_controller, scope, value|
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
     column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[status_in_course_and_name].include?(column)
-      scope.send "order_by_#{column}", direction
+    if %w[ASC DESC].include?(direction)
+      if column == 'status_in_course_and_name'
+        scope.order_by_status_in_course_and_name direction
+      else
+        series = Series.find(controller.params[:id])
+        exercise = series.activities.find(column)
+        if exercise.present?
+          scope.order_by_exercise_submission_status_in_series(direction, exercise, series)
+        else
+          scope
+        end
+      end
     else
       scope
     end
@@ -189,7 +199,7 @@ class SeriesController < ApplicationController
     @course_labels = CourseLabel.where(course: @course)
 
     scores = @series.scoresheet
-    @users = apply_scopes(scores[:users]).order_by_exercise_submission_status_in_series('DESC', scores[:activities].first, @series)
+    @users = apply_scopes(scores[:users])
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]

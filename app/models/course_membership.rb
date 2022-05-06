@@ -31,6 +31,7 @@ class CourseMembership < ApplicationRecord
   scope :by_institution, ->(institution) { where(user: User.by_institution(institution)) }
   scope :by_permission, ->(permission) { where(user: User.by_permission(permission)) }
   scope :by_filter, ->(filter) { where(user: User.by_filter(filter)) }
+  scope :order_by_status_in_course_and_name, ->(direction) { joins(:user).merge(User.order_by_status_in_course_and_name(direction)) }
   scope :by_course_labels, lambda { |course_labels|
     includes(:course_labels)
       .where(course_labels: { name: course_labels })

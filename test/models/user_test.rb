@@ -300,6 +300,71 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'Voornaam', user.first_name
     assert_equal 'Achternaam', user.last_name
   end
+
+  test 'should be able to order by status in course and name' do
+    c = create :course
+    u5 = create :user, permission: :student, last_name: 'Adams', first_name: 'Brecht'
+    CourseMembership.create user: u5, course: c, status: 'student'
+    u2 = create :user, permission: :zeus, last_name: 'Paters', first_name: 'Thomas'
+    CourseMembership.create user: u2, course: c, status: 'student'
+    u7 = create :user, permission: :zeus, last_name: 'Adams', first_name: 'Amber'
+    CourseMembership.create user: u7, course: c, status: 'unsubscribed'
+    u1 = create :user, permission: :staff, last_name: 'Pieters', first_name: 'Thomas'
+    CourseMembership.create user: u1, course: c, status: 'course_admin'
+    u3 = create :user, permission: :staff, last_name: 'Pieters', first_name: 'Jan'
+    CourseMembership.create user: u3, course: c, status: 'student'
+    u6 = create :user, permission: :student, last_name: 'Boeien', first_name: 'Frank'
+    CourseMembership.create user: u6, course: c, status: 'student'
+    u4 = create :user, permission: :student, last_name: 'Adams', first_name: 'Anke'
+    CourseMembership.create user: u4, course: c, status: 'student'
+
+    assert_equal [u5.id, u2.id, u7.id, u1.id, u3.id, u6.id, u4.id], User.in_course(c).pluck(:id)
+    assert_equal [u1.id, u2.id, u3.id, u4.id, u5.id, u6.id, u7.id], User.in_course(c).order_by_status_in_course_and_name('ASC').pluck(:id)
+    assert_equal [u7.id, u6.id, u5.id, u4.id, u3.id, u2.id, u1.id], User.in_course(c).order_by_status_in_course_and_name('DESC').pluck(:id)
+  end
+
+  test 'should be able to order by exercise submission status in series' do
+    c = create :course
+    s = create :series, course: c
+    e = create :exercise
+    SeriesMembership.create series: s, activity: e
+    u1 = create :user
+    CourseMembership.create user: u1, course: c, status: 'student'
+    u2 = create :user
+    CourseMembership.create user: u2, course: c, status: 'student'
+    create :correct_submission, user: u2, course: c, exercise: e
+    u3 = create :user
+    CourseMembership.create user: u3, course: c, status: 'student'
+    create :correct_submission, user: u3, course: c, exercise: e
+    create :wrong_submission, user: u3, course: c, exercise: e
+
+    assert_equal [u1.id, u2.id, u3.id], User.in_course(c).order_by_exercise_submission_status_in_series('ASC', e, s).pluck(:id)
+    assert_equal [u3.id, u2.id, u1.id], User.in_course(c).order_by_exercise_submission_status_in_series('DESC', e, s).pluck(:id)
+  end
+
+  test 'should be able to order by solved exercises in series' do
+    c = create :course
+    s = create :series, course: c
+    e1 = create :exercise
+    e2 = create :exercise
+    SeriesMembership.create series: s, activity: e1
+    SeriesMembership.create series: s, activity: e2
+    u1 = create :user
+    CourseMembership.create user: u1, course: c, status: 'student'
+    u2 = create :user
+    CourseMembership.create user: u2, course: c, status: 'student'
+    create :correct_submission, user: u2, course: c, exercise: e1
+    create :correct_submission, user: u2, course: c, exercise: e2
+    create :wrong_submission, user: u2, course: c, exercise: e2
+    u3 = create :user
+    CourseMembership.create user: u3, course: c, status: 'student'
+    create :wrong_submission, user: u3, course: c, exercise: e1
+    create :correct_submission, user: u3, course: c, exercise: e1
+    create :correct_submission, user: u3, course: c, exercise: e2
+
+    assert_equal [u1.id, u2.id, u3.id], User.in_course(c).order_by_solved_exercises_in_series('ASC', s).pluck(:id)
+    assert_equal [u3.id, u2.id, u1.id], User.in_course(c).order_by_solved_exercises_in_series('DESC', s).pluck(:id)
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

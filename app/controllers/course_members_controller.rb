@@ -7,10 +7,17 @@ class CourseMembersController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_course_labels, as: 'course_labels', type: :array
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+  has_scope :order_by, using: %i[column direction], type: :hash do |controller, scope, value|
     column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[status_in_course_and_name].include?(column)
-      scope.send "order_by_#{column}", direction
+    if %w[ASC DESC].include?(direction)
+      if %w[status_in_course_and_name].include?(column)
+        scope.send "order_by_#{column}", direction
+      elsif column == 'progress'
+        course = Course.find(controller.params[:course_id])
+        scope.order_by_progress direction, course
+      else
+        scope
+      end
     else
       scope
     end

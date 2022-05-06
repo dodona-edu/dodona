@@ -149,12 +149,11 @@ class User < ApplicationRecord
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
       .reorder 'submissions.count': direction
   }
-  scope :order_by_progress, lambda { |direction, options|
+  scope :order_by_progress, lambda { |direction, course = nil|
     submissions = Submission.judged
-    submissions = submissions.in_course(options[:course]) if options[:course].present?
-    submissions = submissions.group(:user_id, :exercise_id).most_recent
-    correct_exercises = submissions.correct.group(:user_id).select(:user_id, 'COUNT(*) AS count')
-    attempted_exercises = submissions.group(:user_id).select(:user_id, 'COUNT(*) AS count')
+    submissions = submissions.in_course(course) if course.present?
+    correct_exercises = submissions.correct.group(:user_id).select(:user_id, 'COUNT(distinct exercise_id) AS count')
+    attempted_exercises = submissions.group(:user_id).select(:user_id, 'COUNT(distinct exercise_id) AS count')
     joins("LEFT JOIN (#{correct_exercises.to_sql}) correct ON correct.user_id = users.id")
       .joins("LEFT JOIN (#{attempted_exercises.to_sql}) attempted ON attempted.user_id = users.id")
       .reorder 'correct.count': direction, 'attempted.count': direction

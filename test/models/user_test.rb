@@ -365,6 +365,29 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [u1.id, u2.id, u3.id], User.in_course(c).order_by_solved_exercises_in_series('ASC', s).pluck(:id)
     assert_equal [u3.id, u2.id, u1.id], User.in_course(c).order_by_solved_exercises_in_series('DESC', s).pluck(:id)
   end
+
+  test 'should be able to order by progress' do
+    User.destroy_all
+    c = create :course
+    e1 = create :exercise
+    e2 = create :exercise
+
+    u1 = create :user
+    u2 = create :user
+    create :correct_submission, user: u2, course: c, exercise: e1
+    u3 = create :user
+    create :correct_submission, user: u3, exercise: e1
+    create :wrong_submission, user: u3, course: c, exercise: e2
+    u4 = create :user
+    create :wrong_submission, user: u4, course: c, exercise: e1
+    create :correct_submission, user: u4, course: c, exercise: e1
+    create :correct_submission, user: u4, course: c, exercise: e2
+
+    assert_equal [u1.id, u2.id, u3.id, u4.id], User.order_by_progress('ASC').pluck(:id)
+    assert_equal [u4.id, u3.id, u2.id, u1.id], User.order_by_progress('DESC').pluck(:id)
+    assert_equal [u1.id, u3.id, u2.id, u4.id], User.order_by_progress('ASC', c).pluck(:id)
+    assert_equal [u4.id, u2.id, u3.id, u1.id], User.order_by_progress('DESC', c).pluck(:id)
+  end
 end
 
 class UserHasManyTest < ActiveSupport::TestCase

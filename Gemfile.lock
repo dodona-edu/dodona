@@ -234,8 +234,8 @@ GEM
       activesupport (>= 4.2)
       aes_key_wrap
       bindata
-    json-schema (2.8.1)
-      addressable (>= 2.4)
+    json-schema (3.0.0)
+      addressable (>= 2.8)
     jwt (2.3.0)
     kramdown (2.4.0)
       rexml
@@ -346,7 +346,7 @@ GEM
       premailer (~> 1.7, >= 1.7.9)
     pretender (0.4.0)
       actionpack (>= 5.2)
-    public_suffix (4.0.6)
+    public_suffix (4.0.7)
     puma (5.6.4)
       nio4r (~> 2.0)
     pundit (2.2.0)
@@ -546,7 +546,7 @@ DEPENDENCIES
   io-wait (~> 0.2.0)
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.0.2)
-  json-schema (~> 2.8.1)
+  json-schema (~> 3.0.0)
   jwt (~> 2.3.0)
   kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)

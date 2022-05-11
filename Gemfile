@@ -144,7 +144,7 @@ gem 'ddtrace', '~> 1.0.0.beta2'
 gem 'after_commit_everywhere', '~> 1.2.0'
 
 # Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
-gem 'io-wait', '~> 0.2.0'
+gem 'io-wait', '~> 0.2.3'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

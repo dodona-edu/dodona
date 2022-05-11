@@ -6,10 +6,10 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <%= render 'saved_annotations/form', model: SavedAnnotation.new %>
+        <%= render 'saved_annotations/form', model: SavedAnnotation.new, form_options: { remote: true } %>
       </div>
       <div class="modal-footer">
-        <button id="save-annotation-submit" type="button" class="btn btn-primary btn-text"><%= t ".save" %></button>
+        <button id="save-annotation-submit" type="submit" form="new_saved_annotation" class="btn btn-primary btn-text"><%= t ".save" %></button>
       </div>
     </div>
   </div>

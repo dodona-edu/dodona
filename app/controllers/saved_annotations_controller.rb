@@ -17,8 +17,10 @@ class SavedAnnotationsController < ApplicationController
       if @saved_annotation.save
         annotation.update(saved_annotation: @saved_annotation)
         format.json { render :show, status: :created, location: @saved_annotation }
+        format.js { render :show, status: :created }
       else
         format.json { render json: @saved_annotation.errors, status: :unprocessable_entity }
+        format.js
       end
     end
   end

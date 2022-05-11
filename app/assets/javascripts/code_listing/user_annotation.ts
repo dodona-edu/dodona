@@ -86,8 +86,8 @@ export class UserAnnotation extends Annotation {
 
     protected save(): void {
         const modal = new bootstrap.Modal(document.getElementById("save-annotation"));
-        const fromField = document.getElementById("save-annotation-from");
-        const textField = document.getElementById("save-annotation-text")
+        const fromField = document.getElementById("saved_annotation_from");
+        const textField = document.getElementById("saved_annotation_annotation_text")
 
         fromField.value = this.id;
         textField.value = this.__rawText;

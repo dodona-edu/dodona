@@ -22,6 +22,7 @@ class AnnotationPolicy < ApplicationPolicy
 
   def show?
     return false unless SubmissionPolicy.new(user, record.submission).show?
+    return true if user&.course_admin?(record&.course)
     return true if record.evaluation.blank?
 
     record.evaluation.released

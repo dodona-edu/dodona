@@ -467,7 +467,7 @@ GEM
       activesupport (>= 3)
       attr_required (>= 0.0.5)
       httpclient (>= 2.4)
-    terser (1.1.8)
+    terser (1.1.9)
       execjs (>= 0.3.0, < 3)
     test-prof (1.0.9)
     thor (1.2.1)

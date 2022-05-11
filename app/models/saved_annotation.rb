@@ -12,7 +12,7 @@
 #  updated_at      :datetime         not null
 #
 class SavedAnnotation < ApplicationRecord
-  validates :title, presence: true
+  validates :title, presence: true, uniqueness: { scope: %i[user_id exercise_id course_id] }
   validates :annotation_text, presence: true
 
   belongs_to :user

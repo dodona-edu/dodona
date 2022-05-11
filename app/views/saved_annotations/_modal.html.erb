@@ -6,6 +6,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
+        <div id="error-holder"></div>
         <%= render 'saved_annotations/form', model: SavedAnnotation.new, form_options: { remote: true } %>
       </div>
       <div class="modal-footer">

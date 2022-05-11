@@ -1,0 +1,8 @@
+<div class="callout callout-danger" id="error_explanation">
+  <h4><%= t('errors.validation_errors', :count => saved_annotation.errors.count) %></h4>
+  <ul>
+    <% saved_annotation.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+</div>

@@ -20,7 +20,7 @@ class SavedAnnotationsController < ApplicationController
         format.js { render :show, status: :created }
       else
         format.json { render json: @saved_annotation.errors, status: :unprocessable_entity }
-        format.js
+        format.js { render :new, status: :unprocessable_entity }
       end
     end
   end

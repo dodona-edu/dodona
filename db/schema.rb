@@ -389,6 +389,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_02_130036) do
     t.datetime "updated_at", null: false
     t.index ["course_id"], name: "index_saved_annotations_on_course_id"
     t.index ["exercise_id"], name: "index_saved_annotations_on_exercise_id"
+    t.index ["title", "user_id", "exercise_id", "course_id"], name: "index_saved_annotations_title_uid_eid_cid", unique: true
+    t.index ["user_id"], name: "index_saved_annotations_on_user_id"
   end
 
   create_table "score_items", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -539,6 +541,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_02_130036) do
   add_foreign_key "rights_requests", "users"
   add_foreign_key "saved_annotations", "activities", column: "exercise_id"
   add_foreign_key "saved_annotations", "courses"
+  add_foreign_key "saved_annotations", "users"
   add_foreign_key "score_items", "evaluation_exercises"
   add_foreign_key "scores", "feedbacks"
   add_foreign_key "scores", "score_items"

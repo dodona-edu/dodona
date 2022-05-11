@@ -299,7 +299,7 @@ GEM
       timeout
     net-ssh (6.1.0)
     nio4r (2.5.8)
-    nokogiri (1.13.4)
+    nokogiri (1.13.6)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     oauth2 (1.4.7)
@@ -558,7 +558,7 @@ DEPENDENCIES
   minitest-utils (~> 0.4.8)
   mocha (~> 1.14.0)
   mysql2 (~> 0.5.4)
-  nokogiri (~> 1.13.4)
+  nokogiri (~> 1.13.6)
   omniauth-google-oauth2 (~> 0.8.2)
   omniauth-oauth2 (~> 1.7.2)
   omniauth_openid_connect (~> 0.4.0)

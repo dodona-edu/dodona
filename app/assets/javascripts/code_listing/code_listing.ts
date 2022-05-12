@@ -1,4 +1,4 @@
-import { initTooltips } from "util.js";
+import { initTooltips, fetch } from "util.js";
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import {
@@ -40,6 +40,9 @@ export class CodeListing {
     public readonly code: string;
     public readonly codeLines: number;
     public readonly submissionId: number;
+    public readonly courseId: number;
+    public readonly exerciseId: number;
+    public readonly userId: number;
 
     private readonly markingClass: string = "marked";
     private evaluationId: number;
@@ -56,11 +59,14 @@ export class CodeListing {
 
     private readonly questionMode: boolean;
 
-    constructor(submissionId: number, code: string, codeLines: number, questionMode = false) {
+    constructor(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false) {
         this.annotations = new Map<number, Annotation[]>();
         this.code = code;
         this.codeLines = codeLines;
         this.submissionId = submissionId;
+        this.courseId = courseId;
+        this.exerciseId = exerciseId;
+        this.userId = userId;
         this.questionMode = questionMode;
 
         this.badge = document.querySelector<HTMLSpanElement>(badge);
@@ -376,18 +382,28 @@ export class CodeListing {
             <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
             <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.toNumber(maxLength, { precision: 0 })}</span>
           </div>
-          <div class="annotation-submission-button-container">
-            ${annotation && annotation.removable ? `
-                  <button class="btn-text annotation-control-button annotation-delete-button" type="button">
-                    ${I18n.t("js.user_annotation.delete")}
-                  </button>
-                ` : ""}
-            <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
-              ${I18n.t("js.user_annotation.cancel")}
-            </button>
-            <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
-                ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
-            </button>
+          <div class="annotation-controls-block">
+            ${this.questionMode ? "" : `
+              <input type="hidden" class="saved-annotation-id" value="${annotation?.savedAnnotationId || ""}"/>
+              <span class="dropdown">
+                <input class="dropdown-toggle form-control annotation-search-saved" placeholder="${I18n.t("js.user_annotation.use_saved")}">
+                <ul class="dropdown-menu">
+                </ul>
+              </span>
+            `}
+            <span class="annotation-submission-button-container">
+              ${annotation && annotation.removable ? `
+                    <button class="btn-text annotation-control-button annotation-delete-button" type="button">
+                      ${I18n.t("js.user_annotation.delete")}
+                    </button>
+                  ` : ""}
+              <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
+                ${I18n.t("js.user_annotation.cancel")}
+              </button>
+              <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
+                  ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
+              </button>
+            </span>
           </div>
         `;
 
@@ -395,6 +411,12 @@ export class CodeListing {
         const deleteButton = form.querySelector<HTMLButtonElement>(annotationFormDelete);
         const sendButton = form.querySelector<HTMLButtonElement>(annotationFormSubmit);
         const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+        const saveSearchField = form.querySelector<HTMLInputElement>(".annotation-search-saved");
+        const searchDropdown = new bootstrap.Dropdown(form.querySelector<HTMLButtonElement>(".dropdown-toggle"));
+        const searchResults = form.querySelector<HTMLUListElement>(".dropdown-menu");
+        const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
+
+        this.setupSaveAutocomplete(saveSearchField, inputField, savedAnnotationField, searchDropdown, searchResults);
 
         if (annotation !== null) {
             inputField.rows = annotation.rawText.split("\n").length + 1;
@@ -451,9 +473,35 @@ export class CodeListing {
         return form;
     }
 
+    private setupSaveAutocomplete(input: HTMLInputElement, textField: HTMLTextAreaElement, savedAnnotationField: HTMLInputElement, dropdown: bootstrap.Dropdown, resultsContainer: HTMLUListElement): void {
+        input.addEventListener("input", async () => {
+            fetch(`/saved_annotations.json?course_id=${this.courseId}&exercise_id=${this.exerciseId}&user_id=${this.userId}&filter=${input.value}`)
+                .then(response => response.json())
+                .then(results => {
+                    resultsContainer.innerHTML = "";
+                    results.forEach(savedAnnotation => {
+                        const element = document.createElement<HTMLLIElement>("li");
+                        const innerElement = document.createElement<HTMLAnchorElement>("a");
+                        innerElement.classList.add("dropdown-item");
+                        innerElement.innerText = savedAnnotation.title;
+                        innerElement.addEventListener("click", () => {
+                            input.value = savedAnnotation.title;
+                            textField.value = savedAnnotation.annotation_text;
+                            savedAnnotationField.value = savedAnnotation.id;
+                            dropdown.hide();
+                        });
+                        element.appendChild(innerElement);
+                        resultsContainer.appendChild(element);
+                    });
+                    dropdown.show();
+                });
+        });
+    }
+
     private createNewAnnotationForm(line: number | null): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+            const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
             inputField.classList.remove("validation-error");
 
             // Run client side validations.
@@ -464,7 +512,8 @@ export class CodeListing {
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
                 "line_nr": (line === null ? null : line - 1),
-                "evaluation_id": this.evaluationId || undefined
+                "evaluation_id": this.evaluationId || undefined,
+                "saved_annotation_id": savedAnnotationField.value || undefined,
             };
 
             try {
@@ -486,6 +535,7 @@ export class CodeListing {
         callback: CallableFunction): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+            const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
 
             // Run client side validations.
             if (!inputField.reportValidity()) {
@@ -494,8 +544,7 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "line_nr": (annotation.line === null ? null : annotation.line - 1),
-                "evaluation_id": annotation.evaluationId || undefined
+                "saved_annotation_id": savedAnnotationField.value || undefined,
             };
 
             try {

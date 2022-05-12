@@ -295,6 +295,12 @@ $annotation-info: $info-500;
       margin-bottom: 0;
     }
 
+    .annotation-controls-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .annotation-submission-button-container {
       margin-top: 12px;
       margin-bottom: 12px;

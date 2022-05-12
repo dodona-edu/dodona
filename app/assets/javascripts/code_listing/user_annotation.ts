@@ -35,6 +35,8 @@ export interface UserAnnotationData {
     rendered_markdown: string;
     // eslint-disable-next-line camelcase
     evaluation_id: number | null;
+    // eslint-disable-next-line camelcase
+    saved_annotation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
     type: string;
@@ -51,6 +53,7 @@ export class UserAnnotation extends Annotation {
     private readonly __rawText: string;
     public readonly released: boolean;
     public readonly evaluationId: number | null;
+    private readonly __savedAnnotationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
     public readonly lastUpdatedBy: UserAnnotationUserData;
@@ -66,6 +69,7 @@ export class UserAnnotation extends Annotation {
         this.released = data.released;
         this.__rawText = data.annotation_text;
         this.evaluationId = data.evaluation_id;
+        this.__savedAnnotationId = data.saved_annotation_id;
         this.url = data.url;
         this.user = data.user;
         this.lastUpdatedBy = data.last_updated_by;
@@ -87,7 +91,7 @@ export class UserAnnotation extends Annotation {
     protected save(): void {
         const modal = new bootstrap.Modal(document.getElementById("save-annotation"));
         const fromField = document.getElementById("saved_annotation_from");
-        const textField = document.getElementById("saved_annotation_annotation_text")
+        const textField = document.getElementById("saved_annotation_annotation_text");
 
         fromField.value = this.id;
         textField.value = this.__rawText;
@@ -107,6 +111,10 @@ export class UserAnnotation extends Annotation {
 
     public get rawText(): string {
         return this.__rawText;
+    }
+
+    public get savedAnnotationId(): number | null {
+        return this.__savedAnnotationId;
     }
 
     public get removable(): boolean {
@@ -148,6 +156,6 @@ export class UserAnnotation extends Annotation {
     }
 
     protected get saveTitle(): string {
-        return I18n.t("js.user_annotation.save")
+        return I18n.t("js.user_annotation.save");
     }
 }

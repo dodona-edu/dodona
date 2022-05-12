@@ -85,27 +85,27 @@ export abstract class Annotation {
 
         // Update button.
         if (this.modifiable) {
-            const edit_link = document.createElement("a");
-            edit_link.addEventListener("click", () => this.edit());
-            edit_link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            edit_link.title = this.editTitle;
+            const editLink = document.createElement("a");
+            editLink.addEventListener("click", () => this.edit());
+            editLink.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
+            editLink.title = this.editTitle;
 
-            const edit_icon = document.createElement("i");
-            edit_icon.classList.add("mdi", "mdi-pencil");
-            edit_link.appendChild(edit_icon);
+            const editIcon = document.createElement("i");
+            editIcon.classList.add("mdi", "mdi-pencil");
+            editLink.appendChild(editIcon);
 
-            header.appendChild(edit_link);
+            header.appendChild(editLink);
 
-            const save_link = document.createElement("a");
-            save_link.addEventListener("click", () => this.save());
-            save_link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            save_link.title = this.saveTitle;
+            const saveLink = document.createElement("a");
+            saveLink.addEventListener("click", () => this.save());
+            saveLink.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
+            saveLink.title = this.saveTitle;
 
-            const save_icon = document.createElement("i");
-            save_icon.classList.add("mdi", "mdi-content-save");
-            save_link.appendChild(save_icon);
+            const saveIcon = document.createElement("i");
+            saveIcon.classList.add("mdi", "mdi-content-save");
+            saveLink.appendChild(saveIcon);
 
-            header.appendChild(save_link);
+            header.appendChild(saveLink);
         }
 
         if (this.transitionable("answered")) {
@@ -187,6 +187,10 @@ export abstract class Annotation {
 
     public get rawText(): string {
         return this.text;
+    }
+
+    public get savedAnnotationId(): number | null {
+        return null;
     }
 
     public get removable(): boolean {

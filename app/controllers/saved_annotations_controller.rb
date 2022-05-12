@@ -1,6 +1,11 @@
 class SavedAnnotationsController < ApplicationController
   before_action :set_saved_annotation, only: %i[show update destroy]
 
+  has_scope :by_user, as: 'user_id'
+  has_scope :by_course, as: 'course_id'
+  has_scope :by_exercise, as: 'exercise_id'
+  has_scope :by_filter, as: 'filter'
+
   def index
     authorize SavedAnnotation
     @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))

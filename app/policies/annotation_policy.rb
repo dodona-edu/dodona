@@ -41,10 +41,10 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[annotation_text line_nr evaluation_id]
+    %i[annotation_text saved_annotation_id line_nr evaluation_id]
   end
 
   def permitted_attributes_for_update
-    %i[annotation_text]
+    %i[annotation_text saved_annotation_id]
   end
 end

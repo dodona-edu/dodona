@@ -143,6 +143,7 @@ nl:
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
+      use_saved: 'Opgeslagen opmerking'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       fields:
         annotation_text: 'Opmerking'

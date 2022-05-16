@@ -68,7 +68,7 @@ export class SortButton extends LitElement {
                 this.removeEventListener("click", this.sort);
             }
         }
-        if ( changedProperties.has("default") &&
+        if (changedProperties.has("default") &&
             (this.default === "ASC" || this.default === "DESC" ) &&
             this.active_column === undefined) {
             this.active_column = this.column;

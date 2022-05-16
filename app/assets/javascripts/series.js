@@ -138,4 +138,5 @@ function initSeriesShow(id) {
         });
     });
 }
-export { initDeadlinePicker: initDatePicker, initSeriesEdit, initSeriesShow };
+const initDeadlinePicker= initDatePicker;
+export { initDeadlinePicker, initSeriesEdit, initSeriesShow };

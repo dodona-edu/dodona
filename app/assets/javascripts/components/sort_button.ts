@@ -10,7 +10,7 @@ export class SortQuery {
 
     constructor() {
         this.active_column = searchQuery.queryParams.params.get("order_by[column]");
-        this.ascending= searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
+        this.ascending = searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
         searchQuery.queryParams.subscribeByKey("order_by[column]", (k, o, n) => {
             this.active_column = n;
             this.notify();
@@ -55,7 +55,7 @@ export class SortButton extends LitElement {
     @property({ type: String })
     default: string;
     @property({ type: Boolean })
-    disabled= false;
+    disabled = false;
 
     active_column: string;
     ascending: boolean;
@@ -68,7 +68,7 @@ export class SortButton extends LitElement {
                 this.removeEventListener("click", this.sort);
             }
         }
-        if ( changedProperties.has("default") &&
+        if (changedProperties.has("default") &&
             (this.default === "ASC" || this.default === "DESC" ) &&
             this.active_column === undefined) {
             this.active_column = this.column;

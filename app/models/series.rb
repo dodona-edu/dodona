@@ -141,10 +141,7 @@ class Series < ApplicationRecord
   end
 
   def scoresheet
-    users = course.subscribed_members
-                  .order('course_memberships.status ASC')
-                  .order(permission: :asc)
-                  .order(last_name: :asc, first_name: :asc)
+    users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 
     submission_hash = Submission.in_series(self).where(user: users)
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?

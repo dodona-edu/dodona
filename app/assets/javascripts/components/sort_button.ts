@@ -9,35 +9,19 @@ export class SortQuery {
     listeners: Array<(c: string, a: boolean) => void> = [];
 
     constructor() {
-        const sortParams = [...searchQuery.queryParams.params.entries()].filter(
-            ([k, v]) => k.startsWith("order_by_") && (v === "ASC" || v === "DESC")
-        );
-
-        if (sortParams.length > 0) {
-            this.active_column = sortParams[0][0].substring(9);
-            this.ascending = sortParams[0][1] === "ASC";
-            sortParams.slice(1).forEach(([k, _]) => {
-                searchQuery.queryParams.updateParam(k, undefined);
-            });
-        }
-        searchQuery.queryParams.subscribe((k, o, n) => {
-            if (
-                k.startsWith("order_by_") &&
-                !(k === this.getQueryKey() && n === this.getQueryValue()) &&
-                (n === "ASC" || n === "DESC")
-            ) {
-                this.active_column = k.substring(9);
-                this.ascending = n === "ASC";
-                this.notify();
-            }
+        this.active_column = searchQuery.queryParams.params.get("order_by[column]");
+        this.ascending = searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
+        searchQuery.queryParams.subscribeByKey("order_by[column]", (k, o, n) => {
+            this.active_column = n;
+            this.notify();
+        });
+        searchQuery.queryParams.subscribeByKey("order_by[direction]", (k, o, n) => {
+            this.ascending = n === "ASC";
+            this.notify();
         });
     }
 
-    getQueryKey(): string {
-        return "order_by_" + this.active_column;
-    }
-
-    getQueryValue(): string {
+    getDirectionValue(): string {
         return this.ascending ? "ASC" : "DESC";
     }
 
@@ -54,14 +38,11 @@ export class SortQuery {
             return;
         }
 
-        if (this.active_column !== column) {
-            searchQuery.queryParams.updateParam(this.getQueryKey(), undefined);
-            this.active_column = column;
-        }
+        this.active_column = column;
         this.ascending = ascending;
-        this.notify();
         if (this.active_column) {
-            searchQuery.queryParams.updateParam(this.getQueryKey(), this.getQueryValue());
+            searchQuery.queryParams.updateParam("order_by[column]", this.active_column);
+            searchQuery.queryParams.updateParam("order_by[direction]", this.getDirectionValue());
         }
     }
 }
@@ -71,10 +52,10 @@ export const sortQuery = new SortQuery();
 export class SortButton extends LitElement {
     @property({ type: String })
     column: string;
+    @property({ type: String })
+    default: string;
     @property({ type: Boolean })
-    default = false;
-    @property({ type: Boolean })
-    disabled= false;
+    disabled = false;
 
     active_column: string;
     ascending: boolean;
@@ -86,6 +67,12 @@ export class SortButton extends LitElement {
             } else {
                 this.removeEventListener("click", this.sort);
             }
+        }
+        if (changedProperties.has("default") &&
+            (this.default === "ASC" || this.default === "DESC" ) &&
+            this.active_column === undefined) {
+            this.active_column = this.column;
+            this.ascending = this.default === "ASC";
         }
         super.update(changedProperties);
     }
@@ -131,8 +118,7 @@ export class SortButton extends LitElement {
     `;
 
     isActive(): boolean {
-        return this.column === this.active_column ||
-            (this.active_column === undefined && this.default);
+        return this.column === this.active_column;
     }
 
     getSortIcon(): string {

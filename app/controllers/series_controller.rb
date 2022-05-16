@@ -15,6 +15,25 @@ class SeriesController < ApplicationController
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
 
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction)
+      if column == 'status_in_course_and_name'
+        scope.order_by_status_in_course_and_name direction
+      else
+        series = Series.find(controller.params[:id])
+        if series.activities.exists? id: column
+          exercise = series.activities.find(column)
+          scope.order_by_exercise_submission_status_in_series(direction, exercise, series)
+        else
+          scope
+        end
+      end
+    else
+      scope
+    end
+  end
+
   content_security_policy only: %i[overview] do |policy|
     policy.frame_src -> { sandbox_url }
   end

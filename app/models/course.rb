@@ -278,9 +278,7 @@ class Course < ApplicationRecord
 
   def scoresheet
     sorted_series = series
-    sorted_users = subscribed_members.order('course_memberships.status ASC')
-                                     .order(permission: :asc)
-                                     .order(last_name: :asc, first_name: :asc)
+    sorted_users = subscribed_members.order_by_status_in_course_and_name 'ASC'
 
     hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).to_h do |series_info, user|
       scores = series_info[1]

@@ -134,6 +134,22 @@ class User < ApplicationRecord
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
 
+  scope :order_by_status_in_course_and_name, ->(direction) { reorder 'course_memberships.status': direction, permission: direction == 'ASC' ? :desc : :asc, last_name: direction, first_name: direction }
+  scope :order_by_exercise_submission_status_in_series, lambda { |direction, exercise, series|
+    submissions = Submission.in_series(series).of_exercise(exercise)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id).most_recent
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder 'submissions.status': direction
+  }
+  scope :order_by_solved_exercises_in_series, lambda { |direction, series|
+    submissions = Submission.in_series(series)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.group(:user_id).select(:user_id, 'COUNT(*) AS count')
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder 'submissions.count': direction
+  }
+
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
 

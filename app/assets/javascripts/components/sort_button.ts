@@ -10,7 +10,7 @@ export class SortQuery {
 
     constructor() {
         this.active_column = searchQuery.queryParams.params.get("order_by[column]");
-        this.ascending= searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
+        this.ascending = searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
         searchQuery.queryParams.subscribeByKey("order_by[column]", (k, o, n) => {
             this.active_column = n;
             this.notify();

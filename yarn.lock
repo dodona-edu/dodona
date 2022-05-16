@@ -1068,10 +1068,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.3.4.tgz#02aa1310d04132539bba621939325aa9ba59b0d9"
-  integrity sha512-aBZpRdlYs7k5lGBUT3mlSmzpdsUBSlkh94UZ+N2mtn2qvR9c3mVl+NNxTc8gPr6nBn+grbloLuno0YnG7ux08g==
+"@dodona/papyros@^0.3.6":
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.3.6.tgz#b9bfb3bb52546a2bae0b9f27fb665014c118fa53"
+  integrity sha512-SRgC4Cv+nnuq0+X0p+7pToJDPYtSX1WoR4KL4Xz8/8/Hqk+R0//CbnT07VQuQDOqL7imknlqZat4cGtQLczLDw==
   dependencies:
     "@codemirror/autocomplete" "^0.20.0"
     "@codemirror/commands" "^0.20.0"
@@ -1087,7 +1087,7 @@
     comsync "^0.0.8"
     escape-html "^1.0.3"
     i18n-js "^3.8.0"
-    pyodide-worker-runner "^0.0.8"
+    pyodide-worker-runner "^0.0.10"
     sync-message "^0.0.10"
 
 "@eslint/eslintrc@^1.2.3":
@@ -5269,10 +5269,10 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-pyodide-worker-runner@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/pyodide-worker-runner/-/pyodide-worker-runner-0.0.8.tgz#8469060750ee098e4be194bb51efa71403710514"
-  integrity sha512-476A8teV5fI9kidqF5ElDpfAxKpbFmVUszEIxy9phqapJsyhtmZeKV8AjfM7Qy8bQHZ/2TxC3IodOnra1rijpQ==
+pyodide-worker-runner@^0.0.10:
+  version "0.0.10"
+  resolved "https://registry.yarnpkg.com/pyodide-worker-runner/-/pyodide-worker-runner-0.0.10.tgz#0cb2c6f730022b40dd4b43b1385931f88fee49a2"
+  integrity sha512-/7XFoDALhF64qKYfdrK4uVLlEMkwK1rFuy5EfL876q9+g736KZbSw5Uw5K7gChotTYM36/lmhhiMYMXMWdpLow==
   dependencies:
     p-retry "^5.0.0"
 

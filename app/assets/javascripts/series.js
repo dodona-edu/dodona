@@ -138,5 +138,4 @@ function initSeriesShow(id) {
         });
     });
 }
-const initDeadlinePicker= initDatePicker;
-export { initDeadlinePicker, initSeriesEdit, initSeriesShow };
+export { initDeadlinePicker: initDatePicker, initSeriesEdit, initSeriesShow };

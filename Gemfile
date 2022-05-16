@@ -4,9 +4,9 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.0.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2.4'
+gem 'rails', '~> 7.0.3'
 # Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.3'
+gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.4'
 
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.11.1', require: false
 
 # used to validate container responses
-gem 'json-schema', '~> 2.8.1'
+gem 'json-schema', '~> 3.0.0'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'
@@ -64,7 +64,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.2'
+gem 'autoprefixer-rails', '~>10.4.7'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.4'
+gem 'nokogiri', '~> 1.13.6'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -138,7 +138,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-gem 'ddtrace', '~> 1.0.0.beta2'
+gem 'ddtrace', '~> 1.0.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.0'
@@ -159,7 +159,7 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.36.0'
+  gem 'capybara', '~> 3.37.1'
   gem 'selenium-webdriver', '~> 4.1.0'
 end
 
@@ -168,7 +168,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.0.8'
+  gem 'test-prof', '~> 1.0.9'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

@@ -459,6 +459,15 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'zeus should be able to see private activities in courses' do
+    instance = create :exercise, access: 'private'
+    course = create :course, visibility: :hidden, registration: :closed
+    sign_in users(:zeus)
+    (create :series, course: course).exercises << instance
+    get course_activity_path(course, instance)
+    assert_response :success
+  end
+
   test 'authenticated user should be able to see private activity when used in a subscribed course' do
     series = create :series
     @instance = create :exercise, access: 'private'

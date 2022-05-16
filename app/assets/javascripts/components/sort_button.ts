@@ -55,7 +55,7 @@ export class SortButton extends LitElement {
     @property({ type: String })
     default: string;
     @property({ type: Boolean })
-    disabled= false;
+    disabled = false;
 
     active_column: string;
     ascending: boolean;

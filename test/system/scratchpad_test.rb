@@ -30,7 +30,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Focus editor
     find('.cm-editor').click
     find('.cm-content').send_keys code
-    find('.cm-content', text: code)
+    sleep(0.5)
     find_button('__papyros-run-code-btn', disabled: false).click
   end
 

@@ -3,10 +3,10 @@
     <thead>
     <tr>
       <th class='status-icon'></th>
-      <th><%= User.human_attribute_name("name") %></th>
+      <th><dodona-sort-button column="status_in_course_and_name" default="ASC"><%= User.human_attribute_name("name") %></dodona-sort-button></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th class="d-none d-sm-table-cell"><%= t("users.index.progress") %></th>
+      <th class="d-none d-sm-table-cell"><dodona-sort-button column="progress"><%= t("users.index.progress") %></dodona-sort-button></th>
       <th><%= t(".labels") %></th>
       <th></th>
     </tr>

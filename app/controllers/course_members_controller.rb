@@ -7,6 +7,22 @@ class CourseMembersController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_course_labels, as: 'course_labels', type: :array
 
+  has_scope :order_by, using: %i[column direction], type: :hash do |controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction)
+      if %w[status_in_course_and_name].include?(column)
+        scope.send "order_by_#{column}", direction
+      elsif column == 'progress'
+        course = Course.find(controller.params[:course_id])
+        scope.order_by_progress direction, course
+      else
+        scope
+      end
+    else
+      scope
+    end
+  end
+
   def index
     statuses = if %w[unsubscribed pending].include? params[:status]
                  params[:status]
@@ -14,11 +30,8 @@ class CourseMembersController < ApplicationController
                  %w[course_admin student]
                end
 
-    @course_memberships = apply_scopes(@course.course_memberships)
+    @course_memberships = apply_scopes(@course.course_memberships.order_by_status_in_course_and_name('ASC'))
                           .includes(:course_labels, user: [:institution])
-                          .order(status: :asc)
-                          .order(Arel.sql('users.permission DESC'))
-                          .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
                           .where(status: statuses)
                           .paginate(page: parse_pagination_param(params[:page]))
 

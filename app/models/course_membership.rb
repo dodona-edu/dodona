@@ -38,6 +38,9 @@ class CourseMembership < ApplicationRecord
       .having('COUNT(DISTINCT(course_membership_labels.course_label_id)) = ?', course_labels.uniq.length)
   }
 
+  scope :order_by_status_in_course_and_name, ->(direction) { joins(:user).merge(User.order_by_status_in_course_and_name(direction)) }
+  scope :order_by_progress, ->(direction, course) { joins(:user).merge(User.order_by_progress(direction, course)) }
+
   def subscribed?
     student? || course_admin?
   end

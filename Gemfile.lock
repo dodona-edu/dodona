@@ -172,7 +172,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faker (2.20.0)
+    faker (2.21.0)
       i18n (>= 1.8.11, < 2)
     faraday (1.9.3)
       faraday-em_http (~> 1.0)
@@ -535,7 +535,7 @@ DEPENDENCIES
   ed25519
   exception_notification (~> 4.5.0)
   factory_bot_rails (~> 6.2.0)
-  faker (~> 2.20.0)
+  faker (~> 2.21.0)
   flamegraph (~> 0.9.5)
   has_scope (~> 0.8.0)
   hcaptcha (~> 7.1.0)

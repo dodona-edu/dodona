@@ -8,7 +8,7 @@
 #  start_delivering_at :datetime
 #  stop_delivering_at  :datetime
 #  user_group          :integer          not null
-#  institution_id      :integer
+#  institution_id      :bigint
 #  style               :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null

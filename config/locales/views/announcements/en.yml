@@ -5,7 +5,7 @@ en:
     edit:
       title: Edit announcement
     form:
-      markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting is supported.
+      markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.
     index:
       title: Announcements
       new: Create new announcement

@@ -20,7 +20,7 @@ nl:
       from_now: "over %{readable_time}"
       users_from_institution: "%{users} van onderwijsinstelling %{institution}"
     announcement:
-      dismiss: aankondiging sluiten
+      dismiss: Aankondiging sluiten
       shown_to_institution: Deze aankondiging wordt getoond aan %{user_group} van de onderwijsinstelling %{institution}
       shown_to: Deze aankondiging wordt getoond aan %{user_group}
       start_delivering_at: vanaf %{start_delivering_at}

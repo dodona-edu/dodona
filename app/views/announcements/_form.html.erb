@@ -67,12 +67,7 @@
       <%= f.label :institution_id %>
     </div>
     <div class="col-sm-9">
-      <%= f.text_field :institution_id, class: 'form-control', list: 'institutions' %>
-      <datalist id="institutions">
-        <% @institutions.each do |institution| %>
-          <option value="<%= institution.id %>"><%= institution.name %></option>
-        <% end %>
-      </datalist>
+      <dodona-datalist-input name="announcement[institution_id]" options="<%= @institutions.map{|i| {value: i.id.to_s, label: i.name.to_s}}.to_json %>" value="<%= announcement.institution_id %>" ></dodona-datalist-input>
     </div>
   </div>
 

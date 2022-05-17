@@ -4,6 +4,7 @@ nl:
       title: Nieuwe aankondiging
     edit:
       title: Aankondiging bewerken
+      destroy: Aankondiging permanent verwijderen
     form:
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
     index:
@@ -25,4 +26,3 @@ nl:
       shown_to: Deze aankondiging wordt getoond aan %{user_group}
       start_delivering_at: vanaf %{start_delivering_at}
       stop_delivering_at: tot %{stop_delivering_at}
-      destroy: Aankondiging permanent verwijderen

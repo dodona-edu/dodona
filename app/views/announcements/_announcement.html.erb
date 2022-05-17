@@ -26,8 +26,8 @@
           <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at, format: :announcement) %>
         <% end %>
       </div>
-      <%= link_to announcement_path(announcement), :method => :delete, data: {confirm: t("general.are_you_sure")}, title: t(".destroy") do %>
-        <i class="mdi mdi-delete mdi-18"></i>
+      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title")  do %>
+        <i class="mdi mdi-pencil mdi-18"></i>
       <% end %>
     </div>
   <% end %>

@@ -17,7 +17,7 @@ class AnnouncementPolicy < ApplicationPolicy
   end
 
   def index?
-    true
+    user&.zeus?
   end
 
   def mark_as_read?

@@ -8,7 +8,7 @@ nl:
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
     index:
       title: Aankondigingen
-      new: Maak een nieuwe aankondiging
+      new: Nieuwe aankondiging maken
       start: Start
       stop: Einde
       number_of_reads: "#Gelezen"

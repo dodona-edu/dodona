@@ -9,6 +9,8 @@ class AnnouncementsController < ApplicationController
   def index
     authorize Announcement
     @announcements = apply_scopes(policy_scope(Announcement.all))
+    @title = I18n.t('announcements.index.title')
+    @crumbs = [[I18n.t('announcements.index.title'), '#']]
   end
 
   def mark_as_read
@@ -26,11 +28,16 @@ class AnnouncementsController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @title = I18n.t('announcements.edit.title')
+    @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.edit.title'), '#']]
+  end
 
   def new
     authorize Announcement
     @announcement = Announcement.new
+    @title = I18n.t('announcements.new.title')
+    @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.new.title'), '#']]
   end
 
   def create

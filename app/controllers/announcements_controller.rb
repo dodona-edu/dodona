@@ -29,7 +29,7 @@ class AnnouncementsController < ApplicationController
 
   def new
     authorize Announcement
-    @announcement = Announcement.new
+    @announcement = Announcement.new(style: :primary)
     @institutions = Institution.all
     @title = I18n.t('announcements.new.title')
     @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.new.title'), '#']]

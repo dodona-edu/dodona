@@ -14,17 +14,10 @@ class AnnouncementsController < ApplicationController
   end
 
   def mark_as_read
-    respond_to do |format|
-      if announcement
-        if AnnouncementView.where(user_id: current_user.id, announcement_id: announcement.id).first_or_create(user_id: current_user.id, announcement_id: announcement.id)
-          format.json { render json: :ok }
-          format.js { render :mark_as_read }
-        else
-          format.json { render json: nil, status: :unprocessable_entity }
-        end
-      else
-        format.json { render json: nil, status: :unprocessable_entity }
-      end
+    if announcement.present? && AnnouncementView.where(user_id: current_user.id, announcement_id: announcement.id).first_or_create(user_id: current_user.id, announcement_id: announcement.id)
+      render :mark_as_read
+    else
+      render js: nil, status: :unprocessable_entity
     end
   end
 

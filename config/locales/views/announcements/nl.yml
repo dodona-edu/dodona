@@ -1,28 +1,28 @@
 nl:
   announcements:
     new:
-      title: Maak een nieuwe aankondiging
+      title: Nieuwe aankondiging
     edit:
-      title: Bewerk aankondiging
+      title: Aankondiging bewerken
     form:
-      markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formaat wordt ondersteund.
+      markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
     index:
       title: Aankondigingen
-      new: Maak een nieuwe aankondiging
+      new: Nieuwe aankondiging maken
       start: Start
       stop: Einde
       number_of_reads: "#Gelezen"
       text: Tekst
       waiting: Gepland
       active: Actief
-      stopped: Beeindigd
+      stopped: Beëindigd
       ago: "%{readable_time} geleden"
       from_now: "over %{readable_time}"
       users_from_institution: "%{users} van onderwijsinstelling %{institution}"
     announcement:
-      dismiss: sluit aankondiging
+      dismiss: aankondiging sluiten
       shown_to_institution: Deze aankondiging wordt getoond aan %{user_group} van de onderwijsinstelling %{institution}
       shown_to: Deze aankondiging wordt getoond aan %{user_group}
       start_delivering_at: vanaf %{start_delivering_at}
       stop_delivering_at: tot %{stop_delivering_at}
-      destroy: Verwijder deze aankondiging permanent
+      destroy: Aankondiging permanent verwijderen

@@ -186,16 +186,16 @@ nl:
         maximum: Maximum
         visible: Zichtbaar
       announcement:
-        text_nl: Nederelands aankondiging
+        text_nl: Nederlandse aankondiging
         text_en: Engelse aankondiging
         start_delivering_at: Start aankondiging op
         stop_delivering_at: Stop aankondiging op
-        user_group: Gebruikers groep
+        user_group: Gebruikersgroep
         user_groups:
           everyone: Iedereen
           all_users: Alle gebruikers
           students: Studenten
           staff: Lesgevers
           zeus: Zeus
-        institution_id: Onderwijsinstelling id
-        style: Bootstrap stijl
+        institution_id: ID van onderwijsinstelling
+        style: Bootstrap-stijl

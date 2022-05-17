@@ -18,10 +18,10 @@ en:
       stopped: Ended
       ago: "%{readable_time} ago"
       from_now: "%{readable_time} from now"
-      users_from_institution: "%{users} from institution %{institution}"
+      users_from_institution: "%{users} from %{institution}"
     announcement:
       dismiss: Dismiss announcement
-      shown_to_institution: This announcement is shown to %{user_group} of institution %{institution}
+      shown_to_institution: This announcement is shown to %{user_group} of %{institution}
       shown_to: This announcement is shown to %{user_group}
       start_delivering_at: from %{start_delivering_at}
       stop_delivering_at: until %{stop_delivering_at}

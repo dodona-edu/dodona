@@ -14,8 +14,8 @@
     <div class="flex-placement-container">
       <div>
         <i class="mdi mdi-android mdi-18"></i>
-        <% if announcement.institution_id.present? %>
-          <%= t ".shown_to_institution", user_group: Announcement.human_enum_name(:user_group, announcement.user_group), institution: announcement.institution_id %>
+        <% if announcement.institution.present? %>
+          <%= t ".shown_to_institution", user_group: Announcement.human_enum_name(:user_group, announcement.user_group), institution: announcement.institution.name %>
         <% else %>
           <%= t ".shown_to", user_group: Announcement.human_enum_name(:user_group, announcement.user_group) %>
         <% end %>

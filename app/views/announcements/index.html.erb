@@ -59,8 +59,8 @@
                   </td>
                   <td><%= announcement.number_of_reads %></td>
                   <td>
-                    <% if announcement.institution_id.present? %>
-                      <%= t ".users_from_institution", users: Announcement.human_enum_name("user_group", announcement.user_group), institution: announcement.institution_id %>
+                    <% if announcement.institution.present? %>
+                      <%= t ".users_from_institution", users: Announcement.human_enum_name("user_group", announcement.user_group), institution: announcement.institution.name %>
                     <% else %>
                       <%= Announcement.human_enum_name("user_group", announcement.user_group) %>
                     <% end %>

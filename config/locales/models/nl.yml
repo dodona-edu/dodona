@@ -190,7 +190,7 @@ nl:
         text_en: Engelse aankondiging
         start_delivering_at: Start aankondiging op
         stop_delivering_at: Stop aankondiging op
-        user_group: Gebruikers groep
+        user_group: Gebruikersgroep
         user_groups:
           everyone: Iedereen
           all_users: Alle gebruikers

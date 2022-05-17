@@ -29,7 +29,6 @@
             <% @announcements.each do |announcement| %>
               <tr class="announcement">
                 <td class="status-col  border-<%= announcement.style %>">
-                  <%= style_icon announcement.style %>
                   <% if current_user&.zeus? %>
                     <% if announcement.waiting? %>
                       <i class="mdi mdi-alarm mdi-18" title="<%= t ".waiting" %>"></i>

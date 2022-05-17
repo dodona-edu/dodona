@@ -15,6 +15,7 @@
 #
 class Announcement < ApplicationRecord
   has_many :announcement_views, dependent: :destroy
+  belongs_to :institution, optional: true
   enum user_group: { everyone: 0, all_users: 1, students: 2, staff: 3, zeus: 4 }
   enum style: { primary: 0, success: 1, danger: 2, warning: 3, info: 4 }
 
@@ -33,7 +34,7 @@ class Announcement < ApplicationRecord
       joins("LEFT JOIN announcement_views ON
       announcement_views.announcement_id = announcements.id AND
       announcement_views.user_id = #{sanitize_sql_for_conditions(current_user.id)}")
-        .where('announcement_views.announcement_id IS NULL AND announcement_views.user_id IS NULL')
+        .where(announcement_views: { announcement_id: nil, user_id: nil })
     end
   }
 

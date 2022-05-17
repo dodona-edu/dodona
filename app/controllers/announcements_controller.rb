@@ -1,5 +1,6 @@
 class AnnouncementsController < ApplicationController
   protect_from_forgery except: :index
+  before_action :set_announcement, except: %i[index new create]
 
   has_scope :unread, as: 'unread', type: :boolean do |controller, scope|
     scope.unread_by(controller.current_user)
@@ -11,8 +12,6 @@ class AnnouncementsController < ApplicationController
   end
 
   def mark_as_read
-    authorize Announcement
-    announcement = Announcement.find(params[:id].to_i)
     respond_to do |format|
       if announcement
         if AnnouncementView.where(user_id: current_user.id, announcement_id: announcement.id).first_or_create(user_id: current_user.id, announcement_id: announcement.id)
@@ -27,11 +26,7 @@ class AnnouncementsController < ApplicationController
     end
   end
 
-  def edit
-    authorize Announcement
-    @announcement = Announcement.find(params[:id])
-    authorize @announcement
-  end
+  def edit; end
 
   def new
     authorize Announcement
@@ -49,9 +44,6 @@ class AnnouncementsController < ApplicationController
   end
 
   def update
-    authorize Announcement
-    @announcement = Announcement.find(params[:id])
-    authorize @announcement
     if @announcement.update(permitted_attributes(@announcement))
       redirect_to action: :index
     else
@@ -62,5 +54,10 @@ class AnnouncementsController < ApplicationController
   def destroy
     Announcement.destroy(params[:id])
     redirect_to action: :index
+  end
+
+  def set_announcement
+    @announcement = Announcement.find(params[:id])
+    authorize @announcement
   end
 end

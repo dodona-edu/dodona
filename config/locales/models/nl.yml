@@ -197,5 +197,5 @@ nl:
           students: Studenten
           staff: Lesgevers
           zeus: Zeus
-        institution_id: Onderwijsinstelling id
+        institution_id: ID van onderwijsinstelling
         style: Bootstrap-stijl

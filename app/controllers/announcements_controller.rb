@@ -22,6 +22,7 @@ class AnnouncementsController < ApplicationController
   end
 
   def edit
+    @institutions = Institution.all
     @title = I18n.t('announcements.edit.title')
     @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.edit.title'), '#']]
   end
@@ -29,6 +30,7 @@ class AnnouncementsController < ApplicationController
   def new
     authorize Announcement
     @announcement = Announcement.new
+    @institutions = Institution.all
     @title = I18n.t('announcements.new.title')
     @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.new.title'), '#']]
   end

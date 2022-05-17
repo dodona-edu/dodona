@@ -67,7 +67,12 @@
       <%= f.label :institution_id %>
     </div>
     <div class="col-sm-9">
-      <%= f.number_field :institution_id, class: 'form-control' %>
+      <%= f.text_field :institution_id, class: 'form-control', list: 'institutions' %>
+      <datalist id="institutions">
+        <% @institutions.each do |institution| %>
+          <option value="<%= institution.id %>"><%= institution.name %></option>
+        <% end %>
+      </datalist>
     </div>
   </div>
 

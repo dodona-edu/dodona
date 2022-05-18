@@ -12,7 +12,7 @@
       <th class='status-icon'></th>
       <th class='type-icon'></th>
       <th><%= t "activities.index.activity_title" %></th>
-      <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+      <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
         <th class='count d-none d-sm-table-cell'>
           <% if @course %>
             <%= t "activities.index.class_progress" %>
@@ -69,7 +69,7 @@
           <% end %>
         </td>
 
-        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+        <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
           <td class="d-none d-sm-table-cell">
             <% if activity.exercise? %>
               <% if @course %>

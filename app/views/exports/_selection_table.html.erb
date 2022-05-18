@@ -8,7 +8,7 @@
       <th>
         <%= data[:table_header_type] %>
       </th>
-      <% if data[:is_series?] && (data[:item].progress_enabled || current_user&.course_admin?(data[:course]))%>
+      <% if data[:is_series?] && policy(data[:item]).show_progress? %>
         <th class='count d-none d-sm-table-cell'>
             <%= t "activities.index.class_progress" %>
         </th>
@@ -27,7 +27,7 @@
           <td>
             <span> <%= el.name %> </span>
           </td>
-          <% if data[:is_series?] && (data[:item].progress_enabled || current_user&.course_admin?(data[:course]))%>
+          <% if data[:is_series?] && policy(data[:item]).show_progress? %>
             <td class="d-none d-sm-table-cell">
               <%= render partial: 'application/progress_chart',
                   locals: {

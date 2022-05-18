@@ -17,88 +17,95 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to announcements_url
   end
 
-  def count_announcements(user)
-    sign_in user
-    get announcements_url, params: { unread: true }
-    response.body.scan(/<tr class="announcement">/).size
+  def announcement?(user = nil)
+    sign_in user if user.present?
+    get root_url
+    sign_out user if user.present?
+    response.body.scan(/class="announcement/).size == 1
   end
 
   test 'Mark as read should work' do
     student = create :student
+    assert announcement? student
     sign_in student
-    assert_equal 1, count_announcements(student)
     post mark_as_read_announcement_url @instance, format: :js
-    assert_equal 0, count_announcements(student)
+    assert_not announcement? student
   end
 
   test 'Students should only see announcements for their own institution' do
-    create :announcement, institution_id: 1
+    @instance.update institution_id: 1
     a = create :student, institution_id: 1
     b = create :student, institution_id: (create :institution).id
-    assert_equal 2, count_announcements(a)
-    assert_equal 1, count_announcements(b)
+    assert announcement? a
+    assert_not announcement? b
   end
 
   test 'Staff should only see announcements for their own institution' do
-    create :announcement, institution_id: 1
+    @instance.update institution_id: 1
     a = create :staff, institution_id: 1
     b = create :staff, institution_id: (create :institution).id
-    assert_equal 2, count_announcements(a)
-    assert_equal 1, count_announcements(b)
+    assert announcement? a
+    assert_not announcement? b
   end
 
   test 'Announcements should be filtered by user group' do
-    create :announcement, user_group: :all_users
     student = create :student
     staff = create :staff
     zeus = create :zeus
-    assert_equal 2, count_announcements(student)
-    assert_equal 2, count_announcements(staff)
-    assert_equal 2, count_announcements(zeus)
 
-    create :announcement, user_group: :students
-    assert_equal 3, count_announcements(student)
-    assert_equal 2, count_announcements(staff)
-    assert_equal 3, count_announcements(zeus)
+    @instance.update user_group: :everyone
+    assert announcement? student
+    assert announcement? staff
+    assert announcement? zeus
+    assert announcement?
 
-    create :announcement, user_group: :staff
-    assert_equal 3, count_announcements(student)
-    assert_equal 3, count_announcements(staff)
-    assert_equal 4, count_announcements(zeus)
+    @instance.update user_group: :all_users
+    assert announcement? student
+    assert announcement? staff
+    assert announcement? zeus
+    assert_not announcement?
 
-    create :announcement, user_group: :zeus
-    assert_equal 3, count_announcements(student)
-    assert_equal 3, count_announcements(staff)
-    assert_equal 5, count_announcements(zeus)
+    @instance.update user_group: :students
+    assert announcement? student
+    assert_not announcement? staff
+    assert announcement? zeus
+    assert_not announcement?
+
+    @instance.update user_group: :staff
+    assert_not announcement? student
+    assert announcement? staff
+    assert announcement? zeus
+    assert_not announcement?
+
+    @instance.update user_group: :zeus
+    assert_not announcement? student
+    assert_not announcement? staff
+    assert announcement? zeus
+    assert_not announcement?
   end
 
   test 'only active announcements should be shown' do
-    create :announcement, start_delivering_at: 1.day.ago
     student = create :student
-    assert_equal 2, count_announcements(student)
+    @instance.update start_delivering_at: 1.day.ago
+    assert announcement? student
 
-    create :announcement, start_delivering_at: 1.day.from_now
-    student = create :student
-    assert_equal 2, count_announcements(student)
+    @instance.update start_delivering_at: 1.day.from_now
+    assert_not announcement? student
 
-    create :announcement, stop_delivering_at: 1.day.from_now
-    student = create :student
-    assert_equal 3, count_announcements(student)
+    @instance.update start_delivering_at: nil
+    @instance.update stop_delivering_at: 1.day.from_now
+    assert announcement? student
 
-    create :announcement, stop_delivering_at: 1.day.ago
-    student = create :student
-    assert_equal 3, count_announcements(student)
+    @instance.update stop_delivering_at: 1.day.ago
+    assert_not announcement? student
 
-    create :announcement, start_delivering_at: 1.day.ago, stop_delivering_at: 1.day.from_now
-    student = create :student
-    assert_equal 4, count_announcements(student)
+    @instance.update start_delivering_at: 1.day.ago, stop_delivering_at: 1.day.from_now
+    assert announcement? student
 
-    create :announcement, start_delivering_at: 2.days.ago, stop_delivering_at: 1.day.ago
-    student = create :student
-    assert_equal 4, count_announcements(student)
+    @instance.update start_delivering_at: 2.days.ago, stop_delivering_at: 1.day.ago
+    assert_not announcement? student
 
-    create :announcement, start_delivering_at: 1.day.from_now, stop_delivering_at: 2.days.from_now
-    student = create :student
-    assert_equal 4, count_announcements(student)
+    @instance.update start_delivering_at: 1.day.from_now, stop_delivering_at: 2.days.from_now
+    assert_not announcement? student
   end
 end

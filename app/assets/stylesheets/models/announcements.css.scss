@@ -20,4 +20,10 @@
     border-bottom-color: $hairlinegray !important;
     width: 0
   }
+
+  .markdown-col {
+    max-width: 25vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
 }

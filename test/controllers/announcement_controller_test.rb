@@ -108,4 +108,18 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     @instance.update start_delivering_at: 1.day.from_now, stop_delivering_at: 2.days.from_now
     assert_not announcement? student
   end
+
+  test 'Reset read states on update should work' do
+    5.times do
+      student = create :student
+      sign_in student
+      post mark_as_read_announcement_url @instance, format: :js
+    end
+    assert_equal 5, @instance.announcement_views.count
+    sign_in create :zeus
+    put announcement_url @instance, announcement: { text_nl: 'a', text_en: 'b' }
+    assert_equal 5, @instance.announcement_views.count
+    put announcement_url @instance, announcement: { text_nl: 'a', text_en: 'b' }, reset_announcement_views: true
+    assert_equal 0, @instance.announcement_views.count
+  end
 end

@@ -24,7 +24,7 @@ class AnnouncementsController < ApplicationController
   def edit
     @institutions = Institution.all
     @title = I18n.t('announcements.edit.title')
-    @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.edit.title'), '#']]
+    @crumbs = [[I18n.t('announcements.index.title'), announcements_path], [I18n.t('announcements.edit.title'), '#']]
   end
 
   def new
@@ -32,7 +32,7 @@ class AnnouncementsController < ApplicationController
     @announcement = Announcement.new(style: :primary)
     @institutions = Institution.all
     @title = I18n.t('announcements.new.title')
-    @crumbs = [[I18n.t('announcements.index.title'), labels_path], [I18n.t('announcements.new.title'), '#']]
+    @crumbs = [[I18n.t('announcements.index.title'), announcements_path], [I18n.t('announcements.new.title'), '#']]
   end
 
   def create
@@ -47,6 +47,7 @@ class AnnouncementsController < ApplicationController
 
   def update
     if @announcement.update(permitted_attributes(@announcement))
+      @announcement.announcement_views.destroy_all if params[:reset_announcement_views].present?
       redirect_to action: :index
     else
       render :edit, status: :unprocessable_entity

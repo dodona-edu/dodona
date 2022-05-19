@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
-  before_action :set_announcement, unless: :remote_request?
+  before_action :set_unread_announcement, unless: :remote_request?
 
   impersonates :user
 
@@ -195,7 +195,7 @@ class ApplicationController < ActionController::Base
     @dot_icon = @unread_notifications.any? ? %i[notifications] : []
   end
 
-  def set_announcement
+  def set_unread_announcement
     @unread_announcement = AnnouncementPolicy::Scope.new(current_user, Announcement.all).resolve.unread_by(current_user).first
   end
 

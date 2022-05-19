@@ -15,6 +15,7 @@ class AnnouncementsController < ApplicationController
 
   def mark_as_read
     if @announcement.present? && AnnouncementView.where(user_id: current_user.id, announcement_id: @announcement.id).first_or_create(user_id: current_user.id, announcement_id: @announcement.id)
+      set_unread_announcement
       render :mark_as_read
     else
       render js: nil, status: :unprocessable_entity

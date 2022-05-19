@@ -1,1 +1,10 @@
-location.reload();
+(() => {
+    const activeAnnouncement = document.getElementById("active-announcement");
+    <% if @unread_announcement.present? %>
+        const template = document.createElement('template');
+        template.innerHTML = "<%= escape_javascript render(partial: 'announcement', locals: { announcement: @unread_announcement }) %>";
+        activeAnnouncement?.replaceWith(template.content.firstChild);
+    <% else %>
+        activeAnnouncement.remove();
+    <% end %>
+})();

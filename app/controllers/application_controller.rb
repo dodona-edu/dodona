@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
-  before_action :set_announcement
+  before_action :set_announcement, unless: :remote_request?
 
   impersonates :user
 

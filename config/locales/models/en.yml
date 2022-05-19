@@ -187,8 +187,8 @@ en:
       announcement:
         text_en: English announcement
         text_nl: Dutch announcement
-        start_delivering_at: Start delivering at
-        stop_delivering_at: Stop delivering at
+        start_delivering_at: Start showing at
+        stop_delivering_at: Stop showing at
         user_group: User group
         user_groups:
           everyone: Everyone

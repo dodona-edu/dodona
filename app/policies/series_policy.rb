@@ -129,6 +129,10 @@ class SeriesPolicy < ApplicationPolicy
     statistics?
   end
 
+  def show_progress?
+    record.instance_of?(Series) && (record.progress_enabled || course_admin?)
+  end
+
   private
 
   def course_member?

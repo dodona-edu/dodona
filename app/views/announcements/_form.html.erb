@@ -88,11 +88,12 @@
   <% if announcement.id.present? %>
     <div class="field form-group row">
       <div class="col-sm-3 col-form-label">
-        <label for="reset_announcement_views"><%= t ".reset_announcement_views" %></label>
+        <label for="reset_announcement_views" ><%= t ".reset" %></label>
       </div>
-      <div class="col-sm-9">
+      <div class="col-sm-9 pt-2">
         <div class="form-check">
-          <input id="reset_announcement_views" class="form-check-input" type="checkbox" name="reset_announcement_views">
+          <input id="reset_announcement_views" class="form-check-input" style="margin-top: 1px" type="checkbox" name="reset_announcement_views">
+          <label for="reset_announcement_views" class="form-check-label" ><%= t ".reset_announcement_views" %></label>
         </div>
       </div>
     </div>

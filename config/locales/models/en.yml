@@ -197,4 +197,5 @@ en:
           staff: Staff
           zeus: Zeus
         institution_id: Institution ID
+        institution: Institution
         style: Bootstrap style

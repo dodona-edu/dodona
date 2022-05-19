@@ -130,7 +130,7 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def show_progress?
-    record.instance_of?(Series) && (record&.progress_enabled || course_admin?)
+    record.instance_of?(Series) && (record.progress_enabled || course_admin?)
   end
 
   private

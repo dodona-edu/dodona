@@ -11,11 +11,12 @@
         <div class="col-sm-12">
           <%= render 'form', announcement: @announcement %>
           <% if policy(@announcement).destroy? %>
-            <hr/>
-            <%= link_to @announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn  btn-danger float-end" do %>
-              <i class="mdi mdi-delete mdi-18"></i>
-              <%= t ".destroy" %>
-            <% end %>
+            <div class="card-actions card-border">
+              <%= link_to @announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn  btn-danger float-end" do %>
+                <i class="mdi mdi-delete mdi-18"></i>
+                <%= t ".destroy" %>
+              <% end %>
+            </div>
           <% end %>
         </div>
       </div>

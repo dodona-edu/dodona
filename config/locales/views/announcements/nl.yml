@@ -7,7 +7,7 @@ nl:
       destroy: Definitief verwijderen
     form:
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
-      reset_announcement_views: "Toon deze aankondiging opnieuw aan gebruikers die hem al gelezen hebben"
+      reset_announcement_views: "Toon deze aankondiging opnieuw aan gebruikers die ze al gelezen hebben"
       reset: Reset
     index:
       title: Aankondigingen

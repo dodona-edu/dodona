@@ -12,7 +12,7 @@
           <%= render 'form', announcement: @announcement %>
           <% if policy(@announcement).destroy? %>
             <div class="card-actions card-border">
-              <%= link_to @announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn  btn-danger float-end" do %>
+              <%= link_to @announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn  btn-danger" do %>
                 <i class="mdi mdi-delete mdi-18"></i>
                 <%= t ".destroy" %>
               <% end %>

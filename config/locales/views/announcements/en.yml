@@ -12,6 +12,10 @@ en:
     index:
       title: Announcements
       new: Create new announcement
+      waiting: Scheduled
+      active: Active
+      stopped: Ended
+    announcement_table:
       start: Start
       stop: End
       number_of_reads: "#Reads"

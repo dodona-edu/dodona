@@ -9,6 +9,9 @@ class AnnouncementsController < ApplicationController
   def index
     authorize Announcement
     @announcements = apply_scopes(policy_scope(Announcement.all))
+    @waiting_announcements = @announcements.filter(&:waiting?)
+    @active_announcements = @announcements.filter(&:active?)
+    @stopped_announcements = @announcements.filter(&:stopped?)
     @title = I18n.t('announcements.index.title')
     @crumbs = [[I18n.t('announcements.index.title'), '#']]
   end

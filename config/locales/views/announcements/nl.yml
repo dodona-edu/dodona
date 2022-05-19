@@ -12,6 +12,10 @@ nl:
     index:
       title: Aankondigingen
       new: Nieuwe aankondiging maken
+      waiting: Gepland
+      active: Actief
+      stopped: Beëindigd
+    announcement_table:
       start: Start
       stop: Einde
       number_of_reads: "#Gelezen"

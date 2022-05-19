@@ -3,6 +3,12 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 
+/**
+ * This component represents an input field with a datalist with possible options for the input.
+ * The options have a label and a value.
+ * The label is used to match the user input, while the value is sent to the server.
+ * If the user input does not match any label, the value sent to the server wil be ""
+ */
 @customElement("dodona-datalist-input")
 export class DatalistInput extends ShadowlessLitElement {
     @property({ type: String })

@@ -5,6 +5,7 @@ en:
     edit:
       title: Edit announcement
       destroy: Remove permanently
+      save: Save
     form:
       markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.
       reset_announcement_views: "Show this announcement again to users who have already dismissed it"

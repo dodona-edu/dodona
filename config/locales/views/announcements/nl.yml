@@ -5,6 +5,7 @@ nl:
     edit:
       title: Aankondiging bewerken
       destroy: Definitief verwijderen
+      save: Opslaan
     form:
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
       reset_announcement_views: "Toon deze aankondiging opnieuw aan gebruikers die ze al gelezen hebben"

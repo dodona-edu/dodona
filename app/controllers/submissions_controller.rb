@@ -78,7 +78,7 @@ class SubmissionsController < ApplicationController
               end
     @submissions = @submissions.of_exercise(@submission.exercise)
     @submissions = @submissions.of_user(@submission.user)
-    @submissions = @submissions.in_course(course) if course.present?
+    @submissions = @submissions.in_course(course)
 
     @submissions_time_stamps = []
     prev = nil

@@ -142,6 +142,17 @@ class User < ApplicationRecord
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
       .reorder 'submissions.status': direction
   }
+  scope :order_by_submission_statuses_in_series, lambda { |direction, series|
+    submissions = Submission.in_series(series)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id, :exercise_id).most_recent
+    # Create columns for each status with the count of submissions that have that status
+    cols = Submission.statuses.map { |k, v| "COUNT(CASE WHEN status = #{v} THEN 1 END) AS #{k.parameterize(separator: '_')}" }
+    submissions = submissions.group(:user_id).select :user_id, cols
+    # Order by those status columns
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder Submission.statuses.keys.map { |k| "submissions.#{k.parameterize(separator: '_')} #{direction}" }.join(',')
+  }
   scope :order_by_solved_exercises_in_series, lambda { |direction, series|
     submissions = Submission.in_series(series)
     submissions = submissions.before_deadline(series.deadline) if series.deadline.present?

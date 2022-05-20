@@ -18,8 +18,12 @@ class SeriesController < ApplicationController
   has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
     column, direction = value
     if %w[ASC DESC].include?(direction)
-      if column == 'status_in_course_and_name'
+      case column
+      when 'status_in_course_and_name'
         scope.order_by_status_in_course_and_name direction
+      when 'submission_statuses_in_series'
+        series = Series.find(controller.params[:id])
+        scope.order_by_submission_statuses_in_series direction, series
       else
         series = Series.find(controller.params[:id])
         if series.activities.exists? id: column

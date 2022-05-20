@@ -207,12 +207,18 @@ class SeriesController < ApplicationController
 
     @submission_counts = Hash.new(0)
     @read_state_counts = Hash.new(0)
+    @summary_by_user = Hash.new(0)
+    @total = Hash.new(0)
     @users.each do |user|
       @activities.each do |activity|
         if activity.exercise? && @submissions[[user.id, activity.id]].present?
           @submission_counts[[activity.id, @submissions[[user.id, activity.id]].status]] += 1
+          @summary_by_user[[user.id, @submissions[[user.id, activity.id]].status]] += 1
+          @total[@submissions[[user.id, activity.id]].status] += 1
         elsif activity.content_page? && @read_states[[user.id, activity.id]].present?
           @read_state_counts[activity.id] += 1
+          @summary_by_user[[user.id, :correct]] += 1
+          @total[:correct] += 1
         end
       end
     end

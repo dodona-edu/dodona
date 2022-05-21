@@ -220,11 +220,14 @@ class CoursesController < ApplicationController
       scores = @course.scoresheet
       @users = apply_scopes(scores[:users])
       @series = scores[:series]
+
+      # this maps a [user_id, series_id] tuple to an object containing the number of accepted and started exercises
       @hash = scores[:hash]
 
-      @total = Hash.new(0)
-      @hash.each_with_object(@total) do |(key, val), total|
-        total[key[1]] += val[:accepted]
+      @histogram = {}
+      @series.each { |s| @histogram[s.id] = Array.new(s.activity_count + 1, 0) }
+      @hash.each do |(_, series_id), val|
+        @histogram[series_id][val[:accepted]] += 1
       end
     end
 

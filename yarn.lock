@@ -1068,10 +1068,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.3.6":
-  version "0.3.6"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.3.6.tgz#b9bfb3bb52546a2bae0b9f27fb665014c118fa53"
-  integrity sha512-SRgC4Cv+nnuq0+X0p+7pToJDPYtSX1WoR4KL4Xz8/8/Hqk+R0//CbnT07VQuQDOqL7imknlqZat4cGtQLczLDw==
+"@dodona/papyros@^0.3.7-scoped":
+  version "0.3.7-scoped"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.3.7-scoped.tgz#8a3c1471bcb6755cd9f947e3042e3bd4680c2da3"
+  integrity sha512-WhAYwSjJ7QFXdDPBcx47azdGM6OFXA36K4LJxrP18f8ZRkWGuFn8AsDx1MWw7Ejoe1MciRIUvxceZ5O4fxCIuQ==
   dependencies:
     "@codemirror/autocomplete" "^0.20.0"
     "@codemirror/commands" "^0.20.0"

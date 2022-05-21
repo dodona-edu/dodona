@@ -12,11 +12,12 @@ export class Histogram extends LitElement {
             align-items: flex-end;
             height: 100%;
             width: 100%;
+            border-bottom: 1px solid var(--dod-histo-axis, lightgray);
         }
         .bar {
             display: inline-block;
-            background: var(--bs-blue);
             width: 100%;
+            background: var(--dod-histo-bar, steelblue);
         }
     `;
 

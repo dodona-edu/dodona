@@ -14,7 +14,7 @@
     <tr class="summary-row">
       <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
       <% series.each do |s| %>
-        <td class="status" ><%= total[s.id] %></td>
+        <td class="status" ><dodona-histogram values="<%= histogram[s.id] %>"></dodona-histogram></td>
       <% end %>
     </tr>
     <% users.each do |student| %>

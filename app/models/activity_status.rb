@@ -33,8 +33,8 @@ class ActivityStatus < ApplicationRecord
 
   validates :series_id_non_nil, uniqueness: { scope: %i[user_id activity_id] }, on: :create
 
-  scope :in_series, ->(series) { where(series: series) }
-  scope :for_user, ->(user) { where(user: user) }
+  scope :in_series, ->(series) { where(series:) }
+  scope :for_user, ->(user) { where(user:) }
 
   before_validation :initialise_series_id_non_nil, if: -> { new_record? }
   before_create :initialise_values_for_content_page, if: -> { activity.content_page? }
@@ -56,21 +56,21 @@ class ActivityStatus < ApplicationRecord
 
   def self.add_status_for_series(series, eager = [])
     Current.status_store ||= {}
-    ActivityStatus.where(series: series).unscope(:order).includes(eager).find_each do |as|
+    ActivityStatus.where(series:).unscope(:order).includes(eager).find_each do |as|
       Current.status_store[[as.user_id, as.series_id, as.activity_id]] = as
     end
   end
 
   def self.add_status_for_user_and_series(user, series, eager = [])
     Current.status_store ||= {}
-    ActivityStatus.where(series: series, user: user).unscope(:order).includes(eager).find_each do |as|
+    ActivityStatus.where(series:, user:).unscope(:order).includes(eager).find_each do |as|
       Current.status_store[[as.user_id, as.series_id, as.activity_id]] = as
     end
   end
 
   def self.add_status_for_user_and_activities(user, activities, eager = [])
     Current.status_store ||= {}
-    ActivityStatus.where(activity: activities, user: user, series: nil).unscope(:order).includes(eager).find_each do |as|
+    ActivityStatus.where(activity: activities, user:, series: nil).unscope(:order).includes(eager).find_each do |as|
       Current.status_store[[as.user_id, nil, as.activity_id]] = as
     end
   end

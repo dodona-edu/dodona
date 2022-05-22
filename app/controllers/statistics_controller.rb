@@ -43,13 +43,13 @@ class StatisticsController < ApplicationController
     series = Series.find(params[:series_id])
     authorize series
 
-    result = Submission.send(visualisation, series: series)
+    result = Submission.send(visualisation, series:)
     if result.present?
       ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
       data = series.exercises.map { |ex| { ex_id: ex.id, ex_data: result[:value][ex.id] || [] } }
 
       render json: {
-        data: data,
+        data:,
         exercises: ex_data,
         student_count: series.course.enrolled_members.length,
         deadline: series.deadline

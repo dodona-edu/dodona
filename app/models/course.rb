@@ -160,7 +160,7 @@ class Course < ApplicationRecord
 
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
-  scope :by_institution, ->(institution) { where(institution: institution) }
+  scope :by_institution, ->(institution) { where(institution:) }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5
@@ -186,11 +186,11 @@ class Course < ApplicationRecord
   end
 
   def pending_series(user)
-    series.visible.select { |s| s.pending? && !s.completed?(user: user) }
+    series.visible.select { |s| s.pending? && !s.completed?(user:) }
   end
 
   def incomplete_series(user)
-    series.visible.reject { |s| s.completed?(user: user) }
+    series.visible.reject { |s| s.completed?(user:) }
   end
 
   def formatted_year
@@ -215,37 +215,37 @@ class Course < ApplicationRecord
   end
 
   def invalidate_subscribed_members_count_cache
-    Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
+    Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id:))
   end
 
   def subscribed_members_count
-    Rails.cache.fetch(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id)) do
+    Rails.cache.fetch(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id:)) do
       subscribed_members.count
     end
   end
 
   def activities_count
-    Rails.cache.fetch(format(ACTIVITIES_COUNT_CACHE_STRING, id: id)) do
+    Rails.cache.fetch(format(ACTIVITIES_COUNT_CACHE_STRING, id:)) do
       activities.count
     end
   end
 
   def content_pages_count
-    Rails.cache.fetch(format(CONTENT_PAGES_COUNT_CACHE_STRING, id: id)) do
+    Rails.cache.fetch(format(CONTENT_PAGES_COUNT_CACHE_STRING, id:)) do
       content_pages.count
     end
   end
 
   def exercises_count
-    Rails.cache.fetch(format(EXERCISES_COUNT_CACHE_STRING, id: id)) do
+    Rails.cache.fetch(format(EXERCISES_COUNT_CACHE_STRING, id:)) do
       exercises.count
     end
   end
 
   def invalidate_activities_count_cache
-    Rails.cache.delete(format(ACTIVITIES_COUNT_CACHE_STRING, id: id))
-    Rails.cache.delete(format(CONTENT_PAGES_COUNT_CACHE_STRING, id: id))
-    Rails.cache.delete(format(EXERCISES_COUNT_CACHE_STRING, id: id))
+    Rails.cache.delete(format(ACTIVITIES_COUNT_CACHE_STRING, id:))
+    Rails.cache.delete(format(CONTENT_PAGES_COUNT_CACHE_STRING, id:))
+    Rails.cache.delete(format(EXERCISES_COUNT_CACHE_STRING, id:))
   end
 
   def correct_solutions(_options = {})
@@ -304,7 +304,7 @@ class Course < ApplicationRecord
     {
       users: sorted_users,
       series: sorted_series,
-      hash: hash
+      hash:
     }
   end
 
@@ -321,7 +321,7 @@ class Course < ApplicationRecord
         csv << [cm.user.id, cm.user.username, cm.user.last_name, cm.user.first_name, cm.user.email, cm.course_labels.map(&:name).join(';')]
       end
     end
-    { filename: "#{name}-users-labels.csv", data: data }
+    { filename: "#{name}-users-labels.csv", data: }
   end
 
   def self.format_year(year)

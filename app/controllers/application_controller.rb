@@ -173,8 +173,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def user_time_zone(&block)
-    Time.use_zone(current_user.time_zone, &block)
+  def user_time_zone(&)
+    Time.use_zone(current_user.time_zone, &)
   end
 
   def set_time_zone_offset

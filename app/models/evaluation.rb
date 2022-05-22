@@ -78,9 +78,9 @@ class Evaluation < ApplicationRecord
 
     {
       evaluation_exercises: eval_exercises,
-      exercises: exercises,
+      exercises:,
       feedbacks: fbs,
-      totals: totals
+      totals:
     }
   end
 
@@ -107,7 +107,7 @@ class Evaluation < ApplicationRecord
       e.update!(visible_score: visible)
     end
     score_items.each do |s|
-      s.update!(visible: visible)
+      s.update!(visible:)
     end
   end
 

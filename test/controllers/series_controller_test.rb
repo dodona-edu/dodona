@@ -231,9 +231,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
   def assert_show_and_overview(authorized, token: nil)
     response = authorized ? :success : :redirect
-    get series_url(@series, token: token)
+    get series_url(@series, token:)
     assert_response response
-    get overview_series_url(@series, token: token)
+    get overview_series_url(@series, token:)
     assert_response response
   end
 

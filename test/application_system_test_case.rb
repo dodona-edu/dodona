@@ -16,7 +16,7 @@ Capybara.register_driver :chrome do |app|
   client.read_timeout = 120 # instead of the default 60 end
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 options: options, http_client: client)
+                                 options:, http_client: client)
 end
 
 Capybara.configure do |config|

@@ -43,8 +43,8 @@ class ActivityStatusTest < ActiveSupport::TestCase
   test 'should not be able to create two activity_statuses with series_id nil' do
     activity = exercises(:python_exercise)
     user = users(:student)
-    ActivityStatus.create(user: user, activity: activity, series: nil)
-    ActivityStatus.create(user: user, activity: activity, series: nil)
+    ActivityStatus.create(user:, activity:, series: nil)
+    ActivityStatus.create(user:, activity:, series: nil)
     assert_equal 1, ActivityStatus.count
   end
 end

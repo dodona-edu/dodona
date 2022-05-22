@@ -17,4 +17,4 @@ elsif activity.content_page?
   json.has_read activity.solved_for?(current_user, series) if current_user
 end
 json.description_url description_activity_url(activity, token: activity.access_token)
-json.url activity_scoped_url(activity: activity, series: series, course: course, options: { format: :json })
+json.url activity_scoped_url(activity:, series:, course:, options: { format: :json })

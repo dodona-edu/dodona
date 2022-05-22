@@ -116,7 +116,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'correct',
       description: summary
     }
-    assert_submission status: 'correct', summary: summary, accepted: true
+    assert_submission status: 'correct', summary:, accepted: true
   end
 
   test 'compilation error should not be accepted' do
@@ -126,7 +126,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'compilation error',
       description: summary
     }
-    assert_submission status: 'compilation error', summary: summary, accepted: false
+    assert_submission status: 'compilation error', summary:, accepted: false
   end
 
   test 'runtime error should not be accepted' do
@@ -136,7 +136,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'runtime error',
       description: summary
     }
-    assert_submission status: 'runtime error', summary: summary, accepted: false
+    assert_submission status: 'runtime error', summary:, accepted: false
   end
 
   test 'docker container should be deleted after use' do
@@ -205,7 +205,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
     @submission.evaluate
 
-    assert_submission status: 'correct', summary: summary, accepted: true
+    assert_submission status: 'correct', summary:, accepted: true
   end
 
   test 'random errors should be caught' do

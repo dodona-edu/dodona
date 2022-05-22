@@ -29,8 +29,8 @@ class Annotation < ApplicationRecord
                                          greater_than_or_equal_to: 0
                                        }, if: ->(attr) { attr.line_nr.present? }
 
-  scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
-  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  scope :by_submission, ->(submission_id) { where(submission_id:) }
+  scope :by_user, ->(user_id) { where(user_id:) }
   scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }

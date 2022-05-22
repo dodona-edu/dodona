@@ -184,7 +184,7 @@ class CsvDiffer
           title = I18n.t('submissions.show.expected')
         end
         builder.tr do
-          builder.th(class: 'line-nr', title: title) do
+          builder.th(class: 'line-nr', title:) do
             builder.i(class: %(mdi mdi-18 #{icon_cls}))
           end
           builder.th(title, colspan: headers.length)

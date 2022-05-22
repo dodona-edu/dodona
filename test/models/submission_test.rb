@@ -260,32 +260,32 @@ class SubmissionTest < ActiveSupport::TestCase
     temp = users(:student)
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
-    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
-    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: }
+    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, user:)[:value].values.sum
   end
 
   test 'user option should work for heatmap' do
     temp = users(:student)
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
-    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
-    assert_equal 3, Submission.old_heatmap_matrix(user: user)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: }
+    assert_equal 3, Submission.old_heatmap_matrix(user:)[:value].values.sum
   end
 
   test 'course option should work for punchcard' do
     temp = courses(:course1)
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
-    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: }
+    assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course:)[:value].values.sum
   end
 
   test 'course option should work for heatmap' do
     temp = courses(:course1)
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
-    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
-    assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
+    3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: }
+    assert_equal 3, Submission.old_heatmap_matrix(course:)[:value].values.sum
   end
 
   test 'update to internal error should send exception notification' do
@@ -382,10 +382,10 @@ class SubmissionTest < ActiveSupport::TestCase
       3.times do
         user = create :student, subscribed_courses: [@course]
         2.times do
-          create :submission, user: user, exercise: @exercise, status: :correct, course: @course, created_at: @date
+          create :submission, user:, exercise: @exercise, status: :correct, course: @course, created_at: @date
         end
         3.times do
-          create :submission, user: user, exercise: @exercise, status: :wrong, course: @course, created_at: @date
+          create :submission, user:, exercise: @exercise, status: :wrong, course: @course, created_at: @date
         end
       end
     end
@@ -418,19 +418,19 @@ class SubmissionTest < ActiveSupport::TestCase
       series = create :series, exercises: [exercise], course: @course
 
       # violin
-      result = Submission.violin_matrix(course: @course, series: series)[:value]
+      result = Submission.violin_matrix(course: @course, series:)[:value]
       assert_equal result.length, 0
 
       # stacked
-      result = Submission.stacked_status_matrix(course: @course, series: series)[:value]
+      result = Submission.stacked_status_matrix(course: @course, series:)[:value]
       assert_equal result.length, 0
 
       # time series
-      result = Submission.timeseries_matrix(course: @course, series: series)[:value]
+      result = Submission.timeseries_matrix(course: @course, series:)[:value]
       assert_equal result.length, 0
 
       # ctimeseries
-      result = Submission.cumulative_timeseries_matrix(course: @course, series: series)[:value]
+      result = Submission.cumulative_timeseries_matrix(course: @course, series:)[:value]
       assert_equal result.length, 0
     end
 

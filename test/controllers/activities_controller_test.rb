@@ -199,7 +199,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   test 'should get activities filtered by judge' do
     judge = @instance.judge
     get activities_url(format: :json, judge_id: judge.id)
-    assert_equal Activity.where(judge: judge).count, JSON.parse(response.body).count
+    assert_equal Activity.where(judge:).count, JSON.parse(response.body).count
     assert_equal @instance.id, JSON.parse(response.body)[0]['id']
 
     get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
@@ -278,7 +278,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     result_exercises = JSON.parse response.body
     assert_equal 0, result_exercises.count, 'should not contain exercises'
 
-    @instance.update(programming_language: programming_language)
+    @instance.update(programming_language:)
 
     get available_activities_series_url(series, programming_language: programming_language.name, format: :json)
 
@@ -463,7 +463,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     instance = create :exercise, access: 'private'
     course = create :course, visibility: :hidden, registration: :closed
     sign_in users(:zeus)
-    (create :series, course: course).exercises << instance
+    (create :series, course:).exercises << instance
     get course_activity_path(course, instance)
     assert_response :success
   end

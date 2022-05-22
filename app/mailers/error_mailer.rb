@@ -3,7 +3,7 @@ class ErrorMailer < ApplicationMailer
 
   def json_error(error, user: nil, name: nil, email: nil)
     @error = error
-    @user = user || User.find_by(email: email)
+    @user = user || User.find_by(email:)
 
     if @user
       @name = @user.full_name

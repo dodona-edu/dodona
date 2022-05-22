@@ -102,14 +102,14 @@ module ApplicationHelper
       title: options.delete(:title),
       icon: options.delete(:icon),
       custom_icon_name: options.delete(:custom_icon),
-      url: url,
+      url:,
       link_options: options
     }
 
-    render partial: 'navbar_link', locals: locals
+    render partial: 'navbar_link', locals:
   end
 
-  def activatable_link_to(url, options = nil, &block)
+  def activatable_link_to(url, options = nil, &)
     if current_page?(url)
       options ||= {}
       if options[:class]
@@ -118,7 +118,7 @@ module ApplicationHelper
         options[:class] = 'active'
       end
     end
-    link_to url, options, &block
+    link_to(url, options, &)
   end
 
   def clipboard_button_for(selector)
@@ -275,9 +275,9 @@ module ApplicationHelper
   # rubocop:disable Metrics/ParameterLists
   def page_navigation_links(pages, remote = false, controller = '', params = {}, action = 'index', param_name = 'page')
     if remote
-      will_paginate(pages, param_name: param_name, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller: controller, action: action, format: nil }.merge(params))
+      will_paginate(pages, param_name:, class: 'pagination', inner_window: 2, outer_window: 0, renderer: AjaxLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { controller:, action:, format: nil }.merge(params))
     else
-      will_paginate(pages, param_name: param_name, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { format: nil }.merge(params))
+      will_paginate(pages, param_name:, class: 'pagination', inner_window: 2, outer_window: 0, renderer: BootstrapLinkRenderer, previous_label: '&larr;'.html_safe, next_label: '&rarr;'.html_safe, params: { format: nil }.merge(params))
     end
   end
   # rubocop:enable Metrics/ParameterLists

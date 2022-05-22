@@ -37,7 +37,7 @@ class ActivityReadState < ApplicationRecord
     end.reduce(&:merge)
   }
 
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id:).by_course_labels(labels).map(&:user)) }
 
   def invalidate_caches
     activity.invalidate_delayed_users_read
@@ -50,18 +50,18 @@ class ActivityReadState < ApplicationRecord
     # Invalidate the completion status of this activity, for every series in
     # the current course that contains this activity, for the current user.
     # Afterwards, invalidate the completion status of the series itself as well.
-    activity.series.where(course_id: course_id).find_each do |act_series|
-      act_series.invalidate_completed?(user: user)
-      act_series.invalidate_completed?(deadline: act_series.deadline, user: user)
-      act_series.invalidate_started?(user: user)
-      act_series.invalidate_wrong?(user: user)
+    activity.series.where(course_id:).find_each do |act_series|
+      act_series.invalidate_completed?(user:)
+      act_series.invalidate_completed?(deadline: act_series.deadline, user:)
+      act_series.invalidate_started?(user:)
+      act_series.invalidate_wrong?(user:)
     end
 
     # Invalidate other statistics.
-    activity.invalidate_delayed_users_read(course: course)
+    activity.invalidate_delayed_users_read(course:)
     course.invalidate_delayed_correct_solutions
-    user.invalidate_attempted_exercises(course: course)
-    user.invalidate_correct_exercises(course: course)
+    user.invalidate_attempted_exercises(course:)
+    user.invalidate_correct_exercises(course:)
   end
 
   def activity_accessible_for_user?

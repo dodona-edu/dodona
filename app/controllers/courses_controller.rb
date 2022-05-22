@@ -267,7 +267,7 @@ class CoursesController < ApplicationController
           end
         end
         filename = "course-#{@course.name.parameterize}.csv"
-        send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+        send_data(sheet, type: 'text/csv', filename:, disposition: 'attachment', x_sendfile: true)
       end
     end
   end
@@ -292,7 +292,7 @@ class CoursesController < ApplicationController
     @title = if count == 0
                I18n.t('courses.questions.questions.title')
              else
-               I18n.t('courses.questions.questions.page_title', count: count)
+               I18n.t('courses.questions.questions.page_title', count:)
              end
     @dot_icon.push(:questions) if @unanswered.any?
   end
@@ -304,10 +304,10 @@ class CoursesController < ApplicationController
         toast = t('controllers.updated', model: CourseMembership.model_name.human)
         format.html { redirect_back fallback_location: root_url, notice: toast }
         format.json { head :ok }
-        format.js { render 'reload_users', locals: { toast: toast } }
+        format.js { render 'reload_users', locals: { toast: } }
       else
         alert = t('controllers.update_failed', model: CourseMembership.model_name.human)
-        format.html { redirect_back(fallback_location: root_url, alert: alert) }
+        format.html { redirect_back(fallback_location: root_url, alert:) }
         format.json { head :unprocessable_entity }
         format.js { render 'reload_users', locals: { toast: alert } }
       end
@@ -467,7 +467,7 @@ class CoursesController < ApplicationController
     user = current_user
 
     if @current_membership.present?
-      @current_membership.update(status: status)
+      @current_membership.update(status:)
     else
       membership = CourseMembership.new course: @course,
                                         status: status,
@@ -485,16 +485,16 @@ class CoursesController < ApplicationController
   end
 
   def update_membership_status_for(user, status)
-    membership = CourseMembership.where(user: user, course: @course).first
+    membership = CourseMembership.where(user:, course: @course).first
     return false unless membership
 
     authorize @course, :update_course_admin_membership? if membership.course_admin? && user != current_user
     authorize @course, :update_course_admin_membership? if status == 'course_admin'
 
-    membership.update(status: status).tap do |success|
+    membership.update(status:).tap do |success|
       if success && membership.unsubscribed?
         membership.favorite = false
-        membership.destroy if @course.submissions.where(user: user).empty?
+        membership.destroy if @course.submissions.where(user:).empty?
       end
     end
   end

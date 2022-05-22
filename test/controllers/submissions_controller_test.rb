@@ -77,9 +77,9 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     u1 = users(:student)
     u2 = users(:staff)
     course = courses(:course1)
-    cm = CourseMembership.create(user: u1, course: course, status: :student)
-    CourseMembership.create(user: u2, course: course, status: :student)
-    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
+    cm = CourseMembership.create(user: u1, course:, status: :student)
+    CourseMembership.create(user: u2, course:, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course:)
     create :submission, status: :correct, user: u1, course: course
     create :submission, status: :wrong, user: u2, course: course
     get course_submissions_url course, params: { course_labels: ['test'], format: :json }
@@ -92,9 +92,9 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     u2 = users(:staff)
     sign_in u2
     course = courses(:course1)
-    cm = CourseMembership.create(user: u1, course: course, status: :student)
-    CourseMembership.create(user: u2, course: course, status: :student)
-    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
+    cm = CourseMembership.create(user: u1, course:, status: :student)
+    CourseMembership.create(user: u2, course:, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course:)
     create :submission, status: :correct, user: u1, course: course
     create :submission, status: :wrong, user: u2, course: course
 

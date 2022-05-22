@@ -142,10 +142,10 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     course_admin = create :user
     course_admin.update(administrating_courses: [course])
 
-    create :annotation, user: user, submission: (create :submission, user: user, course: course)
-    create :annotation, user: user, submission: (create :submission, user: user, course: course)
-    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
-    create :annotation, user: other_user, submission: (create :submission, user: other_user, course: course)
+    create :annotation, user: user, submission: (create :submission, user:, course:)
+    create :annotation, user: user, submission: (create :submission, user:, course:)
+    create :annotation, user: user, submission: (create :submission, user:, course: create(:course))
+    create :annotation, user: other_user, submission: (create :submission, user: other_user, course:)
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json)
@@ -164,9 +164,9 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     user = users(:student)
     other_user = create :user
 
-    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
-    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
-    create :annotation, user: user, submission: (create :submission, user: user, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user:, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user:, course: create(:course))
+    create :annotation, user: user, submission: (create :submission, user:, course: create(:course))
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 

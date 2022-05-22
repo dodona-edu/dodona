@@ -179,24 +179,24 @@ class CourseTest < ActiveSupport::TestCase
             expected_accepted[[u.id, series.id]] += 1
           when 2 # Wrong submission after deadline
             create :wrong_submission,
-                   exercise: exercise,
+                   exercise:,
                    user: u,
                    created_at: (deadline + 2.minutes),
-                   course: course
+                   course:
           when 3 # Correct submission after deadline
             create :correct_submission,
-                   exercise: exercise,
+                   exercise:,
                    user: u,
                    created_at: (deadline + 2.minutes),
-                   course: course
+                   course:
           when 4 # Correct submission before deadline not in course
             create :correct_submission,
-                   exercise: exercise,
+                   exercise:,
                    user: u,
                    created_at: (deadline - 2.minutes)
           when 5 # Correct submission after deadline not in course
             create :correct_submission,
-                   exercise: exercise,
+                   exercise:,
                    user: u,
                    created_at: (deadline + 2.minutes)
           end
@@ -210,7 +210,7 @@ class CourseTest < ActiveSupport::TestCase
             expected_started[[u.id, series.id]] += 1
             expected_accepted[[u.id, series.id]] += 1
           else
-            create :activity_read_state, activity: cp, user: u, course: course, created_at: (deadline + 2.minutes)
+            create :activity_read_state, activity: cp, user: u, course:, created_at: (deadline + 2.minutes)
           end
         end
       end

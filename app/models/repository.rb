@@ -205,7 +205,7 @@ class Repository < ApplicationRecord
     end
 
     labels = config['labels']&.map do |name|
-      Label.find_by(name: name) || Label.create(name: name)
+      Label.find_by(name:) || Label.create(name:)
     end || []
 
     act.access = Activity.convert_visibility_to_access(config['visibility']) if config['visibility']

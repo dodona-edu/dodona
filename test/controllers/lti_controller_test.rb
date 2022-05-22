@@ -23,7 +23,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     id_token = encode_jwt(payload)
 
     get content_selection_path, params: {
-      id_token: id_token,
+      id_token:,
       provider_id: @provider.id
     }
 
@@ -77,7 +77,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
       end
     end
 
-    get course_path course, id_token: id_token, provider_id: @provider.id
+    get course_path course, id_token:, provider_id: @provider.id
     assert_response :ok
     assert_not_empty flash[:error]
 
@@ -138,7 +138,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     # The LTI platform says OK, do the callback.
     # Described in section 5.1.1.3 of the IMS Security Framework
     post user_lti_omniauth_callback_path, params: {
-      id_token: id_token,
+      id_token:,
       state: params[:state]
     }
 
@@ -167,7 +167,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     id_token = encode_jwt(payload)
 
     post user_lti_omniauth_callback_path, params: {
-      id_token: id_token,
+      id_token:,
       state: params[:state]
     }
 

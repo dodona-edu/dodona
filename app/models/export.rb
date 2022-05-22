@@ -23,9 +23,9 @@ class Export < ApplicationRecord
 
   def start(item, list, users, params)
     bundle = Zipper.new(
-      item: item,
-      users: users,
-      list: list,
+      item:,
+      users:,
+      list:,
       options: params,
       for_user: user
     ).bundle
@@ -38,7 +38,7 @@ class Export < ApplicationRecord
     )
 
     delay(queue: 'cleaning', run_at: AUTOMATICALLY_DELETE_AFTER.from_now).destroy
-    notification = Notification.new(user: user, message: 'exports.index.ready_for_download')
-    update(status: :finished, notification: notification)
+    notification = Notification.new(user:, message: 'exports.index.ready_for_download')
+    update(status: :finished, notification:)
   end
 end

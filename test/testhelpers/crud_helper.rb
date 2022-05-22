@@ -88,7 +88,7 @@ module CRUDHelper
   # is increased by one.
   def create_request_expect(attr_hash: nil)
     assert_difference("#{model}.count", +1, "#{model} was not created") do
-      create_request attr_hash: attr_hash
+      create_request attr_hash:
     end
     last_created
   end
@@ -102,7 +102,7 @@ module CRUDHelper
 
   def should_set_attributes_on_create
     assert_produces_object_with_attributes do |attr_hash|
-      create_request_expect attr_hash: attr_hash
+      create_request_expect attr_hash:
     end
   end
 
@@ -125,7 +125,7 @@ module CRUDHelper
 
   def should_set_attributes_on_update
     assert_produces_object_with_attributes do |attr_hash|
-      update_request_expect attr_hash: attr_hash
+      update_request_expect attr_hash:
     end
   end
 

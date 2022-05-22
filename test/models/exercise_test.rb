@@ -213,26 +213,26 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 1, e.users_tried(course: course2)
 
     users_c1.each do |user|
-      create :submission, user: user, course: course1, exercise: e, status: :wrong
+      create :submission, user:, course: course1, exercise: e, status: :wrong
     end
     assert_equal 5, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c2.each do |user|
-      create :submission, user: user, course: course2, exercise: e, status: :wrong
+      create :submission, user:, course: course2, exercise: e, status: :wrong
     end
     assert_equal 7, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
-      create :submission, user: user, exercise: e, status: :wrong
+      create :submission, user:, exercise: e, status: :wrong
     end
     assert_equal 9, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
-      create :submission, user: user, exercise: e, status: :running
+      create :submission, user:, exercise: e, status: :running
     end
     assert_equal 9, e.users_tried
     assert_equal 3, e.users_tried(course: course1)

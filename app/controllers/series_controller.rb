@@ -78,7 +78,7 @@ class SeriesController < ApplicationController
   def new
     course = Course.find(params[:course_id])
     authorize course, :add_series?
-    @series = Series.new(course: course)
+    @series = Series.new(course:)
     @title = I18n.t('series.new.title')
     @crumbs = [[course.name, course_path(course)], [I18n.t('series.new.title'), '#']]
   end
@@ -153,8 +153,8 @@ class SeriesController < ApplicationController
     render partial: 'application/token_field', locals: {
       container_name: :access_token_field,
       name: type,
-      value: value,
-      reset_url: reset_token_series_path(@series, type: type)
+      value:,
+      reset_url: reset_token_series_path(@series, type:)
     }
   end
 
@@ -167,10 +167,10 @@ class SeriesController < ApplicationController
     elsif email.blank?
       render json: { errors: ['No email given'] }, status: :unprocessable_entity
     else
-      user = User.find_by(email: email)
+      user = User.find_by(email:)
       if user
         options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
-        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options: options, for_user: user).bundle
+        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options:, for_user: user).bundle
       else
         render json: { errors: ['Unknown email'] }, status: :not_found
       end
@@ -273,7 +273,7 @@ class SeriesController < ApplicationController
           end
         end
         filename = "scoresheet-#{@series.name.parameterize}.csv"
-        send_data(sheet, type: 'text/csv', filename: filename, disposition: 'attachment', x_sendfile: true)
+        send_data(sheet, type: 'text/csv', filename:, disposition: 'attachment', x_sendfile: true)
       end
     end
   end

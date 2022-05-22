@@ -561,8 +561,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     institution = create :institution
     user.institution = institution
     user.save
-    c1.update(institution: institution)
-    c2.update(institution: institution)
+    c1.update(institution:)
+    c2.update(institution:)
     sign_in user
 
     # all courses
@@ -624,7 +624,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
 
     post favorite_course_url(@course)
-    assert CourseMembership.find_by(user: user, course: @course).favorite
+    assert CourseMembership.find_by(user:, course: @course).favorite
   end
 
   test 'users should be able to unfavorite favorited courses' do
@@ -634,7 +634,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post favorite_course_url(@course)
     post unfavorite_course_url(@course)
-    assert_not CourseMembership.find_by(user: user, course: @course).favorite
+    assert_not CourseMembership.find_by(user:, course: @course).favorite
   end
 
   test 'users should not be able to favorite unsubscribed courses' do

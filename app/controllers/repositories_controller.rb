@@ -196,13 +196,13 @@ class RepositoriesController < ApplicationController
       if success
         toast = t('controllers.updated', model: model.model_name.human)
         format.json { head :no_content }
-        format.js { render locals: { toast: toast } }
+        format.js { render locals: { toast: } }
         format.html { redirect_back fallback_location: return_path, notice: toast }
       else
         alert = t('controllers.update_failed', model: model.model_name.human)
         format.json { head :unprocessable_entity }
         format.js { render status: :bad_request, locals: { toast: alert } }
-        format.html { redirect_back fallback_location: return_path, alert: alert }
+        format.html { redirect_back fallback_location: return_path, alert: }
       end
     end
   end

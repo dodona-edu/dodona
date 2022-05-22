@@ -143,9 +143,6 @@ gem 'ddtrace', '~> 1.0.0'
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.0'
 
-# Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
-gem 'io-wait', '~> 0.2.0'
-
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.14.0'

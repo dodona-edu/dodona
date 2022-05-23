@@ -342,6 +342,21 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [u3.id, u2.id, u1.id], User.in_course(c).order_by_exercise_submission_status_in_series('DESC', e, s).pluck(:id)
   end
 
+  test 'should be able to order by activity_read_state in series' do
+    c = create :course
+    s = create :series, course: c
+    a = create :content_page
+    SeriesMembership.create series: s, activity: a
+    u1 = create :user
+    CourseMembership.create user: u1, course: c, status: 'student'
+    u2 = create :user
+    CourseMembership.create user: u2, course: c, status: 'student'
+    create :activity_read_state, user: u2, course: c, activity: a
+
+    assert_equal [u1.id, u2.id], User.in_course(c).order_by_activity_read_state_in_series('ASC', a, s).pluck(:id)
+    assert_equal [u2.id, u1.id], User.in_course(c).order_by_activity_read_state_in_series('DESC', a, s).pluck(:id)
+  end
+
   test 'should be able to order by solved exercises in series' do
     c = create :course
     s = create :series, course: c

@@ -142,6 +142,12 @@ class User < ApplicationRecord
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
       .reorder 'submissions.status': direction
   }
+  scope :order_by_activity_read_state_in_series, lambda { |direction, content_page, series|
+    read_states = ActivityReadState.in_series(series).of_content_page(content_page)
+    read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+    joins("LEFT JOIN (#{read_states.to_sql}) read_states ON read_states.user_id = users.id")
+      .reorder 'read_states.id': direction
+  }
   scope :order_by_solved_exercises_in_series, lambda { |direction, series|
     submissions = Submission.in_series(series)
     submissions = submissions.before_deadline(series.deadline) if series.deadline.present?

@@ -145,9 +145,13 @@ class User < ApplicationRecord
   scope :order_by_solved_exercises_in_series, lambda { |direction, series|
     submissions = Submission.in_series(series)
     submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
-    submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.group(:user_id).select(:user_id, 'COUNT(*) AS count')
-    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
-      .reorder 'submissions.count': direction
+    submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.select(:user_id)
+    read_states = ActivityReadState.in_series(series)
+    read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+    read_states = read_states.select(:user_id)
+    combined_sql = "(SELECT user_id, COUNT(*) AS count FROM ((#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})) AS c GROUP BY user_id)"
+    joins("LEFT JOIN #{combined_sql} c ON c.user_id = users.id")
+      .reorder 'c.count': direction
   }
   scope :order_by_progress, lambda { |direction, course = nil|
     submissions = Submission.judged

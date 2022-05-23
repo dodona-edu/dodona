@@ -35,7 +35,7 @@
     "jquery": "^3.6.0",
     "lit": "2.2.3",
     "moment": "^2.29.3",
-    "sass": "^1.51.0",
+    "sass": "^1.52.1",
     "typeahead.js": "^0.11.1",
     "typescript": "^4.6.4",
     "webpack": "^5.72.1",

@@ -221,8 +221,8 @@ class SeriesController < ApplicationController
           @total[@submissions[[user.id, activity.id]].status] += 1
         elsif activity.content_page? && @read_states[[user.id, activity.id]].present?
           @read_state_counts[activity.id] += 1
-          @summary_by_user[[user.id, :correct]] += 1
-          @total[:correct] += 1
+          @summary_by_user[[user.id, 'correct']] += 1
+          @total['correct'] += 1
         end
       end
     end

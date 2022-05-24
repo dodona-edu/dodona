@@ -10,6 +10,8 @@ en:
       hide_activities: "Hide learning activities"
       hide_activities_help: "Hiding learning activities will only show the description for this series. Teachers can use this setting to release the course material for a series early while holding back the exercises and reading activities."
       advanced_settings: Advanced settings
+      activity_numbers_enabled: "Number activities"
+      activity_numbers_enabled_help: "Every activity gets a sequential number starting at 1. This number will be displayed titles and listings and can simplify communicating about those activities."
     index:
       title: All series
       load_more: Load more series

@@ -159,9 +159,9 @@ class User < ApplicationRecord
       read_states = ActivityReadState.in_series(series)
       read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
       read_states = read_states.select(:user_id)
-      "(SELECT user_id, COUNT(*) AS count FROM ((#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})) AS c GROUP BY user_id)"
+      "(#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})"
     end
-    combined_sql = "(SELECT user_id, SUM(count) AS count FROM (#{combined_sql.join(' UNION ALL ')}) AS c GROUP BY user_id)"
+    combined_sql = "(SELECT user_id, COUNT(*) AS count FROM (#{combined_sql.join(' UNION ALL ')}) AS c GROUP BY user_id)"
     joins("LEFT JOIN #{combined_sql} c ON c.user_id = users.id")
       .reorder 'c.count': direction
   }

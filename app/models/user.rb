@@ -314,6 +314,12 @@ class User < ApplicationRecord
     find_by(email: email, institution_id: institution_id)
   end
 
+  def self.from_username_and_institution(username, institution_id)
+    return nil if username.blank? || institution_id.nil?
+
+    find_by(username: username, institution_id: institution_id)
+  end
+
   def set_search
     self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end

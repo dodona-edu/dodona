@@ -224,7 +224,7 @@ class CoursesController < ApplicationController
       @series = scores[:series]
       @hash = scores[:hash]
 
-      @total_activity_count = @series.sum{|s| s.activity_count}
+      @total_activity_count = @series.sum(&:activity_count)
       @total_by_user = Hash.new(0)
       @users.each do |u|
         @series.each do |s|

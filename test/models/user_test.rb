@@ -406,8 +406,6 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [u5.id, u4.id, u3.id, u2.id, u1.id], User.in_course(c).order_by_solved_exercises_in_course('DESC', c).pluck(:id)
   end
 
-
-
   test 'should be able to order by progress' do
     User.destroy_all
     c = create :course

@@ -1,5 +1,4 @@
 class AnnouncementsController < ApplicationController
-  protect_from_forgery except: :index
   before_action :set_announcement, except: %i[index new create]
 
   has_scope :unread, as: 'unread', type: :boolean do |controller, scope|

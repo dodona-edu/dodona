@@ -225,9 +225,12 @@ class CoursesController < ApplicationController
       @hash = scores[:hash]
 
       @histogram = {}
-      @series.each { |s| @histogram[s.id] = Array.new(s.activity_count + 1, 0) }
-      @hash.each do |(_, series_id), val|
-        @histogram[series_id][val[:accepted]] += 1
+      @series.each do |s|
+        @histogram[s.id] = Array.new(s.activity_count + 1, 0)
+        @users.each do |u|
+          value = @hash[[u.id, s.id]]
+          @histogram[s.id][value[:accepted]] += 1 if value
+        end
       end
     end
 

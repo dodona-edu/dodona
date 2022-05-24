@@ -239,6 +239,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def flash_wrong_provider(tried_provider, user_provider)
     set_flash_message :alert, :wrong_provider,
+                      tried_email_address: auth_email,
                       tried_provider_type: tried_provider.class.sym.to_s,
                       tried_provider_institution: tried_provider.institution.name,
                       user_provider_type: user_provider.class.sym.to_s,

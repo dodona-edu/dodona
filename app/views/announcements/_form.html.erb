@@ -1,0 +1,111 @@
+<%= javascript_include_tag 'announcement' %>
+<%= form_for(announcement, :html => { :class => 'form-horizontal' }) do |f| %>
+  <% if announcement.errors.any? %>
+    <div class="callout callout-danger" id="error_explanation">
+      <h4><%= t('errors.validation_errors', count: @announcement.errors.count) %></h4>
+      <ul>
+        <% announcement.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :text_nl %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.text_area :text_nl, class: 'form-control' %>
+      <span class="help-block"><%=t ".markdown_html" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :text_en %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.text_area :text_en, class: 'form-control' %>
+      <span class="help-block"><%=t ".markdown_html" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <%= f.label :start_delivering_at, :class => "col-sm-3 col-form-label" %>
+    <div class='col-sm-6'>
+      <div class="input-group" id='start-delivering-at-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <%= f.text_field :start_delivering_at, class: "form-control", 'data-input': true %>
+        <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+        <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+      </div>
+      <span class="help-block"><%=t ".start_delivering_at_help" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <%= f.label :stop_delivering_at, :class => "col-sm-3 col-form-label" %>
+    <div class='col-sm-6'>
+      <div class="input-group" id='stop-delivering-at-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+        <%= f.text_field :stop_delivering_at, class: "form-control", 'data-input': true %>
+        <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+        <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+      </div>
+      <span class="help-block"><%=t ".stop_delivering_at_help" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :user_group %>
+    </div>
+    <div class="col-sm-9">
+      <%= f.select :user_group, Announcement.user_groups.map {|key, value| [Announcement.human_enum_name(:user_group, key), key]}, {}, {:class => 'form-select'} %>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :institution %>
+    </div>
+    <div class="col-sm-9">
+      <dodona-datalist-input name="announcement[institution_id]" options="<%= @institutions.map{|i| {value: i.id.to_s, label: i.name.to_s}}.to_json %>" value="<%= announcement.institution_id %>" ></dodona-datalist-input>
+      <span class="help-block"><%=t ".institution_help" %></span>
+    </div>
+  </div>
+
+  <div class="field form-group row">
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :style %>
+    </div>
+    <div class="col-sm-9">
+      <% Announcement.styles.keys.each do |style| %>
+        <div class="form-check">
+          <%= f.radio_button :style, style, class: "form-check-input"%>
+          <%= f.label style.to_sym, class: "text-#{style}" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <% if announcement.id.present? %>
+    <div class="field form-group row">
+      <div class="col-sm-3 col-form-label">
+        <label for="reset_announcement_views" ><%= t ".reset" %></label>
+      </div>
+      <div class="col-sm-9 pt-2">
+        <div class="form-check">
+          <input id="reset_announcement_views" class="form-check-input" style="margin-top: 1px" type="checkbox" name="reset_announcement_views">
+          <label for="reset_announcement_views" class="form-check-label" ><%= t ".reset_announcement_views" %></label>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<script>
+  $(function () {
+    dodona.initDatePicker('#stop-delivering-at-group');
+    dodona.initDatePicker('#start-delivering-at-group');
+  });
+</script>

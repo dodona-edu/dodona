@@ -1,8 +1,6 @@
-import flatpickr from "flatpickr";
-import { Dutch } from "flatpickr/dist/l10n/nl.js";
-
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
+import { initDatePicker } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin.ts";
 import { StackedStatusGraph } from "visualisations/stacked_status.ts";
@@ -116,18 +114,6 @@ function initSeriesEdit() {
     init();
 }
 
-function initDeadlinePicker(selector) {
-    function init() {
-        const options = {};
-        if (I18n.locale === "nl") {
-            options.locale = Dutch;
-        }
-        flatpickr(selector, options);
-    }
-
-    init();
-}
-
 function initSeriesShow(id) {
     const graphMapping = {
         violin: ViolinGraph,
@@ -153,4 +139,4 @@ function initSeriesShow(id) {
     });
 }
 
-export { initDeadlinePicker, initSeriesEdit, initSeriesShow };
+export { initDatePicker as initDeadlinePicker, initSeriesEdit, initSeriesShow };

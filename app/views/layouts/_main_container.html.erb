@@ -10,6 +10,9 @@
         </div>
       <% end %>
     <% end %>
+    <% if @unread_announcement.present? %>
+      <%= render partial: 'announcements/announcement', locals: { announcement: @unread_announcement } %>
+    <% end %>
     <% if user_signed_in? %>
       <div class='alert alert-warning hidden' id="time-zone-warning">
         <strong><%= t("layout.messages.warning") %></strong> <%= t("layout.messages.time_zone_html", time_zone: current_user.time_zone, profile_edit: edit_user_path(current_user)) %>

@@ -1,0 +1,69 @@
+<div class="table-scroll-wrapper mb-4">
+  <table class="table table-index table-resource">
+    <thead>
+    <tr>
+      <th></th>
+      <% if current_user&.zeus? %>
+        <th><%= t ".start" %></th>
+        <th><%= t ".stop" %></th>
+        <th><%= t ".number_of_reads" %></th>
+        <th><%= Announcement.human_attribute_name("user_group") %></th>
+      <% end %>
+      <th><%= t ".text" %></th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% announcements.each do |announcement| %>
+      <tr class="announcement">
+        <td class="status-col  border-<%= announcement.style %>">
+          <%= style_icon announcement.style %>
+        </td>
+        <% if current_user&.zeus? %>
+          <td>
+            <% if announcement.start_delivering_at.present? %>
+                      <span title="<%= l announcement.start_delivering_at, format: :submission %>">
+                        <% readable_time = time_ago_in_words announcement.start_delivering_at %>
+                        <%= announcement.start_delivering_at.before?(Time.now) ? t(".ago", readable_time: readable_time) : t(".from_now", readable_time: readable_time) %>
+                      </span>
+            <% end %>
+          </td>
+          <td>
+            <% if announcement.stop_delivering_at.present? %>
+                      <span title="<%= l announcement.stop_delivering_at, format: :submission %>">
+                        <% readable_time = time_ago_in_words announcement.stop_delivering_at %>
+                        <%= announcement.stop_delivering_at.before?(Time.now) ? t(".ago", readable_time: readable_time) : t(".from_now", readable_time: readable_time) %>
+                      </span>
+            <% end %>
+          </td>
+          <td><%= announcement.number_of_reads %></td>
+          <td>
+            <% if announcement.institution.present? %>
+              <%= t ".users_from_institution", users: Announcement.human_enum_name("user_group", announcement.user_group), institution: announcement.institution.name %>
+            <% else %>
+              <%= Announcement.human_enum_name("user_group", announcement.user_group) %>
+            <% end %>
+          </td>
+        <% end %>
+        <td>
+          <div class="markdown-col">
+            <%= announcement.text %>
+          </div>
+        </td>
+        <td class="actions">
+          <% if policy(announcement).edit? %>
+            <%= link_to edit_announcement_path(announcement), class: "btn btn-sm btn-secondary" do %>
+              <i class="mdi mdi-pencil mdi-18"></i>
+            <% end %>
+          <% end %>
+          <% if policy(announcement).destroy? %>
+            <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
+              <i class="mdi mdi-delete mdi-18"></i>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>

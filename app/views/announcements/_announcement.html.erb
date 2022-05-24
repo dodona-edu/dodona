@@ -1,0 +1,34 @@
+<div class="announcement alert alert-<%= announcement.style %>" role="alert" id="active-announcement">
+  <div class="flex-placement-container">
+    <div>
+      <%= markdown(announcement.text) %>
+    </div>
+    <% if current_user.present? %>
+      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, title: t(".dismiss") do %>
+        <i class="mdi mdi-close mdi-18"></i>
+      <% end %>
+    <% end %>
+  </div>
+  <% if current_user&.zeus? %>
+    <hr>
+    <div class="flex-placement-container">
+      <div>
+        <i class="mdi mdi-android mdi-18"></i>
+        <% if announcement.institution.present? %>
+          <%= t ".shown_to_institution", user_group: Announcement.human_enum_name(:user_group, announcement.user_group), institution: announcement.institution.name %>
+        <% else %>
+          <%= t ".shown_to", user_group: Announcement.human_enum_name(:user_group, announcement.user_group) %>
+        <% end %>
+        <% if announcement.start_delivering_at.present? %>
+          <%= t ".start_delivering_at", start_delivering_at: I18n.localize(announcement.start_delivering_at, format: :announcement) %>
+        <% end %>
+        <% if announcement.stop_delivering_at.present? %>
+          <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at, format: :announcement) %>
+        <% end %>
+      </div>
+      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title")  do %>
+        <i class="mdi mdi-pencil mdi-18"></i>
+      <% end %>
+    </div>
+  <% end %>
+</div>

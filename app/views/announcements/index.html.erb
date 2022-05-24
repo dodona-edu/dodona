@@ -10,15 +10,15 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <% if @waiting_announcements %>
+        <% if @waiting_announcements.present? %>
           <h2><%= t ".waiting" %></h2>
           <%= render 'announcement_table', announcements: @waiting_announcements %>
         <% end %>
-        <% if @active_announcements %>
+        <% if @active_announcements.present? %>
           <h2><%= t ".active" %></h2>
           <%= render 'announcement_table', announcements: @active_announcements %>
         <% end %>
-        <% if @stopped_announcements %>
+        <% if @stopped_announcements.present? %>
           <h2><%= t ".stopped" %></h2>
           <%= render 'announcement_table', announcements: @stopped_announcements %>
         <% end %>

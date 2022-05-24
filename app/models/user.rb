@@ -149,6 +149,22 @@ class User < ApplicationRecord
     joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
       .reorder 'submissions.count': direction
   }
+  scope :order_by_solved_exercises_in_course, lambda { |direction, course|
+    # because the deadline can be different for each series and an activity can appear in multiple series
+    # we need a subquery for each series
+    combined_sql = course.series.map do |series|
+      submissions = Submission.in_series(series)
+      submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+      submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.select(:user_id)
+      read_states = ActivityReadState.in_series(series)
+      read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+      read_states = read_states.select(:user_id)
+      "(SELECT user_id, COUNT(*) AS count FROM ((#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})) AS c GROUP BY user_id)"
+    end
+    combined_sql = "(SELECT user_id, SUM(count) AS count FROM (#{combined_sql.join(' UNION ALL ')}) AS c GROUP BY user_id)"
+    joins("LEFT JOIN #{combined_sql} c ON c.user_id = users.id")
+      .reorder 'c.count': direction
+  }
   scope :order_by_progress, lambda { |direction, course = nil|
     submissions = Submission.judged
     submissions = submissions.in_course(course) if course.present?

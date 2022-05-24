@@ -23,7 +23,9 @@ class CoursesController < ApplicationController
         scope.order_by_status_in_course_and_name direction
       else
         course = Course.find(controller.params[:id])
-        if course.series.exists? id: column
+        if column == 'solved_exercises_in_course'
+          scope.order_by_solved_exercises_in_course(direction, course)
+        elsif course.series.exists? id: column
           series = course.series.find(column)
           scope.order_by_solved_exercises_in_series(direction, series)
         else

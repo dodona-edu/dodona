@@ -10,6 +10,9 @@ nl:
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
       reset_announcement_views: "Toon deze aankondiging opnieuw aan gebruikers die ze al gelezen hebben"
       reset: Reset
+      start_delivering_at_help: "Aankondiging zal onmiddelijk getoond worden bij lege input."
+      stop_delivering_at_help: "Aankondiging zal getoond worden tot ze manueel verwijderd is bij lege input."
+      institution_help: "Aankondiging zal getoond worden aan alle onderwijsinstellingen bij lege input."
     index:
       title: Aankondigingen
       new: Nieuwe aankondiging maken

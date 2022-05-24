@@ -10,6 +10,9 @@ en:
       markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.
       reset_announcement_views: "Show this announcement again to users who have already dismissed it"
       reset: Reset
+      start_delivering_at_help: "Announcement will be displayed immediately when left empty."
+      stop_delivering_at_help: "Announcement will be displayed until it is manually removed when left empty."
+      institution_help: "Announcement will be displayed to all institutions when left empty."
     index:
       title: Announcements
       new: Create new announcement

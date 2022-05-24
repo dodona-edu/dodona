@@ -221,6 +221,14 @@ class CoursesController < ApplicationController
       @users = apply_scopes(scores[:users])
       @series = scores[:series]
       @hash = scores[:hash]
+
+      @total_activity_count = @series.sum{|s| s.activity_count}
+      @total_by_user = Hash.new(0)
+      @users.each do |u|
+        @series.each do |s|
+          @total_by_user[u.id] += @hash[[u.id, s.id]][:accepted]
+        end
+      end
     end
 
     respond_to do |format|

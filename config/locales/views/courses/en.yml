@@ -128,6 +128,7 @@ en:
       download_deadlines_tooltip: "Add this link to your calendar application to show the course deadlines in your calendar"
     scoresheet:
       user: User
+      total: Total
       at_least_one_started: "Only show users that started at least one exercise"
       download: Download scoresheet
       scoresheet: Scoresheet

@@ -3,6 +3,9 @@
     <thead>
     <tr>
       <th class="user-name"><dodona-sort-button column="status_in_course_and_name" default="ASC"><%= t('courses.scoresheet.user') %></dodona-sort-button></th>
+      <th class="status-header">
+        <dodona-sort-button column="status_in_course_and_name"><%= t 'courses.scoresheet.total' %></dodona-sort-button>
+      </th>
       <% series.each do |s| %>
       <th class="status-header ellipsis-overflow" title="<%= s.name %>">
         <dodona-sort-button  column="<%= s.id %>"><%= s.name %></dodona-sort-button>
@@ -14,6 +17,7 @@
     <% users.each do |student| %>
       <tr>
         <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>
+        <td class="status" title="<%= "#{student.full_name} - #{total_by_user[student.id]}/#{total_activity_count}" %>"><%= total_by_user[student.id] %></td>
         <% series.each do |s| %>
           <td class="status" title="<%= "#{s.name} - #{student.full_name} - #{hash[[student.id, s.id]][:accepted]}/#{s.activity_count}" %>"><%= hash[[student.id, s.id]][:accepted] %></td>
         <% end %>

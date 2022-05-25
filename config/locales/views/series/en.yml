@@ -61,6 +61,7 @@ en:
       course_view: Course scoresheet
       select_view: Select view
       status: "Status %{activity}"
+      total: Total
       users:
         zero: No users
         one: 1 user

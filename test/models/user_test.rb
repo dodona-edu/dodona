@@ -390,6 +390,43 @@ class UserTest < ActiveSupport::TestCase
     assert_equal [u4.id, u3.id, u2.id, u1.id], User.in_course(c).order_by_solved_exercises_in_series('DESC', s).pluck(:id)
   end
 
+  test 'should be able to order by submission statuses in series' do
+    c = create :course
+    s = create :series, course: c
+    e1 = create :exercise
+    e2 = create :exercise
+    a1 = create :content_page
+    a2 = create :content_page
+    SeriesMembership.create series: s, activity: e1
+    SeriesMembership.create series: s, activity: e2
+    SeriesMembership.create series: s, activity: a1
+    SeriesMembership.create series: s, activity: a2
+    u1 = create :user
+    CourseMembership.create user: u1, course: c, status: 'student'
+    u2 = create :user
+    CourseMembership.create user: u2, course: c, status: 'student'
+    create :wrong_submission, user: u2, course: c, exercise: e1
+    u3 = create :user
+    CourseMembership.create user: u3, course: c, status: 'student'
+    create :correct_submission, user: u3, course: c, exercise: e1
+    u4 = create :user
+    CourseMembership.create user: u4, course: c, status: 'student'
+    create :correct_submission, user: u4, course: c, exercise: e1
+    create :wrong_submission, user: u4, course: c, exercise: e2
+    u5 = create :user
+    CourseMembership.create user: u5, course: c, status: 'student'
+    create :correct_submission, user: u5, course: c, exercise: e1
+    create :activity_read_state, user: u5, course: c, activity: a1
+    u6 = create :user
+    CourseMembership.create user: u6, course: c, status: 'student'
+    create :correct_submission, user: u6, course: c, exercise: e1
+    create :activity_read_state, user: u6, course: c, activity: a1
+    create :activity_read_state, user: u6, course: c, activity: a2
+
+    assert_equal [u1.id, u2.id, u3.id, u4.id, u5.id, u6.id], User.in_course(c).order_by_submission_statuses_in_series('ASC', s).pluck(:id)
+    assert_equal [u6.id, u5.id, u4.id, u3.id, u2.id, u1.id], User.in_course(c).order_by_submission_statuses_in_series('DESC', s).pluck(:id)
+  end
+
   test 'should be able to order by progress' do
     User.destroy_all
     c = create :course

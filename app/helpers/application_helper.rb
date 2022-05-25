@@ -178,6 +178,17 @@ module ApplicationHelper
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
   end
 
+  def style_icon(style, size = 18)
+    icon = {
+      'primary' => 'star',
+      'success' => 'check',
+      'danger' => 'close-octagon',
+      'warning' => 'alert',
+      'info' => 'information'
+    }[style]
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} text-#{style}\" title=\"#{style}\" ></i>".html_safe
+  end
+
   def submission_status_icon(submission, size = 18)
     status_icon(submission&.status, size)
   end

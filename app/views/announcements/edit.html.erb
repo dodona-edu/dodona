@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+      </div>
+      <div class="card-supporting-text mt-3">
+        <div class="col-sm-12">
+          <%= render 'form', announcement: @announcement %>
+        </div>
+      </div>
+      <div class="card-actions card-border">
+        <% if policy(@announcement).destroy? %>
+          <%= link_to @announcement, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn-text  btn-danger" do %>
+            <i class="mdi mdi-delete mdi-18"></i>
+            <%= t ".destroy" %>
+          <% end %>
+        <% end %>
+        <button type="submit" class="btn-text btn-primary" form="edit_announcement_<%= @announcement.id %>">
+          <i class="mdi mdi-send mdi-18"></i>
+          <%= t ".save" %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

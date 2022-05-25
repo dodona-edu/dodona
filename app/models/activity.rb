@@ -119,6 +119,16 @@ class Activity < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def numbered_name(series)
+    return name unless series&.activity_numbers_enabled?
+
+    activity_ids = series.activities.pluck(:id)
+    position = activity_ids.find_index(id)
+    return name if position.nil?
+
+    "##{position + 1} #{name}"
+  end
+
   def description_languages
     languages = []
     languages << 'nl' if description_file('nl').exist?

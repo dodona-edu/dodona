@@ -41,7 +41,7 @@ end %>
         <h2 class="card-title-text">
           <%= activity_icon(@activity, 24) %>
           &nbsp;
-          <%= @activity.name %>
+          <%= @activity.numbered_name(@series) %>
         </h2>
         <% if @series.present? %>
           <div class="card-title-navigation hidden-print">
@@ -63,7 +63,7 @@ end %>
       <ul class="nav affix">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
         <% @series.activities.each do |activity| %>
-          <li><%= link_to activity.name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
+          <li><%= link_to activity.numbered_name(@series), activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
         <% end %>
       </ul>
     </nav>

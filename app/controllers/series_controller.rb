@@ -18,13 +18,23 @@ class SeriesController < ApplicationController
   has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
     column, direction = value
     if %w[ASC DESC].include?(direction)
-      if column == 'status_in_course_and_name'
+      case column
+      when 'status_in_course_and_name'
         scope.order_by_status_in_course_and_name direction
+      when 'submission_statuses_in_series'
+        series = Series.find(controller.params[:id])
+        scope.order_by_submission_statuses_in_series direction, series
       else
         series = Series.find(controller.params[:id])
         if series.activities.exists? id: column
-          exercise = series.activities.find(column)
-          scope.order_by_exercise_submission_status_in_series(direction, exercise, series)
+          activity = series.activities.find(column)
+          if activity.exercise?
+            scope.order_by_exercise_submission_status_in_series direction, activity, series
+          elsif activity.content_page?
+            scope.order_by_activity_read_state_in_series direction, activity, series
+          else
+            scope
+          end
         else
           scope
         end
@@ -207,12 +217,18 @@ class SeriesController < ApplicationController
 
     @submission_counts = Hash.new(0)
     @read_state_counts = Hash.new(0)
+    @summary_by_user = Hash.new(0)
+    @total = Hash.new(0)
     @users.each do |user|
       @activities.each do |activity|
         if activity.exercise? && @submissions[[user.id, activity.id]].present?
           @submission_counts[[activity.id, @submissions[[user.id, activity.id]].status]] += 1
+          @summary_by_user[[user.id, @submissions[[user.id, activity.id]].status]] += 1
+          @total[@submissions[[user.id, activity.id]].status] += 1
         elsif activity.content_page? && @read_states[[user.id, activity.id]].present?
           @read_state_counts[activity.id] += 1
+          @summary_by_user[[user.id, 'correct']] += 1
+          @total['correct'] += 1
         end
       end
     end

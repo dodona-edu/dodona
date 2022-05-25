@@ -63,6 +63,7 @@ nl:
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
       status: "Status %{activity}"
+      total: Totaal
       users:
         zero: Geen gebruikers
         one: 1 gebruiker

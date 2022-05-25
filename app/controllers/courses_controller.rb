@@ -237,6 +237,11 @@ class CoursesController < ApplicationController
           @total_by_user[u.id] += value[:accepted] if value
         end
       end
+
+      @total_histogram = Array.new(@total_activity_count + 1, 0)
+      @users.each do |u|
+        @total_histogram[@total_by_user[u.id]] += 1
+      end
     end
 
     respond_to do |format|

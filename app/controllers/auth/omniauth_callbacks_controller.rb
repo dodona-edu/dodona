@@ -65,27 +65,43 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Ensure that an appropriate provider is used.
     return redirect_to_preferred_provider! if provider.redirect?
 
-    # Find the identity.
-    identity, user = find_identity_and_user
+    identity = nil
+    # First try to find an existing identity
+    if auth_uid.present?
+      # Basic case
+      identity = find_identity_by_uid
+    else
+      # For providers without auth uid
+      user = find_user_in_institution
+      identity = find_identity_by_user(user) if user.present?
+    end
+    # At this point identity should have a value if it exists in our database
 
     if identity.blank?
       # If no identity was found and the provider is a link provider, prompt the
       # user to sign in with a preferred provider.
       return redirect_to_preferred_provider! if provider.link?
 
-      # Create a new user and identity.
+      # If no identity exist, we want to check if it is a new user or an existing user using a new provider
+      # Try to find an existing user
+      user = find_user_in_institution
+      # Create a new user if no existing user was found
       user = User.new institution: provider&.institution if user.blank?
+
+      # Create a new identity for the existing or newly created user
       identity = user.identities.build identifier: auth_uid, provider: provider
     end
 
     # Validation.
     raise 'Identity should not be nil here' if identity.nil?
 
+    # Get the user independent of it being newly created or an existing user
+    user = identity.user
     # Update the user information from the authentication response.
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
-    # Link the stored identifier to the signed in user.
+    # Link the stored link provider identity to the signed in user.
     create_linked_identity!(user)
 
     # User successfully updated, finish the authentication procedure. Force is
@@ -118,17 +134,21 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session.delete(:hide_flash)
   end
 
-  def find_identity_and_user
-    # Attempt to find the identity by its identifier.
-    identity = Identity.find_by(identifier: auth_uid, provider: provider)
-    return [identity, identity.user] if identity.present? && auth_uid.present?
+  def find_identity_by_uid
+    # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
+    Identity.find_by(identifier: auth_uid, provider: provider) if auth_uid.present?
+  end
 
-    # No username was provided, try to find the user using the email address and institution id.
-    user = User.from_email_and_institution(auth_email, provider.institution_id)
-    return [nil, nil] if user.blank?
+  def find_identity_by_user(user)
+    Identity.find_by(provider: provider, user: user)
+  end
 
-    # Find an identity for the user at the current provider.
-    [Identity.find_by(provider: provider, user: user), user]
+  def find_user_in_institution
+    # Attempt to find user by its username and institution id
+    user = User.from_username_and_institution(auth_uid, provider.institution_id)
+    # Try to find the user using the email address and institution id.
+    user = User.from_email_and_institution(auth_email, provider.institution_id) if user.blank?
+    user
   end
 
   def find_or_create_oauth_provider
@@ -216,6 +236,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def flash_wrong_provider(tried_provider, user_provider)
     set_flash_message :alert, :wrong_provider,
+                      tried_email_address: auth_email,
                       tried_provider_type: tried_provider.class.sym.to_s,
                       tried_provider_institution: tried_provider.institution.name,
                       user_provider_type: user_provider.class.sym.to_s,

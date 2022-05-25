@@ -14,6 +14,12 @@
     </tr>
     </thead>
     <tbody>
+    <tr class="summary-row">
+      <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
+      <% series.each do |s| %>
+        <td class="status" ><dodona-histogram values="<%= histogram[s.id] %>"></dodona-histogram></td>
+      <% end %>
+    </tr>
     <% users.each do |student| %>
       <tr>
         <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>

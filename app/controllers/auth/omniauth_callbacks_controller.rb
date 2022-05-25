@@ -77,19 +77,16 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     end
     # At this point identity should have a value if it exists in our database
 
-    # If no identity exist, we want to check if it is a new user or an existing user using a new provider
     if identity.blank?
+      # If no identity was found and the provider is a link provider, prompt the
+      # user to sign in with a preferred provider.
+      return redirect_to_preferred_provider! if provider.link?
+
+      # If no identity exist, we want to check if it is a new user or an existing user using a new provider
       # Try to find an existing user
       user = find_user_in_institution
-
-      if user.blank?
-        # If no user was found and the provider is a link provider, prompt the
-        # user to sign in with a preferred provider.
-        return redirect_to_preferred_provider! if provider.link?
-
-        # Create a new user
-        user = User.new institution: provider&.institution
-      end
+      # Create a new user if no existing user was found
+      user = User.new institution: provider&.institution if user.blank?
 
       # Create a new identity for the existing or newly created user
       identity = user.identities.build identifier: auth_uid, provider: provider

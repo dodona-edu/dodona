@@ -42,8 +42,7 @@ class CsvDiffer
   # @param [String] raw The csv-encoded output as received from the judge
   # @return [Boolean]   Is the number of columns 'limited'?
   def self.limited_columns?(raw)
-    first_line = raw.lstrip.lines.first
-    columncount = CSV.parse_line((first_line || ''), nil_value: '')&.length
+    columncount = CSV.parse_line(raw.lstrip, nil_value: '')&.length
     columncount.nil? || columncount <= 20
   end
 

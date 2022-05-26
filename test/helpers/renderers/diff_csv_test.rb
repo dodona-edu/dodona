@@ -101,6 +101,19 @@ class CsvDifferTest < ActiveSupport::TestCase
     should_match_html diff, diff_csv.split
   end
 
+  test 'should not crash when checking limited columns on header with newline' do
+    generated = <<~EOS.chomp
+      "BBB
+       BBB"
+      "AAA
+       AAA"
+      "AAA
+       AAA"
+    EOS
+
+    CsvDiffer.limited_columns?(generated)
+  end
+
   test 'empty header' do
     generated = <<~EOS.chomp
     EOS

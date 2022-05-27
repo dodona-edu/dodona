@@ -72,7 +72,11 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         parentElementId: CODE_OUTPUT_PARENT_ID
                     },
                     inputOptions: {
-                        parentElementId: CODE_INPUT_PARENT_ID
+                        parentElementId: CODE_INPUT_PARENT_ID,
+                        inputStyling: {
+                            // Allows 4 lines of input
+                            maxHeight: "10vh"
+                        }
                     },
                     darkMode: window.dodona.darkMode
                 });

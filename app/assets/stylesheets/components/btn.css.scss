@@ -1,4 +1,83 @@
 .btn {
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+  transition:
+    box-shadow 145ms ease,
+    opacity 145ms ease,
+    border-color 145ms ease,
+    background-color 145ms ease;
+
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 0.9;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}
+
+.btn.btn-filled {
+  background: $primary;
+  color: $text-on-bg-color;
+
+  &:hover {
+    @include shadow-z2;
+  }
+}
+
+.btn.btn-tonal,
+.btn.btn-elevated {
+  background: $accent-100;
+  color: $text-on-bg-color;
+
+  &:hover {
+    @include shadow-z1;
+  }
+}
+
+.btn.btn-elevated {
+  @include shadow-z1;
+
+  &:hover {
+    @include shadow-z2;
+  }
+}
+
+.btn.btn-text,
+.btn.btn-outline {
+  background: none;
+  color: $primary;
+
+  &:hover,
+  &:focus,
+  &:active {
+    background: rgba($primary, 0.1);
+  }
+}
+
+.btn.btn-text {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.btn.btn-outline {
+  border: 1px solid $hairlinegray;
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: $primary;
+  }
+}
+
+/*
+.btn {
   padding: 2px 8px;
 }
 
@@ -291,3 +370,5 @@ form.button_to {
 .option-btn:hover {
   @include shadow-z4;
 }
+
+*/

@@ -12,7 +12,8 @@
   $color-blue-grey: $blue-grey-700 !global;
 
   $primary-700: $light-blue-800 !global;
-  $accent-300: $yellow-400 !global;
+  $accent-100: $yellow-100  !global;
+  $accent-300: $yellow-400  !global;
   $accent-500: $yellow-800 !global;
   $accent-800: lighten($accent-500, 10%) !global;
   $brand-primary: $accent-500 !global;

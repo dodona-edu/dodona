@@ -92,7 +92,7 @@ code {
 }
 
 // buttons
-.btn {
+/*.btn {
   @include shadow-z1;
 }
 
@@ -119,6 +119,8 @@ code {
 .btn.btn-link:hover {
   box-shadow: none;
 }
+
+*/
 
 .dropdown-menu {
   @include shadow-z5;

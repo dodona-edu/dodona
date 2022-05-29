@@ -90,9 +90,9 @@
   <% end %>
   <div class="card-actions card-border">
     <% if local_assigns[:course_index] and current_user.course_admin? course %>
-      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn-text float-end' %>
+      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn btn-text float-end' %>
     <% else %>
-      <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text float-end' %>
+      <%= link_to t('.go-to-course'), course_path(course), class: 'btn btn-text float-end' %>
     <% end %>
     <% if not local_assigns[:course_index] %>
       <div class="float-start">

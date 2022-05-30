@@ -26,14 +26,14 @@ class ScratchpadTest < ApplicationSystemTestCase
 
   def codemirror_send_keys(parent, code)
     # Focus editor
-    parent.find_element('.cm-editor').click
+    parent.find('.cm-editor').click
     parent.find('.cm-content').send_keys code
     sleep(0.5)
   end
 
   # Set code in the editor and run it
   def run_code(code)
-    codemirror_send_keys(find_element('scratchpad-editor-wrapper'), code)
+    codemirror_send_keys(find('scratchpad-editor-wrapper'), code)
     find_button('__papyros-run-code-btn', disabled: false).click
   end
 

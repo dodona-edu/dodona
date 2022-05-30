@@ -233,19 +233,23 @@ if Rails.env.development?
 
   # Add contents and exercises to test course
   courses.each do |course|
+    activity_numbers_enabled = Random.rand > 0.5
     series = []
     series << Series.create(name: 'Verborgen reeks',
                             description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
-                            visibility: :hidden)
+                            visibility: :hidden,
+                            activity_numbers_enabled: activity_numbers_enabled)
     series << Series.create(name: 'Gesloten reeks',
                             description: Faker::Lorem.paragraph(sentence_count: 25),
                             course: course,
-                            visibility: :closed)
+                            visibility: :closed,
+                            activity_numbers_enabled: activity_numbers_enabled)
     8.times do |i|
       s = Series.create(name: "Reeks #{i}",
                         description: Faker::Lorem.paragraph(sentence_count: 25),
-                        course: course)
+                        course: course,
+                        activity_numbers_enabled: activity_numbers_enabled)
       if Random.rand < 0.1
         t = if Random.rand < 0.3
               Time.now.advance(days: -1 * Random.rand(5))
@@ -301,7 +305,8 @@ if Rails.env.development?
   3.times do |i|
     s = Series.create(name: "Reeks #{i}",
                       description: Faker::Lorem.paragraph(sentence_count: 25),
-                      course: visualisation_test)
+                      course: visualisation_test,
+                      activity_numbers_enabled: true)
     series_exercises = exercises_list.sample(rand(3) + 2)
     s.exercises << series_exercises
 

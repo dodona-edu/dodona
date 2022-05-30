@@ -24,13 +24,16 @@ class ScratchpadTest < ApplicationSystemTestCase
     find('#scratchpad-offcanvas-show-btn').click
   end
 
+  def codemirror_send_keys(parent, code)
+    # Focus editor
+    parent.find_element('.cm-editor').click
+    parent.find('.cm-content').send_keys code
+    sleep(0.5)
+  end
+
   # Set code in the editor and run it
   def run_code(code)
-    assert_selector '.cm-editor'
-    # Focus editor
-    find('.cm-editor').click
-    find('.cm-content').send_keys code
-    sleep(0.5)
+    codemirror_send_keys(find_element('scratchpad-editor-wrapper'), code)
     find_button('__papyros-run-code-btn', disabled: false).click
   end
 
@@ -57,9 +60,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Set the input before the run
     find('#__papyros-switch-input-mode').click
     # input area should be re-rendered
-    find_field('__papyros-code-input-area').send_keys scratchpad_input
-    # Ensure the text was entered
-    find_field('__papyros-code-input-area', with: scratchpad_input)
+    codemirror_send_keys(find_element('scratchpad-input-wrapper'), scratchpad_input)
     run_code ''
 
     output_area.find('span', text: scratchpad_input)

@@ -33,7 +33,7 @@ class ScratchpadTest < ApplicationSystemTestCase
 
   # Set code in the editor and run it
   def run_code(code)
-    codemirror_send_keys(find('scratchpad-editor-wrapper'), code)
+    codemirror_send_keys(find('#scratchpad-editor-wrapper'), code)
     find_button('__papyros-run-code-btn', disabled: false).click
   end
 
@@ -60,7 +60,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Set the input before the run
     find('#__papyros-switch-input-mode').click
     # input area should be re-rendered
-    codemirror_send_keys(find_element('scratchpad-input-wrapper'), scratchpad_input)
+    codemirror_send_keys(find_element('#scratchpad-input-wrapper'), scratchpad_input)
     run_code ''
 
     output_area.find('span', text: scratchpad_input)

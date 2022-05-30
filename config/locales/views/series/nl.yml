@@ -10,8 +10,8 @@ nl:
       hide_activities: Verberg leeractiviteiten
       hide_activities_help: "Als de leeractiviteiten verborgen zijn, dan zal enkel de beschrijving van deze reeks getoond worden. Lesgevers kunnen deze instelling gebruiken om bijvoorbeeld de leerstof van de reeks vooraf beschikbaar te stellen, zonder de oefeningen en leesactiviteiten al vrij te geven."
       advanced_settings: Geavanceerde instellingen
-      activity_numbers_enabled: "Nummer activiteiten"
-      activity_numbers_enabled_help: "Elke activieit krijgt een opeenvolgend nummer, beginnend bij 1. Dit nummer wordt weergegeven in titels en oplijstingen en kan helpen om over de activiteit te communiceren."
+      activity_numbers_enabled: "Nummer leeractiviteiten"
+      activity_numbers_enabled_help: "Elke oefening en leesactiviteit krijgt een opeenvolgend nummer, beginnend bij 1. Dit nummer wordt weergegeven in titels en het reeksoverzicht en kan helpen om over de activiteit te communiceren."
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden

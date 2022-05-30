@@ -60,7 +60,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Set the input before the run
     find('#__papyros-switch-input-mode').click
     # input area should be re-rendered
-    codemirror_send_keys(find('#scratchpad-input-wrapper'), scratchpad_input)
+    codemirror_send_keys(find('#scratchpad-input-wrapper'), "#{scratchpad_input}\n")
     run_code ''
 
     output_area.find('span', text: scratchpad_input)

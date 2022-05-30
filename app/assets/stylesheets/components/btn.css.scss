@@ -23,7 +23,7 @@
   &:focus,
   &:active {
     opacity: 0.9;
-    box-shadow: 0;
+    box-shadow: none;
   }
 
   &:disabled,
@@ -107,6 +107,29 @@
   }
 }
 
+.btn-group {
+
+  &>.btn {
+    padding-left: 12px;
+    padding-right: 12px;
+    border: 1px solid $hairlinegray;
+    border-right: 0;
+
+    &:last-of-type {
+      border-right: 1px solid $hairlinegray;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: rgba($primary, 0.1);
+    }
+
+    &.active {
+      background: rgba($primary, 0.2);
+    }
+  }
+}
 /*
 .btn {
   padding: 2px 8px;

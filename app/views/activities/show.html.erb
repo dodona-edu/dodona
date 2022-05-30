@@ -62,8 +62,9 @@ end %>
     <nav class="col-md-1 d-none d-md-block hidden-print activity-sidebar">
       <ul class="nav affix">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
-        <% @series.activities.each do |activity| %>
-          <li><%= link_to activity.numbered_name(@series), activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
+        <% @series.activities.each_with_index do |activity, index| %>
+          <% numbered_name = @series.activity_numbers_enabled? ? "#{index + 1}. #{activity.name}" : activity.name %>
+          <li><%= link_to numbered_name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
         <% end %>
       </ul>
     </nav>

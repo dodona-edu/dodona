@@ -126,7 +126,7 @@ class Activity < ApplicationRecord
     position = activity_ids.find_index(id)
     return name if position.nil?
 
-    "##{position + 1} #{name}"
+    "#{position + 1}. #{name}"
   end
 
   def description_languages

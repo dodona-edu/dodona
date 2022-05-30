@@ -85,10 +85,19 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If no identity exist, we want to check if it is a new user or an existing user using a new provider
       # Try to find an existing user
       user = find_user_in_institution
-      # Create a new user if no existing user was found
-      user = User.new institution: provider&.institution if user.blank?
+      # If we found an existing user, which already has an identity for this provider
+      # This will require a manual intervention by the development team, notify the user and the team
+      return redirect_with_flash!('TODO') if user&.providers&.find(id: provider.id).present?
+      # If we found an existing user with the same username or email
+      # We will ask the user to verify if this was the user they wanted to sign in to
+      # if yes => redirect to a previously used provider for this user
+      # if no => contact dodona for a manual intervention
+      return redirect_to_known_provider!(user) if user.present?
 
-      # Create a new identity for the existing or newly created user
+      # No existing user was found
+      # Create a new user
+      user = User.new institution: provider&.institution
+      # Create a new identity for the newly created user
       identity = user.identities.build identifier: auth_uid, provider: provider
     end
 

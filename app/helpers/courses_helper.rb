@@ -13,13 +13,13 @@ module CoursesHelper
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn-text btn-primary'
+                  class: 'btn btn-filled'
         else
           link_to t('courses.show.subscribe'),
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn-text btn-primary'
+                  class: 'btn btn-filled'
         end
       else
         tag.p t('courses.registration.registration_closed')
@@ -28,7 +28,7 @@ module CoursesHelper
       link_to t('courses.registration.remove_from_pending'),
               unsubscribe_course_path(@course),
               method: :post,
-              class: 'btn-text'
+              class: 'btn btn-text'
     else
       tag.p t('courses.registration.already_a_member')
     end

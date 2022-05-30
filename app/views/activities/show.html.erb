@@ -140,7 +140,7 @@ end %>
   <div class="col-md-10 offset-md-1 col-12">
     <div class="content-page-actions">
       <% if @series.present? %>
-        <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>
+        <%= link_to previous_link, class: 'content-page-action btn btn-text with-icon previous' do %>
           <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
       <% end %>
@@ -148,7 +148,7 @@ end %>
       <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @course, user: current_user, read_state: @read_state} %>
       <span class="gap"></span>
       <% if @series.present? %>
-        <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
+        <%= link_to next_link, class: 'content-page-action btn btn-text with-icon right next' do %>
           <span class="text"><%= next_tooltip %></span>
           <i class="mdi mdi-chevron-right icon"></i>
         <% end %>

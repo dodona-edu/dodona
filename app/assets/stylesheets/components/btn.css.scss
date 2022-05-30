@@ -9,10 +9,21 @@
     border-color 145ms ease,
     background-color 145ms ease;
 
+  &.with-icon {
+    padding-left: 16px;
+    padding-right: 24px;
+
+    .mdi {
+      padding: 0;
+      padding-right: 8px;
+    }
+  }
+
   &:hover,
   &:focus,
   &:active {
     opacity: 0.9;
+    box-shadow: 0;
   }
 
   &:disabled,
@@ -64,6 +75,26 @@
 .btn.btn-text {
   padding-left: 12px;
   padding-right: 12px;
+
+  &.with-icon {
+    padding-left: 12px;
+    padding-right: 16px;
+
+    .mdi {
+      padding: 0;
+      padding-right: 8px;
+    }
+  }
+
+  &.with-icon.right {
+    padding-left: 16px;
+    padding-right: 12px;
+
+    .mdi {
+      padding: 0;
+      padding-left: 8px;
+    }
+  }
 }
 
 .btn.btn-outline {

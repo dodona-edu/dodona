@@ -89,13 +89,8 @@
     <% end %>
   <% end %>
   <div class="card-actions card-border">
-    <% if local_assigns[:course_index] and current_user.course_admin? course %>
-      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn btn-text float-end' %>
-    <% else %>
-      <%= link_to t('.go-to-course'), course_path(course), class: 'btn btn-text float-end' %>
-    <% end %>
     <% if not local_assigns[:course_index] %>
-      <div class="float-start">
+      <div class="flex-grow-1">
         <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"
            data-course_id="<%= course.id %>"
            title="<%= @favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
@@ -104,6 +99,11 @@
         >
         </i>
       </div>
+    <% end %>
+    <% if local_assigns[:course_index] and current_user.course_admin? course %>
+      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn btn-text' %>
+    <% else %>
+      <%= link_to t('.go-to-course'), course_path(course), class: 'btn btn-text' %>
     <% end %>
   </div>
 </div>

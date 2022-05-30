@@ -385,7 +385,7 @@ export class CodeListing {
             <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
               ${I18n.t("js.user_annotation.cancel")}
             </button>
-            <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
+            <button class="btn btn-filled annotation-control-button annotation-submission-button" type="button">
                 ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
             </button>
           </div>

@@ -43,9 +43,9 @@
   </div>
   <div class="stepper-actions stepper-border">
     <% if local_assigns[:back] %>
-      <%= link_to t('evaluations.edit.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+      <%= link_to t('evaluations.edit.back_to_evaluation'), evaluation_path(@evaluation), class: "btn btn-filled" %>
     <% else %>
-      <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-text btn-primary" %>
+      <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-filled" %>
     <% end %>
   </div>
 </div>

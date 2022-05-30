@@ -10,7 +10,7 @@
       </div>
       <%= render 'form', course: @course %>
       <div class="card-actions card-border">
-        <button type="submit" class="btn btn-text btn-primary" form="<%= "edit_course_#{@course.id}" %>"><%= t('.update') %></button>
+        <button type="submit" class="btn btn-filled" form="<%= "edit_course_#{@course.id}" %>"><%= t('.update') %></button>
       </div>
     </div>
     <% if policy(@course).reorder_series? %>

@@ -10,7 +10,7 @@ module OmniAuth
       option :name, 'office365'
 
       option :client_options,
-             site: 'https://login.microsoftonline.com/',
+             site: 'https://login.microsoftonline.com/?prompt=select_account',
              authorize_url: '/common/oauth2/authorize',
              token_url: '/common/oauth2/token'
 

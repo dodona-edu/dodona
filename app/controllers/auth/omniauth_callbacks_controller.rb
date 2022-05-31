@@ -87,7 +87,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user = find_user_in_institution
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
-      return redirect_with_flash!('TODO') if user&.providers&.find(id: provider.id).present?
+      return redirect_duplicate_email_for_provider! if user&.providers&.find(id: provider.id).present?
       # If we found an existing user with the same username or email
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user
@@ -266,6 +266,12 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       }
     end
     flash[:options] << { url: contact_path, message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_contact') }
+    redirect_to root_path
+  end
+
+  def redirect_duplicate_email_for_provider!
+    set_flash_message :alert, :duplicate_email_for_provider, email_address: auth_email, provider: provider.class.sym.to_s
+    flash[:options] = [{ url: contact_path, message: I18n.t('pages.contact.prompt') }]
     redirect_to root_path
   end
 

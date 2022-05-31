@@ -143,9 +143,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Create the identity for the current user.
     Identity.create(identifier: original_uid, provider: original_provider, user: user)
 
-    if session[:hide_flash].blank?
-      # Set a flash message.
-      set_flash_message :notice, :identity_created, provider: original_provider.class.sym.to_s
+    # Set a flash message.
+    set_flash_message :notice, :identity_created, provider: original_provider.class.sym.to_s
+    if session[:hide_flash].blank? && original_provider.issuer == 'https://ufora.ugent.be'
+      # Set a Ufora/UGent specific flash message.
+      set_flash_message :notice, :linked
     end
     session.delete(:hide_flash)
   end

@@ -22,10 +22,10 @@
       <% if policy(@institution).edit? || policy(@institution).merge? %>
         <div class="card-actions card-border">
           <% if policy(@institution).merge? %>
-            <%= link_to t(".merge"), merge_institution_path(@institution), class: "btn-text"  %>
+            <%= link_to t(".merge"), merge_institution_path(@institution), class: "btn btn-text"  %>
           <% end %>
           <% if policy(@institution).edit? %>
-            <%= link_to t(".edit"), edit_institution_path(@institution), class: "btn-text btn-primary"  %>
+            <%= link_to t(".edit"), edit_institution_path(@institution), class: "btn btn-filled"  %>
           <% end %>
         </div>
       <% end %>

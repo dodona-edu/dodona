@@ -178,7 +178,7 @@
                 <% solutions.each_with_index do |(fname, code), i| %>
                   <div id="solution-<%= i %>" class="tab-pane feedback-table">
                     <div class="feedback-table-options">
-                      <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn-text" %>
+                      <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn btn-text" %>
                     </div>
                     <div class="code-table">
                       <%= raw FeedbackCodeRenderer.new(code, @activity.programming_language&.renderer_name).add_code.html %>

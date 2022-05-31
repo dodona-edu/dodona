@@ -23,10 +23,10 @@
         </div>
       </div>
       <div class="card-actions card-border">
-        <%= link_to t('evaluations.edit.title'), edit_evaluation_path(@evaluation), class: "btn-text" %>
+        <%= link_to t('evaluations.edit.title'), edit_evaluation_path(@evaluation), class: "btn btn-text" %>
         <%= link_to (@evaluation.released ? t('.unrelease') : t('.release')),
                     evaluation_path(@evaluation, evaluation: { released: !@evaluation.released }),
-                    class: "btn-primary btn-text",
+                    class: "btn btn-filled",
                     method: :patch %>
         <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
           <i class="mdi mdi-dots-vertical"></i>

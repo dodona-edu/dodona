@@ -225,20 +225,14 @@ a.card-title-link:hover {
   flex-wrap: nowrap;
 }
 
-.card-subtitle-actions a {
-  color: $text-secondary;
-  font-size: 18px;
-  margin-left: 10px;
+.card-subtitle-actions {
+  gap: 8px;
+  margin-right: -8px;
 }
 
 .card-subtitle-actions a.dropdown-item {
   margin-left: unset;
   color: $text-color;
-}
-
-.card-subtitle-actions a:hover {
-  color: $text-color;
-  font-size: 18px;
 }
 
 .card-nav,

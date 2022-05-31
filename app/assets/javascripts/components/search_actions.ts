@@ -121,7 +121,7 @@ export class SearchActions extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <div class="btn-group actions" id="kebab-menu">
+            <div class="dropdown actions" id="kebab-menu">
                 <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="mdi mdi-dots-vertical"></i>
                 </a>
@@ -154,5 +154,3 @@ export class SearchActions extends ShadowlessLitElement {
         `;
     }
 }
-
-

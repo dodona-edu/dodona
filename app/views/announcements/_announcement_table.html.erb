@@ -52,13 +52,13 @@
         </td>
         <td class="actions">
           <% if policy(announcement).edit? %>
-            <%= link_to edit_announcement_path(announcement), class: "btn btn-sm btn-secondary" do %>
-              <i class="mdi mdi-pencil mdi-18"></i>
+            <%= link_to edit_announcement_path(announcement), class: "btn btn-icon" do %>
+              <i class="mdi mdi-pencil"></i>
             <% end %>
           <% end %>
           <% if policy(announcement).destroy? %>
-            <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-              <i class="mdi mdi-delete mdi-18"></i>
+            <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-danger" do %>
+              <i class="mdi mdi-delete"></i>
             <% end %>
           <% end %>
         </td>

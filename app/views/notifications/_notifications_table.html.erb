@@ -20,11 +20,11 @@
         <span><%= t 'notifications.index.created', when: time_ago_in_words(n.created_at) %></span>
       </td>
       <td class="actions">
-        <span class="btn btn-sm btn-secondary read-toggle-button" >
-          <i class="mdi mdi-circle-medium mdi-18 read-indicator" title="<%= n.read ? t('js.mark_as_unread') : t('js.mark_as_read') %>"></i>
+        <span class="btn btn-icon read-toggle-button" >
+          <i class="mdi mdi-circle-medium read-indicator" title="<%= n.read ? t('js.mark_as_unread') : t('js.mark_as_read') %>"></i>
         </span>
-        <span class="btn btn-sm btn-danger delete-button" title="<%= t('notifications.index.delete') %>">
-          <i class="mdi mdi-delete mdi-18"></i>
+        <span class="btn btn-icon btn-danger delete-button" title="<%= t('notifications.index.delete') %>">
+          <i class="mdi mdi-delete"></i>
         </span>
       </td>
     </tr>

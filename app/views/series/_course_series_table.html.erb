@@ -50,8 +50,8 @@
       </td>
       <td class="actions">
         <% if policy(s).edit? %>
-          <%= link_to edit_series_url(s), class: "btn btn-sm btn-secondary", title: t("series.edit.title") do %>
-            <i class="mdi mdi-18 mdi-pencil"></i>
+          <%= link_to edit_series_url(s), class: "btn btn-icon", title: t("series.edit.title") do %>
+            <i class="mdi mdi-pencil"></i>
           <% end %>
         <% end %>
         <% if policy(s).destroy? %>
@@ -61,8 +61,8 @@
                 confirm += " " + t('series.delete.confirm_evaluation')
               end
            %>
-          <%= link_to s, method: :delete, data: {confirm: confirm}, class: "btn btn-sm btn-danger", title: t("series.delete.title") do %>
-            <i class="mdi mdi-18 mdi-delete"></i>
+          <%= link_to s, method: :delete, data: {confirm: confirm}, class: "btn btn-icon btn-danger", title: t("series.delete.title") do %>
+            <i class="mdi mdi-delete"></i>
           <% end %>
         <% end %>
       </td>

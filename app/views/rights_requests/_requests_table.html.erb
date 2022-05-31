@@ -27,11 +27,11 @@
           <% end %>
         </td>
         <td class="actions">
-          <%= link_to approve_rights_request_path(request), remote: true, method: :post, class: "btn btn-sm btn-success", title: t(".approve") do %>
-            <i class="mdi mdi-check mdi-18"></i>
+          <%= link_to approve_rights_request_path(request), remote: true, method: :post, class: "btn btn-icon btn-success", title: t(".approve") do %>
+            <i class="mdi mdi-check"></i>
           <% end %>
-          <%= link_to reject_rights_request_path(request), remote: true, method: :post, class: "btn btn-sm btn-danger", title: t(".reject") do %>
-            <i class="mdi mdi-close mdi-18"></i>
+          <%= link_to reject_rights_request_path(request), remote: true, method: :post, class: "btn btn-icon btn-danger", title: t(".reject") do %>
+            <i class="mdi mdi-close"></i>
           <% end %>
         </td>
       </tr>

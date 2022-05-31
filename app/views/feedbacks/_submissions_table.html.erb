@@ -29,8 +29,8 @@
           </td>
           <td class="actions">
             <% unless @feedback.submission&.id == submission.id %>
-              <%= link_to feedback_path(@feedback, feedback: { submission_id: submission.id }), class: "btn btn-sm btn-primary", title: t(".update-submission"), confirm: t('.confirm'), method: :patch do %>
-                <i class="mdi mdi-check mdi-18"></i>
+              <%= link_to feedback_path(@feedback, feedback: { submission_id: submission.id }), class: "btn btn-icon btn-primary", title: t(".update-submission"), confirm: t('.confirm'), method: :patch do %>
+                <i class="mdi mdi-check"></i>
               <% end %>
             <% end %>
           </td>

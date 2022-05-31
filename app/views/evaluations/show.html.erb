@@ -66,8 +66,8 @@
                       <%= t ".grading_details_info_html" %>
                     </p>
                     <div class="btn-group">
-                      <%= link_to export_grades_evaluation_path(@evaluation, format: :csv), class: 'btn btn-secondary btn-small', title: t('evaluations.download') do %>
-                        <i class="mdi mdi-download mdi-18"></i>
+                      <%= link_to export_grades_evaluation_path(@evaluation, format: :csv), class: 'btn btn-icon', title: t('evaluations.download') do %>
+                        <i class="mdi mdi-download"></i>
                       <% end %>
                     </div>
                   </div>

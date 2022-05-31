@@ -19,13 +19,13 @@
         <td><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
         <td>
           <% if policy(Label).edit? %>
-            <%= link_to edit_label_path(label), class: "btn btn-sm btn-secondary" do %>
-              <i class="mdi mdi-pencil mdi-18"></i>
+            <%= link_to edit_label_path(label), class: "btn btn-icon" do %>
+              <i class="mdi mdi-pencil"></i>
             <% end %>
           <% end %>
           <% if policy(Label).destroy? %>
-            <%= link_to label, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-              <i class="mdi mdi-delete mdi-18"></i>
+            <%= link_to label, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-danger" do %>
+              <i class="mdi mdi-delete"></i>
             <% end %>
           <% end %>
         </td>

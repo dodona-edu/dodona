@@ -183,15 +183,6 @@ a.card-title-link:hover {
   font-size: 14px;
   line-height: 18px;
   padding: $card-supporting-text-padding;
-  .mdi::before{
-    line-height: 18px;
-  }
-  .mdi-36::before{
-    line-height: 32px
-  }
-  .mdi-48::before {
-    line-height: 50px
-  }
 }
 
 .card-actions {

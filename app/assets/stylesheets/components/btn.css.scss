@@ -2,6 +2,7 @@
   height: 40px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   font-weight: 500;
   transition:
     box-shadow 145ms ease,
@@ -68,10 +69,12 @@
   &:hover,
   &:focus,
   &:active {
+    opacity: 1;
     background: rgba($primary, 0.1);
   }
 }
 
+// in the future, the "with-icon" class can be replaced by a "has()" selector
 .btn.btn-text {
   padding-left: 12px;
   padding-right: 12px;
@@ -107,6 +110,18 @@
   }
 }
 
+.btn.btn-icon {
+  width: 40px;
+  padding: 0;
+  color: $text-secondary;
+
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 1;
+    background: rgba($primary, 0.1);
+  }
+}
 .btn-group {
 
   &>.btn {

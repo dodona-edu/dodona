@@ -4,15 +4,15 @@
                 remote: true,
                 params: {user: user.id, status: 'student'},
                 title: t('users.index.accept'),
-                class: 'btn btn-sm btn-success' do %>
-    <i class="mdi mdi-check mdi-18" aria-hidden='true'></i>
+                class: 'btn btn-icon btn-success' do %>
+    <i class="mdi mdi-check" aria-hidden='true'></i>
   <% end %>
   <%= button_to update_membership_course_path(course),
                 remote: true,
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.decline'),
-                class: 'btn btn-sm btn-danger' do %>
-    <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
+                class: 'btn btn-icon btn-danger' do %>
+    <i class="mdi mdi-delete" aria-hidden='true'></i>
   <% end %>
 <% when 'student' %>
   <% if policy(course).update_course_admin_membership? %>
@@ -21,8 +21,8 @@
                   params: {user: user.id, status: 'course_admin'},
                   title: t('users.index.promote'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-secondary' do %>
-      <i class="mdi mdi-school mdi-18" aria-hidden='true'></i>
+                  class: 'btn btn-icon' do %>
+      <i class="mdi mdi-school" aria-hidden='true'></i>
     <% end %>
   <% end %>
   <%= button_to update_membership_course_path(course),
@@ -30,8 +30,8 @@
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.unsubscribe'),
                 data: {confirm: t('general.are_you_sure')},
-                class: 'btn btn-sm btn-secondary' do %>
-    <i class="mdi mdi-delete mdi-18" aria-hidden="true"></i>
+                class: 'btn btn-icon' do %>
+    <i class="mdi mdi-delete" aria-hidden="true"></i>
   <% end %>
 <% when 'course_admin' %>
   <% if policy(course).update_course_admin_membership? %>
@@ -40,16 +40,16 @@
                   params: {user: user.id, status: 'student'},
                   title: t('users.index.demote'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-secondary' do %>
-      <i class="mdi mdi-school mdi-icons-strikethrough mdi-18" aria-hidden='true'></i>
+                  class: 'btn btn-icon' do %>
+      <i class="mdi mdi-school mdi-icons-strikethrough" aria-hidden='true'></i>
     <% end %>
     <%= button_to update_membership_course_path(course),
                   remote: true,
                   params: {user: user.id, status: 'unsubscribed'},
                   title: t('users.index.unsubscribe'),
                   data: {confirm: t('general.are_you_sure')},
-                  class: 'btn btn-sm btn-secondary' do %>
-      <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
+                  class: 'btn btn-icon' do %>
+      <i class="mdi mdi-delete" aria-hidden='true'></i>
     <% end %>
   <% end %>
 <% when 'unsubscribed' %>
@@ -58,7 +58,7 @@
                 params: {user: user.id, status: 'student'},
                 title: t('courses.show.subscribe'),
                 data: {confirm: t('general.are_you_sure')},
-                class: 'btn btn-sm btn-secondary' do %>
-    <i class="mdi mdi-account-plus mdi-18" aria-hidden="true"></i>
+                class: 'btn btn-icon' do %>
+    <i class="mdi mdi-account-plus" aria-hidden="true"></i>
   <% end %>
 <% end %>

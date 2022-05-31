@@ -40,23 +40,23 @@
                 <td><%= link_to repository.judge.name, repository.judge %></td>
                 <td class="actions">
                   <% if policy(repository).admins? %>
-                    <%= link_to admins_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".admins") do %>
-                      <i class="mdi mdi-account-multiple mdi-18"></i>
+                    <%= link_to admins_repository_path(repository), class: "btn btn-icon", title: t(".admins") do %>
+                      <i class="mdi mdi-account-multiple"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).courses? %>
-                    <%= link_to courses_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".courses") do %>
-                      <i class="mdi mdi-book-multiple mdi-18"></i>
+                    <%= link_to courses_repository_path(repository), class: "btn btn-icon", title: t(".courses") do %>
+                      <i class="mdi mdi-book-multiple"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).edit? %>
-                    <%= link_to edit_repository_path(repository), class: "btn btn-sm btn-secondary", title: t(".edit") do %>
-                      <i class="mdi mdi-pencil mdi-18"></i>
+                    <%= link_to edit_repository_path(repository), class: "btn btn-icon", title: t(".edit") do %>
+                      <i class="mdi mdi-pencil"></i>
                     <% end %>
                   <% end %>
                   <% if policy(repository).destroy? %>
-                    <%= link_to repository, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger", title: t(".delete") do %>
-                      <i class="mdi mdi-delete mdi-18"></i>
+                    <%= link_to repository, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-danger", title: t(".delete") do %>
+                      <i class="mdi mdi-delete"></i>
                     <% end %>
                   <% end %>
                 </td>

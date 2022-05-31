@@ -6,7 +6,9 @@
         <div class="alert alert-<%= type %>">
           <strong><%= t("layout.messages.#{type}") %></strong>
           <%= value %>
-          <%= link_to(flash[:extra]["message"], flash[:extra]["url"]) if flash[:extra] %>
+          <% flash[:options]&.each do |option| %>
+            <%= link_to(option["message"], option["url"])%>
+          <% end %>
         </div>
       <% end %>
     <% end %>

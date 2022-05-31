@@ -110,8 +110,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
-    # Link the stored link provider identity to the signed in user.
-    create_linked_identity!(user)
+    # If the session contains credentials for another identity, add this identity to the signed in user
+    create_identity_from_session!(user)
 
     # User successfully updated, finish the authentication procedure. Force is
     # required to overwrite the current existing user.
@@ -123,22 +123,26 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # ==> Utilities.
 
-  def create_linked_identity!(user)
-    # Find the link provider and uid in the session.
-    link_provider_id = session.delete(:auth_link_provider_id)
-    link_uid = session.delete(:auth_link_uid)
-    return if link_provider_id.blank? || link_uid.blank?
+  def create_identity_from_session!(user)
+    # Find the original provider and uid in the session.
+    original_provider_id = session.delete(:auth_original_provider_id)
+    original_uid = session.delete(:auth_original_uid)
+    return if original_provider_id.blank? || original_uid.blank?
+
+    # If a userid was specified in the session, only create a new identity if that user signed in
+    original_user_id = session.delete(:auth_original_user_id)
+    return if original_user_id.present? && user.id != original_user_id
 
     # Find the actual provider.
-    link_provider = Provider.find(link_provider_id)
-    return if link_provider.blank?
+    original_provider = Provider.find(original_provider_id)
+    return if original_provider.blank?
 
     # Create the identity for the current user.
-    Identity.create(identifier: link_uid, provider: link_provider, user: user)
+    Identity.create(identifier: original_uid, provider: original_provider, user: user)
 
     if session[:hide_flash].blank?
       # Set a flash message.
-      set_flash_message :notice, :linked
+      set_flash_message :notice, :identity_created, provider: original_provider.class.sym.to_s
     end
     session.delete(:hide_flash)
   end
@@ -190,17 +194,18 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Get the provider type.
     provider_type = auth_provider_type || request.env['omniauth.error.strategy']&.name || 'OAuth2'
     set_flash_message :alert, :failure, kind: provider_type, reason: reason
-    flash[:extra] = { url: contact_path, message: I18n.t('pages.contact.prompt') }
+    flash[:options] = [{ url: contact_path, message: I18n.t('pages.contact.prompt') }]
   end
 
-  def redirect_to_preferred_provider!
+  def store_identity_in_session!
     # Store the uid and the id of the current provider in the session, to link
     # the identities after returning.
-    session[:auth_link_provider_id] = provider.id if provider.link?
-    session[:auth_link_uid] = auth_uid if provider.link?
+    session[:auth_original_provider_id] = provider.id unless provider.redirect?
+    session[:auth_original_uid] = auth_uid unless provider.redirect?
+  end
 
-    # Find the preferred provider for the current institution.
-    preferred_provider = provider.institution.preferred_provider
+  def redirect_to_provider!(target_provider)
+    store_identity_in_session!
 
     # If this is the first time a user is logging in with LTI, we do something special: LTI
     # related screens are often shown inside an iframe, which some providers don't support
@@ -214,11 +219,17 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # We are not saving the entire URL, since this can be lengthy
       # and cause problems overflowing the session.
       session[:original_redirect] = URI.parse(target_path(:user)).path
-      redirect_to lti_redirect_path(sym: preferred_provider.class.sym, provider: preferred_provider)
+      redirect_to lti_redirect_path(sym: target_provider.class.sym, provider: target_provider)
     else
       # Redirect to the provider.
-      redirect_to omniauth_authorize_path(:user, preferred_provider.class.sym, provider: preferred_provider)
+      redirect_to omniauth_authorize_path(:user, target_provider.class.sym, provider: target_provider)
     end
+  end
+
+  def redirect_to_preferred_provider!
+    # Find the preferred provider for the current institution.
+    preferred_provider = provider.institution.preferred_provider
+    redirect_to_provider!(preferred_provider)
   end
 
   def redirect_with_errors!(resource)
@@ -243,6 +254,21 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to root_path
   end
 
+  def redirect_to_known_provider!(user)
+    store_identity_in_session!
+    session[:auth_original_user_id] = user.id
+    known_providers = user.providers.where(mode: %i[prefer secondary])
+    set_flash_message :alert, :redirect_to_known_provider, user: user.name, username: user.username, email: user.email, institution: user.institution.name
+    flash[:options] = known_providers.map do |known_provider|
+      {
+        message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_option', provider: known_provider.class.sym.to_s),
+        url: omniauth_authorize_path(:user, known_provider.class.sym, provider: known_provider)
+      }
+    end
+    flash[:options] << { url: contact_path, message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_contact') }
+    redirect_to root_path
+  end
+
   def flash_wrong_provider(tried_provider, user_provider)
     set_flash_message :alert, :wrong_provider,
                       tried_email_address: auth_email,
@@ -250,7 +276,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
                       tried_provider_institution: tried_provider.institution.name,
                       user_provider_type: user_provider.class.sym.to_s,
                       user_institution: user_provider.institution.name
-    flash[:extra] = { message: I18n.t('devise.omniauth_callbacks.wrong_provider_extra', user_provider_type: user_provider.class.sym.to_s), url: omniauth_authorize_path(:user, user_provider.class.sym, provider: user_provider) }
+    flash[:options] = [{ message: I18n.t('devise.omniauth_callbacks.wrong_provider_extra', user_provider_type: user_provider.class.sym.to_s), url: omniauth_authorize_path(:user, user_provider.class.sym, provider: user_provider) }]
   end
 
   def redirect_to_target!(user)

@@ -32,6 +32,10 @@ nl:
       wrong_provider_extra: "Aanmelden via %{user_provider_type}."
       linked: Omdat je nog niet eerder op Dodona inlogde vanaf Ufora, konden we de gevraagde actie niet uitvoeren. Nu we je UGent-account gekoppeld hebben, zou dit wel moeten lukken. Klik opnieuw op de link in Ufora om opnieuw te proberen.
       success: "Succesvol geautoriseerd met %{kind} account."
+      redirect_to_known_provider: "Een gebruiker (%{user}) met dezelfde gebruikersnaam (%{username}) en/of hetzelfde email address (%{email address}) bestaat al voor deze onderwijsinstelling (%{institution}). Als dit de gebruiker is waarin je probeerde in te loggen, bevestig dan je identiteit dor in te loggen met een van onderstaande login methodes."
+      redirect_to_known_provider_option: "Log in via %{provider}"
+      redirect_to_known_provider_contact: "Contacteer support als je problemen blijft hebben."
+      identity_created: "Vanaf nu kan je ook inloggen in deze gebruiker via %{provider}."
     passwords:
       no_token: "Je kunt deze pagina niet bereiken als je geen e-mail hebt ontvangen met wachtwoord reset instructies. Mocht je dit wel hebben ontvangen kijk dan het URL na in je mail of vraag de instructies opnieuw aan."
       send_instructions: "Je zult een e-mail met instructies ontvangen over hoe je jouw wachtwoord moet resetten over een paar minuten."

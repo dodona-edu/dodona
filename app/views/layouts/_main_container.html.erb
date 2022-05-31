@@ -7,7 +7,7 @@
           <strong><%= t("layout.messages.#{type}") %></strong>
           <%= value %>
           <% flash[:options]&.each do |option| %>
-            <span><%= link_to(option["message"], option["url"])%></span>
+            <br/><%= link_to(option["message"], option["url"])%>
           <% end %>
         </div>
       <% end %>

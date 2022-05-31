@@ -319,41 +319,6 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'login with temporary user should convert them to normal' do
-    OAUTH_PROVIDERS.each do |provider_name|
-      # Setup.
-      provider = create provider_name
-      user = create :temporary_user, institution: provider.institution
-      identity = build :identity, provider: provider, user: user
-      username = 'real_username'
-      omniauth_mock_identity identity,
-                             uid: username
-
-      # Call the authorization url.
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert user has been updated.
-      user.reload
-      assert_equal user, @controller.current_user
-      assert_equal 'real_username', user.username
-      assert_equal provider.institution, user.institution
-
-      # Sign-out and sign-in again.
-      sign_out user
-
-      omniauth_mock_identity identity, uid: username
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert successful authentication.
-      assert_equal user, @controller.current_user, 'temp user should be still able to sign in after conversion'
-
-      # Cleanup.
-      sign_out user
-    end
-  end
-
   test 'failure handler' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.

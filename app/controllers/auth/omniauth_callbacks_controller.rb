@@ -87,7 +87,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user = find_user_in_institution
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
-      return redirect_duplicate_email_for_provider! if user&.providers&.find(id: provider.id).present?
+      p = provider.id
+      pr = user&.providers&.pluck(&:id)
+      return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
       # If we found an existing user with the same username or email
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user
@@ -258,7 +260,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     store_identity_in_session!
     session[:auth_original_user_id] = user.id
     known_providers = user.providers.where(mode: %i[prefer secondary])
-    set_flash_message :alert, :redirect_to_known_provider, user: user.name, username: user.username, email: user.email, institution: user.institution.name
+    set_flash_message :alert, :redirect_to_known_provider, user: user.full_name, username: user.username, email: user.email, institution: user.institution.name
     flash[:options] = known_providers.map do |known_provider|
       {
         message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_option', provider: known_provider.class.sym.to_s),

@@ -87,8 +87,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       user = find_user_in_institution
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
-      p = provider.id
-      pr = user&.providers&.pluck(&:id)
       return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
       # If we found an existing user with the same username or email
       # We will ask the user to verify if this was the user they wanted to sign in to

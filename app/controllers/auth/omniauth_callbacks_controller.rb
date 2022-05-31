@@ -137,6 +137,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     original_provider = Provider.find(original_provider_id)
     return if original_provider.blank?
 
+    # Check if provider is from the same institution
+    return if original_provider.institution_id != user.institution_id
+
     # Create the identity for the current user.
     Identity.create(identifier: original_uid, provider: original_provider, user: user)
 

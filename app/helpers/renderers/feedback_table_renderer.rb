@@ -148,10 +148,10 @@ class FeedbackTableRenderer
             end
             @builder.div(class: 'btn-group btn-toggle') do
               @builder.button(class: 'btn active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye mdi-18')
+                @builder.i('', class: 'mdi mdi-eye')
               end
               @builder.button(class: 'btn', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye-off mdi-18')
+                @builder.i('', class: 'mdi mdi-eye-off')
               end
             end
           end
@@ -163,10 +163,10 @@ class FeedbackTableRenderer
             end
             @builder.div(class: 'btn-group btn-toggle') do
               @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
+                @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
               end
               @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
+                @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
               end
             end
           end

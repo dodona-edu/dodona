@@ -21,6 +21,16 @@
     }
   }
 
+  &.with-icon.right {
+    padding-left: 24px;
+    padding-right: 16px;
+
+    .mdi {
+      padding: 0;
+      padding-left: 8px;
+    }
+  }
+
   &:hover,
   &:focus,
   &:active {
@@ -116,22 +126,37 @@
   padding: 0;
   color: $text-secondary;
 
-  &:hover,
-  &:focus,
-  &:active {
-    opacity: 1;
-    background: rgba($primary, 0.1);
-  }
-&.btn-inverted {
-  color: $header-fg;
+  &:not(.btn-icon-filled) {
 
-  &:hover,
-  &:focus,
-  &:active {
-    opacity: 1;
-    background: rgba(white, 0.1);
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1;
+      background: rgba($primary, 0.1);
+    }
   }
-}
+
+  &.btn-icon-inverted {
+    color: $header-fg;
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1;
+      background: rgba(white, 0.1);
+    }
+  }
+
+  &.btn-icon-filled {
+    color: $header-fg;
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1;
+      filter: brightness(0.95);
+    }
+  }
 }
 
 .btn.btn-fab {
@@ -181,6 +206,22 @@
 
     &.active {
       background: rgba($primary, 0.2);
+    }
+  }
+}
+
+.input-group {
+  .btn {
+    border: 1px solid $hairlinegray;
+    border-radius: 2px;
+  }
+  .btn:disabled {
+    opacity: 0.8;
+    background: $body-bg;
+  }
+  &.input-group-small {
+    .btn {
+      height: 32px;
     }
   }
 }
@@ -444,6 +485,7 @@ form.button_to {
   display: inline;
 }
 
+*/
 .option-btn {
   height: 90px;
   display: flex;
@@ -479,5 +521,3 @@ form.button_to {
 .option-btn:hover {
   @include shadow-z4;
 }
-
-*/

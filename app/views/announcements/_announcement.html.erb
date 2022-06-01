@@ -5,7 +5,7 @@
     </div>
     <% if current_user.present? %>
       <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, title: t(".dismiss") do %>
-        <i class="mdi mdi-close mdi-18"></i>
+        <i class="mdi mdi-close"></i>
       <% end %>
     <% end %>
   </div>
@@ -13,7 +13,7 @@
     <hr>
     <div class="flex-placement-container">
       <div>
-        <i class="mdi mdi-android mdi-18"></i>
+        <i class="mdi mdi-android"></i>
         <% if announcement.institution.present? %>
           <%= t ".shown_to_institution", user_group: Announcement.human_enum_name(:user_group, announcement.user_group), institution: announcement.institution.name %>
         <% else %>
@@ -26,7 +26,7 @@
           <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at, format: :announcement) %>
         <% end %>
       </div>
-      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title"), class: 'btn btn-icon btn-inverted'  do %>
+      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title"), class: 'btn btn-icon btn-icon-inverted'  do %>
         <i class="mdi mdi-pencil"></i>
       <% end %>
     </div>

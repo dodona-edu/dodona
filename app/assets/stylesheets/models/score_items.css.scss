@@ -7,6 +7,7 @@
 .score-items-table {
   td.description {
     width: 400px;
+
     p {
       margin: 0;
     }
@@ -36,6 +37,10 @@
 
   .maximum-row {
     font-weight: bold;
+  }
+
+  .btn-icon {
+    margin: 0;
   }
 }
 
@@ -72,10 +77,12 @@ a.option-btn {
   .expanded-icon {
     display: none;
   }
+
   &[aria-expanded="true"] {
     .expanded-icon {
       display: initial;
     }
+
     .collapsed-icon {
       display: none;
     }

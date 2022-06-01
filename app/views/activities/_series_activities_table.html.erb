@@ -60,11 +60,11 @@
               <%= form_with url: add_course_repository_path(activity.repository) do |form| %>
                 <%= form.hidden_field :course_id, value: @course.id %>
                 <button type="submit" class="btn btn-icon">
-                  <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+                  <i class="mdi mdi-alert colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
                 </button>
               <% end %>
             <% elsif current_user&.course_admin?(@course) %>
-              <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+              <i class="mdi mdi-alert colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
             <% end %>
           <% end %>
         </td>
@@ -115,7 +115,7 @@
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
             <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
@@ -123,7 +123,7 @@
               <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('activities.navbar_links.read_states'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
           </td>

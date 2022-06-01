@@ -42,11 +42,11 @@
         <p>
           <% if submission.course.nil? %>
             <%= link_to activity_submissions_path(exercise), class: 'btn-icon float-end' do %>
-              <i class="mdi mdi-chevron-right mdi-18"></i>
+              <i class="mdi mdi-chevron-right"></i>
             <% end %>
           <% else %>
             <%= link_to course_activity_submissions_path(submission.course, exercise), class: 'btn-icon float-end' do %>
-              <i class="mdi mdi-chevron-right mdi-18"></i>
+              <i class="mdi mdi-chevron-right"></i>
             <% end %>
           <% end %>
           <span class='float-start'><%= submission_status_icon(submission) %></span>

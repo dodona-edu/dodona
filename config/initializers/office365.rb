@@ -10,7 +10,7 @@ module OmniAuth
       option :name, 'office365'
 
       option :client_options,
-             site: 'https://login.microsoftonline.com/?prompt=select_account',
+             site: 'https://login.microsoftonline.com/',
              authorize_url: '/common/oauth2/authorize',
              token_url: '/common/oauth2/token'
 
@@ -25,6 +25,7 @@ module OmniAuth
           end
 
           params[:scope] ||= DEFAULT_SCOPE
+          params[:prompt] = 'select_account'
         end
       end
 

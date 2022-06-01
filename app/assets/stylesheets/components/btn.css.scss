@@ -123,6 +123,7 @@
     background: rgba($primary, 0.1);
   }
 }
+
 .btn.btn-fab {
   height: 56px;
   width: 56px;
@@ -130,7 +131,6 @@
   background: $primary;
   color: $content-bg;
   @include shadow-z2;
-
 
   &:hover,
   &:focus,
@@ -141,7 +141,16 @@
     filter: brightness(0.95);
     @include shadow-z3;
   }
+
+  &.correct {
+    background-color: $brand-success;
+  }
+
+  &.wrong {
+    background-color: $brand-danger;
+  }
 }
+
 .btn-group {
 
   &>.btn {
@@ -165,6 +174,7 @@
     }
   }
 }
+
 /*
 .btn {
   padding: 2px 8px;

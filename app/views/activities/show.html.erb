@@ -78,10 +78,10 @@ end %>
       <div class="card-title card-title-colored">
         <% if policy(@activity).submit? %>
           <div class="card-title-fab">
-            <button class="btn btn-primary btn-fab mdi mdi-send mdi-36" id="editor-process-btn" data-user_id="<%= current_user.id %>">
+            <button class="btn btn-fab mdi mdi-send" id="editor-process-btn" data-user_id="<%= current_user.id %>">
             </button>
-            <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-              <i class="mdi mdi-pencil mdi-36"></i>
+            <a class="btn btn-fab hidden" id="submission-copy-btn">
+              <i class="mdi mdi-pencil"></i>
             </a>
           </div>
         <% end %>

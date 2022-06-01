@@ -123,6 +123,25 @@
     background: rgba($primary, 0.1);
   }
 }
+.btn.btn-fab {
+  height: 56px;
+  width: 56px;
+  border-radius: 16px;
+  background: $primary;
+  color: $content-bg;
+  @include shadow-z2;
+
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:disabled,
+  &.disabled {
+    opacity: 1;
+    filter: brightness(0.95);
+    @include shadow-z3;
+  }
+}
 .btn-group {
 
   &>.btn {

@@ -50,7 +50,7 @@
         </td>
 
         <td>
-          <%="#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled?%>
+          <%= "#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled? %>
           <% if activity.accessible?(current_user, @course) %>
             <%= link_to activity.name, get_activity_path.call(activity) %>
           <% elsif activity.access_public? %>

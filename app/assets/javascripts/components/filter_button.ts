@@ -7,9 +7,14 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 /**
  * This is a very simple clickable component
  * It sets a given query param to a given value when clicked
- * multi should be specified in case of array query params
+ *
+ * @element d-filter-button
+ *
+ * @prop {string} param - the searchQuery param to be used
+ * @prop {string} value - the value to be used in the searchQuery
+ * @prop {boolean} multi - should be specified in case of array query params
  */
-@customElement("dodona-filter-button")
+@customElement("d-filter-button")
 export class FilterButton extends LitElement {
     @property({ type: String })
     param: string;
@@ -42,8 +47,13 @@ export class FilterButton extends LitElement {
 /**
  * This is a clickable filter icon
  * When clicked it sets the query param 'filter' to the given value
+ *
+ * @element d-filter-icon
+ *
+ * @prop {string} value - the value to be used in the searchQuery
+ * @prop {string} title - the title text that should be displayed when hovering the icon
  */
-@customElement("dodona-filter-icon")
+@customElement("d-filter-icon")
 export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })
     value: string;
@@ -70,7 +80,7 @@ export class FilterIcon extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-        <dodona-filter-button param="filter" .value=${this.value}>
+        <d-filter-button param="filter" .value=${this.value}>
             <i class="mdi mdi-filter-outline mdi-18 filter-icon"
                title="${this.title}"
                data-bs-toggle="tooltip"
@@ -78,7 +88,7 @@ export class FilterIcon extends ShadowlessLitElement {
                ${ref(r => this.initialiseTooltip(r))}
             >
             </i>
-        </dodona-filter-button>
+        </d-filter-button>
         `;
     }
 }

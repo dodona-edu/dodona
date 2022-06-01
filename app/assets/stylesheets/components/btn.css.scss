@@ -122,6 +122,16 @@
     opacity: 1;
     background: rgba($primary, 0.1);
   }
+&.btn-inverted {
+  color: $header-fg;
+
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 1;
+    background: rgba(white, 0.1);
+  }
+}
 }
 
 .btn.btn-fab {

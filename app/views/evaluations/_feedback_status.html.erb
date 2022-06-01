@@ -11,9 +11,9 @@
 <span class='feedback <%= submission_status %> <%= "active" if local_assigns[:current] == feedback %>'>
   <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
     <% if feedback.completed? %>
-      <i class="mdi mdi-comment-check-outline mdi-24 done" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_finished" %>"></i>
+      <i class="mdi mdi-comment-check-outline done" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_finished" %>"></i>
     <% else %>
-      <i class="mdi mdi-comment-outline mdi-24" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_unstarted" %>"></i>
+      <i class="mdi mdi-comment-outline" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_unstarted" %>"></i>
     <% end %>
   <% end %>
 </span>

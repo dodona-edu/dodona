@@ -29,7 +29,7 @@
           <% if current_page?(notifications_path).! %>
             <li id="navbar-notifications" class="dropdown <%= "hidden" unless @last_notifications.any? %>">
               <a href="#" class="dropdown-toggle<%= " notification" if @unread_notifications.any? %>" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <i class="mdi mdi-24 mdi-bell"></i>
+                <i class="mdi mdi-bell"></i>
               </a>
               <div class="dropdown-menu dropdown-menu-end notification-dropdown">
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
@@ -48,7 +48,7 @@
               <% else %>
                 <% user_icon = 'account-circle' %>
               <% end %>
-              <i class="<%= "mdi mdi-24 mdi-#{user_icon}"%>"></i>
+              <i class="<%= "mdi mdi-#{user_icon}"%>"></i>
               <span class="dropdown-title"><%= current_user.first_name || current_user.last_name %></span>
               <span class="caret"></span>
             </a>
@@ -66,13 +66,13 @@
                 <% if Current.demo_mode %>
                   <li>
                     <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item" do %>
-                      <i class="mdi mdi-toggle-switch text-primary mdi-24 dropdown-box"></i><%= t(".demo_mode") %>
+                      <i class="mdi mdi-toggle-switch text-primary dropdown-box"></i><%= t(".demo_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
                     <%= link_to toggle_demo_mode_path, remote: true, method: "POST", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-toggle-switch-off mdi-24 dropdown-box"></i> <%= t(".demo_mode") %>
+                      <i class="mdi mdi-toggle-switch-off dropdown-box"></i> <%= t(".demo_mode") %>
                     <% end %>
                   </li>
                 <% end %>
@@ -81,13 +81,13 @@
                 <% if session[:dark] %>
                   <li>
                     <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-toggle-switch text-primary mdi-24 dropdown-box"></i> <%= t(".dark_mode") %>
+                      <i class="mdi mdi-toggle-switch text-primary dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% else %>
                   <li>
                     <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-toggle-switch-off mdi-24 dropdown-box"></i> <%= t(".dark_mode") %>
+                      <i class="mdi mdi-toggle-switch-off dropdown-box"></i> <%= t(".dark_mode") %>
                     <% end %>
                   </li>
                 <% end %>
@@ -103,7 +103,7 @@
         <% end %>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <i class='mdi mdi-24 mdi-web'></i>
+            <i class='mdi mdi-web'></i>
             <span class="dropdown-title"><%= I18n.locale.to_s %></span>
             <span class="caret"></span></a>
           <ul class="dropdown-menu dropdown-menu-end">

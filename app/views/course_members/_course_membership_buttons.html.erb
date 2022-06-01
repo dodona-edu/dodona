@@ -4,14 +4,14 @@
                 remote: true,
                 params: {user: user.id, status: 'student'},
                 title: t('users.index.accept'),
-                class: 'btn btn-icon btn-success' do %>
+                class: 'btn btn-icon btn-icon-filled bg-success' do %>
     <i class="mdi mdi-check" aria-hidden='true'></i>
   <% end %>
   <%= button_to update_membership_course_path(course),
                 remote: true,
                 params: {user: user.id, status: 'unsubscribed'},
                 title: t('users.index.decline'),
-                class: 'btn btn-icon btn-danger' do %>
+                class: 'btn btn-icon btn-icon-filled bg-danger' do %>
     <i class="mdi mdi-delete" aria-hidden='true'></i>
   <% end %>
 <% when 'student' %>

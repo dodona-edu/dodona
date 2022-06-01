@@ -52,7 +52,7 @@ function initAdminsEdit() {
         $button.html("<i class='mdi mdi-delete'></i>");
         $button.removeClass("add-admin");
         $button.addClass("remove-admin");
-        $button.addClass("btn-danger");
+        $button.addClass("btn-icon-filled bg-danger");
         $button.off("click");
         $button.on("click", onRemoveClick);
         $("#admin-table-wrapper table tbody").append($oldRow.clone(true));
@@ -125,7 +125,7 @@ function initCoursesEdit() {
         $button.html("<i class='mdi mdi-delete'></i>");
         $button.removeClass("add-course");
         $button.addClass("remove-course");
-        $button.addClass("btn-danger");
+        $button.addClass("btn-filled bg-danger");
         $button.off("click");
         $button.on("click", onRemoveClick);
         $("#allowed-courses-table-wrapper table tbody").append($oldRow.clone(true));

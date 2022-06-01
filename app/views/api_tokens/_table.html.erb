@@ -15,7 +15,7 @@
         <td><%= token.description %></td>
         <td><%= l token.created_at %></td>
         <td class="text-end">
-          <%= button_to api_token_path(token), method: :delete, remote: true, class: 'btn btn-icon btn-danger' do %>
+          <%= button_to api_token_path(token), method: :delete, remote: true, class: 'btn btn-icon btn-icon-filled bg-danger' do %>
             <i class="mdi mdi-delete"></i>
           <% end %>
         </td>

@@ -55,7 +55,7 @@
                     <% end %>
                   <% end %>
                   <% if policy(repository).destroy? %>
-                    <%= link_to repository, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-danger", title: t(".delete") do %>
+                    <%= link_to repository, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled bg-danger", title: t(".delete") do %>
                       <i class="mdi mdi-delete"></i>
                     <% end %>
                   <% end %>

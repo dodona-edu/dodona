@@ -18,7 +18,7 @@ export type FilterCollection = {
  *
  * @prop {string} param - the searchQuery param to be used for this filter
  * @prop {boolean} multi - whether one or more labels can be selected at the same time
- * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
+ * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 export class FilterCollectionElement extends ShadowlessLitElement {

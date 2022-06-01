@@ -3,7 +3,19 @@ import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { FilterCollection, FilterCollectionElement, Label } from "components/filter_collection_element";
 
-@customElement("dodona-search-token")
+/**
+ * This component inherits from FilterCollectionElement.
+ * It represent a lists of dismissible tokens, one for each active label
+ *
+ * @element d-search-token
+ *
+ * @prop {(s: Label) => string} color - a function that fetches the color associated with each label
+ * @prop {string} param - the searchQuery param to be used for this filter
+ * @prop {boolean} multi - whether one or more labels can be selected at the same time
+ * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
+ * @prop {[Label]} labels - all labels that could potentially be selected
+ */
+@customElement("d-search-token")
 export class SearchToken extends FilterCollectionElement {
     @property()
     color: (l: Label) => string;
@@ -20,7 +32,14 @@ export class SearchToken extends FilterCollectionElement {
     }
 }
 
-@customElement("dodona-search-tokens")
+/**
+ * This component represents a list of d-search-token
+ *
+ * @element d-search-tokens
+ *
+ * @prop {Record<string, FilterCollection>} filterCollections - the filter collections for which tokens should be shown
+ */
+@customElement("d-search-tokens")
 export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
     filterCollections: Record<string, FilterCollection>;
@@ -32,14 +51,14 @@ export class SearchTokens extends ShadowlessLitElement {
 
         return html`
             ${Object.values(this.filterCollections).map(c => html`
-                <dodona-search-token
+                <d-search-token
                     .labels=${c.data}
                     .color=${c.color}
                     .paramVal=${c.paramVal}
                     .param=${c.param}
                     .multi=${c.multi}
                 >
-                </dodona-search-token>
+                </d-search-token>
             `)}
         `;
     }

@@ -2,7 +2,7 @@
   <%= javascript_include_tag 'search' %>
 <% end %>
 <div class='table-toolbar'>
-  <dodona-search-tokens class="search-tokens"></dodona-search-tokens>
+  <d-search-tokens class="search-tokens"></d-search-tokens>
   <div class='table-toolbar-tools'>
     <i class="mdi mdi-magnify"></i>
     <form class='search' onsubmit="return false;">
@@ -181,7 +181,7 @@
           searchField.placeholder = '<%= t("layout.search.search") %>';
         });
 
-        const searchTokens = Array.from(document.getElementsByTagName("dodona-search-tokens"));
+        const searchTokens = Array.from(document.getElementsByTagName("d-search-tokens"));
         searchTokens.forEach(st => st.filterCollections = filterCollections);
 
         const noDropdownFilters = <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>;

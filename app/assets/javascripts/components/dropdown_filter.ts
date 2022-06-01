@@ -17,7 +17,7 @@ export class DropdownFilter extends FilterCollectionElement {
 
         return html`
             <div class="dropdown dropdown-filter">
-                <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="btn btn-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)} left-icon"></i>`)}
                     ${I18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>

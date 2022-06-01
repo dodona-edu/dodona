@@ -34,7 +34,7 @@
     </tr>
     </thead>
     <tbody>
-    <% local_assigns[:activities].each do |activity| %>
+    <% local_assigns[:activities].each_with_index do |activity, index| %>
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>
@@ -50,6 +50,7 @@
         </td>
 
         <td>
+          <%= "#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled? %>
           <% if activity.accessible?(current_user, @course) %>
             <%= link_to activity.name, get_activity_path.call(activity) %>
           <% elsif activity.access_public? %>

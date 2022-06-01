@@ -6,7 +6,7 @@
   <div class='table-toolbar-tools'>
     <i class="mdi mdi-magnify"></i>
     <form class='search' onsubmit="return false;">
-      <dodona-search-field placeholder="<%= t("layout.search.search") %>"></dodona-search-field>
+      <d-search-field placeholder="<%= t("layout.search.search") %>"></d-search-field>
       <div id="progress-filter" class="dodona-progress dodona-progress-indeterminate">
         <div class="progressbar bar bar1" style="width: 0%;"></div>
         <div class="bufferbar bar bar2" style="width: 100%;"></div>
@@ -174,7 +174,7 @@
         dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
         dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
 
-        const searchFields = Array.from(document.getElementsByTagName("dodona-search-field"));
+        const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {
           searchField.filterCollections = filterCollections;
           searchField.eager = <%= local_assigns.fetch :eager, false %>;

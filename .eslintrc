@@ -14,6 +14,7 @@
     "plugin:no-jquery/all"
   ],
   "rules": {
+    "no-jquery": "error",
     "arrow-parens": ["error", "as-needed"],
     "comma-dangle": ["error", {
         "arrays": "only-multiline",

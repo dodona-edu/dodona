@@ -75,7 +75,7 @@
   <center><%= page_navigation_links questions, true, "annotations", {}, 'question_index' %></center>
 <% end %>
 <script type="text/javascript">
-    $(function () {
+    dodona.onReady(function () {
         new window.dodona.questionTable("<%= questions_path %>");
     });
 </script>

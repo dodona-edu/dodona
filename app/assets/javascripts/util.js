@@ -162,6 +162,20 @@ function initDatePicker(selector, options = {}) {
     return init();
 }
 
+/**
+ * This function will call the callback when the dom content is fully loaded
+ * This could mean immediately if the dom is already loaded
+ * @param {function} callback - callback function
+ */
+function onReady(callback) {
+    if (document.readyState !== "loading") {
+        callback();
+    } else {
+        document.addEventListener("DOMContentLoaded", callback);
+    }
+}
+
+
 export {
     createDelayer,
     delay,
@@ -178,5 +192,6 @@ export {
     makeInvisible,
     makeVisible,
     setDocumentTitle,
-    initDatePicker
+    initDatePicker,
+    onReady
 };

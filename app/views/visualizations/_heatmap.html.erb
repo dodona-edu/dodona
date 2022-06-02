@@ -8,7 +8,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    dodona.onReady(function () {
         dodona.initHeatmap(
             '<%= raw heatmap_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>',
             <%= raw local_assigns[:course].present? ? "true" : "false" %>,

@@ -29,7 +29,7 @@ window.bootstrap = bootstrap;
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
+import { checkTimeZone, checkIframe, initCSRF, initTooltips, onReady } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 
@@ -55,4 +55,5 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
+dodona.onReady = onReady;
 window.dodona = dodona;

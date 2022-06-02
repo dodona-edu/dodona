@@ -134,5 +134,5 @@
         buttonText: "<%= t('.direction.next') %>",
         scoreItems: <%= raw @feedback.score_items.map(&:id).to_json %>
     });
-    $(() => window.dodona.initTooltips());
+    dodona.onReady(() => window.dodona.initTooltips());
 </script>

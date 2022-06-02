@@ -1,27 +1,6 @@
 /* globals ace */
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
-import GLightbox from "glightbox";
-
-function showLightbox(content) {
-    const lightbox = new GLightbox(content);
-    lightbox.on("slide_changed", () => {
-        // There might have been math in the image captions, so ask
-        // MathJax to search for new math (but only in the captions).
-        window.MathJax.typeset([".gslide-description"]);
-    });
-    lightbox.open();
-
-    // Transfer focus back to the document body to allow the lightbox to be closed.
-    // https://github.com/dodona-edu/dodona/issues/1759.
-    document.body.focus();
-}
-
-function onFrameMessage(event) {
-    if (event.message.type === "lightbox") {
-        showLightbox(event.message.content);
-    }
-}
 
 function initLightboxes() {
     let index = 0;
@@ -388,6 +367,5 @@ function onFrameScroll(position) {
 }
 
 export {
-    initMathJax, initExerciseShow, initExerciseDescription, afterResize,
-    onFrameMessage, onFrameScroll
+    initMathJax, initExerciseShow, initExerciseDescription, afterResize, onFrameScroll
 };

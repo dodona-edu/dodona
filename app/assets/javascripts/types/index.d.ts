@@ -5,7 +5,7 @@ declare interface Window {
 }
 
 declare class MathJaxObject {
-    typeset() :void;
+    typeset(strings?: string[]) :void;
 }
 
 declare module I18n {

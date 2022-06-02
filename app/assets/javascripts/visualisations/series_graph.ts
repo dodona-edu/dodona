@@ -1,7 +1,6 @@
 // eslint-disable-next-line
 // @ts-nocheck
 import * as d3 from "d3";
-import { initDatePicker } from "util.js";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
@@ -358,8 +357,8 @@ export abstract class SeriesGraph {
             altInput: true,
             altFormat: I18n.t("time.formats.flatpickr_long"),
         };
-        this.fpStart = initDatePicker(`#scope-start-${this.seriesId}`, options);
-        this.fpEnd = initDatePicker(`#scope-end-${this.seriesId}`, options);
+        this.fpStart = dodona.initDatePicker(`#scope-start-${this.seriesId}`, options);
+        this.fpEnd = dodona.initDatePicker(`#scope-end-${this.seriesId}`, options);
         this.fpStart.config.onClose.push(() => this.applyScope());
         this.fpEnd.config.onClose.push(() => this.applyScope());
     }

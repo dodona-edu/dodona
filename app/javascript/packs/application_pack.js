@@ -32,6 +32,7 @@ import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
+import { initDatePicker } from "date_picker";
 
 // Initialize clipboard.js
 initClipboard();
@@ -55,4 +56,5 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
+dodona.initDatePicker = initDatePicker;
 window.dodona = dodona;

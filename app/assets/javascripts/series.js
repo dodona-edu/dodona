@@ -139,4 +139,4 @@ function initSeriesShow(id) {
     });
 }
 
-export { initDatePicker as initDeadlinePicker, initSeriesEdit, initSeriesShow };
+export { initSeriesEdit, initSeriesShow };

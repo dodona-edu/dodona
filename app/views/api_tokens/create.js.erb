@@ -1,4 +1,4 @@
-$("#token-table-placeholder").html("<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>");
-$("#new-token-form").html("<%= escape_javascript(render partial: 'form', locals: {user: @user}) %>");
-$("#fresh-token").html("<%= escape_javascript(render partial: 'show', locals: {token: new_token}) %>");
+document.getElementById("token-table-placeholder").innerHTML= "<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>";
+document.getElementById("new-token-form").innerHTML= "<%= escape_javascript(render partial: 'form', locals: {user: @user}) %>";
+document.getElementById("fresh-token").innerHTML= "<%= escape_javascript(render partial: 'show', locals: {token: new_token}) %>";
 new dodona.Toast("<%= escape_javascript toast %>");

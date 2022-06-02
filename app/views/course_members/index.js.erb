@@ -1,2 +1,2 @@
-$("#users-table-wrapper").html("<%= escape_javascript(render partial: 'members_table', locals: {course_memberships: @course_memberships}) %>")
-$(dodona.initTooltips);
+document.getElementById("users-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'members_table', locals: {course_memberships: @course_memberships}) %>"
+dodona.onReady(dodona.initTooltips);

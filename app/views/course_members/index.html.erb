@@ -80,7 +80,7 @@
                            {
                                icon: 'palette-swatch',
                                text: t(".edit_all_labels"),
-                               js: '$("#labelsUploadModal").modal("show")',
+                               js: 'document.getElementById("labelsUploadModal").modal("show")',
                                type: 'enrolled'
                            }
                        ],
@@ -99,5 +99,5 @@
   </div>
 </div>
 <script type="text/javascript">
-    $(dodona.initCourseMembers);
+    dodona.onReady(dodona.initCourseMembers);
 </script>

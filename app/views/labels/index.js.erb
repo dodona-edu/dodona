@@ -1,1 +1,1 @@
-$("#labels-table-wrapper").html("<%= escape_javascript(render partial: 'labels_table', locals: { labels: @labels }) %>");
+document.getElementById("labels-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'labels_table', locals: { labels: @labels }) %>";

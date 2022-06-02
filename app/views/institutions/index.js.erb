@@ -1,1 +1,1 @@
-$("#institution-table-wrapper").html("<%= escape_javascript(render partial: 'institutions/institution_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts }) %>");
+document.getElementById("institution-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'institutions/institution_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts }) %>";

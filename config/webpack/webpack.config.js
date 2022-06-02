@@ -15,6 +15,15 @@ const config = {
     },
     optimization: {
         moduleIds: "deterministic",
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    name: "commons",
+                    chunks: "initial",
+                    minChunks: 2,
+                },
+            },
+        },
     },
     // https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
     entry: glob.sync("./app/javascript/packs/**.{js,ts}").reduce(function (obj, el) {

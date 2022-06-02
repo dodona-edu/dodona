@@ -35,10 +35,10 @@ const config = {
     ]
 };
 
-// if (process.env.NODE_ENV === "development") {
-//     config.mode = "development";
-//     config.devtool = "inline-source-map";
-// }
+if (process.env.NODE_ENV === "development") {
+    config.mode = "development";
+    config.devtool = "inline-source-map";
+}
 
 // Test, Staging and Production use default config
 

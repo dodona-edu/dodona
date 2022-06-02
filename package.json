@@ -1,6 +1,5 @@
 {
   "name": "dodona",
-  "sideEffects": false,
   "private": true,
   "scripts": {
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",

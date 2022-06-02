@@ -1,5 +1,4 @@
-import { initExerciseShow, afterResize, onFrameScroll } from "exercise.js";
-import { onFrameMessage } from "light_box";
+import { initExerciseShow, afterResize, onFrameMessage, onFrameScroll } from "exercise.js";
 
 window.dodona.initExerciseShow = initExerciseShow;
 window.dodona.afterResize = afterResize;

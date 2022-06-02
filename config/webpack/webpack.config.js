@@ -31,7 +31,7 @@ const config = {
         extensions: [".tsx", ".ts", ".mjs", ".js", ".sass", ".scss", ".css", ".module.sass", ".module.scss", ".module.css", ".png", ".svg", ".gif", ".jpeg", ".jpg"]
     },
     plugins: [
-         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
+        new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en|nl/),
     ]
 };
 

@@ -145,6 +145,23 @@ function setDocumentTitle(title) {
     document.title = title;
 }
 
+/**
+ * Initiates a datepicker using flatpicker
+ * @param {string} selector - The selector of div containing the input field and buttons
+ * @param {object} options - optional, Options object as should be provided to the flatpicker creation method
+ * @return {flatpickr} the created flatpicker
+ */
+function initDatePicker(selector, options = {}) {
+    function init() {
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        return flatpickr(selector, options);
+    }
+
+    return init();
+}
+
 export {
     createDelayer,
     delay,
@@ -160,5 +177,6 @@ export {
     initTooltips,
     makeInvisible,
     makeVisible,
-    setDocumentTitle
+    setDocumentTitle,
+    initDatePicker
 };

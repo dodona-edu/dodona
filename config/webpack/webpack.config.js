@@ -1,5 +1,6 @@
 const path = require("path");
 const glob = require("glob");
+const webpack = require('webpack');
 
 const config = {
     mode: "production",
@@ -29,6 +30,9 @@ const config = {
         modules: ["node_modules", "app/assets/javascripts"],
         extensions: [".tsx", ".ts", ".mjs", ".js", ".sass", ".scss", ".css", ".module.sass", ".module.scss", ".module.css", ".png", ".svg", ".gif", ".jpeg", ".jpg"]
     },
+    plugins: [
+         new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en|nl/),
+    ]
 };
 
 if (process.env.NODE_ENV === "development") {

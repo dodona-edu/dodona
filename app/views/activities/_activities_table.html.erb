@@ -64,9 +64,9 @@
           <% if policy(activity).info? %>
             <div class="text-muted ellipsis-overflow">
               <small>
-                <dodona-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>">
+                <d-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>">
                   <%= activity.repository.name %>: <%= activity.path %>
-                </dodona-filter-button>
+                </d-filter-button>
               </small>
             </div>
           <% end %>
@@ -74,7 +74,7 @@
 
         <td class="description-languages">
           <div class="text-muted">
-            <%= raw activity.description_languages.map {|language| "<dodona-filter-button param='description_languages' value='#{language}' multi title='#{t("js.#{language}")}'>#{language}</dodona-filter-button> "}.join(", ") %>
+            <%= raw activity.description_languages.map {|language| "<d-filter-button param='description_languages' value='#{language}' multi title='#{t("js.#{language}")}'>#{language}</d-filter-button> "}.join(", ") %>
           </div>
         </td>
 

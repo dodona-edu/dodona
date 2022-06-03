@@ -11,6 +11,16 @@ export type FilterCollection = {
     param: string
 };
 
+/**
+ * This class represent a lit element that contains a filter collection
+ * The class manages selection and deselection of filter labels
+ * It interacts with the searchQuery using the listener paradigm to keep the selected filters up to date
+ *
+ * @prop {string} param - the searchQuery param to be used for this filter
+ * @prop {boolean} multi - whether one or more labels can be selected at the same time
+ * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
+ * @prop {[Label]} labels - all labels that could potentially be selected
+ */
 export class FilterCollectionElement extends ShadowlessLitElement {
     @property()
     param: string;

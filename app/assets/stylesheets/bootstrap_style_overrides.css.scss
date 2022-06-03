@@ -50,24 +50,39 @@ code {
 }
 
 // alerts
-@if $theme ==dark {
-  .alert {
-    color: white !important;
-    background-color: inherit;
+.alert {
+  color: $text-on-bg-color  !important;
+  border-radius: $border-radius-base;
+  border: 0;
+
+  a {
+    font-weight: bold;
+    color: inherit;
   }
 
-}
-
-@else {
-  .alert {
-    color: white !important;
-    border-width: 0 !important;
-    @include shadow-z2;
+  .btn.btn-icon {
+    color: inherit;
   }
-}
 
-.alert-link {
-  color: white !important;
+  &.alert-info {
+    background-color: $info-bg;
+  }
+
+  &.alert-warning {
+    background-color: $warning-bg;
+  }
+
+  &.alert-danger {
+    background-color: $danger-bg;
+  }
+
+  &.alert-success {
+    background-color: $success-bg;
+  }
+
+  &.alert-primary {
+    background-color: $primary-bg;
+  }
 }
 
 .alert button.btn-close {

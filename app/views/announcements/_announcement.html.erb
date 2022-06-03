@@ -4,7 +4,7 @@
       <%= markdown(announcement.text) %>
     </div>
     <% if current_user.present? %>
-      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, title: t(".dismiss") do %>
+      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, class:"btn btn-icon", title: t(".dismiss") do %>
         <i class="mdi mdi-close"></i>
       <% end %>
     <% end %>
@@ -26,7 +26,7 @@
           <%= t ".stop_delivering_at", stop_delivering_at: I18n.localize(announcement.stop_delivering_at, format: :announcement) %>
         <% end %>
       </div>
-      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title"), class: 'btn btn-icon btn-icon-inverted'  do %>
+      <%= link_to edit_announcement_path(announcement), title: t("announcements.edit.title"), class: 'btn btn-icon'  do %>
         <i class="mdi mdi-pencil"></i>
       <% end %>
     </div>

@@ -15,7 +15,7 @@
       <div class="card-supporting-text">
         <%= render partial: 'description', locals: {submission: @submission} %>
         <script>
-          dodona.onReady(() => {
+          dodona.ready.then(() => {
             <%# Python judge has a code tab with href="#code-n" where n is the
                 number of tabs and for the other judges it is "#code-tab", so we
                 can't generically handle code tabs, except for selecting the last

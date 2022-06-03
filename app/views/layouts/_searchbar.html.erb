@@ -21,7 +21,7 @@
 </div>
 
 <script type="text/javascript">
-    dodona.onReady(function () {
+    dodona.ready.then(function () {
         const filterCollections = {};
         <% if local_assigns.fetch :labels, false %>
         filterCollections["labels"] = {

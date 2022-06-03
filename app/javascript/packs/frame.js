@@ -13,16 +13,16 @@ import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from 
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
-import { initTooltips, onReady } from "util.js";
+import { initTooltips, ready } from "util.js";
 import { initClipboard } from "copy";
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};
 dodona.initTooltips = initTooltips;
-dodona.onReady = onReady;
+dodona.ready = ready;
 window.dodona = dodona;
 
 // Initialize clipboard.js
 initClipboard();
 
-onReady(initTooltips);
+ready.then(initTooltips);

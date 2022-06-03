@@ -23,7 +23,7 @@
   </div>
 <% end %>
 <script>
-    dodona.onReady(function () {
+    dodona.ready.then(function () {
         dodona.initCourseMemberLabelsEdit(<%= raw @course_labels.map{|cl| {id: cl.id, name: cl.name}}.to_json %>);
     });
 </script>

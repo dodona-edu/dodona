@@ -125,24 +125,32 @@
   display: inline-flex;
   align-items: center;
   height: $token-height;
-  border-radius: math.div($token-height, 2);
+  border-radius: 8px;
   padding-left: 12px;
+  padding-right: 12px;
   border-width: 0px;
   color: $text-on-bg-color;
   text-transform: capitalize;
   white-space: nowrap;
   cursor: default;
-  margin-bottom: 8px;
-  padding-right: 8px;
-  margin-right: 8px;
 }
 .token .close {
+  font-size: 18px;
   margin-left: 8px;
+  margin-right: -4px; // a token with a close button has a right padding of 8 instead of 12px
   color: $text-on-bg-color;
 }
 .token .close:hover {
   color: $text-color;
   cursor: pointer;
+}
+a+a>.token,
+.token+.token {
+  margin-left: 8px;
+}
+
+d-search-token>.token {
+  margin-right: 8px;
 }
 
 

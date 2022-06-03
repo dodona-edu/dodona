@@ -1,7 +1,6 @@
 import { isInIframe } from "iframe";
 import { Dutch } from "flatpickr/dist/l10n/nl";
 import flatpickr from "flatpickr";
-import { Tooltip } from "bootstrap";
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.
@@ -76,13 +75,13 @@ function getArrayURLParameter(name, _url) {
 
 function checkTimeZone(offset) {
     if (offset !== new Date().getTimezoneOffset()) {
-        document.getElementById("time-zone-warning").classList.remove("hidden");
+        $("#time-zone-warning").removeClass("hidden");
     }
 }
 
 function checkIframe() {
     if (isInIframe()) {
-        document.getElementById("iframe-warning").classList.remove("hidden");
+        $("#iframe-warning").removeClass("hidden");
     }
 }
 
@@ -98,8 +97,7 @@ function initCSRF() {
 }
 
 function initTooltips() {
-    Array.from(document.querySelectorAll("[data-bs-toggle=\"tooltip\"]"))
-        .forEach( tooltip => new Tooltip(tooltip, { container: "body" }));
+    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body" });
 }
 
 function tooltip(target, message, disappearAfter=1000) {

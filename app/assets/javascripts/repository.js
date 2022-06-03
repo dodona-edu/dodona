@@ -63,7 +63,7 @@ function initAdminsEdit() {
         $(`#admin-table-wrapper td.repository-admin-button-cell[data-user_id="${userId}"]`).parents("tr").eq(0).remove();
         const $cell = $(`td[data-user_id="${userId}"]`);
         if ($cell) {
-            $cell.html("<button type='button' class='btn btn-sm add-admin'><i class='mdi mdi-account-plus'></i></button>");
+            $cell.html("<button type='button' class='btn btn-icon add-admin'><i class='mdi mdi-account-plus'></i></button>");
             const $button = $cell.find(".add-admin");
             $button.off("click");
             $button.on("click", onAddClick);
@@ -136,7 +136,7 @@ function initCoursesEdit() {
         $(`#allowed-courses-table-wrapper td.repository-course-button-cell[data-course_id="${courseId}"]`).parents("tr").eq(0).remove();
         const $cell = $(`td[data-course_id="${courseId}"]`);
         if ($cell) {
-            $cell.html("<button type='button' class='btn btn-sm add-course'><i class='mdi mdi-plus'></i> </button>");
+            $cell.html("<button type='button' class='btn btn-icon add-course'><i class='mdi mdi-plus'></i> </button>");
             const $button = $cell.find(".add-course");
             $button.off("click");
             $button.on("click", onAddClick);

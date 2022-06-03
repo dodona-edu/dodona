@@ -1,5 +1,9 @@
 // html elements
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
   font-weight: 300;
   letter-spacing: -0.01em;
   line-height: 48px;
@@ -46,13 +50,15 @@ code {
 }
 
 // alerts
-@if $theme == dark {
+@if $theme ==dark {
   .alert {
     color: white !important;
     background-color: inherit;
   }
 
-} @else {
+}
+
+@else {
   .alert {
     color: white !important;
     border-width: 0 !important;
@@ -91,37 +97,6 @@ code {
   font-weight: 700;
 }
 
-// buttons
-/*.btn {
-  @include shadow-z1;
-}
-
-.btn:hover {
-  @include shadow-z3;
-}
-.btn-primary,
-.btn-primary:disabled {
-  color: white;
-}
-.btn-primary:hover {
-  color: white;
-  background-color: shade-color($primary, $btn-hover-bg-shade-amount);
-}
-.btn-primary:active, .btn-primary:focus {
-  color: white;
-  background-color: shade-color($primary, $btn-hover-bg-shade-amount);
-  box-shadow: none !important;
-}
-
-.btn.btn-file,
-.btn.btn-file:hover,
-.btn.btn-link,
-.btn.btn-link:hover {
-  box-shadow: none;
-}
-
-*/
-
 .dropdown-menu {
   @include shadow-z5;
 }
@@ -150,7 +125,7 @@ code {
   color: $text-secondary;
   padding-bottom: 8px;
   border-bottom-width: 2px;
-  border-bottom-color: $border-color !important;
+  border-bottom-color: $border-color  !important;
 }
 
 // modals
@@ -172,6 +147,7 @@ code {
   line-height: 14px;
   color: $text-secondary;
 }
+
 .help-block:not(:last-child) {
   margin-bottom: 1rem;
 }
@@ -180,7 +156,9 @@ code {
 .form-check-label {
   cursor: pointer;
 }
+
 .has-error {
+
   .col-form-label,
   .radio,
   .checkbox,
@@ -189,27 +167,33 @@ code {
   &.radio label,
   &.checkbox label,
   &.radio-inline label,
-  &.checkbox-inline label  {
+  &.checkbox-inline label {
     color: $text-color;
   }
+
   .help-block {
     color: $text-secondary;
   }
+
   .form-control {
     border-color: $state-danger-border;
     @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
+
     &:focus {
       border-color: darken($state-danger-border, 10%);
-      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($state-danger-border, 20%);
+      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
+      0 0 6px lighten($state-danger-border, 20%);
       @include box-shadow($shadow);
     }
   }
+
   .btn {
     border-color: $state-danger-border;
   }
 }
 
 .has-warning {
+
   .col-form-label,
   .radio,
   .checkbox,
@@ -218,21 +202,26 @@ code {
   &.radio label,
   &.checkbox label,
   &.radio-inline label,
-  &.checkbox-inline label  {
+  &.checkbox-inline label {
     color: $text-color;
   }
+
   .help-block {
     color: $text-secondary;
   }
+
   .form-control {
     border-color: $state-warning-border;
     @include box-shadow(inset 0 1px 1px rgba(0, 0, 0, .075));
+
     &:focus {
       border-color: darken($state-warning-border, 10%);
-      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 6px lighten($state-warning-border, 20%);
+      $shadow: inset 0 1px 1px rgba(0, 0, 0, .075),
+      0 0 6px lighten($state-warning-border, 20%);
       @include box-shadow($shadow);
     }
   }
+
   .btn {
     border-color: $state-warning-border;
   }
@@ -244,6 +233,7 @@ code {
   margin-bottom: 6px;
   @include shadow-z3;
 }
+
 .course-description .panel-group,
 .series .panel-group,
 .activity-description .panel-group {
@@ -259,6 +249,7 @@ code {
       color: inherit;
     }
   }
+
   .panel-body {
     padding: 12px;
   }
@@ -280,9 +271,6 @@ mark,
   .btn {
     box-shadow: none;
   }
-  .btn-secondary {
-    border-color: $border-color;
-  }
 }
 
 .pagination {
@@ -296,10 +284,17 @@ blockquote {
 }
 
 @media screen {
-  .visible-print { display: none; }
-  .visible-print-inline { display: none; }
+  .visible-print {
+    display: none;
+  }
+
+  .visible-print-inline {
+    display: none;
+  }
 }
 
 @media print {
-  .hidden-print { display: none; }
+  .hidden-print {
+    display: none;
+  }
 }

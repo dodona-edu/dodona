@@ -41,6 +41,12 @@ $card-supporting-text-padding: 16px;
   padding: 16px;
   box-sizing: border-box;
   flex-direction: column;
+  &.card-title-flex {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: row;
+      align-items: center;
+    }
 }
 
 .card-title.card-title-colored {

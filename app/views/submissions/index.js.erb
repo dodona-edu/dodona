@@ -1,4 +1,4 @@
-document.getElementById("submissions-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user }) %>";
+$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user }) %>");
 if (dodona.feedbackTableLoaded) {
     dodona.feedbackTableLoaded(
         <%= raw "#{current_user&.id || 'undefined'}" %>,

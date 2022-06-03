@@ -1,1 +1,1 @@
-document.getElementById("activities-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'activities_table', locals: {activities: @activities}) %>";
+$("#activities-table-wrapper").html("<%= escape_javascript(render partial: 'activities_table', locals: {activities: @activities}) %>");

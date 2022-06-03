@@ -1,4 +1,4 @@
-document.getElementById("course-form-wrapper").innerHTML= "<%= escape_javascript(render partial: 'form', locals: {course: @course, copy_options: @copy_options}) %>"
+$("#course-form-wrapper").html("<%= escape_javascript(render partial: 'form', locals: {course: @course, copy_options: @copy_options}) %>")
 if (dodona.courseFormLoaded) {
     dodona.courseFormLoaded();
 }

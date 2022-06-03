@@ -1,12 +1,10 @@
 <%# This does two steps: replace the HTML of the score, and then notify the action class. %>
 <%# The index is set with JS once known. %>
-document.getElementById("<%= @score.score_item.id %>-score-form-wrapper")
-    .outerHTML = "<%= escape_javascript(render 'feedbacks/score_actions', score: @score, score_item: @score.score_item, index: @order) %>";
-Array.from(document.getElementsByClassName("user-feedback-row")).forEach( el =>
-    el.innerHTML= "<%= escape_javascript(render 'feedbacks/user_feedback_row', current_feedback: @feedback) %>"
-);
-Array.from(document.getElementsByClassName("progress-row")).forEach( el =>
-    el.innerHTML= "<%= escape_javascript(render 'feedbacks/progress_row', metadata: @feedback.evaluation_exercise.metadata) %>"
-);
+$("#<%= @score.score_item.id %>-score-form-wrapper")
+    .replaceWith("<%= escape_javascript(render 'feedbacks/score_actions', score: @score, score_item: @score.score_item, index: @order) %>");
+$(".user-feedback-row")
+    .html("<%= escape_javascript(render 'feedbacks/user_feedback_row', current_feedback: @feedback) %>");
+$(".progress-row")
+    .html("<%= escape_javascript(render 'feedbacks/progress_row', metadata: @feedback.evaluation_exercise.metadata) %>");
 window.dodona.feedbackActions.initScoreForm("<%= @score.score_item.id %>");
 window.dodona.feedbackActions.setTotal("<%= format_score @total %>", <%= @feedback.completed %>);

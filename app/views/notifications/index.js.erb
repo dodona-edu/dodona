@@ -1,6 +1,4 @@
-Array.from(document.getElementsByClassName("notification-dropdown")).forEach( el =>
-    el.innerHTML= "<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>"
-);
+$(".notification-dropdown").html("<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>");
 <% if @notifications.any? %>
     document.getElementById("navbar-notifications").classList.remove("hidden");
 <% end %>

@@ -1,1 +1,1 @@
-document.getElementById("scoresheet-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'scoresheet_table', locals: {course: @course, series: @series, users: @users, hash: @hash, histogram: @histogram}) %>"
+$("#scoresheet-table-wrapper").html("<%= escape_javascript(render partial: 'scoresheet_table', locals: {course: @course, series: @series, users: @users, hash: @hash, histogram: @histogram}) %>")

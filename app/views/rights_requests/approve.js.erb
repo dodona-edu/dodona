@@ -1,1 +1,1 @@
-document.getElementById("requests-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'requests_table', locals: { requests: @requests }) %>";
+$("#requests-table-wrapper").html("<%= escape_javascript(render partial: 'requests_table', locals: { requests: @requests }) %>");

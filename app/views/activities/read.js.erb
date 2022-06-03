@@ -1,1 +1,1 @@
-document.getElementById("content_page_read_action").innerHTML= "<%= escape_javascript(render partial: 'activities/content_page_read_button', locals: {activity: activity, course: course, read_state: read_state, user: user}) %>";
+$("#content_page_read_action").html("<%= escape_javascript(render partial: 'activities/content_page_read_button', locals: {activity: activity, course: course, read_state: read_state, user: user}) %>");

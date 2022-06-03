@@ -1,1 +1,1 @@
-document.getElementById('<%= container_name.to_s %>').html('<%= escape_javascript render(partial: 'application/token_field', formats: [:html], locals: { name: name, value: value, reset_url: reset_url }) %>');
+$('#<%= container_name.to_s %>').html('<%= escape_javascript render(partial: 'application/token_field', formats: [:html], locals: { name: name, value: value, reset_url: reset_url }) %>');

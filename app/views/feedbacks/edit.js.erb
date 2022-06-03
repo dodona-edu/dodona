@@ -1,1 +1,1 @@
-document.getElementById("submissions-table-wrapper").innerHTML= "<%= escape_javascript(render partial: 'submissions_table', locals: { submissions: @submissions }) %>"
+$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: { submissions: @submissions }) %>")

@@ -1,1 +1,1 @@
-document.getElementById("series-listing").append("<%= escape_javascript(@series.map{|series| render(partial: 'series/series', locals: {series: series})}.join.html_safe) %>");
+$("#series-listing").append("<%= escape_javascript(@series.map{|series| render(partial: 'series/series', locals: {series: series})}.join.html_safe) %>");

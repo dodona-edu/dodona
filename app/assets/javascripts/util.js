@@ -98,7 +98,8 @@ function initCSRF() {
 }
 
 function initTooltips() {
-    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body" });
+    Array.from(document.querySelectorAll("[data-bs-toggle=\"tooltip\"]"))
+        .forEach( tooltip => new Tooltip(tooltip, { container: "body" }));
 }
 
 function tooltip(target, message, disappearAfter=1000) {

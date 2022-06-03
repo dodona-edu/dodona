@@ -25,4 +25,4 @@ window.dodona = dodona;
 // Initialize clipboard.js
 initClipboard();
 
-$(initTooltips);
+onReady(initTooltips);

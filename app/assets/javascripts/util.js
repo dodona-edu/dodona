@@ -87,7 +87,7 @@ function checkIframe() {
 
 // add CSRF token to each ajax-request
 function initCSRF() {
-    $(() => {
+    onReady(() => {
         $.ajaxSetup({
             "headers": {
                 "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),

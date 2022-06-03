@@ -1,8 +1,8 @@
 import ClipboardJS from "clipboard";
-import { tooltip } from "util.js";
+import { onReady, tooltip } from "util.js";
 
 export function initClipboard(): void {
-    $(() => {
+    onReady(() => {
         const selector = ".btn";
         const delay = 1000;
         const clip = new ClipboardJS(selector);

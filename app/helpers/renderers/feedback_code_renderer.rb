@@ -28,7 +28,7 @@ class FeedbackCodeRenderer
       end
       @builder.script(type: 'application/javascript') do
         @builder << <<~HEREDOC
-          $(() => {
+          window.dodona.onReady(() => {
             window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", #{@code.to_json});
           });
         HEREDOC

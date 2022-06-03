@@ -38,14 +38,14 @@ initClipboard();
 
 // Don't show drawer if we don't want a drawer.
 if (!window.dodona.hideDrawer) {
-    $(() => new Drawer());
+    onReady(() => new Drawer());
 }
 
 
 // Adds the CSRF token to each ajax request
 initCSRF();
 
-$(initTooltips);
+onReady(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};

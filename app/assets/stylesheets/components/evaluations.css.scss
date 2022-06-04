@@ -80,22 +80,24 @@
         cursor: auto;
       }
 
-      .form-control.in-progress, .input-group-addon.in-progress {
+      .form-control.in-progress,
+      .input-group-addon.in-progress {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
 
-      .form-control{
+      .form-control {
         border-color: $border-color;
         line-height: initial;
       }
 
-      .score-input{
+      .score-input {
         border-right: none;
         margin-right: -28px;
         padding-right: 28px;
       }
-      .score-state{
+
+      .score-state {
         border-left: none;
         width: 28px;
         background-color: $input-bg;
@@ -128,6 +130,7 @@
       text-decoration: inherit;
     }
   }
+
   .user-select-option:hover {
     border: 1px solid $text-disabled;
   }
@@ -135,6 +138,7 @@
   .user-select-option h1 small {
     font-weight: 100;
   }
+
   .selected-users {
     margin-top: 18px;
     display: inline-block;
@@ -150,18 +154,24 @@
 
 .feedback {
   padding-bottom: 6px;
+
   &.correct {
     border-bottom: 3px solid $success-300;
   }
+
   &.wrong {
     border-bottom: 3px solid $danger-300;
   }
+
   &.not-started {
     border-bottom: 3px solid $hairlinegray;
   }
-  .done, .provisional {
+
+  .done,
+  .provisional {
     color: $text-disabled;
   }
+
   a:hover .done,
   a:hover .provisional,
   .done:hover,
@@ -169,6 +179,7 @@
     color: $text-color;
   }
 }
+
 .user-feedback-row {
   display: flex;
   justify-content: space-around;
@@ -176,10 +187,12 @@
   a .done {
     color: $text-secondary;
   }
+
   .active a i {
     color: $info-500;
   }
 }
+
 .evaluation-form-title {
   line-height: normal;
 }
@@ -254,7 +267,8 @@ a.score-click {
     padding-left: 30px;
   }
 
-  td:first-child, th:first-child {
+  td:first-child,
+  th:first-child {
     max-width: 200px;
   }
 

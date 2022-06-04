@@ -69,13 +69,17 @@ $annotation-info: $info-500;
       }
 
       .lineno:first-child {
-        .rouge-code, .rouge-gutter {
+
+        .rouge-code,
+        .rouge-gutter {
           padding-top: 5px;
         }
       }
 
       .lineno:last-child {
-        .rouge-code, .rouge-gutter {
+
+        .rouge-code,
+        .rouge-gutter {
           padding-bottom: 5px;
         }
       }
@@ -138,7 +142,8 @@ $annotation-info: $info-500;
       }
 
       // General lighter background on the right side
-      .rouge-code, .annotation-cell {
+      .rouge-code,
+      .annotation-cell {
         background-color: $body-bg;
       }
 
@@ -179,7 +184,10 @@ $annotation-info: $info-500;
         color: $text-secondary;
       }
 
-      .annotation-edit, .question-resolve, .question-in_progress, .question-unresolve {
+      .annotation-edit,
+      .question-resolve,
+      .question-in_progress,
+      .question-unresolve {
         float: right;
         margin-top: 4px;
       }
@@ -188,6 +196,7 @@ $annotation-info: $info-500;
         &::before {
           vertical-align: bottom;
         }
+
         margin-left: 4px;
       }
 
@@ -207,7 +216,7 @@ $annotation-info: $info-500;
       // Override the normal pre padding & coloring
       pre {
         padding: 0;
-        background-color: $code-bg !important;
+        background-color: $code-bg  !important;
         margin-bottom: 0;
         border: none;
         border-radius: 0;
@@ -216,7 +225,8 @@ $annotation-info: $info-500;
       }
 
       // Stylize the embedded code block
-      .highlighter-rouge div.highlight, pre:not(.highlight) {
+      .highlighter-rouge div.highlight,
+      pre:not(.highlight) {
         padding: 5px 10px;
         margin-left: 10px;
         margin-right: 10px;
@@ -240,12 +250,15 @@ $annotation-info: $info-500;
         margin: 10px auto 20px;
 
         max-width: 300px;
+
         @include media-breakpoint-up(md) {
           max-width: calc(#{map-get($container-max-widths, "md")} * 0.6);
         }
+
         @include media-breakpoint-up(lg) {
           max-width: calc(#{map-get($container-max-widths, "lg")} * 0.7);
         }
+
         @include media-breakpoint-up(xl) {
           max-width: calc(#{map-get($container-max-widths, "xl")} * 0.7);
         }
@@ -253,7 +266,8 @@ $annotation-info: $info-500;
     }
   }
 
-  .annotation.question, .annotation.user {
+  .annotation.question,
+  .annotation.user {
     border-left-width: 5px;
   }
 
@@ -299,7 +313,8 @@ $annotation-info: $info-500;
       margin-bottom: 12px;
       text-align: right;
 
-      .annotation-control-button, .question-control-button {
+      .annotation-control-button,
+      .question-control-button {
         margin-left: 3px;
       }
 

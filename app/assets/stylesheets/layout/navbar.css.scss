@@ -4,27 +4,25 @@ $navbar-height: 50px;
 .dodona-navbar {
   @include shadow-z3;
   background: $header-bg;
-
   height: $navbar-height;
-
   display: flex;
-
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 10;
-
   width: 100vw;
   max-width: 100vw;
 
   ul {
     margin-bottom: 9.5px;
   }
+
   a {
     color: $header-fg;
     text-decoration: none;
   }
+
   li {
     display: inline-block;
   }
@@ -34,17 +32,17 @@ $navbar-height: 50px;
     display: flex;
     justify-content: center;
 
-    > .content {
+    >.content {
       display: inline-flex;
       justify-content: center;
     }
   }
 
-  .flex:first-child > .content {
+  .flex:first-child>.content {
     margin-right: auto;
   }
 
-  .flex:last-child > .content {
+  .flex:last-child>.content {
     margin-left: auto;
   }
 
@@ -56,18 +54,23 @@ $navbar-height: 50px;
   .center {
     flex-shrink: 1;
     flex-grow: 100;
+
     @include media-breakpoint-up(sm) {
       max-width: calc(100vw - 240px);
     }
+
     @include media-breakpoint-up(md) {
       max-width: math.div(map-get($container-max-widths, "md"), 12) * 10;
     }
+
     @include media-breakpoint-up(lg) {
       max-width: math.div(map-get($container-max-widths, "lg"), 12) * 10;
     }
+
     @include media-breakpoint-up(xl) {
       max-width: math.div(map-get($container-max-widths, "xl"), 12) * 10;
     }
+
     @include media-breakpoint-up(xxl) {
       max-width: math.div(map-get($container-max-widths, "xxl"), 12) * 10;
     }
@@ -107,6 +110,7 @@ $navbar-height: 50px;
 
       i {
         line-height: $navbar-height;
+
         @include media-breakpoint-up(sm) {
           display: none;
         }
@@ -122,15 +126,19 @@ $navbar-height: 50px;
     @include media-breakpoint-up(sm) {
       max-width: calc(100vw - 240px);
     }
+
     @include media-breakpoint-up(md) {
       max-width: calc((#{map-get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
     }
+
     @include media-breakpoint-up(lg) {
       max-width: calc((#{map-get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
     }
+
     @include media-breakpoint-up(xl) {
       max-width: calc((#{map-get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
     }
+
     @include media-breakpoint-up(xxl) {
       max-width: calc((#{map-get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
     }
@@ -139,6 +147,7 @@ $navbar-height: 50px;
       @include media-breakpoint-down(sm) {
         display: none;
       }
+
       flex-shrink: 0;
       align-self: flex-end;
       align-content: flex-end;
@@ -150,8 +159,10 @@ $navbar-height: 50px;
       li a {
         padding-left: 8px;
         padding-right: 8px;
+
         @include media-breakpoint-up(sm) {
           padding-bottom: 11px;
+
           &.active {
             padding-bottom: 8px;
             border-bottom: solid #fff 3px;
@@ -170,9 +181,10 @@ $navbar-height: 50px;
       padding-left: 20px;
 
       .notification-dropdown {
-        .table > tbody > tr:first-of-type > td {
+        .table>tbody>tr:first-of-type>td {
           border-top: none;
         }
+
         .notification {
           cursor: pointer;
 
@@ -193,18 +205,23 @@ $navbar-height: 50px;
             line-height: 24px;
           }
         }
+
         .read-toggle-button {
           cursor: pointer;
         }
+
         a {
           padding-left: 0px;
           color: $text-color;
+
           &.btn-icon {
             color: $text-secondary;
           }
         }
+
         .notification-overflow a {
           color: $link-color;
+
           &:hover {
             text-decoration: underline;
           }
@@ -214,6 +231,7 @@ $navbar-height: 50px;
       li a {
         padding-left: 8px;
       }
+
       li a .dropdown-box::before {
         float: right; // position to right of text
         top: -6px;
@@ -231,6 +249,7 @@ $navbar-height: 50px;
         li {
           display: block;
         }
+
         a {
           color: $text-color;
         }
@@ -252,7 +271,9 @@ $navbar-height: 50px;
         }
 
         .dropdown-menu {
-          li, a {
+
+          li,
+          a {
             color: $text-color;
           }
 
@@ -275,6 +296,7 @@ $navbar-height: 50px;
     @include media-breakpoint-up(sm) {
       display: none;
     }
+
     position: absolute;
     top: 0;
     right: 10px;
@@ -297,6 +319,7 @@ $navbar-height: 50px;
     @include media-breakpoint-up(sm) {
       display: inline-block;
     }
+
     @include media-breakpoint-down(sm) {
       @include shadow-z3;
       position: absolute;
@@ -319,13 +342,17 @@ $navbar-height: 50px;
           display: none;
         }
       }
+
       display: inline-block;
+
       @include media-breakpoint-down(sm) {
         padding-left: 25px;
       }
+
       transform: translateY(-.5em);
     }
   }
+
   .custom-material-icons svg {
     margin-bottom: 13px;
   }
@@ -352,6 +379,7 @@ $navbar-height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
+
   .crumb.list a {
     margin-right: 12px;
   }
@@ -360,14 +388,16 @@ $navbar-height: 50px;
     overflow: hidden;
     flex-shrink: 1;
 
-    .mdi::before{
+    .mdi::before {
       line-height: $navbar-height;
       margin-left: 4px;
       margin-right: 4px;
     }
   }
 
-  .crumb, .crumb a, .crumb-separator {
+  .crumb,
+  .crumb a,
+  .crumb-separator {
     color: $header-fg;
   }
 
@@ -375,7 +405,8 @@ $navbar-height: 50px;
     text-decoration: none;
   }
 
-  .crumb:last-child:not(:first-child), .crumb:last-child:not(:first-child) a {
+  .crumb:last-child:not(:first-child),
+  .crumb:last-child:not(:first-child) a {
     color: $header-fg-secondary;
     pointer-events: none;
     cursor: default;

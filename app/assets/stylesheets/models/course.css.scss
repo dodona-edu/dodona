@@ -61,22 +61,24 @@
       width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2);
     }
   }
+
   @include media-breakpoint-up(xl) {
     .nav {
       width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2);
     }
   }
+
   @include media-breakpoint-up(xxl) {
     .nav {
       width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2);
     }
   }
 
-  .nav > li.header {
+  .nav>li.header {
     color: $text-secondary;
   }
 
-  .nav > li > a {
+  .nav>li>a {
     display: block;
     padding: 6px 6px;
     font-size: 13px;
@@ -84,14 +86,14 @@
     color: $text-disabled;
   }
 
-  .nav > li > a.active,
-  .nav > li > a.active:hover {
+  .nav>li>a.active,
+  .nav>li>a.active:hover {
     border-left: 2px solid $primary-800;
     padding-left: 4px;
     color: $text-secondary;
   }
 
-  .nav > li > a:hover {
+  .nav>li>a:hover {
     border-left: 1px solid $primary-800;
     padding-left: 5px;
     color: $text-secondary;

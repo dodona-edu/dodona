@@ -15,18 +15,23 @@
   .table {
     border-collapse: separate;
 
-    td, th {
+    td,
+    th {
       margin: 0;
       white-space: nowrap;
     }
+
     .status-header {
       max-width: 100px;
       min-width: 100px;
     }
-    .status, .status-header {
+
+    .status,
+    .status-header {
       text-align: center;
       overflow: hidden;
     }
+
     .user-name {
       position: absolute;
       width: 200px;
@@ -34,9 +39,11 @@
       height: auto;
       top: auto;
     }
+
     td:not(.sticky-column) {
       height: 42px;
     }
+
     thead .user-name {
       height: auto !important;
     }
@@ -57,6 +64,7 @@ tr.gu-mirror {
   overflow: hidden;
   text-overflow: ellipsis;
   vertical-align: middle;
+
   form {
     display: inline;
   }

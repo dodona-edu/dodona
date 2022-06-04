@@ -1,15 +1,14 @@
-
 .violin-label {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 .violin-invisibar {
-    visibility: hidden;
-    fill: none
+  visibility: hidden;
+  fill: none
 }
 
 .metric-container {
-    stroke: $hairlinegray;
+  stroke: $hairlinegray;
 }
 
 .day-cell {
@@ -60,7 +59,7 @@
     .legend-text {
       margin-left: 4px;
     }
-  } 
+  }
 }
 
 .daterange-picker {

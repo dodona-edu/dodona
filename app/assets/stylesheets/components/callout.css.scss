@@ -22,7 +22,7 @@
 }
 
 /* Tighten up space between multiple callouts */
-.callout + .callout {
+.callout+.callout {
   margin-top: -5px;
 }
 

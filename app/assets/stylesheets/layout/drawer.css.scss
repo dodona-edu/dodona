@@ -119,11 +119,13 @@ ul.drawer-list {
       background: $drawer-active;
     }
 
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       background: $drawer-hover;
     }
 
-    span, i {
+    span,
+    i {
       font-size: 18px;
       margin-right: 12px;
     }

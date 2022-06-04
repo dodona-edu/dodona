@@ -31,7 +31,7 @@
   margin: 0;
 }
 
-.table-toolbar .table-toolbar-tools > .mdi::before {
+.table-toolbar .table-toolbar-tools>.mdi::before {
   margin-top: 3px;
   margin-left: 8px;
   color: $text-disabled;
@@ -106,7 +106,7 @@
   visibility: hidden;
 }
 
-.dodona-progress > .bar {
+.dodona-progress>.bar {
   display: block;
   position: absolute;
   top: 0;
@@ -115,41 +115,39 @@
   transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dodona-progress > .progressbar {
+.dodona-progress>.progressbar {
   background-color: $progress-bar-bg;
   z-index: 1;
   left: 0;
 }
 
-.dodona-progress > .bufferbar {
-  background-image: linear-gradient(
-      to right,
+.dodona-progress>.bufferbar {
+  background-image: linear-gradient(to right,
       rgba(255, 255, 255, 0.7),
-      rgba(255, 255, 255, 0.7)
-    ),
+      rgba(255, 255, 255, 0.7)),
     linear-gradient(to right, $accent-A100, $accent-A100);
   z-index: 0;
   left: 0;
 }
 
-.dodona-progress > .auxbar {
+.dodona-progress>.auxbar {
   right: 0;
 }
 
-.dodona-progress.dodona-progress-indeterminate > .bar1,
-.dodona-progress.dodona-progress-indeterminate > .bar3 {
+.dodona-progress.dodona-progress-indeterminate>.bar1,
+.dodona-progress.dodona-progress-indeterminate>.bar3 {
   background-color: $progress-bar-bg;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-.mdl-progress.mdl-progress-indeterminate > .bar3 {
+.mdl-progress.mdl-progress-indeterminate>.bar3 {
   background-image: none;
   animation-name: indeterminate2;
 }
 
-.dodona-progress.dodona-progress-indeterminate > .bar1 {
+.dodona-progress.dodona-progress-indeterminate>.bar1 {
   animation-name: indeterminate1;
 }
 
@@ -158,10 +156,12 @@
     left: 0%;
     width: 0%;
   }
+
   50% {
     left: 25%;
     width: 75%;
   }
+
   75% {
     left: 100%;
     width: 0%;
@@ -169,15 +169,18 @@
 }
 
 @keyframes indeterminate2 {
+
   0%,
   50% {
     left: 0%;
     width: 0%;
   }
+
   75% {
     left: 0%;
     width: 25%;
   }
+
   100% {
     left: 100%;
     width: 0%;

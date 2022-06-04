@@ -51,7 +51,6 @@ code {
 
 // alerts
 .alert {
-  color: $text-on-bg-color  !important;
   border-radius: $border-radius-base;
   border: 0;
 
@@ -65,34 +64,39 @@ code {
   }
 
   &.alert-info {
-    background-color: $info-bg;
+    background-color: $info-container;
+      color: $on-info-container;
   }
 
   &.alert-warning {
-    background-color: $warning-bg;
+    background-color: $warning-container;
+      color: $on-warning-container;
   }
 
   &.alert-danger {
-    background-color: $danger-bg;
+    background-color: $danger-container;
+      color: $on-danger-container;
   }
 
   &.alert-success {
-    background-color: $success-bg;
+    background-color: $success-container;
+      color: $on-success-container;
   }
 
   &.alert-primary {
-    background-color: $primary-bg;
+    background-color: $primary-container;
+      color: $on-primary-container;
   }
 }
 
 .alert button.btn-close {
-  color: $alert-secondary;
+  //color: $alert-secondary; //TODO
   opacity: 1;
   text-shadow: initial;
 }
 
 .alert button.btn-close:hover {
-  color: $alert-fg;
+  //color: $alert-fg;
 }
 
 // popovers
@@ -172,7 +176,8 @@ code {
   cursor: pointer;
 }
 
-.has-error {
+// TODO
+/*.has-error {
 
   .col-form-label,
   .radio,
@@ -241,6 +246,8 @@ code {
     border-color: $state-warning-border;
   }
 }
+
+*/
 
 // panels
 .panel {

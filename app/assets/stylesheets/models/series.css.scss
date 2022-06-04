@@ -31,16 +31,16 @@
 }
 
 .deadline-passed {
-  color: $danger-fg;
+  color: $danger;
 }
 
 .deadline-ok {
-  color: $success-fg;
+  color: $success;
 }
 
 .submission-status-button {
   a {
-    color: $btn-accent;
+    //TODO color: $btn-accent;
   }
 }
 
@@ -78,7 +78,7 @@
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
-    background-color: $series-summary-icon-bg;
+    //TODO background-color: $series-summary-icon-bg;
 
     &>.mdi::before {
       line-height: 24px;
@@ -86,7 +86,7 @@
 
     &.deadline-missed .mdi-alarm-off {
       &::before {
-        color: $brand-danger;
+        color: $danger;
       }
 
       background-color: $content-bg;
@@ -98,7 +98,7 @@
 
     &.deadline-met .mdi-alarm-check {
       &::before {
-        color: $brand-success;
+        color: $success;
       }
 
       background-color: $content-bg;
@@ -109,26 +109,26 @@
     }
 
     i {
-      color: $series-summary-icon-bg;
+      //TODO color: $series-summary-icon-bg;
       background: $content-bg;
       border-radius: 50%;
       border: 5px solid $content-bg;
     }
 
     &.wrong {
-      background-color: $brand-danger;
+      background-color: $danger;
 
       i {
-        color: $brand-danger;
+        color: $danger;
       }
     }
 
     &.started,
     &.completed.deadline-missed {
-      background-color: $brand-success;
+      background-color: $success;
 
       i {
-        color: $brand-success;
+        color: $success;
       }
     }
 

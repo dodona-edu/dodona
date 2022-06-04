@@ -126,7 +126,7 @@ if Rails.env.development?
   end
 
   puts "Creating labels (#{Time.now - start})"
-  %w[red pink purple deep-purple indigo teal orange brown blue-grey].each do |color|
+  %w[red pink purple deep-purple indigo teal orange brown blue-gray].each do |color|
     Label.create name: Faker::GreekPhilosophers.unique.name, color: color
   end
 

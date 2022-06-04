@@ -1,6 +1,7 @@
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../../../node_modules/bootstrap/scss/functions";
 
+@import "theme/m3-theme-light.css.scss";
 // 2. Include any default variable overrides here
 @import "theme/colors.css.scss";
 @import "bootstrap_variable_overrides.css.scss";
@@ -78,11 +79,11 @@
 @import "print.css.scss";
 
 .field_with_errors input {
-  border-color: $danger-fg;
+  border-color: $danger;
 }
 
 .colored-info {
-  color: $brand-info;
+  color: $info;
 }
 
 figcaption {

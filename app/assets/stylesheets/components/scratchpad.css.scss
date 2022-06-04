@@ -16,8 +16,8 @@
 }
 
 .scratchpad-header {
-    color: $header-fg;
-    background-color: $header-bg;
+    color: $on-primary;
+        background-color: $primary;
     height: $navbar-height;
     display: flex;
     position: absolute;
@@ -42,7 +42,7 @@
 
 #scratchpad-code-copy-btn {
     color: white;
-    background-color: $color-blue-grey;
+    background-color: $blue-gray;
     white-space: nowrap;
 }
 

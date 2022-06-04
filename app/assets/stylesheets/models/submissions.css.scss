@@ -14,14 +14,14 @@
     }
 
     .badge.bg-danger {
-      color: $brand-danger;
-      border-color: $brand-danger;
+      color: $danger;
+        border-color: $danger;
       background-color: $content-bg  !important;
     }
 
     .badge.bg-success {
-      color: $brand-success;
-      border-color: $brand-success;
+      color: $success;
+        border-color: $success;
       background-color: $content-bg  !important;
     }
   }
@@ -47,11 +47,11 @@
     padding-left: 12px;
 
     &.correct {
-      border-left-color: $brand-success;
+      border-left-color: $success;
     }
 
     &.wrong {
-      border-left-color: $brand-danger;
+      border-left-color: $danger;
     }
   }
 
@@ -73,13 +73,13 @@
 
     &.correct {
       .indicator {
-        color: $brand-success;
+        color: $success;
       }
     }
 
     &.wrong {
       .indicator {
-        color: $brand-danger;
+        color: $danger;
       }
     }
   }
@@ -247,7 +247,7 @@
   }
 
   .linter pre.lineno {
-    border-right: 1px solid $divider-color;
+    border-right: 1px solid $divider;
     padding-right: 25px;
   }
 
@@ -325,7 +325,7 @@
   }
 
   .tab-link-marker {
-    background: $brand-warning  !important;
+    background: $warning  !important;
   }
 }
 
@@ -343,15 +343,15 @@ iframe.file {
 }
 
 .colored-correct {
-  color: $brand-success;
+  color: $success;
 }
 
 .colored-wrong {
-  color: $brand-danger;
+  color: $danger;
 }
 
 .colored-warning {
-  color: $brand-warning;
+  color: $warning;
 }
 
 .colored-secondary {

@@ -4,7 +4,8 @@
   top: 0;
   height: 380px;
   width: 100%;
-  background: $home-lead-bg;
+  //TODO
+    //background: $home-lead-bg;
   z-index: -1;
 }
 
@@ -14,19 +15,20 @@
 }
 
 .home-lead {
-  color: $home-lead-fg;
+  //TODO
+    //color: $home-lead-fg;
   margin-bottom: 20px;
 
   .btn,
   .btn:active {
     border-radius: 2px;
     background-color: $content-bg;
-    border-color: $home-lead-bg;
-    color: $home-lead-bg;
+    //TODO border-color: $home-lead-bg;
+      //TODO color: $home-lead-bg;
   }
 
   .btn:active {
-    background-color: $btn-active-background;
+    //TODO background-color: $btn-active-background;
   }
 
   .lead {
@@ -109,7 +111,7 @@
 }
 
 .home-summary-card .course-link:hover {
-  color: $course-link-hover-color;
+  //TODO color: $course-link-hover-color;
 }
 
 .home-summary-card .stats h1 {
@@ -117,7 +119,7 @@
 }
 
 .home-summary-card.getting-started {
-  background-color: $getting-started-bg;
+  //TODO background-color: $getting-started-bg;
 }
 
 .home-summary-card.getting-started .card-media {
@@ -125,7 +127,7 @@
 }
 
 .home-summary-card.getting-started .card-title {
-  color: $getting-started-fg;
+  //TODO color: $getting-started-fg;
   padding-top: 10px;
   padding-bottom: 10px;
 }

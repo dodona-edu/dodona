@@ -2,18 +2,18 @@
   shape-rendering: crispEdges;
 
   .correct {
-    stroke: $success-300;
+    stroke: $success;
   }
 
   .info {
-    stroke: $info-500;
+    stroke: $info;
   }
 
   .wrong {
-    stroke: $danger-300;
+    stroke: $danger;
   }
 
   .not-started {
-    stroke: $hairlinegray;
+    stroke: $divider;
   }
 }

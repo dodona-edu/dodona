@@ -3,7 +3,7 @@ $navbar-height: 50px;
 
 .dodona-navbar {
   @include shadow-z3;
-  background: $header-bg;
+  background: $primary;
   height: $navbar-height;
   display: flex;
   position: fixed;
@@ -19,7 +19,7 @@ $navbar-height: 50px;
   }
 
   a {
-    color: $header-fg;
+    color: $on-primary;
     text-decoration: none;
   }
 
@@ -96,7 +96,7 @@ $navbar-height: 50px;
       border: none;
       outline: none;
       background: none;
-      color: $header-fg;
+      color: $on-primary;
     }
 
     .brand {
@@ -302,7 +302,7 @@ $navbar-height: 50px;
     right: 10px;
     border: none;
     background: none;
-    color: $header-fg;
+    color: $on-primary;
 
     i {
       line-height: $navbar-height;
@@ -327,7 +327,7 @@ $navbar-height: 50px;
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: $header-bg;
+      background-color: $primary;
 
       li {
         display: block;
@@ -398,7 +398,7 @@ $navbar-height: 50px;
   .crumb,
   .crumb a,
   .crumb-separator {
-    color: $header-fg;
+    color: $on-primary;
   }
 
   .crumb a:hover {
@@ -407,7 +407,8 @@ $navbar-height: 50px;
 
   .crumb:last-child:not(:first-child),
   .crumb:last-child:not(:first-child) a {
-    color: $header-fg-secondary;
+    // TODO
+    //color: $header-fg-secondary;
     pointer-events: none;
     cursor: default;
   }
@@ -424,7 +425,8 @@ a.notification:before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  background-color: $pending-color;
+  // TODO
+  //background-color: $pending-color;
   position: relative;
   margin-left: -15px;
   left: 30px;

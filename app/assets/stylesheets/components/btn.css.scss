@@ -57,7 +57,7 @@
 .btn.btn-tonal,
 .btn.btn-elevated {
   background: $secondary-container;
-    color: $on-secondary-container;
+  color: $on-secondary-container;
 
   &:hover {
     @include shadow-z1;
@@ -163,8 +163,8 @@
   height: 56px;
   width: 56px;
   border-radius: 16px;
-  background: $primary;
-  color: $on-primary;
+  background: $secondary-container;
+  color: $on-secondary-container;
   @include shadow-z2;
 
   &:hover,
@@ -219,7 +219,7 @@
   .btn:disabled {
     opacity: 0.8;
     // TODO
-      //background: $body-bg;
+    //background: $body-bg;
   }
 
   &.input-group-small {
@@ -236,7 +236,7 @@
   margin-bottom: 15px;
   padding: 12px;
   //TODO
-    //background-color: $content-bg;
+  //background-color: $content-bg;
   border-radius: 2px;
   transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
   @include shadow-z2;

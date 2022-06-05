@@ -1,9 +1,9 @@
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../../../node_modules/bootstrap/scss/functions";
 
-@import "theme/m3-theme-light.css.scss";
 // 2. Include any default variable overrides here
-@import "theme/colors.css.scss";
+//@import "theme/colors.css.scss"; // todo remove
+@import "theme/m3-theme-light.css.scss";
 @import "bootstrap_variable_overrides.css.scss";
 @import "mixins.css.scss";
 @import "vendor";
@@ -13,9 +13,12 @@
 
 @import "theme/rouge-light.css.scss";
 @import "theme/rouge-dark.css.scss";
-@if $theme == "dark" {
+
+@if $theme =="dark" {
   @include rouge-dark;
-} @else {
+}
+
+@else {
   @include rouge-light;
 }
 

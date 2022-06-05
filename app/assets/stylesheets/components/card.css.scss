@@ -52,7 +52,7 @@ $card-supporting-text-padding: 16px;
 
 .card-title.card-title-colored {
   color: $on-primary;
-    background-color: $primary;
+  background-color: $primary;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 }
@@ -71,7 +71,7 @@ a.card-title-link:hover {
   .card-subtitle-text {
     margin-top: 3px;
     // TODO
-      //color: $text-secondary-on-container-color;
+    //color: $text-secondary-on-container-color;
   }
 
   .card-subtitle-text+.card-subtitle-text {
@@ -87,67 +87,67 @@ a.card-title-link:hover {
 .card-title.card-colored-accent {
   &.accent-red {
     background-color: $red-container;
-      color: $on-red-container;
+    color: $on-red-container;
   }
 
   &.accent-pink {
     background-color: $pink-container;
-      color: $on-pink-container;
+    color: $on-pink-container;
   }
 
   &.accent-purple {
     background-color: $purple-container;
-      color: $on-purple-container;
+    color: $on-purple-container;
   }
 
   &.accent-deep-purple {
     background-color: $deep-purple-container;
-      color: $on-purple-container;
+    color: $on-purple-container;
   }
 
   &.accent-indigo {
     background-color: $indigo-container;
-      color: $on-indigo-container;
+    color: $on-indigo-container;
   }
 
   &.accent-teal {
     background-color: $teal-container;
-      color: $on-teal-container;
+    color: $on-teal-container;
   }
 
   &.accent-orange {
     background-color: $orange-container;
-      color: $on-orange-container;
+    color: $on-orange-container;
   }
 
   &.accent-brown {
     background-color: $brown-container;
-      color: $on-brown-container;
+    color: $on-brown-container;
   }
 
-                                                                &.accent-blue-gray {
-                                                                  background-color: $blue-gray-container;
-                                                                  color: $on-blue-gray-container;
+  &.accent-blue-gray {
+    background-color: $blue-gray-container;
+    color: $on-blue-gray-container;
   }
 
   &.accent-blue {
     background-color: $blue-container;
-      color: $on-blue-container;
+    color: $on-blue-container;
   }
 
   &.accent-yellow {
     background-color: $yellow-container;
-      color: $on-yellow-container;
+    color: $on-yellow-container;
   }
 
   &.accent-green {
     background-color: $green-container;
-      color: $on-green-container;
+    color: $on-green-container;
   }
 
   &.accent-cyan {
     background-color: $cyan-container;
-      color: $on-cyan-container;
+    color: $on-cyan-container;
   }
 }
 
@@ -197,7 +197,7 @@ a.card-title-link:hover {
 .card-subtitle-text {
   font-size: 14px;
   //TODO
-    //color: $text-secondary;
+  //color: $text-secondary;
   margin: 0;
   font-weight: normal;
   line-height: 1.1;
@@ -211,7 +211,7 @@ a.card-title-link:hover {
 .card-title-colored .card-subtitle-text,
 .card-title-colored .card-subtitle-text a {
   // TODO
-    //color: $header-fg-secondary;
+  //color: $header-fg-secondary;
 }
 
 .card-supporting-text {
@@ -310,7 +310,7 @@ a.card-title-link:hover {
   height: 55px;
   border: none;
   //TODO
-    //border-bottom: 5px solid $header-accent;
+  //border-bottom: 5px solid $header-accent;
   font-size: 18px;
   transition-duration: 0.2s;
   transition-property: height;
@@ -324,8 +324,7 @@ a.card-title-link:hover {
 }
 
 .card-tab .nav-tabs li a {
-  // TODO
-    //color: $text-muted;
+  color: $text-muted;
 }
 
 .card-title .nav-tabs li a,
@@ -353,7 +352,7 @@ a.card-title-link:hover {
   border: none;
   background: inherit;
   // TODO
-    //border-bottom: 5px solid $header-accent;
+  //border-bottom: 5px solid $header-accent;
   height: 50px;
 }
 
@@ -373,6 +372,7 @@ a.card-title-link:hover {
 }
 
 .nav-tabs .badge {
+  // todo
   background-color: $text-muted;
 }
 

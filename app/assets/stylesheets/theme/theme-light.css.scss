@@ -1,68 +1,9 @@
-@import "theme/development.css.scss";
-@import "theme/theme-dark.css.scss";
+//@import "theme/development.css.scss";
+//@import "theme/theme-dark.css.scss";
 @import "theme/m3-theme.css.scss";
 
-// General defines
-/*$color-red: $red-500;
-$color-pink: $pink-500;
-$color-purple: $purple-500;
-$color-deep-purple: $deep-purple-500;
-$color-indigo: $indigo-500;
-$color-teal: $teal-500;
-$color-orange: $deep-orange-500;
-$color-brown: $brown-500;
-$color-blue-grey: $blue-grey-500;
 
-$color-red-bg: $red-200;
-$color-pink-bg: $pink-200;
-$color-purple-bg: $purple-200;
-$color-deep-purple-bg: $deep-purple-200;
-$color-indigo-bg: $indigo-200;
-$color-teal-bg: $teal-200;
-$color-orange-bg: $deep-orange-200;
-$color-brown-bg: $brown-200;
-$color-blue-grey-bg: $blue-grey-200;
-$color-blue-bg: $blue-200;
-$color-yellow-bg: $yellow-200;
-$color-green-bg: $green-200;
-$color-cyan-bg: $cyan-200;
-
-$primary-100: $blue-100;
-$primary-200: $blue-200;
-$primary-300: $blue-300;
-$primary-500: $blue-500;
-$primary-700: $blue-700;
-$primary-800: $blue-800;
-$primary-900: $blue-900;
-$primary-A100: $blue-A100;
-
-$accent-100: $amber-100;
-$accent-200: $amber-200;
-$accent-300: $amber-300;
-$accent-500: $amber-500;
-$accent-700: $amber-700;
-$accent-800: $amber-800;
-$accent-900: $amber-900;
-$accent-A100: $amber-A100;
-
-
-$info-200: $blue-200;
-$info-500: $blue-500;
-$success-100: $green-100;
-$success-200: $green-200;
-$success-300: $green-300;
-$success-500: $green-500;
-$success-800: $green-800;
-$danger-100: $red-100;
-$danger-200: $red-200;
-$danger-300: $red-300;
-$danger-500: $red-500;
-$danger-800: $red-800;
-$danger-A100: $red-A100;
-$danger-A200: $red-A200;
-$warning-200: $amber-200;
-$warning-500: $amber-500;
-
+/*
 $primary-bg: $accent-200;
 $success-bg: $success-200;
 $danger-bg: $danger-200;
@@ -80,10 +21,11 @@ $text-secondary: $black-secondary;
 $hairlinegray: $black-divider;
 */
 
-@if $development == true {
+@if $development ==true {
     @include theme-development;
 }
-@if $theme == dark {
+
+@if $theme ==dark {
     @include theme-dark;
 }
 
@@ -234,6 +176,6 @@ $hairlinegray: $black-divider;
     display: unset;
 }
 
-@if $theme == dark {
+@if $theme ==dark {
     @include theme-dark-other;
 }

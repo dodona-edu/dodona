@@ -65,27 +65,27 @@ code {
 
   &.alert-info {
     background-color: $info-container;
-      color: $on-info-container;
+    color: $on-info-container;
   }
 
   &.alert-warning {
     background-color: $warning-container;
-      color: $on-warning-container;
+    color: $on-warning-container;
   }
 
   &.alert-danger {
     background-color: $danger-container;
-      color: $on-danger-container;
+    color: $on-danger-container;
   }
 
   &.alert-success {
     background-color: $success-container;
-      color: $on-success-container;
+    color: $on-success-container;
   }
 
   &.alert-primary {
     background-color: $primary-container;
-      color: $on-primary-container;
+    color: $on-primary-container;
   }
 }
 

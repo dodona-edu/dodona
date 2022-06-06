@@ -13,9 +13,8 @@ $footer-height-sm: 180px;
   flex-shrink: 0;
   width: 100%;
   padding: 32px;
-  //TODO
-    color: $on-tertiary;
-    background-color: $tertiary;
+  color: $on-gray;
+  background-color: $gray;
   height: $footer-height;
 }
 
@@ -37,8 +36,7 @@ $footer-height-sm: 180px;
     margin-left: 1em;
 
     &:hover {
-      //TODO
-        //color: $footer-fg-hover;
+      opacity: 80%;
       text-decoration: none;
     }
   }

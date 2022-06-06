@@ -407,8 +407,7 @@ $navbar-height: 50px;
 
   .crumb:last-child:not(:first-child),
   .crumb:last-child:not(:first-child) a {
-    // TODO
-    //color: $header-fg-secondary;
+    opacity: 75%;
     pointer-events: none;
     cursor: default;
   }
@@ -425,8 +424,7 @@ a.notification:before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  // TODO
-  //background-color: $pending-color;
+  background-color: $danger;
   position: relative;
   margin-left: -15px;
   left: 30px;

@@ -40,7 +40,7 @@
 
 .submission-status-button {
   a {
-    //TODO color: $btn-accent;
+    color: $primary;
   }
 }
 
@@ -78,7 +78,7 @@
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
-    //TODO background-color: $series-summary-icon-bg;
+    background-color: $gray;
 
     &>.mdi::before {
       line-height: 24px;
@@ -109,7 +109,7 @@
     }
 
     i {
-      //TODO color: $series-summary-icon-bg;
+      color: $gray;
       background: $content-bg;
       border-radius: 50%;
       border: 5px solid $content-bg;

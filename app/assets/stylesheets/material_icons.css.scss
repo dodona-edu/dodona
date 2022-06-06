@@ -173,59 +173,56 @@
   }
 }
 
-// TODO
-/*.mdi.mdi-colored-accent {
+.mdi.mdi-colored-accent {
   &.accent-red {
-    color: $color-red-bg;
+    color: $red-container;
   }
 
   &.accent-pink {
-    color: $color-pink-bg;
+    color: $pink-container;
   }
 
   &.accent-purple {
-    color: $purple;
+    color: $purple-container;
   }
 
   &.accent-deep-purple {
-    color: $deep-purple;
+    color: $deep-purple-container;
   }
 
   &.accent-indigo {
-    color: $indigo;
+    color: $indigo-container;
   }
 
   &.accent-teal {
-    color: $teal;
+    color: $teal-container;
   }
 
   &.accent-orange {
-    color: $orange;
+    color: $orange-container;
   }
 
   &.accent-brown {
-    color: $brown;
+    color: $brown-container;
   }
 
-    &.accent-blue-gray {
-      color: $blue-gray;
+  &.accent-blue-gray {
+    color: $blue-gray-container;
   }
 
   &.accent-blue {
-    color: $blue;
+    color: $blue-container;
   }
 
   &.accent-yellow {
-    color: $yellow;
+    color: $yellow-container;
   }
 
   &.accent-green {
-    color: $green;
+    color: $green-container;
   }
 
   &.accent-cyan {
-    color: $cyan;
+    color: $cyan-container;
   }
 }
-
-*/

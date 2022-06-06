@@ -70,8 +70,7 @@ a.card-title-link:hover {
 
   .card-subtitle-text {
     margin-top: 3px;
-    // TODO
-    //color: $text-secondary-on-container-color;
+    opacity: 75%;
   }
 
   .card-subtitle-text+.card-subtitle-text {
@@ -83,7 +82,6 @@ a.card-title-link:hover {
   }
 }
 
-//TODO
 .card-title.card-colored-accent {
   &.accent-red {
     background-color: $red-container;
@@ -196,8 +194,6 @@ a.card-title-link:hover {
 
 .card-subtitle-text {
   font-size: 14px;
-  //TODO
-  //color: $text-secondary;
   margin: 0;
   font-weight: normal;
   line-height: 1.1;
@@ -206,12 +202,6 @@ a.card-title-link:hover {
 .card-title.card-subtitle {
   align-items: inherit;
   padding: inherit;
-}
-
-.card-title-colored .card-subtitle-text,
-.card-title-colored .card-subtitle-text a {
-  // TODO
-  //color: $header-fg-secondary;
 }
 
 .card-supporting-text {
@@ -309,8 +299,7 @@ a.card-title-link:hover {
   margin-right: 10px;
   height: 55px;
   border: none;
-  //TODO
-  //border-bottom: 5px solid $header-accent;
+  border-bottom: 5px solid $secondary-container;
   font-size: 18px;
   transition-duration: 0.2s;
   transition-property: height;
@@ -351,8 +340,7 @@ a.card-title-link:hover {
 .card-title .nav-tabs li a.active {
   border: none;
   background: inherit;
-  // TODO
-  //border-bottom: 5px solid $header-accent;
+  border-bottom: 5px solid $secondary-container;
   height: 50px;
 }
 
@@ -368,16 +356,18 @@ a.card-title-link:hover {
 
 .card-nav .badge {
   margin-left: 3px;
-  background-color: $secondary;
+  background-color: $secondary-container;
+  color: $on-secondary-container;
 }
 
 .nav-tabs .badge {
-  // todo
-  background-color: $text-muted;
+  background-color: $surface-variant;
+  color: $on-surface-variant;
 }
 
 .nav-tabs .active .badge {
-  background-color: $secondary;
+  background-color: $secondary-container;
+  color: $on-secondary-container;
 }
 
 .card-title-fab {

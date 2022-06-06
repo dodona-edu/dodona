@@ -1,9 +1,5 @@
 $feedback-diff-table-header-bg: $surface-variant;
 $feedback-diff-table-header-fg: $on-surface-variant;
-$feedback-diff-table-ins: $success-container;
-$feedback-diff-table-ins-strong: $success;
-$feedback-diff-table-del: $danger-container;
-$feedback-diff-table-del-strong: $danger;
 
 .submissions-table {
   th.status-column {
@@ -142,19 +138,23 @@ $feedback-diff-table-del-strong: $danger;
     }
 
     .ins {
-      background: $feedback-diff-table-ins;
+      background: $success-container;
+      color: $on-success-container;
     }
 
     .del {
-      background: $feedback-diff-table-del;
+      background: $danger-container;
+      color: $on-success-container;
     }
 
     .ins strong {
-      background: $feedback-diff-table-ins-strong;
+      background: $success;
+      color: $on-success;
     }
 
     .del strong {
-      background: $feedback-diff-table-del-strong;
+      background: $danger;
+      color: $on-danger;
     }
 
     .line-nr {

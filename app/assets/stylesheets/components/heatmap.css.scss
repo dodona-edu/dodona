@@ -8,13 +8,11 @@
 
     .day-cell {
       &.empty {
-        //TODO
-          //fill: $heatmap-empty-fg;
+        fill: $off-surface;
       }
 
       &:hover {
-        //TODO
-          //stroke: $heatmap-hover-fg;
+        stroke: $primary;
         stroke-width: 2;
       }
     }

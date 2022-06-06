@@ -150,8 +150,6 @@
   padding-left: 12px;
   padding-right: 12px;
   border-width: 0px;
-  //TODO
-  //color: $text-on-bg-color;
   text-transform: capitalize;
   white-space: nowrap;
   cursor: default;
@@ -161,8 +159,7 @@
   font-size: 18px;
   margin-left: 8px;
   margin-right: -4px; // a token with a close button has a right padding of 8 instead of 12px
-  //TODO
-  //color: $text-on-bg-color;
+  color: inherit;
 }
 
 .token .close:hover {
@@ -179,8 +176,7 @@ d-search-token>.token {
   margin-right: 8px;
 }
 
-// TODO
-/*.token.accent-red {
+.token.accent-red {
   color: $on-red-container;
   background-color: $red-container;
 }
@@ -225,7 +221,6 @@ d-search-token>.token {
   background-color: $blue-gray-container;
 }
 
-*/
 .tokenfield {
 
   .form-control {

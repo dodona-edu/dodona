@@ -3,11 +3,18 @@
 // primary, secondary, success, info, warning, danger and the variables for color names are already overridden in m3-theme-light
 
 $body-bg: $background; // TODO: remove all uses
-$content-bg: $background;
+$content-bg: $surface;
 $body-color: $on-background;
 $link-color: $primary;
 $text-secondary: $text-muted; // TODO: all uses of this can probably be replaced by text-muted
 $text-disabled: $text-muted; // TODO: can probably be removed
+
+// dropdowns
+$dropdown-bg: $background;
+$dropdown-color: $on-background;
+$dropdown-link-color: $on-background;
+$dropdown-link-hover-bg: $secondary-container;
+$dropdown-link-hover-color: $on-secondary-container;
 
 // disable rfs
 $enable-rfs: false;

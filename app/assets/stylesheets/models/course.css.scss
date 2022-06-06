@@ -84,6 +84,7 @@
     font-size: 13px;
     font-weight: 500;
     color: $text-disabled;
+    opacity: 75%;
   }
 
   .nav>li>a.active,
@@ -91,11 +92,13 @@
     border-left: 2px solid $secondary;
     padding-left: 4px;
     color: $text-secondary;
+    opacity: 100%;
   }
 
   .nav>li>a:hover {
     border-left: 1px solid $secondary;
     padding-left: 5px;
     color: $text-secondary;
+    opacity: 100%;
   }
 }

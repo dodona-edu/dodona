@@ -165,7 +165,7 @@ $navbar-height: 50px;
 
           &.active {
             padding-bottom: 8px;
-            border-bottom: solid #fff 3px;
+            border-bottom: solid $on-primary 3px;
           }
         }
       }
@@ -282,7 +282,7 @@ $navbar-height: 50px;
           float: none;
           margin-top: 0;
           margin-left: 20px;
-          background-color: $content-bg;
+          background-color: $background;
           border: 0;
           box-shadow: none;
           color: $text-color;

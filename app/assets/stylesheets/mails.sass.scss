@@ -1,8 +1,6 @@
-@import "theme/colors.css.scss";
-
 $theme: "light";
 
-@import "theme/theme-light.css.scss";
+@import "theme/m3-theme-light.css.scss";
 @import "theme/rouge-light.css.scss";
 
 body {
@@ -11,7 +9,7 @@ body {
 }
 
 a {
-  color: $link-color;
+  color: $primary;
   text-decoration: none;
 }
 

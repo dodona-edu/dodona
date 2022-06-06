@@ -3,12 +3,15 @@
 
 // 2. Include any default variable overrides here
 @import "theme/m3-theme-light.css.scss";
+@import "theme/m3-theme-dark.css.scss";
+
+@if $theme =="dark" {
+  @include theme-dark;
+}
+
 @import "bootstrap_variable_overrides.css.scss";
 @import "mixins.css.scss";
 @import "vendor";
-
-// also loads dark mode stuff
-@import "theme/theme-light.css.scss";
 
 @import "theme/rouge-light.css.scss";
 @import "theme/rouge-dark.css.scss";

@@ -1,11 +1,11 @@
 $dot-size: 9px;
 
 // Annotation colors
-$annotation-question: $color-purple;
-$annotation-user: $success-500;
-$annotation-error: $danger-500;
-$annotation-warning: $warning-500;
-$annotation-info: $info-500;
+$annotation-question: $purple;
+$annotation-user: $success;
+$annotation-error: $danger;
+$annotation-warning: $warning;
+$annotation-info: $info;
 
 .code-table {
   .code-listing-container {
@@ -41,15 +41,15 @@ $annotation-info: $info-500;
 
       // Highlight for the line numbers.
       .lineno.marked {
-        background-color: $code-bg-warning;
-        border-left: $code-warning-border-left solid $warning-500;
+        background-color: $warning-container;
+        border-left: $code-warning-border-left solid $warning;
         // Only do the line number, don't extend to the full height
         background-clip: content-box;
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
-        background-color: $code-bg-warning;
+        background-color: $warning-container;
       }
 
       .annotation-button {
@@ -172,7 +172,7 @@ $annotation-info: $info-500;
     border-bottom-right-radius: 5px;
     border: 1px solid $hairlinegray;
     border-left-width: 3px;
-    border-left-color: $grey-500;
+    border-left-color: $outline;
 
     background: $content-bg;
 

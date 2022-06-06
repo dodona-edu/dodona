@@ -1,3 +1,10 @@
+$feedback-diff-table-header-bg: $surface-variant;
+$feedback-diff-table-header-fg: $on-surface-variant;
+$feedback-diff-table-ins: $success-container;
+$feedback-diff-table-ins-strong: $success;
+$feedback-diff-table-del: $danger-container;
+$feedback-diff-table-del-strong: $danger;
+
 .submissions-table {
   th.status-column {
     width: 48px;
@@ -15,13 +22,13 @@
 
     .badge.bg-danger {
       color: $danger;
-        border-color: $danger;
+      border-color: $danger;
       background-color: $content-bg  !important;
     }
 
     .badge.bg-success {
       color: $success;
-        border-color: $success;
+      border-color: $success;
       background-color: $content-bg  !important;
     }
   }
@@ -330,7 +337,7 @@
 }
 
 #editor-result .ace_content {
-  background-color: $code-light-bg;
+  background-color: $code-bg;
   cursor: default;
 }
 

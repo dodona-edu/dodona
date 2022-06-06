@@ -151,7 +151,7 @@
   padding-right: 12px;
   border-width: 0px;
   //TODO
-    //color: $text-on-bg-color;
+  //color: $text-on-bg-color;
   text-transform: capitalize;
   white-space: nowrap;
   cursor: default;
@@ -162,7 +162,7 @@
   margin-left: 8px;
   margin-right: -4px; // a token with a close button has a right padding of 8 instead of 12px
   //TODO
-    //color: $text-on-bg-color;
+  //color: $text-on-bg-color;
 }
 
 .token .close:hover {
@@ -181,39 +181,48 @@ d-search-token>.token {
 
 // TODO
 /*.token.accent-red {
-  background-color: $color-red-bg;
+  color: $on-red-container;
+  background-color: $red-container;
 }
 
 .token.accent-pink {
-  background-color: $color-pink-bg;
+  color: $on-pink-container;
+  background-color: $pink-container;
 }
 
 .token.accent-purple {
-  background-color: $color-purple-bg;
+  color: $on-purple-container;
+  background-color: $purple-container;
 }
 
 .token.accent-deep-purple {
-  background-color: $color-deep-purple-bg;
+  color: $on-deep-purple-container;
+  background-color: $deep-purple-container;
 }
 
 .token.accent-indigo {
-  background-color: $color-indigo-bg;
+  color: $on-indigo-container;
+  background-color: $indigo-container;
 }
 
 .token.accent-teal {
-  background-color: $color-teal-bg;
+  color: $on-teal-container;
+  background-color: $teal-container;
 }
 
 .token.accent-orange {
-  background-color: $color-orange-bg;
+  color: $on-orange-container;
+  background-color: $orange-container;
 }
 
 .token.accent-brown {
-  background-color: $color-brown-bg;
+  color: $on-brown-container;
+  background-color: $brown-container;
 }
 
 .token.accent-blue-gray {
-  background-color: $color-blue-gray-bg;
+  color: $on-blue-gray-container;
+  background-color: $blue-gray-container;
 }
 
 */

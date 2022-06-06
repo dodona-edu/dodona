@@ -1,4 +1,3 @@
-//@import "theme/development.css.scss";
 //@import "theme/theme-dark.css.scss";
 @import "theme/m3-theme.css.scss";
 
@@ -21,34 +20,12 @@ $text-secondary: $black-secondary;
 $hairlinegray: $black-divider;
 */
 
-@if $development ==true {
-    @include theme-development;
-}
-
 @if $theme ==dark {
     @include theme-dark;
 }
 
-//$link-color: $accent-800;
-
-// old vars
-//$brand-info: $info-500;
-//$brand-primary: $accent-800;
-//$brand-success: $success-500;
-//$brand-danger: $danger-500;
-//$brand-warning: $warning-500;
-// new vars
-//$primary: $brand-primary;
-//$secondary: $grey-100;
-//$success: $brand-success;
-//$info: $brand-info;
-//$warning: $brand-warning;
-//$danger: $brand-danger;
-
-//$code-bg: $grey-200;
-//$code-light-bg: $grey-100;
 //$code-bg-warning: $amber-500;
-//$code-warning-border-left: 0;
+$code-warning-border-left: 0; // TODO: find out where this is used and if it is needed.
 //$code-color: $text-color;
 //$page-header-border-color: $black-divider;
 //$panel-primary-heading-bg: $primary-500;
@@ -64,19 +41,6 @@ $hairlinegray: $black-divider;
 //$navbar-default-toggle-border-color: $white-secondary;
 //$navbar-default-toggle-hover-bg: $primary-300;
 //$navbar-default-border: transparent;
-
-//$state-info-bg: $brand-info;
-//$state-info-border: $brand-info;
-//$state-info-text: white;
-//$state-danger-bg: $brand-danger;
-//$state-danger-border: $brand-danger;
-//$state-danger-text: white;
-//$state-warning-bg: $brand-warning;
-//$state-warning-border: $brand-warning;
-//$state-warning-text: white;
-//$state-success-bg: $brand-success;
-//$state-success-border: $brand-success;
-//$state-success-text: white;
 
 //$modal-backdrop-bg: white;
 //$modal-backdrop-opacity: 0.35;
@@ -111,7 +75,6 @@ $hairlinegray: $black-divider;
 //$header-bg: $primary-700;
 //$header-fg: $white-text;
 //$header-fg-secondary: $white-secondary;
-//$header-accent: $accent-500;
 
 //$footer-fg-hover: $white-text;
 //$footer-fg: $grey-500;
@@ -129,7 +92,6 @@ $hairlinegray: $black-divider;
 //$drawer-bg: black;
 //$drawer-hover: $grey-100;
 //$drawer-active: $grey-200;
-//$drawer-border: $grey-300;
 
 //$toast-bg: $grey-800;
 //$toast-fg: $white-text;
@@ -143,8 +105,6 @@ $hairlinegray: $black-divider;
 
 //$progress-bar-bg: $accent-A100;
 
-//$favorite-color: $color-pink;
-
 //$spinner-bg: $grey-300;
 
 //$course-link-hover-color: $grey-700;
@@ -153,16 +113,6 @@ $hairlinegray: $black-divider;
 
 //$series-summary-icon-bg: $grey-300;
 
-//$skeleton-color: $grey-300;
-
-//$feedback-diff-table-header-bg: $grey-50;
-//$feedback-diff-table-header-fg: $black-secondary;
-//$feedback-diff-table-ins: $green-A100;
-//$feedback-diff-table-del: $red-100;
-//$feedback-diff-table-ins-strong: $green-A200;
-//$feedback-diff-table-del-strong: $red-A100;
-
-//$punchcard-fg: $primary-800;
 //$heatmap-empty-fg: $grey-50;
 //$heatmap-hover-fg: $grey-200;
 

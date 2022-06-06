@@ -1,6 +1,5 @@
 @import "theme/colors.css.scss";
 
-$development: false;
 $theme: "light";
 
 @import "theme/theme-light.css.scss";
@@ -28,7 +27,7 @@ a {
 
 .error-json {
   margin: 8px;
-  border-left: 3px solid $brand-danger;
+  border-left: 3px solid $danger;
   padding-left: 8px;
   white-space: pre;
 }

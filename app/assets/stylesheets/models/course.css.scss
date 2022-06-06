@@ -88,13 +88,13 @@
 
   .nav>li>a.active,
   .nav>li>a.active:hover {
-    border-left: 2px solid $primary-800;
+    border-left: 2px solid $secondary;
     padding-left: 4px;
     color: $text-secondary;
   }
 
   .nav>li>a:hover {
-    border-left: 1px solid $primary-800;
+    border-left: 1px solid $secondary;
     padding-left: 5px;
     color: $text-secondary;
   }

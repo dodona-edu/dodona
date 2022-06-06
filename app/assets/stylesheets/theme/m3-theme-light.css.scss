@@ -1,3 +1,6 @@
+// This file contains all "design tokens" according to material 3 in light mode.
+// At the bottom of this file, there are a number of dodona-specific variables
+
 @import "theme/m3-theme.css.scss";
 
 $primary: $primary-40;
@@ -141,5 +144,9 @@ $blue-gray-container: $blue-gray-90;
 $on-blue-gray: $blue-gray-100;
 $on-blue-gray-container: $blue-gray-10;
 
-$text-color: $on-background;
-$text-muted: $neutral-40;
+$text-color: $on-background; // todo: if not used by bootstrap, rename or replace
+$text-muted: $neutral-40; // todo: if not used by bootstrap, rename to on-surface-muted
+
+$code-bg: $neutral-95;
+$hairlinegray: $primary; // todo: some use this variable, others use $outline
+$skeleton-color: $surface-variant;

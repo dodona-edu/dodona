@@ -2,40 +2,12 @@
 
 // primary, secondary, success, info, warning, danger and the variables for color names are already overridden in m3-theme-light
 
-$body-bg: $background; // todo: remove all uses
+$body-bg: $background; // TODO: remove all uses
+$content-bg: $background;
 $body-color: $on-background;
 $link-color: $primary;
-
-// todo
-$drawer-border: orange;
-$content-bg: brown;
-$code-bg: red;
-$hairlinegray: orange;
-$text-secondary: yellow;
-$text-disabled: yellow;
-$accent-500: green;
-$color-purple: purple;
-$success-500: green;
-$danger-500: red;
-$warning-500: orange;
-$info-500: blue;
-$code-bg-warning: green;
-$code-warning-border-left: orange;
-$primary-700: pink;
-$punchcard-fg: pink;
-$accent-A100: pink;
-$primary-800: pink;
-$skeleton-color: pink;
-$feedback-diff-table-header-bg: pink;
-$feedback-diff-table-header-fg: pink;
-$feedback-diff-table-ins: pink;
-$feedback-diff-table-ins-strong: pink;
-$feedback-diff-table-del: pink;
-$feedback-diff-table-del-strong: pink;
-$code-light-bg: orange;
-$white-text: orange;
-$grey-500: orange;
-
+$text-secondary: $text-muted; // TODO: all uses of this can probably be replaced by text-muted
+$text-disabled: $text-muted; // TODO: can probably be removed
 
 // disable rfs
 $enable-rfs: false;

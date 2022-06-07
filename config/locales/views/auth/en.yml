@@ -16,10 +16,9 @@ en:
         institution-creation: Something went wrong while creating a new institution.
         missing-provider: Only accounts linked to an institution are supported.
     redirect_to_known_provider:
-      title: Email and/or username are not unique
-      message: "A user with the same email address and/or username already exists for this institution."
-      providers_title: "Confirm your identity"
-      contact_support_title: "If this is not you, or you keep having issues"
-      contact_support: "Contact support"
-      user_title: "User"
-      providers_message: "If this is the user you want to sign in to, please confirm your identity by signing in using a previously used sign in method listed below."
+      title: We need your help
+      message_p1: "A user with the same username (%{username}) or email address (%{email}) already exists within the institution %{institution} on Dodona. This is probably you, but you made use of a different sign in method on previous occasions."
+      message_p2: "Before you can access your data using %{provider}, we have to link your existing account. To proceed, click on one of the sign in methods below and sign in again."
+      providers_title: "Link accounts"
+      "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
+      contact_form: "contact form"

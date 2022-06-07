@@ -262,6 +262,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def redirect_to_known_provider!(user)
     store_identity_in_session!
     session[:auth_original_user_id] = user.id
+    @provider = provider
     @known_providers = user.providers.where(mode: %i[prefer secondary])
     @user = user
     render 'auth/redirect_to_known_provider'

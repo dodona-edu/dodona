@@ -1,8 +1,27 @@
 <div class="row">
-  <h1><%= t ".title" %></h1>
-  <span><%= t ".message", user: @user.full_name, username: @user.username, email: @user.email, institution: @user.institution.name %></span>
-  <% @known_providers.each do |provider| %>
-    <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
-  <% end %>
-  <%= link_to  t(".contact_support"), contact_path %>
+  <div class="sign-in-dialog-wrapper">
+    <div class="sign-in-divider row">
+      <div class="sign-in-dialog-header">
+        <h1><%= t ".title" %><br>
+          <small><%= t ".message", user: @user.full_name, username: @user.username, email: @user.email, institution: @user.institution.name %></span></small>
+        </h1>
+      </div>
+    </div>
+    <div class="sign-in-dialog-institutions row">
+      <% @known_providers.each do |provider| %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+      <% end %>
+    </div>
+
+    <div class="sign-in-divider row">
+      <div class="sign-in-dialog-header">
+        <h1>
+          <small><%= t(".contact_support") %></small>
+        </h1>
+      </div>
+    </div>
+    <div class="row">
+      <%= link_to  t(".contact"), contact_path, class="btn btn-secondary btn-lg" %>
+    </div>
+  </div>
 </div>

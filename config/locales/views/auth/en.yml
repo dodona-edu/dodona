@@ -19,3 +19,4 @@ en:
       title: Email and/or username are not unique
       message: "A user (%{user}) with the same username (%{username}) and/or email address (%{email}) already exists for this institution (%{institution}). If this is the user you want to sign in to, please confirm your identity by signing in using a previously used sign in method listed below."
       contact_support: "Contact support if you keep having issues."
+      contact: "Contact"

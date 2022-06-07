@@ -15,3 +15,7 @@ nl:
       errors:
         institution-creation: Er ging iets mis tijdens het aanmaken van een nieuwe onderwijsinstelling.
         missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.
+    redirect_to_known_provider:
+      title: Email adres en/of gebruikersnaam zijn niet uniek
+      message: "Een gebruiker (%{user}) met dezelfde gebruikersnaam (%{username}) en/of hetzelfde email adres (%{email}) bestaat al voor deze onderwijsinstelling (%{institution}). Als dit de gebruiker is waarvoor je probeerde in te loggen, bevestig dan je identiteit door in te loggen met een van onderstaande login methodes."
+      contact_support: "Contacteer support als je problemen blijft hebben."

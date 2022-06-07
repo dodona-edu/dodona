@@ -1,0 +1,8 @@
+<div class="row">
+  <h1><%= t ".title" %></h1>
+  <span><%= t ".message", user: @user.full_name, username: @user.username, email: @user.email, institution: @user.institution.name %></span>
+  <% @known_providers.each do |provider| %>
+    <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+  <% end %>
+  <%= link_to  t(".contact_support"), contact_path %>
+</div>

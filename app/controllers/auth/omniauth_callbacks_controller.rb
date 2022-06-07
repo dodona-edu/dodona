@@ -262,16 +262,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def redirect_to_known_provider!(user)
     store_identity_in_session!
     session[:auth_original_user_id] = user.id
-    known_providers = user.providers.where(mode: %i[prefer secondary])
-    set_flash_message :alert, :redirect_to_known_provider, user: user.full_name, username: user.username, email: user.email, institution: user.institution.name
-    flash[:options] = known_providers.map do |known_provider|
-      {
-        message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_option', provider: known_provider.class.sym.to_s),
-        url: omniauth_authorize_path(:user, known_provider.class.sym, provider: known_provider)
-      }
-    end
-    flash[:options] << { url: contact_path, message: I18n.t('devise.omniauth_callbacks.redirect_to_known_provider_contact') }
-    redirect_to root_path
+    @known_providers = user.providers.where(mode: %i[prefer secondary])
+    @user = user
+    render 'auth/redirect_to_known_provider'
   end
 
   def redirect_duplicate_email_for_provider!

@@ -8,13 +8,6 @@
             <%= t ".timezone" %> <b><%= @user.time_zone %></b>.
           </p>
         </div>
-        <% if @user.token.present? %>
-          <div class="callout callout-warning">
-            <h4><%= t ".sign_in" %></h4>
-            <p><%= t ".token_sign_in" %></p>
-            <p><%= token_sign_in_user_url(@user, @user.token) %></p>
-          </div>
-        <% end %>
         <div class="row">
           <div class="col-sm-12 col-md-6">
             <h4><%= t ".stats" %></h4>
@@ -57,6 +50,18 @@
               <% end %>
             <% end %>
           </div>
+        </div>
+        <div class="row">
+          <h4><%= t(".sign_in") %></h4>
+          <% if @user.token.present? %>
+            <p><%= t ".token_sign_in" %></p>
+            <p><%= token_sign_in_user_url(@user, @user.token) %></p>
+          <% else %>
+            <span class="mb-2"><%= t ".providers_message"%></span>
+            <% @user.providers.where(mode: %i[prefer secondary]).each do |provider| %>
+              <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+            <% end %>
+          <% end %>
         </div>
       </div>
       <% if policy(@user).edit? or policy(@user).impersonate? or policy(@user).download_submissions? %>

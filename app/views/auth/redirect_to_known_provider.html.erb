@@ -8,6 +8,12 @@
       </div>
     </div>
     <div class="row">
+      <h3 class="mb-2"><%= t(".user_title") %></h3>
+      <div class="profile">
+        <%= render partial: "users/user_short", locals: {user: @user} %>
+      </div>
+    </div>
+    <div class="row">
       <h3 class="mb-2"><%= t(".providers_title") %></h3>
       <% @known_providers.each do |provider| %>
         <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
@@ -15,7 +21,7 @@
     </div>
     <div class="row">
       <h3 class="mb-2"><%= t(".contact_support_title") %></h3>
-      <span><%= link_to  t(".contact_support"), contact_path, class: "btn-text btn-secondary" %></span>
+      <span><%= link_to  t(".contact_support"), contact_path, class: "btn btn-secondary" %></span>
     </div>
   </div>
 </div>

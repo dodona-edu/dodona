@@ -3,9 +3,6 @@
     <div class="row">
       <h1><%= t ".title" %></h1>
       <span><%= t ".message"%></span>
-      <div class="profile mt-1">
-        <%= render partial: "users/user_short", locals: {user: @user} %>
-      </div>
     </div>
     <div class="row">
       <h3 class="mb-2"><%= t(".user_title") %></h3>

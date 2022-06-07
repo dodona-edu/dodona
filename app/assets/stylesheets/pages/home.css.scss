@@ -17,7 +17,8 @@
   color: $home-lead-fg;
   margin-bottom: 20px;
 
-  .btn, .btn:active {
+  .btn,
+  .btn:active {
     border-radius: 2px;
     background-color: $content-bg;
     border-color: $home-lead-bg;
@@ -69,6 +70,7 @@
 .info-step img {
   padding-left: 25px;
   padding-right: 25px;
+
   @include media-breakpoint-down(md) {
     margin: auto;
   }
@@ -132,6 +134,7 @@
   margin-right: 45px;
   margin-top: 10px;
   margin-bottom: 15px;
+
   @media (max-width: 480px) {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -174,6 +177,7 @@
   margin-top: -6px;
   margin-bottom: -6px;
 }
+
 .metric {
   margin-top: 6px;
   margin-bottom: 6px;

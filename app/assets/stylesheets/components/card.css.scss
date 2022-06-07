@@ -41,12 +41,13 @@ $card-supporting-text-padding: 16px;
   padding: 16px;
   box-sizing: border-box;
   flex-direction: column;
+
   &.card-title-flex {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: row;
-      align-items: center;
-    }
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .card-title.card-title-colored {
@@ -72,7 +73,7 @@ a.card-title-link:hover {
     color: $text-secondary-on-bg-color;
   }
 
-  .card-subtitle-text + .card-subtitle-text {
+  .card-subtitle-text+.card-subtitle-text {
     margin-top: 10px;
   }
 
@@ -85,39 +86,51 @@ a.card-title-link:hover {
   &.accent-red {
     background-color: $color-red-bg;
   }
+
   &.accent-pink {
     background-color: $color-pink-bg;
   }
+
   &.accent-purple {
     background-color: $color-purple-bg;
   }
+
   &.accent-deep-purple {
     background-color: $color-deep-purple-bg;
   }
+
   &.accent-indigo {
     background-color: $color-indigo-bg;
   }
+
   &.accent-teal {
     background-color: $color-teal-bg;
   }
+
   &.accent-orange {
     background-color: $color-orange-bg;
   }
+
   &.accent-brown {
     background-color: $color-brown-bg;
   }
+
   &.accent-blue-grey {
     background-color: $color-blue-grey-bg;
   }
+
   &.accent-blue {
     background-color: $color-blue-bg;
   }
+
   &.accent-yellow {
     background-color: $color-yellow-bg;
   }
+
   &.accent-green {
     background-color: $color-green-bg;
   }
+
   &.accent-cyan {
     background-color: $color-cyan-bg;
   }
@@ -143,7 +156,7 @@ a.card-title-link:hover {
   margin: 0;
 }
 
-.card-title-text + .card-subtitle-text {
+.card-title-text+.card-subtitle-text {
   margin-top: .4em;
 }
 
@@ -208,7 +221,7 @@ a.card-title-link:hover {
   border-top: 1px solid $divider-color;
 }
 
-.card-title + .card-border {
+.card-title+.card-border {
   border-top: 0px;
 }
 
@@ -295,6 +308,7 @@ a.card-title-link:hover {
 .card-tab .nav-tabs li a {
   color: $text-muted;
 }
+
 .card-title .nav-tabs li a,
 .card-tab .nav-tabs li a {
   display: block;

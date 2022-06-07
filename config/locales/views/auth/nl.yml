@@ -17,6 +17,7 @@ nl:
         missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.
     redirect_to_known_provider:
       title: Email adres en/of gebruikersnaam zijn niet uniek
-      message: "Een gebruiker (%{user}) met dezelfde gebruikersnaam (%{username}) en/of hetzelfde email adres (%{email}) bestaat al voor deze onderwijsinstelling (%{institution}). Als dit de gebruiker is waarvoor je probeerde in te loggen, bevestig dan je identiteit door in te loggen met een van onderstaande login methodes."
-      contact_support: "Contacteer support als je problemen blijft hebben."
-      contact: "Contact"
+      message: "Een gebruiker met dezelfde gebruikersnaam en/of hetzelfde email adres bestaat al voor deze onderwijsinstelling. Als dit de gebruiker is waarvoor je probeerde in te loggen, bevestig dan je identiteit door in te loggen met een van onderstaande login methodes."
+      providers_title: "Bevestig je identiteit"
+      contact_support_title: "Als jij dit niet bent, of je blijft problemen hebben"
+      contact_support: "Contacteer support"

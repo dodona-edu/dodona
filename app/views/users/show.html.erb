@@ -3,35 +3,7 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon float-start">
-            <% if @user.permission == "student" %>
-              <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
-            <% elsif @user.permission == "staff" %>
-              <i class="mdi mdi-school mdi-36" title="<%= @user.permission %>">
-            <% else %>
-              <i class="mdi mdi-android mdi-36" title="<%= @user.permission %>">
-            <% end %>
-              </i>
-          </span>
-          <span class="profile-line">
-            <span class="name">
-              <%= @user.full_name %>
-            </span>
-            <% if @user.username.present? %>
-              <span>(<%= @user.username %>)</span>
-            <% end %>
-          </span>
-          <span class="profile-byline text-muted">
-            <% if @user.institution.present? and policy(@user.institution).show?%>
-              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
-            <% else %>
-              <%= @user.institution&.name %>
-            <% end %>
-            <% if @user.institution&.name.present? and @user.email.present? %>
-              &middot;
-            <% end %>
-            <%= mail_to(@user.email, nil, { class: 'text-muted', title: t('course_members.show.send_mail') }) %>
-          </span>
+          <%= render partial: "user_short", locals: {user: @user} %>
           <p class="timezone">
             <%= t ".timezone" %> <b><%= @user.time_zone %></b>.
           </p>

@@ -11,7 +11,8 @@
       </div>
     </div>
     <div class="row">
-      <h3 class="mb-2"><%= t(".providers_title") %></h3>
+      <h3><%= t(".providers_title") %></h3>
+      <span class="mb-2"><%= t ".providers_message"%></span>
       <% @known_providers.each do |provider| %>
         <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
       <% end %>

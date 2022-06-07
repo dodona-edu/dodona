@@ -17,8 +17,9 @@ en:
         missing-provider: Only accounts linked to an institution are supported.
     redirect_to_known_provider:
       title: Email and/or username are not unique
-      message: "A user with the same username and/or email address already exists for this institution. If this is the user you want to sign in to, please confirm your identity by signing in using a previously used sign in method listed below."
+      message: "A user with the same username and/or email address already exists for this institution."
       providers_title: "Confirm your identity"
       contact_support_title: "If this is not you, or you keep having issues"
       contact_support: "Contact support"
       user_title: "User"
+      providers_message: "If this is the user you want to sign in to, please confirm your identity by signing in using a previously used sign in method listed below."

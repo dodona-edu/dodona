@@ -1,9 +1,9 @@
 <div class="row">
-  <div>
+  <div class="col-md-10">
     <div class="row">
       <h1><%= t ".title" %></h1>
-      <p><%= markdown t(".message_p1", username: @user.username, email: @user.email, institution: @user.institution.name) %></p>
-      <p><%= markdown t(".message_p2", provider: @provider.class.sym.to_s) %></p>
+      <%= markdown t(".message_p1", username: @user.username, email: @user.email, institution: @user.institution.name) %>
+      <%= markdown t(".message_p2", provider: @provider.class.sym.to_s) %>
     </div>
     <div class="row">
       <h2><%= t(".providers_title") %></h2>

@@ -46,7 +46,7 @@
     "@types/serviceworker": "^0.0.46",
     "@typescript-eslint/eslint-plugin": "^5.26.0",
     "@typescript-eslint/parser": "^5.27.0",
-    "eslint": "^8.16.0",
+    "eslint": "^8.17.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^26.5.3",
     "eslint-plugin-no-jquery": "^2.7.0",

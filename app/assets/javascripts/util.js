@@ -86,13 +86,12 @@ function checkIframe() {
 }
 
 // add CSRF token to each ajax-request
-function initCSRF() {
-    $(() => {
-        $.ajaxSetup({
-            "headers": {
-                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
-            },
-        });
+async function initCSRF() {
+    await ready;
+    $.ajaxSetup({
+        "headers": {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+        },
     });
 }
 
@@ -162,6 +161,19 @@ function initDatePicker(selector, options = {}) {
     return init();
 }
 
+/**
+ * This promise will resolve when the dom content is fully loaded
+ * This could mean immediately if the dom is already loaded
+ */
+const ready = new Promise(resolve => {
+    if (document.readyState !== "loading") {
+        resolve();
+    } else {
+        document.addEventListener("DOMContentLoaded", () => resolve());
+    }
+});
+
+
 export {
     createDelayer,
     delay,
@@ -178,5 +190,6 @@ export {
     makeInvisible,
     makeVisible,
     setDocumentTitle,
-    initDatePicker
+    initDatePicker,
+    ready
 };

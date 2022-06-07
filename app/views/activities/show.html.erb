@@ -162,7 +162,7 @@ end %>
   <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
 <% end %>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initExerciseShow(
             <%= @activity.id %>,
             "<%= @activity.programming_language&.editor_name || "text" %>",

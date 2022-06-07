@@ -28,7 +28,7 @@
     <td></td>
   </tr>
   <script>
-    $(() => {
+    dodona.ready.then(() => {
       <% notifications.each do |n| %>
         new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_url(n) %>", true, dodona.dotManager);
       <% end %>

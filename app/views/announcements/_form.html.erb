@@ -104,7 +104,7 @@
 <% end %>
 
 <script>
-  $(function () {
+  dodona.ready.then(function () {
     dodona.initDatePicker('#stop-delivering-at-group');
     dodona.initDatePicker('#start-delivering-at-group');
   });

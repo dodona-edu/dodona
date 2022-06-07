@@ -281,7 +281,7 @@ export class CodeListing {
         const codeLines = this.table.querySelectorAll(".lineno");
         codeLines.forEach((codeLine: HTMLTableRowElement) => {
             const annotationButton = document.createElement("button") as HTMLButtonElement;
-            annotationButton.classList.add("btn", "btn-icon", "btn-icon-fille", "bg-primary", "annotation-button");
+            annotationButton.classList.add("btn", "btn-icon", "btn-icon-filled", "bg-primary", "annotation-button");
             annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
             annotationButton.title = title;
 

@@ -7,7 +7,21 @@ import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { FilterCollectionElement, Label } from "components/filter_collection_element";
 
-@customElement("dodona-search-field-suggestion")
+/**
+ * This component inherits from FilterCollectionElement.
+ * It represents a list of filters to be used in a dropdown as typeahead suggestions
+ *
+ * @element d-search-field-suggestion
+ *
+ * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
+ * @prop {string} filter - The string for which typeahead suggestions should be provided
+ * @prop {number} index - bookkeeping param to remember the order across multiple elements
+ * @prop {string} param - the searchQuery param to be used for this filter
+ * @prop {boolean} multi - whether one or more labels can be selected at the same time
+ * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
+ * @prop {[Label]} labels - all labels that could potentially be selected
+ */
+@customElement("d-search-field-suggestion")
 export class SearchFieldSuggestion extends FilterCollectionElement {
     @property()
     type: string;
@@ -44,7 +58,18 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     }
 }
 
-@customElement("dodona-search-field")
+/**
+ * This component represents a searchfield with typeahead suggestion
+ * It interacts with SearchQuery to set and get the currently active filters
+ *
+ * @element d-search-field
+ *
+ * @prop {string} placeholder - The placeholder text for an empty searchfield
+ * @prop {boolean} eager - if true a search will be run before user input happens
+ * @prop {Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>} filterCollections
+ *  - The list of filter lists to be used as search suggestions
+ */
+@customElement("d-search-field")
 export class SearchField extends ShadowlessLitElement {
     @property({ type: String })
     placeholder: string;
@@ -131,7 +156,7 @@ export class SearchField extends ShadowlessLitElement {
             />
             <ul class="dropdown-menu ${this.filter && this.hasSuggestions ? "show-search-dropdown" : ""}">
                 ${Object.entries(this.filterCollections).map(([type, c], i) => html`
-                    <dodona-search-field-suggestion
+                    <d-search-field-suggestion
                         .labels=${c.data}
                         .type=${type}
                         .filter=${this.filter}
@@ -141,7 +166,7 @@ export class SearchField extends ShadowlessLitElement {
                         .index=${i}
                         ${ref(this.suggestionFieldChanged)}
                     >
-                    </dodona-search-field-suggestion>
+                    </d-search-field-suggestion>
                 ` )}
             </ul>
         `;

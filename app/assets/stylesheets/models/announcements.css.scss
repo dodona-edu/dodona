@@ -17,7 +17,7 @@
 
   .status-col {
     border-left-width: 6px;
-    border-bottom-color: $hairlinegray !important;
+    border-bottom-color: $hairlinegray  !important;
     width: 0
   }
 
@@ -25,5 +25,10 @@
     max-width: 25vw;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  .btn-icon {
+    margin-top: -6px;
+    margin-bottom: -6px;
   }
 }

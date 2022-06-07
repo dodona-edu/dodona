@@ -1,4 +1,4 @@
-$drawer-width: 256px;
+$drawer-width: 360px;
 
 aside.drawer {
   position: fixed;
@@ -104,11 +104,15 @@ ul.drawer-list {
     justify-content: flex-start;
     text-transform: inherit;
     position: relative;
-    padding: 0 16px;
+    padding-left: 16px;
+    padding-right: 24px;
+    margin-left: 12px;
+    margin-right: 4px;
     outline: none;
     color: $text-color;
     text-decoration: none;
-    height: 42px;
+    height: 56px;
+    border-radius: 28px;
 
     &.active {
       font-weight: 400;
@@ -121,7 +125,7 @@ ul.drawer-list {
 
     span, i {
       font-size: 18px;
-      margin-right: 24px;
+      margin-right: 12px;
     }
 
   }

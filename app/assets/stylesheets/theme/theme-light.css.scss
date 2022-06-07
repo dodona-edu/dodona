@@ -27,6 +27,7 @@ $color-green-bg: $green-200;
 $color-cyan-bg: $cyan-200;
 
 $primary-100: $blue-100;
+$primary-200: $blue-200;
 $primary-300: $blue-300;
 $primary-500: $blue-500;
 $primary-700: $blue-700;
@@ -34,6 +35,8 @@ $primary-800: $blue-800;
 $primary-900: $blue-900;
 $primary-A100: $blue-A100;
 
+$accent-100: $amber-100;
+$accent-200: $amber-200;
 $accent-300: $amber-300;
 $accent-500: $amber-500;
 $accent-700: $amber-700;
@@ -41,6 +44,7 @@ $accent-800: $amber-800;
 $accent-900: $amber-900;
 $accent-A100: $amber-A100;
 
+$info-200: $blue-200;
 $info-500: $blue-500;
 $success-100: $green-100;
 $success-200: $green-200;
@@ -54,8 +58,14 @@ $danger-500: $red-500;
 $danger-800: $red-800;
 $danger-A100: $red-A100;
 $danger-A200: $red-A200;
+$warning-200: $amber-200;
 $warning-500: $amber-500;
 
+$primary-bg: $accent-200;
+$success-bg: $success-200;
+$danger-bg: $danger-200;
+$warning-bg: $warning-200;
+$info-bg: $info-200;
 $body-bg: $grey-50;
 $content-bg: white;
 $text-color: $black-text;

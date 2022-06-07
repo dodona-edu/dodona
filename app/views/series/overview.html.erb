@@ -26,12 +26,12 @@
       <%= description_iframe exercise %>
       <div class="card-actions card-border hidden-print">
         <% if user && (exercise.started_for?(user, @series) || @series.deadline&.past?) %>
-          <div class="btn-text submission-status-button">
+          <div class="btn btn-text submission-status-button">
             <%= render partial: 'activities/user_status_icon', locals: {activity: exercise, series: @series, user: user} %>
             <%= render partial: 'activities/user_status', locals: {activity: exercise, series: @series, user: user} %>
           </div>
         <% else %>
-          <%= link_to t('activities.show.handin'), course_series_activity_path(@series.course, @series.id, exercise, anchor: "submission-card"), class: "btn-text" %>
+          <%= link_to t('activities.show.handin'), course_series_activity_path(@series.course, @series.id, exercise, anchor: "submission-card"), class: "btn btn-text" %>
         <% end %>
       </div>
     </div>

@@ -31,10 +31,10 @@
         <td>
           <% if meta[:next_incomplete_feedback].present? %>
             <%= link_to meta[:next_incomplete_feedback], title: t('evaluations.show.next_incomplete_feedback'), class: 'btn btn-icon' do %>
-              <i class="mdi mdi-chevron-right mdi-18"></i>
+              <i class="mdi mdi-chevron-right"></i>
             <% end %>
           <% else %>
-            <span><i class="mdi mdi-check colored-correct mdi-18"></i></span>
+            <span><i class="mdi mdi-check colored-correct"></i></span>
           <% end %>
         </td>
       </tr>

@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card">
-      <div class="card-title card-title-colored">
+      <div class="card-title card-title-flex card-title-colored">
         <h2 class="card-title-text float-start">
           <span>
             <% if @course %>
@@ -27,7 +27,7 @@
         </h2>
         <% if !@activity && @activity_read_states_path %>
           <div class="float-end hidden-print">
-            <%= link_to @activity_read_states_path, class: 'btn-icon-inverted', title: t('.read-states'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+            <%= link_to @activity_read_states_path, class: 'btn btn-icon btn-icon-inverted', title: t('.read-states'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
               <i class="mdi mdi-playlist-check"></i>
             <% end %>
           </div>

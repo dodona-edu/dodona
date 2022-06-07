@@ -1,10 +1,10 @@
 <% is_allowed = course.usable_repositories.include?(repository) %>
 <% if is_allowed && show_delete_button %>
-  <button type="button" class="btn btn-sm btn-danger remove-course">
-    <i class="mdi mdi-delete mdi-18"></i>
+  <button type="button" class="btn btn-icon btn-icon-filled bg-danger remove-course">
+    <i class="mdi mdi-delete"></i>
   </button>
 <% elsif !is_allowed %>
-  <button type="button" class="btn btn-sm add-course">
-    <i class="mdi mdi-plus mdi-18"></i>
+  <button type="button" class="btn btn-icon add-course">
+    <i class="mdi mdi-plus"></i>
   </button>
 <% end %>

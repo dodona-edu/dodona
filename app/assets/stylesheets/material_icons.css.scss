@@ -54,24 +54,6 @@
   position: relative;
 }
 
-a.btn-fab .mdi::before {
-  margin-top: 5px;
-}
-
-.btn-fab.mdi-send {
-  padding-left: 12px;
-}
-.btn-sm .mdi::before {
-  font-size: 18px;
-  margin-top: 3px;
-}
-
-.btn-sm .mdi::before {
-  font-size: 18px;
-  margin-top: 3px;
-}
-
-
 .dropdown-menu .mdi {
   width: 18px;
 }
@@ -93,11 +75,6 @@ a.btn-fab .mdi::before {
       line-height: 30px;
     }
   }
-}
-
-.nav .mdi::before {
-  position: relative;
-  top: 4px;
 }
 
 .breadcrumb .mdi::before {

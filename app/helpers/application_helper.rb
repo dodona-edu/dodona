@@ -124,11 +124,11 @@ module ApplicationHelper
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')
-    button_tag class: 'btn btn-secondary',
+    button_tag class: 'btn btn-icon',
                type: 'button',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag.i(class: 'mdi mdi-clipboard-outline mdi-18')
+      tag.i(class: 'mdi mdi-clipboard-outline')
     end
   end
 

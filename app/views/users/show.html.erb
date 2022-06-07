@@ -90,10 +90,10 @@
       <% if policy(@user).edit? or policy(@user).impersonate? or policy(@user).download_submissions? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn btn-outline" %>
           <% end %>
           <% if policy(@user).edit? %>
-            <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary" %>
+            <%= link_to t(".edit"), edit_user_path(@user), class: "btn btn-filled" %>
           <% end %>
           <% if policy(@user).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">

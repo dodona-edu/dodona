@@ -50,11 +50,11 @@
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-activity" title="<%= t "series.edit.remove_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity)%>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>">
-            <i class="mdi mdi-delete mdi-18"></i>
+            <i class="mdi mdi-delete"></i>
           </a>
         <% else %>
           <a href="#" class="btn btn-icon add-activity <%= "hidden" if series.activities.include? activity %>" title="<%= t "series.edit.add_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity) %>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>" data-confirm="<%= t('.course_added_to_usable') unless activity.usable_by? @series.course %>">
-            <i class="mdi mdi-plus mdi-18"></i>
+            <i class="mdi mdi-plus"></i>
           </a>
         <% end %>
       </td>

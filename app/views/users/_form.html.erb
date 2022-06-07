@@ -45,11 +45,11 @@
         </div>
         <% if can_make_request %>
           <div class="col-sm-4">
-            <%= link_to t('.request_rights'), new_rights_request_path, class: "btn btn-primary btn-text" %>
+            <%= link_to t('.request_rights'), new_rights_request_path, class: "btn btn-filled" %>
           </div>
         <% elsif has_request %>
           <div class="col-sm-4">
-            <button class="btn btn-primary btn-text" disabled><%= t('.request_in_progress') %></button>
+            <button class="btn btn-filled" disabled><%= t('.request_in_progress') %></button>
           </div>
         <% end %>
       </div>

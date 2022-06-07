@@ -31,8 +31,8 @@
                   </td>
                   <td class="actions">
                     <% if export.archive.attached? %>
-                      <%= link_to rails_blob_path(export.archive, disposition: "attachment"), class: 'btn btn-sm btn-secondary' do %>
-                        <i class="mdi mdi-cloud-download mdi-18"></i>
+                      <%= link_to rails_blob_path(export.archive, disposition: "attachment"), class: 'btn btn-icon' do %>
+                        <i class="mdi mdi-cloud-download"></i>
                       <% end %>
                     <% end %>
                   </td>

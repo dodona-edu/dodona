@@ -154,20 +154,20 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function swapActionButtons() {
         $("#activity-handin-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
-            $("#editor-process-btn").removeClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
+            $("#editor-process-btn").removeClass("hidden");
         });
         $("#activity-submission-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
             if (lastSubmission) {
-                $("#editor-process-btn").removeClass("hidden-fab");
+                $("#editor-process-btn").removeClass("hidden");
             } else {
-                $("#editor-process-btn").addClass("hidden-fab");
+                $("#editor-process-btn").addClass("hidden");
             }
         });
         $("#activity-feedback-link").on("show.bs.tab", function (e) {
-            $("#editor-process-btn").addClass("hidden-fab");
-            $("#submission-copy-btn").removeClass("hidden-fab");
+            $("#editor-process-btn").addClass("hidden");
+            $("#submission-copy-btn").removeClass("hidden");
         });
     }
 
@@ -282,7 +282,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         const icon = fab.children[0];
         fab.classList.remove("correct", "wrong");
         icon.classList.remove(...icon.classList);
-        icon.classList.add("mdi", "mdi-36", "mdi-pencil");
+        icon.classList.add("mdi", "mdi-pencil");
     }
     function getPositiveEmoji() {
         const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];

@@ -12,7 +12,8 @@
   $color-blue-grey: $blue-grey-700 !global;
 
   $primary-700: $light-blue-800 !global;
-  $accent-300: $yellow-400 !global;
+  $accent-100: $yellow-100  !global;
+  $accent-300: $yellow-400  !global;
   $accent-500: $yellow-800 !global;
   $accent-800: lighten($accent-500, 10%) !global;
   $brand-primary: $accent-500 !global;
@@ -44,9 +45,7 @@
 
   $input-bg: $content-bg !global;
   $input-color: $text-color !global;
-  $input-disabled-bg: $body-bg !global;
-  $btn-secondary-bg: $content-bg !global;
-  $btn-secondary-color: $text-color !global;
+  $input-disabled-bg: $body-bg  !global;
 
   $pre-bg: $content-bg !global;
   $pre-color: $text-color !global;
@@ -55,10 +54,6 @@
   $code-light-bg: $body-bg !global;
   $code-bg-warning: rgba(80, 52, 18, 0.4) !global;
   $code-warning-border-left: 0.5em !global;
-
-  $alert-warning-bg: inherit !global;
-  $alert-info-bg: inherit !global;
-  $alert-danger-bg: inherit !global;
 
   $table-border-color: $hairlinegray !global;
   $table-bg-accent: $body-bg !global;

@@ -162,7 +162,10 @@
   .done, .provisional {
     color: $text-disabled;
   }
-  .done:hover, .provisional:hover {
+  a:hover .done,
+  a:hover .provisional,
+  .done:hover,
+  .provisional:hover {
     color: $text-color;
   }
 }

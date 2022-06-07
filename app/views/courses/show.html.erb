@@ -64,7 +64,7 @@
       <% if current_user&.member_of? @course or policy(@course).copy? or policy(@course).scoresheet? %>
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
-            <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
+            <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
@@ -119,7 +119,7 @@
       <div class="flex-spacer"></div>
       <div>
         <% if policy(@course).manage_series? %>
-          <%= link_to manage_series_course_path(@course), title: t(".manage_series"), class: "btn with-text btn-primary btn-fab-extended" do %>
+          <%= link_to manage_series_course_path(@course), title: t(".manage_series"), class: "btn btn-filled with-icon" do %>
             <i class="mdi mdi-playlist-edit icon"></i>
             <span class='text'><%= t(".manage_series") %></span>
           <% end %>

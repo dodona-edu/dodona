@@ -3,7 +3,7 @@
 <div class="row">
   <div class="col-12">
     <div class="card">
-      <div class="card-title card-title-colored">
+      <div class="card-title card-title-flex card-title-colored">
         <h2 class="card-title-text float-start">
           <span>
             <% if @course %>
@@ -27,7 +27,7 @@
         </h2>
         <% if !@activity && @submissions_path %>
           <div class="float-end hidden-print">
-            <%= link_to @submissions_path, class: 'btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
+            <%= link_to @submissions_path, class: 'btn btn-icon btn-icon-inverted', title: t('.submissions'), data: { 'bs-toggle': 'tooltip', placement: 'top' } do %>
               <%= custom_icon 'submissions' %>
             <% end %>
           </div>

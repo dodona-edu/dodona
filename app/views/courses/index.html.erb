@@ -8,7 +8,7 @@
       <div class="flex-spacer"></div>
       <div>
         <% if policy(Course).new? %>
-          <%= link_to new_course_path, title: t("courses.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+          <%= link_to new_course_path, title: t("courses.new.title"), class: "btn btn-filled with-icon" do %>
             <i class="mdi mdi-plus icon"></i>
             <span class='text'><%= t("courses.new.title") %></span>
           <% end %>

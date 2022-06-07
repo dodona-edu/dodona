@@ -2,10 +2,10 @@
   <table class="table">
     <thead>
     <tr>
-      <th class="user-name"><dodona-sort-button column="status_in_course_and_name" default="ASC"><%= t('courses.scoresheet.user') %></dodona-sort-button></th>
+      <th class="user-name"><d-sort-button column="status_in_course_and_name" default="ASC"><%= t('courses.scoresheet.user') %></d-sort-button></th>
       <% series.each do |s| %>
       <th class="status-header ellipsis-overflow" title="<%= s.name %>">
-        <dodona-sort-button  column="<%= s.id %>"><%= s.name %></dodona-sort-button>
+        <d-sort-button  column="<%= s.id %>"><%= s.name %></d-sort-button>
       </th>
       <% end %>
     </tr>
@@ -14,7 +14,7 @@
     <tr class="summary-row">
       <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
       <% series.each do |s| %>
-        <td class="status" ><dodona-histogram values="<%= histogram[s.id] %>"></dodona-histogram></td>
+        <td class="status" ><d-histogram values="<%= histogram[s.id] %>"></d-histogram></td>
       <% end %>
     </tr>
     <% users.each do |student| %>

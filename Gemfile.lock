@@ -86,7 +86,7 @@ GEM
     bcrypt_pbkdf (1.1.0)
     bindata (2.4.10)
     bindex (0.8.1)
-    bootsnap (1.11.1)
+    bootsnap (1.12.0)
       msgpack (~> 1.2)
     bootstrap_tokenfield_rails (0.12.1)
     builder (3.2.4)
@@ -224,7 +224,6 @@ GEM
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
-    io-wait (0.2.0)
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
@@ -413,7 +412,7 @@ GEM
       actionpack (>= 5.0)
       railties (>= 5.0)
     rexml (3.2.5)
-    rouge (3.28.0)
+    rouge (3.29.0)
     rubocop (1.26.0)
       parallel (~> 1.10)
       parser (>= 3.1.0.0)
@@ -437,7 +436,7 @@ GEM
       ffi (~> 1.12)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    selenium-webdriver (4.2.0)
+    selenium-webdriver (4.2.1)
       childprocess (>= 0.5, < 5.0)
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
@@ -517,7 +516,7 @@ DEPENDENCIES
   annotate (~> 3.2.0)
   autoprefixer-rails (~> 10.4.7)
   bcrypt_pbkdf
-  bootsnap (~> 1.11.1)
+  bootsnap (~> 1.12.0)
   bootstrap_tokenfield_rails (~> 0.12.1)
   builder (~> 3.2.4)
   byebug (~> 11.1.3)
@@ -547,7 +546,6 @@ DEPENDENCIES
   i18n-js (~> 3.9.2)
   icalendar (~> 2.7)
   image_processing (~> 1.12.2)
-  io-wait (~> 0.2.0)
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.0.2)
   json-schema (~> 3.0.0)
@@ -576,11 +574,11 @@ DEPENDENCIES
   rails-i18n (~> 7.0.3)
   rails_server_timings (~> 1.0.8)
   rb-readline (~> 0.5.5)
-  rouge (= 3.28.0)
+  rouge (= 3.29.0)
   rubocop-rails (~> 2.14.2)
   ruby-saml (~> 1.14.0)
   rubyzip (~> 2.3.2)
-  selenium-webdriver (~> 4.2.0)
+  selenium-webdriver (~> 4.2.1)
   simplecov (~> 0.21.2)
   sinatra (~> 2.2.0)
   slack-notifier (~> 2.4.0)
@@ -597,4 +595,4 @@ RUBY VERSION
    ruby 3.0.3p157
 
 BUNDLED WITH
-   2.2.32
+   2.2.33

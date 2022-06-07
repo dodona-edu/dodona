@@ -3,6 +3,9 @@ import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";
 
+/**
+ * This class is made to manage the currently active sort parameter in the search query
+ */
 export class SortQuery {
     active_column: string;
     ascending: boolean;
@@ -48,7 +51,19 @@ export class SortQuery {
 }
 export const sortQuery = new SortQuery();
 
-@customElement("dodona-sort-button")
+/**
+ * This component represents a sort button.
+ * It is clickable and contains an icon indicating the current sort direction.
+ *
+ * @element d-sort-button
+ *
+ * @prop {string} column - the column by which should be sorted
+ * @prop {string} default - posible values: "ASC" or "DESC". if present this sortButton is supposed to be active when no sort params ore in the searchQuery
+ * @prop {boolean} disabled - disables the functionality
+ *
+ * @slot - this contains the clickable button content (left of the sort icon)
+ */
+@customElement("d-sort-button")
 export class SortButton extends LitElement {
     @property({ type: String })
     column: string;

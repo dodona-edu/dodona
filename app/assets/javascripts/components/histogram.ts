@@ -5,14 +5,14 @@ import { customElement, property } from "lit/decorators.js";
  * This component displays a simple histogram using a flex layout and styled divs.
  * It always takes up 100% of the space it's given.
  *
- * @element dodona-histogram
+ * @element d-histogram
  *
  * @prop {number[]} values - Pass the histogram data as an array of numbers.
  *
  * @cssprop [--d-histogram-baseline=lightgray] - The color of the bottom border serving as an axis.
  * @cssprop [--d-histogram-bar=steelblue] - The color of the bars.
  */
-@customElement("dodona-histogram")
+@customElement("d-histogram")
 export class Histogram extends LitElement {
     @property({ type: Array })
     values: number[];

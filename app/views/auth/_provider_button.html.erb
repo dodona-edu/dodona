@@ -1,4 +1,5 @@
 <% institution = provider.institution %>
+
 <% if provider.type == "Provider::Saml" %>
   <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in col-md-6 col-xl-4' do %>
     <div class="option-btn">

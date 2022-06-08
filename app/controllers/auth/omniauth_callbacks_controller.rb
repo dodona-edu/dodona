@@ -313,7 +313,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def auth_target
-    return request.env['omniauth.params'][:origin] if request.env['omniauth.params'][:origin].present?
+    return request.env['omniauth.origin'] if request.env['omniauth.origin'].present?
     return nil if auth_hash.extra[:target].blank?
 
     "#{auth_hash.extra[:target]}?#{auth_redirect_params.to_param}"

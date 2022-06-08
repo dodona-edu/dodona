@@ -59,7 +59,7 @@
           <% else %>
             <span class="mb-2"><%= t ".providers_message"%></span>
             <% @user.providers.where(mode: %i[prefer secondary]).each do |provider| %>
-              <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+              <%= render partial: 'auth/provider_button', locals: { provider: provider, origin: user_path(@user) } %>
             <% end %>
           <% end %>
         </div>

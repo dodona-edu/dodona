@@ -22,7 +22,7 @@ pre {
   word-break: break-all;
   word-wrap: break-word;
   background-color: $code-bg;
-  border: 1px solid $primary;
+  border: 1px solid $outline;
   border-radius: $border-radius-base;
 
   code {
@@ -265,7 +265,7 @@ code {
     color: inherit;
     padding: 12px;
     background-color: $body-bg;
-    border-bottom: 1px solid $hairlinegray;
+    border-bottom: 1px solid $divider;
 
     a {
       color: inherit;

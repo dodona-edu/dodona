@@ -15,6 +15,12 @@ $dropdown-color: $on-background;
 $dropdown-link-color: $on-background;
 $dropdown-link-hover-bg: $secondary-container;
 $dropdown-link-hover-color: $on-secondary-container;
+$dropdown-link-active-bg: $secondary;
+
+// inputs
+$input-disabled-bg: $background;
+$input-border-color: $outline;
+$form-select-indicator-color: $on-background;
 
 // disable rfs
 $enable-rfs: false;

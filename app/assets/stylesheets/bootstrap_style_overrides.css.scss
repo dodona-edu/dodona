@@ -89,16 +89,6 @@ code {
   }
 }
 
-.alert button.btn-close {
-  //color: $alert-secondary; //TODO
-  opacity: 1;
-  text-shadow: initial;
-}
-
-.alert button.btn-close:hover {
-  //color: $alert-fg;
-}
-
 // popovers
 .popover {
   border-radius: 2px;
@@ -152,16 +142,8 @@ code {
   @include shadow-z5;
 }
 
-// extra small input elements
-.input-xs {
-  height: 22px;
-  padding: 1px 10px;
-  font-size: 12px;
-  line-height: 1.5;
-  border-radius: 3px;
-}
-
 .help-block {
+  margin-top: 4px;
   font-size: 12px;
   line-height: 14px;
   color: $text-secondary;

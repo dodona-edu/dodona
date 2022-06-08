@@ -28,6 +28,14 @@ class Provider::Surf < Provider
     :surf
   end
 
+  def self.logo
+    'surf-logo.svg'
+  end
+
+  def self.readable_name
+    'SURFconext'
+  end
+
   def self.extract_institution_name(auth_hash)
     institution_hostname = auth_hash&.info&.institution
 

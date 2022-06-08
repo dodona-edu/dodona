@@ -31,23 +31,18 @@ class Auth::AuthenticationController < Devise::SessionsController
     ].compact
 
     # Providers that are not necessarily specific to one institution.
-    @generic_providers = {
-      Provider::Smartschool => { image: 'smartschool.png', name: 'Smartschool' },
-      Provider::Office365 => { image: 'office365.png', name: 'Office 365' },
-      Provider::GSuite => { image: 'Google-logo.png', name: 'Google Workspace' },
-      Provider::Surf => { image: 'surf-logo.svg', name: 'SURFconext' }
-    }
-
-    # Calculate some information for these providers.
-    @generic_providers.each do |key, value|
-      value[:link] = omniauth_authorize_path(:user, key.sym)
-    end
+    @generic_providers = [
+      Provider::Smartschool,
+      Provider::Office365,
+      Provider::GSuite,
+      Provider::Surf
+    ]
 
     @providers = Provider.all
     @title = I18n.t('auth.sign_in.sign_in')
     @oauth_providers = apply_scopes(@providers
       .includes(:institution)
-      .where(type: @generic_providers.keys)
+      .where(type: @generic_providers)
       .where(mode: :prefer)
       .where(institutions: { generated_name: false }))
     render 'auth/sign_in'

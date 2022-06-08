@@ -58,15 +58,15 @@
             <p><%= token_sign_in_user_url(@user, @user.token) %></p>
           <% else %>
             <span class="mb-2"><%= t ".providers_message"%></span>
-            <% @user.providers.where(mode: %i[prefer secondary]).each do |provider| %>
+            <% @identities.each do |identity| %>
               <div class="col-md-6 col-xl-4 sign-in-method-container">
                 <div class="sign-in-method">
                   <div class="sign-in-method-img">
-                    <%= image_tag institution_logo(provider.logo), class: "img-fluid" %>
+                    <%= image_tag institution_logo(identity.provider.logo), class: "img-fluid" %>
                   </div>
                   <div class="sign-in-method-title">
-                    <h3><%= provider.readable_name %><br>
-                    <small><%= t('.sign-in-with', provider: provider.readable_name) %></small>
+                    <h3><%= identity.provider.readable_name %><br>
+                    <small><%= t('.identifier', identifier: identity.identifier) %></small>
                     </h3>
                   </div>
                 </div>

@@ -3,7 +3,7 @@
     <div class="row">
       <h1><%= t ".title" %></h1>
       <%= markdown t(".message_p1", username: @user.username, email: @user.email, institution: @user.institution.name) %>
-      <%= markdown t(".message_p2", provider: @provider.class.sym.to_s) %>
+      <%= markdown t(".message_p2", provider: @provider.readable_name) %>
     </div>
     <div class="row">
       <h2><%= t(".providers_title") %></h2>

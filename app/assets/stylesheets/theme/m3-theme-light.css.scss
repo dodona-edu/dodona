@@ -23,6 +23,7 @@ $surface-variant: $neutral-variant-90;
 $background: $neutral-98;
 $on-surface: $neutral-10;
 $on-surface-variant: $neutral-variant-30;
+$on-surface-muted: $neutral-30;
 $on-background: $neutral-10;
 
 $outline: $neutral-variant-50;
@@ -147,9 +148,6 @@ $on-blue-gray: $blue-gray-100;
 $on-blue-gray-container: $blue-gray-10;
 
 $off-surface: $neutral-95;
-
-$text-color: $on-background; // todo: if not used by bootstrap, rename or replace
-$text-muted: $neutral-40; // todo: if not used by bootstrap, rename to on-surface-muted
 
 $code-bg: $neutral-95;
 $skeleton-color: $surface-variant;

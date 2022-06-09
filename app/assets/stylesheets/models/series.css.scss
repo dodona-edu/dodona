@@ -23,11 +23,11 @@
 .series-activity-list .status-icon,
 #activities-table-wrapper .status-icon {
   text-align: right;
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .deadline-future {
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .deadline-passed {
@@ -234,7 +234,7 @@
 
 .graph-info {
   margin-left: 5px;
-  color: $text-muted
+  color: $on-surface-muted
 }
 
 .svg-icon-btn {

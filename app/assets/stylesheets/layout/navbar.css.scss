@@ -212,10 +212,10 @@ $navbar-height: 50px;
 
         a {
           padding-left: 0px;
-          color: $text-color;
+          color: $on-surface;
 
           &.btn-icon {
-            color: $text-secondary;
+            color: $on-surface-muted;
           }
         }
 
@@ -251,7 +251,7 @@ $navbar-height: 50px;
         }
 
         a {
-          color: $text-color;
+          color: $on-surface;
         }
       }
 
@@ -274,7 +274,7 @@ $navbar-height: 50px;
 
           li,
           a {
-            color: $text-color;
+            color: $on-surface;
           }
 
           position: relative;
@@ -285,7 +285,7 @@ $navbar-height: 50px;
           background-color: $background;
           border: 0;
           box-shadow: none;
-          color: $text-color;
+          color: $on-surface;
           width: 100%;
         }
       }

@@ -151,7 +151,7 @@ a.card-title-link:hover {
 
 .card-title.card-title-plain li a {
   font-weight: 300;
-  color: $text-color;
+  color: $on-surface;
 }
 
 .card-title.card-border {
@@ -205,7 +205,7 @@ a.card-title-link:hover {
 }
 
 .card-supporting-text {
-  color: $text-color;
+  color: $on-surface;
   font-size: 14px;
   line-height: 18px;
   padding: $card-supporting-text-padding;
@@ -258,7 +258,7 @@ a.card-title-link:hover {
 
 .card-subtitle-actions a.dropdown-item {
   margin-left: unset;
-  color: $text-color;
+  color: $on-surface;
 }
 
 .card-nav,
@@ -313,7 +313,7 @@ a.card-title-link:hover {
 }
 
 .card-tab .nav-tabs li a {
-  color: $text-muted;
+  color: $on-surface-muted;
 }
 
 .card-title .nav-tabs li a,
@@ -327,7 +327,7 @@ a.card-title-link:hover {
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,
 .card-tab .nav-tabs li a:focus {
-  color: $text-color;
+  color: $on-surface;
 }
 
 .card-tab .nav-tabs li.active a,

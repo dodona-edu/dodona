@@ -72,7 +72,7 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 1;
-        color: $text-color;
+        color: $on-surface;
         text-align: center;
         background-color: $surface;
         border: 1px solid $outline;
@@ -132,7 +132,7 @@
   }
 
   .user-select-option:hover {
-    border: 1px solid $text-disabled;
+    border: 1px solid $divider;
   }
 
   .user-select-option h1 small {
@@ -169,14 +169,14 @@
 
   .done,
   .provisional {
-    color: $text-disabled;
+    color: $on-surface-muted;
   }
 
   a:hover .done,
   a:hover .provisional,
   .done:hover,
   .provisional:hover {
-    color: $text-color;
+    color: $on-surface;
   }
 }
 
@@ -185,7 +185,7 @@
   justify-content: space-around;
 
   a .done {
-    color: $text-secondary;
+    color: $on-surface-muted;
   }
 
   .active a {
@@ -211,7 +211,7 @@ $user-column-width: 170px;
 
   .score-text {
     a {
-      color: $text-color;
+      color: $on-surface;
     }
   }
 
@@ -258,7 +258,7 @@ $user-column-width: 170px;
 }
 
 a.score-click {
-  color: $text-color;
+  color: $on-surface;
 }
 
 .score-buttons {

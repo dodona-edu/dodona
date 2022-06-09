@@ -35,7 +35,7 @@
 .scratchpad-info {
     padding-left: 20px;
     font-size: 14px;
-    color: $text-muted;
+    color: $on-surface-muted;
     // Header has absolute position, simulate its height using margin-top
     margin-top: $navbar-height + 5;
 }

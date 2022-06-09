@@ -25,6 +25,7 @@
   $background: $neutral-25  !global;
   $on-surface: $neutral-90  !global;
   $on-surface-variant: $neutral-variant-80  !global;
+  $on-surface-muted: $neutral-80  !global;
   $on-background: $neutral-90  !global;
 
   $outline: $neutral-variant-60  !global;
@@ -146,9 +147,6 @@
   $on-blue-gray-container: $blue-gray-90  !global;
 
   $off-surface: $neutral-20  !global;
-
-  $text-color: $on-background  !global; // todo: if not used by bootstrap, rename or replace
-  $text-muted: $neutral-80  !global; // todo: if not used by bootstrap, rename to on-surface-muted
 
   $code-bg: $neutral-20  !global;
   $skeleton-color: $surface-variant  !global;

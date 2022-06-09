@@ -292,7 +292,7 @@ $feedback-diff-table-header-fg: $on-surface-variant;
 
   .message-zeus,
   .message-staff {
-    border-left: 3px solid $text-secondary;
+    border-left: 3px solid $on-surface-muted;
     padding-left: 25px
   }
 
@@ -301,7 +301,7 @@ $feedback-diff-table-header-fg: $on-surface-variant;
   .tab-zeus:before,
   .tab-staff:before {
     font: normal normal normal 24px/1 "Material Design Icons";
-    color: $text-secondary;
+    color: $on-surface-muted;
     font-size: 18px;
   }
 
@@ -362,7 +362,7 @@ iframe.file {
 }
 
 .colored-secondary {
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .submission-summary {

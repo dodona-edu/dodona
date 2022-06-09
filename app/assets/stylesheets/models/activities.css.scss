@@ -7,7 +7,7 @@
   th.type-icon,
   td.type-icon {
     width: 18px;
-    color: $text-secondary;
+    color: $on-surface-muted;
     padding-left: 0;
     padding-right: 0;
   }
@@ -106,7 +106,7 @@
   height: 16px;
   margin-left: 16px;
   display: block;
-  border-top: 1px solid $text-secondary;
+  border-top: 1px solid $on-surface-muted;
 }
 
 .footnotes {

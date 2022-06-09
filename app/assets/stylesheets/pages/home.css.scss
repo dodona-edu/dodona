@@ -31,6 +31,12 @@
   }
 }
 
+.home-card .info-step img {
+  @if $theme =="dark" {
+    filter: invert(1);
+  }
+}
+
 .home-card .card-title-text {
   font-size: 36px;
   line-height: 1.8;

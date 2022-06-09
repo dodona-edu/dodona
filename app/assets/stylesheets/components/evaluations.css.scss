@@ -74,8 +74,8 @@
         line-height: 1;
         color: $text-color;
         text-align: center;
-        background-color: $input-group-addon-bg;
-        border: 1px solid $border-color;
+        background-color: $surface;
+        border: 1px solid $outline;
         opacity: 1;
         cursor: auto;
       }
@@ -87,7 +87,7 @@
       }
 
       .form-control {
-        border-color: $border-color;
+        border-color: $outline;
         line-height: initial;
       }
 
@@ -164,7 +164,7 @@
   }
 
   &.not-started {
-    border-bottom: 3px solid $surface-variant;
+    border-bottom: 3px solid $divider;
   }
 
   .done,
@@ -188,8 +188,12 @@
     color: $text-secondary;
   }
 
-  .active a i {
-    color: $info;
+  .active a {
+    background-color: $info-container;
+
+    i {
+      color: $info;
+    }
   }
 }
 

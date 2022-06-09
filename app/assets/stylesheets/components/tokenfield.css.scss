@@ -167,12 +167,7 @@
   cursor: pointer;
 }
 
-a+a>.token,
-.token+.token {
-  margin-left: 8px;
-}
-
-d-search-token>.token {
+.token {
   margin-right: 8px;
 }
 

@@ -336,6 +336,10 @@ $feedback-diff-table-header-fg: $on-surface-variant;
   }
 }
 
+#editor-text .ace-twilight {
+  background-color: $gray-10;
+}
+
 #editor-result .ace_content {
   background-color: $code-bg;
   cursor: default;

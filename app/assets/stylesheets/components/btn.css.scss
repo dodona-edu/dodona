@@ -213,7 +213,7 @@
 .input-group {
   .btn {
     border: 1px solid $outline;
-    border-radius: 2px;
+    border-radius: 4px;
   }
 
   .btn:disabled {
@@ -234,7 +234,7 @@
   margin-bottom: 15px;
   padding: 12px;
   background-color: $surface;
-  border-radius: 2px;
+  border-radius: 4px;
   transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
   @include shadow-z2;
   cursor: pointer;

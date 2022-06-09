@@ -91,14 +91,14 @@ code {
 
 // popovers
 .popover {
-  border-radius: 2px;
+  border-radius: 4px;
   padding: 0px;
   @include shadow-z5;
   z-index: 5;
 }
 
 .popover .popover-title {
-  border-radius: 2px 2px 0 0;
+  border-radius: 4px 4px 0 0;
   border: 0;
 }
 

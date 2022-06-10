@@ -137,9 +137,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // init editor
         editor = ace.edit("editor-text");
         editor.getSession().setMode("ace/mode/" + programmingLanguage);
-        if (window.dodona.darkMode) {
-            editor.setTheme("ace/theme/twilight");
-        }
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true,

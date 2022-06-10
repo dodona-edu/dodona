@@ -15,6 +15,7 @@
 
 @import "theme/rouge-light.css.scss";
 @import "theme/rouge-dark.css.scss";
+@import "theme/ace.css.scss";
 
 @if $theme =="dark" {
   @include rouge-dark;

@@ -47,7 +47,7 @@
 
 .btn.btn-filled {
   background: $primary;
-  color: $text-on-bg-color;
+  color: $on-primary;
 
   &:hover {
     @include shadow-z2;
@@ -56,8 +56,8 @@
 
 .btn.btn-tonal,
 .btn.btn-elevated {
-  background: $accent-100;
-  color: $text-on-bg-color;
+  background: $secondary-container;
+  color: $on-secondary-container;
 
   &:hover {
     @include shadow-z1;
@@ -112,7 +112,7 @@
 }
 
 .btn.btn-outline {
-  border: 1px solid $hairlinegray;
+  border: 1px solid $divider;
 
   &:hover,
   &:focus,
@@ -124,7 +124,7 @@
 .btn.btn-icon {
   width: 40px;
   padding: 0;
-  color: $text-secondary;
+  color: $on-surface-variant;
 
   &:not(.btn-icon-filled) {
 
@@ -137,7 +137,7 @@
   }
 
   &.btn-icon-inverted {
-    color: $header-fg;
+    color: $on-primary;
 
     &:hover,
     &:focus,
@@ -148,7 +148,7 @@
   }
 
   &.btn-icon-filled {
-    color: $header-fg;
+    color: $on-primary;
 
     &:hover,
     &:focus,
@@ -163,8 +163,8 @@
   height: 56px;
   width: 56px;
   border-radius: 16px;
-  background: $primary;
-  color: $content-bg;
+  background: $secondary-container;
+  color: $on-secondary-container;
   @include shadow-z2;
 
   &:hover,
@@ -178,11 +178,11 @@
   }
 
   &.correct {
-    background-color: $brand-success;
+    background-color: $success;
   }
 
   &.wrong {
-    background-color: $brand-danger;
+    background-color: $danger;
   }
 }
 
@@ -191,11 +191,11 @@
   &>.btn {
     padding-left: 12px;
     padding-right: 12px;
-    border: 1px solid $hairlinegray;
+    border: 1px solid $divider;
     border-right: 0;
 
     &:last-of-type {
-      border-right: 1px solid $hairlinegray;
+      border-right: 1px solid $divider;
     }
 
     &:hover,
@@ -212,13 +212,12 @@
 
 .input-group {
   .btn {
-    border: 1px solid $hairlinegray;
-    border-radius: 2px;
+    border: 1px solid $outline;
+    border-radius: 4px;
   }
 
   .btn:disabled {
     opacity: 0.8;
-    background: $body-bg;
   }
 
   &.input-group-small {
@@ -234,8 +233,8 @@
   align-items: center;
   margin-bottom: 15px;
   padding: 12px;
-  background-color: $content-bg;
-  border-radius: 2px;
+  background-color: $surface;
+  border-radius: 4px;
   transition: box-shadow 0.1s cubic-bezier(.4, 0, .2, 1);
   @include shadow-z2;
   cursor: pointer;

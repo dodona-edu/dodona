@@ -378,11 +378,11 @@ export class CodeListing {
           </div>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
-                  <button class="btn-text annotation-control-button annotation-delete-button" type="button">
+                  <button class="btn btn-text annotation-control-button annotation-delete-button" type="button">
                     ${I18n.t("js.user_annotation.delete")}
                   </button>
                 ` : ""}
-            <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
+            <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
               ${I18n.t("js.user_annotation.cancel")}
             </button>
             <button class="btn btn-filled annotation-control-button annotation-submission-button" type="button">

@@ -46,12 +46,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         super.draw(animation);
 
-        // no data in cell
-        const emptyColor = this.darkMode ? "#37474F" : "white";
-        // almost no data in cell
-        const lowColor = this.darkMode ? "#364953" : "#E3F2FD";
-        // a lot of data in cell
-        const highColor = this.darkMode ? "#039BE5" : "#0D47A1";
+        const emptyColor = this.darkMode ? "#001d36" : "#fcfcff";
+        const lowColor = this.darkMode ? "#00325a" : "#d0e4ff";
+        const highColor = this.darkMode ? "#9ccaff" : "#003d6c";
 
         const end = new Date(this.maxDate);
         end.setHours(0, 0, 0, 0); // bin and domain seem to handle end differently

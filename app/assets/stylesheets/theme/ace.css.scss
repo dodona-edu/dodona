@@ -62,11 +62,11 @@
   .ace_support.ace_constant,
   .ace_constant.ace_numeric,
   .ace_constant.ace_language {
-    color: $secondary
+    color: $secondary;
   }
 
   .ace_storage.ace_type {
-    color: $secondary
+    color: $secondary;
   }
 
   .ace_invalid {
@@ -82,7 +82,7 @@
   .ace_entity.ace_name,
   .ace_entity.ace_name.ace_function,
   .ace_support.ace_function {
-    color: $tertiary
+    color: $tertiary;
   }
 
   .ace_variable.ace_parameter {
@@ -104,5 +104,9 @@
 
   .ace_meta.ace_tag {
     color: $primary;
+  }
+
+  .ace_attribute-name.ace_xml {
+    color: $tertiary;
   }
 }

@@ -1,3 +1,6 @@
+$feedback-diff-table-header-bg: $surface-variant;
+$feedback-diff-table-header-fg: $on-surface-variant;
+
 .submissions-table {
   th.status-column {
     width: 48px;
@@ -14,14 +17,14 @@
     }
 
     .badge.bg-danger {
-      color: $brand-danger;
-      border-color: $brand-danger;
+      color: $danger;
+      border-color: $danger;
       background-color: $content-bg  !important;
     }
 
     .badge.bg-success {
-      color: $brand-success;
-      border-color: $brand-success;
+      color: $success;
+      border-color: $success;
       background-color: $content-bg  !important;
     }
   }
@@ -47,11 +50,11 @@
     padding-left: 12px;
 
     &.correct {
-      border-left-color: $brand-success;
+      border-left-color: $success;
     }
 
     &.wrong {
-      border-left-color: $brand-danger;
+      border-left-color: $danger;
     }
   }
 
@@ -73,13 +76,13 @@
 
     &.correct {
       .indicator {
-        color: $brand-success;
+        color: $success;
       }
     }
 
     &.wrong {
       .indicator {
-        color: $brand-danger;
+        color: $danger;
       }
     }
   }
@@ -135,19 +138,23 @@
     }
 
     .ins {
-      background: $feedback-diff-table-ins;
+      background: $success-container;
+      color: $on-success-container;
     }
 
     .del {
-      background: $feedback-diff-table-del;
+      background: $danger-container;
+      color: $on-success-container;
     }
 
     .ins strong {
-      background: $feedback-diff-table-ins-strong;
+      background: $success;
+      color: $on-success;
     }
 
     .del strong {
-      background: $feedback-diff-table-del-strong;
+      background: $danger;
+      color: $on-danger;
     }
 
     .line-nr {
@@ -247,7 +254,7 @@
   }
 
   .linter pre.lineno {
-    border-right: 1px solid $divider-color;
+    border-right: 1px solid $divider;
     padding-right: 25px;
   }
 
@@ -285,7 +292,7 @@
 
   .message-zeus,
   .message-staff {
-    border-left: 3px solid $text-secondary;
+    border-left: 3px solid $on-surface-muted;
     padding-left: 25px
   }
 
@@ -294,7 +301,7 @@
   .tab-zeus:before,
   .tab-staff:before {
     font: normal normal normal 24px/1 "Material Design Icons";
-    color: $text-secondary;
+    color: $on-surface-muted;
     font-size: 18px;
   }
 
@@ -325,12 +332,16 @@
   }
 
   .tab-link-marker {
-    background: $brand-warning  !important;
+    background: $warning  !important;
   }
 }
 
+#editor-text .ace-twilight {
+  background-color: $gray-10;
+}
+
 #editor-result .ace_content {
-  background-color: $code-light-bg;
+  background-color: $code-bg;
   cursor: default;
 }
 
@@ -343,19 +354,19 @@ iframe.file {
 }
 
 .colored-correct {
-  color: $brand-success;
+  color: $success;
 }
 
 .colored-wrong {
-  color: $brand-danger;
+  color: $danger;
 }
 
 .colored-warning {
-  color: $brand-warning;
+  color: $warning;
 }
 
 .colored-secondary {
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .submission-summary {

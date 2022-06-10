@@ -21,8 +21,8 @@
         font-size: 12px;
         margin-right: 5px;
         vertical-align: text-bottom;
-        background-color: $navbar-default-bg;
-        color: $navbar-default-color;
+        background-color: $primary;
+        color: $on-primary;
         letter-spacing: 0;
       }
 
@@ -36,12 +36,12 @@
 
           &.disabled {
             cursor: default;
-            color: $text-muted;
+            color: $on-surface-muted;
           }
         }
 
         .answer {
-          color: $text-muted;
+          color: $on-surface-muted;
         }
       }
     }
@@ -73,7 +73,7 @@
       }
 
       .stepper-border {
-        border-top: 1px solid $divider-color;
+        border-top: 1px solid $divider;
       }
 
       .stepper-actions {

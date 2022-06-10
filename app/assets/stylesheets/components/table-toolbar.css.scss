@@ -6,7 +6,7 @@
   font-size: 18px;
   min-height: 36px;
   width: 100%;
-  color: $text-color;
+  color: $on-surface;
   margin-bottom: 6px;
 
   .btn {
@@ -34,7 +34,7 @@
 .table-toolbar .table-toolbar-tools>.mdi::before {
   margin-top: 3px;
   margin-left: 8px;
-  color: $text-disabled;
+  color: $on-surface-muted;
 }
 
 .table-toolbar .table-toolbar-tools .search {
@@ -45,7 +45,7 @@
     width: 100%;
     margin: 0;
     border: none;
-    color: $text-color;
+    color: $on-surface;
     vertical-align: baseline;
   }
 
@@ -54,22 +54,22 @@
   }
 
   input::-webkit-input-placeholder {
-    color: $text-disabled;
+    color: $on-surface-muted;
     font-weight: 300;
   }
 
   input::-moz-placeholder {
-    color: $text-disabled;
+    color: $on-surface-muted;
     font-weight: 300;
   }
 
   input:-ms-input-placeholder {
-    color: $text-disabled;
+    color: $on-surface-muted;
     font-weight: 300;
   }
 
   input::input-placeholder {
-    color: $text-disabled;
+    color: $on-surface-muted;
     font-weight: 300;
   }
 }
@@ -83,7 +83,7 @@
   box-shadow: none;
 
   .twitter-typeahead .token-input.tt-hint {
-    color: $text-secondary;
+    color: $on-surface-muted;
     margin-top: 7px;
     margin-bottom: 6px;
     margin-left: 12px;
@@ -125,7 +125,7 @@
   background-image: linear-gradient(to right,
       rgba(255, 255, 255, 0.7),
       rgba(255, 255, 255, 0.7)),
-    linear-gradient(to right, $accent-A100, $accent-A100);
+    linear-gradient(to right, $secondary, $secondary);
   z-index: 0;
   left: 0;
 }

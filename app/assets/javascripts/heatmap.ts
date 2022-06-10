@@ -71,9 +71,9 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
 
 function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: string | undefined): void {
     const darkMode = window.dodona.darkMode;
-    const emptyColor = darkMode ? "#37474F" : "white";
-    const lowColor = darkMode ? "#364953" : "#E3F2FD";
-    const highColor = darkMode ? "#039BE5" : "#0D47A1";
+    const emptyColor = darkMode ? "#001d36" : "#fcfcff";
+    const lowColor = darkMode ? "#00325a" : "#d0e4ff";
+    const highColor = darkMode ? "#9ccaff" : "#003d6c";
 
     const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));
     const shortMonthNames = monthKeys.map(k => I18n.t(`js.months.short.${k}`));
@@ -211,4 +211,3 @@ function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: 
 }
 
 export { initHeatmap };
-

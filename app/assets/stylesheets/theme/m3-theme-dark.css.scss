@@ -1,0 +1,161 @@
+// This file contains all "design tokens" according to material 3 in light mode.
+// At the bottom of this file, there are a number of dodona-specific variables
+
+@import "theme/m3-theme.css.scss";
+
+@mixin theme-dark {
+
+  $primary: $primary-80  !global;
+  $primary-container: $primary-30  !global;
+  $on-primary: $primary-20  !global;
+  $on-primary-container: $primary-90  !global;
+
+  $secondary: $secondary-80  !global;
+  $secondary-container: $secondary-30  !global;
+  $on-secondary: $secondary-20  !global;
+  $on-secondary-container: $secondary-90  !global;
+
+  $tertiary: $tertiary-80  !global;
+  $tertiary-container: $tertiary-30  !global;
+  $on-tertiary: $tertiary-20  !global;
+  $on-tertiary-container: $tertiary-90  !global;
+
+  $surface: $neutral-20  !global;
+  $surface-variant: $neutral-variant-30  !global;
+  $background: $neutral-25  !global;
+  $on-surface: $neutral-90  !global;
+  $on-surface-variant: $neutral-variant-80  !global;
+  $on-surface-muted: $neutral-80  !global;
+  $on-background: $neutral-90  !global;
+
+  $outline: $neutral-variant-60  !global;
+  $divider: $neutral-30  !global;
+  $shadow: $neutral-0  !global;
+  $surface-tint: $primary  !global;
+  $inverse-surface: $neutral-90  !global;
+  $inverse-on-surface: $neutral-20  !global;
+  $inverse-primary: $primary-40  !global;
+
+  $info: $info-80  !global;
+  $info-container: $info-30  !global;
+  $on-info: $info-20  !global;
+  $on-info-container: $info-90  !global;
+
+  $success: $success-80  !global;
+  $success-container: $success-30  !global;
+  $on-success: $success-20  !global;
+  $on-success-container: $success-90  !global;
+
+  $danger: $danger-80  !global;
+  $danger-container: $danger-30  !global;
+  $on-danger: $danger-20  !global;
+  $on-danger-container: $danger-90  !global;
+
+  $warning: $warning-80  !global;
+  $warning-container: $warning-30  !global;
+  $on-warning: $warning-20  !global;
+  $on-warning-container: $warning-90  !global;
+
+  $red: $red-80  !global;
+  $red-container: $red-30  !global;
+  $on-red: $red-20  !global;
+  $on-red-container: $red-90  !global;
+
+  $pink: $pink-80  !global;
+  $pink-container: $pink-30  !global;
+  $on-pink: $pink-20  !global;
+  $on-pink-container: $pink-90  !global;
+
+  $purple: $purple-80  !global;
+  $purple-container: $purple-30  !global;
+  $on-purple: $purple-20  !global;
+  $on-purple-container: $purple-90  !global;
+
+  $deep-purple: $deep-purple-80  !global;
+  $deep-purple-container: $deep-purple-30  !global;
+  $on-deep-purple: $deep-purple-20  !global;
+  $on-deep-purple-container: $deep-purple-90  !global;
+
+  $indigo: $indigo-80  !global;
+  $indigo-container: $indigo-30  !global;
+  $on-indigo: $indigo-20  !global;
+  $on-indigo-container: $indigo-90  !global;
+
+  $blue: $blue-80  !global;
+  $blue-container: $blue-30  !global;
+  $on-blue: $blue-20  !global;
+  $on-blue-container: $blue-90  !global;
+
+  $light-blue: $light-blue-80  !global;
+  $light-blue-container: $light-blue-30  !global;
+  $on-light-blue: $light-blue-20  !global;
+  $on-light-blue-container: $light-blue-90  !global;
+
+  $cyan: $cyan-80  !global;
+  $cyan-container: $cyan-30  !global;
+  $on-cyan: $cyan-20  !global;
+  $on-cyan-container: $cyan-90  !global;
+
+  $teal: $teal-80  !global;
+  $teal-container: $teal-30  !global;
+  $on-teal: $teal-20  !global;
+  $on-teal-container: $teal-90  !global;
+
+  $green: $green-80  !global;
+  $green-container: $green-30  !global;
+  $on-green: $green-20  !global;
+  $on-green-container: $green-90  !global;
+
+  $light-green: $light-green-80  !global;
+  $light-green-container: $light-green-30  !global;
+  $on-light-green: $light-green-20  !global;
+  $on-light-green-container: $light-green-90  !global;
+
+  $yellow: $yellow-80  !global;
+  $yellow-container: $yellow-30  !global;
+  $on-yellow: $yellow-20  !global;
+  $on-yellow-container: $yellow-90  !global;
+
+  $amber: $amber-80  !global;
+  $amber-container: $amber-30  !global;
+  $on-amber: $amber-20  !global;
+  $on-amber-container: $amber-90  !global;
+
+  $orange: $orange-80  !global;
+  $orange-container: $orange-30  !global;
+  $on-orange: $orange-20  !global;
+  $on-orange-container: $orange-90  !global;
+
+  $deep-orange: $deep-orange-80  !global;
+  $deep-orange-container: $deep-orange-30  !global;
+  $on-deep-orange: $deep-orange-20  !global;
+  $on-deep-orange-container: $deep-orange-90  !global;
+
+  $brown: $brown-80  !global;
+  $brown-container: $brown-30  !global;
+  $on-brown: $brown-20  !global;
+  $on-brown-container: $brown-90  !global;
+
+  $gray: $gray-80  !global;
+  $gray-container: $gray-30  !global;
+  $on-gray: $gray-20  !global;
+  $on-gray-container: $gray-90  !global;
+
+  $blue-gray: $blue-gray-80  !global;
+  $blue-gray-container: $blue-gray-30  !global;
+  $on-blue-gray: $blue-gray-20  !global;
+  $on-blue-gray-container: $blue-gray-90  !global;
+
+  $off-surface: $neutral-20  !global;
+
+  $code-bg: $neutral-30  !global;
+  $skeleton-color: $surface-variant  !global;
+
+  .light-only {
+    display: none;
+  }
+
+  .dark-only {
+    display: unset;
+  }
+}

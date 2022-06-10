@@ -4,7 +4,7 @@
   top: 0;
   height: 380px;
   width: 100%;
-  background: $home-lead-bg;
+  background: $primary-30;
   z-index: -1;
 }
 
@@ -14,25 +14,26 @@
 }
 
 .home-lead {
-  color: $home-lead-fg;
+  color: $primary-90;
   margin-bottom: 20px;
 
   .btn,
   .btn:active {
-    border-radius: 2px;
+    border-radius: 4px;
     background-color: $content-bg;
-    border-color: $home-lead-bg;
-    color: $home-lead-bg;
-  }
-
-  .btn:active {
-    background-color: $btn-active-background;
+    color: $primary;
   }
 
   .lead {
     margin-top: 25px;
     margin-bottom: 30px;
     font-size: 24px;
+  }
+}
+
+.home-card .info-step img {
+  @if $theme =="dark" {
+    filter: invert(1);
   }
 }
 
@@ -108,16 +109,12 @@
   display: block;
 }
 
-.home-summary-card .course-link:hover {
-  color: $course-link-hover-color;
-}
-
 .home-summary-card .stats h1 {
   margin-top: -10px;
 }
 
 .home-summary-card.getting-started {
-  background-color: $getting-started-bg;
+  background-color: $tertiary;
 }
 
 .home-summary-card.getting-started .card-media {
@@ -125,7 +122,7 @@
 }
 
 .home-summary-card.getting-started .card-title {
-  color: $getting-started-fg;
+  color: $on-tertiary;
   padding-top: 10px;
   padding-bottom: 10px;
 }

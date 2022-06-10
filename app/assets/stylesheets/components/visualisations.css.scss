@@ -8,16 +8,16 @@
 }
 
 .metric-container {
-  stroke: $hairlinegray;
+  stroke: $divider;
 }
 
 .day-cell {
   &.empty {
-    fill: $heatmap-empty-fg;
+    fill: $off-surface;
   }
 
   &:hover {
-    stroke: $heatmap-hover-fg;
+    stroke: $primary;
     stroke-width: 2;
   }
 }

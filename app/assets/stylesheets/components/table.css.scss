@@ -1,6 +1,6 @@
 .table-scroll-wrapper {
   overflow-x: auto;
-  background-image: linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $hairlinegray, rgba(255, 255, 255, 0)), linear-gradient(to left, $hairlinegray, rgba(255, 255, 255, 0));
+  background-image: linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $content-bg, $content-bg), linear-gradient(to right, $divider, rgba(255, 255, 255, 0)), linear-gradient(to left, $divider, rgba(255, 255, 255, 0));
   background-position: left center, right center, left center, right center;
   background-repeat: no-repeat;
   background-color: $content-bg;
@@ -116,7 +116,7 @@ tr.gu-mirror {
 .table {
   .placeholder-text {
     text-align: center;
-    color: $text-secondary;
+    color: $on-surface-muted;
   }
 }
 
@@ -127,12 +127,12 @@ tr.gu-mirror {
 #scoresheet-table-wrapper .summary-row td {
   height: 35px;
   font-size: 12px;
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 #scoresheet-table-wrapper .summary-col {
   font-size: 12px;
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .table-resource .btn-icon {

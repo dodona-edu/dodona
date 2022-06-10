@@ -7,7 +7,7 @@
 }
 
 .badge-pending {
-  background-color: $pending-color;
+  background-color: $danger;
 }
 
 .card.course {
@@ -75,7 +75,7 @@
   }
 
   .nav>li.header {
-    color: $text-secondary;
+    color: $on-surface-muted;
   }
 
   .nav>li>a {
@@ -83,19 +83,22 @@
     padding: 6px 6px;
     font-size: 13px;
     font-weight: 500;
-    color: $text-disabled;
+    color: $on-surface-muted;
+    opacity: 75%;
   }
 
   .nav>li>a.active,
   .nav>li>a.active:hover {
-    border-left: 2px solid $primary-800;
+    border-left: 2px solid $secondary;
     padding-left: 4px;
-    color: $text-secondary;
+    color: $on-surface-muted;
+    opacity: 100%;
   }
 
   .nav>li>a:hover {
-    border-left: 1px solid $primary-800;
+    border-left: 1px solid $secondary;
     padding-left: 5px;
-    color: $text-secondary;
+    color: $on-surface-muted;
+    opacity: 100%;
   }
 }

@@ -3,7 +3,7 @@ $navbar-height: 50px;
 
 .dodona-navbar {
   @include shadow-z3;
-  background: $header-bg;
+  background: $primary;
   height: $navbar-height;
   display: flex;
   position: fixed;
@@ -15,11 +15,11 @@ $navbar-height: 50px;
   max-width: 100vw;
 
   ul {
-    margin-bottom: 9.5px;
+    margin-bottom: 9px;
   }
 
   a {
-    color: $header-fg;
+    color: $on-primary;
     text-decoration: none;
   }
 
@@ -96,7 +96,7 @@ $navbar-height: 50px;
       border: none;
       outline: none;
       background: none;
-      color: $header-fg;
+      color: $on-primary;
     }
 
     .brand {
@@ -165,7 +165,7 @@ $navbar-height: 50px;
 
           &.active {
             padding-bottom: 8px;
-            border-bottom: solid #fff 3px;
+            border-bottom: solid $on-primary 3px;
           }
         }
       }
@@ -212,10 +212,10 @@ $navbar-height: 50px;
 
         a {
           padding-left: 0px;
-          color: $text-color;
+          color: $on-surface;
 
           &.btn-icon {
-            color: $text-secondary;
+            color: $on-surface-muted;
           }
         }
 
@@ -251,7 +251,7 @@ $navbar-height: 50px;
         }
 
         a {
-          color: $text-color;
+          color: $on-surface;
         }
       }
 
@@ -274,7 +274,7 @@ $navbar-height: 50px;
 
           li,
           a {
-            color: $text-color;
+            color: $on-surface;
           }
 
           position: relative;
@@ -282,10 +282,10 @@ $navbar-height: 50px;
           float: none;
           margin-top: 0;
           margin-left: 20px;
-          background-color: $content-bg;
+          background-color: $background;
           border: 0;
           box-shadow: none;
-          color: $text-color;
+          color: $on-surface;
           width: 100%;
         }
       }
@@ -302,7 +302,7 @@ $navbar-height: 50px;
     right: 10px;
     border: none;
     background: none;
-    color: $header-fg;
+    color: $on-primary;
 
     i {
       line-height: $navbar-height;
@@ -327,7 +327,7 @@ $navbar-height: 50px;
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: $header-bg;
+      background-color: $primary;
 
       li {
         display: block;
@@ -398,7 +398,7 @@ $navbar-height: 50px;
   .crumb,
   .crumb a,
   .crumb-separator {
-    color: $header-fg;
+    color: $on-primary;
   }
 
   .crumb a:hover {
@@ -407,7 +407,7 @@ $navbar-height: 50px;
 
   .crumb:last-child:not(:first-child),
   .crumb:last-child:not(:first-child) a {
-    color: $header-fg-secondary;
+    opacity: 75%;
     pointer-events: none;
     cursor: default;
   }
@@ -424,7 +424,7 @@ a.notification:before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  background-color: $pending-color;
+  background-color: $danger;
   position: relative;
   margin-left: -15px;
   left: 30px;

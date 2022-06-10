@@ -152,6 +152,9 @@ $off-surface: $neutral-95;
 $code-bg: $neutral-95;
 $skeleton-color: $surface-variant;
 
+$head: $primary;
+$on-head: $on-primary;
+
 // this should be fixed using css and not in scss
 .dark-only {
   display: none;

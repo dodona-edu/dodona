@@ -51,8 +51,8 @@ $card-supporting-text-padding: 16px;
 }
 
 .card-title.card-title-colored {
-  color: $primary-100;
-  background-color: $primary-40;
+  color: $on-head;
+  background-color: $head;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 }
@@ -180,12 +180,12 @@ a.card-title-link:hover {
 
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
-  color: $primary-100;
+  color: $on-head;
 }
 
 .card-title-image {
   background: rgba(0, 0, 0, 0.5);
-  color: $primary-100;
+  color: $on-head;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   height: 61px;
   margin-top: -61px;
@@ -309,7 +309,7 @@ a.card-title-link:hover {
 .card-title-colored .nav-tabs li a,
 .card-title-colored .nav-tabs li a:hover,
 .card-title-colored .nav-tabs li a:focus {
-  color: $primary-100;
+  color: $on-head;
 }
 
 .card-tab .nav-tabs li a {

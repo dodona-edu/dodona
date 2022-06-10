@@ -3,7 +3,7 @@ $navbar-height: 50px;
 
 .dodona-navbar {
   @include shadow-z3;
-  background: $primary-40;
+  background: $head;
   height: $navbar-height;
   display: flex;
   position: fixed;
@@ -19,7 +19,7 @@ $navbar-height: 50px;
   }
 
   a {
-    color: $primary-100;
+    color: $on-head;
     text-decoration: none;
   }
 
@@ -96,7 +96,7 @@ $navbar-height: 50px;
       border: none;
       outline: none;
       background: none;
-      color: $primary-100;
+      color: $on-head;
     }
 
     .brand {
@@ -165,7 +165,7 @@ $navbar-height: 50px;
 
           &.active {
             padding-bottom: 8px;
-            border-bottom: solid $primary-100 3px;
+            border-bottom: solid $on-head 3px;
           }
         }
       }
@@ -302,7 +302,7 @@ $navbar-height: 50px;
     right: 10px;
     border: none;
     background: none;
-    color: $primary-100;
+    color: $on-head;
 
     i {
       line-height: $navbar-height;
@@ -327,7 +327,7 @@ $navbar-height: 50px;
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: $primary-40;
+      background-color: $head;
 
       li {
         display: block;
@@ -398,7 +398,7 @@ $navbar-height: 50px;
   .crumb,
   .crumb a,
   .crumb-separator {
-    color: $primary-100;
+    color: $on-head;
   }
 
   .crumb a:hover {

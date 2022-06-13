@@ -21,7 +21,7 @@
             </select>
           </div>
           <% if @series.activities.any? %>
-            <%= link_to scoresheet_series_path(@series, format: :csv), class: "btn btn-primary btn-text" do %>
+            <%= link_to scoresheet_series_path(@series, format: :csv), class: "btn btn-outline with-icon" do %>
               <i class="mdi mdi-cloud-download"></i>
               <%=  t('.download') %>
             <% end %>
@@ -45,5 +45,5 @@
   </div>
 </div>
 <script>
-  $(window.dodona.initScoresheetLinks)
+  dodona.ready.then(window.dodona.initScoresheetLinks)
 </script>

@@ -1,5 +1,5 @@
 .sign-in-wrapper a {
-  border-radius: 2px;
+  border-radius: 4px;
   display: block;
 }
 
@@ -9,6 +9,7 @@
   .card {
     flex-grow: 1;
   }
+
   .login-button {
     border-bottom-left-radius: 0;
     border-top-left-radius: 0;
@@ -28,6 +29,7 @@
 .sign-in-dialog-wrapper h2 {
   line-height: 1;
   margin-top: 15px;
+
   small {
     font-size: 50%;
   }
@@ -44,7 +46,7 @@
 }
 
 a.institution-sign-in {
-  color: $text-color;
+  color: $on-surface;
 }
 
 a.institution-sign-in:link,
@@ -66,7 +68,9 @@ input:focus {
   .card {
     margin-bottom: 0;
   }
+
   margin-bottom: 16px;
+
   .tt-menu {
     max-height: 150px;
     overflow-y: auto;
@@ -78,11 +82,12 @@ input:focus {
     background-color: lightskyblue;
   }
 
-  .tt-input, .tt-hint {
+  .tt-input,
+  .tt-hint {
     border: none;
     font-size: 18px;
     min-height: 42px;
-    color: $text-color;
+    color: $on-surface;
     border-radius: 6px 0 0 6px !important;
 
   }

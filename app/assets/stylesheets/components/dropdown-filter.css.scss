@@ -1,19 +1,17 @@
-
 .dropdown-filter {
   margin: 8px;
+  margin-right: 0;
   display: inline-block;
 
-  .dropdown-toggle{
+  .dropdown-toggle {
     display: inline-flex;
-    padding-top: 0;
     padding-left: 16px;
     padding-right: 16px;
     font-size: 14px;
-    line-height: 36px;
-    height: 36px;
     white-space: nowrap;
     box-shadow: none;
-    .mdi::before{
+
+    .mdi::before {
       line-height: 36px;
     }
 
@@ -28,7 +26,7 @@
     }
   }
 
-  .form-check-label{
+  .form-check-label {
     width: 100%;
   }
 }

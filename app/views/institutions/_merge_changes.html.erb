@@ -21,6 +21,6 @@
 </div>
 <div class="stepper-actions stepper-border">
   <%= form_with url: merge_institution_url(institution, other_institution_id: other.id) do |f| %>
-    <%= f.submit t('.confirm'), class: "btn btn-text btn-primary" %>
+    <%= f.submit t('.confirm'), class: "btn btn-filled" %>
   <% end %>
 </div>

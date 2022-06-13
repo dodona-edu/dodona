@@ -101,7 +101,7 @@ class PythiaRenderer < FeedbackTableRenderer
     # Initialize tutor javascript
     @builder.script do
       escaped = escape_javascript(@code.strip)
-      @builder << '$(function() {'
+      @builder << 'dodona.ready.then(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"
       @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
@@ -115,11 +115,11 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.div(class: 'modal-header') do
               @builder.h4(class: 'modal-title') {}
               @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
-                  @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
+                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
+                  @builder.i('', class: 'mdi mdi-fullscreen')
                 end
-                @builder.button(type: 'button', class: 'btn btn-link btn-sm', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close mdi-18')
+                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
+                  @builder.i('', class: 'mdi mdi-close')
                 end
               end
             end

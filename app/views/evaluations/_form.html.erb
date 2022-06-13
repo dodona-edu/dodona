@@ -11,7 +11,7 @@
           <%= t(".deadline-help_html") %>
           <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true data-max-date="<%= Time.current.httpdate %>">
             <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-            <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
+            <button class="btn btn-icon" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
           </div>
         </div>
       </div>
@@ -32,7 +32,7 @@
   <% end %>
 <% end %>
 <script>
-  $(function() {
+  dodona.ready.then(function() {
     dodona.initDeadlinePicker("#deadline-group");
   });
 </script>

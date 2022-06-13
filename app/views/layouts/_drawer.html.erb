@@ -50,7 +50,7 @@
               <%= activatable_link_to users_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.users') do %>
-                <i class="mdi mdi-account-multiple mdi-24"></i>
+                <i class="mdi mdi-account-multiple"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.users") %>
                 </div>
@@ -62,7 +62,7 @@
               <%= activatable_link_to courses_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.courses') do %>
-                <i class="mdi mdi-book-multiple mdi-24"></i>
+                <i class="mdi mdi-book-multiple"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.courses") %>
                 </div>
@@ -74,7 +74,7 @@
               <%= activatable_link_to questions_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.questions') do %>
-                <i class="mdi mdi-account-question mdi-24"></i>
+                <i class="mdi mdi-account-question"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.questions") %>
                 </div>
@@ -86,7 +86,7 @@
               <%= activatable_link_to judges_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.judges') do %>
-                <i class="mdi mdi-gavel mdi-24"></i>
+                <i class="mdi mdi-gavel"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.judges") %>
                 </div>
@@ -98,7 +98,7 @@
               <%= activatable_link_to repositories_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.repositories') do %>
-                <i class="mdi mdi-server mdi-24"></i>
+                <i class="mdi mdi-server"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.repositories") %>
                 </div>
@@ -110,7 +110,7 @@
               <%= activatable_link_to labels_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.labels') do %>
-                <i class="mdi mdi-palette-swatch mdi-24"></i>
+                <i class="mdi mdi-palette-swatch"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t('layout.menu.labels') %>
                 </div>
@@ -122,7 +122,7 @@
               <%= activatable_link_to programming_languages_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.programming_languages') do %>
-                <i class='mdi mdi-code-tags mdi-24'></i>
+                <i class='mdi mdi-code-tags'></i>
                 <div class="drawer-list-ellipsis">
                   <%= t("layout.menu.programming_languages") %>
                 </div>
@@ -133,7 +133,7 @@
               <%= activatable_link_to institutions_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.institutions') do %>
-                <i class="mdi mdi-library mdi-24"></i>
+                <i class="mdi mdi-library"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t('layout.menu.institutions') %>
                 </div>
@@ -145,7 +145,7 @@
               <%= activatable_link_to events_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.events') do %>
-                <i class="mdi mdi-calendar mdi-24"></i>
+                <i class="mdi mdi-calendar"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t('layout.menu.events') %>
                 </div>
@@ -157,7 +157,7 @@
               <%= activatable_link_to rights_requests_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.rights_requests') do %>
-                <i class="mdi mdi-account-plus mdi-24"></i>
+                <i class="mdi mdi-account-plus"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t('layout.menu.rights_requests') %>
                 </div>
@@ -169,7 +169,7 @@
               <%= activatable_link_to announcements_path,
                                       class: 'drawer-list-item',
                                       title: t('layout.menu.announcements') do %>
-                <i class="mdi mdi-bullhorn mdi-24"></i>
+                <i class="mdi mdi-bullhorn"></i>
                 <div class="drawer-list-ellipsis">
                   <%= t('layout.menu.announcements') %>
                 </div>
@@ -181,7 +181,7 @@
               <%= activatable_link_to "/dj/overview",
                                       class: 'drawer-list-item',
                                       title: 'Job queue' do %>
-                <i class="mdi mdi-plus-box-multiple mdi-24"></i>
+                <i class="mdi mdi-plus-box-multiple"></i>
                 <div class="drawer-list-ellipsis">
                   Job queue
                 </div>
@@ -196,7 +196,7 @@
         <li><%= activatable_link_to user_path(current_user),
                                     class: 'drawer-list-item',
                                     title: t('layout.menu.profile') do %>
-            <i class="mdi mdi-account-circle mdi-24"></i>
+            <i class="mdi mdi-account-circle"></i>
             <div class="drawer-list-ellipsis">
               <%= t("layout.menu.profile") %>
             </div>
@@ -206,7 +206,7 @@
           <%= link_to "https://docs.dodona.be/#{I18n.locale}/news/",
                                     class: 'drawer-list-item',
                                     title: t('layout.menu.news') do %>
-            <i class="mdi mdi-alert-decagram mdi-24"></i>
+            <i class="mdi mdi-alert-decagram"></i>
             <div class="drawer-list-ellipsis">
               <%= t('layout.menu.news') %>
             </div>
@@ -216,7 +216,7 @@
           <%= link_to "https://docs.dodona.be/#{I18n.locale}",
                                     class: 'drawer-list-item',
                                     title: t('layout.menu.manual') do %>
-            <i class="mdi mdi-help-circle mdi-24"></i>
+            <i class="mdi mdi-help-circle"></i>
             <div class="drawer-list-ellipsis">
               <%= t('layout.menu.manual') %>
             </div>
@@ -226,7 +226,7 @@
           <%= link_to sign_out_path, method: :delete,
                                     class: 'drawer-list-item',
                                     title: t('layout.menu.log_out') do %>
-            <i class="mdi mdi-power mdi-24"></i>
+            <i class="mdi mdi-power"></i>
             <div class="drawer-list-ellipsis">
               <%= t('layout.menu.log_out') %>
             </div>

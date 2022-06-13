@@ -1,24 +1,23 @@
-
 .violin-label {
-    font-size: 11px;
+  font-size: 11px;
 }
 
 .violin-invisibar {
-    visibility: hidden;
-    fill: none
+  visibility: hidden;
+  fill: none
 }
 
 .metric-container {
-    stroke: $hairlinegray;
+  stroke: $divider;
 }
 
 .day-cell {
   &.empty {
-    fill: $heatmap-empty-fg;
+    fill: $off-surface;
   }
 
   &:hover {
-    stroke: $heatmap-hover-fg;
+    stroke: $primary;
     stroke-width: 2;
   }
 }
@@ -60,7 +59,7 @@
     .legend-text {
       margin-left: 4px;
     }
-  } 
+  }
 }
 
 .daterange-picker {

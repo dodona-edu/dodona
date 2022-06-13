@@ -19,7 +19,16 @@ type SearchAction = {
 const isSearchOption = (opt): opt is SearchOption => (opt as SearchOption).search !== undefined;
 const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !== undefined || (act as SearchAction).action !== undefined || (act as SearchAction).url !== undefined;
 
-@customElement("dodona-search-option")
+/**
+ * This component represents a SearchOption using a checkbox to be used in a dropdown list
+ * The checkbox tracks whether the searchoption is curently active
+ *
+ * @element d-search-option
+ *
+ * @prop {SearchOption} searchOption - the search option which can be activated or disabled
+ * @prop {number} key - unique identifier used to differentiate from other search options
+ */
+@customElement("d-search-option")
 export class SearchOptionElement extends ShadowlessLitElement {
     @property({ type: Object })
     searchOption: SearchOption;
@@ -76,7 +85,14 @@ export class SearchOptionElement extends ShadowlessLitElement {
     }
 }
 
-@customElement("dodona-search-actions")
+/**
+ * This component represents a dropdown containing a combination of SearchOptions and SearchActions
+ *
+ * @element d-search-actions
+ *
+ * @prop {(SearchOption|SearchAction)[]} actions - the array of SearchOptions/Actions to be displayed in the dropdown
+ */
+@customElement("d-search-actions")
 export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
     actions: (SearchOption|SearchAction)[] = [];
@@ -121,7 +137,7 @@ export class SearchActions extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <div class="btn-group actions" id="kebab-menu">
+            <div class="dropdown actions" id="kebab-menu">
                 <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
                     <i class="mdi mdi-dots-vertical"></i>
                 </a>
@@ -130,8 +146,8 @@ export class SearchActions extends ShadowlessLitElement {
                         <li><h6 class='dropdown-header'>${I18n.t("js.options")}</h6></li>
                     ` : html``}
                     ${this.getSearchOptions().map((opt, id) => html`
-                        <dodona-search-option .searchOption=${opt} .key=${id}>
-                        </dodona-search-option>
+                        <d-search-option .searchOption=${opt} .key=${id}>
+                        </d-search-option>
                     `)}
 
                     ${this.getSearchActions().length > 0 ? html`
@@ -154,5 +170,3 @@ export class SearchActions extends ShadowlessLitElement {
         `;
     }
 }
-
-

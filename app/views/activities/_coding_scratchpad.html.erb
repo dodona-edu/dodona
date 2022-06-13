@@ -2,7 +2,7 @@
 <% content_for :javascripts do %>
     <%= javascript_include_tag 'coding_scratchpad' %>
 <% end %>
-<button class="btn btn-secondary hidden" type="button" data-bs-toggle="offcanvas"
+<button class="btn btn-outline hidden" type="button" data-bs-toggle="offcanvas"
 data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
     <%= t '.start_coding' %>
 </button>
@@ -29,7 +29,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
     </div>
 </div>
 <script type="text/javascript">
-    $(function () {
+  dodona.ready.then(function () {
         dodona.initCodingScratchpad(
             "<%= escape_javascript @activity.programming_language&.name %>"
         );

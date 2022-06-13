@@ -1,4 +1,5 @@
-$drawer-width: 256px;
+$drawer-width: 360px;
+$drawer-border: $divider;
 
 aside.drawer {
   position: fixed;
@@ -15,7 +16,7 @@ aside.drawer {
     z-index: -1;
     opacity: 0;
     transition: opacity .3s;
-    background: $drawer-bg;
+    background: $surface;
     position: fixed;
     top: 0;
     left: 0;
@@ -43,7 +44,7 @@ aside.drawer {
     overflow-y: auto;
     overflow-x: hidden;
 
-    background: $content-bg;
+    background: $surface;
     @include shadow-z5;
     transition: .3s;
   }
@@ -84,7 +85,7 @@ h1.drawer-group-title {
   font-size: 14px;
   font-weight: 400;
   margin-left: 16px;
-  color: $text-secondary;
+  color: $on-surface-variant;
 }
 
 ul.drawer-list {
@@ -96,7 +97,7 @@ ul.drawer-list {
   padding: 0;
   line-height: 1.5rem;
   list-style-type: none;
-  color: $text-secondary;
+  color: $on-surface-variant;
 
   li a {
     display: flex;
@@ -104,24 +105,33 @@ ul.drawer-list {
     justify-content: flex-start;
     text-transform: inherit;
     position: relative;
-    padding: 0 16px;
+    padding-left: 16px;
+    padding-right: 24px;
+    margin-left: 12px;
+    margin-right: 4px;
     outline: none;
-    color: $text-color;
+    color: $on-surface;
     text-decoration: none;
-    height: 42px;
+    height: 56px;
+    border-radius: 28px;
 
     &.active {
       font-weight: 400;
-      background: $drawer-active;
+      background: $secondary-container;
+      color: $on-secondary-container;
     }
 
-    &:hover, &:focus {
-      background: $drawer-hover;
+    &:hover,
+    &:focus {
+      background: $secondary-container;
+      color: $on-secondary-container;
+      opacity: 75%;
     }
 
-    span, i {
+    span,
+    i {
       font-size: 18px;
-      margin-right: 24px;
+      margin-right: 12px;
     }
 
   }

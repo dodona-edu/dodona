@@ -60,7 +60,7 @@
             <span class="mb-2"><%= t ".providers_message"%></span>
             <% @identities.each do |identity| %>
               <div class="col-md-6 col-xl-4 sign-in-method-container">
-                <div class="sign-in-method">
+                <div class="card card-outlined sign-in-method">
                   <div class="sign-in-method-img">
                     <%= image_tag institution_logo(identity.provider.logo), class: "img-fluid" %>
                   </div>

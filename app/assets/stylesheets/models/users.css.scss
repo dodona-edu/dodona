@@ -36,16 +36,13 @@
   .sign-in-method-container{
     padding-left: 12px;
     padding-right: 12px;
-    
+
     .sign-in-method {
       height: 90px;
-      display: flex;
       align-items: center;
-      margin-bottom: 15px;
+      flex-direction: row;
+      margin-bottom: 0;
       padding: 12px;
-      background-color: $content-bg;
-      border-radius: 2px;
-      @include shadow-z2;
 
       .sign-in-method-img {
         margin-right: 12px;
@@ -58,12 +55,8 @@
         }
       }
 
-      .sign-in-method-title {
-        flex-grow: 1;
-
-        h3 {
+      .sign-in-method-title h3 {
           line-height: 1;
-        }
       }
     }
   }

@@ -1,0 +1,34 @@
+.announcement {
+  .mdi::before {
+    position: unset;
+    top: 0;
+    margin-right: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .flex-placement-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .status-col {
+    border-left-width: 6px;
+    border-bottom-color: $divider  !important;
+    width: 0
+  }
+
+  .markdown-col {
+    max-width: 25vw;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .btn-icon {
+    margin-top: -6px;
+    margin-bottom: -6px;
+  }
+}

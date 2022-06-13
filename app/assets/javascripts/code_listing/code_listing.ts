@@ -287,7 +287,7 @@ export class CodeListing {
         const codeLines = this.table.querySelectorAll(".lineno");
         codeLines.forEach((codeLine: HTMLTableRowElement) => {
             const annotationButton = document.createElement("button") as HTMLButtonElement;
-            annotationButton.classList.add("btn", "btn-primary", "annotation-button");
+            annotationButton.classList.add("btn", "btn-icon", "btn-icon-filled", "bg-primary", "annotation-button");
             annotationButton.addEventListener("click", () => this.handleAnnotateLine(codeLine));
             annotationButton.title = title;
 
@@ -393,14 +393,14 @@ export class CodeListing {
             `}
             <span class="annotation-submission-button-container">
               ${annotation && annotation.removable ? `
-                    <button class="btn-text annotation-control-button annotation-delete-button" type="button">
+                    <button class="btn btn-text annotation-control-button annotation-delete-button" type="button">
                       ${I18n.t("js.user_annotation.delete")}
                     </button>
                   ` : ""}
-              <button class="btn-text annotation-control-button annotation-cancel-button" type="button">
+              <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
                 ${I18n.t("js.user_annotation.cancel")}
               </button>
-              <button class="btn btn-text btn-primary annotation-control-button annotation-submission-button" type="button">
+              <button class="btn btn-filled annotation-control-button annotation-submission-button" type="button">
                   ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
               </button>
             </span>

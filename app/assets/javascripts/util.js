@@ -1,4 +1,6 @@
 import { isInIframe } from "iframe";
+import { Dutch } from "flatpickr/dist/l10n/nl";
+import flatpickr from "flatpickr";
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.
@@ -84,13 +86,12 @@ function checkIframe() {
 }
 
 // add CSRF token to each ajax-request
-function initCSRF() {
-    $(() => {
-        $.ajaxSetup({
-            "headers": {
-                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
-            },
-        });
+async function initCSRF() {
+    await ready;
+    $.ajaxSetup({
+        "headers": {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+        },
     });
 }
 
@@ -143,6 +144,36 @@ function setDocumentTitle(title) {
     document.title = title;
 }
 
+/**
+ * Initiates a datepicker using flatpicker
+ * @param {string} selector - The selector of div containing the input field and buttons
+ * @param {object} options - optional, Options object as should be provided to the flatpicker creation method
+ * @return {flatpickr} the created flatpicker
+ */
+function initDatePicker(selector, options = {}) {
+    function init() {
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        return flatpickr(selector, options);
+    }
+
+    return init();
+}
+
+/**
+ * This promise will resolve when the dom content is fully loaded
+ * This could mean immediately if the dom is already loaded
+ */
+const ready = new Promise(resolve => {
+    if (document.readyState !== "loading") {
+        resolve();
+    } else {
+        document.addEventListener("DOMContentLoaded", () => resolve());
+    }
+});
+
+
 export {
     createDelayer,
     delay,
@@ -158,5 +189,7 @@ export {
     initTooltips,
     makeInvisible,
     makeVisible,
-    setDocumentTitle
+    setDocumentTitle,
+    initDatePicker,
+    ready
 };

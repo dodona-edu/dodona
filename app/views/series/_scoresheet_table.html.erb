@@ -2,15 +2,35 @@
   <table class="table">
     <thead>
     <tr>
-      <th class="user-name"><%= t('series.scoresheet.user') %></th>
+      <th class="user-name"><d-sort-button  column="status_in_course_and_name" default="ASC"> <%= t('series.scoresheet.user') %></d-sort-button></th>
+      <th class="status-header ellipsis-overflow"><d-sort-button  column="submission_statuses_in_series"> <%= t('series.scoresheet.total') %></d-sort-button></th>
       <% activities.each do |activity| %>
-        <th class="status-header ellipsis-overflow" title="<%= activity.name %>"><%= activity.name %></th>
+        <th class="status-header ellipsis-overflow" title="<%= activity.name %>">
+          <d-sort-button  column="<%= activity.id %>"><%= activity.name %></d-sort-button>
+        </th>
       <% end %>
     </tr>
     </thead>
     <tbody>
     <tr class="summary-row">
       <td class="user-name ellipsis-overflow"><%= t('series.scoresheet.users', count: users.length) %></td>
+      <td class="status">
+        <% i = 0 %>
+        <% statuses.each do |status| %>
+          <% count = total[status] %>
+          <% if count > 0 %>
+            <% if i > 0 %>
+              &middot;
+            <% end %>
+            <% i += 1 %>
+            <span data-bs-toggle="tooltip" title="<%= count %> <%= Submission.human_enum_name(:status, status) %>">
+                  <%= count %>
+              <%= status_icon(status, 12) %>
+                </span>
+          <% else %>
+          <% end %>
+        <% end %>
+      </td>
       <% activities.each do |activity| %>
         <% if activity.exercise? %>
           <td class="status">
@@ -46,6 +66,23 @@
     <% users.each do |student| %>
       <tr>
         <td class="user-name ellipsis-overflow"><%= link_to student.full_name, course_member_path(course, student), title: student.full_name, class: "ellipsis-overflow" %></td>
+        <td class="status summary-col">
+          <% i = 0 %>
+          <% statuses.each do |status| %>
+            <% count = summary_by_user[[student.id, status]] %>
+            <% if count > 0 %>
+              <% if i > 0 %>
+                &middot;
+              <% end %>
+              <% i += 1 %>
+              <span data-bs-toggle="tooltip" title="<%= count %> <%= Submission.human_enum_name(:status, status) %>">
+                  <%= count %>
+                <%= status_icon(status, 12) %>
+                </span>
+            <% else %>
+            <% end %>
+          <% end %>
+        </td>
         <% activities.each do |activity| %>
           <% if activity.exercise? %>
             <% submission = submissions[[student.id, activity.id]] %>

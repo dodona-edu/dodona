@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.11.1', require: false
+gem 'bootsnap', '~> 1.12.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.28.0'
+gem 'rouge', '3.29.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -130,7 +130,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.1'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.20.0'
+gem 'faker', '~> 2.21.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -138,13 +138,10 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-gem 'ddtrace', '~> 1.0.0'
+gem 'ddtrace', '~> 1.1.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.0'
-
-# Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
-gem 'io-wait', '~> 0.2.0'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -160,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.37.1'
-  gem 'selenium-webdriver', '~> 4.1.0'
+  gem 'selenium-webdriver', '~> 4.2.1'
 end
 
 group :test do

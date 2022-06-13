@@ -51,9 +51,9 @@
     </div>
     <div class="modal-footer">
       <% if score_item&.new_record? %>
-        <%= f.submit t("score_items.form.add"), class: "btn btn-primary btn-text" %>
+        <%= f.submit t("score_items.form.add"), class: "btn btn-filled" %>
       <% else %>
-        <%= f.submit t("score_items.form.save"), class: "btn btn-primary btn-text" %>
+        <%= f.submit t("score_items.form.save"), class: "btn btn-filled" %>
       <% end %>
     </div>
   <% end %>

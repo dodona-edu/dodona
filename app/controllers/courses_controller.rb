@@ -16,6 +16,27 @@ class CoursesController < ApplicationController
     scope.by_course_labels(value, controller.params[:id])
   end
 
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction)
+      if column == 'status_in_course_and_name'
+        scope.order_by_status_in_course_and_name direction
+      else
+        course = Course.find(controller.params[:id])
+        if column == 'solved_exercises_in_course'
+          scope.order_by_solved_exercises_in_course(direction, course)
+        elsif course.series.exists? id: column
+          series = course.series.find(column)
+          scope.order_by_solved_exercises_in_series(direction, series)
+        else
+          scope
+        end
+      end
+    else
+      scope
+    end
+  end
+
   # GET /courses
   # GET /courses.json
   def index
@@ -201,7 +222,26 @@ class CoursesController < ApplicationController
       scores = @course.scoresheet
       @users = apply_scopes(scores[:users])
       @series = scores[:series]
+
+      # this maps a [user_id, series_id] tuple to an object containing the number of accepted and started exercises
       @hash = scores[:hash]
+
+      @histogram = {}
+      @total_activity_count = @series.sum(&:activity_count)
+      @total_by_user = Hash.new(0)
+      @series.each do |s|
+        @histogram[s.id] = Array.new(s.activity_count + 1, 0)
+        @users.each do |u|
+          value = @hash[[u.id, s.id]]
+          @histogram[s.id][value[:accepted]] += 1 if value
+          @total_by_user[u.id] += value[:accepted] if value
+        end
+      end
+
+      @total_histogram = Array.new(@total_activity_count + 1, 0)
+      @users.each do |u|
+        @total_histogram[@total_by_user[u.id]] += 1
+      end
     end
 
     respond_to do |format|

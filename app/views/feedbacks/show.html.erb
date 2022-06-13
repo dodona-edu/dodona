@@ -84,7 +84,7 @@
 </div>
 <% if @feedback.submission.present? %>
   <script>
-      $(function () {
+      dodona.ready.then(function () {
         window.MathJax.startup.promise.then(() => {
           window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>);
         });

@@ -1,0 +1,28 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(Announcement).new? %>
+          <div class="card-title-fab">
+            <%= render 'fab_link', url: new_announcement_path, icon: 'plus' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <% if @waiting_announcements.present? %>
+          <h2><%= t ".waiting" %></h2>
+          <%= render 'announcement_table', announcements: @waiting_announcements %>
+        <% end %>
+        <% if @active_announcements.present? %>
+          <h2><%= t ".active" %></h2>
+          <%= render 'announcement_table', announcements: @active_announcements %>
+        <% end %>
+        <% if @stopped_announcements.present? %>
+          <h2><%= t ".stopped" %></h2>
+          <%= render 'announcement_table', announcements: @stopped_announcements %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

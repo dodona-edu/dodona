@@ -4,8 +4,10 @@ th.status-icon {
 
 .notification {
   &.unread {
-    .notification-icon, .read-indicator {
-      color: $info-500;
+
+    .notification-icon,
+    .read-indicator {
+      color: $info;
     }
   }
 }

@@ -62,10 +62,10 @@
       <% if policy(@course_membership).update? or policy(@user).impersonate? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn btn-text" %>
           <% end %>
           <% if policy(@course_membership).update? %>
-            <button class="btn-text" data-bs-toggle="modal" data-bs-target="#labelsEditModal">
+            <button class="btn btn-text" data-bs-toggle="modal" data-bs-target="#labelsEditModal">
               <%= t ".edit_labels" %>
             </button>
             <% content_for :modal do %>
@@ -80,8 +80,8 @@
                       <%= render 'form', course: @course, user: @user, course_membership: @course_membership %>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn-text" data-bs-dismiss="modal"><%= t(".close") %></button>
-                      <button type="submit" class="btn-text btn-primary" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
+                      <button type="button" class="btn btn-text" data-bs-dismiss="modal"><%= t(".close") %></button>
+                      <button type="submit" class="btn btn-filled" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
                     </div>
                   </div>
                 </div>
@@ -115,5 +115,5 @@
 </div>
 
 <script type="text/javascript">
-    $(dodona.initCourseShow);
+    dodona.ready.then(dodona.initCourseShow);
 </script>

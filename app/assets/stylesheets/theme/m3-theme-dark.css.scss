@@ -1,6 +1,7 @@
 // This file contains all "design tokens" according to material 3 in light mode.
 // At the bottom of this file, there are a number of dodona-specific variables
 
+@use "sass:color";
 @import "theme/m3-theme.css.scss";
 
 @mixin theme-dark {
@@ -20,12 +21,12 @@
   $on-tertiary: $tertiary-20  !global;
   $on-tertiary-container: $tertiary-90  !global;
 
-  $surface: $neutral-20  !global;
+  $surface: color.mix($neutral-10, $primary, $weight: 95%)  !global;
   $surface-variant: $neutral-variant-30  !global;
-  $background: $neutral-25  !global;
-  $on-surface: $neutral-90  !global;
+  $background: $neutral-10  !global;
+  $on-surface: color.mix($neutral-90, $primary, $weight: 95%)  !global;
   $on-surface-variant: $neutral-variant-80  !global;
-  $on-surface-muted: $neutral-80  !global;
+  $on-surface-muted: color.mix($neutral-80, $primary, $weight: 95%)  !global;
   $on-background: $neutral-90  !global;
 
   $outline: $neutral-variant-60  !global;
@@ -148,8 +149,11 @@
 
   $off-surface: $neutral-20  !global;
 
-  $code-bg: $neutral-30  !global;
+  $code-bg: $neutral-20  !global;
   $skeleton-color: $surface-variant  !global;
+
+  $footer: $surface  !global;
+  $on-footer: $on-surface  !global;
 
   .light-only {
     display: none;

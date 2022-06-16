@@ -12,6 +12,8 @@ import { ref, Ref, createRef } from "lit/directives/ref.js";
  * @prop {[{label: string, value: string}]} options - The label is used to match the user input, while the value is sent to the server.
  *          If the user input does not match any label, the value sent to the server wil be ""
  * @prop {String} value - the initial value for this field
+ *
+ * @fires input - on value change, event details contain {label: string, value: string}
  */
 @customElement("d-datalist-input")
 export class DatalistInput extends ShadowlessLitElement {
@@ -30,14 +32,21 @@ export class DatalistInput extends ShadowlessLitElement {
         return option?.label;
     }
 
-    processInput(): void {
+    processInput(e): void {
         const option = this.options.find(option => option.label === this.inputRef.value.value);
         this.hiddenInputRef.value.value = option ? option.value : "";
+        const event = new CustomEvent("input", {
+            detail: { value: this.hiddenInputRef.value.value, label: this.inputRef.value.value },
+            bubbles: true,
+            composed: true }
+        );
+        this.dispatchEvent(event);
+        e.stopPropagation();
     }
 
     render(): TemplateResult {
         return html`
-            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${() => this.processInput()}  value="${this.label}">
+            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}">
             <datalist id="${this.name}-datalist-hidden">
                 ${this.options.map(option => html`<option value="${option.label}">${option.label}</option>`)}
             </datalist>

@@ -8,6 +8,8 @@ export interface UserAnnotationFormData {
     line_nr: number | null;
     // eslint-disable-next-line camelcase
     evaluation_id: number | undefined;
+    // eslint-disable-next-line camelcase
+    saved_annotation_id?: string;
 }
 
 export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;

@@ -7,6 +7,7 @@ import {
     UserAnnotationFormData
 } from "code_listing/user_annotation";
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
+import "components/saved_annotation_input";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -384,12 +385,14 @@ export class CodeListing {
           </div>
           <div class="annotation-controls-block">
             ${this.questionMode ? "" : `
-              <input type="hidden" class="saved-annotation-id" value="${annotation?.savedAnnotationId || ""}"/>
-              <span class="dropdown">
-                <input class="dropdown-toggle form-control annotation-search-saved" placeholder="${I18n.t("js.user_annotation.use_saved")}">
-                <ul class="dropdown-menu">
-                </ul>
-              </span>
+              <d-saved-annotation-input
+                name="saved_annotation_id"
+                course-id="${this.courseId}"
+                exercise-id="${this.exerciseId}"
+                user-id="${this.userId}"
+                class="saved-annotation-input"
+                value="${annotation?.savedAnnotationId || ""}"
+              ></d-saved-annotation-input>
             `}
             <span class="annotation-submission-button-container">
               ${annotation && annotation.removable ? `
@@ -411,12 +414,14 @@ export class CodeListing {
         const deleteButton = form.querySelector<HTMLButtonElement>(annotationFormDelete);
         const sendButton = form.querySelector<HTMLButtonElement>(annotationFormSubmit);
         const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-        const saveSearchField = form.querySelector<HTMLInputElement>(".annotation-search-saved");
-        const searchDropdown = new bootstrap.Dropdown(form.querySelector<HTMLButtonElement>(".dropdown-toggle"));
-        const searchResults = form.querySelector<HTMLUListElement>(".dropdown-menu");
-        const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
+        const savedAnnotationInput = form.querySelector<HTMLInputElement>(".saved-annotation-input");
 
-        this.setupSaveAutocomplete(saveSearchField, inputField, savedAnnotationField, searchDropdown, searchResults);
+        savedAnnotationInput.addEventListener("input", (e: CustomEvent) => {
+            console.log(e.detail);
+            if (e.detail.text) {
+                inputField.value = e.detail.text;
+            }
+        });
 
         if (annotation !== null) {
             inputField.rows = annotation.rawText.split("\n").length + 1;
@@ -473,35 +478,9 @@ export class CodeListing {
         return form;
     }
 
-    private setupSaveAutocomplete(input: HTMLInputElement, textField: HTMLTextAreaElement, savedAnnotationField: HTMLInputElement, dropdown: bootstrap.Dropdown, resultsContainer: HTMLUListElement): void {
-        input.addEventListener("input", async () => {
-            fetch(`/saved_annotations.json?course_id=${this.courseId}&exercise_id=${this.exerciseId}&user_id=${this.userId}&filter=${input.value}`)
-                .then(response => response.json())
-                .then(results => {
-                    resultsContainer.innerHTML = "";
-                    results.forEach(savedAnnotation => {
-                        const element = document.createElement<HTMLLIElement>("li");
-                        const innerElement = document.createElement<HTMLAnchorElement>("a");
-                        innerElement.classList.add("dropdown-item");
-                        innerElement.innerText = savedAnnotation.title;
-                        innerElement.addEventListener("click", () => {
-                            input.value = savedAnnotation.title;
-                            textField.value = savedAnnotation.annotation_text;
-                            savedAnnotationField.value = savedAnnotation.id;
-                            dropdown.hide();
-                        });
-                        element.appendChild(innerElement);
-                        resultsContainer.appendChild(element);
-                    });
-                    dropdown.show();
-                });
-        });
-    }
-
     private createNewAnnotationForm(line: number | null): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-            const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
             inputField.classList.remove("validation-error");
 
             // Run client side validations.
@@ -513,7 +492,7 @@ export class CodeListing {
                 "annotation_text": inputField.value,
                 "line_nr": (line === null ? null : line - 1),
                 "evaluation_id": this.evaluationId || undefined,
-                "saved_annotation_id": savedAnnotationField.value || undefined,
+                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined,
             };
 
             try {
@@ -535,7 +514,6 @@ export class CodeListing {
         callback: CallableFunction): HTMLFormElement {
         const onSubmit = async (form: HTMLFormElement): Promise<void> => {
             const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-            const savedAnnotationField = form.querySelector<HTMLInputElement>(".saved-annotation-id");
 
             // Run client side validations.
             if (!inputField.reportValidity()) {
@@ -544,7 +522,7 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "saved_annotation_id": savedAnnotationField.value || undefined,
+                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined,
             };
 
             try {

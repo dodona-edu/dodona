@@ -217,3 +217,5 @@ en:
         save: "Save"
         title: "Save comment for re-use"
         errors: "%{count} errors prevented saving"
+      list:
+        title: Saved comments

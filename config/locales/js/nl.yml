@@ -217,4 +217,6 @@ nl:
         save: "Opslaan"
         title: "Opmerking opslaan om later te hergebruiken"
         errors: "%{count} errors verhinderen het opslaan"
+      list:
+        title: Opgeslagen opmerkingen
 

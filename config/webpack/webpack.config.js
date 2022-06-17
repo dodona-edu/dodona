@@ -14,6 +14,7 @@ const config = {
     },
     optimization: {
         moduleIds: "deterministic",
+        runtimeChunk: "single",
         splitChunks: {
             cacheGroups: {
                 commons: {

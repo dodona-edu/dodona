@@ -279,12 +279,12 @@
 
 .single-zero-button:hover:not(:focus),
 #zero-button:hover:not(:focus) {
-  color: $brand-danger;
+  color: $danger;
 }
 
 .single-max-button:hover:not(:focus),
 #max-button:hover:not(:focus) {
-  color: $brand-success;
+  color: $success;
 }
 
 .single-zero-button:active,

@@ -2,6 +2,8 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import "components/datalist_input";
+import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
+import { stateMixin } from "state/StateMixin";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -18,7 +20,7 @@ import "components/datalist_input";
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
 @customElement("d-saved-annotation-input")
-export class SavedAnnotationInput extends ShadowlessLitElement {
+export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     @property({ type: String })
     name = "";
     @property({ type: Number, attribute: "course-id" })
@@ -30,22 +32,18 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     @property({ type: String })
     value: string;
 
-    @property({ state: true })
-    savedAnnotations: {title: string, id: string, annotation_text: string}[] = [];
+    state = ["getSavedAnnotations"];
+
+    get savedAnnotations(): SavedAnnotation[] {
+        return getSavedAnnotations({
+            "course_id": this.courseId.toString(),
+            "exercise_id": this.exerciseId.toString(),
+            "user_id": this.userId.toString()
+        });
+    }
 
     get options(): {label: string, value: string}[] {
         return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString() }));
-    }
-
-    connectedCallback(): void {
-        super.connectedCallback();
-        this.fetchAnnotations();
-    }
-
-    async fetchAnnotations(): Promise<void> {
-        const url = `/saved_annotations.json?course_id=${this.courseId}&exercise_id=${this.exerciseId}&user_id=${this.userId}`;
-        const response = await fetch(url);
-        this.savedAnnotations = await response.json();
     }
 
     processInput(e: CustomEvent): void {

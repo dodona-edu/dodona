@@ -1,3 +1,5 @@
+import { NewSavedAnnotation } from "components/saved_annotations/new_saved_annotation";
+
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 export type QuestionState = "unanswered" | "answered" | "in_progress";
 
@@ -10,6 +12,7 @@ export abstract class Annotation {
     public readonly line: number | null;
     public readonly text: string;
     public readonly type: AnnotationType;
+    public readonly id: number;
 
     protected constructor(line: number | null, text: string, type: AnnotationType) {
         this.__html = null;
@@ -31,10 +34,6 @@ export abstract class Annotation {
     }
 
     protected edit(): void {
-        // Do nothing.
-    }
-
-    protected save(): void {
         // Do nothing.
     }
 
@@ -96,14 +95,9 @@ export abstract class Annotation {
 
             header.appendChild(editLink);
 
-            const saveLink = document.createElement("a");
-            saveLink.addEventListener("click", () => this.save());
-            saveLink.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            saveLink.title = this.saveTitle;
-
-            const saveIcon = document.createElement("i");
-            saveIcon.classList.add("mdi", "mdi-content-save");
-            saveLink.appendChild(saveIcon);
+            const saveLink = new NewSavedAnnotation();
+            saveLink.fromAnnotationId = this.id;
+            saveLink.annotationText = this.rawText;
 
             header.appendChild(saveLink);
         }
@@ -212,10 +206,6 @@ export abstract class Annotation {
     protected abstract get title(): string;
 
     protected get editTitle(): string {
-        return "";
-    }
-
-    protected get saveTitle(): string {
         return "";
     }
 

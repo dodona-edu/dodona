@@ -207,3 +207,14 @@ nl:
         description_languages: Taal
         courses: Cursus
         question_states: Toestand
+    saved_annotation:
+      title: Titel
+      annotation_text: Tekst
+      form:
+        markdown_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
+      new:
+        button_title: 'Opmerking opslaan'
+        save: "Opslaan"
+        title: "Opmerking opslaan om later te hergebruiken"
+        errors: "%{count} errors verhinderen het opslaan"
+

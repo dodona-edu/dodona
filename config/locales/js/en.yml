@@ -207,3 +207,13 @@ en:
         description_languages: Language
         courses: Course
         question_states: Status
+    saved_annotation:
+      title: Title
+      annotation_text: Text
+      form:
+        markdown_html: '<a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
+      new:
+        button_title: 'Save comment'
+        save: "Save"
+        title: "Save comment for re-use"
+        errors: "%{count} errors prevented saving"

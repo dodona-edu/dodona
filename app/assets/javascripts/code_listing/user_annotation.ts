@@ -90,16 +90,6 @@ export class UserAnnotation extends Annotation {
         this.__html.querySelector(".annotation-text").replaceWith(editor);
     }
 
-    protected save(): void {
-        const modal = new bootstrap.Modal(document.getElementById("save-annotation"));
-        const fromField = document.getElementById("saved_annotation_from");
-        const textField = document.getElementById("saved_annotation_annotation_text");
-
-        fromField.value = this.id;
-        textField.value = this.__rawText;
-        modal.show();
-    }
-
     protected get meta(): string {
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
         const user = this.user.name;
@@ -155,9 +145,5 @@ export class UserAnnotation extends Annotation {
 
     protected get editTitle(): string {
         return I18n.t("js.user_annotation.edit");
-    }
-
-    protected get saveTitle(): string {
-        return I18n.t("js.user_annotation.save");
     }
 }

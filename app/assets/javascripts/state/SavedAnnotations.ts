@@ -32,23 +32,31 @@ export async function fetchSavedAnnotation(id: number): Promise<SavedAnnotation>
     return savedAnnotationsById.get(id);
 }
 
-export async function createSavedAnnotation(form: FormData): Promise<number> {
+export async function createSavedAnnotation(data: { from: number, saved_annotation: SavedAnnotation} ): Promise<number> {
     const url = `${URL}.json`;
     const response = await fetch(url, {
         method: "post",
-        body: form,
+        body: JSON.stringify(data),
+        headers: {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+            "Content-type": "application/json"
+        },
     });
+    if (response.status === 422) {
+        const errors = await response.json();
+        throw errors;
+    }
     const savedAnnotation: SavedAnnotation = await response.json();
     events.publish("fetchSavedAnnotations");
     events.publish(`fetchSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
     return savedAnnotation.id;
 }
 
-export async function updateSavedAnnotation(number, id: number, form: FormData): Promise<void> {
+export async function updateSavedAnnotation(number, id: number, data: {saved_annotation: SavedAnnotation}): Promise<void> {
     const url = `${URL}/${id}`;
     await fetch(url, {
         method: "put",
-        body: form,
+        body: JSON.stringify(data),
     });
     events.publish("fetchSavedAnnotations");
     events.publish(`fetchSavedAnnotation${id}`, id);

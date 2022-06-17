@@ -7,7 +7,7 @@ import {
     UserAnnotationFormData
 } from "code_listing/user_annotation";
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
-import "components/saved_annotation_input";
+import "components/saved_annotations/saved_annotation_input";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";

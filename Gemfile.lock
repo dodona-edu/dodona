@@ -236,7 +236,7 @@ GEM
       bindata
     json-schema (3.0.0)
       addressable (>= 2.8)
-    jwt (2.3.0)
+    jwt (2.4.1)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -549,7 +549,7 @@ DEPENDENCIES
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.0.2)
   json-schema (~> 3.0.0)
-  jwt (~> 2.3.0)
+  jwt (~> 2.4.1)
   kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.8.1)

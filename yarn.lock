@@ -1818,10 +1818,10 @@
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.1.tgz#d8f1c0d0dc23afad6dc16a9e993a0865774b4065"
   integrity sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g==
 
-"@types/serviceworker@^0.0.46":
-  version "0.0.46"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.46.tgz#34bf76bd4d1b34280d6f59440fb37b3e5f45e890"
-  integrity sha512-ulfbE0b3ahy5WVVV4+U/8Jw+dFRbJW66hmq/1ls82zKjXsENb6k3lRvFB1yURYGBIlBjbviqCSMqaAxRd/nW+w==
+"@types/serviceworker@^0.0.47":
+  version "0.0.47"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.47.tgz#cb746abb9c77adc9d4bb595341cd3d67aaa9fdd2"
+  integrity sha512-0vfhBQPWdM3J+tkiPsKVpp5JcamlQmv3KUrj4iRjsO6ZpmCGYx3xZ8reb9bPniFrpRgptGMEOTN361XLwjehlw==
 
 "@types/sizzle@*":
   version "2.3.3"

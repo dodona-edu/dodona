@@ -4,6 +4,7 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
+import "./delete_saved_annotation";
 
 @customElement("d-saved-annotation-list")
 export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
@@ -37,9 +38,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                                 <td>${sa.title}</td>
                                 <td class="actions">
                                     <d-edit-saved-annotation .savedAnnotation=${sa}></d-edit-saved-annotation>
-                                    <a class="btn btn-icon btn-icon-filled bg-danger">
-                                        <i class="mdi mdi-delete"></i>
-                                    </a>
+                                    <d-delete-saved-annotation .savedAnnotationId=${sa.id}></d-delete-saved-annotation>
                                 </td>
                             </tr>
                         `)}

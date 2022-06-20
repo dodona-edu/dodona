@@ -74,6 +74,10 @@ export async function deleteSavedAnnotation(id: number): Promise<void> {
     const url = `${URL}/${id}`;
     await fetch(url, {
         method: "delete",
+        headers: {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+            "Content-type": "application/json"
+        },
     });
     events.publish("fetchSavedAnnotations");
     events.publish(`fetchSavedAnnotation${id}`, id);

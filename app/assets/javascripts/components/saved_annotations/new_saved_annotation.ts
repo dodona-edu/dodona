@@ -5,6 +5,15 @@ import { createSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 
+/**
+ * This component represents an creation button for a saved annotation
+ * It also contains the creation form within a modal, which will be shown upon clicking the button
+ *
+ * @element d-new-saved-annotation
+ *
+ * @prop {Number} fromAnnotationId - the id of the annotation which will be saved
+ * @prop {String} annotationText - the original text of the annotation which wil be saved
+ */
 @customElement("d-new-saved-annotation")
 export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "from-annotation-id" })
@@ -44,7 +53,7 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
         `, html`
             ${this.errors !== undefined ? html`
                 <div class="callout callout-danger">
-                    <h4>${I18n.t("js.saved_annotation.new.errors", {count: this.errors.length})}</h4>
+                    <h4>${I18n.t("js.saved_annotation.new.errors", { count: this.errors.length })}</h4>
                     <ul>
                         ${this.errors.map(error => html`
                             <li>${error}</li>`)}

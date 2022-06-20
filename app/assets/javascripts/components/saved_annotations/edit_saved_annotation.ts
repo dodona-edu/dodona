@@ -5,6 +5,14 @@ import { SavedAnnotation, updateSavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 
+/**
+ * This component represents an edit button for a saved annotation
+ * It also contains the edit form within a modal, which will be shown upon clicking the button
+ *
+ * @element d-edit-saved-annotation
+ *
+ * @prop {SavedAnnotation} savedAnnotation - the saved annotation to be edited
+ */
 @customElement("d-edit-saved-annotation")
 export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     @property({ type: Object })
@@ -31,7 +39,7 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
         `, html`
             ${this.errors !== undefined ? html`
                 <div class="callout callout-danger">
-                    <h4>${I18n.t("js.saved_annotation.edit.errors", {count: this.errors.length})}</h4>
+                    <h4>${I18n.t("js.saved_annotation.edit.errors", { count: this.errors.length })}</h4>
                     <ul>
                         ${this.errors.map(error => html`
                             <li>${error}</li>`)}

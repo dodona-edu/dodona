@@ -6,6 +6,15 @@ import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
 import "./delete_saved_annotation";
 
+/**
+ * This component represents a list of saved annotations
+ *
+ * @element d-saved-annotation-list
+ *
+ * @prop {Number} courseId - used to fetch saved annotations by course
+ * @prop {Number} exerciseId - used to fetch saved annotations by exercise
+ * @prop {Number} userId - used to fetch saved annotations by user
+ */
 @customElement("d-saved-annotation-list")
 export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "course-id" })

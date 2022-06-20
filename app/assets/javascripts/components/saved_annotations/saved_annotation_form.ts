@@ -4,6 +4,15 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { SavedAnnotation } from "state/SavedAnnotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
+/**
+ * This component represents a form for creating or editing saved annotations
+ *
+ * @element d-saved-annotation-form
+ *
+ * @prop {SavedAnnotation} savedAnnotation - the saved annotation to be edited in this form
+ *
+ * @fires change - on user changes in the form, event.detail has the new state of the SavedAnnotation
+ */
 @customElement("d-saved-annotation-form")
 export class SavedAnnotationForm extends ShadowlessLitElement {
     @property({ type: Object })

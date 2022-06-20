@@ -1,4 +1,4 @@
-import { initTooltips, fetch } from "util.js";
+import { initTooltips } from "util.js";
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { MachineAnnotation, MachineAnnotationData } from "code_listing/machine_annotation";
 import {
@@ -417,7 +417,6 @@ export class CodeListing {
         const savedAnnotationInput = form.querySelector<HTMLInputElement>(".saved-annotation-input");
 
         savedAnnotationInput.addEventListener("input", (e: CustomEvent) => {
-            console.log(e.detail);
             if (e.detail.text) {
                 inputField.value = e.detail.text;
             }

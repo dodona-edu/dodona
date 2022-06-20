@@ -2,7 +2,8 @@
  * heavily based on https://github.com/hankchizljaw/vanilla-js-state-management/blob/master/src/js/lib/pubsub.js
  * Copyright (c) 2018 Andy Bell
  *
- *
+ * This class is a generic implementation of the publisher subscriber scheme.
+ * It allows subscribing to and publishing string based events.
   */
 export class PubSub {
     events: Map<string, Array<(...params: Array<any>) => any>>;
@@ -50,4 +51,7 @@ export class PubSub {
     }
 }
 
+/**
+ * A static instance of PubSub to be used as the general subscription/publishing system throughout the application
+ */
 export const events = new PubSub();

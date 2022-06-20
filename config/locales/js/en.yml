@@ -222,5 +222,8 @@ en:
         save: "Save"
         title: "Edit saved comment"
         errors: "%{count} errors prevented saving"
+      delete:
+        button_title: 'Delete saved comment'
+        confirm: 'Are you sure you want to delete this saved comment?'
       list:
         title: Saved comments

@@ -217,5 +217,10 @@ en:
         save: "Save"
         title: "Save comment for re-use"
         errors: "%{count} errors prevented saving"
+      edit:
+        button_title: 'Edit saved comment'
+        save: "Save"
+        title: "Edit saved comment"
+        errors: "%{count} errors prevented saving"
       list:
         title: Saved comments

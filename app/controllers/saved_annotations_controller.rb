@@ -33,7 +33,7 @@ class SavedAnnotationsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @saved_annotation.update(args)
+      if @saved_annotation.update(permitted_attributes(SavedAnnotation))
         format.json { render :show, status: :ok, location: @saved_annotation }
       else
         format.json { render json: @saved_annotation.errors, status: :unprocessable_entity }

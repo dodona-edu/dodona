@@ -52,12 +52,20 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
     return savedAnnotation.id;
 }
 
-export async function updateSavedAnnotation(number, id: number, data: {saved_annotation: SavedAnnotation}): Promise<void> {
+export async function updateSavedAnnotation(id: number, data: {saved_annotation: SavedAnnotation}): Promise<void> {
     const url = `${URL}/${id}`;
-    await fetch(url, {
+    const response = await fetch(url, {
         method: "put",
         body: JSON.stringify(data),
+        headers: {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+            "Content-type": "application/json"
+        },
     });
+    if (response.status === 422) {
+        const errors = await response.json();
+        throw errors;
+    }
     events.publish("fetchSavedAnnotations");
     events.publish(`fetchSavedAnnotation${id}`, id);
 }

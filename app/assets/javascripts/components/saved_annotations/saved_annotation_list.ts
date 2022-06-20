@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
+import "./edit_saved_annotation";
 
 @customElement("d-saved-annotation-list")
 export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
@@ -24,7 +25,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return html`
+        return this.savedAnnotations.length > 0 ? html`
             <div class="card-supporting-text card-border">
                 <h4 class="ellipsis-overflow" title=">${I18n.t("js.saved_annotation.list.title")}">
                     ${I18n.t("js.saved_annotation.list.title")}
@@ -35,9 +36,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                             <tr>
                                 <td>${sa.title}</td>
                                 <td class="actions">
-                                    <a class="btn btn-icon">
-                                        <i class="mdi mdi-pencil"></i>
-                                    </a>
+                                    <d-edit-saved-annotation .savedAnnotation=${sa}></d-edit-saved-annotation>
                                     <a class="btn btn-icon btn-icon-filled bg-danger">
                                         <i class="mdi mdi-delete"></i>
                                     </a>
@@ -47,6 +46,6 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                     </tbody>
                 </table>
             </div>
-        `;
+        ` : html``;
     }
 }

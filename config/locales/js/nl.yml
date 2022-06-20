@@ -217,6 +217,11 @@ nl:
         save: "Opslaan"
         title: "Opmerking opslaan om later te hergebruiken"
         errors: "%{count} errors verhinderen het opslaan"
+      edit:
+        button_title: 'Bewerk opgeslagen opmerking'
+        save: "Opslaan"
+        title: "Bewerk opgeslagen opmerking"
+        errors: "%{count} errors verhinderen het opslaan"
       list:
         title: Opgeslagen opmerkingen
 

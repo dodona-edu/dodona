@@ -15,7 +15,7 @@ const URL = "/saved_annotations";
 
 let fetchParams: Record<string, string>;
 let savedAnnotations: SavedAnnotation[];
-let savedAnnotationsById: Map<number, SavedAnnotation>;
+const savedAnnotationsById = new Map<number, SavedAnnotation>();
 
 function getHeaders(): Record<string, string> {
     return ({

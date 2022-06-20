@@ -13,9 +13,10 @@
 #
 FactoryBot.define do
   factory :saved_annotation do
-    annotation_text { 'MyText' }
+    title { 'Foo' }
+    annotation_text { 'Bar' }
     user { nil }
-    exercise { nil }
-    course { nil }
+    exercise
+    course
   end
 end

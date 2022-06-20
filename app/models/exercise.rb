@@ -45,7 +45,7 @@ class Exercise < Activity
 
   def solutions
     (full_path + SOLUTION_DIR)
-      .yield_self { |path| path.directory? ? path.children : [] }
+      .then { |path| path.directory? ? path.children : [] }
       .filter { |path| path.file? && path.readable? }
       .to_h { |path| [path.basename.to_s, path.read(SOLUTION_MAX_BYTES)&.force_encoding('UTF-8')&.scrub || ''] }
   end

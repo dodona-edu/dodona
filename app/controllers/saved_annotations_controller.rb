@@ -14,7 +14,6 @@ class SavedAnnotationsController < ApplicationController
   def show; end
 
   def create
-    Rails.logger.info params
     annotation = Annotation.find(params[:from])
     authorize annotation, :show?
     @saved_annotation = SavedAnnotation.new(permitted_attributes(SavedAnnotation).merge({ user: current_user, course: annotation.course, exercise: annotation.submission.exercise }))
@@ -23,10 +22,8 @@ class SavedAnnotationsController < ApplicationController
       if @saved_annotation.save
         annotation.update(saved_annotation: @saved_annotation)
         format.json { render :show, status: :created, location: @saved_annotation }
-        format.js { render :show, status: :created }
       else
         format.json { render json: @saved_annotation.errors.full_messages, status: :unprocessable_entity }
-        format.js { render :new, status: :unprocessable_entity }
       end
     end
   end
@@ -36,7 +33,7 @@ class SavedAnnotationsController < ApplicationController
       if @saved_annotation.update(permitted_attributes(SavedAnnotation))
         format.json { render :show, status: :ok, location: @saved_annotation }
       else
-        format.json { render json: @saved_annotation.errors, status: :unprocessable_entity }
+        format.json { render json: @saved_annotation.errors.full_messages, status: :unprocessable_entity }
       end
     end
   end

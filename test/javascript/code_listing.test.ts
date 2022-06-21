@@ -45,7 +45,7 @@ beforeEach(() => {
         </table>
     </div>
 </div>`;
-    codeListing = new CodeListing(54, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+    codeListing = new CodeListing(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
 });
 
 test("create feedback table with default settings", () => {

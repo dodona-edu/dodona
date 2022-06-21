@@ -5,9 +5,9 @@ export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
     annotation_text: string;
     // eslint-disable-next-line camelcase
-    line_nr: number | null;
+    line_nr?: number | null;
     // eslint-disable-next-line camelcase
-    evaluation_id: number | undefined;
+    evaluation_id?: number | undefined;
     // eslint-disable-next-line camelcase
     saved_annotation_id?: string;
 }

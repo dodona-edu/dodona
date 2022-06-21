@@ -521,7 +521,7 @@ export class CodeListing {
 
             const annotationData: UserAnnotationFormData = {
                 "annotation_text": inputField.value,
-                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined,
+                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined
             };
 
             try {

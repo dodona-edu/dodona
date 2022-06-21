@@ -4,7 +4,8 @@ module.exports = {
     globals: {
         "ts-jest": {
             tsconfig: {
-                allowJs: true,
+                "allowJs": true,
+                "target": "es6",
             },
         },
     },

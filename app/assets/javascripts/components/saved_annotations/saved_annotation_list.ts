@@ -28,18 +28,14 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
 
     get savedAnnotations(): SavedAnnotation[] {
         return getSavedAnnotations({
-            "course_id": this.courseId.toString(),
-            "exercise_id": this.exerciseId.toString(),
-            "user_id": this.userId.toString()
+            "course_id": this.courseId?.toString(),
+            "exercise_id": this.exerciseId?.toString(),
+            "user_id": this.userId?.toString()
         });
     }
 
     render(): TemplateResult {
         return this.savedAnnotations.length > 0 ? html`
-            <div class="card-supporting-text card-border">
-                <h4 class="ellipsis-overflow" title=">${I18n.t("js.saved_annotation.list.title")}">
-                    ${I18n.t("js.saved_annotation.list.title")}
-                </h4>
                 <table class="table table-index table-resource">
                     <tbody>
                         ${this.savedAnnotations.map(sa => html`
@@ -53,7 +49,6 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                         `)}
                     </tbody>
                 </table>
-            </div>
         ` : html``;
     }
 }

@@ -32,6 +32,7 @@ import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
+import "components/saved_annotations/saved_annotation_list";
 
 // Initialize clipboard.js
 initClipboard();

@@ -251,6 +251,20 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
   end
+
+  test 'annotation can be created from saved annotation' do
+    sa = create :saved_annotation, user: @zeus, course: @submission.course, exercise: @submission.exercise
+
+    post submission_annotations_url(@submission), params: {
+      format: :json,
+      annotation: {
+        annotation_text: sa.annotation_text,
+        line_nr: 0,
+        saved_annotation_id: sa.id
+      }
+    }
+    assert_response :success
+  end
 end
 
 # Separate class, since this needs separate setup

@@ -416,7 +416,7 @@ export class CodeListing {
         const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
         const savedAnnotationInput = form.querySelector<HTMLInputElement>(".saved-annotation-input");
 
-        savedAnnotationInput.addEventListener("input", (e: CustomEvent) => {
+        savedAnnotationInput?.addEventListener("input", (e: CustomEvent) => {
             if (e.detail.text) {
                 inputField.value = e.detail.text;
             }

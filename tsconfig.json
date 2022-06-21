@@ -11,7 +11,7 @@
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "es5",
+    "target": "es6",
     "downlevelIteration": true,
     "baseUrl": "app",
     "paths": {

@@ -154,7 +154,7 @@ module CRUDHelper
 end
 
 module CRUDTest
-  def crud_helpers(model, attrs: [], format: 'text/html')
+  def crud_helpers(model, attrs: [], format: :html)
     include(CRUDHelper)
 
     @model = model

@@ -173,6 +173,7 @@
         <% end %>
         dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
         dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        dodona.searchQuery.autoSearch = <%= local_assigns.fetch :autoSearch, true %>;
 
         const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {

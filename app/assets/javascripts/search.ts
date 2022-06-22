@@ -47,6 +47,7 @@ export class QueryParameters<T> {
 
 export class SearchQuery {
     updateAddressBar= true;
+    autoSearch= true;
     baseUrl: string;
     refreshElement: string;
     periodicReload: InactiveTimeout;
@@ -167,7 +168,9 @@ export class SearchQuery {
                 return;
             }
             this.updateHistory(this.changedParams.some(k => k === "page"));
-            this.search();
+            if (this.autoSearch) {
+                this.search();
+            }
             this.changedParams = [];
         }, 100);
     }

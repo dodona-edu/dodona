@@ -5,6 +5,7 @@ import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
 import "./delete_saved_annotation";
+import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
 
 /**
  * This component represents a list of saved annotations
@@ -23,15 +24,31 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     exerciseId: number;
     @property({ type: Number, attribute: "user-id" })
     userId: number;
+    @property({ type: Boolean, attribute: "use-query-params" })
+    useQueryParams: boolean;
 
-    state = ["getSavedAnnotations"];
+    state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams"];
+
+    get queryParams(): Map<string, string> {
+        const params: Map<string, string> = this.useQueryParams ? getQueryParams() : new Map<string, string>();
+        if (this.courseId) {
+            params.set("course_id", this.courseId.toString());
+        }
+        if (this.exerciseId) {
+            params.set("exercise_id", this.exerciseId.toString());
+        }
+        if (this.userId) {
+            params.set("user_id", this.userId.toString());
+        }
+        return params;
+    }
+
+    get arrayQueryParams(): Map<string, string[]> {
+        return this.useQueryParams ? getArrayQueryParams() : new Map<string, string[]>();
+    }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return getSavedAnnotations({
-            "course_id": this.courseId?.toString(),
-            "exercise_id": this.exerciseId?.toString(),
-            "user_id": this.userId?.toString()
-        });
+        return getSavedAnnotations(this.queryParams, this.arrayQueryParams);
     }
 
     render(): TemplateResult {

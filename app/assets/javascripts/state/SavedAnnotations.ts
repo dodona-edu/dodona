@@ -1,5 +1,5 @@
 import { events } from "state/PubSub";
-import { updateURLParameter } from "util.js";
+import { updateArrayURLParameter, updateURLParameter } from "util.js";
 
 /**
  * This file contains all state management functions for saved annotations
@@ -13,8 +13,7 @@ import { updateURLParameter } from "util.js";
 export type SavedAnnotation = {title: string, id: number, annotation_text: string};
 const URL = "/saved_annotations";
 
-let fetchParams: Record<string, string>;
-let savedAnnotations: SavedAnnotation[];
+const savedAnnotationsByURL = new Map<string, SavedAnnotation[]>();
 const savedAnnotationsById = new Map<number, SavedAnnotation>();
 
 function getHeaders(): Record<string, string> {
@@ -24,21 +23,19 @@ function getHeaders(): Record<string, string> {
     });
 }
 
-export async function fetchSavedAnnotations(params?: Record<string, string>): Promise<Array<SavedAnnotation>> {
-    if (params !== undefined) {
-        fetchParams = params;
-    }
-    let url = `${URL}.json`;
-    for (const param in fetchParams) {
-        // eslint-disable-next-line no-prototype-builtins
-        if (fetchParams.hasOwnProperty(param)) {
-            url = updateURLParameter(url, param, fetchParams[param]);
-        }
-    }
+function addParametersToUrl(url: string, params?: Map<string, string>, arrayParams?: Map<string, string[]>): string {
+    let result = url;
+    params?.forEach((v, k) => result = updateURLParameter(result, k, v));
+    arrayParams?.forEach((v, k) => result = updateArrayURLParameter(result, k, v));
+    return result;
+}
+
+export async function fetchSavedAnnotations(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Promise<Array<SavedAnnotation>> {
+    const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
     const response = await fetch(url);
-    savedAnnotations = await response.json();
+    savedAnnotationsByURL.set(url, await response.json());
     events.publish("getSavedAnnotations");
-    return savedAnnotations;
+    return savedAnnotationsByURL.get(url);
 }
 
 export async function fetchSavedAnnotation(id: number): Promise<SavedAnnotation> {
@@ -61,8 +58,10 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
         throw errors;
     }
     const savedAnnotation: SavedAnnotation = await response.json();
-    events.publish("fetchSavedAnnotations");
-    events.publish(`fetchSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
+    savedAnnotationsByURL.clear();
+    savedAnnotationsById.set(savedAnnotation.id, savedAnnotation);
+    events.publish("getSavedAnnotations");
+    events.publish(`getSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
     return savedAnnotation.id;
 }
 
@@ -77,8 +76,11 @@ export async function updateSavedAnnotation(id: number, data: {saved_annotation:
         const errors = await response.json();
         throw errors;
     }
-    events.publish("fetchSavedAnnotations");
-    events.publish(`fetchSavedAnnotation${id}`, id);
+    const savedAnnotation: SavedAnnotation = await response.json();
+    savedAnnotationsByURL.clear();
+    savedAnnotationsById.set(savedAnnotation.id, savedAnnotation);
+    events.publish("getSavedAnnotations");
+    events.publish(`getSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
 }
 
 export async function deleteSavedAnnotation(id: number): Promise<void> {
@@ -87,16 +89,18 @@ export async function deleteSavedAnnotation(id: number): Promise<void> {
         method: "delete",
         headers: getHeaders(),
     });
-    events.publish("fetchSavedAnnotations");
-    events.publish(`fetchSavedAnnotation${id}`, id);
+    savedAnnotationsByURL.clear();
+    savedAnnotationsById.delete(id);
+    events.publish("getSavedAnnotations");
+    events.publish(`getSavedAnnotation${id}`, id);
 }
 
-export function getSavedAnnotations(params?: Record<string, string>): Array<SavedAnnotation> {
-    if (savedAnnotations === undefined) {
-        events.subscribe("fetchSavedAnnotations", fetchSavedAnnotations);
+export function getSavedAnnotations(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
+    const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
+    if (!savedAnnotationsByURL.has(url)) {
         fetchSavedAnnotations(params);
     }
-    return savedAnnotations || [];
+    return savedAnnotationsByURL.get(url) || [];
 }
 
 export function getSavedAnnotation(id: number): SavedAnnotation {

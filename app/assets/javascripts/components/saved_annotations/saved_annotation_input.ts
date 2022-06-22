@@ -35,11 +35,11 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     state = ["getSavedAnnotations"];
 
     get savedAnnotations(): SavedAnnotation[] {
-        return getSavedAnnotations({
-            "course_id": this.courseId.toString(),
-            "exercise_id": this.exerciseId.toString(),
-            "user_id": this.userId.toString()
-        });
+        return getSavedAnnotations(new Map([
+            ["course_id", this.courseId.toString()],
+            ["exercise_id", this.exerciseId.toString()],
+            ["user_id", this.userId.toString()]
+        ]));
     }
 
     get options(): {label: string, value: string}[] {

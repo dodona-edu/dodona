@@ -1,4 +1,5 @@
 class SavedAnnotationsController < ApplicationController
+  set_pagination_headers :saved_annotations, only: [:index]
   before_action :set_saved_annotation, only: %i[show update destroy]
 
   has_scope :by_user, as: 'user_id'
@@ -8,7 +9,7 @@ class SavedAnnotationsController < ApplicationController
 
   def index
     authorize SavedAnnotation
-    @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
+    @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all)).paginate(page: parse_pagination_param(params[:page]))
   end
 
   def show; end

@@ -1,10 +1,11 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
+import { getSavedAnnotations, getSavedAnnotationsPagination, Pagination, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
 import "./delete_saved_annotation";
+import "components/pagination";
 import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
 
 /**
@@ -24,13 +25,11 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     exerciseId: number;
     @property({ type: Number, attribute: "user-id" })
     userId: number;
-    @property({ type: Boolean, attribute: "use-query-params" })
-    useQueryParams: boolean;
 
-    state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams"];
+    state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams", "getSavedAnnotationsPagination"];
 
     get queryParams(): Map<string, string> {
-        const params: Map<string, string> = this.useQueryParams ? getQueryParams() : new Map<string, string>();
+        const params: Map<string, string> = getQueryParams();
         if (this.courseId) {
             params.set("course_id", this.courseId.toString());
         }
@@ -44,11 +43,15 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     get arrayQueryParams(): Map<string, string[]> {
-        return this.useQueryParams ? getArrayQueryParams() : new Map<string, string[]>();
+        return getArrayQueryParams();
     }
 
     get savedAnnotations(): SavedAnnotation[] {
         return getSavedAnnotations(this.queryParams, this.arrayQueryParams);
+    }
+
+    get pagination(): Pagination {
+        return getSavedAnnotationsPagination(this.queryParams, this.arrayQueryParams);
     }
 
     render(): TemplateResult {
@@ -66,6 +69,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                         `)}
                     </tbody>
                 </table>
+                <d-pagination .total=${this.pagination.total_pages} .current=${this.pagination.current_page} small></d-pagination>
         ` : html``;
     }
 }

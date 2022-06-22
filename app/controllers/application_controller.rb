@@ -93,6 +93,18 @@ class ApplicationController < ActionController::Base
       request.host != Rails.configuration.default_host
   end
 
+  # Set pagination info for named resource in the http headers.
+  # This is useful for frontend pagination
+  def self.set_pagination_headers(name, options = {})
+    after_action(options) do
+      results = instance_variable_get("@#{name}")
+      headers['X-Pagination'] = {
+        total_pages: results.total_pages,
+        current_page: results.current_page,
+      }.to_json
+    end
+  end
+
   private
 
   def redirect_to_default_host

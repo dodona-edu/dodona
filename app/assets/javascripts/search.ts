@@ -47,7 +47,7 @@ export class QueryParameters<T> {
 
 export class SearchQuery {
     updateAddressBar= true;
-    autoSearch= true;
+    autoSearch= false;
     baseUrl: string;
     refreshElement: string;
     periodicReload: InactiveTimeout;

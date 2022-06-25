@@ -1000,96 +1000,98 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codemirror/autocomplete@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-0.20.0.tgz#390cc444ea36474e77117f2153caad84214f0edf"
-  integrity sha512-F6VOM8lImn5ApqxJcaWgdl7hhlw8B5yAfZJGlsQifcpNotkZOMND61mBFZ84OmSLWxtT8/smkSeLvJupKbjP9w==
+"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-6.0.2.tgz#119b9d147456418895de6fae09419465b58d7beb"
+  integrity sha512-9PDjnllmXan/7Uax87KGORbxerDJ/cu10SB+n4Jz0zXMEvIh3+TGgZxhIvDOtaQ4jDBQEM7kHYW4vLdQB0DGZQ==
   dependencies:
-    "@codemirror/language" "^0.20.0"
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
-    "@lezer/common" "^0.16.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
 
-"@codemirror/commands@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-0.20.0.tgz#51405d442e6b8687b63e8fa27effc28179917c88"
-  integrity sha512-v9L5NNVA+A9R6zaFvaTbxs30kc69F6BkOoiEbeFw4m4I0exmDEKBILN6mK+GksJtvTzGBxvhAPlVFTdQW8GB7Q==
+"@codemirror/commands@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.0.0.tgz#9eaa4d53e9cdb2e13da52c8a03636a9f9ad45d2b"
+  integrity sha512-nVJDPiCQXWXj5AZxqNVXyIM3nOYauF4Dko9NGPSwgVdK+lXWJQhI5LGhS/AvdG5b7u7/pTQBkrQmzkLWRBF62A==
   dependencies:
-    "@codemirror/language" "^0.20.0"
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
-    "@lezer/common" "^0.16.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
 
-"@codemirror/lang-javascript@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-0.20.0.tgz#64a7beaa634ad2163dbfdcff94bae8ff28bae476"
-  integrity sha512-Wawq5+o1DlWtsqAyaa9NkiSXNT7geFcfdUael0hIQdM7P23gkQaD+xgZcyQP6QvPxVAdnY4VIWHFzFAqBti+WQ==
+"@codemirror/lang-javascript@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-javascript/-/lang-javascript-6.0.0.tgz#ae23b623456d333ca175f7f9801824426a113aed"
+  integrity sha512-IQLfR+pgydwLxP3AQYOhjGfLWlAZz5SEH+M1tnUXVvp2+KZhn3iDTQX/7HZgoJ3w0oySKOxPjdq6jmkTCW6/sg==
   dependencies:
-    "@codemirror/autocomplete" "^0.20.0"
-    "@codemirror/language" "^0.20.0"
-    "@codemirror/lint" "^0.20.0"
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
-    "@lezer/javascript" "^0.16.0"
+    "@codemirror/autocomplete" "^6.0.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/javascript" "^1.0.0"
 
-"@codemirror/lang-python@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/lang-python/-/lang-python-0.20.0.tgz#e7d133030e1fcd911f91480322b99c9c6b714567"
-  integrity sha512-P2mIyjqBexRTaYbLmAf1HpIyNDw6nWsh2K5MiDi80+6oYwnRggU9dR3Yn9Lv0RM5ph3xJzayMbW0IpicIfA87w==
+"@codemirror/lang-python@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lang-python/-/lang-python-6.0.0.tgz#75860ce18bcc57f1152a5f2c1f94a7ee2621817b"
+  integrity sha512-wI448yup4Y2Xxq/7r3Q4eEmth74ud263ABcexumEFEcoU+0c1k5XRKXp1aT5PrrVavlAKxWQMEvgi+x+HBU4zQ==
   dependencies:
-    "@codemirror/language" "^0.20.0"
-    "@lezer/python" "^0.16.0"
+    "@codemirror/language" "^6.0.0"
+    "@lezer/python" "^1.0.0"
 
-"@codemirror/language@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-0.20.0.tgz#959967901e780c1612934cf5d6df3d7b7e5bf9f0"
-  integrity sha512-lPsF5Y2ZFd5lZ9+7HXTxu57Po3dms3+7q2iAffzrbis2wyJo0lzi/j2312EKStEzwd0pGGpvrUk2dEd333N2jw==
+"@codemirror/language@^6.0.0", "@codemirror/language@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/language/-/language-6.1.0.tgz#7686f0ecafd958c35332c3cc2aa3d564fd33dc44"
+  integrity sha512-CeqY80nvUFrJcXcBW115aNi06D0PS8NSW6nuJRSwbrYFkE0SfJnPfyLGrcM90AV95lqg5+4xUi99BCmzNaPGJg==
   dependencies:
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
-    "@lezer/common" "^0.16.0"
-    "@lezer/highlight" "^0.16.0"
-    "@lezer/lr" "^0.16.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/common" "^1.0.0"
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
+    style-mod "^4.0.0"
 
-"@codemirror/lint@^0.20.0", "@codemirror/lint@^0.20.2":
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-0.20.2.tgz#e47307167ff7e5bb14b717f4084a386dd7f8954e"
-  integrity sha512-xEH3wlzoFLEhPEeMVRNoQIhoTCMEtXhVxemGh3FYjLfl/CL3B2Wz+CU7ooP5SKhN1le7JqUNSfiTArFP+IzFuw==
+"@codemirror/lint@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-6.0.0.tgz#a249b021ac9933b94fe312d994d220f0ef11a157"
+  integrity sha512-nUUXcJW1Xp54kNs+a1ToPLK8MadO0rMTnJB8Zk4Z8gBdrN0kqV7uvUraU/T2yqg+grDNR38Vmy/MrhQN/RgwiA==
   dependencies:
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.2"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
-"@codemirror/search@^0.20.1":
-  version "0.20.1"
-  resolved "https://registry.yarnpkg.com/@codemirror/search/-/search-0.20.1.tgz#9eba0514218a673e29501a889a4fcb7da7ce24ad"
-  integrity sha512-ROe6gRboQU5E4z6GAkNa2kxhXqsGNbeLEisbvzbOeB7nuDYXUZ70vGIgmqPu0tB+1M3F9yWk6W8k2vrFpJaD4Q==
+"@codemirror/search@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/search/-/search-6.0.0.tgz#43bd6341d9aff18869386d2fce27519850e919e3"
+  integrity sha512-rL0rd3AhI0TAsaJPUaEwC63KHLO7KL0Z/dYozXj6E7L3wNHRyx7RfE0/j5HsIf912EE5n2PCb4Vg0rGYmDv4UQ==
   dependencies:
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
     crelt "^1.0.5"
 
-"@codemirror/state@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/state/-/state-0.20.0.tgz#3343d209169813b0152b77361cd78bea01549a73"
-  integrity sha512-R3XrAWCS5Xm9lx+4pDET4EUPEg+8bDfAa5zoOFIhx+VChsfew9Vy33dAjCXS5ES4Q8UecW4WM4UudmUFpZ+86A==
+"@codemirror/state@^6.0.0", "@codemirror/state@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@codemirror/state/-/state-6.0.1.tgz#a1994f14c49e2f77cb9e26aef35f63a8b3707c6c"
+  integrity sha512-6vYgaXc4KjSY0BUfSVDJooGcoswg/RJZpq/ZGjsUYmY0KN1lmB8u03nv+jiG1ncUV5qoggyxFT5AGD5Ak+5Zrw==
 
-"@codemirror/theme-one-dark@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/theme-one-dark/-/theme-one-dark-0.20.0.tgz#112074e446d46931d1104405154ccbe8c8874009"
-  integrity sha512-iqTKaiOZddwlc2rYF+9D60Gfyz9EsSawVejSjyP2FCtOwZ1X0frG5/ByTKH5FBDD2+P7W8+h/OIG4r5dWq4bgA==
+"@codemirror/theme-one-dark@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/theme-one-dark/-/theme-one-dark-6.0.0.tgz#81a999a568217f68522bd8846cbf7210ca2a59df"
+  integrity sha512-jTCfi1I8QT++3m21Ui6sU8qwu3F/hLv161KLxfvkV1cYWSBwyUanmQFs89ChobQjBHi2x7s2k71wF9WYvE8fdw==
   dependencies:
-    "@codemirror/language" "^0.20.0"
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/view" "^0.20.0"
-    "@lezer/highlight" "^0.16.0"
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
+    "@lezer/highlight" "^1.0.0"
 
-"@codemirror/view@^0.20.0", "@codemirror/view@^0.20.2", "@codemirror/view@^0.20.3":
-  version "0.20.3"
-  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-0.20.3.tgz#c907b93afb540400c0088c4203c42deb949cbc08"
-  integrity sha512-wAKK1SSmNOEAG1QEDlY5NhzVnzcXU21pcs6wzYa4G6IC6EWO208N69Ei11A4SIHk9QL658p2+GQ+ealpwHtAcw==
+"@codemirror/view@^6.0.0", "@codemirror/view@^6.0.2":
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.0.2.tgz#27f4d08edd10a3678cf15390b4fba5e2a7220873"
+  integrity sha512-mnVT/q1JvKPjpmjXJNeCi/xHyaJ3abGJsumIVpdQ1nE1MXAyHf7GHWt8QpWMUvDiqF0j+inkhVR2OviTdFFX7Q==
   dependencies:
-    "@codemirror/state" "^0.20.0"
+    "@codemirror/state" "^6.0.0"
     style-mod "^4.0.0"
     w3c-keyname "^2.2.4"
 
@@ -1098,21 +1100,22 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-0.5.1.tgz#66fd798211b3bbaa3979f917ed40123f78e6ac0c"
-  integrity sha512-4TJaOUfdeNhvi1a7HUzC+969q3AgTRmd5iWHPAZ0eDY5tzDDBGLs223vRyjKSaote/AmWT9YXGT9+7a2mnNfgQ==
+"@dodona/papyros@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-1.0.0.tgz#57a2e24328b218d7d59f51957fd4632e1f600faa"
+  integrity sha512-uztOjAA3vy8ipE1KemOzofm+zhCx1bxCRxd9WrYMPM4YtDlG2WjR5uiCtcgxFDZHhl2RfJEDMoi1bmcyEOdXXA==
   dependencies:
-    "@codemirror/autocomplete" "^0.20.0"
-    "@codemirror/commands" "^0.20.0"
-    "@codemirror/lang-javascript" "^0.20.0"
-    "@codemirror/lang-python" "^0.20.0"
-    "@codemirror/language" "^0.20.0"
-    "@codemirror/lint" "^0.20.2"
-    "@codemirror/search" "^0.20.1"
-    "@codemirror/state" "^0.20.0"
-    "@codemirror/theme-one-dark" "^0.20.0"
-    "@codemirror/view" "^0.20.3"
+    "@codemirror/autocomplete" "^6.0.2"
+    "@codemirror/commands" "^6.0.0"
+    "@codemirror/lang-javascript" "^6.0.0"
+    "@codemirror/lang-python" "^6.0.0"
+    "@codemirror/language" "^6.1.0"
+    "@codemirror/lint" "^6.0.0"
+    "@codemirror/search" "^6.0.0"
+    "@codemirror/state" "^6.0.1"
+    "@codemirror/theme-one-dark" "^6.0.0"
+    "@codemirror/view" "^6.0.2"
+    "@lezer/common" "^1.0.0"
     comlink "^4.3.1"
     comsync "^0.0.8"
     escape-html "^1.0.3"
@@ -1376,40 +1379,40 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@lezer/common@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@lezer/common/-/common-0.16.0.tgz#b6023a0a682b0b7676d0e7f0e0838f71bde39fcd"
-  integrity sha512-H6sPCku+asKWYaNjwfQ1Uvcay9UP1Pdzu4qpy8GtRZ0cKT2AAGnj9MQGiRtY18MDntvhYRJxNGv7FNWOSV/e8A==
+"@lezer/common@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/common/-/common-1.0.0.tgz#1c95ae53ec17706aa3cbcc88b52c23f22ed56096"
+  integrity sha512-ohydQe+Hb+w4oMDvXzs8uuJd2NoA3D8YDcLiuDsLqH+yflDTPEpgCsWI3/6rH5C3BAedtH1/R51dxENldQceEA==
 
-"@lezer/highlight@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@lezer/highlight/-/highlight-0.16.0.tgz#95f7b7ee3c32c8a0f6ce499c085e8b1f927ffbdc"
-  integrity sha512-iE5f4flHlJ1g1clOStvXNLbORJoiW4Kytso6ubfYzHnaNo/eo5SKhxs4wv/rtvwZQeZrK3we8S9SyA7OGOoRKQ==
+"@lezer/highlight@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/highlight/-/highlight-1.0.0.tgz#1dc82300f5d39fbd67ae1194b5519b4c381878d3"
+  integrity sha512-nsCnNtim90UKsB5YxoX65v3GEIw3iCHw9RM2DtdgkiqAbKh9pCdvi8AWNwkYf10Lu6fxNhXPpkpHbW6mihhvJA==
   dependencies:
-    "@lezer/common" "^0.16.0"
+    "@lezer/common" "^1.0.0"
 
-"@lezer/javascript@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@lezer/javascript/-/javascript-0.16.0.tgz#712c3bc098bfc91b381a386551a86e9d4baf95eb"
-  integrity sha512-kDcwX3QMFKVd7VJwlYTeTNtcj3/gXQEDa7cQzXXsFMvTGV/RTDq0r8agTpZu0zBc1RUZkVILusd1Cluz3STRqw==
+"@lezer/javascript@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/javascript/-/javascript-1.0.0.tgz#60f0b6c295ef526a51fb33603403daad452d9470"
+  integrity sha512-RawBSrMD9yrVdrXWKn7hqo5BqgBaFelUx80i6p2/V0f+0THjncSSrRC6v3QWVv++RpqWT59L8ujKZjlExJq9xw==
   dependencies:
-    "@lezer/highlight" "^0.16.0"
-    "@lezer/lr" "^0.16.0"
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
 
-"@lezer/lr@^0.16.0":
-  version "0.16.2"
-  resolved "https://registry.yarnpkg.com/@lezer/lr/-/lr-0.16.2.tgz#a26e2572b6acf60815b12d898341ed02464f1c5e"
-  integrity sha512-bx7kkp4eLOzp+YclKMOx1P0OzWRH/6Y3EdEvsHC+rhsc7H72GvccwlKfuXlWkiKjnmzlxLTFxsNjA8v+Yj75mQ==
+"@lezer/lr@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/lr/-/lr-1.0.0.tgz#89e30c1e710b8715ac5c847ad063418c51d6e750"
+  integrity sha512-k6DEqBh4HxqO/cVGedb6Ern6LS7K6IOzfydJ5WaqCR26v6UR9sIFyb6PS+5rPUs/mXgnBR/QQCW7RkyjSCMoQA==
   dependencies:
-    "@lezer/common" "^0.16.0"
+    "@lezer/common" "^1.0.0"
 
-"@lezer/python@^0.16.0":
-  version "0.16.0"
-  resolved "https://registry.yarnpkg.com/@lezer/python/-/python-0.16.0.tgz#9946d19dc1f35a79bef4e936568dce98974e3cab"
-  integrity sha512-jbcidwKGE1TwmozoHel6RwqHc6/gC8KAx8ZwFYUNcIuar20dQTGgyj6MVn85njhm2ZtejUJpTkVr5KS8KGh1CQ==
+"@lezer/python@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@lezer/python/-/python-1.0.0.tgz#3afa3b5a82274c213e1b7fa53e77974d22cd6797"
+  integrity sha512-UQtDPmNhXxQZ7/Uoh8mR6sckrFzeyrjCkTIy7WQY8Sjdfi8wmr49iPbgsThy1Jy0DDBTnqZRULDngXNJ5AWVqg==
   dependencies:
-    "@lezer/highlight" "^0.16.0"
-    "@lezer/lr" "^0.16.0"
+    "@lezer/highlight" "^1.0.0"
+    "@lezer/lr" "^1.0.0"
 
 "@lit/reactive-element@^1.3.0":
   version "1.3.1"

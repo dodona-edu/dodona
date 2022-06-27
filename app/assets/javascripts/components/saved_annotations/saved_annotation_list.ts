@@ -57,7 +57,6 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        console.log(this.savedAnnotations);
         return this.savedAnnotations.length > 0 ? html`
             <div class="table-scroll-wrapper">
                 <table class="table table-index table-resource">

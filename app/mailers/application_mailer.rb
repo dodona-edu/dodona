@@ -10,7 +10,7 @@ class ApplicationMailer < ActionMailer::Base
     institution = @authinfo['info']['institution']
 
     mail to: Rails.application.config.dodona_email,
-         subject: "Onderwijsinstelling aangemaakt voor #{uid} (#{email}) "\
+         subject: "Onderwijsinstelling aangemaakt voor #{uid} (#{email}) " \
                   "via #{provider} (#{institution})",
          content_type: 'text/plain',
          body: "Authenticatie-info:\n#{@authinfo.pretty_inspect}\n"
@@ -25,7 +25,7 @@ class ApplicationMailer < ActionMailer::Base
     institution = @authinfo['info']['institution']
 
     mail to: Rails.application.config.dodona_email,
-         subject: "Niet gelukt om onderwijsinstelling aan te maken voor #{uid} (#{email}) "\
+         subject: "Niet gelukt om onderwijsinstelling aan te maken voor #{uid} (#{email}) " \
                   "via #{provider} (#{institution})",
          content_type: 'text/plain',
          body: "Authenticatie-info:\n#{@authinfo.pretty_inspect}\nErrors:\n#{@errors}"

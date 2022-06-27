@@ -124,7 +124,7 @@ class Submission < ApplicationRecord
   end
 
   def code=(code)
-    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
+    FileUtils.mkdir_p fs_path
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
   end
 
@@ -138,7 +138,7 @@ class Submission < ApplicationRecord
   end
 
   def result=(result)
-    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
+    FileUtils.mkdir_p fs_path
     File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
@@ -178,11 +178,7 @@ class Submission < ApplicationRecord
 
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
-    # rubocop:disable Style/GuardClause, Style/SoleNestedConditional
-    if destroyed? || new_record?
-      FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
-    end
-    # rubocop:enable Style/GuardClause, Style/SoleNestedConditional
+    FileUtils.rm_rf(fs_path) if destroyed? || new_record?
   end
 
   def on_filesystem?

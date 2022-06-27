@@ -149,7 +149,7 @@ module ActivityHelper
         # Filter <div class="thumbcaption">???</div> away
         text = caption.gsub(%r{\s*<div.*?>(.*?)</\s*div>}, '\1')
 
-        caption = "<figcaption class='visible-print-block'>"\
+        caption = "<figcaption class='visible-print-block'>" \
                   "#{text}</figcaption>"
         img.add_next_sibling caption
       end

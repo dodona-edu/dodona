@@ -49,7 +49,7 @@ export class DatalistInput extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}" placeholder="${this.placeholder}">
+            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}" placeholder="${this.placeholder}" autocomplete="off">
             <datalist id="${this.name}-datalist-hidden">
                 ${this.options.map(option => html`<option value="${option.label}">${option.label}</option>`)}
             </datalist>

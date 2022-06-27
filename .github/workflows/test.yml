@@ -93,10 +93,10 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - name: Use node 17
+    - name: Use node 12
       uses: actions/setup-node@v3
       with:
-        node-version: 17.x
+        node-version: 12.x
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master

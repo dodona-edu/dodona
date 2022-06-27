@@ -10,7 +10,14 @@ import { updateArrayURLParameter, updateURLParameter } from "util.js";
  * It should probably be abstracted and or generalized instead of duplicated when another resource requires similar behaviour.
  */
 
-export type SavedAnnotation = { title: string, id: number, annotation_text: string };
+export type SavedAnnotation = {
+    title: string,
+    id: number,
+    annotation_text: string,
+    user?: {name: string, url: string},
+    exercise?: {name: string, url: string},
+    course?: {name: string, url: string}
+};
 export type Pagination = { total_pages: number, current_page: number };
 const URL = "/saved_annotations";
 

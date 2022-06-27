@@ -25,6 +25,8 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     exerciseId: number;
     @property({ type: Number, attribute: "user-id" })
     userId: number;
+    @property({ type: Boolean })
+    small = false;
 
     state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams", "getSavedAnnotationsPagination"];
 
@@ -55,12 +57,30 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
+        console.log(this.savedAnnotations);
         return this.savedAnnotations.length > 0 ? html`
+            <div class="table-scroll-wrapper">
                 <table class="table table-index table-resource">
+                    ${ this.small ? "" : html`
+                        <thead>
+                            <th>${I18n.t("js.saved_annotation.title")}</th>
+                            <th>${I18n.t("js.saved_annotation.annotation_text")}</th>
+                            <th>${I18n.t("js.saved_annotation.user")}</th>
+                            <th>${I18n.t("js.saved_annotation.course")}</th>
+                            <th>${I18n.t("js.saved_annotation.exercise")}</th>
+                            <th></th>
+                        </thead>
+                    `}
                     <tbody>
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
                                 <td>${sa.title}</td>
+                                ${ this.small ? "" : html`
+                                    <td class="ellipsis-overflow">${sa.annotation_text}</td>
+                                    <td><a href="${sa.user.url}">${sa.user.name}</a></td>
+                                    <td><a href="${sa.course.url}">${sa.course.name}</a></td>
+                                    <td><a href="${sa.exercise.url}">${sa.exercise.name}</a></td>
+                                `}
                                 <td class="actions">
                                     <d-edit-saved-annotation .savedAnnotation=${sa}></d-edit-saved-annotation>
                                     <d-delete-saved-annotation .savedAnnotationId=${sa.id}></d-delete-saved-annotation>
@@ -69,7 +89,8 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                         `)}
                     </tbody>
                 </table>
-                <d-pagination .total=${this.pagination.total_pages} .current=${this.pagination.current_page} small></d-pagination>
+            </div>
+            <d-pagination .total=${this.pagination.total_pages} .current=${this.pagination.current_page} .small=${this.small}></d-pagination>
         ` : html``;
     }
 }

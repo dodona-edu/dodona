@@ -210,6 +210,9 @@ nl:
     saved_annotation:
       title: Titel
       annotation_text: Tekst
+      user: Gebruiker
+      course: Cursus
+      exercise: Oefening
       form:
         markdown_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       new:

@@ -210,6 +210,9 @@ en:
     saved_annotation:
       title: Title
       annotation_text: Text
+      user: User
+      course: Course
+      exercise: Exercise
       form:
         markdown_html: '<a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       new:
@@ -228,3 +231,4 @@ en:
       input:
         placeholder: Saved comment
         link: Manage saved anotations
+

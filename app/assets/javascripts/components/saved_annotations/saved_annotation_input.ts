@@ -51,8 +51,8 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     processInput(e: CustomEvent): void {
-        this.label = e.detail.label;
         const annotation = this.savedAnnotations.find(sa => sa.id.toString() === e.detail.value.toString());
+        this.label = e.detail.label;
         const event = new CustomEvent("input", {
             detail: { id: e.detail.value, title: e.detail.label, text: annotation?.annotation_text },
             bubbles: true,

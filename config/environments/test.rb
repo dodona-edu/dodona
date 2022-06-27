@@ -73,7 +73,4 @@ Rails.application.configure do
 
   routes.default_url_options[:trailing_slash] = true
   routes.default_url_options[:locale] = 'en'
-
-  # Creates IllegalStateError on simultaneous requests (see https://github.com/dpogue/rails_server_timings/issues/6)
-  config.server_timings.enabled = false
 end

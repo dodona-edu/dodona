@@ -109,9 +109,6 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Do not add server timings in production
-  config.server_timings.enabled = false
-
   config.middleware.use ExceptionNotification::Rack,
                         ignore_crawlers: %w[Googlebot bingbot Applebot],
                         ignore_if: ->(env, exception) {

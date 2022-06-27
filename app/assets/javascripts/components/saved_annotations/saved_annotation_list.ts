@@ -16,6 +16,7 @@ import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
  * @prop {Number} courseId - used to fetch saved annotations by course
  * @prop {Number} exerciseId - used to fetch saved annotations by exercise
  * @prop {Number} userId - used to fetch saved annotations by user
+ * @prop {Boolean} small - When present, less columns will be displayed in the table
  */
 @customElement("d-saved-annotation-list")
 export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {

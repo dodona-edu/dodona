@@ -81,3 +81,5 @@ Style/NumericPredicate:
   Enabled: false
 Style/OptionalBooleanParameter:
   Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never

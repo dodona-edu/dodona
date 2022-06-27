@@ -49,8 +49,8 @@ class CourseMembership < ApplicationRecord
     if status_was == 'course_admin' &&
        status != 'course_admin' &&
        CourseMembership
-       .where(course:, status: :course_admin)
-       .where.not(id:).empty?
+       .where(course: course, status: :course_admin)
+       .where.not(id: id).empty?
       errors.add(:status, :at_least_one_admin_per_course)
     end
   end

@@ -33,7 +33,7 @@ module StubHelper
   end
 
   refine FactoryBot::SyntaxRunner do
-    include StubHelper
+    import_methods StubHelper
   end
 
   # somehow we need to set this to false for use with factory bot 5

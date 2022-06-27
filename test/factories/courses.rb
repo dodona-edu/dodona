@@ -42,7 +42,7 @@ FactoryBot.define do
     after :create do |course, e|
       e.series_count.times do
         create :series,
-               course:,
+               course: course,
                activity_count: e.activities_per_series,
                exercise_count: e.exercises_per_series,
                content_page_count: e.content_pages_per_series,

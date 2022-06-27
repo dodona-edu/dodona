@@ -8,7 +8,7 @@ class FeedbackPolicy < ApplicationPolicy
       elsif user
         common = scope.joins(:evaluation_user, { evaluation: :series })
         # If the user is the evaluation user and the evaluation has been released
-        student = common.where(evaluation_users: { user: }, evaluation: { released: true })
+        student = common.where(evaluation_users: { user: user }, evaluation: { released: true })
         # If the user is a staff member for the course of the evaluation
         staff = common.where(evaluation: { series: { course_id: user.administrating_courses.map(&:id) } })
         student.or(staff)

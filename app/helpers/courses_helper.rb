@@ -10,13 +10,13 @@ module CoursesHelper
       if course.open_for_all? || (course.open_for_institution? && (course.institution == current_user&.institution || current_user.nil?))
         if course.moderated
           link_to t('courses.show.request_registration'),
-                  subscribe_course_path(@course, secret:),
+                  subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
                   class: 'btn btn-filled'
         else
           link_to t('courses.show.subscribe'),
-                  subscribe_course_path(@course, secret:),
+                  subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
                   class: 'btn btn-filled'

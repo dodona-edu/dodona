@@ -1,7 +1,7 @@
 class ExportPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.where(user:)
+      scope.where(user: user)
     end
   end
 

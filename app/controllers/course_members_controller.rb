@@ -60,7 +60,7 @@ class CourseMembersController < ApplicationController
     course_labels = attributes[:course_labels]
     if course_labels
       course_labels = course_labels.split(',') unless course_labels.is_a?(Array)
-      attributes[:course_labels] = course_labels&.map(&:downcase)&.uniq&.map { |name| CourseLabel.find_by(course: @course, name:) || CourseLabel.create(course: @course, name:) }
+      attributes[:course_labels] = course_labels&.map(&:downcase)&.uniq&.map { |name| CourseLabel.find_by(course: @course, name: name) || CourseLabel.create(course: @course, name: name) }
     end
 
     if @course_membership.update(attributes)

@@ -70,14 +70,14 @@ class Activity < ApplicationRecord
   scope :content_pages, -> { where(type: ContentPage.name) }
   scope :exercises, -> { where(type: Exercise.name) }
 
-  scope :in_repository, ->(repository) { where repository: }
+  scope :in_repository, ->(repository) { where repository: repository }
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
-  scope :by_type, ->(type) { where(type:) }
+  scope :by_type, ->(type) { where(type: type) }
   scope :by_judge, ->(judge) { where(judge_id: judge) }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
@@ -402,7 +402,7 @@ class Activity < ApplicationRecord
   def activity_status_for!(user, series = nil)
     first_try = true
     begin
-      ActivityStatus.find_or_create_by(activity: self, series:, user:)
+      ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
     rescue StandardError
       # https://github.com/dodona-edu/dodona/issues/1877
       raise unless first_try

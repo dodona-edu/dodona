@@ -276,8 +276,8 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     exercises = (0..5).map { create :exercise }
     create :series, exercises: exercises
-    exercises.each { |e| create :submission, user:, exercise: e }
-    exercises.take(3).each { |e| create :submission, user:, exercise: e }
+    exercises.each { |e| create :submission, user: user, exercise: e }
+    exercises.take(3).each { |e| create :submission, user: user, exercise: e }
     assert_equal exercises.take(3).reverse, user.recent_exercises
   end
 

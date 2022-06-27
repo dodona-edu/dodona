@@ -61,7 +61,7 @@ class Feedback < ApplicationRecord
   end
 
   def siblings
-    feedbacks_same_exercise = evaluation.feedbacks.where(evaluation_exercise:).order(:id)
+    feedbacks_same_exercise = evaluation.feedbacks.where(evaluation_exercise: evaluation_exercise).order(:id)
 
     {
       next: feedbacks_same_exercise.find_by('id > ?', id) || feedbacks_same_exercise.first,
@@ -106,12 +106,12 @@ class Feedback < ApplicationRecord
   def reset_feedback_after_submission_update
     return unless will_save_change_to_submission_id? && submission_id_in_database.present?
 
-    Submission.find(submission_id_in_database).annotations.where(evaluation_id:).destroy_all
+    Submission.find(submission_id_in_database).annotations.where(evaluation_id: evaluation_id).destroy_all
     scores.each(&:destroy)
   end
 
   def destroy_related_annotations
-    submission.annotations.where(evaluation_id:).destroy_all if submission.present?
+    submission.annotations.where(evaluation_id: evaluation_id).destroy_all if submission.present?
   end
 
   def submission_user_exercise_correct

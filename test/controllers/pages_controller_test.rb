@@ -45,7 +45,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
       message: '┬─┬ノ( º _ ºノ )'
     }
     assert_changes 'ActionMailer::Base.deliveries.size', +1 do
-      post create_contact_path(contact_form:)
+      post create_contact_path(contact_form: contact_form)
     end
     assert_redirected_to root_url
   end

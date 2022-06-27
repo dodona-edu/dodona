@@ -28,7 +28,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   end
 
   def omniauth_url(provider)
-    send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym), provider:)
+    send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym), provider: provider)
   end
 
   test 'login with existing identity' do

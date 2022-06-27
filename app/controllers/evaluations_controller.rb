@@ -121,7 +121,7 @@ class EvaluationsController < ApplicationController
             when 'none'
               []
             end
-    @evaluation.update(users:) unless users.nil?
+    @evaluation.update(users: users) unless users.nil?
     render 'refresh_users'
   end
 

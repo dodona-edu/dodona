@@ -22,7 +22,7 @@ class AnnotationTest < ActiveSupport::TestCase
     @user = users(:student)
     @annotating_user = users(:staff)
     course = courses(:course1)
-    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user, course:
+    @submission = create :submission, code: "line1\nline2\nline3\n", user: @user, course: course
   end
 
   test 'can create line-bound annotation' do

@@ -61,9 +61,9 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     u1 = users(:student)
     u2 = users(:staff)
     course = courses(:course1)
-    cm = CourseMembership.create(user: u1, course:, status: :student)
-    CourseMembership.create(user: u2, course:, status: :student)
-    CourseLabel.create(name: 'test', course_memberships: [cm], course:)
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
     a1 = create :content_page, name_en: 'test'
     series = create :series, course: course
     series.exercises << a1
@@ -79,9 +79,9 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     u2 = users(:staff)
     sign_in u2
     course = courses(:course1)
-    cm = CourseMembership.create(user: u1, course:, status: :student)
-    CourseMembership.create(user: u2, course:, status: :student)
-    CourseLabel.create(name: 'test', course_memberships: [cm], course:)
+    cm = CourseMembership.create(user: u1, course: course, status: :student)
+    CourseMembership.create(user: u2, course: course, status: :student)
+    CourseLabel.create(name: 'test', course_memberships: [cm], course: course)
     a1 = create :content_page, name_en: 'test'
     series = create :series, course: course
     series.exercises << a1
@@ -113,7 +113,7 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     post activity_activity_read_states_url(cp, format: :js), params: { activity_read_state: { activity_id: cp.id, course_id: course.id } }
     assert_response :success
 
-    assert ActivityReadState.where(user: @user, activity: cp, course:).any?
+    assert ActivityReadState.where(user: @user, activity: cp, course: course).any?
   end
 
   test 'should mark content_page as read as json' do

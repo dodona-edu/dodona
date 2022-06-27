@@ -50,11 +50,11 @@ class ResultConstructor
                              locale: @locale) }
 
     # close the levels left open
-    close_test(generated: '', accepted: false, status:) if @level == :test
+    close_test(generated: '', accepted: false, status: status) if @level == :test
     close_testcase(accepted: false) if @level == :testcase
     close_context(accepted: false) if @level == :context
     close_tab(badgeCount: @tab[:badgeCount] || 1) if @level == :tab
-    close_judgement(accepted: false, status:) if @level == :judgement
+    close_judgement(accepted: false, status: status) if @level == :judgement
 
     @result
   end
@@ -135,7 +135,7 @@ class ResultConstructor
   def close_test(generated: nil, accepted: nil, status: nil)
     check_level(:test, 'test closed')
     @test[:generated] = generated
-    escalate_status(status:)
+    escalate_status(status: status)
     @test[:accepted] = if accepted.nil?
                        then status[:enum] == 'correct'
                        else

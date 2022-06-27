@@ -30,7 +30,7 @@ class SeriesMembership < ApplicationRecord
   end
 
   def invalidate_status
-    ActivityStatus.delete_by(series:, activity:)
+    ActivityStatus.delete_by(series: series, activity: activity)
   end
 
   def regenerate_activity_token

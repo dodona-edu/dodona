@@ -124,11 +124,11 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :identities, limit: 1
 
-  scope :by_permission, ->(permission) { where(permission:) }
-  scope :by_institution, ->(institution) { where(institution:) }
+  scope :by_permission, ->(permission) { where(permission: permission) }
+  scope :by_institution, ->(institution) { where(institution: institution) }
 
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
-  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id:).by_course_labels(labels).select(:user_id)) }
+  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
   scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
@@ -290,7 +290,7 @@ class User < ApplicationRecord
                                     ->(this, options) { format(CORRECT_EXERCISES_CACHE_STRING, course_id: options[:course].present? ? options[:course].id.to_s : 'global', id: this.id.to_s) })
 
   def unfinished_exercises(course = nil)
-    attempted_exercises(course:) - correct_exercises(course:)
+    attempted_exercises(course: course) - correct_exercises(course: course)
   end
 
   def recent_exercises(limit = 3)
@@ -328,7 +328,7 @@ class User < ApplicationRecord
   end
 
   def membership_status_for(course)
-    membership = CourseMembership.find_by(course:, user: self)
+    membership = CourseMembership.find_by(course: course, user: self)
     if membership
       membership.status
     else
@@ -351,7 +351,7 @@ class User < ApplicationRecord
   def self.from_email_and_institution(email, institution_id)
     return nil if email.blank? || institution_id.nil?
 
-    find_by(email:, institution_id:)
+    find_by(email: email, institution_id: institution_id)
   end
 
   def set_search

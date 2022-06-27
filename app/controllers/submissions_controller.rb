@@ -132,7 +132,7 @@ class SubmissionsController < ApplicationController
   def download
     data = @submission.code
     filename = @submission.exercise.file_name
-    send_data data, type: 'application/octet-stream', filename:, disposition: 'attachment', x_sendfile: true
+    send_data data, type: 'application/octet-stream', filename: filename, disposition: 'attachment', x_sendfile: true
   end
 
   def evaluate

@@ -36,7 +36,7 @@ class ScoreItem < ApplicationRecord
     evaluation_exercise
       .feedbacks
       .find_each do |feedback|
-      Score.create(score_item: self, feedback:, score: 0, last_updated_by:) if feedback.submission.blank?
+      Score.create(score_item: self, feedback: feedback, score: 0, last_updated_by: last_updated_by) if feedback.submission.blank?
     end
 
     uncomplete_feedbacks

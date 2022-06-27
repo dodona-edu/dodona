@@ -52,7 +52,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
   end
 
   def omniauth_url(provider)
-    user_oidc_omniauth_authorize_url(provider:)
+    user_oidc_omniauth_authorize_url(provider: provider)
   end
 
   def stub_discovery!
@@ -143,7 +143,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     id_token = encode_jwt id_token_body, KEY_ID
 
     # Stub the access token call.
-    access_token_response = { access_token: Faker::Crypto.md5, expires_in: 3600, id_token:, scope: 'profile', token_type: 'Bearer' }
+    access_token_response = { access_token: Faker::Crypto.md5, expires_in: 3600, id_token: id_token, scope: 'profile', token_type: 'Bearer' }
     stub_request(:post, TOKEN_URL).to_return(body: access_token_response.to_json, headers: { 'Content-Type': 'application/json' }, status: 200)
 
     # Call the callback url.

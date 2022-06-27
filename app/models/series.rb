@@ -97,7 +97,7 @@ class Series < ApplicationRecord
                                     ->(this, options) { format(USER_COMPLETED_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s, deadline: options[:deadline].present?.to_s) })
 
   def completed_before_deadline?(user)
-    completed?(deadline:, user:)
+    completed?(deadline: deadline, user: user)
   end
 
   def missed_deadline?(user)
@@ -153,8 +153,8 @@ class Series < ApplicationRecord
     read_state_hash = read_state_hash.group(%i[user_id activity_id]).index_by { |s| [s.user_id, s.activity_id] }
 
     {
-      users:,
-      activities:,
+      users: users,
+      activities: activities,
       read_states: read_state_hash,
       submissions: submission_hash
     }
@@ -173,9 +173,9 @@ class Series < ApplicationRecord
 
   def invalidate_caches(user)
     # Delete all caches for this series.
-    invalidate_completed?(user:)
-    invalidate_completed?(user:, deadline:) if deadline.present?
-    invalidate_started?(user:)
-    invalidate_wrong?(user:)
+    invalidate_completed?(user: user)
+    invalidate_completed?(user: user, deadline: deadline) if deadline.present?
+    invalidate_started?(user: user)
+    invalidate_wrong?(user: user)
   end
 end

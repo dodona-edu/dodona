@@ -75,7 +75,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       # Create a new user and identity.
       user = User.new institution: provider&.institution if user.blank?
-      identity = user.identities.build identifier: auth_uid, provider:
+      identity = user.identities.build identifier: auth_uid, provider: provider
     end
 
     # Validation.
@@ -109,7 +109,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return if link_provider.blank?
 
     # Create the identity for the current user.
-    Identity.create(identifier: link_uid, provider: link_provider, user:)
+    Identity.create(identifier: link_uid, provider: link_provider, user: user)
 
     if session[:hide_flash].blank?
       # Set a flash message.
@@ -120,7 +120,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def find_identity_and_user
     # Attempt to find the identity by its identifier.
-    identity = Identity.find_by(identifier: auth_uid, provider:)
+    identity = Identity.find_by(identifier: auth_uid, provider: provider)
     return [identity, identity.user] if identity.present? && auth_uid.present?
 
     # No username was provided, try to find the user using the email address and institution id.
@@ -128,7 +128,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     return [nil, nil] if user.blank?
 
     # Find an identity for the user at the current provider.
-    [Identity.find_by(provider:, user:), user]
+    [Identity.find_by(provider: provider, user: user), user]
   end
 
   def find_or_create_oauth_provider

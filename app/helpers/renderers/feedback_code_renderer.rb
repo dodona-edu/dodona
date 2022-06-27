@@ -50,9 +50,9 @@ class FeedbackCodeRenderer
   def add_messages(submission, messages, user)
     user_is_student = !user.course_admin?(submission.course)
     user_perm = if user_is_student
-                  QuestionPolicy.new(user, Question.new(submission:, user:)).create?
+                  QuestionPolicy.new(user, Question.new(submission: submission, user: user)).create?
                 else
-                  AnnotationPolicy.new(user, Annotation.new(submission:, user:)).create?
+                  AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?
                 end
 
     @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do

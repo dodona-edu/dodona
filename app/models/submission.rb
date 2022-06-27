@@ -72,7 +72,7 @@ class Submission < ApplicationRecord
       scopes.any? ? merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
   }
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id:).by_course_labels(labels).map(&:user)) }
+  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
 
   scope :most_recent, lambda {
     submissions = select('MAX(submissions.id) as id')
@@ -133,7 +133,7 @@ class Submission < ApplicationRecord
 
     ActiveSupport::Gzip.decompress(File.read(File.join(fs_path, RESULT_FILENAME)).force_encoding('UTF-8'))
   rescue Errno::ENOENT, Zlib::GzipFile::Error => e
-    ExceptionNotifier.notify_exception e, data: { submission_id: id, status:, current_user: Current.user&.id }
+    ExceptionNotifier.notify_exception e, data: { submission_id: id, status: status, current_user: Current.user&.id }
     nil
   end
 
@@ -215,7 +215,7 @@ class Submission < ApplicationRecord
       summary: nil
     )
 
-    delay(queue:).evaluate
+    delay(queue: queue).evaluate
   end
 
   def evaluate
@@ -296,16 +296,16 @@ class Submission < ApplicationRecord
     # Invalidate the completion status of this exercise, for every series in
     # the current course that contains this exercise, for the current user.
     # Afterwards, invalidate the completion status of the series itself as well.
-    exercise.series.where(course_id:).find_each do |ex_series|
+    exercise.series.where(course_id: course_id).find_each do |ex_series|
       ex_series.invalidate_caches(user)
     end
 
     # Invalidate other statistics.
     course.invalidate_delayed_correct_solutions
-    exercise.invalidate_delayed_users_correct(course:)
-    exercise.invalidate_delayed_users_tried(course:)
-    user.invalidate_attempted_exercises(course:)
-    user.invalidate_correct_exercises(course:)
+    exercise.invalidate_delayed_users_correct(course: course)
+    exercise.invalidate_delayed_users_tried(course: course)
+    user.invalidate_attempted_exercises(course: course)
+    user.invalidate_correct_exercises(course: course)
   end
 
   def self.submissions_since(latest, options)
@@ -332,7 +332,7 @@ class Submission < ApplicationRecord
 
     {
       until: submissions.first&.id || 0,
-      value:
+      value: value
     }
   end
 
@@ -361,7 +361,7 @@ class Submission < ApplicationRecord
 
     {
       until: submissions.first&.id || 0,
-      value:
+      value: value
     }
   end
 
@@ -396,7 +396,7 @@ class Submission < ApplicationRecord
             .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
             .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
     {
-      value:
+      value: value
     }
   end
 
@@ -422,7 +422,7 @@ class Submission < ApplicationRecord
       value = value.merge(transformed) { |_k, h1, h2| h1.merge(h2) { |_k, count1, count2| count1 + count2 } }
     end
     {
-      value:
+      value: value
     }
   end
 
@@ -457,9 +457,9 @@ class Submission < ApplicationRecord
     end
 
     {
-      value:,
-      first_sub:,
-      last_sub:
+      value: value,
+      first_sub: first_sub,
+      last_sub: last_sub
     }
   end
 
@@ -481,7 +481,7 @@ class Submission < ApplicationRecord
       ) { |_k, v1, v2| v1 + v2 }
     end
     {
-      value:
+      value: value
     }
   end
 

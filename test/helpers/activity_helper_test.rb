@@ -6,7 +6,7 @@ class ActivityHelperTest < ActiveSupport::TestCase
 
   setup do
     course = create :course
-    @series = create :series, course:, exercise_count: 3
+    @series = create :series, course: course, exercise_count: 3
   end
 
   test 'previous activity at beginning of series should be nil' do

@@ -4,7 +4,7 @@ class NotificationsControllerTest < ActionDispatch::IntegrationTest
   setup do
     user = users(:student)
     sign_in user
-    @notification = create :notification, user:
+    @notification = create :notification, user: user
   end
 
   test 'should get index' do

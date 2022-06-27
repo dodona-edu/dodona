@@ -70,9 +70,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     token_user = create :user, institution: nil
     token = token_user.token
 
-    get token_sign_in_user_url(token_user, token:)
+    get token_sign_in_user_url token_user, token: token
 
-    assert_redirected_to(root_path)
+    assert_redirected_to root_path
     assert_equal @controller.current_user, token_user
   end
 

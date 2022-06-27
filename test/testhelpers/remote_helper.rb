@@ -68,6 +68,6 @@ class TempRepository < GitRepository
 
   def add_sample_dir(src_path, msg: nil)
     msg ||= "add #{src_path}"
-    add_dir File.join(REMOTES_LOCATION, src_path), msg:
+    add_dir File.join(REMOTES_LOCATION, src_path), msg: msg
   end
 end

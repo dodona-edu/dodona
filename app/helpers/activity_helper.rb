@@ -66,7 +66,7 @@ module ActivityHelper
     id = "activity-description-#{activity.id}"
     url = description_activity_url(activity,
                                    token: activity.access_token,
-                                   dark:).html_safe
+                                   dark: dark).html_safe
     resizeframe = %{
       window.iFrameResize({
           onResized: dodona.afterResize,
@@ -76,7 +76,7 @@ module ActivityHelper
         },
         '##{id}')
     }
-    tag.iframe id:,
+    tag.iframe id: id,
                class: 'dodona-iframe',
                scrolling: 'no',
                onload: resizeframe,

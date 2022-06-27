@@ -21,7 +21,7 @@ class ScoreItemTest < ActiveSupport::TestCase
       series.course.enrolled_members << u
       create :submission, user: u, exercise: series.exercises.first, course: series.course, created_at: 1.hour.ago
     end
-    @evaluation = create :evaluation, series:, users:, exercises: series.exercises
+    @evaluation = create :evaluation, series: series, users: users, exercises: series.exercises
   end
 
   test 'completed feedbacks are uncompleted' do

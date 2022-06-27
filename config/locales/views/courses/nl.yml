@@ -73,6 +73,7 @@ nl:
       create: "Cursus aanmaken"
     scoresheet:
       user: Gebruiker
+      total: Totaal
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
       scoresheet: Statusoverzicht
       download: Statusoverzicht downloaden

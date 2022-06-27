@@ -26,8 +26,8 @@
       <div class='col-sm-6'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>
           <%= f.text_field :deadline, class: "form-control", 'data-input': true %>
-          <button class="btn btn-secondary" type="button" data-toggle><i class='mdi mdi-calendar-blank mdi-18'></i></button>
-          <button class="btn btn-secondary" type="button" data-clear><i class='mdi mdi-close mdi-18'></i></button>
+          <button class="btn btn-icon" type="button" data-toggle><i class='mdi mdi-calendar-blank'></i></button>
+          <button class="btn btn-icon" type="button" data-clear><i class='mdi mdi-close'></i></button>
         </div>
       </div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
@@ -71,7 +71,7 @@
       </span>
     </div>
   <% end %>
-  <div class="field form-group row">
+    <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
         <div class="form-check">
           <input type="hidden" value="1" name="series[activities_visible]">
@@ -83,10 +83,22 @@
         <%= t '.hide_activities_help' %>
       </span>
     </div>
+    <div class="field form-group row">
+      <div class="col-sm-6 offset-sm-3">
+        <div class="form-check">
+          <input type="hidden" value="1" name="series[activities_visible]">
+          <%= f.check_box :activity_numbers_enabled, class: "form-check-input" %>
+          <%= f.label :activity_numbers_enabled, t('.activity_numbers_enabled'), class:"form-check-label" %>
+        </div>
+      </div>
+      <span class="help-block offset-sm-3 col-sm-6">
+          <%= t '.activity_numbers_enabled_help' %>
+        </span>
+    </div>
   </div>
 <% end %>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initDeadlinePicker("#deadline-group");
     });
 </script>

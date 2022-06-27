@@ -1,5 +1,5 @@
-<%= link_to url, class: "btn btn-primary btn-fab hidden-print", 
+<%= link_to url, class: "btn btn-fab hidden-print",
                  method: local_assigns[:method] || :get,
                  title: local_assigns[:title] do %>
-  <i class="mdi mdi-36 mdi-<%= icon %>"></i>
+  <i class="mdi mdi-<%= icon %>"></i>
 <% end %>

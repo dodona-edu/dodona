@@ -23,7 +23,9 @@ class CoursesController < ApplicationController
         scope.order_by_status_in_course_and_name direction
       else
         course = Course.find(controller.params[:id])
-        if course.series.exists? id: column
+        if column == 'solved_exercises_in_course'
+          scope.order_by_solved_exercises_in_course(direction, course)
+        elsif course.series.exists? id: column
           series = course.series.find(column)
           scope.order_by_solved_exercises_in_series(direction, series)
         else
@@ -225,12 +227,20 @@ class CoursesController < ApplicationController
       @hash = scores[:hash]
 
       @histogram = {}
+      @total_activity_count = @series.sum(&:activity_count)
+      @total_by_user = Hash.new(0)
       @series.each do |s|
         @histogram[s.id] = Array.new(s.activity_count + 1, 0)
         @users.each do |u|
           value = @hash[[u.id, s.id]]
           @histogram[s.id][value[:accepted]] += 1 if value
+          @total_by_user[u.id] += value[:accepted] if value
         end
+      end
+
+      @total_histogram = Array.new(@total_activity_count + 1, 0)
+      @users.each do |u|
+        @total_histogram[@total_by_user[u.id]] += 1
       end
     end
 

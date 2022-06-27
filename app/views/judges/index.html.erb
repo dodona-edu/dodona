@@ -32,13 +32,13 @@
                 <% end %>
                 <td class="actions">
                   <% if policy(judge).edit? %>
-                    <%= link_to edit_judge_path(judge), class: "btn btn-sm btn-secondary" do %>
-                      <i class="mdi mdi-pencil mdi-18"></i>
+                    <%= link_to edit_judge_path(judge), class: "btn btn-icon" do %>
+                      <i class="mdi mdi-pencil"></i>
                     <% end %>
                   <% end %>
                   <% if policy(judge).destroy? %>
-                    <%= link_to judge, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-                      <i class="mdi mdi-delete mdi-18"></i>
+                    <%= link_to judge, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled bg-danger" do %>
+                      <i class="mdi mdi-delete"></i>
                     <% end %>
                   <% end %>
                 </td>

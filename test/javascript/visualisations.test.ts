@@ -39,7 +39,7 @@ beforeAll(() => {
         "<div class='input-group date-picker' id='scope-end-<%= series.id %>'>" +
             "<input type='text' class='form-control' data-input>" +
         "</div>" +
-        "<button class='btn btn-secondary' id='scope-apply-<%= series.id %>'></button>" +
+        "<button class='btn btn-icon' id='scope-apply-<%= series.id %>'></button>" +
     "</div>";
 });
 

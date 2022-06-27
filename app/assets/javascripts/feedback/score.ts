@@ -64,7 +64,7 @@ export default class ScoreForm {
             // If the score is not valid, show warning.
             if (!this.input.reportValidity()) {
                 const icon = document.createElement("i");
-                icon.classList.add("mdi", "mdi-alert-circle-outline", "mdi-18", "colored-wrong");
+                icon.classList.add("mdi", "mdi-alert-circle-outline", "colored-wrong");
                 icon.setAttribute("aria-hidden", "true");
                 this.scoreState.replaceChildren(icon);
                 return;

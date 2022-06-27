@@ -1,4 +1,7 @@
-.search-filter:focus + .show-search-dropdown, .show-search-dropdown:focus, .show-search-dropdown:active, .show-search-dropdown:target {
+.search-filter:focus+.show-search-dropdown,
+.show-search-dropdown:focus,
+.show-search-dropdown:active,
+.show-search-dropdown:target {
   display: block;
   max-height: 400px;
   overflow-y: auto;

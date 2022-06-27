@@ -1,9 +1,6 @@
-@import "theme/colors.css.scss";
-
-$development: false;
 $theme: "light";
 
-@import "theme/theme-light.css.scss";
+@import "theme/m3-theme-light.css.scss";
 @import "theme/rouge-light.css.scss";
 
 body {
@@ -12,7 +9,7 @@ body {
 }
 
 a {
-  color: $link-color;
+  color: $primary;
   text-decoration: none;
 }
 
@@ -28,7 +25,7 @@ a {
 
 .error-json {
   margin: 8px;
-  border-left: 3px solid $brand-danger;
+  border-left: 3px solid $danger;
   padding-left: 8px;
   white-space: pre;
 }

@@ -74,6 +74,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # For providers without auth uid
       user = find_user_in_institution
       identity = find_identity_by_user(user) if user.present?
+      Event.create(event_type: :no_auth_id_sign_in, user: user, message: "User #{user.id} logged in without auth_id using identity #{identity.id}") if identity.present? && user.present?
     end
     # At this point identity should have a value if it exists in our database
 

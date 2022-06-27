@@ -11,10 +11,10 @@ gem 'mysql2', '~> 0.5.4'
 gem 'puma', '~> 5.6.4'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.1.0'
+gem 'cssbundling-rails', '~> 1.1.1'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.2'
+gem 'jsbundling-rails', '~> 1.0.3'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -76,7 +76,7 @@ gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.4.0'
 
 # Json webtokens
-gem 'jwt', '~> 2.3.0'
+gem 'jwt', '~> 2.4.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -127,7 +127,7 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.2.1'
+gem 'dalli', '~> 3.2.2'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.21.0'
@@ -141,7 +141,7 @@ gem 'stackprof', '~> 0.2.19'
 gem 'ddtrace', '~> 1.1.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.2.0'
+gem 'after_commit_everywhere', '~> 1.2.2'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.37.1'
-  gem 'selenium-webdriver', '~> 4.2.1'
+  gem 'selenium-webdriver', '~> 4.3.0'
 end
 
 group :test do
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.14.2'
+  gem 'rubocop-rails', '~> 2.15.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

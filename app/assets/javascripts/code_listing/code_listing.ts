@@ -390,7 +390,7 @@ export class CodeListing {
                 course-id="${this.courseId}"
                 exercise-id="${this.exerciseId}"
                 user-id="${this.userId}"
-                class="saved-annotation-input"
+                class="saved-annotation-input annotation-submission-button-container"
                 value="${annotation?.savedAnnotationId || ""}"
               ></d-saved-annotation-input>
             `}

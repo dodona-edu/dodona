@@ -32,13 +32,17 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     @property({ type: String })
     value: string;
 
+    @property({ state: true })
+    label: string;
+
     state = ["getSavedAnnotations"];
 
     get savedAnnotations(): SavedAnnotation[] {
         return getSavedAnnotations(new Map([
             ["course_id", this.courseId.toString()],
             ["exercise_id", this.exerciseId.toString()],
-            ["user_id", this.userId.toString()]
+            ["user_id", this.userId.toString()],
+            ["filter", this.label]
         ]));
     }
 
@@ -47,6 +51,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     processInput(e: CustomEvent): void {
+        this.label = e.detail.label;
         const annotation = this.savedAnnotations.find(sa => sa.id.toString() === e.detail.value.toString());
         const event = new CustomEvent("input", {
             detail: { id: e.detail.value, title: e.detail.label, text: annotation?.annotation_text },
@@ -64,7 +69,11 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
                 .options=${this.options}
                 value="${this.value}"
                 @input="${e => this.processInput(e)}"
+                placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
             ></d-datalist-input>
+            <span class="help-block">
+                <a  href="/saved_annotations" target="_blank">${I18n.t("js.saved_annotation.input.link")}</a>
+            </span>
         `;
     }
 }

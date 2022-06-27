@@ -12,6 +12,7 @@ import { ref, Ref, createRef } from "lit/directives/ref.js";
  * @prop {[{label: string, value: string}]} options - The label is used to match the user input, while the value is sent to the server.
  *          If the user input does not match any label, the value sent to the server wil be ""
  * @prop {String} value - the initial value for this field
+ * @prop {String} placeholder - placeholder text shown in input
  *
  * @fires input - on value change, event details contain {label: string, value: string}
  */
@@ -23,6 +24,8 @@ export class DatalistInput extends ShadowlessLitElement {
     options: [{label: string, value: string}];
     @property({ type: String })
     value: string;
+    @property({ type: String })
+    placeholder: string;
 
     inputRef: Ref<HTMLInputElement> = createRef();
     hiddenInputRef: Ref<HTMLInputElement> = createRef();
@@ -46,7 +49,7 @@ export class DatalistInput extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}">
+            <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}" placeholder="${this.placeholder}">
             <datalist id="${this.name}-datalist-hidden">
                 ${this.options.map(option => html`<option value="${option.label}">${option.label}</option>`)}
             </datalist>

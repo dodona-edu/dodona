@@ -225,5 +225,6 @@ en:
       delete:
         button_title: 'Delete saved comment'
         confirm: 'Are you sure you want to delete this saved comment?'
-      list:
-        title: Saved comments
+      input:
+        placeholder: Saved comment
+        link: Manage saved anotations

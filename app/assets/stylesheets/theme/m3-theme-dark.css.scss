@@ -158,4 +158,8 @@
   .dark-only {
     display: unset;
   }
+
+  :root {
+    color-scheme: dark;
+  }
 }

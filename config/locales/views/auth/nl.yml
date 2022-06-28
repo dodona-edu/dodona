@@ -21,4 +21,4 @@ nl:
       message_p2: "Om ook via **%{provider}** aan je gegevens te kunnen, moeten we even je bestaande account koppelen. Klik daarvoor op de aanmeldknop hieronder en log nogmaals in."
       providers_title: "Accounts koppelen"
       "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
-      contact_form: "contact formulier"
+      contact_form: "contactformulier"

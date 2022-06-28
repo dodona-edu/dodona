@@ -1,5 +1,5 @@
 module DelayedJobHelper
-  def assert_jobs_enqueued(number, &block)
-    assert_difference('Delayed::Job.count', number, &block)
+  def assert_jobs_enqueued(number, &)
+    assert_difference('Delayed::Job.count', number, &)
   end
 end

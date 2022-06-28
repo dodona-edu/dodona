@@ -109,7 +109,7 @@ module ApplicationHelper
     render partial: 'navbar_link', locals: locals
   end
 
-  def activatable_link_to(url, options = nil, &block)
+  def activatable_link_to(url, options = nil, &)
     if current_page?(url)
       options ||= {}
       if options[:class]
@@ -118,7 +118,7 @@ module ApplicationHelper
         options[:class] = 'active'
       end
     end
-    link_to url, options, &block
+    link_to(url, options, &)
   end
 
   def clipboard_button_for(selector)

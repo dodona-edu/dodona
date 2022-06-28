@@ -1,0 +1,394 @@
+.highlighter-rouge .hll {
+  background-color: #f1fa8c
+}
+
+.highlighter-rouge {
+  color: $on-background;
+}
+
+/* Comment */
+.highlighter-rouge .c {
+  color: $on-surface-muted;
+}
+
+/* Error */
+.highlighter-rouge .err {
+  color: $on-background;
+}
+
+/* Generic */
+.highlighter-rouge .g {
+  color: $on-background;
+}
+
+/* Keyword */
+.highlighter-rouge .k {
+  color: $primary;
+}
+
+/* Literal */
+.highlighter-rouge .l {
+  color: $on-background;
+}
+
+/* Name */
+.highlighter-rouge .n {
+  color: $on-background;
+}
+
+/* Operator */
+.highlighter-rouge .o {
+  color: $primary;
+}
+
+/* Other */
+.highlighter-rouge .x {
+  color: $on-background;
+}
+
+/* Punctuation */
+.highlighter-rouge .p {
+  color: $on-background;
+}
+
+/* Comment.Hashbang */
+.highlighter-rouge .ch {
+  color: $on-surface-muted;
+}
+
+/* Comment.Multiline */
+.highlighter-rouge .cm {
+  color: $on-surface-muted;
+}
+
+/* Comment.Preproc */
+.highlighter-rouge .cp {
+  color: $on-surface-muted;
+}
+
+/* Comment.PreprocFile */
+.highlighter-rouge .cpf {
+  color: $on-surface-muted;
+}
+
+/* Comment.Single */
+.highlighter-rouge .c1 {
+  color: $on-surface-muted;
+}
+
+/* Comment.Special */
+.highlighter-rouge .cs {
+  color: $on-surface-muted;
+}
+
+/* Generic.Deleted */
+.highlighter-rouge .gd {
+  color: $danger;
+}
+
+/* Generic.Emph */
+.highlighter-rouge .ge {
+  color: $on-background;
+  text-decoration: underline
+}
+
+/* Generic.Error */
+.highlighter-rouge .gr {
+  color: $on-background;
+}
+
+/* Generic.Heading */
+.highlighter-rouge .gh {
+  color: $on-background;
+  font-weight: bold
+}
+
+/* Generic.Inserted */
+.highlighter-rouge .gi {
+  color: $on-background;
+  font-weight: bold
+}
+
+/* Generic.Output */
+.highlighter-rouge .go {
+  color: $on-surface-muted;
+}
+
+/* Generic.Prompt */
+.highlighter-rouge .gp {
+  color: $primary;
+}
+
+/* Generic.Strong */
+.highlighter-rouge .gs {
+  color: $on-background;
+}
+
+/* Generic.Subheading */
+.highlighter-rouge .gu {
+  color: $on-background;
+  font-weight: bold
+}
+
+/* Generic.Traceback */
+.highlighter-rouge .gt {
+  color: $on-background;
+}
+
+/* Keyword.Constant */
+.highlighter-rouge .kc {
+  color: $secondary;
+}
+
+/* Keyword.Declaration */
+.highlighter-rouge .kd {
+  color: $primary;
+  font-style: italic
+}
+
+/* Keyword.Namespace */
+.highlighter-rouge .kn {
+  color: $primary;
+}
+
+/* Keyword.Pseudo */
+.highlighter-rouge .kp {
+  color: $secondary;
+}
+
+/* Keyword.Reserved */
+.highlighter-rouge .kr {
+  color: $secondary;
+}
+
+/* Keyword.Type */
+.highlighter-rouge .kt {
+  color: $primary;
+}
+
+/* Literal.Date */
+.highlighter-rouge .ld {
+  color: $on-background;
+}
+
+/* Literal.Number */
+.highlighter-rouge .m {
+  color: $secondary;
+}
+
+/* Literal.String */
+.highlighter-rouge .s {
+  color: $teal;
+}
+
+/* Name.Attribute */
+.highlighter-rouge .na {
+  color: $tertiary;
+}
+
+/* Name.Builtin */
+.highlighter-rouge .nb {
+  color: $tertiary;
+  font-style: italic
+}
+
+/* Name.Class */
+.highlighter-rouge .nc {
+  color: $on-background;
+}
+
+/* Name.Constant */
+.highlighter-rouge .no {
+  color: $on-background;
+}
+
+/* Name.Decorator */
+.highlighter-rouge .nd {
+  color: $on-background;
+}
+
+/* Name.Entity */
+.highlighter-rouge .ni {
+  color: $on-background;
+}
+
+/* Name.Exception */
+.highlighter-rouge .ne {
+  color: $on-background;
+}
+
+/* Name.Function */
+.highlighter-rouge .nf {
+  color: $on-background;
+}
+
+/* Name.Label */
+.highlighter-rouge .nl {
+  color: $primary;
+  font-style: italic
+}
+
+/* Name.Namespace */
+.highlighter-rouge .nn {
+  color: $on-background;
+}
+
+/* Name.Other */
+.highlighter-rouge .nx {
+  color: $on-background;
+}
+
+/* Name.Property */
+.highlighter-rouge .py {
+  color: $on-background;
+}
+
+/* Name.Tag */
+.highlighter-rouge .nt {
+  color: $primary;
+}
+
+/* Name.Variable */
+.highlighter-rouge .nv {
+  color: $on-background;
+  font-style: italic
+}
+
+/* Operator.Word */
+.highlighter-rouge .ow {
+  color: $primary;
+}
+
+/* Text.Whitespace */
+.highlighter-rouge .w {
+  color: $on-background;
+}
+
+/* Literal.Number.Bin */
+.highlighter-rouge .mb {
+  color: $secondary;
+}
+
+/* Literal.Number.Float */
+.highlighter-rouge .mf {
+  color: $secondary;
+}
+
+/* Literal.Number.Hex */
+.highlighter-rouge .mh {
+  color: $secondary;
+}
+
+/* Literal.Number.Integer */
+.highlighter-rouge .mi {
+  color: $secondary;
+}
+
+/* Literal.Number.Oct */
+.highlighter-rouge .mo {
+  color: $secondary;
+}
+
+/* Literal.String.Affix */
+.highlighter-rouge .sa {
+  color: $teal;
+}
+
+/* Literal.String.Backtick */
+.highlighter-rouge .sb {
+  color: $teal;
+}
+
+/* Literal.String.Char */
+.highlighter-rouge .sc {
+  color: $teal;
+}
+
+/* Literal.String.Delimiter */
+.highlighter-rouge .dl {
+  color: $teal;
+}
+
+/* Literal.String.Doc */
+.highlighter-rouge .sd {
+  color: $teal;
+}
+
+/* Literal.String.Double */
+.highlighter-rouge .s2 {
+  color: $teal;
+}
+
+/* Literal.String.Escape */
+.highlighter-rouge .se {
+  color: $teal;
+}
+
+/* Literal.String.Heredoc */
+.highlighter-rouge .sh {
+  color: $teal;
+}
+
+/* Literal.String.Interpol */
+.highlighter-rouge .si {
+  color: $teal;
+}
+
+/* Literal.String.Other */
+.highlighter-rouge .sx {
+  color: $teal;
+}
+
+/* Literal.String.Regex */
+.highlighter-rouge .sr {
+  color: $teal;
+}
+
+/* Literal.String.Single */
+.highlighter-rouge .s1 {
+  color: $teal;
+}
+
+/* Literal.String.Symbol */
+.highlighter-rouge .ss {
+  color: $teal;
+}
+
+/* Name.Builtin.Pseudo */
+.highlighter-rouge .bp {
+  color: $secondary;
+}
+
+/* Name.Function.Magic */
+.highlighter-rouge .fm {
+  color: $on-background;
+}
+
+/* Name.Variable.Class */
+.highlighter-rouge .vc {
+  color: $tertiary;
+  font-style: italic
+}
+
+/* Name.Variable.Global */
+.highlighter-rouge .vg {
+  color: $tertiary;
+  font-style: italic
+}
+
+/* Name.Variable.Instance */
+.highlighter-rouge .vi {
+  color: $tertiary;
+  font-style: italic
+}
+
+/* Name.Variable.Magic */
+.highlighter-rouge .vm {
+  color: $tertiary;
+  font-style: italic
+}
+
+/* Literal.Number.Integer.Long */
+.highlighter-rouge .il {
+  color: $secondary;
+}

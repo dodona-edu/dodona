@@ -155,7 +155,13 @@
   {
     "@context": "https://schema.org/",
     "@type": "Course",
+    "@id": "<%= course_url(@course) %>",
+    "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08",
+        "@type": "CreativeWork"
+    },
     "name": "<%= escape_javascript(@course.name) %>",
+    "keywords": "<%= @course.activities.map{ |a| a.content_page? ? 'Reading activity' : a.programming_language&.renderer_name }.uniq.join(', ') %>",
     "teaches": "programming",
     "educationalUse": "exercises",
     <% if @course.institution %>

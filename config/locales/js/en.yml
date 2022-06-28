@@ -143,7 +143,6 @@ en:
       delete: 'Delete'
       edit: 'Edit comment'
       save: 'Save comment'
-      use_saved: 'Saved comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       fields:
         annotation_text: 'Comment'
@@ -229,6 +228,7 @@ en:
         button_title: 'Delete saved comment'
         confirm: 'Are you sure you want to delete this saved comment?'
       input:
-        placeholder: Saved comment
-        link: Manage saved anotations
+        placeholder: Search saved comment
+        title: 'Saved comment that is reused for this comment'
+        link: Manage saved comments
 

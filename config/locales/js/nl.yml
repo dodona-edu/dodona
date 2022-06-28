@@ -143,7 +143,6 @@ nl:
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
-      use_saved: 'Opgeslagen opmerking'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       fields:
         annotation_text: 'Opmerking'
@@ -229,6 +228,7 @@ nl:
         button_title: 'Verwijder opgeslagen opmerking'
         confirm: 'Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?'
       input:
-        placeholder: Opgeslagen opmerking
+        placeholder: Zoek opgeslagen opmerking
+        title: 'Opgeslagen opmerking die hergebruikt wordt voor deze opmerking'
         link: Beheer opgeslagen opmerkingen
 

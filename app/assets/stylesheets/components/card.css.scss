@@ -16,6 +16,11 @@ $card-supporting-text-padding: 16px;
   margin-bottom: $card-margin-bottom;
 }
 
+.card-outlined {
+  box-shadow: none;
+  border: 1px solid $outline;
+}
+
 .card-media {
   background-color: $surface;
   background-repeat: repeat;

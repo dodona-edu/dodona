@@ -57,6 +57,18 @@ class Provider < ApplicationRecord
     [Institution::NEW_INSTITUTION_NAME, Institution::NEW_INSTITUTION_NAME]
   end
 
+  def readable_name
+    return self.class.readable_name if self.class.respond_to? :readable_name
+
+    institution&.short_name
+  end
+
+  def logo
+    return self.class.logo if self.class.respond_to? :logo
+
+    institution&.logo
+  end
+
   private
 
   def at_least_one_preferred

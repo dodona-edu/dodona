@@ -25,6 +25,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @title = @user.full_name
+    @identities = @user.identities
   end
 
   # GET /users/new

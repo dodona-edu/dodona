@@ -32,4 +32,32 @@
   .labels {
     margin-left: 6px;
   }
+
+  .sign-in-method-container{
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .sign-in-method {
+      height: 90px;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 0;
+      padding: 12px;
+
+      .sign-in-method-img {
+        margin-right: 12px;
+
+        img {
+          width: 70px;
+          height: 70px;
+          object-position: 50% 50%;
+          object-fit: contain;
+        }
+      }
+
+      .sign-in-method-title h3 {
+          line-height: 1;
+      }
+    }
+  }
 }

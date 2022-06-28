@@ -31,6 +31,10 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym), provider: provider)
   end
 
+  def omniauth_path(provider)
+    send(format('user_%<sym>s_omniauth_authorize_path', sym: provider.class.sym), provider: provider)
+  end
+
   test 'login with existing identity' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
@@ -319,41 +323,6 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'login with temporary user should convert them to normal' do
-    OAUTH_PROVIDERS.each do |provider_name|
-      # Setup.
-      provider = create provider_name
-      user = create :temporary_user, institution: provider.institution
-      identity = build :identity, provider: provider, user: user
-      username = 'real_username'
-      omniauth_mock_identity identity,
-                             uid: username
-
-      # Call the authorization url.
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert user has been updated.
-      user.reload
-      assert_equal user, @controller.current_user
-      assert_equal 'real_username', user.username
-      assert_equal provider.institution, user.institution
-
-      # Sign-out and sign-in again.
-      sign_out user
-
-      omniauth_mock_identity identity, uid: username
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert successful authentication.
-      assert_equal user, @controller.current_user, 'temp user should be still able to sign in after conversion'
-
-      # Cleanup.
-      sign_out user
-    end
-  end
-
   test 'failure handler' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
@@ -405,5 +374,55 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       'Sec-Fetch-Dest' => 'document'
     })
     assert_redirected_to omniauth_url(main_provider)
+  end
+
+  test 'existing users can link new provider within institution' do
+    institution = create :institution
+    user = create :user, institution: institution, identities: []
+    first_provider = create :provider, institution: institution, mode: :prefer, identities: []
+    second_provider = create :provider, institution: institution, mode: :secondary, identities: []
+
+    # Link user to first provider.
+    first_identity = create :identity, provider: first_provider, user: user
+
+    # Build, but don't save the identity for the second provider.
+    # This allows us to log in with the second provider for the 'first' time.
+    second_identity = build :identity, provider: second_provider, user: user
+    omniauth_mock_identity second_identity
+
+    # Simulate the user logging in with the second provider.
+    # It should not create a user.
+    assert_difference 'User.count', 0 do
+      get omniauth_url(second_provider)
+      follow_redirect!
+    end
+
+    # It should render the page where the user can choose.
+    assert_response :success
+
+    # It is actually the page we expect.
+    assert_select 'h1', t('auth.redirect_to_known_provider.title')
+    # The other provider is listed as a possibility.
+    assert_select 'a.institution-sign-in' do |link|
+      assert_equal omniauth_path(first_provider), link.attr('href').to_s
+    end
+
+    omniauth_mock_identity first_identity
+
+    # The user listens to what we say and clicks the button.
+    get omniauth_url(first_provider)
+    follow_redirect!
+
+    # It should have been linked.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    user.identities.reload
+
+    # The user should have two identities.
+    assert_equal 2, user.identities.length
+
+    # Done.
+    sign_out user
   end
 end

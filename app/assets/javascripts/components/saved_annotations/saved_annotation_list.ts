@@ -16,7 +16,7 @@ import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
  * @prop {Number} courseId - used to fetch saved annotations by course
  * @prop {Number} exerciseId - used to fetch saved annotations by exercise
  * @prop {Number} userId - used to fetch saved annotations by user
- * @prop {Boolean} small - When present, less columns will be displayed in the table
+ * @prop {Boolean} small - When present, less columns and rows will be displayed in the table
  */
 @customElement("d-saved-annotation-list")
 export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
@@ -41,6 +41,9 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
         }
         if (this.userId) {
             params.set("user_id", this.userId.toString());
+        }
+        if (this.small) {
+            params.set("per_page", "10");
         }
         return params;
     }

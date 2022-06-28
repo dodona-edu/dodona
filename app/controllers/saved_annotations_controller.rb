@@ -11,7 +11,7 @@ class SavedAnnotationsController < ApplicationController
     authorize SavedAnnotation
     @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
                          .includes(:course).includes(:user).includes(:exercise)
-                         .paginate(page: parse_pagination_param(params[:page]))
+                         .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
   end
 
   def show; end

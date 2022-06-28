@@ -72,8 +72,8 @@
 }
 
 // First child is the output area, limit its size
-#scratchpad-output-wrapper>div:first-child {
-    max-height: 20vh;
+#scratchpad-output-wrapper > div:first-child {
+    max-height: 20vh !important;
     flex: 0 1 auto;
 }
 

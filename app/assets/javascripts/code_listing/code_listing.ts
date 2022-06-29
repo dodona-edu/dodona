@@ -394,7 +394,7 @@ export class CodeListing {
                 class="saved-annotation-input annotation-submission-button-container"
                 value="${annotation?.savedAnnotationId || ""}"
                 title="${I18n.t("js.saved_annotation.input.title")}"
-                annotation-text="${annotation.rawText}"
+                annotation-text="${annotation?.rawText}"
               ></d-saved-annotation-input>
             `}
             <span class="annotation-submission-button-container">

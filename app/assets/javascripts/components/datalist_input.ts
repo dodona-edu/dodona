@@ -21,7 +21,7 @@ export class DatalistInput extends ShadowlessLitElement {
     @property({ type: String })
     name: string;
     @property({ type: Array })
-    options: [{label: string, value: string}];
+    options: [{label: string, value: string, extra?: string}];
     @property({ type: String })
     value: string;
     @property({ type: String })
@@ -51,7 +51,7 @@ export class DatalistInput extends ShadowlessLitElement {
         return html`
             <input class="form-control" type="text" list="${this.name}-datalist-hidden" ${ref(this.inputRef)} @input=${e => this.processInput(e)}  value="${this.label}" placeholder="${this.placeholder}" autocomplete="off">
             <datalist id="${this.name}-datalist-hidden">
-                ${this.options.map(option => html`<option value="${option.label}">${option.label}</option>`)}
+                ${this.options.map(option => html`<option value="${option.label}">${option.label}${option.extra ? ": " + option.extra : ""}</option>`)}
             </datalist>
             <input type="hidden" name="${this.name}" ${ref(this.hiddenInputRef)} value="${this.value}">
         `;

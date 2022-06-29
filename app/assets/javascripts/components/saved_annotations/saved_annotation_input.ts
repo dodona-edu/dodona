@@ -54,7 +54,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     get options(): {label: string, value: string}[] {
-        return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString() }));
+        return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString(), extra: sa.annotation_text }));
     }
 
     get icon(): string {

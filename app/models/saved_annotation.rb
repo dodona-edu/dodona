@@ -24,5 +24,5 @@ class SavedAnnotation < ApplicationRecord
   scope :by_user, ->(user_id) { where user_id: user_id }
   scope :by_course, ->(course_id) { where course_id: course_id }
   scope :by_exercise, ->(exercise_id) { where exercise_id: exercise_id }
-  scope :by_filter, ->(filter) { where 'title LIKE ?', "%#{filter}%" }
+  scope :by_filter, ->(filter) { where 'title LIKE ? or annotation_text LIKE ?', "%#{filter}%", "%#{filter}%" }
 end

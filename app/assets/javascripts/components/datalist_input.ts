@@ -9,8 +9,9 @@ import { ref, Ref, createRef } from "lit/directives/ref.js";
  * @element d-datalist-input
  *
  * @prop {String} name - name of the input field (used in form submit)
- * @prop {[{label: string, value: string}]} options - The label is used to match the user input, while the value is sent to the server.
+ * @prop {[{label: string, value: string, extra?: string}]} options - The label is used to match the user input, while the value is sent to the server.
  *          If the user input does not match any label, the value sent to the server wil be ""
+ *          The extra string is added in the options and also used to match the input
  * @prop {String} value - the initial value for this field
  * @prop {String} placeholder - placeholder text shown in input
  *

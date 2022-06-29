@@ -280,7 +280,7 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     assert_show_and_overview false
   end
 
-  test 'student should see hidden series with token' do
+  test 'unsubscribed student should not see hidden series, even with token' do
     sign_in @student
     @series.update(visibility: :hidden)
     assert_show_and_overview false, token: @series.access_token

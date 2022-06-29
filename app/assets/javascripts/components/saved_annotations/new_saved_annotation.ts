@@ -29,7 +29,8 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     get newSavedAnnotation(): SavedAnnotation {
         return {
             id: undefined,
-            title: "",
+            // Take the first five words, with a max of 40 chars as default title
+            title: this.annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40),
             annotation_text: this.annotationText
         };
     }
@@ -38,7 +39,7 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
         try {
             await createSavedAnnotation({
                 from: this.fromAnnotationId,
-                saved_annotation: this.savedAnnotation
+                saved_annotation: this.savedAnnotation || this.newSavedAnnotation
             });
             this.errors = undefined;
             this.hideModal();

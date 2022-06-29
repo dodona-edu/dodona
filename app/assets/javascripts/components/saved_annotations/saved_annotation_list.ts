@@ -77,7 +77,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                     <tbody>
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
-                                <td>${sa.title}</td>
+                                <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}">${sa.title}</td>
                                 ${ this.small ? "" : html`
                                     <td class="ellipsis-overflow">${sa.annotation_text}</td>
                                     <td><a href="${sa.user.url}">${sa.user.name}</a></td>

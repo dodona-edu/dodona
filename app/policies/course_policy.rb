@@ -7,10 +7,11 @@ class CoursePolicy < ApplicationPolicy
         scope
       elsif user
         @scope = scope.joins(:course_memberships)
-        scope.where(visibility: :visible_for_all)
-             .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
-             .or(scope.where(course_memberships: { status: %i[student course_admin], user_id: user.id }))
-             .distinct
+        @filtered_scope = scope.where(visibility: :visible_for_all)
+                               .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
+                               .or(scope.where(course_memberships: { status: %i[student course_admin], user_id: user.id }))
+        @filtered_scope = @filtered_scope.or(scope.where(visibility: :visible_for_institutional_users)) if user.institutional?
+        @filtered_scope.distinct
       else
         scope.where(visibility: :visible_for_all)
       end
@@ -39,6 +40,7 @@ class CoursePolicy < ApplicationPolicy
       user&.zeus? ||
       record.visible_for_all? ||
       (record.visible_for_institution? && record.institution == user&.institution) ||
+      (record.visible_for_institutional_users && user&.institutional?) ||
       record.subscribed_members.include?(user)
     )
   end

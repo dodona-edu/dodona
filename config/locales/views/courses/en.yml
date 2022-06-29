@@ -99,9 +99,11 @@ en:
       visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."
       visibility-visible_for_institution-info: "This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link."
       visibility-hidden-info: "This course is hidden: it is not listed in the course overview, and users need the secret link to access this course."
+      visibility-visible_for_institutional_users-info: "This course is accessible for anyone that belongs to an institution: they can access this course from the course overview and see its contents. Personal accounts need the secret link."
       registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
       registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
       registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."
+      registration-open_for_institutional_users-info: "Registrations are open for users that belong to an institution: only they can register for this course."
       moderated-info: "This course is moderated. Users who register will have to be explicitly approved by a course admin."
       subscribe: Register
       request_registration: Request registration

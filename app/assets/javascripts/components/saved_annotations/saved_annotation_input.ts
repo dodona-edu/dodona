@@ -16,6 +16,7 @@ import { stateMixin } from "state/StateMixin";
  * @prop {Number} exerciseId - used to fetch saved annotations by exercise
  * @prop {Number} userId - used to fetch saved annotations by user
  * @prop {String} value - the initial saved annotation id
+ * @prop {String} annotationText - the current text of the real annotation, used to detect if there are manual changes from the selected saved annotation
  *
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
@@ -31,6 +32,8 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     userId: number;
     @property({ type: String })
     value: string;
+    @property( { type: String, attribute: "annotation-text" })
+    annotationText: string;
 
     @property({ state: true })
     label: string;
@@ -46,15 +49,28 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
         ]));
     }
 
+    get selectedAnnotation(): SavedAnnotation {
+        return this.savedAnnotations.find(sa => sa.id.toString() === this.value);
+    }
+
     get options(): {label: string, value: string}[] {
         return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString() }));
     }
 
+    get icon(): string {
+        if (this.selectedAnnotation == undefined) {
+            return "";
+        }
+
+        return this.selectedAnnotation.annotation_text === this.annotationText ? "equal" : "not-equal-variant";
+    }
+
     processInput(e: CustomEvent): void {
-        const annotation = this.savedAnnotations.find(sa => sa.id.toString() === e.detail.value.toString());
+        this.value = e.detail.value.toString();
+        const annotation = this.selectedAnnotation;
         this.label = e.detail.label;
         const event = new CustomEvent("input", {
-            detail: { id: e.detail.value, title: e.detail.label, text: annotation?.annotation_text },
+            detail: { id: this.value, title: this.label, text: annotation?.annotation_text },
             bubbles: true,
             composed: true }
         );
@@ -64,13 +80,22 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <d-datalist-input
-                name="${this.name}"
-                .options=${this.options}
-                value="${this.value}"
-                @input="${e => this.processInput(e)}"
-                placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
-            ></d-datalist-input>
+            <div class="position-relative">
+                <d-datalist-input
+                    name="${this.name}"
+                    .options=${this.options}
+                    value="${this.value}"
+                    @input="${e => this.processInput(e)}"
+                    placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
+                ></d-datalist-input>
+                ${ this.selectedAnnotation && this.selectedAnnotation.annotation_text !== this.annotationText ? html`
+                    <i
+                        class="mdi mdi-not-equal-variant colored-info position-absolute"
+                        style="left: 165px; top: 3px;"
+                        title="${I18n.t("js.saved_annotation.input.edited")}"
+                    ></i>
+                ` : ""}
+            </div>
             <span class="help-block">
                 <a  href="/saved_annotations" target="_blank">${I18n.t("js.saved_annotation.input.link")}</a>
             </span>

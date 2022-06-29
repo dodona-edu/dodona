@@ -231,4 +231,5 @@ nl:
         placeholder: Zoek opgeslagen opmerking
         title: 'Opgeslagen opmerking die hergebruikt wordt voor deze opmerking'
         link: Beheer opgeslagen opmerkingen
+        edited: De huidige opmerking verschilt van de opgeslagen opmerking
 

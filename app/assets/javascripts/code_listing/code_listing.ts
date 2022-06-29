@@ -8,6 +8,7 @@ import {
 } from "code_listing/user_annotation";
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 import "components/saved_annotations/saved_annotation_input";
+import {SavedAnnotationInput} from "components/saved_annotations/saved_annotation_input";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -393,6 +394,7 @@ export class CodeListing {
                 class="saved-annotation-input annotation-submission-button-container"
                 value="${annotation?.savedAnnotationId || ""}"
                 title="${I18n.t("js.saved_annotation.input.title")}"
+                annotation-text="${annotation.rawText}"
               ></d-saved-annotation-input>
             `}
             <span class="annotation-submission-button-container">
@@ -415,11 +417,12 @@ export class CodeListing {
         const deleteButton = form.querySelector<HTMLButtonElement>(annotationFormDelete);
         const sendButton = form.querySelector<HTMLButtonElement>(annotationFormSubmit);
         const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-        const savedAnnotationInput = form.querySelector<HTMLInputElement>(".saved-annotation-input");
+        const savedAnnotationInput = form.querySelector<SavedAnnotationInput>(".saved-annotation-input");
 
         savedAnnotationInput?.addEventListener("input", (e: CustomEvent) => {
             if (e.detail.text) {
                 inputField.value = e.detail.text;
+                savedAnnotationInput.annotationText = inputField.value;
             }
         });
 
@@ -434,6 +437,9 @@ export class CodeListing {
         // Update value while typing.
         inputField.addEventListener("input", () => {
             usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+            if (savedAnnotationInput) {
+                savedAnnotationInput.annotationText = inputField.value;
+            }
         });
 
         // Cancellation handler.

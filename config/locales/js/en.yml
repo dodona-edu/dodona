@@ -231,4 +231,5 @@ en:
         placeholder: Search saved comment
         title: 'Saved comment that is reused for this comment'
         link: Manage saved comments
+        edited: The current comment differs from the saved comment
 

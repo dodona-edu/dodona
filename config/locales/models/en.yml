@@ -49,6 +49,7 @@ en:
         featured: Featured course
         visibilities:
           visible_for_all: Visible for everyone
+          visible_for_institutional_users: Visible for all users that belong to an institution
           visible_for_institution: Only visible for members of the configured institution
           hidden: Hidden
         registrations:

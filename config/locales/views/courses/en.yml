@@ -14,6 +14,7 @@ en:
       visibility-visible_for_all-help_html: This course is part of the public course overview, and everyone can see the contents.
       visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
       visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
+      visibility-visible_for_institutional_users-help_html: This course is accessible for anyone that belongs to an institution.
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
@@ -25,6 +26,7 @@ en:
       visibility-visible_for_all_html: Everyone
       visibility-visible_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
       visibility-hidden_html: Only registered users
+      visibility-visible_for_institutional_users_html: Everyone that belongs to an institution
       registration-open_for_all_html: Everyone
       registration-open_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
       registration-closed_html: Nobody

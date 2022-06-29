@@ -54,7 +54,7 @@ class Course < ApplicationRecord
 
   has_many :course_labels, dependent: :destroy
 
-  enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
+  enum visibility: { visible_for_all: 3, visible_for_institutional_users: 0, visible_for_institution: 1, hidden: 2 }
   enum registration: { open_for_all: 3, open_for_institutional_users: 0, open_for_institution: 1, closed: 2 }
 
   # TODO: Remove and use activities?

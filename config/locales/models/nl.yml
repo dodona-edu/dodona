@@ -50,6 +50,7 @@ nl:
         featured: Uitgelichte cursus
         visibilities:
           visible_for_all: Zichtbaar voor iedereen
+          visible_for_institutional_users: Zichtbaar voor alle gebruikers die tot een onderwijsinstelling behoren
           visible_for_institution: Zichtbaar voor gebruikers van de ingestelde onderwijsinstelling
           hidden: Verborgen
         registrations:

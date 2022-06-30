@@ -81,6 +81,18 @@
               <% end %>
             </li>
           <% end %>
+          <% if policy(SavedAnnotation).index? %>
+            <li>
+              <%= activatable_link_to questions_path,
+                                      class: 'drawer-list-item',
+                                      title: t('layout.menu.saved_annotations') do %>
+                <i class="mdi mdi-content-save"></i>
+                <div class="drawer-list-ellipsis">
+                  <%= t("layout.menu.saved_annotations") %>
+                </div>
+              <% end %>
+            </li>
+          <% end %>
           <% if policy(Judge).index? %>
             <li>
               <%= activatable_link_to judges_path,

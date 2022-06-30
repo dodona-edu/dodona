@@ -206,6 +206,7 @@ class Course < ApplicationRecord
   def secret_required?(user = nil)
     return false if visible_for_all?
     return false if visible_for_institution? && user&.institution == institution
+    return false if visible_for_institutional_users? && user&.institutional?
 
     true
   end

@@ -27,3 +27,4 @@ course1:
   visibility: 3 # visible for all
   registration: 3 # open for all
   teacher: Prof. Zonnebloem
+  secret: "PuDCHk3A7qCEAbxKXPpz"

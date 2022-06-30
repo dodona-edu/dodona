@@ -712,6 +712,60 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
 
+  test 'personal user should only see visible_for_institutional_users course with secret and after subscription' do
+    add_externals
+    @course.update(visibility: :visible_for_institutional_users)
+    user = @externals.first
+    user.update(institution_id: nil)
+    sign_in user
+    get course_url(@course)
+    assert_not response.successful?
+    get course_url(@course, secret: @course.secret)
+    assert response.successful?
+    post subscribe_course_url(@course)
+    assert_not @course.subscribed_members.include?(user)
+    post subscribe_course_url(@course, secret: @course.secret)
+    assert @course.subscribed_members.include?(user)
+    get course_url(@course)
+    assert response.successful?
+  end
+
+  test 'institutional user should always see visible_for_institutional_users course' do
+    add_externals
+    @course.update(visibility: :visible_for_institutional_users)
+    user = @externals.first
+    user.update(institution: (create :institution))
+    sign_in user
+    get course_url(@course)
+    assert response.successful?
+    get course_url(@course, secret: @course.secret)
+    assert response.successful?
+  end
+
+  test 'personal user should not be able to subscribe to open_for_institutional_users course' do
+    add_externals
+    @course.update(registration: :open_for_institutional_users)
+    user = @externals.first
+    user.update(institution: nil)
+    sign_in user
+    post subscribe_course_url(@course)
+    assert_not @course.subscribed_members.include?(user)
+    post subscribe_course_url(@course, secret: @course.secret)
+    assert_not @course.subscribed_members.include?(user)
+  end
+
+  test 'institutional user should be able to subscribe to open_for_institutional_users course' do
+    add_externals
+    @course.update(registration: :open_for_institutional_users)
+    user = @externals.first
+    user.update(institution: (create :institution))
+    sign_in user
+    post subscribe_course_url(@course)
+    assert @course.subscribed_members.include?(user)
+    post subscribe_course_url(@course, secret: @course.secret)
+    assert @course.subscribed_members.include?(user)
+  end
+
   test 'should not destroy course as student' do
     add_students
     sign_in @students.first

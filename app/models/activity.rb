@@ -280,7 +280,7 @@ class Activity < ApplicationRecord
       return true if user&.member_of? course
       return false if course.moderated && access_private?
 
-      course.open_for_all? || (course.open_for_institution? && course.institution == user&.institution)
+      course.open_for_user?(user)
     else
       return true if user&.repository_admin? repository
 

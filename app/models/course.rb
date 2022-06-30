@@ -167,8 +167,8 @@ class Course < ApplicationRecord
 
   # Default year & enum values
   after_initialize do |course|
-    self.visibility ||= 'visible_for_all'
-    self.registration ||= 'open_for_all'
+    self.visibility ||= 'visible_for_institutional_users'
+    self.registration ||= 'open_for_institutional_users'
     unless year
       now = Time.zone.now
       y = now.year
@@ -212,6 +212,10 @@ class Course < ApplicationRecord
 
   def all_activities_accessible?
     activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
+  end
+
+  def open_for_user?(user)
+    open_for_all? || (open_for_institution? && institution == user&.institution) || (open_for_institutional_users? && user&.institutional?)
   end
 
   def invalidate_subscribed_members_count_cache

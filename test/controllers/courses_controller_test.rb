@@ -158,7 +158,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   test 'should get course page with secret' do
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who, user|
-      %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institution closed], [true, false]).each do |v, r, m|
+      %w[visible_for_all visible_for_institutional_users visible_for_institution hidden].product(%w[open_for_all open_for_institutional_users open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
         get course_url(@course, secret: @course.secret, format: :json)
         assert_response :success, "#{who} should get registration page"

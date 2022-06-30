@@ -36,6 +36,7 @@ en:
       evaluation_overview: Show feedback
       series_overview: Series overview
       apply: apply
+      hidden_not_registered: You are not registered for this course. You have to register before you can start solving the exercises.
     edit:
       title: Edit series
       add_activities: Add activities

@@ -41,12 +41,14 @@
   $on-info: $info-20  !global;
   $on-info-container: $info-90  !global;
 
-  $success: $success-80  !global;
+  // changed from 80 to 70
+  $success: $success-70  !global;
   $success-container: $success-30  !global;
   $on-success: $success-20  !global;
   $on-success-container: $success-90  !global;
 
-  $danger: $danger-80  !global;
+  // changed from 80 to 70
+  $danger: $danger-70  !global;
   $danger-container: $danger-30  !global;
   $on-danger: $danger-20  !global;
   $on-danger-container: $danger-90  !global;
@@ -157,5 +159,9 @@
 
   .dark-only {
     display: unset;
+  }
+
+  :root {
+    color-scheme: dark;
   }
 }

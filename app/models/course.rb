@@ -333,7 +333,7 @@ class Course < ApplicationRecord
   end
 
   def color
-    colors = %w[blue-gray indigo cyan purple teal pink orange brown deep-purple]
+    colors = %w[blue-gray orange cyan purple teal pink indigo brown deep-purple]
     colors[year.to_i % colors.size]
   end
 

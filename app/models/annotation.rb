@@ -28,8 +28,8 @@ class Annotation < ApplicationRecord
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
   validates :line_nr, allow_nil: true, numericality: {
-    greater_than_or_equal_to: 0
-  }, if: ->(attr) { attr.line_nr.present? }
+                                         greater_than_or_equal_to: 0
+                                       }, if: ->(attr) { attr.line_nr.present? }
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }

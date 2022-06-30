@@ -53,8 +53,6 @@
           <%= "#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled? %>
           <% if activity.accessible?(current_user, @course) %>
             <%= link_to activity.name, get_activity_path.call(activity) %>
-          <% elsif activity.access_public? %>
-            <%= link_to activity.name, activity_path(activity) %>
           <% else %>
             <%= activity.name %>
             <% if current_user&.course_admin?(@course) && current_user&.repository_admin?(activity.repository) %>

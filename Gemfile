@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.0.3'
+ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.0.3'
@@ -138,7 +138,7 @@ gem 'stackprof', '~> 0.2.19'
 gem 'ddtrace', '~> 1.1.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.2.1'
+gem 'after_commit_everywhere', '~> 1.2.2'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.37.1'
-  gem 'selenium-webdriver', '~> 4.2.1'
+  gem 'selenium-webdriver', '~> 4.3.0'
 end
 
 group :test do
@@ -177,7 +177,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.15.0'
+  gem 'rubocop-rails', '~> 2.15.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

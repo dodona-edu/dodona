@@ -43,6 +43,7 @@ class User < ApplicationRecord
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
   has_many :identities, dependent: :destroy, inverse_of: :user
+  has_many :providers, through: :identities
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -352,6 +353,12 @@ class User < ApplicationRecord
     return nil if email.blank? || institution_id.nil?
 
     find_by(email: email, institution_id: institution_id)
+  end
+
+  def self.from_username_and_institution(username, institution_id)
+    return nil if username.blank? || institution_id.nil?
+
+    find_by(username: username, institution_id: institution_id)
   end
 
   def set_search

@@ -9,6 +9,7 @@ import {
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 import "components/saved_annotations/saved_annotation_input";
 import { SavedAnnotationInput } from "components/saved_annotations/saved_annotation_input";
+import { isBetaCourse } from "saved_annotation_beta";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -385,7 +386,7 @@ export class CodeListing {
             <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.toNumber(maxLength, { precision: 0 })}</span>
           </div>
           <div class="annotation-controls-block">
-            ${this.questionMode ? "" : `
+            ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : `
               <d-saved-annotation-input
                 name="saved_annotation_id"
                 course-id="${this.courseId}"

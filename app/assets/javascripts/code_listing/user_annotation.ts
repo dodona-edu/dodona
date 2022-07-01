@@ -44,6 +44,9 @@ export interface UserAnnotationData {
     type: string;
     // eslint-disable-next-line camelcase
     last_updated_by: UserAnnotationUserData;
+    // REMOVE AFTER CLOSED BETA
+    // eslint-disable-next-line camelcase
+    course_id: number;
 }
 
 export class UserAnnotation extends Annotation {
@@ -59,6 +62,8 @@ export class UserAnnotation extends Annotation {
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
     public readonly lastUpdatedBy: UserAnnotationUserData;
+    // REMOVE AFTER CLOSED BETA
+    private readonly __courseId: number;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {
@@ -75,6 +80,8 @@ export class UserAnnotation extends Annotation {
         this.url = data.url;
         this.user = data.user;
         this.lastUpdatedBy = data.last_updated_by;
+        // REMOVE AFTER CLOSED BETA
+        this.__courseId = data.course_id;
     }
 
     protected edit(): void {
@@ -145,5 +152,10 @@ export class UserAnnotation extends Annotation {
 
     protected get editTitle(): string {
         return I18n.t("js.user_annotation.edit");
+    }
+
+    // REMOVE AFTER CLOSED BETA
+    protected get courseId(): number {
+        return this.__courseId;
     }
 }

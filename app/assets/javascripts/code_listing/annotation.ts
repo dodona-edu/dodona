@@ -1,4 +1,5 @@
 import { NewSavedAnnotation } from "components/saved_annotations/new_saved_annotation";
+import {isBetaCourse} from "saved_annotation_beta";
 
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 export type QuestionState = "unanswered" | "answered" | "in_progress";
@@ -95,12 +96,15 @@ export abstract class Annotation {
 
             header.appendChild(editLink);
 
-            const saveLink = new NewSavedAnnotation();
-            saveLink.fromAnnotationId = this.id;
-            saveLink.annotationText = this.rawText;
-            saveLink.savedAnnotationId = this.savedAnnotationId;
+            // REMOVE IF AFTER CLOSED BETA
+            if (isBetaCourse(this.courseId)) {
+                const saveLink = new NewSavedAnnotation();
+                saveLink.fromAnnotationId = this.id;
+                saveLink.annotationText = this.rawText;
+                saveLink.savedAnnotationId = this.savedAnnotationId;
 
-            header.appendChild(saveLink);
+                header.appendChild(saveLink);
+            }
         }
 
         if (this.transitionable("answered")) {
@@ -224,6 +228,11 @@ export abstract class Annotation {
 
     protected get useNoticeIcon(): boolean {
         return true;
+    }
+
+    // REMOVE AFTER CLOSED BETA
+    protected get courseId(): number {
+        return undefined;
     }
 
     public async update(data): Promise<Annotation> {

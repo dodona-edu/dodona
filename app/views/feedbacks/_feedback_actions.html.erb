@@ -124,16 +124,19 @@
   </div>
 </div>
 
-<div class="card-supporting-text card-border">
-  <h4 class="ellipsis-overflow" title="<%= t "saved_annotations.index.title" %>">
-    <%= t "saved_annotations.index.title" %>
-  </h4>
-  <d-saved-annotation-list course-id="<%= @feedback.evaluation.series.course.id %>"
-                           exercise-id="<%= @feedback.exercise.id %>"
-                           user-id="<%= current_user.id %>"
-                           small
-  ></d-saved-annotation-list>
-</div>
+<!-- REMOVE IF AFTER CLOSED BETA -->
+<% if policy(SavedAnnotation).beta_course? @feedback.evaluation.series.course.id %>
+  <div class="card-supporting-text card-border">
+    <h4 class="ellipsis-overflow" title="<%= t "saved_annotations.index.title" %>">
+      <%= t "saved_annotations.index.title" %>
+    </h4>
+    <d-saved-annotation-list course-id="<%= @feedback.evaluation.series.course.id %>"
+                             exercise-id="<%= @feedback.exercise.id %>"
+                             user-id="<%= current_user.id %>"
+                             small
+    ></d-saved-annotation-list>
+  </div>
+<% end %>
 
 <script>
     <% siblings = @feedback.siblings %>

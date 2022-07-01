@@ -75,7 +75,6 @@ class FeedbackTest < ActiveSupport::TestCase
     feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
     user = feedback.user
     exercise = feedback.exercise
-    course = create :course
     submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
 
     feedback.update(submission_id: submission.id)

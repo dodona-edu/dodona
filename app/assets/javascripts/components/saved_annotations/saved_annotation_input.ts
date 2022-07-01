@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import "components/datalist_input";
-import { getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
+import {getSavedAnnotation, getSavedAnnotations, SavedAnnotation} from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 
 /**
@@ -36,9 +36,15 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     annotationText: string;
 
     @property({ state: true })
-    label: string;
+    __label: string;
 
-    state = ["getSavedAnnotations"];
+    get state(): string[] {
+        return this.value ? [`getSavedAnnotation${this.value}`, "getSavedAnnotations"] : ["getSavedAnnotations"];
+    }
+
+    get label(): string {
+        return this.value ? getSavedAnnotation(parseInt(this.value))?.title : this.__label;
+    }
 
     get savedAnnotations(): SavedAnnotation[] {
         return getSavedAnnotations(new Map([
@@ -68,7 +74,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     processInput(e: CustomEvent): void {
         this.value = e.detail.value.toString();
         const annotation = this.selectedAnnotation;
-        this.label = e.detail.label;
+        this.__label = e.detail.label;
         const event = new CustomEvent("input", {
             detail: { id: this.value, title: this.label, text: annotation?.annotation_text },
             bubbles: true,

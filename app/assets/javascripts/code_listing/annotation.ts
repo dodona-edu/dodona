@@ -1,5 +1,5 @@
 import { NewSavedAnnotation } from "components/saved_annotations/new_saved_annotation";
-import {isBetaCourse} from "saved_annotation_beta";
+import { isBetaCourse } from "saved_annotation_beta";
 
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 export type QuestionState = "unanswered" | "answered" | "in_progress";

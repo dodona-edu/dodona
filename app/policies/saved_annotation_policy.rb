@@ -22,7 +22,7 @@ class SavedAnnotationPolicy < ApplicationPolicy
 
   # REMOVE AFTER CLOSED BETA
   def user_admin_of_beta_course?
-    user&.zeus? || user&.administrating_courses&.pluck(:id).any? { |c| c.in? BETA_COURSES }
+    user&.zeus? || user&.administrating_courses&.pluck(:id)&.any? { |c| c.in? BETA_COURSES }
   end
 
   # REMOVE AFTER CLOSED BETA

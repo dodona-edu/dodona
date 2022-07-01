@@ -88,9 +88,9 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     render(): TemplateResult {
-        return this.isAlreadyLinked ? html`
+        return this.isAlreadyLinked && this.linkedSavedAnnotation!= undefined ? html`
             <div class="annotation-linked">
-                <i class="mdi mdi-link-variant" title="${I18n.t("js.saved_annotation.new.linked", { title: this.linkedSavedAnnotation?.title })}"></i>
+                <i class="mdi mdi-link-variant" title="${I18n.t("js.saved_annotation.new.linked", { title: this.linkedSavedAnnotation.title })}"></i>
             </div>
         ` : html`
             <a class="btn btn-icon annotation-control-button annotation-edit"

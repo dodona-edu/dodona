@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import "components/datalist_input";
-import {getSavedAnnotation, getSavedAnnotations, SavedAnnotation} from "state/SavedAnnotations";
+import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 
 /**

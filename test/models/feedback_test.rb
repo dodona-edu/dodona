@@ -71,6 +71,23 @@ class FeedbackTest < ActiveSupport::TestCase
     assert_not feedback.completed
   end
 
+  test 'feedback cannot have submission from other course' do
+    feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
+    user = feedback.user
+    exercise = feedback.exercise
+    course = create :course
+    submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
+
+    feedback.update(submission_id: submission.id)
+    assert_empty feedback.errors
+
+    course = create :course
+    submission = create :submission, user: user, exercise: exercise, course: course
+
+    feedback.update(submission_id: submission.id)
+    assert_not_empty feedback.errors
+  end
+
   test 'score calculations are correct' do
     feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
     si1 = create :score_item, evaluation_exercise: feedback.evaluation_exercise

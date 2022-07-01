@@ -98,6 +98,7 @@ export abstract class Annotation {
             const saveLink = new NewSavedAnnotation();
             saveLink.fromAnnotationId = this.id;
             saveLink.annotationText = this.rawText;
+            saveLink.savedAnnotationId = this.savedAnnotationId;
 
             header.appendChild(saveLink);
         }

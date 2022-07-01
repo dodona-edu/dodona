@@ -219,6 +219,7 @@ nl:
         save: "Opslaan"
         title: "Opmerking opslaan om later te hergebruiken"
         errors: "%{count} errors verhinderen het opslaan"
+        linked: "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}"
       edit:
         button_title: 'Bewerk opgeslagen opmerking'
         save: "Opslaan"

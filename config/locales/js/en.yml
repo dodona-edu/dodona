@@ -219,6 +219,7 @@ en:
         save: "Save"
         title: "Save comment for re-use"
         errors: "%{count} errors prevented saving"
+        linked: "This comment is linked to the saved comment: %{title}"
       edit:
         button_title: 'Edit saved comment'
         save: "Save"

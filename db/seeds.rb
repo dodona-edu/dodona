@@ -467,14 +467,8 @@ if Rails.env.development?
 
   puts "Add announcements (#{Time.now - start})"
 
-  sign_in_announcement = Announcement.create text_nl: "## Log in met:
-- [zeus](/users/#{zeus.id}/token/#{zeus.token})
-- [staff](/users/#{staff.id}/token/#{staff.token})
-- [student](/users/#{jelix.id}/token/#{jelix.token})",
-                      text_en: "## Sign in to:
-- [zeus](/users/#{zeus.id}/token/#{zeus.token})
-- [staff](/users/#{staff.id}/token/#{staff.token})
-- [student](/users/#{jelix.id}/token/#{jelix.token})",
+  sign_in_announcement = Announcement.create text_nl: "Log in met [zeus](/users/#{zeus.id}/token/#{zeus.token}), [staff](/users/#{staff.id}/token/#{staff.token}) of [student](/users/#{jelix.id}/token/#{jelix.token})",
+                      text_en: "Sign in to [zeus](/users/#{zeus.id}/token/#{zeus.token}), [staff](/users/#{staff.id}/token/#{staff.token}) or [student](/users/#{jelix.id}/token/#{jelix.token})",
                       user_group: :everyone,
                       style: :info
   AnnouncementView.create user:zeus, announcement: sign_in_announcement

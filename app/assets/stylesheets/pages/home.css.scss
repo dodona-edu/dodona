@@ -11,8 +11,9 @@
 .home-header {
   position: relative;
 }
+
 .home-header:before {
-  content:"";
+  content: "";
   background: $primary-30;
   position: absolute;
   width: 100vw;

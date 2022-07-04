@@ -465,5 +465,22 @@ if Rails.env.development?
                     code: '',
                     result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
 
+  puts "Add announcements (#{Time.now - start})"
+
+  sign_in_announcement = Announcement.create text_nl: "## Log in met:
+- [zeus](/users/#{zeus.id}/token/#{zeus.token})
+- [staff](/users/#{staff.id}/token/#{staff.token})
+- [student](/users/#{jelix.id}/token/#{jelix.token})",
+                      text_en: "## Sign in to:
+- [zeus](/users/#{zeus.id}/token/#{zeus.token})
+- [staff](/users/#{staff.id}/token/#{staff.token})
+- [student](/users/#{jelix.id}/token/#{jelix.token})",
+                      user_group: :everyone,
+                      style: :info
+  AnnouncementView.create user:zeus, announcement: sign_in_announcement
+  AnnouncementView.create user:staff, announcement: sign_in_announcement
+  AnnouncementView.create user:jelix, announcement: sign_in_announcement
+
+
   puts "Finished! (#{Time.now - start})"
 end

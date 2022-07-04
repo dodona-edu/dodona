@@ -10,7 +10,7 @@ class AggregatedConfigErrors < StandardError
     @errors = errors.uniq(&:path)
   end
 
-  def each(&block)
-    errors.each(&block)
+  def each(&)
+    errors.each(&)
   end
 end

@@ -1,9 +1,6 @@
-import flatpickr from "flatpickr";
-import { Dutch } from "flatpickr/dist/l10n/nl.js";
-
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop.js";
-import { initTokenClickables } from "./util.js";
+import { initDatePicker } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin.ts";
 import { StackedStatusGraph } from "visualisations/stacked_status.ts";
@@ -24,13 +21,11 @@ const DRAG_AND_DROP_ARGS = {
 function initSeriesEdit() {
     function init() {
         initAddButtons();
-        initTokenClickables();
         initRemoveButtons();
         initDragAndDrop(DRAG_AND_DROP_ARGS);
         // export function
         dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
-            initTokenClickables();
         };
     }
 
@@ -47,9 +42,9 @@ function initSeriesEdit() {
             }
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
-            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
+            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal'></i></div>");
             $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='${scopedUrl}'>${activityName}</a>`);
-            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-activity' data-activity_id='${activityId}' data-activity_name='${activityName}' data-series_id='${seriesId}'><i class='mdi mdi-delete mdi-18'></i></a>`);
+            $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-activity' data-activity_id='${activityId}' data-activity_name='${activityName}' data-series_id='${seriesId}'><i class='mdi mdi-delete'></i></a>`);
             $(".series-activity-list tbody").append($row);
             $row.css("opacity"); // trigger paint
             $row.removeClass("new").addClass("pending");
@@ -119,18 +114,6 @@ function initSeriesEdit() {
     init();
 }
 
-function initDeadlinePicker(selector) {
-    function init() {
-        const options = {};
-        if (I18n.locale === "nl") {
-            options.locale = Dutch;
-        }
-        flatpickr(selector, options);
-    }
-
-    init();
-}
-
 function initSeriesShow(id) {
     const graphMapping = {
         violin: ViolinGraph,
@@ -156,4 +139,4 @@ function initSeriesShow(id) {
     });
 }
 
-export { initDeadlinePicker, initSeriesEdit, initSeriesShow };
+export { initDatePicker as initDeadlinePicker, initSeriesEdit, initSeriesShow };

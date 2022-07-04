@@ -17,6 +17,7 @@
 
   .selection-row {
     cursor: pointer;
+
     &:hover {
       background-color: table-hover-bg;
     }
@@ -48,6 +49,7 @@
 
   .selection-row {
     cursor: pointer;
+
     &:hover {
       background-color: $table-hover-bg;
     }

@@ -6,23 +6,58 @@
   .user-icon {
     padding-right: 12px;
   }
+
   .profile-byline {
     margin-bottom: 3px;
   }
-  .profile-line, .profile-byline {
+
+  .profile-line,
+  .profile-byline {
     display: block;
   }
+
   .name {
     font-weight: 400;
     font-size: 18px;
   }
+
   .timezone {
     margin-left: 48px;
   }
+
   .stat {
     margin-bottom: 12px;
   }
+
   .labels {
     margin-left: 6px;
+  }
+
+  .sign-in-method-container{
+    padding-left: 12px;
+    padding-right: 12px;
+
+    .sign-in-method {
+      height: 90px;
+      align-items: center;
+      flex-direction: row;
+      margin-bottom: 0;
+      padding: 12px;
+
+      .sign-in-method-img {
+        margin-right: 12px;
+
+        img {
+          width: 70px;
+          height: 70px;
+          object-position: 50% 50%;
+          object-fit: contain;
+        }
+      }
+
+      .sign-in-method-title h3 {
+          line-height: 1;
+      }
+    }
   }
 }

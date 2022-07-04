@@ -2,34 +2,38 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-@import "theme/colors.css.scss";
+@import "theme/m3-theme-light.css.scss";
+@import "theme/m3-theme-dark.css.scss";
+
+@if $theme =="dark" {
+  @include theme-dark;
+}
+
 @import "bootstrap_variable_overrides.css.scss";
 @import "mixins.css.scss";
 @import "vendor";
 
-// also loads dark mode stuff
-@import "theme/theme-light.css.scss";
-
-@import "theme/rouge-light.css.scss";
-@import "theme/rouge-dark.css.scss";
-@if $theme == "dark" {
-  @include rouge-dark;
-} @else {
-  @include rouge-light;
-}
+@import "theme/rouge.css.scss";
+@import "theme/ace.css.scss";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../../node_modules/bootstrap/scss/variables";
-@import "../../../node_modules/bootstrap/scss/mixins";
-@import "../../../node_modules/bootstrap/scss/utilities";
 
-// 4. Include any optional Bootstrap components as you like
+// 4. Include any default map overrides here
+
+// 5. Include remainder of required parts
+@import "../../../node_modules/bootstrap/scss/maps";
+@import "../../../node_modules/bootstrap/scss/mixins";
 @import "../../../node_modules/bootstrap/scss/root";
+
+// 6. Optionally include any other parts as needed
+@import "../../../node_modules/bootstrap/scss/utilities";
 @import "../../../node_modules/bootstrap/scss/reboot";
 @import "../../../node_modules/bootstrap/scss/type";
 @import "../../../node_modules/bootstrap/scss/images";
 @import "../../../node_modules/bootstrap/scss/containers";
 @import "../../../node_modules/bootstrap/scss/grid";
+@import "../../../node_modules/bootstrap/scss/helpers";
 @import "../../../node_modules/bootstrap/scss/tables";
 @import "../../../node_modules/bootstrap/scss/forms";
 @import "../../../node_modules/bootstrap/scss/buttons";
@@ -72,11 +76,11 @@
 @import "print.css.scss";
 
 .field_with_errors input {
-  border-color: $danger-fg;
+  border-color: $danger;
 }
 
 .colored-info {
-  color: $brand-info;
+  color: $info;
 }
 
 figcaption {

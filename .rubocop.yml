@@ -12,7 +12,7 @@ AllCops:
     - "db/**/*"
     - "vendor/**/*"
     - "node_modules/**/*"
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.1
   NewCops: enable
 
 Layout/FirstArrayElementIndentation:
@@ -81,3 +81,5 @@ Style/NumericPredicate:
   Enabled: false
 Style/OptionalBooleanParameter:
   Enabled: false
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never

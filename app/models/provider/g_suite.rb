@@ -28,6 +28,14 @@ class Provider::GSuite < Provider
     :google_oauth2
   end
 
+  def self.logo
+    'Google-logo.png'
+  end
+
+  def self.readable_name
+    'Google Workspace'
+  end
+
   def self.extract_institution_name(auth_hash)
     # The institution is the domain
     institution = auth_hash&.info&.institution

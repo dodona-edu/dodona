@@ -65,7 +65,7 @@ nl:
       hide_correct: verberg correct
       correct: correct
       wrong: verkeerd
-      hand_in_tooltip: Klik op de play-knop om je oplossing te testen en in te dienen.
+      hand_in_tooltip: Klik op de verzend-knop om je oplossing te testen en in te dienen.
       not_found: Sorry, we kunnen deze oefening niet vinden.
       not_accessible: Deze oefening is niet toegankelijk voor studenten.
       not_visible: Deze oefening is niet zichtbaar voor studenten zonder de correcte link.

@@ -28,6 +28,14 @@ class Provider::Office365 < Provider
     :office365
   end
 
+  def self.logo
+    'office365.png'
+  end
+
+  def self.readable_name
+    'Office 365'
+  end
+
   def self.extract_institution_name(auth_hash)
     # Office 365 has no useful information, so take the domain name of the email.
     mail = auth_hash&.info&.email

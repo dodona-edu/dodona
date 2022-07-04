@@ -1,60 +1,7 @@
-/* globals Bloodhound,ace */
+/* globals ace */
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
-
-function initLabelsEdit(labels, undeletableLabels) {
-    const colorMap = {};
-    for (const label of labels) {
-        colorMap[label.name] = label.color;
-        label.value = label.name;
-    }
-
-    const engine = new Bloodhound({
-        local: labels,
-        identify: d => d.id,
-        datumTokenizer: d => {
-            const result = Bloodhound.tokenizers.whitespace(d.name);
-            $.each(result, (i, val) => {
-                for (let i = 1; i < val.length; i++) {
-                    result.push(val.substr(i, val.length));
-                }
-            });
-            return result;
-        }, queryTokenizer: Bloodhound.tokenizers.whitespace,
-    });
-
-    const $field = $("#exercise_labels");
-    $field.on("tokenfield:createdtoken", e => {
-        if (colorMap[e.attrs.value]) {
-            $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
-        }
-        if (undeletableLabels.includes(e.attrs.value)) {
-            $(e.relatedTarget).addClass("tokenfield-undeletable");
-            $(e.relatedTarget).prop("title", I18n.t("js.label-undeletable"));
-        }
-    });
-    $field.on("tokenfield:removetoken", e => {
-        if (undeletableLabels.includes(e.attrs.value)) {
-            return false;
-        }
-    });
-    $field.on("tokenfield:edittoken", e => {
-        if (undeletableLabels.includes(e.attrs.value)) {
-            return false;
-        }
-    });
-    $field.tokenfield({
-        beautify: false,
-        createTokensOnBlur: true,
-        typeahead: [{
-            highlight: true,
-        }, {
-            source: engine,
-            display: d => d.name,
-        }],
-    });
-}
 
 function showLightbox(content) {
     const lightbox = new GLightbox(content);
@@ -190,9 +137,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // init editor
         editor = ace.edit("editor-text");
         editor.getSession().setMode("ace/mode/" + programmingLanguage);
-        if (window.dodona.darkMode) {
-            editor.setTheme("ace/theme/twilight");
-        }
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true,
@@ -207,20 +151,20 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
 
     function swapActionButtons() {
         $("#activity-handin-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
-            $("#editor-process-btn").removeClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
+            $("#editor-process-btn").removeClass("hidden");
         });
         $("#activity-submission-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
             if (lastSubmission) {
-                $("#editor-process-btn").removeClass("hidden-fab");
+                $("#editor-process-btn").removeClass("hidden");
             } else {
-                $("#editor-process-btn").addClass("hidden-fab");
+                $("#editor-process-btn").addClass("hidden");
             }
         });
         $("#activity-feedback-link").on("show.bs.tab", function (e) {
-            $("#editor-process-btn").addClass("hidden-fab");
-            $("#submission-copy-btn").removeClass("hidden-fab");
+            $("#editor-process-btn").addClass("hidden");
+            $("#submission-copy-btn").removeClass("hidden");
         });
     }
 
@@ -307,13 +251,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn")
             .prop("disabled", false)
             .removeClass("busy mdi-timer-sand-empty mdi-spin")
-            .addClass("mdi-play");
+            .addClass("mdi-send");
     }
 
     function disableSubmitButton() {
         $("#editor-process-btn")
             .prop("disabled", true)
-            .removeClass("mdi-play")
+            .removeClass("mdi-send")
             .addClass("busy mdi-timer-sand-empty mdi-spin");
     }
 
@@ -335,7 +279,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         const icon = fab.children[0];
         fab.classList.remove("correct", "wrong");
         icon.classList.remove(...icon.classList);
-        icon.classList.add("mdi", "mdi-36", "mdi-pencil");
+        icon.classList.add("mdi", "mdi-pencil");
     }
     function getPositiveEmoji() {
         const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
@@ -441,6 +385,6 @@ function onFrameScroll(position) {
 }
 
 export {
-    initMathJax, initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    initMathJax, initExerciseShow, initExerciseDescription, afterResize,
     onFrameMessage, onFrameScroll
 };

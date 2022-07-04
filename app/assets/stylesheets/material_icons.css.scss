@@ -8,6 +8,11 @@
   line-height: 14px;
 }
 
+.mdi.mdi-16::before {
+  font-size: 16px;
+  line-height: 18px;
+}
+
 .mdi.mdi-18::before {
   font-size: 18px;
   line-height: 20px;
@@ -49,21 +54,6 @@
   position: relative;
 }
 
-a.btn-fab .mdi::before {
-  margin-top: 5px;
-}
-
-.btn-sm .mdi::before {
-  font-size: 18px;
-  margin-top: 3px;
-}
-
-.btn-sm .mdi::before {
-  font-size: 18px;
-  margin-top: 3px;
-}
-
-
 .dropdown-menu .mdi {
   width: 18px;
 }
@@ -73,23 +63,21 @@ a.btn-fab .mdi::before {
   top: 2px;
   left: -8px;
 }
+
 .dropdown-menu .mdi-box::before {
   left: 10px;
   position: relative; // required to use left
 }
 
 .dodona-navbar {
-  .actions , .dropdown {
+
+  .actions,
+  .dropdown {
     .mdi::before {
       vertical-align: text-bottom;
       line-height: 30px;
     }
   }
-}
-
-.nav .mdi::before {
-  position: relative;
-  top: 4px;
 }
 
 .breadcrumb .mdi::before {
@@ -129,7 +117,7 @@ a.btn-fab .mdi::before {
 }
 
 .filter-icon {
-  color: $text-secondary;
+  color: $on-surface-muted;
 
   letter-spacing: -2px;
   /* make sure the tooltip with the filtering information is centered
@@ -141,7 +129,7 @@ a.btn-fab .mdi::before {
   margin-right: 3px; // add spacing between text and the icon
 
   &:hover {
-    color: $text-color;
+    color: $on-surface;
   }
 }
 
@@ -182,5 +170,59 @@ a.btn-fab .mdi::before {
   &.md-48 {
     width: 48px;
     height: 48px;
+  }
+}
+
+.mdi.mdi-colored-accent {
+  &.accent-red {
+    color: $red-container;
+  }
+
+  &.accent-pink {
+    color: $pink-container;
+  }
+
+  &.accent-purple {
+    color: $purple-container;
+  }
+
+  &.accent-deep-purple {
+    color: $deep-purple-container;
+  }
+
+  &.accent-indigo {
+    color: $indigo-container;
+  }
+
+  &.accent-teal {
+    color: $teal-container;
+  }
+
+  &.accent-orange {
+    color: $orange-container;
+  }
+
+  &.accent-brown {
+    color: $brown-container;
+  }
+
+  &.accent-blue-gray {
+    color: $blue-gray-container;
+  }
+
+  &.accent-blue {
+    color: $blue-container;
+  }
+
+  &.accent-yellow {
+    color: $yellow-container;
+  }
+
+  &.accent-green {
+    color: $green-container;
+  }
+
+  &.accent-cyan {
+    color: $cyan-container;
   }
 }

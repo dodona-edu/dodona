@@ -119,6 +119,16 @@ class Activity < ApplicationRecord
                          path&.split('/')&.last
   end
 
+  def numbered_name(series)
+    return name unless series&.activity_numbers_enabled?
+
+    activity_ids = series.activities.pluck(:id)
+    position = activity_ids.find_index(id)
+    return name if position.nil?
+
+    "#{position + 1}. #{name}"
+  end
+
   def description_languages
     languages = []
     languages << 'nl' if description_file('nl').exist?
@@ -186,7 +196,7 @@ class Activity < ApplicationRecord
             .map { |dir| read_dirconfig dir } # try reading their dirconfigs
             .compact # remove nil entries
             .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
-            .yield_self { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+            .then { |dirconfig| lowercase_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
   def merged_dirconfig_locations
@@ -194,7 +204,7 @@ class Activity < ApplicationRecord
             .map { |dir| read_dirconfig_locations dir } # try reading their dirconfigs
             .compact # remove nil entries
             .reduce { |h1, h2| deep_merge_configs h1, h2 } # reduce into single hash
-            .yield_self { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
+            .then { |dirconfig| unique_labels(dirconfig) || {} } # return empty hash if dirconfig is nil
   end
 
   def merged_config
@@ -264,6 +274,7 @@ class Activity < ApplicationRecord
       else
         return false unless course.visible_activities.pluck(:id).include? id
       end
+      return true if user&.zeus?
       return false unless access_public? \
           || repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.member_of? course

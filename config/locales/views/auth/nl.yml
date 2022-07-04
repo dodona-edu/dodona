@@ -15,3 +15,10 @@ nl:
       errors:
         institution-creation: Er ging iets mis tijdens het aanmaken van een nieuwe onderwijsinstelling.
         missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.
+    redirect_to_known_provider:
+      title: We hebben even je hulp nodig
+      message_p1: "Er bestaat al een gebruiker met dezelfde gebruikersnaam (**%{username}**) of hetzelfde e-mailadres (**%{email}**) binnen de onderwijsinstelling **%{institution}** op Dodona. Waarschijnlijk ben jij dit, maar gebruikte je vorige keer een andere loginmethode."
+      message_p2: "Om ook via **%{provider}** aan je gegevens te kunnen, moeten we even je bestaande account koppelen. Klik daarvoor op de aanmeldknop hieronder en log nogmaals in."
+      providers_title: "Accounts koppelen"
+      "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
+      contact_form: "contactformulier"

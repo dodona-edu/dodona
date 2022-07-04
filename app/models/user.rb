@@ -43,6 +43,7 @@ class User < ApplicationRecord
   has_many :repository_admins, dependent: :restrict_with_error
   has_many :courses, through: :course_memberships
   has_many :identities, dependent: :destroy, inverse_of: :user
+  has_many :providers, through: :identities
   has_many :events, dependent: :restrict_with_error
   has_many :exports, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -133,6 +134,71 @@ class User < ApplicationRecord
   scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_course, ->(course) { where(id: ActivityReadState.in_course(course).select('DISTINCT(user_id)')) }
+
+  scope :order_by_status_in_course_and_name, ->(direction) { reorder 'course_memberships.status': direction, permission: direction == 'ASC' ? :desc : :asc, last_name: direction, first_name: direction }
+  scope :order_by_exercise_submission_status_in_series, lambda { |direction, exercise, series|
+    submissions = Submission.in_series(series).of_exercise(exercise)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id).most_recent
+    joins("LEFT JOIN (#{submissions.to_sql}) submissions ON submissions.user_id = users.id")
+      .reorder 'submissions.status': direction
+  }
+  scope :order_by_submission_statuses_in_series, lambda { |direction, series|
+    submissions = Submission.in_series(series)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id, :exercise_id).most_recent.select(:user_id, :status)
+    read_states = ActivityReadState.in_series(series)
+    read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+    read_states = read_states.select(:user_id, 'NULL AS status')
+    # Create columns for each status with the count of submissions that have that status
+    cols = Submission.statuses.map { |k, v| "COUNT(CASE WHEN status = #{v} #{'OR status is NULL' if k == 'correct'} THEN 1 END) AS #{k.parameterize(separator: '_')}" }
+    combined_sql = "(SELECT user_id, #{cols.join(',')} FROM ((#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})) AS c GROUP BY user_id)"
+    # Order by those status columns
+    joins("LEFT JOIN (#{combined_sql}) c ON c.user_id = users.id")
+      .reorder Submission.statuses.keys.map { |k| "c.#{k.parameterize(separator: '_')} #{direction}" }.join(',')
+  }
+  scope :order_by_activity_read_state_in_series, lambda { |direction, content_page, series|
+    read_states = ActivityReadState.in_series(series).of_content_page(content_page)
+    read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+    joins("LEFT JOIN (#{read_states.to_sql}) read_states ON read_states.user_id = users.id")
+      .reorder 'read_states.id': direction
+  }
+  scope :order_by_solved_exercises_in_series, lambda { |direction, series|
+    submissions = Submission.in_series(series)
+    submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+    submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.select(:user_id)
+    read_states = ActivityReadState.in_series(series)
+    read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+    read_states = read_states.select(:user_id)
+    combined_sql = "(SELECT user_id, COUNT(*) AS count FROM ((#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})) AS c GROUP BY user_id)"
+    joins("LEFT JOIN #{combined_sql} c ON c.user_id = users.id")
+      .reorder 'c.count': direction
+  }
+  scope :order_by_solved_exercises_in_course, lambda { |direction, course|
+    # because the deadline can be different for each series and an activity can appear in multiple series
+    # we need a subquery for each series
+    combined_sql = course.series.map do |series|
+      submissions = Submission.in_series(series)
+      submissions = submissions.before_deadline(series.deadline) if series.deadline.present?
+      submissions = submissions.group(:user_id, :exercise_id).most_recent.correct.select(:user_id)
+      read_states = ActivityReadState.in_series(series)
+      read_states = read_states.before_deadline(series.deadline) if series.deadline.present?
+      read_states = read_states.select(:user_id)
+      "(#{read_states.to_sql}) UNION ALL (#{submissions.to_sql})"
+    end
+    combined_sql = "(SELECT user_id, COUNT(*) AS count FROM (#{combined_sql.join(' UNION ALL ')}) AS c GROUP BY user_id)"
+    joins("LEFT JOIN #{combined_sql} c ON c.user_id = users.id")
+      .reorder 'c.count': direction
+  }
+  scope :order_by_progress, lambda { |direction, course = nil|
+    submissions = Submission.judged
+    submissions = submissions.in_course(course) if course.present?
+    correct_exercises = submissions.correct.group(:user_id).select(:user_id, 'COUNT(distinct exercise_id) AS count')
+    attempted_exercises = submissions.group(:user_id).select(:user_id, 'COUNT(distinct exercise_id) AS count')
+    joins("LEFT JOIN (#{correct_exercises.to_sql}) correct ON correct.user_id = users.id")
+      .joins("LEFT JOIN (#{attempted_exercises.to_sql}) attempted ON attempted.user_id = users.id")
+      .reorder 'correct.count': direction, 'attempted.count': direction
+  }
 
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
@@ -287,6 +353,12 @@ class User < ApplicationRecord
     return nil if email.blank? || institution_id.nil?
 
     find_by(email: email, institution_id: institution_id)
+  end
+
+  def self.from_username_and_institution(username, institution_id)
+    return nil if username.blank? || institution_id.nil?
+
+    find_by(username: username, institution_id: institution_id)
   end
 
   def set_search

@@ -1,7 +1,7 @@
 json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :created_at, :updated_at
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
-  json.newer_submission_url(annotation.newer_submission&.yield_self { |s| submission_url(s) })
+  json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })
 end
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)

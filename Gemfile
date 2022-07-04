@@ -1,27 +1,27 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.0.3'
+ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.2.4'
+gem 'rails', '~> 7.0.3'
 # Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.3'
+gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
 gem 'puma', '~> 5.6.4'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.1.0'
+gem 'cssbundling-rails', '~> 1.1.1'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.2'
+gem 'jsbundling-rails', '~> 1.0.3'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
 gem 'sprockets-rails', '~> 3.4.2'
 
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 4.1.20'
+# Use Terser as compressor for JavaScript assets
+gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'
@@ -34,10 +34,10 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.11.1', require: false
+gem 'bootsnap', '~> 1.12.0', require: false
 
 # used to validate container responses
-gem 'json-schema', '~> 2.8.1'
+gem 'json-schema', '~> 3.0.0'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.28.0'
+gem 'rouge', '3.29.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -64,7 +64,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'ace-rails-ap', '~>4.4'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.2'
+gem 'autoprefixer-rails', '~>10.4.7'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
@@ -76,7 +76,7 @@ gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.4.0'
 
 # Json webtokens
-gem 'jwt', '~> 2.3.0'
+gem 'jwt', '~> 2.4.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.4'
+gem 'nokogiri', '~> 1.13.6'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -127,10 +127,10 @@ gem 'rails_server_timings', '~> 1.0.8'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.2.1'
+gem 'dalli', '~> 3.2.2'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.20.0'
+gem 'faker', '~> 2.21.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -138,13 +138,10 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.19'
 
-gem 'ddtrace', '~> 1.0.0.beta2'
+gem 'ddtrace', '~> 1.1.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.2.0'
-
-# Set io-wait fixed to version 0.2.0 as 0.2.1 is not available in production environment
-gem 'io-wait', '~> 0.2.0'
+gem 'after_commit_everywhere', '~> 1.2.2'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -159,8 +156,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.36.0'
-  gem 'selenium-webdriver', '~> 4.1.0'
+  gem 'capybara', '~> 3.37.1'
+  gem 'selenium-webdriver', '~> 4.3.0'
 end
 
 group :test do
@@ -168,7 +165,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.0.8'
+  gem 'test-prof', '~> 1.0.9'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -183,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.14.2'
+  gem 'rubocop-rails', '~> 2.15.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

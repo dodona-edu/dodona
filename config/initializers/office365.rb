@@ -25,6 +25,7 @@ module OmniAuth
           end
 
           params[:scope] ||= DEFAULT_SCOPE
+          params[:prompt] = 'select_account'
         end
       end
 

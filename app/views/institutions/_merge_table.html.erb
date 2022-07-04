@@ -28,8 +28,8 @@
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id), target: '_blank', class: 'nested-link' %></td>
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
         <td class="actions">
-          <%= link_to institution_path(institution), target: '_blank', class: 'btn btn-sm btn-secondary nested-link' do %>
-            <i class="mdi mdi-open-in-new mdi-18"></i>
+          <%= link_to institution_path(institution), target: '_blank', class: 'btn btn-icon nested-link' do %>
+            <i class="mdi mdi-open-in-new"></i>
           <% end %>
         </td>
       </tr>

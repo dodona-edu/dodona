@@ -6,9 +6,14 @@
         <div class="alert alert-<%= type %>">
           <strong><%= t("layout.messages.#{type}") %></strong>
           <%= value %>
-          <%= link_to(flash[:extra]["message"], flash[:extra]["url"]) if flash[:extra] %>
+          <% flash[:options]&.each do |option| %>
+            <br/><%= link_to(option["message"], option["url"])%>
+          <% end %>
         </div>
       <% end %>
+    <% end %>
+    <% if @unread_announcement.present? %>
+      <%= render partial: 'announcements/announcement', locals: { announcement: @unread_announcement } %>
     <% end %>
     <% if user_signed_in? %>
       <div class='alert alert-warning hidden' id="time-zone-warning">

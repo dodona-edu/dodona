@@ -33,43 +33,32 @@
     </div>
   <% end %>
   <div class="card-supporting-text stats row">
-    <% if local_assigns[:course_index] %>
+    <% if current_user.course_admin?(course) %>
       <div class="col-6">
-        <h1><%= number_with_delimiter course.subscribed_members_count, delimiter: " " %></h1>
-        <%= t ".users" %>
+        <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
+          <%= t ".submissions" %>
+        <% end %>
       </div>
       <div class="col-6">
-        <h1><%= number_with_delimiter course.exercises_count, delimiter: " " %></h1>
-        <%= t ".exercises" %>
+        <%= link_to course_members_path(course), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter course.subscribed_members_count, delimiter: " " %></h1>
+          <%= t ".users" %>
+        <% end %>
       </div>
     <% else %>
-      <% if current_user.course_admin?(course) %>
-        <div class="col-6">
-          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
-            <h1><%= number_with_delimiter course.submissions.count, delimiter: " " %></h1>
-            <%= t ".submissions" %>
-          <% end %>
-        </div>
-        <div class="col-6">
-          <%= link_to course_members_path(course), class: 'card-title-link' do %>
-            <h1><%= number_with_delimiter course.subscribed_members_count, delimiter: " " %></h1>
-            <%= t ".users" %>
-          <% end %>
-        </div>
-      <% else %>
-        <div class="col-6">
-          <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
-            <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
-            <%= t ".submissions" %>
-          <% end %>
-        </div>
-        <div class="col-6">
-          <%= link_to course_path(course), class: 'card-title-link' do %>
-            <h1><%= number_with_delimiter current_user.correct_exercises(course: course), delimiter: " " %></h1>
-            <%= t ".correct-exercises" %>
-          <% end %>
-        </div>
-      <% end %>
+      <div class="col-6">
+        <%= link_to course_submissions_path(course), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter current_user.submissions.in_course(course).count, delimiter: " " %></h1>
+          <%= t ".submissions" %>
+        <% end %>
+      </div>
+      <div class="col-6">
+        <%= link_to course_path(course), class: 'card-title-link' do %>
+          <h1><%= number_with_delimiter current_user.correct_exercises(course: course), delimiter: " " %></h1>
+          <%= t ".correct-exercises" %>
+        <% end %>
+      </div>
     <% end %>
   </div>
   <% if local_assigns[:show_deadlines] %>
@@ -89,21 +78,15 @@
     <% end %>
   <% end %>
   <div class="card-actions card-border">
-    <% if local_assigns[:course_index] and current_user.course_admin? course %>
-      <%= link_to t('.edit-course'), edit_course_path(course), class: 'btn-text float-end' %>
-    <% else %>
-      <%= link_to t('.go-to-course'), course_path(course), class: 'btn-text float-end' %>
-    <% end %>
-    <% if not local_assigns[:course_index] %>
-      <div class="float-start">
-        <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"
-           data-course_id="<%= course.id %>"
-           title="<%= @favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
-           data-bs-toggle="tooltip"
-           data-bs-placement="bottom"
-        >
-        </i>
-      </div>
-    <% end %>
+    <div class="flex-grow-1">
+      <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"
+          data-course_id="<%= course.id %>"
+          title="<%= @favorite_courses.include?(course) ? t('js.unfavorite-course-do') : t('js.favorite-course-do') %>"
+          data-bs-toggle="tooltip"
+          data-bs-placement="bottom"
+      >
+      </i>
+    </div>
+    <%= link_to t('.go-to-course'), course_path(course), class: 'btn btn-text' %>
   </div>
 </div>

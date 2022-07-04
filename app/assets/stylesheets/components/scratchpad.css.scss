@@ -4,7 +4,7 @@
     background-color: $content-bg;
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
-    border-color: $hairlinegray;
+    border-color: $divider;
     border-bottom: 0;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -16,8 +16,8 @@
 }
 
 .scratchpad-header {
-    color: $header-fg;
-    background-color: $header-bg;
+    color: $on-primary;
+    background-color: $primary;
     height: $navbar-height;
     display: flex;
     position: absolute;
@@ -35,14 +35,14 @@
 .scratchpad-info {
     padding-left: 20px;
     font-size: 14px;
-    color: $text-muted;
+    color: $on-surface-muted;
     // Header has absolute position, simulate its height using margin-top
     margin-top: $navbar-height + 5;
 }
 
 #scratchpad-code-copy-btn {
     color: white;
-    background-color: $color-blue-grey;
+    background-color: $blue-gray;
     white-space: nowrap;
 }
 
@@ -57,29 +57,29 @@
 #scratchpad-editor-wrapper {
     margin-bottom: 20px;
 }
+
 // Wrapper and its child should take up as much space as possible
-#scratchpad-editor-wrapper , #scratchpad-editor-wrapper > div:first-child {
-    height: 100%;
-    max-height: 100%;
+#scratchpad-editor-wrapper,
+#scratchpad-editor-wrapper>div:first-child {
+    display: flex;
+    flex-flow: column;
+    flex: 1 1 auto;
+    overflow-y: auto;
 }
 
-.cm-editor {
-    // Inform editor of height preferences
-    height: 100%;
-}
-
-// More specific selector to override !important property from Papyros
-div .cm-gutters {
-    // Height 100% seems to not work on the gutters, so override the default
-    height: auto !important;
-    min-height: 100% !important;
-}
 #scrathcpad-output-wrapper {
     margin-bottom: 10px;
+    flex: 0 1 auto;
 }
+
 // First child is the output area, limit its size
-#scratchpad-output-wrapper > div:first-child {
-    max-height: 20vh;
+#scratchpad-output-wrapper>div:first-child {
+    max-height: 20vh !important;
+    flex: 0 1 auto;
+}
+
+#scratchpad-input-wrapper {
+    flex: 0 1 auto;
 }
 
 #scratchpad-offcanvas.show {

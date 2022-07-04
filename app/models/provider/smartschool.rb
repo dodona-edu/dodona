@@ -28,6 +28,14 @@ class Provider::Smartschool < Provider
     :smartschool
   end
 
+  def self.logo
+    'smartschool.png'
+  end
+
+  def self.readable_name
+    'Smartschool'
+  end
+
   SMARTSCHOOL_SUFFIX = '.smartschool.be'.freeze
 
   def self.extract_institution_name(auth_hash)

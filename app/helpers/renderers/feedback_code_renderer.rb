@@ -22,13 +22,13 @@ class FeedbackCodeRenderer
       # Only display copy button when the submission is not empty
       if @code.present?
         # Not possible to use clipboard_button_for here since the behaviour is different.
-        @builder.button(class: 'btn btn-secondary copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-          @builder.i(class: 'mdi mdi-clipboard-outline mdi-18') {}
+        @builder.button(class: 'btn btn-icon copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+          @builder.i(class: 'mdi mdi-clipboard-outline') {}
         end
       end
       @builder.script(type: 'application/javascript') do
         @builder << <<~HEREDOC
-          $(() => {
+          window.dodona.ready.then(() => {
             window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", #{@code.to_json});
           });
         HEREDOC
@@ -57,7 +57,7 @@ class FeedbackCodeRenderer
 
     @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do
       if user_perm
-        @builder.button(class: 'btn-text', id: 'add_global_annotation') do
+        @builder.button(class: 'btn btn-text', id: 'add_global_annotation') do
           if user_is_student
             @builder.text!(I18n.t('submissions.show.questions.add_global'))
           else
@@ -72,14 +72,14 @@ class FeedbackCodeRenderer
           @builder.text!(I18n.t('submissions.show.annotations.title'))
         end
         @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-bs-toggle': 'buttons') do
-          @builder.button(class: 'btn btn-secondary annotation-toggle active', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-18 mdi-comment-multiple-outline') {}
+          @builder.button(class: 'btn annotation-toggle active', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-multiple-outline') {}
           end
-          @builder.button(class: 'btn btn-secondary annotation-toggle', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-18 mdi-comment-alert-outline') {}
+          @builder.button(class: 'btn annotation-toggle', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-alert-outline') {}
           end
-          @builder.button(class: 'btn btn-secondary annotation-toggle', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-18 mdi-comment-remove-outline') {}
+          @builder.button(class: 'btn annotation-toggle', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-remove-outline') {}
           end
         end
       end

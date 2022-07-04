@@ -21,6 +21,15 @@ class SubmissionsController < ApplicationController
     end
   end
 
+  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[user exercise created_at status].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
+  end
+
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed tutor
     policy.frame_src -> { [sandbox_url] }
@@ -69,7 +78,7 @@ class SubmissionsController < ApplicationController
               end
     @submissions = @submissions.of_exercise(@submission.exercise)
     @submissions = @submissions.of_user(@submission.user)
-    @submissions = @submissions.in_course(course) if course.present?
+    @submissions = @submissions.in_course(course)
 
     @submissions_time_stamps = []
     prev = nil

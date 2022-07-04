@@ -2,20 +2,21 @@
 #
 # Table name: series
 #
-#  id                 :integer          not null, primary key
-#  course_id          :integer
-#  name               :string(255)
-#  description        :text(16777215)
-#  visibility         :integer
-#  order              :integer          default(0), not null
-#  created_at         :datetime         not null
-#  updated_at         :datetime         not null
-#  deadline           :datetime
-#  access_token       :string(255)
-#  indianio_token     :string(255)
-#  progress_enabled   :boolean          default(TRUE), not null
-#  activities_visible :boolean          default(TRUE), not null
-#  activities_count   :integer
+#  id                       :integer          not null, primary key
+#  course_id                :integer
+#  name                     :string(255)
+#  description              :text(16777215)
+#  visibility               :integer
+#  order                    :integer          default(0), not null
+#  created_at               :datetime         not null
+#  updated_at               :datetime         not null
+#  deadline                 :datetime
+#  access_token             :string(255)
+#  indianio_token           :string(255)
+#  progress_enabled         :boolean          default(TRUE), not null
+#  activities_visible       :boolean          default(TRUE), not null
+#  activities_count         :integer
+#  activity_numbers_enabled :boolean          default(FALSE), not null
 #
 
 require 'csv'
@@ -141,10 +142,7 @@ class Series < ApplicationRecord
   end
 
   def scoresheet
-    users = course.subscribed_members
-                  .order('course_memberships.status ASC')
-                  .order(permission: :asc)
-                  .order(last_name: :asc, first_name: :asc)
+    users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 
     submission_hash = Submission.in_series(self).where(user: users)
     submission_hash = submission_hash.before_deadline(deadline) if deadline.present?

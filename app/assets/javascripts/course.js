@@ -1,12 +1,11 @@
-import { setBaseUrl } from "./index.js";
 import { initDragAndDrop } from "./drag_and_drop.js";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
+import { searchQuery } from "./search";
 
 function loadUsers(_baseUrl, _status) {
-    const baseUrl = _baseUrl || $("#user-tabs").data("baseurl");
     const status = _status || getURLParameter("status");
-    setBaseUrl(baseUrl + "?status=" + status);
+    searchQuery.queryParams.updateParam("status", status);
 }
 
 function initCourseMembers() {
@@ -23,7 +22,7 @@ function initCourseMembers() {
             // Select tab and load users
             const selectTab = $tab => {
                 const $kebab = $("#kebab-menu");
-                const status = $tab.attr("href").substr(1);
+                const status = $tab.attr("data-status");
                 const $kebabItems = $kebab.find("li a.action");
                 let anyShown = false;
                 for (const item of $kebabItems) {
@@ -55,11 +54,11 @@ function initCourseMembers() {
             });
 
             // Determine which tab to show first
-            const hash = window.location.hash;
-            let $tab = $("a[href='" + hash + "']");
+            const status = searchQuery.queryParams.params.get("status");
+            let $tab = $("a[data-status='" + status + "']");
             if ($tab.length === 0) {
                 // Default to enrolled (subscribed)
-                $tab = $("a[href='#enrolled']");
+                $tab = $("a[data-status='enrolled']");
             }
             selectTab($tab);
         }
@@ -293,21 +292,17 @@ function initCourseNew() {
 }
 
 function initCoursesListing(firstTab) {
-    let baseUrl = "";
     initCourseTabs(firstTab);
 
     function initCourseTabs(firstTab) {
-        const courseTabs = document.getElementById("course-tabs");
-        baseUrl = courseTabs.dataset.baseurl;
-
         document.querySelectorAll("#course-tabs li a").forEach(tab => {
             tab.addEventListener("click", () => selectTab(tab));
         });
 
         // If the url hash is a valid tab, use that, otherwise use the given tab
-        const hash = window.location.hash;
-        const tab = document.querySelector(`a[href='${hash}']`) ??
-            document.querySelector(`a[href='#${firstTab}']`);
+        const hash = searchQuery.queryParams.params.get("tab");
+        const tab = document.querySelector(`a[data-tab='${hash}']`) ??
+            document.querySelector(`a[data-tab='${firstTab}']`);
         selectTab(tab);
     }
 
@@ -315,14 +310,14 @@ function initCoursesListing(firstTab) {
         // If the current tab is already loaded or if it's blank, do nothing
         if (!tab || tab.classList.contains("active")) return;
 
-        const state = tab.getAttribute("href").substr(1);
+        const state = tab.getAttribute("data-tab");
         loadCourses(state);
         document.querySelector("#course-tabs a.active")?.classList?.remove("active");
         tab.classList.add("active");
     }
 
     function loadCourses(tab) {
-        setBaseUrl(`${baseUrl}?tab=${tab}`);
+        searchQuery.queryParams.updateParam("tab", tab);
     }
 }
 

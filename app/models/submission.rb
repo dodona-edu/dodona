@@ -55,7 +55,7 @@ class Submission < ApplicationRecord
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
   scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
   scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
-  scope :in_course, ->(course) { where course_id: course.id }
+  scope :in_course, ->(course) { where course_id: course&.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
   scope :of_judge, ->(judge) { where(exercise_id: Exercise.where(judge_id: judge.id)) }
   scope :from_students, ->(course) { where(user: course.enrolled_members) }
@@ -98,6 +98,11 @@ class Submission < ApplicationRecord
     correct.group(:exercise_id, :user_id).least_recent
   }
 
+  scope :order_by_user, ->(direction) { includes(:user).reorder 'users.first_name': direction, 'users.last_name': direction, id: :desc }
+  scope :order_by_exercise, ->(direction) { includes(:exercise).reorder "activities.name_#{I18n.locale}": direction, id: :desc }
+  scope :order_by_created_at, ->(direction) { reorder created_at: direction, id: :desc }
+  scope :order_by_status, ->(direction) { reorder status: direction, id: :desc }
+
   def initialize(params)
     raise 'please explicitly tell whether you want to evaluate this submission' unless params.key? :evaluate
 
@@ -119,7 +124,7 @@ class Submission < ApplicationRecord
   end
 
   def code=(code)
-    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
+    FileUtils.mkdir_p fs_path
     File.write(File.join(fs_path, CODE_FILENAME), code.force_encoding('UTF-8'))
   end
 
@@ -133,7 +138,7 @@ class Submission < ApplicationRecord
   end
 
   def result=(result)
-    FileUtils.mkdir_p fs_path unless File.exist?(fs_path)
+    FileUtils.mkdir_p fs_path
     File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
@@ -173,11 +178,7 @@ class Submission < ApplicationRecord
 
   def clear_fs
     # If we were destroyed or if we were never saved to the database, delete this submission's directory
-    # rubocop:disable Style/GuardClause, Style/SoleNestedConditional
-    if destroyed? || new_record?
-      FileUtils.remove_entry_secure(fs_path) if File.exist?(fs_path)
-    end
-    # rubocop:enable Style/GuardClause, Style/SoleNestedConditional
+    FileUtils.rm_rf(fs_path) if destroyed? || new_record?
   end
 
   def on_filesystem?

@@ -1,11 +1,11 @@
 $dot-size: 9px;
 
 // Annotation colors
-$annotation-question: $color-purple;
-$annotation-user: $success-500;
-$annotation-error: $danger-500;
-$annotation-warning: $warning-500;
-$annotation-info: $info-500;
+$annotation-question: $purple;
+$annotation-user: $success;
+$annotation-error: $danger;
+$annotation-warning: $warning;
+$annotation-info: $info;
 
 .code-table {
   .code-listing-container {
@@ -15,7 +15,7 @@ $annotation-info: $info-500;
 
     .copy-btn {
       margin-right: 5px;
-      margin-top: 5px;
+      margin-top: -4px;
       position: absolute;
       right: 1px;
       top: 0;
@@ -41,15 +41,15 @@ $annotation-info: $info-500;
 
       // Highlight for the line numbers.
       .lineno.marked {
-        background-color: $code-bg-warning;
-        border-left: $code-warning-border-left solid $warning-500;
+        background-color: $warning-container;
+        //border-left: $code-warning-border-left solid $warning;
         // Only do the line number, don't extend to the full height
         background-clip: content-box;
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
-        background-color: $code-bg-warning;
+        background-color: $warning-container;
       }
 
       .annotation-button {
@@ -60,8 +60,7 @@ $annotation-info: $info-500;
         left: -15px;
         margin-top: -7px;
         border-radius: 50%;
-        padding-left: 5.5px;
-        padding-top: 6px;
+        padding-top: 4px;
       }
 
       .annotation-button:hover {
@@ -70,13 +69,17 @@ $annotation-info: $info-500;
       }
 
       .lineno:first-child {
-        .rouge-code, .rouge-gutter {
+
+        .rouge-code,
+        .rouge-gutter {
           padding-top: 5px;
         }
       }
 
       .lineno:last-child {
-        .rouge-code, .rouge-gutter {
+
+        .rouge-code,
+        .rouge-gutter {
           padding-bottom: 5px;
         }
       }
@@ -105,7 +108,7 @@ $annotation-info: $info-500;
           margin-left: 20px;
           white-space: nowrap;
           font-family: $font-family-monospace;
-          color: $text-secondary;
+          color: $on-surface-muted;
         }
 
         .dot {
@@ -139,8 +142,9 @@ $annotation-info: $info-500;
       }
 
       // General lighter background on the right side
-      .rouge-code, .annotation-cell {
-        background-color: $body-bg;
+      .rouge-code,
+      .annotation-cell {
+        background-color: $background;
       }
 
       .hide {
@@ -166,9 +170,9 @@ $annotation-info: $info-500;
 
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border: 1px solid $hairlinegray;
+    border: 1px solid $divider;
     border-left-width: 3px;
-    border-left-color: $grey-500;
+    border-left-color: $outline;
 
     background: $content-bg;
 
@@ -177,18 +181,21 @@ $annotation-info: $info-500;
     .annotation-header {
       .annotation-meta {
         font-size: 85%;
-        color: $text-secondary;
+        color: $on-surface-muted;
       }
 
-      .annotation-edit, .question-resolve, .question-in_progress, .question-unresolve {
+      .annotation-edit,
+      .question-resolve,
+      .question-in_progress,
+      .question-unresolve {
         float: right;
-        margin-top: 4px;
       }
 
       .annotation-visibility {
         &::before {
           vertical-align: bottom;
         }
+
         margin-left: 4px;
       }
 
@@ -208,7 +215,7 @@ $annotation-info: $info-500;
       // Override the normal pre padding & coloring
       pre {
         padding: 0;
-        background-color: $code-bg !important;
+        background-color: $code-bg  !important;
         margin-bottom: 0;
         border: none;
         border-radius: 0;
@@ -217,7 +224,8 @@ $annotation-info: $info-500;
       }
 
       // Stylize the embedded code block
-      .highlighter-rouge div.highlight, pre:not(.highlight) {
+      .highlighter-rouge div.highlight,
+      pre:not(.highlight) {
         padding: 5px 10px;
         margin-left: 10px;
         margin-right: 10px;
@@ -241,12 +249,15 @@ $annotation-info: $info-500;
         margin: 10px auto 20px;
 
         max-width: 300px;
+
         @include media-breakpoint-up(md) {
           max-width: calc(#{map-get($container-max-widths, "md")} * 0.6);
         }
+
         @include media-breakpoint-up(lg) {
           max-width: calc(#{map-get($container-max-widths, "lg")} * 0.7);
         }
+
         @include media-breakpoint-up(xl) {
           max-width: calc(#{map-get($container-max-widths, "xl")} * 0.7);
         }
@@ -254,7 +265,8 @@ $annotation-info: $info-500;
     }
   }
 
-  .annotation.question, .annotation.user {
+  .annotation.question,
+  .annotation.user {
     border-left-width: 5px;
   }
 
@@ -300,7 +312,8 @@ $annotation-info: $info-500;
       margin-bottom: 12px;
       text-align: right;
 
-      .annotation-control-button, .question-control-button {
+      .annotation-control-button,
+      .question-control-button {
         margin-left: 3px;
       }
 
@@ -316,7 +329,7 @@ $annotation-info: $info-500;
     }
 
     .annotation-submission-input.validation-error {
-      border-color: $danger-fg;
+      border-color: $danger;
     }
   }
 

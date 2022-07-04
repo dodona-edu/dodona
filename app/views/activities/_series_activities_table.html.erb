@@ -12,7 +12,7 @@
       <th class='status-icon'></th>
       <th class='type-icon'></th>
       <th><%= t "activities.index.activity_title" %></th>
-      <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+      <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
         <th class='count d-none d-sm-table-cell'>
           <% if @course %>
             <%= t "activities.index.class_progress" %>
@@ -34,7 +34,7 @@
     </tr>
     </thead>
     <tbody>
-    <% local_assigns[:activities].each do |activity| %>
+    <% local_assigns[:activities].each_with_index do |activity, index| %>
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>
@@ -50,6 +50,7 @@
         </td>
 
         <td>
+          <%= "#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled? %>
           <% if activity.accessible?(current_user, @course) %>
             <%= link_to activity.name, get_activity_path.call(activity) %>
           <% else %>
@@ -58,16 +59,16 @@
               <%= form_with url: add_course_repository_path(activity.repository) do |form| %>
                 <%= form.hidden_field :course_id, value: @course.id %>
                 <button type="submit" class="btn btn-icon">
-                  <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+                  <i class="mdi mdi-alert colored-warning" title="<%= t ".course_has_no_rights_with_fix" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
                 </button>
               <% end %>
             <% elsif current_user&.course_admin?(@course) %>
-              <i class="mdi mdi-alert mdi-18 colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
+              <i class="mdi mdi-alert colored-warning" title="<%= t ".course_has_no_rights_with_contact" %>" data-bs-toggle="tooltip" data-bs-placement="right"></i>
             <% end %>
           <% end %>
         </td>
 
-        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
+        <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
           <td class="d-none d-sm-table-cell">
             <% if activity.exercise? %>
               <% if @course %>
@@ -113,7 +114,7 @@
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
             <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
@@ -121,7 +122,7 @@
               <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('activities.navbar_links.read_states'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
           </td>

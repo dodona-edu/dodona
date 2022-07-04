@@ -6,6 +6,7 @@
 @import "components/evaluations.css.scss";
 @import "components/favorite.css.scss";
 @import "components/heatmap.css.scss";
+@import "components/histogram.css.scss";
 @import "components/img.css.scss";
 @import "components/link.css.scss";
 @import "components/modal.css.scss";
@@ -21,14 +22,19 @@
 @import "components/tokenfield.css.scss";
 @import "components/tutor.css.scss";
 @import "components/visualisations.css.scss";
+@import "components/search_field.css.scss";
+@import "components/dropdown-filter.css.scss";
 
 .flex-spacer {
   flex-grow: 1;
 }
 
-.h3-info-text, .h4-info-text, .h5-info-text, .header-info-text {
+.h3-info-text,
+.h4-info-text,
+.h5-info-text,
+.header-info-text {
   font-size: 85%;
-  color: $text-muted;
+  color: $on-surface-muted;
 }
 
 .h3-info-text {
@@ -50,7 +56,7 @@
 }
 
 .spinner {
-  background-color: $spinner-bg;
+  background-color: $secondary;
   border-radius: 100%;
   animation: scaleout 1.5s infinite ease-in-out;
 }
@@ -59,6 +65,7 @@
   0% {
     transform: scale(0.0);
   }
+
   100% {
     transform: scale(1.0);
     opacity: 0;
@@ -69,11 +76,6 @@
   margin-bottom: 1rem;
 }
 
-.alert a {
-  color: $alert-fg;
-  font-weight: bold;
-}
-
 .hidden {
   display: none !important;
 }
@@ -82,13 +84,37 @@
   @include media-breakpoint-down(sm) {
     text-align: left;
   }
+
   text-align: right;
   font-weight: bold;
 }
 
-h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small,
+.h1 small,
+.h2 small,
+.h3 small,
+.h4 small,
+.h5 small,
+.h6 small,
+h1 .small,
+h2 .small,
+h3 .small,
+h4 .small,
+h5 .small,
+h6 .small,
+.h1 .small,
+.h2 .small,
+.h3 .small,
+.h4 .small,
+.h5 .small,
+.h6 .small {
   font-size: 65%;
   font-weight: 400;
   line-height: 1;
-  color: $text-secondary;
+  color: $on-surface-muted;
 }

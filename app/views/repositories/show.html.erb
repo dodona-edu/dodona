@@ -1,7 +1,4 @@
 <%= render 'navbar_links' %>
-<% content_for :javascripts do %>
-  <%= javascript_include_tag 'activities' %>
-<% end %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
@@ -59,7 +56,7 @@
         <% if policy(@repository).reprocess? %>
           <div class="col-12">
             <div class="float-end">
-              <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn-text" %>
+              <%= link_to t(".reprocess"), reprocess_repository_path(@repository), class: "btn btn-text" %>
             </div>
           </div>
         <% end %>

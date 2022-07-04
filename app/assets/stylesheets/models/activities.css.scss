@@ -4,9 +4,10 @@
     width: 30px;
   }
 
-  th.type-icon, td.type-icon {
+  th.type-icon,
+  td.type-icon {
     width: 18px;
-    color: $text-secondary;
+    color: $on-surface-muted;
     padding-left: 0;
     padding-right: 0;
   }
@@ -34,6 +35,7 @@
   .card-title {
     display: flex;
     flex-direction: row;
+    align-items: center;
 
     .card-title-navigation {
       display: flex;
@@ -41,9 +43,18 @@
       font-size: 24px;
       font-weight: 300;
       line-height: normal;
-      overflow: hidden;
       margin-left: auto;
     }
+
+    .btn-icon {
+      margin-top: -6px;
+      margin-bottom: -6px;
+    }
+  }
+
+  .card-supporting-text {
+    font-size: 18px;
+    line-height: 1.5;
   }
 }
 
@@ -76,10 +87,10 @@
   text-align: left;
 }
 
-.activity-description .dodona-centered-group img + img,
-.activity-description .dodona-centered-group img + table,
-.activity-description .dodona-centered-group table + img,
-.activity-description .dodona-centered-group table + table {
+.activity-description .dodona-centered-group img+img,
+.activity-description .dodona-centered-group img+table,
+.activity-description .dodona-centered-group table+img,
+.activity-description .dodona-centered-group table+table {
   margin-left: 16px;
 }
 
@@ -100,7 +111,7 @@
   height: 16px;
   margin-left: 16px;
   display: block;
-  border-top: 1px solid $text-secondary;
+  border-top: 1px solid $on-surface-muted;
 }
 
 .footnotes {
@@ -136,6 +147,7 @@ center img {
 .activity-info {
   .labels {
     margin-bottom: 1em;
+
     a:hover {
       text-decoration: none;
     }
@@ -165,6 +177,7 @@ center img {
   .card-title {
     padding-bottom: 0;
   }
+
   .card-supporting-text {
     padding-top: 0;
   }

@@ -171,6 +171,8 @@ class Repository < ApplicationRecord
       end
     end
 
+    # rubocop:disable Style/HashExcept
+    # activity_dirs_and_configs is not a hash
     activity_dirs_and_configs.reject { |d, _| handled_directories.include? d }.each do |dir, c|
       token = c['internals'] && c['internals']['token']
       if token.is_a?(String) && token.length == 64 && Activity.find_by(repository_token: token).nil?
@@ -181,6 +183,7 @@ class Repository < ApplicationRecord
       end
       update_activity act
     end
+    # rubocop:enable Style/HashExcept
 
     new_activities.each do |act|
       c = act.config

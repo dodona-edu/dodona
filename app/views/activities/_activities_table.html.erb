@@ -1,6 +1,3 @@
-<% content_for :javascripts do %>
-  <%= javascript_include_tag 'activities' %>
-<% end %>
 <% get_activity_path ||= method(:activity_path) %>
 <% if defined? user
      user = user || current_user
@@ -67,7 +64,9 @@
           <% if policy(activity).info? %>
             <div class="text-muted ellipsis-overflow">
               <small>
-                <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
+                <d-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>">
+                  <%= activity.repository.name %>: <%= activity.path %>
+                </d-filter-button>
               </small>
             </div>
           <% end %>
@@ -75,7 +74,7 @@
 
         <td class="description-languages">
           <div class="text-muted">
-            <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+            <%= raw activity.description_languages.map {|language| "<d-filter-button param='description_languages' value='#{language}' multi title='#{t("js.#{language}")}'>#{language}</d-filter-button> "}.join(", ") %>
           </div>
         </td>
 
@@ -129,7 +128,7 @@
               <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('layout.menu.my_submissions'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
             <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
@@ -137,7 +136,7 @@
               <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
                           title: t('activities.navbar_links.read_states'),
                           class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right mdi-18"></i>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
             <% end %>
           </td>
@@ -150,8 +149,3 @@
 <% if activities.try(:total_pages) %>
   <center><%= page_navigation_links activities, true, "activities" %></center>
 <% end %>
-<script type="text/javascript">
-    $(function () {
-        dodona.initTokenClickables();
-    });
-</script>

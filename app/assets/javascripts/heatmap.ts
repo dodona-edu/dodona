@@ -1,7 +1,15 @@
 /* eslint @typescript-eslint/no-use-before-define: "off" */
 
 import * as d3 from "d3";
-import * as moment from "moment";
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+import minMax from "dayjs/plugin/minMax";
+import duration from "dayjs/plugin/duration";
+import isoWeek from "dayjs/plugin/isoWeek";
+dayjs.extend(utc);
+dayjs.extend(minMax);
+dayjs.extend(duration);
+dayjs.extend(isoWeek);
 
 const selector = "#heatmap-container";
 const margin = { top: 50, right: 10, bottom: 20, left: 30 };
@@ -9,13 +17,13 @@ const isoDateFormat = "YYYY-MM-DD";
 const monthKeys = ["jan", "feb", "mar", "apr", "may", "jun", "jul", "aug", "sep", "oct", "nov", "dec"];
 const dayKeys = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"];
 
-function firstDayOfAY(day: moment.Moment): moment.Moment {
-    const prevYearStart = setToAYStart(day.clone().subtract(1, "year"));
-    const currentYearStart = setToAYStart(day.clone());
+function firstDayOfAY(day: dayjs.Dayjs): dayjs.Dayjs {
+    const prevYearStart = setToAYStart(day.subtract(1, "year"));
+    const currentYearStart = setToAYStart(day);
     return day < currentYearStart ? prevYearStart : currentYearStart;
 }
 
-function setToAYStart(day: moment.Moment): moment.Moment {
+function setToAYStart(day: dayjs.Dayjs): dayjs.Dayjs {
     return day.month(8).date(1);
 }
 
@@ -33,17 +41,17 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
         let firstDay;
         let lastDay;
         if (keys.length > 0) {
-            firstDay = firstDayOfAY(moment.utc(keys[0]));
-            lastDay = moment.min([
-                firstDayOfAY(moment.utc(keys[keys.length - 1]).add(1, "year")),
-                moment.utc(moment().format(isoDateFormat)).add(1, "day"),
+            firstDay = firstDayOfAY(dayjs.utc(keys[0]));
+            lastDay = dayjs.min([
+                firstDayOfAY(dayjs.utc(keys[keys.length - 1]).add(1, "year")),
+                dayjs.utc(dayjs().format(isoDateFormat)).add(1, "day"),
             ]);
         } else {
-            firstDay = firstDayOfAY(moment.utc(moment().format(isoDateFormat)));
-            lastDay = moment.utc(moment().format(isoDateFormat)).add(1, "day");
+            firstDay = firstDayOfAY(dayjs.utc(dayjs().format(isoDateFormat)));
+            lastDay = dayjs.utc(dayjs().format(isoDateFormat)).add(1, "day");
         }
 
-        for (let date = firstDay.clone(); date < lastDay; date.add(1, "day")) {
+        for (let date = firstDay; date < lastDay; date = date.add(1, "day")) {
             if (!keys.includes(date.format(isoDateFormat))) {
                 keys.push(date.format(isoDateFormat));
             }
@@ -52,7 +60,7 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
             keys
                 .sort()
                 .map(
-                    k => [moment.utc(k), data[k] || 0] as [moment.Moment, number]
+                    k => [dayjs.utc(k), data[k] || 0] as [dayjs.Dayjs, number]
                 ),
             oldestFirst,
             year
@@ -61,11 +69,11 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
     d3.json(url).then(processor);
 }
 
-function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year: string | undefined): void {
+function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: string | undefined): void {
     const darkMode = window.dodona.darkMode;
-    const emptyColor = darkMode ? "#37474F" : "white";
-    const lowColor = darkMode ? "#364953" : "#E3F2FD";
-    const highColor = darkMode ? "#039BE5" : "#0D47A1";
+    const emptyColor = darkMode ? "#001d36" : "#fcfcff";
+    const lowColor = darkMode ? "#00325a" : "#d0e4ff";
+    const highColor = darkMode ? "#9ccaff" : "#003d6c";
 
     const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));
     const shortMonthNames = monthKeys.map(k => I18n.t(`js.months.short.${k}`));
@@ -96,12 +104,12 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
     const weekdaysData = [];
     const yearsData = [];
     for (
-        let y = firstAY.clone();
-        y < setToAYStart(lastAY.clone().add(1, "year"));
+        let y = firstAY;
+        y < setToAYStart(lastAY.add(1, "year"));
         y = setToAYStart(y.add(1, "year"))
     ) {
-        const next = setToAYStart(y.clone().add(1, "year"));
-        const weeks = moment.duration(next.diff(y)).asWeeks() + 1;
+        const next = setToAYStart(y.add(1, "year"));
+        const weeks = dayjs.duration(next.diff(y)).asWeeks() + 1;
         if (weeks > maxWeeks) {
             maxWeeks = weeks;
         }
@@ -145,12 +153,12 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
         .attr("fill", "currentColor")
         .text(d => d[1]);
 
-    const firstMonth = firstAY.clone().date(1);
-    const lastMonth = lastDay.clone().date(1);
+    const firstMonth = firstAY.date(1);
+    const lastMonth = lastDay.date(1);
     const months = [firstMonth];
-    const numMonths = moment.duration(lastMonth.diff(firstMonth)).asMonths() - 1;
+    const numMonths = dayjs.duration(lastMonth.diff(firstMonth)).asMonths() - 1;
     for (let i = 0; i < numMonths + 1; i++) {
-        months.push(firstMonth.clone().add(i + 1, "months"));
+        months.push(firstMonth.add(i + 1, "months"));
     }
 
     const monthLabels = chart.selectAll(".month").data(months);
@@ -159,12 +167,12 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
         .attr("class", "month")
         .attr("fill", "currentColor")
         .style("opacity", 0)
-        .text((d: moment.Moment) => shortMonthNames[d.month()])
+        .text((d: dayjs.Dayjs) => shortMonthNames[d.month()])
         .transition().duration(500)
         .style("opacity", 1)
         .attr("x", d => {
             const ayStart = firstDayOfAY(d);
-            return moment.duration(d.clone().isoWeekday(1).diff(ayStart.clone().isoWeekday(1))).asWeeks() * unitSize + 1;
+            return dayjs.duration(d.isoWeekday(1).diff(ayStart.isoWeekday(1))).asWeeks() * unitSize + 1;
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d);
@@ -192,7 +200,7 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
         .attr("height", unitSize - 2)
         .attr("x", d => {
             const ayStart = firstDayOfAY(d[0]);
-            return moment.duration(d[0].clone().isoWeekday(1).diff(ayStart.clone().isoWeekday(1))).asWeeks() * unitSize + 1;
+            return dayjs.duration(d[0].isoWeekday(1).diff(ayStart.isoWeekday(1))).asWeeks() * unitSize + 1;
         })
         .attr("y", d => {
             const ayStart = firstDayOfAY(d[0]);
@@ -203,4 +211,3 @@ function drawHeatmap(data: [moment.Moment, number][], oldestFirst: boolean, year
 }
 
 export { initHeatmap };
-

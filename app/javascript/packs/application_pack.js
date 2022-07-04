@@ -26,11 +26,10 @@ import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from 
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
-import "polyfills.js";
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, checkIframe, initCSRF, initTooltips } from "util.js";
+import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 
@@ -39,14 +38,14 @@ initClipboard();
 
 // Don't show drawer if we don't want a drawer.
 if (!window.dodona.hideDrawer) {
-    $(() => new Drawer());
+    ready.then(() => new Drawer());
 }
 
 
 // Adds the CSRF token to each ajax request
 initCSRF();
 
-$(initTooltips);
+ready.then(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};
@@ -56,4 +55,5 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
+dodona.ready = ready;
 window.dodona = dodona;

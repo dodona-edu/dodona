@@ -72,30 +72,32 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 1;
-        color: $text-color;
+        color: $on-surface;
         text-align: center;
-        background-color: $input-group-addon-bg;
-        border: 1px solid $border-color;
+        background-color: $surface;
+        border: 1px solid $outline;
         opacity: 1;
         cursor: auto;
       }
 
-      .form-control.in-progress, .input-group-addon.in-progress {
+      .form-control.in-progress,
+      .input-group-addon.in-progress {
         border-bottom-left-radius: 0;
         border-bottom-right-radius: 0;
       }
 
-      .form-control{
-        border-color: $border-color;
+      .form-control {
+        border-color: $outline;
         line-height: initial;
       }
 
-      .score-input{
+      .score-input {
         border-right: none;
         margin-right: -28px;
         padding-right: 28px;
       }
-      .score-state{
+
+      .score-state {
         border-left: none;
         width: 28px;
         background-color: $input-bg;
@@ -117,7 +119,7 @@
 
 .evaluation-user-select {
   .user-select-option {
-    border: 1px solid $divider-color;
+    border: 1px solid $divider;
     border-radius: $border-radius-base;
     text-align: center;
     padding: 6px;
@@ -128,13 +130,15 @@
       text-decoration: inherit;
     }
   }
+
   .user-select-option:hover {
-    border: 1px solid $text-disabled;
+    border: 1px solid $divider;
   }
 
   .user-select-option h1 small {
     font-weight: 100;
   }
+
   .selected-users {
     margin-top: 18px;
     display: inline-block;
@@ -150,33 +154,49 @@
 
 .feedback {
   padding-bottom: 6px;
+
   &.correct {
-    border-bottom: 3px solid $success-300;
+    border-bottom: 3px solid $success;
   }
+
   &.wrong {
-    border-bottom: 3px solid $danger-300;
+    border-bottom: 3px solid $danger;
   }
+
   &.not-started {
-    border-bottom: 3px solid $hairlinegray;
+    border-bottom: 3px solid $divider;
   }
-  .done, .provisional {
-    color: $text-disabled;
+
+  .done,
+  .provisional {
+    color: $on-surface-muted;
   }
-  .done:hover, .provisional:hover {
-    color: $text-color;
+
+  a:hover .done,
+  a:hover .provisional,
+  .done:hover,
+  .provisional:hover {
+    color: $on-surface;
   }
 }
+
 .user-feedback-row {
   display: flex;
   justify-content: space-around;
 
   a .done {
-    color: $text-secondary;
+    color: $on-surface-muted;
   }
-  .active a i {
-    color: $info-500;
+
+  .active a {
+    background-color: $info-container;
+
+    i {
+      color: $info;
+    }
   }
 }
+
 .evaluation-form-title {
   line-height: normal;
 }
@@ -191,7 +211,7 @@ $user-column-width: 170px;
 
   .score-text {
     a {
-      color: $text-color;
+      color: $on-surface;
     }
   }
 
@@ -238,7 +258,7 @@ $user-column-width: 170px;
 }
 
 a.score-click {
-  color: $text-color;
+  color: $on-surface;
 }
 
 .score-buttons {
@@ -251,7 +271,8 @@ a.score-click {
     padding-left: 30px;
   }
 
-  td:first-child, th:first-child {
+  td:first-child,
+  th:first-child {
     max-width: 200px;
   }
 

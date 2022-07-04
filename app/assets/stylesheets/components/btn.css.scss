@@ -142,7 +142,8 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgb(white 0.1);
+      /* stylelint-disable-next-line color-function-notation */
+      background: rgba(white, 0.1);
     }
   }
 

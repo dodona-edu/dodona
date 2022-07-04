@@ -8,6 +8,21 @@
   z-index: -1;
 }
 
+.home-header {
+  position: relative;
+}
+.home-header:before {
+  content:"";
+  background: $primary-30;
+  position: absolute;
+  width: 100vw;
+  height: 380px;
+  z-index: -1;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+
 .home-header img {
   margin-top: -35px;
   margin-bottom: -10px;

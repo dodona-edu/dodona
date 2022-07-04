@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 .ace-tm {
   background-color: $code-bg;
   color: $on-background;
@@ -11,8 +12,9 @@
     width: 1px;
     background: $divider;
   }
+
   .ace_cursor {
-    color:  $secondary;
+    color: $secondary;
   }
 
   .ace_marker-layer .ace_selection {
@@ -86,7 +88,7 @@
   }
 
   .ace_variable.ace_parameter {
-    font-style: italic
+    font-style: italic;
   }
 
   .ace_string {
@@ -110,3 +112,4 @@
     color: $tertiary;
   }
 }
+/* stylelint-enable selector-class-pattern */

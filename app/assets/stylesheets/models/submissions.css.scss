@@ -9,6 +9,8 @@ $feedback-diff-table-header-fg: $on-background;
 
 .feedback-table {
   .groups {
+    margin: 0 15px 0 0;
+
     .badge {
       display: block;
       text-align: left;
@@ -19,13 +21,13 @@ $feedback-diff-table-header-fg: $on-background;
     .badge.bg-danger {
       color: $danger;
       border-color: $danger;
-      background-color: $content-bg  !important;
+      background-color: $content-bg !important;
     }
 
     .badge.bg-success {
       color: $success;
       border-color: $success;
-      background-color: $content-bg  !important;
+      background-color: $content-bg !important;
     }
   }
 
@@ -35,11 +37,6 @@ $feedback-diff-table-header-fg: $on-background;
     pre {
       border: none;
     }
-  }
-
-  .groups {
-    margin: 0;
-    margin-right: 15px;
   }
 
   .group {
@@ -70,7 +67,7 @@ $feedback-diff-table-header-fg: $on-background;
       }
     }
 
-    &>div {
+    & > div {
       margin-bottom: 3px;
     }
 
@@ -166,6 +163,7 @@ $feedback-diff-table-header-fg: $on-background;
 
     .line-nr:empty::before {
       content: " ";
+
       /* make sure the line-height is respected */
     }
 
@@ -182,12 +180,11 @@ $feedback-diff-table-header-fg: $on-background;
     .tr {
       padding: 0;
       margin: 0;
-      line-height: 1.0;
+      line-height: 1;
     }
   }
 
   table.diff.csv-diff {
-
     td,
     .del,
     .ins,
@@ -198,7 +195,6 @@ $feedback-diff-table-header-fg: $on-background;
 
     td.line-nr,
     th.line-nr {
-      position: -webkit-sticky;
       position: sticky;
       left: 0;
       vertical-align: top;
@@ -236,7 +232,7 @@ $feedback-diff-table-header-fg: $on-background;
       margin-left: 1em;
 
       span {
-        margin-right: .5em;
+        margin-right: 0.5em;
       }
     }
 
@@ -272,20 +268,20 @@ $feedback-diff-table-header-fg: $on-background;
   }
 
   .code.wrong {
-    background: #fee;
-    color: #b00;
+    background: #ffeeee;
+    color: #bb0000;
   }
 
   .code.correct {
-    background: #dfd;
-    color: #080;
+    background: #ddffdd;
+    color: #008800;
   }
 
   .feedback-table-messages {
     margin-bottom: 9.5px;
   }
 
-  .row>.messages {
+  .row > .messages {
     margin-left: 1em;
     margin-right: 1em;
   }
@@ -293,46 +289,47 @@ $feedback-diff-table-header-fg: $on-background;
   .message-zeus,
   .message-staff {
     border-left: 3px solid $on-surface-muted;
-    padding-left: 25px
+    padding-left: 25px;
   }
 
-  .message-zeus:before,
-  .message-staff:before,
-  .tab-zeus:before,
-  .tab-staff:before {
+  .message-zeus::before,
+  .message-staff::before,
+  .tab-zeus::before,
+  .tab-staff::before {
+    /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
     font: normal normal normal 24px/1 "Material Design Icons";
     color: $on-surface-muted;
     font-size: 18px;
   }
 
-  .message-zeus:before,
-  .message-staff:before {
+  .message-zeus::before,
+  .message-staff::before {
     position: absolute;
     left: 22px;
   }
 
-  .tab-zeus:before,
-  .tab-staff:before {
+  .tab-zeus::before,
+  .tab-staff::before {
     padding-right: 7px;
   }
 
-  .message-zeus:before,
-  .tab-zeus:before {
+  .message-zeus::before,
+  .tab-zeus::before {
     content: "\F0032";
   }
 
-  .message-staff:before,
-  .tab-staff:before {
+  .message-staff::before,
+  .tab-staff::before {
     content: "\F0474";
   }
 
-  .message-zeus+.message-zeus:before,
-  .message-staff+.message-staff:before {
-    content: '';
+  .message-zeus + .message-zeus::before,
+  .message-staff + .message-staff::before {
+    content: "";
   }
 
   .tab-link-marker {
-    background: $warning  !important;
+    background: $warning !important;
   }
 }
 
@@ -340,6 +337,7 @@ $feedback-diff-table-header-fg: $on-background;
   background-color: $gray-10;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 #editor-result .ace_content {
   background-color: $code-bg;
   cursor: default;
@@ -349,6 +347,7 @@ iframe.file {
   border: none;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .ace_gutter-cell {
   background-position: 2px top !important;
 }

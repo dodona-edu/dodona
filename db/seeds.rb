@@ -215,7 +215,7 @@ if Rails.env.development?
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }
       .each do |dir|
-    10.times do |i|
+    5.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
@@ -245,7 +245,7 @@ if Rails.env.development?
                             course: course,
                             visibility: :closed,
                             activity_numbers_enabled: activity_numbers_enabled)
-    8.times do |i|
+    2.times do |i|
       s = Series.create(name: "Reeks #{i}",
                         description: Faker::Lorem.paragraph(sentence_count: 25),
                         course: course,
@@ -262,7 +262,7 @@ if Rails.env.development?
     end
 
     series.each do |s|
-      series_contents = contents_list.sample(rand(3) + 2)
+      series_contents = contents_list.sample(rand(3))
       s.content_pages << series_contents
       series_contents.each do |content|
         course.enrolled_members.sample(5).each do |student|

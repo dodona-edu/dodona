@@ -1,8 +1,10 @@
 @use "sass:math";
+@use "sass:map";
 $navbar-height: 50px;
 
 .dodona-navbar {
   @include shadow-z3;
+
   background: $primary;
   height: $navbar-height;
   display: flex;
@@ -38,11 +40,11 @@ $navbar-height: 50px;
     }
   }
 
-  .flex:first-child>.content {
+  .flex:first-child > .content {
     margin-right: auto;
   }
 
-  .flex:last-child>.content {
+  .flex:last-child > .content {
     margin-left: auto;
   }
 
@@ -60,19 +62,19 @@ $navbar-height: 50px;
     }
 
     @include media-breakpoint-up(md) {
-      max-width: math.div(map-get($container-max-widths, "md"), 12) * 10;
+      max-width: math.div(map.get($container-max-widths, "md"), 12) * 10;
     }
 
     @include media-breakpoint-up(lg) {
-      max-width: math.div(map-get($container-max-widths, "lg"), 12) * 10;
+      max-width: math.div(map.get($container-max-widths, "lg"), 12) * 10;
     }
 
     @include media-breakpoint-up(xl) {
-      max-width: math.div(map-get($container-max-widths, "xl"), 12) * 10;
+      max-width: math.div(map.get($container-max-widths, "xl"), 12) * 10;
     }
 
     @include media-breakpoint-up(xxl) {
-      max-width: math.div(map-get($container-max-widths, "xxl"), 12) * 10;
+      max-width: math.div(map.get($container-max-widths, "xxl"), 12) * 10;
     }
   }
 
@@ -128,19 +130,19 @@ $navbar-height: 50px;
     }
 
     @include media-breakpoint-up(md) {
-      max-width: calc((#{map-get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc((#{map.get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(lg) {
-      max-width: calc((#{map-get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc((#{map.get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(xl) {
-      max-width: calc((#{map-get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc((#{map.get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(xxl) {
-      max-width: calc((#{map-get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc((#{map.get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
     }
 
     .actions {
@@ -181,7 +183,7 @@ $navbar-height: 50px;
       padding-left: 20px;
 
       .notification-dropdown {
-        .table>tbody>tr:first-of-type>td {
+        .table > tbody > tr:first-of-type > td {
           border-top: none;
         }
 
@@ -211,7 +213,7 @@ $navbar-height: 50px;
         }
 
         a {
-          padding-left: 0px;
+          padding-left: 0;
           color: $on-surface;
 
           &.btn-icon {
@@ -271,7 +273,6 @@ $navbar-height: 50px;
         }
 
         .dropdown-menu {
-
           li,
           a {
             color: $on-surface;
@@ -322,6 +323,7 @@ $navbar-height: 50px;
 
     @include media-breakpoint-down(sm) {
       @include shadow-z3;
+
       position: absolute;
       top: $navbar-height;
       right: 0;
@@ -349,7 +351,7 @@ $navbar-height: 50px;
         padding-left: 25px;
       }
 
-      transform: translateY(-.5em);
+      transform: translateY(-0.5em);
     }
   }
 
@@ -359,6 +361,7 @@ $navbar-height: 50px;
 
   .caret {
     @include caret-down;
+
     display: inline-block;
   }
 }
@@ -407,7 +410,7 @@ $navbar-height: 50px;
 
   .crumb:last-child:not(:first-child),
   .crumb:last-child:not(:first-child) a {
-    opacity: 75%;
+    opacity: 0.75;
     pointer-events: none;
     cursor: default;
   }
@@ -417,8 +420,8 @@ $navbar-height: 50px;
   }
 }
 
-a.notification:before {
-  content: '';
+a.notification::before {
+  content: "";
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -431,7 +434,7 @@ a.notification:before {
   z-index: 10;
 }
 
-a.notification-left:before {
+a.notification-left::before {
   margin-right: 5px;
   left: 15px;
 }

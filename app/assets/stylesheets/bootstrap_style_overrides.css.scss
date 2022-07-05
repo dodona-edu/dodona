@@ -41,6 +41,7 @@ code {
 }
 
 .img-responsive {
+  /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
   @extend .img-fluid;
 }
 
@@ -92,8 +93,10 @@ code {
 // popovers
 .popover {
   border-radius: 4px;
-  padding: 0px;
+  padding: 0;
+
   @include shadow-z5;
+
   z-index: 5;
 }
 
@@ -134,7 +137,7 @@ code {
   color: $on-surface-muted;
   padding-bottom: 8px;
   border-bottom-width: 2px;
-  border-bottom-color: $divider  !important;
+  border-bottom-color: $divider !important;
 }
 
 // modals
@@ -162,6 +165,7 @@ code {
 .panel {
   border: 0;
   margin-bottom: 6px;
+
   @include shadow-z3;
 }
 

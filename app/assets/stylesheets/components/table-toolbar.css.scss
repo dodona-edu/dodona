@@ -31,14 +31,14 @@
   margin: 0;
 }
 
-.table-toolbar .table-toolbar-tools>.mdi::before {
+.table-toolbar .table-toolbar-tools > .mdi::before {
   margin-top: 3px;
   margin-left: 8px;
   color: $on-surface-muted;
 }
 
 .table-toolbar .table-toolbar-tools .search {
-  margin-left: 0px;
+  margin-left: 0;
   flex: 1;
 
   input {
@@ -53,6 +53,7 @@
     outline: none;
   }
 
+  /* stylelint-disable */
   input::-webkit-input-placeholder {
     color: $on-surface-muted;
     font-weight: 300;
@@ -72,6 +73,7 @@
     color: $on-surface-muted;
     font-weight: 300;
   }
+  /* stylelint-enable */
 }
 
 .table-toolbar input {
@@ -106,7 +108,7 @@
   visibility: hidden;
 }
 
-.dodona-progress>.bar {
+.dodona-progress > .bar {
   display: block;
   position: absolute;
   top: 0;
@@ -115,39 +117,42 @@
   transition: width 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.dodona-progress>.progressbar {
+.dodona-progress > .progressbar {
   background-color: $progress-bar-bg;
   z-index: 1;
   left: 0;
 }
 
-.dodona-progress>.bufferbar {
-  background-image: linear-gradient(to right,
-      rgba(255, 255, 255, 0.7),
-      rgba(255, 255, 255, 0.7)),
+.dodona-progress > .bufferbar {
+  background-image:
+    linear-gradient(
+      to right,
+      rgb(255 255 255 / 0.7),
+      rgb(255 255 255 / 0.7)
+    ),
     linear-gradient(to right, $secondary, $secondary);
   z-index: 0;
   left: 0;
 }
 
-.dodona-progress>.auxbar {
+.dodona-progress > .auxbar {
   right: 0;
 }
 
-.dodona-progress.dodona-progress-indeterminate>.bar1,
-.dodona-progress.dodona-progress-indeterminate>.bar3 {
+.dodona-progress.dodona-progress-indeterminate > .bar1,
+.dodona-progress.dodona-progress-indeterminate > .bar3 {
   background-color: $progress-bar-bg;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
 }
 
-.mdl-progress.mdl-progress-indeterminate>.bar3 {
+.mdl-progress.mdl-progress-indeterminate > .bar3 {
   background-image: none;
   animation-name: indeterminate2;
 }
 
-.dodona-progress.dodona-progress-indeterminate>.bar1 {
+.dodona-progress.dodona-progress-indeterminate > .bar1 {
   animation-name: indeterminate1;
 }
 
@@ -169,7 +174,6 @@
 }
 
 @keyframes indeterminate2 {
-
   0%,
   50% {
     left: 0%;

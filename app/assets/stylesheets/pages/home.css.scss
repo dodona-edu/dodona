@@ -32,7 +32,7 @@
 }
 
 .home-card .info-step img {
-  @if $theme =="dark" {
+  @if $theme == "dark" {
     filter: invert(1);
   }
 }
@@ -152,7 +152,6 @@
     .privacy-disclaimer-icon {
       margin-right: 1em;
     }
-
   }
 }
 

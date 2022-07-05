@@ -11,8 +11,10 @@ $card-supporting-text-padding: 16px;
   overflow: visible;
   background: $surface;
   border-radius: $border-radius-base;
-  transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
   @include shadow-z2;
+
   margin-bottom: $card-margin-bottom;
 }
 
@@ -75,19 +77,17 @@ a.card-title-link:hover {
 
   .card-subtitle-text {
     margin-top: 3px;
-    opacity: 75%;
+    opacity: 0.75;
   }
 
-  .card-subtitle-text+.card-subtitle-text {
+  .card-subtitle-text + .card-subtitle-text {
     margin-top: 10px;
   }
 
   a {
     color: inherit;
   }
-}
 
-.card-title.card-colored-accent {
   &.accent-red {
     background-color: $red-container;
     color: $on-red-container;
@@ -174,8 +174,8 @@ a.card-title-link:hover {
   margin: 0;
 }
 
-.card-title-text+.card-subtitle-text {
-  margin-top: .4em;
+.card-title-text + .card-subtitle-text {
+  margin-top: 0.4em;
 }
 
 .card-title-text.float-end {
@@ -189,9 +189,9 @@ a.card-title-link:hover {
 }
 
 .card-title-image {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgb(0 0 0 / 0.5);
   color: $on-primary;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 3px rgb(0 0 0 / 0.6);
   height: 61px;
   margin-top: -61px;
   z-index: 1;
@@ -233,14 +233,15 @@ a.card-title-link:hover {
   border-top: 1px solid $divider;
 }
 
-.card-title+.card-border {
-  border-top: 0px;
+.card-title + .card-border {
+  border-top: 0;
 }
 
 .card-expand {
   flex-grow: 1;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .card_menu {
   position: absolute;
   right: 16px;
@@ -298,9 +299,6 @@ a.card-title-link:hover {
 
 .card-tab .nav-tabs li a,
 .card-title .nav-tabs li a {
-  padding-bottom: 8px;
-  padding-left: 10px;
-  padding-right: 10px;
   margin-right: 10px;
   height: 55px;
   border: none;
@@ -309,6 +307,9 @@ a.card-title-link:hover {
   transition-duration: 0.2s;
   transition-property: height;
   transition-timing-function: ease-out;
+  display: block;
+  padding: 10px 10px 8px;
+  line-height: 25px;
 }
 
 .card-title-colored .nav-tabs li a,
@@ -319,13 +320,6 @@ a.card-title-link:hover {
 
 .card-tab .nav-tabs li a {
   color: $on-surface-muted;
-}
-
-.card-title .nav-tabs li a,
-.card-tab .nav-tabs li a {
-  display: block;
-  padding-top: 10px;
-  line-height: 25px;
 }
 
 .card-tab .nav-tabs li a.active,
@@ -356,7 +350,7 @@ a.card-title-link:hover {
 }
 
 .card-nav .card-title .btn-icon:hover {
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgb(255 255 255 / 0.3);
 }
 
 .card-nav .badge {

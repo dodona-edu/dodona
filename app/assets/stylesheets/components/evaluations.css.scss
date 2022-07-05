@@ -206,6 +206,7 @@ $user-column-width: 170px;
 .score-table {
   // Allows borders to be sticky.
   border-collapse: separate;
+
   // Prevent rows from becoming ugly; we provide scrolling instead.
   white-space: nowrap;
 
@@ -245,6 +246,7 @@ $user-column-width: 170px;
   thead tr th:nth-child(2) {
     background: $content-bg;
     position: sticky;
+
     // Raise index, to prevent sticky column from rolling over the header.
     z-index: 2;
     left: $user-column-width - 4px;

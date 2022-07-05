@@ -25,6 +25,7 @@
   }
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .progress_visibility {
   position: relative;
   top: 1px; // move the icon a bit downwards
@@ -81,16 +82,13 @@
   width: auto;
   display: inline-table;
   vertical-align: middle;
-}
-
-.activity-description .dodona-centered-group table {
   text-align: left;
 }
 
-.activity-description .dodona-centered-group img+img,
-.activity-description .dodona-centered-group img+table,
-.activity-description .dodona-centered-group table+img,
-.activity-description .dodona-centered-group table+table {
+.activity-description .dodona-centered-group img + img,
+.activity-description .dodona-centered-group img + table,
+.activity-description .dodona-centered-group table + img,
+.activity-description .dodona-centered-group table + table {
   margin-left: 16px;
 }
 
@@ -100,6 +98,7 @@
   display: flex;
   justify-content: space-between;
 
+  /* stylelint-disable-next-line selector-id-pattern */
   #content_page_read_action {
     display: inline-flex;
   }
@@ -158,12 +157,12 @@ center img {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-      padding-top: .3em;
+      padding-top: 0.3em;
     }
 
     i {
       vertical-align: -3px;
-      padding-right: .6em;
+      padding-right: 0.6em;
     }
   }
 

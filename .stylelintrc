@@ -8,4 +8,4 @@ rules:
   alpha-value-notation: number
   no-invalid-position-at-import-rule: null
   number-max-precision: null
-
+  color-function-notation: legacy

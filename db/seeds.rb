@@ -8,7 +8,9 @@
 
 # separate method as always Submission.create is used instead of a factory
 def submission_summary(status)
-  summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 2)} tests failed."
+  return 'All tests succeeded.' if status == :correct
+  return "#{Faker::Number.number(digits: 2)} tests failed." if status == :wrong
+  nil
 end
 
 def academic_year(diff = 0)
@@ -311,18 +313,26 @@ if Rails.env.development?
     s = Series.create(name: "Reeks #{i}",
                       description: Faker::Lorem.paragraph(sentence_count: 25),
                       course: visualisation_test,
-                      activity_numbers_enabled: true)
+                      activity_numbers_enabled: true,
+                      deadline: Date.current - (i+1).weeks)
     series_exercises = exercises_list.sample(rand(3) + 2)
     s.exercises << series_exercises
 
-    series_exercises.each do |exercise|
-      visualisation_test.enrolled_members.sample(rand(25)).each do |student|
-        rand(1..10).times do
-          status = if rand() < 0.5
+    series_exercises.each_with_index do |exercise, k|
+      difficulty = rand(1..(k+1))
+      visualisation_test.enrolled_members.sample(rand(3*(6-difficulty)..45)).each do |student|
+        # Normally distributed submissions between 8am and 10pm, the day before the deadline, with a peek around 1pm
+        submission_time = s.deadline - 1.day + 8.hour + rand(0..420).minutes + rand(0..420).minutes
+        # Some users missed the deadline
+        submission_time += rand(7).days if rand(10) == 1
+        tries = rand(1..(3 * difficulty)) + rand(1..(3 * difficulty))
+        tries.times do |j|
+          status = if j + rand(7) > tries + difficulty
                      :correct
                    else
-                     :wrong
+                     [ :wrong, :wrong, 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'output limit exceeded' ][rand(7)]
                    end
+          submission_time += 30.minutes # submission within 30 minutes before the next submission
           Submission.create user: student,
                             course: s.course,
                             exercise: exercise,
@@ -331,8 +341,7 @@ if Rails.env.development?
                             status: status,
                             accepted: status == :correct,
                             summary: submission_summary(status),
-                            # Normally distributed submissions between 6am and 12pm yesterday, with a peek around 3pm
-                            created_at: Date.yesterday + 6.hour + rand(0..540).minutes + rand(0..540).minutes,
+                            created_at: submission_time,
                             code: "print(input())\n",
                             result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
         end

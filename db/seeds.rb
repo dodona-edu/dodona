@@ -11,6 +11,11 @@ def submission_summary(status)
   summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 2)} tests failed."
 end
 
+def academic_year(diff = 0)
+  start_year = Date.current.month > 8 ? Date.current.year : Date.current.year - 1
+  "#{start_year + diff}-#{start_year + 1 + diff}"
+end
+
 if Rails.env.development?
   start = Time.now
 
@@ -151,14 +156,14 @@ if Rails.env.development?
 
   courses = []
 
-  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2020-2021', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
-  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2020-2021', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
-  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2019-2020', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Featured course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Zonnebloem', featured: true)
+  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: academic_year, registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
+  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: academic_year, registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: academic_year, registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: academic_year(-1), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: academic_year(-2), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Featured course', year: academic_year(-2), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Zonnebloem', featured: true)
 
   puts "Adding users to courses (#{Time.now - start})"
 
@@ -297,7 +302,7 @@ if Rails.env.development?
   end
 
   puts "Create Visualisation Test course (#{Time.now - start})"
-  visualisation_test = Course.create(name: 'Visualisation Test', year: '2021-2022', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Stijn Taff', administrating_members: [zeus, staff])
+  visualisation_test = Course.create(name: 'Visualisation Test', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Stijn Taff', administrating_members: [zeus, staff])
   visualisation_test.enrolled_members.concat(students.sample(50))
   big_activity_repo.allowed_courses << visualisation_test
   activity_repo.allowed_courses << visualisation_test
@@ -339,7 +344,7 @@ if Rails.env.development?
 
   puts "Create Status Test course (#{Time.now - start})"
 
-  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
+  status_test = Course.create(name: 'Status Test', year: academic_year(-1), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
 
   deadline = Time.now - 1.day
   after_deadline = deadline + 1.hour

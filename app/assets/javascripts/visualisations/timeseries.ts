@@ -46,9 +46,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         super.draw(animation);
 
-        const emptyColor = this.darkMode ? "#001d36" : "#fcfcff";
-        const lowColor = this.darkMode ? "#00325a" : "#d0e4ff";
-        const highColor = this.darkMode ? "#9ccaff" : "#003d6c";
+        const emptyColor = this.darkMode ? "#303034" : "#fcfcff";
+        const lowColor = this.darkMode ? "#3e434d" : "#d0e4ff";
+        const highColor = this.darkMode ? "#9ccaff" : "#0061a6";
 
         const end = new Date(this.maxDate);
         end.setHours(0, 0, 0, 0); // bin and domain seem to handle end differently

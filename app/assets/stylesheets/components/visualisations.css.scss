@@ -4,11 +4,13 @@
 
 .violin-invisibar {
   visibility: hidden;
-  fill: none
+  fill: none;
 }
 
 .metric-container {
   stroke: $divider;
+  fill: none;
+  stroke-width: 2;
 }
 
 .day-cell {
@@ -27,20 +29,15 @@
   flex-direction: column;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .graph_placeholder {
   margin: auto;
 }
 
-.metric-container {
-  fill: none;
-  stroke-width: 2;
-}
-
 .legend {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
   justify-content: center;
-  flex-wrap: wrap;
   overflow: hidden;
 
   .legend-item {

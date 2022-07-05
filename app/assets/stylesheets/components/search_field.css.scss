@@ -1,4 +1,4 @@
-.search-filter:focus+.show-search-dropdown,
+.search-filter:focus + .show-search-dropdown,
 .show-search-dropdown:focus,
 .show-search-dropdown:active,
 .show-search-dropdown:target {
@@ -13,5 +13,4 @@
   .dropdown-item {
     padding-left: 2rem;
   }
-
 }

@@ -12,7 +12,7 @@
   position: relative;
 }
 
-.home-header:before {
+.home-header::before {
   content: "";
   background: $primary-30;
   position: absolute;
@@ -22,7 +22,6 @@
   left: 50%;
   transform: translate(-50%, 0);
 }
-
 
 .home-header img {
   margin-top: -35px;

@@ -20,12 +20,17 @@ export class SearchToken extends FilterCollectionElement {
     @property()
     color: (l: Label) => string;
 
+    processClick(e: Event, label: Label): void {
+        this.unSelect(label);
+        e.preventDefault();
+    }
+
     render(): TemplateResult {
         return html`
             ${ this.getSelectedLabels().map( label => html`
                 <div class="token accent-${this.color(label)}">
                     <span class="token-label">${label.name}</span>
-                    <a href="#" class="close" tabindex="-1"  @click=${() => this.unSelect(label)}>×</a>
+                    <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label) }>×</a>
                 </div>
             `)}
         `;

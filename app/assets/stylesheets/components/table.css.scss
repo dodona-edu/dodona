@@ -3,8 +3,8 @@
   background-image:
     linear-gradient(to right, $content-bg, $content-bg),
     linear-gradient(to right, $content-bg, $content-bg),
-    linear-gradient(to right, $divider, rgb(255 255 255 / 0)),
-    linear-gradient(to left, $divider, rgb(255 255 255 / 0));
+    linear-gradient(to right, $divider, rgba(255, 255, 255, 0)),
+    linear-gradient(to left, $divider, rgba(255, 255, 255, 0));
   background-position: left center, right center, left center, right center;
   background-repeat: no-repeat;
   background-color: $content-bg;

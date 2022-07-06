@@ -270,6 +270,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_duplicate_email_for_provider!
+    ApplicationMailer.with(
+      authinfo: auth_hash,
+      errors: I18n.t('devise.omniauth_callbacks.duplicate_email_for_provider', email_address: auth_email, provider: provider.class.sym.to_s)
+    ).user_unable_to_log_in.deliver_later
+
     set_flash_message :alert, :duplicate_email_for_provider, email_address: auth_email, provider: provider.class.sym.to_s
     flash[:options] = [{ url: contact_path, message: I18n.t('pages.contact.prompt') }]
     redirect_to root_path

@@ -2,6 +2,7 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { FilterCollection, Label, FilterCollectionElement } from "components/filter_collection_element";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { filter } from "d3";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -23,6 +24,17 @@ export class DropdownFilter extends FilterCollectionElement {
     @property()
     type: string;
 
+    @property({ state: true })
+    filter = "";
+
+    get showFilter(): boolean {
+        return this.labels.length > 15;
+    }
+
+    get filteredLabels(): Label[] {
+        return this.showFilter ? this.labels.filter(s => s.name.toLowerCase().includes(this.filter.toLowerCase())) : this.labels;
+    }
+
     render(): TemplateResult {
         if (this.labels.length === 0) {
             return html``;
@@ -37,7 +49,12 @@ export class DropdownFilter extends FilterCollectionElement {
                 </a>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 450px; overflow-y: auto;">
-                    ${this.labels.map(s => html`
+                    ${this.showFilter ? html`
+                        <li><span class="dropdown-item-text ">
+                            <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${I18n.t("js.dropdown.search")}">
+                        </span></li>
+                    ` : ""}
+                    ${this.filteredLabels.map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
@@ -45,7 +62,6 @@ export class DropdownFilter extends FilterCollectionElement {
                                         ${s.name}
                                     </label>
                                 </div>
-                            </span></li>
                     `)}
                 </ul>
             </div>

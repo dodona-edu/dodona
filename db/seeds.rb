@@ -18,6 +18,46 @@ def academic_year(diff = 0)
   "#{start_year + diff}-#{start_year + 1 + diff}"
 end
 
+def fill_series_with_realistic_submissions(s)
+  s.content_pages.each do |content|
+    s.course.enrolled_members.sample(5).each do |student|
+      ActivityReadState.create user: student,
+                               course: s.course,
+                               activity: content
+    end
+  end
+
+  s.exercises.each_with_index do |exercise, k|
+    difficulty = rand(1..(k+1))
+    s.course.enrolled_members.sample(rand(3*(6-difficulty)..45)).each do |student|
+      # Normally distributed submissions between 8am and 10pm, the day before the deadline, with a peek around 1pm
+      submission_time = s.deadline - 1.day + 8.hour + rand(0..420).minutes + rand(0..420).minutes
+      # Some users missed the deadline
+      submission_time += rand(7).days if rand(10) == 1
+      tries = rand(1..(3 * difficulty)) + rand(1..(3 * difficulty))
+      tries.times do |j|
+        status = if j + rand(7) > tries + difficulty
+                   :correct
+                 else
+                   [ :wrong, :wrong, 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'output limit exceeded' ][rand(7)]
+                 end
+        submission_time += 30.minutes # submission within 30 minutes before the next submission
+        Submission.create user: student,
+                          course: s.course,
+                          exercise: exercise,
+                          evaluate: false,
+                          skip_rate_limit_check: true,
+                          status: status,
+                          accepted: status == :correct,
+                          summary: submission_summary(status),
+                          created_at: submission_time,
+                          code: "print(input())\n",
+                          result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+      end
+    end
+  end
+end
+
 if Rails.env.development?
   start = Time.now
 
@@ -315,39 +355,45 @@ if Rails.env.development?
                       course: visualisation_test,
                       activity_numbers_enabled: true,
                       deadline: Date.current - (i+1).weeks)
-    series_exercises = exercises_list.sample(rand(3) + 2)
-    s.exercises << series_exercises
+    s.content_pages << contents_list.sample(rand(2))
+    s.exercises << exercises_list.sample(rand(3) + 2)
+    fill_series_with_realistic_submissions(s)
+  end
 
-    series_exercises.each_with_index do |exercise, k|
-      difficulty = rand(1..(k+1))
-      visualisation_test.enrolled_members.sample(rand(3*(6-difficulty)..45)).each do |student|
-        # Normally distributed submissions between 8am and 10pm, the day before the deadline, with a peek around 1pm
-        submission_time = s.deadline - 1.day + 8.hour + rand(0..420).minutes + rand(0..420).minutes
-        # Some users missed the deadline
-        submission_time += rand(7).days if rand(10) == 1
-        tries = rand(1..(3 * difficulty)) + rand(1..(3 * difficulty))
-        tries.times do |j|
-          status = if j + rand(7) > tries + difficulty
-                     :correct
-                   else
-                     [ :wrong, :wrong, 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'output limit exceeded' ][rand(7)]
-                   end
-          submission_time += 30.minutes # submission within 30 minutes before the next submission
-          Submission.create user: student,
-                            course: s.course,
-                            exercise: exercise,
-                            evaluate: false,
-                            skip_rate_limit_check: true,
-                            status: status,
-                            accepted: status == :correct,
-                            summary: submission_summary(status),
-                            created_at: submission_time,
-                            code: "print(input())\n",
-                            result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+  puts "Create Evaluation (#{Time.now - start})"
+  s = Series.create(name: "Evaluation",
+                    description: Faker::Lorem.paragraph(sentence_count: 25),
+                    course: visualisation_test,
+                    activity_numbers_enabled: false,
+                    deadline: Date.current)
+  s.content_pages << contents_list.sample(1)
+  s.exercises << exercises_list.sample(2)
+  fill_series_with_realistic_submissions(s)
+
+  e = Evaluation.create(series: s, deadline: s.deadline)
+  e.exercises = s.exercises
+  e.users = s.course.enrolled_members
+  e.save()
+
+  e.evaluation_exercises.each do |ee|
+    rand(1..5).times do
+      ScoreItem.create(evaluation_exercise: ee,
+                       maximum: rand(5),
+                       name: Faker::Lorem.word,
+                       description: Faker::Lorem.sentence)
+    end
+    ee.feedbacks.each do |f|
+      if(f.submission.present?)
+        ee.score_items.each do |si|
+          Score.create(score_item: si, feedback: f, last_updated_by: zeus, score: rand(si.maximum))
         end
       end
     end
   end
+
+
+
+
 
 
 

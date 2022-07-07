@@ -2,7 +2,6 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { FilterCollection, Label, FilterCollectionElement } from "components/filter_collection_element";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { filter } from "d3";
 
 /**
  * This component inherits from FilterCollectionElement.

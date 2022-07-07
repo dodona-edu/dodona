@@ -36,7 +36,7 @@ export class DropdownFilter extends FilterCollectionElement {
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 450px; overflow-y: auto;">
                     ${this.labels.map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">

@@ -61,6 +61,7 @@ export class DropdownFilter extends FilterCollectionElement {
                                         ${s.name}
                                     </label>
                                 </div>
+                            </span></li>
                     `)}
                 </ul>
             </div>

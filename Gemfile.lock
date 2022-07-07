@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/lucaskanashiro/json-jwt.git
+  revision: 329bbe1b4fff6ca20f35559a9a2bd43b16498c1c
+  branch: support-openssl-3
+  specs:
+    json-jwt (1.13.0)
+      activesupport (>= 4.2)
+      aes_key_wrap
+      bindata
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -211,10 +221,6 @@ GEM
     jsbundling-rails (1.0.3)
       railties (>= 6.0.0)
     json (2.6.2)
-    json-jwt (1.13.0)
-      activesupport (>= 4.2)
-      aes_key_wrap
-      bindata
     json-schema (3.0.0)
       addressable (>= 2.8)
     jwt (2.4.1)
@@ -526,6 +532,7 @@ DEPENDENCIES
   image_processing (~> 1.12.2)
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.0.3)
+  json-jwt!
   json-schema (~> 3.0.0)
   jwt (~> 2.4.1)
   kramdown (~> 2.4.0)

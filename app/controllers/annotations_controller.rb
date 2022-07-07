@@ -35,9 +35,9 @@ class AnnotationsController < ApplicationController
     # Preload dependencies for efficiency
     @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])
 
+    @courses = policy_scope(Course.where(id: @questions.pluck(:course_id)))
+
     @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))
-    @activities = policy_scope(Activity.all)
-    @courses = policy_scope(Course.all)
     @title = I18n.t('questions.index.title')
     @crumbs = []
     @crumbs << [@user.full_name, user_path(@user)] if @user.present?

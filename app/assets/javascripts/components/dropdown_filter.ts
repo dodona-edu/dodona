@@ -48,7 +48,7 @@ export class DropdownFilter extends FilterCollectionElement {
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 450px; overflow-y: auto;">
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     ${this.showFilter ? html`
                         <li><span class="dropdown-item-text ">
                             <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${I18n.t("js.dropdown.search")}">

@@ -126,10 +126,8 @@ if Rails.env.development?
   end
 
   puts "Creating labels (#{Time.now - start})"
-  5.times do
-    %w[red pink purple deep-purple indigo teal orange brown blue-gray].each do |color|
-      Label.create name: Faker::Hobby.unique.activity, color: color
-    end
+  %w[red pink purple deep-purple indigo teal orange brown blue-gray].each do |color|
+    Label.create name: Faker::GreekPhilosophers.unique.name, color: color
   end
 
   puts "Creating programming languages (#{Time.now - start})"

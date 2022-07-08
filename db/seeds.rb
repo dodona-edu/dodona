@@ -348,6 +348,7 @@ if Rails.env.development?
   visualisation_test.enrolled_members.concat(students.sample(50))
   big_activity_repo.allowed_courses << visualisation_test
   activity_repo.allowed_courses << visualisation_test
+  courses << visualisation_test
 
   3.times do |i|
     s = Series.create(name: "Reeks #{i}",
@@ -402,6 +403,27 @@ if Rails.env.development?
     end
   end
 
+  puts "Add questions (#{Time.now - start})"
+
+  courses.each do |c|
+    c.submissions.sample(rand(10)).each do |s|
+      question_state = rand(3)
+      line_nr = rand(2) == 1 ? 1 : nil
+      Question.create(line_nr: line_nr,
+                        submission: s,
+                        annotation_text: Faker::Lorem.sentence,
+                        question_state: question_state,
+                        user: s.user,
+                        course: s.course)
+      if(question_state == 2)
+        Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
+                          submission: s,
+                          annotation_text: Faker::Lorem.sentence,
+                          user: c.administrating_members.first,
+                          course: s.course)
+      end
+    end
+  end
 
 
 

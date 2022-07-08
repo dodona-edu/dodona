@@ -268,6 +268,9 @@ if Rails.env.development?
   end
   big_activity_repo.process_activities
 
+  RepositoryAdmin.create(repository: activity_repo, user: zeus)
+  RepositoryAdmin.create(repository: big_activity_repo, user: zeus)
+
   contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
 

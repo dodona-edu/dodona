@@ -592,5 +592,12 @@ if Rails.env.development?
                       stop_delivering_at: 1.week.from_now
   AnnouncementView.create user:zeus, announcement: a
 
+  puts "Add rights requests (#{Time.now - start})"
+
+  ActionMailer::Base.perform_deliveries = false
+  students.sample(rand(1..10)).each do |s|
+    RightsRequest.create(user: s, context: Faker::Lorem.paragraph(sentence_count: 10))
+  end
+
   puts "Finished! (#{Time.now - start})"
 end

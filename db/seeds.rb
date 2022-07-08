@@ -430,11 +430,6 @@ if Rails.env.development?
     end
   end
 
-
-
-
-
-
   puts "Create Status Test course (#{Time.now - start})"
 
   status_test = Course.create(name: 'Status Test', year: academic_year(-1), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
@@ -573,6 +568,29 @@ if Rails.env.development?
   AnnouncementView.create user:staff, announcement: sign_in_announcement
   AnnouncementView.create user:jelix, announcement: sign_in_announcement
 
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :all_users,
+                      style: :danger,
+                      start_delivering_at: 5.weeks.ago,
+                      stop_delivering_at: 1.week.ago
+  AnnouncementView.create user:zeus, announcement: a
+
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :students,
+                      style: :primary,
+                      start_delivering_at: 1.week.from_now
+  AnnouncementView.create user:zeus, announcement: a
+
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :staff,
+                      institution: ugent,
+                      style: :success,
+                      start_delivering_at: 5.weeks.ago,
+                      stop_delivering_at: 1.week.from_now
+  AnnouncementView.create user:zeus, announcement: a
 
   puts "Finished! (#{Time.now - start})"
 end

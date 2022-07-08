@@ -20,7 +20,7 @@ end
 
 def fill_series_with_realistic_submissions(s)
   s.content_pages.each do |content|
-    s.course.enrolled_members.sample(5).each do |student|
+    s.course.enrolled_members.sample(rand(45)).each do |student|
       ActivityReadState.create user: student,
                                course: s.course,
                                activity: content
@@ -372,7 +372,7 @@ if Rails.env.development?
 
   e = Evaluation.create(series: s, deadline: s.deadline)
   e.exercises = s.exercises
-  e.users = s.course.enrolled_members
+  e.users = s.course.enrolled_members.sample(25)
   e.save()
 
   e.evaluation_exercises.each do |ee|
@@ -382,10 +382,21 @@ if Rails.env.development?
                        name: Faker::Lorem.word,
                        description: Faker::Lorem.sentence)
     end
-    ee.feedbacks.each do |f|
+    ee.feedbacks.sample(rand(5..25)).each do |f|
       if(f.submission.present?)
         ee.score_items.each do |si|
-          Score.create(score_item: si, feedback: f, last_updated_by: zeus, score: rand(si.maximum))
+          Score.create(score_item: si,
+                       feedback: f,
+                       last_updated_by: zeus,
+                       score: rand(si.maximum))
+        end
+        rand(3).times do
+          Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
+                            submission: f.submission,
+                            annotation_text: Faker::Lorem.sentence,
+                            evaluation: e,
+                            user: zeus,
+                            course: s.course)
         end
       end
     end

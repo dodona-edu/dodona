@@ -409,12 +409,17 @@ if Rails.env.development?
     c.submissions.sample(rand(10)).each do |s|
       question_state = rand(3)
       line_nr = rand(2) == 1 ? 1 : nil
-      Question.create(line_nr: line_nr,
+      q = Question.create(line_nr: line_nr,
                         submission: s,
                         annotation_text: Faker::Lorem.sentence,
                         question_state: question_state,
                         user: s.user,
                         course: s.course)
+
+      if(question_state > 0)
+        q.update(last_updated_by: c.administrating_members.first)
+      end
+
       if(question_state == 2)
         Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
                           submission: s,

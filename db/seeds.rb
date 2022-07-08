@@ -41,7 +41,7 @@ def fill_series_with_realistic_submissions(s)
                  else
                    [ :wrong, :wrong, 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'output limit exceeded' ][rand(7)]
                  end
-        submission_time += 30.minutes # submission within 30 minutes before the next submission
+        submission_time += rand(30).minutes # submission within 30 minutes after the previous submission
         Submission.create user: student,
                           course: s.course,
                           exercise: exercise,

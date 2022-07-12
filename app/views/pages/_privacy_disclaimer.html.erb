@@ -7,4 +7,9 @@
       <%= t ".text_html", your_data: data_url, privacy_statement: privacy_url %>
     </div>
   </div>
+  <div class="card-actions card-border">
+    <d-accept-privacy-disclaimer-button user-id="<%= current_user.id %>" class="btn btn-primary">
+      <%= t ".button" %>
+    </d-accept-privacy-disclaimer-button>
+  </div>
 </div>

@@ -51,6 +51,9 @@ en:
       featured:
         title: Featured course
         toggle-label: Feature this course
+      allow_personal_accounts:
+        title: Personal accounts
+        toggle-label: Allow users to register with a personal account
     index:
       title: Courses
       users: "Users"

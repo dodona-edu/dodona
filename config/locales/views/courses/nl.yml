@@ -51,6 +51,9 @@ nl:
       featured:
         title: Uitgelichte cursus
         toggle-label: Deze cursus uitlichten
+      allow_personal_accounts:
+        title: Persoonlijke accounts
+        toggle-label: Sta toe dat gebruikers registreren met een persoonlijke account
     index:
       title: Cursussen
       users: "Gebruikers"

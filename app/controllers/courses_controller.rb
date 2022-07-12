@@ -342,26 +342,14 @@ class CoursesController < ApplicationController
           success_method = method(:signup_succeeded_response)
         end
 
-        case @course.registration
-        when 'open_for_all'
+        if @course.open_for_user?(current_user)
           if try_to_subscribe_current_user status: status
             success_method.call(format)
           else
             subscription_failed_response format
           end
-        when 'open_for_institution'
-          if @course.institution == current_user.institution
-            if try_to_subscribe_current_user status: status
-              success_method.call(format)
-            else
-              subscription_failed_response format
-            end
-          else
-            format.html { redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed')) }
-            format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
-          end
-        when 'closed'
-          format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+        else
+          format.html { redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed')) }
           format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
         end
       end

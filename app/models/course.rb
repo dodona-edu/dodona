@@ -215,6 +215,12 @@ class Course < ApplicationRecord
     activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
   end
 
+  def open_for_user?(user)
+    (open_for_all? && user&.institutional?) ||
+      (open_for_institution? && institution == user&.institution) ||
+      (allow_personal_accounts? && user&.personal? && !closed?)
+  end
+
   def invalidate_subscribed_members_count_cache
     Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end

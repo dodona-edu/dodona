@@ -28,3 +28,5 @@ course1:
   visibility: 0 # visible for all
   registration: 0 # open for all
   teacher: Prof. Zonnebloem
+  secret: "PuDCHk3A7qCEAbxKXPpz"
+  allow_personal_accounts: true

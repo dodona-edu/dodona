@@ -712,6 +712,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
   end
 
   test 'exercise page within series should contain extra navigation' do
+    sign_in users(:student)
     course = courses(:course1)
     exercise = exercises(:python_exercise)
     other_exercise = create :exercise

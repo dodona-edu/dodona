@@ -30,6 +30,7 @@ zeus:
   token: nil
   time_zone: Brussels
   search: zeus
+  institution_id: 1
 
 staff:
   id: 2
@@ -42,6 +43,7 @@ staff:
   token: nil
   time_zone: Brussels
   search: staff
+  institution_id: 1
 
 student:
   id: 3
@@ -54,3 +56,4 @@ student:
   token: nil
   time_zone: Brussels
   search: student
+  institution_id: 1

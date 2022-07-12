@@ -28,6 +28,7 @@ FactoryBot.define do
     registration { 'open_for_all' }
     moderated { false }
     teacher { "Prof. #{Faker::Name.first_name} #{Faker::Name.last_name}" }
+    allow_personal_accounts { true }
 
     transient do
       series_count { 0 }

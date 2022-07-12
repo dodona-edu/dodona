@@ -712,6 +712,38 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
 
+  test 'personal user should not be able to subscribe to a course which does not allow_personal_accounts' do
+    add_externals
+    @course.update(allow_personal_accounts: false)
+    user = @externals.first
+    user.update(institution: nil)
+    sign_in user
+    post subscribe_course_url(@course)
+    assert_not @course.subscribed_members.include?(user)
+    post subscribe_course_url(@course, secret: @course.secret)
+    assert_not @course.subscribed_members.include?(user)
+  end
+
+  test 'institutional user should be able to subscribe to a course which does not allow_personal_accounts' do
+    add_externals
+    @course.update(allow_personal_accounts: false)
+    user = @externals.first
+    user.update(institution: (create :institution))
+    sign_in user
+    post subscribe_course_url(@course)
+    assert @course.subscribed_members.include?(user)
+  end
+
+  test 'personal user should be able to subscribe to a course which does allow_personal_accounts' do
+    add_externals
+    @course.update(allow_personal_accounts: true)
+    user = @externals.first
+    user.update(institution: nil)
+    sign_in user
+    post subscribe_course_url(@course)
+    assert @course.subscribed_members.include?(user)
+  end
+
   test 'should not destroy course as student' do
     add_students
     sign_in @students.first

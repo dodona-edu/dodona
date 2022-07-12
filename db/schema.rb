@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_24_123721) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_12_085958) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -209,6 +209,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_123721) do
     t.boolean "moderated", default: false, null: false
     t.boolean "enabled_questions", default: true, null: false
     t.boolean "featured", default: false, null: false
+    t.boolean "allow_personal_accounts", default: false, null: false
     t.index ["featured"], name: "index_courses_on_featured"
     t.index ["institution_id"], name: "index_courses_on_institution_id"
   end

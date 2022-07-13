@@ -73,4 +73,43 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     get about_url
     assert_response :success
   end
+
+  test 'should redirect to privacy_prompt if user has not accepted_privacy_policy' do
+    user = create :user, accepted_privacy_policy: false
+    sign_in(user)
+    [root_url, courses_url, submissions_url, profile_url, questions_url].each do |url|
+      get url
+      assert_redirected_to privacy_prompt_path
+    end
+  end
+
+  test 'After accepting privacy policy, should redirect back to original target' do
+    [root_url, courses_url, submissions_url, profile_url, questions_url].each do |url|
+      url = url.chomp('/')
+      user = create :user, accepted_privacy_policy: false
+      sign_in(user)
+      get url
+      assert_redirected_to privacy_prompt_path
+      post privacy_prompt_path
+      assert_redirected_to url
+    end
+  end
+
+  test 'After accepting privacy policy, should redirect back to root if no original target' do
+    user = create :user, accepted_privacy_policy: false
+    sign_in(user)
+    get privacy_prompt_path
+    assert_response :success
+    post privacy_prompt_path
+    assert_redirected_to root_url
+  end
+
+  test 'should not redirect from info pages to privacy_prompt if user has not accepted_privacy_policy' do
+    user = create :user, accepted_privacy_policy: false
+    sign_in(user)
+    [about_url, privacy_url, data_url, contact_url, support_us_url].each do |url|
+      get url
+      assert_response :success
+    end
+  end
 end

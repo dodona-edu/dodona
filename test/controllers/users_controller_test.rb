@@ -65,6 +65,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @controller.true_user, @instance
   end
 
+  test 'should be able to stop impersonating user that has not accepted privacy policy' do
+    other_user = create :user, accepted_privacy_policy: false
+
+    get impersonate_user_url(other_user)
+
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, other_user
+    assert_equal @controller.true_user, @instance
+
+    get stop_impersonating_users_url
+
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, @instance
+    assert_equal @controller.true_user, @instance
+  end
+
   test 'user token should log in' do
     sign_out :user
     token_user = create :user, institution: nil

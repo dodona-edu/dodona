@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  skip_before_action :prompt_privacy_policy, except: :home
+  skip_before_action :prompt_privacy_policy, except: %i[home profile]
 
   content_security_policy only: %i[contact create_contact] do |policy|
     policy.script_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.script_src))

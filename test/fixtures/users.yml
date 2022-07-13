@@ -31,6 +31,7 @@ zeus:
   token: nil
   time_zone: Brussels
   search: zeus
+  accepted_privacy_policy: true
 
 staff:
   id: 2
@@ -43,6 +44,7 @@ staff:
   token: nil
   time_zone: Brussels
   search: staff
+  accepted_privacy_policy: true
 
 student:
   id: 3
@@ -55,3 +57,4 @@ student:
   token: nil
   time_zone: Brussels
   search: student
+  accepted_privacy_policy: true

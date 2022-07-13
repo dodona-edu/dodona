@@ -94,7 +94,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       end
 
       # Assert successful authentication.
-      assert_redirected_to root_path
+      assert_redirected_to privacy_prompt_path
       assert_equal @controller.current_user.email, user.email
 
       # Cleanup.
@@ -119,7 +119,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       end
 
       # Assert successful authentication.
-      assert_redirected_to root_path
+      assert_redirected_to privacy_prompt_path
       assert_equal @controller.current_user.email, user.email
 
       # Cleanup.
@@ -149,7 +149,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_enqueued_jobs 1
 
       # Assert successful authentication.
-      assert_redirected_to root_path
+      assert_redirected_to privacy_prompt_path
       assert_not_nil @controller.current_user
 
       # Cleanup.

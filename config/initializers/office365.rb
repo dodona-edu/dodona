@@ -11,8 +11,8 @@ module OmniAuth
 
       option :client_options,
              site: 'https://login.microsoftonline.com/',
-             authorize_url: '/common/oauth2/authorize',
-             token_url: '/common/oauth2/token'
+             authorize_url: '/common/oauth2/v2.0/authorize',
+             token_url: '/common/oauth2/v2.0/token'
 
       DEFAULT_SCOPE = "openid email profile https://outlook.office.com/contacts.read"
 

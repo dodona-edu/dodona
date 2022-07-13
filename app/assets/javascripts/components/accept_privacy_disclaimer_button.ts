@@ -1,6 +1,5 @@
 import { html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { fetch } from "util.js";
 
 /**

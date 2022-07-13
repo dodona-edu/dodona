@@ -27,6 +27,8 @@ Rails.application.routes.draw do
     get '/about' => 'pages#about'
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
+    get '/privacy_prompt' => 'pages#privacy_prompt'
+    post '/privacy_prompt' => 'pages#accept_privacy_policy'
     get '/profile' => 'pages#profile', as: 'profile'
     get '/support-us' => 'pages#support'
 

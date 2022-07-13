@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_action :store_current_location,
-                except: %i[media sign_in institution_not_supported],
+                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :skip_session,
@@ -34,6 +34,10 @@ class ApplicationController < ActionController::Base
   before_action :set_notifications, if: :user_signed_in?
   before_action :set_unread_announcement, unless: :remote_request?
 
+  before_action :prompt_privacy_policy,
+                if: :should_accept_privacy_policy?,
+                unless: :devise_controller?
+
   impersonates :user
 
   # A more lax CSP for pages in the sandbox
@@ -50,6 +54,7 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(_resource)
+    return privacy_prompt_path if should_accept_privacy_policy?
     stored_location_for(:user) || root_path
   end
 
@@ -77,6 +82,14 @@ class ApplicationController < ActionController::Base
 
   def js_request?
     request.format.js?
+  end
+
+  def should_accept_privacy_policy?
+    current_user.present? && !current_user.accepted_privacy_policy?
+  end
+
+  def prompt_privacy_policy
+    redirect_to privacy_prompt_path
   end
 
   def parse_pagination_param(page)

@@ -3,9 +3,6 @@
 <% end %>
 <div class="row">
   <div class="col-12 col-md-6 col-lg-8">
-    <% if !current_user.accepted_privacy_policy? %>
-      <%= render 'privacy_disclaimer' %>
-    <% end %>
     <% if @subscribed_courses.empty? %>
       <%= render "getting_started_card" %>
     <% else %>

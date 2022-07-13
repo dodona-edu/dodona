@@ -32,7 +32,6 @@ import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
-import "components/accept_privacy_disclaimer_button";
 
 // Initialize clipboard.js
 initClipboard();

@@ -1,4 +1,6 @@
 class PagesController < ApplicationController
+  skip_before_action :prompt_privacy_policy, except: :home
+
   content_security_policy only: %i[contact create_contact] do |policy|
     policy.script_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.script_src))
     policy.style_src(*(%w[https://hcaptcha.com https://*.hcaptcha.com] + policy.style_src))
@@ -36,6 +38,15 @@ class PagesController < ApplicationController
   def data; end
 
   def privacy; end
+
+  def privacy_prompt
+    redirect_to root_path unless should_accept_privacy_policy?
+  end
+
+  def accept_privacy_policy
+    current_user.update(accepted_privacy_policy: true)
+    redirect_to stored_location_for(:user) || root_path
+  end
 
   def support
     set_metrics

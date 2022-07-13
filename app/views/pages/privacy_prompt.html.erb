@@ -1,0 +1,20 @@
+<div class="row justify-content-center">
+
+  <div class="col-12 col-lg-8">
+    <div class="card home-summary-card privacy-disclaimer">
+      <div class="card-supporting-text">
+        <div class="privacy-disclaimer-icon">
+          <i class="mdi mdi-48 mdi-shield-lock"></i>
+        </div>
+        <div class="privacy-disclaimer-text">
+          <%= t ".text_html", your_data: data_url, privacy_statement: privacy_url %>
+        </div>
+      </div>
+      <div class="card-actions card-border">
+        <%= link_to privacy_prompt_path, method: :post, class: "btn btn-primary" do %>
+          <%= t ".button" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

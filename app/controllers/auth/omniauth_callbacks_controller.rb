@@ -52,8 +52,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Authentication logic.
 
   def generic_oauth
-    return provider_missing! if oauth_provider_id.blank?
-
     # Find the provider for the current institution. If no provider exists yet,
     # a new one will be created.
     return redirect_with_flash!(I18n.t('auth.sign_in.errors.institution-creation')) if provider.blank?
@@ -365,10 +363,5 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed
                      .deliver_later
-  end
-
-  def provider_missing!
-    flash_failure I18n.t('auth.sign_in.errors.missing-provider')
-    redirect_to sign_in_path
   end
 end

@@ -2,21 +2,22 @@
 #
 # Table name: courses
 #
-#  id                :integer          not null, primary key
-#  name              :string(255)
-#  year              :string(255)
-#  secret            :string(255)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
-#  description       :text(16777215)
-#  visibility        :integer
-#  registration      :integer
-#  teacher           :string(255)
-#  institution_id    :bigint
-#  search            :string(4096)
-#  moderated         :boolean          default(FALSE), not null
-#  enabled_questions :boolean          default(TRUE), not null
-#  featured          :boolean          default(FALSE), not null
+#  id                      :integer          not null, primary key
+#  name                    :string(255)
+#  year                    :string(255)
+#  secret                  :string(255)
+#  created_at              :datetime         not null
+#  updated_at              :datetime         not null
+#  description             :text(16777215)
+#  visibility              :integer
+#  registration            :integer
+#  teacher                 :string(255)
+#  institution_id          :bigint
+#  search                  :string(4096)
+#  moderated               :boolean          default(FALSE), not null
+#  enabled_questions       :boolean          default(TRUE), not null
+#  featured                :boolean          default(FALSE), not null
+#  allow_personal_accounts :boolean          default(FALSE), not null
 #
 
 require 'test_helper'

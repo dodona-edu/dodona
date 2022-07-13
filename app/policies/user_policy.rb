@@ -87,7 +87,7 @@ class UserPolicy < ApplicationPolicy
     if user&.zeus?
       %i[username first_name last_name email permission time_zone]
     else
-      %i[time_zone]
+      %i[time_zone accepted_privacy_policy]
     end
   end
 end

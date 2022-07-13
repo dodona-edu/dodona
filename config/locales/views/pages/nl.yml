@@ -63,8 +63,9 @@ nl:
     create_contact:
       captcha_failed: HCaptcha kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."
-    privacy_disclaimer:
-      text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"%{your_data}\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\">privacyverklaring</a> vinden."
+    privacy_prompt:
+      text_html: "Jouw privacy is belangrijk voor ons. Op de <a href=\"%{your_data}\" target=\"_blank\">jouw data</a> pagina leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\" target=\"_blank\">privacyverklaring</a> vinden."
+      button: Accepteer de privacyverklaring
     support:
       support_dodona: Steun Dodona
       title_l1: Gratis leren programmeren

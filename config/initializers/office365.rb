@@ -49,6 +49,8 @@ module OmniAuth
       end
 
       def username
+        Rails.logger.info "================================================ FIND ME =============================================================="
+        Rails.logger.info raw_info
         raw_info['unique_name'].split('@').first
       end
 

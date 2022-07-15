@@ -387,8 +387,6 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-
-
   test 'Office 365 identifier should be updated upon login if the identifier still used the old format' do
     # Setup.
     provider = create :office365_provider

@@ -91,6 +91,10 @@ if Rails.env.development?
   # OIDC
   Provider::Oidc.create institution: vlaanderen, client_id: '12345', issuer: 'https://authenticatie.vlaanderen.be/op'
 
+  # Personal providers
+  Provider::Office365.create identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil
+  Provider::GSuite.create identifier: nil, institution: nil
+
   puts "Creating users (#{Time.now - start})"
 
   zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: nil, token: 'zeus'

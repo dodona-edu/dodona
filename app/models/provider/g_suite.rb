@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -22,7 +22,7 @@
 class Provider::GSuite < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
   validates :authorization_uri, :client_id, :issuer, :jwks_uri, absence: true
-  validates :identifier, uniqueness: { case_sensitive: false }, presence: true
+  validates :identifier, uniqueness: { case_sensitive: false }
 
   def self.sym
     :google_oauth2

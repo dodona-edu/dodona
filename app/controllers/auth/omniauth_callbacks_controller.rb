@@ -152,9 +152,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def find_identity_by_uid
+    # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
     return nil if auth_uid.nil?
 
-    # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
     identity = Identity.find_by(identifier: auth_uid, provider: provider)
 
     return identity unless identity.nil? && provider.class.sym == :office365 && auth_email.present?

@@ -387,6 +387,46 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+
+
+  test 'Office 365 identifier should be updated upon login if the identifier still used the old format' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar'
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+
+    # sign in should still work with changed identifier
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    # Cleanup.
+    sign_out user
+  end
+
   test 'lti redirects to main provider' do
     main_provider = create :provider
     provider = create :lti_provider, institution: main_provider.institution, mode: :link

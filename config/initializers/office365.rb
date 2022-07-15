@@ -14,7 +14,7 @@ module OmniAuth
              authorize_url: '/common/oauth2/v2.0/authorize',
              token_url: '/common/oauth2/v2.0/token'
 
-      DEFAULT_SCOPE = "openid email profile https://outlook.office.com/contacts.read"
+      DEFAULT_SCOPE = "openid email profile"
 
       def authorize_params
         super.tap do |params|
@@ -30,14 +30,14 @@ module OmniAuth
       end
 
       # These are called after authentication has succeeded.
-      uid {username}
+      uid { raw_info['oid'] }
 
       info do
         {
             username: username,
-            first_name: raw_info['given_name'],
-            last_name: raw_info['family_name'],
-            email: raw_info['upn'],
+            first_name: raw_info['name'].split(' ').first,
+            last_name: raw_info['name'].split(' ').drop(1).join(' '),
+            email: raw_info['email'],
             institution: raw_info['tid']
         }
       end
@@ -49,9 +49,7 @@ module OmniAuth
       end
 
       def username
-        Rails.logger.info "================================================ FIND ME =============================================================="
-        Rails.logger.info raw_info
-        raw_info['unique_name'].split('@').first
+        raw_info['email'].split('@').first
       end
 
       def decoded_token

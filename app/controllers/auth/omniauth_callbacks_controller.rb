@@ -152,8 +152,21 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def find_identity_by_uid
+    return nil if auth_uid.nil?
+
     # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
-    Identity.find_by(identifier: auth_uid, provider: provider) if auth_uid.present?
+    identity = Identity.find_by(identifier: auth_uid, provider: provider)
+
+    return identity unless identity.nil? && provider.sym == :office365 && auth_email.present?
+
+    # This code supports a migration of the office365 oauth api from v1 to v2
+    # Try to find the user by the legacy identifier
+    identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider)
+    return nil if identity.nil?
+
+    # Update the identifier to the new uid
+    identity.update(identifier: auth_uid)
+    identity
   end
 
   def find_identity_by_user(user)

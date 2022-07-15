@@ -200,7 +200,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       institution_created
       provider
     else
-      institution_creation_failed institution.errors
+      institution_create_failed institution.errors
       nil
     end
   end

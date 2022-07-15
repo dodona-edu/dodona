@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_07_15_082910) do
+ActiveRecord::Schema[7.0].define(version: 2022_07_15_111838) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -296,6 +296,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_07_15_082910) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "identifier_based_on_email", default: false, null: false
     t.index ["provider_id", "identifier"], name: "index_identities_on_provider_id_and_identifier", unique: true
     t.index ["provider_id", "user_id"], name: "index_identities_on_provider_id_and_user_id", unique: true
     t.index ["user_id"], name: "fk_rails_5373344100"

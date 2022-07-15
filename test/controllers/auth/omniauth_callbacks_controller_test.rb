@@ -393,7 +393,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Setup.
     provider = create :office365_provider
     user = create :user, institution: provider.institution
-    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar'
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar', identifier_based_on_email: true
     omniauth_mock_identity identity,
                            info: {
                              email: 'Foo.Bar@test.com'
@@ -403,6 +403,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     get omniauth_url(provider)
     follow_redirect!
 
+    assert_equal @controller.current_user, user
     identity.reload
     assert_equal identity.identifier, 'NEW-UID'
 
@@ -422,6 +423,25 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Assert successful authentication.
     assert_redirected_to root_path
     assert_equal @controller.current_user, user
+
+    # Cleanup.
+    sign_out user
+
+    # Should not be able to change it again
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'NEW-UID@test.com'
+                           },
+                           uid: 'NEWER-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_not_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
 
     # Cleanup.
     sign_out user

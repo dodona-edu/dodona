@@ -179,6 +179,7 @@ en:
       5: Good job!
       6: Well done!
     dropdown:
+      search: Search
       multi:
         labels: Labels
         programming_languages: Programming Languages

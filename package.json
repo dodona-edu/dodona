@@ -43,6 +43,7 @@
     "webpack-cli": "^4.9.2"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.1",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.48",
     "@typescript-eslint/eslint-plugin": "^5.31.0",

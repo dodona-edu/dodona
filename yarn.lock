@@ -1450,7 +1450,7 @@
   resolved "https://registry.yarnpkg.com/@polka/url/-/url-1.0.0-next.21.tgz#5de5a2385a35309427f6011992b544514d559aa1"
   integrity sha512-a5Sab1C4/icpTZVzZc5Ghpz88yQtGOyNqYXcZgOssB2uuAr+wF/MvN6bgtW32q7HHrvBki+BsZ0OuNv6EV3K9g==
 
-"@popperjs/core@^2.11.5":
+"@popperjs/core@^2.11.5", "@popperjs/core@^2.9.2":
   version "2.11.5"
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
@@ -1518,6 +1518,13 @@
   integrity sha512-K2waXdXBi2302XUdcHcR1jCeU0LL4TD9HRs/gk0N2Xvrht+G/BfJa4QObBQZfhMdxiCpV3COl5Nfq4uKTeTnJA==
   dependencies:
     "@babel/types" "^7.3.0"
+
+"@types/bootstrap@^5.2.1":
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.2.1.tgz#618978b7dc5afb2a8eb8cb4c8d4e63b2c112ca69"
+  integrity sha512-jPdLpDnBTHeocqelEz+ZVP2eY12hIBXgJLV/n0URiQiiNLdCgHwDqaI0chijjn1qwvDNbjzhKDeYAHxsnIGtIA==
+  dependencies:
+    "@popperjs/core" "^2.9.2"
 
 "@types/d3-array@*":
   version "3.0.2"

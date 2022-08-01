@@ -1,7 +1,9 @@
 import { fetch } from "util.js";
+import { Collapse } from "bootstrap";
 
 export function initCheckboxes(): void {
-    document.querySelectorAll(".evaluation-users-table .user-row").forEach(el => initCheckbox(el));
+    document.querySelectorAll<HTMLTableRowElement>(".evaluation-users-table .user-row")
+        .forEach(el => initCheckbox(el));
 }
 
 export function initCheckbox(row: HTMLTableRowElement): void {
@@ -21,13 +23,13 @@ export function initCheckbox(row: HTMLTableRowElement): void {
 
 export function initEvaluationStepper(): void {
     const evalPanelElement = document.querySelector("#info-panel .panel-collapse");
-    const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });
+    const evalPanel = new Collapse(evalPanelElement, { toggle: false });
     const userPanelElement = document.querySelector("#users-panel .panel-collapse");
-    const userPanel = new bootstrap.Collapse(userPanelElement, { toggle: false });
+    const userPanel = new Collapse(userPanelElement, { toggle: false });
     const choicePanelElement = document.querySelector("#choice-panel .panel-collapse");
-    const choicePanel = new bootstrap.Collapse(choicePanelElement, { toggle: false });
+    const choicePanel = new Collapse(choicePanelElement, { toggle: false });
     const scorePanelElement = document.querySelector("#items-panel .panel-collapse");
-    const scorePanel = new bootstrap.Collapse(scorePanelElement, { toggle: false });
+    const scorePanel = new Collapse(scorePanelElement, { toggle: false });
 
     let evaluationUrl: string = null;
 
@@ -64,12 +66,12 @@ export function initEvaluationStepper(): void {
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
 
-        const yesButton = document.querySelector("#yes-grading");
+        const yesButton = document.querySelector<HTMLElement>("#yes-grading");
         yesButton.addEventListener("click", function () {
             document.querySelector("#items-panel").classList.remove("hidden");
             choicePanel.hide();
             scorePanel.show();
-            document.querySelector("#choice-panel .answer").innerText = yesButton.dataset["answer"];
+            document.querySelector<HTMLElement>("#choice-panel .answer").innerText = yesButton.dataset["answer"];
         });
 
         document.querySelector("#no-grading").addEventListener("click", function () {

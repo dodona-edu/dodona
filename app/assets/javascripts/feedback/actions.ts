@@ -30,7 +30,7 @@ export default class FeedbackActions {
     private readonly allScoresZeroButton: HTMLButtonElement | null;
     private readonly allScoresMaxButton: HTMLButtonElement | null;
     private readonly scoreSumElement: HTMLInputElement | null;
-    private readonly completedIcon: HTMLTextElement | null;
+    private readonly completedIcon: HTMLButtonElement | null;
 
     private scoreForms: ScoreForm[];
     // ID's of the score forms that are updating.
@@ -50,7 +50,7 @@ export default class FeedbackActions {
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 
         this.scoreSumElement = document.getElementById("score-sum") as HTMLInputElement;
-        this.completedIcon = document.getElementById("completed-button");
+        this.completedIcon = document.getElementById("completed-button") as HTMLButtonElement;
 
         // Score forms
         this.scoreForms = [];

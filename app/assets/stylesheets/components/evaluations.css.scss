@@ -136,6 +136,7 @@
 
   .user-select-option:hover {
     border: 1px solid $divider;
+
     @include shadow-z4;
   }
 

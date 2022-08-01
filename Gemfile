@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.12.0', require: false
+gem 'bootsnap', '~> 1.13.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.29.0'
+gem 'rouge', '3.30.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -77,9 +77,6 @@ gem 'omniauth_openid_connect', '~> 0.4.0'
 
 # Json webtokens
 gem 'jwt', '~> 2.4.1'
-
-# Remove once https://github.com/nov/json-jwt/pull/101 is merged and released or some other fix is released
-gem 'json-jwt', github: 'lucaskanashiro/json-jwt', branch: 'support-openssl-3'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -133,13 +130,13 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.2'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.21.0'
+gem 'faker', '~> 2.22.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.19'
+gem 'stackprof', '~> 0.2.20'
 
 gem 'ddtrace', '~> 1.2.0'
 

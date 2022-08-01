@@ -1,4 +1,5 @@
 #!/bin/bash
 bundle install
 yarn install
-bundle exec rails s -p 3000 & bundle exec rails jobs:work & yarn build:css --watch & NODE_ENV=development yarn build:js --watch
+#bundle exec rails s -p 3000 &
+bundle exec rails jobs:work & yarn build:css --watch & NODE_ENV=development yarn build:js --watch

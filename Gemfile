@@ -78,9 +78,6 @@ gem 'omniauth_openid_connect', '~> 0.4.0'
 # Json webtokens
 gem 'jwt', '~> 2.4.1'
 
-# Remove once https://github.com/nov/json-jwt/pull/101 is merged and released or some other fix is released
-gem 'json-jwt', github: 'lucaskanashiro/json-jwt', branch: 'support-openssl-3'
-
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'

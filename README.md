@@ -109,6 +109,8 @@ We have tests in JavaScript, Ruby, and system tests:
 * For the system tests, run `bundle exec rails test:system`
 * For the ruby tests, run `bundle exec rails test`
 
+There is also a type check for code written in TypeScript. This can be executed with `yarn typeCheck`.
+
 **Tips**
 * Use the `PARALLEL_WORKERS` ENV var to specify the number of threads to use.
 * Use `TestProf` to profile the ruby tests

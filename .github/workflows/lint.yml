@@ -41,6 +41,9 @@ jobs:
     - name: Lint
       run: |
         yarn lint --quiet
+    - name: Typescript type check
+      run: |
+        yarn tsc --skipLibCheck --noEmit
 
   css:
     name: CSS

@@ -7,7 +7,8 @@
     "test": "jest --coverage",
     "build:css": "./bin/build-css",
     "build:js": "webpack --config ./config/webpack/webpack.config.js",
-    "build": "yarn build:js"
+    "build": "yarn build:js",
+    "typeCheck": "yarn tsc --skipLibCheck --noEmit"
   },
   "dependencies": {
     "@babel/core": "^7.18.9",

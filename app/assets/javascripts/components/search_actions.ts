@@ -105,7 +105,7 @@ export class SearchActions extends ShadowlessLitElement {
         return this.actions.filter(isSearchAction);
     }
 
-    async performAction(action: SearchAction): boolean {
+    async performAction(action: SearchAction): Promise<boolean> {
         if (!action.action && !action.js) {
             return true;
         }

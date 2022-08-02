@@ -6,7 +6,7 @@ current_command=$BASH_COMMAND
 last_command=$current_command
 trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
-trap 'echo "\"${last_command}\" command failed with exit code $?."' EXIT
+trap '[ $? -eq 0 ] || echo "\"${last_command}\" command failed with exit code $?."' EXIT
 
 if [ "$#" -ne 1 ]
 then

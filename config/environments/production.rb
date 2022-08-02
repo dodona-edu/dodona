@@ -114,10 +114,11 @@ Rails.application.configure do
 
   config.middleware.use ExceptionNotification::Rack,
                         ignore_crawlers: %w[Googlebot bingbot Applebot],
-                        ignore_if: ->(env, exception) {
-                          env['action_controller.instance'].is_a?(PagesController) &&
-                              env['action_controller.instance'].action_name == 'create_contact' &&
-                              exception.is_a?(ActionController::InvalidAuthenticityToken)
+                        ignore_if: lambda { |env, exception|
+                          env['HTTP_FROM'] == 'bingbot(at)microsoft.com' ||
+                            (env['action_controller.instance'].is_a?(PagesController) &&
+                             env['action_controller.instance'].action_name == 'create_contact' &&
+                             exception.is_a?(ActionController::InvalidAuthenticityToken))
                         },
                         email: {
                             email_prefix: '[Dodona] ',

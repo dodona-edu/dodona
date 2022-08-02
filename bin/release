@@ -39,9 +39,9 @@ git pull
 
 # Start release
 git flow release start "$version"
-sed -i "s/MAJOR = [0-9]\+/MAJOR = ${version_array[0]}/g" config/initializers/00_version.rb;
-sed -i "s/MINOR = [0-9]\+/MINOR = ${version_array[1]}/g" config/initializers/00_version.rb;
-sed -i "s/PATCH = [0-9]\+/PATCH = ${version_array[2]}/g" config/initializers/00_version.rb;
+sed -i "s/MAJOR = [0-9]\+/MAJOR = ${version_array[0]}/g" config/initializers/00_version.rb
+sed -i "s/MINOR = [0-9]\+/MINOR = ${version_array[1]}/g" config/initializers/00_version.rb
+sed -i "s/PATCH = [0-9]\+/PATCH = ${version_array[2]}/g" config/initializers/00_version.rb
 git commit -am "Bump version"
 
 # Double check that all tests succeed

@@ -8,7 +8,7 @@ trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
 # echo an error message before exiting
 trap 'echo "\"${last_command}\" command failed with exit code $?."' EXIT
 
-if [ "$#" -ne 1 ];
+if [ "$#" -ne 1 ]
 then
   >&2 echo "Expected exactly 1 argument"
   >&2 echo "usage \`bin/release [version]\`"

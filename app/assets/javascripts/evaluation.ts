@@ -1,5 +1,4 @@
 import { fetch } from "util.js";
-import { Collapse } from "bootstrap";
 
 export function initCheckboxes(): void {
     document.querySelectorAll<HTMLTableRowElement>(".evaluation-users-table .user-row")
@@ -23,13 +22,13 @@ export function initCheckbox(row: HTMLTableRowElement): void {
 
 export function initEvaluationStepper(): void {
     const evalPanelElement = document.querySelector("#info-panel .panel-collapse");
-    const evalPanel = new Collapse(evalPanelElement, { toggle: false });
+    const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });
     const userPanelElement = document.querySelector("#users-panel .panel-collapse");
-    const userPanel = new Collapse(userPanelElement, { toggle: false });
+    const userPanel = new bootstrap.Collapse(userPanelElement, { toggle: false });
     const choicePanelElement = document.querySelector("#choice-panel .panel-collapse");
-    const choicePanel = new Collapse(choicePanelElement, { toggle: false });
+    const choicePanel = new bootstrap.Collapse(choicePanelElement, { toggle: false });
     const scorePanelElement = document.querySelector("#items-panel .panel-collapse");
-    const scorePanel = new Collapse(scorePanelElement, { toggle: false });
+    const scorePanel = new bootstrap.Collapse(scorePanelElement, { toggle: false });
 
     let evaluationUrl: string = null;
 

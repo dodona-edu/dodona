@@ -59,7 +59,7 @@ git flow release finish "$version"
 # Allow abort before push
 echo -n "Next step will push, press A to abort, any key to continue"
 read -r confirm
-if [ "$confirm" == "A" ] || [ "$confirm" == "a" ];
+if [ "$confirm" == "A" ] || [ "$confirm" == "a" ]
 then
   exit
 fi

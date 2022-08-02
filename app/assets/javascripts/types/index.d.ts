@@ -1,6 +1,6 @@
 declare interface Window {
     dodona: any;
-    bootstrap: { Alert: any, Button: any, Collapse: any, Dropdown: any, Modal: any, Popover: any, Tab: any, Tooltip: any };
+    bootstrap: { Alert: bootstrap.Alert, Button: bootstrap.Button, Collapse: bootstrap.Collapse, Dropdown: bootstrap.Dropdown, Modal: bootstrap.Modal, Popover: bootstrap.Popover, Tab: bootstrap.Tab, Tooltip: bootstrap.Tooltip };
     MathJax: MathJaxObject;
 }
 
@@ -17,5 +17,3 @@ declare module I18n {
 }
 
 declare var dodona;
-
-declare var bootstrap: { Alert: any, Button: any, Collapse: any, Dropdown: any, Modal: any, Popover: any, Tab: any, Tooltip: any };

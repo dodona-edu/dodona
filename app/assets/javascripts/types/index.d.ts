@@ -11,7 +11,7 @@ declare class MathJaxObject {
 declare module I18n {
     export function l(key: string, data: any): string;
     export function t(key: string, options?: {}): string;
-    export function toNumber(number: number, options?: {}): string;
+    export function numberToDelimited(number: number, options?: {}): string;
 
     export var locale: string;
 }

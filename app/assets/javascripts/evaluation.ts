@@ -100,8 +100,8 @@ export function initEvaluationStepper(): void {
                 if (!running) {
                     running = true;
                     event.preventDefault();
-                    const button = option.querySelector(".button");
-                    const loader = option.querySelector(".loader");
+                    const button = option.querySelector(".btn");
+                    const loader = option.parentNode.querySelector(".loader");
                     button.classList.add("hidden");
                     loader.classList.remove("hidden");
                     const response = await fetch(option.getAttribute("href"), { method: "POST" });

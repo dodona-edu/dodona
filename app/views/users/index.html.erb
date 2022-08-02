@@ -10,7 +10,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, no_dropdown_for: ["institutions"]} %>
+        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all} %>
         <div id="users-table-wrapper">
           <%= render partial: 'users_table', locals: {users: @users, pagination_opts: @pagination_opts} %>
         </div>

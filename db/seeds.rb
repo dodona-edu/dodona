@@ -8,7 +8,54 @@
 
 # separate method as always Submission.create is used instead of a factory
 def submission_summary(status)
-  summary = status == :correct ? 'All tests succeeded.' : "#{Faker::Number.number(digits: 2)} tests failed."
+  return 'All tests succeeded.' if status == :correct
+  return "#{Faker::Number.number(digits: 2)} tests failed." if status == :wrong
+  nil
+end
+
+def academic_year(diff = 0)
+  start_year = Date.current.month > 8 ? Date.current.year : Date.current.year - 1
+  "#{start_year + diff}-#{start_year + 1 + diff}"
+end
+
+def fill_series_with_realistic_submissions(s)
+  s.content_pages.each do |content|
+    s.course.enrolled_members.sample(rand(45)).each do |student|
+      ActivityReadState.create user: student,
+                               course: s.course,
+                               activity: content
+    end
+  end
+
+  s.exercises.each_with_index do |exercise, k|
+    difficulty = rand(1..(k+1))
+    s.course.enrolled_members.sample(rand(3*(6-difficulty)..45)).each do |student|
+      # Normally distributed submissions between 8am and 10pm, the day before the deadline, with a peek around 1pm
+      submission_time = s.deadline - 1.day + 8.hour + rand(0..420).minutes + rand(0..420).minutes
+      # Some users missed the deadline
+      submission_time += rand(7).days if rand(10) == 1
+      tries = rand(1..(3 * difficulty)) + rand(1..(3 * difficulty))
+      tries.times do |j|
+        status = if j + rand(7) > tries + difficulty
+                   :correct
+                 else
+                   [ :wrong, :wrong, 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'output limit exceeded' ][rand(7)]
+                 end
+        submission_time += rand(30).minutes # submission within 30 minutes after the previous submission
+        Submission.create user: student,
+                          course: s.course,
+                          exercise: exercise,
+                          evaluate: false,
+                          skip_rate_limit_check: true,
+                          status: status,
+                          accepted: status == :correct,
+                          summary: submission_summary(status),
+                          created_at: submission_time,
+                          code: "print(input())\n",
+                          result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+      end
+    end
+  end
 end
 
 if Rails.env.development?
@@ -21,8 +68,8 @@ if Rails.env.development?
   artevelde = Institution.create name: 'Artevelde', short_name: 'Artevelde', logo: 'artevelde.png', category: 1
   sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'UGent.png'
   slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.nl.png'
-  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png'
-  sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
+  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png', generated_name: false
+  sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg', generated_name: false
   elixir = Institution.create name: 'Elixir', short_name: 'Elixir', logo: 'elixir.png', category: 2
   vlaanderen = Institution.create name: 'Vlaamse Overheid', short_name: 'Vlaamse Overheid', logo: 'vlaamse-overheid.png', category: 2
 
@@ -151,14 +198,14 @@ if Rails.env.development?
 
   courses = []
 
-  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: '2020-2021', registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
-  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
-  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: '2020-2021', registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
-  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: '2020-2021', registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
-  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: '2019-2020', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
-  courses << Course.create(description: 'This is a test course.', name: 'Featured course', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Zonnebloem', featured: true)
+  courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: academic_year, registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
+  courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')
+  courses << Course.create(description: 'This is a test course.', name: 'Hidden Test Course', year: academic_year, registration: 'open_for_all', visibility: 'hidden', moderated: false, teacher: 'Prof. Kumulus')
+  courses << Course.create(description: 'This is a test course.', name: 'Closed Test Course', year: academic_year, registration: 'closed', visibility: 'hidden', moderated: false, teacher: 'Graaf van Rommelgem')
+  courses << Course.create(description: 'This is a test course.', name: 'Old Open for All Test Course', year: academic_year(-1), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Very Old Open for All Test Course', year: academic_year(-2), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Gobelijn')
+  courses << Course.create(description: 'This is a test course.', name: 'Featured course', year: academic_year(-2), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Zonnebloem', featured: true)
 
   puts "Adding users to courses (#{Time.now - start})"
 
@@ -215,11 +262,14 @@ if Rails.env.development?
   Dir.glob("#{big_activity_repo.full_path}/*")
       .select { |f| File.directory? f }
       .each do |dir|
-    10.times do |i|
+    5.times do |i|
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
   big_activity_repo.process_activities
+
+  RepositoryAdmin.create(repository: activity_repo, user: zeus)
+  RepositoryAdmin.create(repository: big_activity_repo, user: zeus)
 
   contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
@@ -245,7 +295,7 @@ if Rails.env.development?
                             course: course,
                             visibility: :closed,
                             activity_numbers_enabled: activity_numbers_enabled)
-    8.times do |i|
+    2.times do |i|
       s = Series.create(name: "Reeks #{i}",
                         description: Faker::Lorem.paragraph(sentence_count: 25),
                         course: course,
@@ -262,7 +312,7 @@ if Rails.env.development?
     end
 
     series.each do |s|
-      series_contents = contents_list.sample(rand(3) + 2)
+      series_contents = contents_list.sample(rand(3))
       s.content_pages << series_contents
       series_contents.each do |content|
         course.enrolled_members.sample(5).each do |student|
@@ -297,49 +347,95 @@ if Rails.env.development?
   end
 
   puts "Create Visualisation Test course (#{Time.now - start})"
-  visualisation_test = Course.create(name: 'Visualisation Test', year: '2021-2022', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Stijn Taff', administrating_members: [zeus, staff])
+  visualisation_test = Course.create(name: 'Visualisation Test', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Stijn Taff', administrating_members: [zeus, staff])
   visualisation_test.enrolled_members.concat(students.sample(50))
   big_activity_repo.allowed_courses << visualisation_test
   activity_repo.allowed_courses << visualisation_test
+  courses << visualisation_test
 
   3.times do |i|
     s = Series.create(name: "Reeks #{i}",
                       description: Faker::Lorem.paragraph(sentence_count: 25),
                       course: visualisation_test,
-                      activity_numbers_enabled: true)
-    series_exercises = exercises_list.sample(rand(3) + 2)
-    s.exercises << series_exercises
+                      activity_numbers_enabled: true,
+                      deadline: Date.current - (i+1).weeks)
+    s.content_pages << contents_list.sample(rand(2))
+    s.exercises << exercises_list.sample(rand(3) + 2)
+    fill_series_with_realistic_submissions(s)
+  end
 
-    series_exercises.each do |exercise|
-      visualisation_test.enrolled_members.sample(rand(25)).each do |student|
-        rand(1..10).times do
-          status = if rand() < 0.5
-                     :correct
-                   else
-                     :wrong
-                   end
-          Submission.create user: student,
-                            course: s.course,
-                            exercise: exercise,
-                            evaluate: false,
-                            skip_rate_limit_check: true,
-                            status: status,
-                            accepted: status == :correct,
-                            summary: submission_summary(status),
-                            # Normally distributed submissions between 6am and 12pm yesterday, with a peek around 3pm
-                            created_at: Date.yesterday + 6.hour + rand(0..540).minutes + rand(0..540).minutes,
-                            code: "print(input())\n",
-                            result: File.read(Rails.root.join('db', 'results', "#{exercise.judge.name}-result.json"))
+  puts "Create Evaluation (#{Time.now - start})"
+  s = Series.create(name: "Evaluation",
+                    description: Faker::Lorem.paragraph(sentence_count: 25),
+                    course: visualisation_test,
+                    activity_numbers_enabled: false,
+                    deadline: Date.current)
+  s.content_pages << contents_list.sample(1)
+  s.exercises << exercises_list.sample(2)
+  fill_series_with_realistic_submissions(s)
+
+  e = Evaluation.create(series: s, deadline: s.deadline)
+  e.exercises = s.exercises
+  e.users = s.course.enrolled_members.sample(25)
+  e.save()
+
+  e.evaluation_exercises.each do |ee|
+    rand(1..5).times do
+      ScoreItem.create(evaluation_exercise: ee,
+                       maximum: rand(5),
+                       name: Faker::Lorem.word,
+                       description: Faker::Lorem.sentence)
+    end
+    ee.feedbacks.sample(rand(5..25)).each do |f|
+      if(f.submission.present?)
+        ee.score_items.each do |si|
+          Score.create(score_item: si,
+                       feedback: f,
+                       last_updated_by: zeus,
+                       score: rand(si.maximum))
+        end
+        rand(3).times do
+          Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
+                            submission: f.submission,
+                            annotation_text: Faker::Lorem.sentence,
+                            evaluation: e,
+                            user: zeus,
+                            course: s.course)
         end
       end
     end
   end
 
+  puts "Add questions (#{Time.now - start})"
 
+  courses.each do |c|
+    c.submissions.sample(rand(10)).each do |s|
+      question_state = rand(3)
+      line_nr = rand(2) == 1 ? 1 : nil
+      q = Question.create(line_nr: line_nr,
+                        submission: s,
+                        annotation_text: Faker::Lorem.sentence,
+                        question_state: question_state,
+                        user: s.user,
+                        course: s.course)
+
+      if(question_state > 0)
+        q.update(last_updated_by: c.administrating_members.first)
+      end
+
+      if(question_state == 2)
+        Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
+                          submission: s,
+                          annotation_text: Faker::Lorem.sentence,
+                          user: c.administrating_members.first,
+                          course: s.course)
+      end
+    end
+  end
 
   puts "Create Status Test course (#{Time.now - start})"
 
-  status_test = Course.create(name: 'Status Test', year: '2018-2019', registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
+  status_test = Course.create(name: 'Status Test', year: academic_year(-1), registration: 'open_for_all', visibility: 'visible_for_all', teacher: 'Prof. Ir. Dr. Dr. Msc. Bsc.', administrating_members: [zeus])
 
   deadline = Time.now - 1.day
   after_deadline = deadline + 1.hour
@@ -475,6 +571,36 @@ if Rails.env.development?
   AnnouncementView.create user:staff, announcement: sign_in_announcement
   AnnouncementView.create user:jelix, announcement: sign_in_announcement
 
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :all_users,
+                      style: :danger,
+                      start_delivering_at: 5.weeks.ago,
+                      stop_delivering_at: 1.week.ago
+  AnnouncementView.create user:zeus, announcement: a
+
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :students,
+                      style: :primary,
+                      start_delivering_at: 1.week.from_now
+  AnnouncementView.create user:zeus, announcement: a
+
+  a = Announcement.create text_nl: Faker::Markdown.emphasis,
+                      text_en: Faker::Markdown.emphasis,
+                      user_group: :staff,
+                      institution: ugent,
+                      style: :success,
+                      start_delivering_at: 5.weeks.ago,
+                      stop_delivering_at: 1.week.from_now
+  AnnouncementView.create user:zeus, announcement: a
+
+  puts "Add rights requests (#{Time.now - start})"
+
+  ActionMailer::Base.perform_deliveries = false
+  students.sample(rand(1..10)).each do |s|
+    RightsRequest.create(user: s, context: Faker::Lorem.paragraph(sentence_count: 10))
+  end
 
   puts "Finished! (#{Time.now - start})"
 end

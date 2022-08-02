@@ -17,3 +17,5 @@ declare module I18n {
 }
 
 declare var dodona;
+
+declare var bootstrap: { Alert: any, Button: any, Collapse: any, Dropdown: any, Modal: any, Popover: any, Tab: any, Tooltip: any };

@@ -374,7 +374,7 @@ export class CodeListing {
           <textarea autofocus required class="form-control annotation-submission-input" rows="3" minlength="1" maxlength="${maxLength}"></textarea>
           <div class="clearfix annotation-help-block">
             <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
-            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.toNumber(maxLength, { precision: 0 })}</span>
+            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.numberToDelimited(maxLength)}</span>
           </div>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
@@ -403,10 +403,10 @@ export class CodeListing {
 
         const usedCharacters = form.querySelector(".used-characters");
         // Initial value.
-        usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+        usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
         // Update value while typing.
         inputField.addEventListener("input", () => {
-            usedCharacters.innerHTML = I18n.toNumber(inputField.value.length, { precision: 0 });
+            usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
         });
 
         // Cancellation handler.

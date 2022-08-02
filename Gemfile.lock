@@ -181,6 +181,7 @@ GEM
     faraday-net_http (2.0.3)
     ffi (1.15.5)
     flamegraph (0.9.5)
+    glob (0.2.2)
     globalid (1.0.0)
       activesupport (>= 5.0)
     has_scope (0.8.0)
@@ -197,8 +198,9 @@ GEM
     httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    i18n-js (3.9.2)
-      i18n (>= 0.6.6)
+    i18n-js (4.0.0)
+      glob
+      i18n
     icalendar (2.8.0)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
@@ -522,7 +524,7 @@ DEPENDENCIES
   has_scope (~> 0.8.0)
   hcaptcha (~> 7.1.0)
   httparty (~> 0.20.0)
-  i18n-js (~> 3.9.2)
+  i18n-js (~> 4.0.0)
   icalendar (~> 2.8)
   image_processing (~> 1.12.2)
   jbuilder (~> 2.11.5)

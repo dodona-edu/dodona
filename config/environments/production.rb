@@ -113,11 +113,11 @@ Rails.application.configure do
   config.server_timings.enabled = false
 
   config.middleware.use ExceptionNotification::Rack,
-                        ignore_crawlers: %w[Googlebot bingbot Applebot],
-                        ignore_if: ->(env, exception) {
+                        ignore_crawlers: %w[Googlebot BingPreview bingbot Applebot],
+                        ignore_if: lambda { |env, exception|
                           env['action_controller.instance'].is_a?(PagesController) &&
-                              env['action_controller.instance'].action_name == 'create_contact' &&
-                              exception.is_a?(ActionController::InvalidAuthenticityToken)
+                            env['action_controller.instance'].action_name == 'create_contact' &&
+                            exception.is_a?(ActionController::InvalidAuthenticityToken)
                         },
                         email: {
                             email_prefix: '[Dodona] ',

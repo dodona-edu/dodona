@@ -22,7 +22,7 @@ version=$1
 # get major, minor and patch as an array
 readarray -d . -t version_array< <(printf '%s' "$version")
 
-if [ "${#version_array[@]}" -ne 3 ];
+if [ "${#version_array[@]}" -ne 3 ]
 then
   >&2 echo "expected version to contain major minor and patch"
   >&2 echo "usage \`bin/release [version]\`"

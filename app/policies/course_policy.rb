@@ -11,6 +11,7 @@ class CoursePolicy < ApplicationPolicy
              .or(scope.where(institution: user.institution, visibility: :visible_for_institution))
              .or(scope.where(course_memberships: { status: %i[student course_admin], user_id: user.id }))
              .distinct
+      else
         scope.where(visibility: :visible_for_all)
       end
     end

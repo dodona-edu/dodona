@@ -52,8 +52,9 @@ nl:
         title: Uitgelichte cursus
         toggle-label: Deze cursus uitlichten
       allow_personal_accounts:
-        title: Persoonlijke accounts
-        toggle-label: Sta toe dat gebruikers registreren met een persoonlijke account
+        title: Private accounts
+        toggle-label: Sta toe dat gebruikers registreren met een private account
+        help: Private accounts zijn gebruikers accounts die niet verbonden zijn aan een onderwijsinstelling, zoals bijvoorbeeld gebruikers die inloggen met een persoonlijke gmail of outlook account.
     index:
       title: Cursussen
       users: "Gebruikers"

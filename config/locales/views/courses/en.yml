@@ -52,8 +52,9 @@ en:
         title: Featured course
         toggle-label: Feature this course
       allow_personal_accounts:
-        title: Personal accounts
-        toggle-label: Allow users to register with a personal account
+        title: Private accounts
+        toggle-label: Allow users to register with a private account
+        help: Private accounts are user accounts that are not linked to an institution. For example users that signed in using a personal gmail or outlook account.
     index:
       title: Courses
       users: "Users"

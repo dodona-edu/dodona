@@ -84,6 +84,9 @@ class ActivitiesController < ApplicationController
 
   def show
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
+
+    # Double check if activity still exists within this course (And throw a 404 when it does not)
+    @course&.activities&.find_by!(id: @activity.id)
     # We still need to check access because an unauthenticated user should be able to see public activities
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 

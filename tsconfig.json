@@ -17,7 +17,8 @@
     "paths": {
       "*": ["assets/javascripts/*"]
     },
-    "pretty": true
+    "pretty": true,
+    "allowUmdGlobalAccess": true
   },
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public", "data"],
   "compileOnSave": false

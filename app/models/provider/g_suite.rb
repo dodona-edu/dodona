@@ -33,7 +33,7 @@ class Provider::GSuite < Provider
   end
 
   def self.readable_name
-    'Google Workspace'
+    'Google'
   end
 
   def self.extract_institution_name(auth_hash)

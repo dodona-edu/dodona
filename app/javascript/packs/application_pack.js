@@ -21,6 +21,10 @@ window.jQuery = jQuery;
 window.jquery = jQuery;
 window.$ = jQuery;
 
+import { I18n } from "i18n-js";
+import translations from "i18n/translations.json";
+window.I18n = new I18n(translations);
+
 // bootstrap
 import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from "bootstrap";
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };

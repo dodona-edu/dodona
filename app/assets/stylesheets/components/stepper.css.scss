@@ -1,6 +1,7 @@
 .stepper {
   .panel {
     @include shadow-z0;
+
     border-radius: 0;
     background-color: transparent;
 
@@ -46,9 +47,9 @@
       }
     }
 
-
-    .panel-heading+.panel-collapse>.panel-body {
+    .panel-heading + .panel-collapse > .panel-body {
       @include shadow-z2;
+
       background-color: $content-bg;
 
       @include media-breakpoint-up(sm) {
@@ -61,10 +62,11 @@
 
       &.panel-body-transparent {
         background-color: transparent;
+
         @include shadow-z0;
       }
 
-      .row+.row {
+      .row + .row {
         margin-top: 20px;
       }
 

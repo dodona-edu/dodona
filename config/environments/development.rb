@@ -100,7 +100,10 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Regenerate js translation files
-  config.middleware.use I18n::JS::Middleware
+  config.after_initialize do
+    require 'i18n-js/listen'
+    I18nJS.listen
+  end
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

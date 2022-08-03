@@ -15,7 +15,7 @@
   right: 0;
 }
 
-.repository-courses-table-wrapper .text:before {
-  content: '';
+.repository-courses-table-wrapper .text::before {
+  content: "";
   display: inline-block;
 }

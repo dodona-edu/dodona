@@ -45,7 +45,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     @feedback.reload
     assert_equal 1, @feedback.scores.count
 
-    s = create :submission, exercise: @feedback.exercise, user: @feedback.user
+    s = create :submission, exercise: @feedback.exercise, user: @feedback.user, course: @feedback.evaluation.series.course
 
     patch evaluation_feedback_path(@evaluation, @feedback), params: {
       feedback: {
@@ -69,7 +69,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     @feedback.reload
     assert_equal 10, @feedback.scores.count
 
-    s = create :submission, exercise: @feedback.exercise, user: @feedback.user
+    s = create :submission, exercise: @feedback.exercise, user: @feedback.user, course: @feedback.evaluation.series.course
 
     patch evaluation_feedback_path(@evaluation, @feedback), params: {
       feedback: {

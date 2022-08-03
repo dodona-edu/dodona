@@ -180,6 +180,7 @@ nl:
       5: Puik werk!
       6: Goed gedaan!
     dropdown:
+      search: Zoeken
       multi:
         labels: Labels
         programming_languages: Programmeertalen

@@ -9,5 +9,5 @@ global.$ = global.jQuery = jQuery;
 global.I18n = {
     l: k => k,
     t: t => t,
-    toNumber: n => n.toString()
+    numberToDelimited: n => n.toString()
 };

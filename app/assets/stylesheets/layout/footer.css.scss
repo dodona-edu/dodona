@@ -6,8 +6,7 @@ $footer-height-sm: 180px;
   bottom: 0;
   left: 0;
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   justify-content: center;
   align-items: flex-start;
   flex-shrink: 0;
@@ -18,15 +17,14 @@ $footer-height-sm: 180px;
   height: $footer-height;
 }
 
-.footer:after {
-  content: '';
+.footer::after {
+  content: "";
   display: block;
 }
 
 .footer-block {
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  flex-flow: row nowrap;
   flex-shrink: 0;
   align-self: stretch;
   align-items: center;
@@ -36,13 +34,13 @@ $footer-height-sm: 180px;
     margin-left: 1em;
 
     &:hover {
-      opacity: 80%;
+      opacity: 0.8;
       text-decoration: none;
     }
   }
 }
 
-.footer-block>* {
+.footer-block > * {
   flex-shrink: 0;
 }
 

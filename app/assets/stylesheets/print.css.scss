@@ -1,7 +1,6 @@
 @media print {
-
   @page {
-    size: A4;
+    size: a4;
     margin: 25mm;
   }
 
@@ -47,7 +46,7 @@
   //  }
   body {
     min-height: initial !important;
-    margin: 0 0 0 0;
+    margin: 0;
   }
 
   // Make font size a little bit bigger
@@ -65,7 +64,7 @@
   }
 
   // Bootstrap places link href after the text, remove it
-  a[href]:after {
+  a[href]::after {
     content: none;
   }
 }

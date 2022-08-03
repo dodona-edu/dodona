@@ -32,10 +32,10 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - name: Use node 12
+    - name: Use node 16
       uses: actions/setup-node@v3
       with:
-        node-version: 12.x
+        node-version: 16.x
         cache: yarn
     - name: Install JS dependencies
       run: |
@@ -61,7 +61,7 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v3
       with:
-        node-version: 12.x
+        node-version: 16.x
         cache: yarn
     - name: Install dependencies
       run: |
@@ -93,10 +93,10 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-    - name: Use node 12
+    - name: Use node 16
       uses: actions/setup-node@v3
       with:
-        node-version: 12.x
+        node-version: 16.x
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master

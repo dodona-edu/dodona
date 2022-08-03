@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.12.0', require: false
+gem 'bootsnap', '~> 1.13.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -44,7 +44,7 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
-gem 'sinatra', '~>2.2.0'
+gem 'sinatra', '~>2.2.2'
 
 # pagination
 gem 'will_paginate', '~>3.3.1'
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.29.0'
+gem 'rouge', '3.30.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -102,8 +102,8 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 3.9.2'
-gem 'rails-i18n', '~> 7.0.3'
+gem 'i18n-js', '~> 4.0.0'
+gem 'rails-i18n', '~> 7.0.5'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.6'
+gem 'nokogiri', '~> 1.13.8'
 gem 'premailer-rails', '~> 1.11.1'
 
 # filtering
@@ -127,15 +127,15 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.2'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.21.0'
+gem 'faker', '~> 2.22.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.19'
+gem 'stackprof', '~> 0.2.20'
 
-gem 'ddtrace', '~> 1.1.0'
+gem 'ddtrace', '~> 1.2.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'
@@ -177,7 +177,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.15.1'
+  gem 'rubocop-rails', '~> 2.15.2'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'
@@ -190,4 +190,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'docker-api', '~> 2.2.0'
 
 # Used for syncing deadlines with an external calendar
-gem 'icalendar', '~> 2.7'
+gem 'icalendar', '~> 2.8'

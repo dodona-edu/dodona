@@ -140,11 +140,10 @@
         <span class="help-block offset-sm-3 col-sm-6"><%= t ".registration-#{r}-help_html" %></span>
       <% end %>
     </div>
-
     <div class="field form-group row">
       <%= f.label :allow_personal_accounts, t(".allow_personal_accounts.title"), class: 'col-sm-3 col-form-label' %>
       <div class="col-sm-6 pt-2">
-        <div class="form-check <%= "form-switch" unless course.new_record? %>">
+        <div class="form-check">
           <%= f.check_box :allow_personal_accounts, class: 'form-check-input' %>
           <%= f.label :allow_personal_accounts, t(".allow_personal_accounts.toggle-label"), class: 'form-check-label' %>
         </div>

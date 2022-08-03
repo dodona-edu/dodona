@@ -81,7 +81,7 @@ class ApplicationController < ActionController::Base
 
   def parse_pagination_param(page)
     # This doesn't work for negative numbers, but we don't need to handle negative numbers here anyway
-    page.to_s.match(/^\d+$/) ? [page.to_i, 1].max : nil
+    page.to_s.match(/^\d*$/) ? [page.to_i, 1].max : nil
   end
 
   def skip_session

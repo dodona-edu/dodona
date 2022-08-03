@@ -14,7 +14,6 @@ en:
       visibility-visible_for_all-help_html: This course is part of the public course overview, and everyone can see the contents.
       visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
       visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
-      visibility-visible_for_institutional_users-help_html: This course is accessible for anyone that belongs to an institution.
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
@@ -26,7 +25,6 @@ en:
       visibility-visible_for_all_html: Everyone
       visibility-visible_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
       visibility-hidden_html: Only registered users
-      visibility-visible_for_institutional_users_html: Everyone that belongs to an institution
       registration-open_for_all_html: Everyone
       registration-open_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
       registration-closed_html: Nobody
@@ -99,7 +97,6 @@ en:
       visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."
       visibility-visible_for_institution-info: "This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link."
       visibility-hidden-info: "This course is hidden: it is not listed in the course overview, and users need the secret link to access this course."
-      visibility-visible_for_institutional_users-info: "This course is accessible for anyone that belongs to an institution: they can access this course from the course overview and see its contents. Personal accounts need the secret link."
       registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
       registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
       registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."

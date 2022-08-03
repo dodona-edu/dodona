@@ -24,7 +24,7 @@ course1:
   name: course 1
   year: 2021-2022
   description: This is the description of course 1
-  visibility: 3 # visible for all
+  visibility: 0 # visible for all
   registration: 3 # open for all
   teacher: Prof. Zonnebloem
   secret: "PuDCHk3A7qCEAbxKXPpz"

@@ -14,7 +14,6 @@ nl:
       visibility-visible_for_all-help_html: Deze cursus wordt opgenomen in het publieke cursusoverzicht en iedereen kan de inhoud bekijken.
       visibility-visible_for_institution-help_html: Deze cursus is enkel toegankelijk voor gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> en via onderstaande directe link.
       visibility-hidden-help_html: Deze cursus wordt niet opgenomen in het publieke cursusoverzicht en is enkel toegankelijk via onderstaande directe link.
-      visibility-visible_for_institutional_users-help_html: Iedereen die tot een instelling behoort kan deze cursus bekijken.
       registration-open_for_all-help_html: Iedereen kan zich voor deze cursus registreren.
       registration-open_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen zich voor deze cursus registreren.
       registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
@@ -26,7 +25,6 @@ nl:
       visibility-visible_for_all_html: Iedereen
       visibility-visible_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
       visibility-hidden_html: Enkel geregistreerde gebruikers
-      visibility-visible_for_institutional_users_html: Alle gebruikers die tot een onderwijsinstelling behoren
       registration-open_for_all_html: Iedereen
       registration-open_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
       registration-closed_html: Niemand
@@ -109,7 +107,6 @@ nl:
       visibility-visible_for_institution-info: 'Deze cursus is zichtbaar voor leden van %{institution}: voor hen wordt deze cursus opgelijst in het cursusoverzicht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van deze cursus zien via de geheime link'
       visibility-hidden-info: 'Deze cursus is verborgen: ze verschijnt niet in het cursusoverzicht en gebruikers kunnen deze cursus enkel zien via de geheime link.'
       registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
-      visibility-visible_for_institutional_users-info: "Iedereen die tot een instelling behoort kan deze cursus bekijken: voor hen wordt deze cursus opgelijst in het cursusoverzicht en is de inhoud zichtbaar. Anderen kunnen enkel de inhoud van deze cursus zien via de geheime link"
       registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'
       registration-closed-info: 'De registraties zijn gesloten: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
       registration-open_for_institutional_users-info: 'De registraties staan open voor gebruikers die tot een instelling behoren: enkel zij kunnen zich registreren voor deze cursus.'

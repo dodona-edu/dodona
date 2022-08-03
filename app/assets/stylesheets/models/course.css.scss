@@ -1,3 +1,5 @@
+@use "sass:map";
+
 .admin-card-info {
   margin-top: 24px;
 }
@@ -41,7 +43,7 @@
 
   @include media-breakpoint-up(md) {
     .nav {
-      width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "md")} / 12 * 10)) / 2);
+      width: calc((100vw - var(--scrollbar-width) - (#{map.get($container-max-widths, "md")} / 12 * 10)) / 2);
       max-height: calc(100vh - (#{$navbar-height} + 20px));
       display: block;
       overflow-y: auto;
@@ -58,47 +60,47 @@
 
   @include media-breakpoint-up(lg) {
     .nav {
-      width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "lg")} / 12 * 10)) / 2);
+      width: calc((100vw - var(--scrollbar-width) - (#{map.get($container-max-widths, "lg")} / 12 * 10)) / 2);
     }
   }
 
   @include media-breakpoint-up(xl) {
     .nav {
-      width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "xl")} / 12 * 10)) / 2);
+      width: calc((100vw - var(--scrollbar-width) - (#{map.get($container-max-widths, "xl")} / 12 * 10)) / 2);
     }
   }
 
   @include media-breakpoint-up(xxl) {
     .nav {
-      width: calc((100vw - var(--scrollbar-width) - (#{map-get($container-max-widths, "xxl")} / 12 * 10)) / 2);
+      width: calc((100vw - var(--scrollbar-width) - (#{map.get($container-max-widths, "xxl")} / 12 * 10)) / 2);
     }
   }
 
-  .nav>li.header {
+  .nav > li.header {
     color: $on-surface-muted;
   }
 
-  .nav>li>a {
+  .nav > li > a {
     display: block;
-    padding: 6px 6px;
+    padding: 6px;
     font-size: 13px;
     font-weight: 500;
     color: $on-surface-muted;
-    opacity: 75%;
+    opacity: 0.75;
   }
 
-  .nav>li>a.active,
-  .nav>li>a.active:hover {
+  .nav > li > a.active,
+  .nav > li > a.active:hover {
     border-left: 2px solid $secondary;
     padding-left: 4px;
     color: $on-surface-muted;
-    opacity: 100%;
+    opacity: 1;
   }
 
-  .nav>li>a:hover {
+  .nav > li > a:hover {
     border-left: 1px solid $secondary;
     padding-left: 5px;
     color: $on-surface-muted;
-    opacity: 100%;
+    opacity: 1;
   }
 }

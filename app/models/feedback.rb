@@ -88,7 +88,7 @@ class Feedback < ApplicationRecord
 
   def determine_submission
     # First because the default order is id: :desc
-    self.submission = user.submissions.of_exercise(exercise).before_deadline(evaluation.deadline).first
+    self.submission = user.submissions.in_course(evaluation.series.course).of_exercise(exercise).before_deadline(evaluation.deadline).first
     self.completed = true if submission.nil?
   end
 
@@ -117,5 +117,6 @@ class Feedback < ApplicationRecord
   def submission_user_exercise_correct
     errors.add(:submission, 'user should be the same as in the evaluation') if submission.present? && submission.user_id != user.id
     errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.exercise_id != exercise.id
+    errors.add(:submission, 'course should be the same as in the evaluation') if submission.present? && submission.course_id != evaluation.series.course_id
   end
 end

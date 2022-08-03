@@ -74,13 +74,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
     background-color: $gray;
 
-    &>.mdi::before {
+    & > .mdi::before {
       line-height: 24px;
     }
 
@@ -147,13 +146,16 @@
       $p5: 75%;
       $p6: 90%;
 
-      background-image: linear-gradient(-135deg,
-          $red $p1,
-          $orange $p2,
-          $yellow $p3,
-          $green $p4,
-          $blue $p5,
-          $purple $p6 );
+      background-image:
+        linear-gradient(
+          -135deg,
+          $red-70 $p1,
+          $orange-70 $p2,
+          $yellow-70 $p3,
+          $green-70 $p4,
+          $blue-70 $p5,
+          $purple-70 $p6
+        );
 
       i {
         font-weight: bolder;
@@ -185,13 +187,16 @@
     border-bottom: solid 1px $skeleton-color;
     height: 33px;
     background-repeat: no-repeat;
-    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    background-image:
+      linear-gradient($skeleton-color 100%, transparent 0),
       linear-gradient($skeleton-color 100%, transparent 0),
       linear-gradient($skeleton-color 100%, transparent 0);
-    background-size: 56px 12px,
+    background-size:
+      56px 12px,
       90px 12px,
       115px 12px;
-    background-position: 58px 10px,
+    background-position:
+      58px 10px,
       calc(100% - 230px) 10px,
       calc(100% - 75px) 10px;
   }
@@ -200,15 +205,18 @@
     border-top: solid 1px $skeleton-color;
     height: 37px;
     background-repeat: no-repeat;
-    background-image: linear-gradient($skeleton-color 100%, transparent 0),
+    background-image:
+      linear-gradient($skeleton-color 100%, transparent 0),
       linear-gradient($skeleton-color 100%, transparent 0),
       linear-gradient($skeleton-color 100%, transparent 0),
       linear-gradient($skeleton-color 100%, transparent 0);
-    background-size: 90px 12px,
+    background-size:
+      90px 12px,
       100px 12px,
       90px 12px,
       8px 12px;
-    background-position: 58px 15px,
+    background-position:
+      58px 15px,
       calc(100% - 220px) 15px,
       calc(100% - 100px) 15px,
       calc(100% - 25px) 15px;
@@ -234,11 +242,11 @@
 
 .graph-info {
   margin-left: 5px;
-  color: $on-surface-muted
+  color: $on-surface-muted;
 }
 
 .svg-icon-btn {
-  fill: currentColor;
+  fill: currentcolor;
 
   &.rotate {
     transform: rotate(90deg);

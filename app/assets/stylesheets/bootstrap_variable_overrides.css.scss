@@ -1,6 +1,7 @@
 // boostrap color overrides
 
-// primary, secondary, success, info, warning, danger and the variables for color names are already overridden in m3-theme-light
+// primary, secondary, success, info, warning, danger and the variables for color names
+// are already overridden in m3-theme-light
 
 $body-bg: $background;
 $content-bg: $surface;
@@ -43,9 +44,9 @@ $enable-caret: false;
 $border-radius-base: 12px;
 
 // font stuff
-$font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-size-base: 0.875rem; //14px;
-$baseLineHeight: 24px;
+$font-family-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
+$font-size-base: 0.875rem; // 14px;
+$baseLineHeight: 24px; /* stylelint-disable-line scss/dollar-variable-pattern */
 $line-height-base: 1.3846153846;
 $min-contrast-ratio: 3;
 
@@ -59,7 +60,7 @@ $alert-bg-scale: 0%;
 
 // bootstrap offcanvas overrides
 $offcanvas-horizontal-width: 700px;
-$offcanvas-border-width: 0px;
+$offcanvas-border-width: 0;
 
 // button stuff
 $btn-padding-x: 24px;

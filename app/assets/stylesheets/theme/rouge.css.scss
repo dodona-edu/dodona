@@ -1,5 +1,5 @@
 .highlighter-rouge .hll {
-  background-color: #f1fa8c
+  background-color: #f1fa8c;
 }
 
 .highlighter-rouge {
@@ -89,7 +89,7 @@
 /* Generic.Emph */
 .highlighter-rouge .ge {
   color: $on-background;
-  text-decoration: underline
+  text-decoration: underline;
 }
 
 /* Generic.Error */
@@ -100,13 +100,13 @@
 /* Generic.Heading */
 .highlighter-rouge .gh {
   color: $on-background;
-  font-weight: bold
+  font-weight: bold;
 }
 
 /* Generic.Inserted */
 .highlighter-rouge .gi {
   color: $on-background;
-  font-weight: bold
+  font-weight: bold;
 }
 
 /* Generic.Output */
@@ -127,7 +127,7 @@
 /* Generic.Subheading */
 .highlighter-rouge .gu {
   color: $on-background;
-  font-weight: bold
+  font-weight: bold;
 }
 
 /* Generic.Traceback */
@@ -143,7 +143,7 @@
 /* Keyword.Declaration */
 .highlighter-rouge .kd {
   color: $primary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Keyword.Namespace */
@@ -189,7 +189,7 @@
 /* Name.Builtin */
 .highlighter-rouge .nb {
   color: $tertiary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Name.Class */
@@ -225,7 +225,7 @@
 /* Name.Label */
 .highlighter-rouge .nl {
   color: $primary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Name.Namespace */
@@ -251,7 +251,7 @@
 /* Name.Variable */
 .highlighter-rouge .nv {
   color: $on-background;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Operator.Word */
@@ -367,25 +367,25 @@
 /* Name.Variable.Class */
 .highlighter-rouge .vc {
   color: $tertiary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Name.Variable.Global */
 .highlighter-rouge .vg {
   color: $tertiary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Name.Variable.Instance */
 .highlighter-rouge .vi {
   color: $tertiary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Name.Variable.Magic */
 .highlighter-rouge .vm {
   color: $tertiary;
-  font-style: italic
+  font-style: italic;
 }
 
 /* Literal.Number.Integer.Long */

@@ -37,7 +37,7 @@
   margin-top: 12px;
 }
 
-.mdi.mdi-icons-strikethrough.mdi-18:after {
+.mdi.mdi-icons-strikethrough.mdi-18::after {
   position: relative;
   top: -27px;
   left: 19px;
@@ -70,7 +70,6 @@
 }
 
 .dodona-navbar {
-
   .actions,
   .dropdown {
     .mdi::before {
@@ -113,13 +112,13 @@
 .list-group-item .mdi::before {
   position: relative;
   top: 3px;
-  left: -3px
+  left: -3px;
 }
 
 .filter-icon {
   color: $on-surface-muted;
-
   letter-spacing: -2px;
+
   /* make sure the tooltip with the filtering information is centered
   regarding the filter icon (displayed when hovering over the icon) */
 
@@ -141,6 +140,7 @@
   &.fix-alignment {
     position: absolute;
 
+    /* stylelint-disable-next-line selector-class-pattern */
     &.square_edit {
       top: 11px;
       right: 10px;

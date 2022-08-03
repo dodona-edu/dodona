@@ -1,7 +1,8 @@
 import { fetch } from "util.js";
 
 export function initCheckboxes(): void {
-    document.querySelectorAll(".evaluation-users-table .user-row").forEach(el => initCheckbox(el));
+    document.querySelectorAll<HTMLTableRowElement>(".evaluation-users-table .user-row")
+        .forEach(el => initCheckbox(el));
 }
 
 export function initCheckbox(row: HTMLTableRowElement): void {
@@ -64,12 +65,12 @@ export function initEvaluationStepper(): void {
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
 
-        const yesButton = document.querySelector("#yes-grading");
+        const yesButton = document.querySelector<HTMLElement>("#yes-grading");
         yesButton.addEventListener("click", function () {
             document.querySelector("#items-panel").classList.remove("hidden");
             choicePanel.hide();
             scorePanel.show();
-            document.querySelector("#choice-panel .answer").innerText = yesButton.dataset["answer"];
+            document.querySelector<HTMLElement>("#choice-panel .answer").innerText = yesButton.dataset["answer"];
         });
 
         document.querySelector("#no-grading").addEventListener("click", function () {
@@ -100,8 +101,8 @@ export function initEvaluationStepper(): void {
                 if (!running) {
                     running = true;
                     event.preventDefault();
-                    const button = option.querySelector(".button");
-                    const loader = option.querySelector(".loader");
+                    const button = option.querySelector(".btn");
+                    const loader = option.parentNode.querySelector(".loader");
                     button.classList.add("hidden");
                     loader.classList.remove("hidden");
                     const response = await fetch(option.getAttribute("href"), { method: "POST" });

@@ -43,18 +43,13 @@ If you want to help with development, issues tagged with the [student label](htt
     ...
     GRANT ALL ON `dodona_test-N`.* TO 'dodona'@'localhost';
     ```
-4. Install the correct `ruby` version using [RVM](https://rvm.io/)
-5. Install the correct `node` version using `nvm` and [yarn](https://yarnpkg.com/)
+4. Install the correct `ruby` version using [RVM](https://rvm.io/) (the currently used version can be found [here](./.ruby-version)).
+5. Install the correct `node` version using `nvm` and [yarn](https://yarnpkg.com/) (any modern node version should do).
 6. Run `bundle install` and `yarn install`
 7. Create and seed the database with `rails db:setup`. (If something goes wrong with the database, you can use `rails db:reset` to drop, rebuild and reseed the database.)
 If the error "Could not initialize python judge" arises, use `SKIP_PYTHON_JUDGE=true rails db:setup`
-8. Run `yarn build:css` to build the stylesheets.
-9. Run `yarn build:js` to build the javascript.
-10. [Start the server](#starting-the-server). The simplest way is with `rails s`. Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
-11. Because CAS authentication does not work in development, you can log in by going to these pages (only works with the seed database from step 7)
-- `http://dodona.localhost:3000/nl/users/1/token/zeus`
-- `http://dodona.localhost:3000/nl/users/2/token/staff`
-- `http://dodona.localhost:3000/nl/users/3/token/student`
+8. Run `bin/server` to start the server. More information on how to start the development setup can be found [here](#starting-a-local-server). Dodona [will be available on a subdomain of localhost](#localhost-subdomain): http://dodona.localhost:3000.
+9. CAS authentication does not work in development. Instead the seed database from step 7 provides three users via login tokens. The relevant login links are displayed in an announcement on the home page of Dodona.
 
 #### Evaluating exercises locally
 These steps are not required to run the server, but you need docker to actually evaluate exercises.
@@ -70,7 +65,7 @@ If you want to build the docker images yourself:
 These steps are not required to run the server, but are needed to let the visualisations load.
 
 1. Install and start `memcached`.
-2. Create the following file `tmp/caching-dev.txt`.
+2. Create the following file `tmp/caching-dev.txt` in the root of the project.
 
 #### Windows
 
@@ -82,8 +77,8 @@ This means you use WSL for the database, memcached, git, Docker, etc.
 The simplest way to start the server is with the `rails s` command. But this will not process the submission queue, and javascript will be compiled by webpack in the background (without output when something goes wrong).
 
 - To process the submission queue, delayed job needs to be started with the `bin/delayed_job start` command.
-- With `yarn build:css --watch` your css is reloaded live
-- With `yarn build:js --watch` your javascript is reloaded live
+- With `yarn build:css --watch` your css is reloaded live (use without the `--watch` flag when you need to build the stylesheets and live reload is not wanted).
+- With `yarn build:js --watch` your javascript is reloaded live (use without the `--watch` flag when you need to build the javascript and live reload is not wanted).
 
 To start the rails server, delayed job, css bundling and js bundling at the same time, simply run `bin/server`.
 
@@ -108,6 +103,8 @@ We have tests in JavaScript, Ruby, and system tests:
 * For JavaScript, run `yarn test`
 * For the system tests, run `bundle exec rails test:system`
 * For the ruby tests, run `bundle exec rails test`
+
+There is also a type check for code written in TypeScript. This can be executed with `yarn typeCheck`.
 
 **Tips**
 * Use the `PARALLEL_WORKERS` ENV var to specify the number of threads to use.

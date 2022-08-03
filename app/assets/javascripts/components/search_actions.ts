@@ -105,7 +105,7 @@ export class SearchActions extends ShadowlessLitElement {
         return this.actions.filter(isSearchAction);
     }
 
-    performAction(action: SearchAction): boolean {
+    async performAction(action: SearchAction): Promise<boolean> {
         if (!action.action && !action.js) {
             return true;
         }
@@ -118,17 +118,17 @@ export class SearchActions extends ShadowlessLitElement {
         if (action.confirm === undefined || window.confirm(action.confirm)) {
             const url: string = searchQuery.addParametersToUrl(action.action);
 
-            fetch(url, {
+            const response = await fetch(url, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" }
-            }).then( data => {
-                new Toast(data.message);
-                if (data.js) {
-                    eval(data.js);
-                } else {
-                    searchQuery.resetAllQueryParams();
-                }
             });
+            const data = await response.json();
+            new Toast(data.message);
+            if (data.js) {
+                eval(data.js);
+            } else {
+                searchQuery.resetAllQueryParams();
+            }
         }
 
         return false;

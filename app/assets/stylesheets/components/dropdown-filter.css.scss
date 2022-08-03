@@ -29,4 +29,9 @@
   .form-check-label {
     width: 100%;
   }
+
+  .dropdown-menu {
+    max-height: 450px;
+    overflow-y: auto;
+  }
 }

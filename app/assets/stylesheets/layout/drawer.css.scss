@@ -5,17 +5,14 @@ aside.drawer {
   position: fixed;
   top: 0;
   left: 0;
-
   height: 100vh;
-
   width: 0;
-
   z-index: 5;
 
   .drawer-background {
     z-index: -1;
     opacity: 0;
-    transition: opacity .3s;
+    transition: opacity 0.3s;
     background: $surface;
     position: fixed;
     top: 0;
@@ -32,21 +29,18 @@ aside.drawer {
     padding-top: 50px;
     width: 100%;
     max-width: $drawer-width;
-
     z-index: 6;
-
     display: inline-flex;
     flex-direction: column;
-
     border-left: 0;
     border-right: 1px solid $drawer-border;
-
     overflow-y: auto;
     overflow-x: hidden;
-
     background: $surface;
+
     @include shadow-z5;
-    transition: .3s;
+
+    transition: 0.3s;
   }
 
   &.active {
@@ -61,7 +55,6 @@ aside.drawer {
       width: 100vw;
     }
   }
-
 }
 
 .drawer-group {
@@ -125,7 +118,7 @@ ul.drawer-list {
     &:focus {
       background: $secondary-container;
       color: $on-secondary-container;
-      opacity: 75%;
+      opacity: 0.75;
     }
 
     span,
@@ -133,7 +126,6 @@ ul.drawer-list {
       font-size: 18px;
       margin-right: 12px;
     }
-
   }
 }
 

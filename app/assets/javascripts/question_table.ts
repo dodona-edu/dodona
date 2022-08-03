@@ -1,5 +1,5 @@
 import { fetch } from "util.js";
-import { InactiveTimeout } from "auto_reload.ts";
+import { InactiveTimeout } from "auto_reload";
 
 const questionContainerId = "question-container";
 const stateChangeLinkClass = "state-changer";

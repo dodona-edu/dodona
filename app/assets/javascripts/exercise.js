@@ -145,6 +145,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
         editor.on("focus", enableSubmitButton);
+        editor.commands.removeCommand("find"); // disable search box in ACE editor
         // Make editor available globally
         window.dodona.editor = editor;
     }

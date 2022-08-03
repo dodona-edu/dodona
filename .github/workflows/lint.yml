@@ -41,6 +41,9 @@ jobs:
     - name: Lint
       run: |
         yarn lint --quiet
+    - name: TypeScript type check
+      run: |
+        yarn typeCheck
 
   css:
     name: CSS

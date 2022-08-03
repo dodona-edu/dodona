@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+# exit when any command fails
+set -e
+# keep track of the last executed command
+current_command=$BASH_COMMAND
+last_command=$current_command
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+# echo an error message before exiting
+trap '[ $? -eq 0 ] || echo "\"${last_command}\" command failed with exit code $?."' EXIT
+
+if [ "$#" -ne 1 ]
+then
+  >&2 echo "Expected exactly 1 argument"
+  >&2 echo "usage \`bin/release [version]\`"
+  >&2 echo "version should be of the format MAJOR.MINOR.PATCH"
+  >&2 echo "example \`bin/release 5.6.4\`"
+  exit 1
+fi
+
+# first and only argument is version
+version=$1
+# get major, minor and patch as an array
+readarray -d . -t version_array< <(printf '%s' "$version")
+
+if [ "${#version_array[@]}" -ne 3 ]
+then
+  >&2 echo "expected version to contain major minor and patch"
+  >&2 echo "usage \`bin/release [version]\`"
+  >&2 echo "version should be of the format MAJOR.MINOR.PATCH"
+  >&2 echo "example \`bin/release 5.6.4\`"
+  exit 1
+fi
+
+# Make sure you have the latest commits
+git checkout master
+git pull
+git checkout develop
+git pull
+
+# Start release
+git flow release start "$version"
+sed -i "s/MAJOR = [0-9]\+/MAJOR = ${version_array[0]}/g" config/initializers/00_version.rb
+sed -i "s/MINOR = [0-9]\+/MINOR = ${version_array[1]}/g" config/initializers/00_version.rb
+sed -i "s/PATCH = [0-9]\+/PATCH = ${version_array[2]}/g" config/initializers/00_version.rb
+git commit -am "Bump version"
+
+# Double check that all tests succeed
+bundle install
+yarn install
+bin/rake css:build # Build css before testing
+bin/rake javascript:build # Build javascript before testing
+bundle exec rails test
+bundle exec rails test:system
+yarn test
+
+# Finish release
+git flow release finish "$version"
+
+# Allow abort before push
+echo -n "Next step will push, press A to abort, any key to continue"
+read -r confirm
+if [ "$confirm" == "A" ] || [ "$confirm" == "a" ]
+then
+  exit
+fi
+
+# Push local changes
+git push
+git checkout master
+git push
+git push --tags
+
+# Deploy
+cap production deploy

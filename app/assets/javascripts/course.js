@@ -296,7 +296,10 @@ function initCoursesListing(firstTab) {
 
     function initCourseTabs(firstTab) {
         document.querySelectorAll("#course-tabs li a").forEach(tab => {
-            tab.addEventListener("click", () => selectTab(tab));
+            tab.addEventListener("click", event => {
+                event.preventDefault(); // used to prevent popstate event from firing
+                selectTab(tab);
+            });
         });
 
         // If the url hash is a valid tab, use that, otherwise use the given tab

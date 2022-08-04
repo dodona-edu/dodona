@@ -90,6 +90,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
         assert_difference 'Identity.count', 1 do
           get omniauth_url(provider)
           follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          post privacy_prompt_path
         end
       end
 
@@ -115,6 +120,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
         assert_difference 'Identity.count', 1 do
           get omniauth_url(provider)
           follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          post privacy_prompt_path
         end
       end
 
@@ -141,6 +151,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
           assert_difference 'Institution.count', 1 do
             get omniauth_url(provider)
             follow_redirect!
+
+            # assert privacy prompt before successful sign in
+            assert_redirected_to privacy_prompt_path
+            assert_nil @controller.current_user
+            post privacy_prompt_path
           end
         end
       end
@@ -276,6 +291,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'User.count', +1 do
       get omniauth_url(provider)
       follow_redirect!
+
+      # assert privacy prompt before successful sign in
+      assert_redirected_to privacy_prompt_path
+      assert_nil @controller.current_user
+      post privacy_prompt_path
     end
 
     assert_equal @controller.current_user.username, user.username
@@ -315,6 +335,10 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'User.count', 0 do
         get omniauth_url(second_provider)
         follow_redirect!
+
+        assert_redirected_to privacy_prompt_path
+        assert_nil @controller.current_user
+        post privacy_prompt_path
       end
 
       assert_redirected_to root_path

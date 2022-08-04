@@ -10,3 +10,10 @@ en:
         other: 'Something went wrong during the processing of the exercise repository "%{repository}". You probably made a syntax error in the config file. These were the generated error messages:'
       regards: "Kind regards,"
       auto-generated: This message was generated automatically.
+    git_error:
+      subject: "Failed to push to %{repository}"
+      body:
+        greeting: "Dear %{name},"
+        error_message_html: "While processing, Dodona was unable to push the edits to the processed exercises. The exact error was: %{error}.\n\nMake sure to give the Dodona user push rights to your repository."
+        regards: "Kind regards,"
+        auto-generated: This message was generated automatically.

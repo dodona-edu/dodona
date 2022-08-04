@@ -142,6 +142,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session[:new_user_first_name] = auth_hash.info.first_name
     session[:new_user_last_name] = auth_hash.info.last_name
     session[:new_user_provider_id] = provider&.id
+    session[:new_user_auth_target] = auth_target
 
     redirect_to privacy_prompt_path
   end
@@ -341,7 +342,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Shorthands.
 
   def target_path(user)
-    auth_target || after_sign_in_path_for(user)
+    auth_target || session.delete(:new_user_auth_target) || after_sign_in_path_for(user)
   end
 
   def auth_hash

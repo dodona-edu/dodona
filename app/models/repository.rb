@@ -196,9 +196,7 @@ class Repository < ApplicationRecord
     unless new_activities.empty?
       status, err = commit 'stored tokens in new activities'
       # handle errors when commit fails
-      unless status
-        errors.push err
-      end
+      errors.push err unless status
     end
 
     raise AggregatedConfigErrors.new(self, errors) if errors.any?

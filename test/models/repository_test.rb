@@ -304,4 +304,15 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'not_valid', @echo.status
   end
+
+  test 'should send an email when commit fails' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['not empty']])
+    @repository.reset
+
+    # should raise AggregatedConfigErrors because commit fails
+    assert_raises(AggregatedConfigErrors) do
+      @repository.process_activities
+    end
+  end
 end

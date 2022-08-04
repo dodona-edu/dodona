@@ -10,8 +10,11 @@
         </div>
       </div>
       <div class="card-actions card-border">
+        <%= link_to root_path, class: "btn btn-danger" do %>
+          <%= t ".decline_button" %>
+        <% end %>
         <%= link_to privacy_prompt_path, method: :post, class: "btn btn-primary" do %>
-          <%= t ".button" %>
+          <%= t ".accept_button" %>
         <% end %>
       </div>
     </div>

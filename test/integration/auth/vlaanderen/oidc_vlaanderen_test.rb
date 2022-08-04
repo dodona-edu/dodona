@@ -179,6 +179,11 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
       assert_equal 'authorization_code', parameters[:grant_type].first
     end
 
+    # assert privacy prompt before successful sign in
+    assert_redirected_to privacy_prompt_path
+    assert_nil @controller.current_user
+    post privacy_prompt_path
+
     # Validate that the user is correctly logged in.
     current_user = @controller.current_user
     assert_equal id_token_body[:given_name], current_user.first_name

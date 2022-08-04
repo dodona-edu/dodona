@@ -49,7 +49,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   # ==> Privacy agreement acceptance before new account creation
 
-  def privacy_prompt; end
+  def privacy_prompt
+    render 'auth/privacy_prompt'
+  end
 
   def accept_privacy_policy
     sign_in_new_user_from_session!

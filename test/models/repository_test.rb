@@ -305,12 +305,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 'not_valid', @echo.status
   end
 
-  test 'should send an email when commit fails' do
+  test 'should catch error when commit fails' do
     # make sure commit fails
-    @repository.stubs(:commit).returns([false, ['not empty']])
-    @repository.reset
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
 
     # should raise AggregatedConfigErrors because commit fails
+    @repository.reset
     assert_raises(AggregatedConfigErrors) do
       @repository.process_activities
     end

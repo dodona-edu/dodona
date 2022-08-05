@@ -314,9 +314,9 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.copy_dir(@echo.path, new_dir)
     @remote.commit('copy exercise')
 
-    # should raise AggregatedConfigErrors because commit fails
+    # should raise DodonaGitError because commit fails
     @repository.reset
-    assert_raises(AggregatedConfigErrors) do
+    assert_raises(DodonaGitError) do
       @repository.process_activities
     end
   end

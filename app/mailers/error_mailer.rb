@@ -1,7 +1,7 @@
 class ErrorMailer < ApplicationMailer
   helper :repository
 
-  def set_fields(user, name, email)
+  def set_fields(error, user, name, email)
     @error = error
     @user = user || User.find_by(email: email)
     if @user
@@ -14,7 +14,7 @@ class ErrorMailer < ApplicationMailer
   end
 
   def json_error(error, user: nil, name: nil, email: nil)
-    set_fields(user, name, email)
+    set_fields(error, user, name, email)
 
     I18n.with_locale(@user&.lang) do
       mail to: %("#{@name}" <#{@email}>),
@@ -28,7 +28,7 @@ class ErrorMailer < ApplicationMailer
   end
 
   def git_error(error, user: nil, name: nil, email: nil)
-    set_field(user, name, email)
+    set_field(error, user, name, email)
 
     I18n.with_locale(@user&.lang) do
       mail to: %("#{@name}" <#{@email}>),
@@ -39,7 +39,7 @@ class ErrorMailer < ApplicationMailer
            ),
            content_type: 'text/plain',
            body: I18n.t(
-             'error_mailer.git_error.body',
+             'error_mailer.git_error.body', # TODO: update with newest body
              deep_interpolation: true, # used to make sure there is also interpolations on the levels "under" body
              name: @name,
              error: error.errorstring

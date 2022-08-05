@@ -100,6 +100,8 @@ class Repository < ApplicationRecord
     process_activities
   rescue AggregatedConfigErrors => e
     ErrorMailer.json_error(e, **kwargs).deliver
+  rescue DodonaGitError => e
+    ErrorMailer.git_error(e, **kwargs).deliver
   end
 
   def process_activities
@@ -192,7 +194,12 @@ class Repository < ApplicationRecord
       c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
       act.config_file.write(JSON.pretty_generate(c))
     end
-    commit 'stored tokens in new activities' unless new_activities.empty?
+
+    unless new_activities.empty?
+      status, err = commit 'stored tokens in new activities'
+      # handle errors when commit fails
+      raise DodonaGitError.new(self, err) unless status
+    end
 
     raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end

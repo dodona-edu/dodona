@@ -255,6 +255,39 @@
       },
       "question_states": "Status",
       "repositories": "Repositories",
+      "saved_annotation": {
+        "annotation_text": "Text",
+        "course": "Course",
+        "delete": {
+          "button_title": "Delete saved comment",
+          "confirm": "Are you sure you want to delete this saved comment?"
+        },
+        "edit": {
+          "button_title": "Edit saved comment",
+          "errors": "%{count} errors prevented saving",
+          "save": "Save",
+          "title": "Edit saved comment"
+        },
+        "exercise": "Exercise",
+        "form": {
+          "markdown_html": "<a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported."
+        },
+        "input": {
+          "edited": "The current comment differs from the saved comment",
+          "link": "Manage saved comments",
+          "placeholder": "Search saved comment",
+          "title": "Saved comment that is reused for this comment"
+        },
+        "new": {
+          "button_title": "Save comment",
+          "errors": "%{count} errors prevented saving",
+          "linked": "This comment is linked to the saved comment: %{title}",
+          "save": "Save",
+          "title": "Save comment for re-use"
+        },
+        "title": "Title",
+        "user": "User"
+      },
       "score": {
         "confirm": "Are you sure?",
         "conflict": "This score was already changed by another user",
@@ -314,6 +347,7 @@
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
+        "save": "Save comment",
         "send": "Comment",
         "update": "Update"
       },
@@ -653,6 +687,39 @@
       },
       "question_states": "Toestand",
       "repositories": "Repository's",
+      "saved_annotation": {
+        "annotation_text": "Tekst",
+        "course": "Cursus",
+        "delete": {
+          "button_title": "Verwijder opgeslagen opmerking",
+          "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"
+        },
+        "edit": {
+          "button_title": "Bewerk opgeslagen opmerking",
+          "errors": "%{count} errors verhinderen het opslaan",
+          "save": "Opslaan",
+          "title": "Bewerk opgeslagen opmerking"
+        },
+        "exercise": "Oefening",
+        "form": {
+          "markdown_html": "<a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund."
+        },
+        "input": {
+          "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
+          "link": "Beheer opgeslagen opmerkingen",
+          "placeholder": "Zoek opgeslagen opmerking",
+          "title": "Opgeslagen opmerking die hergebruikt wordt voor deze opmerking"
+        },
+        "new": {
+          "button_title": "Opmerking opslaan",
+          "errors": "%{count} errors verhinderen het opslaan",
+          "linked": "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}",
+          "save": "Opslaan",
+          "title": "Opmerking opslaan om later te hergebruiken"
+        },
+        "title": "Titel",
+        "user": "Gebruiker"
+      },
       "score": {
         "confirm": "Bent u zeker?",
         "conflict": "Deze score is al aangepast door een andere gebruiker",
@@ -709,9 +776,10 @@
         "fields": {
           "annotation_text": "Opmerking"
         },
-        "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a>  wordt ondersteund.",
+        "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
+        "save": "Opmerking opslaan",
         "send": "Toevoegen",
         "update": "Updaten"
       },

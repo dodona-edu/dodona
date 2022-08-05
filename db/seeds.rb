@@ -379,6 +379,7 @@ if Rails.env.development?
   e.users = s.course.enrolled_members.sample(25)
   e.save()
 
+  saved_annotations = []
   e.evaluation_exercises.each do |ee|
     rand(1..5).times do
       ScoreItem.create(evaluation_exercise: ee,
@@ -395,12 +396,31 @@ if Rails.env.development?
                        score: rand(si.maximum))
         end
         rand(3).times do
+          a = Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
+                                submission: f.submission,
+                                annotation_text: Faker::Lorem.sentence,
+                                evaluation: e,
+                                user: zeus,
+                                course: s.course)
+          if(rand(2) == 1)
+            sa = SavedAnnotation.create(title: Faker::Lorem.word,
+                                        annotation_text: a.annotation_text,
+                                        user: zeus,
+                                        course: s.course,
+                                        exercise: ee.exercise)
+            a.update(saved_annotation: sa)
+            saved_annotations << sa
+          end
+        end
+
+        saved_annotations.sample(rand(2)).each do |sa|
           Annotation.create(line_nr: rand(2) == 1 ? 1 : nil,
                             submission: f.submission,
-                            annotation_text: Faker::Lorem.sentence,
+                            annotation_text: sa.annotation_text,
                             evaluation: e,
                             user: zeus,
-                            course: s.course)
+                            course: s.course,
+                            saved_annotation: sa)
         end
       end
     end

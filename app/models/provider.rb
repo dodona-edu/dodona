@@ -102,6 +102,10 @@ class Provider < ApplicationRecord
     # Current provider is the preferred provider.
     return if preferred_provider.id == id
 
+    Rails.logger.info "=========================================TEST DIFFERENT ID HYPOTHESES==============================="
+    Rails.logger.info id
+    Rails.logger.info preferred_provider.id
+
     # Invalid.
     errors.add(:mode, 'may not be preferred')
   end

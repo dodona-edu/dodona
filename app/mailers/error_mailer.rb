@@ -28,7 +28,7 @@ class ErrorMailer < ApplicationMailer
   end
 
   def git_error(error, user: nil, name: nil, email: nil)
-    set_field(error, user, name, email)
+    set_fields(error, user, name, email)
 
     I18n.with_locale(@user&.lang) do
       mail to: %("#{@name}" <#{@email}>),

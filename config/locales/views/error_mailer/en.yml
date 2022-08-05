@@ -13,7 +13,7 @@ en:
     git_error:
       subject: '[Dodona] Failed to push to "%{repository}"'
       greeting: 'Dear %{name},'
-      error_message_html: 'While processing "%{repository}", Dodona was unable to push the edits to the processed exercises. The exact error was: %{error}.'
+      error_message: 'While processing "%{repository}", Dodona was unable to push the edits to the processed exercises. The exact error was: %{error}.'
       hint: 'Make sure to give the Dodona user push rights to your repository.'
       regards: 'Kind regards,'
       auto-generated: This message was generated automatically.

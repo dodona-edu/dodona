@@ -13,7 +13,7 @@ nl:
     git_error:
       subject: '[Dodona] Pushen naar "%{repository}" mislukt'
       greeting: 'Beste %{name},'
-      error_message_html: 'Tijdens het verwerken van "%{repository}" kon Dodona de aanpassingen aan de verwerkte oefeningen niet pushen. De exacte error was: %{error}.'
+      error_message: 'Tijdens het verwerken van "%{repository}" kon Dodona de aanpassingen aan de verwerkte oefeningen niet pushen. De exacte error was: %{error}.'
       hint: 'Zorg er zeker voor dat de Dodona gebruiker pushrechten heeft op je repository.'
       regards: 'Vriendelijke groeten,'
       auto-generated: ps. Dit bericht werd automatisch gegenereerd.

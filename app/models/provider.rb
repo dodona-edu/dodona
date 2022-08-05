@@ -103,8 +103,12 @@ class Provider < ApplicationRecord
     return if preferred_provider.id == id
 
     Rails.logger.info "=========================================TEST DIFFERENT ID HYPOTHESES==============================="
-    Rails.logger.info id
-    Rails.logger.info preferred_provider.id
+    Rails.logger.info "id: #{id.to_s}"
+    Rails.logger.info "identifier: #{identifier.to_s}"
+    Rails.logger.info "type: #{type.to_s}"
+    Rails.logger.info "id: #{preferred_provider.id.to_s}"
+    Rails.logger.info "identifier: #{preferred_provider.identifier.to_s}"
+    Rails.logger.info "type: #{preferred_provider.type.to_s}"
 
     # Invalid.
     errors.add(:mode, 'may not be preferred')

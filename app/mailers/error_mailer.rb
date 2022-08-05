@@ -39,10 +39,16 @@ class ErrorMailer < ApplicationMailer
            ),
            content_type: 'text/plain',
            body: I18n.t(
-             'error_mailer.git_error.body', # TODO: update with newest body
-             deep_interpolation: true, # used to make sure there is also interpolations on the levels "under" body
-             name: @name,
+             'error_mailer.git_error.body.greeting',
+             name: @name
+           ) + I18n.t(
+             'error_mailer.git_error.body.error_message_html',
+             repository: error.repository.name,
              error: error.errorstring
+           ) + I18n.t(
+             'error_mailer.git_error.body.regards'
+           ) + I18n.t(
+             'error_mailer.git_error.body.auto-generated'
            )
     end
   end

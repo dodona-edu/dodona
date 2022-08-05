@@ -189,9 +189,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       institution_created
       provider
     else
-      logger.info institution
-      logger.info provider
-      logger.info institution.providers
+      logger.info institution.pretty_inspect
+      logger.info provider.pretty_inspect
+      logger.info institution.providers.pretty_inspect
       institution_create_failed institution.errors
       nil
     end
@@ -363,7 +363,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     logger.info "Failed to created institution with identifier #{oauth_provider_id} (#{auth_provider_type}). " \
                 "See below for more info about the request:\n" \
                 "#{auth_hash.pretty_inspect}" \
-                "#{errors}"
+                "#{errors.pretty_inspect}"
 
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed

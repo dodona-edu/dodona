@@ -320,4 +320,19 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.process_activities
     end
   end
+
+  test 'should send a mail chen commit fails' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+
+    @repository.reset
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      @repository.process_activities_email_errors
+    end
+  end
 end

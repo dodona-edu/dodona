@@ -189,6 +189,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       institution_created
       provider
     else
+      logger.info institution
+      logger.info provider
+      logger.info institution.providers
       institution_create_failed institution.errors
       nil
     end

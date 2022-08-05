@@ -36,19 +36,6 @@ class ErrorMailer < ApplicationMailer
            subject: I18n.t(
              'error_mailer.git_error.subject',
              repository: error.repository.name
-           ),
-           content_type: 'text/plain',
-           body: I18n.t(
-             'error_mailer.git_error.body.greeting',
-             name: @name
-           ) + I18n.t(
-             'error_mailer.git_error.body.error_message',
-             repository: error.repository.name,
-             error: error.errorstring
-           ) + I18n.t(
-             'error_mailer.git_error.body.regards'
-           ) + I18n.t(
-             'error_mailer.git_error.body.auto-generated'
            )
     end
   end

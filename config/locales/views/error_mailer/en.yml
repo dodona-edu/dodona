@@ -12,13 +12,8 @@ en:
       auto-generated: This message was generated automatically.
     git_error:
       subject: '[Dodona] Failed to push to "%{repository}"'
-      body:
-        greeting: |
-          Dear %{name},
-        error_message: |
-          While processing "%{repository}", Dodona was unable to push the edits to the processed exercises. The exact error was: %{error}.
-
-          Make sure to give the Dodona user push rights to your repository.
-        regards: |
-          Kind regards,
-        auto-generated: This message was generated automatically.
+      greeting: 'Dear %{name},'
+      error_message_html: 'While processing "%{repository}", Dodona was unable to push the edits to the processed exercises. The exact error was: %{error}.'
+      hint: 'Make sure to give the Dodona user push rights to your repository.'
+      regards: 'Kind regards,'
+      auto-generated: This message was generated automatically.

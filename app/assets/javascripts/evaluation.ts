@@ -25,8 +25,10 @@ export function initEvaluationStepper(): void {
     const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });
     const userPanelElement = document.querySelector("#users-panel .panel-collapse");
     const userPanel = new bootstrap.Collapse(userPanelElement, { toggle: false });
-    const choicePanelElement = document.querySelector("#choice-panel .panel-collapse");
-    const choicePanel = new bootstrap.Collapse(choicePanelElement, { toggle: false });
+    const anonymizeChoicePanelElement = document.querySelector("#choice-panel-anonymize .panel-collapse");
+    const anonymizeChoicePanel = new bootstrap.Collapse(anonymizeChoicePanelElement, { toggle: false });
+    const gradeChoicePanelElement = document.querySelector("#choice-panel-grading .panel-collapse");
+    const gradeChoicePanel = new bootstrap.Collapse(gradeChoicePanelElement, { toggle: false });
     const scorePanelElement = document.querySelector("#items-panel .panel-collapse");
     const scorePanel = new bootstrap.Collapse(scorePanelElement, { toggle: false });
 
@@ -40,37 +42,64 @@ export function initEvaluationStepper(): void {
 
         evalPanelElement.addEventListener("show.bs.collapse", function () {
             userPanel.hide();
-            choicePanel.hide();
+            gradeChoicePanel.hide();
             scorePanel.hide();
+            anonymizeChoicePanel.hide();
         });
         userPanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
-            choicePanel.hide();
+            gradeChoicePanel.hide();
+            scorePanel.hide();
+            anonymizeChoicePanel.hide();
+        });
+        anonymizeChoicePanelElement.addEventListener("show.bs.collapse", function () {
+            evalPanel.hide();
+            gradeChoicePanel.hide();
+            userPanel.hide();
             scorePanel.hide();
         });
-        choicePanelElement.addEventListener("show.bs.collapse", function () {
+        gradeChoicePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
             userPanel.hide();
             scorePanel.hide();
+            anonymizeChoicePanel.hide();
         });
         scorePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
-            choicePanel.hide();
+            gradeChoicePanel.hide();
             userPanel.hide();
+            anonymizeChoicePanel.hide();
         });
 
         document.querySelector("#users-step-finish-button").addEventListener("click", function () {
             userPanel.hide();
-            choicePanel.show();
+            anonymizeChoicePanel.show();
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
 
-        const yesButton = document.querySelector<HTMLElement>("#yes-grading");
-        yesButton.addEventListener("click", function () {
+        const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
+        yesButtonAnonymize.addEventListener("click", function () {
+            anonymizeChoicePanel.hide();
+            gradeChoicePanel.show();
+            // display "yes" as answer next to the question rule
+            document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
+        });
+
+        const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
+        document.querySelector("#no-anonymize").addEventListener("click", function () {
+            anonymizeChoicePanel.hide();
+            // display "no" as answer next to the question rule
+            document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
+            // TODO: do something that saves we pressed no
+            gradeChoicePanel.show();
+        });
+
+        const yesButtonGrading = document.querySelector<HTMLElement>("#yes-grading");
+        yesButtonGrading.addEventListener("click", function () {
             document.querySelector("#items-panel").classList.remove("hidden");
-            choicePanel.hide();
+            gradeChoicePanel.hide();
             scorePanel.show();
-            document.querySelector<HTMLElement>("#choice-panel .answer").innerText = yesButton.dataset["answer"];
+            document.querySelector<HTMLElement>("#choice-panel-grading .answer").innerText = yesButtonGrading.dataset["answer"];
         });
 
         document.querySelector("#no-grading").addEventListener("click", function () {
@@ -88,8 +117,10 @@ export function initEvaluationStepper(): void {
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");
         document.querySelector("#users-panel a[role=\"button\"]").classList.remove("disabled");
-        document.querySelector("#choice-panel a[role=\"button\"]").setAttribute("href", "#choice-step");
-        document.querySelector("#choice-panel a[role=\"button\"]").classList.remove("disabled");
+        document.querySelector("#choice-panel-anonymize a[role=\"button\"]").setAttribute("href", "#choice-step-anonymize");
+        document.querySelector("#choice-panel-anonymize a[role=\"button\"]").classList.remove("disabled");
+        document.querySelector("#choice-panel-grading a[role=\"button\"]").setAttribute("href", "#choice-step-grading");
+        document.querySelector("#choice-panel-grading a[role=\"button\"]").classList.remove("disabled");
         document.querySelector("#items-panel a[role=\"button\"]").setAttribute("href", "#items-step");
         document.querySelector("#items-panel a[role=\"button\"]").classList.remove("disabled");
     }

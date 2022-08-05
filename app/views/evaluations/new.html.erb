@@ -77,17 +77,58 @@
         </div>
       </div>
 
-      <div id="choice-panel" class="panel panel-default">
+      <div id="choice-panel-anonymize" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">3</span>
+            <a class="disabled" role="button" data-bs-toggle="collapse">
+              <%= "Do you want to hide the name of the reviewers?" %>
+              <span class="answer"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="choice-step-anonymize" class="panel-collapse collapse" role="tabpanel">
+          <div class="panel-body panel-body-transparent">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn" id="yes-anonymize" data-answer="<%= "Yes" %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= "Yes" %>
+                      <br>
+                      <small><%= "This way students don't know who evaluated them" %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="option-btn" id="no-anonymize" data-answer="<%= "No" %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= "No" %>
+                      <br>
+                      <small><%= "No secrets here" %></small>
+                    </h3>
+                  </div>
+                  <div><i class="mdi mdi-chevron-right"></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div id="choice-panel-grading" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">4</span>
             <a class="disabled" role="button" data-bs-toggle="collapse">
               <%= t('score_items.new.choose') %>
               <span class="answer"></span>
             </a>
           </h4>
         </div>
-        <div id="choice-step" class="panel-collapse collapse" role="tabpanel">
+        <div id="choice-step-grading" class="panel-collapse collapse" role="tabpanel">
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
@@ -121,7 +162,7 @@
       <div id="items-panel" class="panel panel-default hidden">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
-            <span class="step-circle">4</span>
+            <span class="step-circle">5</span>
             <a role="button" class="disabled" data-bs-toggle="collapse">
               <%= t 'score_items.index.title' %>
             </a>

@@ -11,14 +11,14 @@ nl:
       regards: 'Vriendelijke groeten,'
       auto-generated: ps. Dit bericht werd automatisch gegenereerd.
     git_error:
-      subject: 'Pushen naar "%{repository}" mislukt'
+      subject: '[Dodona] Pushen naar "%{repository}" mislukt'
       body:
         greeting: |
           Beste %{name},
-        error_message_html: |
-          Tijdens het verwerken "%{repository}" kon Dodona de aanpassingen van de verwerkte oefeningen niet pushen. De exacte error was: %{error}.
+        error_message: |
+          Tijdens het verwerken van "%{repository}" kon Dodona de aanpassingen aan de verwerkte oefeningen niet pushen. De exacte error was: %{error}.
 
-          Zorg er zeker voor dat de Dodona gebruiker push rechten heeft op je repository.
+          Zorg er zeker voor dat de Dodona gebruiker pushrechten heeft op je repository.
         regards: |
           Vriendelijke groeten,
         auto-generated: ps. Dit bericht werd automatisch gegenereerd.

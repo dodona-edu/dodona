@@ -321,7 +321,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
   end
 
-  test 'should send a mail chen commit fails' do
+  test 'should send a mail when commit fails' do
     # make sure commit fails
     @repository.stubs(:commit).returns([false, ['commit fail']])
 

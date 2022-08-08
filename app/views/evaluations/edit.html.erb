@@ -72,7 +72,13 @@
             <span class="step-circle">2</span>
             <a role="button" data-bs-toggle="collapse" href="#choice-step-anonymize">
               <%= "Do you want to hide the name of the reviewers?" %>
-              <span class="answer"></span>
+              <span class="answer">
+                <% if @evaluation.anonymous? %>
+                  <%= "Yes" %>
+                <% else %>
+                  <%= "No" %>
+                <% end %>
+              </span>
             </a>
           </h4>
         </div>
@@ -80,26 +86,30 @@
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
-                <div class="option-btn <%= "chosen-option" if @evaluation.anonymous %>" id="yes-anonymize" data-answer="<%= "Yes" %>">
-                  <div class="option-btn-title">
-                    <h3>
-                      <%= "Yes" %>
-                      <br>
-                      <small><%= "This way students don't know who evaluated them" %></small>
-                    </h3>
+                <%= link_to set_anonymous_evaluation_path(@evaluation, anonymous: true, format: :js), method: :post do %>
+                  <div class="option-btn <%= "chosen-option" if @evaluation.anonymous %>" id="yes-anonymize" data-answer="<%= "Yes" %>">
+                    <div class="option-btn-title">
+                      <h3>
+                        <%= "Yes" %>
+                        <br>
+                        <small><%= "This way students don't know who evaluated them" %></small>
+                      </h3>
+                    </div>
                   </div>
-                </div>
+                <% end %>
               </div>
               <div class="col-sm-6">
-                <div class="option-btn <%= "chosen-option" unless @evaluation.anonymous %>" id="no-anonymize" data-answer="<%= "No" %>">
-                  <div class="option-btn-title">
-                    <h3>
-                      <%= "No" %>
-                      <br>
-                      <small><%= "No secrets here" %></small>
-                    </h3>
+                <%= link_to set_anonymous_evaluation_path(@evaluation, anonymous: false, format: :js), method: :post do %>
+                  <div class="option-btn <%= "chosen-option" unless @evaluation.anonymous %>" id="no-anonymize" data-answer="<%= "No" %>">
+                    <div class="option-btn-title">
+                      <h3>
+                        <%= "No" %>
+                        <br>
+                        <small><%= "No secrets here" %></small>
+                      </h3>
+                    </div>
                   </div>
-                </div>
+                <% end %>
               </div>
             </div>
           </div>

@@ -36,7 +36,7 @@ export function modalMixin<T extends Constructor<ShadowlessLitElement>>(superCla
 
         modalTemplate(title: TemplateResult, body: TemplateResult, footer: TemplateResult): TemplateResult {
             return html`
-                <div class="modal fade" ${ref(el => this.initModal(el))} tabindex="-1" role="dialog">
+                <div class="modal fade" ${ref(el => this.initModal(el))} tabindex="-1" role="dialog" data-bs-backdrop="static">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">

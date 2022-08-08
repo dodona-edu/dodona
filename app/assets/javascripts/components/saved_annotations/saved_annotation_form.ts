@@ -57,6 +57,7 @@ export class SavedAnnotationForm extends ShadowlessLitElement {
                               .value=${this.savedAnnotation.annotation_text} @change=${e => this.updateText(e)}></textarea>
                     <span class="help-block">
                         ${unsafeHTML(I18n.t("js.saved_annotation.form.markdown_html"))}
+                        ${I18n.t("js.saved_annotation.form.annotation_text_help")}
                     </span>
                 </div>
             </form>`;

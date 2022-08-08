@@ -48,7 +48,7 @@
     "@types/bootstrap": "^5.2.1",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.49",
-    "@typescript-eslint/eslint-plugin": "^5.31.0",
+    "@typescript-eslint/eslint-plugin": "^5.32.0",
     "@typescript-eslint/parser": "^5.31.0",
     "eslint": "^8.21.0",
     "eslint-config-google": "^0.14.0",

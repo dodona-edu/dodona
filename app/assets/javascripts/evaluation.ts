@@ -20,6 +20,26 @@ export function initCheckbox(row: HTMLTableRowElement): void {
     });
 }
 
+export function initAnonymizeButtons(): void {
+    const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
+    const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
+
+    yesButtonAnonymize.addEventListener("click", function () {
+        noButtonAnonymize.classList.remove("chosen-option");
+        yesButtonAnonymize.classList.add("chosen-option");
+        // display "yes" as answer next to the question rule
+        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
+    });
+
+    document.querySelector("#no-anonymize").addEventListener("click", function () {
+        yesButtonAnonymize.classList.remove("chosen-option");
+        noButtonAnonymize.classList.add("chosen-option");
+        // display "no" as answer next to the question rule
+        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
+        // TODO: do something that saves we pressed no
+    });
+}
+
 export function initEvaluationStepper(): void {
     const evalPanelElement = document.querySelector("#info-panel .panel-collapse");
     const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });

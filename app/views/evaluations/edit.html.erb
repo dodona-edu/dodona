@@ -66,10 +66,50 @@
         </div>
       </div>
 
-      <div id="items-panel" class="panel panel-default">
+      <div id="choice-panel-anonymize" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
             <span class="step-circle">2</span>
+            <a role="button" data-bs-toggle="collapse" href="#choice-step-anonymize">
+              <%= "Do you want to hide the name of the reviewers?" %>
+              <span class="answer"></span>
+            </a>
+          </h4>
+        </div>
+        <div id="choice-step-anonymize" class="panel-collapse collapse show" role="tabpanel">
+          <div class="panel-body panel-body-transparent">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="option-btn <%= "chosen-option" if @evaluation.anonymous %>" id="yes-anonymize" data-answer="<%= "Yes" %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= "Yes" %>
+                      <br>
+                      <small><%= "This way students don't know who evaluated them" %></small>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="option-btn <%= "chosen-option" unless @evaluation.anonymous %>" id="no-anonymize" data-answer="<%= "No" %>">
+                  <div class="option-btn-title">
+                    <h3>
+                      <%= "No" %>
+                      <br>
+                      <small><%= "No secrets here" %></small>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="items-panel" class="panel panel-default">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">3</span>
             <a role="button" data-bs-toggle="collapse" href="#items-step">
               <%= t 'score_items.index.title' %>
             </a>
@@ -84,4 +124,5 @@
 </div>
 <script>
   dodona.ready.then(dodona.initCheckboxes)
+  dodona.ready.then(dodona.initAnonymizeButtons)
 </script>

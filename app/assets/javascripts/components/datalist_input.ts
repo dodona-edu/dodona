@@ -32,43 +32,67 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     placeholder: string;
 
     inputRef: Ref<HTMLInputElement> = createRef();
-    hiddenInputRef: Ref<HTMLInputElement> = createRef();
 
     @property({ state: true })
     filter: string = this.label;
 
     watch = {
         filter: () => {
-            const option = this.options.find(option => option.label === this.filter);
-            this.hiddenInputRef.value.value = option ? option.value : "";
+            if (!this.value) {
+                this.value = this.options.find(o => this.filter === o.label)?.value || "";
+            }
             const event = new CustomEvent("input", {
-                detail: { value: this.hiddenInputRef.value.value, label: this.filter },
+                detail: { value: this.value, label: this.filter },
                 bubbles: true,
                 composed: true
             });
             this.dispatchEvent(event);
         },
-        value: () => {
-            this.filter = this.label;
-        }
     };
 
     get label(): string {
-        const option = this.options.find(option => option.value === this.value);
-        return option?.label;
+        const option = this.options?.find(option => option.value === this.value);
+        return option?.label || "";
     }
 
     get filtered_options(): Option[] {
-        return this.options.filter(option => option.label.toLowerCase().includes(this.filter.toLowerCase()));
+        return this.options?.filter(option =>
+            option.label.toLowerCase().includes(this.filter?.toLowerCase()) ||
+            option.extra?.toLowerCase().includes(this.filter?.toLowerCase())
+        );
+    }
+
+    get dropdown_top(): number {
+        return this.inputRef.value?.getBoundingClientRect().bottom;
+    }
+
+    get dropdown_left(): number {
+        return this.inputRef.value?.getBoundingClientRect().left;
+    }
+
+    get dropdown_width(): number {
+        const rect = this.inputRef.value?.getBoundingClientRect();
+        return rect?.right - rect?.left;
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        // We are using fixed positioning for the dropdown to overcome issues with bounding boxes
+        // This also means we have to rerender the dropdown in the correct position when the user scrolls
+        window.addEventListener("scroll", () => this.requestUpdate());
     }
 
     select(option: Option, e: Event): void {
         e.preventDefault();
         e.stopPropagation();
+        this.value = option.value;
+        this.filter = option.label;
     }
 
     processInput(e): void {
-        this.filter = this.inputRef.value.value;
+        const input = this.inputRef.value.value;
+        this.value = "";
+        this.filter = input;
         e.stopPropagation();
     }
 
@@ -82,18 +106,19 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        .value="${this.filter}"
                        placeholder="${this.placeholder}"
                 >
-                <ul class="dropdown-menu ${this.filter && this.hasSuggestions ? "show-search-dropdown" : ""}">
+                <ul class="dropdown-menu ${this.filter && this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
+                    style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
-                        <li><a class="dropdown-item" @click=${ e => this.select(option, e)}>
+                        <li><a class="dropdown-item ${this.value === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
                             ${option.label}
                             ${option.extra ? html`
-                                <p class="small">${option.extra}</p>
+                                <br/><span class="small">${option.extra}</span>
                             `:""}
                         </a></li>
                     `)}
                 </ul>
             </div>
-            <input type="hidden" name="${this.name}" ${ref(this.hiddenInputRef)} value="${this.value}">
+            <input type="hidden" name="${this.name}" .value="${this.value}">
         `;
     }
 }

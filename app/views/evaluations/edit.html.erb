@@ -71,12 +71,12 @@
           <h4 class="panel-title">
             <span class="step-circle">2</span>
             <a role="button" data-bs-toggle="collapse" href="#choice-step-anonymize">
-              <%= "Do you want to hide the name of the reviewers?" %>
+              <%= t('score_items.new.choose_anonymous') %>
               <span class="answer">
                 <% if @evaluation.anonymous? %>
-                  <%= "Yes" %>
+                  <%= t('score_items.new.yes_answer') %>
                 <% else %>
-                  <%= "No" %>
+                  <%= t('score_items.new.no_answer') %>
                 <% end %>
               </span>
             </a>
@@ -87,12 +87,12 @@
             <div class="row">
               <div class="col-sm-6">
                 <%= link_to set_anonymous_evaluation_path(@evaluation, anonymous: true, format: :js), method: :post do %>
-                  <div class="option-btn <%= "chosen-option" if @evaluation.anonymous %>" id="yes-anonymize" data-answer="<%= "Yes" %>">
+                  <div class="option-btn <%= "chosen-option" if @evaluation.anonymous %>" id="yes-anonymize" data-answer="<%= t('score_items.new.yes_answer') %>">
                     <div class="option-btn-title">
                       <h3>
-                        <%= "Yes" %>
+                        <%= t('score_items.new.yes_answer') %>
                         <br>
-                        <small><%= "This way students don't know who evaluated them" %></small>
+                        <small><%= t('score_items.new.yes_anonymous_explanation') %></small>
                       </h3>
                     </div>
                   </div>
@@ -100,12 +100,12 @@
               </div>
               <div class="col-sm-6">
                 <%= link_to set_anonymous_evaluation_path(@evaluation, anonymous: false, format: :js), method: :post do %>
-                  <div class="option-btn <%= "chosen-option" unless @evaluation.anonymous %>" id="no-anonymize" data-answer="<%= "No" %>">
+                  <div class="option-btn <%= "chosen-option" unless @evaluation.anonymous %>" id="no-anonymize" data-answer="<%= t('score_items.new.no_answer') %>">
                     <div class="option-btn-title">
                       <h3>
-                        <%= "No" %>
+                        <%= t('score_items.new.no_answer') %>
                         <br>
-                        <small><%= "No secrets here" %></small>
+                        <small><%= t('score_items.new.no_anonymous_explanation') %></small>
                       </h3>
                     </div>
                   </div>

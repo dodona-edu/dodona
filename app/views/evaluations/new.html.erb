@@ -82,7 +82,7 @@
           <h4 class="panel-title">
             <span class="step-circle">3</span>
             <a class="disabled" role="button" data-bs-toggle="collapse">
-              <%= "Do you want to hide the name of the reviewers?" %>
+              <%= t('score_items.new.choose_anonymous') %>
               <span class="answer"></span>
             </a>
           </h4>
@@ -91,24 +91,24 @@
           <div class="panel-body panel-body-transparent">
             <div class="row">
               <div class="col-sm-6">
-                <div class="option-btn" id="yes-anonymize" data-answer="<%= "Yes" %>">
+                <div class="option-btn" id="yes-anonymize" data-answer="<%= t('score_items.new.yes_answer') %>">
                   <div class="option-btn-title">
                     <h3>
-                      <%= "Yes" %>
+                      <%= t('score_items.new.yes_answer') %>
                       <br>
-                      <small><%= "This way students don't know who evaluated them" %></small>
+                      <small><%= t('score_items.new.yes_anonymous_explanation') %></small>
                     </h3>
                   </div>
                   <div><i class="mdi mdi-chevron-right"></i></div>
                 </div>
               </div>
               <div class="col-sm-6">
-                <div class="option-btn" id="no-anonymize" data-answer="<%= "No" %>">
+                <div class="option-btn" id="no-anonymize" data-answer="<%= t('score_items.new.no_answer') %>">
                   <div class="option-btn-title">
                     <h3>
-                      <%= "No" %>
+                      <%= t('score_items.new.no_answer') %>
                       <br>
-                      <small><%= "No secrets here" %></small>
+                      <small><%= t('score_items.new.no_anonymous_explanation') %></small>
                     </h3>
                   </div>
                   <div><i class="mdi mdi-chevron-right"></i></div>

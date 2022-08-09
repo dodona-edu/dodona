@@ -29,6 +29,9 @@ en:
       yes_explanation: "Create a scoring scheme below"
       no_answer: "No"
       no_explanation: "Continue to the evaluation"
+      choose_anonymous: "Do you want to hide the name of the reviewer?"
+      yes_anonymous_explanation: "Hide the reviewer for the students"
+      no_anonymous_explanation: "Show students who evaluated them"
       second_step: "Create a scoring scheme"
       second_explanation: You can create a scoring scheme below for each exercise. You can always change these later.
       summary_html:

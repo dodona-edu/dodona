@@ -29,6 +29,9 @@ nl:
       yes_explanation: "Stel hieronder een puntenverdeling op"
       no_answer: "Nee"
       no_explanation: "Ga door naar de evaluatie"
+      choose_anonymous: "Wil je de naam van de reviewer verbergen?"
+      yes_anonymous_explanation: "Verberg voor studenten wie hen evalueerde"
+      no_anonymous_explanation: "Laat de studenten zien wie hen evalueerde"
       second_step: "Stel een puntenverdeling op"
       second_explanation: Je kan hieronder per oefening een puntenverdeling opstellen. Je kan deze later altijd aanpassen.
       summary_html:

@@ -271,7 +271,7 @@ function initCourseNew() {
             $(this)
                 .closest(".panel")
                 .find(".answer")
-                .html($(this).data("answer"));
+                .text($(this).data("answer"));
             fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`)
                 .then(req => req.text())
                 .then(resp => eval(resp));

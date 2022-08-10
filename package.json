@@ -38,7 +38,7 @@
     "iframe-resizer": "^4.3.2",
     "jquery": "^3.6.0",
     "lit": "2.2.8",
-    "sass": "^1.54.0",
+    "sass": "^1.54.3",
     "typeahead.js": "^0.11.1",
     "typescript": "^4.7.4",
     "webpack": "^5.74.0",

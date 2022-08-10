@@ -7,7 +7,12 @@ json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
 json.user do
-  json.name annotation.user.full_name
+  # if we are NOT an admin and the evaluation is anonymous and we are not the person that typed the annotation => hide name
+  if annotation.evaluation.anonymous? && (current_user.id != annotation.user.id)
+    json.name 'Teacher'
+  else
+    json.name annotation.user.full_name
+  end
   json.url user_url(annotation.user)
 end
 json.last_updated_by do

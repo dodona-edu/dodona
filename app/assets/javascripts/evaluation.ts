@@ -20,7 +20,7 @@ export function initCheckbox(row: HTMLTableRowElement): void {
     });
 }
 
-export function initAnonymizeButtons(): void {
+export function initAnonymizeButtonsEditEval(): void {
     const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
     const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
 
@@ -36,7 +36,35 @@ export function initAnonymizeButtons(): void {
         noButtonAnonymize.classList.add("chosen-option");
         // display "no" as answer next to the question rule
         document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
-        // TODO: do something that saves we pressed no
+    });
+}
+
+export function initAnonymizeButtonsNewEval(): void {
+    const anonymizeChoicePanelElement = document.querySelector("#choice-panel-anonymize .panel-collapse");
+    const anonymizeChoicePanel = new bootstrap.Collapse(anonymizeChoicePanelElement, { toggle: false });
+    const gradeChoicePanelElement = document.querySelector("#choice-panel-grading .panel-collapse");
+    const gradeChoicePanel = new bootstrap.Collapse(gradeChoicePanelElement, { toggle: false });
+
+    const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
+    yesButtonAnonymize.addEventListener("click", function () {
+        anonymizeChoicePanel.hide();
+        gradeChoicePanel.show();
+        // make the selected button a different shade
+        noButtonAnonymize.classList.remove("chosen-option");
+        yesButtonAnonymize.classList.add("chosen-option");
+        // display "yes" as answer next to the question rule
+        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
+    });
+
+    const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
+    document.querySelector("#no-anonymize").addEventListener("click", function () {
+        anonymizeChoicePanel.hide();
+        gradeChoicePanel.show();
+        // make the selected button a different shade
+        yesButtonAnonymize.classList.remove("chosen-option");
+        noButtonAnonymize.classList.add("chosen-option");
+        // display "no" as answer next to the question rule
+        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
     });
 }
 
@@ -95,29 +123,6 @@ export function initEvaluationStepper(): void {
             userPanel.hide();
             anonymizeChoicePanel.show();
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
-        });
-
-        const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
-        yesButtonAnonymize.addEventListener("click", function () {
-            anonymizeChoicePanel.hide();
-            gradeChoicePanel.show();
-            // make the selected button a different shade
-            noButtonAnonymize.classList.remove("chosen-option");
-            yesButtonAnonymize.classList.add("chosen-option");
-            // display "yes" as answer next to the question rule
-            document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
-        });
-
-        const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
-        document.querySelector("#no-anonymize").addEventListener("click", function () {
-            anonymizeChoicePanel.hide();
-            // make the selected button a different shade
-            yesButtonAnonymize.classList.remove("chosen-option");
-            noButtonAnonymize.classList.add("chosen-option");
-            // display "no" as answer next to the question rule
-            document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
-            // TODO: do something that saves we pressed no
-            gradeChoicePanel.show();
         });
 
         const yesButtonGrading = document.querySelector<HTMLElement>("#yes-grading");

@@ -101,6 +101,9 @@ export function initEvaluationStepper(): void {
         yesButtonAnonymize.addEventListener("click", function () {
             anonymizeChoicePanel.hide();
             gradeChoicePanel.show();
+            // make the selected button a different shade
+            noButtonAnonymize.classList.remove("chosen-option");
+            yesButtonAnonymize.classList.add("chosen-option");
             // display "yes" as answer next to the question rule
             document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
         });
@@ -108,6 +111,9 @@ export function initEvaluationStepper(): void {
         const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
         document.querySelector("#no-anonymize").addEventListener("click", function () {
             anonymizeChoicePanel.hide();
+            // make the selected button a different shade
+            yesButtonAnonymize.classList.remove("chosen-option");
+            noButtonAnonymize.classList.add("chosen-option");
             // display "no" as answer next to the question rule
             document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
             // TODO: do something that saves we pressed no

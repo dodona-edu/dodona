@@ -48,6 +48,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
             });
             this.dispatchEvent(event);
         },
+        options: () => {
+            if (!this.filter) {
+                this.filter = this.label;
+            }
+        }
     };
 
     get label(): string {

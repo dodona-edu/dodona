@@ -90,7 +90,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
                 <d-datalist-input
                     name="${this.name}"
                     .options=${this.options}
-                    value="${this.value}"
+                    .value=${this.value}
                     @input="${e => this.processInput(e)}"
                     placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
                 ></d-datalist-input>

@@ -8,8 +8,7 @@ import {
 } from "code_listing/user_annotation";
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 import "components/saved_annotations/saved_annotation_input";
-import { SavedAnnotationInput } from "components/saved_annotations/saved_annotation_input";
-import { isBetaCourse } from "saved_annotation_beta";
+import { AnnotationForm } from "components/annotations/annotation_form";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -18,9 +17,6 @@ const annotationHideAll = "#hide_all_annotations";
 const annotationShowAll = "#show_all_annotations";
 const annotationShowErrors = "#show_only_errors";
 const annotationToggles = "#annotations_toggles";
-const annotationFormCancel = ".annotation-cancel-button";
-const annotationFormDelete = ".annotation-delete-button";
-const annotationFormSubmit = ".annotation-submission-button";
 const badge = "#badge_code";
 
 type OrderGroup = "error" | "conversation" | "warning" | "info";
@@ -368,138 +364,20 @@ export class CodeListing {
     // Creating and modifying user annotations /////////////////////////////////
     // /////////////////////////////////////////////////////////////////////////
 
-    private createAnnotationForm(id: string,
-        annotation: Annotation | null,
-        onSubmit: (f: HTMLFormElement) => Promise<void>,
-        onCancel: (f: HTMLFormElement) => void): HTMLFormElement {
-        const form = document.createElement("form") as HTMLFormElement;
-        const type = this.questionMode ? "user_question" : "user_annotation";
+    private createNewAnnotationForm(line: number | null): HTMLElement {
+        const annotationForm = new AnnotationForm();
+        annotationForm.id = `annotation-submission-new-${line || 0}`;
+        annotationForm.questionMode = this.questionMode;
+        annotationForm.courseId = this.courseId;
+        annotationForm.exerciseId = this.exerciseId;
+        annotationForm.userId = this.userId;
 
-        form.classList.add("annotation-submission");
-        form.id = id;
-        // Min and max of the annotation text is defined in the annotation model.
-        const maxLength = 10_000;
-        form.innerHTML = `
-          <textarea autofocus required class="form-control annotation-submission-input" rows="3" minlength="1" maxlength="${maxLength}"></textarea>
-          <div class="clearfix annotation-help-block">
-            <span class='help-block'>${I18n.t("js.user_annotation.help")}</span>
-            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.numberToDelimited(maxLength)}</span>
-          </div>
-          <div class="annotation-controls-block">
-            ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : `
-              <d-saved-annotation-input
-                name="saved_annotation_id"
-                course-id="${this.courseId}"
-                exercise-id="${this.exerciseId}"
-                user-id="${this.userId}"
-                class="saved-annotation-input annotation-submission-button-container"
-                value="${annotation?.savedAnnotationId || ""}"
-                title="${I18n.t("js.saved_annotation.input.title")}"
-                annotation-text="${annotation?.rawText}"
-              ></d-saved-annotation-input>
-            `}
-            <span class="annotation-submission-button-container">
-              ${annotation && annotation.removable ? `
-                    <button class="btn btn-text annotation-control-button annotation-delete-button" type="button">
-                      ${I18n.t("js.user_annotation.delete")}
-                    </button>
-                  ` : ""}
-              <button class="btn btn-text annotation-control-button annotation-cancel-button" type="button">
-                ${I18n.t("js.user_annotation.cancel")}
-              </button>
-              <button class="btn btn-filled annotation-control-button annotation-submission-button" type="button">
-                  ${(annotation !== null ? I18n.t(`js.${type}.update`) : I18n.t(`js.${type}.send`))}
-              </button>
-            </span>
-          </div>
-        `;
-
-        const cancelButton = form.querySelector<HTMLButtonElement>(annotationFormCancel);
-        const deleteButton = form.querySelector<HTMLButtonElement>(annotationFormDelete);
-        const sendButton = form.querySelector<HTMLButtonElement>(annotationFormSubmit);
-        const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-        const savedAnnotationInput = form.querySelector<SavedAnnotationInput>(".saved-annotation-input");
-
-        savedAnnotationInput?.addEventListener("input", (e: CustomEvent) => {
-            if (e.detail.text) {
-                inputField.value = e.detail.text;
-                savedAnnotationInput.annotationText = inputField.value;
-            }
-        });
-
-        if (annotation !== null) {
-            inputField.rows = annotation.rawText.split("\n").length + 1;
-            inputField.textContent = annotation.rawText;
-        }
-
-        const usedCharacters = form.querySelector(".used-characters");
-        // Initial value.
-        usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
-        // Update value while typing.
-        inputField.addEventListener("input", () => {
-            usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
-            if (savedAnnotationInput) {
-                savedAnnotationInput.annotationText = inputField.value;
-            }
-        });
-
-        // Cancellation handler.
-        cancelButton.addEventListener("click", () => onCancel(form));
-
-        // Deletion handler.
-        if (deleteButton !== null) {
-            deleteButton.addEventListener("click", async () => {
-                const type = this.questionMode ? "user_question" : "user_annotation";
-                const confirmText = I18n.t(`js.${type}.delete_confirm`);
-                if (confirm(confirmText)) {
-                    annotation.remove().then(() => this.removeAnnotation(annotation));
-                }
-            });
-        }
-
-        // Submission handler.
-        sendButton.addEventListener("click", async () => {
-            if (sendButton.getAttribute("disabled") !== "1") {
-                sendButton.setAttribute("disabled", "1");
-                await onSubmit(form);
-                sendButton.removeAttribute("disabled");
-                // Ask MathJax to search for math in the annotations
-                window.MathJax.typeset();
-            }
-        });
-
-        inputField.addEventListener("keydown", e => {
-            if (e.code === "Enter" && e.shiftKey) {
-                // Send using Shift-Enter.
-                e.preventDefault();
-                sendButton.click();
-                return false;
-            } else if (e.code === "Escape") {
-                // Cancel using ESC.
-                e.preventDefault();
-                cancelButton.click();
-                return false;
-            }
-        });
-
-        return form;
-    }
-
-    private createNewAnnotationForm(line: number | null): HTMLFormElement {
-        const onSubmit = async (form: HTMLFormElement): Promise<void> => {
-            const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
-            inputField.classList.remove("validation-error");
-
-            // Run client side validations.
-            if (!inputField.reportValidity()) {
-                return; // Something is wrong, abort.
-            }
-
+        annotationForm.addEventListener("submit", async (e: CustomEvent) => {
             const annotationData: UserAnnotationFormData = {
-                "annotation_text": inputField.value,
+                "annotation_text": e.detail.text,
                 "line_nr": (line === null ? null : line - 1),
                 "evaluation_id": this.evaluationId || undefined,
-                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined,
+                "saved_annotation_id": e.detail.savedAnnotationId || undefined,
             };
 
             try {
@@ -507,76 +385,74 @@ export class CodeListing {
                 const annotation = await createUserAnnotation(annotationData, this.submissionId,
                     (a, cb) => this.createUpdateAnnotationForm(a, cb), mode);
                 this.addAnnotation(annotation);
-                form.remove();
+                annotationForm.remove();
             } catch (err) {
-                inputField.classList.add("validation-error");
+                annotationForm.hasErrors= true;
+                annotationForm.disabled= false;
             }
-        };
+        });
 
-        return this.createAnnotationForm(`annotation-submission-new-${line || 0}`,
-            null, onSubmit, form => form.remove());
+        annotationForm.addEventListener("cancel", () => annotationForm.remove());
+
+        return annotationForm;
     }
 
     private createUpdateAnnotationForm(annotation: UserAnnotation,
-        callback: CallableFunction): HTMLFormElement {
-        const onSubmit = async (form: HTMLFormElement): Promise<void> => {
-            const inputField = form.querySelector<HTMLTextAreaElement>("textarea");
+        callback: CallableFunction): HTMLElement {
+        const annotationForm = new AnnotationForm();
+        annotationForm.id = `annotation-submission-update-${annotation.id}`;
+        annotationForm.annotation = annotation;
+        annotationForm.questionMode = this.questionMode;
+        annotationForm.courseId = this.courseId;
+        annotationForm.exerciseId = this.exerciseId;
+        annotationForm.userId = this.userId;
 
-            // Run client side validations.
-            if (!inputField.reportValidity()) {
-                return; // Something is wrong, abort.
-            }
-
+        annotationForm.addEventListener("submit", async (e: CustomEvent) => {
             const annotationData: UserAnnotationFormData = {
-                "annotation_text": inputField.value,
-                "saved_annotation_id": new FormData(form).get("saved_annotation_id") as string || undefined
+                "annotation_text": e.detail.text,
+                "saved_annotation_id": e.detail.savedAnnotationId || undefined,
             };
 
             try {
                 const updated = await annotation.update(annotationData);
                 this.updateAnnotation(annotation, updated);
+                // Ask MathJax to search for math in the annotations
+                window.MathJax.typeset();
             } catch (err) {
-                inputField.classList.add("validation-error");
+                annotationForm.hasErrors= true;
+                annotationForm.disabled= false;
             }
-        };
+        });
 
-        const formId = `annotation-submission-update-${annotation.id}`;
-        return this.createAnnotationForm(formId, annotation, onSubmit, () => callback());
+        annotationForm.addEventListener("cancel", () => callback());
+        annotationForm.addEventListener("delete", () => annotation.remove().then(() => this.removeAnnotation(annotation)));
+
+        return annotationForm;
     }
 
     private handleAnnotateGlobal(): void {
         // Attempt to find an existing form and reuse that.
         const formId = "#annotation-submission-0";
-        let form = this.globalAnnotations.querySelector<HTMLFormElement>(formId);
+        let form = this.globalAnnotations.querySelector<HTMLElement>(formId);
         if (form === null) {
             form = this.createNewAnnotationForm(null);
 
             // Inject the form into the div.
             this.globalAnnotations.prepend(form);
         }
-
-        // Focus the input field. We must wait till the next frame, because we can only give the
-        // focus after the element is added to the dom.
-        const input = form.querySelector<HTMLTextAreaElement>(".annotation-submission-input");
-        window.requestAnimationFrame(() => input.focus());
     }
 
     private handleAnnotateLine(row: HTMLTableRowElement): void {
         const lineNo = parseInt(row.dataset["line"]);
 
         // Attempt to find an existing form and reuse that.
-        let form = row.querySelector<HTMLFormElement>(`#annotation-submission-new-${lineNo}`);
+        let form = row.querySelector<HTMLElement>(`#annotation-submission-new-${lineNo}`);
         if (form === null) {
             form = this.createNewAnnotationForm(lineNo);
             // Inject the form into the table.
             const cell = row.querySelector<HTMLTableDataCellElement>(`#annotation-cell-${lineNo}`);
             cell.prepend(form);
         }
-
-        // Focus the input field. We must wait till the next frame, because we can only give the
-        // focus after the element is added to the dom.
-        const input = form.querySelector<HTMLTextAreaElement>(".annotation-submission-input");
-        window.requestAnimationFrame(() => input.focus());
     }
 
     // /////////////////////////////////////////////////////////////////////////

@@ -8,7 +8,7 @@ json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
 json.user do
   # if we are NOT an admin and the evaluation is anonymous and we are not the person that typed the annotation => hide name
-  if annotation.evaluation.anonymous? && (current_user.id != annotation.user.id)
+  if !current_user.a_course_admin? && !annotation.evaluation.nil? && annotation.evaluation.anonymous? && (current_user.id != annotation.user.id)
     json.name 'Teacher'
   else
     json.name annotation.user.full_name

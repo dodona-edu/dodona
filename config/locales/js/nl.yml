@@ -137,6 +137,7 @@ nl:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
       meta: "%{user} · %{time}"
+      meta_anonymous: "%{time}"
       send: 'Toevoegen'
       update: 'Updaten'
       cancel: 'Annuleren'

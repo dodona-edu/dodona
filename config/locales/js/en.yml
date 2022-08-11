@@ -137,6 +137,7 @@ en:
       copy-to-clipboard: Copy code to clipboard
     user_annotation:
       meta: "%{user} · %{time}"
+      meta_anonymous: "%{time}"
       send: 'Comment'
       update: 'Update'
       cancel: 'Cancel'

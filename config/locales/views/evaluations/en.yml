@@ -10,6 +10,8 @@ en:
       release: Release feedback
       unrelease: Unrelease feedback
       deadline_html: This evaluation of <b>%{users} students</b> contains the submissions of <b>%{exercises} exercises</b> with <b>%{deadline}</b> as a deadline.
+      anonymous_review: The name of the reviewer is hidden for students
+      not_anonymous_review: The name of the reviewer is visible for students
       next_incomplete_feedback: Go to the next incomplete solution
       evaluation_progress: Evaluation progress
       evaluation_details: Evaluation details

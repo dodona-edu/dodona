@@ -304,6 +304,7 @@
       "unknown-error-loading-feedback": "An unknown error occurred while loading the feedback for your submission",
       "user": "user",
       "user_annotation": {
+        "anonymous_name": "Teacher",
         "cancel": "Cancel",
         "delete": "Delete",
         "delete_confirm": "Are you sure you want to delete this comment?",
@@ -313,7 +314,6 @@
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "meta": "%{user} · %{time}",
-        "meta_anonymous": "%{time}",
         "not_released": "This comment is not yet visible for students",
         "send": "Comment",
         "update": "Update"
@@ -703,6 +703,7 @@
       "unknown-error-loading-feedback": "Er is een onbekende fout opgetreden bij het laden van de feedback voor je oplossing",
       "user": "gebruiker",
       "user_annotation": {
+        "anonymous_name": "Leerkracht",
         "cancel": "Annuleren",
         "delete": "Verwijderen",
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",
@@ -712,7 +713,6 @@
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a>  wordt ondersteund.",
         "meta": "%{user} · %{time}",
-        "meta_anonymous": "%{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
         "send": "Toevoegen",
         "update": "Updaten"

@@ -88,12 +88,7 @@ export class UserAnnotation extends Annotation {
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
         const user = this.user.name;
 
-        if (user !== "") {
-            return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
-        } else {
-            // the name === "", this means we just want to hide the name
-            return I18n.t("js.user_annotation.meta_anonymous", { time: timestamp });
-        }
+        return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
     }
 
     public get modifiable(): boolean {

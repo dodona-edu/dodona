@@ -39,7 +39,7 @@ class Institution < ApplicationRecord
   end
 
   def preferred_provider
-    Provider.find_by(institution: self, mode: :prefer)
+    providers.find_by(mode: :prefer)
   end
 
   def uses_lti?

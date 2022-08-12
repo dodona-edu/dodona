@@ -113,7 +113,11 @@ export class SearchQuery {
         this.queryParams.subscribe(k => this.paramChange(k));
         this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
 
-        window.onpopstate = () => this.setBaseUrl();
+        window.onpopstate = () => {
+            if (this.updateAddressBar) {
+                this.setBaseUrl();
+            }
+        };
 
         this.setRefreshElement(refreshElement);
     }

@@ -66,6 +66,10 @@ export function initAnonymizeButtonsNewEval(): void {
         // display "no" as answer next to the question rule
         document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
     });
+
+    // both buttons should be deselected when seeing them for the first time during setup
+    noButtonAnonymize.classList.remove("chosen-option");
+    yesButtonAnonymize.classList.remove("chosen-option");
 }
 
 export function initEvaluationStepper(): void {

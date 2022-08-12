@@ -180,7 +180,7 @@
         if (prevDefinedSearchParams) {
           // add "?" that is needed between the pathname and search params and concatenate everything
           const prevDefinedSearchUrl = "<%= local_assigns.fetch :baseUrl, "" %>" + "?" + prevDefinedSearchParams;
-          dodona.searchQuery.setBaseUrl(prevDefinedSearchUrl);
+          dodona.searchQuery.setBaseUrl(prevDefinedSearchUrl, localStorageKey);
         } else {
           dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
         }

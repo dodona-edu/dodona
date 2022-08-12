@@ -1,5 +1,6 @@
 import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
 import { InactiveTimeout } from "auto_reload";
+import l = I18n.l;
 const RELOAD_SECONDS = 2;
 
 
@@ -72,11 +73,15 @@ export class SearchQuery {
         }
     }
 
-    setBaseUrl(baseUrl?: string): void {
+    setBaseUrl(baseUrl?: string, localStorageKey?: string): void {
         this.updateAddressBar = baseUrl === undefined || baseUrl === "";
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
+
+        // update the listeners with the new localStorageKey
+        this.queryParams.listeners = this.queryParams.listeners.map(() => (k => this.paramChange(k, localStorageKey)));
+        this.arrayQueryParams.listeners = this.arrayQueryParams.listeners.map(() => (k => this.paramChange(k, localStorageKey)));
 
         // Reset old params
         for (const key of this.arrayQueryParams.params.keys()) {
@@ -106,7 +111,7 @@ export class SearchQuery {
     }
 
     constructor(baseUrl?: string, refreshElement?: string, localStorageKey?: string) {
-        this.setBaseUrl(baseUrl);
+        this.setBaseUrl(baseUrl, localStorageKey);
 
         // subscribe relevant listeners
         this.arrayQueryParams.subscribe(k => this.paramChange(k, localStorageKey));
@@ -196,10 +201,9 @@ export class SearchQuery {
                 document.getElementById("progress-filter").style.visibility = "hidden";
             }).then(() => {
                 // if there is local storage key => update the value to reuse later
-                const urlObj = new URL(url);
-                // if (/^\/(nl)|en\/series\/[0-9]+\/available_activities\/$/.test(urlObj.pathname)) {
                 if (localStorageKey) {
                     // TODO: field search param is removed, do we indeed want this?
+                    const urlObj = new URL(url);
                     urlObj.searchParams.delete("filter");
                     localStorage.setItem(localStorageKey, urlObj.searchParams.toString());
                 }

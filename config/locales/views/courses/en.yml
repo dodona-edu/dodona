@@ -100,7 +100,7 @@ en:
       registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
       registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
       registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."
-      registration-open_for_institutional_users-info: "Registrations are open for users that belong to an institution: only they can register for this course. Registrations are closed for users who signed in using a private account, such as a personal Gmail or Outlook account."
+      registration-open_for_institutional_users-info: "Registrations are open for users that belong to any institution. Registrations are closed for users who signed in using a private account, such as a personal Gmail or Outlook account."
       moderated-info: "This course is moderated. Users who register will have to be explicitly approved by a course admin."
       subscribe: Register
       request_registration: Request registration

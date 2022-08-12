@@ -627,9 +627,10 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     }
     @series.evaluation.update(anonymous: false)
 
-    assert_not @series.evaluation.anonymous?
+    assert_not @series.evaluation.anonymous
 
     post set_anonymous_evaluation_path(@series.evaluation, anonymous: true, format: :js)
+    @series.evaluation.reload
     assert @series.evaluation.anonymous
   end
 end

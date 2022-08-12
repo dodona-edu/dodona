@@ -171,10 +171,20 @@
             }
         };
         <% end %>
-        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
-        dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        // if there is a previous value stored in local storage, load that value to reuse those frequently used preferences
+        const localStorageKey = "<%= local_assigns.fetch :local_storage_key, "" %>"
 
-        const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
+        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>", localStorageKey);
+
+        const prevDefinedSearchParams = localStorage.getItem(localStorageKey);
+        if (prevDefinedSearchParams) {
+          // add "?" that is needed between the pathname and search params and concatenate everything
+          const prevDefinedSearchUrl = "<%= local_assigns.fetch :baseUrl, "" %>" + "?" + prevDefinedSearchParams;
+          dodona.searchQuery.setBaseUrl(prevDefinedSearchUrl);
+        } else {
+          dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        }
+      const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {
           searchField.filterCollections = filterCollections;
           searchField.eager = <%= local_assigns.fetch :eager, false %>;

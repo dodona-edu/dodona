@@ -55,7 +55,7 @@ export class SearchQuery {
     arrayQueryParams: QueryParameters<string[]> = new QueryParameters<string[]>();
     queryParams: QueryParameters<string> = new QueryParameters<string>();
 
-    setRefreshElement(refreshElement: string): void {
+    setRefreshElement(refreshElement: string, localStorageKey?: string): void {
         this.refreshElement = refreshElement;
 
         if (this.refreshElement) {
@@ -63,7 +63,7 @@ export class SearchQuery {
                 document.querySelector(this.refreshElement),
                 RELOAD_SECONDS * 1000,
                 () => {
-                    this.search();
+                    this.search(localStorageKey);
                 }
             );
             this.refresh(this.queryParams.params.get("refresh"));
@@ -105,12 +105,12 @@ export class SearchQuery {
         }));
     }
 
-    constructor(baseUrl?: string, refreshElement?: string) {
+    constructor(baseUrl?: string, refreshElement?: string, localStorageKey?: string) {
         this.setBaseUrl(baseUrl);
 
         // subscribe relevant listeners
-        this.arrayQueryParams.subscribe(k => this.paramChange(k));
-        this.queryParams.subscribe(k => this.paramChange(k));
+        this.arrayQueryParams.subscribe(k => this.paramChange(k, localStorageKey));
+        this.queryParams.subscribe(k => this.paramChange(k, localStorageKey));
         this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
 
         window.onpopstate = () => {
@@ -119,7 +119,7 @@ export class SearchQuery {
             }
         };
 
-        this.setRefreshElement(refreshElement);
+        this.setRefreshElement(refreshElement, localStorageKey);
     }
 
     addParametersToUrl(baseUrl?: string): string {
@@ -162,7 +162,7 @@ export class SearchQuery {
 
     paramChangeDelayer = createDelayer();
     changedParams = [];
-    paramChange(key: string): void {
+    paramChange(key: string, localStorageKey?: string): void {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
             if (this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
@@ -171,12 +171,12 @@ export class SearchQuery {
                 return;
             }
             this.updateHistory(this.changedParams.some(k => k === "page"));
-            this.search();
+            this.search(localStorageKey);
             this.changedParams = [];
         }, 100);
     }
 
-    search(): void {
+    search(localStorageKey?: string): void {
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;
 
@@ -194,6 +194,15 @@ export class SearchQuery {
                     eval(data);
                 }
                 document.getElementById("progress-filter").style.visibility = "hidden";
+            }).then(() => {
+                // if there is local storage key => update the value to reuse later
+                const urlObj = new URL(url);
+                // if (/^\/(nl)|en\/series\/[0-9]+\/available_activities\/$/.test(urlObj.pathname)) {
+                if (localStorageKey) {
+                    // TODO: field search param is removed, do we indeed want this?
+                    urlObj.searchParams.delete("filter");
+                    localStorage.setItem(localStorageKey, urlObj.searchParams.toString());
+                }
             });
     }
 }

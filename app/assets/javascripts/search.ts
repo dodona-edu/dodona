@@ -1,6 +1,5 @@
 import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
 import { InactiveTimeout } from "auto_reload";
-import l = I18n.l;
 const RELOAD_SECONDS = 2;
 
 

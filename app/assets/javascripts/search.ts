@@ -119,7 +119,7 @@ export class SearchQuery {
 
         window.onpopstate = () => {
             if (this.updateAddressBar) {
-                this.setBaseUrl();
+                this.setBaseUrl(localStorageKey);
             }
         };
 

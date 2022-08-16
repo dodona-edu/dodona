@@ -61,6 +61,30 @@
     </div>
 
     <div class="sign-in-divider row">
+      <div class="sign-in-dialog-footer">
+        <h2><%= t ".private-accounts" %><br>
+          <small><%= t ".private-accounts-help" %></small></h2>
+      </div>
+    </div>
+    <div class="sign-in-dialog-institutions row">
+      <% @private_providers.each do |provider| %>
+        <%= link_to omniauth_authorize_path(:user, provider.class.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
+          <div class="option-btn">
+            <div class="option-btn-img">
+              <%= image_tag "idp/#{provider.logo}", class: "img-fluid" %>
+            </div>
+            <div class="option-btn-title">
+              <h3><%= provider.readable_name %><br>
+                <small><%= t('.sign-in-with', provider: provider.readable_name) %></small>
+              </h3>
+            </div>
+            <div><i class="mdi mdi-chevron-right"></i></div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="sign-in-divider row">
         <div class="sign-in-dialog-footer">
           <h2><%= t ".other" %></h2>
         </div>

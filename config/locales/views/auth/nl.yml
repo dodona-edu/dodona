@@ -8,8 +8,10 @@ nl:
       institution-search: "Typ om jouw school te vinden"
       ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen via de i-Learn website."
       higher-education: "Hoger onderwijs"
-      other-education: "Generieke loginmethodes"
+      other-education: "Andere onderwijsinstellingen"
       other: "Andere organisaties"
+      private-accounts: Private accounts
+      private-accounts-help: Gebruik deze login methodes als je niet bij een onderwijsinstelling aangesloten bent
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

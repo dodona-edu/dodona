@@ -33,7 +33,7 @@ class Provider::GSuite < Provider
   end
 
   def self.readable_name
-    'Google'
+    'Google Workspace'
   end
 
   def self.extract_institution_name(auth_hash)
@@ -45,5 +45,12 @@ class Provider::GSuite < Provider
     else
       Provider.extract_institution_name(auth_hash)
     end
+  end
+
+  def readable_name
+    # We want to display gmail for private accounts
+    return 'Gmail' if institution.nil?
+
+    super.readable_name
   end
 end

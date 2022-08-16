@@ -703,7 +703,7 @@
       "unknown-error-loading-feedback": "Er is een onbekende fout opgetreden bij het laden van de feedback voor je oplossing",
       "user": "gebruiker",
       "user_annotation": {
-        "anonymous_message": "Dit commentaar is deel van een evaluatie",
+        "anonymous_message": "Deze opmerking is deel van een evaluatie",
         "cancel": "Annuleren",
         "delete": "Verwijderen",
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",

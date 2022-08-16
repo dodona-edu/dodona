@@ -106,8 +106,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return redirect_to_known_provider!(user) if user.present?
 
       # No existing user was found
-      # Redirect to privacy prompt before we create a new user
-      return redirect_to_privacy_prompt
+      # Redirect to privacy prompt before we create a new private user
+      return redirect_to_privacy_prompt if provider&.institution.nil?
+
+      # Institutional users don't need to accept the privacy policy
+      # Thus we can immediately create a new user
+      user = User.new institution: provider&.institution
+      # Create a new identity for the newly created user
+      identity = user.identities.build identifier: auth_uid, provider: provider
     end
 
     # Validation.

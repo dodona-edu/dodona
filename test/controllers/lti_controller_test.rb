@@ -142,11 +142,6 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
       state: params[:state]
     }
 
-    # assert privacy prompt before successful sign in
-    assert_redirected_to privacy_prompt_path
-    assert_nil @controller.current_user
-    post privacy_prompt_path
-
     assert_response :found
     target_uri = URI.parse(@response.header['Location'])
     params = URI.decode_www_form(target_uri.query).to_h.symbolize_keys
@@ -175,11 +170,6 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
       id_token: id_token,
       state: params[:state]
     }
-
-    # assert privacy prompt before successful sign in
-    assert_redirected_to privacy_prompt_path
-    assert_nil @controller.current_user
-    post privacy_prompt_path
 
     assert_response :redirect
     target_uri = URI.parse(@response.header['Location'])

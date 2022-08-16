@@ -11,8 +11,6 @@ nl:
       release: Feedback vrijgeven
       unrelease: Feedback verbergen
       deadline_html: Deze evaluatie van <b>%{users} studenten</b> bevat de oplossingen van <b>%{exercises} oefeningen</b> met als deadline <b>%{deadline}</b>.
-      anonymous_review: Studenten kunnen de naam van de reviewer niet zien
-      not_anonymous_review: Studenten kunnen de naam van de reviewer zien
       next_incomplete_feedback: Ga naar de volgende onafgewerkte feedback
       evaluation_progress: Evaluatie voortgang
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."

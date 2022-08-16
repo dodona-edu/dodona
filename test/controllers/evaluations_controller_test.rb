@@ -617,5 +617,4 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match expected_score_string(s2), response.body
     assert_no_match expected_score_string(feedback.score, feedback.maximum_score), response.body
   end
-
 end

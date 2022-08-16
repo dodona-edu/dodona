@@ -618,19 +618,4 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match expected_score_string(feedback.score, feedback.maximum_score), response.body
   end
 
-  test 'should be able to make feedback anonymous' do
-    post evaluations_path(format: :js), params: {
-      evaluation: {
-        series_id: @series.id,
-        deadline: DateTime.now
-      }
-    }
-    @series.evaluation.update(anonymous: false)
-
-    assert_not @series.evaluation.anonymous
-
-    post set_anonymous_evaluation_path(@series.evaluation, anonymous: true, format: :js)
-    @series.evaluation.reload
-    assert @series.evaluation.anonymous
-  end
 end

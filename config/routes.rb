@@ -221,7 +221,6 @@ Rails.application.routes.draw do
         post 'remove_user'
         post 'set_multi_user'
         post 'modify_grading_visibility'
-        post 'set_anonymous'
       end
       resources :feedbacks, only: %i[show edit update]
       resources :score_items, only: %i[create destroy update] do

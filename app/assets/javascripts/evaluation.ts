@@ -20,65 +20,12 @@ export function initCheckbox(row: HTMLTableRowElement): void {
     });
 }
 
-export function initAnonymizeButtonsEditEval(): void {
-    const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
-    const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
-
-    yesButtonAnonymize.addEventListener("click", function () {
-        noButtonAnonymize.classList.remove("chosen-option");
-        yesButtonAnonymize.classList.add("chosen-option");
-        // display "yes" as answer next to the question rule
-        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
-    });
-
-    document.querySelector("#no-anonymize").addEventListener("click", function () {
-        yesButtonAnonymize.classList.remove("chosen-option");
-        noButtonAnonymize.classList.add("chosen-option");
-        // display "no" as answer next to the question rule
-        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
-    });
-}
-
-export function initAnonymizeButtonsNewEval(): void {
-    const anonymizeChoicePanelElement = document.querySelector("#choice-panel-anonymize .panel-collapse");
-    const anonymizeChoicePanel = new bootstrap.Collapse(anonymizeChoicePanelElement, { toggle: false });
-    const gradeChoicePanelElement = document.querySelector("#choice-panel-grading .panel-collapse");
-    const gradeChoicePanel = new bootstrap.Collapse(gradeChoicePanelElement, { toggle: false });
-
-    const yesButtonAnonymize = document.querySelector<HTMLElement>("#yes-anonymize");
-    yesButtonAnonymize.addEventListener("click", function () {
-        anonymizeChoicePanel.hide();
-        gradeChoicePanel.show();
-        // make the selected button a different shade
-        noButtonAnonymize.classList.remove("chosen-option");
-        yesButtonAnonymize.classList.add("chosen-option");
-        // display "yes" as answer next to the question rule
-        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = yesButtonAnonymize.dataset["answer"];
-    });
-
-    const noButtonAnonymize = document.querySelector<HTMLElement>("#no-anonymize");
-    document.querySelector("#no-anonymize").addEventListener("click", function () {
-        anonymizeChoicePanel.hide();
-        gradeChoicePanel.show();
-        // make the selected button a different shade
-        yesButtonAnonymize.classList.remove("chosen-option");
-        noButtonAnonymize.classList.add("chosen-option");
-        // display "no" as answer next to the question rule
-        document.querySelector<HTMLElement>("#choice-panel-anonymize .answer").innerText = noButtonAnonymize.dataset["answer"];
-    });
-
-    // both buttons should be deselected when seeing them for the first time during setup
-    noButtonAnonymize.classList.remove("chosen-option");
-    yesButtonAnonymize.classList.remove("chosen-option");
-}
 
 export function initEvaluationStepper(): void {
     const evalPanelElement = document.querySelector("#info-panel .panel-collapse");
     const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });
     const userPanelElement = document.querySelector("#users-panel .panel-collapse");
     const userPanel = new bootstrap.Collapse(userPanelElement, { toggle: false });
-    const anonymizeChoicePanelElement = document.querySelector("#choice-panel-anonymize .panel-collapse");
-    const anonymizeChoicePanel = new bootstrap.Collapse(anonymizeChoicePanelElement, { toggle: false });
     const gradeChoicePanelElement = document.querySelector("#choice-panel-grading .panel-collapse");
     const gradeChoicePanel = new bootstrap.Collapse(gradeChoicePanelElement, { toggle: false });
     const scorePanelElement = document.querySelector("#items-panel .panel-collapse");
@@ -96,36 +43,26 @@ export function initEvaluationStepper(): void {
             userPanel.hide();
             gradeChoicePanel.hide();
             scorePanel.hide();
-            anonymizeChoicePanel.hide();
         });
         userPanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
             gradeChoicePanel.hide();
-            scorePanel.hide();
-            anonymizeChoicePanel.hide();
-        });
-        anonymizeChoicePanelElement.addEventListener("show.bs.collapse", function () {
-            evalPanel.hide();
-            gradeChoicePanel.hide();
-            userPanel.hide();
             scorePanel.hide();
         });
         gradeChoicePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
             userPanel.hide();
             scorePanel.hide();
-            anonymizeChoicePanel.hide();
         });
         scorePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
             gradeChoicePanel.hide();
             userPanel.hide();
-            anonymizeChoicePanel.hide();
         });
 
         document.querySelector("#users-step-finish-button").addEventListener("click", function () {
             userPanel.hide();
-            anonymizeChoicePanel.show();
+            gradeChoicePanel.show();
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
 
@@ -152,8 +89,6 @@ export function initEvaluationStepper(): void {
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");
         document.querySelector("#users-panel a[role=\"button\"]").classList.remove("disabled");
-        document.querySelector("#choice-panel-anonymize a[role=\"button\"]").setAttribute("href", "#choice-step-anonymize");
-        document.querySelector("#choice-panel-anonymize a[role=\"button\"]").classList.remove("disabled");
         document.querySelector("#choice-panel-grading a[role=\"button\"]").setAttribute("href", "#choice-step-grading");
         document.querySelector("#choice-panel-grading a[role=\"button\"]").classList.remove("disabled");
         document.querySelector("#items-panel a[role=\"button\"]").setAttribute("href", "#items-step");

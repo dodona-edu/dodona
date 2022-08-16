@@ -1,15 +1,25 @@
-json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :created_at, :updated_at
+json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :updated_at
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
   json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })
 end
+
+# hide timestamp depending on evaluation and current user
+if annotation.anonymous(current_user)
+  json.created_at t('js.user_annotation.anonymous_message')
+  json.anonymous true
+else
+  json.created_at annotation.created_at
+  json.anonymous false
+end
+
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
 json.user do
-  # if we are NOT an admin and the evaluation is anonymous and we are not the person that typed the annotation => hide name
-  if !current_user.a_course_admin? && !annotation.evaluation.nil? && annotation.evaluation.anonymous? && (current_user.id != annotation.user.id)
-    json.name t('js.user_annotation.anonymous_name')
+  # hide reviewer name depending on evaluation and current user
+  if annotation.anonymous(current_user)
+    json.name ''
   else
     json.name annotation.user.full_name
   end

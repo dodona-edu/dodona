@@ -2,7 +2,7 @@ class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
 
-  before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility set_anonymous]
+  before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
   has_scope :by_institution, as: 'institution_id'
@@ -171,10 +171,6 @@ class EvaluationsController < ApplicationController
         send_data @evaluation.grades_csv, type: 'text/csv', disposition: "attachment; filename=export-#{@evaluation.id}.csv"
       end
     end
-  end
-
-  def set_anonymous
-    @evaluation.update(anonymous: params[:anonymous])
   end
 
   private

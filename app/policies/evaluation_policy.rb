@@ -35,10 +35,6 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def set_anonymous?
-    course_admin?
-  end
-
   def add_user?
     course_admin?
   end

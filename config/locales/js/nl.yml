@@ -137,7 +137,7 @@ nl:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
       meta: "%{user} · %{time}"
-      anonymous_name: 'Leerkracht'
+      anonymous_message: 'Dit commentaar is deel van een evaluatie'
       send: 'Toevoegen'
       update: 'Updaten'
       cancel: 'Annuleren'

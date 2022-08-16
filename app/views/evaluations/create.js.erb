@@ -1,6 +1,5 @@
 $("#info-panel .answer").text("<%= l @evaluation.deadline, format: :long %>");
 $("#users-step-wrapper").html("<%= raw escape_javascript(render partial: 'add_users') %>");
-$("#anonymize-step-wrapper").html("<%= raw escape_javascript(render partial: 'set_anonymous') %>")
 window.dodona.initTooltips();
 window.dodona.toUsersStep();
 window.dodona.setEvaluationUrl("<%= evaluation_url(@evaluation) %>");

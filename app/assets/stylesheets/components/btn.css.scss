@@ -261,10 +261,6 @@
   }
 }
 
-.option-btn.chosen-option {
-  background-color: $button-selected-gray;
-}
-
 .option-btn:hover {
   @include shadow-z4;
 }

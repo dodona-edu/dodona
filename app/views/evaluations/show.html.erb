@@ -17,15 +17,6 @@
             </div>
           </div>
           <div class="col-lg-6 col-md-12 order-lg-0">
-            <h5>
-              <% if @evaluation.anonymous? %>
-                <i class="mdi mdi-18 mdi-eye-off"></i>
-                <%= t ".anonymous_review" %>
-              <% else %>
-                <i class="mdi mdi-18 mdi-eye"></i>
-                <%= t ".not_anonymous_review" %>
-              <% end %>
-            </h5>
             <p><%= t '.deadline_html', users: @evaluation.users.count, exercises: @evaluation.exercises.count, deadline: l(@evaluation.deadline, format: :submission) %></p>
             <%= render partial: 'exercises_progress_table', locals: { metadata: @evaluation.metadata, series: @evaluation.series } %>
           </div>

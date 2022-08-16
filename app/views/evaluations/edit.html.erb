@@ -66,33 +66,10 @@
         </div>
       </div>
 
-      <div id="choice-panel-anonymize" class="panel panel-default">
-        <div class="panel-heading" role="tab">
-          <h4 class="panel-title">
-            <span class="step-circle">2</span>
-            <a role="button" data-bs-toggle="collapse" href="#choice-step-anonymize">
-              <%= t('score_items.new.choose_anonymous') %>
-              <span class="answer">
-                <% if @evaluation.anonymous? %>
-                  <%= t('score_items.new.yes_answer') %>
-                <% else %>
-                  <%= t('score_items.new.no_answer') %>
-                <% end %>
-              </span>
-            </a>
-          </h4>
-        </div>
-        <div id="choice-step-anonymize" class="panel-collapse collapse show" role="tabpanel">
-          <div class="panel-body panel-body-transparent">
-            <%= render partial: 'set_anonymous' %>
-          </div>
-        </div>
-      </div>
-
       <div id="items-panel" class="panel panel-default">
         <div class="panel-heading" role="tab">
           <h4 class="panel-title">
-            <span class="step-circle">3</span>
+            <span class="step-circle">2</span>
             <a role="button" data-bs-toggle="collapse" href="#items-step">
               <%= t 'score_items.index.title' %>
             </a>
@@ -107,5 +84,4 @@
 </div>
 <script>
   dodona.ready.then(dodona.initCheckboxes)
-  dodona.ready.then(dodona.initAnonymizeButtonsEditEval)
 </script>

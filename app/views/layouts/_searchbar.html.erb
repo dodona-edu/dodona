@@ -171,18 +171,28 @@
             }
         };
         <% end %>
-        // if there is a previous value stored in local storage, load that value to reuse those frequently used preferences
+
+        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+
+        // load the given localStorageKey if present. This key is used to retrieve the values stored in localStorage
         const localStorageKey = "<%= local_assigns.fetch :local_storage_key, "" %>"
-
-        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>", localStorageKey);
-
         const prevDefinedSearchParams = localStorage.getItem(localStorageKey);
-        let url = "<%= local_assigns.fetch :baseUrl, "" %>"
-        // if there are params from localStorage, concatenate them to the url to use these stored search params
+
+        // slap https:// in front of baseUrl (baseUrl is actually the path of the url) to make this a valid url accepted by the URL-object constructor
+        let urlObj = new URL("https://" + "<%= local_assigns.fetch :baseUrl, "" %>");
+        // if there are params from localStorage, apply these filters to the url
         if (prevDefinedSearchParams) {
-          url += "?" + prevDefinedSearchParams;
+          const searchParamsObj = new URLSearchParams(prevDefinedSearchParams);
+          const searchParamsFromUrl = urlObj.searchParams;
+          for (const [key, value] of searchParamsObj) {
+            // only apply the filter value from localStorage if it is not already present in the base url
+            if (!searchParamsFromUrl.has(key)) {
+              searchParamsFromUrl.set(key, value);
+            }
+          }
+          urlObj.search = searchParamsFromUrl.toString();
         }
-        dodona.searchQuery.setBaseUrl(url, localStorageKey);
+        dodona.searchQuery.setBaseUrl(urlObj.pathname + urlObj.search, localStorageKey);
 
         const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {

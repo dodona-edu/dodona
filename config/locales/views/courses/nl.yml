@@ -61,6 +61,7 @@ nl:
       my_courses: "Mijn cursussen"
     new:
       title: Cursus aanmaken
+      help_html: 'Meer informatie over het aanmaken van een cursus kan <a href="https://docs.dodona.be/nl/guides/teachers/getting-started/#een-cursus-aanmaken">hier</a> gevonden worden.'
       empty: "Lege cursus"
       copy: "Kopieer cursus"
       new_course: "Lege cursus"

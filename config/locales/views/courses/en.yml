@@ -61,6 +61,7 @@ en:
       my_courses: "My courses"
     new:
       title: Create course
+      help_html: 'More information on creating a course can be found <a href="https://docs.dodona.be/nl/guides/teachers/getting-started/#een-cursus-aanmaken">here</a>.'
       empty: "Empty course"
       copy: "Copy course"
       new_course: "Empty course"

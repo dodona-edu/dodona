@@ -138,7 +138,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.20'
 
-gem 'ddtrace', '~> 1.2.0'
+gem 'ddtrace', '~> 1.3.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.37.1'
-  gem 'selenium-webdriver', '~> 4.3.0'
+  gem 'selenium-webdriver', '~> 4.4.0'
 end
 
 group :test do
@@ -165,7 +165,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.0.9'
+  gem 'test-prof', '~> 1.0.10'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

@@ -304,4 +304,35 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
     assert_equal 'not_valid', @echo.status
   end
+
+  test 'should catch error when commit fails' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+
+    # should raise DodonaGitError because commit fails
+    @repository.reset
+    assert_raises(DodonaGitError) do
+      @repository.process_activities
+    end
+  end
+
+  test 'should send a mail when commit fails' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+
+    @repository.reset
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      @repository.process_activities_email_errors
+    end
+  end
 end

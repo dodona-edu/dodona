@@ -49,6 +49,7 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
+  has_many :announcement_views, dependent: :destroy
 
   has_many :subscribed_courses,
            lambda {
@@ -441,6 +442,14 @@ class User < ApplicationRecord
           ra.destroy!
         else
           ra.update!(user: other)
+        end
+      end
+
+      announcement_views.each do |av|
+        if other.announcement_views.find { |oav| oav.announcement_id == av.announcement_id }
+          av.destroy!
+        else
+          av.update!(user: other)
         end
       end
 

@@ -271,7 +271,7 @@ function initCourseNew() {
             $(this)
                 .closest(".panel")
                 .find(".answer")
-                .html($(this).data("answer"));
+                .text($(this).data("answer"));
             fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`)
                 .then(req => req.text())
                 .then(resp => eval(resp));
@@ -296,7 +296,10 @@ function initCoursesListing(firstTab) {
 
     function initCourseTabs(firstTab) {
         document.querySelectorAll("#course-tabs li a").forEach(tab => {
-            tab.addEventListener("click", () => selectTab(tab));
+            tab.addEventListener("click", event => {
+                event.preventDefault(); // used to prevent popstate event from firing
+                selectTab(tab);
+            });
         });
 
         // If the url hash is a valid tab, use that, otherwise use the given tab

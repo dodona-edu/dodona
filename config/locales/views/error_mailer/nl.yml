@@ -9,4 +9,11 @@ nl:
         one: 'Bij het automatisch verwerken van de oefeningenrepository "%{repository}" liep iets fout. Vermoedelijk zit er een syntaxfout in het configuratiebestand. Onderstaande foutmelding werd gegenereerd:'
         other: 'Bij het automatisch verwerken van de oefeningenrepository "%{repository}" liep iets fout. Vermoedelijk zit er een syntaxfout in het configuratiebestand. Onderstaande foutmeldingen werden gegenereerd:'
       regards: 'Vriendelijke groeten,'
-      auto-generated: ps. Dit bericht werd automatisch gegenereerd.
+      auto-generated: PS Dit bericht werd automatisch gegenereerd.
+    git_error:
+      subject: '[Dodona] Pushen naar "%{repository}" mislukt'
+      greeting: 'Beste %{name},'
+      error_message: 'Tijdens het verwerken van "%{repository}" kon Dodona de aanpassingen aan de verwerkte oefeningen niet pushen. De exacte error was: %{error}.'
+      hint: 'Zorg er zeker voor dat de Dodona-gebruiker pushrechten heeft op je repository.'
+      regards: 'Vriendelijke groeten,'
+      auto-generated: PS Dit bericht werd automatisch gegenereerd.

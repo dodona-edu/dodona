@@ -44,13 +44,18 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
         return label.replace(this.getFilterRegExp(), str => `<strong>${str}</strong>`);
     }
 
+    handleClick(e: Event, label: Label): void {
+        e.preventDefault();
+        this.select(label);
+    }
+
     render(): TemplateResult {
         return this.getFilteredLabels().length == 0 ? html`` : html`
             <li>
                 <h6 class='dropdown-header'>${I18n.t(`js.${this.type}`)}</h6>
             </li>
             ${ this.getFilteredLabels().map( label => html`
-                <li><a class="dropdown-item" href="#" @click=${() => this.select(label)}>
+                <li><a class="dropdown-item" href="#" @click=${e => this.handleClick(e, label)}>
                     ${unsafeHTML(this.getHighlightedLabel(label.name))}
                 </a></li>
             `)}

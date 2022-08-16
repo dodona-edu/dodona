@@ -68,8 +68,8 @@ if Rails.env.development?
   artevelde = Institution.create name: 'Artevelde', short_name: 'Artevelde', logo: 'artevelde.png', category: 1
   sg_paulus = Institution.create name: 'Scholengroep Paulus', short_name: 'SGPaulus', logo: 'UGent.png'
   slo = Institution.create name: 'SLO Wetenschappen', short_name: 'SLOW', logo: 'ugent.nl.png'
-  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png'
-  sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg'
+  college_ieper = Institution.create name: 'College Ieper', short_name: 'College Ieper', logo: 'ugent.nl.png', generated_name: false
+  sint_bavo = Institution.create name: 'Sint-Bavo Humaniora Gent', short_name: 'sbhg', logo: 'sbhg.jpeg', generated_name: false
   elixir = Institution.create name: 'Elixir', short_name: 'Elixir', logo: 'elixir.png', category: 2
   vlaanderen = Institution.create name: 'Vlaamse Overheid', short_name: 'Vlaamse Overheid', logo: 'vlaamse-overheid.png', category: 2
 
@@ -202,6 +202,8 @@ if Rails.env.development?
 
   courses = []
 
+
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institutional users course', year: academic_year, registration: 'open_for_institutional_users', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: academic_year, registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
   courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')

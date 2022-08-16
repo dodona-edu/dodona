@@ -98,6 +98,6 @@
 </div>
 <script>
   const institutions = <%= raw @oauth_providers.map{|i| {id: i.id, name: i.institution.name, type: i.type}}.to_json %>;
-  const links = <%= raw @generic_providers.to_json %>;
+  const links = <%= raw @generic_providers.map{|p| [p, {name: p.readable_name, link: omniauth_authorize_path(:user, p.sym) }]}.to_h.to_json %>;
   window.dodona.initInstitutionAutoSelect(institutions, links);
 </script>

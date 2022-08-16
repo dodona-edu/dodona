@@ -272,6 +272,14 @@ class User < ApplicationRecord
     @repository_admin.include?(repository.id)
   end
 
+  def personal?
+    institution.nil?
+  end
+
+  def institutional?
+    institution.present?
+  end
+
   def attempted_exercises(options)
     s = submissions.judged
     s = s.in_course(options[:course]) if options[:course].present?

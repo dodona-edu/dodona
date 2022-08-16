@@ -16,8 +16,8 @@
 # the following configuration to something like this:
 #
 translations:
-- file: "app/assets/javascripts/i18n/translations.js"
-  only: ['*.date', '*.time', 'en.js', 'nl.js']
+- file: "app/assets/javascripts/i18n/translations.json"
+  patterns: ['*.date', '*.time', 'en.js', 'nl.js']
 #
 # If you're running an old version, you can use something
 # like this:

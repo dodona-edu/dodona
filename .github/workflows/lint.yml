@@ -33,7 +33,7 @@ jobs:
     - name: Set up Node
       uses: actions/setup-node@v3
       with:
-        node-version: 12.x
+        node-version: 16.x
         cache: yarn
     - name: Install dependencies
       run: |
@@ -41,6 +41,9 @@ jobs:
     - name: Lint
       run: |
         yarn lint --quiet
+    - name: TypeScript type check
+      run: |
+        yarn typeCheck
 
   css:
     name: CSS
@@ -50,7 +53,7 @@ jobs:
       - name: Set up Node
         uses: actions/setup-node@v3
         with:
-          node-version: 12.x
+          node-version: 16.x
           cache: yarn
       - name: Install dependencies
         run: |

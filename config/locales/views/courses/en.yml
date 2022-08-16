@@ -17,6 +17,7 @@ en:
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
+      registration-open_for_institutional_users-help_html: Anyone that belongs to an institution can register for this course. Users that signed in using a <b>private account</b>, such as a personal Gmail or Outlook account, <b>cannot</b> register.
       description-help_html: A description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting can be used.
       visibility-label: For whom is this course visible?
       registration-label: Who can register for this course?
@@ -27,6 +28,7 @@ en:
       registration-open_for_all_html: Everyone
       registration-open_for_institution_html: Only users of <span class="fill-institution">the configured institution</span>
       registration-closed_html: Nobody
+      registration-open_for_institutional_users_html: Everyone that belongs to an institution
       no_institution: "No institution"
       copy_admins: "Course admins"
       copy_options: "Copy options"
@@ -98,6 +100,7 @@ en:
       registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
       registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
       registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."
+      registration-open_for_institutional_users-info: "Registrations are open for users that belong to any institution. Registrations are closed for users who signed in using a private account, such as a personal Gmail or Outlook account."
       moderated-info: "This course is moderated. Users who register will have to be explicitly approved by a course admin."
       subscribe: Register
       request_registration: Request registration

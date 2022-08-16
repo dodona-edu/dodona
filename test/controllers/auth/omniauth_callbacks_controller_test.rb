@@ -373,6 +373,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
           # Call the authorization url.
           get omniauth_url(provider)
           follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          post privacy_prompt_path
         end
       end
 

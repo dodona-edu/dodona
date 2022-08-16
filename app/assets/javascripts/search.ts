@@ -201,9 +201,7 @@ export class SearchQuery {
             }).then(() => {
                 // if there is local storage key => update the value to reuse later
                 if (localStorageKey) {
-                    // TODO: field search param is removed, do we indeed want this?
                     const urlObj = new URL(url);
-                    urlObj.searchParams.delete("filter");
                     localStorage.setItem(localStorageKey, urlObj.searchParams.toString());
                 }
             });

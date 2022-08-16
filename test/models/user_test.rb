@@ -787,4 +787,21 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal true, s2.started?(user: u2)
     assert_equal true, s2.wrong?(user: u2)
   end
+
+  test 'merge should only transfer unique announcement views to the other user' do
+    u1 = create :user
+    u2 = create :user
+
+    a1 = create :announcement
+    a2 = create :announcement
+    AnnouncementView.create user: u1, announcement: a1
+    AnnouncementView.create user: u1, announcement: a2
+    AnnouncementView.create user: u2, announcement: a1
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal 2, u2.announcement_views.count
+  end
 end

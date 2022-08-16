@@ -3,7 +3,7 @@
 # precedence.
 
 *               @dodona-edu/review
-package.json    @chvp
-yarn.lock       @chvp
-Gemfile         @chvp
-Gemfile.lock    @chvp
+package.json    @jorg-vr
+yarn.lock       @jorg-vr
+Gemfile         @jorg-vr
+Gemfile.lock    @jorg-vr

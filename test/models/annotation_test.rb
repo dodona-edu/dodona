@@ -77,14 +77,9 @@ class AnnotationTest < ActiveSupport::TestCase
     assert annotation.anonymous(@user)
   end
 
-  test 'anonymous is false when evaluation exists and student views own annotation' do
-    annotation = create :annotation, :with_evaluation, submission: @submission, user: @annotating_user
+  test 'anonymous is false when evaluation exists and person views own annotation' do
+    annotation = create :annotation, :with_evaluation, submission: @submission, user: @user
     assert_not annotation.anonymous(@user)
-  end
-
-  test 'anonymous is false when teacher views own annotation' do
-    annotation = create :annotation, :with_evaluation, submission: @submission, user: @annotating_user
-    assert_not annotation.anonymous(@annotating_user)
   end
 
   test 'anonymous is false when evaluation does not exist' do

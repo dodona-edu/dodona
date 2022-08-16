@@ -38,6 +38,8 @@ class Auth::AuthenticationController < Devise::SessionsController
       Provider::Surf
     ]
 
+    @private_providers = Provider.where(institution: nil)
+
     @providers = Provider.all
     @title = I18n.t('auth.sign_in.sign_in')
     @oauth_providers = apply_scopes(@providers

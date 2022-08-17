@@ -1,4 +1,4 @@
-json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :updated_at
+json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :created_at, :updated_at
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
   json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })
@@ -6,11 +6,7 @@ end
 
 # hide timestamp depending on evaluation and current user
 if annotation.anonymous(current_user)
-  json.created_at t('js.user_annotation.anonymous_message')
-  json.anonymous true
-else
-  json.created_at annotation.created_at
-  json.anonymous false
+  json.anonymous_message t('js.user_annotation.anonymous_message')
 end
 
 json.rendered_markdown markdown(annotation.annotation_text)
@@ -20,14 +16,22 @@ json.user do
   # hide reviewer name depending on evaluation and current user
   if annotation.anonymous(current_user)
     json.name ''
+    json.url ''
   else
     json.name annotation.user.full_name
+    json.url user_url(annotation.user)
   end
-  json.url user_url(annotation.user)
 end
+
 json.last_updated_by do
-  json.name annotation.last_updated_by.full_name
-  json.url user_url(annotation.last_updated_by)
+  # hide reviewer name depending on evaluation and current user
+  if annotation.anonymous(current_user)
+    json.name ''
+    json.url ''
+  else
+    json.name annotation.last_updated_by.full_name
+    json.url user_url(annotation.last_updated_by)
+  end
 end
 json.permission do
   json.update policy(annotation).update?

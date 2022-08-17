@@ -40,7 +40,8 @@ export interface UserAnnotationData {
     type: string;
     // eslint-disable-next-line camelcase
     last_updated_by: UserAnnotationUserData;
-    anonymous: boolean; // will be true if the name of the reviewer is hidden
+    // eslint-disable-next-line camelcase
+    anonymous_message: string | null; // will not be null if the annotation is anonymised
 }
 
 export class UserAnnotation extends Annotation {
@@ -55,7 +56,7 @@ export class UserAnnotation extends Annotation {
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
     public readonly lastUpdatedBy: UserAnnotationUserData;
-    private readonly anonymous: boolean;
+    private readonly anonymousMessage: string | null;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {
@@ -71,7 +72,7 @@ export class UserAnnotation extends Annotation {
         this.url = data.url;
         this.user = data.user;
         this.lastUpdatedBy = data.last_updated_by;
-        this.anonymous = data.anonymous;
+        this.anonymousMessage = data.anonymous_message;
     }
 
     protected edit(): void {
@@ -89,8 +90,8 @@ export class UserAnnotation extends Annotation {
 
     protected get meta(): string {
         // when the reviewer name is hidden, the created time is just a message that shows that the annotation is from during the review
-        if (this.anonymous) {
-            return this.createdAt;
+        if (this.anonymousMessage) {
+            return this.anonymousMessage;
         }
 
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);

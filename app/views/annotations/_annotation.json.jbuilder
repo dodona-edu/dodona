@@ -4,10 +4,8 @@ if annotation.is_a?(Question)
   json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })
 end
 
-# hide timestamp depending on evaluation and current user
-if annotation.anonymous(current_user)
-  json.anonymous_message t('js.user_annotation.anonymous_message')
-end
+# add anonymous message if the annotation is anonymised
+json.anonymous_message t('js.user_annotation.anonymous_message') if annotation.anonymous(current_user)
 
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)

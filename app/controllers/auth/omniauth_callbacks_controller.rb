@@ -52,8 +52,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Authentication logic.
 
   def generic_oauth
-    return provider_missing! if oauth_provider_id.blank?
-
     # Find the provider for the current institution. If no provider exists yet,
     # a new one will be created.
     return redirect_with_flash!(I18n.t('auth.sign_in.errors.institution-creation')) if provider.blank?
@@ -155,7 +153,20 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def find_identity_by_uid
     # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
-    Identity.find_by(identifier: auth_uid, provider: provider) if auth_uid.present?
+    return nil if auth_uid.nil?
+
+    identity = Identity.find_by(identifier: auth_uid, provider: provider)
+
+    return identity unless identity.nil? && provider.class.sym == :office365 && auth_email.present?
+
+    # This code supports a migration of the office365 oauth api from v1 to v2
+    # Try to find the user by the legacy identifier
+    identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
+    return nil if identity.nil?
+
+    # Update the identifier to the new uid
+    identity.update(identifier: auth_uid, identifier_based_on_email: false)
+    identity
   end
 
   def find_identity_by_user(user)
@@ -365,10 +376,5 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed
                      .deliver_later
-  end
-
-  def provider_missing!
-    flash_failure I18n.t('auth.sign_in.errors.missing-provider')
-    redirect_to sign_in_path
   end
 end

@@ -10,6 +10,8 @@ nl:
       higher-education: "Hoger onderwijs"
       other-education: "Andere onderwijsinstellingen"
       other: "Andere organisaties"
+      private-accounts: Private accounts
+      private-accounts-help: Gebruik deze login methodes als je niet bij een onderwijsinstelling aangesloten bent
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

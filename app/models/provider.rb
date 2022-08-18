@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -24,7 +24,7 @@ class Provider < ApplicationRecord
 
   PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Oidc, Provider::Saml, Provider::Smartschool, Provider::Surf].freeze
 
-  belongs_to :institution, inverse_of: :providers
+  belongs_to :institution, inverse_of: :providers, optional: true
 
   has_many :identities, inverse_of: :provider, dependent: :destroy
 

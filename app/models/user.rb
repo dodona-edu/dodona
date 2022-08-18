@@ -461,7 +461,7 @@ class User < ApplicationRecord
   private
 
   def set_token
-    if institution.present?
+    if identities.present?
       self.token = nil
     elsif token.blank?
       generate_token

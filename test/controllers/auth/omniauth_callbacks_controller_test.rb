@@ -339,7 +339,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'oauth login with missing provider' do
-    OAUTH_PROVIDERS.each do |provider_name|
+    %i[office365_provider smartschool_provider].each do |provider_name|
       # Setup.
       provider = build provider_name, identifier: nil
       user = build :user, institution: provider.institution
@@ -351,9 +351,98 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       # Assert failed authentication.
-      assert_redirected_to sign_in_path
+      assert_redirected_to root_path
       assert_nil @controller.current_user
     end
+  end
+
+  test 'Can sign up with personal account' do
+    personal_providers = [
+      create(:office365_provider, identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil),
+      create(:gsuite_provider, identifier: nil, institution: nil)
+    ]
+
+    personal_providers.each do |provider|
+      # Setup.
+      user = build :user, institution: nil
+      identity = build :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      assert_difference 'User.count', 1 do
+        assert_difference 'Identity.count', 1 do
+          # Call the authorization url.
+          get omniauth_url(provider)
+          follow_redirect!
+        end
+      end
+
+      # Assert successful authentication.
+      assert_redirected_to root_path
+      assert_not_nil @controller.current_user
+      assert_equal @controller.current_user.email, user.email
+      assert_nil @controller.current_user.institution
+
+      # Cleanup.
+      sign_out user
+    end
+  end
+
+  test 'Office 365 identifier should be updated upon login if the identifier still used the old format' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+
+    # sign in should still work with changed identifier
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    # Cleanup.
+    sign_out user
+
+    # Should not be able to change it again
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'NEW-UID@test.com'
+                           },
+                           uid: 'NEWER-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_not_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
   end
 
   test 'lti redirects to main provider' do

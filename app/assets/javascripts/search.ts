@@ -89,12 +89,12 @@ export class SearchQuery {
 
         // initialise present parameters
         this.initialiseParams(url.searchParams);
-        // apply parameters from local storage
-        this.useLocalStorage();
     }
 
     setLocalStorageKey(localStorageKey: string): void {
         this.localStorageKey = localStorageKey;
+        // apply parameters from local storage
+        this.useLocalStorage();
     }
 
     initPagination(): void {
@@ -213,9 +213,8 @@ export class SearchQuery {
             if (searchParamsStringFromStorage) {
                 const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
                 // don't overwrite currently set params with params from the localStorage
-                const currentSearchParams = new URL(this.baseUrl).searchParams;
-                currentSearchParams.forEach((_value: string, key:string) => {
-                    if (searchParamsFromStorage.has(key)) {
+                searchParamsFromStorage.forEach((_value: string, key:string) => {
+                    if (this.queryParams.params.get(key) !== undefined || this.arrayQueryParams.params.get(key) !== undefined) {
                         searchParamsFromStorage.delete(key);
                     }
                 });

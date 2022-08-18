@@ -176,8 +176,8 @@
 
         // load the given localStorageKey if present. This key is used to retrieve the values stored in localStorage
         const localStorageKey = "<%= local_assigns.fetch :local_storage_key, "" %>"
-        dodona.searchQuery.setLocalStorageKey(localStorageKey);
         dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        dodona.searchQuery.setLocalStorageKey(localStorageKey);
 
         const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {

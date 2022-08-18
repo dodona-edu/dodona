@@ -18,6 +18,7 @@ nl:
       loading_more: Reeksen worden geladen...
     new:
       title: Reeks aanmaken
+      help_html: 'Meer informatie over het beheren van een reeks kan in <a href="https://docs.dodona.be/nl/guides/teachers/exercise-series-management/#oefeningenreeksenbeheer">onze documentatie</a> gevonden worden.'
     show:
       copy: 'Om te kopiëren: Ctrl+c, Enter'
       indianio_token: 'Indianio-token'

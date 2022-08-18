@@ -17,6 +17,7 @@ en:
     show:
       repository: Repository
       webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
+      setup_html: "We noticed your repository is empty, learn in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>our documentation</a> how you can add exercises to your repository."
       reprocess: Reprocess repository
       exercises: Exercises
       content_pages: Reading activities

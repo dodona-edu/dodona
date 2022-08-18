@@ -35,7 +35,7 @@
         <%= image_tag institution_logo(institution&.logo || provider.logo), class: "img-fluid" %>
       </div>
       <div class="option-btn-title">
-        <h3><%= institution.short_name %><br>
+        <h3><%= institution&.short_name || provider.readable_name %><br>
           <small><%= t('auth.sign_in.sign-in-with', provider: provider.readable_name) %></small>
         </h3>
       </div>

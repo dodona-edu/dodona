@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class AnnotationPolicyTest < ActiveSupport::TestCase
-
   setup do
     @user = users(:student)
     @annotating_user = users(:staff)

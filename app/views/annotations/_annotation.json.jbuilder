@@ -5,7 +5,6 @@ if annotation.is_a?(Question)
 end
 
 # add anonymous message if the annotation is anonymised
-json.test annotation.user.id
 json.anonymous_message t('js.user_annotation.anonymous_message') if policy(annotation).anonymous?
 
 json.rendered_markdown markdown(annotation.annotation_text)

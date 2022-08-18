@@ -48,9 +48,9 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def anonymous?
-    # if we are NOT an admin and the annotation is part of an evaluation and we are not who wrote the annotation => hide name
+    # if we are NOT the admin and the annotation is part of an evaluation and we are not who wrote the annotation => hide name
     # "user" is the person that receives the annotation
     # "record.user" is the person that wrote the annotation
-    !user.a_course_admin? && !record.evaluation.nil? && (user.id != record.user.id)
+    !user.course_admin?(record.course) && !record.evaluation.nil? && (user.id != record.user.id)
   end
 end

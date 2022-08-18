@@ -11,7 +11,7 @@ en:
       other-education: "Other educational institutions"
       other: "Other institutions"
       private-accounts: Private accounts
-      private-accounts-help: Use these sign in methods if you are associated with any educational institution
+      private-accounts-help: Use these sign in methods to use your personal Google or Microsoft account if you are not associated with any educational institution.
       blacklist:
         sgpaulus: Gebruik je sgpaulus-account (voornaam.naam@sgpaulus.eu) om in te loggen op Dodona.
       errors:

@@ -1,9 +1,5 @@
 import { initDeadlinePicker } from "series.js";
-import {
-    initCheckboxes,
-    initCheckbox,
-    initEvaluationStepper,
-} from "evaluation.ts";
+import { initCheckboxes, initCheckbox, initEvaluationStepper } from "evaluation.ts";
 import FeedbackActions from "feedback/actions";
 
 window.dodona.initDeadlinePicker = initDeadlinePicker;

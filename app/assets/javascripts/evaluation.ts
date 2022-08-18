@@ -20,14 +20,13 @@ export function initCheckbox(row: HTMLTableRowElement): void {
     });
 }
 
-
 export function initEvaluationStepper(): void {
     const evalPanelElement = document.querySelector("#info-panel .panel-collapse");
     const evalPanel = new bootstrap.Collapse(evalPanelElement, { toggle: false });
     const userPanelElement = document.querySelector("#users-panel .panel-collapse");
     const userPanel = new bootstrap.Collapse(userPanelElement, { toggle: false });
-    const gradeChoicePanelElement = document.querySelector("#choice-panel-grading .panel-collapse");
-    const gradeChoicePanel = new bootstrap.Collapse(gradeChoicePanelElement, { toggle: false });
+    const choicePanelElement = document.querySelector("#choice-panel .panel-collapse");
+    const choicePanel = new bootstrap.Collapse(choicePanelElement, { toggle: false });
     const scorePanelElement = document.querySelector("#items-panel .panel-collapse");
     const scorePanel = new bootstrap.Collapse(scorePanelElement, { toggle: false });
 
@@ -41,37 +40,37 @@ export function initEvaluationStepper(): void {
 
         evalPanelElement.addEventListener("show.bs.collapse", function () {
             userPanel.hide();
-            gradeChoicePanel.hide();
+            choicePanel.hide();
             scorePanel.hide();
         });
         userPanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
-            gradeChoicePanel.hide();
+            choicePanel.hide();
             scorePanel.hide();
         });
-        gradeChoicePanelElement.addEventListener("show.bs.collapse", function () {
+        choicePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
             userPanel.hide();
             scorePanel.hide();
         });
         scorePanelElement.addEventListener("show.bs.collapse", function () {
             evalPanel.hide();
-            gradeChoicePanel.hide();
+            choicePanel.hide();
             userPanel.hide();
         });
 
         document.querySelector("#users-step-finish-button").addEventListener("click", function () {
             userPanel.hide();
-            gradeChoicePanel.show();
+            choicePanel.show();
             document.querySelector("#short-users-count-wrapper").classList.remove("hidden");
         });
 
-        const yesButtonGrading = document.querySelector<HTMLElement>("#yes-grading");
-        yesButtonGrading.addEventListener("click", function () {
+        const yesButton = document.querySelector<HTMLElement>("#yes-grading");
+        yesButton.addEventListener("click", function () {
             document.querySelector("#items-panel").classList.remove("hidden");
-            gradeChoicePanel.hide();
+            choicePanel.hide();
             scorePanel.show();
-            document.querySelector<HTMLElement>("#choice-panel-grading .answer").innerText = yesButtonGrading.dataset["answer"];
+            document.querySelector<HTMLElement>("#choice-panel .answer").innerText = yesButton.dataset["answer"];
         });
 
         document.querySelector("#no-grading").addEventListener("click", function () {
@@ -89,8 +88,8 @@ export function initEvaluationStepper(): void {
         userPanel.show();
         document.querySelector("#users-panel a[role=\"button\"]").setAttribute("href", "#users-step");
         document.querySelector("#users-panel a[role=\"button\"]").classList.remove("disabled");
-        document.querySelector("#choice-panel-grading a[role=\"button\"]").setAttribute("href", "#choice-step-grading");
-        document.querySelector("#choice-panel-grading a[role=\"button\"]").classList.remove("disabled");
+        document.querySelector("#choice-panel a[role=\"button\"]").setAttribute("href", "#choice-step");
+        document.querySelector("#choice-panel a[role=\"button\"]").classList.remove("disabled");
         document.querySelector("#items-panel a[role=\"button\"]").setAttribute("href", "#items-step");
         document.querySelector("#items-panel a[role=\"button\"]").classList.remove("disabled");
     }

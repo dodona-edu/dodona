@@ -50,7 +50,7 @@ class Annotation < ApplicationRecord
     end.reduce(includes(submission: [:exercise], user: []), &:merge)
   }
 
-  def anonymous(current_user)
+  def anonymous?(current_user)
     # if we are NOT an admin and the annotation is part of an evaluation and we are not who wrote the annotation => hide name
     !current_user.a_course_admin? && !evaluation.nil? && (current_user.id != user.id)
   end

@@ -5,14 +5,14 @@ if annotation.is_a?(Question)
 end
 
 # add anonymous message if the annotation is anonymised
-json.anonymous_message t('js.user_annotation.anonymous_message') if annotation.anonymous(current_user)
+json.anonymous_message t('js.user_annotation.anonymous_message') if annotation.anonymous?(current_user)
 
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
 json.user do
   # hide reviewer name depending on evaluation and current user
-  if annotation.anonymous(current_user)
+  if annotation.anonymous?(current_user)
     json.name ''
     json.url ''
   else
@@ -23,7 +23,7 @@ end
 
 json.last_updated_by do
   # hide reviewer name depending on evaluation and current user
-  if annotation.anonymous(current_user)
+  if annotation.anonymous?(current_user)
     json.name ''
     json.url ''
   else

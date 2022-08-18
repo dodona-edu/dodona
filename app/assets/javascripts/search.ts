@@ -193,7 +193,7 @@ export class SearchQuery {
                     eval(data);
                 }
                 document.getElementById("progress-filter").style.visibility = "hidden";
-            }).then(() => {
+
                 // if there is local storage key => update the value to reuse later
                 if (this.localStorageKey) {
                     const urlObj = new URL(url);

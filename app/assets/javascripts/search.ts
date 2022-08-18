@@ -74,8 +74,6 @@ export class SearchQuery {
     }
 
     setBaseUrl(baseUrl?: string): void {
-        this.localStorageKey = null; // reset the local storageKey since we have a new base URL
-
         this.updateAddressBar = baseUrl === undefined || baseUrl === "";
         const _url = baseUrl || window.location.href;
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
@@ -91,6 +89,8 @@ export class SearchQuery {
 
         // initialise present parameters
         this.initialiseParams(url.searchParams);
+        // apply parameters from local storage
+        this.useLocalStorage();
     }
 
     setLocalStorageKey(localStorageKey: string): void {

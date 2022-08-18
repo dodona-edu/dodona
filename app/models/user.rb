@@ -359,13 +359,13 @@ class User < ApplicationRecord
   end
 
   def self.from_email_and_institution(email, institution_id)
-    return nil if email.blank? || institution_id.nil?
+    return nil if email.blank?
 
     find_by(email: email, institution_id: institution_id)
   end
 
   def self.from_username_and_institution(username, institution_id)
-    return nil if username.blank? || institution_id.nil?
+    return nil if username.blank?
 
     find_by(username: username, institution_id: institution_id)
   end

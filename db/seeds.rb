@@ -164,6 +164,7 @@ if Rails.env.development?
       Identity.create provider: user.institution.providers.first,
                       identifier: user.username,
                       user: user
+      user.save
     end
   end
 

@@ -7,7 +7,7 @@ module CoursesHelper
     membership = args[:membership]
 
     if membership.nil? || membership.unsubscribed?
-      if course.open_for_all? || (course.open_for_institution? && (course.institution == current_user&.institution || current_user.nil?))
+      if course.open_for_user?(current_user) || current_user.nil?
         if course.moderated
           link_to t('courses.show.request_registration'),
                   subscribe_course_path(@course, secret: secret),

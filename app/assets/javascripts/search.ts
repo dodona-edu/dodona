@@ -207,10 +207,18 @@ export class SearchQuery {
      */
     useLocalStorage() : void {
         if (this.localStorageKey) {
-            const prevDefinedSearchParams = localStorage.getItem(this.localStorageKey);
-            if (prevDefinedSearchParams) {
-                const searchParamsObj = new URLSearchParams(prevDefinedSearchParams);
-                this.initialiseParams(searchParamsObj);
+            const searchParamsStringFromStorage = localStorage.getItem(this.localStorageKey);
+            if (searchParamsStringFromStorage) {
+                const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
+                // don't overwrite currently set params with params from the localStorage
+                const currentSearchParams = new URL(this.baseUrl).searchParams;
+                currentSearchParams.forEach((_value: string, key:string) => {
+                    if (searchParamsFromStorage.has(key)) {
+                        searchParamsFromStorage.delete(key);
+                    }
+                });
+
+                this.initialiseParams(searchParamsFromStorage);
             }
         }
     }

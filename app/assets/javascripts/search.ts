@@ -73,8 +73,8 @@ export class SearchQuery {
         }
     }
 
-    setBaseUrl(baseUrl?: string, localStorageKey?: string): void {
-        this.localStorageKey = localStorageKey;
+    setBaseUrl(baseUrl?: string): void {
+        this.localStorageKey = null; // reset the local storageKey since we have a new base URL
 
         this.updateAddressBar = baseUrl === undefined || baseUrl === "";
         const _url = baseUrl || window.location.href;
@@ -91,8 +91,10 @@ export class SearchQuery {
 
         // initialise present parameters
         this.initialiseParams(url.searchParams);
-        // apply params that were stored in localStorage
-        this.useLocalStorage();
+    }
+
+    setLocalStorageKey(localStorageKey: string): void {
+        this.localStorageKey = localStorageKey;
     }
 
     initPagination(): void {
@@ -104,8 +106,8 @@ export class SearchQuery {
         }));
     }
 
-    constructor(baseUrl?: string, refreshElement?: string, localStorageKey?: string) {
-        this.setBaseUrl(baseUrl, localStorageKey);
+    constructor(baseUrl?: string, refreshElement?: string) {
+        this.setBaseUrl(baseUrl);
 
         // subscribe relevant listeners
         this.arrayQueryParams.subscribe(k => this.paramChange(k));
@@ -114,7 +116,7 @@ export class SearchQuery {
 
         window.onpopstate = () => {
             if (this.updateAddressBar) {
-                this.setBaseUrl(null, localStorageKey);
+                this.setBaseUrl();
             }
         };
 

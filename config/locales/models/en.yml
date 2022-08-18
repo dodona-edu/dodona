@@ -55,6 +55,7 @@ en:
           open_for_all: Open for everyone
           open_for_institution: Only open for members of the configured institution
           closed: Closed
+          open_for_institutional_users: Open for all users that belong to an institution
         institution: Institution
       activity:
         name: Name

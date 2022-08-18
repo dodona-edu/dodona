@@ -373,6 +373,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
           # Call the authorization url.
           get omniauth_url(provider)
           follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          post privacy_prompt_path
         end
       end
 
@@ -384,6 +389,37 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
       # Cleanup.
       sign_out user
+    end
+  end
+
+  test 'No account is created if privacy statement is rejected' do
+    personal_providers = [
+      create(:office365_provider, identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil),
+      create(:gsuite_provider, identifier: nil, institution: nil)
+    ]
+
+    personal_providers.each do |provider|
+      # Setup.
+      user = build :user, institution: nil
+      identity = build :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      assert_difference 'User.count', 0 do
+        assert_difference 'Identity.count', 0 do
+          # Call the authorization url.
+          get omniauth_url(provider)
+          follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          get root_path # Decline privacy prompt
+        end
+      end
+
+      # Assert unsuccessful authentication.
+      assert_response :success
+      assert_nil @controller.current_user
     end
   end
 

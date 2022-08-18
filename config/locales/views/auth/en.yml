@@ -24,3 +24,7 @@ en:
       providers_title: "Link accounts"
       "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
       contact_form: "contact form"
+    privacy_prompt:
+      text_html: "In order to use Dodona, you need to accept our privacy statement. On the <a href=\"%{your_data}\" target=\"_blank\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\" target=\"_blank\">privacy statement</a> contains the legally binding version."
+      accept_button: Accept the privacy statement
+      decline_button: Decline

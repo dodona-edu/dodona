@@ -24,3 +24,7 @@ nl:
       providers_title: "Accounts koppelen"
       "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
       contact_form: "contactformulier"
+    privacy_prompt:
+      text_html: "Om Dodona te gebruiken moet je onze privacyverklaring accepteren. Op de pagina <a href=\"%{your_data}\" target=\"_blank\">jouw data</a> leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\" target=\"_blank\">privacyverklaring</a> vinden."
+      accept_button: Privacyverklaring accepteren
+      decline_button: Weigeren

@@ -61,6 +61,7 @@ en:
       featured_courses: Featured courses
       all_courses: "All courses"
       my_courses: "My courses"
+      only_show_can_register: "Only show courses for which you can register"
     new:
       title: Create course
       empty: "Empty course"

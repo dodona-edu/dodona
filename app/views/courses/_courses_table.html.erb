@@ -16,8 +16,14 @@
     <% courses.each do |course| %>
       <tr>
         <td>
-          <% if current_user&.admin_of?(course) %>
+          <% if @membership_status[course.id] == 'course_admin' %>
             <span title='<%= t "pages.course_card.course-admin" %>'><i class='mdi mdi-school'></i></span>
+          <% elsif @membership_status[course.id] == 'student' %>
+            <span title='<%= t "courses.registration.already_a_member" %>'><i class='mdi mdi-account-check-outline'></i></span>
+          <% elsif @membership_status[course.id] == 'pending' %>
+            <span title='<%= t "courses.registration.pending" %>'><i class='mdi mdi-account-clock-outline'></i></span>
+          <% elsif current_user.present? && !course.open_for_user?(current_user) %>
+            <span title='<%= t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) %>'><i class='mdi mdi-account-remove-outline'></i></span>
           <% end %>
           <% if course.featured %>
             <span title='<%= Course.human_attribute_name("featured") %>'><i class='mdi mdi-star-outline'></i></span>

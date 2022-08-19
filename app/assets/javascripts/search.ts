@@ -214,7 +214,8 @@ export class SearchQuery {
                 const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
                 // don't overwrite currently set params with params from the localStorage
                 searchParamsFromStorage.forEach((_value: string, key:string) => {
-                    if (this.queryParams.params.get(key) !== undefined || this.arrayQueryParams.params.get(key) !== undefined) {
+                    if (this.queryParams.params.get(key) !== undefined ||
+                        this.arrayQueryParams.params.get(key.substring(0, key.length-2)) !== undefined) {
                         searchParamsFromStorage.delete(key);
                     }
                 });

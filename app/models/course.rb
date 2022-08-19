@@ -165,8 +165,10 @@ class Course < ApplicationRecord
     if user&.institutional?
       where(registration: %i[open_for_all open_for_institutional_users])
         .or(where(registration: :open_for_institution, institution_id: user.institution_id))
+        .or(where(id: user.subscribed_courses.pluck(:id)))
     else
       where(registration: :open_for_all)
+        .or(where(id: user&.subscribed_courses.pluck(:id)))
     end
   }
   default_scope { order(year: :desc, name: :asc) }

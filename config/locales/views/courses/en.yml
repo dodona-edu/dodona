@@ -53,6 +53,8 @@ en:
         toggle-label: Feature this course
     index:
       title: Courses
+      help_student_html: 'More information about courses can be found in <a href="https://docs.dodona.be/en/guides/students/courses/#cursussen-op-dodona">our documentation</a>.'
+      help_admin_html: 'More information on managing a course can be found in <a href="https://docs.dodona.be/en/guides/teachers/course-management/#cursusbeheer">our documentation</a>.'
       users: "Users"
       exercises: "Exercises"
       institution_courses: "%{institution} courses"

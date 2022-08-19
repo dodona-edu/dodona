@@ -22,7 +22,7 @@ module CoursesHelper
                   class: 'btn btn-filled'
         end
       else
-        tag.p t('courses.registration.registration_closed')
+        tag.p t("courses.show.registration-#{@course.registration}-info", institution: @course.institution&.name)
       end
     elsif membership.pending?
       link_to t('courses.registration.remove_from_pending'),

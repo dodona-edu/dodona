@@ -1,6 +1,6 @@
 <div class="col-sm-6 col-12">
   <div class="callout callout-info">
-    <% if @course.closed? %>
+    <% if !@course.open_for_user?(current_user) %>
       <p><%= t 'courses.registration.closed' %></p>
     <% else %>
       <% if @current_membership&.pending? %>
@@ -12,8 +12,6 @@
         <p><%= t 'courses.registration.moderated' %></p>
       <% end %>
     <% end %>
-    <% unless @course.closed? %>
-      <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret if @course.secret_required?(current_user)) %>
-    <% end %>
+    <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret if @course.secret_required?(current_user)) %>
   </div>
 </div>

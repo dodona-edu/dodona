@@ -215,7 +215,8 @@ export class SearchQuery {
                 // don't overwrite currently set params with params from the localStorage
                 searchParamsFromStorage.forEach((_value: string, key:string) => {
                     if (this.queryParams.params.get(key) !== undefined ||
-                        this.arrayQueryParams.params.get(key.substring(0, key.length-2)) !== undefined) {
+                        (this.isArrayQueryParamsKey(key) &&
+                            this.arrayQueryParams.params.get(this.extractArrayQueryParamsKey(key)) !== undefined)) {
                         searchParamsFromStorage.delete(key);
                     }
                 });
@@ -232,12 +233,32 @@ export class SearchQuery {
      */
     initialiseParams(searchParams: URLSearchParams) : void {
         for (const key of searchParams.keys()) {
-            if (key.endsWith("[]")) {
-                this.arrayQueryParams.updateParam(key.substring(0, key.length-2), searchParams.getAll(key));
+            if (this.isArrayQueryParamsKey(key)) {
+                this.arrayQueryParams.updateParam(this.extractArrayQueryParamsKey(key), searchParams.getAll(key));
             } else {
                 this.queryParams.updateParam(key, searchParams.get(key));
             }
         }
+    }
+
+    /**
+     *
+     * @param {string} key the key value stored in the url
+     * @private
+     * @return {boolean} true if the key ends with [] otherwise false
+     */
+    private isArrayQueryParamsKey(key: string): boolean {
+        return key.endsWith("[]");
+    }
+
+    /**
+     *
+     * @param {string} key the key value stored in the url
+     * @private
+     * @return {string} the key without the [] at the end
+     */
+    private extractArrayQueryParamsKey(key: string): string {
+        return key.substring(0, key.length-2);
     }
 }
 

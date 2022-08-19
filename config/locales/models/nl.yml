@@ -56,6 +56,7 @@ nl:
           open_for_all: Open voor iedereen
           open_for_institution: Enkel open voor gebruikers van de ingestelde onderwijsinstelling
           closed: Gesloten
+          open_for_institutional_users: Open voor alle gebruikers die tot een onderwijsinstelling behoren
         institution: Onderwijsinstelling
       activity:
         name: Naam

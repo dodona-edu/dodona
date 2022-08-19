@@ -47,13 +47,21 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     generic_oauth
   end
 
+  # ==> Privacy agreement acceptance before new account creation
+
+  def privacy_prompt
+    render 'auth/privacy_prompt'
+  end
+
+  def accept_privacy_policy
+    sign_in_new_user_from_session!
+  end
+
   private
 
   # ==> Authentication logic.
 
   def generic_oauth
-    return provider_missing! if oauth_provider_id.blank?
-
     # Find the provider for the current institution. If no provider exists yet,
     # a new one will be created.
     return redirect_with_flash!(I18n.t('auth.sign_in.errors.institution-creation')) if provider.blank?
@@ -96,7 +104,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       return redirect_to_known_provider!(user) if user.present?
 
       # No existing user was found
-      # Create a new user
+      # Redirect to privacy prompt before we create a new private user
+      return redirect_to_privacy_prompt if provider&.institution.nil?
+
+      # Institutional users don't need to accept the privacy policy
+      # Thus we can immediately create a new user
       user = User.new institution: provider&.institution
       # Create a new identity for the newly created user
       identity = user.identities.build identifier: auth_uid, provider: provider
@@ -111,6 +123,12 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
+    sign_in!(user)
+  end
+
+  # ==> Utilities.
+
+  def sign_in!(user)
     # If the session contains credentials for another identity, add this identity to the signed in user
     create_identity_from_session!(user)
 
@@ -122,7 +140,38 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     redirect_to_target!(user)
   end
 
-  # ==> Utilities.
+  def redirect_to_privacy_prompt
+    session[:new_user_identifier] = auth_hash.uid
+    session[:new_user_email] = auth_hash.info.email
+    session[:new_user_first_name] = auth_hash.info.first_name
+    session[:new_user_last_name] = auth_hash.info.last_name
+    session[:new_user_provider_id] = provider&.id
+    session[:new_user_auth_target] = auth_target
+
+    redirect_to privacy_prompt_path
+  end
+
+  def sign_in_new_user_from_session!
+    identifier = session.delete(:new_user_identifier)
+    email = session.delete(:new_user_email)
+    first_name = session.delete(:new_user_first_name)
+    last_name = session.delete(:new_user_last_name)
+    provider_id = session.delete(:new_user_provider_id)
+
+    provider = Provider.find(provider_id)
+
+    # Create a new user
+    user = User.new institution: provider&.institution, email: email, first_name: first_name, last_name: last_name,
+                    username: identifier
+
+    # Create a new identity for the newly created user
+    user.identities.build identifier: identifier, provider: provider
+    user.save
+
+    return redirect_with_errors!(user) if user.errors.any?
+
+    sign_in!(user)
+  end
 
   def create_identity_from_session!(user)
     # Find the original provider and uid in the session.
@@ -155,7 +204,26 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def find_identity_by_uid
     # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
-    Identity.find_by(identifier: auth_uid, provider: provider) if auth_uid.present?
+    return nil if auth_uid.nil?
+
+    identity = Identity.find_by(identifier: auth_uid, provider: provider)
+
+    return identity unless identity.nil? && provider.class.sym == :office365 && auth_email.present?
+
+    # This code supports a migration of the office365 oauth api from v1 to v2
+    # Try to find the user by the legacy identifier
+    identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
+
+    # Try to find user by preferred username
+    identity = Identity.find_by(identifier: auth_hash.extra.raw_info.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.raw_info&.preferred_username.present?
+
+    # Try to find user by name
+    identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
+    return nil if identity.nil?
+
+    # Update the identifier to the new uid
+    identity.update(identifier: auth_uid, identifier_based_on_email: false)
+    identity
   end
 
   def find_identity_by_user(user)
@@ -297,7 +365,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Shorthands.
 
   def target_path(user)
-    auth_target || after_sign_in_path_for(user)
+    auth_target || session.delete(:new_user_auth_target) || after_sign_in_path_for(user)
   end
 
   def auth_hash
@@ -319,7 +387,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def auth_target
-    return nil if auth_hash.extra[:target].blank?
+    return nil if auth_hash.blank? || auth_hash.extra[:target].blank?
 
     "#{auth_hash.extra[:target]}?#{auth_redirect_params.to_param}"
   end
@@ -365,10 +433,5 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     ApplicationMailer.with(authinfo: auth_hash, errors: errors.inspect)
                      .institution_creation_failed
                      .deliver_later
-  end
-
-  def provider_missing!
-    flash_failure I18n.t('auth.sign_in.errors.missing-provider')
-    redirect_to sign_in_path
   end
 end

@@ -46,6 +46,7 @@
 
       .sign-in-method-img {
         margin-right: 12px;
+        min-width: 70px;
 
         img {
           width: 70px;
@@ -57,6 +58,11 @@
 
       .sign-in-method-title h3 {
         line-height: 1;
+      }
+
+      .sign-in-method-title {
+        white-space: nowrap;
+        overflow-x: hidden;
       }
     }
   }

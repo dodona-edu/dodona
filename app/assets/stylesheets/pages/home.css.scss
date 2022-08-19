@@ -129,7 +129,7 @@
 }
 
 .home-summary-card.getting-started {
-  background-color: $tertiary;
+  background-color: $primary-30;
 }
 
 .home-summary-card.getting-started .card-media {
@@ -137,7 +137,7 @@
 }
 
 .home-summary-card.getting-started .card-title {
-  color: $on-tertiary;
+  color: $primary-100;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -155,7 +155,8 @@
 }
 
 .home-summary-card.getting-started .getting-started-action {
-  background: $content-bg;
+  background: $primary-100;
+  color: $primary-30;
 }
 
 .home-summary-card.privacy-disclaimer {

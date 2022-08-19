@@ -161,6 +161,14 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
+  scope :can_register, lambda { |user|
+    if user&.institutional?
+      where(registration: %i[open_for_all open_for_institutional])
+        .or(where(registration: :open_for_institution, institution_id: user.institution_id))
+    else
+      where(registration: :open_for_all)
+    end
+  }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5

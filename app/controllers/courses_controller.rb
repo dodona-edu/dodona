@@ -16,6 +16,10 @@ class CoursesController < ApplicationController
     scope.by_course_labels(value, controller.params[:id])
   end
 
+  has_scope :can_register, type: :boolean, only: :index do |controller, scope|
+    scope.can_register(controller.current_user)
+  end
+
   has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
     column, direction = value
     if %w[ASC DESC].include?(direction)
@@ -63,7 +67,7 @@ class CoursesController < ApplicationController
     end
 
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
-    @membership_status = current_user&.course_memberships.where(course_id: @courses.pluck(:id))&.map { |c| [c.course_id, c.status] }&.to_h || {}
+    @membership_status = current_user&.course_memberships&.where(course_id: @courses.pluck(:id))&.map { |c| [c.course_id, c.status] }&.to_h || {}
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @institution = Institution.find(params[:institution_id]) if params[:institution_id]
     @copy_courses = params[:copy_courses]

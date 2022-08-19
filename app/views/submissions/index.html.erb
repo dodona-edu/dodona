@@ -42,6 +42,9 @@
              actions << {icon: 'file-eye', text: t('.watch_submissions'), search: {refresh: true}, click: 'window.dodona.toggleIndexReload()'}
           %>
         <% end %>
+        <div class="callout callout-info">
+          <%= t '.help_html' %>
+        </div>
         <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user} %>

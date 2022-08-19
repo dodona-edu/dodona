@@ -9,6 +9,9 @@
         <h2 class="card-title-text"><%= @course.name + " - " + t("courses.show.users") %></h2>
       </div>
       <div class="card-supporting-text card-border">
+        <div class="callout callout-info">
+          <%= t '.help_html' %>
+        </div>
         <div class="card-tab">
           <ul id="user-tabs" class="nav nav-tabs" data-baseurl="<%= course_members_path(@course) %>" role="tablist">
             <li role="presentation" class="active"><a href="#" data-status="enrolled"><%= t 'courses.show.subscribed' %></a></li>

@@ -30,3 +30,4 @@ en:
       finally_upload: "If you are satisfied with your changes, select the modified file below."
       download: "Download list"
       could_not_find_labels_column: "We couldn't find the labels column of the user with ID %{user_id}. Make sure the uploaded file is in the correct format."
+      help_html: "Learn more about managing users for your course with the guide in <a href='https://docs.dodona.be/en/guides/teachers/user-management/#gebruikersbeheer'>our documentation</a>."

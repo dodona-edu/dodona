@@ -163,7 +163,7 @@ class Course < ApplicationRecord
   scope :by_institution, ->(institution) { where(institution: institution) }
   scope :can_register, lambda { |user|
     if user&.institutional?
-      where(registration: %i[open_for_all open_for_institutional])
+      where(registration: %i[open_for_all open_for_institutional_users])
         .or(where(registration: :open_for_institution, institution_id: user.institution_id))
     else
       where(registration: :open_for_all)

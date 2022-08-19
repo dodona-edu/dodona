@@ -277,7 +277,7 @@ class CourseTest < ActiveSupport::TestCase
   test 'can_register should only return course if the user can register for it' do
     i = create :institution
     Course.registrations.each do |r|
-      c = create :course, registration: r[1], institution: i
+      create :course, registration: r[1], institution: i
     end
     [create(:institution), i, nil].each do |institution|
       u = create :user, institution: institution

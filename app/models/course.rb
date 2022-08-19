@@ -168,7 +168,7 @@ class Course < ApplicationRecord
         .or(where(id: user.subscribed_courses.pluck(:id)))
     else
       where(registration: :open_for_all)
-        .or(where(id: user&.subscribed_courses.pluck(:id)))
+        .or(where(id: user&.subscribed_courses&.pluck(:id)))
     end
   }
   default_scope { order(year: :desc, name: :asc) }

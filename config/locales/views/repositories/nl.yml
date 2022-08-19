@@ -13,7 +13,7 @@ nl:
       admin: "Je bent beheerder van deze repository"
     new:
       title: Een repository met oefeningen toevoegen
-      help_html: "Een handleiding me meer informatie kan in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>onze documentatie</a> gevonden worden."
+      help_html: "Een handleiding met meer informatie over het beheren van een repository kan in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>onze documentatie</a> gevonden worden."
     show:
       repository: Repository
       setup_html: "We zien dat je repository leeg is, leer in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>onze documentatie</a> hoe je oefeningen aan je repository kunt toevoegen."

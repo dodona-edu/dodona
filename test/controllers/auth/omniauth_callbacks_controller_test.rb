@@ -481,6 +481,53 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     sign_out user
   end
 
+  test 'Office 365 legacy sign in works with prefered username' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'A.B@test.com'
+                           },
+                           extra: {
+                             preferred_username: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Office 365 legacy sign in works with name' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution, first_name: 'Foo', last_name: 'Bar'
+    identity = create :identity, provider: provider, user: user, identifier: 'X.Y', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'A.B@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
   test 'lti redirects to main provider' do
     main_provider = create :provider
     provider = create :lti_provider, institution: main_provider.institution, mode: :link

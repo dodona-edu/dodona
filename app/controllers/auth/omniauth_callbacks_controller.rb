@@ -213,6 +213,12 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # This code supports a migration of the office365 oauth api from v1 to v2
     # Try to find the user by the legacy identifier
     identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
+
+    # Try to find user by preferred username
+    identity = Identity.find_by(identifier: auth_hash.extra.raw_info.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.raw_info&.preferred_username.present?
+
+    # Try to find user by name
+    identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
     return nil if identity.nil?
 
     # Update the identifier to the new uid

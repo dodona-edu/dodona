@@ -98,6 +98,5 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     @feedback.reload
 
     assert @feedback.scores.empty?
-
   end
 end

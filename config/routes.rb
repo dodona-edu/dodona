@@ -231,7 +231,7 @@ Rails.application.routes.draw do
       end
       resources :scores, only: %i[show create update destroy]
     end
-    resources :feedbacks, only: %i[show edit update]
+    resources :feedbacks, only: %i[show edit update destroy]
     resources :evaluation_exercise, only: %i[update]
 
     resources :rights_requests, only: %i[index new create] do

@@ -31,6 +31,7 @@ export default class FeedbackActions {
     private readonly allScoresMaxButton: HTMLButtonElement | null;
     private readonly scoreSumElement: HTMLInputElement | null;
     private readonly completedIcon: HTMLButtonElement | null;
+    private readonly deleteAllButton: HTMLButtonElement | null;
 
     private scoreForms: ScoreForm[];
     // ID's of the score forms that are updating.
@@ -50,7 +51,8 @@ export default class FeedbackActions {
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 
         this.scoreSumElement = document.getElementById("score-sum") as HTMLInputElement;
-        this.completedIcon = document.getElementById("completed-button") as HTMLButtonElement;
+        this.completedIcon = document.getElementById("completed-checkmark") as HTMLButtonElement;
+        this.deleteAllButton = document.getElementById("delete-all-button") as HTMLButtonElement;
 
         // Score forms
         this.scoreForms = [];
@@ -122,6 +124,28 @@ export default class FeedbackActions {
         });
     }
 
+    delete(): Promise<void> {
+        this.disableInputs();
+        return fetch(this.options.currentURL, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "text/javascript"
+            }
+        }).then(async response => {
+            if (response.ok) {
+                const res = await response.text();
+                eval(res);
+            } else if ([403, 404, 422].includes(response.status)) {
+                new dodona.Toast(I18n.t("js.score.conflict"));
+                await this.refresh();
+            } else {
+                new dodona.Toast(I18n.t("js.score.unknown"));
+                await this.refresh();
+            }
+        });
+    }
+
     async refresh(warning = ""): Promise<void> {
         const url = updateURLParameter(this.options.currentURL, "warning", warning);
         const response = await fetch(url, {
@@ -158,16 +182,11 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.value = newTotal;
+            this.deleteAllButton.disabled = this.scoreSumElement.value === "-"; // '-' is the placeholder if no score items are filled in yet
         }
 
         if (this.completedIcon) {
-            if (completed) {
-                this.completedIcon.classList.add("mdi-check");
-                this.completedIcon.classList.remove("mdi-circle-slice-3");
-            } else {
-                this.completedIcon.classList.add("mdi-circle-slice-3");
-                this.completedIcon.classList.remove("mdi-check");
-            }
+            this.completedIcon.hidden = !completed;
         }
     }
 
@@ -205,7 +224,6 @@ export default class FeedbackActions {
                 return;
             }
             this.disableInputs();
-            console.log(this.updatingForms);
             // Wait for score updates before going away.
             if (this.updatingForms.size > 0) {
                 this.nextAfterScoreUpdate = true;
@@ -257,6 +275,15 @@ export default class FeedbackActions {
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
+        });
+        this.deleteAllButton?.addEventListener("click", async e => {
+            e.preventDefault();
+            this.disableInputs();
+            this.scoreForms.forEach(f => {
+                f.markBusy();
+                f.data = "";
+            });
+            await this.delete();
         });
     }
 }

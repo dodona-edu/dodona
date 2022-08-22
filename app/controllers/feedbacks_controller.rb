@@ -1,7 +1,7 @@
 class FeedbacksController < ApplicationController
   include SeriesHelper
 
-  before_action :set_feedback, only: %i[show edit update destroy] # TODO: use destroy or update with extra param to reset all scores
+  before_action :set_feedback, only: %i[show edit update]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_filter(value, skip_user: true, skip_exercise: true)
@@ -64,38 +64,42 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    attrs = permitted_attributes(@feedback)
-    attrs['scores_attributes'].each { |s| s['last_updated_by_id'] = current_user.id } if attrs['scores_attributes'].present?
+    clear_scores = params[:clear_scores]
 
-    updated = @feedback.update(attrs)
-    # We might have updated scores, so recalculate the map.
-    @score_map = @feedback.scores.index_by(&:score_item_id)
+    # clear_scores is true if we want to delete all the currently set scores
+    if clear_scores
+      # destroy all the scores
+      @feedback.scores.each(&:destroy)
 
-    respond_to do |format|
-      if updated
+      # update the data for the view to render
+      @feedback = Feedback.find(params[:id])
+      @score_map = @feedback.scores.index_by(&:score_item_id)
+
+      # render the view
+      respond_to do |format|
         format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
-        format.json { render :show, status: :ok, location: @feedback }
+        format.json { render :show, status: :no_content, location: @feedback }
         format.js { render :show }
-      else
-        format.json { render json: @feedback.errors, status: :unprocessable_entity }
-        format.js { render :show, status: :unprocessable_entity }
       end
-    end
-  end
 
-  def destroy
-    # destroy all the scores
-    @feedback.scores.each(&:destroy)
+    else # we want to change the current scores to the min or max value
+      attrs = permitted_attributes(@feedback)
+      attrs['scores_attributes'].each { |s| s['last_updated_by_id'] = current_user.id } if attrs['scores_attributes'].present?
 
-    # update the data for the view to render
-    @feedback = Feedback.find(params[:id])
-    @score_map = @feedback.scores.index_by(&:score_item_id)
+      updated = @feedback.update(attrs)
+      # We might have updated scores, so recalculate the map.
+      @score_map = @feedback.scores.index_by(&:score_item_id)
 
-    # render the view
-    respond_to do |format|
-      format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
-      format.json { render :show, status: :no_content, location: @feedback }
-      format.js { render :show }
+      respond_to do |format|
+        if updated
+          format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
+          format.json { render :show, status: :ok, location: @feedback }
+          format.js { render :show }
+        else
+          format.json { render json: @feedback.errors, status: :unprocessable_entity }
+          format.js { render :show, status: :unprocessable_entity }
+        end
+      end
     end
   end
 

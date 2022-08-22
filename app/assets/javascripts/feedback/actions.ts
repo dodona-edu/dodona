@@ -102,11 +102,11 @@ export default class FeedbackActions {
         this.scoreForms.forEach(s => s.disableInputs());
     }
 
-    update(data: Record<string, unknown>): Promise<void> {
+    update(data: Record<string, unknown>, clearScores: boolean): Promise<void> {
         this.disableInputs();
         return fetch(this.options.currentURL, {
             method: "PATCH",
-            body: JSON.stringify({ feedback: data }),
+            body: JSON.stringify({ feedback: data, clear_scores: clearScores }),
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "text/javascript"
@@ -114,28 +114,6 @@ export default class FeedbackActions {
         }).then(async response => {
             if (response.ok) {
                 eval(await response.text());
-            } else if ([403, 404, 422].includes(response.status)) {
-                new dodona.Toast(I18n.t("js.score.conflict"));
-                await this.refresh();
-            } else {
-                new dodona.Toast(I18n.t("js.score.unknown"));
-                await this.refresh();
-            }
-        });
-    }
-
-    delete(): Promise<void> {
-        this.disableInputs();
-        return fetch(this.options.currentURL, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "text/javascript"
-            }
-        }).then(async response => {
-            if (response.ok) {
-                const res = await response.text();
-                eval(res);
             } else if ([403, 404, 422].includes(response.status)) {
                 new dodona.Toast(I18n.t("js.score.conflict"));
                 await this.refresh();
@@ -208,8 +186,8 @@ export default class FeedbackActions {
         this.nextFeedbackAction = async () => {
             if (autoMark && hasAutoMark) {
                 await this.update({
-                    completed: true
-                });
+                    completed: true,
+                }, false);
             }
             if (skipCompleted) {
                 window.location.href = this.options.nextUnseenURL;
@@ -261,7 +239,7 @@ export default class FeedbackActions {
             await this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
-            });
+            }, false);
         });
         this.allScoresMaxButton?.addEventListener("click", async e => {
             e.preventDefault();
@@ -274,7 +252,7 @@ export default class FeedbackActions {
             await this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
-            });
+            }, false);
         });
         this.deleteAllButton?.addEventListener("click", async e => {
             e.preventDefault();
@@ -283,7 +261,7 @@ export default class FeedbackActions {
                 f.markBusy();
                 f.data = "";
             });
-            await this.delete();
+            await this.update({}, true);
         });
     }
 }

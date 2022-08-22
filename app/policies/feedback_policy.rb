@@ -26,10 +26,6 @@ class FeedbackPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def destroy?
-    course_admin?
-  end
-
   def permitted_attributes
     attrs = %i[submission_id completed]
     attrs << { scores_attributes: %i[score id score_item_id] }

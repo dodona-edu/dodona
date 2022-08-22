@@ -256,12 +256,14 @@ export default class FeedbackActions {
         });
         this.deleteAllButton?.addEventListener("click", async e => {
             e.preventDefault();
-            this.disableInputs();
-            this.scoreForms.forEach(f => {
-                f.markBusy();
-                f.data = "";
-            });
-            await this.update({}, true);
+            if (window.confirm(I18n.t("js.score.confirm"))) {
+                this.disableInputs();
+                this.scoreForms.forEach(f => {
+                    f.markBusy();
+                    f.data = "";
+                });
+                await this.update({}, true);
+            }
         });
     }
 }

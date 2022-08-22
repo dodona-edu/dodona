@@ -6,7 +6,7 @@
     <div class="card-title col-6">
       <h1 class="card-title-text getting-started-title"><%= t ".title" %></h1>
       <p class="getting-started-text"><%= t ".text" %></p>
-      <%= link_to t(".action"), courses_path, class: "btn btn-text getting-started-action" %>
+      <%= link_to t(".action"), courses_path(:can_register => :true), class: "btn btn-text getting-started-action" %>
     </div>
   </div>
 </div>

@@ -259,4 +259,31 @@ class CourseTest < ActiveSupport::TestCase
     course.usable_repositories << ex.repository
     assert course.all_activities_accessible?
   end
+
+  test 'can_register scope should always contain own courses' do
+    i = create :institution
+    [create(:institution), i, nil].each do |institution|
+      u = create :user, institution: institution
+      CourseMembership.statuses.each do |s|
+        Course.registrations.each do |r|
+          c = create :course, registration: r[1], institution: i
+          CourseMembership.create user: u, course: c, status: s[1]
+        end
+      end
+      assert_equal u.subscribed_courses.count, u.subscribed_courses.can_register(u).count
+    end
+  end
+
+  test 'can_register should only return course if the user can register for it' do
+    i = create :institution
+    Course.registrations.each do |r|
+      create :course, registration: r[1], institution: i
+    end
+    [create(:institution), i, nil].each do |institution|
+      u = create :user, institution: institution
+      Course.all.each do |c|
+        assert_equal c.open_for_user?(u), Course.can_register(u).exists?(c.id)
+      end
+    end
+  end
 end

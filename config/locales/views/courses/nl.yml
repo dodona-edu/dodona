@@ -61,6 +61,7 @@ nl:
       featured_courses: Uitgelichte cursussen
       all_courses: "Alle cursussen"
       my_courses: "Mijn cursussen"
+      only_show_can_register: "Toon enkel cursusen waarvoor je kan registreren"
     new:
       title: Cursus aanmaken
       empty: "Lege cursus"

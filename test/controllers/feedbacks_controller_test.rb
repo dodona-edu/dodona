@@ -80,4 +80,24 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     assert_equal s.id, @feedback.submission_id
     assert_equal 0, @feedback.scores.count
   end
+
+  test 'using the clear_grades parameter deletes the existing scores' do
+    create :score, feedback: @feedback, score_item: @score_item1
+    @feedback.reload
+    assert_equal 1, @feedback.scores.count
+
+    s = create :submission, exercise: @feedback.exercise, user: @feedback.user, course: @feedback.evaluation.series.course
+
+    patch evaluation_feedback_path(@evaluation, @feedback), params: {
+      feedback: {
+        submission_id: s.id
+      },
+      clear_scores: true
+    }
+
+    @feedback.reload
+
+    assert @feedback.scores.empty?
+
+  end
 end

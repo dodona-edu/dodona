@@ -15,71 +15,77 @@ function initCourseMembers() {
     }
 
     function initUserTabs() {
-        const $userTabs = $("#user-tabs");
-        if ($userTabs.length > 0) {
-            const baseUrl = $userTabs.data("baseurl");
+        const userTabs = document.getElementById("user-tabs");
+        if (userTabs !== null) {
+            const baseUrl = userTabs.getAttribute("data-baseurl");
 
             // Select tab and load users
-            const selectTab = $tab => {
-                const $kebab = $("#kebab-menu");
-                const status = $tab.attr("data-status");
-                const $kebabItems = $kebab.find("li a.action");
+            const selectTab = tab => {
+                const kebab = document.getElementById("kebab-menu");
+                const status = tab.getAttribute("data-status");
+                const kebabItems = kebab.querySelectorAll("li a.action");
                 let anyShown = false;
-                for (const item of $kebabItems) {
-                    const $item = $(item);
-                    if ($item.data("type") && $item.data("type") !== status) {
-                        $item.hide();
+                for (const item of kebabItems) {
+                    const dataType = item.getAttribute("data-type");
+                    if (dataType && dataType !== status) {
+                        hideElement(item);
                     } else {
-                        $item.show();
+                        showElement(item);
                         anyShown = true;
                     }
                 }
                 if (anyShown) {
-                    $kebab.show();
+                    showElement(kebab);
                 } else {
-                    $kebab.hide();
+                    hideElement(kebab);
                 }
-                if ($tab.parent().hasClass("active")) {
+                if (tab.parentNode.classList.contains("active")) {
                     // The current tab is already loaded, nothing to do
                     return;
                 }
+
                 loadUsers(baseUrl, status);
-                $("#user-tabs li.active").removeClass("active");
-                $tab.parent().addClass("active");
+                document.querySelector("#user-tabs li.active").classList.remove("active");
+                tab.parentNode.classList.add("active");
             };
 
             // Switch to clicked tab
-            $("#user-tabs li a").on("click", function () {
-                selectTab($(this));
-            });
+            document.querySelectorAll("#user-tabs li a")
+                .forEach(el => {
+                    el.addEventListener("click", function () {
+                        selectTab(this);
+                    });
+                });
 
             // Determine which tab to show first
             const status = searchQuery.queryParams.params.get("status");
-            let $tab = $("a[data-status='" + status + "']");
-            if ($tab.length === 0) {
-                // Default to enrolled (subscribed)
-                $tab = $("a[data-status='enrolled']");
+            let tab = document.querySelector("a[data-status='" + status + "']");
+            if (tab === null) {
+                tab = document.querySelector("a[data-status='enrolled']");
             }
-            selectTab($tab);
+            selectTab(tab);
         }
     }
 
     function initLabelsEditModal() {
-        $("#labelsUploadButton").on("click", () => {
-            const $modal = $("#labelsUploadModal");
-            const $input = $("#newCsvFileInput")[0];
+        document.getElementById("labelsUploadButton").addEventListener("click", () => {
+            const modal = document.getElementById("labelsUploadModal");
+            const input = document.getElementById("newCsvFileInput");
             const formData = new FormData();
-            formData.append("file", $input.files[0]);
-            $.post({
-                url: `/courses/${$modal.data("course_id")}/members/upload_labels_csv`,
-                contentType: false,
-                processData: false,
-                data: formData,
-                success: function () {
-                    loadUsers();
-                },
-            });
+            formData.append("file", input.files[0]);
+            fetch(`/courses/${modal.getAttribute("data-course_id")}/members/upload_labels_csv`, {
+                method: "POST",
+                body: formData,
+            }).then(loadUsers);
         });
+    }
+
+    function hideElement(element) {
+        element.style.display = "none";
+    }
+
+    function showElement(element) {
+        element.style.display = "block";
     }
 
     init();
@@ -90,8 +96,8 @@ const SKELETON_TABLE_SELECTOR = ".activity-table-skeleton";
 
 class Series {
     static findAll(cardsSelector = ".series.card") {
-        const $cards = $(cardsSelector);
-        return $.map($cards, card => new Series(card));
+        const cards = document.querySelectorAll(cardsSelector);
+        return Array.from(cards, card => new Series(card));
     }
 
     constructor(card) {
@@ -101,14 +107,14 @@ class Series {
     }
 
     reselect(cardSelector) {
-        this.$card = $(cardSelector);
-        this.url = this.$card.data("series-url");
-        this.$table_wrapper = this.$card.find(TABLE_WRAPPER_SELECTOR);
-        this.$skeleton = this.$table_wrapper.find(SKELETON_TABLE_SELECTOR);
-        this.loaded = this.$skeleton.length === 0;
+        this.card = cardSelector;
+        this.url = this.card.getAttribute("data-series-url");
+        this.table_wrapper = this.card.querySelector(TABLE_WRAPPER_SELECTOR);
+        this.skeleton = this.table_wrapper.querySelector(SKELETON_TABLE_SELECTOR);
+        this.loaded = this.skeleton === null;
         this.loading = false;
-        this.top = this.$card.offset().top;
-        this.bottom = this.top + this.$card.height();
+        this.top = this.card.getBoundingClientRect().top + window.pageYOffset;
+        this.bottom = this.top + this.card.getBoundingClientRect().height;
     }
 
     needsLoading() {
@@ -117,9 +123,15 @@ class Series {
 
     load(callback = () => { }) {
         this.loading = true;
-        $.get(this.url).done(() => {
-            this.loading = false;
-            this.reselect(`#series-card-${this.id}`);
+        console.log(this.url);
+        fetch(this.url, {
+            method: "GET"
+        }).then(async response => {
+            if (response.ok) {
+                eval(await response.text());
+                this.loading = false;
+                this.reselect(document.getElementById(`series-card-${this.id}`));
+            }
         });
         callback();
     }

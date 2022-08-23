@@ -5,7 +5,7 @@ function initCourseMemberLabelsEdit(labels) {
         identify: d => d.id,
         datumTokenizer: d => {
             const result = Bloodhound.tokenizers.whitespace(d.name);
-            $.each(result, (i, val) => {
+            result.forEach((val, i) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
                 }

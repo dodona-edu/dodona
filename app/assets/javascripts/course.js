@@ -123,7 +123,6 @@ class Series {
 
     load(callback = () => { }) {
         this.loading = true;
-        console.log(this.url);
         fetch(this.url, {
             method: "GET"
         }).then(async response => {

@@ -160,7 +160,7 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.value = newTotal;
-            this.deleteAllButton.disabled = this.scoreSumElement.value === "-"; // '-' is the placeholder if no score items are filled in yet
+            this.deleteAllButton.disabled = this.scoreForms.every(form => form.data === "");
         }
 
         if (this.completedIcon) {

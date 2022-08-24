@@ -71,7 +71,7 @@ class ProviderTest < ActiveSupport::TestCase
 
   test 'gsuite readable_name gives Google Workspace as name when account is NOT private' do
     provider = build :gsuite_provider, institution: @institution
-    assert_equal 'Google Workspace', provider.readable_name
+    assert_equal Provider::GSuite.readable_name, provider.readable_name
   end
 
   test 'smartschool extracts name of institution' do

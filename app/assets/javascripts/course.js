@@ -275,7 +275,7 @@ function initCourseNew() {
             formPanel.querySelector(".step-circle").innerHTML = "3";
             this.closest(".panel")
                 .querySelector(".answer")
-                .innerHTML = this.getAttribute("data-answer");
+                .textContent = this.getAttribute("data-answer");
         });
     }
 
@@ -286,7 +286,7 @@ function initCourseNew() {
                     .checked = true;
                 this.closest(".panel")
                     .querySelector(".answer")
-                    .innerText = this.getAttribute("data-answer");
+                    .textContent = this.getAttribute("data-answer");
                 fetch(`/courses/new.js?copy_options[base_id]=${this.getAttribute("data-course_id")}`)
                     .then(req => req.text())
                     .then(resp => eval(resp));

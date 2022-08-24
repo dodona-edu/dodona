@@ -199,7 +199,6 @@ function initCourseForm() {
             } else {
                 visibleForInstitution.removeAttribute("disabled");
                 registrationForInstitution.removeAttribute("disabled");
-                console.log("hereeee");
                 document.querySelectorAll(".fill-institution")
                     .forEach(el => {
                         el.innerHTML = institutionSelect.querySelector("option:checked").innerHTML;
@@ -261,7 +260,7 @@ function initCourseNew() {
             formPanel.querySelector(".step-circle").innerHTML = "2";
             this.closest(".panel")
                 .querySelector(".answer")
-                .innerHTML = this.getAttribute("data-answer");
+                .textContent = this.getAttribute("data-answer");
             fetch("/courses/new.js")
                 .then(req => req.text())
                 .then(resp => eval(resp));

@@ -16,7 +16,7 @@ function initCourseMemberLabelsEdit(labels) {
 
     const $field = $("#course_membership_course_labels");
     $field.on("tokenfield:createdtoken", e => {
-        $(e.relatedTarget).addClass("accent-orange");
+        e.relatedTarget.classList.add("accent-orange");
     });
     $field.tokenfield({
         beautify: false,

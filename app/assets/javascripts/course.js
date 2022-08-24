@@ -237,72 +237,72 @@ function initCourseNew() {
 
         // Bootstrap's automatic collapsing of other elements in the parent breaks
         // when doing manual shows and hides, so we have to do this.
-        $typePanel.find(".panel-collapse").on("show.bs.collapse", function () {
-            $choosePanel.find(".panel-collapse").collapse("hide");
-            $formPanel.find(".panel-collapse").collapse("hide");
+        typePanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", function () {
+            choosePanel.querySelector(".panel-collapse").classList.remove("show");
+            formPanel.querySelector(".panel-collapse").classList.remove("show");
         });
-        $choosePanel.find(".panel-collapse").on("show.bs.collapse", function () {
-            $typePanel.find(".panel-collapse").collapse("hide");
-            $formPanel.find(".panel-collapse").collapse("hide");
+        choosePanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", function () {
+            typePanel.querySelector(".panel-collapse").classList.remove("show");
+            formPanel.querySelector(".panel-collapse").classList.remove("show");
         });
-        $formPanel.find(".panel-collapse").on("show.bs.collapse", function () {
-            $typePanel.find(".panel-collapse").collapse("hide");
-            $choosePanel.find(".panel-collapse").collapse("hide");
+        formPanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", function () {
+            typePanel.querySelector(".panel-collapse").classList.remove("show");
+            choosePanel.querySelector(".panel-collapse").classList.remove("show");
         });
     }
 
-    const $typePanel = $("#type-panel");
-    const $choosePanel = $("#choose-panel");
-    const $formPanel = $("#form-panel");
+    const typePanel = document.getElementById("type-panel");
+    const choosePanel = document.getElementById("choose-panel");
+    const formPanel = document.getElementById("form-panel");
 
     function initPanelLogic() {
-        $("#new-course").on("click", function () {
-            $choosePanel.addClass("hidden");
-            $formPanel.find(".step-circle").html("2");
-            $(this)
-                .closest(".panel")
-                .find(".answer")
-                .html($(this).data("answer"));
+        document.getElementById("new-course").addEventListener("click", function () {
+            choosePanel.classList.add("hidden");
+            formPanel.querySelector(".step-circle").innerHTML = "2";
+            this.closest(".panel")
+                .querySelector(".answer")
+                .innerHTML = this.getAttribute("data-answer");
             fetch("/courses/new.js")
                 .then(req => req.text())
                 .then(resp => eval(resp));
         });
 
-        $("#copy-course").on("click", function () {
-            $choosePanel.removeClass("hidden");
-            $choosePanel.find(".panel-collapse").collapse("show");
-            $choosePanel.find("input[type=\"radio\"]").prop("checked", false);
-            $formPanel.addClass("hidden");
-            $formPanel.find(".step-circle").html("3");
-            $(this)
-                .closest(".panel")
-                .find(".answer")
-                .html($(this).data("answer"));
+        document.getElementById("copy-course").addEventListener("click", function () {
+            choosePanel.classList.remove("hidden");
+            choosePanel.querySelector(".panel-collapse").classList.add("show");
+            choosePanel.querySelector("input[type=\"radio\"]").checked = false;
+            formPanel.classList.add("hidden");
+            formPanel.querySelector(".step-circle").innerHTML = "3";
+            this.closest(".panel")
+                .querySelector(".answer")
+                .innerHTML = this.getAttribute("data-answer");
         });
     }
 
     function copyCoursesLoaded() {
-        $("[data-course_id]").on("click", function () {
-            $(this)
-                .find("input[type=\"radio\"]")
-                .prop("checked", true);
-            $(this)
-                .closest(".panel")
-                .find(".answer")
-                .text($(this).data("answer"));
-            fetch(`/courses/new.js?copy_options[base_id]=${$(this).data("course_id")}`)
-                .then(req => req.text())
-                .then(resp => eval(resp));
+        document.querySelectorAll("[data-course_id]").forEach(el => {
+            el.addEventListener("click", function () {
+                this.querySelector("input[type=\"radio\"]")
+                    .checked = true;
+                this.closest(".panel")
+                    .querySelector(".answer")
+                    .innerText = this.getAttribute("data-answer");
+                fetch(`/courses/new.js?copy_options[base_id]=${this.getAttribute("data-course_id")}`)
+                    .then(req => req.text())
+                    .then(resp => eval(resp));
+            });
         });
 
-        $(".copy-course-row .nested-link").on("click", function (e) {
-            e.stopPropagation();
+        document.querySelectorAll(".copy-course-row .nested-link").forEach(el => {
+            el.addEventListener("click", function (e) {
+                e.stopPropagation();
+            });
         });
     }
 
     function courseFormLoaded() {
-        $formPanel.removeClass("hidden");
-        $formPanel.find(".panel-collapse").collapse("show");
+        formPanel.classList.remove("hidden");
+        formPanel.querySelector(".panel-collapse").classList.add("show");
         window.scrollTo(0, 0);
     }
 

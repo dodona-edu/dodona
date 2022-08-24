@@ -147,13 +147,13 @@ function initCourseShow() {
                 offset: 90,
             }).activate();
         }
-        $(window).on("scroll", scroll);
+        window.addEventListener("scroll", scroll);
         scroll(); // Load series visible on pageload
     }
 
     function scroll() {
-        const screenTop = $(window).scrollTop();
-        const screenBottom = screenTop + $(window).height();
+        const screenTop = document.scrollingElement.scrollTop;
+        const screenBottom = screenTop + window.innerHeight;
         const firstVisible = series.findIndex(s => screenTop < s.bottom);
         const firstToLoad = firstVisible <= 0 ? 0 : firstVisible - 1;
         const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
@@ -174,34 +174,41 @@ function initCourseForm() {
     }
 
     function initInstitutionRelatedSelects() {
-        const institutionSelect = $("#course_institution_id");
-        const visibleForAll = $("#course_visibility_visible_for_all");
-        const visibleForInstitution = $("#course_visibility_visible_for_institution");
-        const registrationForAll = $("#course_registration_open_for_all");
-        const registrationForInstitution = $("#course_registration_open_for_institution");
+        const institutionSelect = document.getElementById("course_institution_id");
+        const visibleForAll = document.getElementById("course_visibility_visible_for_all");
+        const visibleForInstitution = document.getElementById("course_visibility_visible_for_institution");
+        const registrationForAll = document.getElementById("course_registration_open_for_all");
+        const registrationForInstitution = document.getElementById("course_registration_open_for_institution");
 
         function changeListener() {
-            if (!institutionSelect.val()) {
-                if (visibleForInstitution.is(":checked")) {
-                    visibleForAll.prop("checked", true);
+            if (!institutionSelect.value) {
+                if (visibleForInstitution.checked) {
+                    visibleForAll.checked = true;
                 }
 
-                if (registrationForInstitution.is(":checked")) {
-                    registrationForAll.prop("checked", true);
+                if (registrationForInstitution.checked) {
+                    registrationForAll.checked = true;
                 }
 
-                visibleForInstitution.attr("disabled", true);
-                registrationForInstitution.attr("disabled", true);
-                $(".fill-institution").html(I18n.t("js.configured-institution"));
+                visibleForInstitution.disabled = true;
+                registrationForInstitution.disabled = true;
+                document.querySelectorAll(".fill-institution")
+                    .forEach(el => {
+                        el.innerHTML = I18n.t("js.configured-institution");
+                    });
             } else {
-                visibleForInstitution.removeAttr("disabled");
-                registrationForInstitution.removeAttr("disabled");
-                $(".fill-institution").html(institutionSelect.find("option:selected").html());
+                visibleForInstitution.removeAttribute("disabled");
+                registrationForInstitution.removeAttribute("disabled");
+                console.log("hereeee");
+                document.querySelectorAll(".fill-institution")
+                    .forEach(el => {
+                        el.innerHTML = institutionSelect.querySelector("option:checked").innerHTML;
+                    });
             }
         }
 
         setTimeout(changeListener);
-        institutionSelect.on("change", changeListener);
+        institutionSelect.addEventListener("change", changeListener);
     }
 
     init();

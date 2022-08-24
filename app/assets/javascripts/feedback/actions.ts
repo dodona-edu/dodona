@@ -102,11 +102,11 @@ export default class FeedbackActions {
         this.scoreForms.forEach(s => s.disableInputs());
     }
 
-    update(data: Record<string, unknown>, clearScores: boolean): Promise<void> {
+    update(data: Record<string, unknown>): Promise<void> {
         this.disableInputs();
         return fetch(this.options.currentURL, {
             method: "PATCH",
-            body: JSON.stringify({ feedback: data, clear_scores: clearScores }),
+            body: JSON.stringify({ feedback: data }),
             headers: {
                 "Content-Type": "application/json",
                 "Accept": "text/javascript"
@@ -187,7 +187,7 @@ export default class FeedbackActions {
             if (autoMark && hasAutoMark) {
                 await this.update({
                     completed: true,
-                }, false);
+                });
             }
             if (skipCompleted) {
                 window.location.href = this.options.nextUnseenURL;
@@ -239,7 +239,7 @@ export default class FeedbackActions {
             await this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
-            }, false);
+            });
         });
         this.allScoresMaxButton?.addEventListener("click", async e => {
             e.preventDefault();
@@ -252,7 +252,7 @@ export default class FeedbackActions {
             await this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
-            }, false);
+            });
         });
         this.deleteAllButton?.addEventListener("click", async e => {
             e.preventDefault();
@@ -262,7 +262,7 @@ export default class FeedbackActions {
                     f.markBusy();
                     f.data = "";
                 });
-                await this.update({}, true);
+                await this.update(null);
             }
         });
     }

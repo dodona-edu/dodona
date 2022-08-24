@@ -64,10 +64,8 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    clear_scores = params[:clear_scores]
-
-    # clear_scores is true if we want to delete all the currently set scores
-    if clear_scores
+    # the feedback value from params is nil if we want to delete all the currently set scores
+    if params[:feedback].nil?
       # destroy all the scores
       @feedback.scores.each(&:destroy)
 
@@ -78,7 +76,7 @@ class FeedbacksController < ApplicationController
       # render the view
       respond_to do |format|
         format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
-        format.json { render :show, status: :no_content, location: @feedback }
+        format.json { render :show, status: :ok, location: @feedback }
         format.js { render :show }
       end
 

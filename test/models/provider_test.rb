@@ -69,6 +69,11 @@ class ProviderTest < ActiveSupport::TestCase
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))
   end
 
+  test 'gsuite readable_name gives Google Workspace as name when account is NOT private' do
+    provider = build :gsuite_provider, institution: @institution
+    assert_equal Provider::GSuite.readable_name, provider.readable_name
+  end
+
   test 'smartschool extracts name of institution' do
     provider = Provider::Smartschool
     # This hash is extracted from the one we receive when logging in.

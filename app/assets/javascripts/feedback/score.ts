@@ -120,7 +120,7 @@ export default class ScoreForm {
     }
 
     public getDataForNested(setNullScore=false): Record<string, unknown> {
-        const newScore = setNullScore? null: this.input.value;
+        const newScore = setNullScore ? null : this.input.value;
 
         // If not existing, include ID.
         if (this.existing) {

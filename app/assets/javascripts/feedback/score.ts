@@ -119,16 +119,18 @@ export default class ScoreForm {
         return this.input.value;
     }
 
-    public getDataForNested(): Record<string, unknown> {
+    public getDataForNested(setNullScore=false): Record<string, unknown> {
+        const newScore = setNullScore? null: this.input.value;
+
         // If not existing, include ID.
         if (this.existing) {
             return {
                 id: this.id,
-                score: this.input.value,
+                score: newScore,
             };
         } else {
             return {
-                score: this.input.value,
+                score: newScore,
                 // eslint-disable-next-line camelcase
                 score_item_id: this.scoreItemId
             };

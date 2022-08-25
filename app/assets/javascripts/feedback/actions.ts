@@ -262,7 +262,11 @@ export default class FeedbackActions {
                     f.markBusy();
                     f.data = "";
                 });
-                await this.update(null);
+                const values = this.scoreForms.map(f => f.getDataForNested(true));
+                await this.update({
+                    // eslint-disable-next-line camelcase
+                    scores_attributes: values
+                });
             }
         });
     }

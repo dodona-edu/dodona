@@ -64,8 +64,8 @@ class FeedbacksController < ApplicationController
   end
 
   def update
-    # the feedback value from params is nil if we want to delete all the currently set scores
-    if params[:feedback].nil?
+    # the set scores are nil if we want to delete all the currently set scores
+    if params[:feedback][:scores_attributes]&.all? { |item| item[:score].nil? }
       # destroy all the scores
       @feedback.scores.each(&:destroy)
 

@@ -16,55 +16,56 @@ function initCourseMembers(): void {
 
     function initUserTabs(): void {
         const userTabs = document.getElementById("user-tabs");
-        if (userTabs !== null) {
-            const baseUrl = userTabs.getAttribute("data-baseurl");
-
-            // Select tab and load users
-            const selectTab = (tab): HTMLElement => {
-                const kebab = document.getElementById("kebab-menu");
-                const status = tab.getAttribute("data-status");
-                const kebabItems = kebab.querySelectorAll<HTMLElement>("li a.action");
-                let anyShown = false;
-                for (const item of Array.from(kebabItems)) {
-                    const dataType = item.getAttribute("data-type");
-                    if (dataType && dataType !== status) {
-                        hideElement(item);
-                    } else {
-                        showElement(item);
-                        anyShown = true;
-                    }
-                }
-                if (anyShown) {
-                    showElement(kebab);
-                } else {
-                    hideElement(kebab);
-                }
-                if (tab.parentNode.classList.contains("active")) {
-                    // The current tab is already loaded, nothing to do
-                    return;
-                }
-
-                loadUsers(baseUrl, status);
-                document.querySelector("#user-tabs li.active").classList.remove("active");
-                tab.parentNode.classList.add("active");
-            };
-
-            // Switch to clicked tab
-            document.querySelectorAll("#user-tabs li a")
-                .forEach(el => {
-                    el.addEventListener("click", function () {
-                        selectTab(this);
-                    });
-                });
-
-            // Determine which tab to show first
-            const status = searchQuery.queryParams.params.get("status");
-            let tab = document.querySelector("a[data-status='" + status + "']");
-            if (tab === null) {
-                tab = document.querySelector("a[data-status='enrolled']");
-            }
-            selectTab(tab);
+        if (userTabs === null) {
+            return;
         }
+
+        const baseUrl = userTabs.dataset.baseurl;
+        // Select tab and load users
+        const selectTab = (tab): HTMLElement => {
+            const kebab = document.getElementById("kebab-menu");
+            const status = tab.dataset.status;
+            const kebabItems = kebab.querySelectorAll<HTMLElement>("li a.action");
+            let anyShown = false;
+            for (const item of kebabItems) {
+                const dataType = item.dataset.type;
+                if (dataType && dataType !== status) {
+                    hideElement(item);
+                } else {
+                    showElement(item);
+                    anyShown = true;
+                }
+            }
+            if (anyShown) {
+                showElement(kebab);
+            } else {
+                hideElement(kebab);
+            }
+            if (tab.parentNode.classList.contains("active")) {
+                // The current tab is already loaded, nothing to do
+                return;
+            }
+
+            loadUsers(baseUrl, status);
+            document.querySelector("#user-tabs li.active").classList.remove("active");
+            tab.parentNode.classList.add("active");
+        };
+
+        // Switch to clicked tab
+        document.querySelectorAll("#user-tabs li a")
+            .forEach(el => {
+                el.addEventListener("click", function () {
+                    selectTab(el);
+                });
+            });
+
+        // Determine which tab to show first
+        const status = searchQuery.queryParams.params.get("status");
+        let tab = document.querySelector("a[data-status='" + status + "']");
+        if (tab === null) {
+            tab = document.querySelector("a[data-status='enrolled']");
+        }
+        selectTab(tab);
     }
 
     function initLabelsEditModal(): void {
@@ -73,7 +74,7 @@ function initCourseMembers(): void {
             const input = document.getElementById("newCsvFileInput") as HTMLInputElement;
             const formData = new FormData();
             formData.append("file", input.files[0]);
-            fetch(`/courses/${modal.getAttribute("data-course_id")}/members/upload_labels_csv`, {
+            fetch(`/courses/${modal.dataset.course_id}/members/upload_labels_csv`, {
                 method: "POST",
                 body: formData,
             }).then(loadUsers);
@@ -102,15 +103,15 @@ class Series {
     private skeleton: HTMLElement;
     private loaded: boolean;
     private loading: boolean;
-    private top: number;
-    private bottom: number;
+    private _top: number;
+    private _bottom: number;
 
-    getTop(): number {
-        return this.top;
+    get top(): number {
+        return this._top;
     }
 
-    getBottom(): number {
-        return this.bottom;
+    get bottom(): number {
+        return this._bottom;
     }
 
     static findAll(cardsSelector = ".series.card"): Array<Series> {
@@ -124,15 +125,15 @@ class Series {
         this.reselect(card);
     }
 
-    reselect(cardSelector): void {
-        this.card = cardSelector;
-        this.url = this.card.getAttribute("data-series-url");
+    reselect(card: HTMLElement): void {
+        this.card = card;
+        this.url = this.card.dataset.seriesUrl;
         this.table_wrapper = this.card.querySelector(TABLE_WRAPPER_SELECTOR);
         this.skeleton = this.table_wrapper.querySelector(SKELETON_TABLE_SELECTOR);
         this.loaded = this.skeleton === null;
         this.loading = false;
-        this.top = this.card.getBoundingClientRect().top + window.scrollY;
-        this.bottom = this.top + this.card.getBoundingClientRect().height;
+        this._top = this.card.getBoundingClientRect().top + window.scrollY;
+        this._bottom = this.top + this.card.getBoundingClientRect().height;
     }
 
     needsLoading(): boolean {
@@ -154,7 +155,7 @@ class Series {
 }
 
 function initCourseShow(): void {
-    const series = Series.findAll().sort((s1, s2) => s1.getTop() - s2.getBottom());
+    const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
 
     function init(): void {
         const nav = document.getElementById("scrollspy-nav");
@@ -171,9 +172,9 @@ function initCourseShow(): void {
     function scroll(): void {
         const screenTop = document.scrollingElement.scrollTop;
         const screenBottom = screenTop + window.innerHeight;
-        const firstVisible = series.findIndex(s => screenTop < s.getBottom());
+        const firstVisible = series.findIndex(s => screenTop < s.bottom);
         const firstToLoad = firstVisible <= 0 ? 0 : firstVisible - 1;
-        const lastVisibleIdx = series.findIndex(s => screenBottom < s.getTop());
+        const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
         const lastToLoad = lastVisibleIdx == -1 ? series.length : lastVisibleIdx;
 
         series
@@ -253,15 +254,15 @@ function initCourseNew(): void {
 
         // Bootstrap's automatic collapsing of other elements in the parent breaks
         // when doing manual shows and hides, so we have to do this.
-        typeCollapseElement.addEventListener("show.bs.collapse", function () {
+        typeCollapseElement.addEventListener("show.bs.collapse", () => {
             chooseCollapse.hide();
             formCollapse.hide();
         });
-        chooseCollapseElement.addEventListener("show.bs.collapse", function () {
+        chooseCollapseElement.addEventListener("show.bs.collapse", () => {
             typeCollapse.hide();
             formCollapse.hide();
         });
-        formCollapseElement.addEventListener("show.bs.collapse", function () {
+        formCollapseElement.addEventListener("show.bs.collapse", () =>{
             typeCollapse.hide();
             chooseCollapse.hide();
         });
@@ -311,16 +312,16 @@ function initCourseNew(): void {
                 this.querySelector("input[type=\"radio\"]").checked = true;
                 this.closest(".panel")
                     .querySelector(".answer")
-                    .textContent = this.getAttribute("data-answer");
-                fetch(`/courses/new.js?copy_options[base_id]=${this.getAttribute("data-course_id")}`)
+                    .textContent = this.dataset.answer;
+                fetch(`/courses/new.js?copy_options[base_id]=${this.dataset.course_id}`)
                     .then(req => req.text())
                     .then(resp => eval(resp));
             });
         });
 
         document.querySelectorAll(".copy-course-row .nested-link").forEach(el => {
-            el.addEventListener("click", function (e) {
-                e.stopPropagation();
+            el.addEventListener("click", event => {
+                event.stopPropagation();
             });
         });
     }

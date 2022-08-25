@@ -5,7 +5,7 @@ function initCourseMemberLabelsEdit(labels) {
         identify: d => d.id,
         datumTokenizer: d => {
             const result = Bloodhound.tokenizers.whitespace(d.name);
-            result.forEach((val, i) => {
+            $.each(result, (i, val) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
                 }
@@ -16,7 +16,7 @@ function initCourseMemberLabelsEdit(labels) {
 
     const $field = $("#course_membership_course_labels");
     $field.on("tokenfield:createdtoken", e => {
-        e.relatedTarget.classList.add("accent-orange");
+        $(e.relatedTarget).addClass("accent-orange");
     });
     $field.tokenfield({
         beautify: false,

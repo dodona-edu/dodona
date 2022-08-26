@@ -26,29 +26,32 @@ function onFrameMessage(event) {
 function initLightboxes() {
     let index = 0;
     const images = [];
-    $(".activity-description img, a.dodona-lightbox").each(function () {
-        const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
-        const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
+    document.querySelectorAll(".activity-description img, a.dodona-lightbox").forEach(el => {
+        const imagesrc = el.dataset.large || el.getAttribute("src") || el.getAttribute("href");
+        const altText = el.dataset.caption || el.getAttribute("alt") || imagesrc.split("/").pop();
         const imageObject = {
             href: imagesrc,
             description: altText,
         };
         images.push(imageObject);
 
-        $(this).data("image_index", index++);
+        el.dataset.image_index = index.toString();
+        index++;
     });
 
-    $(".activity-description img, a.dodona-lightbox").on("click", function () {
-        const index = $(this).data("image_index");
-        window.parentIFrame.sendMessage({
-            type: "lightbox",
-            content: {
-                elements: images,
-                startAt: index,
-                moreLength: 0,
-            }
+    document.querySelectorAll(".activity-description img, a.dodona-lightbox").forEach(el => {
+        el.addEventListener("click", () => {
+            const index = parseInt(el.dataset.image_index, 10);
+            window.parentIFrame.sendMessage({
+                type: "lightbox",
+                content: {
+                    elements: images,
+                    startAt: index,
+                    moreLength: 0,
+                }
+            });
+            return false;
         });
-        return false;
     });
 }
 
@@ -104,31 +107,32 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
 
         // submit source code if button is clicked on editor panel
-        $("#editor-process-btn").on("click", function () {
+        document.getElementById("editor-process-btn").addEventListener("click", () => {
             if (!loggedIn) return;
             // test submitted source code
             const source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
-                .done(data => submissionSuccessful(data, $("#editor-process-btn").data("user_id")))
+                .done(data => submissionSuccessful(data, document.getElementById("editor-process-btn").dataset.user_id))
                 .fail(submissionFailed);
         });
 
-        $("#submission-copy-btn").on("click", function () {
+        document.getElementById("submission-copy-btn").addEventListener("click", () => {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
-            $("#activity-handin-link").tab("show");
+            bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
-        $("#activity-handin-link").on("shown.bs.tab", function () {
+        document.getElementById("activity-handin-link").addEventListener("show.bs.tab", () => {
             // refresh editor after show
             editor.resize(true);
         });
 
         // secure external links
-        $(".activity-description a[target='_blank']").each(function () {
-            $(this).attr("rel", "noopener");
+        document.querySelectorAll(".activity-description a[target='_blank']").forEach(el => {
+            el.setAttribute("rel", "noopener");
         });
+
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
@@ -151,21 +155,23 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function swapActionButtons() {
-        $("#activity-handin-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden");
-            $("#editor-process-btn").removeClass("hidden");
+        document.getElementById("activity-handin-link").addEventListener("show.bs.tab", () => {
+            document.getElementById("submission-copy-btn").classList.add("hidden");
+            document.getElementById("editor-process-btn").classList.remove("hidden");
         });
-        $("#activity-submission-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden");
+
+        document.getElementById("activity-submission-link").addEventListener("show.bs.tab", () => {
+            document.getElementById("submission-copy-btn").classList.add("hidden");
             if (lastSubmission) {
-                $("#editor-process-btn").removeClass("hidden");
+                document.getElementById("editor-process-btn").classList.remove("hidden");
             } else {
-                $("#editor-process-btn").addClass("hidden");
+                document.getElementById("editor-process-btn").classList.add("hidden");
             }
         });
-        $("#activity-feedback-link").on("show.bs.tab", function (e) {
-            $("#editor-process-btn").addClass("hidden");
-            $("#submission-copy-btn").removeClass("hidden");
+
+        document.getElementById("activity-feedback-link").addEventListener("show.bs.tab", () => {
+            document.getElementById("editor-process-btn").classList.add("hidden");
+            document.getElementById("submission-copy-btn").classList.remove("hidden");
         });
     }
 
@@ -180,40 +186,44 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function feedbackLoaded(submissionId) {
-        $("#feedback").removeClass("hidden");
-        const $exerciseFeedbackLink = $("#activity-feedback-link");
-        $exerciseFeedbackLink.removeClass("hidden");
-        $exerciseFeedbackLink.tab("show");
-        $exerciseFeedbackLink.attr("data-submission_id", submissionId);
+        document.getElementById("feedback").classList.remove("hidden");
+        const exerciseFeedbackLink = document.getElementById("activity-feedback-link");
+        exerciseFeedbackLink.classList.remove("hidden");
+        // $exerciseFeedbackLink.tab("show");
+        const tab = new bootstrap.Tab(exerciseFeedbackLink);
+        tab.show();
+        exerciseFeedbackLink.setAttribute("data-submission_id", submissionId);
     }
 
     function loadFeedback(url, submissionId) {
-        $("#submission-wrapper").html("<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>");
+        document.getElementById("submission-wrapper").innerHTML = "<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>";
         feedbackLoaded(submissionId);
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
+                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin",
         }).then(resp => Promise.all([resp.ok, resp.text()])).then(([ok, data]) => {
             if (ok) {
-                $("#submission-wrapper").html(data);
+                document.getElementById("submission-wrapper").innerHTML = data;
                 initTooltips();
             } else {
-                $("#submission-wrapper").html(`<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`);
+                document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`;
             }
         });
     }
 
     function enableSubmissionTableLinks() {
-        $("a.load-submission").on("click", function (event) {
-            if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
-                return;
-            }
-            event.preventDefault();
-            loadFeedback(baseSubmissionsUrl + $(this).data("submission_id"), $(this).data("submission_id"));
+        document.querySelectorAll("a.load-submission").forEach(element => {
+            element.addEventListener("click", event => {
+                if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
+                    return;
+                }
+                event.preventDefault();
+                loadFeedback(baseSubmissionsUrl + $(element).data("submission_id"), $(element).data("submission_id"));
+            });
         });
     }
 

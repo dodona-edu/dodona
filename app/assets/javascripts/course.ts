@@ -286,7 +286,7 @@ function initCourseNew(): void {
             formPanel.querySelector(".step-circle").innerHTML = "2";
             this.closest(".panel")
                 .querySelector(".answer")
-                .textContent = this.getAttribute("data-answer");
+                .textContent = this.dataset.answer;
             fetch("/courses/new.js")
                 .then(req => req.text())
                 .then(resp => eval(resp));
@@ -302,7 +302,7 @@ function initCourseNew(): void {
             formPanel.querySelector(".step-circle").innerHTML = "3";
             this.closest(".panel")
                 .querySelector(".answer")
-                .textContent = this.getAttribute("data-answer");
+                .textContent = this.dataset.answer;
         });
     }
 

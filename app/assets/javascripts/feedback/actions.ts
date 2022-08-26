@@ -236,7 +236,7 @@ export default class FeedbackActions {
                 f.data = "0";
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
-            await this.update({
+            this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
@@ -249,7 +249,7 @@ export default class FeedbackActions {
                 f.data = f.getMax();
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
-            await this.update({
+            this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
@@ -263,7 +263,7 @@ export default class FeedbackActions {
                     f.data = "";
                 });
                 const values = this.scoreForms.map(f => f.getDataForNested(true));
-                await this.update({
+                this.update({
                     // eslint-disable-next-line camelcase
                     scores_attributes: values
                 });

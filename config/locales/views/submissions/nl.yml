@@ -26,7 +26,6 @@ nl:
       reevaluating_submissions:
         one: 1 oplossing wordt geherevalueerd
         other: "%{count} oplossingen worden geherevalueerd"
-      help_html: "Leer meer over hoe je oplossingen voor een cursus kan beheren met de handleinding in <a href='https://docs.dodona.be/nl/guides/teachers/course-management/#navigeren-naar-oplossingen'>onze documentatie</a>."
     show:
       submission: Oplossing
       submission_results: Resultaten

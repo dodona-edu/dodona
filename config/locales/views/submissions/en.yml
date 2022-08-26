@@ -26,7 +26,6 @@ en:
       reevaluating_submissions:
         one: Re-evaluating 1 submission
         other: "Re-evaluating %{count} submissions"
-      help_html: "Learn more about managing solutions for a course with the guide in <a href='https://docs.dodona.be/en/guides/teachers/course-management/#navigeren-naar-oplossingen'>our documentation</a>."
     show:
       submission: Submission
       submission_results: Submission results

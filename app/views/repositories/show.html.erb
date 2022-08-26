@@ -45,8 +45,8 @@
             <% end %>
             <% if @repository.exercises.count === 0 && @repository.content_pages.count === 0 %>
               <div class="callout callout-info">
-                <h4>Setup</h4>
-                <%= t '.setup_html' %>
+                <h4><%= t '.empty_repo_title' %></h4>
+                <%= t '.empty_repo_help_html' %>
               </div>
             <% end %>
             <div class="callout callout-info">

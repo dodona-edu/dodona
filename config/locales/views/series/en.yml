@@ -18,7 +18,6 @@ en:
       loading_more: Loading more series...
     new:
       title: Create series
-      help_html: 'More information on managing a series can be found in <a href="https://docs.dodona.be/en/guides/teachers/exercise-series-management/#oefeningenreeksenbeheer">our documentation</a>.'
     show:
       copy: "To copy to clipboard: Ctrl+c, Enter"
       indianio_token: "Indianio token"

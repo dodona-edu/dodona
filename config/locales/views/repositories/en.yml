@@ -16,7 +16,8 @@ en:
       help_html: "A guide with more information on managing repositories can be found in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>our documentation</a>."
     show:
       repository: Repository
-      setup_html: "We noticed your repository is empty, learn in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>our documentation</a> how you can add exercises to your repository."
+      empty_repo_title: "Getting started"
+      empty_repo_help_html: "We noticed your repository is empty, learn in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>our documentation</a> how you can add exercises to your repository."
       webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
       reprocess: Reprocess repository
       exercises: Exercises

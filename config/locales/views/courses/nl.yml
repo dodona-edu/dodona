@@ -55,8 +55,6 @@ nl:
         toggle-label: Deze cursus uitlichten
     index:
       title: Cursussen
-      help_student_html: 'Meer informatie over cursussen kan in <a href="https://docs.dodona.be/nl/guides/students/courses/#cursussen-op-dodona">onze documentatie</a> gevonden worden.'
-      help_admin_html: 'Meer informatie over het beheren van een cursus kan in <a href="https://docs.dodona.be/nl/guides/teachers/course-management/#cursusbeheer">onze documentatie</a> gevonden worden.'
       users: "Gebruikers"
       exercises: "Oefeningen"
       institution_courses: "%{institution} cursussen"

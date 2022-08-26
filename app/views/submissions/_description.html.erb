@@ -10,9 +10,6 @@
 
 <div class="submission-summary clearfix">
   <div id='submission-motivational-message'></div>
-  <div class="callout callout-info">
-    <%= t "submissions.show.help_html" %>
-  </div>
   <span class="description">
     <% if submission.number.nil? %>
       <%= t "submissions.show.submission_for" %>
@@ -95,6 +92,10 @@
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
+
+<span class="header-info-text"><%= t "submissions.show.help_html" %></span>
+
+
 
 <script>
   dodona.initCorrectSubmissionToNextLink("<%= submission.status %>");

@@ -25,7 +25,6 @@ nl:
       explanation_title: "Wat is een evaluatie?"
       explanation_html: "<p>Het evalueren van een reeks is een gestructureerde manier om de ingediende oplossingen van een reeks te bekijken en er feedback op te geven. Dodona houdt bij welke oplossingen al bekeken zijn zodat je het evaluatiewerk eenvoudig kan verdelen over meerdere lesgevers. De feedback die je geeft is niet onmiddellijk zichtbaar voor de studenten; je kiest zelf wanneer je deze vrijgeeft.</p><p>Een handleiding over verbeteren kan je vinden op <a href=\"https://docs.dodona.be/nl/guides/teachers/grading/\">onze documentatiesite</a>.</p>"
       next: Volgende
-      help_html: 'Meer informatie over het aanmaken van een evaluatie kan in <a href="https://docs.dodona.be/nl/guides/teachers/grading/#je-evaluatie-configureren">onze documentatie</a> gevonden worden.'
     add_users:
       title: Gebruikers selecteren
       explanation_title: "Waarom moet ik gebruikers selecteren?"

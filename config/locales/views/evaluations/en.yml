@@ -22,9 +22,8 @@ en:
       create_evaluation: Evaluate series
       pick_deadline: Pick deadline
       explanation_title: "What is an evaluation?"
-      explanation_html: "<p>Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released.</p>"
+      explanation_html: "<p>Evaluating a series is a structured way to give feedback on all submitted solutions of a series. Dodona keeps track of which submissions are already checked, so you can easily split work between multiple course administrators. The feedback you give isn't immediately visible for the students; you can decide when it is released.</p><p>A guide with more information about evaluating exercises in Dodona can be found <a href=\"https://docs.dodona.be/en/guides/teachers/grading/\">in our documentation</a>.</p>"
       next: Next
-      help_html: 'More information on creating an evaluation can be found in <a href="https://docs.dodona.be/en/guides/teachers/grading/#een-reeks-evalueren">our documentation</a>.'
     add_users:
       title: Select users
       explanation_title: "Why do I have to select users?"

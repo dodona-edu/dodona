@@ -2,15 +2,6 @@
   <%= javascript_include_tag 'course' %>
 <% end %>
 <div class="row">
-  <% unless current_user.nil? %>
-    <div class="callout callout-info">
-      <% if current_user.a_course_admin? %>
-        <%= t '.help_admin_html' %>
-      <% else %>
-        <%= t '.help_student_html' %>
-      <% end %>
-    </div>
-  <% end %>
   <div class="col-12">
     <div class="page-subtitle">
       <h2><%= t '.title' %></h2>

@@ -93,8 +93,6 @@
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>
 
-<span class="header-info-text"><%= t "submissions.show.help_html" %></span>
-
 <script>
   dodona.initCorrectSubmissionToNextLink("<%= submission.status %>");
   dodona.initSubmissionHistory(<%= submission.id %>);

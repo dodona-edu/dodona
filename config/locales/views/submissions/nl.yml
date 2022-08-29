@@ -48,7 +48,6 @@ nl:
       submission_for: "Oplossing voor"
       output: Uitvoer
       correct_tests: Correcte testen
-      help_html: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen over hoe je vragen kunt stellen in Dodona en meer!"
       diff:
         split: Toon uitvoer naast elkaar
         unified: Toon uitvoer onder elkaar

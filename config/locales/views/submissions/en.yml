@@ -48,7 +48,6 @@ en:
       submission_for: "Submission for"
       output: Output
       correct_tests: Correct tests
-      help_html: "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!"
       diff:
         split: Show output side-by-side
         unified: Show unified output

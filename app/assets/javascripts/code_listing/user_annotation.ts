@@ -13,7 +13,7 @@ export interface UserAnnotationFormData {
 export type UserAnnotationEditor = (ua: UserAnnotation, cb: CallableFunction) => HTMLElement;
 
 interface UserAnnotationUserData {
-    name: string;
+    name: string | null;
 }
 
 export interface UserAnnotationPermissionData {

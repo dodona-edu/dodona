@@ -53,8 +53,8 @@ export class UserAnnotation extends Annotation {
     public readonly released: boolean;
     public readonly evaluationId: number | null;
     public readonly url: string;
-    public readonly user: UserAnnotationUserData | null;
-    public readonly lastUpdatedBy: UserAnnotationUserData | null;
+    public readonly user: UserAnnotationUserData | undefined;
+    public readonly lastUpdatedBy: UserAnnotationUserData | undefined;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {
@@ -68,8 +68,8 @@ export class UserAnnotation extends Annotation {
         this.__rawText = data.annotation_text;
         this.evaluationId = data.evaluation_id;
         this.url = data.url;
-        this.user = data.user === undefined ? null : data.user;
-        this.lastUpdatedBy = data.last_updated_by === undefined ? null : data.last_updated_by;
+        this.user = data.user;
+        this.lastUpdatedBy = data.last_updated_by;
     }
 
     protected edit(): void {

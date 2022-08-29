@@ -9,7 +9,10 @@ json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
 json.user do
   # hide reviewer name depending on evaluation and current user
-  unless policy(annotation).anonymous?
+  if policy(annotation).anonymous?
+    json.name nil
+    json.url nil
+  else
     json.name annotation.user.full_name
     json.url user_url(annotation.user)
   end
@@ -17,7 +20,10 @@ end
 
 json.last_updated_by do
   # hide reviewer name depending on evaluation and current user
-  unless policy(annotation).anonymous?
+  if policy(annotation).anonymous?
+    json.name nil
+    json.url nil
+  else
     json.name annotation.last_updated_by.full_name
     json.url user_url(annotation.last_updated_by)
   end

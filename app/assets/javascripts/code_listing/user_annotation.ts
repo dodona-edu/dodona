@@ -53,8 +53,8 @@ export class UserAnnotation extends Annotation {
     public readonly released: boolean;
     public readonly evaluationId: number | null;
     public readonly url: string;
-    public readonly user: UserAnnotationUserData | null;
-    public readonly lastUpdatedBy: UserAnnotationUserData | null;
+    public readonly user: UserAnnotationUserData;
+    public readonly lastUpdatedBy: UserAnnotationUserData;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {

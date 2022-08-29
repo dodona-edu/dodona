@@ -7,23 +7,17 @@ end
 json.rendered_markdown markdown(annotation.annotation_text)
 json.submission_url submission_url(annotation.submission, format: :json)
 json.url annotation_url(annotation, format: :json)
-json.user do
-  # hide reviewer name depending on evaluation and current user
-  if policy(annotation).anonymous?
-    json.name nil
-    json.url nil
-  else
+
+# hide reviewer name depending on evaluation and current user
+unless policy(annotation).anonymous?
+  json.user do
     json.name annotation.user.full_name
     json.url user_url(annotation.user)
   end
 end
-
-json.last_updated_by do
-  # hide reviewer name depending on evaluation and current user
-  if policy(annotation).anonymous?
-    json.name nil
-    json.url nil
-  else
+# hide reviewer name depending on evaluation and current user
+unless policy(annotation).anonymous?
+  json.last_updated_by do
     json.name annotation.last_updated_by.full_name
     json.url user_url(annotation.last_updated_by)
   end

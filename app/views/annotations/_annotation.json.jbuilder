@@ -15,7 +15,7 @@ unless policy(annotation).anonymous?
     json.url user_url(annotation.user)
   end
 end
-# hide reviewer name depending on evaluation and current user
+# hide name of last editor depending on evaluation and current user
 unless policy(annotation).anonymous?
   json.last_updated_by do
     json.name annotation.last_updated_by.full_name

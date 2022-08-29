@@ -91,7 +91,7 @@ export class UserAnnotation extends Annotation {
         }
 
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
-        const user = this.user?.name;
+        const user = this.user?.name; // if we get there the user should always exist, so in theory the `?` is unnecessary
 
         return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
     }

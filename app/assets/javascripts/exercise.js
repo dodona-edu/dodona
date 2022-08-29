@@ -113,13 +113,19 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             const source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
-                .done(data => submissionSuccessful(data, document.getElementById("editor-process-btn").dataset.user_id))
-                .fail(submissionFailed);
+                .then(async response => {
+                    if (response.ok) {
+                        submissionSuccessful(await response.json(), document.getElementById("editor-process-btn").dataset.user_id);
+                    } else {
+                        submissionFailed(response);
+                    }
+                }).catch(submissionFailed);
         });
 
         document.getElementById("submission-copy-btn").addEventListener("click", () => {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
+            // eslint-disable-next-line no-undef
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
@@ -176,12 +182,18 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function submitSolution(code) {
-        return $.post("/submissions.json", {
-            submission: {
-                code: code,
-                exercise_id: exerciseId,
-                course_id: courseId,
+        const data = new FormData();
+        data.append("submission[code]", code);
+        data.append("submission[exercise_id]", exerciseId);
+        data.append("submission[course_id]", courseId);
+
+        return fetch("/submissions.json", {
+            "method": "POST",
+            "headers": {
+                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                "x-requested-with": "XMLHttpRequest",
             },
+            "body": data,
         });
     }
 
@@ -189,7 +201,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         document.getElementById("feedback").classList.remove("hidden");
         const exerciseFeedbackLink = document.getElementById("activity-feedback-link");
         exerciseFeedbackLink.classList.remove("hidden");
-        // $exerciseFeedbackLink.tab("show");
+        // eslint-disable-next-line no-undef
         const tab = new bootstrap.Tab(exerciseFeedbackLink);
         tab.show();
         exerciseFeedbackLink.setAttribute("data-submission_id", submissionId);

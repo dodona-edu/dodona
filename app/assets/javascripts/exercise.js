@@ -119,7 +119,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     } else {
                         submissionFailed(response);
                     }
-                }).catch(submissionFailed);
+                });
         });
 
         document.getElementById("submission-copy-btn").addEventListener("click", () => {
@@ -234,7 +234,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     return;
                 }
                 event.preventDefault();
-                loadFeedback(baseSubmissionsUrl + $(element).data("submission_id"), $(element).data("submission_id"));
+                loadFeedback(baseSubmissionsUrl + element.dataset.submission_id, element.dataset.submission_id);
             });
         });
     }
@@ -242,8 +242,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     function feedbackTableLoaded(userId, exerciseId, courseId) {
         enableSubmissionTableLinks();
         if (lastSubmission) {
-            const $submissionRow = $("#submission_" + lastSubmission);
-            const status = $submissionRow.data("status");
+            const submissionRow = document.getElementById("submission_" + lastSubmission);
+            const status = submissionRow.dataset.status;
             if (status === "queued" || status === "running") {
                 setTimeout(function () {
                     lastTimeout = (lastTimeout || 0) + 1000;
@@ -252,14 +252,23 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     if (courseId !== undefined) {
                         url += `&course_id=${courseId}`;
                     }
-                    $.get(url);
+                    fetch(url, {
+                        headers: {
+                            "accept": "text/javascript",
+                            "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                            "x-requested-with": "XMLHttpRequest",
+                        },
+                        credentials: "same-origin" })
+                        .then(response => response.text())
+                        .then(eval);
                 }, (lastTimeout || 0) + 1000);
             } else {
                 lastTimeout = 0;
-                if ($("#activity-submission-link").hasClass("active")) {
-                    $submissionRow.find(".load-submission").get(0).click();
-                } else if ($("#activity-feedback-link").hasClass("active") &&
-                    $("#activity-feedback-link").data("submission_id") === lastSubmission) {
+                if (document.getElementById("activity-submission-link").classList.contains("active")) {
+                    const event = new Event("click");
+                    submissionRow.querySelector(".load-submission").dispatchEvent(event);
+                } else if (document.getElementById("activity-feedback-link").classList.contains("active") &&
+                    document.getElementById("activity-feedback-link").dataset.submission_id === lastSubmission) {
                     loadFeedback(baseSubmissionsUrl + lastSubmission, lastSubmission);
                 }
                 showFABStatus(status);
@@ -271,17 +280,17 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function enableSubmitButton() {
-        $("#editor-process-btn")
-            .prop("disabled", false)
-            .removeClass("busy mdi-timer-sand-empty mdi-spin")
-            .addClass("mdi-send");
+        const btn = document.getElementById("editor-process-btn");
+        btn.disabled = false;
+        btn.classList.remove("busy", "mdi-timer-sand-empty", "mdi-spin");
+        btn.classList.add("mdi-send");
     }
 
     function disableSubmitButton() {
-        $("#editor-process-btn")
-            .prop("disabled", true)
-            .removeClass("mdi-send")
-            .addClass("busy mdi-timer-sand-empty mdi-spin");
+        const btn = document.getElementById("editor-process-btn");
+        btn.disabled = true;
+        btn.classList.remove("mdi-send");
+        btn.classList.add("busy", "mdi-timer-sand-empty", "mdi-spin");
     }
 
     function showFABStatus(status) {
@@ -316,8 +325,18 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
         }
-        $.get(url);
-        $("#activity-submission-link").tab("show");
+        fetch(url, {
+            headers: {
+                "accept": "text/javascript",
+                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+            credentials: "same-origin" })
+            .then(response => response.text())
+            .then(eval);
+        // eslint-disable-next-line no-undef
+        const tab = new bootstrap.Tab(document.getElementById("activity-submission-link"));
+        tab.show();
     }
 
     function submissionFailed(request) {

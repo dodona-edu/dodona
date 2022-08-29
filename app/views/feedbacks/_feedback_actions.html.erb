@@ -66,7 +66,12 @@
               <% end %>
               <input id="score-sum" class="form-control score-input" disabled="disabled" value="<%= format_score @feedback.score %>">
               <%= button_tag class: "btn btn-icon score-state", disabled: true, type: :button do %>
-                <i id="completed-checkmark" class="mdi mdi-check colored-info" aria-hidden='true' <%= 'hidden' unless @feedback.completed %>></i>
+<!--                <i id="completed-checkmark" class="mdi mdi-check colored-info" aria-hidden='true' <%#= 'hidden' unless @feedback.completed %>></i>-->
+                <% if @feedback.completed %>
+                  <i id="completed-icon" class="mdi mdi-check" aria-hidden='true'></i>
+                <% else %>
+                  <i id="completed-icon" class="mdi mdi-circle-slice-3" aria-hidden='true'></i>
+                <% end %>
               <% end %>
               <%= button_tag class: "btn btn-icon max-text", disabled: true, type: :button do %>
                 / <%= format_score(@feedback.maximum_score) %>

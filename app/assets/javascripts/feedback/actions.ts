@@ -51,7 +51,7 @@ export default class FeedbackActions {
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 
         this.scoreSumElement = document.getElementById("score-sum") as HTMLInputElement;
-        this.completedIcon = document.getElementById("completed-checkmark") as HTMLButtonElement;
+        this.completedIcon = document.getElementById("completed-icon") as HTMLButtonElement;
         this.deleteAllButton = document.getElementById("delete-all-button") as HTMLButtonElement;
 
         // Score forms
@@ -164,7 +164,13 @@ export default class FeedbackActions {
         }
 
         if (this.completedIcon) {
-            this.completedIcon.hidden = !completed;
+            if (completed) {
+                this.completedIcon.classList.add("mdi-check");
+                this.completedIcon.classList.remove("mdi-circle-slice-3");
+            } else {
+                this.completedIcon.classList.add("mdi-circle-slice-3");
+                this.completedIcon.classList.remove("mdi-check");
+            }
         }
     }
 

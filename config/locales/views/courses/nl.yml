@@ -64,7 +64,7 @@ nl:
       only_show_can_register: "Toon enkel cursusen waarvoor je kan registreren"
     new:
       title: Cursus aanmaken
-      help_html: 'Meer informatie over het aanmaken van een cursus kan in <a href="https://docs.dodona.be/nl/guides/teachers/creating-a-course/#een-cursus-aanmaken">onze documentatie</a> gevonden worden.'
+      help_html: 'Meer informatie over het aanmaken van een cursus kan je in <a href="https://docs.dodona.be/nl/guides/teachers/creating-a-course/#een-cursus-aanmaken">onze documentatie</a> terugvinden.'
       empty: "Lege cursus"
       copy: "Kopieer cursus"
       new_course: "Lege cursus"

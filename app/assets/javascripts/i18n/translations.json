@@ -711,7 +711,7 @@
           "annotation_text": "Opmerking"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a>  wordt ondersteund.",
-        "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen over hoe je vragen kunt stellen in Dodona en meer!",
+        "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
         "send": "Toevoegen",

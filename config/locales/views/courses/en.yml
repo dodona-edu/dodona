@@ -64,7 +64,7 @@ en:
       only_show_can_register: "Only show courses for which you can register"
     new:
       title: Create course
-      help_html: 'More information on creating a course can be found in <a href="https://docs.dodona.be/en/guides/teachers/creating-a-course/#een-cursus-aanmaken">our documentation</a>.'
+      help_html: 'You can find more information on creating a course in <a href="https://docs.dodona.be/en/guides/teachers/creating-a-course/#een-cursus-aanmaken">our documentation</a>.'
       empty: "Empty course"
       copy: "Copy course"
       new_course: "Empty course"

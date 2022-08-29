@@ -143,7 +143,7 @@ nl:
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a>  wordt ondersteund.'
-      help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen over hoe je vragen kunt stellen in Dodona en meer!"
+      help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!"
       fields:
         annotation_text: 'Opmerking'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'

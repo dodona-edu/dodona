@@ -123,6 +123,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         document.getElementById("submission-copy-btn").addEventListener("click", () => {
+            // TODO: why is codeListing undefined???
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             // eslint-disable-next-line no-undef

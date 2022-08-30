@@ -55,7 +55,7 @@
     "eslint-plugin-jest": "^26.8.3",
     "eslint-plugin-no-jquery": "^2.7.0",
     "jest": "^26.6.3",
-    "jest-junit": "^14.0.0",
+    "jest-junit": "^14.0.1",
     "stylelint": "^14.11.0",
     "stylelint-config-standard": "^27.0.0",
     "stylelint-config-standard-scss": "^5.0.0",

@@ -268,7 +268,12 @@ export default class FeedbackActions {
                     f.markBusy();
                     f.data = "";
                 });
-                const values = this.scoreForms.map(f => f.getDataForNested(true));
+                const values = this.scoreForms
+                    .map(f => f.getDataForNested())
+                    .map(record => {
+                        record.score = null;
+                        return record;
+                    });
                 this.update({
                     // eslint-disable-next-line camelcase
                     scores_attributes: values

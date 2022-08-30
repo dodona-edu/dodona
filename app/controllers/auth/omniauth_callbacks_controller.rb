@@ -229,6 +229,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # Try to find user by username
       identity = Identity.find_by(identifier: auth_username, provider: provider, identifier_based_on_username: true)
 
+      # Try to find user by email
+      identity = Identity.joins(:user).find_by(user: { email: auth_email }, provider: provider, identifier_based_on_username: true) if identity.nil?
+
       # Try to find user by name
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_username: true) if identity.nil?
       return nil if identity.nil?

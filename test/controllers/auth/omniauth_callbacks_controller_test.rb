@@ -586,6 +586,29 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     sign_out user
   end
 
+  test 'Smartschool legacy sign in works with email' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution, email: 'foo.bar@test.com'
+    identity = create :identity, provider: provider, user: user, identifier: 'OLD-UID', identifier_based_on_username: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'foo.bar@test.com',
+                             username: 'NEW-USERNAME'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
   test 'Smartschool legacy sign in works with name' do
     # Setup.
     provider = create :smartschool_provider

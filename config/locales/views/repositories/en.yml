@@ -13,7 +13,7 @@ en:
       admin: "You are an administrator of this repository"
     new:
       title: Add an exercise repository
-      help_html: "You can find guide with more information on managing repositories in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>our documentation</a>."
+      help_html: "You can find a guide with more information on managing repositories in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>our documentation</a>."
     show:
       repository: Repository
       empty_repo_title: "Getting started"

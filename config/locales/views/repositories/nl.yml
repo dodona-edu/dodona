@@ -17,7 +17,7 @@ nl:
     show:
       repository: Repository
       empty_repo_title: "Aan de slag"
-      empty_repo_help_html: "We zien dat je repository leeg is, leer in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>onze documentatie</a> hoe je oefeningen aan je repository kunt toevoegen."
+      empty_repo_help_html: "We zien dat je repository leeg is, leer hoe je oefeningen aan je repository kunt toevoegen in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>onze documentatie</a>."
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
       reprocess: Repository herverwerken
       exercises: Oefeningen

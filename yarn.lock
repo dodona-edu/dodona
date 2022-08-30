@@ -4078,10 +4078,10 @@ i18n-js@^3.8.0:
   resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-3.9.2.tgz#4a015dcfabd4c9fc73115fc2d02d2627e4c15ca5"
   integrity sha512-+Gm8h5HL0emzKhRx2avMKX+nKiVPXeaOZm7Euf2/pbbFcLQoJ3zZYiUykAzoRasijCoWos2Kl1tslmScTgAQKw==
 
-i18n-js@^4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-4.0.2.tgz#31a62520204e292675bd72e82abdfeeb9aed5f20"
-  integrity sha512-81geA9vPvWe4NI2uL8Ve+/2jM03Sj/IvGgFHPxij7DbSXbG3CfChRK1vBj2h2IRl6eVRZf3Eq4ug3PgeeWUUPA==
+i18n-js@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/i18n-js/-/i18n-js-4.1.1.tgz#05ebd03c4d92f6dc26a00d7c5cfb90f9c326b67c"
+  integrity sha512-Uph8ghmfShexVhDcNtg5s40zprJZPrhW5iOEKsUwPiiBpIGN/0EJ9W7DTqhLFlWfAlpkFiaLxVxHsk8f+3KjIQ==
   dependencies:
     bignumber.js "*"
     lodash "*"

@@ -3,6 +3,7 @@ import ScoreForm from "feedback/score";
 
 interface ActionOptions {
     currentURL: string;
+    deleteScoresURL: string;
     feedbackId: string;
     nextURL: string | null;
     nextUnseenURL: string | null;
@@ -102,10 +103,10 @@ export default class FeedbackActions {
         this.scoreForms.forEach(s => s.disableInputs());
     }
 
-    update(data: Record<string, unknown>): Promise<void> {
+    doRequest(method: string, url: string, data: Record<string, unknown>): Promise<void> {
         this.disableInputs();
-        return fetch(this.options.currentURL, {
-            method: "PATCH",
+        return fetch(url, {
+            method: method,
             body: JSON.stringify({ feedback: data }),
             headers: {
                 "Content-Type": "application/json",
@@ -122,6 +123,14 @@ export default class FeedbackActions {
                 await this.refresh();
             }
         });
+    }
+
+    update(data: Record<string, unknown>): Promise<void> {
+        return this.doRequest("PATCH", this.options.currentURL, data);
+    }
+
+    delete(data: Record<string, unknown>): Promise<void> {
+        return this.doRequest("DELETE", this.options.deleteScoresURL, data);
     }
 
     async refresh(warning = ""): Promise<void> {
@@ -274,7 +283,7 @@ export default class FeedbackActions {
                         record.score = null;
                         return record;
                     });
-                this.update({
+                this.delete({
                     // eslint-disable-next-line camelcase
                     scores_attributes: values
                 });

@@ -132,6 +132,7 @@
     <% siblings = @feedback.siblings %>
     window.dodona.feedbackActions = new window.dodona.FeedbackActions({
         currentURL: <%= raw feedback_url(@feedback).to_json %>,
+        deleteScoresURL: <%= raw scores_feedback_url(@feedback).to_json %>,
         feedbackId: <%= @feedback.id %>,
         nextURL: <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
         nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,

@@ -86,21 +86,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     @feedback.reload
     assert_equal 1, @feedback.scores.count
 
-    delete scores_feedback_path(@feedback), params: {
-      feedback: {
-        scores_attributes:
-          [
-            {
-              id: 0,
-              score: nil
-            },
-            {
-              id: 1,
-              score: nil
-            }
-          ]
-      }
-    }
+    delete scores_feedback_path(@feedback)
 
     @feedback.reload
 

@@ -1548,10 +1548,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/bootstrap@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.2.1.tgz#618978b7dc5afb2a8eb8cb4c8d4e63b2c112ca69"
-  integrity sha512-jPdLpDnBTHeocqelEz+ZVP2eY12hIBXgJLV/n0URiQiiNLdCgHwDqaI0chijjn1qwvDNbjzhKDeYAHxsnIGtIA==
+"@types/bootstrap@^5.2.3":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.2.3.tgz#562defe61dac6c9598843d4088de8007a36607bd"
+  integrity sha512-r2SE9NYaaI7B/jJk8gqRtXzlhgFL6dlXBResJkCbQa8ept619WeiOIO4zBQxdmUFzkKNWLK5ZOyYGI3QZoaqbQ==
   dependencies:
     "@popperjs/core" "^2.9.2"
 

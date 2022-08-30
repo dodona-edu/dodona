@@ -129,7 +129,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
-        document.getElementById("activity-handin-link").addEventListener("show.bs.tab", () => {
+        document.getElementById("activity-handin-link").addEventListener("shown.bs.tab", () => {
             // refresh editor after show
             editor.resize(true);
         });
@@ -265,8 +265,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             } else {
                 lastTimeout = 0;
                 if (document.getElementById("activity-submission-link").classList.contains("active")) {
-                    const event = new Event("click");
-                    submissionRow.querySelector(".load-submission").dispatchEvent(event);
+                    submissionRow.querySelector(".load-submission").click();
                 } else if (document.getElementById("activity-feedback-link").classList.contains("active") &&
                     document.getElementById("activity-feedback-link").dataset.submission_id === lastSubmission) {
                     loadFeedback(baseSubmissionsUrl + lastSubmission, lastSubmission);

@@ -81,12 +81,12 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, @feedback.scores.count
   end
 
-  test 'using nil as score value deletes the existing scores' do
+  test 'deleting all the scores of an evaluation works' do
     create :score, feedback: @feedback, score_item: @score_item1
     @feedback.reload
     assert_equal 1, @feedback.scores.count
 
-    patch evaluation_feedback_path(@evaluation, @feedback), params: {
+    delete scores_feedback_path(@feedback), params: {
       feedback: {
         scores_attributes:
           [

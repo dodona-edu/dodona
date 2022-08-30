@@ -35,7 +35,7 @@
             <% else %>
               <%= link_to (t 'submissions.submissions_table.select'),
                           feedback_path(@feedback, feedback: { submission_id: submission.id }),
-                          class: "btn btn-outline align-action-disabled-btn",
+                          class: "btn btn-outline",
                           title: t(".update-submission"),
                           confirm: t('.confirm'),
                           method: :patch %>

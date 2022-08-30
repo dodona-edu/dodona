@@ -120,11 +120,6 @@
     border-color: $primary;
   }
 
-  // add margin to right to "center" with the disabled button
-  &.align-action-disabled-btn {
-    margin-right: 8px
-  }
-
   &:disabled {
     color: $on-surface;
     border: 1px solid rgba($on-surface, 0.12);

@@ -43,7 +43,7 @@
                 <span><%= t ".clone_failed" %></span>
               </div>
             <% end %>
-            <% if @repository.exercises.count === 0 && @repository.content_pages.count === 0 %>
+            <% if @repository.exercises.empty? && @repository.content_pages.empty? %>
               <div class="callout callout-info">
                 <h4><%= t '.empty_repo_title' %></h4>
                 <%= t '.empty_repo_help_html' %>

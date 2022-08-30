@@ -29,13 +29,13 @@
           </td>
           <td class="actions">
             <% if @feedback.submission&.id == submission.id %>
-              <button class="btn btn-text outline-btn-alignment" disabled>
+              <button class="btn btn-outline" disabled>
                 <%= t 'submissions.submissions_table.selected' %>
               </button>
             <% else %>
               <%= link_to (t 'submissions.submissions_table.select'),
                           feedback_path(@feedback, feedback: { submission_id: submission.id }),
-                          class: "btn btn-outline",
+                          class: "btn btn-outline align-action-disabled-btn",
                           title: t(".update-submission"),
                           confirm: t('.confirm'),
                           method: :patch %>

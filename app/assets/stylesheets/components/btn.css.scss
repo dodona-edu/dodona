@@ -109,12 +109,6 @@
       padding-left: 8px;
     }
   }
-
-  // shift the button to make it match the alignment of buttons with btn-outline style
-  &.outline-btn-alignment {
-    padding-left: 8px;
-    padding-right: 18px;
-  }
 }
 
 .btn.btn-outline {
@@ -124,6 +118,17 @@
   &:focus,
   &:active {
     border-color: $primary;
+  }
+
+  // add margin to right to "center" with the disabled button
+  &.align-action-disabled-btn {
+    margin-right: 8px
+  }
+
+  &:disabled {
+    color: $on-surface;
+    border: 1px solid rgba($on-surface, 0.12);
+    opacity: 0.38;
   }
 }
 

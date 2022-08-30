@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.4'
+gem 'puma', '~> 5.6.5'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.1'

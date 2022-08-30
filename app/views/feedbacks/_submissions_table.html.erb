@@ -27,7 +27,7 @@
           <td>
             <%= submission.summary %>
           </td>
-          <td class="actions">
+          <td class="actions submissions-table">
             <% if @feedback.submission&.id == submission.id %>
               <button class="btn btn-outline" disabled>
                 <%= t 'submissions.submissions_table.selected' %>

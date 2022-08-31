@@ -61,14 +61,20 @@
         <div class="form-group input">
           <div class="control-wrapper">
             <div class="input-group input-group-small">
-              <%= button_tag class: "btn btn-icon", type: :button, disabled: true do %>
+              <%= button_tag id: "delete-all-button", class: "btn btn-icon delete-button", type: :button, disabled: @feedback.scores.count == 0 do %>
+                <i class="mdi mdi-delete-outline" aria-hidden='true'></i>
+              <% end %>
+              <input id="score-sum" class="form-control score-input" disabled="disabled" value="<%= format_score @feedback.score %>">
+              <%= button_tag class: "btn btn-icon score-state disabled-with-tooltip",
+                             disabled: true,
+                             type: :button,
+                             title: @feedback.completed ? t('.score_complete_tooltip') : t('.score_incomplete_tooltip') do %>
                 <% if @feedback.completed %>
-                  <i id="completed-button" class="mdi mdi-check" aria-hidden='true'></i>
+                  <i id="completed-icon" class="mdi mdi-check" aria-hidden='true'></i>
                 <% else %>
-                  <i id="completed-button" class="mdi mdi-circle-slice-3" aria-hidden='true'></i>
+                  <i id="completed-icon" class="mdi mdi-circle-slice-3" aria-hidden='true'></i>
                 <% end %>
               <% end %>
-              <input id="score-sum" class="form-control" disabled="disabled" value="<%= format_score @feedback.score %>">
               <%= button_tag class: "btn btn-icon max-text", disabled: true, type: :button do %>
                 / <%= format_score(@feedback.maximum_score) %>
               <% end %>
@@ -128,6 +134,7 @@
     <% siblings = @feedback.siblings %>
     window.dodona.feedbackActions = new window.dodona.FeedbackActions({
         currentURL: <%= raw feedback_url(@feedback).to_json %>,
+        deleteScoresURL: <%= raw scores_feedback_url(@feedback).to_json %>,
         feedbackId: <%= @feedback.id %>,
         nextURL: <%= raw (siblings[:next].present? ? feedback_url(siblings[:next]) : nil).to_json %>,
         nextUnseenURL: <%= raw (siblings[:next_unseen].present? ? feedback_url(siblings[:next_unseen]) : nil).to_json %>,

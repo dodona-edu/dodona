@@ -123,7 +123,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
 
         document.getElementById("submission-copy-btn").addEventListener("click", () => {
-            // TODO: why is codeListing undefined???
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             // eslint-disable-next-line no-undef
@@ -221,6 +220,12 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }).then(resp => Promise.all([resp.ok, resp.text()])).then(([ok, data]) => {
             if (ok) {
                 document.getElementById("submission-wrapper").innerHTML = data;
+                // .innerHTML does not execute the <script> tags. We execute them manually using eval
+                const scripts = document.getElementById("submission-wrapper").getElementsByTagName("script");
+                for (const script of scripts) {
+                    eval(script.innerHTML);
+                }
+
                 initTooltips();
             } else {
                 document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`;

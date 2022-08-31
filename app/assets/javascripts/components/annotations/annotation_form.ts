@@ -7,6 +7,7 @@ import { watchMixin } from "components/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -49,6 +50,10 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     annotationText = "";
     @property({ state: true })
     savedAnnotationId = "";
+    @property({ state: true })
+    savedAnnotationTitle: string;
+    @property({ state: true })
+    saveAnnotation = false;
 
     inputRef: Ref<HTMLTextAreaElement> = createRef();
 
@@ -101,10 +106,13 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                 return; // Something is wrong, abort.
             }
 
-            console.log({ text: this.annotationText, savedAnnotationId: this.savedAnnotationId });
-
             const event = new CustomEvent("submit", {
-                detail: { text: this.annotationText, savedAnnotationId: this.savedAnnotationId },
+                detail: {
+                    text: this.annotationText,
+                    savedAnnotationId: this.savedAnnotationId,
+                    savedAnnotationTitle: this.savedAnnotationTitle,
+                    saveAnnotation: this.saveAnnotation,
+                },
                 bubbles: true,
                 composed: true
             });
@@ -126,8 +134,21 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         }
     }
 
+    handleUpdateTitle(e: Event): void {
+        this.savedAnnotationTitle = (e.target as HTMLInputElement).value;
+        e.stopPropagation();
+    }
+
     firstUpdated(): void {
         this.inputRef.value.focus();
+    }
+
+    toggleSaveAnnotation(): void {
+        this.saveAnnotation = !this.saveAnnotation;
+        if (this.saveAnnotation && !this.savedAnnotationTitle) {
+            // Take the first five words, with a max of 40 chars as default title
+            this.savedAnnotationTitle = this.annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
+        }
     }
 
     render(): TemplateResult {
@@ -167,6 +188,23 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                         </span>
                     </div>
                 </div>
+                <div class="field form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">
+                        <label class="form-check-label" for="check-save-annotation">
+                            ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
+                        </label>
+                    </div>
+                </div>
+                ${ this.saveAnnotation ? html`
+                    <div class="field form-group">
+                        <label class="form-label">
+                            ${I18n.t("js.saved_annotation.title")}
+                        </label>
+                        <input required="required" class="form-control" type="text"
+                               @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle}>
+                    </div>
+                ` : html``}
                 <div class="annotation-submission-button-container">
                     ${this.annotation && this.annotation.removable ? html`
                         <button class="btn btn-text annotation-control-button annotation-delete-button"

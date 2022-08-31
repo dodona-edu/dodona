@@ -57,7 +57,7 @@ export async function fetchSavedAnnotation(id: number): Promise<SavedAnnotation>
     return savedAnnotationsById.get(id);
 }
 
-export async function createSavedAnnotation(data: { from: number, saved_annotation: SavedAnnotation} ): Promise<number> {
+export async function createSavedAnnotation(data: { from: number, saved_annotation: {title: string, annotation_text: string}} ): Promise<number> {
     const url = `${URL}.json`;
     const response = await fetch(url, {
         method: "post",

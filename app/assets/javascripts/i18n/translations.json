@@ -281,7 +281,7 @@
         },
         "new": {
           "button_title": "Save comment",
-          "errors": "%{count} errors prevented saving",
+          "errors": "%{count} errors prevented saving this comment for reuse",
           "linked": "This comment is linked to the saved comment: %{title}",
           "save": "Save",
           "title": "Save comment for re-use"
@@ -343,7 +343,8 @@
         "delete_confirm": "Are you sure you want to delete this comment?",
         "edit": "Edit comment",
         "fields": {
-          "annotation_text": "Comment"
+          "annotation_text": "Comment",
+          "saved_annotation_title": "Save annotation for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "meta": "%{user} · %{time}",
@@ -714,7 +715,7 @@
         },
         "new": {
           "button_title": "Opmerking opslaan",
-          "errors": "%{count} errors verhinderen het opslaan",
+          "errors": "%{count} errors verhinderen het opslaan van deze opmerking voor hergebruik",
           "linked": "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}",
           "save": "Opslaan",
           "title": "Opmerking opslaan om later te hergebruiken"
@@ -776,7 +777,8 @@
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",
         "edit": "Opmerking bewerken",
         "fields": {
-          "annotation_text": "Opmerking"
+          "annotation_text": "Opmerking",
+          "saved_annotation_title": "Sla opmerking op om te hergebruiken"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "meta": "%{user} · %{time}",

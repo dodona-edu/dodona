@@ -58,7 +58,7 @@ export class UserAnnotation extends Annotation {
     private readonly __rawText: string;
     public readonly released: boolean;
     public readonly evaluationId: number | null;
-    private readonly __savedAnnotationId: number | null;
+    private __savedAnnotationId: number | null;
     public readonly url: string;
     public readonly user: UserAnnotationUserData;
     public readonly lastUpdatedBy: UserAnnotationUserData;
@@ -114,6 +114,10 @@ export class UserAnnotation extends Annotation {
 
     public get savedAnnotationId(): number | null {
         return this.__savedAnnotationId;
+    }
+
+    public set savedAnnotationId(sa: number | null) {
+        this.__savedAnnotationId = sa;
     }
 
     public get removable(): boolean {

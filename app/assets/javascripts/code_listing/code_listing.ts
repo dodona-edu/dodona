@@ -9,6 +9,8 @@ import {
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 import "components/saved_annotations/saved_annotation_input";
 import { AnnotationForm } from "components/annotations/annotation_form";
+import { createSavedAnnotation } from "state/SavedAnnotations";
+import { html } from "lit";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -384,6 +386,7 @@ export class CodeListing {
                 const mode = this.questionMode ? "question" : "annotation";
                 const annotation = await createUserAnnotation(annotationData, this.submissionId,
                     (a, cb) => this.createUpdateAnnotationForm(a, cb), mode);
+                await this.createSavedAnnotation(annotation, e.detail);
                 this.addAnnotation(annotation);
                 annotationForm.remove();
             } catch (err) {
@@ -414,7 +417,8 @@ export class CodeListing {
             };
 
             try {
-                const updated = await annotation.update(annotationData);
+                const updated = await annotation.update(annotationData) as UserAnnotation;
+                await this.createSavedAnnotation(updated, e.detail);
                 this.updateAnnotation(annotation, updated);
                 // Ask MathJax to search for math in the annotations
                 window.MathJax.typeset();
@@ -428,6 +432,22 @@ export class CodeListing {
         annotationForm.addEventListener("delete", () => annotation.remove().then(() => this.removeAnnotation(annotation)));
 
         return annotationForm;
+    }
+
+    private async createSavedAnnotation(from: UserAnnotation, eventDetail: { savedAnnotationTitle: string, text: string, saveAnnotation: boolean }): Promise<void> {
+        if (eventDetail.saveAnnotation) {
+            try {
+                from.savedAnnotationId = await createSavedAnnotation({
+                    from: from.id,
+                    saved_annotation: {
+                        title: eventDetail.savedAnnotationTitle,
+                        annotation_text: eventDetail.text,
+                    }
+                });
+            } catch (errors) {
+                alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+            }
+        }
     }
 
     private handleAnnotateGlobal(): void {

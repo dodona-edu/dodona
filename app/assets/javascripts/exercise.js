@@ -56,7 +56,16 @@ function initLightboxes() {
 }
 
 function centerImagesAndTables() {
-    $(".activity-description p > img").parent().wrapInner("<center></center>");
+    new Set(Array.from(document.querySelectorAll(".activity-description p > img"), el => el.parentNode))
+        .forEach(parent => {
+            // create center element
+            const center = document.createElement("center");
+            // add all the images to the center element
+            center.append(...parent.children);
+            // set the center element as only child of parent
+            parent.innerHTML = "";
+            parent.appendChild(center);
+        });
     $(".activity-description > table").wrap("<center></center>");
     $(".activity-description > iframe").wrap("<center></center>");
 }
@@ -107,7 +116,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
 
         // submit source code if button is clicked on editor panel
-        document.getElementById("editor-process-btn").addEventListener("click", () => {
+        document.getElementById("editor-process-btn")?.addEventListener("click", () => {
             if (!loggedIn) return;
             // test submitted source code
             const source = editor.getValue();
@@ -122,14 +131,14 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 });
         });
 
-        document.getElementById("submission-copy-btn").addEventListener("click", () => {
+        document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
             // eslint-disable-next-line no-undef
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
-        document.getElementById("activity-handin-link").addEventListener("shown.bs.tab", () => {
+        document.getElementById("activity-handin-link")?.addEventListener("shown.bs.tab", () => {
             // refresh editor after show
             editor.resize(true);
         });

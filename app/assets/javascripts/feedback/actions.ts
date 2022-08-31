@@ -3,6 +3,7 @@ import ScoreForm from "feedback/score";
 
 interface ActionOptions {
     currentURL: string;
+    deleteScoresURL: string;
     feedbackId: string;
     nextURL: string | null;
     nextUnseenURL: string | null;
@@ -31,6 +32,7 @@ export default class FeedbackActions {
     private readonly allScoresMaxButton: HTMLButtonElement | null;
     private readonly scoreSumElement: HTMLInputElement | null;
     private readonly completedIcon: HTMLButtonElement | null;
+    private readonly deleteAllButton: HTMLButtonElement | null;
 
     private scoreForms: ScoreForm[];
     // ID's of the score forms that are updating.
@@ -50,7 +52,8 @@ export default class FeedbackActions {
         this.skipCompletedCheckBox = document.getElementById("skip-completed") as HTMLInputElement;
 
         this.scoreSumElement = document.getElementById("score-sum") as HTMLInputElement;
-        this.completedIcon = document.getElementById("completed-button") as HTMLButtonElement;
+        this.completedIcon = document.getElementById("completed-icon") as HTMLButtonElement;
+        this.deleteAllButton = document.getElementById("delete-all-button") as HTMLButtonElement;
 
         // Score forms
         this.scoreForms = [];
@@ -100,10 +103,10 @@ export default class FeedbackActions {
         this.scoreForms.forEach(s => s.disableInputs());
     }
 
-    update(data: Record<string, unknown>): Promise<void> {
+    doRequest(method: string, url: string, data: Record<string, unknown>): Promise<void> {
         this.disableInputs();
-        return fetch(this.options.currentURL, {
-            method: "PATCH",
+        return fetch(url, {
+            method: method,
             body: JSON.stringify({ feedback: data }),
             headers: {
                 "Content-Type": "application/json",
@@ -120,6 +123,14 @@ export default class FeedbackActions {
                 await this.refresh();
             }
         });
+    }
+
+    update(data: Record<string, unknown>): Promise<void> {
+        return this.doRequest("PATCH", this.options.currentURL, data);
+    }
+
+    delete(data: Record<string, unknown>): Promise<void> {
+        return this.doRequest("DELETE", this.options.deleteScoresURL, data);
     }
 
     async refresh(warning = ""): Promise<void> {
@@ -158,6 +169,7 @@ export default class FeedbackActions {
         // Only update the total if we have a total.
         if (this.scoreSumElement) {
             this.scoreSumElement.value = newTotal;
+            this.deleteAllButton.disabled = this.scoreForms.every(form => form.data === "");
         }
 
         if (this.completedIcon) {
@@ -189,7 +201,7 @@ export default class FeedbackActions {
         this.nextFeedbackAction = async () => {
             if (autoMark && hasAutoMark) {
                 await this.update({
-                    completed: true
+                    completed: true,
                 });
             }
             if (skipCompleted) {
@@ -205,7 +217,6 @@ export default class FeedbackActions {
                 return;
             }
             this.disableInputs();
-            console.log(this.updatingForms);
             // Wait for score updates before going away.
             if (this.updatingForms.size > 0) {
                 this.nextAfterScoreUpdate = true;
@@ -240,7 +251,7 @@ export default class FeedbackActions {
                 f.data = "0";
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
-            await this.update({
+            this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
@@ -253,10 +264,21 @@ export default class FeedbackActions {
                 f.data = f.getMax();
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
-            await this.update({
+            this.update({
                 // eslint-disable-next-line camelcase
                 scores_attributes: values
             });
+        });
+        this.deleteAllButton?.addEventListener("click", async e => {
+            e.preventDefault();
+            if (window.confirm(I18n.t("js.score.confirm"))) {
+                this.disableInputs();
+                this.scoreForms.forEach(f => {
+                    f.markBusy();
+                    f.data = "";
+                });
+                this.delete({});
+            }
         });
     }
 }

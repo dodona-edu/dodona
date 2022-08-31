@@ -14,6 +14,8 @@ en:
       result: Result
       summary: Summary
       annotated: This submission has remarks.
+      select: Select
+      selected: Selected
     index:
       title: All submissions
       for: for

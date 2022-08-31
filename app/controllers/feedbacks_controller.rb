@@ -1,7 +1,7 @@
 class FeedbacksController < ApplicationController
   include SeriesHelper
 
-  before_action :set_feedback, only: %i[show edit update]
+  before_action :set_feedback, only: %i[show edit update destroy_scores]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_filter(value, skip_user: true, skip_exercise: true)
@@ -80,6 +80,22 @@ class FeedbacksController < ApplicationController
         format.json { render json: @feedback.errors, status: :unprocessable_entity }
         format.js { render :show, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def destroy_scores
+    # destroy all the scores
+    @feedback.scores.each(&:destroy)
+
+    # update the data for the view to render
+    @feedback = Feedback.find(params[:id])
+    @score_map = @feedback.scores.index_by(&:score_item_id)
+
+    # render the view
+    respond_to do |format|
+      format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
+      format.json { render :show, status: :ok, location: @feedback }
+      format.js { render :show }
     end
   end
 

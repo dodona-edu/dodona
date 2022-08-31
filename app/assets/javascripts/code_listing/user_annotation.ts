@@ -19,6 +19,7 @@ interface UserAnnotationUserData {
 export interface UserAnnotationPermissionData {
     update: boolean;
     destroy: boolean;
+    can_see_annotator: boolean
 }
 
 export interface UserAnnotationData {
@@ -52,8 +53,8 @@ export class UserAnnotation extends Annotation {
     public readonly released: boolean;
     public readonly evaluationId: number | null;
     public readonly url: string;
-    public readonly user: UserAnnotationUserData;
-    public readonly lastUpdatedBy: UserAnnotationUserData;
+    public readonly user: UserAnnotationUserData | undefined;
+    public readonly lastUpdatedBy: UserAnnotationUserData | undefined;
 
     constructor(data: UserAnnotationData,
         editFn: UserAnnotationEditor, type: AnnotationType = "user") {
@@ -85,8 +86,12 @@ export class UserAnnotation extends Annotation {
     }
 
     protected get meta(): string {
+        if (!this.permissions.can_see_annotator) {
+            return I18n.t("js.user_annotation.anonymous_message");
+        }
+
         const timestamp = I18n.l("time.formats.annotation", this.createdAt);
-        const user = this.user.name;
+        const user = this.user!.name;
 
         return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
     }

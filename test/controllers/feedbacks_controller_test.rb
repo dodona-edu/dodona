@@ -80,4 +80,16 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     assert_equal s.id, @feedback.submission_id
     assert_equal 0, @feedback.scores.count
   end
+
+  test 'deleting all the scores of an evaluation works' do
+    create :score, feedback: @feedback, score_item: @score_item1
+    @feedback.reload
+    assert_equal 1, @feedback.scores.count
+
+    delete scores_feedback_path(@feedback)
+
+    @feedback.reload
+
+    assert @feedback.scores.empty?
+  end
 end

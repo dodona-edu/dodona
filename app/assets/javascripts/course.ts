@@ -295,7 +295,7 @@ function initCourseNew(): void {
         document.getElementById("copy-course").addEventListener("click", function () {
             choosePanel.classList.remove("hidden");
             chooseCollapse.show();
-            choosePanel.querySelectorAll<HTMLInputElement>("input[type=\"radio\"]").forEach(el => {
+            choosePanel.querySelectorAll<HTMLInputElement>(`input[type="radio"]`).forEach(el => {
                 el.checked = false;
             });
             formPanel.classList.add("hidden");
@@ -309,7 +309,7 @@ function initCourseNew(): void {
     function copyCoursesLoaded(): void {
         document.querySelectorAll("[data-course_id]").forEach(el => {
             el.addEventListener("click", function () {
-                this.querySelector("input[type=\"radio\"]").checked = true;
+                this.querySelector(`input[type="radio"]`).checked = true;
                 this.closest(".panel")
                     .querySelector(".answer")
                     .textContent = this.dataset.answer;

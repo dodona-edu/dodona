@@ -66,8 +66,19 @@ function centerImagesAndTables() {
             parent.innerHTML = "";
             parent.appendChild(center);
         });
-    $(".activity-description > table").wrap("<center></center>");
-    $(".activity-description > iframe").wrap("<center></center>");
+    // TODO: test if this is works as it should
+    document.querySelectorAll(".activity-description > table").forEach(el => {
+        // create center element
+        const center = document.createElement("center");
+        center.appendChild(el);
+        el.parentNode.replaceChild(center, el);
+    });
+    document.querySelectorAll(".activity-description > iframe").forEach(el => {
+        // create center element
+        const center = document.createElement("center");
+        center.appendChild(el);
+        el.parentNode.replaceChild(center, el);
+    });
 }
 
 function initMathJax() {

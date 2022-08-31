@@ -30,6 +30,8 @@ en:
       evaluation_done: Evaluation completed
       undo: Undo
       waiting_on_score: This solution is not fully graded
+      score_complete_tooltip: All score items have been filled in
+      score_incomplete_tooltip: Not all score items have been filled in
       completed:
         failure: "Could not set state"
       total: "Total"
@@ -38,6 +40,7 @@ en:
     progress_row:
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
     score_actions:
+      score_saved: Score is saved
       give_max_one: "Assign %{score} to this score item"
       give_zero_one: "Assign 0 to this score item"
     overview:

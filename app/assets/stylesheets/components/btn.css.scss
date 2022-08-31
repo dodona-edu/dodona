@@ -126,7 +126,13 @@
   padding: 0;
   color: $on-surface-variant;
 
-  &:not(.btn-icon-filled) {
+  // enable pointer events to enable tooltips to be shown on disabled buttons
+  &.disabled-with-tooltip {
+    pointer-events: auto;
+    cursor: default;
+  }
+
+  &:not(.btn-icon-filled) &:not(.disabled-with-tooltip) {
     &:hover,
     &:focus,
     &:active {

@@ -18,9 +18,9 @@
                              max: score_item.maximum,
                              value: format_score(f.object.score, lang='en', numeric_only=true) %>
 
-          <%= button_tag class: "btn btn-icon score-state", disabled: true, type: :button do %>
+          <%= button_tag class: "btn btn-icon score-state disabled-with-tooltip", disabled: true, type: :button do %>
             <% unless score.score.nil? %>
-              <i class="mdi mdi-check colored-info" aria-hidden='true'></i>
+              <i class="mdi mdi-check colored-info" aria-hidden='true' title="<%= t '.score_saved' %>"></i>
             <% end %>
           <% end %>
           <%= button_tag class: "btn btn-icon max-text", disabled: true, type: :button, data: { max: format_score(score_item.maximum, lang='en', numeric_only=true) } do %>

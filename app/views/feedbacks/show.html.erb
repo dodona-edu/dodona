@@ -12,6 +12,13 @@
     <div class="card" id="feedback-actions-holder">
       <%= render partial: 'feedback_actions', locals: { evaluation: @feedback.evaluation, feedback: @feedback } %>
     </div>
+    <!-- REMOVE IF AFTER CLOSED BETA -->
+    <% if policy(SavedAnnotation).beta_course? @feedback.evaluation.series.course.id %>
+        <d-saved-annotations-sidecard course-id="<%= @feedback.evaluation.series.course.id %>"
+                                 exercise-id="<%= @feedback.exercise.id %>"
+                                 user-id="<%= current_user.id %>"
+        ></d-saved-annotations-sidecard>
+    <% end %>
   </div>
   <div class="col-12 order-lg-0 col-lg-9 feedback-submission">
     <div class="card feedback-show">

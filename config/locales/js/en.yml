@@ -214,6 +214,8 @@ en:
       user: User
       course: Course
       exercise: Exercise
+      sidecard:
+        title: Saved annotations
       form:
         markdown_html: '<a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
         annotation_text_help: Changes to this field will not impact existing annotations.

@@ -286,6 +286,9 @@
           "save": "Save",
           "title": "Save comment for re-use"
         },
+        "sidecard": {
+          "title": "Saved annotations"
+        },
         "title": "Title",
         "user": "User"
       },
@@ -719,6 +722,9 @@
           "linked": "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}",
           "save": "Opslaan",
           "title": "Opmerking opslaan om later te hergebruiken"
+        },
+        "sidecard": {
+          "title": "Opgeslagen opmerkingen"
         },
         "title": "Titel",
         "user": "Gebruiker"

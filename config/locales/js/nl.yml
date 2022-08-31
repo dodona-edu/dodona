@@ -214,6 +214,8 @@ nl:
       user: Gebruiker
       course: Cursus
       exercise: Oefening
+      sidecard:
+        title: Opgeslagen opmerkingen
       form:
         markdown_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
         annotation_text_help: Aanpassingen aan dit veld hebben geen impact op bestaande opmerkingen.

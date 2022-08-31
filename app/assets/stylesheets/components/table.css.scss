@@ -56,6 +56,14 @@
 
 .table-resource .actions {
   text-align: right;
+
+  &.submissions-table {
+    text-align: center;
+
+    // by default the size of the element in the col is used as width if width is smaller than that element.
+    // This width is just here to force everything to the right
+    width: 1px;
+  }
 }
 
 tr.gu-mirror {

@@ -119,6 +119,12 @@
   &:active {
     border-color: $primary;
   }
+
+  &:disabled {
+    color: $on-surface;
+    border: 1px solid rgba($on-surface, 0.12);
+    opacity: 0.38;
+  }
 }
 
 .btn.btn-icon {

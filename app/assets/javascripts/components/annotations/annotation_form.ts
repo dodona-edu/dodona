@@ -75,7 +75,6 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     handleSavedAnnotationInput(e: CustomEvent): void {
         if (e.detail.text) {
             this.annotationText = e.detail.text;
-            console.log(e.detail.text);
         }
         this.savedAnnotationId = e.detail.id;
     }

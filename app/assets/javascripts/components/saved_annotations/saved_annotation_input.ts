@@ -51,7 +51,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
             ["course_id", this.courseId.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()],
-            ["filter", this.label]
+            ["filter", this.__label]
         ]));
     }
 

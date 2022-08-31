@@ -54,6 +54,7 @@ export class SearchQuery {
     appliedIndex = 0;
     arrayQueryParams: QueryParameters<string[]> = new QueryParameters<string[]>();
     queryParams: QueryParameters<string> = new QueryParameters<string>();
+    localStorageKey?: string;
 
     setRefreshElement(refreshElement: string): void {
         this.refreshElement = refreshElement;
@@ -87,13 +88,13 @@ export class SearchQuery {
         }
 
         // initialise present parameters
-        for (const key of url.searchParams.keys()) {
-            if (key.endsWith("[]")) {
-                this.arrayQueryParams.updateParam(key.substring(0, key.length-2), url.searchParams.getAll(key));
-            } else {
-                this.queryParams.updateParam(key, url.searchParams.get(key));
-            }
-        }
+        this.initialiseParams(url.searchParams);
+    }
+
+    setLocalStorageKey(localStorageKey: string): void {
+        this.localStorageKey = localStorageKey;
+        // apply parameters from local storage
+        this.useLocalStorage();
     }
 
     initPagination(): void {
@@ -194,7 +195,70 @@ export class SearchQuery {
                     eval(data);
                 }
                 document.getElementById("progress-filter").style.visibility = "hidden";
+
+                // if there is local storage key => update the value to reuse later
+                if (this.localStorageKey) {
+                    const urlObj = new URL(url);
+                    localStorage.setItem(this.localStorageKey, urlObj.searchParams.toString());
+                }
             });
+    }
+
+    /**
+     * fetch params from localStorage using the localStorageKey if present and apply them to the current url
+     */
+    useLocalStorage() : void {
+        if (this.localStorageKey) {
+            const searchParamsStringFromStorage = localStorage.getItem(this.localStorageKey);
+            if (searchParamsStringFromStorage) {
+                const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
+                // don't overwrite currently set params with params from the localStorage
+                searchParamsFromStorage.forEach((_value: string, key:string) => {
+                    if (this.queryParams.params.get(key) !== undefined ||
+                        (this.isArrayQueryParamsKey(key) &&
+                            this.arrayQueryParams.params.get(this.extractArrayQueryParamsKey(key)) !== undefined)) {
+                        searchParamsFromStorage.delete(key);
+                    }
+                });
+
+                this.initialiseParams(searchParamsFromStorage);
+            }
+        }
+    }
+
+    /**
+     * @param {URLSearchParams} searchParams the obj whose params we want to use
+     *
+     * apply the param values from the URLSearchParams obj to the current queryParams and arrayQueryParams
+     */
+    initialiseParams(searchParams: URLSearchParams) : void {
+        for (const key of searchParams.keys()) {
+            if (this.isArrayQueryParamsKey(key)) {
+                this.arrayQueryParams.updateParam(this.extractArrayQueryParamsKey(key), searchParams.getAll(key));
+            } else {
+                this.queryParams.updateParam(key, searchParams.get(key));
+            }
+        }
+    }
+
+    /**
+     *
+     * @param {string} key the key value stored in the url
+     * @private
+     * @return {boolean} true if the key ends with [] otherwise false
+     */
+    private isArrayQueryParamsKey(key: string): boolean {
+        return key.endsWith("[]");
+    }
+
+    /**
+     *
+     * @param {string} key the key value stored in the url
+     * @private
+     * @return {string} the key without the [] at the end
+     */
+    private extractArrayQueryParamsKey(key: string): string {
+        return key.substring(0, key.length-2);
     }
 }
 

@@ -51,6 +51,6 @@ class Provider::GSuite < Provider
     # We want to display gmail for private accounts
     return 'Gmail' if institution.nil?
 
-    super.readable_name
+    super
   end
 end

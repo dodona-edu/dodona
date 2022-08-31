@@ -193,7 +193,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
-            "body": data,
         });
     }
 
@@ -368,7 +367,26 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (message === undefined) {
             message = I18n.t("js.submission-failed");
         }
-        $("<div style=\"display:none\" class=\"alert alert-danger alert-dismissible\"> <button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"alert\"></button>" + message + "</div>").insertBefore("#editor-window").show("fast");
+
+        // create the div that will house the message
+        const newDiv = document.createElement("div");
+        newDiv.style.display = "none";
+        newDiv.classList.add("alert", "alert-danger", "alert-dismissible");
+        newDiv.innerText = message;
+
+        // create the button that will be in the div
+        const newButton = document.createElement("button");
+        newButton.type = "button";
+        newButton.classList.add("btn-close", "btn-close-white");
+        newButton.setAttribute("data-bs-dismiss", "alert");
+
+        // place the button in the div and the div in the right place in the document
+        newDiv.appendChild(newButton);
+        const referenceEl = document.getElementById("editor-window");
+        referenceEl.parentElement.insertBefore(newDiv, referenceEl);
+
+        // make visible
+        newDiv.style.display = "block";
         enableSubmitButton();
     }
 

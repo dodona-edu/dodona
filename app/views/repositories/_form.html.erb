@@ -1,4 +1,7 @@
 <%= form_for(repository, :html => {:class => 'form-horizontal'}) do |f| %>
+  <div class="callout callout-info">
+    <%= t 'repositories.new.help_html' %>
+  </div>
   <% if repository.errors.any? %>
     <div class="callout callout-danger" id="error_explanation">
       <h4><%= t('errors.validation_errors', :count => repository.errors.count) %></h4>

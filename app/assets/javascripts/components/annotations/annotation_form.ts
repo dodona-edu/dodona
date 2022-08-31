@@ -131,66 +131,74 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return html`
-            <form class="annotation-submission">
-                <textarea autofocus
-                          required
-                          class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
-                          .rows=${this.rows}
-                          minlength="1"
-                          .maxlength=${maxLength}
-                          .value=${this.annotationText}
-                          ${ref(this.inputRef)}
-                          @keydown="${e => this.handleKeyDown(e)}"
-                          @input="${() => this.handleTextInput()}"
-                ></textarea>
-                <div class="clearfix annotation-help-block">
-                    <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
-                    <span class="help-block float-end">
-                        <span class="used-characters">${I18n.numberToDelimited(this.annotationText.length)}</span> / ${I18n.numberToDelimited(maxLength)}
-                    </span>
-                </div>
-                <div class="annotation-controls-block">
-                    ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+        const form = html`
+            <form class="annotation-submission form">
+                ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                         <d-saved-annotation-input
                             name="saved_annotation_id"
                             course-id="${this.courseId}"
                             exercise-id="${this.exerciseId}"
                             user-id="${this.userId}"
-                            class="saved-annotation-input annotation-submission-button-container"
+                            class="saved-annotation-input"
                             .value=${this.savedAnnotationId}
-                            title="${I18n.t("js.saved_annotation.input.title")}"
                             annotation-text="${this.annotationText}"
                             @input="${e => this.handleSavedAnnotationInput(e)}"
                         ></d-saved-annotation-input>
                     `}
-                    <span class="annotation-submission-button-container">
-                        ${this.annotation && this.annotation.removable ? html`
-                            <button class="btn btn-text annotation-control-button annotation-delete-button"
-                                    type="button"
-                                    @click="${() => this.handleDelete()}"
-                                    .disabled=${this.disabled}
-                            >
-                               ${I18n.t("js.user_annotation.delete")}
-                            </button>
-                        ` : ""}
-                        <button class="btn btn-text annotation-control-button annotation-cancel-button"
+                <div class="field form-group">
+                    <label class="form-label">
+                        ${I18n.t("js.user_annotation.fields.annotation_text")}
+                    </label>
+                    <textarea autofocus
+                              required
+                              class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
+                              .rows=${this.rows}
+                              minlength="1"
+                              .maxlength=${maxLength}
+                              .value=${this.annotationText}
+                              ${ref(this.inputRef)}
+                              @keydown="${e => this.handleKeyDown(e)}"
+                              @input="${() => this.handleTextInput()}"
+                    ></textarea>
+                    <div class="clearfix annotation-help-block">
+                        <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
+                        <span class="help-block float-end">
+                            <span class="used-characters">${I18n.numberToDelimited(this.annotationText.length)}</span> / ${I18n.numberToDelimited(maxLength)}
+                        </span>
+                    </div>
+                </div>
+                <div class="annotation-submission-button-container">
+                    ${this.annotation && this.annotation.removable ? html`
+                        <button class="btn btn-text annotation-control-button annotation-delete-button"
                                 type="button"
-                                @click="${() => this.handleCancel()}"
+                                @click="${() => this.handleDelete()}"
                                 .disabled=${this.disabled}
                         >
-                            ${I18n.t("js.user_annotation.cancel")}
+                           ${I18n.t("js.user_annotation.delete")}
                         </button>
-                        <button class="btn btn-filled annotation-control-button annotation-submission-button"
-                                type="button"
-                                @click="${() => this.handleSubmit()}"
-                                .disabled=${this.disabled}
-                        >
-                            ${this.annotation !== null ? I18n.t(`js.${this.type}.update`) : I18n.t(`js.${this.type}.send`)}
-                        </button>
-                    </span>
+                    ` : ""}
+                    <button class="btn btn-text annotation-control-button annotation-cancel-button"
+                            type="button"
+                            @click="${() => this.handleCancel()}"
+                            .disabled=${this.disabled}
+                    >
+                        ${I18n.t("js.user_annotation.cancel")}
+                    </button>
+                    <button class="btn btn-filled annotation-control-button annotation-submission-button"
+                            type="button"
+                            @click="${() => this.handleSubmit()}"
+                            .disabled=${this.disabled}
+                    >
+                        ${this.annotation !== undefined ? I18n.t(`js.${this.type}.update`) : I18n.t(`js.${this.type}.send`)}
+                    </button>
                 </div>
             </form>
+        `;
+
+        return this.annotation !== undefined ? form : html`
+            <div class="annotation user">
+                ${form}
+            </div>
         `;
     }
 }

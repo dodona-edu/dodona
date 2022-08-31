@@ -277,7 +277,7 @@
           "edited": "The current comment differs from the saved comment",
           "link": "Manage saved comments",
           "placeholder": "Search saved comment",
-          "title": "Saved comment that is reused for this comment"
+          "title": "Reuse a saved comment"
         },
         "new": {
           "button_title": "Save comment",
@@ -710,7 +710,7 @@
           "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
           "link": "Beheer opgeslagen opmerkingen",
           "placeholder": "Zoek opgeslagen opmerking",
-          "title": "Opgeslagen opmerking die hergebruikt wordt voor deze opmerking"
+          "title": "Hergebruik een opgeslagen opmerking"
         },
         "new": {
           "button_title": "Opmerking opslaan",

@@ -232,7 +232,7 @@ en:
         confirm: 'Are you sure you want to delete this saved comment?'
       input:
         placeholder: Search saved comment
-        title: 'Saved comment that is reused for this comment'
+        title: 'Reuse a saved comment'
         link: Manage saved comments
         edited: The current comment differs from the saved comment
 

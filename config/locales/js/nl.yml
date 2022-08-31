@@ -232,7 +232,7 @@ nl:
         confirm: 'Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?'
       input:
         placeholder: Zoek opgeslagen opmerking
-        title: 'Opgeslagen opmerking die hergebruikt wordt voor deze opmerking'
+        title: 'Hergebruik een opgeslagen opmerking'
         link: Beheer opgeslagen opmerkingen
         edited: De huidige opmerking verschilt van de opgeslagen opmerking
 

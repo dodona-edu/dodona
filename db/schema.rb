@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_05_24_123721) do
+ActiveRecord::Schema[7.0].define(version: 2022_08_30_124315) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -298,6 +298,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_123721) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "identifier_based_on_email", default: false, null: false
+    t.boolean "identifier_based_on_username", default: false, null: false
     t.index ["provider_id", "identifier"], name: "index_identities_on_provider_id_and_identifier", unique: true
     t.index ["provider_id", "user_id"], name: "index_identities_on_provider_id_and_user_id", unique: true
     t.index ["user_id"], name: "fk_rails_5373344100"
@@ -356,7 +358,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_05_24_123721) do
 
   create_table "providers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "type", default: "Provider::Saml", null: false
-    t.bigint "institution_id", null: false
+    t.bigint "institution_id"
     t.string "identifier"
     t.text "certificate", size: :medium
     t.string "entity_id"

@@ -55,6 +55,14 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
         ]));
     }
 
+    get potentialSavedAnnotationsExist(): boolean {
+        return getSavedAnnotations(new Map([
+            ["course_id", this.courseId.toString()],
+            ["exercise_id", this.exerciseId.toString()],
+            ["user_id", this.userId.toString()]
+        ])).length > 0;
+    }
+
     get selectedAnnotation(): SavedAnnotation {
         return this.savedAnnotations.find(sa => sa.id.toString() === this.value);
     }
@@ -85,26 +93,31 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return html`
-            <div class="position-relative">
-                <d-datalist-input
-                    name="${this.name}"
-                    .options=${this.options}
-                    .value=${this.value}
-                    @input="${e => this.processInput(e)}"
-                    placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
-                ></d-datalist-input>
-                ${ this.selectedAnnotation && this.selectedAnnotation.annotation_text !== this.annotationText ? html`
-                    <i
-                        class="mdi mdi-not-equal-variant colored-info position-absolute"
-                        style="left: 165px; top: 3px;"
-                        title="${I18n.t("js.saved_annotation.input.edited")}"
-                    ></i>
-                ` : ""}
+        return this.potentialSavedAnnotationsExist ? html`
+            <div class="field form-group">
+                <label class="form-label">
+                    ${I18n.t("js.saved_annotation.input.title")}
+                </label>
+                <div class="position-relative">
+                    <d-datalist-input
+                        name="${this.name}"
+                        .options=${this.options}
+                        .value=${this.value}
+                        @input="${e => this.processInput(e)}"
+                        placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
+                    ></d-datalist-input>
+                    ${ this.selectedAnnotation && this.selectedAnnotation.annotation_text !== this.annotationText ? html`
+                        <i
+                            class="mdi mdi-not-equal-variant colored-info position-absolute"
+                            style="left: 165px; top: 3px;"
+                            title="${I18n.t("js.saved_annotation.input.edited")}"
+                        ></i>
+                    ` : ""}
+                </div>
+                <div class="help-block">
+                    <a  href="/saved_annotations" target="_blank">${I18n.t("js.saved_annotation.input.link")}</a>
+                </div>
             </div>
-            <span class="help-block">
-                <a  href="/saved_annotations" target="_blank">${I18n.t("js.saved_annotation.input.link")}</a>
-            </span>
-        `;
+        ` : html``;
     }
 }

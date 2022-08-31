@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.4'
+gem 'puma', '~> 5.6.5'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.1'
@@ -76,7 +76,7 @@ gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.4.0'
 
 # Json webtokens
-gem 'jwt', '~> 2.4.1'
+gem 'jwt', '~> 2.5.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -102,7 +102,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.0.0'
+gem 'i18n-js', '~> 4.0.1'
 gem 'rails-i18n', '~> 7.0.5'
 
 # email exceptions
@@ -136,9 +136,9 @@ gem 'faker', '~> 2.22.0'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.20'
+gem 'stackprof', '~> 0.2.21'
 
-gem 'ddtrace', '~> 1.3.0'
+gem 'ddtrace', '~> 1.4.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'

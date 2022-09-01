@@ -43,6 +43,12 @@
                 <span><%= t ".clone_failed" %></span>
               </div>
             <% end %>
+            <% if @repository.exercises.empty? && @repository.content_pages.empty? %>
+              <div class="callout callout-info">
+                <h4><%= t '.empty_repo_title' %></h4>
+                <%= t '.empty_repo_help_html' %>
+              </div>
+            <% end %>
             <div class="callout callout-info">
               <h4>Webhook</h4>
               <p><%= t ".webhook_html" %></p>

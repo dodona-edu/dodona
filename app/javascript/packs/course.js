@@ -6,7 +6,7 @@ import {
     initCourseShow,
     initCoursesListing,
     loadUsers,
-} from "course.js";
+} from "course.ts";
 
 import {
     RefreshingQuestionTable,

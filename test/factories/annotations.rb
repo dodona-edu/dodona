@@ -26,5 +26,11 @@ FactoryBot.define do
       # Only the submitter can create questions
       before(:create) { |question| question.user = question.submission.user }
     end
+
+    trait :with_evaluation do
+      evaluation do
+        create :evaluation
+      end
+    end
   end
 end

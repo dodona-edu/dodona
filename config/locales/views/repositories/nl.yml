@@ -13,8 +13,11 @@ nl:
       admin: "Je bent beheerder van deze repository"
     new:
       title: Een repository met oefeningen toevoegen
+      help_html: "Een handleiding met meer informatie over het beheren van een repository kan je in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>onze documentatie</a> terugvinden."
     show:
       repository: Repository
+      empty_repo_title: "Aan de slag"
+      empty_repo_help_html: "We zien dat je repository leeg is, leer hoe je oefeningen aan je repository kunt toevoegen in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>onze documentatie</a>."
       webhook_html: "Stel op GitHub een <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> in zodat de oefeningen op Dodona automatisch geüpdatet worden bij elke commit:"
       reprocess: Repository herverwerken
       exercises: Oefeningen

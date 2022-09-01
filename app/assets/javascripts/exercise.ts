@@ -66,17 +66,20 @@ function centerImagesAndTables(): void {
             parent.innerHTML = "";
             parent.appendChild(center);
         });
-    // TODO: test if this is works as it should
     document.querySelectorAll(".activity-description > table").forEach(el => {
         // create center element
         const center = document.createElement("center");
+        // replace the current element with the new center element
         el.parentNode.replaceChild(center, el);
+        // set the current element as child of the center element (aka center wraps around current element)
         center.appendChild(el);
     });
     document.querySelectorAll(".activity-description > iframe").forEach(el => {
         // create center element
         const center = document.createElement("center");
+        // replace the current element with the new center element
         el.parentNode.replaceChild(center, el);
+        // set the current element as child of the center element (aka center wraps around current element)
         center.appendChild(el);
     });
 }

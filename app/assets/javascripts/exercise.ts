@@ -1,6 +1,6 @@
 /* globals ace */
-import {initTooltips, updateURLParameter} from "util.js";
-import {Toast} from "./toast";
+import { initTooltips, updateURLParameter } from "util.js";
+import { Toast } from "./toast";
 import GLightbox from "glightbox";
 
 function showLightbox(content): void {
@@ -99,7 +99,7 @@ function initMathJax(): void {
                 color: [],
                 colorV2: ["color"]
             },
-            packages: {"[+]": ["noerrors"]}
+            packages: { "[+]": ["noerrors"] }
         },
         options: {
             ignoreHtmlClass: "feedback-table",
@@ -399,7 +399,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         newDiv.classList.add("alert", "alert-danger", "alert-dismissible");
 
         // add button and text message to the div
-        newDiv.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${message}`
+        newDiv.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${message}`;
 
         // add div to the right place in the window
         const editorWindow = document.getElementById("editor-window");

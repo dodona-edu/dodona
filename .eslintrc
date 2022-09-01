@@ -40,7 +40,7 @@
     "no-invalid-this": "warn",
     "no-param-reassign": ["error", { "props": false }],
     "object-curly-spacing": ["error", "always"],
-    "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+    "quotes": ["error", "double"],
     "require-jsdoc": "off",
     "valid-jsdoc": "off",
     "space-before-function-paren": [

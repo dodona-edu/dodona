@@ -124,8 +124,8 @@ class Series {
 
     reselect(card: HTMLElement): void {
         this.url = card.dataset.seriesUrl;
-        const table_wrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
-        const skeleton = table_wrapper?.querySelector(SKELETON_TABLE_SELECTOR);
+        const tableWrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
+        const skeleton = tableWrapper?.querySelector(SKELETON_TABLE_SELECTOR);
         this.loaded = skeleton === null;
         this.loading = false;
         this._top = card.getBoundingClientRect().top + window.scrollY;

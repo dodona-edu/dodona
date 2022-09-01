@@ -212,10 +212,9 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         return fetch("/submissions.json", {
             "method": "POST",
             "headers": {
-                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
-            "body": data,
         });
     }
 
@@ -229,12 +228,12 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function loadFeedback(url, submissionId): void {
-        document.getElementById("submission-wrapper").innerHTML = "<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>";
+        document.getElementById("submission-wrapper").innerHTML = `<center><i class="mdi mdi-loading mdi-spin"></i></center>`;
         feedbackLoaded(submissionId);
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin",
@@ -282,7 +281,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     fetch(url, {
                         headers: {
                             "accept": "text/javascript",
-                            "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                            "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                             "x-requested-with": "XMLHttpRequest",
                         },
                         credentials: "same-origin" })
@@ -354,7 +353,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         fetch(url, {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": document.querySelector("meta[name=\"csrf-token\"]").getAttribute("content"),
+                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin" })
@@ -393,18 +392,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         const newDiv = document.createElement("div");
         newDiv.style.display = "none";
         newDiv.classList.add("alert", "alert-danger", "alert-dismissible");
-        newDiv.innerText = message;
 
-        // create the button that will be in the div
-        const newButton = document.createElement("button");
-        newButton.type = "button";
-        newButton.classList.add("btn-close", "btn-close-white");
-        newButton.setAttribute("data-bs-dismiss", "alert");
+        // add button and text message to the div
+        newDiv.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${message}`
 
-        // place the button in the div and the div in the right place in the document
-        newDiv.appendChild(newButton);
-        const referenceEl = document.getElementById("editor-window");
-        referenceEl.parentElement.insertBefore(newDiv, referenceEl);
+        // add div to the right place in the window
+        const editorWindow = document.getElementById("editor-window");
+        editorWindow.parentElement.insertBefore(newDiv, editorWindow);
 
         // make visible
         newDiv.style.display = "block";

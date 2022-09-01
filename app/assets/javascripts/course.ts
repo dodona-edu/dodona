@@ -126,7 +126,8 @@ class Series {
         this.url = card.dataset.seriesUrl;
         const tableWrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
         const skeleton = tableWrapper?.querySelector(SKELETON_TABLE_SELECTOR);
-        this.loaded = skeleton === null;
+        // if tableWrapper is null the series is empty (no activities) => series is always loaded
+        this.loaded = skeleton === null || tableWrapper === null;
         this.loading = false;
         this._top = card.getBoundingClientRect().top + window.scrollY;
         this._bottom = this.top + card.getBoundingClientRect().height;

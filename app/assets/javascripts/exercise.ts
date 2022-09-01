@@ -116,10 +116,10 @@ function initExerciseDescription(): void {
     centerImagesAndTables();
 }
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline, baseSubmissionsUrl): void {
+function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string): void {
     let editor;
-    let lastSubmission;
-    let lastTimeout;
+    let lastSubmission: string;
+    let lastTimeout: number;
 
     function init(): void {
         if (editorShown) {
@@ -140,9 +140,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                     if (response.ok) {
                         submissionSuccessful(await response.json(), document.getElementById("editor-process-btn").dataset.user_id);
                     } else {
-                        submissionFailed(response);
+                        const message = await getErrorMessage(response);
+                        submissionFailed(message);
                     }
-                });
+                }).catch(() => submissionFailed(I18n.t("js.submission-network"))); // fetch only fails promise because of network issues
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
@@ -203,11 +204,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function submitSolution(code): Promise<Response> {
+    function submitSolution(code: string): Promise<Response> {
         const data = new FormData();
         data.append("submission[code]", code);
-        data.append("submission[exercise_id]", exerciseId);
-        data.append("submission[course_id]", courseId);
+        data.append("submission[exercise_id]", exerciseId?.toString());
+        data.append("submission[course_id]", courseId?.toString());
 
         return fetch("/submissions.json", {
             "method": "POST",
@@ -219,7 +220,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function feedbackLoaded(submissionId): void {
+    function feedbackLoaded(submissionId: string): void {
         document.getElementById("feedback").classList.remove("hidden");
         const exerciseFeedbackLink = document.getElementById("activity-feedback-link");
         exerciseFeedbackLink.classList.remove("hidden");
@@ -228,7 +229,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         exerciseFeedbackLink.setAttribute("data-submission_id", submissionId);
     }
 
-    function loadFeedback(url, submissionId): void {
+    function loadFeedback(url: string, submissionId: string): void {
         document.getElementById("submission-wrapper").innerHTML = `<center><i class="mdi mdi-loading mdi-spin"></i></center>`;
         feedbackLoaded(submissionId);
         fetch(updateURLParameter(url, "format", "js"), {
@@ -266,7 +267,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function feedbackTableLoaded(userId, exerciseId, courseId): void {
+    function feedbackTableLoaded(userId: number, exerciseId: number, courseId: number): void {
         enableSubmissionTableLinks();
         if (lastSubmission) {
             const submissionRow = document.getElementById("submission_" + lastSubmission);
@@ -320,7 +321,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         btn.classList.add("busy", "mdi-timer-sand-empty", "mdi-spin");
     }
 
-    function showFABStatus(status): void {
+    function showFABStatus(status: string): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
         icon.classList.remove("mdi-pencil");
@@ -347,8 +348,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
     }
 
-    function submissionSuccessful(data, userId): void {
-        lastSubmission = data.id;
+    function submissionSuccessful(data: {status: string, id: number, exercise_id: number, course_id: number, url: string}, userId: string): void {
+        lastSubmission = data.id.toString();
         new Toast(I18n.t("js.submission-saved"));
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
@@ -368,13 +369,11 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         tab.show();
     }
 
-    function submissionFailed(request): void {
+    async function getErrorMessage(request: Response): Promise<string> {
         let message;
-        if (request.readyState === 0) {
-            message = I18n.t("js.submission-network");
-        } else if (request.status === 422) {
+        if (request.status === 422) {
             try {
-                const response = JSON.parse(request.responseText);
+                const response = JSON.parse(await request.text());
                 const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");
@@ -392,7 +391,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (message === undefined) {
             message = I18n.t("js.submission-failed");
         }
+        return message;
+    }
 
+    function submissionFailed(message: string): void {
         // create the div that will house the message
         const newDiv = document.createElement("div");
         newDiv.style.display = "none";

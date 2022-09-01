@@ -215,6 +215,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
+            "body": data
         });
     }
 

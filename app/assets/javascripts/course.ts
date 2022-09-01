@@ -129,7 +129,7 @@ class Series {
         this.card = card;
         this.url = this.card.dataset.seriesUrl;
         this.table_wrapper = this.card.querySelector(TABLE_WRAPPER_SELECTOR);
-        this.skeleton = this.table_wrapper.querySelector(SKELETON_TABLE_SELECTOR);
+        this.skeleton = this.table_wrapper?.querySelector(SKELETON_TABLE_SELECTOR);
         this.loaded = this.skeleton === null;
         this.loading = false;
         this._top = this.card.getBoundingClientRect().top + window.scrollY;

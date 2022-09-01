@@ -3,7 +3,7 @@ import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 
-function showLightbox(content) {
+function showLightbox(content): void {
     const lightbox = new GLightbox(content);
     lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
@@ -17,16 +17,16 @@ function showLightbox(content) {
     document.body.focus();
 }
 
-function onFrameMessage(event) {
+function onFrameMessage(event): void {
     if (event.message.type === "lightbox") {
         showLightbox(event.message.content);
     }
 }
 
-function initLightboxes() {
+function initLightboxes(): void {
     let index = 0;
     const images = [];
-    document.querySelectorAll(".activity-description img, a.dodona-lightbox").forEach(el => {
+    document.querySelectorAll<HTMLElement>(".activity-description img, a.dodona-lightbox").forEach(el => {
         const imagesrc = el.dataset.large || el.getAttribute("src") || el.getAttribute("href");
         const altText = el.dataset.caption || el.getAttribute("alt") || imagesrc.split("/").pop();
         const imageObject = {
@@ -39,7 +39,7 @@ function initLightboxes() {
         index++;
     });
 
-    document.querySelectorAll(".activity-description img, a.dodona-lightbox").forEach(el => {
+    document.querySelectorAll<HTMLElement>(".activity-description img, a.dodona-lightbox").forEach(el => {
         el.addEventListener("click", () => {
             const index = parseInt(el.dataset.image_index, 10);
             window.parentIFrame.sendMessage({
@@ -55,8 +55,8 @@ function initLightboxes() {
     });
 }
 
-function centerImagesAndTables() {
-    new Set(Array.from(document.querySelectorAll(".activity-description p > img"), el => el.parentNode))
+function centerImagesAndTables(): void {
+    new Set(Array.from(document.querySelectorAll<HTMLElement>(".activity-description p > img"), el => el.parentElement))
         .forEach(parent => {
             // create center element
             const center = document.createElement("center");
@@ -70,18 +70,18 @@ function centerImagesAndTables() {
     document.querySelectorAll(".activity-description > table").forEach(el => {
         // create center element
         const center = document.createElement("center");
-        center.appendChild(el);
         el.parentNode.replaceChild(center, el);
+        center.appendChild(el);
     });
     document.querySelectorAll(".activity-description > iframe").forEach(el => {
         // create center element
         const center = document.createElement("center");
-        center.appendChild(el);
         el.parentNode.replaceChild(center, el);
+        center.appendChild(el);
     });
 }
 
-function initMathJax() {
+function initMathJax(): void {
     // configure MathJax
     window.MathJax = {
         tex: {
@@ -108,17 +108,17 @@ function initMathJax() {
     };
 }
 
-function initExerciseDescription() {
+function initExerciseDescription(): void {
     initLightboxes();
     centerImagesAndTables();
 }
 
-function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline, baseSubmissionsUrl) {
+function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown, courseId, _deadline, baseSubmissionsUrl): void {
     let editor;
     let lastSubmission;
     let lastTimeout;
 
-    function init() {
+    function init(): void {
         if (editorShown) {
             initEditor();
             initDeadlineTimeout();
@@ -163,7 +163,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
-    function initEditor() {
+    function initEditor(): void {
         // init editor
         editor = ace.edit("editor-text");
         editor.getSession().setMode("ace/mode/" + programmingLanguage);
@@ -180,7 +180,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         window.dodona.editor = editor;
     }
 
-    function swapActionButtons() {
+    function swapActionButtons(): void {
         document.getElementById("activity-handin-link").addEventListener("show.bs.tab", () => {
             document.getElementById("submission-copy-btn").classList.add("hidden");
             document.getElementById("editor-process-btn").classList.remove("hidden");
@@ -201,7 +201,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function submitSolution(code) {
+    function submitSolution(code): Promise<Response> {
         const data = new FormData();
         data.append("submission[code]", code);
         data.append("submission[exercise_id]", exerciseId);
@@ -217,7 +217,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function feedbackLoaded(submissionId) {
+    function feedbackLoaded(submissionId): void {
         document.getElementById("feedback").classList.remove("hidden");
         const exerciseFeedbackLink = document.getElementById("activity-feedback-link");
         exerciseFeedbackLink.classList.remove("hidden");
@@ -227,7 +227,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         exerciseFeedbackLink.setAttribute("data-submission_id", submissionId);
     }
 
-    function loadFeedback(url, submissionId) {
+    function loadFeedback(url, submissionId): void {
         document.getElementById("submission-wrapper").innerHTML = "<center><i class=\"mdi mdi-loading mdi-spin\"></i></center>";
         feedbackLoaded(submissionId);
         fetch(updateURLParameter(url, "format", "js"), {
@@ -253,8 +253,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function enableSubmissionTableLinks() {
-        document.querySelectorAll("a.load-submission").forEach(element => {
+    function enableSubmissionTableLinks(): void {
+        document.querySelectorAll<HTMLElement>("a.load-submission").forEach(element => {
             element.addEventListener("click", event => {
                 if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) {
                     return;
@@ -265,7 +265,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         });
     }
 
-    function feedbackTableLoaded(userId, exerciseId, courseId) {
+    function feedbackTableLoaded(userId, exerciseId, courseId): void {
         enableSubmissionTableLinks();
         if (lastSubmission) {
             const submissionRow = document.getElementById("submission_" + lastSubmission);
@@ -291,7 +291,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             } else {
                 lastTimeout = 0;
                 if (document.getElementById("activity-submission-link").classList.contains("active")) {
-                    submissionRow.querySelector(".load-submission").click();
+                    (submissionRow.querySelector(".load-submission") as HTMLButtonElement).click();
                 } else if (document.getElementById("activity-feedback-link").classList.contains("active") &&
                     document.getElementById("activity-feedback-link").dataset.submission_id === lastSubmission) {
                     loadFeedback(baseSubmissionsUrl + lastSubmission, lastSubmission);
@@ -304,21 +304,21 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
     }
 
-    function enableSubmitButton() {
-        const btn = document.getElementById("editor-process-btn");
+    function enableSubmitButton(): void {
+        const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = false;
         btn.classList.remove("busy", "mdi-timer-sand-empty", "mdi-spin");
         btn.classList.add("mdi-send");
     }
 
-    function disableSubmitButton() {
-        const btn = document.getElementById("editor-process-btn");
+    function disableSubmitButton(): void {
+        const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = true;
         btn.classList.remove("mdi-send");
         btn.classList.add("busy", "mdi-timer-sand-empty", "mdi-spin");
     }
 
-    function showFABStatus(status) {
+    function showFABStatus(status): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
         icon.classList.remove("mdi-pencil");
@@ -331,19 +331,19 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         setTimeout(resetFABStatus, 4000);
     }
-    function resetFABStatus() {
+    function resetFABStatus(): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
         fab.classList.remove("correct", "wrong");
         icon.classList.remove(...icon.classList);
         icon.classList.add("mdi", "mdi-pencil");
     }
-    function getPositiveEmoji() {
+    function getPositiveEmoji(): string {
         const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
         return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
     }
 
-    function submissionSuccessful(data, userId) {
+    function submissionSuccessful(data, userId): void {
         lastSubmission = data.id;
         new Toast(I18n.t("js.submission-saved"));
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
@@ -364,7 +364,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         tab.show();
     }
 
-    function submissionFailed(request) {
+    function submissionFailed(request): void {
         let message;
         if (request.readyState === 0) {
             message = I18n.t("js.submission-network");
@@ -411,27 +411,27 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         enableSubmitButton();
     }
 
-    function initDeadlineTimeout() {
+    function initDeadlineTimeout(): void {
         if (!_deadline) {
             return;
         }
         const deadlineWarningElement = document.getElementById("deadline-warning");
         const deadlineInfoElement = document.getElementById("deadline-info");
         const deadline = new Date(_deadline);
-        const infoDeadline = new Date(deadline - (5 * 60 * 1000));
+        const infoDeadline = new Date(deadline.getTime() - (5 * 60 * 1000));
 
-        function showDeadlineAlerts() {
+        function showDeadlineAlerts(): void {
             if (deadline < new Date()) {
                 deadlineInfoElement.hidden = true;
                 deadlineWarningElement.hidden = false;
             } else if (infoDeadline < new Date()) {
                 deadlineInfoElement.hidden = false;
                 setTimeout(showDeadlineAlerts, Math.min(
-                    Math.max(10, (deadline - new Date()) / 10),
+                    Math.max(10, (deadline.getTime() - new Date().getTime()) / 10),
                     10 * 60 * 1000));
             } else {
                 setTimeout(showDeadlineAlerts, Math.min(
-                    Math.max(10, (infoDeadline - new Date()) / 10),
+                    Math.max(10, (infoDeadline.getTime() - new Date().getTime()) / 10),
                     10 * 60 * 1000));
             }
         }
@@ -442,7 +442,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     init();
 }
 
-function afterResize(details) {
+function afterResize(details): void {
     /**
      * If the page is loaded with a hash (#), the browser scrolls to the element
      * with that id, but this happens before our iframe is loaded. After our
@@ -460,12 +460,12 @@ function afterResize(details) {
     }
 }
 
-function onFrameScroll(position) {
+function onFrameScroll(position): boolean {
     /**
      * The scroll position does not account for the navigation bar, which is always
      * visible. This will add the offset for the navigation bar.
      */
-    const navHeight = document.querySelector("nav.dodona-navbar").offsetHeight;
+    const navHeight = document.querySelector<HTMLElement>("nav.dodona-navbar").offsetHeight;
     window.scrollTo(position.x, position.y - navHeight);
     return false;
 }

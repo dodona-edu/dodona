@@ -1,4 +1,4 @@
-import { initExerciseDescription } from "exercise.js";
+import { initExerciseDescription } from "exercise.ts";
 
 window.dodona.initExerciseDescription = initExerciseDescription;
 

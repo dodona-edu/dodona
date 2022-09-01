@@ -4,10 +4,14 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
+    "lib": [
+      "ES2021",
+      "DOM"
+    ],
     "module": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
-    "target": "ES2021",
+    "target": "es5",
     "downlevelIteration": true,
     "baseUrl": "app",
     "paths": {

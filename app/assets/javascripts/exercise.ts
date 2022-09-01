@@ -1,6 +1,6 @@
 /* globals ace */
-import { initTooltips, updateURLParameter } from "util.js";
-import { Toast } from "./toast";
+import {initTooltips, updateURLParameter} from "util.js";
+import {Toast} from "./toast";
 import GLightbox from "glightbox";
 
 function showLightbox(content): void {
@@ -99,7 +99,7 @@ function initMathJax(): void {
                 color: [],
                 colorV2: ["color"]
             },
-            packages: { "[+]": ["noerrors"] }
+            packages: {"[+]": ["noerrors"]}
         },
         options: {
             ignoreHtmlClass: "feedback-table",
@@ -285,7 +285,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                             "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                             "x-requested-with": "XMLHttpRequest",
                         },
-                        credentials: "same-origin" })
+                        credentials: "same-origin"
+                    })
                         .then(response => response.text())
                         .then(eval);
                 }, (lastTimeout || 0) + 1000);
@@ -332,6 +333,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         }
         setTimeout(resetFABStatus, 4000);
     }
+
     function resetFABStatus(): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
@@ -339,6 +341,7 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         icon.classList.remove(...icon.classList);
         icon.classList.add("mdi", "mdi-pencil");
     }
+
     function getPositiveEmoji(): string {
         const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
         return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
@@ -357,7 +360,8 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
                 "x-requested-with": "XMLHttpRequest",
             },
-            credentials: "same-origin" })
+            credentials: "same-origin"
+        })
             .then(response => response.text())
             .then(eval);
         const tab = new bootstrap.Tab(document.getElementById("activity-submission-link"));

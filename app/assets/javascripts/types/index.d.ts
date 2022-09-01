@@ -5,7 +5,26 @@ declare interface Window {
 }
 
 declare class MathJaxObject {
-    typeset() :void;
+    typeset?(args?: string[]) :void;
+
+    tex: {
+        inlineMath: string[][];
+        displayMath: string[][];
+        autoload: {
+            color: string[];
+            colorV2: string[];
+        };
+        packages: {
+            "[+]": string[];
+        };
+    }
+    options: {
+        ignoreHtmlClass: string,
+        processHtmlClass: string
+    }
+    loader: {
+        load: string[]
+    }
 }
 
 declare module I18n {
@@ -15,5 +34,13 @@ declare module I18n {
 
     export var locale: string;
 }
+
+// add parentIFrame from iFrame Resizer to the window to make typescript happy
+declare interface Window {
+    parentIFrame: any;
+}
+
+// ace editor is globally available
+declare var ace;
 
 declare var dodona;

@@ -10,7 +10,6 @@ import { createUserAnnotation, getAllUserAnnotations } from "code_listing/questi
 import "components/saved_annotations/saved_annotation_input";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createSavedAnnotation } from "state/SavedAnnotations";
-import { html } from "lit";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";

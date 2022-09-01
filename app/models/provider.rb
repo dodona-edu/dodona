@@ -24,7 +24,7 @@ class Provider < ApplicationRecord
 
   PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Oidc, Provider::Saml, Provider::Smartschool, Provider::Surf].freeze
 
-  belongs_to :institution, inverse_of: :providers
+  belongs_to :institution, inverse_of: :providers, optional: true
 
   has_many :identities, inverse_of: :provider, dependent: :destroy
 

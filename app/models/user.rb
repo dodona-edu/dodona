@@ -49,6 +49,7 @@ class User < ApplicationRecord
   has_many :notifications, dependent: :destroy
   has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
+  has_many :announcement_views, dependent: :destroy
 
   has_many :subscribed_courses,
            lambda {
@@ -272,6 +273,14 @@ class User < ApplicationRecord
     @repository_admin.include?(repository.id)
   end
 
+  def personal?
+    institution.nil?
+  end
+
+  def institutional?
+    institution.present?
+  end
+
   def attempted_exercises(options)
     s = submissions.judged
     s = s.in_course(options[:course]) if options[:course].present?
@@ -350,13 +359,13 @@ class User < ApplicationRecord
   end
 
   def self.from_email_and_institution(email, institution_id)
-    return nil if email.blank? || institution_id.nil?
+    return nil if email.blank?
 
     find_by(email: email, institution_id: institution_id)
   end
 
   def self.from_username_and_institution(username, institution_id)
-    return nil if username.blank? || institution_id.nil?
+    return nil if username.blank?
 
     find_by(username: username, institution_id: institution_id)
   end
@@ -436,6 +445,14 @@ class User < ApplicationRecord
         end
       end
 
+      announcement_views.each do |av|
+        if other.announcement_views.find { |oav| oav.announcement_id == av.announcement_id }
+          av.destroy!
+        else
+          av.update!(user: other)
+        end
+      end
+
       reload
       destroy!
     end
@@ -444,7 +461,7 @@ class User < ApplicationRecord
   private
 
   def set_token
-    if institution.present?
+    if identities.present?
       self.token = nil
     elsif token.blank?
       generate_token

@@ -55,7 +55,7 @@ class Course < ApplicationRecord
   has_many :course_labels, dependent: :destroy
 
   enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
-  enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
+  enum registration: { open_for_all: 3, open_for_institutional_users: 0, open_for_institution: 1, closed: 2 }
 
   # TODO: Remove and use activities?
   has_many :content_pages,
@@ -161,6 +161,16 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
+  scope :can_register, lambda { |user|
+    if user&.institutional?
+      where(registration: %i[open_for_all open_for_institutional_users])
+        .or(where(registration: :open_for_institution, institution_id: user.institution_id))
+        .or(where(id: user.subscribed_courses.pluck(:id)))
+    else
+      where(registration: :open_for_all)
+        .or(where(id: user&.subscribed_courses&.pluck(:id)))
+    end
+  }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5
@@ -168,7 +178,7 @@ class Course < ApplicationRecord
   # Default year & enum values
   after_initialize do |course|
     self.visibility ||= 'visible_for_all'
-    self.registration ||= 'open_for_all'
+    self.registration ||= 'open_for_institutional_users'
     unless year
       now = Time.zone.now
       y = now.year
@@ -212,6 +222,10 @@ class Course < ApplicationRecord
 
   def all_activities_accessible?
     activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
+  end
+
+  def open_for_user?(user)
+    open_for_all? || (open_for_institution? && institution == user&.institution) || (open_for_institutional_users? && user&.institutional?)
   end
 
   def invalidate_subscribed_members_count_cache

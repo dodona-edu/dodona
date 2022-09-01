@@ -47,4 +47,11 @@ class AnnotationPolicy < ApplicationPolicy
   def permitted_attributes_for_update
     %i[annotation_text saved_annotation_id]
   end
+
+  def anonymous?
+    # if we are NOT the admin and the annotation is part of an evaluation and we are not who wrote the annotation => hide name
+    # "user" is the person that is viewing the annotation
+    # "record.user" is the person that wrote the annotation
+    !user.course_admin?(record.course) && !record.evaluation.nil? && (user.id != record.user.id)
+  end
 end

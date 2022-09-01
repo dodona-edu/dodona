@@ -7,6 +7,8 @@ updates:
     time: "13:00"
     timezone: Europe/Brussels
   open-pull-requests-limit: 99
+  commit-message:
+    prefix: ""
   labels:
     - "dependencies"
   ignore:
@@ -21,6 +23,8 @@ updates:
     time: "13:00"
     timezone: Europe/Brussels
   open-pull-requests-limit: 99
+  commit-message:
+    prefix: ""
   labels:
     - "dependencies"
   ignore:
@@ -35,5 +39,7 @@ updates:
     time: "13:00"
     timezone: Europe/Brussels
   open-pull-requests-limit: 99
+  commit-message:
+    prefix: ""
   labels:
     - "dependencies"

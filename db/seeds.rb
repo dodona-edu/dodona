@@ -91,6 +91,10 @@ if Rails.env.development?
   # OIDC
   Provider::Oidc.create institution: vlaanderen, client_id: '12345', issuer: 'https://authenticatie.vlaanderen.be/op'
 
+  # Personal providers
+  Provider::Office365.create identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil
+  Provider::GSuite.create identifier: nil, institution: nil
+
   puts "Creating users (#{Time.now - start})"
 
   zeus = User.create username: 'zeus', first_name: 'Zeus', last_name: 'Kronosson', email: 'zeus@ugent.be', permission: :zeus, institution: nil, token: 'zeus'
@@ -160,6 +164,7 @@ if Rails.env.development?
       Identity.create provider: user.institution.providers.first,
                       identifier: user.username,
                       user: user
+      user.save
     end
   end
 
@@ -198,6 +203,8 @@ if Rails.env.development?
 
   courses = []
 
+
+  courses << Course.create(description: 'This is a test course.', name: 'Open for Institutional users course', year: academic_year, registration: 'open_for_institutional_users', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Open for All Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: false, teacher: 'Prof. Gobelijn')
   courses << Course.create(description: 'This is a test course.', name: 'Open for Institution Test Course', year: academic_year, registration: 'open_for_institution', visibility: 'visible_for_institution', moderated: false, teacher: 'Prof. Gobelijn', institution: ugent)
   courses << Course.create(description: 'This is a test course.', name: 'Open Moderated Test Course', year: academic_year, registration: 'open_for_all', visibility: 'visible_for_all', moderated: true, teacher: 'Prof. Barabas')

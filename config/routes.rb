@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       devise_scope :user do
         get '/sign_in' => 'authentication#sign_in', as: 'sign_in'
         delete '/sign_out' => 'authentication#destroy', as: 'sign_out'
+        get '/privacy_prompt' => 'omniauth_callbacks#privacy_prompt'
+        post '/privacy_prompt' => 'omniauth_callbacks#accept_privacy_policy'
       end
 
       get '/users/saml/metadata' => 'saml#metadata'
@@ -231,7 +233,9 @@ Rails.application.routes.draw do
       end
       resources :scores, only: %i[show create update destroy]
     end
-    resources :feedbacks, only: %i[show edit update]
+    resources :feedbacks, only: %i[show edit update] do
+      delete 'scores', action: :destroy_scores, controller: :feedbacks, on: :member
+    end
     resources :evaluation_exercise, only: %i[update]
 
     resources :rights_requests, only: %i[index new create] do

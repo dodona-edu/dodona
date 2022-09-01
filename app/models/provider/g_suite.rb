@@ -22,7 +22,7 @@
 class Provider::GSuite < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
   validates :authorization_uri, :client_id, :issuer, :jwks_uri, absence: true
-  validates :identifier, uniqueness: { case_sensitive: false }, presence: true
+  validates :identifier, uniqueness: { case_sensitive: false }
 
   def self.sym
     :google_oauth2
@@ -45,5 +45,12 @@ class Provider::GSuite < Provider
     else
       Provider.extract_institution_name(auth_hash)
     end
+  end
+
+  def readable_name
+    # We want to display gmail for private accounts
+    return 'Gmail' if institution.nil?
+
+    super
   end
 end

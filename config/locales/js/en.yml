@@ -137,6 +137,7 @@ en:
       copy-to-clipboard: Copy code to clipboard
     user_annotation:
       meta: "%{user} · %{time}"
+      anonymous_message: 'This comment is part of an evaluation'
       send: 'Comment'
       update: 'Update'
       cancel: 'Cancel'
@@ -144,6 +145,7 @@ en:
       edit: 'Edit comment'
       save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
+      help_student: "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!"
       fields:
         annotation_text: 'Comment'
         saved_annotation_title: 'Save annotation for reuse'

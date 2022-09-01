@@ -148,7 +148,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
             const codeString = dodona.codeListing.code;
             editor.setValue(codeString, 1);
-            // eslint-disable-next-line no-undef
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
@@ -224,7 +223,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         document.getElementById("feedback").classList.remove("hidden");
         const exerciseFeedbackLink = document.getElementById("activity-feedback-link");
         exerciseFeedbackLink.classList.remove("hidden");
-        // eslint-disable-next-line no-undef
         const tab = new bootstrap.Tab(exerciseFeedbackLink);
         tab.show();
         exerciseFeedbackLink.setAttribute("data-submission_id", submissionId);
@@ -362,7 +360,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             credentials: "same-origin" })
             .then(response => response.text())
             .then(eval);
-        // eslint-disable-next-line no-undef
         const tab = new bootstrap.Tab(document.getElementById("activity-submission-link"));
         tab.show();
     }

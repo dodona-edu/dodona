@@ -373,7 +373,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         let message;
         if (request.status === 422) {
             try {
-                const response = JSON.parse(await request.text());
+                const response = await request.json();
                 const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
                     message = I18n.t("js.submission-emoji");

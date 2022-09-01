@@ -97,10 +97,7 @@ const SKELETON_TABLE_SELECTOR = ".activity-table-skeleton";
 
 class Series {
     private readonly id: number;
-    private card: HTMLElement;
     private url: string;
-    private table_wrapper: HTMLElement;
-    private skeleton: HTMLElement;
     private loaded: boolean;
     private loading: boolean;
     private _top: number;
@@ -126,14 +123,13 @@ class Series {
     }
 
     reselect(card: HTMLElement): void {
-        this.card = card;
-        this.url = this.card.dataset.seriesUrl;
-        this.table_wrapper = this.card.querySelector(TABLE_WRAPPER_SELECTOR);
-        this.skeleton = this.table_wrapper?.querySelector(SKELETON_TABLE_SELECTOR);
-        this.loaded = this.skeleton === null;
+        this.url = card.dataset.seriesUrl;
+        const table_wrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
+        const skeleton = table_wrapper?.querySelector(SKELETON_TABLE_SELECTOR);
+        this.loaded = skeleton === null;
         this.loading = false;
-        this._top = this.card.getBoundingClientRect().top + window.scrollY;
-        this._bottom = this.top + this.card.getBoundingClientRect().height;
+        this._top = card.getBoundingClientRect().top + window.scrollY;
+        this._bottom = this.top + card.getBoundingClientRect().height;
     }
 
     needsLoading(): boolean {

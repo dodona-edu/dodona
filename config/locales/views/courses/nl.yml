@@ -111,7 +111,7 @@ nl:
       registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
       registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'
       registration-closed-info: 'De registraties zijn gesloten: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
-      registration-open_for_institutional_users-info: 'De registraties staan open voor gebruikers die tot een instelling behoren. De registraties zijn gesloten voor gebruikers die zijn ingelogd met een privéaccount, zoals een persoonlijk Google- of Microsoft-account.'
+      registration-open_for_institutional_users-info: 'De registraties staan open voor gebruikers die tot een instelling behoren. De registraties zijn gesloten voor gebruikers die zijn ingelogd met een persoonlijke account, zoals een persoonlijk Google- of Microsoft-account.'
       moderated-info: 'Deze cursus is gemodereerd: Gebruikers die zich registreren moeten expliciet goedgekeurd worden door een cursusbeheerder.'
       subscribe: Registreren
       request_registration: Registratieverzoek indienen

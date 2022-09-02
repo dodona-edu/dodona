@@ -24,7 +24,7 @@
 
 <div class="card-supporting-text <%= "card-border" if @feedback.score_items.empty? %>">
   <center>
-    <%= button_tag class: "btn btn-filled", id: "next-feedback-button" do %>
+    <%= button_tag class: "btn btn-filled", id: "next-feedback-button", title: t('.direction.tooltip') do %>
       <%= t('.direction.next') %>
     <% end %>
   </center>
@@ -46,7 +46,9 @@
     <input id="skip-completed" type="checkbox" class="form-check-input" name="skip-completed" checked>
     <label class="form-check-label" for="skip-completed"><%= t('.skip_completed') %></label>
   </div>
+
 </div>
+
 
 <% if @feedback.evaluation_exercise.score_items.present? %>
   <div class="card-supporting-text card-border">

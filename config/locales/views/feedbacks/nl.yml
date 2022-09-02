@@ -26,6 +26,7 @@ nl:
       progress: Vooruitgang
       direction:
         next: Volgende
+        tooltip: "Ga naar de volgende student\nGebruik Ctrl + Enter als shortcut"
       mark_as_done: Evaluatie afwerken
       evaluation_done: Evaluatie afgewerkt
       undo: Ongedaan maken

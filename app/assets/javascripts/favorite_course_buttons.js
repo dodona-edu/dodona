@@ -2,37 +2,45 @@ import { Toast } from "./toast";
 
 function initFavoriteButtons() {
     function init() {
-        $(".favorite-button").on("click", toggleFavorite);
+        document.querySelectorAll(".favorite-button")
+            .forEach(btn => btn.addEventListener("click", toggleFavorite));
     }
 
     function toggleFavorite() {
-        const $element = $(this);
-        if ($element.hasClass("favorited")) {
-            unfavoriteCourse($element);
+        const element = this;
+        if (element.classList.contains("favorited")) {
+            unfavoriteCourse(element);
         } else {
-            favoriteCourse($element);
+            favoriteCourse(element);
         }
     }
 
     function favoriteCourse(element) {
-        const courseId = element.data("course_id");
+        const courseId = element.dataset.course_id;
         $.post(`/courses/${courseId}/favorite.js`)
             .done(() => {
                 new Toast(I18n.t("js.favorite-course-succeeded"));
-                element.removeClass("mdi-heart-outline").addClass("favorited mdi-heart");
-                element.attr("data-original-title", I18n.t("js.unfavorite-course-do"));
-                element.tooltip("hide");
-                const card = element.parents(".course.card").parent();
-                const favoritesRow = $(".favorites-row");
-                if (favoritesRow.children().length === 0) {
-                    $(".page-subtitle.first").removeClass("hidden");
+                element.classList.remove("mdi-heart-outline");
+                element.classList.add("favorited", "mdi-heart");
+                const tooltip = bootstrap.Tooltip.getInstance(element);
+                tooltip.setContent({".tooltip-inner": I18n.t("js.unfavorite-course-do")}) // update tooltip
+                tooltip.hide();
+                let parent = element.parentNode;
+                while (!(parent.classList.contains("course") && parent.classList.contains("card"))) {
+                    parent = parent.parentNode;
                 }
-                const clone = card.clone();
-                clone.appendTo(favoritesRow);
-                const cloneFavButton = clone.find(".favorite-button");
-                cloneFavButton.attr("title", I18n.t("js.unfavorite-course-do"));
-                cloneFavButton.tooltip();
-                cloneFavButton.click(toggleFavorite);
+                const card = parent.parentNode;
+                const favoritesRow = document.querySelector(".favorites-row");
+                if (favoritesRow.children.length === 0) {
+                    document.querySelector(".page-subtitle.first").classList.remove("hidden");
+                }
+                const clone = card.cloneNode(true);
+                clone.parentElement
+                favoritesRow.appendChild(clone);
+                const cloneFavButton = clone.querySelector<HTMLButtonElement>(".favorite-button");
+                cloneFavButton.setAttribute("title", I18n.t("js.unfavorite-course-do"));
+                new bootstrap.Tooltip(cloneFavButton); // is enabled by default
+                cloneFavButton.addEventListener("click", toggleFavorite);
             })
             .fail(() => {
                 new Toast(I18n.t("js.favorite-course-failed"));
@@ -40,20 +48,28 @@ function initFavoriteButtons() {
     }
 
     function unfavoriteCourse(element) {
-        const courseId = element.data("course_id");
+        const courseId = element.dataset.course_id;
         $.post(`/courses/${courseId}/unfavorite.js`)
             .done(() => {
                 new Toast(I18n.t("js.unfavorite-course-succeeded"));
-                const $elements = $(`[data-course_id="${courseId}"]`);
-                $elements.removeClass("favorited mdi-heart").addClass("mdi-heart-outline");
-                $elements.attr("data-original-title", I18n.t("js.favorite-course-do"));
-                $elements.tooltip("hide");
-                $(`.favorites-row [data-course_id="${courseId}"]`)
-                    .parents(".course.card")
-                    .parent()
-                    .remove();
-                if ($(".favorites-row").children().length === 0) {
-                    $(".page-subtitle.first").addClass("hidden");
+                const elements = document.querySelectorAll<HTMLElement>(`[data-course_id="${courseId}"]`);
+                elements.forEach(el => {
+                    el.classList.remove("favorited", "mdi-heart")
+                    el.classList.add("mdi-heart-outline");
+                    const tooltip = bootstrap.Tooltip.getInstance(el);
+                    tooltip.setContent({".tooltip-inner": I18n.t("js.favorite-course-do")}) // update tooltip
+                    tooltip.hide();
+                })
+                const course = document.querySelector(`.favorites-row [data-course_id="${courseId}"]`);
+                let parent = course.parentNode;
+                while (!(parent.classList.contains("course") && parent.classList.contains("card"))) {
+                    parent = parent.parentNode;
+                }
+                const card = parent.parentNode;
+                card.remove();
+                const favoritesRow = document.querySelector(".favorites-row");
+                if (favoritesRow.children.length === 0) {
+                    document.querySelector(".page-subtitle.first").classList.add("hidden");
                 }
             })
             .fail(() => {

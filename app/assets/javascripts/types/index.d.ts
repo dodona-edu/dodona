@@ -40,7 +40,4 @@ declare interface Window {
     parentIFrame: any;
 }
 
-// ace editor is globally available
-declare var ace;
-
 declare var dodona;

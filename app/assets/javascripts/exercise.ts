@@ -2,6 +2,7 @@
 import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
+import {IFrameMessageData, IFrameResizedData} from "iframe-resizer";
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -17,16 +18,15 @@ function showLightbox(content): void {
     document.body.focus();
 }
 
-function onFrameMessage(event): void {
+function onFrameMessage(event: IFrameMessageData): void {
     if (event.message.type === "lightbox") {
         showLightbox(event.message.content);
     }
 }
 
 function initLightboxes(): void {
-    let index = 0;
     const images = [];
-    document.querySelectorAll<HTMLElement>(".activity-description img, a.dodona-lightbox").forEach(el => {
+    document.querySelectorAll<HTMLElement>(".activity-description img, a.dodona-lightbox").forEach((el, index) => {
         const imagesrc = el.dataset.large || el.getAttribute("src") || el.getAttribute("href");
         const altText = el.dataset.caption || el.getAttribute("alt") || imagesrc.split("/").pop();
         const imageObject = {
@@ -36,7 +36,6 @@ function initLightboxes(): void {
         images.push(imageObject);
 
         el.dataset.image_index = index.toString();
-        index++;
     });
 
     document.querySelectorAll<HTMLElement>(".activity-description img, a.dodona-lightbox").forEach(el => {
@@ -117,7 +116,7 @@ function initExerciseDescription(): void {
 }
 
 function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string): void {
-    let editor;
+    let editor: AceAjax.Editor;
     let lastSubmission: string;
     let lastTimeout: number;
 
@@ -267,7 +266,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         });
     }
 
-    function feedbackTableLoaded(userId: number, exerciseId: number, courseId: number): void {
+    function feedbackTableLoaded(userId: number, exerciseId: number, courseId: number | undefined): void {
         enableSubmissionTableLinks();
         if (lastSubmission) {
             const submissionRow = document.getElementById("submission_" + lastSubmission);

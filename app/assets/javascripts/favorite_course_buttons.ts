@@ -7,11 +7,10 @@ function initFavoriteButtons(): void {
     }
 
     function toggleFavorite(): void {
-        const element = this;
-        if (element.classList.contains("favorited")) {
-            unfavoriteCourse(element);
+        if (this.classList.contains("favorited")) {
+            unfavoriteCourse(this);
         } else {
-            favoriteCourse(element);
+            favoriteCourse(this);
         }
     }
 

@@ -1,8 +1,8 @@
 /* globals ace */
-import { initTooltips, updateURLParameter } from "util.js";
+import { initTooltips, updateURLParameter, fetch } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
-import {IFrameMessageData, IFrameResizedData} from "iframe-resizer";
+import { IFrameMessageData } from "iframe-resizer";
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -211,10 +211,6 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
         return fetch("/submissions.json", {
             "method": "POST",
-            "headers": {
-                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-                "x-requested-with": "XMLHttpRequest",
-            },
             "body": data
         });
     }
@@ -234,10 +230,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-                "x-requested-with": "XMLHttpRequest",
             },
-            credentials: "same-origin",
         }).then(resp => Promise.all([resp.ok, resp.text()])).then(([ok, data]) => {
             if (ok) {
                 document.getElementById("submission-wrapper").innerHTML = data;
@@ -282,10 +275,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
                     fetch(url, {
                         headers: {
                             "accept": "text/javascript",
-                            "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-                            "x-requested-with": "XMLHttpRequest",
                         },
-                        credentials: "same-origin"
                     })
                         .then(response => response.text())
                         .then(eval);
@@ -357,10 +347,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         fetch(url, {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-                "x-requested-with": "XMLHttpRequest",
             },
-            credentials: "same-origin"
         })
             .then(response => response.text())
             .then(eval);

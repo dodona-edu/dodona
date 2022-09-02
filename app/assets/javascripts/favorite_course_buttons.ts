@@ -1,4 +1,5 @@
 import { Toast } from "./toast";
+import { fetch } from "util.js";
 
 function initFavoriteButtons(): void {
     function init(): void {
@@ -17,10 +18,7 @@ function initFavoriteButtons(): void {
     function favoriteCourse(element: HTMLElement): void {
         const courseId = element.dataset.course_id;
         fetch(`/courses/${courseId}/favorite.js`, {
-            "method": "POST",
-            "headers": {
-                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-            },
+            "method": "POST"
         }).then(response => {
             if (response.ok) {
                 new Toast(I18n.t("js.favorite-course-succeeded"));
@@ -59,10 +57,7 @@ function initFavoriteButtons(): void {
     function unfavoriteCourse(element: HTMLElement): void {
         const courseId = element.dataset.course_id;
         fetch(`/courses/${courseId}/unfavorite.js`, {
-            "method": "POST",
-            "headers": {
-                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
-            },
+            "method": "POST"
         }).then(response => {
             if (response.ok) {
                 new Toast(I18n.t("js.unfavorite-course-succeeded"));

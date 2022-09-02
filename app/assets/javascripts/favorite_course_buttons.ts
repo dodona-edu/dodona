@@ -1,12 +1,12 @@
 import { Toast } from "./toast";
 
-function initFavoriteButtons() {
-    function init() {
+function initFavoriteButtons(): void {
+    function init(): void {
         document.querySelectorAll(".favorite-button")
             .forEach(btn => btn.addEventListener("click", toggleFavorite));
     }
 
-    function toggleFavorite() {
+    function toggleFavorite(): void {
         const element = this;
         if (element.classList.contains("favorited")) {
             unfavoriteCourse(element);
@@ -15,7 +15,7 @@ function initFavoriteButtons() {
         }
     }
 
-    function favoriteCourse(element) {
+    function favoriteCourse(element: HTMLElement): void {
         const courseId = element.dataset.course_id;
         fetch(`/courses/${courseId}/favorite.js`, {
             "method": "POST",
@@ -34,17 +34,17 @@ function initFavoriteButtons() {
                 tooltip.hide();
 
                 // search the card
-                let parent = element.parentNode;
+                let parent = element.parentElement;
                 while (!(parent.classList.contains("course") && parent.classList.contains("card"))) {
-                    parent = parent.parentNode;
+                    parent = parent.parentElement;
                 }
-                const card = parent.parentNode;
+                const card = parent.parentElement;
                 const favoritesRow = document.querySelector(".favorites-row");
                 if (favoritesRow.children.length === 0) {
                     document.querySelector(".page-subtitle.first").classList.remove("hidden");
                 }
                 // create clone of card to place up top on the favorites row
-                const clone = card.cloneNode(true);
+                const clone = card.cloneNode(true) as HTMLElement;
                 favoritesRow.appendChild(clone);
                 // activate button in new card in the favoritesRow
                 const cloneFavButton = clone.querySelector<HTMLButtonElement>(".favorite-button");
@@ -57,7 +57,7 @@ function initFavoriteButtons() {
         }).catch(() => new Toast(I18n.t("js.favorite-course-failed")));
     }
 
-    function unfavoriteCourse(element) {
+    function unfavoriteCourse(element: HTMLElement): void {
         const courseId = element.dataset.course_id;
         fetch(`/courses/${courseId}/unfavorite.js`, {
             "method": "POST",
@@ -78,11 +78,11 @@ function initFavoriteButtons() {
                 });
                 // search the card in the favorites row and remove it
                 const course = document.querySelector(`.favorites-row [data-course_id="${courseId}"]`);
-                let parent = course.parentNode;
+                let parent = course.parentElement;
                 while (!(parent.classList.contains("course") && parent.classList.contains("card"))) {
-                    parent = parent.parentNode;
+                    parent = parent.parentElement;
                 }
-                const card = parent.parentNode;
+                const card = parent.parentElement;
                 card.remove();
                 const favoritesRow = document.querySelector(".favorites-row");
                 if (favoritesRow.children.length === 0) {

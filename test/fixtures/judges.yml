@@ -1,0 +1,22 @@
+# == Schema Information
+#
+# Table name: judges
+#
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  image        :string(255)
+#  path         :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  renderer     :string(255)      not null
+#  remote       :string(255)
+#  clone_status :integer          default("queued"), not null
+#
+
+python_judge:
+  id: 1
+  name: "Python judge"
+  image: "dodona-python"
+  path: "path/to/judge"
+  renderer: "FeedbackTableRenderer"
+  remote: "https://github.com"

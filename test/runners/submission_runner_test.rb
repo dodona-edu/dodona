@@ -4,7 +4,7 @@ require 'timeout'
 
 class SubmissionRunnerTest < ActiveSupport::TestCase
   setup do
-    @repository = create :repository, :git_stubbed
+    @repository = create :repository, :git_stubbed, :generated_judge
     @judge = @repository.judge
     @course = create :course
     @user = create :user, courses: [@course]

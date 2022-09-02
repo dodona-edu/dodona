@@ -5,6 +5,7 @@ nl:
       show: Activiteit bekijken
       edit: Activiteit bewerken
       submissions: Oplossingen voor deze oefening
+      read_states: Log voor deze leesactiviteit
     activity:
       count_tooltip: Aantal studenten die deze oefening correct hebben
       read_tooltip: Aantal studenten die dit gelezen hebben
@@ -64,7 +65,7 @@ nl:
       hide_correct: verberg correct
       correct: correct
       wrong: verkeerd
-      hand_in_tooltip: Klik op de play-knop om je oplossing te testen en in te dienen.
+      hand_in_tooltip: Klik op de verzend-knop om je oplossing te testen en in te dienen.
       not_found: Sorry, we kunnen deze oefening niet vinden.
       not_accessible: Deze oefening is niet toegankelijk voor studenten.
       not_visible: Deze oefening is niet zichtbaar voor studenten zonder de correcte link.
@@ -77,6 +78,8 @@ nl:
         back_to_course: Terug naar cursus
         previous: Vorige activiteit
         next: Volgende activiteit
+        next_actionable: Ga naar de volgende oefening
+        back_to_course_actionable: Ga terug naar de cursus
       mark_as_read: Markeren als gelezen
       read_at: "Gelezen op %{timestamp}"
     series_activities_add_table:
@@ -110,8 +113,6 @@ nl:
       judge: Judge
       repository: Repository waar deze leeractiviteit zich in bevindt
       repository_path: Bestandslocatie binnen deze repository
-      created: Aangemaakt
-      updated: Laatst gewijzigd
       ago: geleden
       click_here_to_create_one: Klik hier om de 'readme' informatie aan te maken.
       config_set_by: "Deze waarde werd ingesteld door %{file}"
@@ -119,3 +120,15 @@ nl:
       description_files:   "We hebben bestanden gevonden met een beschrijving voor deze talen in de beschrijvingsmap %{path}"
       config_info: 'Neem een kijkje op de %{doc_site} voor meer informatie over het configureren van oefeningen.'
       doc_site: 'documentatiesite'
+      activity_invalid: Deze oefening heeft geen geldige configuratie.
+      visibility_solution_warning: Deze pagina is enkel toegankelijk voor lesgevers. Studenten hebben dus geen toegang tot de voorbeeldoplossingen.
+      visibility_warning: Deze pagina is enkel toegankelijk voor lesgevers en niet voor studenten.
+    series_activities_table:
+      course_has_no_rights_with_fix: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Klik hier om deze rechten te geven.
+      course_has_no_rights_with_contact: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Contacteer de auteur of verwijder deze oefening uit de cursus.
+    coding_scratchpad:
+      title: "Voer %{programming_language} code uit in je browser"
+      experimental_feature_html: In dit venster kan je Python-code uitvoeren zonder iets te moeten installeren. De code die je hier schrijft wordt <b>niet</b> automatisch ingediend in Dodona. Deze functie is nog in volle ontwikkeling. We horen graag je suggesties en problemen via <a href="%{url}">het contactformulier</a>.
+      close: Sluiten
+      start_coding: Code uitvoeren
+      beta: BETA

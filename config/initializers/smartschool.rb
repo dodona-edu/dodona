@@ -16,7 +16,7 @@ module OmniAuth
              token_url: '/OAuth/index/token'
 
       # These are called after authentication has succeeded.
-      uid {raw_info['username']}
+      uid {raw_info['userID']}
 
       info do
         {

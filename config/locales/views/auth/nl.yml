@@ -1,16 +1,31 @@
 nl:
   auth:
     sign_in:
-      select-institution: "Selecteer je onderwijsinstelling"
+      select-institution: "Selecteer je onderwijsinstelling of organisatie om aan te melden. Je Dodona-account wordt automatisch aangemaakt."
       sign_in: "Aanmelden"
       sign-in-with: "Inloggen met %{provider}"
       sign-in-help: "Weet je niet welke login je moet gebruiken? Zoek hieronder je school en klik op aanmelden:"
       institution-search: "Typ om jouw school te vinden"
       ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen via de i-Learn website."
       higher-education: "Hoger onderwijs"
-      secondary-education: "Secundair onderwijs"
+      other-education: "Andere onderwijsinstellingen"
+      other: "Andere organisaties"
+      private-accounts: Private accounts
+      private-accounts-help: Gebruik deze loginmethodes om je persoonlijke Google of Microsoft account te gebruiken als je niet bij een onderwijsinstelling bent aangesloten.
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:
         institution-creation: Er ging iets mis tijdens het aanmaken van een nieuwe onderwijsinstelling.
         missing-provider: Enkel accounts die gelinkt zijn aan een onderwijsinstelling worden ondersteund.
+    redirect_to_known_provider:
+      title: We hebben even je hulp nodig
+      message_p1: "Er bestaat al een gebruiker met dezelfde gebruikersnaam (**%{username}**) of hetzelfde e-mailadres (**%{email}**) binnen de onderwijsinstelling **%{institution}** op Dodona. Waarschijnlijk ben jij dit, maar gebruikte je vorige keer een andere loginmethode."
+      message_p1_personal: "Er bestaat al een gebruiker met dezelfde gebruikersnaam (**%{username}**) of hetzelfde e-mailadres (**%{email}**) op Dodona. Waarschijnlijk ben jij dit, maar gebruikte je vorige keer een andere loginmethode."
+      message_p2: "Om ook via **%{provider}** aan je gegevens te kunnen, moeten we even je bestaande account koppelen. Klik daarvoor op de aanmeldknop hieronder en log nogmaals in."
+      providers_title: "Accounts koppelen"
+      "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
+      contact_form: "contactformulier"
+    privacy_prompt:
+      text_html: "Om Dodona te gebruiken moet je onze privacyverklaring accepteren. Op de pagina <a href=\"%{your_data}\" target=\"_blank\">jouw data</a> leggen we in mensentaal uit welke data we verzamelen en hoe we die gebruiken. De juridisch bindende versie kan je in onze <a href=\"%{privacy_statement}\" target=\"_blank\">privacyverklaring</a> vinden."
+      accept_button: Privacyverklaring accepteren
+      decline_button: Weigeren

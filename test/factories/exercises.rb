@@ -35,12 +35,16 @@ FactoryBot.define do
     description_en_present { false }
     access { 'public' }
     status { 'ok' }
-    programming_language
 
     sequence(:path) { |n| "exercise#{n}" }
 
-    association :repository, factory: %i[repository git_stubbed]
+    repository { Repository.find(1) } # load python repo fixture
     judge { repository.judge }
+
+    trait :generated_repo do
+      association :repository, factory: %i[repository git_stubbed]
+      judge { repository.judge }
+    end
 
     transient do
       name { nil }
@@ -49,7 +53,7 @@ FactoryBot.define do
 
       submission_count { 0 }
       submission_users do
-        create_list :user, 5 if submission_count.positive?
+        create_list :user, 3 if submission_count.positive?
       end
     end
 
@@ -73,6 +77,10 @@ FactoryBot.define do
 
     after :build do |exercise|
       exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1 })
+    end
+
+    trait :with_programming_language do
+      association :programming_language
     end
 
     trait :nameless do

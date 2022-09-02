@@ -1,7 +1,7 @@
 en:
   repositories:
     form:
-      remote_help: "The SSH clone URL of the judge repository. Dodona needs access rights to the repository to be able to clone it."
+      remote_help: "The SSH clone URL of the exercise repository. Dodona needs read and write permissions to use the repository."
       judge_help: "This judge will be used when the exercise doesn't specify one."
       remote_cant_be_edited_html: The clone URL can't be edited after the repository was created. Contact <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> if it needs to be changed.
     index:
@@ -13,8 +13,11 @@ en:
       admin: "You are an administrator of this repository"
     new:
       title: Add an exercise repository
+      help_html: "You can find a guide with more information on managing repositories in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>our documentation</a>."
     show:
       repository: Repository
+      empty_repo_title: "Getting started"
+      empty_repo_help_html: "We noticed your repository is empty, learn how you can add exercises to your repository in <a href='https://docs.dodona.be/nl/references/repository-directory-structure/#repository-bestandenstructuur'>our documentation</a>."
       webhook_html: "If you set up a <a href='https://developer.github.com/webhooks/creating/#setting-up-a-webhook' target='_blank' rel='noopener'>webhook</a> on GitHub, Dodona will automatically update your exercises on each commit:"
       reprocess: Reprocess repository
       exercises: Exercises
@@ -25,6 +28,8 @@ en:
       public_files_placeholder: This repository has no public files.
       file_name: File name
       file_url: URL
+      clone_incomplete: "We are now adding your repository to Dodona. It can take up to five minutes until your exercises show up."
+      clone_failed: "Failed to clone the repository. Please make sure Dodona has read and write access to your repository."
     admins:
       admins: "Administrators"
       admin_explanation: "The users listed below are repository administrators. These users can make others repository admins, view the private exercises in this repository, edit exercises in the repository and manage which courses can use private exercises."

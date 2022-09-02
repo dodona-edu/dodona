@@ -6,7 +6,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   crud_helpers User, attrs: %i[username first_name last_name email permission time_zone]
 
   setup do
-    @instance = create(:zeus)
+    @instance = users(:zeus)
     sign_in @instance
   end
 
@@ -15,7 +15,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'staff should not be able to make themself zeus' do
     sign_out :user
 
-    staff = create(:staff)
+    staff = users(:staff)
     sign_in staff
 
     put user_url(staff), params: { user: { permission: :zeus } }
@@ -25,7 +25,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'json representation should contain courses' do
     # create distractions
-    other_user = create(:student)
+    other_user = users(:student)
     create(:course, subscribed_members: [other_user])
 
     # actual course to test against
@@ -50,7 +50,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should impersonate user' do
-    other_user = create(:user)
+    other_user = users(:student)
 
     get impersonate_user_url(other_user)
 
@@ -84,7 +84,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'normal user should not be allowed to view other user profile' do
     sign_out :user
-    sign_in create(:user)
+    sign_in users(:student)
 
     get user_url(@instance)
 
@@ -100,7 +100,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should render edit page for staff' do
-    user = create(:staff)
+    user = users(:staff)
     sign_in user
     get edit_user_url(user)
 

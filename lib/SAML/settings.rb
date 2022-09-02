@@ -4,17 +4,17 @@ module OmniAuth
       class Settings
         ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS = %w(https://idp.hogent.be/idp https://idp.howest.be/idp/shibboleth)
 
-        def self.base
+        def self.base(host = Rails.configuration.default_host)
           # Load the certificate and private key if on staging/production.
           certificate = IO.read('/home/dodona/cert.pem') if File.file?('/home/dodona/cert.pem')
           private_key = IO.read('/home/dodona/key.pem') if File.file?('/home/dodona/key.pem')
 
           {
               assertion_consumer_service_binding: 'urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST',
-              assertion_consumer_service_url: "https://#{Rails.configuration.default_host}/users/saml/auth",
+              assertion_consumer_service_url: "https://#{host}/users/saml/auth",
               authn_context: '',
               certificate: certificate,
-              issuer: "https://#{Rails.configuration.default_host}/users/saml/metadata",
+              issuer: "https://#{host}/users/saml/metadata",
               name_identifier_format: 'urn:oasis:names:tc:SAML:2.0:nameid-format:transient',
               private_key: private_key,
               security: {

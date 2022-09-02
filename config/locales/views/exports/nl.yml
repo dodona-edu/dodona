@@ -9,7 +9,7 @@ nl:
       created: "%{when} geleden"
       export_started: "We zijn je export aan het klaarmaken en zullen je verwittigen wanneer die klaar is"
       automatic_deletion: Gegenereerde archieven zullen beschikbaar blijven voor 30 dagen, waarna ze van onze servers verwijderd zullen worden.
-      explanation: "Bij Dodona geloven we sterk dat jouw data wel degelijk van jou is. Daarom laten we je to om al de oplossingen die je ooit hebt ingediend op het platform te exporteren en te downloaden. Elke cursus en oefeningenreeks heeft een link naar onze data export wizard waar je een archief kan maken van je oplossingen in een paar gemakkelijke stappen. Lesgevers kunnen ook gemakkelijk alle oplossingen van studenten downloaden binnen hun vak."
+      explanation: "Bij Dodona geloven we sterk dat jouw data wel degelijk van jou is. Daarom laten we je toe om al de oplossingen die je ooit hebt ingediend op het platform te exporteren en te downloaden. Elke cursus en oefeningenreeks heeft een link naar onze data export wizard waar je een archief kan maken van je oplossingen in een paar gemakkelijke stappen. Lesgevers kunnen ook gemakkelijk alle oplossingen van studenten downloaden binnen hun vak."
       no_exports_yet_html: "Het lijkt er op dat je geen recente exports hebt gemaakt. Je kan beginnen met <a href=\"%{user_link}\">al je ingediende oplossingen</a> te exporteren."
     download_submissions:
       title: Oplossingen exporteren

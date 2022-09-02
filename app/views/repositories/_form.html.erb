@@ -1,4 +1,7 @@
 <%= form_for(repository, :html => {:class => 'form-horizontal'}) do |f| %>
+  <div class="callout callout-info">
+    <%= t 'repositories.new.help_html' %>
+  </div>
   <% if repository.errors.any? %>
     <div class="callout callout-danger" id="error_explanation">
       <h4><%= t('errors.validation_errors', :count => repository.errors.count) %></h4>
@@ -10,11 +13,15 @@
     </div>
   <% end %>
   <div class="field form-group row">
-    <%= f.label :name, :class => "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :name %>
+    </div>
     <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
   </div>
   <div class="field form-group row">
-    <%= f.label :remote, :class => "col-sm-3 col-form-label" %>
+    <div class="col-sm-3 col-form-label">
+      <%= f.label :remote %>
+    </div>
     <div class="col-sm-6">
       <%= f.text_field :remote,
                        class: "form-control",

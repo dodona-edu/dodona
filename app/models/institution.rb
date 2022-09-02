@@ -9,10 +9,13 @@
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  generated_name :boolean          default(TRUE), not null
+#  category       :integer          default("secondary"), not null
 #
 
 class Institution < ApplicationRecord
   NEW_INSTITUTION_NAME = 'n/a'.freeze
+
+  enum category: { secondary: 0, higher: 1, other: 2 }
 
   has_many :users, dependent: :restrict_with_error
   has_many :providers, inverse_of: :institution, dependent: :restrict_with_error
@@ -36,11 +39,15 @@ class Institution < ApplicationRecord
   end
 
   def preferred_provider
-    Provider.find_by(institution: self, mode: :prefer)
+    providers.find_by(mode: :prefer)
   end
 
   def uses_lti?
     providers.any? { |provider| provider.type == Provider::Lti.name }
+  end
+
+  def uses_oidc?
+    providers.any? { |provider| provider.type == Provider::Oidc.name }
   end
 
   def uses_smartschool?
@@ -52,12 +59,10 @@ class Institution < ApplicationRecord
   end
 
   def merge_into(other)
-    errors.add(:merge, 'has overlapping usernames') if other.users.exists?(username: users.pluck(:username))
+    errors.add(:merge, "has overlapping usernames. Run `bin/rake merge_institutions[#{id},#{other.id}]` on the server to solve this using an interactive script.") if other.users.exists?(username: users.pluck(:username))
     errors.add(:merge, 'has link provider') if providers.any?(&:link?)
     return false if errors.any?
 
-    courses.each { |c| c.update(institution: other) }
-    users.each { |u| u.update(institution: other) }
     providers.each do |p|
       if p.prefer?
         p.update(institution: other, mode: :secondary)
@@ -65,6 +70,8 @@ class Institution < ApplicationRecord
         p.update(institution: other)
       end
     end
+    courses.each { |c| c.update(institution: other) }
+    users.each { |u| u.update(institution: other) }
     reload
     destroy
   end

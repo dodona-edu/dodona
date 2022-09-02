@@ -1,4 +1,39 @@
-// Color overrides are in theme/theme.css.scss
+// boostrap color overrides
+
+// primary, secondary, success, info, warning, danger and the variables for color names
+// are already overridden in m3-theme-light
+
+$body-bg: $background;
+$content-bg: $surface;
+$body-color: $on-background;
+$link-color: $primary;
+$text-secondary: $on-surface-muted;
+$text-disabled: $on-surface-muted;
+
+// dropdowns
+$dropdown-bg: $background;
+$dropdown-color: $on-background;
+$dropdown-link-color: $on-background;
+$dropdown-link-hover-bg: $secondary-container;
+$dropdown-link-hover-color: $on-secondary-container;
+$dropdown-link-active-bg: $secondary;
+
+// inputs
+$input-disabled-bg: $background;
+$input-border-color: $outline;
+$form-select-indicator-color: $on-background;
+
+// pagination
+$pagination-bg: $surface;
+$pagination-hover-bg: $surface;
+$pagination-disabled-bg: $background;
+
+$modal-content-bg: $surface;
+
+$form-check-input-checked-bg-color: $secondary;
+$form-check-input-border: 1px solid rgba($text-disabled, 0.25);
+
+$table-border-color: $divider;
 
 // disable rfs
 $enable-rfs: false;
@@ -7,30 +42,28 @@ $enable-rfs: false;
 $enable-caret: false;
 
 // other values
-$border-radius-base: 6px;
+$border-radius-base: 12px;
 
 // font stuff
-$font-family-sans-serif: Roboto, "Helvetica Neue", Helvetica, Arial, sans-serif;
-$font-size-base: 0.875rem;//14px;
-$baseLineHeight: 24px;
+$font-family-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
+$font-size-base: 0.875rem; // 14px;
+$baseLineHeight: 24px; /* stylelint-disable-line scss/dollar-variable-pattern */
 $line-height-base: 1.3846153846;
 $min-contrast-ratio: 3;
 
 $link-decoration: none;
 
-$paragraph-margin-bottom:   0.875rem;
+$paragraph-margin-bottom: 0.875rem;
 
 $blockquote-font-size: $font-size-base;
 
 $alert-bg-scale: 0%;
 
-$blue:    $blue-500;
-$indigo:  $indigo-500;
-$purple:  $purple-500;
-$pink:    $pink-500;
-$red:     $red-500;
-$orange:  $orange-500;
-$yellow:  $yellow-500;
-$green:   $green-500;
-$teal:    $teal-500;
-$cyan:    $cyan-500;
+// bootstrap offcanvas overrides
+$offcanvas-horizontal-width: 700px;
+$offcanvas-border-width: 0;
+
+// button stuff
+$btn-padding-x: 24px;
+$btn-border-radius: 20px;
+$btn-border-width: 0;

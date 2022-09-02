@@ -35,11 +35,12 @@ class CoursePolicy < ApplicationPolicy
   end
 
   def copy?
-    create? &&
+    create? && (
       user&.zeus? ||
       record.visible_for_all? ||
       (record.visible_for_institution? && record.institution == user&.institution) ||
       record.subscribed_members.include?(user)
+    )
   end
 
   def download_submissions?
@@ -142,6 +143,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def ical?
+    true
+  end
+
   def export?
     return true if zeus?
 
@@ -151,7 +156,7 @@ class CoursePolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Course class on create
     if zeus?
-      %i[name year description visibility registration teacher institution_id moderated enabled_questions color featured]
+      %i[name year description visibility registration teacher institution_id moderated enabled_questions featured]
     elsif course_admin? || (record == Course && user&.admin?)
       %i[name year description visibility registration teacher institution_id moderated enabled_questions]
     else

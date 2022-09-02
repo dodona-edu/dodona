@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-10">
+    <div class="row">
+      <h1><%= t ".title" %></h1>
+      <% if @user.institutional? %>
+        <%= markdown t(".message_p1", username: @user.username, email: @user.email, institution: @user.institution.name) %>
+      <% else %>
+        <%= markdown t(".message_p1_personal", username: @user.username, email: @user.email) %>
+      <% end %>
+      <%= markdown t(".message_p2", provider: @provider.readable_name) %>
+    </div>
+    <div class="row">
+      <h2><%= t(".providers_title") %></h2>
+      <% @known_providers.each do |provider| %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+      <% end %>
+    </div>
+    <div class="row">
+      <p><%= t ".contact_support_html", form: link_to(t(".contact_form"), contact_path)%></p>
+    </div>
+  </div>
+</div>

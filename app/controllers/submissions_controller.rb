@@ -1,8 +1,9 @@
 class SubmissionsController < ApplicationController
   include SeriesHelper
+  include ActionView::Helpers::DateHelper
 
   before_action :set_submission, only: %i[show download evaluate edit media]
-  before_action :set_submissions, only: %i[index mass_rejudge]
+  before_action :set_submissions, only: %i[index mass_rejudge show]
   before_action :ensure_trailing_slash, only: :show
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
@@ -15,6 +16,15 @@ class SubmissionsController < ApplicationController
     course = Course.find_by(id: controller.params[:course_id]) if controller.params[:course_id].present?
     if course.present? && controller.current_user&.course_admin?(course) && controller.params[:user_id].nil?
       scope.by_course_labels(value, controller.params[:course_id])
+    else
+      scope
+    end
+  end
+
+  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[user exercise created_at status].include?(column)
+      scope.send "order_by_#{column}", direction
     else
       scope
     end
@@ -35,6 +45,7 @@ class SubmissionsController < ApplicationController
     return unless request.format.html?
 
     @title = I18n.t('submissions.index.title')
+    @activity_read_states_path = activity_read_states_path
     @crumbs = []
     if @user
       @crumbs << if @course.present?
@@ -42,12 +53,16 @@ class SubmissionsController < ApplicationController
                  else
                    [@user.full_name, user_path(@user)]
                  end
+      @activity_read_states_path = user_activity_read_states_path(@user)
     elsif @series
       @crumbs << [@series.course.name, course_path(@series.course)] << [@series.name, breadcrumb_series_path(@series, current_user)]
+      @activity_read_states_path = nil
     elsif @course
       @crumbs << [@course.name, course_path(@course)]
+      @activity_read_states_path = course_activity_read_states_path(@course)
     elsif @judge
       @crumbs << [@judge.name, judge_path(@judge)]
+      @activity_read_states_path = nil
     end
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @exercise, series: @series, course: @course)] if @exercise
     @crumbs << [I18n.t('submissions.index.title'), '#']
@@ -61,6 +76,22 @@ class SubmissionsController < ApplicationController
               else
                 [[@submission.exercise.name, activity_path(@submission.exercise)], [I18n.t('submissions.show.submission'), '#']]
               end
+    @submissions = @submissions.of_exercise(@submission.exercise)
+    @submissions = @submissions.of_user(@submission.user)
+    @submissions = @submissions.in_course(course)
+
+    @submissions_time_stamps = []
+    prev = nil
+    @submissions.each do |s|
+      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t 'submissions.show.ago'}" : (t 'submissions.show.today')
+      if current == prev
+        @submissions_time_stamps.push nil
+      else
+        @submissions_time_stamps.push current
+        prev = current
+      end
+    end
+
     @feedbacks = policy_scope(@submission.feedbacks).preload(scores: :score_item)
   end
 
@@ -128,6 +159,8 @@ class SubmissionsController < ApplicationController
     authorize @submission
   end
 
+  # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
+  # changes made here are potentially applicable to both functions
   def set_submissions
     @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
     if params[:user_id]

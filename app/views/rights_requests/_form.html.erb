@@ -16,7 +16,9 @@
     </div>
 
     <div class="field form-group row">
-      <%= f.label :context, class: 'col-sm-3 col-form-label' %>
+      <div class="col-sm-3 col-form-label">
+        <%= f.label :context %>
+      </div>
       <div class="col-sm-9">
         <%= f.text_area :context, class: 'form-control', placeholder: t(".context_explanation") %>
       </div>

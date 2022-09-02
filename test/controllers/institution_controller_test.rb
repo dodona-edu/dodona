@@ -6,8 +6,8 @@ class InstitutionControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Institution, attrs: %i[name short_name]
 
   setup do
-    @instance = create(:institution)
-    sign_in create(:zeus)
+    @instance = institutions(:ugent)
+    sign_in users(:zeus)
   end
 
   test_crud_actions only: %i[index show edit update], except: %i[update_redirect]

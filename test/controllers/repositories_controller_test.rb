@@ -10,7 +10,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     Repository.any_instance.stubs(:process_activities)
     @instance = create :repository
     Repository.any_instance.stubs(:full_path).returns(Pathname.new('test/remotes/exercises/echo'))
-    @admin = create :zeus
+    @admin = users(:zeus)
     sign_in @admin
   end
 
@@ -52,7 +52,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'zeus and repository admin should be able to edit repository admins' do
-    user = create :user
+    user = users(:student)
 
     assert_difference('@instance.admins.count', 1, 'zeus should always be able to add a repository admin') do
       post add_admin_repository_url(@instance, user_id: user.id)
@@ -78,7 +78,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'normal user should not be able to edit repository admins' do
-    user = create :user
+    user = users(:student)
     repo_admin = create :user
     @instance.admins << repo_admin
 
@@ -103,18 +103,18 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'allowed courses should render' do
-    course = create :course
+    course = courses(:course1)
     @instance.allowed_courses << course
     get courses_repository_url(@instance)
     assert_response :success
-    user = create :user
+    user = users(:student)
     @instance.admins << user
     get courses_repository_url(@instance)
     assert_response :success
   end
 
   test 'zeus and repository admin should be able to edit allowed courses' do
-    course = create :course
+    course = courses(:course1)
 
     assert_difference('@instance.allowed_courses.count', 1, 'zeus should be able to add an allowed course') do
       post add_course_repository_url(@instance, course_id: course.id)
@@ -124,7 +124,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
       post remove_course_repository_url(@instance, course_id: course.id)
     end
 
-    user = create :user
+    user = users(:student)
     @instance.admins << user
 
     sign_in user
@@ -139,8 +139,8 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'user should not be able to edit allowed courses' do
-    course = create :course
-    user = create :user
+    course = courses(:course1)
+    user = users(:student)
 
     sign_in user
 
@@ -187,7 +187,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should email during repository creation' do
-    user = create :staff
+    user = users(:staff)
     judge = create :judge, :git_stubbed
     sign_in user
     @remote.update_file('echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
@@ -233,5 +233,165 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     }]
     post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-Gitlab-Event': 'push' }
     assert_equal 'private', find_echo.access
+  end
+
+  test 'github webhook with incorrect commit should email pusher' do
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        email: 'a@ugent.be',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ['a@ugent.be'], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email pusher' do
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt',
+      user_email: 'a@ugent.be'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal ['a@ugent.be'], email.to
+  end
+
+  test 'github webhook with incorrect commit should email first admin when no mail is present' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'github webhook with incorrect commit should email first admin when no mail is invalid' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      pusher: {
+        name: 'Deter Pawyndt',
+        email: 'a.ugent.be',
+        username: 'dpawyndt'
+      }
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email first admin when no mail is present' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
+  end
+
+  test 'gitlab webhook with incorrect commit should email first admin when no mail is invalid' do
+    user = users(:staff)
+    @repository.admins << user
+    @remote.write_file('dirconfig.json', 'Write invalid config') do
+      '{"invalid json",,}'
+    end
+    params = {
+      commits: [{
+        committer: {
+          name: 'Deter Pawyndt',
+          email: 'deter.pawyndt@ugent.be',
+          username: 'dpawyndt'
+        },
+        message: 'Write invalid config',
+        added: ['{"invalid json",,}'],
+        removed: [],
+        modified: ['dirconfig.json']
+      }],
+      user_name: 'Deter Pawyndt',
+      user_email: 'a.ugent.be'
+    }
+    post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
+
+    email = ActionMailer::Base.deliveries.last
+    assert_equal [user.email], email.to
   end
 end

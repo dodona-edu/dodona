@@ -1,6 +1,6 @@
-@import "layout/drawer.css";
-@import "layout/footer.css";
-@import "layout/navbar.css";
+@import "layout/drawer.css.scss";
+@import "layout/footer.css.scss";
+@import "layout/navbar.css.scss";
 
 html,
 body {
@@ -21,17 +21,16 @@ html.lti-frame > body {
   min-height: 100%;
   position: relative;
   padding-top: 50px;
-
   display: flex;
   flex-direction: row;
   margin: 0;
   width: 100%;
-
 }
 
 .container.main {
   padding-top: 20px;
   padding-bottom: 80px;
+
   @include media-breakpoint-down(md) {
     padding-bottom: 180px;
   }

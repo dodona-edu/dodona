@@ -16,6 +16,9 @@
         </td>
         <td>
           <span>
+            <% if current_user&.admin_of?(course) %>
+              <span title='<%= t "pages.course_card.course-admin" %>'><i class='mdi mdi-18 mdi-school'></i></span>
+            <% end %>
             <% if course.featured %>
               <span title='<%= Course.human_attribute_name("featured") %>'><i class='mdi mdi-18 mdi-star-outline'></i></span>
             <% end %>
@@ -26,8 +29,8 @@
         </td>
         <td><%= course.subscribed_members_count %></td>
         <td class="actions">
-          <%= link_to course_path(course), target: '_blank', class: 'btn btn-sm btn-secondary nested-link' do %>
-            <i class="mdi mdi-open-in-new mdi-18"></i>
+          <%= link_to course_path(course), target: '_blank', class: 'btn btn-icon nested-link' do %>
+            <i class="mdi mdi-open-in-new"></i>
           <% end %>
         </td>
       </tr>

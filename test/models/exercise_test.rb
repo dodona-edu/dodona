@@ -28,8 +28,9 @@ require 'test_helper'
 class ExerciseTest < ActiveSupport::TestCase
   setup do
     @date = DateTime.new(1302, 7, 11, 13, 37, 42)
-    @user = create :user
-    @exercise = create :exercise
+    @user = users(:student)
+    @course = courses(:course1)
+    @exercise = exercises(:python_exercise)
   end
 
   test 'factory should create exercise' do
@@ -52,69 +53,59 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'accessible? should return false if user is course admin of course and exercise not in course' do
-    exercise = create :exercise
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
-    assert_not exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
-    exercise = create :exercise
     course = create :course, users: [@user]
-    assert_not exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and series is not visible course' do
-    exercise = create :exercise
     course = create :course, users: [@user]
-    create :series, course: course, visibility: 'closed', exercises: [exercise]
-    assert_not exercise.accessible?(@user, course)
+    create :series, course: course, visibility: 'closed', exercises: [@exercise]
+    assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is course admin of course, repository admin and exercise is in course' do
-    exercise = create :exercise
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
     User.any_instance.stubs(:repository_admin?).returns(true)
-    create :series, course: course, exercises: [exercise]
-    assert exercise.accessible?(@user, course)
+    create :series, course: course, exercises: [@exercise]
+    assert @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is repository admin and series is visible' do
-    exercise = create :exercise
-    course = create :course
     User.any_instance.stubs(:repository_admin?).returns(true)
-    create :series, course: course, exercises: [exercise]
-    assert exercise.accessible?(@user, course)
+    create :series, course: @course, exercises: [@exercise]
+    assert @exercise.accessible?(@user, @course)
   end
 
   test 'accessible? should return false if not allowed to use exercise' do
     exercise = create :exercise, access: 'private'
-    course = create :course
-    create :series, course: course, exercises: [exercise]
-    assert_not exercise.accessible?(@user, course)
+    create :series, course: @course, exercises: [exercise]
+    assert_not exercise.accessible?(@user, @course)
   end
 
   test 'accessible? should return true if repository allows access to course' do
     exercise = create :exercise, access: :private
-    course = create :course
-    create :series, course: course, exercises: [exercise]
-    exercise.repository.allowed_courses << course
-    assert exercise.accessible?(@user, course)
+    create :series, course: @course, exercises: [exercise]
+    exercise.repository.allowed_courses << @course
+    assert exercise.accessible?(@user, @course)
   end
 
   test 'accessible? should return false if user is not a member of the course' do
-    exercise = create :exercise
     course = create :course, registration: 'closed'
-    create :series, course: course, exercises: [exercise]
-    assert_not exercise.accessible?(@user, course)
+    create :series, course: course, exercises: [@exercise]
+    assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is a member of the course' do
-    exercise = create :exercise
     course = create :course, users: [@user]
-    create :series, course: course, exercises: [exercise]
-    assert exercise.accessible?(@user, course)
+    create :series, course: course, exercises: [@exercise]
+    assert @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user repository admin of repository' do
@@ -124,12 +115,11 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'accessible? should return true if exercise is public' do
-    exercise = create :exercise
-    assert exercise.accessible?(@user, nil)
+    assert @exercise.accessible?(@user, nil)
   end
 
   test 'accessible? should return false if exercise is private' do
-    exercise = create :exercise, access: 'private'
+    exercise = build :exercise, access: 'private'
     assert_not exercise.accessible?(@user, nil)
   end
 
@@ -150,10 +140,8 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'exercise should not be accessible if included via hidden series and user is not a member' do
-    exercise = create :exercise
-    course = create :course
-    create :series, course: course, exercises: [exercise], visibility: :hidden
-    assert_not exercise.accessible?(@user, course)
+    create :series, course: @course, exercises: [@exercise], visibility: :hidden
+    assert_not @exercise.accessible?(@user, @course)
   end
 
   test 'convert_visibility_to_access should convert "visible" to "public"' do
@@ -181,7 +169,7 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'move_relations should move submissions from one exercise to the other' do
-    exercise1 = create :exercise
+    exercise1 = @exercise
     create :submission, exercise: exercise1
     exercise2 = create :exercise
     assert_equal 1, exercise1.submissions.count
@@ -192,15 +180,15 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'users tried' do
-    e = create :exercise
-    course1 = create :course
+    e = @exercise
+    course1 = @course
     create :series, course: course1, exercises: [e]
     course2 = create :course
     create :series, course: course2, exercises: [e]
 
-    users_c1 = create_list(:user, 5, courses: [course1])
-    users_c2 = create_list(:user, 5, courses: [course2])
-    users_all = create_list(:user, 5, courses: [course1, course2])
+    users_c1 = create_list(:user, 3, courses: [course1])
+    users_c2 = create_list(:user, 3, courses: [course2])
+    users_all = create_list(:user, 3, courses: [course1, course2])
 
     assert_equal 0, e.users_tried
     assert_equal 0, e.users_tried(course: course1)
@@ -227,33 +215,33 @@ class ExerciseTest < ActiveSupport::TestCase
     users_c1.each do |user|
       create :submission, user: user, course: course1, exercise: e, status: :wrong
     end
-    assert_equal 7, e.users_tried
-    assert_equal 5, e.users_tried(course: course1)
+    assert_equal 5, e.users_tried
+    assert_equal 3, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
 
     users_c2.each do |user|
       create :submission, user: user, course: course2, exercise: e, status: :wrong
     end
-    assert_equal 11, e.users_tried
-    assert_equal 5, e.users_tried(course: course1)
-    assert_equal 5, e.users_tried(course: course2)
+    assert_equal 7, e.users_tried
+    assert_equal 3, e.users_tried(course: course1)
+    assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e, status: :wrong
     end
-    assert_equal 15, e.users_tried
-    assert_equal 5, e.users_tried(course: course1)
-    assert_equal 5, e.users_tried(course: course2)
+    assert_equal 9, e.users_tried
+    assert_equal 3, e.users_tried(course: course1)
+    assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e, status: :running
     end
-    assert_equal 15, e.users_tried
-    assert_equal 5, e.users_tried(course: course1)
-    assert_equal 5, e.users_tried(course: course2)
+    assert_equal 9, e.users_tried
+    assert_equal 3, e.users_tried(course: course1)
+    assert_equal 3, e.users_tried(course: course2)
   end
 
   test 'users correct' do
-    e = create :exercise
-    course1 = create :course
+    e = @exercise
+    course1 = @course
     create :series, course: course1, exercises: [e]
     course2 = create :course
     create :series, course: course2, exercises: [e]
@@ -452,15 +440,14 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'exercise status should be updated for every series in a course' do
-    course = create :course
-    series = create_list :series, 2, course: course, exercises: [@exercise]
+    series = create_list :series, 2, course: @course, exercises: [@exercise]
 
     series.each do |series_it|
       assert_not @exercise.accepted_for?(@user, series_it)
     end
 
     create :correct_submission,
-           course: course,
+           course: @course,
            exercise: @exercise,
            user: @user
 
@@ -470,7 +457,7 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 
   test 'exercise not made within course should not be accepted for that course' do
-    series = create_list :series, 2, exercises: [@exercise]
+    series = create_list :series, 2, :generated_course, exercises: [@exercise]
     courses = series.map(&:course)
 
     create :correct_submission,
@@ -559,6 +546,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     @exercise = @repository.exercises.first
     @about_nl_path = @exercise.full_path.join('README.nl.md')
     @about_en_path = @exercise.full_path.join('README.md')
+    @user = users(:student)
   end
 
   teardown do
@@ -570,36 +558,27 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     JSON.parse(File.read(@exercise.config_file))
   end
 
+  test 'should update properties in config file' do
+    @exercise.update access: 'private'
+    assert_equal 'private', config['access']
+
+    @exercise.update name_nl: 'Echo'
+    assert_equal 'Echo', config['description']['names']['nl']
+
+    @exercise.update name_en: 'Echo'
+    assert_equal 'Echo', config['description']['names']['en']
+  end
+
   test 'should have solutions' do
     assert_equal @exercise.solutions,
                  'solution.py' => "print(input())\n",
                  'empty.py' => ''
   end
 
-  test 'should update access in config file' do
-    @exercise.update access: 'private'
-    assert_equal 'private', config['access']
-  end
-
-  test 'should update name_nl in config file' do
-    @exercise.update name_nl: 'Echo'
-    assert_equal 'Echo', config['description']['names']['nl']
-  end
-
-  test 'should update name_en in config file' do
-    @exercise.update name_en: 'Echo'
-    assert_equal 'Echo', config['description']['names']['en']
-  end
-
-  test 'should use current user name when committing' do
-    Current.user = create :user
+  test 'should use current user name and email when committing' do
+    Current.user = @user
     @exercise.update access: 'private'
     assert_equal Current.user.full_name, @remote.git('log', '-1', '--pretty=format:%an')
-  end
-
-  test 'should use current user email when committing' do
-    Current.user = create :user
-    @exercise.update access: 'private'
     assert_equal Current.user.email, @remote.git('log', '-1', '--pretty=format:%ae')
   end
 
@@ -619,9 +598,6 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'dirconfig_file? should return true if the basename is "dirconfig.json"' do
     assert Exercise.dirconfig_file?(@exercise.full_path.join('dirconfig.json'))
-  end
-
-  test 'dirconfig_file? should return false if the basename is not "dirconfig.json"' do
     assert_not Exercise.dirconfig_file?(@exercise.full_path.join('otherconfig.json'))
   end
 
@@ -657,26 +633,20 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'config_file? should be true if exercise has a config file' do
     assert @exercise.config_file?
-  end
-
-  test 'config_file? should be false if exercise has no config file' do
     @exercise.path = '/wrong_path'
     assert_not @exercise.config_file?
   end
 
-  test 'about should give a localized result for en' do
+  test 'about should give a localized result' do
     I18n.with_locale :en do
       assert_equal @about_en_path.read, @exercise.about
     end
-  end
 
-  test 'about should give a localized result for nl' do
     I18n.with_locale :nl do
       assert_equal @about_nl_path.read, @exercise.about
     end
-  end
 
-  test 'about should fallback to other language if localized is unavailable' do
+    # correct fallback
     FileUtils.rm @about_en_path
     I18n.with_locale :en do
       assert_equal @about_nl_path.read, @exercise.about
@@ -720,27 +690,21 @@ class LasagneConfigTest < ActiveSupport::TestCase
     @repository.git_repository.remove
   end
 
-  test 'determine_format should return "md" when exercise has and md description' do
+  test 'determine_format should return "html" when exercise has and html description' do
+    assert_equal 'html', Exercise.determine_format(@exercise.full_path)
+
     Dir.stubs(:glob).returns([]) # The search to html descriptions should return no results because description is in md
     assert_equal 'md', Exercise.determine_format(@exercise.full_path)
   end
 
-  test 'determine_format should return "html" when exercise has and html description' do
-    assert_equal 'html', Exercise.determine_format(@exercise.full_path)
-  end
-
-  # set top level, overridden by exercise
-  test 'should set judge' do
+  test 'should set properties' do
+    # set top level, overridden by exercise
     assert_equal @judge, @exercise.judge
-  end
 
-  # set at top level, overridden by series, overridden by exercise
-  test 'should set programming language' do
+    # set at top level, overridden by series, overridden by exercise
     assert_equal ProgrammingLanguage.find_by(name: 'python'), @exercise.programming_language
-  end
 
-  # set at top level, overridden by series
-  test 'should set access' do
+    # set at top level, overridden by series
     assert_equal 'public', @exercise.access
   end
 

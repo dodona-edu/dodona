@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -26,6 +26,14 @@ class Provider::Smartschool < Provider
 
   def self.sym
     :smartschool
+  end
+
+  def self.logo
+    'smartschool.png'
+  end
+
+  def self.readable_name
+    'Smartschool'
   end
 
   SMARTSCHOOL_SUFFIX = '.smartschool.be'.freeze

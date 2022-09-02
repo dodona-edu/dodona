@@ -10,6 +10,8 @@ en:
       hide_activities: "Hide learning activities"
       hide_activities_help: "Hiding learning activities will only show the description for this series. Teachers can use this setting to release the course material for a series early while holding back the exercises and reading activities."
       advanced_settings: Advanced settings
+      activity_numbers_enabled: "Number learning activities"
+      activity_numbers_enabled_help: "Every exercise and reading activity gets a sequential number starting at 1. This number will be displayed titles and listings and can simplify communicating about those activities."
     index:
       title: All series
       load_more: Load more series
@@ -32,6 +34,9 @@ en:
       best_is_not_last: Your best submission is not your last submission! Click to check (and edit/submit) your best submission.
       show_overview: Show all learning activity descriptions
       evaluation_overview: Show feedback
+      series_overview: Series overview
+      apply: apply
+      hidden_not_registered: You are not registered for this course. You have to register before you can start solving the exercises.
     edit:
       title: Edit series
       add_activities: Add activities
@@ -53,13 +58,17 @@ en:
       confirm_evaluation: Note there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will be deleted as well.
     scoresheet:
       user: User
-      explanation: "Showing the number of correctly solved exercises and completed reading activities before the deadline"
       at_least_one_started: "Only show users that started at least one learning activity"
       no_activities_html: "This series doesn't have any learning activities. You can add some on the <a href=%{series_edit_url}>series edit page</a>."
       download: Download scoresheet
       course_view: Course scoresheet
       select_view: Select view
       status: "Status %{activity}"
+      total: Total
+      users:
+        zero: No users
+        one: 1 user
+        other: "%{count} users"
     series_status:
       completed_after_deadline_missed: You completed all learning activities, but unfortunately not before the deadline.
       wrong_after_deadline_missed: You missed the deadline, and there are still incorrect exercises.

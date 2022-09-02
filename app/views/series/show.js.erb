@@ -1,8 +1,8 @@
-<% series_card = render partial: 'series.html.erb',
+<% series_card = render partial: 'series',
                         locals: {
                           series: @series,
                           loaded: true,
                           user: @user,
                         } %>
 $("#series-card-<%= @series.id %>").replaceWith("<%= escape_javascript series_card %>");
-$(dodona.initTooltips)
+dodona.ready.then(dodona.initTooltips)

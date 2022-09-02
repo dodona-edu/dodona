@@ -1,11 +1,13 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'favorite_course_buttons' %>
+  <%= javascript_include_tag 'favorite_course_buttons' %>
 <% end %>
 <div class="row">
   <div class="col-12 col-md-6 col-lg-8">
     <% if @subscribed_courses.empty? %>
       <%= render "getting_started_card" %>
-      <%= render 'privacy_disclaimer' %>
+      <% if current_user.institutional? %>
+        <%= render 'privacy_disclaimer' %>
+      <% end %>
     <% else %>
       <div class="row favorites-row">
         <% unless @favorite_courses.empty? %>
@@ -49,7 +51,7 @@
         <% end %>
         <div class="card home-summary-card">
           <div class="card-supporting-text">
-            <%= link_to (t('.more-courses') + ' …'), courses_path, class: "btn-text" %>
+            <%= link_to (t('.more-courses') + ' …'), courses_path(:can_register => :true), class: "btn btn-text" %>
           </div>
         </div>
       </div>
@@ -57,7 +59,7 @@
   </div>
 </div>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initFavoriteButtons();
     });
 </script>

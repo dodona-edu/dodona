@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_12_104516) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_08_30_124315) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -28,7 +27,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.string "content_type"
     t.text "metadata", size: :medium
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
+    t.string "checksum"
     t.datetime "created_at", null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
@@ -79,8 +78,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "activity_id", null: false
     t.integer "course_id"
     t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["activity_id", "course_id", "user_id"], name: "activity_read_states_unique", unique: true
     t.index ["course_id"], name: "fk_rails_f674cacc14"
     t.index ["user_id"], name: "fk_rails_96d00253e9"
@@ -95,8 +94,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "activity_id", null: false
     t.integer "series_id"
     t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "last_submission_id"
     t.integer "last_submission_deadline_id"
     t.integer "best_submission_id"
@@ -113,8 +112,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "submission_id"
     t.integer "user_id"
     t.text "annotation_text", size: :medium
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.bigint "evaluation_id"
     t.string "type", default: "Annotation", null: false
     t.integer "question_state"
@@ -125,6 +124,29 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"
     t.index ["submission_id"], name: "index_annotations_on_submission_id"
     t.index ["user_id"], name: "index_annotations_on_user_id"
+  end
+
+  create_table "announcement_views", charset: "utf8mb4", force: :cascade do |t|
+    t.bigint "announcement_id", null: false
+    t.integer "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["announcement_id"], name: "index_announcement_views_on_announcement_id"
+    t.index ["user_id", "announcement_id"], name: "index_announcement_views_on_user_id_and_announcement_id", unique: true
+    t.index ["user_id"], name: "index_announcement_views_on_user_id"
+  end
+
+  create_table "announcements", charset: "utf8mb4", force: :cascade do |t|
+    t.text "text_nl", null: false
+    t.text "text_en", null: false
+    t.datetime "start_delivering_at"
+    t.datetime "stop_delivering_at"
+    t.integer "user_group", null: false
+    t.bigint "institution_id"
+    t.integer "style", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["institution_id"], name: "index_announcements_on_institution_id"
   end
 
   create_table "api_tokens", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -181,7 +203,6 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.text "description", size: :medium
     t.integer "visibility"
     t.integer "registration"
-    t.integer "color"
     t.string "teacher"
     t.bigint "institution_id"
     t.string "search", limit: 4096
@@ -210,8 +231,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
   create_table "evaluation_exercises", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_id"
     t.integer "exercise_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.boolean "visible_score", default: true, null: false
     t.index ["evaluation_id"], name: "index_evaluation_exercises_on_evaluation_id"
     t.index ["exercise_id", "evaluation_id"], name: "index_evaluation_exercises_on_exercise_id_and_evaluation_id", unique: true
@@ -221,8 +242,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
   create_table "evaluation_users", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.bigint "evaluation_id"
     t.integer "user_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["evaluation_id"], name: "index_evaluation_users_on_evaluation_id"
     t.index ["user_id", "evaluation_id"], name: "index_evaluation_users_on_user_id_and_evaluation_id", unique: true
     t.index ["user_id"], name: "index_evaluation_users_on_user_id"
@@ -232,8 +253,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "series_id"
     t.boolean "released", default: false, null: false
     t.datetime "deadline", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["series_id"], name: "index_evaluations_on_series_id"
   end
 
@@ -250,8 +271,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
   create_table "exports", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "user_id"
     t.integer "status", default: 0, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_exports_on_user_id"
   end
 
@@ -261,8 +282,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.bigint "evaluation_user_id"
     t.bigint "evaluation_exercise_id"
     t.boolean "completed", default: false, null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["evaluation_exercise_id"], name: "index_feedbacks_on_evaluation_exercise_id"
     t.index ["evaluation_id"], name: "index_feedbacks_on_evaluation_id"
     t.index ["evaluation_user_id"], name: "index_feedbacks_on_evaluation_user_id"
@@ -273,8 +294,10 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.string "identifier", null: false
     t.bigint "provider_id", null: false
     t.integer "user_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "identifier_based_on_email", default: false, null: false
+    t.boolean "identifier_based_on_username", default: false, null: false
     t.index ["provider_id", "identifier"], name: "index_identities_on_provider_id_and_identifier", unique: true
     t.index ["provider_id", "user_id"], name: "index_identities_on_provider_id_and_user_id", unique: true
     t.index ["user_id"], name: "fk_rails_5373344100"
@@ -287,6 +310,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "generated_name", default: true, null: false
+    t.integer "category", default: 0, null: false
   end
 
   create_table "judges", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -297,6 +321,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.datetime "updated_at", null: false
     t.string "renderer", null: false
     t.string "remote"
+    t.integer "clone_status", default: 1, null: false
     t.index ["name"], name: "index_judges_on_name", unique: true
   end
 
@@ -312,8 +337,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "user_id", null: false
     t.string "notifiable_type"
     t.bigint "notifiable_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["notifiable_type", "notifiable_id"], name: "index_notifications_on_notifiable_type_and_notifiable_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
@@ -331,14 +356,14 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
 
   create_table "providers", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "type", default: "Provider::Saml", null: false
-    t.bigint "institution_id", null: false
+    t.bigint "institution_id"
     t.string "identifier"
     t.text "certificate", size: :medium
     t.string "entity_id"
     t.string "slo_url"
     t.string "sso_url"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.integer "mode", default: 0, null: false
     t.boolean "active", default: true
     t.string "authorization_uri"
@@ -355,6 +380,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "judge_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "clone_status", default: 1, null: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true
@@ -371,8 +397,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.integer "user_id", null: false
     t.string "institution_name"
     t.text "context", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_rights_requests_on_user_id"
   end
 
@@ -382,8 +408,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.string "name", null: false
     t.boolean "visible", default: true, null: false
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["evaluation_exercise_id"], name: "index_score_items_on_evaluation_exercise_id"
   end
 
@@ -392,8 +418,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.bigint "feedback_id", null: false
     t.decimal "score", precision: 5, scale: 2, null: false
     t.integer "last_updated_by_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["feedback_id"], name: "index_scores_on_feedback_id"
     t.index ["last_updated_by_id"], name: "index_scores_on_last_updated_by_id"
     t.index ["score_item_id", "feedback_id"], name: "index_scores_on_score_item_id_and_feedback_id", unique: true
@@ -414,6 +440,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.boolean "progress_enabled", default: true, null: false
     t.boolean "activities_visible", default: true, null: false
     t.integer "activities_count"
+    t.boolean "activity_numbers_enabled", default: false, null: false
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"
@@ -443,6 +470,7 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.boolean "accepted", default: false
     t.integer "course_id"
     t.string "fs_key", limit: 24
+    t.integer "number"
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"
     t.index ["exercise_id", "user_id", "accepted", "created_at"], name: "ex_us_ac_cr_index"
@@ -466,6 +494,8 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
     t.string "time_zone", default: "Brussels"
     t.bigint "institution_id"
     t.string "search", limit: 4096
+    t.datetime "seen_at"
+    t.datetime "sign_in_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
@@ -491,6 +521,9 @@ ActiveRecord::Schema.define(version: 2021_06_12_104516) do
   add_foreign_key "annotations", "submissions"
   add_foreign_key "annotations", "users"
   add_foreign_key "annotations", "users", column: "last_updated_by_id"
+  add_foreign_key "announcement_views", "announcements"
+  add_foreign_key "announcement_views", "users"
+  add_foreign_key "announcements", "institutions"
   add_foreign_key "course_labels", "courses", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_labels", on_delete: :cascade
   add_foreign_key "course_membership_labels", "course_memberships", on_delete: :cascade

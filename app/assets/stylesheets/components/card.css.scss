@@ -9,15 +9,22 @@ $card-supporting-text-padding: 16px;
   z-index: auto;
   position: relative;
   overflow: visible;
-  background: $content-bg;
+  background: $surface;
   border-radius: $border-radius-base;
-  transition: box-shadow 0.2s cubic-bezier(.4, 0, .2, 1);
+  transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
   @include shadow-z2;
+
   margin-bottom: $card-margin-bottom;
 }
 
+.card-outlined {
+  box-shadow: none;
+  border: 1px solid $outline;
+}
+
 .card-media {
-  background-color: $content-bg;
+  background-color: $surface;
   background-repeat: repeat;
   background-position: 50% 50%;
   background-size: cover;
@@ -41,11 +48,18 @@ $card-supporting-text-padding: 16px;
   padding: 16px;
   box-sizing: border-box;
   flex-direction: column;
+
+  &.card-title-flex {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .card-title.card-title-colored {
-  color: rgb(0, 0, 0);
-  background-color: $header-bg;
+  color: $on-primary;
+  background-color: $primary;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 }
@@ -57,13 +71,13 @@ a.card-title-link:hover {
 }
 
 .card-title.card-colored-accent {
-  color: $header-fg;
+  color: $on-primary-container;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 
   .card-subtitle-text {
     margin-top: 3px;
-    color: $header-fg-secondary;
+    opacity: 0.75;
   }
 
   .card-subtitle-text + .card-subtitle-text {
@@ -73,51 +87,80 @@ a.card-title-link:hover {
   a {
     color: inherit;
   }
-}
 
-.card-title.card-colored-accent.accent-red {
-  background-color: $color-red;
-}
+  &.accent-red {
+    background-color: $red-container;
+    color: $on-red-container;
+  }
 
-.card-title.card-colored-accent.accent-pink {
-  background-color: $color-pink;
-}
+  &.accent-pink {
+    background-color: $pink-container;
+    color: $on-pink-container;
+  }
 
-.card-title.card-colored-accent.accent-purple {
-  background-color: $color-purple;
-}
+  &.accent-purple {
+    background-color: $purple-container;
+    color: $on-purple-container;
+  }
 
-.card-title.card-colored-accent.accent-deep-purple {
-  background-color: $color-deep-purple;
-}
+  &.accent-deep-purple {
+    background-color: $deep-purple-container;
+    color: $on-purple-container;
+  }
 
-.card-title.card-colored-accent.accent-indigo {
-  background-color: $color-indigo;
-}
+  &.accent-indigo {
+    background-color: $indigo-container;
+    color: $on-indigo-container;
+  }
 
-.card-title.card-colored-accent.accent-teal {
-  background-color: $color-teal;
-}
+  &.accent-teal {
+    background-color: $teal-container;
+    color: $on-teal-container;
+  }
 
-.card-title.card-colored-accent.accent-orange {
-  background-color: $color-orange;
-}
+  &.accent-orange {
+    background-color: $orange-container;
+    color: $on-orange-container;
+  }
 
-.card-title.card-colored-accent.accent-brown {
-  background-color: $color-brown;
-}
+  &.accent-brown {
+    background-color: $brown-container;
+    color: $on-brown-container;
+  }
 
-.card-title.card-colored-accent.accent-blue-grey {
-  background-color: $color-blue-grey;
+  &.accent-blue-gray {
+    background-color: $blue-gray-container;
+    color: $on-blue-gray-container;
+  }
+
+  &.accent-blue {
+    background-color: $blue-container;
+    color: $on-blue-container;
+  }
+
+  &.accent-yellow {
+    background-color: $yellow-container;
+    color: $on-yellow-container;
+  }
+
+  &.accent-green {
+    background-color: $green-container;
+    color: $on-green-container;
+  }
+
+  &.accent-cyan {
+    background-color: $cyan-container;
+    color: $on-cyan-container;
+  }
 }
 
 .card-title.card-title-plain li a {
   font-weight: 300;
-  color: $text-color;
+  color: $on-surface;
 }
 
 .card-title.card-border {
-  border-bottom: 1px solid $divider-color;
+  border-bottom: 1px solid $divider;
 }
 
 .card-title-text {
@@ -132,7 +175,7 @@ a.card-title-link:hover {
 }
 
 .card-title-text + .card-subtitle-text {
-  margin-top: .4em;
+  margin-top: 0.4em;
 }
 
 .card-title-text.float-end {
@@ -142,12 +185,12 @@ a.card-title-link:hover {
 
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
-  color: $header-fg;
+  color: $on-primary;
 }
 
 .card-title-image {
   background: rgba(0, 0, 0, 0.5);
-  color: $header-fg;
+  color: $on-primary;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   height: 61px;
   margin-top: -61px;
@@ -156,7 +199,6 @@ a.card-title-link:hover {
 
 .card-subtitle-text {
   font-size: 14px;
-  color: $text-secondary;
   margin: 0;
   font-weight: normal;
   line-height: 1.1;
@@ -167,47 +209,39 @@ a.card-title-link:hover {
   padding: inherit;
 }
 
-.card-title-colored .card-subtitle-text,
-.card-title-colored .card-subtitle-text a {
-  color: $header-fg-secondary;
-}
-
 .card-supporting-text {
-  color: $text-color;
+  color: $on-surface;
   font-size: 14px;
   line-height: 18px;
   padding: $card-supporting-text-padding;
-  .mdi::before{
-    line-height: 18px;
-  }
-  .mdi-36::before{
-    line-height: 32px
-  }
 }
 
 .card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
   font-size: 16px;
   line-height: normal;
   width: 100%;
   background-color: transparent;
   padding: 8px;
   box-sizing: border-box;
-  text-align: right;
 }
 
 .card-supporting-text.card-border,
 .card-actions.card-border {
-  border-top: 1px solid $divider-color;
+  border-top: 1px solid $divider;
 }
 
 .card-title + .card-border {
-  border-top: 0px;
+  border-top: 0;
 }
 
 .card-expand {
   flex-grow: 1;
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .card_menu {
   position: absolute;
   right: 16px;
@@ -219,18 +253,18 @@ a.card-title-link:hover {
   align-items: center;
 }
 
-.card-subtitle-actions a {
-  color: $text-secondary;
-  font-size: 18px;
+.card-subtitle-actions .nav.btn-group {
+  flex-wrap: nowrap;
+}
+
+.card-subtitle-actions {
+  gap: 8px;
+  margin-right: -8px;
 }
 
 .card-subtitle-actions a.dropdown-item {
-  color: $text-color;
-}
-
-.card-subtitle-actions a:hover {
-  color: $text-color;
-  font-size: 18px;
+  margin-left: unset;
+  color: $on-surface;
 }
 
 .card-nav,
@@ -265,40 +299,34 @@ a.card-title-link:hover {
 
 .card-tab .nav-tabs li a,
 .card-title .nav-tabs li a {
-  padding-bottom: 8px;
-  padding-left: 10px;
-  padding-right: 10px;
   margin-right: 10px;
   height: 55px;
   border: none;
-  border-bottom: 5px solid $header-accent;
+  border-bottom: 5px solid $secondary-container;
   font-size: 18px;
   transition-duration: 0.2s;
   transition-property: height;
   transition-timing-function: ease-out;
+  display: block;
+  padding: 10px 10px 8px;
+  line-height: 25px;
 }
 
 .card-title-colored .nav-tabs li a,
 .card-title-colored .nav-tabs li a:hover,
 .card-title-colored .nav-tabs li a:focus {
-  color: $header-fg;
+  color: $on-primary;
 }
 
 .card-tab .nav-tabs li a {
-  color: $text-muted;
-}
-.card-title .nav-tabs li a,
-.card-tab .nav-tabs li a {
-  display: block;
-  padding-top: 10px;
-  line-height: 25px;
+  color: $on-surface-muted;
 }
 
 .card-tab .nav-tabs li a.active,
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,
 .card-tab .nav-tabs li a:focus {
-  color: $text-color;
+  color: $on-surface;
 }
 
 .card-tab .nav-tabs li.active a,
@@ -311,7 +339,7 @@ a.card-title-link:hover {
 .card-title .nav-tabs li a.active {
   border: none;
   background: inherit;
-  border-bottom: 5px solid $header-accent;
+  border-bottom: 5px solid $secondary-80;
   height: 50px;
 }
 
@@ -322,26 +350,29 @@ a.card-title-link:hover {
 }
 
 .card-nav .card-title .btn-icon:hover {
-  background-color: rgba(255, 255, 255, .3);
+  background-color: rgba(255, 255, 255, 0.3);
 }
 
 .card-nav .badge {
   margin-left: 3px;
-  background-color: $header-accent;
+  background-color: $secondary-container;
+  color: $on-secondary-container;
 }
 
 .nav-tabs .badge {
-  background-color: $text-muted;
+  background-color: $surface-variant;
+  color: $on-surface-variant;
 }
 
 .nav-tabs .active .badge {
-  background-color: $header-accent;
+  background-color: $secondary-container;
+  color: $on-secondary-container;
 }
 
 .card-title-fab {
   position: absolute;
   right: 24px;
-  top: 33px;
+  top: 31px;
   z-index: 4;
 
   form {

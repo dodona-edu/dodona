@@ -1,5 +1,5 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'lti' %>
+  <%= javascript_include_tag 'lti' %>
 <% end %>
 <script type="application/javascript">
     // Our server side detection is not perfect, so sometimes we redirected to this page
@@ -12,7 +12,7 @@
   <h2><%= t ".welcome" %></h2>
   <p><%= t ".first_time" %></p>
   <p class="text-center">
-    <a class="btn btn-primary btn-lg" id="lti_redirect_button" href="<%= @path %>" target="_blank">
+    <a class="btn btn-filled" id="lti_redirect_button" href="<%= @path %>" target="_blank">
       <%= t ".login" %>
     </a>
   <p><%= t ".after" %></p>

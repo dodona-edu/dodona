@@ -1,6 +1,7 @@
 en:
   submissions:
     submission:
+      submission: Submission
       ago: ago
       view_solution: View solution
       filter-submissions-by-user: "Only show submissions from this user"
@@ -13,10 +14,13 @@ en:
       result: Result
       summary: Summary
       annotated: This submission has remarks.
+      select: Select
+      selected: Selected
     index:
       title: All submissions
       for: for
       from: from
+      read-states: Read activity log
       most_recent_correct: Most recent correct submissions per user
       watch_submissions: Automatically reload submissions
       reevaluate_submissions: Retest submissions
@@ -32,6 +36,7 @@ en:
       course: Course
       handed_in: Handed in
       ago: ago
+      today: today
       status: Status
       result: Result
       code: Code
@@ -64,3 +69,4 @@ en:
       message_zeus: This message is only visible for administrators
       tab_staff: This tab is only visible for course admins
       tab_zeus: This tab is only visisble for administrators
+      for: "for"

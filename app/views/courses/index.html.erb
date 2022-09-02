@@ -1,5 +1,5 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
+  <%= javascript_include_tag 'course' %>
 <% end %>
 <div class="row">
   <div class="col-12">
@@ -8,7 +8,7 @@
       <div class="flex-spacer"></div>
       <div>
         <% if policy(Course).new? %>
-          <%= link_to new_course_path, title: t("courses.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+          <%= link_to new_course_path, title: t("courses.new.title"), class: "btn btn-filled with-icon" do %>
             <i class="mdi mdi-plus icon"></i>
             <span class='text'><%= t("courses.new.title") %></span>
           <% end %>
@@ -20,23 +20,23 @@
         <div class="card-tab">
           <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_url %>" role="tablist">
             <% if @show_institution_courses %>
-              <li role="presentation"><a href="#institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
+              <li role="presentation"><a href="#" data-tab="institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
             <% end %>
-            <li role="presentation"><a href="#featured"><%= t '.featured_courses' %></a></li>
-            <li role="presentation"><a href="#all"><%= t '.all_courses' %></a></li>
+            <li role="presentation"><a href="#" data-tab="featured"><%= t '.featured_courses' %></a></li>
+            <li role="presentation"><a href="#" data-tab="all"><%= t '.all_courses' %></a></li>
             <% if @show_my_courses %>
-              <li role="presentation"><a href="#my"><%= t '.my_courses' %></a></li>
+              <li role="presentation"><a href="#" data-tab="my"><%= t '.my_courses' %></a></li>
             <% end %>
           </ul>
         </div>
-        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false } %>
+        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false, no_dropdown_for: ["institutions"], actions: [{search: {can_register: true}, type: 'can-register', text: "#{t(".only_show_can_register")}"}]  } %>
         <div id="courses-table-wrapper"></div>
       </div>
     </div>
   </div>
 </div>
 <script type="text/javascript">
-  $(function () {
+  dodona.ready.then(function () {
     dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "featured" %>');
   });
 </script>

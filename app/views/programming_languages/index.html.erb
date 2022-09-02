@@ -60,13 +60,13 @@
                 </td>
                 <td class="actions">
                   <% if policy(programming_language).edit? %>
-                    <%= link_to edit_programming_language_path(programming_language), class: "btn btn-sm btn-secondary" do %>
-                      <i class="mdi mdi-pencil mdi-18"></i>
+                    <%= link_to edit_programming_language_path(programming_language), class: "btn btn-icon" do %>
+                      <i class="mdi mdi-pencil"></i>
                     <% end %>
                   <% end %>
                   <% if policy(programming_language).destroy? %>
-                    <%= link_to programming_language, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-sm btn-danger" do %>
-                      <i class="mdi mdi-18 mdi-delete"></i>
+                    <%= link_to programming_language, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled bg-danger" do %>
+                      <i class="mdi mdi-delete"></i>
                     <% end %>
                   <% end %>
                 </td>

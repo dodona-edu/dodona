@@ -7,10 +7,12 @@ en:
       close: "Close"
       save: "Save"
       course_overview: "Course overview for "
+      send_mail: "Send an email to this user."
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to delimit labels"
     members_table:
+      teacher_rights: "This user has teacher rights on Dodona. Although they aren't an administrator of this course, it is possible they can access the sample solutions of exercises."
       labels: "Labels"
       member_progress_chart_info_tried:
         one: "Started one exercise."
@@ -18,6 +20,7 @@ en:
       member_progress_chart_info_correct:
         one: "Solved one exercise."
         other: "Solved %{count} exercises."
+      send_mail: "Send an email to this user."
     index:
       close: "Close"
       upload: "Upload changes"

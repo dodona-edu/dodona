@@ -2,3 +2,7 @@
 .dropdown-menu a:hover {
   font-size: $font-size-base;
 }
+
+.dropdown-item-text {
+  white-space: nowrap;
+}

@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -26,6 +26,14 @@ class Provider::Office365 < Provider
 
   def self.sym
     :office365
+  end
+
+  def self.logo
+    'office365.png'
+  end
+
+  def self.readable_name
+    'Office 365'
   end
 
   def self.extract_institution_name(auth_hash)

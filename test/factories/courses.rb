@@ -11,7 +11,6 @@
 #  description       :text(16777215)
 #  visibility        :integer
 #  registration      :integer
-#  color             :integer
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)

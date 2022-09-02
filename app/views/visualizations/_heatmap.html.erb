@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'visualisations' %>
+  <%= javascript_include_tag 'visualisations' %>
 <% end %>
 <h4><%= t ".heatmap" %></h4>
 <p class="h4-info-text"><%= t ".heatmap_details" %></p>
@@ -8,7 +8,7 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initHeatmap(
             '<%= raw heatmap_path(user_id: local_assigns[:user]&.id, course_id: local_assigns[:course]&.id) %>',
             <%= raw local_assigns[:course].present? ? "true" : "false" %>,

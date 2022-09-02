@@ -1,6 +1,7 @@
 .stepper {
   .panel {
     @include shadow-z0;
+
     border-radius: 0;
     background-color: transparent;
 
@@ -21,8 +22,8 @@
         font-size: 12px;
         margin-right: 5px;
         vertical-align: text-bottom;
-        background-color: $navbar-default-bg;
-        color: $navbar-default-color;
+        background-color: $primary;
+        color: $on-primary;
         letter-spacing: 0;
       }
 
@@ -33,28 +34,35 @@
 
         a {
           color: inherit;
+
+          &.disabled {
+            cursor: default;
+            color: $on-surface-muted;
+          }
         }
 
         .answer {
-          color: $text-muted;
+          color: $on-surface-muted;
         }
       }
     }
 
-
     .panel-heading + .panel-collapse > .panel-body {
       @include shadow-z2;
+
       background-color: $content-bg;
 
       @include media-breakpoint-up(sm) {
         margin-left: 45px;
       }
+
       border: none;
       border-radius: $border-radius-base;
       padding: 0;
 
       &.panel-body-transparent {
         background-color: transparent;
+
         @include shadow-z0;
       }
 
@@ -67,7 +75,7 @@
       }
 
       .stepper-border {
-        border-top: 1px solid $divider-color;
+        border-top: 1px solid $divider;
       }
 
       .stepper-actions {

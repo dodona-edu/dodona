@@ -23,24 +23,24 @@
 .series-activity-list .status-icon,
 #activities-table-wrapper .status-icon {
   text-align: right;
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .deadline-future {
-  color: $text-secondary;
+  color: $on-surface-muted;
 }
 
 .deadline-passed {
-  color: $danger-fg;
+  color: $danger;
 }
 
 .deadline-ok {
-  color: $success-fg;
+  color: $success;
 }
 
 .submission-status-button {
   a {
-    color: $btn-accent;
+    color: $primary;
   }
 }
 
@@ -62,6 +62,10 @@
     font-size: 65%;
   }
 
+  .card-subtitle-actions .mdi-format-list-bulleted {
+    vertical-align: text-bottom;
+  }
+
   .card-title-icon {
     min-width: 40px;
     width: 40px;
@@ -70,20 +74,20 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
     font-size: 22px;
     margin-right: 16px;
     border-radius: 50%;
-    background-color: $series-summary-icon-bg;
+    background-color: $gray;
 
-    & > .mdi::before{
+    & > .mdi::before {
       line-height: 24px;
     }
 
     &.deadline-missed .mdi-alarm-off {
-      &::before{
-        color: $brand-danger;
+      &::before {
+        color: $danger;
       }
+
       background-color: $content-bg;
       position: absolute;
       top: 24px;
@@ -92,9 +96,10 @@
     }
 
     &.deadline-met .mdi-alarm-check {
-      &::before{
-        color: $brand-success;
+      &::before {
+        color: $success;
       }
+
       background-color: $content-bg;
       position: absolute;
       top: 24px;
@@ -103,25 +108,26 @@
     }
 
     i {
-      color: $series-summary-icon-bg;
+      color: $gray;
       background: $content-bg;
       border-radius: 50%;
       border: 5px solid $content-bg;
     }
 
     &.wrong {
-      background-color: $brand-danger;
+      background-color: $danger;
 
       i {
-        color: $brand-danger;
+        color: $danger;
       }
     }
 
-    &.started, &.completed.deadline-missed {
-      background-color: $brand-success;
+    &.started,
+    &.completed.deadline-missed {
+      background-color: $success;
 
       i {
-        color: $brand-success;
+        color: $success;
       }
     }
 
@@ -140,14 +146,16 @@
       $p5: 75%;
       $p6: 90%;
 
-      background-image: linear-gradient(-135deg,
-      $red $p1,
-      $orange $p2,
-      $yellow $p3,
-      $green $p4,
-      $blue $p5,
-      $purple $p6
-      );
+      background-image:
+        linear-gradient(
+          -135deg,
+          $red-70 $p1,
+          $orange-70 $p2,
+          $yellow-70 $p3,
+          $green-70 $p4,
+          $blue-70 $p5,
+          $purple-70 $p6
+        );
 
       i {
         font-weight: bolder;
@@ -179,33 +187,75 @@
     border-bottom: solid 1px $skeleton-color;
     height: 33px;
     background-repeat: no-repeat;
-    background-image: linear-gradient($skeleton-color 100%, transparent 0),
-    linear-gradient($skeleton-color 100%, transparent 0),
-    linear-gradient($skeleton-color 100%, transparent 0);
-    background-size: 56px 12px,
-    90px 12px,
-    115px 12px;
-    background-position: 58px 10px,
-    calc(100% - 230px) 10px,
-    calc(100% - 75px) 10px;
+    background-image:
+      linear-gradient($skeleton-color 100%, transparent 0),
+      linear-gradient($skeleton-color 100%, transparent 0),
+      linear-gradient($skeleton-color 100%, transparent 0);
+    background-size:
+      56px 12px,
+      90px 12px,
+      115px 12px;
+    background-position:
+      58px 10px,
+      calc(100% - 230px) 10px,
+      calc(100% - 75px) 10px;
   }
 
   .skeleton-row {
     border-top: solid 1px $skeleton-color;
     height: 37px;
     background-repeat: no-repeat;
-    background-image: linear-gradient($skeleton-color 100%, transparent 0),
-    linear-gradient($skeleton-color 100%, transparent 0),
-    linear-gradient($skeleton-color 100%, transparent 0),
-    linear-gradient($skeleton-color 100%, transparent 0);
-    background-size: 90px 12px,
-    100px 12px,
-    90px 12px,
-    8px 12px;
-    background-position: 58px 15px,
-    calc(100% - 220px) 15px,
-    calc(100% - 100px) 15px,
-    calc(100% - 25px) 15px;
+    background-image:
+      linear-gradient($skeleton-color 100%, transparent 0),
+      linear-gradient($skeleton-color 100%, transparent 0),
+      linear-gradient($skeleton-color 100%, transparent 0),
+      linear-gradient($skeleton-color 100%, transparent 0);
+    background-size:
+      90px 12px,
+      100px 12px,
+      90px 12px,
+      8px 12px;
+    background-position:
+      58px 15px,
+      calc(100% - 220px) 15px,
+      calc(100% - 100px) 15px,
+      calc(100% - 25px) 15px;
     padding-right: 8px;
   }
+}
+
+.graph-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.graph-title {
+  display: flex;
+  font-size: 16px;
+  align-items: center;
+}
+
+.stats-container {
+  position: relative; // needed for the correct positioning of the tooltips
+}
+
+.graph-info {
+  margin-left: 5px;
+  color: $on-surface-muted;
+}
+
+.svg-icon-btn {
+  fill: currentcolor;
+
+  &.rotate {
+    transform: rotate(90deg);
+  }
+}
+
+.d3-tooltip-label {
+  font-size: 12px;
+  paint-order: stroke;
+  stroke: $content-bg;
+  stroke-width: 2px;
 }

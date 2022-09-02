@@ -23,7 +23,7 @@
               <% @exports.each do |export| %>
                 <tr <%= raw 'class="active"' if export.id == @highlighted_id %>>
                   <td><%= Export.human_enum_name(:status, export.status) %></td>
-                  <td><%= t('.created', { when: time_ago_in_words(export.created_at) }) %></td>
+                  <td><%= t('.created', when: time_ago_in_words(export.created_at)) %></td>
                   <td>
                     <% if export.archive.attached? %>
                       <%= export.archive.filename %>
@@ -31,8 +31,8 @@
                   </td>
                   <td class="actions">
                     <% if export.archive.attached? %>
-                      <%= link_to rails_blob_path(export.archive, disposition: "attachment"), class: 'btn btn-sm btn-secondary' do %>
-                        <i class="mdi mdi-cloud-download mdi-18"></i>
+                      <%= link_to rails_blob_path(export.archive, disposition: "attachment"), class: 'btn btn-icon' do %>
+                        <i class="mdi mdi-cloud-download"></i>
                       <% end %>
                     <% end %>
                   </td>

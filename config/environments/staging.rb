@@ -1,21 +1,23 @@
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
-
   # The main webapp
   config.default_host = 'naos.ugent.be'
+
+  # alternative host name
+  config.alt_host = 'naos.dodona.be'
+
+  config.web_hosts = [config.default_host, config.alt_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
 
   # Allowed hostnames
-  config.hosts << config.default_host << config.sandbox_host
+  config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
-  # Where we host our assets (a single domain, for caching)
-  config.action_controller.asset_host = 'naos.ugent.be'
+  # Where we host our assets, can be / for current host or a domain
+  config.action_controller.asset_host = '/'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development
@@ -64,9 +66,7 @@ Rails.application.configure do
   config.assets.quiet = true
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
-  config.assets.js_compressor = Uglifier.new(harmony: true) if defined? Uglifier
-  config.assets.css_compressor = :sass
+  config.assets.js_compressor = :terser
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
@@ -78,7 +78,7 @@ Rails.application.configure do
   config.assets.raise_runtime_errors = true
 
   # Raises error for missing translations
-  config.action_view.raise_on_missing_translations = true
+  config.i18n.raise_on_missing_translations = true
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

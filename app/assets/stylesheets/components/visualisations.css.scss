@@ -1,0 +1,76 @@
+.violin-label {
+  font-size: 11px;
+}
+
+.violin-invisibar {
+  visibility: hidden;
+  fill: none;
+}
+
+.metric-container {
+  stroke: $divider;
+  fill: none;
+  stroke-width: 2;
+}
+
+.day-cell {
+  &.empty {
+    fill: $off-surface;
+  }
+
+  &:hover {
+    stroke: $primary;
+    stroke-width: 2;
+  }
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+.graph_placeholder {
+  margin: auto;
+}
+
+.legend {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  overflow: hidden;
+
+  .legend-item {
+    margin-left: 8px;
+    margin-right: 8px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    .legend-box {
+      width: 15px;
+      height: 15px;
+      border-radius: 5px;
+    }
+
+    .legend-text {
+      margin-left: 4px;
+    }
+  }
+}
+
+.daterange-picker {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  .date-picker {
+    margin-right: 10px;
+    width: 20em;
+
+    input {
+      border-top-left-radius: 0.25rem !important;
+      border-bottom-left-radius: 0.25rem !important;
+    }
+  }
+}

@@ -1,16 +1,18 @@
 class ApplicationController < ActionController::Base
-  include Pundit
+  include Pundit::Authorization
   include SetCurrentRequestDetails
   include ApplicationHelper
 
   MAX_STORED_URL_LENGTH = 1024
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
+  rescue_from ActionController::ParameterMissing, with: :bad_request
 
   protect_from_forgery with: :null_session
 
   before_action :store_current_location,
-                except: %i[media sign_in institution_not_supported],
+                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :skip_session,
@@ -25,9 +27,12 @@ class ApplicationController < ActionController::Base
 
   around_action :user_time_zone, if: :current_user
 
+  after_action :set_user_seen_at, if: -> { current_user && !js_request? }
+
   before_action :set_time_zone_offset
 
   before_action :set_notifications, if: :user_signed_in?
+  before_action :set_unread_announcement, unless: :remote_request?
 
   impersonates :user
 
@@ -53,10 +58,11 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.uses_smartschool? && !user.institution&.uses_lti?
+    if user.email.blank? && !user.institution&.uses_lti? && !user.institution&.uses_oidc? && !user.institution&.uses_smartschool?
       raise "User with id #{user.id} should not have a blank email " \
-            'if the provider is not smartschool and not LTI'
+            'if the provider is not LTI, OIDC or Smartschool'
     end
+    user.touch(:sign_in_at)
   end
 
   Warden::Manager.after_set_user do |user, _auth, _opts|
@@ -65,16 +71,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
-  def allow_iframe
-    response.headers['X-Frame-Options'] = "allow-from #{default_url}"
-  end
-
-  def default_url
-    "#{request.protocol}#{Rails.configuration.default_host}:#{request.port}"
-  end
-
   def remote_request?
     request.format.js? || request.format.json?
+  end
+
+  def js_request?
+    request.format.js?
   end
 
   def parse_pagination_param(page)
@@ -94,8 +96,7 @@ class ApplicationController < ActionController::Base
   private
 
   def redirect_to_default_host
-    redirect_to host: Rails.configuration.default_host,
-                params: request.query_parameters
+    redirect_to({ host: Rails.configuration.default_host, params: request.query_parameters }, { allow_other_host: true })
   end
 
   def user_not_authorized
@@ -118,6 +119,12 @@ class ApplicationController < ActionController::Base
         redirect_to(root_path)
       end
     end
+  end
+
+  def bad_request
+    # rubocop:disable Rails/RenderInline
+    render status: :bad_request, inline: 'Bad request'
+    # rubocop:enable Rails/RenderInline
   end
 
   def set_locale
@@ -166,8 +173,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def user_time_zone(&block)
-    Time.use_zone(current_user.time_zone, &block)
+  def user_time_zone(&)
+    Time.use_zone(current_user.time_zone, &)
   end
 
   def set_time_zone_offset
@@ -186,5 +193,13 @@ class ApplicationController < ActionController::Base
     # This variable counts for which services the dot in the favicon should be shown.
     # On most pages this will be empty or contain :notifications
     @dot_icon = @unread_notifications.any? ? %i[notifications] : []
+  end
+
+  def set_unread_announcement
+    @unread_announcement = AnnouncementPolicy::Scope.new(current_user, Announcement.all).resolve.unread_by(current_user).first
+  end
+
+  def set_user_seen_at
+    current_user.touch(:seen_at)
   end
 end

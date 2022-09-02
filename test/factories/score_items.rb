@@ -17,7 +17,7 @@ FactoryBot.define do
 
     maximum { '10.00' }
     visible { true }
-    last_updated_by { create :user }
+    last_updated_by { User.find(3) } # load student fixture
     description { Faker::Lorem.unique.sentence }
   end
 end

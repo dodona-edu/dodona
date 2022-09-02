@@ -1,18 +1,46 @@
-/* globals ga */
-
 import { isInIframe } from "iframe";
+import { Dutch } from "flatpickr/dist/l10n/nl";
+import flatpickr from "flatpickr";
 
-/*
- * Function to delay some other function until it isn't
- * called for "ms" ms
+/**
+ * Create a function that will delay all subsequent calls on the same timer.
+ * You don't necessarily have to call the delayer with the same function.
+ *
+ * In the first example, the typical usage is illustrated. The second example
+ * illustrates what happens with multiple delayers, each with their own timer.
+ *
+ * There is also a pre-made delayer available with a global timer, see `delay`.
+ * @example
+ *  const delay = createDelayer();
+ *  delay(() => console.log(1), 100);
+ *  delay(() => console.log(2), 100);
+ *  // prints 2, since the first invocation is cancelled
+ *
+ * @example
+ *  const delay1 = createDelayer();
+ *  const delay2 = createDelayer();
+ *  delay1(() => console.log(1), 100);
+ *  delay2(() => console.log(2), 100);
+ *  // prints 1 and then 2, since both have their own timer.
+ *
+ *  @return {function(TimerHandler, number): void}
  */
-const delay = (function () {
+function createDelayer() {
     let timer = 0;
     return function (callback, ms) {
         clearTimeout(timer);
         timer = setTimeout(callback, ms);
     };
-})();
+}
+
+/*
+ * Function to delay some other function until it isn't
+ * called for "ms" ms. This runs on a global timer, meaning
+ * the actual function doesn't matter. If you want a delay
+ * specifically for one function, you need to first create
+ * your own "delayer" with `createDelayer`.
+ */
+const delay = createDelayer();
 
 function updateURLParameter(_url, param, paramVal) {
     const url = new URL(_url, window.location.origin);
@@ -26,10 +54,11 @@ function updateURLParameter(_url, param, paramVal) {
 
 function updateArrayURLParameter(_url, param, _paramVals) {
     const paramVals = new Set(_paramVals); // remove duplicate items
-    const url = new URL(_url, window.location.origin);
-    url.searchParams.delete(param);
+    // convert "%5B%5D" back to "[]"
+    const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
+    url.searchParams.delete(`${param}[]`);
     paramVals.forEach(paramVal => {
-        url.searchParams.append(param, paramVal);
+        url.searchParams.append(`${param}[]`, paramVal);
     });
     return url.toString();
 }
@@ -41,16 +70,7 @@ function getURLParameter(name, _url) {
 
 function getArrayURLParameter(name, _url) {
     const url = new URL(_url ?? window.location.href, window.location.origin);
-    return url.searchParams.getAll(name);
-}
-
-/*
- * Logs data to Google Analytics. Category and action are mandatory.
- */
-function logToGoogle(category, action, label, value) {
-    if (typeof (ga) !== "undefined") {
-        ga("send", "event", category, action, label, value);
-    }
+    return url.searchParams.getAll(`${name}[]`);
 }
 
 function checkTimeZone(offset) {
@@ -66,13 +86,12 @@ function checkIframe() {
 }
 
 // add CSRF token to each ajax-request
-function initCSRF() {
-    $(() => {
-        $.ajaxSetup({
-            "headers": {
-                "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
-            },
-        });
+async function initCSRF() {
+    await ready;
+    $.ajaxSetup({
+        "headers": {
+            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
+        },
     });
 }
 
@@ -96,22 +115,6 @@ function fetch(url, options = {}) {
     headers["x-requested-with"] = headers["x-requested-with"] || "XMLHttpRequest";
     options["headers"] = headers;
     return window.fetch(url, options);
-}
-
-/**
- * Initializes any element with the clickable-token class to use its data for searching
- */
-function initTokenClickables() {
-    const $clickableTokens = $(".clickable-token");
-    $clickableTokens.off("click");
-    $clickableTokens.on("click", function () {
-        const $htmlElement = $(this);
-        const type = $htmlElement.data("type");
-        const name = $htmlElement.data("name");
-        if (dodona.addTokenToSearch) {
-            dodona.addTokenToSearch(type, name);
-        }
-    });
 }
 
 /**
@@ -141,21 +144,52 @@ function setDocumentTitle(title) {
     document.title = title;
 }
 
+/**
+ * Initiates a datepicker using flatpicker
+ * @param {string} selector - The selector of div containing the input field and buttons
+ * @param {object} options - optional, Options object as should be provided to the flatpicker creation method
+ * @return {flatpickr} the created flatpicker
+ */
+function initDatePicker(selector, options = {}) {
+    function init() {
+        if (I18n.locale === "nl") {
+            options.locale = Dutch;
+        }
+        return flatpickr(selector, options);
+    }
+
+    return init();
+}
+
+/**
+ * This promise will resolve when the dom content is fully loaded
+ * This could mean immediately if the dom is already loaded
+ */
+const ready = new Promise(resolve => {
+    if (document.readyState !== "loading") {
+        resolve();
+    } else {
+        document.addEventListener("DOMContentLoaded", () => resolve());
+    }
+});
+
+
 export {
+    createDelayer,
     delay,
     fetch,
     updateURLParameter,
     updateArrayURLParameter,
     getURLParameter,
     getArrayURLParameter,
-    logToGoogle,
     checkTimeZone,
     checkIframe,
     initCSRF,
     tooltip,
     initTooltips,
-    initTokenClickables,
     makeInvisible,
     makeVisible,
-    setDocumentTitle
+    setDocumentTitle,
+    initDatePicker,
+    ready
 };

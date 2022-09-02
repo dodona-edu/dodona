@@ -24,7 +24,7 @@ class FeedbacksTest < ApplicationSystemTestCase
       @exercises.each do |e|
         submission = create :correct_submission, user: u, exercise: e,
                                                  course: series.course,
-                                                 created_at: Time.current - 1.hour,
+                                                 created_at: 1.hour.ago,
                                                  code: code_lines.join("\n"),
                                                  result: result
         submission.exercise.judge.renderer = PythiaRenderer

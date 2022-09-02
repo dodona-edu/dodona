@@ -2,7 +2,7 @@ require 'zip'
 
 module ExportHelper
   class Zipper
-    include Pundit
+    include Pundit::Authorization
 
     attr_reader :users, :item, :errors
 
@@ -28,15 +28,15 @@ module ExportHelper
         @users_labels = @item.course
                              .course_memberships
                              .includes(:course_labels, :user)
-                             .map { |m| [m.user, m.course_labels] }
-                             .to_h
+                             .to_h { |m| [m.user, m.course_labels] }
+
         @users = @users_labels.keys if users.nil?
       when Course
         @list = @item.series if all?
         @users_labels = @item.course_memberships
                              .includes(:course_labels, :user)
-                             .map { |m| [m.user, m.course_labels] }
-                             .to_h
+                             .to_h { |m| [m.user, m.course_labels] }
+
         @users = @users_labels.keys if users.nil?
         initialize_series_per_exercise # depends on @list
       when User
@@ -184,8 +184,9 @@ module ExportHelper
           csv << if indianio?
                    %w[filename status submission_id name_en name_nl exercise_id]
                  else
-                   headers = %w[filename full_name id status submission_id name_en name_nl exercise_id created_at]
+                   headers = %w[filename id username last_name first_name full_name email]
                    headers << 'labels' if labels?
+                   headers += %w[status submission_id name_en name_nl exercise_id created_at]
                    headers
                  end
           submissions.each do |submission|
@@ -226,8 +227,9 @@ module ExportHelper
       csv << if indianio?
                [filename, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id]
              else
-               row = [filename, user.full_name, user.id, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
+               row = [filename, user.id, user.username, user.last_name, user.first_name, user.full_name, user.email]
                row << @users_labels[user].map(&:name).join(';') if labels?
+               row += [submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
                row
              end
     end

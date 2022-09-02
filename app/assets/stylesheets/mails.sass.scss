@@ -1,0 +1,31 @@
+$theme: "light";
+
+@import "theme/m3-theme-light.css.scss";
+@import "theme/rouge.css.scss";
+
+body {
+  font-size: 14px;
+  font-family: helvetica, sans-serif;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+}
+
+.error-list {
+  margin: 10px 0;
+}
+
+.error-report {
+  margin: 25px 0;
+  font-family: monospace;
+  font-size: 12px;
+}
+
+.error-json {
+  margin: 8px;
+  border-left: 3px solid $danger;
+  padding-left: 8px;
+  white-space: pre;
+}

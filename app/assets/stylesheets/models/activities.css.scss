@@ -4,9 +4,10 @@
     width: 30px;
   }
 
-  th.type-icon, td.type-icon {
+  th.type-icon,
+  td.type-icon {
     width: 18px;
-    color: $text-secondary;
+    color: $on-surface-muted;
     padding-left: 0;
     padding-right: 0;
   }
@@ -24,6 +25,7 @@
   }
 }
 
+/* stylelint-disable-next-line selector-class-pattern */
 .progress_visibility {
   position: relative;
   top: 1px; // move the icon a bit downwards
@@ -34,6 +36,7 @@
   .card-title {
     display: flex;
     flex-direction: row;
+    align-items: center;
 
     .card-title-navigation {
       display: flex;
@@ -41,9 +44,18 @@
       font-size: 24px;
       font-weight: 300;
       line-height: normal;
-      overflow: hidden;
       margin-left: auto;
     }
+
+    .btn-icon {
+      margin-top: -6px;
+      margin-bottom: -6px;
+    }
+  }
+
+  .card-supporting-text {
+    font-size: 18px;
+    line-height: 1.5;
   }
 }
 
@@ -70,9 +82,6 @@
   width: auto;
   display: inline-table;
   vertical-align: middle;
-}
-
-.activity-description .dodona-centered-group table {
   text-align: left;
 }
 
@@ -89,6 +98,7 @@
   display: flex;
   justify-content: space-between;
 
+  /* stylelint-disable-next-line selector-id-pattern */
   #content_page_read_action {
     display: inline-flex;
   }
@@ -100,7 +110,7 @@
   height: 16px;
   margin-left: 16px;
   display: block;
-  border-top: 1px solid $text-secondary;
+  border-top: 1px solid $on-surface-muted;
 }
 
 .footnotes {
@@ -136,6 +146,7 @@ center img {
 .activity-info {
   .labels {
     margin-bottom: 1em;
+
     a:hover {
       text-decoration: none;
     }
@@ -146,12 +157,12 @@ center img {
       text-overflow: ellipsis;
       overflow: hidden;
       white-space: nowrap;
-      padding-top: .3em;
+      padding-top: 0.3em;
     }
 
     i {
       vertical-align: -3px;
-      padding-right: .6em;
+      padding-right: 0.6em;
     }
   }
 
@@ -165,6 +176,7 @@ center img {
   .card-title {
     padding-bottom: 0;
   }
+
   .card-supporting-text {
     padding-top: 0;
   }

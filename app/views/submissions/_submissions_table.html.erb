@@ -3,14 +3,15 @@
     <thead>
     <tr>
       <th class="status-column"></th>
+      <th></th>
       <% if user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
-        <th><%= t ".user" %></th>
+        <th><d-sort-button column="user" <%= "disabled" unless course.present? %>><%= t ".user" %></d-sort-button></th>
       <% end %>
       <% unless exercise.present? %>
-        <th><%= t ".exercise" %></th>
+        <th><d-sort-button column="exercise" <%= "disabled" unless course.present? %>><%= t ".exercise" %></d-sort-button></th>
       <% end %>
-      <th><%= t ".time" %></th>
-      <th><%= t ".status" %></th>
+      <th><d-sort-button column="created_at" default="DESC" <%= "disabled" unless course.present? %>><%= t ".time" %></d-sort-button></th>
+      <th><d-sort-button column="status" <%= "disabled" unless course.present? %>><%= t ".status" %></d-sort-button></th>
       <th><%= t ".summary" %></th>
       <th></th>
     </tr>
@@ -23,15 +24,8 @@
 
 <%
   params = {}
-  params[:exercise_id] = local_assigns[:exercise].id if local_assigns[:exercise].present?
+  params[:activity_id] = local_assigns[:exercise].id if local_assigns[:exercise].present?
   params[:user_id] = local_assigns[:user].id if local_assigns[:user].present?
 %>
 
 <center><%= page_navigation_links submissions, true, 'submissions', params %></center>
-<script type="text/javascript">
-    $(function () {
-      if (dodona.initFilterButtons){
-        dodona.initFilterButtons();
-      }
-    });
-</script>

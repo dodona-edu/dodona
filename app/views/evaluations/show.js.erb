@@ -1,0 +1,2 @@
+$("#evaluation-table-wrapper").html("<%= escape_javascript(render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")
+$("#evaluation-grade-table-wrapper").html("<%= escape_javascript(render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")

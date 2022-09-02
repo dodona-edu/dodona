@@ -1,8 +1,6 @@
 require "active_support/core_ext/integer/time"
 
 Rails.application.configure do
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -17,6 +15,11 @@ Rails.application.configure do
   # The main webapp
   config.default_host = 'dodona.ugent.be'
   config.action_mailer.default_url_options = { host: 'dodona.ugent.be' }
+
+  # alternative host name
+  config.alt_host = 'dodona.be'
+
+  config.web_hosts = [config.default_host, config.alt_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'sandbox.dodona.be'
@@ -43,9 +46,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
-  config.assets.js_compressor = Uglifier.new(harmony: true) if defined? Uglifier
-  config.assets.css_compressor = :sass
+  config.assets.js_compressor = :terser
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -77,7 +78,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
-  config.cache_store = :mem_cache_store, 'elysium.ugent.be', {namespace: :"2"}
+  config.cache_store = :mem_cache_store, 'calliope.ugent.be', {namespace: :"2"}
 
   # Use a real queuing backend for Active Job (and separate queues per environment).
   # config.active_job.queue_adapter     = :resque
@@ -108,36 +109,15 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  # Inserts middleware to perform automatic connection switching.
-  # The `database_selector` hash is used to pass options to the DatabaseSelector
-  # middleware. The `delay` is used to determine how long to wait after a write
-  # to send a subsequent read to the primary.
-  #
-  # The `database_resolver` class is used by the middleware to determine which
-  # database is appropriate to use based on the time delay.
-  #
-  # The `database_resolver_context` class is used by the middleware to set
-  # timestamps for the last write to the primary. The resolver uses the context
-  # class timestamps to determine how long to wait before reading from the
-  # replica.
-  #
-  # By default Rails will store a last write timestamp in the session. The
-  # DatabaseSelector middleware is designed as such you can define your own
-  # strategy for connection switching and pass that into the middleware through
-  # these configuration options.
-  # config.active_record.database_selector = { delay: 2.seconds }
-  # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
-
   # Do not add server timings in production
   config.server_timings.enabled = false
 
   config.middleware.use ExceptionNotification::Rack,
-                        ignore_crawlers: %w[Googlebot bingbot Applebot],
-                        ignore_if: ->(env, exception) {
+                        ignore_crawlers: %w[Googlebot BingPreview bingbot Applebot],
+                        ignore_if: lambda { |env, exception|
                           env['action_controller.instance'].is_a?(PagesController) &&
-                              env['action_controller.instance'].action_name == 'create_contact' &&
-                              exception.is_a?(ActionController::InvalidAuthenticityToken)
+                            env['action_controller.instance'].action_name == 'create_contact' &&
+                            exception.is_a?(ActionController::InvalidAuthenticityToken)
                         },
                         email: {
                             email_prefix: '[Dodona] ',

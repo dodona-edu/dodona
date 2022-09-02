@@ -74,6 +74,19 @@ module ApplicationHelper
     end
   end
 
+  def activity_read_states_scoped_path(content_page: nil, series: nil, course: nil, options: nil)
+    if content_page.nil?
+      activity_read_states_path(I18n.locale, options)
+    elsif series.present?
+      course ||= series.course
+      course_series_activity_activity_read_states_path(I18n.locale, course, series, content_page, options)
+    elsif course.present?
+      course_activity_activity_read_states_path(I18n.locale, course, content_page, options)
+    else
+      activity_activity_read_states_path(I18n.locale, content_page, options)
+    end
+  end
+
   def navbar_link(options)
     return unless options.delete(:if)
 
@@ -96,7 +109,7 @@ module ApplicationHelper
     render partial: 'navbar_link', locals: locals
   end
 
-  def activatable_link_to(url, options = nil, &block)
+  def activatable_link_to(url, options = nil, &)
     if current_page?(url)
       options ||= {}
       if options[:class]
@@ -105,17 +118,17 @@ module ApplicationHelper
         options[:class] = 'active'
       end
     end
-    link_to url, options, &block
+    link_to(url, options, &)
   end
 
   def clipboard_button_for(selector)
     selector = selector.to_s
     selector.prepend('#') unless selector.starts_with?('#')
-    button_tag class: 'btn btn-secondary',
+    button_tag class: 'btn btn-icon',
                type: 'button',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag.i(class: 'mdi mdi-clipboard-outline mdi-18')
+      tag.i(class: 'mdi mdi-clipboard-outline')
     end
   end
 
@@ -149,7 +162,7 @@ module ApplicationHelper
     string.gsub('"', '\"')
   end
 
-  def submission_status_icon(submission, size = 18)
+  def status_icon(status, size = 18)
     icon, color = {
       nil => %w[remove default],
       'correct' => %w[check correct],
@@ -161,8 +174,23 @@ module ApplicationHelper
       'compilation error' => %w[flash-circle wrong],
       'memory limit exceeded' => %w[memory wrong],
       'output limit exceeded' => %w[script-text wrong]
-    }[submission&.status] || %w[alert warning]
+    }[status] || %w[alert warning]
     "<i class=\"mdi mdi-#{icon} mdi-#{size} colored-#{color}\"></i>".html_safe
+  end
+
+  def style_icon(style, size = 18)
+    icon = {
+      'primary' => 'star',
+      'success' => 'check',
+      'danger' => 'close-octagon',
+      'warning' => 'alert',
+      'info' => 'information'
+    }[style]
+    "<i class=\"mdi mdi-#{icon} mdi-#{size} text-#{style}\" title=\"#{style}\" ></i>".html_safe
+  end
+
+  def submission_status_icon(submission, size = 18)
+    status_icon(submission&.status, size)
   end
 
   def locale=(language_code)
@@ -220,7 +248,15 @@ module ApplicationHelper
     protected
 
     def html_container(html)
-      tag :ul, html, container_attributes
+      container = tag :ul, html, container_attributes
+      %(
+        #{container}
+        <script>
+        if(dodona.searchQuery){
+            dodona.searchQuery.initPagination();
+        }
+        </script>
+      )
     end
 
     def page_number(page)

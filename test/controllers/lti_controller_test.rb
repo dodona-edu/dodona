@@ -1,13 +1,14 @@
 require 'test_helper'
 
-# In these tests we don't want to hit the network to get jwsk content.
+# In these tests we don't want to hit the network to get jwks content.
 module LTI::JWK
-  def get_jwsk_content(_uri)
-    LtiTestHelper.jwks_content
+  def get_jwks_content(_uri)
+    JwksHelper.jwks_content
   end
 end
 
 class LtiControllerTest < ActionDispatch::IntegrationTest
+  include JwksHelper
   include LtiTestHelper
   include LtiHelper
 
@@ -36,7 +37,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     series = create :series, exercise_count: 1
     payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
 
-    key = File.read(FILES_LOCATION.join('private_key.pem'))
+    key = File.read(JwksHelper.private_key_path)
     File.stubs(:file?).returns(true)
     File.stubs(:read).returns(key)
 
@@ -71,8 +72,8 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
     # Change the kid in the original key, so we can simulate the rotation used by Ufora.
     LTI::JWK.module_eval do
-      def get_jwsk_content(_uri)
-        LtiTestHelper.jwks_content('kid')
+      def get_jwks_content(_uri)
+        JwksHelper.jwks_content('kid')
       end
     end
 
@@ -82,14 +83,15 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
     # Restore the module
     LTI::JWK.module_eval do
-      def get_jwsk_content(_uri)
-        LtiTestHelper.jwks_content
+      def get_jwks_content(_uri)
+        JwksHelper.jwks_content
       end
     end
   end
 end
 
 class LtiFlowTest < ActionDispatch::IntegrationTest
+  include JwksHelper
   include LtiTestHelper
 
   def setup
@@ -107,7 +109,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
   test 'correct OpenID Connect Launch flow works' do
     target = 'http://www.example.com/target'
     # Described by section 5.1.1.1 of the IMS Security Framework.
-    post '/users/auth/lti', params: {
+    post user_lti_omniauth_authorize_path, params: {
       iss: @provider.issuer,
       login_hint: 'login hint test',
       target_link_uri: target
@@ -135,7 +137,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
 
     # The LTI platform says OK, do the callback.
     # Described in section 5.1.1.3 of the IMS Security Framework
-    post '/users/auth/lti/callback', params: {
+    post user_lti_omniauth_callback_path, params: {
       id_token: id_token,
       state: params[:state]
     }
@@ -151,7 +153,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
   test 'content selection is redirected even if target is wrong' do
     target = 'blip blop'
 
-    post '/users/auth/lti', params: {
+    post user_lti_omniauth_authorize_path, params: {
       iss: @provider.issuer,
       login_hint: 'login hint test',
       target_link_uri: target
@@ -164,7 +166,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     payload = lti_payload(params[:nonce], target, 'LtiDeepLinkingRequest')
     id_token = encode_jwt(payload)
 
-    post '/users/auth/lti/callback', params: {
+    post user_lti_omniauth_callback_path, params: {
       id_token: id_token,
       state: params[:state]
     }

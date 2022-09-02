@@ -8,12 +8,41 @@ class SeriesController < ApplicationController
   before_action :set_lti_provider, only: %i[show]
 
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started_in_series(Series.find(controller.params[:id]))
+    scope.at_least_one_started_in_series(Series.find(controller.params[:id])).or(scope.at_least_one_read_in_series(Series.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
     scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
   end
   has_scope :by_filter, as: 'filter', only: :scoresheet
+
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction)
+      case column
+      when 'status_in_course_and_name'
+        scope.order_by_status_in_course_and_name direction
+      when 'submission_statuses_in_series'
+        series = Series.find(controller.params[:id])
+        scope.order_by_submission_statuses_in_series direction, series
+      else
+        series = Series.find(controller.params[:id])
+        if series.activities.exists? id: column
+          activity = series.activities.find(column)
+          if activity.exercise?
+            scope.order_by_exercise_submission_status_in_series direction, activity, series
+          elsif activity.content_page?
+            scope.order_by_activity_read_state_in_series direction, activity, series
+          else
+            scope
+          end
+        else
+          scope
+        end
+      end
+    else
+      scope
+    end
+  end
 
   content_security_policy only: %i[overview] do |policy|
     policy.frame_src -> { sandbox_url }
@@ -36,6 +65,7 @@ class SeriesController < ApplicationController
     @title = @series.name
     @crumbs = [[@course.name, course_path(@course)], [@series.name, '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)
+    flash[:alert] = I18n.t('series.show.hidden_not_registered') if @series.hidden? && !current_user&.subscribed_courses&.include?(@course)
   end
 
   def overview
@@ -184,6 +214,25 @@ class SeriesController < ApplicationController
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]
+    @statuses = Submission.statuses.keys
+
+    @submission_counts = Hash.new(0)
+    @read_state_counts = Hash.new(0)
+    @summary_by_user = Hash.new(0)
+    @total = Hash.new(0)
+    @users.each do |user|
+      @activities.each do |activity|
+        if activity.exercise? && @submissions[[user.id, activity.id]].present?
+          @submission_counts[[activity.id, @submissions[[user.id, activity.id]].status]] += 1
+          @summary_by_user[[user.id, @submissions[[user.id, activity.id]].status]] += 1
+          @total[@submissions[[user.id, activity.id]].status] += 1
+        elsif activity.content_page? && @read_states[[user.id, activity.id]].present?
+          @read_state_counts[activity.id] += 1
+          @summary_by_user[[user.id, 'correct']] += 1
+          @total['correct'] += 1
+        end
+      end
+    end
 
     @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
 
@@ -192,15 +241,18 @@ class SeriesController < ApplicationController
       format.js
       format.json
       format.csv do
-        sheet = CSV.generate do |csv|
-          csv << [I18n.t('series.scoresheet.explanation')]
-          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email'), @series.name]
+        users_labels = @course.course_memberships
+                              .includes(:course_labels, :user)
+                              .to_h { |m| [m.user, m.course_labels] }
+
+        sheet = CSV.generate(force_quotes: true) do |csv|
+          columns = ['id', 'username', 'last_name', 'first_name', 'email', 'labels', @series.name]
           columns.concat(@activities.map(&:name))
           columns.concat(@activities.map { |a| I18n.t('series.scoresheet.status', activity: a.name) })
           csv << columns
-          csv << ['Maximum', '', '', '', @activities.count].concat(@activities.map { 1 }).concat(@activities.map { '' })
+          csv << ['Maximum', '', '', '', '', '', @activities.count].concat(@activities.map { 1 }).concat(@activities.map { '' })
           @users.each do |u|
-            row = [u.first_name, u.last_name, u.username, u.email]
+            row = [u.id, u.username, u.first_name, u.last_name, u.email, users_labels[u].map(&:name).join(';')]
             succeeded_exercises = @activities.map do |a|
               if a.exercise?
                 @submissions[[u.id, a.id]]&.accepted ? 1 : 0

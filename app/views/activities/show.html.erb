@@ -1,12 +1,12 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'exercise' %>
+  <%= javascript_include_tag 'exercise' %>
   <% if @activity.exercise? %>
-    <%= javascript_pack_tag 'submission' %>
+    <%= javascript_include_tag 'submission' %>
     <script>
       window.dodona.initMathJax();
     </script>
     <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-    <%= javascript_pack_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
+    <%= javascript_include_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
 <% end %>
 <%= render 'navbar_links' %>
@@ -21,6 +21,7 @@
   previous_tooltip = previous_activity ? t('.navigation.previous') : t('.navigation.back_to_course')
   next_link = next_activity || breadcrumb_series_path(@series, current_user)
   next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
+  next_tooltip_actionable = next_activity ? t('.navigation.next_actionable') : t('.navigation.back_to_course_actionable')
 end %>
 
 <div class="row">
@@ -38,14 +39,16 @@ end %>
     <div class="card activity-description">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text">
-          <%= @activity.name %>
+          <%= activity_icon(@activity, 24) %>
+          &nbsp;
+          <%= @activity.numbered_name(@series) %>
         </h2>
         <% if @series.present? %>
           <div class="card-title-navigation hidden-print">
-            <%= link_to previous_link, class: 'btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
+            <%= link_to previous_link, class: 'btn btn-icon btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
               <i class="mdi mdi-chevron-left"></i>
             <% end %>
-            <%= link_to next_link, class: 'btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
+            <%= link_to next_link, class: 'btn btn-icon btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top', title: next_tooltip_actionable}, id: 'next-exercise-link' do %>
                 <i class="mdi mdi-chevron-right"></i>
             <% end %>
           </div>
@@ -59,8 +62,9 @@ end %>
     <nav class="col-md-1 d-none d-md-block hidden-print activity-sidebar">
       <ul class="nav affix">
         <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
-        <% @series.activities.each do |activity| %>
-          <li><%= link_to activity.name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
+        <% @series.activities.each_with_index do |activity, index| %>
+          <% numbered_name = @series.activity_numbers_enabled? ? "#{index + 1}. #{activity.name}" : activity.name %>
+          <li><%= link_to numbered_name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
         <% end %>
       </ul>
     </nav>
@@ -75,10 +79,10 @@ end %>
       <div class="card-title card-title-colored">
         <% if policy(@activity).submit? %>
           <div class="card-title-fab">
-            <button class="btn btn-primary btn-fab mdi mdi-play mdi-36" id="editor-process-btn" data-user_id="<%= current_user.id %>">
+            <button class="btn btn-fab mdi mdi-send" id="editor-process-btn" data-user_id="<%= current_user.id %>">
             </button>
-            <a class="btn btn-primary btn-fab hidden-fab" id="submission-copy-btn">
-              <i class="mdi mdi-pencil mdi-36"></i>
+            <a class="btn btn-fab hidden" id="submission-copy-btn">
+              <i class="mdi mdi-pencil"></i>
             </a>
           </div>
         <% end %>
@@ -137,7 +141,7 @@ end %>
   <div class="col-md-10 offset-md-1 col-12">
     <div class="content-page-actions">
       <% if @series.present? %>
-        <%= link_to previous_link, class: 'content-page-action btn-fab-extended previous' do %>
+        <%= link_to previous_link, class: 'content-page-action btn btn-text with-icon previous' do %>
           <i class="mdi mdi-chevron-left icon"></i><span class="text"><%= previous_tooltip %></span>
         <% end %>
       <% end %>
@@ -145,7 +149,7 @@ end %>
       <%= render partial: 'content_page_read_button', locals: {activity: @activity, course: @course, user: current_user, read_state: @read_state} %>
       <span class="gap"></span>
       <% if @series.present? %>
-        <%= link_to next_link, class: 'content-page-action btn-fab-extended right next' do %>
+        <%= link_to next_link, class: 'content-page-action btn btn-text with-icon right next' do %>
           <span class="text"><%= next_tooltip %></span>
           <i class="mdi mdi-chevron-right icon"></i>
         <% end %>
@@ -154,8 +158,11 @@ end %>
   </div>
 </div>
 <% end %>
+<% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+  <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
+<% end %>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initExerciseShow(
             <%= @activity.id %>,
             "<%= @activity.programming_language&.editor_name || "text" %>",

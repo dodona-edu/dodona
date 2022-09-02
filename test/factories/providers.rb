@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -37,6 +37,13 @@ FactoryBot.define do
   factory :office365_provider, class: 'Provider::Office365' do
     institution
     identifier { SecureRandom.uuid }
+  end
+
+  factory :oidc_provider, class: 'Provider::Oidc' do
+    institution
+
+    client_id { SecureRandom.uuid }
+    issuer { Faker::Internet.url }
   end
 
   factory :provider, aliases: [:saml_provider], class: 'Provider::Saml' do

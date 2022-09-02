@@ -3,17 +3,19 @@ require 'test_helper'
 class ExportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_activities!
-    @course = create :course
-    @students = [create(:student), create(:student), create(:student)]
+    @course = courses(:course1)
+    @students = [users(:student), users(:staff)]
     @course.enrolled_members.concat(@students)
     @series = create :series,
                      :with_submissions,
+                     exercise_count: 1,
+                     exercise_submission_count: 1,
                      exercise_submission_users: @students,
                      course: @course,
                      deadline: Time.current
     # make accessing all database-objects easier, no need for querying
     @data = { course: @course, users: @students, series: @series, exercises: @series.exercises, deadline: @series.deadline }
-    sign_in create(:zeus)
+    sign_in users(:zeus)
   end
 
   test 'should retrieve download solutions wizard page' do
@@ -77,7 +79,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length
     assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
 
-    @series.update(deadline: Time.current + 2.years)
+    @series.update(deadline: 2.years.from_now)
     post series_exports_path(@series), params: { all: true, deadline: true }
     assert_redirected_to exports_path
     zip_submission_count = @series.exercises.map { |ex| ex.submissions.before_deadline(@series.deadline) }.flatten.length
@@ -219,7 +221,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not be able to download submissions of other user' do
-    sign_in @students[2]
+    sign_in @students[0]
     other_student = @students[1]
     options = {
       data: @data,

@@ -1,5 +1,5 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'repository' %>
+  <%= javascript_include_tag 'repository' %>
 <% end %>
 <%= render 'navbar_links' %>
 
@@ -25,7 +25,7 @@
   </div>
 </div>
 <script>
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initAdminsEdit();
     });
 </script>

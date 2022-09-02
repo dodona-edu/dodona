@@ -25,8 +25,8 @@ class Feedback < ApplicationRecord
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
-  before_save :uncomplete, if: :submission_id_changed?
-  before_save :manage_annotations_after_submission_update
+  before_save :uncomplete, if: :will_save_change_to_submission_id?
+  before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
   before_destroy :destroy_related_annotations
@@ -88,7 +88,7 @@ class Feedback < ApplicationRecord
 
   def determine_submission
     # First because the default order is id: :desc
-    self.submission = user.submissions.of_exercise(exercise).before_deadline(evaluation.deadline).first
+    self.submission = user.submissions.in_course(evaluation.series.course).of_exercise(exercise).before_deadline(evaluation.deadline).first
     self.completed = true if submission.nil?
   end
 
@@ -103,10 +103,11 @@ class Feedback < ApplicationRecord
     self.completed = false
   end
 
-  def manage_annotations_after_submission_update
-    return unless submission_id_changed? && submission_id_was.present?
+  def reset_feedback_after_submission_update
+    return unless will_save_change_to_submission_id? && submission_id_in_database.present?
 
-    Submission.find(submission_id_was).annotations.where(evaluation_id: evaluation_id).destroy_all
+    Submission.find(submission_id_in_database).annotations.where(evaluation_id: evaluation_id).destroy_all
+    scores.each(&:destroy)
   end
 
   def destroy_related_annotations
@@ -116,5 +117,6 @@ class Feedback < ApplicationRecord
   def submission_user_exercise_correct
     errors.add(:submission, 'user should be the same as in the evaluation') if submission.present? && submission.user_id != user.id
     errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.exercise_id != exercise.id
+    errors.add(:submission, 'course should be the same as in the evaluation') if submission.present? && submission.course_id != evaluation.series.course_id
   end
 end

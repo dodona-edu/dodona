@@ -15,6 +15,8 @@
 #  time_zone      :string(255)      default("Brussels")
 #  institution_id :bigint
 #  search         :string(4096)
+#  seen_at        :datetime
+#  sign_in_at     :datetime
 #
 
 FactoryBot.define do
@@ -24,7 +26,10 @@ FactoryBot.define do
     username { Faker::Internet.unique.user_name(specifier: 5..32) }
     email { "#{first_name}.#{last_name}.#{username}@ugent.be".downcase.gsub(' ', '_') }
     permission { :student }
-    institution
+
+    trait :with_institution do
+      association :institution
+    end
   end
 
   factory :zeus, parent: :user do

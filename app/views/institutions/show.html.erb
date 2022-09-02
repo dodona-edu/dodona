@@ -4,6 +4,8 @@
       <div class="card-supporting-text">
         <div>
           <span class="profile-line">
+            <% if @institution.other? %><i class="mdi mdi-18 mdi-domain" title="Other"></i><% end %>
+            <% if @institution.higher? %><i class="mdi mdi-18 mdi-school" title="Higher"></i><% end %>
             <span class="name"><%= @institution.name %></span> (<%= @institution.short_name %>)
             <% if @institution.generated_name? %>
               <span class="generated-name-icon" title="<%= t 'institutions.index.generated_name' %>"><i class="mdi mdi-18 mdi-cogs icon"></i></span>
@@ -20,10 +22,10 @@
       <% if policy(@institution).edit? || policy(@institution).merge? %>
         <div class="card-actions card-border">
           <% if policy(@institution).merge? %>
-            <%= link_to t(".merge"), merge_institution_path(@institution), class: "btn-text"  %>
+            <%= link_to t(".merge"), merge_institution_path(@institution), class: "btn btn-text"  %>
           <% end %>
           <% if policy(@institution).edit? %>
-            <%= link_to t(".edit"), edit_institution_path(@institution), class: "btn-text btn-primary"  %>
+            <%= link_to t(".edit"), edit_institution_path(@institution), class: "btn btn-filled"  %>
           <% end %>
         </div>
       <% end %>

@@ -1,3 +1,5 @@
+require 'will_paginate/array'
+
 class CoursesController < ApplicationController
   include SetLtiMessage
 
@@ -8,10 +10,35 @@ class CoursesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_scope :by_institution, as: 'institution_id'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
-    scope.at_least_one_started_in_course(Course.find(controller.params[:id]))
+    scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
   has_scope :by_course_labels, as: 'course_labels', type: :array, only: :scoresheet do |controller, scope, value|
-    scope.by_course_labels(value, Series.find(controller.params[:id]).course_id)
+    scope.by_course_labels(value, controller.params[:id])
+  end
+
+  has_scope :can_register, type: :boolean, only: :index do |controller, scope|
+    scope.can_register(controller.current_user)
+  end
+
+  has_scope :order_by, using: %i[column direction], only: :scoresheet, type: :hash do |controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction)
+      if column == 'status_in_course_and_name'
+        scope.order_by_status_in_course_and_name direction
+      else
+        course = Course.find(controller.params[:id])
+        if column == 'solved_exercises_in_course'
+          scope.order_by_solved_exercises_in_course(direction, course)
+        elsif course.series.exists? id: column
+          series = course.series.find(column)
+          scope.order_by_solved_exercises_in_series(direction, series)
+        else
+          scope
+        end
+      end
+    else
+      scope
+    end
   end
 
   # GET /courses
@@ -22,18 +49,25 @@ class CoursesController < ApplicationController
     @show_my_courses = current_user && current_user.subscribed_courses.count > 0
     @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
 
-    if current_user && params[:tab] == 'institution'
-      @courses = @courses.where(institution: current_user.institution)
-    elsif current_user && params[:tab] == 'my'
-      @courses = current_user.subscribed_courses
-    elsif params[:tab] == 'featured'
-      @courses = @courses.where(featured: true)
-    elsif params[:copy_courses]
+    if params[:copy_courses]
+      @courses = apply_scopes(@courses)
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
+      @own_courses = @courses.select { |course| current_user&.admin_of?(course) }
+      @other_courses = @courses.reject { |course| current_user&.admin_of?(course) }
+      @courses = @own_courses.concat(@other_courses)
+    else
+      if current_user && params[:tab] == 'institution'
+        @courses = @courses.where(institution: current_user.institution)
+      elsif current_user && params[:tab] == 'my'
+        @courses = current_user.subscribed_courses
+      elsif params[:tab] == 'featured'
+        @courses = @courses.where(featured: true)
+      end
+      @courses = apply_scopes(@courses)
     end
 
-    @courses = apply_scopes(@courses)
     @courses = @courses.paginate(page: parse_pagination_param(params[:page]))
+    @membership_status = current_user&.course_memberships&.where(course_id: @courses.pluck(:id))&.map { |c| [c.course_id, c.status] }&.to_h || {}
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
     @institution = Institution.find(params[:institution_id]) if params[:institution_id]
     @copy_courses = params[:copy_courses]
@@ -46,6 +80,13 @@ class CoursesController < ApplicationController
     if @course.secret_required?(current_user)
       redirect_unless_secret_correct
       return if performed?
+    end
+    if current_user&.course_admin?(@course) && !@course.all_activities_accessible?
+      flash.now[:alert] = I18n.t('courses.show.has_private_exercises')
+      flash.now[:extra] = {
+        'message' => I18n.t('courses.show.has_private_help'),
+        'url' => contact_url
+      }
     end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
@@ -63,8 +104,8 @@ class CoursesController < ApplicationController
         name: @copy_options[:base].name,
         description: @copy_options[:base].description,
         institution: current_user.institution,
-        visibility: @copy_options[:base].visibility,
-        registration: @copy_options[:base].registration,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution,
         teacher: current_user.full_name
       )
       @copy_options = {
@@ -77,7 +118,9 @@ class CoursesController < ApplicationController
       @copy_options = nil
       @course = Course.new(
         teacher: current_user.full_name,
-        institution: current_user.institution
+        institution: current_user.institution,
+        visibility: :visible_for_institution,
+        registration: :open_for_institution
       )
     end
 
@@ -132,7 +175,6 @@ class CoursesController < ApplicationController
 
     respond_to do |format|
       if @course.save
-        flash[:alert] = I18n.t('courses.create.added_private_exercises') unless @course.exercises.where(access: :private).count.zero?
         @course.administrating_members << current_user unless @course.administrating_members.include?(current_user)
         format.html { redirect_to @course, notice: I18n.t('controllers.created', model: Course.model_name.human) }
         format.json { render :show, status: :created, location: @course }
@@ -171,6 +213,9 @@ class CoursesController < ApplicationController
   def statistics
     @title = I18n.t('courses.statistics.statistics')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.statistics.statistics'), '#']]
+    @unanswered = @course.unanswered_questions.count
+    @in_progress = @course.in_progress_questions.count
+    @answered = @course.answered_questions.count
   end
 
   def scoresheet
@@ -182,7 +227,26 @@ class CoursesController < ApplicationController
       scores = @course.scoresheet
       @users = apply_scopes(scores[:users])
       @series = scores[:series]
+
+      # this maps a [user_id, series_id] tuple to an object containing the number of accepted and started exercises
       @hash = scores[:hash]
+
+      @histogram = {}
+      @total_activity_count = @series.sum(&:activity_count)
+      @total_by_user = Hash.new(0)
+      @series.each do |s|
+        @histogram[s.id] = Array.new(s.activity_count + 1, 0)
+        @users.each do |u|
+          value = @hash[[u.id, s.id]]
+          @histogram[s.id][value[:accepted]] += 1 if value
+          @total_by_user[u.id] += value[:accepted] if value
+        end
+      end
+
+      @total_histogram = Array.new(@total_activity_count + 1, 0)
+      @users.each do |u|
+        @total_histogram[@total_by_user[u.id]] += 1
+      end
     end
 
     respond_to do |format|
@@ -190,15 +254,18 @@ class CoursesController < ApplicationController
       format.js
       format.json
       format.csv do
-        sheet = CSV.generate do |csv|
-          csv << [I18n.t('courses.scoresheet.explanation')]
-          columns = [User.human_attribute_name('first_name'), User.human_attribute_name('last_name'), User.human_attribute_name('username'), User.human_attribute_name('email')]
+        sheet = CSV.generate(force_quotes: true) do |csv|
+          users_labels = @course.course_memberships
+                                .includes(:course_labels, :user)
+                                .to_h { |m| [m.user, m.course_labels] }
+
+          columns = %w[id username last_name first_name email labels]
           columns.concat(@series.map(&:name))
           columns.concat(@series.map { |s| I18n.t('courses.scoresheet.started', series: s.name) })
           csv << columns
-          csv << ['Maximum', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
+          csv << ['Maximum', '', '', '', '', ''].concat(@series.map(&:activity_count)).concat(@series.map(&:activity_count))
           @users.each do |u|
-            row = [u.first_name, u.last_name, u.username, u.email]
+            row = [u.id, u.username, u.first_name, u.last_name, u.email, users_labels[u].map(&:name).join(';')]
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:accepted] })
             row.concat(@series.map { |s| @hash[[u.id, s.id]][:started] })
             csv << row
@@ -280,26 +347,14 @@ class CoursesController < ApplicationController
           success_method = method(:signup_succeeded_response)
         end
 
-        case @course.registration
-        when 'open_for_all'
+        if @course.open_for_user?(current_user)
           if try_to_subscribe_current_user status: status
             success_method.call(format)
           else
             subscription_failed_response format
           end
-        when 'open_for_institution'
-          if @course.institution == current_user.institution
-            if try_to_subscribe_current_user status: status
-              success_method.call(format)
-            else
-              subscription_failed_response format
-            end
-          else
-            format.html { redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed')) }
-            format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
-          end
-        when 'closed'
-          format.html { redirect_to(@course, alert: I18n.t('courses.registration.closed')) }
+        else
+          format.html { redirect_to(course_url(@course, secret: params[:secret]), alert: I18n.t('courses.registration.closed')) }
           format.json { render json: { errors: ['course closed'] }, status: :unprocessable_entity }
         end
       end
@@ -375,6 +430,27 @@ class CoursesController < ApplicationController
       rank = order.find_index(s.id) || 999
       s.update(order: rank)
     end
+  end
+
+  def ical
+    series = @course.series.where(visibility: :open)
+
+    cal = Icalendar::Calendar.new
+    cal.x_wr_calname = "Dodona: #{@course.name}"
+
+    series.each do |serie|
+      next unless serie.deadline
+
+      cal.event do |e|
+        e.dtstart = "#{serie.deadline.utc.strftime('%Y%m%dT%H%M%S')}Z" # Set deadline to its respective UTC time
+        e.dtend = "#{(serie.deadline.to_time + 1.second).to_datetime.utc.strftime('%Y%m%dT%H%M%S')}Z" # value of dtend must be larger than value of dtstart
+        e.summary = serie.name
+        e.description = t('.serie_deadline', serie_name: serie.name, course_name: @course.name, serie_url: series_url(serie))
+        e.url = series_url(serie)
+      end
+    end
+    cal.publish
+    render plain: cal.to_ical
   end
 
   private

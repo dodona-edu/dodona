@@ -38,7 +38,6 @@ en:
       my_exports: My exports
       submissions: Submissions
       users: Users
-      courses: Courses
       questions: Questions
       institutions: Institutions
       events: Events
@@ -52,6 +51,7 @@ en:
       log_in: Sign in
       log_out: Sign out
       rights_requests: Teacher rights requests
+      announcements: Announcements
     footer:
       support_dodona: Support Dodona
       ugent: Ghent University

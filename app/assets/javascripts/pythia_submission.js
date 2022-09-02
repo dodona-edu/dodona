@@ -1,6 +1,5 @@
-/* globals fullScreenApi */
+import fscreen from "fscreen";
 import { showInfoModal } from "./modal.js";
-import { logToGoogle } from "./util.js";
 
 function initPythiaSubmissionShow(submissionCode, activityPath) {
     function init() {
@@ -23,7 +22,6 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
         });
 
         $(".tutorlink").on("click", function () {
-            logToGoogle("tutor", "start", document.title);
             const exerciseId = $(".feedback-table").data("exercise_id");
             const $group = $(this).parents(".group");
             const stdin = $group.data("stdin").slice(0, -1);
@@ -110,23 +108,23 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
     }
 
     function initFullScreen() {
-        $(document).bind(fullScreenApi.fullScreenEventName, resizeFullScreen);
+        fscreen.addEventListener("fullscreenchange", resizeFullScreen);
 
         $("#tutor #fullscreen-button").on("click", function () {
             const elem = $("#tutor").get(0);
-            if (fullScreenApi.isFullScreen()) {
+            if (fscreen.fullscreenElement) {
                 $("#tutor .modal-dialog").removeClass("modal-fullscreen");
-                fullScreenApi.cancelFullScreen(elem);
+                fscreen.exitFullscreen();
             } else {
                 $("#tutor .modal-dialog").addClass("modal-fullscreen");
-                fullScreenApi.requestFullScreen(elem);
+                fscreen.requestFullscreen(elem);
             }
         });
     }
 
     function resizeFullScreen() {
         const $tutor = $("#tutor");
-        if (!fullScreenApi.isFullScreen()) {
+        if (!fscreen.fullscreenElement) {
             $tutor.removeClass("fullscreen");
             $("#tutorviz").height($("#tutorviz").data("standardheight"));
         } else {
@@ -200,11 +198,9 @@ function initPythiaSubmissionShow(submissionCode, activityPath) {
             });
 
             modal.on("hidden.bs.modal", function () {
-                if (fullScreenApi.isFullScreen()) {
-                    const $tutor = $("#tutor");
-                    const elem = $tutor.get(0);
+                if (fscreen.fullscreenElement) {
                     $("#tutor .modal-dialog").removeClass("modal-fullscreen");
-                    fullScreenApi.cancelFullScreen(elem);
+                    fscreen.exitFullscreen();
                 }
             });
         };

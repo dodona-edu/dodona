@@ -13,6 +13,6 @@
 FactoryBot.define do
   factory :score do
     score { '6.00' }
-    last_updated_by { create :user }
+    last_updated_by { User.find(3) } # load student fixture
   end
 end

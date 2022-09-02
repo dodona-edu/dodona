@@ -1,5 +1,5 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'scoresheet' %>
+  <%= javascript_include_tag 'scoresheet' %>
 <% end %>
 <div class="row">
   <div class="col-12">
@@ -20,7 +20,7 @@
               <% end %>
             </select>
           </div>
-          <%= link_to scoresheet_course_path(@course, format: :csv), class: "btn btn-primary btn-text" do %>
+          <%= link_to scoresheet_course_path(@course, format: :csv), class: "btn btn-outline with-icon" do %>
             <i class="mdi mdi-cloud-download"></i>
             <%=  t('.download') %>
           <% end %>
@@ -38,5 +38,5 @@
   </div>
 </div>
 <script>
-  $(window.dodona.initScoresheetLinks)
+  dodona.ready.then(window.dodona.initScoresheetLinks)
 </script>

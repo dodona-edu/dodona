@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'submission' %>
+  <%= javascript_include_tag 'submission' %>
 <% end %>
 <%= render 'navbar_links' %>
 <%
@@ -9,9 +9,20 @@
 %>
 <div class="row">
   <div class="col-lg-10 offset-lg-1 col-12">
+    <div class="alert alert-info">
+      <% if @activity.exercise? && @activity.solutions.any? %>
+        <%= t '.visibility_solution_warning' %>
+      <% else %>
+        <%= t '.visibility_warning' %>
+      <% end %>
+    </div>
     <div class="card activity-info">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @activity.name %></h2>
+        <h2 class="card-title-text">
+          <%= activity_icon(@activity, 24) %>
+          &nbsp;
+          <%= @activity.name %>
+        </h2>
       </div>
 
       <div class="card-supporting-text card-border">
@@ -21,7 +32,7 @@
             <p>
             <% @activity.labels.each do |label| %>
               <%= link_to label_path(label) do %>
-                <span class="badge bg-primary"><%= label.name %></span>
+                <span class="token accent-purple"><%= label.name %></span>
               <% end %>
             <% end %>
           </div>
@@ -35,14 +46,14 @@
                   <% if (contact_info = @config['contact'] || @repository.first_admin&.pretty_email) %>
                     <div class="col-md-12 col-6">
                       <p title="<%= t '.contact' %>">
-                        <i class="mdi mdi-account-box mdi-24"></i>
+                        <i class="mdi mdi-account-box"></i>
                         <%= mail_to(contact_info) %>
                     </div>
                   <% end %>
                   <% if @activity.exercise? %>
                     <div class="col-md-12 col-6">
                       <p title="<%= t '.judge' %>">
-                      <i class="mdi mdi-gavel mdi-24"></i>
+                      <i class="mdi mdi-gavel"></i>
                       <% if policy(@activity.judge).show? %>
                         <%= link_to @activity.judge.name, judge_path(@activity.judge) %>
                       <% else %>
@@ -52,7 +63,7 @@
                   <% end %>
                   <div class="col-md-12 col-6">
                     <p title="<%= t '.repository' %>">
-                    <i class="mdi mdi-server mdi-24"></i>
+                    <i class="mdi mdi-server"></i>
                     <% if policy(@repository).show? %>
                       <%= link_to @repository.name, repository_path(@repository) %>
                     <% else %>
@@ -62,23 +73,9 @@
                   <div class="col-md-12 col-6">
                     <% if current_user&.repository_admin?(@repository) %>
                     <p title="<%= t '.repository_path' %>">
-                    <i class="mdi mdi-file-search mdi-24"></i>
+                    <i class="mdi mdi-file-search"></i>
                     <%= github_link @repository, @activity.path %>
                     <% end %>
-                  </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.created' %>">
-                    <i class="mdi mdi-clock-outline mdi-24"></i>
-                    <span title="<%= l @activity.created_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.created_at) %> <%= t '.ago' %>
-                    </span>
-                  </div>
-                  <div class="col-md-12 col-6">
-                    <p title="<%= t '.updated' %>">
-                    <i class="mdi mdi-update mdi-24"></i>
-                    <span title="<%= l @activity.updated_at, format: :long %>">
-                    <%= time_ago_in_words(@activity.updated_at) %> <%= t '.ago' %>
-                    </span>
                   </div>
                 </div>
               </div>
@@ -181,7 +178,7 @@
                 <% solutions.each_with_index do |(fname, code), i| %>
                   <div id="solution-<%= i %>" class="tab-pane feedback-table">
                     <div class="feedback-table-options">
-                      <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn-text" %>
+                      <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn btn-text" %>
                     </div>
                     <div class="code-table">
                       <%= raw FeedbackCodeRenderer.new(code, @activity.programming_language&.renderer_name).add_code.html %>
@@ -236,8 +233,8 @@
                     <td><%= course.subscribed_members_count %></td>
                     <td class="actions">
                       <% if policy(course).edit? %>
-                        <%= link_to edit_course_path(course), class: "btn btn-sm btn-secondary" do %>
-                          <i class="mdi mdi-pencil mdi-18"></i>
+                        <%= link_to edit_course_path(course), class: "btn btn-icon" do %>
+                          <i class="mdi mdi-pencil"></i>
                         <% end %>
                       <% end %>
                     </td>

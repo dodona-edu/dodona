@@ -20,7 +20,7 @@ class FeedbackTest < ActiveSupport::TestCase
     @exercises = @evaluation.series.exercises
     @user_count = @users.count
     @exercise_count = @exercises.count
-    @zeus = create :zeus
+    @zeus = users(:zeus)
   end
 
   test 'Appropriate amount of feedbacks are created when making a session and when updating' do
@@ -69,6 +69,22 @@ class FeedbackTest < ActiveSupport::TestCase
     feedback.update(completed: true)
     feedback.update(submission_id: submission.id)
     assert_not feedback.completed
+  end
+
+  test 'feedback cannot have submission from other course' do
+    feedback = @evaluation.feedbacks.where.not(submission_id: nil).first
+    user = feedback.user
+    exercise = feedback.exercise
+    submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
+
+    feedback.update(submission_id: submission.id)
+    assert_empty feedback.errors
+
+    course = create :course
+    submission = create :submission, user: user, exercise: exercise, course: course
+
+    feedback.update(submission_id: submission.id)
+    assert_not_empty feedback.errors
   end
 
   test 'score calculations are correct' do

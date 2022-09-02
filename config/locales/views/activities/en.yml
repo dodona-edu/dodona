@@ -5,6 +5,7 @@ en:
       show: Show activity
       submissions: Submissions for this exercise
       edit: Edit activity
+      read_states: Log for this reading activity
     activity:
       count_tooltip: Number of students that solved this exercise correctly
       read_tooltip: Number of students that read this
@@ -64,7 +65,7 @@ en:
       hide_correct: hide correct
       correct: correct
       wrong: wrong
-      hand_in_tooltip: Click the play button to hand in and test your solution.
+      hand_in_tooltip: Click the send button to hand in and test your solution.
       not_found: Sorry, we can't find this exercise.
       not_accessible: This exercise isn't accessible to students.
       not_visible: This exercise isn't visible for students without the correct link.
@@ -77,6 +78,8 @@ en:
         back_to_course: Back to course
         previous: Previous activity
         next: Next activity
+        next_actionable: Go to the next exercise
+        back_to_course_actionable: Go back to course
       mark_as_read: Mark as read
       read_at: "Marked as read at %{timestamp}"
     series_activities_add_table:
@@ -109,8 +112,6 @@ en:
       judge: Judge
       repository: Repository containing this activity
       repository_path: Path within this repository
-      created: Created
-      updated: Last edited
       ago: ago
       click_here_to_create_one: Click here to create the readme.
       config_set_by: "This value was set by %{file}"
@@ -118,3 +119,15 @@ en:
       description_files: "We found files for these languages in the descriptions folder %{path}"
       config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
       doc_site: 'documentation site'
+      activity_invalid: This exercise's configuration is invalid.
+      visibility_solution_warning: This page is only accessible to teachers. Students do not have access to the sample solutions.
+      visibility_warning: This page is only accessible to teachers and not to students.
+    series_activities_table:
+      course_has_no_rights_with_fix: This course is not allowed to use this private exercise. Click here to grant this course those rights.
+      course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.
+    coding_scratchpad:
+      title: "Run %{programming_language} code in your browser"
+      experimental_feature_html: This window allows you to run Python code without installing a thing. The code you write here is <b>not</b> automatically submitted to Dodona. This feature is still in full development, so we're happy to hear about your suggestions and issues using <a href="%{url}">the contact form</a>.
+      close: Close
+      start_coding: Run your code
+      beta: BETA

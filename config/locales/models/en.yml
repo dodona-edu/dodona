@@ -6,6 +6,10 @@ en:
           at_least_one_admin: The course should always have at least one course administrator.
         api_token:
           not_permitted: You are not permitted to create a token for this user.
+        activity_read_state:
+          attributes:
+            activity:
+              taken: You have already read this activity
     models:
       course: Course
       activity: Activity
@@ -51,17 +55,7 @@ en:
           open_for_all: Open for everyone
           open_for_institution: Only open for members of the configured institution
           closed: Closed
-        color: Color
-        colors:
-          red: Red
-          pink: Pink
-          purple: Purple
-          deep-purple: Deep Purple
-          indigo: Indigo
-          teal: Teal
-          orange: Orange
-          brown: Brown
-          blue-grey: Blue Grey
+          open_for_institutional_users: Open for all users that belong to an institution
         institution: Institution
       activity:
         name: Name
@@ -147,12 +141,15 @@ en:
         name: Name
         short_name: Short name
         providers: Login types
+        category: Category
       provider:
         saml: SAML
         office365: Office 365
         smartschool: Smartschool
-        google_oauth2: G Suite
+        google_oauth2: Google Workspace
+        oidc: OpenID Connect
         lti: LTI
+        surf: SURFconext
       event:
         event_type: Type
         user: User
@@ -188,3 +185,18 @@ en:
         description: Description
         maximum: Maximum
         visible: Visible
+      announcement:
+        text_en: English announcement
+        text_nl: Dutch announcement
+        start_delivering_at: Start showing at
+        stop_delivering_at: Stop showing at
+        user_group: User group
+        user_groups:
+          everyone: Everyone
+          all_users: All users
+          students: Students
+          staff: Staff
+          zeus: Zeus
+        institution_id: Institution ID
+        institution: Institution
+        style: Bootstrap style

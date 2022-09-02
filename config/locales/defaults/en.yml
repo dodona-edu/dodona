@@ -24,11 +24,26 @@ en:
     abbr_day_names: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
     month_names: [null, "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
     abbr_month_names: [null, "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  time:
     formats:
+      weekday_short: "%a %b %d"
+      weekday_long: "%A %B %d"
+      monthday_long: "%B %d"
+  time:
+    units:
+      sec: ["second", "seconds"]
+      min: ["minute", "minutes"]
+      hour: ["hour", "hours"]
+      day: ["day", "days"]
+      week: ["week", "weeks"]
+    formats:
+      flatpickr_short: 'm/d/Y H:i'
+      flatpickr_long: F j Y H:i
       annotation: '%B %d, %Y %H:%M'
+      announcement: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
+      read_state: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
+      plain_time: '%H:%M'
   controllers:
     created: "%{model} was successfully created."
     updated: "%{model} was successfully updated."

@@ -3,7 +3,11 @@ module StubHelper
   def stub_git(obj)
     obj.stubs(:pull)
     obj.stubs(:reset)
+    obj.stubs(:create_full_path)
     obj.stubs(:clone_repo)
+    obj.stubs(:clone_repo_delayed)
+    obj.stubs(:clone_incomplete?).returns(false)
+    obj.stubs(:clone_failed?).returns(false)
     obj.stubs(:repo_is_accessible).returns(true)
   end
 
@@ -29,7 +33,7 @@ module StubHelper
   end
 
   refine FactoryBot::SyntaxRunner do
-    include StubHelper
+    import_methods StubHelper
   end
 
   # somehow we need to set this to false for use with factory bot 5

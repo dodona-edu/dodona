@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'series' %>
+  <%= javascript_include_tag 'series' %>
 <% end %>
 <div class="row">
   <div class="col-12">
@@ -84,7 +84,7 @@
         <div class="card-supporting-text card-border">
           <div class="col-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"]} %>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], local_storage_key: 'seriesActivitySearch'} %>
             <div id="activities-table-wrapper">
             </div>
           </div>
@@ -94,7 +94,7 @@
   </div>
 </div>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initSeriesEdit();
     });
 </script>

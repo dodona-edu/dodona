@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'lti' %>
+  <%= javascript_include_tag 'lti' %>
 <% end %>
 
 <div class="row">
@@ -31,7 +31,7 @@
 
 <div id="series" style="padding-bottom: 10px"></div>
 
-<button class="btn btn-primary btn-lg" style="visibility: hidden" id="lti_content_selection_confirm"><%= t ".confirm" %></button>
+<button class="btn btn-btn-filled" style="visibility: hidden" id="lti_content_selection_confirm"><%= t ".confirm" %></button>
 <script>
     window.dodona.initLtiContentSelection(
         "<%= content_selection_path %>",

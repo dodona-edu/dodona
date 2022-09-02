@@ -4,8 +4,23 @@
   top: 0;
   height: 380px;
   width: 100%;
-  background: $home-lead-bg;
+  background: $primary-30;
   z-index: -1;
+}
+
+.home-header {
+  position: relative;
+}
+
+.home-header::before {
+  content: "";
+  background: $primary-30;
+  position: absolute;
+  width: 100vw;
+  height: 380px;
+  z-index: -1;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 
 .home-header img {
@@ -14,25 +29,26 @@
 }
 
 .home-lead {
-  color: $home-lead-fg;
+  color: $primary-90;
   margin-bottom: 20px;
 
-  .btn, .btn:active {
-    border-radius: 2px;
-    background-color: $content-bg;
-    border-color: $home-lead-bg;
-    color: $home-lead-bg;
-    text-transform: uppercase;
-  }
-
+  .btn,
   .btn:active {
-    background-color: $btn-active-background;
+    border-radius: 4px;
+    background-color: $content-bg;
+    color: $primary;
   }
 
   .lead {
     margin-top: 25px;
     margin-bottom: 30px;
     font-size: 24px;
+  }
+}
+
+.home-card .info-step img {
+  @if $theme == "dark" {
+    filter: invert(1);
   }
 }
 
@@ -70,6 +86,7 @@
 .info-step img {
   padding-left: 25px;
   padding-right: 25px;
+
   @include media-breakpoint-down(md) {
     margin: auto;
   }
@@ -78,7 +95,6 @@
 .home-summary-card h5 {
   line-height: 18px;
   margin-bottom: 8px;
-  text-transform: uppercase;
 }
 
 .home-summary-card .dynamic-homepage-series-link,
@@ -108,16 +124,12 @@
   display: block;
 }
 
-.home-summary-card .course-link:hover {
-  color: $course-link-hover-color;
-}
-
 .home-summary-card .stats h1 {
   margin-top: -10px;
 }
 
 .home-summary-card.getting-started {
-  background-color: $getting-started-bg;
+  background-color: $primary-30;
 }
 
 .home-summary-card.getting-started .card-media {
@@ -125,7 +137,7 @@
 }
 
 .home-summary-card.getting-started .card-title {
-  color: $getting-started-fg;
+  color: $primary-100;
   padding-top: 10px;
   padding-bottom: 10px;
 }
@@ -134,6 +146,7 @@
   margin-right: 45px;
   margin-top: 10px;
   margin-bottom: 15px;
+
   @media (max-width: 480px) {
     margin-top: 5px;
     margin-bottom: 5px;
@@ -142,7 +155,8 @@
 }
 
 .home-summary-card.getting-started .getting-started-action {
-  background: $content-bg;
+  background: $primary-100;
+  color: $primary-30;
 }
 
 .home-summary-card.privacy-disclaimer {
@@ -154,7 +168,6 @@
     .privacy-disclaimer-icon {
       margin-right: 1em;
     }
-
   }
 }
 
@@ -176,6 +189,7 @@
   margin-top: -6px;
   margin-bottom: -6px;
 }
+
 .metric {
   margin-top: 6px;
   margin-bottom: 6px;

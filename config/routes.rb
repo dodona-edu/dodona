@@ -18,6 +18,8 @@ Rails.application.routes.draw do
       devise_scope :user do
         get '/sign_in' => 'authentication#sign_in', as: 'sign_in'
         delete '/sign_out' => 'authentication#destroy', as: 'sign_out'
+        get '/privacy_prompt' => 'omniauth_callbacks#privacy_prompt'
+        post '/privacy_prompt' => 'omniauth_callbacks#accept_privacy_policy'
       end
 
       get '/users/saml/metadata' => 'saml#metadata'
@@ -39,7 +41,7 @@ Rails.application.routes.draw do
 
     concern :mediable do
       member do
-        constraints host: Rails.configuration.default_host do
+        constraints host: Rails.configuration.web_hosts do
           get 'media/*media', to: 'activities#media', constraints: {media: /.*/}, as: :media
         end
       end
@@ -52,9 +54,7 @@ Rails.application.routes.draw do
     end
 
     concern :readable do
-      member do
-        post 'read'
-      end
+      resources :activity_read_states, only: %i[index create]
     end
 
     concern :submitable do
@@ -88,12 +88,17 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
+          get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
+        end
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
-      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
+        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
+      end
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
         get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
@@ -104,6 +109,7 @@ Rails.application.routes.draw do
         get 'manage_series'
         get 'scoresheet'
         get 'questions'
+        get 'ical'
         post 'mass_accept_pending'
         post 'mass_decline_pending'
         post 'reset_token'
@@ -118,6 +124,7 @@ Rails.application.routes.draw do
 
     resources :activities, only: %i[index show edit update], concerns: %i[readable mediable submitable infoable] do
       member do
+        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'activities#description', as: 'description'
@@ -179,9 +186,12 @@ Rails.application.routes.draw do
       resources :annotations, only: [:index, :create, :update, :destroy], format: :json
     end
 
+    resources :activity_read_states, only: %i[index create]
+
     resources :users do
       resources :api_tokens, only: %i[index create destroy], shallow: true
       resources :submissions, only: [:index]
+      resources :activity_read_states, only: [:index]
       get 'stop_impersonating', on: :collection
       get 'available_for_repository', on: :collection
       member do
@@ -207,7 +217,6 @@ Rails.application.routes.draw do
 
     resources :evaluations, only: %i[show new edit create update destroy] do
       member do
-        get 'add_users'
         get 'overview'
         get 'export_grades'
         post 'add_user'
@@ -216,19 +225,27 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update index new] do
+      resources :score_items, only: %i[create destroy update] do
         post 'copy', on: :collection
         post 'add_all', on: :collection
       end
       resources :scores, only: %i[show create update destroy]
     end
-    resources :feedbacks, only: %i[show edit update]
+    resources :feedbacks, only: %i[show edit update] do
+      delete 'scores', action: :destroy_scores, controller: :feedbacks, on: :member
+    end
     resources :evaluation_exercise, only: %i[update]
 
     resources :rights_requests, only: %i[index new create] do
       member do
         post 'approve'
         post 'reject'
+      end
+    end
+
+    resources :announcements, only: %i[index new create destroy edit update] do
+      member do
+        post 'mark_as_read'
       end
     end
 
@@ -244,8 +261,11 @@ Rails.application.routes.draw do
     scope 'stats', controller: 'statistics' do
       get 'heatmap', to: 'statistics#heatmap'
       get 'punchcard', to: 'statistics#punchcard'
+      get 'violin', to: 'statistics#violin'
+      get 'stacked_status', to: 'statistics#stacked_status'
+      get 'timeseries', to: 'statistics#timeseries'
+      get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
-
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

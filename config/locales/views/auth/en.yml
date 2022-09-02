@@ -1,16 +1,31 @@
 en:
   auth:
     sign_in:
-      select-institution: "Please select your institution"
+      select-institution: "Please select your institution to sign in. A Dodona account will be created automatically."
       sign_in: "Sign in"
       sign-in-with: "Sign in with %{provider}"
       sign-in-help: "Don't know which login you can use? Search for your school and click the sign in button:"
       institution-search: "Type to search for your institution"
       ilearn-help: "Users of i-Learn can currently only sign in through the i-Learn website."
       higher-education: "Higher education"
-      secondary-education: "Secondary education"
+      other-education: "Other educational institutions"
+      other: "Other institutions"
+      private-accounts: Private accounts
+      private-accounts-help: Use these sign in methods to use your personal Google or Microsoft account if you are not associated with any educational institution.
       blacklist:
         sgpaulus: Gebruik je sgpaulus-account (voornaam.naam@sgpaulus.eu) om in te loggen op Dodona.
       errors:
         institution-creation: Something went wrong while creating a new institution.
         missing-provider: Only accounts linked to an institution are supported.
+    redirect_to_known_provider:
+      title: We need your help
+      message_p1: "A user with the same username (**%{username}**) or email address (**%{email}**) already exists within the institution **%{institution}** on Dodona. This is probably you, but you made use of a different sign in method on previous occasions."
+      message_p1_personal: "A user with the same username (**%{username}**) or email address (**%{email}**) already exists on Dodona. This is probably you, but you made use of a different sign in method on previous occasions."
+      message_p2: "Before you can access your data using **%{provider}**, we have to link your existing account. To proceed, click on one of the sign in methods below and sign in again."
+      providers_title: "Link accounts"
+      "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
+      contact_form: "contact form"
+    privacy_prompt:
+      text_html: "In order to use Dodona, you need to accept our privacy statement. On the <a href=\"%{your_data}\" target=\"_blank\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\" target=\"_blank\">privacy statement</a> contains the legally binding version."
+      accept_button: Accept the privacy statement
+      decline_button: Decline

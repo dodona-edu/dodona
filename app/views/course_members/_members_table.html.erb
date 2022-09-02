@@ -3,10 +3,10 @@
     <thead>
     <tr>
       <th class='status-icon'></th>
-      <th><%= User.human_attribute_name("name") %></th>
+      <th><d-sort-button column="status_in_course_and_name" default="ASC"><%= User.human_attribute_name("name") %></d-sort-button></th>
       <th><%= User.human_attribute_name("email") %></th>
       <th><%= User.human_attribute_name("institution") %></th>
-      <th class="d-none d-sm-table-cell"><%= t("users.index.progress") %></th>
+      <th class="d-none d-sm-table-cell"><d-sort-button column="progress"><%= t("users.index.progress") %></d-sort-button></th>
       <th><%= t(".labels") %></th>
       <th></th>
     </tr>
@@ -18,6 +18,8 @@
         <td>
           <% if course_membership.course_admin? %>
             <i class="mdi mdi-school course-mdi-icon mdi-18" title='<%= t "users.users_table.course_admin" %>'></i>
+          <% elsif user.admin? %>
+            <span class="mdi mdi-alert mdi-18" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t(".teacher_rights") %>"></span>
           <% end %>
           <% if user.username.blank? %>
             <i class="mdi mdi-alert mdi-18" title='<%= t "users.users_table.no_institution" %>'></i>
@@ -30,7 +32,7 @@
             <%= link_to user.full_name, course_member_path(@course, user), title: user.full_name, class: "ellipsis-overflow" %>
           <% end %>
         </td>
-        <td><%= user.email %></td>
+        <td><%= mail_to(user.email, nil, { title: t('.send_mail') }) %></td>
         <td><%= user.institution&.name %></td>
         <td class="d-none d-sm-table-cell">
           <%= render partial: 'application/progress_chart',
@@ -45,20 +47,20 @@
         </td>
         <td class='course-membership-labels'>
           <% course_membership.course_labels.each do |label| %>
-            <span class="badge bg-primary"><%= label.name %></span>
+            <span class="token accent-orange"><%= label.name %></span>
           <% end %>
         </td>
         <td class="actions">
           <%= render partial: 'course_membership_buttons',
                      locals: {course: @course, user: user, membership_status: course_membership.status} %>
           <% if policy(user).impersonate? %>
-            <%= link_to impersonate_user_path(user), class: "btn btn-sm btn-secondary", title: t("layout.impersonate.impersonate") do %>
-              <i class="mdi mdi-account mdi-18"></i>
+            <%= link_to impersonate_user_path(user), class: "btn btn-icon", title: t("layout.impersonate.impersonate") do %>
+              <i class="mdi mdi-account"></i>
             <% end %>
           <% end %>
           <% if policy(user).edit? %>
-            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-sm btn-secondary" do %>
-              <i class="mdi mdi-pencil mdi-18"></i>
+            <%= link_to edit_user_path(user), title: t("users.index.edit"), class: "btn btn-icon" do %>
+              <i class="mdi mdi-pencil"></i>
             <% end %>
           <% end %>
         </td>

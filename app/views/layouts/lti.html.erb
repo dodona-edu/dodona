@@ -32,16 +32,16 @@
     </script>
   <% end %>
 
-  <%= javascript_pack_tag 'application' %>
-  <%= javascript_include_tag 'application' %>
+  <%= javascript_include_tag 'application_pack' %>
+  <%= javascript_include_tag 'commons' %>
+  <%= javascript_include_tag 'application_old' %>
   <%= yield :javascripts %>
-  <%= render 'layouts/ga_analytics' %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>
 </head>
 <body>
 <%= render 'layouts/main_container' %>
-<div class="toasts"></div>
+<section class="toasts"></section>
 <script>
     I18n = I18n || {};
     I18n.locale = "<%= I18n.locale %>";

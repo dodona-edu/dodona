@@ -2,13 +2,14 @@
 #
 # Table name: repositories
 #
-#  id         :integer          not null, primary key
-#  name       :string(255)
-#  remote     :string(255)
-#  path       :string(255)
-#  judge_id   :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
+#  id           :integer          not null, primary key
+#  name         :string(255)
+#  remote       :string(255)
+#  path         :string(255)
+#  judge_id     :integer
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  clone_status :integer          default("queued"), not null
 #
 require 'open3'
 require 'pathname'
@@ -25,7 +26,8 @@ class Repository < ApplicationRecord
 
   validate :repo_is_accessible, on: :create
 
-  before_create :clone_repo
+  before_create :create_full_path
+  after_create :clone_repo_delayed
 
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error
@@ -94,10 +96,12 @@ class Repository < ApplicationRecord
     activity_dirs_below(full_path)
   end
 
-  def process_activities_email_errors(user: nil, name: nil, email: nil)
+  def process_activities_email_errors(kwargs = {})
     process_activities
   rescue AggregatedConfigErrors => e
-    ErrorMailer.json_error(e, user: user, name: name, email: email).deliver
+    ErrorMailer.json_error(e, **kwargs).deliver
+  rescue DodonaGitError => e
+    ErrorMailer.git_error(e, **kwargs).deliver
   end
 
   def process_activities
@@ -169,6 +173,8 @@ class Repository < ApplicationRecord
       end
     end
 
+    # rubocop:disable Style/HashExcept
+    # activity_dirs_and_configs is not a hash
     activity_dirs_and_configs.reject { |d, _| handled_directories.include? d }.each do |dir, c|
       token = c['internals'] && c['internals']['token']
       if token.is_a?(String) && token.length == 64 && Activity.find_by(repository_token: token).nil?
@@ -179,6 +185,7 @@ class Repository < ApplicationRecord
       end
       update_activity act
     end
+    # rubocop:enable Style/HashExcept
 
     new_activities.each do |act|
       c = act.config
@@ -187,7 +194,12 @@ class Repository < ApplicationRecord
       c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'
       act.config_file.write(JSON.pretty_generate(c))
     end
-    commit 'stored tokens in new activities' unless new_activities.empty?
+
+    unless new_activities.empty?
+      status, err = commit 'stored tokens in new activities'
+      # handle errors when commit fails
+      raise DodonaGitError.new(self, err) unless status
+    end
 
     raise AggregatedConfigErrors.new(self, errors) if errors.any?
   end

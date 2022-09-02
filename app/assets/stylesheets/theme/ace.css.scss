@@ -1,0 +1,115 @@
+/* stylelint-disable selector-class-pattern */
+.ace-tm {
+  background-color: $code-bg;
+  color: $on-background;
+
+  .ace_gutter {
+    background: $surface;
+    color: $on-surface-muted;
+  }
+
+  .ace_print-margin {
+    width: 1px;
+    background: $divider;
+  }
+
+  .ace_cursor {
+    color: $secondary;
+  }
+
+  .ace_marker-layer .ace_selection {
+    background: $surface-variant;
+  }
+
+  &.ace_multiselect .ace_selection.ace_start {
+    box-shadow: none;
+  }
+
+  .ace_marker-layer .ace_step {
+    background: $secondary-container;
+  }
+
+  .ace_marker-layer .ace_bracket {
+    background-color: $secondary-container;
+    border: none;
+  }
+
+  .ace_marker-layer .ace_active-line {
+    background: $background;
+  }
+
+  .ace_gutter-active-line {
+    background-color: $background;
+  }
+
+  .ace_marker-layer .ace_selected-word {
+    background-color: $secondary-container;
+    border: none;
+  }
+
+  .ace_invisible {
+    color: $on-surface-muted;
+  }
+
+  .ace_keyword,
+  .ace_keyword.ace_operator,
+  .ace_meta {
+    color: $primary;
+  }
+
+  .ace_constant,
+  .ace_constant.ace_character,
+  .ace_constant.ace_character.ace_escape,
+  .ace_constant.ace_other,
+  .ace_support.ace_constant,
+  .ace_constant.ace_numeric,
+  .ace_constant.ace_language {
+    color: $secondary;
+  }
+
+  .ace_storage.ace_type {
+    color: $secondary;
+  }
+
+  .ace_invalid {
+    color: $on-danger-container;
+    background-color: $danger-container;
+  }
+
+  .ace_fold {
+    background-color: $warning-container;
+    border-color: $warning-container;
+  }
+
+  .ace_entity.ace_name,
+  .ace_entity.ace_name.ace_function,
+  .ace_support.ace_function {
+    color: $tertiary;
+  }
+
+  .ace_variable.ace_parameter {
+    font-style: italic;
+  }
+
+  .ace_string {
+    color: $teal;
+  }
+
+  .ace_string.ace_regexp {
+    color: $teal;
+  }
+
+  .ace_comment {
+    font-style: italic;
+    color: $on-surface-muted;
+  }
+
+  .ace_meta.ace_tag {
+    color: $primary;
+  }
+
+  .ace_attribute-name.ace_xml {
+    color: $tertiary;
+  }
+}
+/* stylelint-enable selector-class-pattern */

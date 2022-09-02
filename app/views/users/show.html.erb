@@ -3,46 +3,11 @@
     <div class="card profile">
       <div class="card-supporting-text">
         <div>
-          <span class="user-icon float-start">
-            <% if @user.permission == "student" %>
-              <i class="mdi mdi-account mdi-36" title="<%= @user.permission %>">
-            <% elsif @user.permission == "staff" %>
-              <i class="mdi mdi-school mdi-36" title="<%= @user.permission %>">
-            <% else %>
-              <i class="mdi mdi-android mdi-36" title="<%= @user.permission %>">
-            <% end %>
-              </i>
-          </span>
-          <span class="profile-line">
-            <span class="name">
-              <%= @user.full_name %>
-            </span>
-            <% if @user.username.present? %>
-              <span>(<%= @user.username %>)</span>
-            <% end %>
-          </span>
-          <span class="profile-byline text-muted">
-            <% if @user.institution.present? and policy(@user.institution).show?%>
-              <%= link_to(@user.institution&.name, institution_path(@user.institution), class: "text-muted") %>
-            <% else %>
-              <%= @user.institution&.name %>
-            <% end %>
-            <% if @user.institution&.name.present? and @user.email.present? %>
-              &middot;
-            <% end %>
-            <%= @user.email %>
-          </span>
+          <%= render partial: "user_short", locals: {user: @user} %>
           <p class="timezone">
             <%= t ".timezone" %> <b><%= @user.time_zone %></b>.
           </p>
         </div>
-        <% if @user.token.present? %>
-          <div class="callout callout-warning">
-            <h4><%= t ".sign_in" %></h4>
-            <p><%= t ".token_sign_in" %></p>
-            <p><%= token_sign_in_user_url(@user, @user.token) %></p>
-          </div>
-        <% end %>
         <div class="row">
           <div class="col-sm-12 col-md-6">
             <h4><%= t ".stats" %></h4>
@@ -86,14 +51,37 @@
             <% end %>
           </div>
         </div>
+        <div class="row">
+          <h4><%= t(".sign_in") %></h4>
+          <% if @user.token.present? %>
+            <p><%= t ".token_sign_in" %></p>
+            <p><%= token_sign_in_user_url(@user, @user.token) %></p>
+          <% else %>
+            <span class="mb-2"><%= t ".providers_message"%></span>
+            <% @identities.each do |identity| %>
+              <div class="col-md-6 col-xl-4 sign-in-method-container">
+                <div class="card card-outlined sign-in-method">
+                  <div class="sign-in-method-img">
+                    <%= image_tag institution_logo(identity.provider.logo), class: "img-fluid" %>
+                  </div>
+                  <div class="sign-in-method-title">
+                    <h3><%= identity.provider.readable_name %><br>
+                    <small title="<%= t('.identifier', identifier: identity.identifier) %>"><%= t('.identifier', identifier: identity.identifier) %></small>
+                    </h3>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       </div>
       <% if policy(@user).edit? or policy(@user).impersonate? or policy(@user).download_submissions? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn btn-outline" %>
           <% end %>
           <% if policy(@user).edit? %>
-            <%= link_to t(".edit"), edit_user_path(@user), class: "btn-text btn-primary" %>
+            <%= link_to t(".edit"), edit_user_path(@user), class: "btn btn-filled" %>
           <% end %>
           <% if policy(@user).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
@@ -112,7 +100,7 @@
     </div>
     <% if policy(@user).edit? %>
       <div class="card">
-        <div class="card-supporting-text card-border">
+        <div class="card-supporting-text">
           <div class="col-12">
             <h4><%= t '.api_tokens' %></h4>
             <p class="h4-info-text"><%= t ".token_help_html" %></p>

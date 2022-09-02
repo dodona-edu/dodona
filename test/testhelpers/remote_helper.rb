@@ -43,9 +43,7 @@ class TempRepository < GitRepository
   end
 
   def write_file(rel_path, msg = nil)
-    File.open(File.join(@path, rel_path), 'w') do |f|
-      f.write(yield)
-    end
+    File.write(File.join(@path, rel_path), yield)
     msg ||= "create #{rel_path}"
     commit msg
   end

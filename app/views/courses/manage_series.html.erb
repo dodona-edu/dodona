@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
+  <%= javascript_include_tag 'course' %>
 <% end %>
 <%= render partial: 'courses/navbar_links' %>
 <div class="row">
@@ -9,7 +9,7 @@
       <div class="flex-spacer"></div>
       <div>
         <% if policy(@course).add_series? %>
-          <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn with-text btn-primary btn-fab-extended" do %>
+          <%= link_to new_course_series_path(@course), title: t("series.new.title"), class: "btn btn-filled with-icon" do %>
             <i class="mdi mdi-plus icon"></i><span class='text'><%= t("series.new.title") %></span>
           <% end %>
         <% end %>
@@ -29,7 +29,7 @@
   </div>
 </div>
 <script type="text/javascript">
-    $(function () {
+    dodona.ready.then(function () {
         dodona.initSeriesReorder();
     });
 </script>

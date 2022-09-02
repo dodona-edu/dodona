@@ -17,6 +17,7 @@ nl:
       registration-open_for_all-help_html: Iedereen kan zich voor deze cursus registreren.
       registration-open_for_institution-help_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span> kunnen zich voor deze cursus registreren.
       registration-closed-help_html: Er zijn geen nieuwe registraties mogelijk.
+      registration-open_for_institutional_users-help_html: Iedereen die tot een instelling behoort kan zich voor deze cursus registreren. Gebruikers die zijn ingelogd met een <b>privéaccount</b>, zoals een persoonlijk Google- of Microsoft-account, kunnen zich <b>niet</b> registreren.
       description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
       visibility-label: Voor wie is deze cursus zichtbaar?
       registration-label: Wie kan zich registreren voor deze cursus?
@@ -27,9 +28,10 @@ nl:
       registration-open_for_all_html: Iedereen
       registration-open_for_institution_html: Enkel gebruikers van <span class="fill-institution">de ingestelde onderwijsinstelling</span>
       registration-closed_html: Niemand
+      registration-open_for_institutional_users_html: Alle gebruikers die tot een onderwijsinstelling behoren
       no_institution: "Geen onderwijsinstelling"
       copy_admins: "Cursusbeheerders"
-      copy_options: "Opties voor het kopieren"
+      copy_options: "Opties voor het kopiëren"
       copy_options_details: "Welke items wil je overnemen van de geselecteerde cursus?"
       copy_admins_details: "Bij nieuwe cursussen word je zelf altijd toegevoegd als cursusbeheerder. Met deze instelling kan je aanvullend de cursusbeheerders uit het originele vak toevoegen."
       copy_exercises: "Oefeningen"
@@ -59,8 +61,10 @@ nl:
       featured_courses: Uitgelichte cursussen
       all_courses: "Alle cursussen"
       my_courses: "Mijn cursussen"
+      only_show_can_register: "Toon enkel cursusen waarvoor je kan registreren"
     new:
       title: Cursus aanmaken
+      help_html: 'Meer informatie over het aanmaken van een cursus kan je in <a href="https://docs.dodona.be/nl/guides/teachers/creating-a-course/#een-cursus-aanmaken">onze documentatie</a> terugvinden.'
       empty: "Lege cursus"
       copy: "Kopieer cursus"
       new_course: "Lege cursus"
@@ -73,7 +77,7 @@ nl:
       create: "Cursus aanmaken"
     scoresheet:
       user: Gebruiker
-      explanation: "Toont het aantal correct opgeloste oefeningen voor het verstrijken van de deadline"
+      total: Totaal
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één oefening begonnen zijn"
       scoresheet: Statusoverzicht
       download: Statusoverzicht downloaden
@@ -97,6 +101,8 @@ nl:
           other: "Je kan een cursus met meer dan %{count} oplossingen niet zelf verwijderen."
         contact_html: "<a href=\"%{contact_url}\">Contacteer ons</a> als je de cursus toch wilt verwijderen."
     show:
+      has_private_exercises: "Deze cursus gebruikt privé-oefeningen waartoe die geen rechten heeft."
+      has_private_help: "Contacteer ons als je niet weet hoe je dit kan oplossen."
       course: Cursus
       hidden_show_link: 'Geheime link'
       visibility-visible_for_all-info: 'Deze cursus is zichtbaar voor iedereen: ze wordt opgelijst in het cursusoverzicht en de inhoud is toegankelijk voor iedereen.'
@@ -105,6 +111,7 @@ nl:
       registration-open_for_all-info: 'De registraties staan open voor iedereen: gebruikers die op de registratie-knop klikken worden geregistreerd.'
       registration-open_for_institution-info: 'De registraties staan open voor gebruikers van %{institution}: enkel zij kunnen zich registreren voor deze cursus.'
       registration-closed-info: 'De registraties zijn gesloten: niemand kan zich nog registreren tot de registratie-instelling wordt aangepast. Gebruikers die geregistreerd zijn behouden hun toegang.'
+      registration-open_for_institutional_users-info: 'De registraties staan open voor gebruikers die tot een instelling behoren. De registraties zijn gesloten voor gebruikers die zijn ingelogd met een privéaccount, zoals een persoonlijk Google- of Microsoft-account.'
       moderated-info: 'Deze cursus is gemodereerd: Gebruikers die zich registreren moeten expliciet goedgekeurd worden door een cursusbeheerder.'
       subscribe: Registreren
       request_registration: Registratieverzoek indienen
@@ -131,6 +138,8 @@ nl:
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
       manage_series: "Reeksen beheren"
+      download_deadlines: "Cursus toevoegen aan agenda"
+      download_deadlines_tooltip: "Voeg deze link toe aan je agenda-applicatie om de deadlines van deze cursus in je kalender te zien"
     registration:
       registration-tooltip: Registratie heeft enkel invloed op je status binnen deze website, niet binnen je onderwijsinstelling.
       registration-closed: Je kan momenteel niet registreren voor deze cursus.
@@ -160,14 +169,16 @@ nl:
       failed: "Cursus uit favorieten verwijderen mislukt"
     statistics:
       statistics: "Statistieken"
+      total_questions: "Totaal aantal vragen"
+      unanswered_questions: "Onbeantwoorde vragen"
+      in_progress_questions: "Vragen in behandeling"
+      answered_questions: "Beantwoorde vragen"
     user_stats:
       subscribed_users: Geregistreerde gebruikers
       exercise_count: Oefeningen
       content_count: Leesactiviteiten
       submitted_solutions: Ingediende oplossingen
       more_statistics: "Meer statistieken >"
-    create:
-      added_private_exercises: "Er werden privé oefeningen toegevoegd tijdens het aanmaken van deze cursus. Om deze oefeningen te kunnen gebruiken zal deze cursus toestemming moeten krijgen van de relevante repository's."
     copy_courses_table:
       info: "Cursus"
       users: "# gebruikers"
@@ -198,6 +209,8 @@ nl:
         enabled: Vragen zijn ingeschakeld.
         enable: Schakel vragen in.
         disable: Schakel vragen uit.
+    ical:
+      serie_deadline: "Deadline voor %{serie_name} van cursus %{course_name}: %{serie_url}"
   submissions:
     show:
       questions:

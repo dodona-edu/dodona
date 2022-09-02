@@ -11,6 +11,6 @@
 
 FactoryBot.define do
   factory :export do
-    user
+    user { User.find(2) } # load student fixture
   end
 end

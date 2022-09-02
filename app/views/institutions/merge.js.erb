@@ -1,1 +1,2 @@
 $("#institution-table-wrapper").html("<%= escape_javascript render(partial: 'merge_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts}) %>")
+dodona.initInstitutionSelectionTable(<%= @institution.id %>);

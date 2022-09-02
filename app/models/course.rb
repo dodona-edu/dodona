@@ -11,7 +11,6 @@
 #  description       :text(16777215)
 #  visibility        :integer
 #  registration      :integer
-#  color             :integer
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)
@@ -35,6 +34,9 @@ class Course < ApplicationRecord
   EXERCISES_COUNT_CACHE_STRING = '/courses/%<id>d/exercises_count'.freeze
   CORRECT_SOLUTIONS_CACHE_STRING = '/courses/%<id>d/correct_solutions'.freeze
 
+  before_create :generate_secret
+  before_destroy :nullify_submissions
+
   belongs_to :institution, optional: true
 
   has_many :course_memberships, dependent: :destroy
@@ -45,7 +47,7 @@ class Course < ApplicationRecord
   has_many :series_memberships, through: :series
 
   has_many :activity_read_states, dependent: :destroy
-  has_many :submissions, dependent: :nullify
+  has_many :submissions, dependent: :restrict_with_error
   has_many :users, through: :course_memberships
 
   has_many :usable_repositories, through: :course_repositories, source: :repository
@@ -53,8 +55,7 @@ class Course < ApplicationRecord
   has_many :course_labels, dependent: :destroy
 
   enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
-  enum registration: { open_for_all: 0, open_for_institution: 1, closed: 2 }
-  enum color: { red: 0, pink: 1, purple: 2, 'deep-purple': 3, indigo: 4, teal: 5, orange: 6, brown: 7, 'blue-grey': 8 }
+  enum registration: { open_for_all: 3, open_for_institutional_users: 0, open_for_institution: 1, closed: 2 }
 
   # TODO: Remove and use activities?
   has_many :content_pages,
@@ -133,21 +134,24 @@ class Course < ApplicationRecord
              where question_state: :unanswered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :in_progress_questions,
            lambda {
              where question_state: :in_progress
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   has_many :answered_questions,
            lambda {
              where question_state: :answered
            },
            class_name: 'Question',
-           inverse_of: :course
+           inverse_of: :course,
+           dependent: :restrict_with_error
 
   validates :name, presence: true
   validates :year, presence: true
@@ -157,17 +161,24 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
+  scope :can_register, lambda { |user|
+    if user&.institutional?
+      where(registration: %i[open_for_all open_for_institutional_users])
+        .or(where(registration: :open_for_institution, institution_id: user.institution_id))
+        .or(where(id: user.subscribed_courses.pluck(:id)))
+    else
+      where(registration: :open_for_all)
+        .or(where(id: user&.subscribed_courses&.pluck(:id)))
+    end
+  }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5
 
-  before_create :generate_secret
-
   # Default year & enum values
   after_initialize do |course|
     self.visibility ||= 'visible_for_all'
-    self.registration ||= 'open_for_all'
-    self.color ||= Course.colors.keys.sample
+    self.registration ||= 'open_for_institutional_users'
     unless year
       now = Time.zone.now
       y = now.year
@@ -179,7 +190,7 @@ class Course < ApplicationRecord
   def homepage_series(passed_series = 1)
     with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
-                       .select { |s| s.deadline < Time.zone.now && s.deadline > Time.zone.now - 1.week }[-1 * passed_series, 1 * passed_series]
+                       .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
   end
@@ -207,6 +218,14 @@ class Course < ApplicationRecord
     return false if visible_for_institution? && user&.institution == institution
 
     true
+  end
+
+  def all_activities_accessible?
+    activities.where(access: :private).where.not(repository_id: usable_repositories).count.zero?
+  end
+
+  def open_for_user?(user)
+    open_for_all? || (open_for_institution? && institution == user&.institution) || (open_for_institutional_users? && user&.institutional?)
   end
 
   def invalidate_subscribed_members_count_cache
@@ -273,11 +292,9 @@ class Course < ApplicationRecord
 
   def scoresheet
     sorted_series = series
-    sorted_users = subscribed_members.order('course_memberships.status ASC')
-                                     .order(permission: :asc)
-                                     .order(last_name: :asc, first_name: :asc)
+    sorted_users = subscribed_members.order_by_status_in_course_and_name 'ASC'
 
-    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).map do |series_info, user|
+    hash = sorted_series.map { |s| [s, s.scoresheet] }.product(sorted_users).to_h do |series_info, user|
       scores = series_info[1]
       data = {
         accepted: series_info[0].activities.count do |a|
@@ -296,7 +313,7 @@ class Course < ApplicationRecord
         end
       }
       [[user.id, series_info[0].id], data]
-    end.to_h
+    end
 
     {
       users: sorted_users,
@@ -329,7 +346,22 @@ class Course < ApplicationRecord
     self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
+  def color
+    colors = %w[blue-gray orange cyan purple teal pink indigo brown deep-purple]
+    colors[year.to_i % colors.size]
+  end
+
   private
+
+  def nullify_submissions
+    # We can't use rails' `dependent: :nullify`, since this skips the
+    # submission's callbacks
+    submissions.each { |s| s.update(course_id: nil) }
+    # Because we update the submissions above, we need to make sure
+    # this object knows it doesn't have submissions anymore, otherwise
+    # the course isn't actually removed
+    reload
+  end
 
   def should_have_institution_when_visible_for_institution
     errors.add(:institution, 'should not be blank when only visible for institution') if visible_for_institution? && institution.blank?

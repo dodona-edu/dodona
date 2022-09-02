@@ -6,6 +6,10 @@ nl:
           at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
         api_token:
           not_permitted: Je hebt geen rechten om een token voor deze user te maken.
+        activity_read_state:
+          attributes:
+            activity:
+              taken: Je hebt deze activiteit al gelezen
     models:
       course: Cursus
       activity: Activiteit
@@ -52,17 +56,7 @@ nl:
           open_for_all: Open voor iedereen
           open_for_institution: Enkel open voor gebruikers van de ingestelde onderwijsinstelling
           closed: Gesloten
-        color: Kleur
-        colors:
-          red: Rood
-          pink: Roze
-          purple: Paars
-          deep-purple: Donkerpaars
-          indigo: Indigo
-          teal: Appelblauwzeegroen
-          orange: Oranje
-          brown: Bruin
-          blue-grey: Blauwgrijs
+          open_for_institutional_users: Open voor alle gebruikers die tot een onderwijsinstelling behoren
         institution: Onderwijsinstelling
       activity:
         name: Naam
@@ -148,12 +142,15 @@ nl:
         name: Naam
         short_name: Korte naam
         providers: Logintypes
+        category: Categorie
       provider:
         saml: SAML
         office365: Office 365
         smartschool: Smartschool
-        google_oauth2: G Suite
+        google_oauth2: Google Workspace
+        oidc: OpenID Connect
         lti: LTI
+        surf: SURFconext
       event:
         event_type: Type
         user: Gebruiker
@@ -189,3 +186,18 @@ nl:
         description: Beschrijving
         maximum: Maximum
         visible: Zichtbaar
+      announcement:
+        text_nl: Nederlandse aankondiging
+        text_en: Engelse aankondiging
+        start_delivering_at: Start aankondiging op
+        stop_delivering_at: Stop aankondiging op
+        user_group: Gebruikersgroep
+        user_groups:
+          everyone: Iedereen
+          all_users: Alle gebruikers
+          students: Studenten
+          staff: Lesgevers
+          zeus: Zeus
+        institution_id: ID van onderwijsinstelling
+        institution: Onderwijsinstelling
+        style: Bootstrap-stijl

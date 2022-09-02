@@ -1,5 +1,6 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
+  <%= javascript_include_tag 'course' %>
+  <%= javascript_include_tag 'series' %>
 <% end %>
 <%= render partial: 'navbar_links' %>
 <div class="row">
@@ -63,7 +64,7 @@
       <% if current_user&.member_of? @course or policy(@course).copy? or policy(@course).scoresheet? %>
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
-            <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn-text', data: {confirm: t('general.are_you_sure')} %>
+            <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
@@ -91,9 +92,14 @@
                   <% end %>
                 </li>
               <% end %>
-              <% if (policy(@course).copy? || current_user&.course_admin?(@course)) && policy(@course).download_submissions? %>
+              <% if policy(@course).copy? || current_user&.course_admin?(@course) %>
                 <li role="separator" class="dropdown-divider"></li>
               <% end %>
+              <li data-bs-toggle="tooltip" data-bs-placement="left" title="<%= t('.download_deadlines_tooltip') %>">
+                <%= link_to ical_course_url(@course, protocol: :webcal, format: :ics), class: "dropdown-item" do %>
+                  <i class="mdi mdi-calendar mdi-18"></i> <%= t(".download_deadlines") %>
+                <% end %>
+              </li>
               <% if policy(@course).download_submissions? %>
                 <li>
                   <%= link_to courses_exports_path(@course, user_id: current_user.id), class: "dropdown-item" do %>
@@ -113,7 +119,7 @@
       <div class="flex-spacer"></div>
       <div>
         <% if policy(@course).manage_series? %>
-          <%= link_to manage_series_course_path(@course), title: t(".manage_series"), class: "btn with-text btn-primary btn-fab-extended" do %>
+          <%= link_to manage_series_course_path(@course), title: t(".manage_series"), class: "btn btn-filled with-icon" do %>
             <i class="mdi mdi-playlist-edit icon"></i>
             <span class='text'><%= t(".manage_series") %></span>
           <% end %>
@@ -142,14 +148,20 @@
   </nav>
 </div>
 <script type="text/javascript">
-    $(dodona.initCourseShow);
+    dodona.ready.then(dodona.initCourseShow);
 </script>
 
 <script type="application/ld+json">
   {
     "@context": "https://schema.org/",
     "@type": "Course",
+    "@id": "<%= course_url(@course) %>",
+    "http://purl.org/dc/terms/conformsTo": {
+        "@id": "https://bioschemas.org/profiles/Course/0.9-DRAFT-2020_12_08",
+        "@type": "CreativeWork"
+    },
     "name": "<%= escape_javascript(@course.name) %>",
+    "keywords": "<%= @course.activities.map{ |a| a.content_page? ? 'Reading activity' : a.programming_language&.renderer_name }.uniq.join(', ') %>",
     "teaches": "programming",
     "educationalUse": "exercises",
     <% if @course.institution %>
@@ -164,6 +176,6 @@
         "name": "<%= escape_javascript(@course.teacher) %>"
       },
     <% end %>
-    "description": "<%= escape_javascript(@course.description) %>"
+    "description": "<%= raw escape_javascript(strip_tags markdown(@course.description)) %>"
   }
 </script>

@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -22,17 +22,19 @@
 class Provider < ApplicationRecord
   enum mode: { prefer: 0, redirect: 1, link: 2, secondary: 3 }
 
-  PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Saml, Provider::Smartschool].freeze
+  PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Oidc, Provider::Saml, Provider::Smartschool, Provider::Surf].freeze
 
-  belongs_to :institution, inverse_of: :providers
+  belongs_to :institution, inverse_of: :providers, optional: true
 
   has_many :identities, inverse_of: :provider, dependent: :destroy
 
   scope :gsuite, -> { where(type: Provider::GSuite.name) }
   scope :lti, -> { where(type: Provider::Lti.name) }
   scope :office365, -> { where(type: Provider::Office365.name) }
+  scope :oidc, -> { where(type: Provider::Oidc.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
+  scope :surf, -> { where(type: Provider::Surf.name) }
   scope :by_institution, ->(institution) { where(institution_id: institution) }
 
   validates :mode, presence: true
@@ -53,6 +55,18 @@ class Provider < ApplicationRecord
 
   def self.extract_institution_name(_auth_hash)
     [Institution::NEW_INSTITUTION_NAME, Institution::NEW_INSTITUTION_NAME]
+  end
+
+  def readable_name
+    return self.class.readable_name if self.class.respond_to? :readable_name
+
+    institution&.short_name
+  end
+
+  def logo
+    return self.class.logo if self.class.respond_to? :logo
+
+    institution&.logo
   end
 
   private

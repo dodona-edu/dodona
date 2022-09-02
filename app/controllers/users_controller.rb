@@ -25,6 +25,7 @@ class UsersController < ApplicationController
   # GET /users/1.json
   def show
     @title = @user.full_name
+    @identities = @user.identities
   end
 
   # GET /users/new
@@ -95,7 +96,10 @@ class UsersController < ApplicationController
 
   def token_sign_in
     token = params[:token]
-    sign_in(@user) if token.present? && token == @user.token
+    if token.present? && token == @user.token
+      sign_in(@user)
+      @user.touch(:sign_in_at)
+    end
     redirect_to root_path
   end
 

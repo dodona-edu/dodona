@@ -2,16 +2,19 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
 
-  before_action :set_activity, only: %i[show description edit update media info read]
-  before_action :set_course, only: %i[show edit update media info read]
-  before_action :set_series, only: %i[show edit update info read]
+  INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
+
+  before_action :set_activity, only: %i[show description edit update media info]
+  before_action :set_course, only: %i[show edit update media info]
+  before_action :set_series, only: %i[show edit update info]
   before_action :ensure_trailing_slash, only: :show
-  before_action :allow_iframe, only: %i[description]
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
-  # Some activity descriptions load JavaScript from their description. Rails has extra protections against loading unprivileged javascript.
-  skip_before_action :verify_authenticity_token, only: [:media]
   skip_before_action :redirect_to_default_host, only: %i[description media]
+  # Some activity descriptions load JavaScript from their description. Rails has
+  # extra protections against loading unprivileged javascript. We also need to
+  # make sure the Papyros service worker can be loaded.
+  protect_from_forgery except: %i[media input_service_worker]
 
   has_scope :by_filter, as: 'filter'
   has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
@@ -23,11 +26,19 @@ class ActivitiesController < ApplicationController
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
-    policy.worker_src -> { ['blob:'] }
+    policy.worker_src -> { ['blob:', "'self'"] }
+    # Safari doesn't support worker_src and falls back to child_src
+    # This should be fixed in Safari 15.5 https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/worker-src#browser_compatibility
+    policy.child_src -> { ['blob:', "'self'"] }
+    # Allow fetching Pyodide and related packages
+    # The data: urls is specifically to allow fetching the Python dependencies via a bundled tar that
+    # is extracted into the Pyodide environment at runtime
+    policy.script_src(*(%w[https://cdn.jsdelivr.net/pyodide/] + policy.script_src))
+    policy.connect_src(*(%w[data: https://cdn.jsdelivr.net/pyodide/ https://pypi.org/pypi/ https://files.pythonhosted.org/packages/] + policy.connect_src))
   end
 
   content_security_policy only: %i[description] do |policy|
-    policy.frame_ancestors -> { default_url }
+    policy.frame_ancestors -> { allowed_frame_ancestors }
   end
 
   rescue_from ActiveRecord::RecordNotFound do
@@ -73,6 +84,9 @@ class ActivitiesController < ApplicationController
 
   def show
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
+
+    # Double check if activity still exists within this course (And throw a 404 when it does not)
+    @course&.activities&.find_by!(id: @activity.id) if current_user&.course_admin?(@course)
     # We still need to check access because an unauthenticated user should be able to see public activities
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 
@@ -99,7 +113,7 @@ class ActivitiesController < ApplicationController
       @read_state = if current_user&.member_of?(@course)
                       @activity.activity_read_states.find_by(user: current_user, course: @course)
                     else
-                      @activity.activity_read_states.find_by(user: current_user)
+                      @activity.activity_read_states.find_by(user: current_user, course: nil)
                     end
     end
 
@@ -116,34 +130,19 @@ class ActivitiesController < ApplicationController
   def info
     @title = @activity.name
     @repository = @activity.repository
-    @config = @activity.merged_config
-    @config_locations = @activity.merged_config_locations
+    @config = @activity.ok? ? @activity.merged_config : {}
+    @config_locations = @activity.ok? ? @activity.merged_config_locations : {}
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @activity, series: @series, course: @course)] << [I18n.t('crumbs.info'), '#']
     @courses_series = policy_scope(@activity.series).group_by(&:course).sort do |a, b|
       [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
     end
+    flash[:alert] = I18n.t('activities.info.activity_invalid') if @activity.not_valid?
   end
 
   def edit
     @title = @activity.name
     @crumbs << [@activity.name, helpers.activity_scoped_path(activity: @activity, series: @series, course: @course)] << [I18n.t('crumbs.edit'), '#']
     @labels = Label.all
-  end
-
-  def read
-    @course = nil if @course.blank? || @course.subscribed_members.exclude?(current_user)
-    read_state = ActivityReadState.new activity: @activity,
-                                       course: @course,
-                                       user: current_user
-    if read_state.save
-      respond_to do |format|
-        format.html { redirect_to helpers.activity_scoped_path(activity: @activity, course: @course, series: @series) }
-        format.js { render 'activities/read', locals: { activity: @activity, course: @course, read_state: read_state, user: current_user } }
-        format.json { head :ok }
-      end
-    else
-      render json: { status: 'failed', errors: read_state.errors }, status: :unprocessable_entity
-    end
   end
 
   def update
@@ -193,6 +192,27 @@ class ActivitiesController < ApplicationController
     end
   end
 
+  # Serve the inputServiceWorker asset required to handle input in Papyros
+  # Asset has been preprocessed and built internally
+  # Redirecting to the asset is not possible due to browser security policy
+  def input_service_worker
+    # Which assets are available depends on the mode of the environment
+    # The else-block is only reachable in production
+    # :nocov:
+    filename = if Rails.application.assets
+                 Rails.application.assets[INPUT_SERVICE_WORKER].filename
+               else
+                 File.join(
+                   Rails.application.assets_manifest.directory,
+                   Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
+                 )
+               end
+    # :nocov:
+    send_file(filename,
+              filename: INPUT_SERVICE_WORKER,
+              type: 'text/javascript')
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -216,5 +236,11 @@ class ActivitiesController < ApplicationController
     @series = Series.find(params[:series_id])
     @crumbs << [@series.name, breadcrumb_series_path(@series, current_user)]
     authorize @series
+  end
+
+  def allowed_frame_ancestors
+    Rails.configuration.web_hosts.map do |web_host|
+      "#{request.protocol}#{web_host}:#{request.port}"
+    end
   end
 end

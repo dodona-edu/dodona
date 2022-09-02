@@ -37,6 +37,11 @@ class Question < Annotation
 
   def destroy_notification; end
 
+  def newer_submission
+    # Submissions are sorted newest first by default
+    Submission.where(id: (submission.id + 1).., exercise_id: submission.exercise_id, course_id: course_id, user_id: submission.user_id).first
+  end
+
   private
 
   def clear_transition

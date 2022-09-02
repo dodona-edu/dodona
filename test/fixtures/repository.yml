@@ -1,0 +1,19 @@
+# == Schema Information
+#
+# Table name: repositories
+#
+#  id         :integer          not null, primary key
+#  name       :string(255)
+#  remote     :string(255)
+#  path       :string(255)
+#  judge_id   :integer
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
+python_repo:
+  id: 1
+  name: "Python exercises"
+  remote: "https://github.com"
+  path: "path/to/repo"
+  judge_id: 1

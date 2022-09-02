@@ -23,5 +23,5 @@
   <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
 <% end %>
 <center>
-  <%= page_navigation_links course_memberships, true, 'evaluations', action: 'edit' %>
+  <%= page_navigation_links course_memberships, true, 'evaluations', { id: @evaluation.id }, 'edit' %>
 </center>

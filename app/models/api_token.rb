@@ -40,7 +40,7 @@ class ApiToken < ApplicationRecord
   end
 
   # Creates digest and tries to find it in the database.
-  # If the token is empy, returns nil
+  # If the token is empty, returns nil
   def self.find_token(token)
     return nil if token.blank?
 

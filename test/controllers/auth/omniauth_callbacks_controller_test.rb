@@ -31,6 +31,10 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     send(format('user_%<sym>s_omniauth_authorize_url', sym: provider.class.sym), provider: provider)
   end
 
+  def omniauth_path(provider)
+    send(format('user_%<sym>s_omniauth_authorize_path', sym: provider.class.sym), provider: provider)
+  end
+
   test 'login with existing identity' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
@@ -319,41 +323,6 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'login with temporary user should convert them to normal' do
-    OAUTH_PROVIDERS.each do |provider_name|
-      # Setup.
-      provider = create provider_name
-      user = create :temporary_user
-      identity = build :identity, provider: provider, user: user
-      username = 'real_username'
-      omniauth_mock_identity identity,
-                             uid: username
-
-      # Call the authorization url.
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert user has been updated.
-      user.reload
-      assert_equal user, @controller.current_user
-      assert_equal 'real_username', user.username
-      assert_equal provider.institution, user.institution
-
-      # Sign-out and sign-in again.
-      sign_out user
-
-      omniauth_mock_identity identity, uid: username
-      get omniauth_url(provider)
-      follow_redirect!
-
-      # Assert successful authentication.
-      assert_equal user, @controller.current_user, 'temp user should be still able to sign in after conversion'
-
-      # Cleanup.
-      sign_out user
-    end
-  end
-
   test 'failure handler' do
     AUTH_PROVIDERS.each do |provider_name|
       # Setup.
@@ -370,7 +339,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'oauth login with missing provider' do
-    OAUTH_PROVIDERS.each do |provider_name|
+    %i[office365_provider smartschool_provider].each do |provider_name|
       # Setup.
       provider = build provider_name, identifier: nil
       user = build :user, institution: provider.institution
@@ -382,9 +351,286 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       # Assert failed authentication.
-      assert_redirected_to sign_in_path
+      assert_redirected_to root_path
       assert_nil @controller.current_user
     end
+  end
+
+  test 'Can sign up with personal account' do
+    personal_providers = [
+      create(:office365_provider, identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil),
+      create(:gsuite_provider, identifier: nil, institution: nil)
+    ]
+
+    personal_providers.each do |provider|
+      # Setup.
+      user = build :user, institution: nil
+      identity = build :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      assert_difference 'User.count', 1 do
+        assert_difference 'Identity.count', 1 do
+          # Call the authorization url.
+          get omniauth_url(provider)
+          follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          post privacy_prompt_path
+        end
+      end
+
+      # Assert successful authentication.
+      assert_redirected_to root_path
+      assert_not_nil @controller.current_user
+      assert_equal @controller.current_user.email, user.email
+      assert_nil @controller.current_user.institution
+
+      # Cleanup.
+      sign_out user
+    end
+  end
+
+  test 'No account is created if privacy statement is rejected' do
+    personal_providers = [
+      create(:office365_provider, identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil),
+      create(:gsuite_provider, identifier: nil, institution: nil)
+    ]
+
+    personal_providers.each do |provider|
+      # Setup.
+      user = build :user, institution: nil
+      identity = build :identity, provider: provider, user: user
+      omniauth_mock_identity identity
+
+      assert_difference 'User.count', 0 do
+        assert_difference 'Identity.count', 0 do
+          # Call the authorization url.
+          get omniauth_url(provider)
+          follow_redirect!
+
+          # assert privacy prompt before successful sign in
+          assert_redirected_to privacy_prompt_path
+          assert_nil @controller.current_user
+          get root_path # Decline privacy prompt
+        end
+      end
+
+      # Assert unsuccessful authentication.
+      assert_response :success
+      assert_nil @controller.current_user
+    end
+  end
+
+  test 'Office 365 identifier should be updated upon login if the identifier still used the old format' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+
+    # sign in should still work with changed identifier
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    # Cleanup.
+    sign_out user
+
+    # Should not be able to change it again
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'NEW-UID@test.com'
+                           },
+                           uid: 'NEWER-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_not_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Office 365 legacy sign in works with prefered username' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'Foo.Bar', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'A.B@test.com'
+                           },
+                           extra: {
+                             preferred_username: 'Foo.Bar@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Office 365 legacy sign in works with name' do
+    # Setup.
+    provider = create :office365_provider
+    user = create :user, institution: provider.institution, first_name: 'Foo', last_name: 'Bar'
+    identity = create :identity, provider: provider, user: user, identifier: 'X.Y', identifier_based_on_email: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'A.B@test.com'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Smartschool identifier should be updated upon login if the identifier still used the old format' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user, identifier: 'OLD-UID', identifier_based_on_username: true
+    omniauth_mock_identity identity,
+                           info: {
+                             username: 'OLD-UID'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+
+    # sign in should still work with changed identifier
+    omniauth_mock_identity identity,
+                           info: {
+                             username: 'OLD-UID'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    # Cleanup.
+    sign_out user
+
+    # Should not be able to change it again
+    omniauth_mock_identity identity,
+                           info: {
+                             username: 'NEW-UID'
+                           },
+                           uid: 'NEWER-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    # Assert successful authentication.
+    assert_redirected_to root_path
+    assert_not_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Smartschool legacy sign in works with email' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution, email: 'foo.bar@test.com'
+    identity = create :identity, provider: provider, user: user, identifier: 'OLD-UID', identifier_based_on_username: true
+    omniauth_mock_identity identity,
+                           info: {
+                             email: 'foo.bar@test.com',
+                             username: 'NEW-USERNAME'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
+  end
+
+  test 'Smartschool legacy sign in works with name' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution, first_name: 'Foo', last_name: 'Bar'
+    identity = create :identity, provider: provider, user: user, identifier: 'OLD-UID', identifier_based_on_username: true
+    omniauth_mock_identity identity,
+                           info: {
+                             first_name: 'Foo',
+                             last_name: 'Bar',
+                             username: 'NEW-USERNAME'
+                           },
+                           uid: 'NEW-UID'
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    identity.reload
+    assert_equal identity.identifier, 'NEW-UID'
+
+    # Cleanup.
+    sign_out user
   end
 
   test 'lti redirects to main provider' do
@@ -405,5 +651,55 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       'Sec-Fetch-Dest' => 'document'
     })
     assert_redirected_to omniauth_url(main_provider)
+  end
+
+  test 'existing users can link new provider within institution' do
+    institution = create :institution
+    user = create :user, institution: institution, identities: []
+    first_provider = create :provider, institution: institution, mode: :prefer, identities: []
+    second_provider = create :provider, institution: institution, mode: :secondary, identities: []
+
+    # Link user to first provider.
+    first_identity = create :identity, provider: first_provider, user: user
+
+    # Build, but don't save the identity for the second provider.
+    # This allows us to log in with the second provider for the 'first' time.
+    second_identity = build :identity, provider: second_provider, user: user
+    omniauth_mock_identity second_identity
+
+    # Simulate the user logging in with the second provider.
+    # It should not create a user.
+    assert_difference 'User.count', 0 do
+      get omniauth_url(second_provider)
+      follow_redirect!
+    end
+
+    # It should render the page where the user can choose.
+    assert_response :success
+
+    # It is actually the page we expect.
+    assert_select 'h1', t('auth.redirect_to_known_provider.title')
+    # The other provider is listed as a possibility.
+    assert_select 'a.institution-sign-in' do |link|
+      assert_equal omniauth_path(first_provider), link.attr('href').to_s
+    end
+
+    omniauth_mock_identity first_identity
+
+    # The user listens to what we say and clicks the button.
+    get omniauth_url(first_provider)
+    follow_redirect!
+
+    # It should have been linked.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    user.identities.reload
+
+    # The user should have two identities.
+    assert_equal 2, user.identities.length
+
+    # Done.
+    sign_out user
   end
 end

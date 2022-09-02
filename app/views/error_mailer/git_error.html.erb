@@ -1,0 +1,15 @@
+<div class="message">
+  <%= content_tag :p, t('.greeting', name: @name) %>
+  <%= content_tag :p, t(
+    '.error_message',
+    repository: @error.repository.name,
+    error: @error.errorstring
+  ) %>
+
+  <%= content_tag :p, t('.hint') %>
+
+  <%= content_tag :p, t('.regards') %>
+  <p>Team Dodona</p>
+
+  <%= content_tag :p, t('.auto-generated') %>
+</div>

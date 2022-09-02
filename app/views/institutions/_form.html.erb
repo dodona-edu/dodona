@@ -18,6 +18,16 @@
       <%= f.label :short_name, :class => "col-sm-3 col-12 col-form-label" %>
       <div class="col-sm-6 col-12"><%= f.text_field :short_name, class: "form-control", disabled: !f.permission?(:short_name) %></div>
     </div>
+    <div class="field form-group row">
+      <%= f.label :logo, :class => "col-sm-3 col-12 col-form-label" %>
+      <div class="col-sm-6 col-12"><%= f.text_field :logo, class: "form-control", disabled: !f.permission?(:logo) %></div>
+    </div>
+    <div class="field form-group row">
+      <%= f.label :category, :class => "col-sm-3 col-12 col-form-label" %>
+      <div class="col-sm-6 col-12">
+        <%= f.select :category, Institution.categories.map {|key, value| [key.humanize, key]}, {}, {:class => 'form-select', disabled: !f.permission?(:category)} %>
+      </div>
+    </div>
   </div>
   <div class="card-supporting-text card-border">
     <h4 class="card-title-text"><%= Institution.human_attribute_name(:providers) %></h4>

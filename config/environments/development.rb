@@ -3,9 +3,6 @@ require "active_support/core_ext/integer/time"
 Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
-  # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = true
-
   # Application hosts
 
   config.hosts << ENV['RAILS_APPLICATION_HOST'] if ENV['RAILS_APPLICATION_HOST'].present?
@@ -14,6 +11,8 @@ Rails.application.configure do
   # The main webapp
   config.default_host = ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost'
   config.action_mailer.default_url_options = { host: ENV['RAILS_APPLICATION_HOST'] || 'dodona.localhost:3000' }
+
+  config.web_hosts = [config.default_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = ENV['RAILS_SANDBOX_HOST'] || 'sandbox.localhost'
@@ -39,14 +38,18 @@ Rails.application.configure do
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
+
+  config.public_file_server.headers = {
+    'Cross-Origin-Resource-Policy' => 'cross-origin'
+  }
   if Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 
     config.cache_store = :mem_cache_store, { namespace: :"2" }
-    config.public_file_server.headers = {
+    config.public_file_server.headers.merge!({
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
-    }
+    })
   else
     config.action_controller.perform_caching = false
 
@@ -100,7 +103,10 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Regenerate js translation files
-  config.middleware.use I18n::JS::Middleware
+  config.after_initialize do
+    require 'i18n-js/listen'
+    I18nJS.listen
+  end
 
   # Use an evented file watcher to asynchronously detect changes in source code,
   # routes, locales, etc. This feature depends on the listen gem.

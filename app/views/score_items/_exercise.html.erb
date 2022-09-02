@@ -1,5 +1,5 @@
 <% content_for :javascripts do %>
-  <%= javascript_pack_tag 'score_item' %>
+  <%= javascript_include_tag 'score_item' %>
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
 <div id="score-items-<%= evaluation_exercise.id %>">
@@ -32,17 +32,17 @@
             <% end %>
           </td>
           <td class="actions">
-            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-sm btn-secondary edit-button',
+            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-icon edit-button',
                         data: { "bs-toggle": "modal" } do %>
-              <i class="mdi mdi-pencil mdi-18" aria-hidden='true'></i>
+              <i class="mdi mdi-pencil" aria-hidden='true'></i>
             <% end %>
             <%= button_to evaluation_score_item_path(@evaluation, score_item),
                           title: t('.delete_title'),
                           method: :delete,
                           remote: true,
                           data: { confirm: t('general.are_you_sure') },
-                          class: 'btn btn-sm btn-secondary btn-danger' do %>
-              <i class="mdi mdi-delete mdi-18" aria-hidden='true'></i>
+                          class: 'btn btn-icon btn-icon-filled bg-danger' do %>
+              <i class="mdi mdi-delete" aria-hidden='true'></i>
             <% end %>
           </td>
         </tr>
@@ -63,16 +63,16 @@
       </td>
       <td class="actions">
         <%= link_to "#copy-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-sm btn-secondary',
+                    class: 'btn btn-icon',
                     title: t('.copy_title', name: evaluation_exercise.exercise.name),
                     data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-content-copy mdi-18" aria-hidden='true'></i>
+          <i class="mdi mdi-content-copy" aria-hidden='true'></i>
         <% end %>
         <%= link_to "#new-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-sm btn-primary',
+                    class: 'btn btn-icon btn-icon-filled bg-primary',
                     title: t('.add_title', name: evaluation_exercise.exercise.name),
                     data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-plus mdi-18" aria-hidden='true'></i>
+          <i class="mdi mdi-plus" aria-hidden='true'></i>
         <% end %>
       </td>
     </tr>

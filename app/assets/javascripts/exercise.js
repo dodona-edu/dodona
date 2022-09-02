@@ -1,69 +1,16 @@
-/* globals Bloodhound,Strip,ace,ga,initStrip */
-import { initTooltips, logToGoogle, updateURLParameter } from "util.js";
+/* globals ace */
+import { initTooltips, updateURLParameter } from "util.js";
 import { Toast } from "./toast";
-
-function initLabelsEdit(labels, undeletableLabels) {
-    const colorMap = {};
-    for (const label of labels) {
-        colorMap[label.name] = label.color;
-        label.value = label.name;
-    }
-
-    const engine = new Bloodhound({
-        local: labels,
-        identify: d => d.id,
-        datumTokenizer: d => {
-            const result = Bloodhound.tokenizers.whitespace(d.name);
-            $.each(result, (i, val) => {
-                for (let i = 1; i < val.length; i++) {
-                    result.push(val.substr(i, val.length));
-                }
-            });
-            return result;
-        }, queryTokenizer: Bloodhound.tokenizers.whitespace,
-    });
-
-    const $field = $("#exercise_labels");
-    $field.on("tokenfield:createdtoken", e => {
-        if (colorMap[e.attrs.value]) {
-            $(e.relatedTarget).addClass(`accent-${colorMap[e.attrs.value]}`);
-        }
-        if (undeletableLabels.includes(e.attrs.value)) {
-            $(e.relatedTarget).addClass("tokenfield-undeletable");
-            $(e.relatedTarget).prop("title", I18n.t("js.label-undeletable"));
-        }
-    });
-    $field.on("tokenfield:removetoken", e => {
-        if (undeletableLabels.includes(e.attrs.value)) {
-            return false;
-        }
-    });
-    $field.on("tokenfield:edittoken", e => {
-        if (undeletableLabels.includes(e.attrs.value)) {
-            return false;
-        }
-    });
-    $field.tokenfield({
-        beautify: false,
-        createTokensOnBlur: true,
-        typeahead: [{
-            highlight: true,
-        }, {
-            source: engine,
-            display: d => d.name,
-        }],
-    });
-}
+import GLightbox from "glightbox";
 
 function showLightbox(content) {
-    Strip.show(content.images, {
-        side: "top",
-        onShow: function () {
-            // There might have been math in the image captions, so ask
-            // MathJax to search for new math (but only in the captions).
-            window.MathJax.typeset([".strp-caption"]);
-        }
-    }, content.index);
+    const lightbox = new GLightbox(content);
+    lightbox.on("slide_changed", () => {
+        // There might have been math in the image captions, so ask
+        // MathJax to search for new math (but only in the captions).
+        window.MathJax.typeset([".gslide-description"]);
+    });
+    lightbox.open();
 
     // Transfer focus back to the document body to allow the lightbox to be closed.
     // https://github.com/dodona-edu/dodona/issues/1759.
@@ -77,14 +24,14 @@ function onFrameMessage(event) {
 }
 
 function initLightboxes() {
-    let index = 1;
+    let index = 0;
     const images = [];
     $(".activity-description img, a.dodona-lightbox").each(function () {
         const imagesrc = $(this).data("large") || $(this).attr("src") || $(this).attr("href");
         const altText = $(this).data("caption") || $(this).attr("alt") || imagesrc.split("/").pop();
         const imageObject = {
-            url: imagesrc,
-            caption: altText,
+            href: imagesrc,
+            description: altText,
         };
         images.push(imageObject);
 
@@ -96,8 +43,9 @@ function initLightboxes() {
         window.parentIFrame.sendMessage({
             type: "lightbox",
             content: {
-                images: images,
-                index: index,
+                elements: images,
+                startAt: index,
+                moreLength: 0,
             }
         });
         return false;
@@ -154,12 +102,10 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
             enableSubmissionTableLinks();
             swapActionButtons();
         }
-        initStrip();
 
         // submit source code if button is clicked on editor panel
         $("#editor-process-btn").on("click", function () {
             if (!loggedIn) return;
-            logToGoogle("submission", "submitted");
             // test submitted source code
             const source = editor.getValue();
             disableSubmitButton();
@@ -183,7 +129,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $(".activity-description a[target='_blank']").each(function () {
             $(this).attr("rel", "noopener");
         });
-
         // export function
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
@@ -192,9 +137,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         // init editor
         editor = ace.edit("editor-text");
         editor.getSession().setMode("ace/mode/" + programmingLanguage);
-        if (window.dodona.darkMode) {
-            editor.setTheme("ace/theme/twilight");
-        }
         editor.setOptions({
             showPrintMargin: false,
             enableBasicAutocompletion: true,
@@ -203,29 +145,31 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
         editor.on("focus", enableSubmitButton);
+        editor.commands.removeCommand("find"); // disable search box in ACE editor
+        // Make editor available globally
+        window.dodona.editor = editor;
     }
 
     function swapActionButtons() {
         $("#activity-handin-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
-            $("#editor-process-btn").removeClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
+            $("#editor-process-btn").removeClass("hidden");
         });
         $("#activity-submission-link").on("show.bs.tab", function (e) {
-            $("#submission-copy-btn").addClass("hidden-fab");
+            $("#submission-copy-btn").addClass("hidden");
             if (lastSubmission) {
-                $("#editor-process-btn").removeClass("hidden-fab");
+                $("#editor-process-btn").removeClass("hidden");
             } else {
-                $("#editor-process-btn").addClass("hidden-fab");
+                $("#editor-process-btn").addClass("hidden");
             }
         });
         $("#activity-feedback-link").on("show.bs.tab", function (e) {
-            $("#editor-process-btn").addClass("hidden-fab");
-            $("#submission-copy-btn").removeClass("hidden-fab");
+            $("#editor-process-btn").addClass("hidden");
+            $("#submission-copy-btn").removeClass("hidden");
         });
     }
 
     function submitSolution(code) {
-        ga("send", "pageview");
         return $.post("/submissions.json", {
             submission: {
                 code: code,
@@ -236,7 +180,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
     }
 
     function feedbackLoaded(submissionId) {
-        ga("send", "pageview");
         $("#feedback").removeClass("hidden");
         const $exerciseFeedbackLink = $("#activity-feedback-link");
         $exerciseFeedbackLink.removeClass("hidden");
@@ -283,7 +226,6 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
                 setTimeout(function () {
                     lastTimeout = (lastTimeout || 0) + 1000;
                     lastTimeout = lastTimeout >= 5000 ? 4000 : lastTimeout;
-                    ga("send", "pageview");
                     let url = `/submissions.js?user_id=${userId}&activity_id=${exerciseId}`;
                     if (courseId !== undefined) {
                         url += `&course_id=${courseId}`;
@@ -310,13 +252,13 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         $("#editor-process-btn")
             .prop("disabled", false)
             .removeClass("busy mdi-timer-sand-empty mdi-spin")
-            .addClass("mdi-play");
+            .addClass("mdi-send");
     }
 
     function disableSubmitButton() {
         $("#editor-process-btn")
             .prop("disabled", true)
-            .removeClass("mdi-play")
+            .removeClass("mdi-send")
             .addClass("busy mdi-timer-sand-empty mdi-spin");
     }
 
@@ -338,17 +280,16 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         const icon = fab.children[0];
         fab.classList.remove("correct", "wrong");
         icon.classList.remove(...icon.classList);
-        icon.classList.add("mdi", "mdi-36", "mdi-pencil");
+        icon.classList.add("mdi", "mdi-pencil");
     }
     function getPositiveEmoji() {
-        const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "shimmer", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
+        const emojis = ["check-bold", "thumb-up-outline", "emoticon-happy-outline", "emoticon-excited-outline", "emoticon-cool-outline", "sparkles", "party-popper", "arm-flex-outline", "emoticon-kiss-outline", "robot-outline", "cow", "unicorn-variant"];
         return "mdi-" + emojis[Math.floor(Math.pow(Math.random(), 3) * emojis.length)];
     }
 
     function submissionSuccessful(data, userId) {
         lastSubmission = data.id;
         new Toast(I18n.t("js.submission-saved"));
-        ga("send", "pageview");
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
@@ -389,17 +330,17 @@ function initExerciseShow(exerciseId, programmingLanguage, loggedIn, editorShown
         if (!_deadline) {
             return;
         }
-        const $deadlineWarning = $("#deadline-warning");
-        const $deadlineInfo = $("#deadline-info");
+        const deadlineWarningElement = document.getElementById("deadline-warning");
+        const deadlineInfoElement = document.getElementById("deadline-info");
         const deadline = new Date(_deadline);
         const infoDeadline = new Date(deadline - (5 * 60 * 1000));
 
         function showDeadlineAlerts() {
             if (deadline < new Date()) {
-                $deadlineInfo.hide();
-                $deadlineWarning.show();
+                deadlineInfoElement.hidden = true;
+                deadlineWarningElement.hidden = false;
             } else if (infoDeadline < new Date()) {
-                $deadlineInfo.show();
+                deadlineInfoElement.hidden = false;
                 setTimeout(showDeadlineAlerts, Math.min(
                     Math.max(10, (deadline - new Date()) / 10),
                     10 * 60 * 1000));
@@ -445,6 +386,6 @@ function onFrameScroll(position) {
 }
 
 export {
-    initMathJax, initExerciseShow, initExerciseDescription, initLabelsEdit, afterResize,
+    initMathJax, initExerciseShow, initExerciseDescription, afterResize,
     onFrameMessage, onFrameScroll
 };

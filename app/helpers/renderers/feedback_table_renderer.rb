@@ -147,11 +147,11 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.correct_tests')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn btn-secondary active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye mdi-18')
+              @builder.button(class: 'btn active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+                @builder.i('', class: 'mdi mdi-eye')
               end
-              @builder.button(class: 'btn btn-secondary ', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye-off mdi-18')
+              @builder.button(class: 'btn', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+                @builder.i('', class: 'mdi mdi-eye-off')
               end
             end
           end
@@ -162,11 +162,11 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.output')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-vertical') {}
+              @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+                @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
               end
-              @builder.button(class: "btn btn-secondary #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-18 mdi-arrow-split-horizontal') {}
+              @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+                @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
               end
             end
           end
@@ -255,9 +255,17 @@ class FeedbackTableRenderer
     end
   end
 
+  def differ(t)
+    if t[:format] == 'csv' && CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
+      CsvDiffer
+    else
+      TextDiffer
+    end
+  end
+
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      @builder.span(t[:generated], class: 'output')
+      differ(t).render_accepted(@builder, t[:generated])
     end
   end
 
@@ -268,7 +276,7 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    differ = LCSHtmlDiffer.new(t[:generated], t[:expected])
+    differ = differ(t).new(t[:generated], t[:expected])
     @builder.div(class: "diffs show-#{@diff_type}") do
       @builder << differ.split
       @builder << differ.unified
@@ -292,6 +300,11 @@ class FeedbackTableRenderer
       @builder << markdown(m[:description])
     elsif m[:format].in?(%w[callout])
       @builder.div(class: 'callout callout-info') do
+        # `markdown` is always safe
+        @builder << markdown(m[:description])
+      end
+    elsif m[:format].in?(%w[callout-info callout-warning callout-danger])
+      @builder.div(class: "callout #{m[:format]}") do
         # `markdown` is always safe
         @builder << markdown(m[:description])
       end
@@ -336,6 +349,8 @@ class FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
+    return 'split' if test[:format] == 'csv'
+
     output = "#{test[:expected].to_s || ''}\n#{test[:generated].to_s || ''}"
     if output.split("\n", -1).map(&:length).max < 55
       'split'

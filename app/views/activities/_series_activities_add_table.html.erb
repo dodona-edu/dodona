@@ -21,8 +21,7 @@
         <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("activities.index.private")}'></i>" if activity.access_private? %>
         <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("activities.index.removed")}'></i>" if activity.removed? %>
         <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("activities.index.invalid")}'></i>" if activity.not_valid? %>
-        <%= raw "<i class='mdi mdi-#{ activity.programming_language&.icon} mdi-18' title='#{t "activities.index.type.exercise_language", language: activity.programming_language&.name&.titleize}'></i>" if activity.exercise? %>
-        <%= raw "<i class='mdi mdi-book-open-variant mdi-18' title='#{t("activities.index.type.content")}'></i>" if activity.content_page? %>
+        <%= activity_icon(activity) %>
       </td>
       <td class="link">
         <span class="ellipsis-overflow" title="<%= activity.name %>">
@@ -34,13 +33,15 @@
         </span>
         <div class="text-muted ellipsis-overflow">
           <small>
-            <span class="clickable-token" title="<%= activity.repository.name %>: <%= activity.path %>" data-type="repositories" data-name="<%= activity.repository.name %>"><%= activity.repository.name %>: <%= activity.path %></span>
+            <d-filter-button param="repository_id" value="<%= activity.repository.id %>" title="<%= activity.repository.name %>: <%= activity.path %>" >
+                <%= activity.repository.name %>: <%= activity.path %>
+            </d-filter-button>
           </small>
         </div>
       </td>
       <td class="description-languages">
         <div class="text-muted">
-          <%= raw activity.description_languages.map {|language| "<span class='clickable-token' title='#{t("js.#{language}")}' data-type='description_languages' data-name='#{t("js.#{language}")}'>#{language}</span>"}.join(", ") %>
+          <%= raw activity.description_languages.map {|language| "<d-filter-button param='description_languages' value='#{language}' multi><span class='clickable-token' title='#{t("js.#{language}")}'>#{language}</span></d-filter-button> "}.join(", ") %>
         </div>
       </td>
       <td class="series-activities-table-labels">
@@ -49,11 +50,11 @@
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-activity" title="<%= t "series.edit.remove_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity)%>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>">
-            <i class="mdi mdi-delete mdi-18"></i>
+            <i class="mdi mdi-delete"></i>
           </a>
         <% else %>
           <a href="#" class="btn btn-icon add-activity <%= "hidden" if series.activities.include? activity %>" title="<%= t "series.edit.add_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity) %>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>" data-confirm="<%= t('.course_added_to_usable') unless activity.usable_by? @series.course %>">
-            <i class="mdi mdi-plus mdi-18"></i>
+            <i class="mdi mdi-plus"></i>
           </a>
         <% end %>
       </td>

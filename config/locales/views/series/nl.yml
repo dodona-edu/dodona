@@ -10,6 +10,8 @@ nl:
       hide_activities: Verberg leeractiviteiten
       hide_activities_help: "Als de leeractiviteiten verborgen zijn, dan zal enkel de beschrijving van deze reeks getoond worden. Lesgevers kunnen deze instelling gebruiken om bijvoorbeeld de leerstof van de reeks vooraf beschikbaar te stellen, zonder de oefeningen en leesactiviteiten al vrij te geven."
       advanced_settings: Geavanceerde instellingen
+      activity_numbers_enabled: "Nummer leeractiviteiten"
+      activity_numbers_enabled_help: "Elke oefening en leesactiviteit krijgt een opeenvolgend nummer, beginnend bij 1. Dit nummer wordt weergegeven in titels en het reeksoverzicht en kan helpen om over de activiteit te communiceren."
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden
@@ -17,7 +19,7 @@ nl:
     new:
       title: Reeks aanmaken
     show:
-      copy: 'Om te kopieren: Ctrl+c, Enter'
+      copy: 'Om te kopiëren: Ctrl+c, Enter'
       indianio_token: 'Indianio-token'
       token_link: 'Geheime link'
       series: Reeks
@@ -32,6 +34,9 @@ nl:
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).
       show_overview: Alle opgaven en leesactiviteiten bekijken
       evaluation_overview: Feedback bekijken
+      series_overview: Reeksoverzicht
+      apply: toepassen
+      hidden_not_registered: Je bent niet ingeschreven voor deze cursus. Je kan de oefeningen pas oplossen nadat je je ingeschreven hebt.
     edit:
       title: Reeks bewerken
       add_activities: Activiteiten toevoegen
@@ -53,13 +58,17 @@ nl:
       confirm_evaluation: Merk op dat er een evaluatie aan deze reeks gelinked is. Als je de reeks verwijderd zal alle feedback binnen die evaluatie ook verwijderd worden.
     scoresheet:
       user: Gebruiker
-      explanation: "Toont het aantal correct opgeloste oefeningen en afgewerkte leesactiviteiten voor het verstrijken van de deadline"
       at_least_one_started: "Toon enkel gebruikers die tenminste aan één leeractiviteit begonnen zijn"
       no_activities_html: "Deze reeks bevat nog geen leeractiviteiten. Je kan er toevoegen op de <a href=%{series_edit_url}>edit pagina van de reeks</a>."
       download: Statusoverzicht downloaden
       course_view: Statusoverzicht van cursus
       select_view: Weergave selecteren
       status: "Status %{activity}"
+      total: Totaal
+      users:
+        zero: Geen gebruikers
+        one: 1 gebruiker
+        other: "%{count} gebruikers"
     overview:
       progress: '%{solved} van de %{count} opgelost'
     series_status:

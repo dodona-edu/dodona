@@ -21,7 +21,43 @@ class StatisticsController < ApplicationController
     end
   end
 
+  def violin
+    visualise_series(:violin_matrix)
+  end
+
+  def stacked_status
+    visualise_series(:stacked_status_matrix)
+  end
+
+  def timeseries
+    visualise_series(:timeseries_matrix)
+  end
+
+  def cumulative_timeseries
+    visualise_series(:cumulative_timeseries_matrix)
+  end
+
   private
+
+  def visualise_series(visualisation)
+    series = Series.find(params[:series_id])
+    authorize series
+
+    result = Submission.send(visualisation, series: series)
+    if result.present?
+      ex_data = series.exercises.map { |ex| [ex.id, ex.name] }
+      data = series.exercises.map { |ex| { ex_id: ex.id, ex_data: result[:value][ex.id] || [] } }
+
+      render json: {
+        data: data,
+        exercises: ex_data,
+        student_count: series.course.enrolled_members.length,
+        deadline: series.deadline
+      }
+    else
+      render json: { status: 'not available yet' }, status: :accepted
+    end
+  end
 
   def set_course_and_user
     @user = nil

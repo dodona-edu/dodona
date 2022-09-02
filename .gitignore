@@ -39,6 +39,7 @@ erd.pdf
 # Ignore coverage reports
 coverage
 /public/packs
+/public/assets
 /public/packs-test
 /node_modules
 /public/packs
@@ -55,3 +56,6 @@ junit.xml
 /config/master.key
 
 /config/credentials/staging.key
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

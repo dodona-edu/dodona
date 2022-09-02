@@ -1,9 +1,16 @@
 ## LTI.
 require_relative '../../lib/LTI/auth.rb'
 
+## OIDC.
+require_relative '../../lib/OIDC/auth.rb'
+
 ## SAML.
 require_relative '../../lib/SAML/strategy.rb'
 require_relative '../../lib/SAML/setup.rb'
+
+## Surf.
+require_relative '../../lib/Surf/strategy.rb'
+require_relative '../../lib/Surf/setup.rb'
 
 # Error handling.
 require_relative('../../lib/devise/custom_failure.rb')
@@ -260,6 +267,10 @@ Devise.setup do |config|
   config.omniauth :office365,
                   Rails.application.credentials.office365_client_id,
                   Rails.application.credentials.office365_client_secret
+
+  config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
+
+  config.omniauth :surf, setup: Surf::Auth::OmniAuth::Setup
 
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 

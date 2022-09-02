@@ -1,6 +1,7 @@
 .language-table {
-  th.type-icon, td.type-icon {
-    color: $text-secondary;
+  th.type-icon,
+  td.type-icon {
+    color: $on-surface-muted;
   }
 }
 

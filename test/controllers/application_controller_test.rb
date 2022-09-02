@@ -2,7 +2,7 @@ require 'test_helper'
 class ApplicationControllerTest < ActionDispatch::IntegrationTest
   setup do
     @course = create :course, visibility: :hidden, registration: :closed
-    @user = create :student
+    @user = users(:student)
   end
 
   test 'should store last location' do

@@ -4,7 +4,7 @@
 #
 #  id                :bigint           not null, primary key
 #  type              :string(255)      default("Provider::Saml"), not null
-#  institution_id    :bigint           not null
+#  institution_id    :bigint
 #  identifier        :string(255)
 #  certificate       :text(16777215)
 #  entity_id         :string(255)
@@ -24,6 +24,10 @@ require 'test_helper'
 class ProviderTest < ActiveSupport::TestCase
   DEFAULT_NAMES = [Institution::NEW_INSTITUTION_NAME, Institution::NEW_INSTITUTION_NAME].freeze
 
+  setup do
+    @institution = institutions(:ugent)
+  end
+
   test 'provider factories' do
     AUTH_PROVIDERS.each do |provider|
       create provider
@@ -31,19 +35,16 @@ class ProviderTest < ActiveSupport::TestCase
   end
 
   test 'at least one preferred provider per institution' do
-    institution = create :institution
-
-    redirect_prov = build :provider, institution: institution, mode: :redirect
+    redirect_prov = build :provider, institution: @institution, mode: :redirect
     assert_not redirect_prov.valid?
 
-    create :provider, institution: institution
+    create :provider, institution: @institution
   end
 
   test 'at most one preferred provider per institution' do
-    institution = create :institution
-    create :provider, institution: institution
+    create :provider, institution: @institution
 
-    second = build :provider, institution: institution
+    second = build :provider, institution: @institution
     assert_not second.valid?
   end
 
@@ -66,6 +67,11 @@ class ProviderTest < ActiveSupport::TestCase
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))
+  end
+
+  test 'gsuite readable_name gives Google Workspace as name when account is NOT private' do
+    provider = build :gsuite_provider, institution: @institution
+    assert_equal Provider::GSuite.readable_name, provider.readable_name
   end
 
   test 'smartschool extracts name of institution' do
@@ -115,6 +121,29 @@ class ProviderTest < ActiveSupport::TestCase
 
     hash.info.email = 'not an email anymore'
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(hash)
+
+    assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
+    assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))
+  end
+
+  test 'Surf extracts name of institution' do
+    provider = Provider::Surf
+    hash = {
+      provider: 'surf',
+      uid: 'something',
+      info: {
+        username: 'janj',
+        first_name: 'Jan',
+        last_name: 'Janssens',
+        email: 'foo@bar.nl',
+        institution: 'example.nl'
+      }
+    }
+    hash = OmniAuth::AuthHash.new(hash)
+    assert_equal %w[example example], provider.extract_institution_name(hash)
+
+    hash.info.institution = 'test.org'
+    assert_equal %w[test test], provider.extract_institution_name(hash)
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({ info: {} }))

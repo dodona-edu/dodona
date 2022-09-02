@@ -2,7 +2,7 @@ import { Toast } from "../../app/assets/javascripts/toast";
 
 beforeEach(() => {
     jest.useFakeTimers();
-    document.body.innerHTML = "<div class='toasts'></div>";
+    document.body.innerHTML = "<section class='toasts'></section>";
 });
 
 test("create toast with default settings", () => {

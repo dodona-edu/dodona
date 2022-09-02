@@ -85,11 +85,11 @@ class PythiaRenderer < FeedbackTableRenderer
   def testcase(tc)
     return super(tc) unless tc[:data] && tc[:data][:files]
 
-    jsonfiles = tc[:data][:files].to_a.map do |key, value|
+    jsonfiles = tc[:data][:files].to_a.to_h do |key, value|
       value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" \
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
-    end.to_h.to_json
+    end.to_json
     @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
       testcase_content(tc)
     end
@@ -101,7 +101,7 @@ class PythiaRenderer < FeedbackTableRenderer
     # Initialize tutor javascript
     @builder.script do
       escaped = escape_javascript(@code.strip)
-      @builder << '$(function() {'
+      @builder << 'dodona.ready.then(function() {'
       @builder << "$('#tutor').appendTo('body');"
       @builder << "var code = \"#{escaped}\";"
       @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
@@ -115,11 +115,11 @@ class PythiaRenderer < FeedbackTableRenderer
             @builder.div(class: 'modal-header') do
               @builder.h4(class: 'modal-title') {}
               @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-link btn-sm') do
-                  @builder.i('', class: 'mdi mdi-fullscreen mdi-18')
+                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
+                  @builder.i('', class: 'mdi mdi-fullscreen')
                 end
-                @builder.button(type: 'button', class: 'btn btn-link btn-sm', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close mdi-18')
+                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
+                  @builder.i('', class: 'mdi mdi-close')
                 end
               end
             end
@@ -268,7 +268,8 @@ class PythiaRenderer < FeedbackTableRenderer
     {
       row: message[:line] - 1,
       type: convert_lint_type(message[:type]),
-      text: message[:description]
+      text: message[:description],
+      externalUrl: message[:externalUrl]
     }
   end
 

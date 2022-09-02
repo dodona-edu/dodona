@@ -15,6 +15,11 @@
                     title: t('.submissions'),
                     custom_icon: 'submissions',
                     if: can_view_submissions %>
+  <% elsif @activity.content_page? %>
+    <%= navbar_link url: activity_read_states_scoped_path(content_page: @activity, course: @course, series: @series),
+                    title: t('.read_states'),
+                    icon: 'playlist-check',
+                    if: can_view_submissions %>
   <% end %>
 
   <%= navbar_link url: edit_activity_scoped_path(activity: @activity, course: @course, series: @series),

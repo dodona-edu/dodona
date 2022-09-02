@@ -37,24 +37,4 @@ module LtiTestHelper
 
     payload
   end
-
-  def encode_jwt(payload)
-    key = JWT::JWK.create_from(OpenSSL::PKey::RSA.new(File.read(FILES_LOCATION.join('private_key.pem'))))
-    payload = payload.as_json
-    headers = { kid: key.kid, typ: 'JWT' }
-    JWT.encode(payload, key.keypair, 'RS256', headers)
-  end
-
-  def decode_jwt(payload)
-    key = JWT::JWK.create_from(OpenSSL::PKey::RSA.new(File.read(FILES_LOCATION.join('public_key.pem'))))
-    payload = payload.as_json
-    JWT.decode(payload, key.keypair, false, algorithm: 'RS256').first
-  end
-
-  def self.jwks_content(kid = nil)
-    pk = OpenSSL::PKey::RSA.new(File.read(FILES_LOCATION.join('public_key.pem')))
-    options = { use: 'sig' }
-    options[:kid] = kid if kid
-    { keys: [JWT::JWK.create_from(pk).export.merge(options)] }.to_json
-  end
 end

@@ -33,7 +33,11 @@ FactoryBot.define do
 
     sequence(:path) { |n| "content_page#{n}" }
 
-    association :repository, factory: %i[repository git_stubbed]
+    repository { Repository.find(1) } # load python repo fixture
+
+    trait :generated_repo do
+      association :repository, factory: %i[repository git_stubbed]
+    end
 
     transient do
       name { nil }

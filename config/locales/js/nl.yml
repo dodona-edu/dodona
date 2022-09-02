@@ -34,7 +34,7 @@ nl:
     statuses: Statussen
     event_types: Event types
     activity_types: Activiteitstypes
-    description_languages: Talen waarin de beschrijving beschikbaar is
+    description_languages: Taal van de beschrijving
     en: Engels
     nl: Nederlands
     courses: Cursussen
@@ -46,6 +46,34 @@ nl:
     mark_as_read: Als gelezen markeren
     mark_as_unread: Als ongelezen markeren
     question_states: Toestand
+    no_data: Er is niet genoeg data om een grafiek te maken.
+    n_submissions: Aantal ingediende oplossingen
+    user: gebruiker
+    users: gebruikers
+    with: met
+    date_on: op
+    date_before: voor
+    submission: oplossing
+    submissions: oplossingen
+    attempts: pogingen
+    total: totaal aantal
+    mean: gemiddeld aantal
+    violin_title: Aantal oplossingen per gebruiker
+    stacked_title: Verdeling van de oplossingsstatus
+    timeseries_title: Ingediende oplossingen over tijd
+    ctimeseries_title: Gebruikers met minstens één correcte oplossing
+    violin_desc: Deze grafiek geeft de verdeling weer van het aantal ingediende oplossingen. Hoe dikker de zone op de grafiek, hoe meer studenten dat aantal pogingen nodig had. Het bolletje geeft het gemiddelde aan. Wanneer het gemiddelde groter dan 20 is, wordt het bolletje hol.
+    stacked_desc: Deze grafiek geeft de verdeling van de oplossingsstatussen per oefening weer.
+    timeseries_desc: Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.
+    ctimeseries_desc: Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.
+    status:
+      correct: correct
+      wrong: fout
+      compilation_error: compilatiefout
+      runtime_error: uitvoeringsfout
+      time_limit_exceeded: tijdslimiet overschreden
+      memory_limit_exceeded: geheugenlimiet overschreden
+      output_limit_exceeded: uitvoerlimiet overschreden
     months:
       long:
         jan: Januari
@@ -109,12 +137,14 @@ nl:
       copy-to-clipboard: Kopieer code naar klembord
     user_annotation:
       meta: "%{user} · %{time}"
+      anonymous_message: 'Deze opmerking maakt deel uit van een evaluatie'
       send: 'Toevoegen'
       update: 'Updaten'
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a>  wordt ondersteund.'
+      help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!"
       fields:
         annotation_text: 'Opmerking'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'
@@ -131,9 +161,50 @@ nl:
       unresolve: Vraag terug openen
       deleted: Deze vraag is verwijderd door een andere gebruiker
       conflict: De status van deze vraag is al aangepast door een andere gebruiker
+      has_newer_submission: Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.
+    machine_annotation:
+        external_url: meer informatie
     score:
       conflict: Deze score is al aangepast door een andere gebruiker
       unknown: Een onverwachte fout trad op bij het opslaan van de score
       confirm: Bent u zeker?
     score_item:
       error: Fout bij bijwerken
+    coding_scratchpad:
+      copy_code: Kopieer naar Dodona
+      overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
+    submission_motivational_message:
+      1: Proficiat!
+      2: Goed bezig!
+      3: Doe zo verder!
+      4: Mooi!
+      5: Puik werk!
+      6: Goed gedaan!
+    dropdown:
+      search: Zoeken
+      multi:
+        labels: Labels
+        programming_languages: Programmeertalen
+        judges: Judges
+        repositories: Repository's
+        institutions: Onderwijsinstellingen
+        course_labels: Gebruikerlabels
+        statuses: Statussen
+        event_types: Event types
+        activity_types: Activiteitstypes
+        description_languages: Talen
+        courses: Cursussen
+        question_states: Toestanden
+      single:
+        labels: Label
+        programming_languages: Programmeertaal
+        judges: Judge
+        repositories: Repository
+        institutions: Onderwijsinstelling
+        course_labels: Gebruikerlabel
+        statuses: Status
+        event_types: Event type
+        activity_types: Activiteitstype
+        description_languages: Taal
+        courses: Cursus
+        question_states: Toestand

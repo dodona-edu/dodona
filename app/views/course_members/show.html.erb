@@ -1,5 +1,6 @@
 <%= content_for :javascripts do %>
-  <%= javascript_pack_tag 'course' %>
+  <%= javascript_include_tag 'course' %>
+  <%= javascript_include_tag 'series' %>
 <% end %>
 
 <div class="row">
@@ -18,7 +19,7 @@
             <% end %>
             <span class="labels">
               <% @course_membership.course_labels.each do |label| %>
-                <span class="badge bg-primary"><%= label.name %></span>
+                <span class="token accent-orange"><%= label.name %></span>
               <% end %>
             </span>
           </span>
@@ -31,7 +32,7 @@
             <% if @user.institution&.name.present? and @user.email.present? %>
               &middot;
             <% end %>
-            <%= @user.email %>
+            <%= mail_to(@user.email, nil, { title: t('.send_mail'), class: 'text-muted' }) %>
           </span>
         </div>
         <div class="row">
@@ -61,10 +62,10 @@
       <% if policy(@course_membership).update? or policy(@user).impersonate? %>
         <div class="card-actions card-border">
           <% if policy(@user).impersonate? %>
-            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn-text" %>
+            <%= link_to t("layout.impersonate.impersonate"), impersonate_user_path(@user), class: "btn btn-text" %>
           <% end %>
           <% if policy(@course_membership).update? %>
-            <button class="btn-text" data-bs-toggle="modal" data-bs-target="#labelsEditModal">
+            <button class="btn btn-text" data-bs-toggle="modal" data-bs-target="#labelsEditModal">
               <%= t ".edit_labels" %>
             </button>
             <% content_for :modal do %>
@@ -79,8 +80,8 @@
                       <%= render 'form', course: @course, user: @user, course_membership: @course_membership %>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn-text" data-bs-dismiss="modal"><%= t(".close") %></button>
-                      <button type="submit" class="btn-text btn-primary" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
+                      <button type="button" class="btn btn-text" data-bs-dismiss="modal"><%= t(".close") %></button>
+                      <button type="submit" class="btn btn-filled" form="<%= "edit_course_membership_#{@course_membership.id}" %>"><%= t(".save") %></button>
                     </div>
                   </div>
                 </div>
@@ -102,8 +103,17 @@
     </div>
 
   </div>
+
+  <nav id="scrollspy-nav" class="col-md-1 d-none d-md-block hidden-print series-sidebar">
+    <ul class="nav" data-offset-bottom="80">
+      <li class="header ellipsis-overflow"><%= t "courses.show.exercise_series" %></li>
+      <% @series.each do |series| %>
+        <li><%= link_to series.name, "#" + series.anchor, class: 'ellipsis-overflow nav-link', title: series.name %> </li>
+      <% end %>
+    </ul>
+  </nav>
 </div>
 
 <script type="text/javascript">
-    $(dodona.initCourseShow);
+    dodona.ready.then(dodona.initCourseShow);
 </script>

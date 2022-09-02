@@ -17,8 +17,14 @@ function initFavoriteButtons() {
 
     function favoriteCourse(element) {
         const courseId = element.dataset.course_id;
-        $.post(`/courses/${courseId}/favorite.js`)
-            .done(() => {
+        fetch(`/courses/${courseId}/favorite.js`, {
+            "method": "POST",
+            "headers": {
+                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+        }).then(response => {
+            if (response.ok) {
                 new Toast(I18n.t("js.favorite-course-succeeded"));
                 element.classList.remove("mdi-heart-outline");
                 element.classList.add("favorited", "mdi-heart");
@@ -41,16 +47,22 @@ function initFavoriteButtons() {
                 cloneFavButton.setAttribute("title", I18n.t("js.unfavorite-course-do"));
                 new bootstrap.Tooltip(cloneFavButton); // is enabled by default
                 cloneFavButton.addEventListener("click", toggleFavorite);
-            })
-            .fail(() => {
+            } else {
                 new Toast(I18n.t("js.favorite-course-failed"));
-            });
+            }
+        }).catch(() => new Toast(I18n.t("js.favorite-course-failed")))
     }
 
     function unfavoriteCourse(element) {
         const courseId = element.dataset.course_id;
-        $.post(`/courses/${courseId}/unfavorite.js`)
-            .done(() => {
+        fetch(`/courses/${courseId}/unfavorite.js`, {
+            "method": "POST",
+            "headers": {
+                "x-csrf-token": document.querySelector(`meta[name="csrf-token"]`).getAttribute("content"),
+                "x-requested-with": "XMLHttpRequest",
+            },
+        }).then(response => {
+            if (response.ok) {
                 new Toast(I18n.t("js.unfavorite-course-succeeded"));
                 const elements = document.querySelectorAll<HTMLElement>(`[data-course_id="${courseId}"]`);
                 elements.forEach(el => {
@@ -71,10 +83,10 @@ function initFavoriteButtons() {
                 if (favoritesRow.children.length === 0) {
                     document.querySelector(".page-subtitle.first").classList.add("hidden");
                 }
-            })
-            .fail(() => {
+            } else {
                 new Toast(I18n.t("js.unfavorite-course-failed"));
-            });
+            }
+        }).catch(() => new Toast(I18n.t("js.unfavorite-course-failed")));
     }
 
     init();

@@ -259,11 +259,12 @@
         "annotation_text": "Text",
         "course": "Course",
         "delete": {
-          "button_title": "Delete saved comment",
           "confirm": "Are you sure you want to delete this saved comment?"
         },
         "edit": {
           "button_title": "Edit saved comment",
+          "cancel": "Cancel",
+          "delete": "Delete",
           "errors": "%{count} errors prevented saving",
           "save": "Save",
           "title": "Edit saved comment"
@@ -698,11 +699,12 @@
         "annotation_text": "Tekst",
         "course": "Cursus",
         "delete": {
-          "button_title": "Verwijder opgeslagen opmerking",
           "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"
         },
         "edit": {
           "button_title": "Bewerk opgeslagen opmerking",
+          "cancel": "Annuleren",
+          "delete": "Verwijderen",
           "errors": "%{count} errors verhinderen het opslaan",
           "save": "Opslaan",
           "title": "Bewerk opgeslagen opmerking"

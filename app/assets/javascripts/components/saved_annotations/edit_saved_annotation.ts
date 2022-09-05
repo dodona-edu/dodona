@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { SavedAnnotation, updateSavedAnnotation } from "state/SavedAnnotations";
+import { SavedAnnotation, updateSavedAnnotation, deleteSavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 
@@ -33,6 +33,13 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
         }
     }
 
+    async deleteSavedAnnotation(): Promise<void> {
+        if (confirm(I18n.t("js.saved_annotation.delete.confirm"))) {
+            await deleteSavedAnnotation(this.savedAnnotation.id);
+            this.hideModal();
+        }
+    }
+
     get filledModalTemplate(): TemplateResult {
         return this.modalTemplate(html`
             ${I18n.t("js.saved_annotation.edit.title")}</h4>
@@ -51,7 +58,14 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
                 @change=${e => this.savedAnnotation = e.detail}
             ></d-saved-annotation-form>
         `, html`
-            <button class="btn btn-primary btn-text" @click=${() => this.updateSavedAnnotation()}>
+            <d-delete-saved-annotation .savedAnnotationId=${this.savedAnnotation.id}></d-delete-saved-annotation>
+            <button class="btn btn-danger btn-text" @click=${() => this.deleteSavedAnnotation()}>
+                ${I18n.t("js.saved_annotation.edit.delete")}
+            </button>
+            <button class="btn btn-primary btn-text" @click=${() => this.hideModal()}>
+                ${I18n.t("js.saved_annotation.edit.cancel")}
+            </button>
+            <button class="btn btn-primary" @click=${() => this.updateSavedAnnotation()}>
                 ${I18n.t("js.saved_annotation.edit.save")}
             </button>
         `);

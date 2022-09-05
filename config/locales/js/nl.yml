@@ -232,8 +232,9 @@ nl:
         save: "Opslaan"
         title: "Bewerk opgeslagen opmerking"
         errors: "%{count} errors verhinderen het opslaan"
+        delete: Verwijderen
+        cancel: Annuleren
       delete:
-        button_title: 'Verwijder opgeslagen opmerking'
         confirm: 'Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?'
       input:
         placeholder: Zoek opgeslagen opmerking

@@ -4,7 +4,6 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { getSavedAnnotations, getSavedAnnotationsPagination, Pagination, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
-import "./delete_saved_annotation";
 import "components/pagination";
 import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
 
@@ -77,16 +76,15 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                     <tbody>
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
-                                <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}">${sa.title}</td>
+                                <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}" title="${sa.title}">${sa.title}</td>
                                 ${ this.small ? "" : html`
-                                    <td class="ellipsis-overflow">${sa.annotation_text}</td>
+                                    <td class="ellipsis-overflow" title="${sa.annotation_text}">${sa.annotation_text}</td>
                                     <td><a href="${sa.user.url}">${sa.user.name}</a></td>
                                     <td><a href="${sa.course.url}">${sa.course.name}</a></td>
                                     <td><a href="${sa.exercise.url}">${sa.exercise.name}</a></td>
                                 `}
                                 <td class="actions">
                                     <d-edit-saved-annotation .savedAnnotation=${sa}></d-edit-saved-annotation>
-                                    <d-delete-saved-annotation .savedAnnotationId=${sa.id}></d-delete-saved-annotation>
                                 </td>
                             </tr>
                         `)}

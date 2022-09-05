@@ -216,6 +216,8 @@ nl:
       user: Gebruiker
       course: Cursus
       exercise: Oefening
+      list:
+        annotations_count: "%{count} keer gebruikt"
       sidecard:
         title: Opgeslagen opmerkingen
         link: Beheer alle opgeslagen opmerkingen

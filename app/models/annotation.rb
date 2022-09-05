@@ -23,7 +23,7 @@ class Annotation < ApplicationRecord
   belongs_to :submission
   belongs_to :user
   belongs_to :evaluation, optional: true
-  belongs_to :saved_annotation, optional: true
+  belongs_to :saved_annotation, optional: true, counter_cache: true
   belongs_to :last_updated_by, class_name: 'User'
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }

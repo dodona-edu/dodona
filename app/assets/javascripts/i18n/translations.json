@@ -280,6 +280,9 @@
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
+        "list": {
+          "annotations_count": "Used %{count} times"
+        },
         "new": {
           "button_title": "Save comment",
           "errors": "%{count} errors prevented saving this comment for reuse",
@@ -720,6 +723,9 @@
           "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
           "placeholder": "Zoek opgeslagen opmerking",
           "title": "Hergebruik een opgeslagen opmerking"
+        },
+        "list": {
+          "annotations_count": "%{count} keer gebruikt"
         },
         "new": {
           "button_title": "Opmerking opslaan",

@@ -216,6 +216,8 @@ en:
       user: User
       course: Course
       exercise: Exercise
+      list:
+        annotations_count: "Used %{count} times"
       sidecard:
         title: Saved annotations
         link: Manage all saved comments

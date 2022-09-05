@@ -11,6 +11,7 @@ import { updateArrayURLParameter, updateURLParameter } from "util.js";
  */
 
 export type SavedAnnotation = {
+    annotations_count: number;
     title: string,
     id: number,
     annotation_text: string,

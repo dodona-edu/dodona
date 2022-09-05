@@ -276,7 +276,7 @@
         },
         "input": {
           "edited": "The current comment differs from the saved comment",
-          "link": "Manage saved comments",
+          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved annotations.",
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
@@ -288,6 +288,7 @@
           "title": "Save comment for re-use"
         },
         "sidecard": {
+          "link": "Manage all saved comments",
           "title": "Saved annotations"
         },
         "title": "Title",
@@ -716,7 +717,7 @@
         },
         "input": {
           "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
-          "link": "Beheer opgeslagen opmerkingen",
+          "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
           "placeholder": "Zoek opgeslagen opmerking",
           "title": "Hergebruik een opgeslagen opmerking"
         },
@@ -728,6 +729,7 @@
           "title": "Opmerking opslaan om later te hergebruiken"
         },
         "sidecard": {
+          "link": "Beheer alle opgeslagen opmerkingen",
           "title": "Opgeslagen opmerkingen"
         },
         "title": "Titel",

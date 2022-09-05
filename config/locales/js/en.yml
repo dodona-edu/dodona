@@ -218,6 +218,7 @@ en:
       exercise: Exercise
       sidecard:
         title: Saved annotations
+        link: Manage all saved comments
       form:
         markdown_html: '<a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
         annotation_text_help: Changes to this field will not impact existing annotations.
@@ -239,6 +240,6 @@ en:
       input:
         placeholder: Search saved comment
         title: 'Reuse a saved comment'
-        link: Manage saved comments
+        help_html: 'Saved annotations are automatically filtered by course and exercise. Click <a  href="/saved_annotations" target="_blank" >here</a> to manage all saved annotations.'
         edited: The current comment differs from the saved comment
 

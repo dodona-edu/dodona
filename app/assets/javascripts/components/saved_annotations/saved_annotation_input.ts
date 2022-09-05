@@ -4,6 +4,7 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import "components/datalist_input";
 import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -115,7 +116,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
                     ` : ""}
                 </div>
                 <div class="help-block">
-                    <a  href="/saved_annotations" target="_blank">${I18n.t("js.saved_annotation.input.link")}</a>
+                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html"))}
                 </div>
             </div>
         ` : html``;

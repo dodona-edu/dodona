@@ -39,6 +39,9 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                 <div class="card-supporting-text card-border">
                     <h4 class="ellipsis-overflow" title="${I18n.t("js.saved_annotation.sidecard.title")}">
                         ${I18n.t("js.saved_annotation.sidecard.title")}
+                        <p class="small">
+                            <a  href="/saved_annotations" target="_blank" >${I18n.t("js.saved_annotation.sidecard.link")}</a>
+                        </p>
                     </h4>
                     <d-saved-annotation-list
                         .courseId=${this.courseId}

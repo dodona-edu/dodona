@@ -218,6 +218,7 @@ nl:
       exercise: Oefening
       sidecard:
         title: Opgeslagen opmerkingen
+        link: Beheer alle opgeslagen opmerkingen
       form:
         markdown_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
         annotation_text_help: Aanpassingen aan dit veld hebben geen impact op bestaande opmerkingen.
@@ -239,6 +240,6 @@ nl:
       input:
         placeholder: Zoek opgeslagen opmerking
         title: 'Hergebruik een opgeslagen opmerking'
-        link: Beheer opgeslagen opmerkingen
+        help_html: 'Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href="/saved_annotations" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
         edited: De huidige opmerking verschilt van de opgeslagen opmerking
 

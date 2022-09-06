@@ -54,8 +54,9 @@ function initCourseMembers(): void {
         // Switch to clicked tab
         document.querySelectorAll("#user-tabs li a")
             .forEach(el => {
-                el.addEventListener("click", function () {
+                el.addEventListener("click", function (e) {
                     selectTab(el);
+                    e.preventDefault();
                 });
             });
 

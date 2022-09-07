@@ -1,5 +1,6 @@
 >= 1% and last 2 major versions and not dead
 Chrome >= 86
 Firefox >= 81
+Firefox ESR
 iOS >= 14
 Safari >= 14

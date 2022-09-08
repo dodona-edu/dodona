@@ -1,5 +1,6 @@
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { fetch } from "util.js";
+import dayjs from "dayjs";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -90,7 +91,7 @@ export class UserAnnotation extends Annotation {
             return I18n.t("js.user_annotation.anonymous_message");
         }
 
-        const timestamp = I18n.l("time.formats.annotation", this.createdAt);
+        const timestamp = dayjs.utc(this.createdAt).format(I18n.t("time.formats.annotation"));
         const user = this.user!.name;
 
         return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });

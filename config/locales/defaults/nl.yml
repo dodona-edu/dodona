@@ -39,7 +39,7 @@ nl:
     formats:
       flatpickr_short: 'd/m/Y H:i'
       flatpickr_long: j F Y H:i
-      annotation: '%e %B %Y, %H:%M'
+      annotation: 'D MMMM YYYY, HH:mm' # dayjs format https://day.js.org/docs/en/display/format
       announcement: '%e %B %Y, %H:%M'
       submission: '%d %B %Y %H:%M:%S'
       read_state: '%d %B %Y %H:%M:%S'

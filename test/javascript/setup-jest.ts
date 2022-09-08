@@ -7,7 +7,13 @@ global.$ = global.jQuery = jQuery;
 
 // Mocking the I18N calls. The key itself will be returned as value.
 global.I18n = {
-    l: k => k,
     t: t => t,
-    numberToDelimited: n => n.toString()
+    formatNumber: n => n.toString(),
+    __locale: "nl",
+    locale: function (l) {
+        if (l) {
+            this.__locale = l;
+        }
+        return this.__locale;
+    }
 };

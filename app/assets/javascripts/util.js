@@ -152,7 +152,7 @@ function setDocumentTitle(title) {
  */
 function initDatePicker(selector, options = {}) {
     function init() {
-        if (I18n.locale === "nl") {
+        if (I18n.locale() === "nl") {
             options.locale = Dutch;
         }
         return flatpickr(selector, options);

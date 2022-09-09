@@ -1,6 +1,8 @@
 import { Annotation, AnnotationType } from "code_listing/annotation";
 import { fetch } from "util.js";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase

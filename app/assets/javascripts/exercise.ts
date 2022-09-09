@@ -204,14 +204,18 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
     }
 
     function submitSolution(code: string): Promise<Response> {
-        const data = new FormData();
-        data.append("submission[code]", code);
-        data.append("submission[exercise_id]", exerciseId?.toString());
-        data.append("submission[course_id]", courseId?.toString());
-
         return fetch("/submissions.json", {
             "method": "POST",
-            "body": data
+            "body": JSON.stringify({
+                submission: {
+                    code: code,
+                    exercise_id: exerciseId,
+                    course_id: courseId,
+                },
+            }),
+            "headers": {
+                "Content-type": "application/json"
+            }
         });
     }
 

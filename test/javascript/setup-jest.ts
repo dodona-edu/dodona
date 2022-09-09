@@ -9,4 +9,5 @@ global.$ = global.jQuery = jQuery;
 global.I18n = {
     t: t => t,
     formatNumber: n => n.toString(),
+    t_a: k => [],
 };

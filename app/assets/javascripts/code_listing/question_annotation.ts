@@ -6,9 +6,6 @@ import {
     UserAnnotationEditor, UserAnnotationFormData,
     UserAnnotationPermissionData
 } from "code_listing/user_annotation";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc";
-dayjs.extend(utc);
 
 interface QuestionAnnotationPermissionData extends UserAnnotationPermissionData {
     transition: {[state in QuestionState]: boolean};
@@ -34,7 +31,7 @@ export class QuestionAnnotation extends UserAnnotation {
     }
 
     protected get meta(): string {
-        const timestamp = dayjs.utc(this.createdAt).format(I18n.t("time.formats.annotation"));
+        const timestamp = I18n.formatDate(this.createdAt, "time.formats.annotation");
         const user = this.user.name;
         const questionState = I18n.t(`js.question.state.${this.questionState}`);
 

@@ -763,7 +763,7 @@
         "day": "%{smart_count} dag |||| %{smart_count} dagen",
         "hour": "%{smart_count} uur |||| %{smart_count} uren",
         "min": "%{smart_count} minuut |||| %{smart_count} minuten",
-        "sec": "%{smart_count} seconde |||| %{smart_count} secondes",
+        "sec": "%{smart_count} seconde |||| %{smart_count} seconden",
         "week": "%{smart_count} week |||| %{smart_count} weken"
       }
     }

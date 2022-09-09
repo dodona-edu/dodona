@@ -1,5 +1,9 @@
 import Polyglot from "node-polyglot";
 import translations from "./translations.json";
+import dayjs, { Dayjs } from "dayjs";
+import "dayjs/locale/nl.js";
+import utc from "dayjs/plugin/utc";
+dayjs.extend(utc);
 
 export class I18n extends Polyglot {
     /**
@@ -45,5 +49,11 @@ export class I18n extends Polyglot {
      */
     formatNumber(number: number, options?: Record<string, unknown>): string {
         return new Intl.NumberFormat(this.locale, options).format(number);
+    }
+
+    formatDate(date: string | number | Date | Dayjs, format: string): string {
+        const d = dayjs.utc(date);
+        const f = super.t(format);
+        return d.locale(this.locale).format(f);
     }
 }

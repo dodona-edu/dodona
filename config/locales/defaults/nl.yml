@@ -31,7 +31,7 @@ nl:
       monthday_long: "%B %d"
   time:
     units:
-      sec: "%{smart_count} seconde |||| %{smart_count} secondes"
+      sec: "%{smart_count} seconde |||| %{smart_count} seconden"
       min: "%{smart_count} minuut |||| %{smart_count} minuten"
       hour: "%{smart_count} uur |||| %{smart_count} uren"
       day: "%{smart_count} dag |||| %{smart_count} dagen"

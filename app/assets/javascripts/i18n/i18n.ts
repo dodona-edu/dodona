@@ -26,20 +26,24 @@ export class I18n extends Polyglot {
         }
     }
 
+    get locale(): string {
+        return super.locale();
+    }
+
     /**
      * When locale changes we need to switch the list of phrases used by polyglot
      */
-    locale(locale?: string): string {
+    set locale(locale: string) {
         if (locale == "en" || locale == "nl") {
             super.replace(translations[locale]);
         }
-        return super.locale(locale);
+        super.locale(locale);
     }
 
     /**
      * Polyglot does not do custom number formatting, thus we use the javascript api
      */
     formatNumber(number: number, options?: Record<string, unknown>): string {
-        return new Intl.NumberFormat(this.locale(), options).format(number);
+        return new Intl.NumberFormat(this.locale, options).format(number);
     }
 }

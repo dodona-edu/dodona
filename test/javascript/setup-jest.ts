@@ -9,11 +9,4 @@ global.$ = global.jQuery = jQuery;
 global.I18n = {
     t: t => t,
     formatNumber: n => n.toString(),
-    __locale: "nl",
-    locale: function (l) {
-        if (l) {
-            this.__locale = l;
-        }
-        return this.__locale;
-    }
 };

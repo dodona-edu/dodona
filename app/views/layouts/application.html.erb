@@ -91,7 +91,8 @@
   <%= render 'layouts/footer' %>
 </div>
 <script>
-    I18n.locale("<%= I18n.locale %>");
+    I18n = I18n || {};
+    I18n.locale = "<%= I18n.locale %>";
     dodona.checkTimeZone(<%= @time_zone_offset %>);
     dodona.checkIframe();
 </script>

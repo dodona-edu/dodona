@@ -13,7 +13,7 @@ declare module I18n {
     export function t_a(key: string, options?: Record<string, unknown>): string[];
     export function formatNumber(number: number, options?: Record<string, unknown>): string;
 
-    export function locale(locale?: string): string;
+    export var locale: string;
 }
 
 declare var dodona;

@@ -27,7 +27,7 @@ beforeAll(() => {
                 "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
             "js.no_data": "Er is niet genoeg data om een grafiek te maken."
         }[arg]) as string);
-    I18n.locale("nl");
+    I18n.locale = "nl";
     window.dodona = { darkMode: false };
 
 

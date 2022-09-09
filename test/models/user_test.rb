@@ -191,6 +191,7 @@ class UserTest < ActiveSupport::TestCase
     info_hash.stubs(:email).returns('')
     info_hash.stubs(:first_name).returns(user.first_name)
     info_hash.stubs(:last_name).returns(user.last_name)
+    info_hash.stubs(:username).returns(user.username)
     oauth_hash.stubs(:info).returns(info_hash)
     oauth_hash.stubs(:uid).returns(user.username)
     oauth_hash

@@ -1,4 +1,4 @@
-import { initExerciseShow, afterResize, onFrameMessage, onFrameScroll } from "exercise.js";
+import { initExerciseShow, afterResize, onFrameMessage, onFrameScroll } from "exercise.ts";
 
 window.dodona.initExerciseShow = initExerciseShow;
 window.dodona.afterResize = afterResize;

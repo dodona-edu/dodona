@@ -17,7 +17,7 @@ export class I18n extends Polyglot {
         this.array_phrases = {};
         super.clear();
     }
-    t_a(key: string, options?: Record<string, unknown>): string[] {
+    t_a(key: string): string[] {
         if (Array.isArray(this.array_phrases[key])) {
             return this.array_phrases[key];
         } else {

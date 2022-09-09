@@ -11,7 +11,7 @@ nl:
       other-education: "Andere onderwijsinstellingen"
       other: "Andere organisaties"
       private-accounts: Persoonlijke accounts
-      private-accounts-help: Gebruik deze loginmethodes om je persoonlijke Google of Microsoft account te gebruiken als je niet bij een onderwijsinstelling bent aangesloten.
+      private-accounts-help: Gebruik deze loginmethodes om je persoonlijke Google (Gmail) of Microsoft (Hotmail, Outlook, ...) account te gebruiken als je niet bij een onderwijsinstelling bent aangesloten.
       blacklist:
         sgpaulus: Use your sgpaulus-account (firstname.lastname@sgpaulus.eu) to sign in to Dodona.
       errors:

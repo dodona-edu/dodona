@@ -1,30 +1,34 @@
 import Polyglot from "node-polyglot";
 import translations from "./translations.json";
 
-const forEach = Array.prototype.forEach;
-const entries = Object.entries;
-
 export class I18n extends Polyglot {
+    /**
+     * Polyglot does not support arrays of phrases
+     * So we store these separately and have a custom function to fetch them
+     */
+    array_phrases: Record<string, string[]> = {};
     extend(morePhrases = {}, prefix: string): void {
-        entries(morePhrases || {}).forEach( entry => {
-            const key = entry[0];
-            const phrase = entry[1];
-            const prefixedKey = prefix ? prefix + "." + key : key;
-            if (typeof phrase === "object" && !Array.isArray(phrase)) {
-                this.extend(phrase, prefixedKey);
-            } else {
-                this.phrases[prefixedKey] = phrase;
-            }
-        });
-    }
-
-    t(key: string, options?: Record<string, unknown>): string {
-        if (Array.isArray(this.phrases[key])) {
-            return this.phrases[key];
+        if (Array.isArray(morePhrases)) {
+            this.array_phrases[prefix] = morePhrases as string[];
         }
-        return super.t(key, options);
+        super.extend(morePhrases, prefix);
+    }
+    clear(): void {
+        this.array_phrases = {};
+        super.clear();
+    }
+    t_a(key: string, options?: Record<string, unknown>): string[] {
+        if (Array.isArray(this.array_phrases[key])) {
+            return this.array_phrases[key];
+        } else {
+            super.warn("Missing array translation for key: '" + key + "'");
+            return [];
+        }
     }
 
+    /**
+     * When locale changes we need to switch the list of phrases used by polyglot
+     */
     locale(locale?: string): string {
         if (locale == "en" || locale == "nl") {
             super.replace(translations[locale]);
@@ -32,6 +36,9 @@ export class I18n extends Polyglot {
         return super.locale(locale);
     }
 
+    /**
+     * Polyglot does not do custom number formatting, thus we use the javascript api
+     */
     formatNumber(number: number, options?: Record<string, unknown>): string {
         return new Intl.NumberFormat(this.locale(), options).format(number);
     }

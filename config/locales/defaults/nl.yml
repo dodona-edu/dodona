@@ -31,11 +31,11 @@ nl:
       monthday_long: "%B %d"
   time:
     units:
-      sec: ["seconde", "seconden"]
-      min: ["minuut", "minuten"]
-      hour: ["uur", "uren"]
-      day: ["dag", "dagen"]
-      week: ["week", "weken"]
+      sec: "%{smart_count} seconde |||| %{smart_count} secondes"
+      min: "%{smart_count} minuut |||| %{smart_count} minuten"
+      hour: "%{smart_count} uur |||| %{smart_count} uren"
+      day: "%{smart_count} dag |||| %{smart_count} dagen"
+      week: "%{smart_count} week |||| %{smart_count} weken"
     formats:
       flatpickr_short: 'd/m/Y H:i'
       flatpickr_long: j F Y H:i

@@ -123,7 +123,6 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                     .attr("height", rectSize)
                     .attr("fill", d => d.sum === 0 ? "" : this.color(d.sum));
             });
-        const unitStrings = I18n.t("time.units");
         const divs = [60, 60, 24, 7];
         const units = ["sec", "min", "hour", "day", "week"];
         let step = this.binStep * 3600; // in seconds
@@ -149,7 +148,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("border-color", highColor);
 
         legend.append("span")
-            .text(`${step} ${step > 1 ? unitStrings[units[i]][1] : unitStrings[units[i]][0]}`)
+            .text(I18n.t(`time.units.${units[i]}`, { smart_count: step }))
             .attr("class", "legend-text")
             .style("margin-left", "5px");
     }

@@ -376,26 +376,11 @@
       },
       "pm": "pm",
       "units": {
-        "day": [
-          "day",
-          "days"
-        ],
-        "hour": [
-          "hour",
-          "hours"
-        ],
-        "min": [
-          "minute",
-          "minutes"
-        ],
-        "sec": [
-          "second",
-          "seconds"
-        ],
-        "week": [
-          "week",
-          "weeks"
-        ]
+        "day": "%{smart_count} day |||| %{smart_count} days",
+        "hour": "%{smart_count} hour |||| %{smart_count} hours",
+        "min": "%{smart_count} minute |||| %{smart_count} minutes",
+        "sec": "%{smart_count} second |||| %{smart_count} seconds",
+        "week": "%{smart_count} week |||| %{smart_count} weeks"
       }
     }
   },
@@ -775,26 +760,11 @@
       },
       "pm": "'s middags",
       "units": {
-        "day": [
-          "dag",
-          "dagen"
-        ],
-        "hour": [
-          "uur",
-          "uren"
-        ],
-        "min": [
-          "minuut",
-          "minuten"
-        ],
-        "sec": [
-          "seconde",
-          "seconden"
-        ],
-        "week": [
-          "week",
-          "weken"
-        ]
+        "day": "%{smart_count} dag |||| %{smart_count} dagen",
+        "hour": "%{smart_count} uur |||| %{smart_count} uren",
+        "min": "%{smart_count} minuut |||| %{smart_count} minuten",
+        "sec": "%{smart_count} seconde |||| %{smart_count} secondes",
+        "week": "%{smart_count} week |||| %{smart_count} weken"
       }
     }
   }

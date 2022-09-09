@@ -30,11 +30,11 @@ en:
       monthday_long: "%B %d"
   time:
     units:
-      sec: ["second", "seconds"]
-      min: ["minute", "minutes"]
-      hour: ["hour", "hours"]
-      day: ["day", "days"]
-      week: ["week", "weeks"]
+      sec: "%{smart_count} second |||| %{smart_count} seconds"
+      min: "%{smart_count} minute |||| %{smart_count} minutes"
+      hour: "%{smart_count} hour |||| %{smart_count} hours"
+      day: "%{smart_count} day |||| %{smart_count} days"
+      week: "%{smart_count} week |||| %{smart_count} weeks"
     formats:
       flatpickr_short: 'm/d/Y H:i'
       flatpickr_long: F j Y H:i

@@ -70,11 +70,7 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
         throw errors;
     }
     const savedAnnotation: SavedAnnotation = await response.json();
-    savedAnnotationsByURL.clear();
-    savedAnnotationsPaginationByURL.clear();
-    savedAnnotationsById.set(savedAnnotation.id, savedAnnotation);
-    events.publish("getSavedAnnotations");
-    events.publish(`getSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
+    invalidateSavedAnnotation(savedAnnotation.id, savedAnnotation);
     return savedAnnotation.id;
 }
 
@@ -90,11 +86,7 @@ export async function updateSavedAnnotation(id: number, data: {saved_annotation:
         throw errors;
     }
     const savedAnnotation: SavedAnnotation = await response.json();
-    savedAnnotationsByURL.clear();
-    savedAnnotationsPaginationByURL.clear();
-    savedAnnotationsById.set(savedAnnotation.id, savedAnnotation);
-    events.publish("getSavedAnnotations");
-    events.publish(`getSavedAnnotation${savedAnnotation.id}`, savedAnnotation.id);
+    invalidateSavedAnnotation(savedAnnotation.id, savedAnnotation);
 }
 
 export async function deleteSavedAnnotation(id: number): Promise<void> {
@@ -103,11 +95,7 @@ export async function deleteSavedAnnotation(id: number): Promise<void> {
         method: "delete",
         headers: getHeaders(),
     });
-    savedAnnotationsByURL.clear();
-    savedAnnotationsPaginationByURL.clear();
-    savedAnnotationsById.delete(id);
-    events.publish("getSavedAnnotations");
-    events.publish(`getSavedAnnotation${id}`, id);
+    invalidateSavedAnnotation(id);
 }
 
 export function getSavedAnnotations(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
@@ -128,9 +116,25 @@ export function getSavedAnnotationsPagination(params?: Map<string, string>, arra
 
 export function getSavedAnnotation(id: number): SavedAnnotation {
     if (!savedAnnotationsById.has(id)) {
-        events.subscribe(`fetchSavedAnnotation${id}`, fetchSavedAnnotation);
         fetchSavedAnnotation(id);
     }
     return savedAnnotationsById.get(id);
+}
+
+export function invalidateSavedAnnotation(id: number, replacement?: SavedAnnotation): void {
+    if (!id) {
+        return;
+    }
+
+    savedAnnotationsByURL.clear();
+    savedAnnotationsPaginationByURL.clear();
+    events.publish("getSavedAnnotations");
+
+    if (replacement) {
+        savedAnnotationsById.set(id, replacement);
+    } else {
+        savedAnnotationsById.delete(id);
+    }
+    events.publish(`getSavedAnnotation${id}`, id);
 }
 

@@ -9,7 +9,7 @@ import {
 import { createUserAnnotation, getAllUserAnnotations } from "code_listing/question_annotation";
 import "components/saved_annotations/saved_annotation_input";
 import { AnnotationForm } from "components/annotations/annotation_form";
-import { createSavedAnnotation } from "state/SavedAnnotations";
+import { createSavedAnnotation, invalidateSavedAnnotation } from "state/SavedAnnotations";
 
 const annotationGlobalAdd = "#add_global_annotation";
 const annotationsGlobal = "#feedback-table-global-annotations";
@@ -387,6 +387,7 @@ export class CodeListing {
                     (a, cb) => this.createUpdateAnnotationForm(a, cb), mode);
                 await this.createSavedAnnotation(annotation, e.detail);
                 this.addAnnotation(annotation);
+                invalidateSavedAnnotation(e.detail.savedAnnotationId);
                 annotationForm.remove();
             } catch (err) {
                 annotationForm.hasErrors= true;
@@ -419,6 +420,10 @@ export class CodeListing {
                 const updated = await annotation.update(annotationData) as UserAnnotation;
                 await this.createSavedAnnotation(updated, e.detail);
                 this.updateAnnotation(annotation, updated);
+                if (e.detail.savedAnnotationId != annotation.savedAnnotationId ) {
+                    invalidateSavedAnnotation(e.detail.savedAnnotationId);
+                    invalidateSavedAnnotation(annotation.savedAnnotationId);
+                }
                 // Ask MathJax to search for math in the annotations
                 window.MathJax.typeset();
             } catch (err) {

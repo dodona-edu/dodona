@@ -115,11 +115,13 @@ export class SearchQuery {
         this.queryParams.subscribe(k => this.paramChange(k));
         this.queryParams.subscribeByKey("refresh", (k, o, n) => this.refresh(n));
 
-        window.onpopstate = () => {
-            if (this.updateAddressBar) {
+        window.onpopstate = e => {
+            if (this.updateAddressBar && e.state === "set_by_search") {
                 this.setBaseUrl();
             }
         };
+
+        window.history.replaceState("set_by_search", "Dodona");
 
         this.setRefreshElement(refreshElement);
     }
@@ -156,9 +158,9 @@ export class SearchQuery {
             return;
         }
         if (push) {
-            window.history.pushState(true, "Dodona", url);
+            window.history.pushState("set_by_search", "Dodona", url);
         } else {
-            window.history.replaceState(true, "Dodona", url);
+            window.history.replaceState("set_by_search", "Dodona", url);
         }
     }
 

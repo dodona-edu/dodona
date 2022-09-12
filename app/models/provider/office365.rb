@@ -45,4 +45,18 @@ class Provider::Office365 < Provider
     domain = Mail::Address.new(mail).domain
     [domain, domain]
   end
+
+  def readable_name
+    # We want to display microsoft for personal accounts
+    return 'Microsoft' if institution.nil?
+
+    super
+  end
+
+  def logo
+    # We want to display microsoft for personal accounts
+    return 'microsoft.png' if institution.nil?
+
+    super
+  end
 end

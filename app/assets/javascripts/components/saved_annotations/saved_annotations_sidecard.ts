@@ -36,7 +36,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     render(): TemplateResult {
         return this.potentialSavedAnnotationsExist ? html`
             <div class="card">
-                <div class="card-supporting-text card-border">
+                <div class="card-supporting-text">
                     <h4 class="ellipsis-overflow" title="${I18n.t("js.saved_annotation.sidecard.title")}">
                         ${I18n.t("js.saved_annotation.sidecard.title")}
                         <p class="small">

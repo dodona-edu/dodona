@@ -1,5 +1,5 @@
 import { events } from "state/PubSub";
-import { updateArrayURLParameter, updateURLParameter } from "util.js";
+import { updateArrayURLParameter, updateURLParameter, fetch } from "util.js";
 
 /**
  * This file contains all state management functions for saved annotations
@@ -25,13 +25,6 @@ const URL = "/saved_annotations";
 const savedAnnotationsByURL = new Map<string, SavedAnnotation[]>();
 const savedAnnotationsPaginationByURL = new Map<string, Pagination>();
 const savedAnnotationsById = new Map<number, SavedAnnotation>();
-
-function getHeaders(): Record<string, string> {
-    return ({
-        "X-CSRF-Token": document.querySelector("meta[name='csrf-token']").getAttribute("content"),
-        "Content-type": "application/json"
-    });
-}
 
 function addParametersToUrl(url: string, params?: Map<string, string>, arrayParams?: Map<string, string[]>): string {
     let result = url;
@@ -63,7 +56,7 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
     const response = await fetch(url, {
         method: "post",
         body: JSON.stringify(data),
-        headers: getHeaders(),
+        headers: { "Content-type": "application/json" },
     });
     if (response.status === 422) {
         const errors = await response.json();
@@ -79,7 +72,7 @@ export async function updateSavedAnnotation(id: number, data: {saved_annotation:
     const response = await fetch(url, {
         method: "put",
         body: JSON.stringify(data),
-        headers: getHeaders(),
+        headers: { "Content-type": "application/json" },
     });
     if (response.status === 422) {
         const errors = await response.json();
@@ -93,7 +86,6 @@ export async function deleteSavedAnnotation(id: number): Promise<void> {
     const url = `${URL}/${id}`;
     await fetch(url, {
         method: "delete",
-        headers: getHeaders(),
     });
     invalidateSavedAnnotation(id);
 }

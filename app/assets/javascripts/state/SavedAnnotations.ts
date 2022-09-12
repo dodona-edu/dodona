@@ -11,7 +11,7 @@ import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer, MapW
  */
 
 export type SavedAnnotation = {
-    annotations_count: number;
+    annotations_count?: number;
     title: string,
     id: number,
     annotation_text: string,

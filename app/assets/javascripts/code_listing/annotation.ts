@@ -1,5 +1,6 @@
 import { NewSavedAnnotation } from "components/saved_annotations/new_saved_annotation";
 import { isBetaCourse } from "saved_annotation_beta";
+import { SavedAnnotationIcon } from "components/saved_annotations/saved_annotation_icon";
 
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 export type QuestionState = "unanswered" | "answered" | "in_progress";
@@ -58,7 +59,7 @@ export abstract class Annotation {
 
         if (!this.visible) {
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-eye-off", "mdi-18", "annotation-visibility");
+            icon.classList.add("mdi", "mdi-eye-off", "mdi-18", "annotation-meta-icon");
             icon.title = I18n.t("js.user_annotation.not_released");
             meta.appendChild(icon);
         }
@@ -98,12 +99,24 @@ export abstract class Annotation {
 
             // REMOVE IF AFTER CLOSED BETA
             if (isBetaCourse(this.courseId)) {
+                // Add button to create saved annotation
                 const saveLink = new NewSavedAnnotation();
                 saveLink.fromAnnotationId = this.id;
                 saveLink.annotationText = this.rawText;
                 saveLink.savedAnnotationId = this.savedAnnotationId;
 
                 header.appendChild(saveLink);
+
+                // Add icon to signify saved annotation
+                const icon = new SavedAnnotationIcon();
+                icon.savedAnnotationId = this.savedAnnotationId;
+
+                // update icon if annotation is saved
+                saveLink.addEventListener("created", (e: CustomEvent) => {
+                    icon.savedAnnotationId = e.detail.id;
+                });
+
+                meta.appendChild(icon);
             }
         }
 

@@ -14,6 +14,7 @@ import { stateMixin } from "state/StateMixin";
  *
  * @prop {Number} fromAnnotationId - the id of the annotation which will be saved
  * @prop {String} annotationText - the original text of the annotation which wil be saved
+ * @prop {Number} savedAnnotationId - the id of the saved annotation
  */
 @customElement("d-new-saved-annotation")
 export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitElement)) {
@@ -58,6 +59,12 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
             });
             this.errors = undefined;
             this.hideModal();
+            const event = new CustomEvent("created", {
+                detail: { id: this.savedAnnotationId },
+                bubbles: true,
+                composed: true }
+            );
+            this.dispatchEvent(event);
         } catch (errors) {
             this.errors = errors;
         }
@@ -88,11 +95,7 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     render(): TemplateResult {
-        return this.isAlreadyLinked && this.linkedSavedAnnotation!= undefined ? html`
-            <div class="annotation-linked">
-                <i class="mdi mdi-link-variant" title="${I18n.t("js.saved_annotation.new.linked", { title: this.linkedSavedAnnotation.title })}"></i>
-            </div>
-        ` : html`
+        return this.isAlreadyLinked && this.linkedSavedAnnotation!= undefined ? html`` : html`
             <a class="btn btn-icon annotation-control-button annotation-edit"
                title="${I18n.t("js.saved_annotation.new.button_title")}"
                @click=${() => this.showModal()}

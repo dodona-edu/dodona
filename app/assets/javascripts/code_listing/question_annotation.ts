@@ -31,7 +31,7 @@ export class QuestionAnnotation extends UserAnnotation {
     }
 
     protected get meta(): string {
-        const timestamp = I18n.l("time.formats.annotation", this.createdAt);
+        const timestamp = I18n.formatDate(this.createdAt, "time.formats.annotation");
         const user = this.user.name;
         const questionState = I18n.t(`js.question.state.${this.questionState}`);
 

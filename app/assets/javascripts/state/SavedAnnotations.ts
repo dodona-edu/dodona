@@ -1,5 +1,6 @@
 import { events } from "state/PubSub";
-import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer, MapWithDefault } from "util.js";
+import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "util.js";
+import { MapWithDefault } from "map_with_default";
 
 /**
  * This file contains all state management functions for saved annotations

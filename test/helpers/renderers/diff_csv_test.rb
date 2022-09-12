@@ -115,8 +115,7 @@ class CsvDifferTest < ActiveSupport::TestCase
   end
 
   test 'empty header' do
-    generated = <<~EOS.chomp
-    EOS
+    generated = ''.chomp
     expected = <<~EOS.chomp
       "BBB","BBB"
       "AAA","AAA"

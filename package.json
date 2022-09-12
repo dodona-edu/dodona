@@ -19,7 +19,7 @@
     "@dodona/papyros": "^1.0.1",
     "@popperjs/core": "^2.11.6",
     "@rails/activestorage": "^7.0.3",
-    "@rails/ujs": "^7.0.3",
+    "@rails/ujs": "^7.0.4",
     "@types/d3": "^7.4.0",
     "@types/jquery": "^3.5.14",
     "babel-loader": "^8.2.5",

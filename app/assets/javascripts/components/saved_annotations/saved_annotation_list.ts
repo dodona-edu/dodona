@@ -78,7 +78,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
                             <tr>
                                 <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}" title="${sa.title}">
                                     ${sa.title}
-                                    <p class="small text-muted">${I18n.t("js.saved_annotation.list.annotations_count", {count: sa.annotations_count})}</p>
+                                    <p class="small text-muted">${I18n.t("js.saved_annotation.list.annotations_count", { count: sa.annotations_count })}</p>
                                 </td>
                                 ${ this.small ? "" : html`
                                     <td class="ellipsis-overflow" title="${sa.annotation_text}">${sa.annotation_text}</td>

@@ -24,7 +24,7 @@
     "@types/jquery": "^3.5.14",
     "babel-loader": "^8.2.5",
     "babel-plugin-macros": "^3.1.0",
-    "bootstrap": "^5.2.0",
+    "bootstrap": "^5.2.1",
     "clipboard": "^2.0.11",
     "core-js": "^3.25.0",
     "d3": "^7.6.1",
@@ -46,7 +46,7 @@
   },
   "devDependencies": {
     "@types/ace": "^0.0.48",
-    "@types/bootstrap": "^5.2.3",
+    "@types/bootstrap": "^5.2.4",
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.51",

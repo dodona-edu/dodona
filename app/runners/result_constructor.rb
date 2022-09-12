@@ -12,8 +12,8 @@ class ResultConstructorError < StandardError
 end
 
 class ResultConstructor
-  FULL_SCHEMA = JSON.parse(File.read(Rails.public_path.join('schemas/judge_output.json')))
-  PART_SCHEMA = JSON.parse(File.read(Rails.public_path.join('schemas/partial_output.json')))
+  FULL_SCHEMA = JSON.parse(Rails.public_path.join('schemas/judge_output.json').read)
+  PART_SCHEMA = JSON.parse(Rails.public_path.join('schemas/partial_output.json').read)
 
   LEVELSA = %i[judgement tab context testcase test].freeze
   LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }.freeze

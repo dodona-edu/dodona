@@ -1558,10 +1558,10 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
-"@types/bootstrap@^5.2.3":
-  version "5.2.3"
-  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.2.3.tgz#562defe61dac6c9598843d4088de8007a36607bd"
-  integrity sha512-r2SE9NYaaI7B/jJk8gqRtXzlhgFL6dlXBResJkCbQa8ept619WeiOIO4zBQxdmUFzkKNWLK5ZOyYGI3QZoaqbQ==
+"@types/bootstrap@^5.2.4":
+  version "5.2.4"
+  resolved "https://registry.yarnpkg.com/@types/bootstrap/-/bootstrap-5.2.4.tgz#7f4f4af8e22af8247385549bd2f687088d00d2d3"
+  integrity sha512-jGNB81zuDHu1DPvBV7Ox3Z3eyzdWPNguYwrt0j7X90VExA8H7c6qxJh0cz5j3xp0XvSy1TYaP2pkyXCHeo8CaA==
   dependencies:
     "@popperjs/core" "^2.9.2"
 
@@ -2488,10 +2488,10 @@ binary-extensions@^2.0.0:
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-2.2.0.tgz#75f502eeaf9ffde42fc98829645be4ea76bd9e2d"
   integrity sha512-jDctJ/IVQbZoJykoeHbhXpOlNBqGNcwXJKJog42E5HDPUwQTSdjCHdihjj0DlnheQ7blbT6dHOafNAiS8ooQKA==
 
-bootstrap@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.2.0.tgz#838727fb60f1630db370fe57c63cbcf2962bb3d3"
-  integrity sha512-qlnS9GL6YZE6Wnef46GxGv1UpGGzAwO0aPL1yOjzDIJpeApeMvqV24iL+pjr2kU4dduoBA9fINKWKgMToobx9A==
+bootstrap@^5.2.1:
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.2.1.tgz#45f97ff05cbe828bad807b014d8425f3aeb8ec3a"
+  integrity sha512-UQi3v2NpVPEi1n35dmRRzBJFlgvWHYwyem6yHhuT6afYF+sziEt46McRbT//kVXZ7b1YUYEVGdXEH74Nx3xzGA==
 
 brace-expansion@^1.1.7:
   version "1.1.11"

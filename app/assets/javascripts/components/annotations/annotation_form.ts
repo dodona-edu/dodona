@@ -7,7 +7,6 @@ import { watchMixin } from "components/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;

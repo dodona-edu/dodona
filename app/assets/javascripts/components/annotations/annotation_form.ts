@@ -186,7 +186,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             <span class='help-block'>${I18n.t("js.user_annotation.help_student")}</span>
                         ` : ""}
                         <span class="help-block float-end">
-                            <span class="used-characters">${I18n.numberToDelimited(this.annotationText.length)}</span> / ${I18n.numberToDelimited(maxLength)}
+                            <span class="used-characters">${I18n.formatNumber(this.annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
                         </span>
                     </div>
                 </div>

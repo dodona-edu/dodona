@@ -26,7 +26,7 @@
     "babel-plugin-macros": "^3.1.0",
     "bootstrap": "^5.2.1",
     "clipboard": "^2.0.11",
-    "core-js": "^3.25.0",
+    "core-js": "^3.25.1",
     "d3": "^7.6.1",
     "dayjs": "^1.11.5",
     "dragula": "^3.7.3",

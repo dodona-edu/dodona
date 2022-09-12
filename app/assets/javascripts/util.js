@@ -173,6 +173,20 @@ const ready = new Promise(resolve => {
     }
 });
 
+class MapWithDefault extends Map {
+    get(key) {
+        if (!this.has(key)) {
+            this.set(key, this.default());
+        }
+        return super.get(key);
+    }
+
+    constructor(defaultFunction, entries) {
+        super(entries);
+        this.default = defaultFunction;
+    }
+}
+
 
 export {
     createDelayer,
@@ -191,5 +205,6 @@ export {
     makeVisible,
     setDocumentTitle,
     initDatePicker,
-    ready
+    ready,
+    MapWithDefault
 };

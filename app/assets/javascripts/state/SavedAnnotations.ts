@@ -1,5 +1,5 @@
 import { events } from "state/PubSub";
-import { updateArrayURLParameter, updateURLParameter, fetch } from "util.js";
+import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer, MapWithDefault } from "util.js";
 
 /**
  * This file contains all state management functions for saved annotations
@@ -25,6 +25,10 @@ const URL = "/saved_annotations";
 const savedAnnotationsByURL = new Map<string, SavedAnnotation[]>();
 const savedAnnotationsPaginationByURL = new Map<string, Pagination>();
 const savedAnnotationsById = new Map<number, SavedAnnotation>();
+
+type Delayer = (f: ()=>void, ms: number)=>void;
+const delayerByURL = new MapWithDefault<string, Delayer>(createDelayer);
+const delayerByID = new MapWithDefault<number, Delayer>(createDelayer);
 
 function addParametersToUrl(url: string, params?: Map<string, string>, arrayParams?: Map<string, string[]>): string {
     let result = url;
@@ -92,24 +96,30 @@ export async function deleteSavedAnnotation(id: number): Promise<void> {
 
 export function getSavedAnnotations(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
     const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
-    if (!savedAnnotationsByURL.has(url)) {
-        fetchSavedAnnotations(params);
-    }
+    delayerByURL.get(url)(() => {
+        if (!savedAnnotationsByURL.has(url)) {
+            fetchSavedAnnotations(params, arrayParams);
+        }
+    }, 200);
     return savedAnnotationsByURL.get(url) || [];
 }
 
 export function getSavedAnnotationsPagination(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Pagination {
     const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
-    if (!savedAnnotationsPaginationByURL.has(url)) {
-        fetchSavedAnnotations(params);
-    }
+    delayerByURL.get(url)(() => {
+        if (!savedAnnotationsPaginationByURL.has(url)) {
+            fetchSavedAnnotations(params, arrayParams);
+        }
+    }, 200);
     return savedAnnotationsPaginationByURL.get(url);
 }
 
 export function getSavedAnnotation(id: number): SavedAnnotation {
-    if (!savedAnnotationsById.has(id)) {
-        fetchSavedAnnotation(id);
-    }
+    delayerByID.get(id)(() => {
+        if (!savedAnnotationsById.has(id)) {
+            fetchSavedAnnotation(id);
+        }
+    }, 200);
     return savedAnnotationsById.get(id);
 }
 
@@ -117,7 +127,6 @@ export function invalidateSavedAnnotation(id: number, replacement?: SavedAnnotat
     if (!id) {
         return;
     }
-
     savedAnnotationsByURL.clear();
     savedAnnotationsPaginationByURL.clear();
     events.publish("getSavedAnnotations");

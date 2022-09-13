@@ -16,6 +16,7 @@ nl:
       timeout: "Je sessie is verlopen, log alsjeblieft opnieuw in om verder te gaan."
       unauthenticated: "Je moet eerst inloggen of aanmelden, voordat je verder kunt gaan."
       unconfirmed: "Je moet eerst je account bevestigen, voordat je verder kunt gaan"
+      smartschool_co_account: "Smartschool co-accounts worden niet ondersteund door Dodona. Gebruik een leerlingaccount om aan te melden."
     mailer:
       confirmation_instructions:
         subject: "Bevestigingsinstructies"

@@ -633,6 +633,41 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     sign_out user
   end
 
+  test 'Smartschool co-accounts should be blocked' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user
+    omniauth_mock_identity identity,
+                           info: {
+                             isCoAccount?: true
+                           }
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_redirected_to root_path
+    assert_nil @controller.current_user
+  end
+
+  test 'Smartschool main-accounts should not be blocked' do
+    # Setup.
+    provider = create :smartschool_provider
+    user = create :user, institution: provider.institution
+    identity = create :identity, provider: provider, user: user
+    omniauth_mock_identity identity,
+                           info: {
+                             isCoAccount?: false
+                           }
+
+    get omniauth_url(provider)
+    follow_redirect!
+
+    assert_equal @controller.current_user, user
+    # Cleanup.
+    sign_out user
+  end
+
   test 'lti redirects to main provider' do
     main_provider = create :provider
     provider = create :lti_provider, institution: main_provider.institution, mode: :link

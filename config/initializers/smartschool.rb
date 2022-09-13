@@ -25,7 +25,7 @@ module OmniAuth
             last_name: raw_info['surname'],
             email: raw_info['email'],
             institution: raw_info['platform'],
-            isCoAccount?: raw_info['isCoAccount']
+            isCoAccount?: raw_info['isCoAccount'] === 1
         }
       end
 

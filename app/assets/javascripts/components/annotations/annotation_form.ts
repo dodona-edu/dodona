@@ -101,6 +101,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
             this.disabled = true;
 
             if (!this.inputRef.value.reportValidity()) {
+                this.hasErrors = true;
+                this.disabled = false;
                 return; // Something is wrong, abort.
             }
 
@@ -173,7 +175,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                               class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
                               .rows=${this.rows}
                               minlength="1"
-                              .maxlength=${maxLength}
+                              maxlength="${maxLength}"
                               .value=${this.annotationText}
                               ${ref(this.inputRef)}
                               @keydown="${e => this.handleKeyDown(e)}"
@@ -189,23 +191,25 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                         </span>
                     </div>
                 </div>
-                <div class="field form-group">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">
-                        <label class="form-check-label" for="check-save-annotation">
-                            ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
-                        </label>
-                    </div>
-                </div>
-                ${ this.saveAnnotation ? html`
+                ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                     <div class="field form-group">
-                        <label class="form-label">
-                            ${I18n.t("js.saved_annotation.title")}
-                        </label>
-                        <input required="required" class="form-control" type="text"
-                               @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle}>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">
+                            <label class="form-check-label" for="check-save-annotation">
+                                ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
+                            </label>
+                        </div>
                     </div>
-                ` : html``}
+                    ${ this.saveAnnotation ? html`
+                        <div class="field form-group">
+                            <label class="form-label">
+                                ${I18n.t("js.saved_annotation.title")}
+                            </label>
+                            <input required="required" class="form-control" type="text"
+                                   @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle}>
+                        </div>
+                    ` : html``}
+                `}
                 <div class="annotation-submission-button-container">
                     ${this.annotation && this.annotation.removable ? html`
                         <button class="btn btn-text annotation-control-button annotation-delete-button"

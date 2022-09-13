@@ -66,7 +66,7 @@ class AnnotationsTest < ApplicationSystemTestCase
         assert_text code_line
       end
     end
-    assert_no_css '.annotation'
+    assert_css 'd-annotation-form'
   end
 
   test 'Enter annotation and send' do

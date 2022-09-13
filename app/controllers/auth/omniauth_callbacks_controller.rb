@@ -371,9 +371,15 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def auth_hash
+    return request.env['omniauth.auth'] if request.env['omniauth.auth'].present?
+
+    # if auth hash was present in session, we can use that
+    # we do want to remove it from the session so it does not stay there indefinitely
     # rubocop:disable Style/OpenStructUse
-    request.env['omniauth.auth'] || (session[:new_user_auth_hash] && JSON.parse(session[:new_user_auth_hash], object_class: OpenStruct))
+    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OpenStruct) if session[:new_user_auth_hash].present?
     # rubocop:enable Style/OpenStructUse
+
+    @new_user_auth_hash
   end
 
   def auth_email

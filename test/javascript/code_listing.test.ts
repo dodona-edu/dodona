@@ -332,9 +332,10 @@ test("ensure that all buttons are created", () => {
 test("click on comment button", () => {
     codeListing.initAnnotateButtons();
 
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
     const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
     annotationButton.click();
-    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
     annotationButton.click();
-    expect(document.querySelectorAll("form.annotation-submission").length).toBe(1);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
 });

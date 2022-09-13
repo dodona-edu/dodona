@@ -271,12 +271,12 @@
         },
         "exercise": "Exercise",
         "form": {
-          "annotation_text_help": "Changes to this field will not impact existing annotations.",
+          "annotation_text_help": "Changes to this field will not impact existing comments.",
           "markdown_html": "<a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported."
         },
         "input": {
           "edited": "The current comment differs from the saved comment",
-          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved annotations.",
+          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
@@ -292,7 +292,7 @@
         },
         "sidecard": {
           "link": "Manage all saved comments",
-          "title": "Saved annotations"
+          "title": "Saved comments"
         },
         "title": "Title",
         "user": "User"
@@ -353,7 +353,7 @@
         "edit": "Edit comment",
         "fields": {
           "annotation_text": "Comment",
-          "saved_annotation_title": "Save annotation for reuse"
+          "saved_annotation_title": "Save comment for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",

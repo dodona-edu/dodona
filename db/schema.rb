@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_08_30_124315) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_14_075029) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -496,7 +496,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_08_30_124315) do
     t.string "search", limit: 4096
     t.datetime "seen_at"
     t.datetime "sign_in_at"
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["email", "institution_id"], name: "index_users_on_email_and_institution_id", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
     t.index ["username", "institution_id"], name: "index_users_on_username_and_institution_id", unique: true

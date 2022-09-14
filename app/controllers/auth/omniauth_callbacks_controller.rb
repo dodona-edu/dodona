@@ -99,11 +99,16 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
       return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
-      # If we found an existing user with the same username or email
+      # If we found an existing user with the same username or email within the same institution
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user
       # if no => contact dodona for a manual intervention
       return redirect_to_known_provider!(user) if user.present?
+
+      # Try to find if the email address is already in use in an other institution
+      # If so, ask the user to confirm to which account they want to sign in
+      # users_with_same_email = auth_email.present? && User.where(email: auth_email)
+      # return redirect_to_confirm_new_user!(users_with_same_email) if users_with_same_email.present?
 
       # No existing user was found
       # Redirect to privacy prompt before we create a new private user
@@ -111,26 +116,25 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       # Institutional users don't need to accept the privacy policy
       # Thus we can immediately create a new user
-      user = User.new institution: provider&.institution
-      # Create a new identity for the newly created user
-      identity = user.identities.build identifier: auth_uid, provider: provider
+      identity = create_new_user_and_identity!
     end
 
+    sign_in!(identity)
+  end
+
+  # ==> Utilities.
+
+  def sign_in!(identity)
     # Validation.
     raise 'Identity should not be nil here' if identity.nil?
 
     # Get the user independent of it being newly created or an existing user
     user = identity.user
+
     # Update the user information from the authentication response.
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
-    sign_in!(user)
-  end
-
-  # ==> Utilities.
-
-  def sign_in!(user)
     # If the session contains credentials for another identity, add this identity to the signed in user
     create_identity_from_session!(user)
 
@@ -149,16 +153,15 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def sign_in_new_user_from_session!
+    identity = create_new_user_and_identity!
+
+    sign_in!(identity)
+  end
+
+  def create_new_user_and_identity!
     user = User.new institution: provider&.institution
     # Create a new identity for the newly created user
     user.identities.build identifier: auth_uid, provider: provider
-
-    # Update the user information from the authentication response.
-    user.update_from_provider(auth_hash, provider)
-
-    return redirect_with_errors!(user) if user.errors.any?
-
-    sign_in!(user)
   end
 
   def create_identity_from_session!(user)

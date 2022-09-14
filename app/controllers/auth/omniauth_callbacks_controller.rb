@@ -44,6 +44,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def smartschool
+    return redirect_with_flash! I18n.t('devise.failure.smartschool_co_account') if auth_hash&.info&.isCoAccount?
+
     generic_oauth
   end
 

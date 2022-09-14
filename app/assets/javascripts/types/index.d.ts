@@ -5,15 +5,40 @@ declare interface Window {
 }
 
 declare class MathJaxObject {
-    typeset() :void;
+    typeset?(args?: string[]) :void;
+
+    tex: {
+        inlineMath: string[][];
+        displayMath: string[][];
+        autoload: {
+            color: string[];
+            colorV2: string[];
+        };
+        packages: {
+            "[+]": string[];
+        };
+    }
+    options: {
+        ignoreHtmlClass: string,
+        processHtmlClass: string
+    }
+    loader: {
+        load: string[]
+    }
 }
 
 declare module I18n {
-    export function l(key: string, data: any): string;
     export function t(key: string, options?: {}): string;
-    export function numberToDelimited(number: number, options?: {}): string;
+    export function t_a(key: string): string[];
+    export function formatNumber(number: number, options?: Record<string, unknown>): string;
+    export function formatDate(date: string | number | Date | import("dayjs").Dayjs, format: string): string;
 
     export var locale: string;
+}
+
+// add parentIFrame from iFrame Resizer to the window to make typescript happy
+declare interface Window {
+    parentIFrame: any;
 }
 
 declare var dodona;

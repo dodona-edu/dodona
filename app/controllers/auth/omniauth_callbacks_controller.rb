@@ -44,6 +44,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def smartschool
+    return redirect_with_flash! I18n.t('devise.failure.smartschool_co_account') if auth_hash&.info&.isCoAccount?
+
     generic_oauth
   end
 
@@ -142,6 +144,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def redirect_to_privacy_prompt
     session[:new_user_identifier] = auth_hash.uid
+    session[:new_user_username] = auth_hash.info.username || auth_hash.uid
     session[:new_user_email] = auth_hash.info.email
     session[:new_user_first_name] = auth_hash.info.first_name
     session[:new_user_last_name] = auth_hash.info.last_name
@@ -153,6 +156,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def sign_in_new_user_from_session!
     identifier = session.delete(:new_user_identifier)
+    username = session.delete(:new_user_username)
     email = session.delete(:new_user_email)
     first_name = session.delete(:new_user_first_name)
     last_name = session.delete(:new_user_last_name)
@@ -162,7 +166,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
     # Create a new user
     user = User.new institution: provider&.institution, email: email, first_name: first_name, last_name: last_name,
-                    username: identifier
+                    username: username
 
     # Create a new identity for the newly created user
     user.identities.build identifier: identifier, provider: provider

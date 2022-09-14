@@ -12,7 +12,7 @@ class FeedbacksTest < ApplicationSystemTestCase
   # We use selectors with ":not(.in-progress)" to make capybara wait on the refresh
   # before continuing
   setup do
-    result = File.read(Rails.root.join('db/results/python-result.json'))
+    result = Rails.root.join('db/results/python-result.json').read
     code_lines = Faker::Lorem.sentences(number: 5)
     @staff_member = create :staff
     series = create :series, exercise_count: 2

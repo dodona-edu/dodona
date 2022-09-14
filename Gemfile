@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.3'
+gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
@@ -52,7 +52,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '3.30.0'
+gem 'rouge', '4.0.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -130,7 +130,7 @@ gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 gem 'dalli', '~> 3.2.2'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 2.22.0'
+gem 'faker', '~> 2.23.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.15.2'
+  gem 'rubocop-rails', '~> 2.16.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

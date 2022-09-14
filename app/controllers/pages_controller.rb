@@ -63,7 +63,7 @@ class PagesController < ApplicationController
     if verify_hcaptcha(model: @contact_form, message: t('.captcha_failed')) && @contact_form.deliver
       redirect_to root_path, notice: t('.mail_sent')
     else
-      flash[:error] = @contact_form.errors.full_messages.to_sentence
+      flash.now[:error] = @contact_form.errors.full_messages.to_sentence
       render :contact
     end
   end

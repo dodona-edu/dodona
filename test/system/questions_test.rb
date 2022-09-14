@@ -11,7 +11,7 @@ class QuestionsTest < ApplicationSystemTestCase
   setup do
     @code_lines = Faker::Lorem.sentences(number: 5)
     @course = create :course, enabled_questions: true
-    @submission = create :correct_submission, result: File.read(Rails.root.join('db/results/python-result.json')), code: @code_lines.join("\n"), course: @course
+    @submission = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: @course
     @submission.exercise.judge.renderer = PythiaRenderer
     @submission.exercise.judge.save
     @student = @submission.user

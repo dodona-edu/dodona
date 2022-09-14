@@ -56,7 +56,30 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_privacy_policy
-    sign_in_new_user_from_session!
+    identity = create_new_user_and_identity!
+
+    sign_in!(identity)
+  end
+
+  # Confirm duplicate email before new user creation
+
+  def confirm_new_user
+    @institution = provider.institution
+    @users = User.where(email: auth_email)
+    @email = auth_email
+    store_hash_in_session!
+    render 'auth/confirm_new_user'
+  end
+
+  def accept_confirm_new_user
+    # Redirect to privacy prompt before we create a new private user
+    return redirect_to_privacy_prompt if provider&.institution.nil?
+
+    # Institutional users don't need to accept the privacy policy
+    # Thus we can immediately create a new user
+    identity = create_new_user_and_identity!
+
+    sign_in!(identity)
   end
 
   private
@@ -107,8 +130,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       # Try to find if the email address is already in use in an other institution
       # If so, ask the user to confirm to which account they want to sign in
-      # users_with_same_email = auth_email.present? && User.where(email: auth_email)
-      # return redirect_to_confirm_new_user!(users_with_same_email) if users_with_same_email.present?
+      users_with_same_email = auth_email.present? && User.where(email: auth_email)
+      return redirect_to_confirm_new_user! if users_with_same_email.present?
 
       # No existing user was found
       # Redirect to privacy prompt before we create a new private user
@@ -147,15 +170,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_privacy_prompt
-    session[:new_user_auth_hash] = auth_hash.to_json
-
+    store_hash_in_session!
     redirect_to privacy_prompt_path
-  end
-
-  def sign_in_new_user_from_session!
-    identity = create_new_user_and_identity!
-
-    sign_in!(identity)
   end
 
   def create_new_user_and_identity!
@@ -285,6 +301,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session[:auth_original_uid] = auth_uid unless provider.redirect?
   end
 
+  def store_hash_in_session!
+    session[:new_user_auth_hash] = auth_hash.to_json
+  end
+
   def redirect_to_provider!(target_provider)
     store_identity_in_session!
 
@@ -342,6 +362,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     @known_providers = user.providers.where(mode: %i[prefer secondary])
     @user = user
     render 'auth/redirect_to_known_provider'
+  end
+
+  def redirect_to_confirm_new_user!
+    store_hash_in_session!
+    redirect_to confirm_new_user
   end
 
   def redirect_duplicate_email_for_provider!

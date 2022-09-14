@@ -29,3 +29,15 @@ en:
       text_html: "In order to use Dodona, you need to accept our privacy statement. On the <a href=\"%{your_data}\" target=\"_blank\">your data</a> page we explain in clear and understandable language what data we collect and how we use it. Our <a href=\"%{privacy_statement}\" target=\"_blank\">privacy statement</a> contains the legally binding version."
       accept_button: Accept the privacy statement
       decline_button: Decline
+    confirm_new_user:
+      title: Email already in use
+      message_single_p1: "A user with the same email address (**%{email}**) already exist within a different institution. This is probably you. If you are trying to sign in to this account, click on one of the sign in methods below and sign in again."
+      message_plural_p1: "Multiple users with the same email address (**%{email}**) already exist within different institutions. These are probably you. If you are trying to sign in to one of these account, click on the relevant sign in method below and sign in again."
+      message_personal_p2: "If you want to create a new personal account, click on \"Create new account\"."
+      message_institutional_p2: "If you want to create a new account for the institution **%{institution}**, click on \"Create new account\"."
+      sign_in_to_institutional: "Sign in to **%{name}** (%{institution})"
+      sign_in_to_personal: "Sign in to **%{name}** (personal account)"
+      create_new_account: "Create new account"
+      "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
+      contact_form: "contact form"
+

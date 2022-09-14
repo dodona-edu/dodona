@@ -111,7 +111,7 @@ class User < ApplicationRecord
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: true }
+  validates :email, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validate :max_one_institution
   validate :provider_allows_blank_email
 

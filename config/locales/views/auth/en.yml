@@ -31,13 +31,13 @@ en:
       decline_button: Decline
     confirm_new_user:
       title: Email already in use
-      message_single_p1: "A user with the same email address (**%{email}**) already exist within a different institution. This is probably you. If you are trying to sign in to this account, click on one of the sign in methods below and sign in again."
-      message_plural_p1: "Multiple users with the same email address (**%{email}**) already exist within different institutions. These are probably you. If you are trying to sign in to one of these account, click on the relevant sign in method below and sign in again."
+      message_single_p1: "A Dodona user with the same email address (**%{email}**) already exist within a different institution. This is probably you. If you want to sign in with the existing account, click on the sign in button below and sign in again."
+      message_plural_p1: "Multiple Dodona users with the same email address (**%{email}**) already exist within different institutions. These are probably you. If you want to sign in with one of these existing accounts, click on the relevant sign in button below and sign in again."
       message_personal_p2: "If you want to create a new personal account, click on \"Create new account\"."
       message_institutional_p2: "If you want to create a new account for the institution **%{institution}**, click on \"Create new account\"."
       sign_in_to_institutional: "Sign in to **%{name}** (%{institution})"
       sign_in_to_personal: "Sign in to **%{name}** (personal account)"
       create_new_account: "Create new account"
-      "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
+      "contact_support_html": "If this isn't you or if you keep having issues, fill in the %{form} and we will assist you as soon as possible."
       contact_form: "contact form"
 

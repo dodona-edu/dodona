@@ -31,12 +31,12 @@ nl:
       decline_button: Weigeren
     confirm_new_user:
       title: Email al in gebruik
-      message_single_p1: "Er bestaat al een gebruiker met hetzelfde email adres (**%{email}**) in een andere onderwijsinstelling. Waarschijnlijk ben jij dit. Gebruik een van onderstaande login methodes om aan te melden met deze bestaande account."
-      message_plural_p1: "Er bestaan al meerdere gebruikers met hetzelfde email adres (**%{email}**) in andere onderwijsinstellingen. Waarschijnlijk ben jij dit. Gebruik een van onderstaande login methodes om aan te melden met een bestaande account."
-      message_personal_p2: "Als je een nieuwe persoonlijke account wilt aanmaken, klik op \"Maak een nieuwe account\"."
-      message_institutional_p2: "Als je een nieuwe account wilt aanmaken voor de onderwijsinstelling **%{institution}**, klik op \"Maak een nieuwe account\"."
+      message_single_p1: "Er bestaat al een Dodonagebruiker met hetzelfde emailadres (**%{email}**) in een andere onderwijsinstelling. Waarschijnlijk ben jij dit. Wil je aanmelden met deze bestaande account, klik dan onderaan op de aanmeldknop."
+      message_plural_p1: "Er bestaan al meerdere Dodonagebruikers met hetzelfde emailadres (**%{email}**) in andere onderwijsinstellingen. Waarschijnlijk ben jij dit. Wil je aanmelden met een van deze bestaande accounts, klik dan onderaan op de correcte aanmeldknop."
+      message_personal_p2: "Als je een nieuwe persoonlijke account wilt aanmaken, klik dan op \"Maak een nieuwe account\"."
+      message_institutional_p2: "Als je een nieuwe account wilt aanmaken voor de onderwijsinstelling **%{institution}**, klik dan op \"Maak een nieuwe account\"."
       sign_in_to_institutional: "Meld aan als **%{name}** (%{institution})"
       sign_in_to_personal: "Meld aan als **%{name}** (%{persoonlijke account})"
       create_new_account: "Maak een nieuwe account"
-      "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
+      "contact_support_html": "Ben jij dit niet of blijf je problemen hebben, vul dan het %{form} in en we helpen je zo snel mogelijk verder."
       contact_form: "contactformulier"

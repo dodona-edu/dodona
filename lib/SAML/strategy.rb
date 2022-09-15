@@ -55,7 +55,7 @@ module OmniAuth
         info['username'] || @name_id
       end
 
-      extra { {provider: @provider} }
+      extra { {provider_id: @provider&.id} }
 
       def on_callback_path?
         # Intercept requests sent to /users/saml/auth and forward those to the

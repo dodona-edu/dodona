@@ -44,7 +44,8 @@ module OmniAuth
 
       extra do
         {
-            'raw_info' => raw_info
+            'raw_info' => raw_info,
+            'preferred_username' => raw_info['preferred_username']
         }
       end
 

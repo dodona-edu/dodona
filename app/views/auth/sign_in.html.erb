@@ -31,7 +31,7 @@
     </div>
     <div class="sign-in-dialog-institutions row">
       <% @generic_providers.each do |provider| %>
-        <%= link_to omniauth_authorize_path(:user, provider.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
+        <%= link_to omniauth_authorize_path(:user, provider.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
           <div class="option-btn">
             <div class="option-btn-img">
               <%= image_tag "idp/#{provider.logo}", class: "img-fluid" %>
@@ -68,7 +68,7 @@
     </div>
     <div class="sign-in-dialog-institutions row">
       <% @private_providers.each do |provider| %>
-        <%= link_to omniauth_authorize_path(:user, provider.class.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
+        <%= link_to omniauth_authorize_path(:user, provider.class.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
           <div class="option-btn">
             <div class="option-btn-img">
               <%= image_tag "idp/#{provider.logo}", class: "img-fluid" %>

@@ -22,7 +22,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     }.deep_merge(params)
 
     # LTI and SAML include the provider.
-    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
+    auth_hash = auth_hash.deep_merge({ extra: { provider_id: identity.provider.id } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
 
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(auth_hash)
   end

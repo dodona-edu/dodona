@@ -450,7 +450,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def provider
     # Extract the provider from the authentication hash.
-    return Provider.find(auth_hash.extra.provider.id) if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
+    return Provider.find(auth_hash.extra.provider_id) if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
 
     # Fallback to an oauth provider
     oauth_provider

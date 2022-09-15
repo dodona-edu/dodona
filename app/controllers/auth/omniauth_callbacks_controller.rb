@@ -223,7 +223,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
 
       # Try to find user by preferred username
-      identity = Identity.find_by(identifier: auth_hash.extra.raw_info.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.raw_info&.preferred_username.present?
+      identity = Identity.find_by(identifier: auth_hash.extra.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.preferred_username.present?
 
       # Try to find user by name
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
@@ -302,7 +302,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def store_hash_in_session!
-    session[:new_user_auth_hash] = auth_hash.to_json
+    # Filter raw info from hash to limit cookie size
+    hash = auth_hash.except('extra').merge({ 'extra' => auth_hash.extra.except('raw_info') })
+    session[:new_user_auth_hash] = hash.to_json
   end
 
   def redirect_to_provider!(target_provider)

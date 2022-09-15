@@ -20,6 +20,8 @@ Rails.application.routes.draw do
         delete '/sign_out' => 'authentication#destroy', as: 'sign_out'
         get '/privacy_prompt' => 'omniauth_callbacks#privacy_prompt'
         post '/privacy_prompt' => 'omniauth_callbacks#accept_privacy_policy'
+        get '/confirm_new_user' => 'omniauth_callbacks#confirm_new_user'
+        post '/confirm_new_user' => 'omniauth_callbacks#accept_confirm_new_user'
       end
 
       get '/users/saml/metadata' => 'saml#metadata'

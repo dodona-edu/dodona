@@ -50,7 +50,7 @@ module OmniAuth
                 email: raw_info[:email]
             },
             extra: {
-                provider: provider,
+                provider_id: provider&.id,
                 redirect_params: {
                     id_token: jwt_token,
                     provider_id: provider&.id

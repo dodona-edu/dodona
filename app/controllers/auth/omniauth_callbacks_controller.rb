@@ -303,8 +303,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def store_hash_in_session!
     # Filter raw info and credentials from hash to limit cookie size
-    hash = auth_hash.to_h
-    hash = hash.except('extra', 'credentials').merge({ 'extra' => hash['extra']&.except('raw_info') })
+    hash = auth_hash.except('extra', 'credentials').merge({ 'extra' => auth_hash.extra&.except('raw_info') })
     session[:new_user_auth_hash] = hash.to_json
   end
 
@@ -409,7 +408,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # if auth hash was present in session, we can use that
     # we do want to remove it from the session so it does not stay there indefinitely
     # rubocop:disable Style/OpenStructUse
-    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OpenStruct) if session[:new_user_auth_hash].present?
+    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OmniAuth::AuthHash) if session[:new_user_auth_hash].present?
     # rubocop:enable Style/OpenStructUse
 
     @new_user_auth_hash

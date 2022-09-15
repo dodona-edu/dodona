@@ -90,7 +90,7 @@ export class UserAnnotation extends Annotation {
             return I18n.t("js.user_annotation.anonymous_message");
         }
 
-        const timestamp = I18n.l("time.formats.annotation", this.createdAt);
+        const timestamp = I18n.formatDate(this.createdAt, "time.formats.annotation");
         const user = this.user!.name;
 
         return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });

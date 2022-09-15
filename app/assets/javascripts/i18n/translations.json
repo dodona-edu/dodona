@@ -361,7 +361,7 @@
     "time": {
       "am": "am",
       "formats": {
-        "annotation": "%B %d, %Y %H:%M",
+        "annotation": "MMMM DD, YYYY HH:mm",
         "announcement": "%B %d, %Y %H:%M",
         "default": "%a, %d %b %Y %H:%M:%S %z",
         "flatpickr_long": "F j Y H:i",
@@ -376,26 +376,11 @@
       },
       "pm": "pm",
       "units": {
-        "day": [
-          "day",
-          "days"
-        ],
-        "hour": [
-          "hour",
-          "hours"
-        ],
-        "min": [
-          "minute",
-          "minutes"
-        ],
-        "sec": [
-          "second",
-          "seconds"
-        ],
-        "week": [
-          "week",
-          "weeks"
-        ]
+        "day": "%{smart_count} day |||| %{smart_count} days",
+        "hour": "%{smart_count} hour |||| %{smart_count} hours",
+        "min": "%{smart_count} minute |||| %{smart_count} minutes",
+        "sec": "%{smart_count} second |||| %{smart_count} seconds",
+        "week": "%{smart_count} week |||| %{smart_count} weeks"
       }
     }
   },
@@ -761,7 +746,7 @@
     "time": {
       "am": "'s ochtends",
       "formats": {
-        "annotation": "%e %B %Y, %H:%M",
+        "annotation": "D MMMM YYYY, HH:mm",
         "announcement": "%e %B %Y, %H:%M",
         "default": "%a %d %b %Y %H:%M:%S %Z",
         "flatpickr_long": "j F Y H:i",
@@ -775,26 +760,11 @@
       },
       "pm": "'s middags",
       "units": {
-        "day": [
-          "dag",
-          "dagen"
-        ],
-        "hour": [
-          "uur",
-          "uren"
-        ],
-        "min": [
-          "minuut",
-          "minuten"
-        ],
-        "sec": [
-          "seconde",
-          "seconden"
-        ],
-        "week": [
-          "week",
-          "weken"
-        ]
+        "day": "%{smart_count} dag |||| %{smart_count} dagen",
+        "hour": "%{smart_count} uur |||| %{smart_count} uren",
+        "min": "%{smart_count} minuut |||| %{smart_count} minuten",
+        "sec": "%{smart_count} seconde |||| %{smart_count} seconden",
+        "week": "%{smart_count} week |||| %{smart_count} weken"
       }
     }
   }

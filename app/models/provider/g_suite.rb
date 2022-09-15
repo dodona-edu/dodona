@@ -48,8 +48,8 @@ class Provider::GSuite < Provider
   end
 
   def readable_name
-    # We want to display gmail for private accounts
-    return 'Gmail' if institution.nil?
+    # We want to display google for private accounts
+    return 'Google' if institution.nil?
 
     super
   end

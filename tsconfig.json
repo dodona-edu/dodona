@@ -14,7 +14,8 @@
       "*": ["assets/javascripts/*"]
     },
     "pretty": true,
-    "allowUmdGlobalAccess": true
+    "allowUmdGlobalAccess": true,
+    "resolveJsonModule": true
   },
   "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public", "data"],
   "compileOnSave": false

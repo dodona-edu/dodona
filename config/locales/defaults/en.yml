@@ -30,15 +30,15 @@ en:
       monthday_long: "%B %d"
   time:
     units:
-      sec: ["second", "seconds"]
-      min: ["minute", "minutes"]
-      hour: ["hour", "hours"]
-      day: ["day", "days"]
-      week: ["week", "weeks"]
+      sec: "%{smart_count} second |||| %{smart_count} seconds"
+      min: "%{smart_count} minute |||| %{smart_count} minutes"
+      hour: "%{smart_count} hour |||| %{smart_count} hours"
+      day: "%{smart_count} day |||| %{smart_count} days"
+      week: "%{smart_count} week |||| %{smart_count} weeks"
     formats:
       flatpickr_short: 'm/d/Y H:i'
       flatpickr_long: F j Y H:i
-      annotation: '%B %d, %Y %H:%M'
+      annotation: 'MMMM DD, YYYY HH:mm' # dayjs format https://day.js.org/docs/en/display/format
       announcement: '%B %d, %Y %H:%M'
       submission: '%B %d, %Y %H:%M:%S'
       read_state: '%B %d, %Y %H:%M:%S'

@@ -14,6 +14,11 @@ beforeAll(() => {
             "time.formats.flatpickr_short": "m/d/Y H:i",
             "time.am": "'s ochtends",
             "time.pm": "'s middags",
+            "js.no_data": "Er is niet genoeg data om een grafiek te maken."
+        }[arg]) as string);
+    jest
+        .spyOn(I18n, "t_a")
+        .mockImplementation(arg => ({
             "date.day_names": [
                 "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", " Vrijdag", "Zaterdag"
             ],
@@ -24,9 +29,8 @@ beforeAll(() => {
             ],
             "date.abbr_month_names": [
                 null, "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun",
-                "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
-            "js.no_data": "Er is niet genoeg data om een grafiek te maken."
-        }[arg]) as string);
+                "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
+        }[arg]) as string[]);
     I18n.locale = "nl";
     window.dodona = { darkMode: false };
 

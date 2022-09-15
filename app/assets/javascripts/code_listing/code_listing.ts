@@ -377,7 +377,7 @@ export class CodeListing {
              ${this.questionMode? `
              <span class='help-block'>${I18n.t("js.user_annotation.help_student")}</span>
              ` : ""}
-            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.numberToDelimited(maxLength)}</span>
+            <span class="help-block float-end"><span class="used-characters">0</span> / ${I18n.formatNumber(maxLength)}</span>
           </div>
           <div class="annotation-submission-button-container">
             ${annotation && annotation.removable ? `
@@ -406,10 +406,10 @@ export class CodeListing {
 
         const usedCharacters = form.querySelector(".used-characters");
         // Initial value.
-        usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
+        usedCharacters.innerHTML = I18n.formatNumber(inputField.value.length);
         // Update value while typing.
         inputField.addEventListener("input", () => {
-            usedCharacters.innerHTML = I18n.numberToDelimited(inputField.value.length);
+            usedCharacters.innerHTML = I18n.formatNumber(inputField.value.length);
         });
 
         // Cancellation handler.

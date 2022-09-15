@@ -349,7 +349,7 @@ class User < ApplicationRecord
   # Update the user using the data provided in the omniauth hash.
   def update_from_provider(auth_hash, auth_provider)
     tap do |user|
-      user.username = auth_hash.uid
+      user.username = auth_hash.info.username || auth_hash.uid
       user.email = auth_hash.info.email
       user.first_name = auth_hash.info.first_name
       user.last_name = auth_hash.info.last_name

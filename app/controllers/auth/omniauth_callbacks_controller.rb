@@ -304,6 +304,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def store_hash_in_session!
     # Filter raw info from hash to limit cookie size
     hash = auth_hash.except('extra').merge({ 'extra' => auth_hash.extra.except('raw_info') })
+    logger.info "===================================================================================================="
+    logger.info hash.to_json
     session[:new_user_auth_hash] = hash.to_json
   end
 

@@ -59,7 +59,7 @@ export class Pagination extends ShadowlessLitElement {
                     ${!this.small ? this.pageButton(this.current - 1, "←") : ""}
                     ${this.pageButton(1)}
                     ${this.total > 3 + 2 * this.width && this.current == 3 + this.width ? this.pageButton(2) : ""}
-                    ${this.total > 3 + 2 * this.width && this.current > 3 + this.width ? this.pageButton(undefined, "...") : ""}
+                    ${this.total > 3 + 2 * this.width && this.current > 3 + this.width ? this.pageButton(undefined, "…") : ""}
                     ${this.range.map(i => this.pageButton(i))}
                     ${this.total > 3 + 2 * this.width && this.total - this.current > 2 + this.width ? this.pageButton(undefined, "…") : ""}
                     ${this.total > 3 + 2 * this.width && this.total - this.current == 2 + this.width ? this.pageButton(this.total - 1) : ""}

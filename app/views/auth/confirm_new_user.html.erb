@@ -12,13 +12,13 @@
       <% else %>
         <%= markdown t(".message_personal_p2") %>
       <% end %>
-      <%= link_to t(".create_new_account"), confirm_new_account_path, method: :post, class: "btn btn-primary" %>
+      <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-primary" %>
     </div>
     <% @users.each do |user| %>
       <div class="row">
         <h2>
           <% if user.institutional? %>
-            <%= markdown t(".sign_in_to_institutional", institution: @user.institution.name, name: user.full_name) %>
+            <%= markdown t(".sign_in_to_institutional", institution: user.institution.name, name: user.full_name) %>
           <% else %>
             <%= markdown t(".sign_in_to_personal", name: user.full_name) %>
           <% end %>

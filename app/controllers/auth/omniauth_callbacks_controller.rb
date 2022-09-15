@@ -72,6 +72,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_confirm_new_user
+    a = auth_hash
     # Redirect to privacy prompt before we create a new private user
     return redirect_to_privacy_prompt if provider&.institution.nil?
 
@@ -366,7 +367,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def redirect_to_confirm_new_user!
     store_hash_in_session!
-    redirect_to confirm_new_user
+    redirect_to confirm_new_user_path
   end
 
   def redirect_duplicate_email_for_provider!
@@ -450,7 +451,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def provider
     # Extract the provider from the authentication hash.
-    return auth_hash.extra.provider if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
+    return Provider.find(auth_hash.extra.provider.id) if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
 
     # Fallback to an oauth provider
     oauth_provider

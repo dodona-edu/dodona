@@ -12,23 +12,25 @@
       <% else %>
         <%= markdown t(".message_personal_p2") %>
       <% end %>
-      <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-primary" %>
+      <div>
+        <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-primary" %>
+      </div>
     </div>
     <% @users.each do |user| %>
-      <div class="row">
-        <h2>
+      <div class="row pt-4">
+        <h3>
           <% if user.institutional? %>
             <%= markdown t(".sign_in_to_institutional", institution: user.institution.name, name: user.full_name) %>
           <% else %>
             <%= markdown t(".sign_in_to_personal", name: user.full_name) %>
           <% end %>
-        </h2>
+        </h3>
         <% user.providers.where(mode: %i[prefer secondary]).each do |provider| %>
           <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
         <% end %>
       </div>
     <% end %>
-    <div class="row">
+    <div class="row pt-4">
       <p><%= t ".contact_support_html", form: link_to(t(".contact_form"), contact_path)%></p>
     </div>
   </div>

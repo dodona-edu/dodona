@@ -72,7 +72,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_confirm_new_user
-    a = auth_hash
     # Redirect to privacy prompt before we create a new private user
     return redirect_to_privacy_prompt if provider&.institution.nil?
 

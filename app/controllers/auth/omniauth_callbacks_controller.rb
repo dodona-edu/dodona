@@ -143,34 +143,18 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_privacy_prompt
-    session[:new_user_identifier] = auth_hash.uid
-    session[:new_user_username] = auth_hash.info.username || auth_hash.uid
-    session[:new_user_email] = auth_hash.info.email
-    session[:new_user_first_name] = auth_hash.info.first_name
-    session[:new_user_last_name] = auth_hash.info.last_name
-    session[:new_user_provider_id] = provider&.id
-    session[:new_user_auth_target] = auth_target
+    session[:new_user_auth_hash] = auth_hash.to_json
 
     redirect_to privacy_prompt_path
   end
 
   def sign_in_new_user_from_session!
-    identifier = session.delete(:new_user_identifier)
-    username = session.delete(:new_user_username)
-    email = session.delete(:new_user_email)
-    first_name = session.delete(:new_user_first_name)
-    last_name = session.delete(:new_user_last_name)
-    provider_id = session.delete(:new_user_provider_id)
-
-    provider = Provider.find(provider_id)
-
-    # Create a new user
-    user = User.new institution: provider&.institution, email: email, first_name: first_name, last_name: last_name,
-                    username: username
-
+    user = User.new institution: provider&.institution
     # Create a new identity for the newly created user
-    user.identities.build identifier: identifier, provider: provider
-    user.save
+    user.identities.build identifier: auth_uid, provider: provider
+
+    # Update the user information from the authentication response.
+    user.update_from_provider(auth_hash, provider)
 
     return redirect_with_errors!(user) if user.errors.any?
 
@@ -385,11 +369,19 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Shorthands.
 
   def target_path(user)
-    auth_target || session.delete(:new_user_auth_target) || after_sign_in_path_for(user)
+    auth_target || after_sign_in_path_for(user)
   end
 
   def auth_hash
-    request.env['omniauth.auth']
+    return request.env['omniauth.auth'] if request.env['omniauth.auth'].present?
+
+    # if auth hash was present in session, we can use that
+    # we do want to remove it from the session so it does not stay there indefinitely
+    # rubocop:disable Style/OpenStructUse
+    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OpenStruct) if session[:new_user_auth_hash].present?
+    # rubocop:enable Style/OpenStructUse
+
+    @new_user_auth_hash
   end
 
   def auth_email

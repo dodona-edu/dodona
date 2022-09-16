@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_action :store_current_location,
-                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy],
+                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy confirm_new_user accept_confirm_new_user],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :skip_session,

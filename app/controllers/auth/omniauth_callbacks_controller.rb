@@ -44,6 +44,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def smartschool
+    return redirect_with_flash! I18n.t('devise.failure.smartschool_co_account') if auth_hash&.info&.isCoAccount?
+
     generic_oauth
   end
 
@@ -54,7 +56,30 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_privacy_policy
-    sign_in_new_user_from_session!
+    identity = create_new_user_and_identity!
+
+    sign_in!(identity)
+  end
+
+  # Confirm duplicate email before new user creation
+
+  def confirm_new_user
+    @institution = provider.institution
+    @users = User.where(email: auth_email)
+    @email = auth_email
+    store_hash_in_session!
+    render 'auth/confirm_new_user'
+  end
+
+  def accept_confirm_new_user
+    # Redirect to privacy prompt before we create a new private user
+    return redirect_to_privacy_prompt if provider&.institution.nil?
+
+    # Institutional users don't need to accept the privacy policy
+    # Thus we can immediately create a new user
+    identity = create_new_user_and_identity!
+
+    sign_in!(identity)
   end
 
   private
@@ -97,11 +122,16 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
       return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
-      # If we found an existing user with the same username or email
+      # If we found an existing user with the same username or email within the same institution
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user
       # if no => contact dodona for a manual intervention
       return redirect_to_known_provider!(user) if user.present?
+
+      # Try to find if the email address is already in use in an other institution
+      # If so, ask the user to confirm to which account they want to sign in
+      users_with_same_email = auth_email.present? && User.where(email: auth_email)
+      return redirect_to_confirm_new_user! if users_with_same_email.present?
 
       # No existing user was found
       # Redirect to privacy prompt before we create a new private user
@@ -109,26 +139,25 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
       # Institutional users don't need to accept the privacy policy
       # Thus we can immediately create a new user
-      user = User.new institution: provider&.institution
-      # Create a new identity for the newly created user
-      identity = user.identities.build identifier: auth_uid, provider: provider
+      identity = create_new_user_and_identity!
     end
 
+    sign_in!(identity)
+  end
+
+  # ==> Utilities.
+
+  def sign_in!(identity)
     # Validation.
     raise 'Identity should not be nil here' if identity.nil?
 
     # Get the user independent of it being newly created or an existing user
     user = identity.user
+
     # Update the user information from the authentication response.
     user.update_from_provider(auth_hash, provider)
     return redirect_with_errors!(user) if user.errors.any?
 
-    sign_in!(user)
-  end
-
-  # ==> Utilities.
-
-  def sign_in!(user)
     # If the session contains credentials for another identity, add this identity to the signed in user
     create_identity_from_session!(user)
 
@@ -141,38 +170,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_privacy_prompt
-    session[:new_user_identifier] = auth_hash.uid
-    session[:new_user_username] = auth_hash.info.username || auth_hash.uid
-    session[:new_user_email] = auth_hash.info.email
-    session[:new_user_first_name] = auth_hash.info.first_name
-    session[:new_user_last_name] = auth_hash.info.last_name
-    session[:new_user_provider_id] = provider&.id
-    session[:new_user_auth_target] = auth_target
-
+    store_hash_in_session!
     redirect_to privacy_prompt_path
   end
 
-  def sign_in_new_user_from_session!
-    identifier = session.delete(:new_user_identifier)
-    username = session.delete(:new_user_username)
-    email = session.delete(:new_user_email)
-    first_name = session.delete(:new_user_first_name)
-    last_name = session.delete(:new_user_last_name)
-    provider_id = session.delete(:new_user_provider_id)
-
-    provider = Provider.find(provider_id)
-
-    # Create a new user
-    user = User.new institution: provider&.institution, email: email, first_name: first_name, last_name: last_name,
-                    username: username
-
+  def create_new_user_and_identity!
+    user = User.new institution: provider&.institution
     # Create a new identity for the newly created user
-    user.identities.build identifier: identifier, provider: provider
-    user.save
-
-    return redirect_with_errors!(user) if user.errors.any?
-
-    sign_in!(user)
+    user.identities.build identifier: auth_uid, provider: provider
   end
 
   def create_identity_from_session!(user)
@@ -218,7 +223,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
 
       # Try to find user by preferred username
-      identity = Identity.find_by(identifier: auth_hash.extra.raw_info.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.raw_info&.preferred_username.present?
+      identity = Identity.find_by(identifier: auth_hash.extra.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.preferred_username.present?
 
       # Try to find user by name
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
@@ -296,6 +301,12 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     session[:auth_original_uid] = auth_uid unless provider.redirect?
   end
 
+  def store_hash_in_session!
+    # Filter raw info and credentials from hash to limit cookie size
+    hash = auth_hash.except('extra', 'credentials').merge({ 'extra' => auth_hash.extra&.except('raw_info') })
+    session[:new_user_auth_hash] = hash.to_json
+  end
+
   def redirect_to_provider!(target_provider)
     store_identity_in_session!
 
@@ -355,6 +366,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     render 'auth/redirect_to_known_provider'
   end
 
+  def redirect_to_confirm_new_user!
+    store_hash_in_session!
+    redirect_to confirm_new_user_path
+  end
+
   def redirect_duplicate_email_for_provider!
     ApplicationMailer.with(
       authinfo: auth_hash,
@@ -383,11 +399,17 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # ==> Shorthands.
 
   def target_path(user)
-    auth_target || session.delete(:new_user_auth_target) || after_sign_in_path_for(user)
+    auth_target || after_sign_in_path_for(user)
   end
 
   def auth_hash
-    request.env['omniauth.auth']
+    return request.env['omniauth.auth'] if request.env['omniauth.auth'].present?
+
+    # if auth hash was present in session, we can use that
+    # we do want to remove it from the session so it does not stay there indefinitely
+    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OmniAuth::AuthHash) if session[:new_user_auth_hash].present?
+
+    @new_user_auth_hash
   end
 
   def auth_email
@@ -428,7 +450,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def provider
     # Extract the provider from the authentication hash.
-    return auth_hash.extra.provider if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
+    return Provider.find(auth_hash.extra.provider_id) if [Provider::Lti.sym, Provider::Saml.sym].include?(auth_provider_type)
 
     # Fallback to an oauth provider
     oauth_provider

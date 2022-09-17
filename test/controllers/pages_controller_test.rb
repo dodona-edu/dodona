@@ -50,6 +50,19 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
 
+  test 'should not send email when captcha spam' do
+    contact_form = {
+      name: 'Jan',
+      email: 'Jan@UGent.BE',
+      subject: '(╯°□°）╯︵ ┻━┻)',
+      message: 'XEvil is annoying'
+    }
+    assert_no_changes 'ActionMailer::Base.deliveries.size' do
+      post create_contact_path(contact_form: contact_form)
+    end
+    assert_redirected_to root_url
+  end
+
   test 'should get profile when logged in' do
     user = users(:student)
     sign_in user

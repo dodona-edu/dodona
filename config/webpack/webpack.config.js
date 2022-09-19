@@ -14,6 +14,12 @@ const config = {
     },
     optimization: {
         moduleIds: "deterministic",
+        // Make sure all modules run in a single unique runtime environment.
+        // This avoids modules being evaluated multiple times.
+        // There is an exception for the inputServiceWorker, which needs to run standalone and thus needs its own runtime environment
+        runtimeChunk: {
+            name: entrypoint => entrypoint.name === "inputServiceWorker" ? false : "runtime"
+        },
         splitChunks: {
             cacheGroups: {
                 commons: {

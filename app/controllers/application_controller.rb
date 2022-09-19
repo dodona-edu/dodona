@@ -36,6 +36,18 @@ class ApplicationController < ActionController::Base
 
   impersonates :user
 
+  # Set pagination info for named resource in the http headers.
+  # This is useful for frontend pagination
+  def self.set_pagination_headers(name, options = {})
+    after_action(options) do
+      results = instance_variable_get("@#{name}")
+      headers['X-Pagination'] = {
+        total_pages: results.total_pages,
+        current_page: results.current_page
+      }.to_json
+    end
+  end
+
   # A more lax CSP for pages in the sandbox
   content_security_policy if: :sandbox? do |policy|
     policy.directives.clear

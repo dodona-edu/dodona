@@ -30,9 +30,6 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  # Creates IllegalStateError on simultaneous requests (see https://github.com/dpogue/rails_server_timings/issues/6)
-  config.server_timings.enabled = false
-
   config.action_controller.perform_caching = true
   config.action_controller.enable_fragment_cache_logging = true
 

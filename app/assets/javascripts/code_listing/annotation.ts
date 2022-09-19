@@ -1,3 +1,7 @@
+import { NewSavedAnnotation } from "components/saved_annotations/new_saved_annotation";
+import { isBetaCourse } from "saved_annotation_beta";
+import { SavedAnnotationIcon } from "components/saved_annotations/saved_annotation_icon";
+
 export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 export type QuestionState = "unanswered" | "answered" | "in_progress";
 
@@ -10,6 +14,7 @@ export abstract class Annotation {
     public readonly line: number | null;
     public readonly text: string;
     public readonly type: AnnotationType;
+    public readonly id: number;
 
     protected constructor(line: number | null, text: string, type: AnnotationType) {
         this.__html = null;
@@ -54,7 +59,7 @@ export abstract class Annotation {
 
         if (!this.visible) {
             const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-eye-off", "mdi-18", "annotation-visibility");
+            icon.classList.add("mdi", "mdi-eye-off", "mdi-18", "annotation-meta-icon");
             icon.title = I18n.t("js.user_annotation.not_released");
             meta.appendChild(icon);
         }
@@ -81,16 +86,38 @@ export abstract class Annotation {
 
         // Update button.
         if (this.modifiable) {
-            const link = document.createElement("a");
-            link.addEventListener("click", () => this.edit());
-            link.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
-            link.title = this.editTitle;
+            const editLink = document.createElement("a");
+            editLink.addEventListener("click", () => this.edit());
+            editLink.classList.add("btn", "btn-icon", "annotation-control-button", "annotation-edit");
+            editLink.title = this.editTitle;
 
-            const icon = document.createElement("i");
-            icon.classList.add("mdi", "mdi-pencil");
-            link.appendChild(icon);
+            const editIcon = document.createElement("i");
+            editIcon.classList.add("mdi", "mdi-pencil");
+            editLink.appendChild(editIcon);
 
-            header.appendChild(link);
+            header.appendChild(editLink);
+
+            // REMOVE IF AFTER CLOSED BETA
+            if (isBetaCourse(this.courseId)) {
+                // Add button to create saved annotation
+                const saveLink = new NewSavedAnnotation();
+                saveLink.fromAnnotationId = this.id;
+                saveLink.annotationText = this.rawText;
+                saveLink.savedAnnotationId = this.savedAnnotationId;
+
+                header.appendChild(saveLink);
+
+                // Add icon to signify saved annotation
+                const icon = new SavedAnnotationIcon();
+                icon.savedAnnotationId = this.savedAnnotationId;
+
+                // update icon if annotation is saved
+                saveLink.addEventListener("created", (e: CustomEvent) => {
+                    icon.savedAnnotationId = e.detail.id;
+                });
+
+                meta.appendChild(icon);
+            }
         }
 
         if (this.transitionable("answered")) {
@@ -174,6 +201,10 @@ export abstract class Annotation {
         return this.text;
     }
 
+    public get savedAnnotationId(): number | null {
+        return null;
+    }
+
     public get removable(): boolean {
         return false;
     }
@@ -210,6 +241,11 @@ export abstract class Annotation {
 
     protected get useNoticeIcon(): boolean {
         return true;
+    }
+
+    // REMOVE AFTER CLOSED BETA
+    protected get courseId(): number {
+        return undefined;
     }
 
     public async update(data): Promise<Annotation> {

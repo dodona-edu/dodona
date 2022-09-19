@@ -33,9 +33,6 @@ Rails.application.configure do
   # Show full error reports.
   config.consider_all_requests_local = true
 
-  # Creates IllegalStateError on simultaneous requests (see https://github.com/dpogue/rails_server_timings/issues/6)
-  config.server_timings.enabled = false
-
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
 

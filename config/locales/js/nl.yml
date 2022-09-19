@@ -143,10 +143,12 @@ nl:
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
-      help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a>  wordt ondersteund.'
+      save: 'Opmerking opslaan'
+      help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!"
       fields:
         annotation_text: 'Opmerking'
+        saved_annotation_title: 'Sla opmerking op om te hergebruiken'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'
       not_released: Deze opmerking is nog niet zichtbaar voor studenten
     user_question:
@@ -208,3 +210,38 @@ nl:
         description_languages: Taal
         courses: Cursus
         question_states: Toestand
+    saved_annotation:
+      title: Titel
+      annotation_text: Tekst
+      user: Gebruiker
+      course: Cursus
+      exercise: Oefening
+      list:
+        annotations_count: "%{count} keer gebruikt"
+      sidecard:
+        title: Opgeslagen opmerkingen
+        link: Beheer alle opgeslagen opmerkingen
+      form:
+        markdown_html: '<a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
+        annotation_text_help: Aanpassingen aan dit veld hebben geen impact op bestaande opmerkingen.
+      new:
+        button_title: 'Opmerking opslaan'
+        save: "Opslaan"
+        title: "Opmerking opslaan om later te hergebruiken"
+        errors: "%{count} errors verhinderen het opslaan van deze opmerking voor hergebruik"
+        linked: "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}"
+      edit:
+        button_title: 'Bewerk opgeslagen opmerking'
+        save: "Opslaan"
+        title: "Bewerk opgeslagen opmerking"
+        errors: "%{count} errors verhinderen het opslaan"
+        delete: Verwijderen
+        cancel: Annuleren
+      delete:
+        confirm: 'Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?'
+      input:
+        placeholder: Zoek opgeslagen opmerking
+        title: 'Hergebruik een opgeslagen opmerking'
+        help_html: 'Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href="/saved_annotations" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
+        edited: De huidige opmerking verschilt van de opgeslagen opmerking
+

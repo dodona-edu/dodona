@@ -22,7 +22,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     }.deep_merge(params)
 
     # LTI and SAML include the provider.
-    auth_hash = auth_hash.deep_merge({ extra: { provider: identity.provider } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
+    auth_hash = auth_hash.deep_merge({ extra: { provider_id: identity.provider.id } }) if [Provider::Lti, Provider::Saml].include?(identity.provider.class)
 
     OmniAuth.config.mock_auth[:default] = OmniAuth::AuthHash.new(auth_hash)
   end
@@ -243,7 +243,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       # Setup.
       provider = create provider_name
       user = create :user, institution: provider.institution
-      other_user = create :user
+      other_user = create :user, institution: provider.institution
       identity = create :identity, provider: provider, user: user
 
       omniauth_mock_identity identity,
@@ -301,7 +301,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
-  test 'login with other institution should not work' do
+  test 'login with other institution should ask confirmation' do
     AUTH_PROVIDERS.each do |provider_name|
       first_provider = create provider_name
       first_user = create :user, institution: first_provider.institution
@@ -317,9 +317,21 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
         follow_redirect!
       end
 
-      assert_redirected_to root_path
+      # Before confirm no one is signed in
+      assert_redirected_to confirm_new_user_path
       assert_nil @controller.current_user
       assert_not_equal first_user.reload.username, second_user.username
+
+      assert_difference 'User.count', 1 do
+        post confirm_new_user_path
+        follow_redirect!
+      end
+
+      # After confirm a new user is created
+      assert_equal @controller.current_user.username, second_user.username
+      assert_not_equal first_user.reload.username, second_user.username
+
+      sign_out @controller.current_user
     end
   end
 

@@ -121,9 +121,6 @@ gem 'has_scope', '~> 0.8.0'
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
 
-# add request server timings to the devtools
-gem 'rails_server_timings', '~> 1.0.8'
-
 # bootstrap tokenizer
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 

@@ -255,6 +255,48 @@
       },
       "question_states": "Status",
       "repositories": "Repositories",
+      "saved_annotation": {
+        "annotation_text": "Text",
+        "course": "Course",
+        "delete": {
+          "confirm": "Are you sure you want to delete this saved comment?"
+        },
+        "edit": {
+          "button_title": "Edit saved comment",
+          "cancel": "Cancel",
+          "delete": "Delete",
+          "errors": "%{count} errors prevented saving",
+          "save": "Save",
+          "title": "Edit saved comment"
+        },
+        "exercise": "Exercise",
+        "form": {
+          "annotation_text_help": "Changes to this field will not impact existing comments.",
+          "markdown_html": "<a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported."
+        },
+        "input": {
+          "edited": "The current comment differs from the saved comment",
+          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
+          "placeholder": "Search saved comment",
+          "title": "Reuse a saved comment"
+        },
+        "list": {
+          "annotations_count": "Used %{count} times"
+        },
+        "new": {
+          "button_title": "Save comment",
+          "errors": "%{count} errors prevented saving this comment for reuse",
+          "linked": "This comment is linked to the saved comment: %{title}",
+          "save": "Save",
+          "title": "Save comment for re-use"
+        },
+        "sidecard": {
+          "link": "Manage all saved comments",
+          "title": "Saved comments"
+        },
+        "title": "Title",
+        "user": "User"
+      },
       "score": {
         "confirm": "Are you sure?",
         "conflict": "This score was already changed by another user",
@@ -310,12 +352,14 @@
         "delete_confirm": "Are you sure you want to delete this comment?",
         "edit": "Edit comment",
         "fields": {
-          "annotation_text": "Comment"
+          "annotation_text": "Comment",
+          "saved_annotation_title": "Save comment for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
+        "save": "Save comment",
         "send": "Comment",
         "update": "Update"
       },
@@ -640,6 +684,48 @@
       },
       "question_states": "Toestand",
       "repositories": "Repository's",
+      "saved_annotation": {
+        "annotation_text": "Tekst",
+        "course": "Cursus",
+        "delete": {
+          "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"
+        },
+        "edit": {
+          "button_title": "Bewerk opgeslagen opmerking",
+          "cancel": "Annuleren",
+          "delete": "Verwijderen",
+          "errors": "%{count} errors verhinderen het opslaan",
+          "save": "Opslaan",
+          "title": "Bewerk opgeslagen opmerking"
+        },
+        "exercise": "Oefening",
+        "form": {
+          "annotation_text_help": "Aanpassingen aan dit veld hebben geen impact op bestaande opmerkingen.",
+          "markdown_html": "<a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund."
+        },
+        "input": {
+          "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
+          "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
+          "placeholder": "Zoek opgeslagen opmerking",
+          "title": "Hergebruik een opgeslagen opmerking"
+        },
+        "list": {
+          "annotations_count": "%{count} keer gebruikt"
+        },
+        "new": {
+          "button_title": "Opmerking opslaan",
+          "errors": "%{count} errors verhinderen het opslaan van deze opmerking voor hergebruik",
+          "linked": "Deze opmerking is gelinkt aan de opgeslagen opmerking: %{title}",
+          "save": "Opslaan",
+          "title": "Opmerking opslaan om later te hergebruiken"
+        },
+        "sidecard": {
+          "link": "Beheer alle opgeslagen opmerkingen",
+          "title": "Opgeslagen opmerkingen"
+        },
+        "title": "Titel",
+        "user": "Gebruiker"
+      },
       "score": {
         "confirm": "Bent u zeker?",
         "conflict": "Deze score is al aangepast door een andere gebruiker",
@@ -695,12 +781,14 @@
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",
         "edit": "Opmerking bewerken",
         "fields": {
-          "annotation_text": "Opmerking"
+          "annotation_text": "Opmerking",
+          "saved_annotation_title": "Sla opmerking op om te hergebruiken"
         },
-        "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a>  wordt ondersteund.",
+        "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
+        "save": "Opmerking opslaan",
         "send": "Toevoegen",
         "update": "Updaten"
       },

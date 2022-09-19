@@ -186,7 +186,7 @@ $annotation-info: $info;
       }
       /* stylelint-enable selector-class-pattern */
 
-      .annotation-visibility {
+      .annotation-meta-icon {
         &::before {
           vertical-align: bottom;
         }
@@ -297,9 +297,10 @@ $annotation-info: $info;
   .annotation-submission {
     padding: 5px;
 
-    .help-block {
-      float: left;
-      margin-bottom: 0;
+    .annotation-controls-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .annotation-submission-button-container {

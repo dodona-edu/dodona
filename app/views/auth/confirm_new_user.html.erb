@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-md-10">
+    <div class="row">
+      <h1><%= t ".title" %></h1>
+      <% if @users.length > 1 %>
+        <%= markdown t(".message_plural_p1", email: @email) %>
+      <% else %>
+        <%= markdown t(".message_single_p1", email: @email) %>
+      <% end %>
+      <% if @institution.present? %>
+        <%= markdown t(".message_institutional_p2", institution: @institution.name) %>
+      <% else %>
+        <%= markdown t(".message_personal_p2") %>
+      <% end %>
+      <div>
+        <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-primary" %>
+      </div>
+    </div>
+    <% @users.each do |user| %>
+      <div class="row pt-4">
+        <h3>
+          <% if user.institutional? %>
+            <%= markdown t(".sign_in_to_institutional", institution: user.institution.name, name: user.full_name) %>
+          <% else %>
+            <%= markdown t(".sign_in_to_personal", name: user.full_name) %>
+          <% end %>
+        </h3>
+        <% user.providers.where(mode: %i[prefer secondary]).each do |provider| %>
+          <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
+        <% end %>
+      </div>
+    <% end %>
+    <div class="row pt-4">
+      <p><%= t ".contact_support_html", form: link_to(t(".contact_form"), contact_path)%></p>
+    </div>
+  </div>
+</div>

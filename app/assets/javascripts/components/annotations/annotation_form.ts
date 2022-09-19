@@ -167,10 +167,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                         ></d-saved-annotation-input>
                     `}
                 <div class="field form-group">
-                    <label class="form-label">
+                    <label class="form-label" for="annotation-text">
                         ${I18n.t("js.user_annotation.fields.annotation_text")}
                     </label>
-                    <textarea autofocus
+                    <textarea id="annotation-text"
+                              autofocus
                               required
                               class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
                               .rows=${this.rows}
@@ -202,11 +203,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                     </div>
                     ${ this.saveAnnotation ? html`
                         <div class="field form-group">
-                            <label class="form-label">
+                            <label class="form-label" for="saved-annotation-title">
                                 ${I18n.t("js.saved_annotation.title")}
                             </label>
                             <input required="required" class="form-control" type="text"
-                                   @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle}>
+                                   @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle} id="saved-annotation-title">
                         </div>
                     ` : html``}
                 `}

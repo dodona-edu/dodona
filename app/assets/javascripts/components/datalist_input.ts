@@ -41,19 +41,34 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
             if (!this.value) {
                 this.value = this.options.find(o => this.filter === o.label)?.value || "";
             }
+            this.fireEvent();
+        },
+        options: () => {
+            if (!this.filter) {
+                this.filter = this.label;
+            }
+
+            // If we can find a result amongst the filtered options
+            // dispatch an event
+            if (!this.value) {
+                this.value = this.options.find(o => this.filter === o.label)?.value || "";
+                if (this.value) {
+                    this.fireEvent();
+                }
+            }
+        }
+    };
+
+    fireEvent(): void {
+        if (this.value) {
             const event = new CustomEvent("input", {
                 detail: { value: this.value, label: this.filter },
                 bubbles: true,
                 composed: true
             });
             this.dispatchEvent(event);
-        },
-        options: () => {
-            if (!this.filter) {
-                this.filter = this.label;
-            }
         }
-    };
+    }
 
     get label(): string {
         const option = this.options?.find(option => option.value === this.value);

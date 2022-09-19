@@ -118,5 +118,4 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     sign_out @staff
   end
-
 end

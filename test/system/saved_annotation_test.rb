@@ -1,7 +1,7 @@
 require 'capybara/minitest'
 require 'application_system_test_case'
 
-class AnnotationsTest < ApplicationSystemTestCase
+class SavedAnnotationsTest < ApplicationSystemTestCase
   include Devise::Test::IntegrationHelpers
   # Make the Capybara DSL available in all integration tests
   include Capybara::DSL

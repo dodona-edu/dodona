@@ -71,9 +71,10 @@ gem 'devise', '~>4.8.1'
 gem 'ruby-saml', '~> 1.14.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 0.8.2'
-gem 'omniauth-oauth2', '~> 1.7.2'
+gem 'omniauth-google-oauth2', '~> 1.1.1'
+gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.4.0'
+gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
 gem 'jwt', '~> 2.5.0'
@@ -119,9 +120,6 @@ gem 'has_scope', '~> 0.8.0'
 
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
-
-# add request server timings to the devtools
-gem 'rails_server_timings', '~> 1.0.8'
 
 # bootstrap tokenizer
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'

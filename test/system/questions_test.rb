@@ -32,6 +32,10 @@ class QuestionsTest < ApplicationSystemTestCase
           button = find('button.annotation-button')
           button.click
           assert_css 'form.annotation-submission'
+          # cancel form to limit page space taken
+          within 'form.annotation-submission' do
+            click_button 'Cancel'
+          end
         end
       end
     end

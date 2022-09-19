@@ -191,5 +191,5 @@ export {
     makeVisible,
     setDocumentTitle,
     initDatePicker,
-    ready
+    ready,
 };

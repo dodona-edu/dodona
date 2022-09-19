@@ -9,7 +9,8 @@ module CRUDHelper
 
   def model_params(attrs)
     {
-      model_sym => attrs
+      model_sym => attrs,
+      format: format
     }
   end
 
@@ -62,22 +63,22 @@ module CRUDHelper
   # Read (show, index, new, edit)
 
   def should_show
-    get polymorphic_url(@instance)
+    get polymorphic_url(@instance), params: { format: format }
     assert_response :success
   end
 
   def should_get_index
-    get polymorphic_url(model)
+    get polymorphic_url(model), params: { format: format }
     assert_response :success
   end
 
   def should_get_new
-    get new_polymorphic_url(model)
+    get new_polymorphic_url(model), params: { format: format }
     assert_response :success
   end
 
   def should_get_edit
-    get edit_polymorphic_url(@instance)
+    get edit_polymorphic_url(@instance), params: { format: format }
     assert_response :success
   end
 
@@ -137,7 +138,7 @@ module CRUDHelper
   # Destroy
 
   def destroy_request
-    delete polymorphic_url(@instance)
+    delete polymorphic_url(@instance), params: { format: format }
   end
 
   def should_destroy
@@ -153,7 +154,7 @@ module CRUDHelper
 end
 
 module CRUDTest
-  def crud_helpers(model, attrs: [])
+  def crud_helpers(model, attrs: [], format: :html)
     include(CRUDHelper)
 
     @model = model
@@ -164,6 +165,10 @@ module CRUDTest
 
     define_method(:allowed_attrs) do
       attrs
+    end
+
+    define_method(:format) do
+      format
     end
   end
 

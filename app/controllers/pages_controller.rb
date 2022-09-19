@@ -57,6 +57,11 @@ class PagesController < ApplicationController
   end
 
   def create_contact
+    if /xevil/i =~ contact_params[:message]
+      redirect_to root_path
+      return
+    end
+
     @contact_form = ContactForm.new(contact_params)
     @contact_form.request = request # Allows us to also send ip
     @contact_form.validate

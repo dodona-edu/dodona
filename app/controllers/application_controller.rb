@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
 
   before_action :store_current_location,
-                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy],
+                except: %i[media sign_in institution_not_supported privacy_prompt accept_privacy_policy confirm_new_user accept_confirm_new_user],
                 unless: -> { devise_controller? || remote_request? }
 
   before_action :skip_session,
@@ -35,6 +35,18 @@ class ApplicationController < ActionController::Base
   before_action :set_unread_announcement, unless: :remote_request?
 
   impersonates :user
+
+  # Set pagination info for named resource in the http headers.
+  # This is useful for frontend pagination
+  def self.set_pagination_headers(name, options = {})
+    after_action(options) do
+      results = instance_variable_get("@#{name}")
+      headers['X-Pagination'] = {
+        total_pages: results.total_pages,
+        current_page: results.current_page
+      }.to_json
+    end
+  end
 
   # A more lax CSP for pages in the sandbox
   content_security_policy if: :sandbox? do |policy|

@@ -59,6 +59,10 @@
       </div>
       <a class="btn btn-primary btn-lg login-button" id="sign-in" href="" disabled=true><%= t 'layout.menu.log_in' %></a>
     </div>
+    <d-sign-in-search-bar
+      institutions="<%= @oauth_providers.map{|i| {name: i.institution.name, provider: i.type}}.to_json %>"
+      providers="<%= @generic_providers.map{|p| [p, {name: p.readable_name, link: omniauth_authorize_path(:user, p.sym) }]}.to_h.to_json %>"
+    ></d-sign-in-search-bar>
 
     <div class="sign-in-divider row">
       <div class="sign-in-dialog-footer">

@@ -4,7 +4,7 @@ import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
 
-type Option = {label: string, value: string, extra?: string};
+export type Option = {label: string, value: string, extra?: string};
 
 /**
  * This component represents an input field with a datalist with possible options for the input.

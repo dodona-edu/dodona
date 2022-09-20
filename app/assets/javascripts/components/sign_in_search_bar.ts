@@ -57,12 +57,12 @@ export class SignInSearchBar extends ShadowlessLitElement {
     render(): TemplateResult {
         return html`
             <div class="input-group input-group-lg autocomplete">
-                    <d-datalist-input
-                        filter="${this.storedInstitution}"
-                        .options=${this.options}
-                        @input=${e => this.handleInput(e)}
-                        placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"
-                    ></d-datalist-input>
+                <d-datalist-input
+                    filter="${this.storedInstitution}"
+                    .options=${this.options}
+                    @input=${e => this.handleInput(e)}
+                    placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"
+                ></d-datalist-input>
                 <a class="btn btn-primary btn-lg login-button"
                    href=${this.link}
                    disabled=${this.selected_provider !== undefined}>

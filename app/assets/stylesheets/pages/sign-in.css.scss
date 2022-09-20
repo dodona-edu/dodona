@@ -90,3 +90,26 @@ input:focus {
     border-radius: 6px 0 0 6px !important;
   }
 }
+
+d-sign-in-search-bar d-datalist-input {
+  flex-grow: 1;
+
+  .form-control {
+    font-size: 1rem;
+    padding: 0.65rem;
+    border-top-right-radius: initial;
+    border-bottom-right-radius: initial;
+  }
+
+  .dropdown-item {
+    font-size: 1rem;
+  }
+
+  .dropdown-menu {
+    width: 100%;
+
+    a:hover {
+      font-size: 1rem;
+    }
+  }
+}

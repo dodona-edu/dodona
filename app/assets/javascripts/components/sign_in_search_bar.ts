@@ -48,7 +48,7 @@ export class SignInSearchBar extends ShadowlessLitElement {
     handleInput(e: CustomEvent): void {
         this.selected_provider = e.detail.value;
         if (e.detail.value) {
-            localStorage.setItem("institution", JSON.stringify({ name: e.detail.label, type: e.detail.value }));
+            localStorage.setItem("institution", JSON.stringify({ name: e.detail.label }));
         } else {
             localStorage.removeItem("institution");
         }

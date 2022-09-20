@@ -1,8 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { DirectiveParent, html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { htmlEncode } from "util";
 
 export type Option = {label: string, value: string, extra?: string};
 
@@ -123,6 +125,12 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         }
     }
 
+    mark(s: string): TemplateResult {
+        return this.filter ?
+            html`${unsafeHTML(htmlEncode(s).replace(new RegExp(this.filter, "gi"), m => `<b>${m}</b>`))}` :
+            html`${s}`;
+    }
+
     render(): TemplateResult {
         return html`
             <div class="dropdown">
@@ -138,9 +146,9 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
                         <li><a class="dropdown-item ${this.value === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
-                            ${option.label}
+                            ${this.mark(option.label)}
                             ${option.extra ? html`
-                                <br/><span class="small">${option.extra}</span>
+                                <br/><span class="small">${this.mark(option.extra)}</span>
                             `:""}
                         </a></li>
                     `)}

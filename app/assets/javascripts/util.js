@@ -173,6 +173,13 @@ const ready = new Promise(resolve => {
     }
 });
 
+function htmlEncode(str) {
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+}
 
 export {
     createDelayer,
@@ -192,4 +199,5 @@ export {
     setDocumentTitle,
     initDatePicker,
     ready,
+    htmlEncode,
 };

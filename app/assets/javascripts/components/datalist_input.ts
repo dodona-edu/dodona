@@ -16,6 +16,7 @@ export type Option = {label: string, value: string, extra?: string};
  *          If the user input does not match any label, the value sent to the server wil be ""
  *          The extra string is added in the options and also used to match the input
  * @prop {String} value - the initial value for this field
+ * @prop {String} filter - the initial filter value for this field
  * @prop {String} placeholder - placeholder text shown in input
  *
  * @fires input - on value change, event details contain {label: string, value: string}
@@ -29,12 +30,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     @property({ type: String })
     value: string;
     @property({ type: String })
+    filter: string = this.label;
+    @property({ type: String })
     placeholder: string;
 
     inputRef: Ref<HTMLInputElement> = createRef();
-
-    @property({ state: true })
-    filter: string = this.label;
 
     watch = {
         filter: () => {

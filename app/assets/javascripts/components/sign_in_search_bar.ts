@@ -29,19 +29,36 @@ export class SignInSearchBar extends ShadowlessLitElement {
         return this.institutions.map(i => ({ label: i.name, value: i.provider, extra: this.providers[i.provider].name }));
     }
 
+    get storedInstitution(): string {
+        const localStorageInstitution = localStorage.getItem("institution");
+        if (localStorageInstitution !== null) {
+            const institution = JSON.parse(localStorageInstitution);
+            return institution.name;
+        } else {
+            return undefined;
+        }
+    }
+
     constructor() {
         super();
+        // Reload when I18n is available
         ready.then(() => this.requestUpdate());
     }
 
     handleInput(e: CustomEvent): void {
         this.selected_provider = e.detail.value;
+        if (e.detail.value) {
+            localStorage.setItem("institution", JSON.stringify({ name: e.detail.label, type: e.detail.value }));
+        } else {
+            localStorage.removeItem("institution");
+        }
     }
 
     render(): TemplateResult {
         return html`
             <div class="input-group input-group-lg autocomplete">
                     <d-datalist-input
+                        filter="${this.storedInstitution}"
                         .options=${this.options}
                         @input=${e => this.handleInput(e)}
                         placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"

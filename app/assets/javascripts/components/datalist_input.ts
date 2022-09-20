@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
+import { searchQuery } from "search";
 
 export type Option = {label: string, value: string, extra?: string};
 
@@ -116,6 +117,13 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         e.stopPropagation();
     }
 
+    keydown(e: KeyboardEvent): void {
+        if (e.key === "Tab" && this.filtered_options.length > 0) {
+            this.value = this.filtered_options[0].value;
+            this.filter = this.filtered_options[0].label;
+        }
+    }
+
     render(): TemplateResult {
         return html`
             <div class="dropdown">
@@ -125,6 +133,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        @input=${e => this.processInput(e)}
                        .value="${this.filter}"
                        placeholder="${this.placeholder}"
+                       @keydown=${e => this.keydown(e)}
                 >
                 <ul class="dropdown-menu ${this.filter && this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">

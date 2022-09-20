@@ -5,7 +5,6 @@ nl:
       sign_in: "Aanmelden"
       sign-in-with: "Inloggen met %{provider}"
       sign-in-help: "Weet je niet welke login je moet gebruiken? Zoek hieronder je school en klik op aanmelden:"
-      institution-search: "Typ om jouw school te vinden"
       ilearn-help: "i-Learn gebruikers kunnen momenteel enkel inloggen via de i-Learn website."
       higher-education: "Hoger onderwijs"
       other-education: "Andere onderwijsinstellingen"

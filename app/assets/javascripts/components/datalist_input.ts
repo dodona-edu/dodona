@@ -3,7 +3,6 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
-import { searchQuery } from "search";
 
 export type Option = {label: string, value: string, extra?: string};
 

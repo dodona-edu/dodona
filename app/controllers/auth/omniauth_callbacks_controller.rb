@@ -64,6 +64,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # Confirm duplicate email before new user creation
 
   def confirm_new_user
+    # If we end up on this page without the relevant session info, redirect to root
+    return redirect_to root_path if auth_hash.blank?
+
     @institution = provider.institution
     @users = User.where(email: auth_email)
     @email = auth_email

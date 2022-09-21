@@ -20,33 +20,32 @@ export class SignInSearchBar extends ShadowlessLitElement {
 
     @property({ state: true })
     selected_provider: string;
+    @property({ state: true })
+    filter: string;
 
     get link(): string {
-        return this.selected_provider !== undefined ? this.providers[this.selected_provider].link : "";
+        return this.providers[this.selected_provider]?.link || "";
     }
 
     get options(): Option[] {
         return this.institutions.map(i => ({ label: i.name, value: i.provider, extra: this.providers[i.provider].name }));
     }
 
-    get storedInstitution(): string {
-        const localStorageInstitution = localStorage.getItem("institution");
-        if (localStorageInstitution !== null) {
-            const institution = JSON.parse(localStorageInstitution);
-            return institution.name;
-        } else {
-            return undefined;
-        }
-    }
-
     constructor() {
         super();
         // Reload when I18n is available
         ready.then(() => this.requestUpdate());
+
+        const localStorageInstitution = localStorage.getItem("institution");
+        if (localStorageInstitution !== null) {
+            const institution = JSON.parse(localStorageInstitution);
+            this.filter = institution.name;
+        }
     }
 
     handleInput(e: CustomEvent): void {
         this.selected_provider = e.detail.value;
+        this.filter = e.detail.label;
         if (e.detail.value) {
             localStorage.setItem("institution", JSON.stringify({ name: e.detail.label }));
         } else {
@@ -58,14 +57,13 @@ export class SignInSearchBar extends ShadowlessLitElement {
         return html`
             <div class="input-group input-group-lg autocomplete">
                 <d-datalist-input
-                    filter="${this.storedInstitution}"
+                    filter="${this.filter}"
                     .options=${this.options}
                     @input=${e => this.handleInput(e)}
                     placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"
                 ></d-datalist-input>
-                <a class="btn btn-primary btn-lg login-button"
-                   href=${this.link}
-                   disabled=${this.selected_provider !== undefined}>
+                <a class="btn btn-primary btn-lg login-button ${this.selected_provider == "" ? "disabled": ""}"
+                   href=${this.link}>
                     ${I18n.t("js.sign_in_search_bar.log_in")}
                 </a>
             </div>

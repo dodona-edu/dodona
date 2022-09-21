@@ -1,10 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
-import { DirectiveParent, html, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { htmlEncode } from "util";
+import { htmlEncode } from "util.js";
 
 export type Option = {label: string, value: string, extra?: string};
 
@@ -62,14 +62,12 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     };
 
     fireEvent(): void {
-        if (this.value) {
-            const event = new CustomEvent("input", {
-                detail: { value: this.value, label: this.filter },
-                bubbles: true,
-                composed: true
-            });
-            this.dispatchEvent(event);
-        }
+        const event = new CustomEvent("input", {
+            detail: { value: this.value, label: this.filter },
+            bubbles: true,
+            composed: true
+        });
+        this.dispatchEvent(event);
     }
 
     get label(): string {

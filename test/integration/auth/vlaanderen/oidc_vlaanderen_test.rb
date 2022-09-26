@@ -69,7 +69,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     stub_discovery!
 
     # Call the redirect url.
-    post omniauth_url(@provider)
+    get omniauth_url(@provider)
 
     # Validate that discovery took place.
     assert_requested :get, DISCOVERY_URL
@@ -79,7 +79,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     stub_discovery!
 
     # Call the redirect url.
-    post omniauth_url(@provider)
+    get omniauth_url(@provider)
 
     # Get the redirect url.
     assert_response :redirect
@@ -121,7 +121,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     stub_keys!(KEY_ID)
 
     # Call the redirect url to set the nonce and state.
-    post omniauth_url(@provider)
+    get omniauth_url(@provider)
 
     # Build an id token.
     id_token_body = {

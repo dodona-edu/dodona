@@ -71,10 +71,9 @@ gem 'devise', '~>4.8.1'
 gem 'ruby-saml', '~> 1.14.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.1.1'
-gem 'omniauth-oauth2', '~> 1.8.0'
+gem 'omniauth-google-oauth2', '~> 0.8.2'
+gem 'omniauth-oauth2', '~> 1.7.2'
 gem 'omniauth_openid_connect', '~> 0.4.0'
-gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
 gem 'jwt', '~> 2.5.0'
@@ -136,7 +135,7 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.21'
 
-gem 'ddtrace', '~> 1.4.0'
+gem 'ddtrace', '~> 1.4.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'
@@ -178,7 +177,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.16.0'
+  gem 'rubocop-rails', '~> 2.16.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

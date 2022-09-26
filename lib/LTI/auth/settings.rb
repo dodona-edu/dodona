@@ -31,7 +31,7 @@ module LTI
             },
             issuer: provider.issuer
         }
-        hash[:scope] = [:openid] if (provider.issuer == "https://ufora.ugent.be")
+        hash[:scope] = [:openid] if (provider.issuer == "https://ufora.ugent.be" || provider.issuer == "https://uforatest.ugent.be")
         hash
       end
     end

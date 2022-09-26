@@ -56,6 +56,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_privacy_policy
+    # If we end up on this page without the relevant session info, redirect to root
+    return redirect_to root_path if auth_hash.blank?
+
     identity = create_new_user_and_identity!
 
     sign_in!(identity)
@@ -64,6 +67,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # Confirm duplicate email before new user creation
 
   def confirm_new_user
+    # If we end up on this page without the relevant session info, redirect to root
+    return redirect_to root_path if auth_hash.blank?
+
     @institution = provider.institution
     @users = User.where(email: auth_email)
     @email = auth_email
@@ -72,6 +78,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def accept_confirm_new_user
+    # If we end up on this page without the relevant session info, redirect to root
+    return redirect_to root_path if auth_hash.blank?
+
     # Redirect to privacy prompt before we create a new private user
     return redirect_to_privacy_prompt if provider&.institution.nil?
 

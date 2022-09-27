@@ -12,10 +12,12 @@ module OmniAuth
       option :name, 'lti'
 
       def key_or_secret
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
         parse_jwks_uri(options.client_options.jwks_uri)
       end
 
       def callback_phase
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
         begin
           super
         rescue => e
@@ -25,6 +27,7 @@ module OmniAuth
       end
 
       def id_token_callback_phase
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
         # Parse the JWT to obtain the raw response.
         jwt_token = params.symbolize_keys[:id_token]
         raw_info = decode_id_token(jwt_token).raw_attributes

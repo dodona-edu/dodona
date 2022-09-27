@@ -4,6 +4,7 @@ module LTI
     require_relative 'messages/types.rb'
 
     def parse_message(token, provider_id)
+      Rails.logger.info "=====================================#{self.class}##{__method__}"
       return nil if token.nil? or provider_id.nil?
 
       # Get the provider of the token.

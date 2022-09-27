@@ -28,6 +28,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def lti
+    Rails.logger.info "=====================================#{self.class}##{__method__}"
     try_login!
   end
 
@@ -95,6 +96,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def try_login!
+    Rails.logger.info "=====================================#{self.class}##{__method__}"
     # Ensure that an appropriate provider is used.
     return redirect_to_preferred_provider! if provider.redirect?
 

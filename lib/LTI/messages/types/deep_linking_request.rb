@@ -25,6 +25,7 @@ module LTI::Messages::Types
     attr_reader :data
 
     def initialize(token_body)
+      Rails.logger.info "=====================================#{self.class}##{__method__}"
       super(token_body)
       settings = token_body[LTI::Messages::Claims::DEEP_LINKING_SETTINGS]
       @return_url = settings[RETURN_URL]
@@ -39,6 +40,7 @@ module LTI::Messages::Types
     end
 
     def as_json(options = nil)
+      Rails.logger.info "=====================================#{self.class}##{__method__}"
       base = super(options)
       settings = {}
       settings[RETURN_URL] = return_url

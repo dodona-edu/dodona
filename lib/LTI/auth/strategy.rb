@@ -11,6 +11,18 @@ module OmniAuth
 
       option :name, 'lti'
 
+      def request_call
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
+        super
+        Rails.logger.info "=====================================#{self.class}##{__method__} END"
+      end
+
+      def request_phase
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
+        super
+        Rails.logger.info "=====================================#{self.class}##{__method__} END"
+      end
+
       def key_or_secret
         Rails.logger.info "=====================================#{self.class}##{__method__}"
         parse_jwks_uri(options.client_options.jwks_uri)

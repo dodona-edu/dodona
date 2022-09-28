@@ -13,7 +13,40 @@ module OmniAuth
 
       def request_call
         Rails.logger.info "=====================================#{self.class}##{__method__}"
-        super
+        log :info, 'Request phase initiated.'
+        Rails.logger.info "=====================================#{self.class}##{__method__} A"
+
+        # store query params from the request url, extracted in the callback_phase
+        session['omniauth.params'] = request.GET
+        Rails.logger.info "=====================================#{self.class}##{__method__} B"
+        OmniAuth.config.before_request_phase.call(env) if OmniAuth.config.before_request_phase
+        Rails.logger.info "=====================================#{self.class}##{__method__} C"
+
+        if options.form.respond_to?(:call)
+          Rails.logger.info "=====================================#{self.class}##{__method__} D"
+          log :info, 'Rendering form from supplied Rack endpoint.'
+          Rails.logger.info "=====================================#{self.class}##{__method__} E"
+          options.form.call(env)
+        elsif options.form
+          Rails.logger.info "=====================================#{self.class}##{__method__} F"
+          log :info, 'Rendering form from underlying application.'
+          Rails.logger.info "=====================================#{self.class}##{__method__} G"
+          call_app!
+        elsif !options.origin_param
+          Rails.logger.info "=====================================#{self.class}##{__method__} H"
+          request_phase
+        else
+          if request.params[options.origin_param]
+            Rails.logger.info "=====================================#{self.class}##{__method__} I"
+            env['rack.session']['omniauth.origin'] = request.params[options.origin_param]
+          elsif env['HTTP_REFERER'] && !env['HTTP_REFERER'].match(/#{request_path}$/)
+            Rails.logger.info "=====================================#{self.class}##{__method__} J"
+            env['rack.session']['omniauth.origin'] = env['HTTP_REFERER']
+          end
+          Rails.logger.info "=====================================#{self.class}##{__method__} K"
+
+          request_phase
+        end
         Rails.logger.info "=====================================#{self.class}##{__method__} END"
       end
 

@@ -4,7 +4,6 @@ module LTI
   module Auth
     module Settings
       def base_settings(host = Rails.configuration.default_host)
-        Rails.logger.info "=====================================#{self.class}##{__method__}"
         # This configuration is tailored according to the LTI specification.
         # To support other OpenID providers, simply move certain properties
         # from this method to the for_provider method below, to make them
@@ -22,7 +21,6 @@ module LTI
       end
 
       def provider_settings(provider)
-        Rails.logger.info "=====================================#{self.class}##{__method__}"
         raise 'Not an LTI provider.' unless provider.is_a?(Provider::Lti)
 
         hash = {

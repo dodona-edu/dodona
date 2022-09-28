@@ -59,7 +59,6 @@ module LTI::Tokens
   class ToolJwt < LTIToken
     # @param [LTI::Tokens::IdToken] request_token: the request this response is for
     def initialize(request_token)
-      Rails.logger.info "=================ToolJwt.initialize"
       base = {}
 
       # Audience of the request is the issuer of the response.

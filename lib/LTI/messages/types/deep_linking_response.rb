@@ -10,13 +10,11 @@ module LTI::Messages::Types
       attr_accessor :url
 
       def initialize(title, url)
-        Rails.logger.info "=====================================#{self.class}##{__method__}"
         @title = title
         @url = url
       end
 
       def as_json(options = nil)
-        Rails.logger.info "=====================================#{self.class}##{__method__}"
         {
             title: @title,
             type: TYPE,
@@ -33,14 +31,12 @@ module LTI::Messages::Types
     attr_accessor :message
 
     def initialize(request)
-      Rails.logger.info "=====================================#{self.class}##{__method__}"
       super(request)
       @data = request.data
       @items = []
     end
 
     def as_json(options = nil)
-      Rails.logger.info "=====================================#{self.class}##{__method__}"
       base = super(options)
       base[LTI::Messages::Claims::DEEP_LINKING_DATA] = data if data.present?
       base[LTI::Messages::Claims::DEEP_LINKING_MESSAGE] = message if message.present?

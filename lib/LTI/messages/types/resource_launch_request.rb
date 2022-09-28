@@ -27,7 +27,6 @@ module LTI::Messages::Types
     attr_reader :platform_guid, :platform_contact_email, :platform_description, :platform_name, :platform_url
 
     def initialize(token_body)
-      Rails.logger.info "=====================================#{self.class}##{__method__}"
       super(token_body)
       resource_link = token_body[LTI::Messages::Claims::RESOURCE_LINK] || {}
       @resource_link_id = resource_link[RESOURCE_LINK_ID]
@@ -44,7 +43,6 @@ module LTI::Messages::Types
     end
 
     def as_json(options = nil)
-      Rails.logger.info "=====================================#{self.class}##{__method__}"
       base = super(options)
       rl = {}
       rl[RESOURCE_LINK_ID] = resource_link_id if resource_link_id.present?

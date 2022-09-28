@@ -52,7 +52,61 @@ module OmniAuth
 
       def request_phase
         Rails.logger.info "=====================================#{self.class}##{__method__}"
-        super
+        options.issuer = issuer if options.issuer.to_s.empty?
+        Rails.logger.info "=====================================#{self.class}##{__method__} A"
+        discover!
+        Rails.logger.info "=====================================#{self.class}##{__method__} B"
+        redirect authorize_uri
+        Rails.logger.info "=====================================#{self.class}##{__method__} END"
+      end
+
+
+
+      def discover!
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
+        return unless options.discovery
+        Rails.logger.info "=====================================#{self.class}##{__method__} A"
+
+        client_options.authorization_endpoint = config.authorization_endpoint
+        Rails.logger.info "=====================================#{self.class}##{__method__} B"
+        client_options.token_endpoint = config.token_endpoint
+        Rails.logger.info "=====================================#{self.class}##{__method__} C"
+        client_options.userinfo_endpoint = config.userinfo_endpoint
+        Rails.logger.info "=====================================#{self.class}##{__method__} D"
+        client_options.jwks_uri = config.jwks_uri
+        Rails.logger.info "=====================================#{self.class}##{__method__} E"
+        client_options.end_session_endpoint = config.end_session_endpoint if config.respond_to?(:end_session_endpoint)
+        Rails.logger.info "=====================================#{self.class}##{__method__} END"
+      end
+
+      def authorize_uri
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
+        client.redirect_uri = redirect_uri
+        Rails.logger.info "=====================================#{self.class}##{__method__} A"
+        opts = {
+          response_type: options.response_type,
+          response_mode: options.response_mode,
+          scope: options.scope,
+          state: new_state,
+          login_hint: params['login_hint'],
+          ui_locales: params['ui_locales'],
+          claims_locales: params['claims_locales'],
+          prompt: options.prompt,
+          nonce: (new_nonce if options.send_nonce),
+          hd: options.hd,
+          acr_values: options.acr_values,
+        }
+        Rails.logger.info "=====================================#{self.class}##{__method__} B"
+
+        opts.merge!(options.extra_authorize_params) unless options.extra_authorize_params.empty?
+
+        Rails.logger.info "=====================================#{self.class}##{__method__} C"
+        options.allow_authorize_params.each do |key|
+          opts[key] = request.params[key.to_s] unless opts.key?(key)
+        end
+        Rails.logger.info "=====================================#{self.class}##{__method__} D"
+
+        client.authorization_uri(opts.reject { |_k, v| v.nil? })
         Rails.logger.info "=====================================#{self.class}##{__method__} END"
       end
 

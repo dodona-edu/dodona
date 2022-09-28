@@ -6,13 +6,11 @@ module LTI::Tokens
     attr_reader :deployment_id
 
     def initialize(attributes)
-      Rails.logger.info "=================tokens.initialize"
       super(attributes)
       @deployment_id = attributes[LTI::Messages::Claims::DEPLOYMENT_ID]
     end
 
     def as_json(options = nil)
-      Rails.logger.info "=================tokens.as_json"
       base = super(options)
       base[LTI::Messages::Claims::DEPLOYMENT_ID] = deployment_id
       base
@@ -35,7 +33,6 @@ module LTI::Tokens
     attr_reader :deployment_id
 
     def initialize(attributes)
-      Rails.logger.info "=================IdToken.initialize"
       super(attributes)
       @email = attributes[JWT::Claims::OpenId::EMAIL]
       @family_name = attributes[JWT::Claims::OpenId::FAMILY_NAME]
@@ -44,7 +41,6 @@ module LTI::Tokens
     end
 
     def as_json(options = nil)
-      Rails.logger.info "=================IdToken.as_json"
       base = super(options)
       base[JWT::Claims::OpenId::EMAIL] = email if email.present?
       base[JWT::Claims::OpenId::FAMILY_NAME] = family_name if family_name.present?

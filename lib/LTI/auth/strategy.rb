@@ -1,5 +1,6 @@
 require_relative '../jwk.rb'
 require_relative '../messages/claims.rb'
+require_relative '../messages/types.rb'
 require 'openid_connect'
 
 # This strategy augments the existing oidc strategy for Dodona.

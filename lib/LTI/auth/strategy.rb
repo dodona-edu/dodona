@@ -18,6 +18,9 @@ module OmniAuth
 
         # store query params from the request url, extracted in the callback_phase
         session['omniauth.params'] = request.GET
+
+        Rails.logger.info "=====================================#{self.class}##{__method__} A1"
+        OmniAuth.config.request_validation_phase.call(env) if OmniAuth.config.request_validation_phase
         Rails.logger.info "=====================================#{self.class}##{__method__} B"
         OmniAuth.config.before_request_phase.call(env) if OmniAuth.config.before_request_phase
         Rails.logger.info "=====================================#{self.class}##{__method__} C"
@@ -57,6 +60,16 @@ module OmniAuth
         discover!
         Rails.logger.info "=====================================#{self.class}##{__method__} B"
         redirect authorize_uri
+        Rails.logger.info "=====================================#{self.class}##{__method__} END"
+      end
+
+      def issuer
+        Rails.logger.info "=====================================#{self.class}##{__method__}"
+        resource = "#{ client_options.scheme }://#{ client_options.host }"
+        Rails.logger.info "=====================================#{self.class}##{__method__} A"
+        resource = "#{ resource }:#{ client_options.port }" if client_options.port
+        Rails.logger.info "=====================================#{self.class}##{__method__} B"
+        ::OpenIDConnect::Discovery::Provider.discover!(resource).issuer
         Rails.logger.info "=====================================#{self.class}##{__method__} END"
       end
 

@@ -12,7 +12,7 @@ module OmniAuth
       option :name, 'lti'
 
       def initialize(app, *args, &block)
-        OmniAuth.config.request_validation_phase false
+        OmniAuth.config.request_validation_phase { }
         super
       end
 

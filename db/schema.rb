@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_09_14_075029) do
+ActiveRecord::Schema[7.0].define(version: 2022_09_29_072055) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -475,6 +475,15 @@ ActiveRecord::Schema[7.0].define(version: 2022_09_14_075029) do
     t.index ["activity_id"], name: "index_series_memberships_on_activity_id"
     t.index ["series_id", "activity_id"], name: "index_series_memberships_on_series_id_and_activity_id", unique: true
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
+  end
+
+  create_table "sessions", charset: "utf8mb4", force: :cascade do |t|
+    t.string "session_id", null: false
+    t.text "data"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
+    t.index ["updated_at"], name: "index_sessions_on_updated_at"
   end
 
   create_table "submissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|

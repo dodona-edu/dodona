@@ -140,6 +140,9 @@ gem 'ddtrace', '~> 1.4.1'
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'
 
+# Store session data in the database
+gem 'activerecord-session_store', '~> 2.0.0'
+
 group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 1.14.0'

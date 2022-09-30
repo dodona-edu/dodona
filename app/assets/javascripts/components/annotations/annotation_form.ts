@@ -185,7 +185,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                     <div class="clearfix annotation-help-block">
                         <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
                         ${this.questionMode ? html`
-                            <span class='help-block'>${I18n.t("js.user_annotation.help_student")}</span>
+                            <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
                         ` : ""}
                         <span class="help-block float-end">
                             <span class="used-characters">${I18n.formatNumber(this.annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}

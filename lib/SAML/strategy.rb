@@ -68,6 +68,8 @@ module OmniAuth
       def handle_response(raw, settings)
         # Parse the raw response.
         opts = response_options.merge(settings: settings)
+        # Allow clock drift to account for clock skew between servers.
+        opts = opts.merge({:allowed_clock_drift => 2.seconds})
         parsed_response = OneLogin::RubySaml::Response.new(raw, opts)
         parsed_response.soft = false
 

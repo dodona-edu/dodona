@@ -40,7 +40,7 @@ export class CodeListing {
     public readonly code: string;
     public readonly codeLines: number;
     public readonly submissionId: number;
-    public readonly courseId: number;
+    public readonly courseId: number | null;
     public readonly exerciseId: number;
     public readonly userId: number;
 

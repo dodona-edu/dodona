@@ -123,13 +123,9 @@ class Feedback < ApplicationRecord
 
   def uncomplete_or_set_blank_to_zero
     if submission.blank?
-      x = score_items.count
-      z = Current.user
       score_items.each do |score_item|
         Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
       end
-      y = scores.reload.count
-      y
     else
       uncomplete
     end

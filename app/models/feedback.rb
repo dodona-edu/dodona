@@ -22,9 +22,6 @@ class Feedback < ApplicationRecord
   has_many :scores, dependent: :destroy
   has_many :score_items, through: :evaluation_exercise
 
-  # Should know the current user to store who last updated the score
-  attr_accessor :current_user
-
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
@@ -127,7 +124,7 @@ class Feedback < ApplicationRecord
   def uncomplete_or_set_blank_to_zero
     if submission.blank?
       score_items.each do |score_item|
-        Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: current_user)
+        Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
       end
     else
       uncomplete

@@ -122,10 +122,10 @@ class Feedback < ApplicationRecord
   end
 
   def set_blank_to_zero
-    if submission.blank?
-      score_items.each do |score_item|
-        Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
-      end
+    return if submission.present?
+
+    score_items.each do |score_item|
+      Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
     end
   end
 end

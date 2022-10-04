@@ -58,17 +58,15 @@ class EvaluationTest < ActiveSupport::TestCase
     assert_equal BigDecimal('18.5'), @evaluation.average_score_sum
   end
 
-
-
   test 'Scores are set if a user is added' do
     evaluation = create :evaluation, :with_submissions
     evaluation.evaluation_exercises.each do |ee|
       create :score_item, evaluation_exercise: ee,
-             description: 'First item',
-             maximum: '10.0'
+                          description: 'First item',
+                          maximum: '10.0'
       create :score_item, evaluation_exercise: ee,
-             description: 'Second item',
-             maximum: '17.0'
+                          description: 'Second item',
+                          maximum: '17.0'
     end
 
     course = evaluation.series.course

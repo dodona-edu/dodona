@@ -617,47 +617,4 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_no_match expected_score_string(s2), response.body
     assert_no_match expected_score_string(feedback.score, feedback.maximum_score), response.body
   end
-
-  test 'Scores are set if a user is added' do
-    evaluation = create :evaluation, :with_submissions
-    evaluation.evaluation_exercises.each do |ee|
-      create :score_item, evaluation_exercise: ee,
-                          description: 'First item',
-                          maximum: '10.0'
-      create :score_item, evaluation_exercise: ee,
-                          description: 'Second item',
-                          maximum: '17.0'
-    end
-
-    course = evaluation.series.course
-    exercise = evaluation.evaluation_exercises.first.exercise
-
-    user = create :user
-    user.enrolled_courses << course
-    create :correct_submission, user: user, exercise: exercise, course: course, created_at: evaluation.deadline - 1.hour
-
-    Current.user = @course_admin
-    assert_difference 'Feedback.count', evaluation.evaluation_exercises.count do
-      evaluation.update(users: evaluation.users + [user])
-    end
-
-    evaluation_user = EvaluationUser.find_by(user: user, evaluation: evaluation)
-    assert_not_nil evaluation_user
-
-    # We have a submission for the first exercise, so it should not be completed, with no scores set
-    first_feedback = Feedback.find_by(evaluation_user: evaluation_user, evaluation_exercise: evaluation.evaluation_exercises.first)
-    assert_not_nil first_feedback
-    assert_not first_feedback.completed?
-    assert_equal 2, first_feedback.score_items.count
-    assert_equal 0, first_feedback.scores.count
-
-    # We have no submission for the second exercise, so it should be completed, with all scores set to 0
-    second_feedback = Feedback.find_by(evaluation_user: evaluation_user, evaluation_exercise: evaluation.evaluation_exercises.second)
-    assert_not_nil second_feedback
-    assert second_feedback.completed?
-    assert_equal 2, second_feedback.score_items.count
-    assert_equal 2, second_feedback.scores.count
-    assert_equal 0, second_feedback.scores.first.score
-    assert_equal 0, second_feedback.scores.second.score
-  end
 end

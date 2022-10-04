@@ -29,7 +29,7 @@ class Feedback < ApplicationRecord
   before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
-  after_create :uncomplete_or_set_blank_to_zero
+  after_create :set_blank_to_zero
   before_destroy :destroy_related_annotations
 
   validate :submission_user_exercise_correct
@@ -121,13 +121,11 @@ class Feedback < ApplicationRecord
     errors.add(:submission, 'course should be the same as in the evaluation') if submission.present? && submission.course_id != evaluation.series.course_id
   end
 
-  def uncomplete_or_set_blank_to_zero
+  def set_blank_to_zero
     if submission.blank?
       score_items.each do |score_item|
         Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
       end
-    else
-      uncomplete
     end
   end
 end

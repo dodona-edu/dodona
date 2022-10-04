@@ -622,11 +622,11 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation = create :evaluation, :with_submissions
     evaluation.evaluation_exercises.each do |ee|
       create :score_item, evaluation_exercise: ee,
-             description: 'First item',
-             maximum: '10.0'
+                          description: 'First item',
+                          maximum: '10.0'
       create :score_item, evaluation_exercise: ee,
-             description: 'Second item',
-             maximum: '17.0'
+                          description: 'Second item',
+                          maximum: '17.0'
     end
 
     course = evaluation.series.course

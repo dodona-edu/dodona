@@ -24,6 +24,9 @@ class Evaluation < ApplicationRecord
   has_many :exercises, through: :evaluation_exercises
   has_many :score_items, through: :evaluation_exercises
 
+  # Should know the current user when creating feedbacks, to store who last updated the score
+  attr_accessor :current_user
+
   validates :deadline, presence: true
   validate :deadline_in_past
 
@@ -142,7 +145,7 @@ class Evaluation < ApplicationRecord
     existing = feedbacks.to_a
     evaluation_users.to_a.each do |eu|
       evaluation_exercises.to_a.each do |ee|
-        feedbacks.new(evaluation_user: eu, evaluation_exercise: ee) if existing.select { |f| f.evaluation_user == eu && f.evaluation_exercise == ee }.blank?
+        feedbacks.new(evaluation_user: eu, evaluation_exercise: ee, current_user: current_user) if existing.select { |f| f.evaluation_user == eu && f.evaluation_exercise == ee }.blank?
       end
     end
   end

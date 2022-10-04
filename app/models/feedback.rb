@@ -22,6 +22,9 @@ class Feedback < ApplicationRecord
   has_many :scores, dependent: :destroy
   has_many :score_items, through: :evaluation_exercise
 
+  # Should know the current user to store who last updated the score
+  attr_accessor :current_user
+
   delegate :user, to: :evaluation_user
   delegate :exercise, to: :evaluation_exercise
 
@@ -29,6 +32,7 @@ class Feedback < ApplicationRecord
   before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
+  after_create :uncomplete_or_set_blank_to_zero
   before_destroy :destroy_related_annotations
 
   validate :submission_user_exercise_correct
@@ -118,5 +122,15 @@ class Feedback < ApplicationRecord
     errors.add(:submission, 'user should be the same as in the evaluation') if submission.present? && submission.user_id != user.id
     errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.exercise_id != exercise.id
     errors.add(:submission, 'course should be the same as in the evaluation') if submission.present? && submission.course_id != evaluation.series.course_id
+  end
+
+  def uncomplete_or_set_blank_to_zero
+    if submission.blank?
+      score_items.each do |score_item|
+        Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: current_user)
+      end
+    else
+      uncomplete
+    end
   end
 end

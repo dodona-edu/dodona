@@ -129,6 +129,7 @@ class EvaluationsController < ApplicationController
     @course = @evaluation.series.course
     @course_membership = @course.course_memberships.find_by(user_id: params[:user_id])
     @user = @course_membership.user
+    @evaluation.current_user = current_user
     @evaluation.update(users: @evaluation.users + [@user])
   end
 

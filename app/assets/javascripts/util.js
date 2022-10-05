@@ -174,11 +174,10 @@ const ready = new Promise(resolve => {
 });
 
 function htmlEncode(str) {
-    return String(str)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;");
+    const text = document.createTextNode(str);
+    const p = document.createElement("p");
+    p.appendChild(text);
+    return p.innerHTML;
 }
 
 export {

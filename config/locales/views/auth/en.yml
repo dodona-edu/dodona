@@ -5,7 +5,6 @@ en:
       sign_in: "Sign in"
       sign-in-with: "Sign in with %{provider}"
       sign-in-help: "Don't know which login you can use? Search for your school and click the sign in button:"
-      institution-search: "Type to search for your institution"
       ilearn-help: "Users of i-Learn can currently only sign in through the i-Learn website."
       higher-education: "Higher education"
       other-education: "Other educational institutions"

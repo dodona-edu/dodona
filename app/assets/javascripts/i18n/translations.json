@@ -305,6 +305,10 @@
       "score_item": {
         "error": "Error while updating"
       },
+      "sign_in_search_bar": {
+        "institution_search": "Type to search for your institution",
+        "log_in": "Sign in"
+      },
       "stacked_desc": "This graph shows the distribution of submissions statuses.",
       "stacked_title": "Distribution of submission statuses",
       "status": {
@@ -733,6 +737,10 @@
       },
       "score_item": {
         "error": "Fout bij bijwerken"
+      },
+      "sign_in_search_bar": {
+        "institution_search": "Typ om jouw school te vinden",
+        "log_in": "Aanmelden"
       },
       "stacked_desc": "Deze grafiek geeft de verdeling van de oplossingsstatussen per oefening weer.",
       "stacked_title": "Verdeling van de oplossingsstatus",

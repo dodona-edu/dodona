@@ -244,4 +244,8 @@ en:
         title: 'Reuse a saved comment'
         help_html: 'Saved annotations are automatically filtered by course and exercise. Click <a  href="/saved_annotations" target="_blank" >here</a> to manage all saved comments.'
         edited: The current comment differs from the saved comment
+    sign_in_search_bar:
+      institution_search: "Type to search for your institution"
+      log_in: Sign in
+
 

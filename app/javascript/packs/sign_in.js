@@ -1,3 +1,1 @@
-import { initInstitutionAutoSelect } from "../../assets/javascripts/sign_in.js";
-
-window.dodona.initInstitutionAutoSelect = initInstitutionAutoSelect;
+import "components/sign_in_search_bar";

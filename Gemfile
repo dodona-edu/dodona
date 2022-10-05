@@ -141,7 +141,7 @@ gem 'after_commit_everywhere', '~> 1.2.2'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.14.0'
+  gem 'mocha', '~> 1.15.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 

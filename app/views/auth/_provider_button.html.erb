@@ -1,7 +1,7 @@
 <% institution = provider.institution %>
 
 <% if provider.type == "Provider::Saml" %>
-  <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+  <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), class: 'institution-sign-in col-md-6 col-xl-4' do %>
     <div class="option-btn">
       <div class="option-btn-img">
         <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
@@ -15,7 +15,7 @@
     </div>
   <% end %>
 <% elsif provider.type == "Provider::Oidc" %>
-  <%= link_to omniauth_authorize_path(:user, Provider::Oidc.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+  <%= link_to omniauth_authorize_path(:user, Provider::Oidc.sym, provider: provider), class: 'institution-sign-in col-md-6 col-xl-4' do %>
     <div class="option-btn">
       <div class="option-btn-img">
         <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
@@ -29,7 +29,7 @@
     </div>
   <% end %>
 <% else %>
-  <%= link_to omniauth_authorize_path(:user, provider.class.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+  <%= link_to omniauth_authorize_path(:user, provider.class.sym), class: 'institution-sign-in col-md-6 col-xl-4' do %>
     <div class="option-btn">
       <div class="option-btn-img">
         <%= image_tag institution_logo(institution&.logo || provider.logo), class: "img-fluid" %>

@@ -233,3 +233,7 @@ blockquote {
     display: none;
   }
 }
+
+.list-group .list-group-item {
+  background-color: $background;
+}

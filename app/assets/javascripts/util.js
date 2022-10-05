@@ -173,6 +173,7 @@ const ready = new Promise(resolve => {
     }
 });
 
+// source https://github.com/janl/mustache.js/blob/master/mustache.js#L73
 const entityMap = {
     "&": "&amp;",
     "<": "&lt;",

@@ -44,7 +44,6 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
-gem 'sinatra', '~>2.2.2'
 
 # pagination
 gem 'will_paginate', '~>3.3.1'
@@ -136,14 +135,14 @@ gem 'memory_profiler', '~> 1.0.0'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.21'
 
-gem 'ddtrace', '~> 1.4.1'
+gem 'ddtrace', '~> 1.5.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.2.2'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 1.14.0'
+  gem 'mocha', '~> 1.15.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 
@@ -155,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.37.1'
-  gem 'selenium-webdriver', '~> 4.4.0'
+  gem 'selenium-webdriver', '~> 4.5.0'
 end
 
 group :test do

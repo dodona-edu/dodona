@@ -173,11 +173,21 @@ const ready = new Promise(resolve => {
     }
 });
 
+const entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;",
+    "/": "&#x2F;",
+    "`": "&#x60;",
+    "=": "&#x3D;"
+};
+
 function htmlEncode(str) {
-    const text = document.createTextNode(str);
-    const p = document.createElement("p");
-    p.appendChild(text);
-    return p.innerHTML;
+    return String(str).replace(/[&<>"'`=/]/g, function (s) {
+        return entityMap[s];
+    });
 }
 
 export {

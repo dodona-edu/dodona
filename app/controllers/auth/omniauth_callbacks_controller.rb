@@ -320,7 +320,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     lookup_string = format(CACHE_STRING, id: id)
     hash = auth_hash.to_json
     Rails.cache.write(lookup_string, hash, expires_in: CACHE_EXPIRY_TIME)
-    x = Rails.cache.read(lookup_string)
     # store unique id in session
     session[:new_user_auth_hash_id] = id
   end

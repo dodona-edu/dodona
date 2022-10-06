@@ -6,7 +6,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   setup do
     # Caching is used in some login flows and should be active for the tests
     ActionController::Base.perform_caching = true
-    Rails.cache = ActiveSupport::Cache::MemCacheStore.new
+    Rails.cache = ActiveSupport::Cache::MemoryStore.new
   end
 
   teardown do

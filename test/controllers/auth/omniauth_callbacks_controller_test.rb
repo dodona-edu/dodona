@@ -3,6 +3,19 @@ require 'test_helper'
 class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
+  def setup
+    super
+    # Caching is used in some login flows and should be active for the tests
+    ActionController::Base.perform_caching = true
+    Rails.cache = ActiveSupport::Cache::MemCacheStore.new
+  end
+
+  def teardown
+    super
+    ActionController::Base.perform_caching = false
+    Rails.cache = ActiveSupport::Cache::NullStore.new
+  end
+
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {

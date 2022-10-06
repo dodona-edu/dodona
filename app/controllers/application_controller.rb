@@ -144,7 +144,7 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale, trailing_slash: true, host: Rails.configuration.default_host }
+    { locale: I18n.locale, trailing_slash: true, host: request.protocol + request.host_with_port }
   end
 
   def ensure_trailing_slash

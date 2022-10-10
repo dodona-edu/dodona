@@ -27,6 +27,7 @@ class Auth::AuthenticationController < Devise::SessionsController
     ].compact
     @other = [
       Provider.find_by(issuer: 'https://authenticatie.vlaanderen.be/op'),
+      Provider.find_by(issuer: 'https://authenticatie-ti.vlaanderen.be/op'),
       Provider.find_by(entity_id: 'https://login.elixir-czech.org/idp/') # Elixir
     ].compact
 

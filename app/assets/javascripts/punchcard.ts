@@ -2,7 +2,6 @@ import * as d3 from "d3";
 
 const containerSelector = "#punchcard-container";
 const margin = { top: 10, right: 10, bottom: 20, left: 70 };
-const labelsX = [...Array(24).keys()];
 
 type chartType = d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 
@@ -52,7 +51,11 @@ function initPunchcard(url: string): void {
     const xAxis = d3.axisBottom(x)
         .ticks(24)
         .tickSize(0)
-        .tickFormat((_d, i) => (labelsX[i].toString()))
+        .tickFormat((hour: d3.NumberValue) => {
+            const now = new Date();
+            now.setHours(hour.valueOf(), 0, 0, 0);
+            return d3.timeFormat("%H:%M")(now);
+        })
         .tickPadding(10);
     const yAxis = d3.axisLeft(y)
         .ticks(7)

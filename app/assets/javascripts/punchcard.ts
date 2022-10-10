@@ -4,12 +4,14 @@ const containerSelector = "#punchcard-container";
 const margin = { top: 10, right: 10, bottom: 20, left: 70 };
 const labelsX = [...Array(24).keys()];
 
-function initPunchcard(url) {
+type chartType = d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+
+function initPunchcard(url: string): void {
     // If this is defined outside of a function, the locale always defaults to "en".
     const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.long.${k}`));
 
     const container = d3.select(containerSelector);
-    const width = container.node().getBoundingClientRect().width;
+    const width = (container.node() as Element).getBoundingClientRect().width;
     const innerWidth = width - margin.left - margin.right;
     const unitSize = innerWidth / 24;
     const innerHeight = unitSize * 7;
@@ -37,7 +39,7 @@ function initPunchcard(url) {
         .attr("y", innerHeight / 2)
         .style("text-anchor", "middle");
 
-    const processor = data => {
+    const processor = function (data): void {
         if (data["status"] === "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
@@ -50,18 +52,18 @@ function initPunchcard(url) {
     const xAxis = d3.axisBottom(x)
         .ticks(24)
         .tickSize(0)
-        .tickFormat((d, i) => labelsX[i])
+        .tickFormat((_d, i) => (labelsX[i].toString()))
         .tickPadding(10);
     const yAxis = d3.axisLeft(y)
         .ticks(7)
         .tickSize(0)
-        .tickFormat((d, i) => labelsY[i])
+        .tickFormat((_d, i) => labelsY[i])
         .tickPadding(10);
 
     renderAxes(xAxis, yAxis, chart, innerHeight);
 }
 
-function renderAxes(xAxis, yAxis, chart, innerHeight) {
+function renderAxes(xAxis: d3.Axis<d3.NumberValue>, yAxis: d3.Axis<d3.NumberValue>, chart: chartType, innerHeight: number): void {
     chart.append("g")
         .attr("class", "axis")
         .attr("transform", `translate(0, ${innerHeight})`)
@@ -75,7 +77,7 @@ function renderAxes(xAxis, yAxis, chart, innerHeight) {
         .style("display", "none");
 }
 
-function renderCard(data, unitSize, chart, x, y) {
+function renderCard(data: Array<[string, number]>, unitSize: number, chart: chartType, x: d3.ScaleLinear<number, number, never>, y: d3.ScaleLinear<number, number, never>): void {
     const maxVal = d3.max(data, d => d[1]);
     const radius = d3.scaleSqrt()
         .domain([0, maxVal])

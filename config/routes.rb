@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root 'pages#home'
 
   devise_scope :user do
-    get 'users/auth/lti', to: 'auth/omniauth_callbacks#lti' # this rout supports i-learn, see https://github.com/dodona-edu/dodona/pull/4082
+    get 'users/auth/lti', to: 'auth/omniauth_callbacks#lti' # this route supports i-learn, see https://github.com/dodona-edu/dodona/pull/4082
     post '/users/saml/auth' => 'auth/omniauth_callbacks#saml' # backwards compatibility
   end
 

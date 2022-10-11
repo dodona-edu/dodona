@@ -16,6 +16,12 @@ module OmniAuth
         # Disable validation phase for lti authentication requests
         # See https://github.com/dodona-edu/dodona/pull/4029
         OmniAuth.config.request_validation_phase { }
+
+        # Allow the use of get request for lti authentication requests
+        # This is required for ILearn, which uses a simple get redirect to Dodona
+        # We only allow get requests for the lti strategy because it also contains security risks
+        # See https://nvd.nist.gov/vuln/detail/CVE-2015-9284
+        OmniAuth.config.silence_get_warning = true
         super
       end
 

@@ -21,6 +21,7 @@ module OmniAuth
         # This is required for ILearn, which uses a simple get redirect to Dodona
         # We only allow get requests for the lti strategy because it also contains security risks
         # See https://nvd.nist.gov/vuln/detail/CVE-2015-9284
+        OmniAuth.config.allowed_request_methods = [:post, :get]
         OmniAuth.config.silence_get_warning = true
         super
       end

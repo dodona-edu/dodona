@@ -38,7 +38,7 @@ function initPunchcard(url: string): void {
         .attr("y", innerHeight / 2)
         .style("text-anchor", "middle");
 
-    const processor = function (data): void {
+    const processor = (data): void => {
         if (data["status"] === "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
             return;
@@ -80,7 +80,7 @@ function renderAxes(xAxis: d3.Axis<d3.NumberValue>, yAxis: d3.Axis<d3.NumberValu
         .style("display", "none");
 }
 
-function renderCard(data: Array<[string, number]>, unitSize: number, chart: chartType, x: d3.ScaleLinear<number, number, never>, y: d3.ScaleLinear<number, number, never>): void {
+function renderCard(data: Array<[string, number]>, unitSize: number, chart: chartType, x: d3.ScaleLinear<number, number>, y: d3.ScaleLinear<number, number>): void {
     const maxVal = d3.max(data, d => d[1]);
     const radius = d3.scaleSqrt()
         .domain([0, maxVal])

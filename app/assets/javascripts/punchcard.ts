@@ -51,11 +51,7 @@ function initPunchcard(url: string): void {
     const xAxis = d3.axisBottom(x)
         .ticks(24)
         .tickSize(0)
-        .tickFormat((hour: d3.NumberValue) => {
-            const now = new Date();
-            now.setHours(hour.valueOf(), 0, 0, 0);
-            return d3.timeFormat("%H:%M")(now);
-        })
+        .tickFormat(hour => `${hour < 10 ? "0" : ""}${hour}:00`)
         .tickPadding(10);
     const yAxis = d3.axisLeft(y)
         .ticks(7)

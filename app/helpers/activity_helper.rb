@@ -159,7 +159,7 @@ module ActivityHelper
     # (i.e. if it is relative, rewrite it to be absolute)
     # Returns nil if the argument isn't an url
     def absolutize_url(url)
-      URI.join(@request.original_url, url).to_s
+      URI.join(Rails.configuration.default_host, url).to_s
     rescue URI::InvalidURIError
       nil
     end

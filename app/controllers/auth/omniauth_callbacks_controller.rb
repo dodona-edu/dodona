@@ -1,6 +1,8 @@
 class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   # Disable CSRF since the token information is lost.
   skip_before_action :verify_authenticity_token
+  CACHE_EXPIRY_TIME = 5.minutes
+  CACHE_STRING = '/auth_hash/%<id>s'.freeze
 
   # ==> Failure route.
 
@@ -311,9 +313,15 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def store_hash_in_session!
-    # Filter raw info and credentials from hash to limit cookie size
-    hash = auth_hash.except('extra', 'credentials').merge({ 'extra' => auth_hash.extra&.except('raw_info') })
-    session[:new_user_auth_hash] = hash.to_json
+    # generate random unique key for the hash
+    # It is sufficiently random for uniqueness: https://stackoverflow.com/questions/18554306/generating-unique-token-on-the-fly-with-rails
+    id = SecureRandom.urlsafe_base64(16)
+    # store hash in cached memory
+    lookup_string = format(CACHE_STRING, id: id)
+    hash = auth_hash.to_json
+    Rails.cache.write(lookup_string, hash, expires_in: CACHE_EXPIRY_TIME)
+    # store unique id in session
+    session[:new_user_auth_hash_id] = id
   end
 
   def redirect_to_provider!(target_provider)
@@ -414,9 +422,13 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def auth_hash
     return request.env['omniauth.auth'] if request.env['omniauth.auth'].present?
 
-    # if auth hash was present in session, we can use that
-    # we do want to remove it from the session so it does not stay there indefinitely
-    @new_user_auth_hash = JSON.parse(session.delete(:new_user_auth_hash), object_class: OmniAuth::AuthHash) if session[:new_user_auth_hash].present?
+    if session[:new_user_auth_hash_id].present?
+      # if auth hash was present in session, we can use that
+      # we do want to remove it from the session so it does not stay there indefinitely
+      lookup_string = format(CACHE_STRING, id: session.delete(:new_user_auth_hash_id))
+      cached_hash = Rails.cache.read(lookup_string)
+      @new_user_auth_hash = JSON.parse(cached_hash, object_class: OmniAuth::AuthHash) if cached_hash.present?
+    end
 
     @new_user_auth_hash
   end

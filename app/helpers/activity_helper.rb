@@ -158,9 +158,8 @@ module ActivityHelper
     # Rewrite relative url's to absolute
     # (i.e. if it is relative, rewrite it to be absolute)
     # Returns nil if the argument isn't an url
-    def absolutize_url(url, use_default_host = false)
-      host = use_default_host ? "https://#{Rails.configuration.default_host}" : @request.original_url
-      URI.join(host, url).to_s
+    def absolutize_url(url)
+      URI.join(@request.original_url, url).to_s
     rescue URI::InvalidURIError
       nil
     end
@@ -174,7 +173,7 @@ module ActivityHelper
         url = anchor.attribute('href')&.value
         next if url.nil?
 
-        url = absolutize_url(url, true)
+        url = absolutize_url(url)
         next if url.nil?
 
         ref = "<sup class='footnote-url visible-print-inline'>#{i}</sup>"

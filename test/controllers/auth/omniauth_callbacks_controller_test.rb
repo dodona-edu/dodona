@@ -3,6 +3,17 @@ require 'test_helper'
 class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
 
+  setup do
+    # Caching is used in some login flows and should be active for the tests
+    ActionController::Base.perform_caching = true
+    Rails.cache = ActiveSupport::Cache::MemoryStore.new
+  end
+
+  teardown do
+    ActionController::Base.perform_caching = false
+    Rails.cache = ActiveSupport::Cache::NullStore.new
+  end
+
   def omniauth_mock_identity(identity, params = {})
     # Generic hash.
     auth_hash = {
@@ -44,7 +55,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       omniauth_mock_identity identity
 
       # Call the authorization url.
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       # Assert successful authentication.
@@ -65,7 +76,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       omniauth_mock_identity identity
 
       # Call the authorization url.
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       # Assert successful authentication.
@@ -88,7 +99,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       # Call the authorization url.
       assert_difference 'User.count', 1 do
         assert_difference 'Identity.count', 1 do
-          get omniauth_url(provider)
+          post omniauth_url(provider)
           follow_redirect!
         end
       end
@@ -113,7 +124,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       # Call the authorization url.
       assert_difference 'User.count', 1 do
         assert_difference 'Identity.count', 1 do
-          get omniauth_url(provider)
+          post omniauth_url(provider)
           follow_redirect!
         end
       end
@@ -139,7 +150,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'User.count', 1 do
         assert_difference 'Identity.count', 1 do
           assert_difference 'Institution.count', 1 do
-            get omniauth_url(provider)
+            post omniauth_url(provider)
             follow_redirect!
           end
         end
@@ -171,7 +182,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                              institution: redirect_provider.identifier
                            }
 
-    get omniauth_url(redirect_provider)
+    post omniauth_url(redirect_provider)
     follow_redirect!
 
     assert_redirected_to %r{/users/auth/#{preferred_provider.class.sym}/}
@@ -187,7 +198,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
       # Authenticate #1.
       omniauth_mock_identity identity
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       # Compare the id to the session since @controller.current_user is not
@@ -201,7 +212,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
       # Authenticate #2.
       omniauth_mock_identity identity2
-      get omniauth_url(provider2)
+      post omniauth_url(provider2)
       follow_redirect!
 
       # Compare the id to the session since @controller.current_user is not
@@ -225,7 +236,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                                last_name: 'Flapstaart'
                              }
 
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       user.reload
@@ -252,7 +263,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                              }
 
       assert_emails 1 do
-        get omniauth_url(provider)
+        post omniauth_url(provider)
         follow_redirect!
       end
 
@@ -274,7 +285,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     omniauth_mock_identity identity
 
     assert_difference 'User.count', +1 do
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
     end
 
@@ -290,7 +301,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       omniauth_mock_identity identity
 
       assert_difference 'User.count', 0 do
-        get omniauth_url(provider)
+        post omniauth_url(provider)
         follow_redirect!
       end
 
@@ -313,7 +324,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       omniauth_mock_identity second_identity
 
       assert_difference 'User.count', 0 do
-        get omniauth_url(second_provider)
+        post omniauth_url(second_provider)
         follow_redirect!
       end
 
@@ -342,7 +353,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       OmniAuth.config.mock_auth[:default] = :invalid_credentials
 
       # Call the authorization url.
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       assert_redirected_to root_path
@@ -359,7 +370,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       omniauth_mock_identity identity
 
       # Call the authorization url.
-      get omniauth_url(provider)
+      post omniauth_url(provider)
       follow_redirect!
 
       # Assert failed authentication.
@@ -383,7 +394,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'User.count', 1 do
         assert_difference 'Identity.count', 1 do
           # Call the authorization url.
-          get omniauth_url(provider)
+          post omniauth_url(provider)
           follow_redirect!
 
           # assert privacy prompt before successful sign in
@@ -419,7 +430,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_difference 'User.count', 0 do
         assert_difference 'Identity.count', 0 do
           # Call the authorization url.
-          get omniauth_url(provider)
+          post omniauth_url(provider)
           follow_redirect!
 
           # assert privacy prompt before successful sign in
@@ -446,7 +457,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -463,7 +474,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     # Assert successful authentication.
@@ -480,7 +491,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEWER-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     # Assert successful authentication.
@@ -507,7 +518,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -529,7 +540,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -551,7 +562,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -568,7 +579,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     # Assert successful authentication.
@@ -585,7 +596,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEWER-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     # Assert successful authentication.
@@ -610,7 +621,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -634,7 +645,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                            },
                            uid: 'NEW-UID'
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -655,7 +666,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                              isCoAccount?: true
                            }
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_redirected_to root_path
@@ -672,7 +683,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
                              isCoAccount?: false
                            }
 
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
 
     assert_equal @controller.current_user, user
@@ -688,12 +699,12 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     omniauth_mock_identity identity
 
     # Test "inside iframe"
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!
     assert_redirected_to lti_redirect_path(provider: main_provider.id, sym: main_provider.class.sym)
 
     # Test outside iframe
-    get omniauth_url(provider)
+    post omniauth_url(provider)
     follow_redirect!(headers: {
       'Sec-Fetch-Dest' => 'document'
     })
@@ -717,7 +728,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Simulate the user logging in with the second provider.
     # It should not create a user.
     assert_difference 'User.count', 0 do
-      get omniauth_url(second_provider)
+      post omniauth_url(second_provider)
       follow_redirect!
     end
 
@@ -734,7 +745,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     omniauth_mock_identity first_identity
 
     # The user listens to what we say and clicks the button.
-    get omniauth_url(first_provider)
+    post omniauth_url(first_provider)
     follow_redirect!
 
     # It should have been linked.

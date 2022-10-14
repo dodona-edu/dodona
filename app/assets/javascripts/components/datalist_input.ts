@@ -3,8 +3,10 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/watch_mixin";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { htmlEncode } from "util.js";
 
-type Option = {label: string, value: string, extra?: string};
+export type Option = {label: string, value: string, extra?: string};
 
 /**
  * This component represents an input field with a datalist with possible options for the input.
@@ -16,6 +18,7 @@ type Option = {label: string, value: string, extra?: string};
  *          If the user input does not match any label, the value sent to the server wil be ""
  *          The extra string is added in the options and also used to match the input
  * @prop {String} value - the initial value for this field
+ * @prop {String} filter - the initial filter value for this field
  * @prop {String} placeholder - placeholder text shown in input
  *
  * @fires input - on value change, event details contain {label: string, value: string}
@@ -29,12 +32,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     @property({ type: String })
     value: string;
     @property({ type: String })
+    filter: string = this.label;
+    @property({ type: String })
     placeholder: string;
 
     inputRef: Ref<HTMLInputElement> = createRef();
-
-    @property({ state: true })
-    filter: string = this.label;
 
     watch = {
         filter: () => {
@@ -60,14 +62,12 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     };
 
     fireEvent(): void {
-        if (this.value) {
-            const event = new CustomEvent("input", {
-                detail: { value: this.value, label: this.filter },
-                bubbles: true,
-                composed: true
-            });
-            this.dispatchEvent(event);
-        }
+        const event = new CustomEvent("input", {
+            detail: { value: this.value, label: this.filter },
+            bubbles: true,
+            composed: true
+        });
+        this.dispatchEvent(event);
     }
 
     get label(): string {
@@ -116,6 +116,19 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         e.stopPropagation();
     }
 
+    keydown(e: KeyboardEvent): void {
+        if (e.key === "Tab" && this.filtered_options.length > 0) {
+            this.value = this.filtered_options[0].value;
+            this.filter = this.filtered_options[0].label;
+        }
+    }
+
+    mark(s: string): TemplateResult {
+        return this.filter ?
+            html`${unsafeHTML(htmlEncode(s).replace(new RegExp(this.filter, "gi"), m => `<b>${m}</b>`))}` :
+            html`${s}`;
+    }
+
     render(): TemplateResult {
         return html`
             <div class="dropdown">
@@ -125,14 +138,15 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        @input=${e => this.processInput(e)}
                        .value="${this.filter}"
                        placeholder="${this.placeholder}"
+                       @keydown=${e => this.keydown(e)}
                 >
                 <ul class="dropdown-menu ${this.filter && this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
                         <li><a class="dropdown-item ${this.value === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
-                            ${option.label}
+                            ${this.mark(option.label)}
                             ${option.extra ? html`
-                                <br/><span class="small">${option.extra}</span>
+                                <br/><span class="small">${this.mark(option.extra)}</span>
                             `:""}
                         </a></li>
                     `)}

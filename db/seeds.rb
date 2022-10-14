@@ -75,6 +75,17 @@ if Rails.env.development?
 
   puts "Creating providers (#{Time.now - start})"
 
+  100.times do
+    i = Institution.create name: Faker::Company.name , short_name: 'sbhg', logo: 'sbhg.jpeg', generated_name: false
+    if Random.rand < 0.3333
+      Provider::Office365.create institution: i, identifier: Faker::Internet.ip_v6_address
+    elsif Random.rand < 0.5
+      Provider::Smartschool.create institution: i, identifier: Faker::Internet.url
+    else
+      Provider::GSuite.create institution: i, identifier: Faker::Internet.ip_v6_address
+    end
+  end
+
   # Office 365.
   Provider::Office365.create institution: artevelde, identifier: 'b6e080ea-adb9-4c79-9303-6dcf826fb854'
   Provider::Office365.create institution: sg_paulus, identifier: 'af15916d-7d77-43f9-b366-ae98d0fe36be'

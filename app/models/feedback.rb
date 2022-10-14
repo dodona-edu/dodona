@@ -29,6 +29,7 @@ class Feedback < ApplicationRecord
   before_save :reset_feedback_after_submission_update
   before_create :generate_id
   before_create :determine_submission
+  after_create :set_blank_to_zero
   before_destroy :destroy_related_annotations
 
   validate :submission_user_exercise_correct
@@ -118,5 +119,13 @@ class Feedback < ApplicationRecord
     errors.add(:submission, 'user should be the same as in the evaluation') if submission.present? && submission.user_id != user.id
     errors.add(:submission, 'exercise should be the same as in the evaluation') if submission.present? && submission.exercise_id != exercise.id
     errors.add(:submission, 'course should be the same as in the evaluation') if submission.present? && submission.course_id != evaluation.series.course_id
+  end
+
+  def set_blank_to_zero
+    return if submission.present?
+
+    score_items.each do |score_item|
+      Score.create(score_item: score_item, feedback: self, score: 0, last_updated_by: Current.user)
+    end
   end
 end

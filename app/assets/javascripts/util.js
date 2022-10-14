@@ -173,6 +173,23 @@ const ready = new Promise(resolve => {
     }
 });
 
+// source https://github.com/janl/mustache.js/blob/master/mustache.js#L73
+const entityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    "\"": "&quot;",
+    "'": "&#39;",
+    "/": "&#x2F;",
+    "`": "&#x60;",
+    "=": "&#x3D;"
+};
+
+function htmlEncode(str) {
+    return String(str).replace(/[&<>"'`=/]/g, function (s) {
+        return entityMap[s];
+    });
+}
 
 export {
     createDelayer,
@@ -192,4 +209,5 @@ export {
     setDocumentTitle,
     initDatePicker,
     ready,
+    htmlEncode,
 };

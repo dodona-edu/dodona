@@ -1,5 +1,6 @@
 require_relative '../jwk.rb'
 require_relative '../messages/claims.rb'
+require_relative '../messages/types.rb'
 require 'openid_connect'
 
 # This strategy augments the existing oidc strategy for Dodona.
@@ -10,6 +11,20 @@ module OmniAuth
       include Rails.application.routes.url_helpers
 
       option :name, 'lti'
+
+      def initialize(app, *args, &block)
+        # Disable validation phase for lti authentication requests
+        # See https://github.com/dodona-edu/dodona/pull/4029
+        OmniAuth.config.request_validation_phase { }
+
+        # Allow the use of get request for lti authentication requests
+        # This is required for ILearn, which uses a simple get redirect to Dodona
+        # We only allow get requests for the lti strategy because it also contains security risks
+        # See https://nvd.nist.gov/vuln/detail/CVE-2015-9284
+        OmniAuth.config.allowed_request_methods = [:post, :get]
+        OmniAuth.config.silence_get_warning = true
+        super
+      end
 
       def key_or_secret
         parse_jwks_uri(options.client_options.jwks_uri)

@@ -63,30 +63,25 @@ input:focus {
   outline: none;
 }
 
-#scrollable-dropdown-menu {
-  .card {
-    margin-bottom: 0;
+d-sign-in-search-bar d-datalist-input {
+  flex-grow: 1;
+
+  .form-control {
+    font-size: 1rem;
+    padding: 0.65rem;
+    border-top-right-radius: initial;
+    border-bottom-right-radius: initial;
   }
 
-  margin-bottom: 16px;
+  .dropdown-item {
+    font-size: 1rem;
+  }
 
-  .tt-menu {
-    max-height: 150px;
-    overflow-y: auto;
-    background-color: white;
+  .dropdown-menu {
     width: 100%;
-  }
 
-  .tt-selectable:hover {
-    background-color: lightskyblue;
-  }
-
-  .tt-input,
-  .tt-hint {
-    border: none;
-    font-size: 18px;
-    min-height: 42px;
-    color: $on-surface;
-    border-radius: 6px 0 0 6px !important;
+    a:hover {
+      font-size: 1rem;
+    }
   }
 }

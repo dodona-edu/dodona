@@ -5,7 +5,7 @@ function initCourseMemberLabelsEdit(labels) {
         identify: d => d.id,
         datumTokenizer: d => {
             const result = Bloodhound.tokenizers.whitespace(d.name);
-            $.each(result, (i, val) => {
+            document.querySelectorAll().forEach(result, (_i, val) => {
                 for (let i = 1; i < val.length; i++) {
                     result.push(val.substr(i, val.length));
                 }
@@ -14,11 +14,13 @@ function initCourseMemberLabelsEdit(labels) {
         }, queryTokenizer: Bloodhound.tokenizers.whitespace,
     });
 
-    const $field = $("#course_membership_course_labels");
-    $field.on("tokenfield:createdtoken", e => {
-        $(e.relatedTarget).addClass("accent-orange");
+    const field = document.querySelector("#course_membership_course_labels");
+
+    field.addEventListener("tokenfield:createdtoken", e => {
+        document.querySelector(e.relatedTarget).classList.add("accent-orange");
     });
-    $field.tokenfield({
+
+    field.tokenfield({
         beautify: false,
         createTokensOnBlur: true,
         typeahead: [{

@@ -450,7 +450,7 @@ GEM
     sshkit (1.21.2)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stackprof (0.2.21)
+    stackprof (0.2.22)
     strscan (3.0.4)
     swd (1.3.0)
       activesupport (>= 3)
@@ -570,7 +570,7 @@ DEPENDENCIES
   simplecov (~> 0.21.2)
   slack-notifier (~> 2.4.0)
   sprockets-rails (~> 3.4.2)
-  stackprof (~> 0.2.21)
+  stackprof (~> 0.2.22)
   terser (>= 1.1.1)
   test-prof (~> 1.0.10)
   tzinfo-data

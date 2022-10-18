@@ -18,12 +18,10 @@
       <div class="col-sm-8 col-10">
         <%= f.text_field :course_labels, class: 'form-control', disable: !f.permission?(:course_labels), value: course_membership.course_labels.map(&:name).join(','), placeholder: t('.course_labels') %>
         <small><%= t '.labels_delimiter' %></small>
+      <d-labels-search-bar
+        labels="<%= raw @course_labels.map{|cl| {id: cl.id, name: cl.name}}.to_json %>"
+      ></d-labels-search-bar>
       </div>
     </div>
   </div>
 <% end %>
-<script>
-    dodona.ready.then(function () {
-        dodona.initCourseMemberLabelsEdit(<%= raw @course_labels.map{|cl| {id: cl.id, name: cl.name}}.to_json %>);
-    });
-</script>

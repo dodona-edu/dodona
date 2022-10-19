@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
-gem 'puma', '~> 5.6.5'
+gem 'puma', '~> 6.0.0'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.1'
@@ -153,7 +153,7 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.37.1'
+  gem 'capybara', github: 'teamcapybara/capybara', branch: 'master'
   gem 'selenium-webdriver', '~> 4.5.0'
 end
 

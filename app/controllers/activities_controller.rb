@@ -136,7 +136,7 @@ class ActivitiesController < ApplicationController
     @courses_series = policy_scope(@activity.series).group_by(&:course).sort do |a, b|
       [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
     end
-    flash[:alert] = I18n.t('activities.info.activity_invalid') if @activity.not_valid?
+    flash.now[:alert] = I18n.t('activities.info.activity_invalid') if @activity.not_valid?
   end
 
   def edit

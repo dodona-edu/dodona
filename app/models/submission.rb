@@ -394,7 +394,7 @@ class Submission < ApplicationRecord
     # this can only be done on the complete result since this part drops the user_id
     value = value
             .group_by { |ex_u_ids, _| ex_u_ids[0] } # group by exercise (key: ex_id, value: [[ex_id, u_id], count])
-            .transform_values { |v| v.map { |ex_u_ids_count| ex_u_ids_count[1] } } # only retain count (as value)
+            .transform_values { |v| v.pluck(1) } # only retain count (as value)
     {
       value: value
     }
@@ -477,7 +477,7 @@ class Submission < ApplicationRecord
         subs.map { |s| [s.exercise_id, s.created_at] }
           .group_by { |ex_id_date| ex_id_date[0] } # group by exId
           # drop exId from values
-          .transform_values { |values| values.map { |v| v[1] } }
+          .transform_values { |values| values.pluck(1) }
       ) { |_k, v1, v2| v1 + v2 }
     end
     {

@@ -352,9 +352,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     exercises_response = JSON.parse response.body
     assert_equal 2, exercises_response.count
 
-    exercise_response_ids = exercises_response.map do |ex|
-      ex['id']
-    end
+    exercise_response_ids = exercises_response.pluck('id')
     exercises_in_series.each do |exercise_expected|
       assert_includes exercise_response_ids, exercise_expected.id
     end

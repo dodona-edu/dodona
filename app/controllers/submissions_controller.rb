@@ -95,6 +95,18 @@ class SubmissionsController < ApplicationController
     @feedbacks = policy_scope(@submission.feedbacks).preload(scores: :score_item)
   end
 
+  def edit
+    respond_to do |format|
+      format.html do
+        if @submission.course.nil?
+          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        else
+          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        end
+      end
+    end
+  end
+
   def create
     authorize Submission
     para = permitted_attributes(Submission)
@@ -114,18 +126,6 @@ class SubmissionsController < ApplicationController
     else
       submission.errors.add(:exercise, 'not permitted') unless can_submit
       render json: { status: 'failed', errors: submission.errors }, status: :unprocessable_entity
-    end
-  end
-
-  def edit
-    respond_to do |format|
-      format.html do
-        if @submission.course.nil?
-          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        else
-          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        end
-      end
     end
   end
 

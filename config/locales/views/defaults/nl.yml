@@ -1,10 +1,10 @@
 nl:
   layouts:
     navbar:
-      demo_mode: "Demo modus"
+      demo_mode: "Anonieme modus"
       dark_mode: "Donkere modus"
-      disable_demo_mode: "Demo modus uitschakelen"
-      enable_demo_mode: "Demo modus inschakelen"
+      disable_demo_mode: "Anonieme modus uitschakelen"
+      enable_demo_mode: "Anonieme modus inschakelen"
       disable_dark_mode: "Donkere modus uitschakelen"
       enable_dark_mode: "Donkere modus inschakelen"
   layout:
@@ -16,9 +16,9 @@ nl:
       switch_back: Keer terug
       your_account: naar jouw account.
     demo_mode:
-      demo_mode_enabled: Demo modus ingeschakeld
-      info: in demo modus verbergt Dodona de echte namen van alle gebruikers.
-      switch_back: Demo modus uitschakelen.
+      demo_mode_enabled: Anonieme modus ingeschakeld
+      info: in anonieme modus verbergt Dodona de echte namen van alle gebruikers.
+      switch_back: Anonieme modus uitschakelen.
     messages:
       warning: Opgepast!
       danger: Oh nee!

@@ -22,20 +22,6 @@ class ScoreItemsController < ApplicationController
     end
   end
 
-  def update
-    args = permitted_attributes(@score_item)
-    args[:last_updated_by] = current_user
-    respond_to do |format|
-      if @score_item.update(args)
-        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
-        format.json { render :show, status: :ok, location: [@evaluation, @score_item] }
-      else
-        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: preload_eval_exercise(@score_item) } }
-        format.json { render json: @score_item.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
   def create
     @score_item = ScoreItem.new(permitted_attributes(ScoreItem))
     @score_item.last_updated_by = current_user
@@ -43,6 +29,20 @@ class ScoreItemsController < ApplicationController
       if @score_item.save
         format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render :show, status: :created, location: [@evaluation, @score_item] }
+      else
+        format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: preload_eval_exercise(@score_item) } }
+        format.json { render json: @score_item.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update
+    args = permitted_attributes(@score_item)
+    args[:last_updated_by] = current_user
+    respond_to do |format|
+      if @score_item.update(args)
+        format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
+        format.json { render :show, status: :ok, location: [@evaluation, @score_item] }
       else
         format.js { render 'score_items/index', locals: { new: @score_item, evaluation_exercise: preload_eval_exercise(@score_item) } }
         format.json { render json: @score_item.errors, status: :unprocessable_entity }

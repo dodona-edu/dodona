@@ -24,18 +24,18 @@ class AnnouncementsController < ApplicationController
     end
   end
 
-  def edit
-    @institutions = Institution.all
-    @title = I18n.t('announcements.edit.title')
-    @crumbs = [[I18n.t('announcements.index.title'), announcements_path], [I18n.t('announcements.edit.title'), '#']]
-  end
-
   def new
     authorize Announcement
     @announcement = Announcement.new(style: :primary)
     @institutions = Institution.all
     @title = I18n.t('announcements.new.title')
     @crumbs = [[I18n.t('announcements.index.title'), announcements_path], [I18n.t('announcements.new.title'), '#']]
+  end
+
+  def edit
+    @institutions = Institution.all
+    @title = I18n.t('announcements.edit.title')
+    @crumbs = [[I18n.t('announcements.index.title'), announcements_path], [I18n.t('announcements.edit.title'), '#']]
   end
 
   def create

@@ -62,7 +62,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     if message_includes
       result = JSON.parse(@submission.result)
       messages = result['messages']
-      message_contents = messages.map { |m| m['description'] }
+      message_contents = messages.pluck('description')
       included = message_contents.any? { |m| m.include?(message_includes) }
       assert included,
              "Expected to find the text \n\"#{message_includes}\"\n" \

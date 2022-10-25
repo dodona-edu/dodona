@@ -30,7 +30,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
 
     results = JSON.parse response.body
-    result_ids = results.map { |r| r['id'] }
+    result_ids = results.pluck('id')
 
     assert_equal submissions.count, result_ids.count
     submissions.each do |sub|

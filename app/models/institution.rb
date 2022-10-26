@@ -73,7 +73,24 @@ class Institution < ApplicationRecord
           matrix[j.id][i.id] = matrix[i.id][j.id]
         end
       end
+      matrix
     end
+  end
+
+  def self.sorted_most_similar_institutions
+    Institution.all
+               .map { |i| [i, i.most_similar_institution] }
+               .map do |a|
+                 [
+                   Institution.similarity_matrix[a[0].id][a[1].id],
+                   a[0].name,
+                   a[0].id,
+                   a[1].name,
+                   a[1].id,
+                   a[0].similarity_score(a[1])
+                 ]
+               end
+               .sort
   end
 
   def most_similar_institution

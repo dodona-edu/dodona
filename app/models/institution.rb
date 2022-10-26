@@ -13,6 +13,9 @@
 #
 
 class Institution < ApplicationRecord
+  include Gem::Text
+  CACHE_EXPIRY_TIME = 1.day
+  SIMILARITY_CACHE_STRING = '/Institutions/similarity_matrix'.freeze
   NEW_INSTITUTION_NAME = 'n/a'.freeze
 
   enum category: { secondary: 0, higher: 1, other: 2 }
@@ -56,6 +59,54 @@ class Institution < ApplicationRecord
 
   def unmark_generated
     self.generated_name = false
+  end
+
+  def self.similarity_matrix
+    # create a matrix of all institutions and their similarity scores
+    Rails.cache.fetch(SIMILARITY_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
+      max_id = Institution.maximum(:id) + 1
+      matrix = Array.new(max_id) { Array.new(max_id, 0) }
+
+      Institution.find_each do |i|
+        Institution.where('id > ?', i.id).find_each do |j|
+          matrix[i.id][j.id] = i.similarity_score(j)[0]
+          matrix[j.id][i.id] = matrix[i.id][j.id]
+        end
+      end
+    end
+  end
+
+  def most_similar_institution
+    Institution.find(Institution.similarity_matrix[id].each_with_index.max[1])
+  end
+
+  def similarity_score(other)
+    return 0 if other.nil?
+
+    # increase score for similar names
+    name_similarity = [name.length, other.name.length].max - levenshtein_distance(name, other.name)
+    short_name_similarity = [short_name.length, other.short_name.length].max - levenshtein_distance(short_name, other.short_name)
+    # increase score if users have the same email address
+    email_similarity = users.where.not(email: nil)
+                  .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
+                  .count
+    # increase score if users have the same username
+    username_similarity = users.where.not(username: nil)
+                  .where(username: User.where(institution: other).where.not(username: nil).pluck(:username))
+                  .count
+    # increase score if users have the same email domain
+    domain_similarity = 0
+    User.where(institution: other).where.not(email: nil)
+        .pluck(:email)
+        .map { |e| e.split('@').last }
+        .filter { |e| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com].exclude?(e) }
+        .group_by { |e| e }.map { |k, v| [k, v.length] }.each do |domain, count|
+      # we want to count the number of users with the same domain
+      # which is the minimum of the number of users with that domain in each institution
+      domain_similarity += [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
+    end
+    score = name_similarity + short_name_similarity + email_similarity + username_similarity + domain_similarity
+    [score, name_similarity, short_name_similarity, email_similarity, username_similarity, domain_similarity]
   end
 
   def merge_into(other)

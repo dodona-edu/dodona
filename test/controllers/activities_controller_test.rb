@@ -746,4 +746,13 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     assert description_url.include?(Rails.configuration.sandbox_host)
     assert description_url.include?(exercise.access_token)
   end
+
+  test 'json link to description should return a 406' do
+    exercise = exercises(:python_exercise)
+
+    # should throw unknown format error, which rails will translate to a 406
+    assert_raises(ActionController::UnknownFormat) do
+      get description_activity_url(exercise, token: exercise.access_token, format: :json)
+    end
+  end
 end

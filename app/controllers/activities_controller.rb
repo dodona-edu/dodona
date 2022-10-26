@@ -122,6 +122,7 @@ class ActivitiesController < ApplicationController
   end
 
   def description
+    respond_to :html
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
 
     render layout: 'frame'

@@ -101,8 +101,8 @@ class Institution < ApplicationRecord
     return 0 if other.nil?
 
     # increase score for similar names
-    name_similarity = [name.length, other.name.length].max - levenshtein_distance(name, other.name)
-    short_name_similarity = [short_name.length, other.short_name.length].max - levenshtein_distance(short_name, other.short_name)
+    name_similarity = (1 - (levenshtein_distance(name, other.name)/[name.length, other.name.length].max.to_f)) * 2
+    short_name_similarity = (1 - (levenshtein_distance(short_name, other.short_name)/[short_name.length, other.short_name.length].max.to_f)) * 2
     # increase score if users have the same email address
     email_similarity = users.where.not(email: nil)
                   .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
@@ -123,7 +123,7 @@ class Institution < ApplicationRecord
       domain_similarity += [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
     end
     score = name_similarity + short_name_similarity + email_similarity + username_similarity + domain_similarity
-    [score, name_similarity, short_name_similarity, email_similarity, username_similarity, domain_similarity]
+    [score.round, name_similarity, short_name_similarity, email_similarity, username_similarity, domain_similarity]
   end
 
   def merge_into(other)

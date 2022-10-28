@@ -32,6 +32,18 @@ class Institution < ApplicationRecord
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%").or(where('short_name LIKE ?', "%#{name}%")) }
 
+  scope :order_by_name, ->(direction) { reorder generated_name: direction, name: direction }
+  scope :order_by_short_name, ->(direction) { reorder short_name: direction }
+  scope :order_by_courses, ->(direction) { joins("LEFT JOIN (#{Course.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) courses on courses.institution_id = institutions.id").reorder("courses.count #{direction}") }
+  scope :order_by_users, ->(direction) { joins("LEFT JOIN (#{User.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) users on users.institution_id = institutions.id").reorder("users.count #{direction}") }
+  scope :order_by_most_similar, lambda { |direction|
+    joins("LEFT JOIN (values ('id', 'score'),#{Institution.most_similar_institutions
+                     .map
+                     .with_index { |ins, i| "(#{i}, #{ins[:score]})" }
+                     .join(', ')}) similarity ON similarity.id = institutions.id")
+      .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
+  }
+
   before_update :unmark_generated, if: :will_save_change_to_name?
 
   def name
@@ -120,12 +132,12 @@ class Institution < ApplicationRecord
     short_name_similarity = (1 - (levenshtein_distance(short_name, other.short_name)/[short_name.length, other.short_name.length].max.to_f)) * 2
     # increase score if users have the same email address
     email_similarity = users.where.not(email: nil)
-                  .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
-                  .count
+                            .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
+                            .count
     # increase score if users have the same username
     username_similarity = users.where.not(username: nil)
-                  .where(username: User.where(institution: other).where.not(username: nil).pluck(:username))
-                  .count
+                               .where(username: User.where(institution: other).where.not(username: nil).pluck(:username))
+                               .count
     # increase score if users have the same email domain
     max_domain_similarity = 0
     User.where(institution: other).where.not(email: nil)

@@ -12,8 +12,8 @@
 #  category       :integer          default("secondary"), not null
 #
 
+include Gem::Text
 class Institution < ApplicationRecord
-  include Gem::Text
   CACHE_EXPIRY_TIME = 1.day
   SIMILARITY_CACHE_STRING = '/Institutions/similarity_matrix'.freeze
   NEW_INSTITUTION_NAME = 'n/a'.freeze
@@ -61,43 +61,58 @@ class Institution < ApplicationRecord
     self.generated_name = false
   end
 
-  def self.similarity_matrix
-    # create a matrix of all institutions and their similarity scores
+  def self.most_similar_institution_ids
     Rails.cache.fetch(SIMILARITY_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
+      # create a matrix of all institutions and their similarity scores
       max_id = Institution.maximum(:id) + 1
       matrix = Array.new(max_id) { Array.new(max_id, 0) }
 
-      Institution.find_each do |i|
-        Institution.where('id > ?', i.id).find_each do |j|
-          matrix[i.id][j.id] = i.similarity_score(j)[0]
-          matrix[j.id][i.id] = matrix[i.id][j.id]
-        end
+      sql = "
+        SELECT count(u.email) AS count, u.institution_id, u2.institution_id AS other_institution_id
+        FROM users u INNER JOIN users u2 ON u.email = u2.email
+        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.email IS NOT NULL
+        GROUP BY u.institution_id, u2.institution_id
+      "
+      ActiveRecord::Base.connection.execute(sql).each do |row|
+        matrix[row[1]][row[2]] += row[0].to_i
       end
-      matrix
+
+      sql = "
+        SELECT count(u.username) AS count, u.institution_id, u2.institution_id AS other_institution_id
+        FROM users u INNER JOIN users u2 ON u.username = u2.username
+        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.username IS NOT NULL
+        GROUP BY u.institution_id, u2.institution_id
+      "
+      ActiveRecord::Base.connection.execute(sql).each do |row|
+        matrix[row[1]][row[2]] += row[0].to_i
+      end
+
+      sql = "
+        SELECT max(least(u.count, u2.count)) AS count, u.institution_id, u2.institution_id AS other_institution_id
+        FROM (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u
+        INNER JOIN (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u2 ON  u.domain = u2.domain
+        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.domain != ''
+        AND u.domain NOT IN ('gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'telenet.be', 'gmail.be', 'live.be', 'outlook.be', 'hotmail.be')
+        GROUP BY u.institution_id, u2.institution_id
+      "
+      ActiveRecord::Base.connection.execute(sql).each do |row|
+        matrix[row[1]][row[2]] += row[0].to_i
+      end
+
+      matrix.map { |row| row.each_with_index.max }.map { |row| { id: row[1], score: row[0] } }
     end
   end
 
-  def self.sorted_most_similar_institutions
-    Institution.all
-               .map { |i| [i, i.most_similar_institution] }
-               .map do |a|
-                 [
-                   Institution.similarity_matrix[a[0].id][a[1].id],
-                   a[0].name,
-                   a[0].id,
-                   a[1].name,
-                   a[1].id,
-                   a[0].similarity_score(a[1])
-                 ]
-               end
-               .sort
+  def self.most_similar_institutions
+    institutions = Institution.all.index_by(&:id)
+    most_similar_institution_ids.map { |row| { id: row[:id], institution: institutions[row[:id]], score: row[:score] } }
   end
 
   def most_similar_institution
-    Institution.find(Institution.similarity_matrix[id].each_with_index.max[1])
+    Institution.most_similar_institutions[id]
   end
 
-  def similarity_score(other)
+  def similarity(other)
     return 0 if other.nil?
 
     # increase score for similar names
@@ -112,18 +127,26 @@ class Institution < ApplicationRecord
                   .where(username: User.where(institution: other).where.not(username: nil).pluck(:username))
                   .count
     # increase score if users have the same email domain
-    domain_similarity = 0
+    max_domain_similarity = 0
     User.where(institution: other).where.not(email: nil)
         .pluck(:email)
         .map { |e| e.split('@').last }
-        .filter { |e| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com].exclude?(e) }
+        .filter { |e| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be live.be outlook.be hotmail.be].exclude?(e) }
         .group_by { |e| e }.map { |k, v| [k, v.length] }.each do |domain, count|
       # we want to count the number of users with the same domain
       # which is the minimum of the number of users with that domain in each institution
-      domain_similarity += [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
+      domain_similarity = [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
+      max_domain_similarity = [max_domain_similarity, domain_similarity].max
     end
-    score = name_similarity + short_name_similarity + email_similarity + username_similarity + domain_similarity
-    [score.round, name_similarity, short_name_similarity, email_similarity, username_similarity, domain_similarity]
+    score = name_similarity + short_name_similarity + email_similarity + username_similarity + max_domain_similarity
+    {
+      total: score.round,
+      name: name_similarity,
+      short_name: short_name_similarity,
+      email: email_similarity,
+      username: username_similarity,
+      domain: max_domain_similarity
+    }
   end
 
   def merge_into(other)

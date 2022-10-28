@@ -8,6 +8,7 @@
       <th><%= t('institutions.index.number_of_users') %></th>
       <th><%= t('institutions.index.number_of_courses') %></th>
       <th><%= Institution.human_attribute_name(:providers) %></th>
+      <th><%= 'institutions.index.most_similar' %></th>
       <th class="actions"></th>
     </tr>
     </thead>
@@ -28,6 +29,7 @@
         <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
+        <td><%= link_to "#{institution.most_similar_institution[:institution].name} (#{institution.most_similar_institution[:score]})", institution.most_similar_institution[:institution] if institution.most_similar_institution[:score] > 0%> </td>
         <td class="actions">
           <% if policy(institution).edit? %>
             <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-icon" do %>

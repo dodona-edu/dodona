@@ -138,7 +138,7 @@ GEM
     cssbundling-rails (1.1.1)
       railties (>= 6.0.0)
     daemons (1.4.1)
-    dalli (3.2.2)
+    dalli (3.2.3)
     ddtrace (1.5.1)
       debase-ruby_core_source (>= 0.10.16, <= 0.10.17)
       libdatadog (~> 0.7.0.1.1)
@@ -522,7 +522,7 @@ DEPENDENCIES
   capybara!
   codecov (~> 0.6.0)
   cssbundling-rails (~> 1.1.1)
-  dalli (~> 3.2.2)
+  dalli (~> 3.2.3)
   ddtrace (~> 1.5.1)
   delayed_job_active_record (~> 4.1.7)
   delayed_job_web (~> 1.4.4)

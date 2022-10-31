@@ -62,6 +62,6 @@
     "stylelint-config-standard": "^29.0.0",
     "stylelint-config-standard-scss": "^5.0.0",
     "ts-jest": "^26.5.6",
-    "webpack-bundle-analyzer": "^4.6.1"
+    "webpack-bundle-analyzer": "^4.7.0"
   }
 }

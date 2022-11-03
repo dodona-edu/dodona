@@ -247,4 +247,7 @@ nl:
     sign_in_search_bar:
       institution_search: "Typ om jouw school te vinden"
       log_in: Aanmelden
+    course_labels_search_bar:
+      course_label_search: "Typ om een gebruikerlabel te vinden of een nieuwe aan te maken."
+      add_course_label: "Toevoegen"
 

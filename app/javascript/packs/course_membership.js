@@ -1,1 +1,1 @@
-import "components/labels_search_bar";
+import "components/course_labels_search_bar";

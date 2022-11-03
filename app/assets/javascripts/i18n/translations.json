@@ -157,6 +157,10 @@
       "copy-success": "Copied!",
       "copy-to-clipboard": "Click to copy",
       "course_labels": "Member labels",
+      "course_labels_search_bar": {
+        "add_course_label": "Add",
+        "course_label_search": "Type to search for a memberlabel or to create a new one."
+      },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
       "ctimeseries_title": "Users with at least one correct submission",
@@ -590,6 +594,10 @@
       "copy-success": "Gekopieerd!",
       "copy-to-clipboard": "Klik om te kopiëren",
       "course_labels": "Gebruikerlabels",
+      "course_labels_search_bar": {
+        "add_course_label": "Toevoegen",
+        "course_label_search": "Typ om een gebruikerlabel te vinden of een nieuwe aan te maken."
+      },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",
       "ctimeseries_title": "Gebruikers met minstens één correcte oplossing",

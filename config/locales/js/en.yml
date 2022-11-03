@@ -247,5 +247,7 @@ en:
     sign_in_search_bar:
       institution_search: "Type to search for your institution"
       log_in: Sign in
-
+    course_labels_search_bar:
+      course_label_search: "Type to search for a memberlabel or to create a new one."
+      add_course_label: "Add"
 

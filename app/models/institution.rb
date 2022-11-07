@@ -118,6 +118,7 @@ class Institution < ApplicationRecord
         INNER JOIN (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u2 ON  u.domain = u2.domain
         WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.domain != ''
         AND u.domain NOT IN ('gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'telenet.be', 'gmail.be', 'live.be', 'outlook.be', 'hotmail.be')
+        AND u.count > 1 AND u2.count > 1
         GROUP BY u.institution_id, u2.institution_id
       "
       ActiveRecord::Base.connection.execute(sql).each do |row|

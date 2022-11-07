@@ -208,7 +208,7 @@ class InstitutionTest < ActiveSupport::TestCase
     i1 = create :institution
     i2 = create :institution
     i3 = create :institution
-    i4 = create :institution
+    create :institution
 
     create :user, institution: i1, username: 'a', email: 'a@foo.com'
     create :user, institution: i1, username: 'b', email: 'b@foo.com'

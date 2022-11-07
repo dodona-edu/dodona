@@ -44,7 +44,7 @@ class Institution < ApplicationRecord
       .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
   }
   scope :order_by_similarity_to, lambda { |id, direction|
-    joins("LEFT JOIN (values ('id', 'score'),#{Institution.most_similarity_matrix[id]
+    joins("LEFT JOIN (values ('id', 'score'),#{Institution.similarity_matrix[id]
                                                           .map
                                                           .with_index { |s, i| "(#{i}, #{s})" }
                                                           .join(', ')}) similarity ON similarity.id = institutions.id")
@@ -80,7 +80,7 @@ class Institution < ApplicationRecord
     self.generated_name = false
   end
 
-  def self.most_similarity_matrix
+  def self.similarity_matrix
     Rails.cache.fetch(SIMILARITY_MATRIX_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
       # create a matrix of all institutions and their similarity scores
       max_id = Institution.maximum(:id) + 1
@@ -132,7 +132,7 @@ class Institution < ApplicationRecord
   def self.most_similar_institutions
     Rails.cache.fetch(MOST_SIMILAR_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
       institutions = Institution.all.index_by(&:id)
-      Institution.most_similarity_matrix.map { |row| row.each_with_index.max }.map { |row| { id: row[1], name: institutions[row[1]]&.name, score: row[0] } }
+      Institution.similarity_matrix.map { |row| row.each_with_index.max }.map { |row| { id: row[1], name: institutions[row[1]]&.name, score: row[0] } }
     end
   end
 
@@ -141,7 +141,7 @@ class Institution < ApplicationRecord
   end
 
   def similarity(other)
-    Institution.most_similarity_matrix[id][other.id]
+    Institution.similarity_matrix[id][other.id]
   end
 
   def merge_into(other)

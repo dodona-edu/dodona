@@ -67,7 +67,7 @@ class InstitutionsController < ApplicationController
     else
       @institutions = apply_scopes(policy_scope(Institution))
                       .where.not(id: @institution.id)
-                      .order(generated_name: :desc, name: :asc)
+                      .order_by_similarity_to(@institution.id, 'DESC')
                       .includes(:courses, :users, :providers)
                       .paginate(per_page: 15, page: parse_pagination_param(params[:page]))
       render :merge, status: :unprocessable_entity

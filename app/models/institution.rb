@@ -43,6 +43,13 @@ class Institution < ApplicationRecord
                      .join(', ')}) similarity ON similarity.id = institutions.id")
       .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
   }
+  scope :order_by_similarity_to, lambda { |id, direction|
+    joins("LEFT JOIN (values ('id', 'score'),#{Institution.most_similarity_matrix[id]
+                                                          .map
+                                                          .with_index { |s, i| "(#{i}, #{s})" }
+                                                          .join(', ')}) similarity ON similarity.id = institutions.id")
+      .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
+  }
 
   before_update :unmark_generated, if: :will_save_change_to_name?
 
@@ -127,35 +134,7 @@ class Institution < ApplicationRecord
   end
 
   def similarity(other)
-    return 0 if other.nil?
-
-    # increase score if users have the same email address
-    email_similarity = users.where.not(email: nil)
-                            .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
-                            .count
-    # increase score if users have the same username
-    username_similarity = users.where.not(username: nil)
-                               .where(username: User.where(institution: other).where.not(username: nil).pluck(:username))
-                               .count
-    # increase score if users have the same email domain
-    max_domain_similarity = 0
-    User.where(institution: other).where.not(email: nil)
-        .pluck(:email)
-        .map { |e| e.split('@').last }
-        .filter { |e| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be live.be outlook.be hotmail.be].exclude?(e) }
-        .group_by { |e| e }.map { |k, v| [k, v.length] }.each do |domain, count|
-      # we want to count the number of users with the same domain
-      # which is the minimum of the number of users with that domain in each institution
-      domain_similarity = [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
-      max_domain_similarity = [max_domain_similarity, domain_similarity].max
-    end
-    score = email_similarity + username_similarity + max_domain_similarity
-    {
-      total: score.round,
-      email: email_similarity,
-      username: username_similarity,
-      domain: max_domain_similarity
-    }
+    Institution.most_similarity_matrix[id][other.id]
   end
 
   def merge_into(other)

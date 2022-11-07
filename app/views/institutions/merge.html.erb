@@ -20,7 +20,7 @@
             <div class="stepper-part">
               <%= render partial: 'layouts/searchbar' %>
               <div id="institution-table-wrapper">
-                <%= render partial: 'merge_table', locals: {institutions: @institutions, pagination_opts: @pagination_opts} %>
+                <%= render partial: 'merge_table', locals: {institutions: @institutions, merge_target: @institution, pagination_opts: @pagination_opts} %>
               </div>
             </div>
           </div>

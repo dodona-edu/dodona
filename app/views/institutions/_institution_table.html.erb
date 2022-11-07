@@ -3,7 +3,7 @@
     <thead>
     <tr>
       <th></th>
-      <th><d-sort-button column="name"><%= Institution.human_attribute_name(:name) %></d-sort-button></th>
+      <th><d-sort-button column="name" default="ASC"><%= Institution.human_attribute_name(:name) %></d-sort-button></th>
       <th><d-sort-button column="short_name"><%= Institution.human_attribute_name(:short_name) %></d-sort-button></th>
       <th><d-sort-button column="users"><%= t('institutions.index.number_of_users') %></d-sort-button></th>
       <th><d-sort-button column="courses"><%= t('institutions.index.number_of_courses') %></d-sort-button></th>

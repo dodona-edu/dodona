@@ -16,9 +16,9 @@ class InstitutionsController < ApplicationController
 
   def index
     authorize Institution
-    @institutions = apply_scopes(policy_scope(Institution)).all
-                                                           .includes(:courses, :users, :providers)
-                                                           .paginate(page: parse_pagination_param(params[:page]))
+    @institutions = apply_scopes(policy_scope(Institution.order_by_name(:asc))).all
+                                                                         .includes(:courses, :users, :providers)
+                                                                         .paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('institutions.index.title')
   end
 

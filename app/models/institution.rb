@@ -32,7 +32,7 @@ class Institution < ApplicationRecord
   scope :of_course_by_members, ->(course) { joins(users: :courses).where(courses: { id: course.id }).distinct }
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%").or(where('short_name LIKE ?', "%#{name}%")) }
 
-  scope :order_by_name, ->(direction) { reorder generated_name: direction, name: direction }
+  scope :order_by_name, ->(direction) { reorder generated_name: :desc, name: direction }
   scope :order_by_short_name, ->(direction) { reorder short_name: direction }
   scope :order_by_courses, ->(direction) { joins("LEFT JOIN (#{Course.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) courses on courses.institution_id = institutions.id").reorder("courses.count #{direction}") }
   scope :order_by_users, ->(direction) { joins("LEFT JOIN (#{User.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) users on users.institution_id = institutions.id").reorder("users.count #{direction}") }

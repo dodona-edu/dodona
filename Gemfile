@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
-gem 'dalli', '~> 3.2.2'
+gem 'dalli', '~> 3.2.3'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 2.23.0'

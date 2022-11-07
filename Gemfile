@@ -131,7 +131,7 @@ gem 'faker', '~> 2.23.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
-gem 'memory_profiler', '~> 1.0.0'
+gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.22'
 

@@ -86,6 +86,7 @@ class Institution < ApplicationRecord
       max_id = Institution.maximum(:id) + 1
       matrix = Array.new(max_id) { Array.new(max_id, 0) }
 
+      # count the amount of users with the same email address
       sql = "
         SELECT count(u.email) AS count, u.institution_id, u2.institution_id AS other_institution_id
         FROM users u INNER JOIN users u2 ON u.email = u2.email
@@ -96,6 +97,7 @@ class Institution < ApplicationRecord
         matrix[row[1]][row[2]] += row[0].to_i
       end
 
+      # count the amount of users with the same username
       sql = "
         SELECT count(u.username) AS count, u.institution_id, u2.institution_id AS other_institution_id
         FROM users u INNER JOIN users u2 ON u.username = u2.username
@@ -106,6 +108,10 @@ class Institution < ApplicationRecord
         matrix[row[1]][row[2]] += row[0].to_i
       end
 
+      # lastly we look at the similarity in email address domains
+      # This is a bit more complex
+      # We try to find if a certain domain is used frequently by multiple institutions
+      # We take the maximum of the domain overlap instead of the sum, because one domain with a lot of overlap is more important than multiple domains with a little overlap
       sql = "
         SELECT max(least(u.count, u2.count)) AS count, u.institution_id, u2.institution_id AS other_institution_id
         FROM (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u

@@ -29,7 +29,7 @@
         <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
-        <td><%= link_to "#{institution.most_similar_institution[:institution].name} (#{institution.most_similar_institution[:score]})", institution.most_similar_institution[:institution] if institution.most_similar_institution[:score] > 0%> </td>
+        <td><%= link_to "#{institution.most_similar_institution[:name]} (#{institution.most_similar_institution[:score]})", institution_path(institution.most_similar_institution[:id]) if institution.most_similar_institution[:score] > 0%> </td>
         <td class="actions">
           <% if policy(institution).edit? %>
             <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-icon" do %>

@@ -12,10 +12,10 @@
 #  category       :integer          default("secondary"), not null
 #
 
-include Gem::Text
 class Institution < ApplicationRecord
-  CACHE_EXPIRY_TIME = 1.day
-  SIMILARITY_CACHE_STRING = '/Institutions/similarity_matrix'.freeze
+  CACHE_EXPIRY_TIME = 5.minutes
+  SIMILARITY_MATRIX_CACHE_STRING = '/Institutions/similarity_matrix'.freeze
+  MOST_SIMILAR_CACHE_STRING = '/Institutions/most_similar'.freeze
   NEW_INSTITUTION_NAME = 'n/a'.freeze
 
   enum category: { secondary: 0, higher: 1, other: 2 }
@@ -73,8 +73,8 @@ class Institution < ApplicationRecord
     self.generated_name = false
   end
 
-  def self.most_similar_institution_ids
-    Rails.cache.fetch(SIMILARITY_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
+  def self.most_similarity_matrix
+    Rails.cache.fetch(SIMILARITY_MATRIX_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
       # create a matrix of all institutions and their similarity scores
       max_id = Institution.maximum(:id) + 1
       matrix = Array.new(max_id) { Array.new(max_id, 0) }
@@ -111,13 +111,15 @@ class Institution < ApplicationRecord
         matrix[row[1]][row[2]] += row[0].to_i
       end
 
-      matrix.map { |row| row.each_with_index.max }.map { |row| { id: row[1], score: row[0] } }
+      matrix
     end
   end
 
   def self.most_similar_institutions
-    institutions = Institution.all.index_by(&:id)
-    most_similar_institution_ids.map { |row| { id: row[:id], institution: institutions[row[:id]], score: row[:score] } }
+    Rails.cache.fetch(MOST_SIMILAR_CACHE_STRING, expires_in: CACHE_EXPIRY_TIME) do
+      institutions = Institution.all.index_by(&:id)
+      Institution.most_similarity_matrix.map { |row| row.each_with_index.max }.map { |row| { id: row[1], name: institutions[row[1]]&.name, score: row[0] } }
+    end
   end
 
   def most_similar_institution
@@ -127,9 +129,6 @@ class Institution < ApplicationRecord
   def similarity(other)
     return 0 if other.nil?
 
-    # increase score for similar names
-    name_similarity = (1 - (levenshtein_distance(name, other.name)/[name.length, other.name.length].max.to_f)) * 2
-    short_name_similarity = (1 - (levenshtein_distance(short_name, other.short_name)/[short_name.length, other.short_name.length].max.to_f)) * 2
     # increase score if users have the same email address
     email_similarity = users.where.not(email: nil)
                             .where(email: User.where(institution: other).where.not(email: nil).pluck(:email))
@@ -150,11 +149,9 @@ class Institution < ApplicationRecord
       domain_similarity = [count, users.where.not(email: nil).where('email LIKE ?', "%#{domain}").count].min
       max_domain_similarity = [max_domain_similarity, domain_similarity].max
     end
-    score = name_similarity + short_name_similarity + email_similarity + username_similarity + max_domain_similarity
+    score = email_similarity + username_similarity + max_domain_similarity
     {
       total: score.round,
-      name: name_similarity,
-      short_name: short_name_similarity,
       email: email_similarity,
       username: username_similarity,
       domain: max_domain_similarity

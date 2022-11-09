@@ -38,6 +38,21 @@ class EmptyRepositoryTest < ActiveSupport::TestCase
   end
 end
 
+class ConfigInRootTest < ActiveSupport::TestCase
+  test 'should be able to handle repositories that have config in root' do
+    remote = local_remote('exercises/echo')
+    remote.copy_dir('echo/', '/')
+    remote.remove_dir('echo')
+    remote.commit('Move config to root')
+    repository = create :repository, remote: remote.path
+
+    assert File.exist?("#{repository.full_path}/config.json")
+
+    repository.process_activities
+    assert repository.exercises.first
+  end
+end
+
 class EchoRepositoryTest < ActiveSupport::TestCase
   def setup
     # ensure we push to the repository

@@ -279,7 +279,7 @@ class Repository < ApplicationRecord
 
   def activity_dirs_below(directory)
     if activity_directory?(directory)
-      directory.cleanpath
+      [directory.cleanpath]
     else
       directory.entries
                .reject { |entry| entry.basename.to_path.start_with?('.') }

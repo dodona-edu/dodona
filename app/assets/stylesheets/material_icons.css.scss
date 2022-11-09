@@ -37,16 +37,16 @@
   margin-top: 12px;
 }
 
-.mdi.mdi-icons-strikethrough.mdi-18::after {
+.mdi.mdi-icons-strikethrough::after {
   position: relative;
-  top: -27px;
-  left: 19px;
+  top: -36px;
+  left: 27px;
   width: 0;
   height: 0;
   content: "|";
   display: block;
   font-weight: bold;
-  font-size: 200%;
+  font-size: 250%;
   transform: rotate(45deg);
 }
 

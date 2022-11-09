@@ -237,5 +237,11 @@ class InstitutionTest < ActiveSupport::TestCase
     assert_includes [i2, i1], Institution.order_by_most_similar('DESC').first
     assert_includes [i2, i1], Institution.order_by_most_similar('DESC').second
     assert_equal i3, Institution.order_by_most_similar('DESC').third
+
+
+    assert_includes [i2, i1], Institution.order_by_most_similar('ASC').last
+    assert_equal i2, Institution.order_by_similarity_to(i1.id, 'ASC').last
+    assert_equal i1, Institution.order_by_similarity_to(i2.id, 'ASC').last
+    assert_equal i2, Institution.order_by_similarity_to(i3.id, 'ASC').last
   end
 end

@@ -37,18 +37,14 @@ class Institution < ApplicationRecord
   scope :order_by_courses, ->(direction) { joins("LEFT JOIN (#{Course.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) courses on courses.institution_id = institutions.id").reorder("courses.count #{direction}") }
   scope :order_by_users, ->(direction) { joins("LEFT JOIN (#{User.group(:institution_id).select(:institution_id, 'COUNT(id) AS count').to_sql}) users on users.institution_id = institutions.id").reorder("users.count #{direction}") }
   scope :order_by_most_similar, lambda { |direction|
-    joins("LEFT JOIN (values ('id', 'score'),#{Institution.most_similar_institutions
-                     .map
-                     .with_index { |ins, i| "(#{i}, #{ins[:score]})" }
-                     .join(', ')}) similarity ON similarity.id = institutions.id")
-      .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
+    reorder Arel.sql("FIELD(id, #{Institution.most_similar_institutions
+                                               .map.with_index { |ins, i| [ins[:score], i] }.sort.pluck(1)
+                                               .join(', ')})") => direction
   }
   scope :order_by_similarity_to, lambda { |id, direction|
-    joins("LEFT JOIN (values ('id', 'score'),#{Institution.similarity_matrix[id]
-                                                          .map
-                                                          .with_index { |s, i| "(#{i}, #{s})" }
-                                                          .join(', ')}) similarity ON similarity.id = institutions.id")
-      .reorder Arel.sql("cast(similarity.score AS INT) #{direction}")
+    reorder Arel.sql("FIELD(id, #{Institution.similarity_matrix[id]
+                                             .map.with_index { |s, i| [s, i] }.sort.pluck(1)
+                                             .join(', ')})") => direction
   }
 
   before_update :unmark_generated, if: :will_save_change_to_name?

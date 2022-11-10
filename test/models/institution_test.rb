@@ -130,8 +130,9 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i2, username: 'Foo', email: 'foo@c.com'
     assert_equal 1, i1.similarity(i2)
 
-    create :user, institution: i1, username: 'Bar', email: 'bar@b.com'
-    create :user, institution: i2, username: 'Bar', email: 'bar@c.com'
+    # username similarity is case insensitive
+    create :user, institution: i1, username: 'BaR', email: 'bar@b.com'
+    create :user, institution: i2, username: 'bar', email: 'bar@c.com'
     assert_equal 2, i1.similarity(i2)
   end
 
@@ -143,7 +144,8 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i2, email: 'foo@bar.com'
     assert_equal 1, i1.similarity(i2)
 
-    create :user, institution: i1, email: 'bar@foo.com'
+    # email similarity is case insensitive
+    create :user, institution: i1, email: 'BaR@foo.com'
     create :user, institution: i2, email: 'bar@foo.com'
     assert_equal 2, i1.similarity(i2)
   end

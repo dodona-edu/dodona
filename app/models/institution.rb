@@ -82,45 +82,36 @@ class Institution < ApplicationRecord
       max_id = Institution.maximum(:id) + 1
       matrix = Array.new(max_id) { Array.new(max_id, 0) }
 
-      # count the amount of users with the same email address
-      sql = "
-        SELECT count(u.email) AS count, u.institution_id, u2.institution_id AS other_institution_id
-        FROM users u INNER JOIN users u2 ON u.email = u2.email
-        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.email IS NOT NULL
-        GROUP BY u.institution_id, u2.institution_id
-      "
-      ActiveRecord::Base.connection.execute(sql).each do |row|
-        matrix[row[1]][row[2]] += row[0].to_i
+      # Get all usernames, emails and email domains, with their institution id
+      usernames = User.select(:institution_id, :username).where('username IS NOT NULL and institution_id IS NOT NULL')
+      emails = User.select(:institution_id, :email).where('email IS NOT NULL and institution_id IS NOT NULL')
+      # Domains are already grouped and counted per unique domain for each institution
+      # We also filter out common domains and avoid domains that appear only once in an institution
+      domains = emails.map { |u| [u.email.split('@').last, u.institution_id] }
+                      .tally.map { |k, v| { domain: k[0], institution_id: k[1], count: v } }
+                      .filter { |u| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be gmail.be live.be outlook.be hotmail.be].exclude?(u[:domain]) && u[:count] > 1 }
+
+      # we group by domain to get all institutions with the same domain, we update the similarity matrix for all pairs of institutions
+      domains.group_by { |u| u[:domain] }.each do |_, users|
+        users.combination(2).each do |u1, u2|
+          matrix[u1[:institution_id]][u2[:institution_id]] = [matrix[u1[:institution_id]][u2[:institution_id]], [u1[:count], u2[:count]].min].max
+          matrix[u2[:institution_id]][u1[:institution_id]] = matrix[u1[:institution_id]][u2[:institution_id]]
+        end
       end
 
-      # count the amount of users with the same username
-      sql = "
-        SELECT count(u.username) AS count, u.institution_id, u2.institution_id AS other_institution_id
-        FROM users u INNER JOIN users u2 ON u.username = u2.username
-        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.username IS NOT NULL
-        GROUP BY u.institution_id, u2.institution_id
-      "
-      ActiveRecord::Base.connection.execute(sql).each do |row|
-        matrix[row[1]][row[2]] += row[0].to_i
+      emails.group_by(&:email).each do |_, users|
+        users.combination(2).each do |u1, u2|
+          matrix[u1.institution_id][u2.institution_id] += 1
+          matrix[u2.institution_id][u1.institution_id] += 1
+        end
       end
 
-      # lastly we look at the similarity in email address domains
-      # This is a bit more complex
-      # We try to find if a certain domain is used frequently by multiple institutions
-      # We take the maximum of the domain overlap instead of the sum, because one domain with a lot of overlap is more important than multiple domains with a little overlap
-      sql = "
-        SELECT max(least(u.count, u2.count)) AS count, u.institution_id, u2.institution_id AS other_institution_id
-        FROM (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u
-        INNER JOIN (SELECT SUBSTR(email, INSTR(email, '@') + 1) AS domain,count(*) as count, institution_id FROM users WHERE email IS NOT NULL GROUP BY institution_id, domain) u2 ON  u.domain = u2.domain
-        WHERE u.institution_id != u2.institution_id AND u.institution_id IS NOT NULL AND u2.institution_id IS NOT NULL AND u.domain != ''
-        AND u.domain NOT IN ('gmail.com', 'hotmail.com', 'outlook.com', 'yahoo.com', 'live.com', 'msn.com', 'aol.com', 'icloud.com', 'telenet.be', 'gmail.be', 'live.be', 'outlook.be', 'hotmail.be')
-        AND u.count > 1 AND u2.count > 1
-        GROUP BY u.institution_id, u2.institution_id
-      "
-      ActiveRecord::Base.connection.execute(sql).each do |row|
-        matrix[row[1]][row[2]] += row[0].to_i
+      usernames.each { |u| u.username.downcase! }.group_by(&:username).each do |_, users|
+        users.combination(2).each do |u1, u2|
+          matrix[u1.institution_id][u2.institution_id] += 1
+          matrix[u2.institution_id][u1.institution_id] += 1
+        end
       end
-
       matrix
     end
   end

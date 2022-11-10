@@ -92,10 +92,10 @@ class Institution < ApplicationRecord
                       .filter { |u| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be gmail.be live.be outlook.be hotmail.be].exclude?(u[:domain]) && u[:count] > 1 }
 
       # we group by domain to get all institutions with the same domain, we update the similarity matrix for all pairs of institutions
-      domains.group_by { |u| u[:domain] }.each do |_, users|
-        users.combination(2).each do |u1, u2|
-          matrix[u1[:institution_id]][u2[:institution_id]] = [matrix[u1[:institution_id]][u2[:institution_id]], [u1[:count], u2[:count]].min].max
-          matrix[u2[:institution_id]][u1[:institution_id]] = matrix[u1[:institution_id]][u2[:institution_id]]
+      domains.group_by { |u| u[:domain] }.each do |_, institution|
+        institution.combination(2).each do |i1, i2|
+          matrix[i1[:institution_id]][i2[:institution_id]] = [matrix[i1[:institution_id]][i2[:institution_id]], [i1[:count], i2[:count]].min].max
+          matrix[i2[:institution_id]][i1[:institution_id]] = matrix[i1[:institution_id]][i2[:institution_id]]
         end
       end
 

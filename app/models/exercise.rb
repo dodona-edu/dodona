@@ -39,6 +39,9 @@ class Exercise < Activity
 
   before_save :check_memory_limit
 
+  # Only used manually from the console
+  scope :unsolved_by, ->(users) { where.not(id: Submission.where(user_id: users).select(:exercise_id)) }
+
   def exercise?
     true
   end

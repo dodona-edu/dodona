@@ -536,6 +536,20 @@ class ExerciseTest < ActiveSupport::TestCase
   end
 end
 
+class ExerciseUnstartedTest < ActiveSupport::TestCase
+  test 'unstarted_by should return a correct result' do
+    user1 = users(:zeus)
+    user2 = users(:staff)
+    exercises = create_list(:exercise, 3)
+    create(:submission, exercise: exercises.first, user: user1)
+    create(:submission, exercise: exercises.second, user: user2)
+
+    result = Exercise.where(id: exercises.map(&:id)).unstarted_by(User.all)
+    assert_equal 1, result.count
+    assert_equal exercises.third, result[0]
+  end
+end
+
 class ExerciseRemoteTest < ActiveSupport::TestCase
   setup do
     # allow pushing

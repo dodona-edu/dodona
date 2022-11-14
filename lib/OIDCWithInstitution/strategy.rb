@@ -6,7 +6,7 @@ require 'openid_connect/response_object'
 module OmniAuth
   module Strategies
     class OpenIDConnectWithInstitution < OmniAuth::Strategies::OpenIDConnect
-      option :name, 'oidc_with_institution'
+      option :name, :oidc_with_institution
 
       info do
         {

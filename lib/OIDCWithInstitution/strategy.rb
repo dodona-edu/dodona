@@ -6,8 +6,6 @@ require 'openid_connect/response_object'
 module OmniAuth
   module Strategies
     class OidcWithInstitution < OmniAuth::Strategies::OpenIDConnect
-      option :name, :oidc_with_institution
-
       info do
         {
           institution: user_info.raw_attributes["schac_home_organization"],

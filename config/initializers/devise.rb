@@ -10,7 +10,6 @@ require_relative '../../lib/SAML/setup.rb'
 
 ## Surf.
 require_relative '../../lib/OIDCWithInstitution/strategy.rb'
-require_relative '../../lib/OIDCWithInstitution/setup.rb'
 
 # Error handling.
 require_relative('../../lib/devise/custom_failure.rb')

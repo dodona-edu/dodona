@@ -5,7 +5,7 @@ require 'openid_connect/response_object'
 # It adds a small change to the default open id connect, introducing the user institution
 module OmniAuth
   module Strategies
-    class OpenIDConnectWithInstitution < OmniAuth::Strategies::OpenIDConnect
+    class OidcWithInstitution < OmniAuth::Strategies::OpenIDConnect
       option :name, :oidc_with_institution
 
       info do

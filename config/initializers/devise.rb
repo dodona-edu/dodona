@@ -10,6 +10,7 @@ require_relative '../../lib/SAML/setup.rb'
 
 ## Surf.
 require_relative '../../lib/OIDCWithInstitution/strategy.rb'
+require_relative '../../lib/OIDCWithInstitution/SurfSetup.rb'
 
 # Error handling.
 require_relative('../../lib/devise/custom_failure.rb')
@@ -270,18 +271,7 @@ Devise.setup do |config|
   config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
 
   # config.omniauth :surf, setup: Surf::Auth::OmniAuth::Setup
-  config.omniauth :oidc_with_institution, {
-    name: :surf,
-    discovery: true,
-    response_mode: :form_post,
-    client_options: {
-      host: Rails.env.production? ? 'connect.surfconext.nl' : 'connect.test.surfconext.nl',
-      identifier: Rails.application.credentials.surf_client_id,
-      secret: Rails.application.credentials.surf_client_secret,
-      redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/surf/callback"
-    },
-    issuer: Rails.env.production? ? 'https://connect.surfconext.nl' : 'https://connect.test.surfconext.nl'
-  }
+  config.omniauth :oidc_with_institution, setup: Surf::Auth::OmniAuth::Setup
 
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 

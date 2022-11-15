@@ -31,19 +31,7 @@
     </div>
     <div class="sign-in-dialog-institutions row">
       <% @generic_providers.each do |provider| %>
-        <%= link_to omniauth_authorize_path(:user, provider.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
-          <div class="option-btn">
-            <div class="option-btn-img">
-              <%= image_tag "idp/#{provider.logo}", class: "img-fluid" %>
-            </div>
-            <div class="option-btn-title">
-              <h3><%= provider.readable_name %><br>
-                <small><%= t('.sign-in-with', provider: provider.readable_name) %></small>
-              </h3>
-            </div>
-            <div><i class="mdi mdi-chevron-right"></i></div>
-          </div>
-        <% end %>
+        <%= render partial: 'auth/provider_button', locals: { provider: provider } %>
       <% end %>
     </div>
     <div class="sign-in-divider row">

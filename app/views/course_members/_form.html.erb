@@ -15,7 +15,7 @@
   <div class="field form-group row">
     <div class="row">
       <%= f.label :course_labels, :class => 'col-sm-2 col-10 col-form-label' %>
-      <div class="col-sm-8 col-10">
+      <div class="col-sm-10 col-10">
         <d-course-labels-search-bar
           labels="<%= @course_labels.map{|cl| {id: cl.id, name: cl.name}}.to_json %>"
           selected_labels="<%= @course_membership.course_labels.map(&:name).to_json %>"

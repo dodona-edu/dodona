@@ -26,17 +26,15 @@ export class CourseLabelTokens extends ShadowlessLitElement {
             return html``;
         }
 
-        // TODO: color hardcoded?
-        // TODO: hidden input in datalist-input?
         return html`
             ${ this.labels.map( label => html`
                     <span class="labels">
                         <span class="token accent-orange">${label}
                             <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>×</a>
                         </span>
-                        <input type="hidden" name="course_membership[course_labels]" .value=${this.labels.join(",")}>
                     </span>
             `)}
+            <input type="hidden" name="course_membership[course_labels]" .value="${this.labels.join(",")}">
         `;
     }
 }
@@ -68,46 +66,52 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
     constructor() {
         super();
         // Reload when I18n is available
-        // TODO: this gives a warning
         ready.then(() => this.requestUpdate());
+    }
+
+    addLabel(): void {
+        // TODO: lege string niet aanvaarden
+        if (this.selected_label) {
+            const newSelectedLabels = this.selected_labels.slice();
+            if (!this.selected_labels.includes(this.selected_label)) {
+                newSelectedLabels.push(this.selected_label);
+                this.selected_labels = newSelectedLabels;
+            }
+            this.filter = "";
+            this.requestUpdate();
+        }
     }
 
     handleClick(e: Event): void {
         e.preventDefault();
-        const newSelectedLabels = this.selected_labels.slice();
-        if (!this.selected_labels.includes(this.selected_label)) {
-            newSelectedLabels.push(this.selected_label);
-            this.selected_labels = newSelectedLabels;
-        }
-        this.filter = "";
-        this.requestUpdate();
+        this.addLabel();
     }
 
     handleInput(e: CustomEvent): void {
         this.selected_label = e.detail.label;
         this.filter = e.detail.label;
+        if (e.detail.value) {
+            this.addLabel();
+        }
     }
 
-    // TODO: handling of enter?
-    // TODO: "courselabel"
-    // TODO: translation not found error/bug
-    // TODO: clear text
-    // TODO: style
     render(): TemplateResult {
         return html`
             <div>
                 <d-course-label-tokens 
                     .labels=${this.selected_labels}
                 ></d-course-label-tokens>
-                <div class="input-group input-group-lg autocomplete">
+                <br>
+                <div class="labels-searchbar-group input-group autocomplete">
                     <d-datalist-input
-                        .filter=${this.filter}
+                        .filter="${this.filter}"
                         .options=${this.options}
                         @input=${e => this.handleInput(e)}
                         placeholder="${I18n.t("js.course_labels_search_bar.course_label_search")}"
                     ></d-datalist-input>
-                    <button type="button" class="btn btn-text" @click="${this.handleClick}">${I18n.t("js.course_labels_search_bar.add_course_label")}</button>
+                    <a type="button" class="btn btn-primary add-button" @click="${this.handleClick}">${I18n.t("js.course_labels_search_bar.add_course_label")}</a>
                 </div>
+                <span class="help-block">${I18n.t("js.course_labels_search_bar.course_label_edit_explanation")}</span>
             </div>
         `;
     }

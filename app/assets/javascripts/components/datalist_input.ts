@@ -40,9 +40,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     watch = {
         filter: () => {
-            if (!this.value) {
-                this.value = this.options.find(o => this.filter === o.label)?.value || "";
-            }
+            this.value = this.options.find(o => this.filter === o.label)?.value || "";
             this.fireEvent();
         },
         options: () => {
@@ -120,6 +118,9 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         if (e.key === "Tab" && this.filtered_options.length > 0) {
             this.value = this.filtered_options[0].value;
             this.filter = this.filtered_options[0].label;
+        }
+        if (e.key === "Enter") {
+            e.preventDefault();
         }
     }
 

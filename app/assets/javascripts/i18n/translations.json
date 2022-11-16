@@ -159,7 +159,8 @@
       "course_labels": "Member labels",
       "course_labels_search_bar": {
         "add_course_label": "Add",
-        "course_label_search": "Type to search for a memberlabel or to create a new one."
+        "course_label_edit_explanation": "Search an existing userlabel or make a new one.",
+        "course_label_search": "Type to search"
       },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
@@ -596,7 +597,8 @@
       "course_labels": "Gebruikerlabels",
       "course_labels_search_bar": {
         "add_course_label": "Toevoegen",
-        "course_label_search": "Typ om een gebruikerlabel te vinden of een nieuwe aan te maken."
+        "course_label_edit_explanation": "Zoek een bestaand gebruikerlabel of maak een nieuwe aan.",
+        "course_label_search": "Typ om te zoeken"
       },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",

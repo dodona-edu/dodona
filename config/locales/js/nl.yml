@@ -248,6 +248,6 @@ nl:
       institution_search: "Typ om jouw school te vinden"
       log_in: Aanmelden
     course_labels_search_bar:
-      course_label_search: "Typ om een gebruikerlabel te vinden of een nieuwe aan te maken."
+      course_label_search: "Typ om te zoeken"
       add_course_label: "Toevoegen"
-
+      course_label_edit_explanation: "Zoek een bestaand gebruikerlabel of maak een nieuwe aan."

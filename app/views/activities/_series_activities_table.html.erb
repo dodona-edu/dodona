@@ -4,7 +4,9 @@
    else
      user = current_user
    end %>
-
+<% unless defined? loaded %>
+  <% loaded = true %>
+<% end %>
 <div class="table-scroll-wrapper">
   <table class="table activity-table table-resource">
     <thead>
@@ -38,10 +40,14 @@
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>
-            <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
-              <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
+            <% if loaded %>
+              <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
+                <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
+              <% end %>
+              <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+            <% else %>
+              <i class="mdi mdi-check unloaded-skeleton-field skeleton-icon"></i>
             <% end %>
-            <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
           <% end %>
         </td>
 
@@ -70,60 +76,72 @@
 
         <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
           <td class="d-none d-sm-table-cell">
-            <% if activity.exercise? %>
-              <% if @course %>
-                <%= render partial: 'application/progress_chart',
-                  locals: {
-                    total: @course.subscribed_members_count,
-                    tried: activity.users_tried(course: @course),
-                    correct: activity.users_correct(course: @course),
-                    info_tried: 'activities.index.progress_chart_info_tried',
-                    info_correct: 'activities.index.progress_chart_info_correct'
-                  }
-                %>
-              <% else %>
-                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-end text-muted" do %>
-                  <%= activity.users_correct %>/<%= activity.users_tried %>
+            <%if loaded %>
+              <% if activity.exercise? %>
+                <% if @course %>
+                  <%= render partial: 'application/progress_chart',
+                    locals: {
+                      total: @course.subscribed_members_count,
+                      tried: activity.users_tried(course: @course),
+                      correct: activity.users_correct(course: @course),
+                      info_tried: 'activities.index.progress_chart_info_tried',
+                      info_correct: 'activities.index.progress_chart_info_correct'
+                    }
+                  %>
+                <% else %>
+                  <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-end text-muted" do %>
+                    <%= activity.users_correct %>/<%= activity.users_tried %>
+                  <% end %>
+                <% end %>
+              <% elsif activity.content_page? %>
+                <% if @course %>
+                  <%= render partial: 'application/read_chart',
+                    locals: {
+                      total: @course.subscribed_members_count,
+                      read: activity.users_read(course: @course),
+                      info_read: 'activities.index.progress_chart_info_read'
+                    }
+                  %>
+                <% else %>
+                  <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-end text-muted" do %>
+                    <%= t 'activities.activity.read_by', count: activity.users_read %>
+                  <% end %>
                 <% end %>
               <% end %>
-            <% elsif activity.content_page? %>
-              <% if @course %>
-                <%= render partial: 'application/read_chart',
-                  locals: {
-                    total: @course.subscribed_members_count,
-                    read: activity.users_read(course: @course),
-                    info_read: 'activities.index.progress_chart_info_read'
-                  }
-                %>
-              <% else %>
-                <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-end text-muted" do %>
-                  <%= t 'activities.activity.read_by', count: activity.users_read %>
-                <% end %>
-              <% end %>
+            <% else %>
+              <div class="unloaded-skeleton-field skeleton-progress"></div>
             <% end %>
           </td>
         <% end %>
 
         <% if user_signed_in? %>
           <td>
-            <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+            <% if loaded %>
+              <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+            <% else %>
+              <div class="unloaded-skeleton-field skeleton-status"></div>
+            <% end %>
           </td>
           <td>
-            <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
-              <% options = current_user == user ? {} : {user_id: user.id} %>
-              <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
-                          title: t('layout.menu.my_submissions'),
-                          class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right"></i>
+            <% if loaded %>
+              <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
+                <% options = current_user == user ? {} : {user_id: user.id} %>
+                <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                            title: t('layout.menu.my_submissions'),
+                            class: 'btn-icon' do %>
+                  <i class="mdi mdi-chevron-right"></i>
+                <% end %>
               <% end %>
-            <% end %>
-            <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
-              <% options = current_user == user ? {} : {user_id: user.id} %>
-              <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
-                          title: t('activities.navbar_links.read_states'),
-                          class: 'btn-icon' do %>
-                <i class="mdi mdi-chevron-right"></i>
+              <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
+                <% options = current_user == user ? {} : {user_id: user.id} %>
+                <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                            title: t('activities.navbar_links.read_states'),
+                            class: 'btn-icon' do %>
+                  <i class="mdi mdi-chevron-right"></i>
+                <% end %>
               <% end %>
+            <% else %>
+              <i class="mdi mdi-chevron-right unloaded-skeleton-field skeleton-icon"></i>
             <% end %>
           </td>
         <% end %>

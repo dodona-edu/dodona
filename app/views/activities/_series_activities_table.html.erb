@@ -46,7 +46,7 @@
               <% end %>
               <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
             <% else %>
-              TBD
+              <i class="mdi mdi-check unloaded-skeleton-field skeleton-icon"></i>
             <% end %>
           <% end %>
         </td>
@@ -109,7 +109,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              TBD
+              <div class="unloaded-skeleton-field skeleton-progress"></div>
             <% end %>
           </td>
         <% end %>
@@ -119,7 +119,7 @@
             <% if loaded %>
               <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
             <% else %>
-              TBD
+              <div class="unloaded-skeleton-field skeleton-status"></div>
             <% end %>
           </td>
           <td>
@@ -141,7 +141,7 @@
                 <% end %>
               <% end %>
             <% else %>
-              TBD
+              <i class="mdi mdi-chevron-right unloaded-skeleton-field skeleton-icon"></i>
             <% end %>
           </td>
         <% end %>

@@ -188,21 +188,13 @@
 
       <% if policy(series).overview? && series.activity_count > 0 %>
         <div class="series-activities-table-wrapper">
-          <% if loaded %>
-            <%= render partial: 'activities/series_activities_table', locals: {
-                series: series,
-                activities: series.activities,
-                get_activity_path: get_activity_path,
-                user: user
-            } %>
-          <% else %>
-            <div class="activity-table-skeleton">
-              <div class="skeleton-head"></div>
-              <% series.activity_count.times do %>
-                <div class="skeleton-row"></div>
-              <% end %>
-            </div>
-          <% end %>
+          <%= render partial: 'activities/series_activities_table', locals: {
+              series: series,
+              activities: series.activities,
+              get_activity_path: get_activity_path,
+              user: user,
+              loaded: loaded,
+          } %>
         </div>
       <% end %>
     </div>

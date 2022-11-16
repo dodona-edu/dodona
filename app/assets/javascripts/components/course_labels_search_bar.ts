@@ -70,21 +70,15 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
     }
 
     addLabel(): void {
-        // TODO: lege string niet aanvaarden
-        if (this.selected_label) {
+        const selectedLabel = this.selected_label.trim();
+        if (selectedLabel.length > 0) {
             const newSelectedLabels = this.selected_labels.slice();
-            if (!this.selected_labels.includes(this.selected_label)) {
-                newSelectedLabels.push(this.selected_label);
+            if (!this.selected_labels.includes(selectedLabel)) {
+                newSelectedLabels.push(selectedLabel);
                 this.selected_labels = newSelectedLabels;
             }
             this.filter = "";
-            this.requestUpdate();
         }
-    }
-
-    handleClick(e: Event): void {
-        e.preventDefault();
-        this.addLabel();
     }
 
     handleInput(e: CustomEvent): void {
@@ -101,7 +95,6 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
                 <d-course-label-tokens 
                     .labels=${this.selected_labels}
                 ></d-course-label-tokens>
-                <br>
                 <div class="labels-searchbar-group input-group autocomplete">
                     <d-datalist-input
                         .filter="${this.filter}"
@@ -109,7 +102,7 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
                         @input=${e => this.handleInput(e)}
                         placeholder="${I18n.t("js.course_labels_search_bar.course_label_search")}"
                     ></d-datalist-input>
-                    <a type="button" class="btn btn-primary add-button" @click="${this.handleClick}">${I18n.t("js.course_labels_search_bar.add_course_label")}</a>
+                    <a type="button" class="btn btn-primary add-button" @click="${this.addLabel}">${I18n.t("js.course_labels_search_bar.add_course_label")}</a>
                 </div>
                 <span class="help-block">${I18n.t("js.course_labels_search_bar.course_label_edit_explanation")}</span>
             </div>

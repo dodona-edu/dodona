@@ -76,7 +76,7 @@
 
         <% if @course.blank? || policy(local_assigns[:series]).show_progress? %>
           <td class="d-none d-sm-table-cell">
-            <%if loaded %>
+            <% if loaded %>
               <% if activity.exercise? %>
                 <% if @course %>
                   <%= render partial: 'application/progress_chart',

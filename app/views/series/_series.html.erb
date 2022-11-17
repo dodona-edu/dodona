@@ -196,7 +196,7 @@
                 user: user
             } %>
           <% else %>
-            <table class="table activity-table table-resource">
+            <table class="table activity-table table-resource skeleton-table">
               <tr class="">
                 <th class='status-icon'></th>
                 <th class='type-icon'></th>
@@ -209,14 +209,11 @@
               </tr>
               <% series.activities.each do |activity| %>
                 <tr>
-                  <td class='status-icon'><i class="skeleton-field skeleton-icon mdi mdi-18 mdi-chevron-right"></i></td>
-                  <td class='type-icon'><i class="skeleton-field skeleton-icon mdi mdi-18 mdi-chevron-right"></i></td>
+                  <td></td><td></td>
                   <td><%= activity.name %></td>
-                  <td><div class="skeleton-field skeleton-progress"></div></td>
-                  <td><div class="skeleton-field skeleton-status"></div></td>
-                  <td>
-                    <i class="skeleton-field skeleton-icon mdi mdi-chevron-right"></i>
-                  </td>
+                  <td class="sk-p"></td>
+                  <td class="sk-s"></td>
+                  <td><i class="sk-i mdi mdi-chevron-right"></i></td>
                 </tr>
               <% end %>
             </table>

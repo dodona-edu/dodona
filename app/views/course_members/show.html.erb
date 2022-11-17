@@ -94,11 +94,8 @@
 
     <h2><%= t(".course_overview") + @user.full_name %></h2>
     <div id="series-listing">
-      <% @series.first(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, loaded: true, user: @user}) %>
-      <% end %>
-      <% @series.offset(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, loaded: false, user: @user}) %>
+      <% @series.each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, user: @user}) %>
       <% end %>
     </div>
 

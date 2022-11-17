@@ -90,7 +90,6 @@ class CoursesController < ApplicationController
     end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
-    @series_loaded = params[:secret].present? ? @course.series.count : 2
     @progress_info = {
       users_tried_by_exercise: @course.users_tried_by_exercise,
       users_correct_by_exercise: @course.users_correct_by_exercise,

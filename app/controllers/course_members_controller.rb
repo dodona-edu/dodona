@@ -45,7 +45,6 @@ class CourseMembersController < ApplicationController
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), course_members_path(@course)], [@user.full_name, '#']]
     @course_labels = CourseLabel.where(course: @course)
     @series = policy_scope(@course.series)
-    @series_loaded = 5
   end
 
   def edit

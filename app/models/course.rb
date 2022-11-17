@@ -269,6 +269,30 @@ class Course < ApplicationRecord
               .count
   end
 
+  def users_correct_by_exercise
+    Submission.where(status: 'correct', course: self)
+              .select(:user_id)
+              .distinct
+              .group(:exercise_id)
+              .count
+  end
+
+  def users_tried_by_exercise
+    Submission.judged.where(course: self)
+              .select(:user_id)
+              .distinct
+              .group(:exercise_id)
+              .count
+  end
+
+  def users_read_by_content_page
+    ActivityReadState.where(course: self)
+                     .select(:user_id)
+                     .distinct
+                     .group(:activity_id)
+                     .count
+  end
+
   invalidateable_instance_cacheable(:correct_solutions, ->(this, _options) { format(CORRECT_SOLUTIONS_CACHE_STRING, id: this.id) })
 
   def pending_memberships

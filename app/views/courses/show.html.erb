@@ -131,7 +131,7 @@
     <% end %>
     <div id="series-listing">
       <% @series.each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series }) %>
+        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info}) %>
       <% end %>
     </div>
   </div>

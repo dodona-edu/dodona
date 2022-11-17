@@ -1,4 +1,7 @@
 <% get_activity_path ||= ->(ex) {course_series_activity_path series.course_id, series.id, ex} %>
+<% unless defined? progress_info %>
+  <% progress_info = nil %>
+<% end %>
 <% if defined? user
      user = user || current_user
    else
@@ -190,6 +193,7 @@
               activities: series.activities,
               get_activity_path: get_activity_path,
               user: user,
+              progress_info: progress_info,
           } %>
         </div>
       <% end %>

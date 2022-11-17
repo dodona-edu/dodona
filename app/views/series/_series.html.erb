@@ -1,7 +1,4 @@
 <% get_activity_path ||= ->(ex) {course_series_activity_path series.course_id, series.id, ex} %>
-<% unless defined? loaded %>
-  <% loaded = true %>
-<% end %>
 <% unless defined? progress_info %>
   <% progress_info = nil %>
 <% end %>
@@ -10,7 +7,7 @@
    else
      user = current_user
    end %>
-<% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
+<% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) %>
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
@@ -18,10 +15,10 @@
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {loaded: loaded, series: series, user: user} %>
+      <%= render partial: 'series/series_status', locals: {series: series, user: user} %>
     </div>
     <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
-      <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && loaded ? series.completed_before_deadline?(user) : false} %>
+      <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && series.completed_before_deadline?(user)} %>
     </h4>
     <div class="flex-spacer"></div>
     <div class="card-subtitle-actions d-flex">
@@ -196,7 +193,6 @@
               activities: series.activities,
               get_activity_path: get_activity_path,
               user: user,
-              loaded: loaded,
               progress_info: progress_info,
           } %>
         </div>

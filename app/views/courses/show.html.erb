@@ -130,11 +130,8 @@
       <p class="lead text-center"><%= t ".no_series_yet" %> <%= t ".get_started_adding" if policy(@course).manage_series? %></p>
     <% end %>
     <div id="series-listing">
-      <% @series.first(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info, loaded: true}) %>
-      <% end %>
-      <% @series.offset(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info, loaded: false}) %>
+      <% @series.each do |series| %>
+        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info}) %>
       <% end %>
     </div>
   </div>

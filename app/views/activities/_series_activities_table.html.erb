@@ -4,9 +4,6 @@
    else
      user = current_user
    end %>
-<% unless defined? loaded %>
-  <% loaded = true %>
-<% end %>
 <% unless defined? progress_info %>
   <% progress_info = nil %>
 <% end %>
@@ -43,14 +40,10 @@
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>
-            <% if loaded %>
-              <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
-                <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
-              <% end %>
-              <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
-            <% else %>
-              <i class="mdi mdi-check unloaded-skeleton-field skeleton-icon"></i>
+            <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
+              <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
             <% end %>
+            <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
           <% end %>
         </td>
 
@@ -115,32 +108,24 @@
 
         <% if user_signed_in? %>
           <td>
-            <% if loaded %>
-              <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
-            <% else %>
-              <div class="unloaded-skeleton-field skeleton-status"></div>
-            <% end %>
+            <%= render partial: 'activities/user_status', locals: {activity: activity, series: local_assigns[:series], user: user} %>
           </td>
           <td>
-            <% if loaded %>
-              <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
-                <% options = current_user == user ? {} : {user_id: user.id} %>
-                <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
-                            title: t('layout.menu.my_submissions'),
-                            class: 'btn-icon' do %>
-                  <i class="mdi mdi-chevron-right"></i>
-                <% end %>
+            <% if activity.exercise? && (activity.started_for?(user, local_assigns[:series]) || current_user.course_admin?(local_assigns[:series]&.course)) %>
+              <% options = current_user == user ? {} : {user_id: user.id} %>
+              <%= link_to submissions_scoped_path(exercise: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                          title: t('layout.menu.my_submissions'),
+                          class: 'btn-icon' do %>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
-              <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
-                <% options = current_user == user ? {} : {user_id: user.id} %>
-                <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
-                            title: t('activities.navbar_links.read_states'),
-                            class: 'btn-icon' do %>
-                  <i class="mdi mdi-chevron-right"></i>
-                <% end %>
+            <% end %>
+            <% if activity.content_page? &&  current_user.course_admin?(local_assigns[:series]&.course) %>
+              <% options = current_user == user ? {} : {user_id: user.id} %>
+              <%= link_to activity_read_states_scoped_path(content_page: activity, course: local_assigns[:series]&.course, series: local_assigns[:series], options: options),
+                          title: t('activities.navbar_links.read_states'),
+                          class: 'btn-icon' do %>
+                <i class="mdi mdi-chevron-right"></i>
               <% end %>
-            <% else %>
-              <i class="mdi mdi-chevron-right unloaded-skeleton-field skeleton-icon"></i>
             <% end %>
           </td>
         <% end %>

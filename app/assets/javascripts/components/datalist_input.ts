@@ -119,6 +119,8 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
             this.value = this.filtered_options[0].value;
             this.filter = this.filtered_options[0].label;
         }
+        // When pressing enter while in this component, the default action shouldn't happen
+        // e.g. when used in a form, enter will save the entire form
         if (e.key === "Enter") {
             e.preventDefault();
         }

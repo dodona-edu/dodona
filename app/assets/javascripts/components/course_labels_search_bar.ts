@@ -5,13 +5,12 @@ import { Option } from "components/datalist_input";
 import { ready } from "util.js";
 import "components/datalist_input";
 /**
- * This component represents a list of d-label-token
+ * This component represents a list of the selected course labels
  *
- * @element d-course-label-tokens
- *
- * @prop {string[]} Labels
+ * @element d-course-labels
+ * @prop {string[]} Labels - the labels of a user in a certain course
  */
-@customElement("d-course-label-tokens")
+@customElement("d-course-labels")
 export class CourseLabelTokens extends ShadowlessLitElement {
     @property({ type: Array })
     labels: string[];
@@ -40,10 +39,13 @@ export class CourseLabelTokens extends ShadowlessLitElement {
 }
 
 /**
+ * This component represents a search bar for course labels, also showing a list of already selected labels.
+ * It allows for searching existing labels, or creating new ones, and adding them to the user of a certain course
+ *
  * @element d-course-labels-search-bar
  *
- * @prop {{id: number, name: string}[]} Labels
- * @prop {string[]} SelectedLabels
+ * @prop {{id: number, name: string}[]} Labels - all the labels already used in a course
+ * @prop {string[]} SelectedLabels - the labels that have been added to the user
  */
 @customElement("d-course-labels-search-bar")
 export class CourseLabelsSearchBar extends ShadowlessLitElement {
@@ -92,9 +94,9 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
     render(): TemplateResult {
         return html`
             <div>
-                <d-course-label-tokens 
+                <d-course-labels
                     .labels=${this.selected_labels}
-                ></d-course-label-tokens>
+                ></d-course-labels>
                 <div class="labels-searchbar-group input-group autocomplete">
                     <d-datalist-input
                         .filter="${this.filter}"

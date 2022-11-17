@@ -180,31 +180,6 @@
   white-space: normal;
 }
 
-.unloaded-skeleton-field {
-  background-image: linear-gradient($skeleton-color 100%, transparent 0);
-
-  &.skeleton-progress {
-    height: 8px;
-    width: 100px;
-  }
-
-  &.skeleton-status {
-    height: 17px;
-    width: 110px;
-  }
-
-  &.skeleton-icon {
-    display: block;
-    background-size: 17px 17px;
-    background-repeat: no-repeat;
-    background-position: center;
-
-    &::before {
-      visibility: hidden;
-    }
-  }
-}
-
 .graph-header {
   display: flex;
   align-items: center;

@@ -94,7 +94,7 @@ function initCourseMembers(): void {
 }
 
 const TABLE_WRAPPER_SELECTOR = ".series-activities-table-wrapper";
-const SKELETON_TABLE_SELECTOR = ".unloaded-skeleton-field";
+const SKELETON_TABLE_SELECTOR = ".unloaded-skeleton-fields";
 
 class Series {
     private readonly id: number;

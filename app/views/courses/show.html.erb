@@ -131,10 +131,10 @@
     <% end %>
     <div id="series-listing">
       <% @series.first(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, loaded: true}) %>
+        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info, loaded: true}) %>
       <% end %>
       <% @series.offset(@series_loaded).each do |series| %>
-        <%= render(partial: 'series/series', locals: {series: series, loaded: false}) %>
+        <%= render(partial: 'series/series', locals: {series: series, progress_info: @progress_info, loaded: false}) %>
       <% end %>
     </div>
   </div>

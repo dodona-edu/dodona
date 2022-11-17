@@ -2,6 +2,9 @@
 <% unless defined? loaded %>
   <% loaded = true %>
 <% end %>
+<% unless defined? progress_info %>
+  <% progress_info = nil %>
+<% end %>
 <% if defined? user
      user = user || current_user
    else
@@ -194,6 +197,7 @@
               get_activity_path: get_activity_path,
               user: user,
               loaded: loaded,
+              progress_info: progress_info,
           } %>
         </div>
       <% end %>

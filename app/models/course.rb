@@ -8,9 +8,9 @@
 #  secret            :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  description       :text(16777215)
-#  visibility        :integer
-#  registration      :integer
+#  description       :text(4294967295)
+#  visibility        :integer          default("visible_for_all")
+#  registration      :integer          default("open_for_institutional_users")
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)
@@ -271,7 +271,7 @@ class Course < ApplicationRecord
 
   def users_correct_by_exercise
     Submission.where(status: 'correct', course: self)
-              .select(:exercise_id, :user_id)
+              .select(:user_id)
               .distinct
               .group(:exercise_id)
               .count
@@ -279,7 +279,7 @@ class Course < ApplicationRecord
 
   def users_tried_by_exercise
     Submission.judged.where(course: self)
-              .select(:exercise_id, :user_id)
+              .select(:user_id)
               .distinct
               .group(:exercise_id)
               .count
@@ -287,7 +287,7 @@ class Course < ApplicationRecord
 
   def users_read_by_content_page
     ActivityReadState.where(course: self)
-                     .select(:activity_id, :user_id)
+                     .select(:user_id)
                      .distinct
                      .group(:activity_id)
                      .count

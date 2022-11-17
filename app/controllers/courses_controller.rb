@@ -90,11 +90,6 @@ class CoursesController < ApplicationController
     end
     @title = @course.name
     @series = policy_scope(@course.series).includes(:evaluation)
-    @progress_info = {
-      users_tried_by_exercise: @course.users_tried_by_exercise,
-      users_correct_by_exercise: @course.users_correct_by_exercise,
-      users_read_by_content_page: @course.users_read_by_content_page
-    }
   end
 
   # GET /courses/new

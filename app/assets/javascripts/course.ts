@@ -93,68 +93,7 @@ function initCourseMembers(): void {
     init();
 }
 
-const TABLE_WRAPPER_SELECTOR = ".series-activities-table-wrapper";
-const SKELETON_TABLE_SELECTOR = ".unloaded-skeleton-fields";
-
-class Series {
-    private readonly id: number;
-    private url: string;
-    private loaded: boolean;
-    private loading: boolean;
-    private _top: number;
-    private _bottom: number;
-
-    get top(): number {
-        return this._top;
-    }
-
-    get bottom(): number {
-        return this._bottom;
-    }
-
-    static findAll(cardsSelector = ".series.card"): Array<Series> {
-        const cards = document.querySelectorAll(cardsSelector);
-        return Array.from(cards, card => new Series(card));
-    }
-
-    constructor(card) {
-        this.id = +card.id.split("series-card-")[1];
-
-        this.reselect(card);
-    }
-
-    reselect(card: HTMLElement): void {
-        this.url = card.dataset.seriesUrl;
-        const tableWrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
-        const skeleton = tableWrapper?.querySelector(SKELETON_TABLE_SELECTOR);
-        // if tableWrapper is null the series is empty (no activities) => series is always loaded
-        this.loaded = skeleton === null || tableWrapper === null;
-        this.loading = false;
-        this._top = card.getBoundingClientRect().top + window.scrollY;
-        this._bottom = this.top + card.getBoundingClientRect().height;
-    }
-
-    needsLoading(): boolean {
-        return !this.loaded && !this.loading;
-    }
-
-    load(): void {
-        this.loading = true;
-        fetch(this.url, {
-            method: "GET"
-        }).then(async response => {
-            if (response.ok) {
-                eval(await response.text());
-                this.loading = false;
-                this.reselect(document.getElementById(`series-card-${this.id}`));
-            }
-        });
-    }
-}
-
 function initCourseShow(): void {
-    const series = Series.findAll().sort((s1, s2) => s1.top - s2.bottom);
-
     function init(): void {
         const nav = document.getElementById("scrollspy-nav");
         if (nav) {
@@ -163,22 +102,6 @@ function initCourseShow(): void {
                 offset: 90,
             }).activate();
         }
-        window.addEventListener("scroll", scroll);
-        scroll(); // Load series visible on pageload
-    }
-
-    function scroll(): void {
-        const screenTop = document.scrollingElement.scrollTop;
-        const screenBottom = screenTop + window.innerHeight;
-        const firstVisible = series.findIndex(s => screenTop < s.bottom);
-        const firstToLoad = firstVisible <= 0 ? 0 : firstVisible - 1;
-        const lastVisibleIdx = series.findIndex(s => screenBottom < s.top);
-        const lastToLoad = lastVisibleIdx == -1 ? series.length : lastVisibleIdx;
-
-        series
-            .slice(firstToLoad, lastToLoad + 1)
-            .filter(s => s.needsLoading())
-            .forEach(s => s.load());
     }
 
     init();

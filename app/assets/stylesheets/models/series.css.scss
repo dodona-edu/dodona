@@ -180,47 +180,28 @@
   white-space: normal;
 }
 
-.activity-table-skeleton {
-  width: 100%;
+.skeleton-field {
+  background-image: linear-gradient($skeleton-color 100%, transparent 0);
 
-  .skeleton-head {
-    border-bottom: solid 1px $skeleton-color;
-    height: 33px;
-    background-repeat: no-repeat;
-    background-image:
-      linear-gradient($skeleton-color 100%, transparent 0),
-      linear-gradient($skeleton-color 100%, transparent 0),
-      linear-gradient($skeleton-color 100%, transparent 0);
-    background-size:
-      56px 12px,
-      90px 12px,
-      115px 12px;
-    background-position:
-      58px 10px,
-      calc(100% - 230px) 10px,
-      calc(100% - 75px) 10px;
+  &.skeleton-progress {
+    height: 8px;
+    width: 100px;
   }
 
-  .skeleton-row {
-    border-top: solid 1px $skeleton-color;
-    height: 37px;
+  &.skeleton-status {
+    height: 17px;
+    width: 110px;
+  }
+
+  &.skeleton-icon {
+    display: block;
+    background-size: 17px 17px;
     background-repeat: no-repeat;
-    background-image:
-      linear-gradient($skeleton-color 100%, transparent 0),
-      linear-gradient($skeleton-color 100%, transparent 0),
-      linear-gradient($skeleton-color 100%, transparent 0),
-      linear-gradient($skeleton-color 100%, transparent 0);
-    background-size:
-      90px 12px,
-      100px 12px,
-      90px 12px,
-      8px 12px;
-    background-position:
-      58px 15px,
-      calc(100% - 220px) 15px,
-      calc(100% - 100px) 15px,
-      calc(100% - 25px) 15px;
-    padding-right: 8px;
+    background-position: center;
+
+    &::before {
+      visibility: hidden;
+    }
   }
 }
 

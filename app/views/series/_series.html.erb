@@ -196,12 +196,30 @@
                 user: user
             } %>
           <% else %>
-            <div class="activity-table-skeleton">
-              <div class="skeleton-head"></div>
-              <% series.activity_count.times do %>
-                <div class="skeleton-row"></div>
+            <table class="table activity-table table-resource">
+              <tr class="">
+                <th class='status-icon'></th>
+                <th class='type-icon'></th>
+                <th><%= t "activities.index.activity_title" %></th>
+                <th class='count d-none d-sm-table-cell'>
+                  <%= t "activities.index.class_progress" %>
+                </th>
+                <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
+                <th class='status-icon'></th>
+              </tr>
+              <% series.activities.each do |activity| %>
+                <tr>
+                  <td class='status-icon'><i class="skeleton-field skeleton-icon mdi mdi-18 mdi-chevron-right"></i></td>
+                  <td class='type-icon'><i class="skeleton-field skeleton-icon mdi mdi-18 mdi-chevron-right"></i></td>
+                  <td><%= activity.name %></td>
+                  <td><div class="skeleton-field skeleton-progress"></div></td>
+                  <td><div class="skeleton-field skeleton-status"></div></td>
+                  <td>
+                    <i class="skeleton-field skeleton-icon mdi mdi-chevron-right"></i>
+                  </td>
+                </tr>
               <% end %>
-            </div>
+            </table>
           <% end %>
         </div>
       <% end %>

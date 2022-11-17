@@ -39,7 +39,7 @@ Rails.application.configure do
   config.public_file_server.headers = {
     'Cross-Origin-Resource-Policy' => 'cross-origin'
   }
-  if Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?
+  if false && Rails.root.join('tmp', 'caching-dev.txt').exist? || ENV['RAILS_DO_CACHING'].present?
     config.action_controller.perform_caching = true
     config.action_controller.enable_fragment_cache_logging = true
 

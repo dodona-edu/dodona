@@ -77,15 +77,15 @@
                 <%= render partial: 'application/progress_chart',
                   locals: {
                     total: @course.subscribed_members_count,
-                    tried: progress_info ? progress_info[:users_tried_by_exercise][activity.id] : activity.users_tried(course: @course),
-                    correct: progress_info ? progress_info[:users_correct_by_exercise][activity.id] : activity.users_correct(course: @course),
+                    tried: progress_info ? progress_info[:users_tried_by_exercise][activity.id] || 0 : activity.users_tried(course: @course),
+                    correct: progress_info ? progress_info[:users_correct_by_exercise][activity.id] || 0 : activity.users_correct(course: @course),
                     info_tried: 'activities.index.progress_chart_info_tried',
                     info_correct: 'activities.index.progress_chart_info_correct'
                   }
                 %>
               <% else %>
                 <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-end text-muted" do %>
-                  <%= progress_info ? progress_info[:users_correct_by_exercise][activity.id] : activity.users_correct(course: @course) %>/<%= progress_info ? progress_info[:users_tried_by_exercise][activity.id] :activity.users_tried(course: @course) %>
+                  <%= progress_info ? progress_info[:users_correct_by_exercise][activity.id] || 0 : activity.users_correct(course: @course) %>/<%= progress_info ? progress_info[:users_tried_by_exercise][activity.id] || 0 : activity.users_tried(course: @course) %>
                 <% end %>
               <% end %>
             <% elsif activity.content_page? %>
@@ -93,13 +93,13 @@
                 <%= render partial: 'application/read_chart',
                   locals: {
                     total: @course.subscribed_members_count,
-                    read: progress_info ? progress_info[:users_read_by_content_page][activity.id] : activity.users_read(course: @course),
+                    read: progress_info ? progress_info[:users_read_by_content_page][activity.id] || 0 : activity.users_read(course: @course),
                     info_read: 'activities.index.progress_chart_info_read'
                   }
                 %>
               <% else %>
                 <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-end text-muted" do %>
-                  <%= t 'activities.activity.read_by', count: progress_info ? progress_info[:users_read_by_content_page][activity.id] : activity.users_read(course: @course) %>
+                  <%= t 'activities.activity.read_by', count: progress_info ? progress_info[:users_read_by_content_page][activity.id] || 0 : activity.users_read(course: @course) %>
                 <% end %>
               <% end %>
             <% end %>

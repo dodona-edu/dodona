@@ -49,8 +49,8 @@ module CRUDHelper
 
       not_equal << <<~MSG
         Attribute #{attr_name}
-          Expected: \"#{value}\"
-          Actual:   \"#{actual}"
+          Expected: "#{value}"
+          Actual:   "#{actual}"
       MSG
     end
     assert not_equal.empty?,

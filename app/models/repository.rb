@@ -126,7 +126,7 @@ class Repository < ApplicationRecord
                           .reject { |_, e| e.nil? }
                           # rubocop:enable Style/CollectionCompact
                           .group_by { |_, e| e }
-                          .transform_values { |l| l.map { |elem| elem[0] } }
+                          .transform_values { |l| l.pluck(0) }
     handled_directories = []
     handled_activity_ids = []
     new_activities = []
@@ -279,7 +279,7 @@ class Repository < ApplicationRecord
 
   def activity_dirs_below(directory)
     if activity_directory?(directory)
-      directory.cleanpath
+      [directory.cleanpath]
     else
       directory.entries
                .reject { |entry| entry.basename.to_path.start_with?('.') }

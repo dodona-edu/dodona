@@ -37,7 +37,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     user_json = JSON.parse(response.body)
     assert user_json.key?('subscribed_courses')
 
-    course_ids = user_json['subscribed_courses'].map { |c| c['id'] }
+    course_ids = user_json['subscribed_courses'].pluck('id')
 
     # check if each course in the result actually belongs to the user
     course_ids.each do |cid|

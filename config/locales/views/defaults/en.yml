@@ -1,10 +1,10 @@
 en:
   layouts:
     navbar:
-      demo_mode: "Demo mode"
+      demo_mode: "Anonymous mode"
       dark_mode: "Dark mode"
-      disable_demo_mode: "Disable demo mode"
-      enable_demo_mode: "Enable demo mode"
+      disable_demo_mode: "Disable anonymous mode"
+      enable_demo_mode: "Enable anonymous mode"
       disable_dark_mode: "Disable dark mode"
       enable_dark_mode: "Enable dark mode"
   layout:
@@ -16,9 +16,9 @@ en:
       switch_back: Switch back
       your_account: to your account.
     demo_mode:
-      demo_mode_enabled: Demo mode enabled
-      info:  while in demo mode, Dodona conceals all users names.
-      switch_back: Disable demo mode.
+      demo_mode_enabled: Anonymous mode enabled
+      info:  while in anonymous mode, Dodona conceals all users names.
+      switch_back: Disable anonymous mode.
     messages:
       warning: Warning!
       danger: Oh snap!

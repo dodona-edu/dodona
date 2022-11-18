@@ -1,0 +1,24 @@
+name: Deploy database backup to Naos
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-naos
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: naos
+      url: https://naos.ugent.be
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.MESTRA_KEY }}
+        known_hosts: ${{ secrets.MESTRA_HOST }}
+    - name: Deploy db backup
+      run: |
+        echo "deploy backup" | ssh -p 4840 dodona@mestra.ugent.be

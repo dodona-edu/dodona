@@ -11,16 +11,26 @@
       </div>
     </div>
   </div>
-  <div class="col-3">
+  <div class="col-9">
     <h4>Upcoming deadlines</h4>
-    <div class="card" style="background: #A5D6A7">
-      <div class="card-title">
-        <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 2: Variables</h2>
-        <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
-          2 hours left
-        </h3>
-      </div>
+    <div class="row">
+      <% @homepage_series.first(3).each do |series| %>
+        <div class="col-4">
+          <div class="card">
+            <div class="card-title">
+              <h2 class="card-title-text course-name ellipsis-overflow d-block">
+                <%= link_to series.name, course_path(series.course, series: series, anchor: series.anchor), title: series.name %>
+              </h2>
+              <h3 class="card-subtitle-text ellipsis-overflow">
+                <%= link_to series.course.name, course_path(series.course), class: "text-muted course-link", title: series.course.name %>
+              </h3>
+              <span class="card-subtitle-text ellipsis-overflow mt-1">
+                <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+              </span>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
   <div class="col-3 align-self-end">

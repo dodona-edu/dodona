@@ -21,7 +21,7 @@ module Elixir
           {
             discovery: true,
             response_mode: :form_post,
-            scope: [:openid, :email],
+            scope: [:openid, :email, :profile, :shac_home_organisation],
             client_options: {
               host: "https://login.elixir-czech.org/oidc/",
               identifier: Rails.application.credentials.elixir_client_id,

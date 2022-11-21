@@ -1,8 +1,6 @@
 require 'openid_connect'
 require 'openid_connect/response_object'
 
-# This strategy enables Surf to be used by Dodona.
-# It adds a smal change to the default open id connect, introducing the user institution
 module OmniAuth
   module Strategies
     class Elixir < OmniAuth::Strategies::OpenIDConnect
@@ -10,6 +8,9 @@ module OmniAuth
 
       info do
         {
+          # Elixir AAI does not provide a unique organisation, but instead offers a list of organisations
+          # This list also changes over time, with organisations being removed 1 year after last login
+          # This is unusable for us, so we group them all in a single organisation
           institution: "elixir",
         }
       end

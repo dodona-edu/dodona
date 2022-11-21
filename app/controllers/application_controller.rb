@@ -173,7 +173,7 @@ class ApplicationController < ActionController::Base
 
     token.gsub!(/Token token="(.*)"/, '\1')
     # only allow urlsafe base64 characters to pass
-    token.gsub!(/[^A-Za-z0-9_\-]/, '')
+    token.gsub!(/[^A-Za-z0-9_-]/, '')
 
     # Do not search for empty strings
     api_token = ApiToken.find_token(token) if token.present?

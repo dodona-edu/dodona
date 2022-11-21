@@ -158,9 +158,9 @@
       "copy-to-clipboard": "Click to copy",
       "course_labels": "Member labels",
       "course_labels_search_bar": {
-        "add_course_label": "Add",
-        "course_label_edit_explanation": "Search an existing userlabel or make a new one.",
-        "course_label_search": "Type to search"
+        "add": "Add",
+        "edit_explanation": "Add an existing userlabel or create a new one.",
+        "placeholder": "Label"
       },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
@@ -596,9 +596,9 @@
       "copy-to-clipboard": "Klik om te kopiëren",
       "course_labels": "Gebruikerlabels",
       "course_labels_search_bar": {
-        "add_course_label": "Toevoegen",
-        "course_label_edit_explanation": "Zoek een bestaand gebruikerlabel of maak een nieuwe aan.",
-        "course_label_search": "Typ om te zoeken"
+        "add": "Toevoegen",
+        "edit_explanation": "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan.",
+        "placeholder": "Label"
       },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",

@@ -10,13 +10,7 @@ module OmniAuth
 
       info do
         {
-          institution: user_info.raw_attributes["schac_home_organization"],
-        }
-      end
-
-      extra do
-        {
-          'user_info' => user_info,
+          institution: "elixir",
         }
       end
     end

@@ -16,6 +16,7 @@ class Institution < ApplicationRecord
   CACHE_EXPIRY_TIME = 5.minutes
   SIMILARITY_MATRIX_CACHE_STRING = '/Institutions/similarity_matrix'.freeze
   MOST_SIMILAR_CACHE_STRING = '/Institutions/most_similar'.freeze
+  IGNORED_DOMAINS_FOR_SIMILARITY = %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be gmail.be live.be outlook.be hotmail.be].freeze
   NEW_INSTITUTION_NAME = 'n/a'.freeze
 
   enum category: { secondary: 0, higher: 1, other: 2 }
@@ -89,7 +90,7 @@ class Institution < ApplicationRecord
       # We also filter out common domains and avoid domains that appear only once in an institution
       domains = emails.map { |u| [u.email.split('@').last, u.institution_id] }
                       .tally.map { |k, v| { domain: k[0], institution_id: k[1], count: v } }
-                      .filter { |u| %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be gmail.be live.be outlook.be hotmail.be].exclude?(u[:domain]) && u[:count] > 1 }
+                      .filter { |u| IGNORED_DOMAINS_FOR_SIMILARITY.exclude?(u[:domain]) && u[:count] > 1 }
 
       # we group by domain to get all institutions with the same domain, we update the similarity matrix for all pairs of institutions
       domains.group_by { |u| u[:domain] }.each do |_, institution|

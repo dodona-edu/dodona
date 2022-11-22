@@ -53,7 +53,6 @@ class PagesController < ApplicationController
 
   def contact
     @contact_form = ContactForm.new
-    @current_user = current_user
     @title = I18n.t('pages.contact.title')
   end
 

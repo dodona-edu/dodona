@@ -11,12 +11,10 @@
           <p><%= t('.contact_p3_html') %></p>
         </div>
         <div class="col-lg-6">
-          <% if @current_user.nil? || policy(RightsRequest).create? %>
-            <div class="callout callout-info">
-              <h4><%= t('.rights_request_title') %></h4>
-              <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
-            </div>
-          <% end %>
+          <div class="callout callout-info">
+            <h4><%= t('.rights_request_title') %></h4>
+            <%= t('.rights_request_redirect_html', url: new_rights_request_path) %>
+          </div>
         </div>
       </div>
       <div class="card-supporting-text card-border">

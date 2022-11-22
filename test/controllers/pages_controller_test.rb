@@ -42,7 +42,9 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
       name: 'Jan',
       email: 'Jan@UGent.BE',
       subject: '(╯°□°）╯︵ ┻━┻)',
-      message: '┬─┬ノ( º _ ºノ )'
+      message: '┬─┬ノ( º _ ºノ )',
+      human: '1',
+      robot: '0'
     }
     assert_changes 'ActionMailer::Base.deliveries.size', +1 do
       post create_contact_path(contact_form: contact_form)
@@ -55,12 +57,30 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
       name: 'Jan',
       email: 'Jan@UGent.BE',
       subject: '(╯°□°）╯︵ ┻━┻)',
-      message: 'XEvil is annoying'
+      message: 'XEvil is annoying',
+      human: '1',
+      robot: '0'
     }
     assert_no_changes 'ActionMailer::Base.deliveries.size' do
       post create_contact_path(contact_form: contact_form)
     end
     assert_redirected_to root_url
+  end
+
+  test 'should not send email when robot' do
+    [%w[0 0], %w[0 1], %w[1 1]].each do |human, robot|
+      contact_form = {
+        name: 'Jan',
+        email: 'Jan@UGent.BE',
+        subject: '(╯°□°）╯︵ ┻━┻)',
+        message: '┬─┬ノ( º _ ºノ )',
+        human: human,
+        robot: robot
+      }
+      assert_no_changes 'ActionMailer::Base.deliveries.size' do
+        post create_contact_path(contact_form: contact_form)
+      end
+    end
   end
 
   test 'should get profile when logged in' do

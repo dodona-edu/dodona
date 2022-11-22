@@ -38,6 +38,20 @@
             <div class="col-sm-8"><%= f.text_area :message, required: true, class: "form-control", rows: 8 %></div>
           </div>
 
+          <div class="field form-group row">
+            <div class="offset-sm-2 col-sm-8">
+              <%= f.check_box :human, class: "form-check-input" %>
+              <%= f.label t('.human'), :class => "form-check-label" %>
+            </div>
+          </div>
+
+          <div class="field form-group row">
+            <div class="offset-sm-2 col-sm-8">
+              <%= f.check_box :robot, class: "form-check-input" %>
+              <%= f.label t('.robot'), :class => "form-check-label" %>
+            </div>
+          </div>
+
           <% if Rails.env.production? || Rails.env.staging? %>
             <div class="form-group row">
               <div class="offset-sm-2 col-sm-8">

@@ -60,6 +60,8 @@ nl:
       rights_request_title: Lesgeversrechten
       rights_request_redirect_html: Wil je lesgeversrechten aanvragen voor je account? Gebruik dan <strong><a href="%{url}">dit formulier</a></strong>.
       send: Bericht verzenden
+      human: Ik ben een mens
+      robot: Ik ben een robot
     create_contact:
       captcha_failed: HCaptcha kon niet geverifieerd worden, probeer opnieuw.
       mail_sent: "Je bericht werd verstuurd. Bedankt om contact op te nemen."

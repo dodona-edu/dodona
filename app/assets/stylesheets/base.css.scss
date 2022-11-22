@@ -77,7 +77,9 @@
 @import "pages.css.scss";
 @import "models.css.scss";
 @import "print.css.scss";
-@import "status_overlay.css.scss";
+
+// 6. Temporal css sheets
+@import "temporal/christmas.css.scss";
 
 /* stylelint-disable-next-line selector-class-pattern */
 .field_with_errors input {

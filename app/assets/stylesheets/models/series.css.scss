@@ -184,7 +184,7 @@
   .sk-p {
     background-image: linear-gradient($skeleton-color 100%, transparent 0);
     width: 116px;
-    background-size: 100px 8px;
+    background-size: 100px 12px;
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 8px;
@@ -193,7 +193,7 @@
   .sk-s {
     background-image: linear-gradient($skeleton-color 100%, transparent 0);
     width: 126px;
-    background-size: 110px 17px;
+    background-size: 110px 12px;
     background-repeat: no-repeat;
     background-position-y: center;
     background-position-x: 8px;
@@ -202,7 +202,7 @@
   .sk-i {
     background-image: linear-gradient($skeleton-color 100%, transparent 0);
     display: block;
-    background-size: 17px 17px;
+    background-size: 17px 12px;
     background-repeat: no-repeat;
     background-position: center;
 

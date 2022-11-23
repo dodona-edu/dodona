@@ -5,7 +5,7 @@
 #  id                       :integer          not null, primary key
 #  course_id                :integer
 #  name                     :string(255)
-#  description              :text(16777215)
+#  description              :text(4294967295)
 #  visibility               :integer
 #  order                    :integer          default(0), not null
 #  created_at               :datetime         not null

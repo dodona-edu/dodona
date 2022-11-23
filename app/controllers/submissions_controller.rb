@@ -83,7 +83,7 @@ class SubmissionsController < ApplicationController
     @submissions_time_stamps = []
     prev = nil
     @submissions.each do |s|
-      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t 'submissions.show.ago'}" : (t 'submissions.show.today')
+      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t '.ago'}" : (t '.today')
       if current == prev
         @submissions_time_stamps.push nil
       else
@@ -93,6 +93,18 @@ class SubmissionsController < ApplicationController
     end
 
     @feedbacks = policy_scope(@submission.feedbacks).preload(scores: :score_item)
+  end
+
+  def edit
+    respond_to do |format|
+      format.html do
+        if @submission.course.nil?
+          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        else
+          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        end
+      end
+    end
   end
 
   def create
@@ -114,18 +126,6 @@ class SubmissionsController < ApplicationController
     else
       submission.errors.add(:exercise, 'not permitted') unless can_submit
       render json: { status: 'failed', errors: submission.errors }, status: :unprocessable_entity
-    end
-  end
-
-  def edit
-    respond_to do |format|
-      format.html do
-        if @submission.course.nil?
-          redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        else
-          redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        end
-      end
     end
   end
 

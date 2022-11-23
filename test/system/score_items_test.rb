@@ -27,7 +27,7 @@ class ScoreItemsTest < ApplicationSystemTestCase
     assert_no_text '314.25'
 
     # Click the edit button of the score item
-    find("a[href=\"\#edit-form-#{@score_item.id}\"]").click
+    find("a[href=\"#edit-form-#{@score_item.id}\"]").click
     # Change value of score item
     find(id: "#{@exercise.id}_score_item_maximum").fill_in with: '314.25'
     # Save our changes to the score item

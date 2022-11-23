@@ -352,9 +352,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     exercises_response = JSON.parse response.body
     assert_equal 2, exercises_response.count
 
-    exercise_response_ids = exercises_response.map do |ex|
-      ex['id']
-    end
+    exercise_response_ids = exercises_response.pluck('id')
     exercises_in_series.each do |exercise_expected|
       assert_includes exercise_response_ids, exercise_expected.id
     end
@@ -747,5 +745,14 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert description_url.include?(Rails.configuration.sandbox_host)
     assert description_url.include?(exercise.access_token)
+  end
+
+  test 'json link to description should return a 406' do
+    exercise = exercises(:python_exercise)
+
+    # should throw unknown format error, which rails will translate to a 406
+    assert_raises(ActionController::UnknownFormat) do
+      get description_activity_url(exercise, token: exercise.access_token, format: :json)
+    end
   end
 end

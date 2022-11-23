@@ -8,9 +8,9 @@
 #  secret            :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  description       :text(16777215)
-#  visibility        :integer
-#  registration      :integer
+#  description       :text(4294967295)
+#  visibility        :integer          default("visible_for_all")
+#  registration      :integer          default("open_for_institutional_users")
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)
@@ -224,7 +224,7 @@ class CourseTest < ActiveSupport::TestCase
     # All series and users are counted.
     assert_equal course.series.count * users.count, scoresheet[:hash].count
     # Correct series are counted.
-    assert_equal scoresheet[:hash].keys.map { |k| k[1] }.to_set, scoresheet[:series].map(&:id).to_set
+    assert_equal scoresheet[:hash].keys.pluck(1).to_set, scoresheet[:series].map(&:id).to_set
     # Correct users are counted.
     assert_equal scoresheet[:hash].keys.map(&:first).to_set, users.map(&:id).to_set
     # Counts are correct.

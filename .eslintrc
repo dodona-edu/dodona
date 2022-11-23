@@ -11,7 +11,9 @@
     "eslint:recommended",
     "google",
     "plugin:jest/recommended",
-    "plugin:no-jquery/all"
+    "plugin:no-jquery/all",
+    "plugin:wc/recommended",
+    "plugin:lit/recommended"
   ],
   "rules": {
     "arrow-parens": ["error", "as-needed"],

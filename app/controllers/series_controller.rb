@@ -65,7 +65,7 @@ class SeriesController < ApplicationController
     @title = @series.name
     @crumbs = [[@course.name, course_path(@course)], [@series.name, '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)
-    flash[:alert] = I18n.t('series.show.hidden_not_registered') if @series.hidden? && !current_user&.subscribed_courses&.include?(@course)
+    flash.now[:alert] = I18n.t('series.show.hidden_not_registered') if @series.hidden? && !current_user&.subscribed_courses&.include?(@course)
   end
 
   def overview

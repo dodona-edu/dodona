@@ -2,24 +2,22 @@
   .card-title-icon.christmas {
     &::before {
       content: "";
-
       position: absolute;
       width: 75px;
       height: 75px;
       margin-left: -4px;
-
-      background-image: url('seasonal/series_status_overlays/christmas.svg') !important;
+      background-image: url("seasonal/series_status_overlays/christmas.svg") !important;
       background-size: contain;
       background-repeat: no-repeat;
     }
-  
+
     &:hover {
       background: transparent !important;
-  
+
       &::before {
-        background-image: url('seasonal/series_status_overlays/christmas-hover.svg') !important;
+        background-image: url("seasonal/series_status_overlays/christmas-hover.svg") !important;
       }
-  
+
       i {
         color: transparent !important;
         background: transparent !important;

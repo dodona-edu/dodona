@@ -4,8 +4,8 @@ module SeasonalHelper
   end
 
   # returns seasonal class
-  def series_status_overlay()
-    current_time = Time.now
+  def series_status_overlay
+    current_time = Time.now.in_time_zone(config.time_zone)
 
     return 'christmas' if christmas(current_time)
 

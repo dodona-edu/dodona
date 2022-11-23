@@ -30,7 +30,6 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         });
     }
 
-    // TODO: not able to test this locally yet
     function initHideCorrect(): void {
         document.querySelectorAll(".correct-switch-buttons .btn").forEach( b => {
             b.addEventListener("click", e => {
@@ -45,36 +44,36 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 const tabButtons = tab.querySelectorAll(".correct-switch-buttons .btn");
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");
-                if (button.dataset.show) {
-                    tab.querySelectorAll(".group.correct").forEach(t => t.show());
+                if (button.dataset.show === "true") {
+                    tab.querySelectorAll(".group.correct").forEach(testcase => {
+                        testcase.style.display = "block";
+                    });
                 } else {
-                    tab.querySelectorAll(".group.correct").forEach(t => t.hide());
+                    tab.querySelectorAll(".group.correct").forEach(testcase => {
+                        testcase.style.display = "none";
+                    });
                 }
             });
         });
     }
 
-    // TODO: code probably not correct yet, where is this used
     function initTabLinks(): void {
         document.querySelectorAll("a.tab-link").forEach(t => {
-            t.addEventListener("click", el => {
-                const tab = el.dataset.tab || "code";
-                const element = el.dataset.element;
-                const line = el.dataset.line;
+            t.addEventListener("click", e => {
+                const link = e.currentTarget;
+                const tabName = link.dataset.tab || "code";
+                const line = link.dataset.line;
 
-                document.querySelector(".tab-link-marker").classList.remove("tab-link-marker");
-                document.querySelectorAll(`.feedback-table .nav-tabs > li a[href*=#tab-${tab}"]`).forEach(e => {
-                    const bootstrapTab = new bootstrap.Tab(e);
-                    bootstrapTab.show();
-                });
-                if (element !== undefined) {
-                    document.querySelector("#element").classList.add("tab-link-marker");
-                }
+                // prevent automatic scrolling to top of the page when clicking a link
+                e.preventDefault();
+
+                const tab = document.querySelector(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']`);
+                new bootstrap.Tab(tab).show();
+
                 if (line !== undefined) {
                     dodona.codeListing.clearHighlights();
                     dodona.codeListing.highlightLine(line, true);
                 }
-                return false;
             });
         });
     }

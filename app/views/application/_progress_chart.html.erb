@@ -14,11 +14,13 @@
 
         "<line class='#{part[:class]}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
     end
+
+    width ||= 100
 %>
 
 <%# You might think that this span here is useless, but you think wrong: https://github.com/twbs/bootstrap/issues/20381 %>
 <span data-bs-html="true" data-bs-toggle='tooltip' title="<%= t(info_tried, count: tried) %><br/><%= t(info_correct, count: correct) %>">
-  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='progress-chart'>
+  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="<%= width %>" class='progress-chart'>
       <%= raw parts.join("") %>
   </svg>
 </span>

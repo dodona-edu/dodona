@@ -141,6 +141,14 @@ class Series < ApplicationRecord
     activities_count || series_memberships.size
   end
 
+  def completed_activity_count(user)
+    activities.count { |a| a.accepted_for?(user, self) }
+  end
+
+  def started_activity_count(user)
+    activities.count { |a| a.started_for?(user, self) }
+  end
+
   def scoresheet
     users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 

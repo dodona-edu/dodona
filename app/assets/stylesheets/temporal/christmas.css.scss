@@ -1,71 +1,34 @@
 .card.series {
-    .card-title-icon.christmas {
-        .overlay {
-          position: absolute;
-          width: 75px;
-          height: 75px;
-          margin-left: -4px;
-      
-          background-image: url('temporal/series_status_overlays/christmas.svg') !important;
-          background-size: contain;
-          background-repeat: no-repeat;
+  .card-title-icon.christmas {
+    &::before {
+      content: "";
+
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      margin-left: -4px;
+
+      background-image: url('temporal/series_status_overlays/christmas.svg') !important;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+  
+    &:hover {
+      background: transparent !important;
+  
+      &::before {
+        background-image: url('temporal/series_status_overlays/christmas-hover.svg') !important;
+      }
+  
+      i {
+        color: transparent !important;
+        background: transparent !important;
+        border: transparent !important;
+
+        &::before {
+          color: transparent !important;
         }
-      
-        &:hover {
-          background: transparent;
-      
-          .overlay {
-            background-image: url('temporal/series_status_overlays/christmas-hover.svg') !important;
-          }
-      
-          i {
-            color: transparent;
-            background: transparent;
-            border: transparent;
-          }
-      
-          &.deadline-missed .mdi-alarm-off {
-            &::before {
-              color: transparent;
-            }
-      
-            background-color: transparent;
-            border: transparent;
-          }
-      
-          &.deadline-met .mdi-alarm-check {
-            &::before {
-              color: transparent;
-            }
-      
-            background-color: transparent;
-            border: transparent;
-          }
-      
-          &.wrong {
-            background-color: transparent;
-      
-            i {
-              color: transparent;
-            }
-          }
-      
-          &.started,
-          &.completed.deadline-missed {
-            background-color: transparent;
-      
-            i {
-              color: transparent;
-            }
-          }
-      
-          &.completed:not(.deadline-missed) {
-            i {
-              background: transparent;
-              border: transparent;
-              color: transparent;
-            }
-          }
-        }
-    }      
+      }
+    }
+  }
 }

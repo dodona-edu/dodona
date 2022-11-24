@@ -120,6 +120,14 @@ class Series < ApplicationRecord
   invalidateable_instance_cacheable(:wrong?,
                                     ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s) })
 
+  def next_activity(activity)
+    activities.where('series_memberships.order > ?', activity.series_memberships.find_by(series: self).order).order('series_memberships.order ASC').first
+  end
+
+  def next
+    course.series.where('order > ?', order).order('order ASC').first
+  end
+
   def indianio_support
     indianio_token.present?
   end

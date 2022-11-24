@@ -18,6 +18,30 @@ class PagesController < ApplicationController
       @favorite_courses = course_memberships.select(&:favorite).map(&:course)
       @grouped_courses = @subscribed_courses.sort_by(&:year).reverse.group_by(&:year)
       @homepage_series = @subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
+
+      latest_submission = current_user.submissions.first
+      if latest_submission.nil?
+        @jump_back_in = nil
+      elsif latest_submission.accepted?
+        if latest_submission.series.nil?
+          @jump_back_in = latest_submission.course
+        else
+          next_activity = latest_submission.series.next_activity(latest_submission.exercise)
+          if next_activity.nil?
+            next_series = latest_submission.series.next
+            if next_series.nil?
+              @jump_back_in = latest_submission.course
+            else
+              @jump_back_in = next_series
+            end
+          else
+            @jump_back_in = next_activity
+          end
+        end
+        @jump_back_in = latest_submission.exercise
+      else
+        @jump_back_in = latest_submission
+      end
     else
       set_metrics
       respond_to do |format|

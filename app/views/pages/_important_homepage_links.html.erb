@@ -1,24 +1,34 @@
 <div class="row">
+  <% if @jump_back_in.present? %>
   <div class="col-4">
     <h4>Jump back in</h4>
-    <div class="card">
-      <div class="card-title">
-        <h2 class="card-title-text course-name ellipsis-overflow d-block">Echo function print</h2>
-        <h3 class="card-subtitle-text ellipsis-overflow">Object oriented programming</h3>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1">
-          Series 5: Loops
-        </h3>
-      </div>
-    </div>
+    <% if @jump_back_in.is_a? Submission %>
+      <%= link_to course_series_activity_path(I18n.locale, @jump_back_in.course_id, @jump_back_in.series.id, @jump_back_in.exercise_id, anchor: 'submission-card', edit_submission: @jump_back_in) do %>
+        <div class="card" style="height: 100px">
+          <div class="card-title">
+            <h2 class="card-title-text course-name ellipsis-overflow d-block" title="<%= @jump_back_in.exercise.name %>">
+              <%= submission_status_icon @jump_back_in, size: 24 %> <%= @jump_back_in.exercise.name %>
+            </h2>
+            <h3 class="card-subtitle-text ellipsis-overflow mt-1">
+              <%= link_to @jump_back_in.course.name, course_path(@jump_back_in.course), class: "text-reset", title: @jump_back_in.course.name %>
+            </h3>
+            <h3 class="card-subtitle-text ellipsis-overflow mt-1">
+              <%= link_to @jump_back_in.series.name, course_path(@jump_back_in.series.course, series: @jump_back_in.series, anchor: @jump_back_in.series.anchor), class: "text-reset", title: @jump_back_in.series.name %>
+            </h3>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
   </div>
+  <% end %>
   <div class="col-8">
     <h4>Upcoming deadlines</h4>
     <div class="row">
-      <% @homepage_series.first(3).each do |series| %>
+      <% @homepage_series.first(2).each do |series| %>
         <% met ||= series.completed_before_deadline?(current_user) %>
         <div class="col-6">
           <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
-            <div class="card">
+            <div class="card" style="height: 100px">
               <div class="card-title">
                 <h2 class="card-title-text course-name ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
                   <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>

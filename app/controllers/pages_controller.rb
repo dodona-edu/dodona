@@ -19,29 +19,7 @@ class PagesController < ApplicationController
       @grouped_courses = @subscribed_courses.sort_by(&:year).reverse.group_by(&:year)
       @homepage_series = @subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
 
-      latest_submission = current_user.submissions.first
-      if latest_submission.nil?
-        @jump_back_in = nil
-      elsif latest_submission.accepted?
-        if latest_submission.series.nil?
-          @jump_back_in = latest_submission.course
-        else
-          next_activity = latest_submission.series.next_activity(latest_submission.exercise)
-          if next_activity.nil?
-            next_series = latest_submission.series.next
-            if next_series.nil?
-              @jump_back_in = latest_submission.course
-            else
-              @jump_back_in = next_series
-            end
-          else
-            @jump_back_in = next_activity
-          end
-        end
-        @jump_back_in = latest_submission.exercise
-      else
-        @jump_back_in = latest_submission
-      end
+      @jump_back_in = jump_back_in
     else
       set_metrics
       respond_to do |format|
@@ -49,6 +27,25 @@ class PagesController < ApplicationController
         format.json { render partial: 'static_home' }
       end
     end
+  end
+
+  def jump_back_in
+    latest_submission = current_user.submissions.first
+    return nil if latest_submission.nil?
+
+    return latest_submission unless latest_submission.accepted? # The last submission was wrong, continue working on it
+
+    # The last submission was correct, start working on the next exercise
+    return latest_submission.course if latest_submission.series.nil? # we don't know the series, thus have no idea what the next exercise is, continue working on the course
+
+    next_activity = latest_submission.series.next_activity(latest_submission.exercise)
+    return next_activity unless next_activity.nil? # start working on the next exercise
+
+    # There is no next exercise, start working on the next series
+    next_series = latest_submission.series.next
+    return latest_submission.course if next_series.nil? # there is no next series, continue working on the course
+
+    next_series # start working on the next series
   end
 
   def institution_not_supported; end

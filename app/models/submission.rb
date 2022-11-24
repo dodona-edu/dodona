@@ -152,7 +152,7 @@ class Submission < ApplicationRecord
     series = series.visible unless user&.course_admin?(course)
     # There could actually be multiple series with the same exercise and the same course
     # But for now we just return the first one, as there is only one in most cases
-    series.find_by(exercises: exercise)
+    series.joins(:series_memberships).find_by(series_memberships: {activity: exercise})
   end
 
   def clean_messages(messages, levels)

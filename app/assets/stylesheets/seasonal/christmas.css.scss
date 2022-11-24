@@ -6,26 +6,37 @@
       width: 75px;
       height: 75px;
       margin-left: -5px;
-      background-image: url("seasonal/series_status_overlays/christmas.svg");
       background-size: contain;
       background-repeat: no-repeat;
     }
 
-    &:hover {
-      background: transparent;
-
+    &.started, &.completed.deadline-missed {
       &::before {
-        background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
+        background-image: url("seasonal/series_status_overlays/christmas.svg");
       }
 
-      i {
-        color: transparent;
+      &:hover {
         background: transparent;
-        border: transparent;
-
+  
         &::before {
-          color: transparent;
+          background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
         }
+  
+        i {
+          color: transparent;
+          background: transparent;
+          border: transparent;
+  
+          &::before {
+            color: transparent;
+          }
+        }
+      }
+    }
+
+    &.completed:not(.deadline-missed) {
+      &::before {
+        background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
       }
     }
   }

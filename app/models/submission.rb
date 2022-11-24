@@ -144,6 +144,17 @@ class Submission < ApplicationRecord
     File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
   end
 
+  def series
+    return nil if course.nil?
+
+    series = course.series
+    # we want to avoid accidentally linking a hidden series to a student
+    series = series.visible unless user&.course_admin?(course)
+    # There could actually be multiple series with the same exercise and the same course
+    # But for now we just return the first one, as there is only one in most cases
+    series.find_by(exercises: exercise)
+  end
+
   def clean_messages(messages, levels)
     messages.select { |m| !m.is_a?(Hash) || !m.key?(:permission) || levels.include?(m[:permission]) }
   end

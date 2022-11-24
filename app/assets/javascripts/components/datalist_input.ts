@@ -40,9 +40,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     watch = {
         filter: () => {
-            if (!this.value) {
-                this.value = this.options.find(o => this.filter === o.label)?.value || "";
-            }
+            this.value = this.options.find(o => this.filter === o.label)?.value || "";
             this.fireEvent();
         },
         options: () => {
@@ -120,6 +118,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         if (e.key === "Tab" && this.filtered_options.length > 0) {
             this.value = this.filtered_options[0].value;
             this.filter = this.filtered_options[0].label;
+        }
+        // When pressing enter while in this component, the default action shouldn't happen
+        // e.g. when used in a form, enter will save the entire form
+        if (e.key === "Enter") {
+            e.preventDefault();
         }
     }
 

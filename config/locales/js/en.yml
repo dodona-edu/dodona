@@ -247,5 +247,8 @@ en:
     sign_in_search_bar:
       institution_search: "Type to search for your institution"
       log_in: Sign in
-
+    course_labels_search_bar:
+      placeholder: "Label"
+      add: "Add"
+      edit_explanation: "Add an existing userlabel or create a new one."
 

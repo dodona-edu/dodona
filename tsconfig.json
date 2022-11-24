@@ -17,6 +17,6 @@
     "allowUmdGlobalAccess": true,
     "resolveJsonModule": true
   },
-  "exclude": ["**/*.spec.ts", "node_modules", "vendor", "public", "data"],
+  "exclude": ["**/*.spec.ts", "node_modules", "public", "data"],
   "compileOnSave": false
 }

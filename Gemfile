@@ -120,9 +120,6 @@ gem 'has_scope', '~> 0.8.0'
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
 
-# bootstrap tokenizer
-gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
-
 # memcache
 gem 'dalli', '~> 3.2.3'
 

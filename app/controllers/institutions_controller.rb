@@ -5,11 +5,19 @@ class InstitutionsController < ApplicationController
     scope.by_name(value)
   end
 
+  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[name short_name users courses most_similar].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
+  end
+
   def index
     authorize Institution
-    @institutions = apply_scopes(policy_scope(Institution)).all.order(generated_name: :desc, name: :asc)
-                                                           .includes(:courses, :users, :providers)
-                                                           .paginate(page: parse_pagination_param(params[:page]))
+    @institutions = apply_scopes(policy_scope(Institution.order_by_name(:asc))).includes(:courses, :users, :providers)
+                                                                               .paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('institutions.index.title')
   end
 
@@ -40,7 +48,7 @@ class InstitutionsController < ApplicationController
     @title = I18n.t('institutions.merge.title', name: @institution.name)
     @institutions = apply_scopes(policy_scope(Institution))
                     .where.not(id: @institution.id)
-                    .order(generated_name: :desc, name: :asc)
+                    .order_by_similarity_to(@institution.id, 'DESC')
                     .includes(:courses, :users, :providers)
                     .paginate(per_page: 15, page: parse_pagination_param(params[:page]))
   end
@@ -58,7 +66,7 @@ class InstitutionsController < ApplicationController
     else
       @institutions = apply_scopes(policy_scope(Institution))
                       .where.not(id: @institution.id)
-                      .order(generated_name: :desc, name: :asc)
+                      .order_by_similarity_to(@institution.id, 'DESC')
                       .includes(:courses, :users, :providers)
                       .paginate(per_page: 15, page: parse_pagination_param(params[:page]))
       render :merge, status: :unprocessable_entity

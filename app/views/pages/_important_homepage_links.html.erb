@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-3">
+  <div class="col-4">
     <h4>Jump back in</h4>
     <div class="card">
       <div class="card-title">
@@ -11,66 +11,40 @@
       </div>
     </div>
   </div>
-  <div class="col-9">
+  <div class="col-8">
     <h4>Upcoming deadlines</h4>
     <div class="row">
       <% @homepage_series.first(3).each do |series| %>
         <% met ||= series.completed_before_deadline?(current_user) %>
-        <div class="col-4">
-          <div class="card">
-            <div class="card-title">
-              <h2 class="card-title-text course-name ellipsis-overflow d-block">
-
-                <%= link_to course_path(series.course, series: series, anchor: series.anchor), title: series.name do %>
+        <div class="col-6">
+          <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
+            <div class="card">
+              <div class="card-title">
+                <h2 class="card-title-text course-name ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
                   <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
                   <%= series.name %>
-                <% end %>
-              </h2>
-              <h3 class="card-subtitle-text ellipsis-overflow">
-                <%= link_to series.course.name, course_path(series.course), class: "text-reset course-link", title: series.course.name %>
-              </h3>
-              <h3 class="card-subtitle-text ellipsis-overflow mt-1">
-                <% if series.deadline.past? && !met %>
-                  <%= t('deadlines.missed') %>
-                <% else %>
+                </h2>
+                <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start">
+                  <%= link_to series.course.name, course_path(series.course), class: "text-reset course-link", title: series.course.name %>
+                </h3>
+                <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end">
+                  <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>
                   <%= deadline_relative_time series.deadline %>
-                <% end %>
-              </h3>
+                </h3>
 
-              <%= render partial: 'progress_chart', locals: {
-                total: series.activity_count,
-                tried: series.started_activity_count(current_user),
-                correct: series.completed_activity_count(current_user),
-                info_tried: 'activities.index.progress_chart_info_tried',
-                info_correct: 'activities.index.progress_chart_info_correct',
-                width: '100%',
-              } %>
+                <%= render partial: 'progress_chart', locals: {
+                  total: series.activity_count,
+                  tried: series.started_activity_count(current_user),
+                  correct: series.completed_activity_count(current_user),
+                  info_tried: 'activities.index.progress_chart_info_tried',
+                  info_correct: 'activities.index.progress_chart_info_correct',
+                  width: '100%',
+                } %>
+              </div>
             </div>
-          </div>
+          <% end %>
         </div>
       <% end %>
-    </div>
-  </div>
-  <div class="col-3 align-self-end">
-    <div class="card" style="background: #EF9A9A">
-      <div class="card-title">
-        <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 5: Loops</h2>
-        <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
-          5 days left
-        </h3>
-      </div>
-    </div>
-  </div>
-  <div class="col-3 align-self-end">
-    <div class="card" style="background: #EF9A9A">
-      <div class="card-title">
-        <h2 class="card-title-text course-name ellipsis-overflow d-block" style="color: rgb(0 0 0 / 75%)">Series 6: Functions</h2>
-        <h3 class="card-subtitle-text ellipsis-overflow" style="color: rgb(0 0 0 / 60%)">Object oriented programming</h3>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1" style="color: rgb(0 0 0 / 60%)">
-          2 weeks left
-        </h3>
-      </div>
     </div>
   </div>
 </div>

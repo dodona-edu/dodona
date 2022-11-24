@@ -3,11 +3,12 @@
     <thead>
     <tr>
       <th></th>
-      <th><%= Institution.human_attribute_name(:name) %></th>
-      <th><%= Institution.human_attribute_name(:short_name) %></th>
-      <th><%= t('institutions.index.number_of_users') %></th>
-      <th><%= t('institutions.index.number_of_courses') %></th>
+      <th><d-sort-button column="name" default="ASC"><%= Institution.human_attribute_name(:name) %></d-sort-button></th>
+      <th><d-sort-button column="short_name"><%= Institution.human_attribute_name(:short_name) %></d-sort-button></th>
+      <th><d-sort-button column="users"><%= t('institutions.index.number_of_users') %></d-sort-button></th>
+      <th><d-sort-button column="courses"><%= t('institutions.index.number_of_courses') %></d-sort-button></th>
       <th><%= Institution.human_attribute_name(:providers) %></th>
+      <th><d-sort-button column="most_similar"><%= t('institutions.index.most_similar') %></d-sort-button></th>
       <th class="actions"></th>
     </tr>
     </thead>
@@ -28,6 +29,7 @@
         <td><%= link_to institution.users.length, users_url(institution_id: institution.id) %></td>
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id) %></td>
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
+        <td><%= link_to "#{institution.most_similar_institution[:name]} (#{institution.most_similar_institution[:score]})", institution_path(institution.most_similar_institution[:id]) if institution.most_similar_institution[:score] > 0%> </td>
         <td class="actions">
           <% if policy(institution).edit? %>
             <%= link_to edit_institution_path(institution), title: t("institutions.index.edit"), class: "btn btn-icon" do %>

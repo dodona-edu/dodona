@@ -1,6 +1,6 @@
 module SeasonalHelper
   def christmas(current_time)
-    current_time.month == 12
+    current_time.month == 12 && current_time.day > 6
   end
 
   # returns seasonal class

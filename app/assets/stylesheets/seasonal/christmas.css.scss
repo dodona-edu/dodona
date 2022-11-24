@@ -6,25 +6,25 @@
       width: 75px;
       height: 75px;
       margin-left: -5px;
-      background-image: url("seasonal/series_status_overlays/christmas.svg") !important;
+      background-image: url("seasonal/series_status_overlays/christmas.svg");
       background-size: contain;
       background-repeat: no-repeat;
     }
 
     &:hover {
-      background: transparent !important;
+      background: transparent;
 
       &::before {
-        background-image: url("seasonal/series_status_overlays/christmas-hover.svg") !important;
+        background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
       }
 
       i {
-        color: transparent !important;
-        background: transparent !important;
-        border: transparent !important;
+        color: transparent;
+        background: transparent;
+        border: transparent;
 
         &::before {
-          color: transparent !important;
+          color: transparent;
         }
       }
     }

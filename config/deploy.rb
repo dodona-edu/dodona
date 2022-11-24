@@ -29,7 +29,7 @@ set :rvm_custom_path, '/usr/share/rvm'
 set :linked_files, fetch(:linked_files, []).push('config/master.key')
 
 # Default value for linked_dirs is []
-set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', 'public/system', 'data/exercises', 'data/judges', 'data/storage', 'node_modules')
+set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'public/system', 'data/exercises', 'data/judges', 'data/storage', 'node_modules')
 
 set :passenger_restart_with_touch, true
 

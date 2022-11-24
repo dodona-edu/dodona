@@ -8,9 +8,9 @@
 #  secret            :string(255)
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  description       :text(4294967295)
-#  visibility        :integer          default("visible_for_all")
-#  registration      :integer          default("open_for_institutional_users")
+#  description       :text(16777215)
+#  visibility        :integer
+#  registration      :integer
 #  teacher           :string(255)
 #  institution_id    :bigint
 #  search            :string(4096)

@@ -1,17 +1,27 @@
-<% met ||= series.completed_before_deadline?(current_user) %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-clickable" style="height: 100px">
     <div class="card-title">
-      <h2 class="card-title-text ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
-        <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
-        <%= series.name %>
-      </h2>
+      <% if series.deadline.present? %>
+        <% met = series.completed_before_deadline?(current_user) %>
+        <h2 class="card-title-text ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
+          <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
+          <%= series.name %>
+        </h2>
+        <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end text-muted">
+          <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>
+          <% if series.deadline.past? && !met %>
+            <%= t('deadlines.missed') %>
+          <% else %>
+            <%= deadline_relative_time series.deadline %>
+          <% end %>
+        </h3>
+      <% else %>
+        <h2 class="card-title-text ellipsis-overflow d-block" title="<%= series.name %>">
+          <%= series.name %>
+        </h2>
+      <% end %>
       <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start text-muted" title="<%= series.course.name %>">
         <%= series.course.name %>
-      </h3>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end text-muted">
-        <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>
-        <%= deadline_relative_time series.deadline %>
       </h3>
 
       <%= render partial: 'progress_chart', locals: {

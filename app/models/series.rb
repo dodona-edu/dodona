@@ -121,7 +121,12 @@ class Series < ApplicationRecord
                                     ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s) })
 
   def next_activity(activity)
-    activities.where('series_memberships.order > ?', activity.series_memberships.find_by(series: self).order).reorder('series_memberships.order ASC').first
+    sm = series_memberships.find_by(activity: activity)
+    return nil if sm.nil?
+
+    activities.where(series_memberships: { order: (sm.order + 1).. })
+              .or(activities.where(series_memberships: { order: sm.order, id: (sm.id + 1).. }))
+              .first
   end
 
   def next

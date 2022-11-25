@@ -150,6 +150,7 @@ en:
         oidc: OpenID Connect
         lti: LTI
         surf: SURFconext
+        elixir: Elixir
       event:
         event_type: Type
         user: User

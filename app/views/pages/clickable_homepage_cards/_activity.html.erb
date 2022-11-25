@@ -1,13 +1,13 @@
 <%= link_to course_series_activity_path(I18n.locale, course.id, series.id, activity.id, anchor: 'submission-card', edit_submission: submission) do %>
   <div class="card card-clickable" style="height: 100px">
     <div class="card-title">
-      <h2 class="card-title-text course-name ellipsis-overflow d-block" title="<%= activity.name %>">
+      <h2 class="card-title-text ellipsis-overflow d-block" title="<%= activity.name %>">
         <%= activity_icon activity, size: 24 %> <%= activity.name %>
       </h2>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-reset" title="<%= course.name%>">
+      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-muted" title="<%= course.name%>">
         <%= course.name %>
       </h3>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-reset" title="<%= series.name%>">
+      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-muted" title="<%= series.name%>">
         <%= series.name %>
       </h3>
     </div>

@@ -15,6 +15,7 @@ nl:
     home:
       more-courses: Meer cursussen
       favorites: "Favorieten"
+      courses: Cursussen
     course_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen

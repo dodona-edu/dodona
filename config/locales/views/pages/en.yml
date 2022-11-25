@@ -15,6 +15,7 @@ en:
     home:
       more-courses: More courses
       favorites: "Favorites"
+      courses: Courses
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises

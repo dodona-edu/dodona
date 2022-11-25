@@ -1,6 +1,6 @@
 <div class="row">
   <% if @jump_back_in.present? %>
-  <div class="col-4">
+  <div class="col-lg-4 ">
     <h4>Jump back in</h4>
     <% if @jump_back_in[:activity].present? %>
       <%= render partial: 'pages/clickable_homepage_cards/activity', locals: @jump_back_in %>
@@ -11,11 +11,11 @@
     <% end %>
   </div>
   <% end %>
-  <div class="col-8">
+  <div class="col-lg-8">
     <h4>Upcoming deadlines</h4>
     <div class="row">
       <% @homepage_series.first(2).each do |series| %>
-        <div class="col-6">
+        <div class="col-lg-6">
           <%= render partial: 'pages/clickable_homepage_cards/series', locals: {series: series} %>
         </div>
       <% end %>

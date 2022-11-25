@@ -1,45 +1,61 @@
-<% institution = provider.institution %>
-
-<% if provider.type == "Provider::Saml" %>
-  <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+<% if provider.is_a?(Class) %>
+  <%= link_to omniauth_authorize_path(:user, provider.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
     <div class="option-btn">
       <div class="option-btn-img">
-        <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
+        <%= image_tag "idp/#{provider.logo}", class: "img-fluid" %>
       </div>
       <div class="option-btn-title">
-        <h3><%= institution.short_name %><br>
-          <small><%= institution.name %></small>
-        </h3>
-      </div>
-      <div><i class="mdi mdi-chevron-right"></i></div>
-    </div>
-  <% end %>
-<% elsif provider.type == "Provider::Oidc" %>
-  <%= link_to omniauth_authorize_path(:user, Provider::Oidc.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
-    <div class="option-btn">
-      <div class="option-btn-img">
-        <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
-      </div>
-      <div class="option-btn-title">
-        <h3><%= institution.short_name %><br>
-          <small><%= institution.name %></small>
+        <h3><%= provider.readable_name %><br>
+          <small><%= t('auth.sign_in.sign-in-with', provider: provider.readable_name) %></small>
         </h3>
       </div>
       <div><i class="mdi mdi-chevron-right"></i></div>
     </div>
   <% end %>
 <% else %>
-  <%= link_to omniauth_authorize_path(:user, provider.class.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
-    <div class="option-btn">
-      <div class="option-btn-img">
-        <%= image_tag institution_logo(institution&.logo || provider.logo), class: "img-fluid" %>
+  <% institution = provider.institution %>
+
+  <% if provider.type == "Provider::Saml" %>
+    <%= link_to omniauth_authorize_path(:user, Provider::Saml.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+      <div class="option-btn">
+        <div class="option-btn-img">
+          <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
+        </div>
+        <div class="option-btn-title">
+          <h3><%= institution.short_name %><br>
+            <small><%= institution.name %></small>
+          </h3>
+        </div>
+        <div><i class="mdi mdi-chevron-right"></i></div>
       </div>
-      <div class="option-btn-title">
-        <h3><%= institution&.short_name || provider.readable_name %><br>
-          <small><%= t('auth.sign_in.sign-in-with', provider: provider.readable_name) %></small>
-        </h3>
+    <% end %>
+  <% elsif provider.type == "Provider::Oidc" %>
+    <%= link_to omniauth_authorize_path(:user, Provider::Oidc.sym, provider: provider), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+      <div class="option-btn">
+        <div class="option-btn-img">
+          <%= image_tag institution_logo(institution.logo), class: "img-fluid" %>
+        </div>
+        <div class="option-btn-title">
+          <h3><%= institution.short_name %><br>
+            <small><%= institution.name %></small>
+          </h3>
+        </div>
+        <div><i class="mdi mdi-chevron-right"></i></div>
       </div>
-      <div><i class="mdi mdi-chevron-right"></i></div>
-    </div>
+    <% end %>
+  <% else %>
+    <%= link_to omniauth_authorize_path(:user, provider.class.sym), method: :post, class: 'institution-sign-in col-md-6 col-xl-4' do %>
+      <div class="option-btn">
+        <div class="option-btn-img">
+          <%= image_tag institution_logo(institution&.logo || provider.logo), class: "img-fluid" %>
+        </div>
+        <div class="option-btn-title">
+          <h3><%= institution&.short_name || provider.readable_name %><br>
+            <small><%= t('auth.sign_in.sign-in-with', provider: provider.readable_name) %></small>
+          </h3>
+        </div>
+        <div><i class="mdi mdi-chevron-right"></i></div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

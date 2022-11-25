@@ -12,6 +12,10 @@ require_relative '../../lib/SAML/setup.rb'
 require_relative '../../lib/Surf/strategy.rb'
 require_relative '../../lib/Surf/setup.rb'
 
+## Elixir.
+require_relative '../../lib/Elixir/strategy.rb'
+require_relative '../../lib/Elixir/setup.rb'
+
 # Error handling.
 require_relative('../../lib/devise/custom_failure.rb')
 
@@ -271,6 +275,8 @@ Devise.setup do |config|
   config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
 
   config.omniauth :surf, setup: Surf::Auth::OmniAuth::Setup
+
+  config.omniauth :elixir, setup: Elixir::Auth::OmniAuth::Setup
 
   config.omniauth :saml, setup: OmniAuth::Strategies::SAML::Setup
 

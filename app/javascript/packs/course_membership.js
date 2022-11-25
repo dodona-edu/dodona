@@ -1,3 +1,1 @@
-import { initCourseMemberLabelsEdit } from "course_membership.js";
-
-window.dodona.initCourseMemberLabelsEdit = initCourseMemberLabelsEdit;
+import "components/course_labels_search_bar";

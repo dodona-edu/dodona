@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.13.0', require: false
+gem 'bootsnap', '~> 1.14.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -120,9 +120,6 @@ gem 'has_scope', '~> 0.8.0'
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
 
-# bootstrap tokenizer
-gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
-
 # memcache
 gem 'dalli', '~> 3.2.3'
 
@@ -135,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.22'
 
-gem 'ddtrace', '~> 1.5.2'
+gem 'ddtrace', '~> 1.6.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -177,7 +174,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.17.2'
+  gem 'rubocop-rails', '~> 2.17.3'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

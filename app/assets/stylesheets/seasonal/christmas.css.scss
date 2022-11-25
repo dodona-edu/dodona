@@ -1,0 +1,44 @@
+.card.series {
+  .card-title-icon.christmas {
+    &::before {
+      content: "";
+      position: absolute;
+      width: 75px;
+      height: 75px;
+      margin-left: -5px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+
+    &.started,
+    &.completed.deadline-missed {
+      &::before {
+        background-image: url("seasonal/series_status_overlays/christmas.svg");
+      }
+
+      &:hover {
+        background: transparent;
+
+        &::before {
+          background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
+        }
+
+        i {
+          color: transparent;
+          background: transparent;
+          border: transparent;
+
+          &::before {
+            color: transparent;
+          }
+        }
+      }
+    }
+
+    &.completed:not(.deadline-missed) {
+      &::before {
+        background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
+      }
+    }
+  }
+}

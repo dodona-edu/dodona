@@ -7,6 +7,8 @@ nl:
       edit: "Onderwijsinstelling aanpassen"
       no_institutions: "Geen onderwijsinstellingen gevonden"
       generated_name: "Gegenereerd uit de beschikbare data."
+      similarity: "Gelijkaardigheid"
+      most_similar: "Meest gelijkaardig"
     show:
       staff: "Lesgevers"
       edit: "Onderwijsinstelling aanpassen"

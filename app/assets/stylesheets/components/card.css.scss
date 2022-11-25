@@ -383,3 +383,29 @@ a.card-title-link:hover {
 .card-subtitle-fab {
   top: 48px;
 }
+
+// Clickable style based om material 3 elevated button
+.card.card-clickable {
+  cursor: pointer;
+  transition:
+    box-shadow 145ms ease,
+    opacity 145ms ease,
+    border-color 145ms ease,
+    background-color 145ms ease;
+
+  @include shadow-z1;
+
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 0.9;
+
+    @include shadow-z2;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}

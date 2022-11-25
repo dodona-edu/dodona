@@ -4,16 +4,16 @@
     <h4>Jump back in</h4>
     <% if @jump_back_in.is_a? Submission %>
       <%= link_to course_series_activity_path(I18n.locale, @jump_back_in.course_id, @jump_back_in.series.id, @jump_back_in.exercise_id, anchor: 'submission-card', edit_submission: @jump_back_in) do %>
-        <div class="card" style="height: 100px">
+        <div class="card card-clickable" style="height: 100px">
           <div class="card-title">
             <h2 class="card-title-text course-name ellipsis-overflow d-block" title="<%= @jump_back_in.exercise.name %>">
-              <%= submission_status_icon @jump_back_in, size: 24 %> <%= @jump_back_in.exercise.name %>
+              <%= activity_icon @jump_back_in.exercise, size: 24 %> <%= @jump_back_in.exercise.name %>
             </h2>
-            <h3 class="card-subtitle-text ellipsis-overflow mt-1">
-              <%= link_to @jump_back_in.course.name, course_path(@jump_back_in.course), class: "text-reset", title: @jump_back_in.course.name %>
+            <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-reset" title="<%= @jump_back_in.course.name%>">
+              <%= @jump_back_in.course.name %>
             </h3>
-            <h3 class="card-subtitle-text ellipsis-overflow mt-1">
-              <%= link_to @jump_back_in.series.name, course_path(@jump_back_in.series.course, series: @jump_back_in.series, anchor: @jump_back_in.series.anchor), class: "text-reset", title: @jump_back_in.series.name %>
+            <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-reset" title="<%= @jump_back_in.series.name%>">
+              <%= @jump_back_in.series.name %>
             </h3>
           </div>
         </div>
@@ -28,14 +28,14 @@
         <% met ||= series.completed_before_deadline?(current_user) %>
         <div class="col-6">
           <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
-            <div class="card" style="height: 100px">
+            <div class="card card-clickable" style="height: 100px">
               <div class="card-title">
                 <h2 class="card-title-text course-name ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
                   <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
                   <%= series.name %>
                 </h2>
-                <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start">
-                  <%= link_to series.course.name, course_path(series.course), class: "text-reset course-link", title: series.course.name %>
+                <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start" title="<%= series.course.name %>">
+                  <%= series.course.name %>
                 </h3>
                 <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end">
                   <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>

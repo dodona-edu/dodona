@@ -7,7 +7,7 @@
           <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
           <%= series.name %>
         </h2>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end text-muted">
+        <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end text-body">
           <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>
           <% if series.deadline.past? && !met %>
             <%= t('deadlines.missed') %>
@@ -20,7 +20,7 @@
           <%= series.name %>
         </h2>
       <% end %>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start text-muted" title="<%= series.course.name %>">
+      <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start text-body" title="<%= series.course.name %>">
         <%= series.course.name %>
       </h3>
 

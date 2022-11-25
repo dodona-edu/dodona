@@ -33,19 +33,45 @@ class PagesController < ApplicationController
     latest_submission = current_user.submissions.first
     return nil if latest_submission.nil?
 
-    return latest_submission unless latest_submission.accepted? # The last submission was wrong, continue working on it
+    result = {
+      submission: nil,
+      activity: nil,
+      series: nil,
+      course: latest_submission.course
+    }
+
+    unless latest_submission.accepted?
+      # The last submission was wrong, continue working on it
+      result[:submission] = latest_submission
+      result[:activity] = latest_submission.exercise
+      result[:series] = latest_submission.series
+      return result
+    end
 
     # The last submission was correct, start working on the next exercise
-    return latest_submission.course if latest_submission.series.nil? # we don't know the series, thus have no idea what the next exercise is, continue working on the course
+    if latest_submission.series.nil?
+      # we don't know the series, thus have no idea what the next exercise is, continue working on the course
+      return result
+    end
 
     next_activity = latest_submission.series.next_activity(latest_submission.exercise)
-    return next_activity unless next_activity.nil? # start working on the next exercise
+    unless next_activity.nil?
+      # start working on the next exercise
+      result[:activity] = next_activity
+      result[:series] = latest_submission.series
+      return result
+    end
 
     # There is no next exercise, start working on the next series
     next_series = latest_submission.series.next
-    return latest_submission.course if next_series.nil? # there is no next series, continue working on the course
+    if next_series.nil?
+      # there is no next series, continue working on the course
+      return result
+    end
 
-    next_series # start working on the next series
+    # start working on the next series
+    result[:series] = next_series
+    result
   end
 
   def institution_not_supported; end

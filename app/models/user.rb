@@ -461,6 +461,7 @@ class User < ApplicationRecord
   def jump_back_in
     latest_submission = submissions.first
     return nil if latest_submission.nil?
+    return nil if latest_submission.exercise.nil?
 
     result = {
       submission: nil,
@@ -475,6 +476,11 @@ class User < ApplicationRecord
       result[:activity] = latest_submission.exercise
       result[:series] = latest_submission.series
       return result
+    end
+
+    if latest_submission.course.nil?
+      # The last submission was correct, but we have no context to determine the next exercise
+      return nil
     end
 
     # The last submission was correct, start working on the next exercise

@@ -38,7 +38,9 @@ class MergeInstitutions
     end
 
     i1.transaction do
-      if (overlap = i1.users.where(username: i2.users.pluck(:username)).count) > 0
+      overlapping_users = i1.users.where(username: i2.users.pluck(:username))
+                            .or(i1.users.where(email: i2.users.pluck(:email)))
+      if (overlap = overlapping_users.count) > 0
         @output.puts "There are #{overlap} overlapping users."
         @output.puts 'These users will be merged before the institution can be merged.'
 
@@ -50,8 +52,9 @@ class MergeInstitutions
         end
         return unless c == 'y'
 
-        i1.users.where(username: i2.users.pluck(:username)).each do |u1|
+        overlapping_users.each do |u1|
           u2 = i2.users.find { |u| u.username.downcase == u1.username.downcase }
+          u2 = i2.users.find { |u| u.email == u1.email } if u2.nil?
           next if u2.nil?
 
           @output.puts ''

@@ -133,7 +133,8 @@ class Institution < ApplicationRecord
   end
 
   def merge_into(other)
-    errors.add(:merge, "has overlapping usernames. Run `bin/rake merge_institutions[#{id},#{other.id}]` on the server to solve this using an interactive script.") if other.users.exists?(username: users.pluck(:username))
+    errors.add(:merge, "has overlapping usernames. Run `RAILS_ENV=production bin/rake merge_institutions[#{id},#{other.id}]` on the server to solve this using an interactive script.") if other.users.exists?(username: users.pluck(:username))
+    errors.add(:merge, "has overlapping emails. Run `RAILS_ENV=production bin/rake merge_institutions[#{id},#{other.id}]` on the server to solve this using an interactive script.") if other.users.exists?(email: users.pluck(:email))
     errors.add(:merge, 'has link provider') if providers.any?(&:link?)
     return false if errors.any?
 

@@ -669,4 +669,57 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal course.series.fourth, course.series.third.next
     assert_nil course.series.fourth.next
   end
+
+  test 'completed_activity_count should return the number of completed activities for the given user' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+    user = create :user
+
+    assert_equal 0, series.completed_activity_count(user)
+
+    create :activity_read_state, activity: series.content_pages.first, user: user, course: series.course
+    assert_equal 1, series.completed_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.first, user: user, course: series.course
+    assert_equal 2, series.completed_activity_count(user)
+
+    create :activity_read_state, activity: series.content_pages.second, user: user, course: series.course
+    assert_equal 3, series.completed_activity_count(user)
+
+    create :wrong_submission, exercise: series.exercises.second, user: user, course: series.course
+    assert_equal 3, series.completed_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+    assert_equal 3, series.completed_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.second, user: user, course: series.course
+    assert_equal 4, series.completed_activity_count(user)
+  end
+
+  test 'started_activity_count should return the number of started activities for the given user' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+    user = create :user
+
+    assert_equal 0, series.started_activity_count(user)
+
+    create :activity_read_state, activity: series.content_pages.first, user: user, course: series.course
+    assert_equal 1, series.started_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.first, user: user, course: series.course
+    assert_equal 2, series.started_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+    assert_equal 2, series.started_activity_count(user)
+
+    create :activity_read_state, activity: series.content_pages.second, user: user, course: series.course
+    assert_equal 3, series.started_activity_count(user)
+
+    create :wrong_submission, exercise: series.exercises.second, user: user, course: series.course
+    assert_equal 4, series.started_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+    assert_equal 4, series.started_activity_count(user)
+
+    create :correct_submission, exercise: series.exercises.second, user: user, course: series.course
+    assert_equal 4, series.started_activity_count(user)
+  end
 end

@@ -28,6 +28,9 @@ en:
       course-hidden: Hidden course
       course-closed: Closed course
       favorite: "Favorite course"
+    important_homepage_links:
+      jump_back_in: Jump back in
+      upcoming_deadlines: Upcoming deadlines
     clickable_homepage_cards:
       series:
         progress_chart_info_tried:

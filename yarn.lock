@@ -3530,10 +3530,10 @@ eslint-plugin-no-jquery@^2.7.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-no-jquery/-/eslint-plugin-no-jquery-2.7.0.tgz#855f5631cf5b8e25b930cf6f06e02dd81f132e72"
   integrity sha512-Aeg7dA6GTH1AcWLlBtWNzOU9efK5KpNi7b0EhBO0o0M+awyzguUUo8gF6hXGjQ9n5h8/uRtYv9zOqQkeC5CG0w==
 
-eslint-plugin-wc@^1.3.2:
-  version "1.3.2"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-wc/-/eslint-plugin-wc-1.3.2.tgz#8e3785221851c4c226f6a5411f566b1bd7de33f3"
-  integrity sha512-/Tt3kIXBp1jh06xYtRqPwAvpNxVVk9YtbcFCKEgLa5l3GY+urZyn376pISaaZxkm9HVD3AIPOF5i9/uFwyF0Zw==
+eslint-plugin-wc@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-wc/-/eslint-plugin-wc-1.4.0.tgz#5996b0c4d7183d0d51765e52bba886cd4aa70741"
+  integrity sha512-AmoKhJyBNcS3I+dbS/JTmRSq4REUvQ/JJCeWJezlK8gqTsdr5JD+EAvHldH/tVvU+l6qR2Tykga5hTINP9zS8A==
   dependencies:
     is-valid-element-name "^1.0.0"
     js-levenshtein-esm "^1.2.0"

@@ -149,7 +149,7 @@ class Submission < ApplicationRecord
 
     series = course.series
     # we want to avoid accidentally linking a hidden series to a student
-    series = series.visible unless user&.course_admin?(course)
+    series = series.visible
     # There could actually be multiple series with the same exercise and the same course
     # But for now we just return the first one, as there is only one in most cases
     series.joins(:series_memberships).find_by(series_memberships: {activity: exercise})

@@ -373,6 +373,54 @@ class SubmissionTest < ActiveSupport::TestCase
     assert_equal third.id, Submission.order_by_status('DESC').first&.id
   end
 
+  test 'series should return series with this exercise in the course' do
+    course = create :course, series_count: 4
+    series = course.series.second
+    exercise = create :exercise
+    series.exercises << exercise
+    submission = create :submission, exercise: exercise, course: course
+    assert_equal series, submission.series
+  end
+
+  test 'series should return nil if exercise is not in a series' do
+    course = create :course, series_count: 4
+    exercise = create :exercise
+    submission = create :submission, exercise: exercise, course: course
+    assert_nil submission.series
+  end
+
+  test 'series should be nil if submission is not in a course' do
+    course = create :course, series_count: 4
+    series = course.series.second
+    exercise = create :exercise
+    series.exercises << exercise
+    submission = create :submission, exercise: exercise
+    assert_nil submission.series
+  end
+
+  test 'if multiple series have the same exercise in the course, series should return any of them' do
+    course = create :course, series_count: 4
+    exercise = create :exercise
+    course.series.first.exercises << exercise
+    course.series.second.exercises << exercise
+    submission = create :submission, exercise: exercise, course: course
+    assert_includes [course.series.first, course.series.second], submission.series
+  end
+
+  test 'if a series is hidden, it should not be returned as the series for this submission' do
+    course = create :course, series_count: 4
+    exercise = create :exercise
+    course.series.first.exercises << exercise
+    course.series.second.exercises << exercise
+    submission = create :submission, exercise: exercise, course: course
+
+    course.series.first.update!(visibility: :hidden)
+    assert_equal course.series.second, submission.series
+
+    course.series.second.update!(visibility: :hidden)
+    assert_nil submission.series
+  end
+
   class StatisticsTest < ActiveSupport::TestCase
     setup do
       @date = DateTime.new(1302, 7, 11, 13, 37, 42)

@@ -28,6 +28,14 @@ nl:
       course-hidden: Verborgen cursus
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
+    clickable_homepage_cards:
+      series:
+        progress_chart_info_tried:
+          one: "Eén oefening begonnen."
+          other: "%{count} oefeningen begonnen."
+        progress_chart_info_correct:
+          one: "Eén oefening correct opgelost."
+          other: "%{count} oefeningen correct opgelost."
     user_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen

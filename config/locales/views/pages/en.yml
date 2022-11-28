@@ -28,6 +28,14 @@ en:
       course-hidden: Hidden course
       course-closed: Closed course
       favorite: "Favorite course"
+    clickable_homepage_cards:
+      series:
+        progress_chart_info_tried:
+          one: "One exercise started."
+          other: "%{count} exercises started."
+        progress_chart_info_correct:
+          one: "One exercise solved correctly."
+          other: "%{count} exercises solved correctly."
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises

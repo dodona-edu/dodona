@@ -620,4 +620,53 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal true, series.completed?(user: user)
     assert_equal true, series.completed_before_deadline?(user)
   end
+
+  test 'next_activity should return the next activity in the series' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+
+    assert_equal series.activities.second, series.next_activity(series.activities.first)
+    assert_equal series.activities.third, series.next_activity(series.activities.second)
+    assert_equal series.activities.fourth, series.next_activity(series.activities.third)
+    assert_nil series.next_activity(series.activities.fourth)
+    assert_nil series.next_activity(nil)
+    assert_nil series.next_activity(create(:exercise))
+  end
+
+  test 'next_activity should return the next activity in the series after order changes' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+    order = series.activities.shuffle
+    series.series_memberships.each_with_index do |membership|
+      rank = order.find_index(membership.activity_id) || 0
+      membership.update(order: rank)
+    end
+
+    assert_equal series.activities.second, series.next_activity(series.activities.first)
+    assert_equal series.activities.third, series.next_activity(series.activities.second)
+    assert_equal series.activities.fourth, series.next_activity(series.activities.third)
+    assert_nil series.next_activity(series.activities.fourth)
+    assert_nil series.next_activity(nil)
+    assert_nil series.next_activity(create(:exercise))
+  end
+
+  test 'next should return next series in course' do
+    course = create :course, series_count: 4
+    assert_equal course.series.second, course.series.first.next
+    assert_equal course.series.third, course.series.second.next
+    assert_equal course.series.fourth, course.series.third.next
+    assert_nil course.series.fourth.next
+  end
+
+  test 'next should return next series in course after order changes' do
+    course = create :course, series_count: 4
+    order = course.series.shuffle
+    course.course_memberships.each_with_index do |membership|
+      rank = order.find_index(membership.series_id) || 0
+      membership.update(order: rank)
+    end
+
+    assert_equal course.series.second, course.series.first.next
+    assert_equal course.series.third, course.series.second.next
+    assert_equal course.series.fourth, course.series.third.next
+    assert_nil course.series.fourth.next
+  end
 end

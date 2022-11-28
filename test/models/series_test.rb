@@ -635,7 +635,7 @@ class SeriesTest < ActiveSupport::TestCase
   test 'next_activity should return the next activity in the series after order changes' do
     series = create :series, exercise_count: 2, content_page_count: 2
     order = series.activities.shuffle
-    series.series_memberships.each_with_index do |membership|
+    series.series_memberships.each do |membership|
       rank = order.find_index(membership.activity_id) || 0
       membership.update(order: rank)
     end
@@ -659,7 +659,7 @@ class SeriesTest < ActiveSupport::TestCase
   test 'next should return next series in course after order changes' do
     course = create :course, series_count: 4
     order = course.series.shuffle
-    course.course_memberships.each_with_index do |membership|
+    course.course_memberships.each do |membership|
       rank = order.find_index(membership.series_id) || 0
       membership.update(order: rank)
     end

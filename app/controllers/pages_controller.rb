@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       @grouped_courses = @subscribed_courses.sort_by(&:year).reverse.group_by(&:year)
       @homepage_series = @subscribed_courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
 
-      @jump_back_in = jump_back_in
+      @jump_back_in = current_user.jump_back_in
     else
       set_metrics
       respond_to do |format|
@@ -27,51 +27,6 @@ class PagesController < ApplicationController
         format.json { render partial: 'static_home' }
       end
     end
-  end
-
-  def jump_back_in
-    latest_submission = current_user.submissions.first
-    return nil if latest_submission.nil?
-
-    result = {
-      submission: nil,
-      activity: nil,
-      series: nil,
-      course: latest_submission.course
-    }
-
-    unless latest_submission.accepted?
-      # The last submission was wrong, continue working on it
-      result[:submission] = latest_submission
-      result[:activity] = latest_submission.exercise
-      result[:series] = latest_submission.series
-      return result
-    end
-
-    # The last submission was correct, start working on the next exercise
-    if latest_submission.series.nil?
-      # we don't know the series, thus have no idea what the next exercise is, continue working on the course
-      return result
-    end
-
-    next_activity = latest_submission.series.next_activity(latest_submission.exercise)
-    unless next_activity.nil?
-      # start working on the next exercise
-      result[:activity] = next_activity
-      result[:series] = latest_submission.series
-      return result
-    end
-
-    # There is no next exercise, start working on the next series
-    next_series = latest_submission.series.next
-    if next_series.nil?
-      # there is no next series, continue working on the course
-      return result
-    end
-
-    # start working on the next series
-    result[:series] = next_series
-    result
   end
 
   def institution_not_supported; end

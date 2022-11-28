@@ -82,6 +82,20 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert User.exists?(u2.id)
   end
 
+  test 'The script should ask confirmation on overlapping emails' do
+    i1 = create :institution
+    i2 = create :institution
+    u1 = create :user, email: 'test@test.com', institution: i1
+    u2 = create :user, email: 'test@test.com', institution: i2
+
+    merge_institutions_interactive i1.id, i2.id, 'y', 'n'
+
+    assert Institution.exists?(i1.id)
+    assert Institution.exists?(i2.id)
+    assert User.exists?(u1.id)
+    assert User.exists?(u2.id)
+  end
+
   test 'The script should ignore non overlapping usernames' do
     i1 = create :institution
     i2 = create :institution
@@ -98,15 +112,17 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert_equal i2, u1.institution
   end
 
-  test 'The script should merge each overlapping username after confirmation' do
+  test 'The script should merge each overlapping username or email after confirmation' do
     i1 = create :institution
     i2 = create :institution
     overlapping_users_i1 = (1..5).map { |i| create :user, username: "test#{i}", institution: i1 }
+    overlapping_users_i1 += (1..3).map { |i| create :user, email: "test#{i}@test.com", institution: i1 }
     overlapping_users_i2 = (1..5).map { |i| create :user, username: "test#{i}", institution: i2 }
+    overlapping_users_i2 += (1..3).map { |i| create :user, email: "test#{i}@test.com", institution: i2 }
     unique_users_i1 = (1..5).map { |i| create :user, username: "foo#{i}", institution: i1 }
     unique_users_i2 = (1..5).map { |i| create :user, username: "bar#{i}", institution: i2 }
 
-    merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y', 'y', 'y', 'y', 'y'
+    merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y', 'y'
 
     assert_not Institution.exists?(i1.id)
     assert Institution.exists?(i2.id)
@@ -124,7 +140,9 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     i1 = create :institution
     i2 = create :institution
     overlapping_users_i1 = (1..5).map { |i| create :user, username: "test#{i}", institution: i1 }
+    overlapping_users_i1 += (1..3).map { |i| create :user, email: "test#{i}@test.com", institution: i1 }
     overlapping_users_i2 = (1..5).map { |i| create :user, username: "test#{i}", institution: i2 }
+    overlapping_users_i2 += (1..3).map { |i| create :user, email: "test#{i}@test.com", institution: i2 }
     unique_users_i1 = (1..5).map { |i| create :user, username: "foo#{i}", institution: i1 }
     unique_users_i2 = (1..5).map { |i| create :user, username: "bar#{i}", institution: i2 }
 

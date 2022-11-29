@@ -10,6 +10,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  clone_status :integer          default("queued"), not null
+#  featured     :boolean          default(FALSE)
 #
 
 require 'test_helper'

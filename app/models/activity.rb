@@ -86,6 +86,27 @@ class Activity < ApplicationRecord
     by_language
   }
 
+  scope :repository_has_allowed_course, ->(user) { joins(:repository).merge(Repository.has_allowed_course(user)) }
+  scope :repository_has_admin, ->(user) { joins(:repository).merge(Repository.has_admin(user)) }
+  scope :repository_owned_by_institution, ->(institution) { joins(:repository).merge(Repository.owned_by_institution(institution)) }
+  scope :repository_featured, -> { joins(:repository).merge(Repository.featured) }
+
+  enum repository_scope: { all: 0, mine: 1, my_institution: 2, featured: 3, has_allowed_course: 4 }, _prefix: true
+  scope :repository_scope, lambda { |options|
+    case options[:scope]&.to_sym
+    when :mine
+      repository_has_admin(options[:user])
+    when :my_institution
+      repository_owned_by_institution(options[:user].institution)
+    when :featured
+      repository_featured
+    when :has_allowed_course
+      repository_has_allowed_course(options[:course])
+    else
+      all
+    end
+  }
+
   def content_page?
     false
   end

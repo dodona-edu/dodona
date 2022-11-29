@@ -23,6 +23,18 @@
 <script type="text/javascript">
     dodona.ready.then(function () {
         const filterCollections = {};
+
+        filterCollections["repository_scopes"] = {
+          param: "repository_scope",
+          paramVal: function(scope) {
+            return scope.id.toString();
+          },
+          multi: false,
+          data: <%= raw Activity.repository_scopes.keys.map{|s| {id: s, name: Activity.human_enum_name(:repository_scope, s)}}.to_json %>,
+          color: function () {
+            return "orange";
+          }
+        };
         <% if local_assigns.fetch :labels, false %>
         filterCollections["labels"] = {
             param: "labels",

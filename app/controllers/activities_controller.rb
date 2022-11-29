@@ -23,6 +23,10 @@ class ActivitiesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
+  has_scope :repository_scope, as: 'repository_scope' do |controller, scope, value|
+    course = Course.find(controller.params[:course_id]) if controller.params[:course_id]
+    scope.repository_scope(scope: value, user: controller.current_user, course: course)
+  end
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }

@@ -53,7 +53,7 @@
     "@typescript-eslint/parser": "^5.44.0",
     "eslint": "^8.28.0",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^27.1.5",
+    "eslint-plugin-jest": "^27.1.6",
     "eslint-plugin-lit": "^1.6.1",
     "eslint-plugin-no-jquery": "^2.7.0",
     "eslint-plugin-wc": "^1.4.0",

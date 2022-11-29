@@ -80,14 +80,6 @@ export class SearchQuery {
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
 
-        // Reset old params
-        for (const key of this.arrayQueryParams.params.keys()) {
-            this.arrayQueryParams.updateParam(key, undefined);
-        }
-        for (const key of this.queryParams.params.keys()) {
-            this.queryParams.updateParam(key, undefined);
-        }
-
         // initialise present parameters
         this.initialiseParams(url.searchParams);
     }
@@ -117,6 +109,7 @@ export class SearchQuery {
 
         window.onpopstate = e => {
             if (this.updateAddressBar && e.state === "set_by_search") {
+                this.resetAllQueryParams();
                 this.setBaseUrl();
             }
         };

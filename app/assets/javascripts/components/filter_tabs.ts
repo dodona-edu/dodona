@@ -10,6 +10,7 @@ import { watchMixin } from "components/watch_mixin";
  * @element d-filter-tabs
  *
  * @prop {[Label]} labels - all labels that could potentially be selected
+ * @prop {string} defaultTab - the tab that should be selected by default
  */
 @customElement("d-filter-tabs")
 export class FilterTabs extends watchMixin(FilterCollectionElement) {

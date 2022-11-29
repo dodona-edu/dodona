@@ -5,12 +5,12 @@ import { watchMixin } from "components/watch_mixin";
 
 /**
  * This component inherits from FilterCollectionElement.
- * It represent a lists tabs, where each tab shows a filtered set of the search results
+ * It represent a list of tabs, where each tab shows a filtered set of the search results
  *
  * @element d-filter-tabs
  *
  * @prop {[Label]} labels - all labels that could potentially be selected
- * @prop {string} defaultTab - the tab that should be selected by default
+ * @prop {string} defaultTab - the tab that should be selected by default, if no default is provided, the first tab is selected
  */
 @customElement("d-filter-tabs")
 export class FilterTabs extends watchMixin(FilterCollectionElement) {
@@ -33,7 +33,11 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
     watch = {
         labels: () => {
             if (this.getSelectedLabels().length == 0) {
-                this.select(this.labels.find(l => l.id == this.defaultTab));
+                if (this.defaultTab) {
+                    this.select(this.labels.find(l => l.id == this.defaultTab));
+                } else {
+                    this.select(this.labels[0]);
+                }
             }
         }
     };

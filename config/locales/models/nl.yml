@@ -71,6 +71,12 @@ nl:
           ok: Ok
           not_valid: Ongeldig
           removed: Verwijderd
+        repository_scopes:
+          mine: "Mijn activiteiten"
+          my_institution: "Activiteiten van mijn onderwijsinstelling"
+          has_allowed_course: "Activiteiten voor deze cursus"
+          featured: "Uitgelichte activiteiten"
+          all: "Alle activiteiten"
       judge:
         name: Naam
         remote: Clone URL

@@ -91,6 +91,8 @@ class SeriesController < ApplicationController
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
+    @tabs = Activity.repository_scopes.keys.map { |s| { id: s, name: Activity.human_enum_name(:repository_scope, s) } }
+    @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user, course: @series.course).any? }
   end
 
   # POST /series

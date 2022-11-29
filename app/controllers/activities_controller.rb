@@ -23,7 +23,7 @@ class ActivitiesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
-  has_scope :repository_scope, as: 'repository_scope' do |controller, scope, value|
+  has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Course.find(controller.params[:course_id]) if controller.params[:course_id]
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
   end
@@ -74,6 +74,9 @@ class ActivitiesController < ApplicationController
     @repositories = policy_scope(Repository.all)
     @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
+
+    @tabs = Activity.repository_scopes.keys.map { |s| { id: s, name: Activity.human_enum_name(:repository_scope, s) } }
+    @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user).any? }
   end
 
   def available

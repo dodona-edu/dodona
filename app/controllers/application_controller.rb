@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
+  rescue_from ActionDispatch::Http::MimeNegotiation::InvalidType, with: :bad_request
   rescue_from ActionController::ParameterMissing, with: :bad_request
 
   protect_from_forgery with: :null_session

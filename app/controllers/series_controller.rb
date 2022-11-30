@@ -91,7 +91,13 @@ class SeriesController < ApplicationController
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
-    @tabs = Activity.repository_scopes.keys.map { |s| { id: s, name: Activity.human_enum_name(:repository_scope, s) } }
+
+    @tabs = []
+    @tabs << { id: :has_allowed_course, name: @series.course.name } if @series.course.present?
+    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine) }
+    @tabs << { id: :my_institution, name: current_user.institution.name } if current_user.institution.present?
+    @tabs << { id: :featured, name: Activity.human_enum_name(:repository_scope, :featured) }
+    @tabs << { id: :all, name: Activity.human_enum_name(:repository_scope, :all) }
     @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user, course: @series.course).any? }
   end
 

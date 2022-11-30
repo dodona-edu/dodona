@@ -24,7 +24,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
-    course = Course.find(controller.params[:course_id]) if controller.params[:course_id]
+    course = Series.find(controller.params[:id]).course if controller.params[:id]
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
   end
 
@@ -75,7 +75,12 @@ class ActivitiesController < ApplicationController
     @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
 
-    @tabs = Activity.repository_scopes.keys.map { |s| { id: s, name: Activity.human_enum_name(:repository_scope, s) } }
+
+    @tabs = []
+    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine) }
+    @tabs << { id: :my_institution, name: current_user.institution.name } if current_user.institution.present?
+    @tabs << { id: :featured, name: Activity.human_enum_name(:repository_scope, :featured) }
+    @tabs << { id: :all, name: Activity.human_enum_name(:repository_scope, :all) }
     @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user).any? }
   end
 

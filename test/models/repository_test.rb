@@ -351,4 +351,33 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.process_activities_email_errors
     end
   end
+
+  test 'has allowed course should filter correctly' do
+    @course = create(:course)
+    @repository.allowed_courses = [@course]
+    assert_includes Repository.has_allowed_course(@course), @repository
+    assert_not_includes Repository.has_allowed_course(create(:course)), @repository
+  end
+
+  test 'has admin scope should filter correctly' do
+    user = create(:staff)
+    @repository.admins << user
+    assert_includes Repository.has_admin(user), @repository
+    assert_not_includes Repository.has_admin(create(:staff)), @repository
+  end
+
+  test 'owned by institution scope should filter correctly' do
+    institution = create(:institution)
+    user = create(:staff, institution: institution)
+    @repository.admins << user
+    assert_includes Repository.owned_by_institution(institution), @repository
+    assert_not_includes Repository.owned_by_institution(create(:institution)), @repository
+  end
+
+  test 'featured scope should filter correctly' do
+    @repository.update(featured: true)
+    assert_includes Repository.featured, @repository
+    @repository.update(featured: false)
+    assert_not_includes Repository.featured, @repository
+  end
 end

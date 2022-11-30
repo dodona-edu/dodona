@@ -75,7 +75,6 @@ class ActivitiesController < ApplicationController
     @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
 
-
     @tabs = []
     @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine) }
     @tabs << { id: :my_institution, name: current_user.institution.name } if current_user.institution.present?

@@ -54,9 +54,9 @@ class Repository < ApplicationRecord
   has_many :content_pages, dependent: :restrict_with_error
   has_many :exercises, dependent: :restrict_with_error
 
-  scope :has_allowed_course, lambda { |course| joins(:course_repositories).where(course_repositories: { course_id: course&.id }) }
-  scope :has_admin, lambda { |user| joins(:repository_admins).where(repository_admins: { user_id: user&.id }) }
-  scope :owned_by_institution, lambda { |institution| joins(:admins).where(users: { institution_id: institution&.id }) }
+  scope :has_allowed_course, ->(course) { joins(:course_repositories).where(course_repositories: { course_id: course&.id }) }
+  scope :has_admin, ->(user) { joins(:repository_admins).where(repository_admins: { user_id: user&.id }) }
+  scope :owned_by_institution, ->(institution) { joins(:admins).where(users: { institution_id: institution&.id }) }
   scope :featured, -> { where(featured: true) }
 
   def full_path

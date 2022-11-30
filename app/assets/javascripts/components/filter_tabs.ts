@@ -10,7 +10,6 @@ import { watchMixin } from "components/watch_mixin";
  * @element d-filter-tabs
  *
  * @prop {[Label]} labels - all labels that could potentially be selected
- * @prop {string} defaultTab - the tab that should be selected by default, if no default is provided, the first tab is selected
  */
 @customElement("d-filter-tabs")
 export class FilterTabs extends watchMixin(FilterCollectionElement) {
@@ -20,8 +19,6 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
     param = "tab";
     @property()
     paramVal = (label: Label): string => label.id.toString();
-    @property({ type: String, attribute: "default-tab" })
-    defaultTab: string;
 
     processClick(e: Event, label: Label): void {
         if (!this.isSelected(label)) {
@@ -33,11 +30,7 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
     watch = {
         labels: () => {
             if (this.getSelectedLabels().length == 0) {
-                if (this.defaultTab) {
-                    this.select(this.labels.find(l => l.id == this.defaultTab));
-                } else {
-                    this.select(this.labels[0]);
-                }
+                this.select(this.labels[0]);
             }
         }
     };

@@ -22,7 +22,7 @@
           labels << { name: t('.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name)), id: 'institution' } if @show_institution_courses
           labels << { name: t('courses.index.featured_courses'), id: 'featured' }
           labels << { name: t('courses.index.all_courses'), id: 'all' }
-          labels << { name: t('courses.index.my_courses'), id: 'my_courses' } if @show_my_courses
+          labels << { name: t('courses.index.my_courses'), id: 'my' } if @show_my_courses
         %>
         <d-filter-tabs labels="<%= labels.to_json %>"
                        default-tab="<%= @show_institution_courses ? "institution" : "featured" %>"

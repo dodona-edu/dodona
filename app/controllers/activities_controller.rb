@@ -67,7 +67,7 @@ class ActivitiesController < ApplicationController
 
     unless @activities.empty?
       @activities = apply_scopes(@activities)
-      @activities = @activities.order("name_#{I18n.locale} IS NULL, name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+      @activities = @activities.order(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale}")).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)

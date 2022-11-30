@@ -366,6 +366,15 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_not_includes Repository.has_admin(create(:staff)), @repository
   end
 
+  test 'repository should only be included once in owned_by_institution scope' do
+    institution = create(:institution)
+    3.times do
+      user = create(:staff, institution: institution)
+      @repository.admins << user
+    end
+    assert_equal 1, Repository.owned_by_institution(institution).count
+  end
+
   test 'owned by institution scope should filter correctly' do
     institution = create(:institution)
     user = create(:staff, institution: institution)

@@ -75,7 +75,7 @@ nl:
           mine: "Mijn activiteiten"
           my_institution: "Activiteiten van mijn onderwijsinstelling"
           has_allowed_course: "Activiteiten voor deze cursus"
-          featured: "Uitgelichte activiteiten"
+          featured: "Aanbevolen activiteiten"
           all: "Alle activiteiten"
       judge:
         name: Naam

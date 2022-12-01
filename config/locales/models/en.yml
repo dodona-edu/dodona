@@ -74,7 +74,7 @@ en:
           mine: "My activities"
           my_institution: "Activities of my institution"
           has_allowed_course: "Activities for this course"
-          featured: "Featured activities"
+          featured: "Recommended activities"
           all: "All activities"
       judge:
         name: Name

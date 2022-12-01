@@ -210,15 +210,6 @@ export class SearchQuery {
             const searchParamsStringFromStorage = localStorage.getItem(this.localStorageKey);
             if (searchParamsStringFromStorage) {
                 const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
-                // don't overwrite currently set params with params from the localStorage
-                searchParamsFromStorage.forEach((_value: string, key:string) => {
-                    if (this.queryParams.params.get(key) !== undefined ||
-                        (this.isArrayQueryParamsKey(key) &&
-                            this.arrayQueryParams.params.get(this.extractArrayQueryParamsKey(key)) !== undefined)) {
-                        searchParamsFromStorage.delete(key);
-                    }
-                });
-
                 this.initialiseParams(searchParamsFromStorage);
             }
         }

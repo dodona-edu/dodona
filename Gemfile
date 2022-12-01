@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.14.0', require: false
+gem 'bootsnap', '~> 1.15.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -119,9 +119,6 @@ gem 'has_scope', '~> 0.8.0'
 
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
-
-# bootstrap tokenizer
-gem 'bootstrap_tokenfield_rails', '~> 0.12.1'
 
 # memcache
 gem 'dalli', '~> 3.2.3'

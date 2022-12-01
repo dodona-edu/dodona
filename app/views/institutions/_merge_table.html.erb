@@ -8,6 +8,7 @@
       <th><%= t('institutions.index.number_of_users') %></th>
       <th><%= t('institutions.index.number_of_courses') %></th>
       <th><%= Institution.human_attribute_name(:providers) %></th>
+      <th><%= t('institutions.index.similarity') %></th>
       <th class="actions"></th>
     </tr>
     </thead>
@@ -27,6 +28,7 @@
         <td><%= link_to institution.users.length, users_url(institution_id: institution.id), target: '_blank', class: 'nested-link' %></td>
         <td><%= link_to institution.courses.length, courses_url(institution_id: institution.id), target: '_blank', class: 'nested-link' %></td>
         <td><%= institution.providers.map { |p| t("activerecord.attributes.provider.#{p.class.sym}") }.join(',') %></td>
+        <td><%= institution.similarity merge_target %></td>
         <td class="actions">
           <%= link_to institution_path(institution), target: '_blank', class: 'btn btn-icon nested-link' do %>
             <i class="mdi mdi-open-in-new"></i>

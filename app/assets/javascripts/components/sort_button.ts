@@ -93,6 +93,10 @@ export class SortButton extends LitElement {
     }
 
     static styles = css`
+        :host {
+            white-space: nowrap;
+        }
+
         .mdi::before {
             display: inline-block;
             font: normal normal normal 24px/1 "Material Design Icons";

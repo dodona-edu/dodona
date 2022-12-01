@@ -1,4 +1,4 @@
-import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory } from "submission.js";
+import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory } from "submission.ts";
 import { initMathJax } from "exercise.ts";
 import { CodeListing } from "code_listing/code_listing.ts";
 import { attachClipboard } from "copy";

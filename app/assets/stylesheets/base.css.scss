@@ -11,7 +11,6 @@
 
 @import "bootstrap_variable_overrides.css.scss";
 @import "mixins.css.scss";
-@import "vendor";
 @import "theme/rouge.css.scss";
 @import "theme/ace.css.scss";
 
@@ -77,6 +76,9 @@
 @import "pages.css.scss";
 @import "models.css.scss";
 @import "print.css.scss";
+
+// 6. Seasonal css sheets
+@import "seasonal/christmas.css.scss";
 
 /* stylelint-disable-next-line selector-class-pattern */
 .field_with_errors input {

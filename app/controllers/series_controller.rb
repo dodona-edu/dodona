@@ -93,11 +93,15 @@ class SeriesController < ApplicationController
     @repositories = policy_scope(Repository.all)
 
     @tabs = []
-    @tabs << { id: :has_allowed_course, name: @series.course.name } if @series.course.present?
-    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine) }
-    @tabs << { id: :my_institution, name: current_user.institution.name } if current_user.institution.present?
-    @tabs << { id: :featured, name: Activity.human_enum_name(:repository_scope, :featured) }
-    @tabs << { id: :all, name: Activity.human_enum_name(:repository_scope, :all) }
+    @tabs << { id: :has_allowed_course, name: I18n.t('activities.index.tabs.course', course: @series.course.name), title: I18n.t('activities.index.tabs.course_title') } if @series.course.present?
+    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine), title: I18n.t('activities.index.tabs.mine_title') }
+    if current_user.institution.present?
+      @tabs << { id: :my_institution,
+                 name: I18n.t('activities.index.tabs.institution', institution: current_user.institution.short_name || current_user.institution.name),
+                 title: I18n.t('activities.index.tabs.institution_title') }
+    end
+    @tabs << { id: :featured, name: Activity.human_enum_name(:repository_scope, :featured), title: I18n.t('activities.index.tabs.featured_title') }
+    @tabs << { id: :all, name: Activity.human_enum_name(:repository_scope, :all), title: I18n.t('activities.index.tabs.all_title') }
     @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user, course: @series.course).any? }
   end
 

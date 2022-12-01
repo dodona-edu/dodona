@@ -9,7 +9,7 @@ import { watchMixin } from "components/watch_mixin";
  *
  * @element d-filter-tabs
  *
- * @prop {[Label]} labels - all labels that could potentially be selected
+ * @prop {{id: string, name: string, title: string}[]} labels - all labels that could potentially be selected
  */
 @customElement("d-filter-tabs")
 export class FilterTabs extends watchMixin(FilterCollectionElement) {
@@ -19,6 +19,8 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
     param = "tab";
     @property()
     paramVal = (label: Label): string => label.id.toString();
+    @property( { type: Array })
+    labels: {id: string, name: string, title: string}[];
 
     processClick(e: Event, label: Label): void {
         if (!this.isSelected(label)) {
@@ -40,7 +42,7 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
             <div class="card-tab">
                 <ul class="nav nav-tabs" role="tablist">
                     ${ this.labels.map( label => html`
-                        <li role="presentation">
+                        <li role="presentation" title="${label.title ? label.title : ""}">
                             <a href="#" @click=${e => this.processClick(e, label)} class="${this.isSelected(label) ? "active" : ""}">
                                 ${label.name}
                             </a>

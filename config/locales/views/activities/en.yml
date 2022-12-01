@@ -55,6 +55,14 @@ en:
         exercise: Exercise
         exercise_language: "%{language} exercise"
         content: Reading activity
+      tabs:
+        course: "%{course} activities"
+        institution: "%{institution} activities"
+        course_title: "Activities from repositories that explicitly granted access to this course"
+        institution_title: "Activities from repositories where one admin is from this institution"
+        mine_title: "Activities from repositories where you are an admin"
+        featured_title: "Activities from repositories that are curated by the Dodona team"
+        all_title: "All activities to which you have access"
     show:
       code: Code
       handin: Hand in

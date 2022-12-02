@@ -11,14 +11,16 @@
     <% end %>
   </div>
   <% end %>
-  <div class="col-lg-8">
-    <h4><%= t '.upcoming_deadlines' %></h4>
-    <div class="row">
-      <% @homepage_series.first(2).each do |series| %>
-        <div class="col-lg-6">
-          <%= render partial: 'pages/clickable_homepage_cards/series', locals: {series: series} %>
-        </div>
-      <% end %>
+  <% if @homepage_series.present? %>
+    <div class="col-lg-8">
+      <h4><%= t '.upcoming_deadlines' %></h4>
+      <div class="row">
+        <% @homepage_series.first(2).each do |series| %>
+          <div class="col-lg-6">
+            <%= render partial: 'pages/clickable_homepage_cards/series', locals: {series: series} %>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>

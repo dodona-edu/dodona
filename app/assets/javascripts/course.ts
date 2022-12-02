@@ -1,4 +1,4 @@
-import { initDragAndDrop } from "./drag_and_drop.js";
+import { initDragAndDrop } from "./drag_and_drop";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
 import { searchQuery } from "./search";

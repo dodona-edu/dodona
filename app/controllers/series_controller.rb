@@ -93,8 +93,7 @@ class SeriesController < ApplicationController
     @repositories = policy_scope(Repository.all)
 
     @tabs = []
-    @tabs << { id: :has_allowed_course, name: I18n.t('activities.index.tabs.course', course: @series.course.name), title: I18n.t('activities.index.tabs.course_title') } if @series.course.present?
-    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine), title: I18n.t('activities.index.tabs.mine_title') }
+    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine), title: I18n.t('activities.index.tabs.mine_course_title') }
     if current_user.institution.present?
       @tabs << { id: :my_institution,
                  name: I18n.t('activities.index.tabs.institution', institution: current_user.institution.short_name || current_user.institution.name),

@@ -73,7 +73,6 @@ en:
         repository_scopes:
           mine: "My activities"
           my_institution: "Activities of my institution"
-          has_allowed_course: "Activities for this course"
           featured: "Recommended activities"
           all: "All activities"
       judge:

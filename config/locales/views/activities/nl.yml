@@ -56,12 +56,11 @@ nl:
         exercise_language: "%{language} oefening"
         content: Leesactiviteit
       tabs:
-        course: "%{course} activiteiten"
         institution: "%{institution} activiteiten"
-        course_title: "Activiteiten van  repositories die expliciet toegang verleenden tot deze cursus"
-        institution_title: "Activiteiten van repositories waarvan een admin behoort tot deze instelling"
-        mine_title: "Activiteiten van repositories waarvan je de eigenaar bent"
-        featured_title: "Activiteiten van repositories die zijn aangeduid als 'aanbevolen' door het Dodona-team"
+        institution_title: "Activiteiten van jou of een van jouw collega's"
+        mine_title: "Activiteiten waarvan je de eigenaar bent"
+        mine_course_title: "Activiteiten waarvan je de eigenaar bent of waar deze cursus toegang toe heeft"
+        featured_title: "Activiteiten die worden aanbevolen door het Dodona-team"
         all_title: "Alle activiteiten waar je toegang tot hebt"
     show:
       code: Code

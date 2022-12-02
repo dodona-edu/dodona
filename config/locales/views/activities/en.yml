@@ -56,12 +56,11 @@ en:
         exercise_language: "%{language} exercise"
         content: Reading activity
       tabs:
-        course: "%{course} activities"
         institution: "%{institution} activities"
-        course_title: "Activities from repositories that explicitly granted access to this course"
-        institution_title: "Activities from repositories where one admin is from this institution"
-        mine_title: "Activities from repositories where you are an admin"
-        featured_title: "Activities from repositories that are recommended by the Dodona team"
+        institution_title: "Activities owned by you or one of your colleagues"
+        mine_title: "Activities owned by you"
+        mine_course_title: "Activities owned by you or to which this course has been granted access"
+        featured_title: "Activities that are recommended by the Dodona team"
         all_title: "All activities to which you have access"
     show:
       code: Code

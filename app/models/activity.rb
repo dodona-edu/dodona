@@ -86,17 +86,16 @@ class Activity < ApplicationRecord
     by_language
   }
 
-  enum repository_scope: { mine: 1, my_institution: 2, has_allowed_course: 4, featured: 3, all: 0 }, _prefix: true
+  enum repository_scope: { mine: 1, my_institution: 2, featured: 3, all: 0 }, _prefix: true
   scope :repository_scope, lambda { |options|
     case options[:scope]&.to_sym
     when :mine
-      joins(:repository).merge(Repository.has_admin(options[:user]))
+      where(repository: Repository.has_admin(options[:user]))
+        .or(where(repository: Repository.has_allowed_course(options[:course])))
     when :my_institution
       joins(:repository).merge(Repository.owned_by_institution(options[:user].institution))
     when :featured
       joins(:repository).merge(Repository.featured)
-    when :has_allowed_course
-      joins(:repository).merge(Repository.has_allowed_course(options[:course]))
     else
       all
     end

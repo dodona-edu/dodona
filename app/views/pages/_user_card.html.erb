@@ -1,4 +1,4 @@
-<div class="card home-summary-card user mt-3">
+<div class="card home-summary-card user">
   <div class="card-supporting-text stats">
     <div class="row">
       <div class="col-6">
@@ -14,3 +14,52 @@
     </div>
   </div>
 </div>
+
+<% deadlines = @homepage_series %>
+<% if deadlines.any? %>
+  <div class="card home-summary-card user">
+    <div class="card-supporting-text deadlines">
+      <h5>Deadlines</h5>
+      <% deadlines.first(5).each do |series| %>
+        <p>
+          <span class='float-end'>
+            <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+          </span>
+          <%= link_to series.name, course_path(series.course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
+          <%= link_to series.course.name, course_path(series.course), class: "small text-muted course-link", title: series.course.name %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
+<% if @recent_exercises.any? %>
+  <div class="card home-summary-card user">
+    <div class="card-supporting-text recents">
+      <h5><%= t ".recent-exercises" %></h5>
+      <% @recent_exercises.each do |exercise| %>
+        <% submission = exercise.last_submission(current_user) %>
+        <p>
+          <% if submission.course.nil? %>
+            <%= link_to activity_submissions_path(exercise), class: 'btn-icon float-end' do %>
+              <i class="mdi mdi-chevron-right"></i>
+            <% end %>
+          <% else %>
+            <%= link_to course_activity_submissions_path(submission.course, exercise), class: 'btn-icon float-end' do %>
+              <i class="mdi mdi-chevron-right"></i>
+            <% end %>
+          <% end %>
+          <span class='float-start'><%= submission_status_icon(submission) %></span>
+          <% if exercise.accessible?(current_user, submission.course) %>
+            <%= link_to exercise.name, activity_scoped_path(course: submission.course, activity: exercise), class: "course-link", title: exercise.name %>
+          <% else %>
+            <span title="<%= exercise.name %>"><%= exercise.name %></span>
+          <% end %>
+          <% unless submission.course.nil? %>
+            <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

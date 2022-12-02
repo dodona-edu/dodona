@@ -1,15 +1,31 @@
-<%= link_to course_series_activity_path(I18n.locale, course.id, series.id, activity.id, anchor: 'submission-card', edit_submission: submission) do %>
+<%
+  if course.present?
+    if series.present?
+      path = course_series_activity_path(I18n.locale, course.id, series.id, activity.id, anchor: 'submission-card', edit_submission: submission)
+    else
+      path = course_activity_path(I18n.locale, course.id, activity.id, anchor: 'submission-card', edit_submission: submission)
+    end
+  else
+    path = activity_path(I18n.locale, activity.id, anchor: 'submission-card', edit_submission: submission)
+  end
+%>
+
+<%= link_to path do %>
   <div class="card card-clickable" style="height: 100px">
     <div class="card-title">
       <h2 class="card-title-text ellipsis-overflow d-block" title="<%= activity.name %>">
         <%= activity_icon activity, size: 24 %> <%= activity.name %>
       </h2>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= course.name%>">
-        <%= course.name %>
-      </h3>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= series.name%>">
-        <%= series.name %>
-      </h3>
+      <% if course.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= course.name%>">
+          <%= course.name %>
+        </h3>
+      <% end %>
+      <% if series.present? %>
+        <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= series.name%>">
+          <%= series.name %>
+        </h3>
+      <% end %>
     </div>
   </div>
 <% end %>

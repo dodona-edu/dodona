@@ -4,12 +4,12 @@
       <h2 class="card-title-text ellipsis-overflow d-block" title="<%= course.name %>">
         <i class="mdi mdi-book-multiple mdi-24"></i> <%= course.name %>
       </h2>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= course.formatted_year %>">
-        <%= course.formatted_year %>
-      </h3>
       <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= course.formatted_attribution %>">
         <%= course.formatted_attribution %>
       </h3>
+      <span class="text-body mt-1 ellipsis-overflow" style="font-size: 12px">
+        <%= t ".jump_back_in_info" %>
+      </span>
     </div>
   </div>
 <% end %>

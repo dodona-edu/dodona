@@ -1,3 +1,4 @@
+<% show_progress ||= false %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-clickable" style="height: 100px">
     <div class="card-title">
@@ -20,18 +21,24 @@
           <%= series.name %>
         </h2>
       <% end %>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-start text-body" title="<%= series.course.name %>">
+      <h3 class="card-subtitle-text ellipsis-overflow mt-1 mb-1 text-body" title="<%= series.course.name %>">
         <%= series.course.name %>
       </h3>
 
-      <%= render partial: 'progress_chart', locals: {
-        total: series.activity_count,
-        tried: series.started_activity_count(current_user),
-        correct: series.completed_activity_count(current_user),
-        info_tried: 'pages.clickable_homepage_cards.series.progress_chart_info_tried',
-        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-        width: '100%',
-      } %>
+      <% if show_progress %>
+        <%= render partial: 'progress_chart', locals: {
+          total: series.activity_count,
+          tried: series.started_activity_count(current_user),
+          correct: series.completed_activity_count(current_user),
+          info_tried: 'pages.clickable_homepage_cards.series.progress_chart_info_tried',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+        } %>
+      <% else %>
+        <span class="text-body mt-2 ellipsis-overflow" style="font-size: 12px">
+            <%= t ".jump_back_in_info" %>
+        </span>
+      <% end %>
     </div>
   </div>
 <% end %>

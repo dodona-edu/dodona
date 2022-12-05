@@ -11,21 +11,26 @@
 %>
 
 <%= link_to path do %>
-  <div class="card card-clickable" style="height: 100px">
-    <div class="card-title">
+  <div class="card card-clickable" >
+    <div class="card-title" style="height: 100px; justify-content: space-between; display: flex">
       <h2 class="card-title-text ellipsis-overflow d-block" title="<%= activity.name %>">
         <%= activity_icon activity, size: 24 %> <%= activity.name %>
       </h2>
       <% if course.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= course.name%>">
+        <h3 class="card-subtitle-text ellipsis-overflow text-body" title="<%= course.name%>">
           <%= course.name %>
+          <% if series.present? %>
+            > <%= series.name %>
+          <% end %>
         </h3>
       <% end %>
-      <% if series.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1 text-body" title="<%= series.name%>">
-          <%= series.name %>
-        </h3>
-      <% end %>
+      <span class="text-body mt-1 ellipsis-overflow" style="font-size: 12px">
+        <% if submission.present? %>
+            <%= t ".jump_back_in_info" %>
+        <% else %>
+            <%= t ".jump_back_in_info_success" %>
+        <% end %>
+      </span>
     </div>
   </div>
 <% end %>

@@ -59,7 +59,7 @@
     "eslint-plugin-wc": "^1.4.0",
     "jest": "^26.6.3",
     "jest-junit": "^15.0.0",
-    "stylelint": "^14.15.0",
+    "stylelint": "^14.16.0",
     "stylelint-config-standard": "^29.0.0",
     "stylelint-config-standard-scss": "^6.1.0",
     "ts-jest": "^26.5.6",

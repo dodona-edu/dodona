@@ -191,6 +191,23 @@ function htmlEncode(str) {
     });
 }
 
+/**
+ * Searches the parents of an element until it finds the parent containing a certain class
+ * @param {HTMLElement} element - Iterate over the parents of this element
+ * @param {string} classParam - The class to search for
+ * @return {HTMLElement} The parent containing the class
+ */
+function findParent(element, classParam) {
+    let parent = element.parentElement;
+    while (parent) {
+        if (parent.classList.contains(classParam)) {
+            return parent;
+        }
+        parent = parent.parentElement;
+    }
+    return null;
+}
+
 export {
     createDelayer,
     delay,
@@ -210,4 +227,5 @@ export {
     initDatePicker,
     ready,
     htmlEncode,
+    findParent,
 };

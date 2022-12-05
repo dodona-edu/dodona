@@ -1,6 +1,15 @@
 import dragula from "dragula";
-import { fetch } from "util.js";
+import { fetch, findParent } from "util.js";
 
+/**
+ * Custom type for arguments of the drag and drop initialization
+ * --table_selector: the id used to find the table that is used for drag and drop
+ * --item_selector: the id used to find the selected item
+ * --item_data_selector: the key used to retrieve data of the item
+ * --order_selector: the id used to find the ordered items
+ * --order_data_selector: the key used to retrieve data of the order
+ * --url_from_id: a function that constructs the URL given an id
+ */
 type DragAndDropArguments = {
     table_selector: string,
     item_selector: string,
@@ -10,8 +19,8 @@ type DragAndDropArguments = {
     url_from_id: (courseId: string) => string;
 }
 
-function copyWidth(clone, original, tag=undefined): void {
-    $(clone).width($(original).width());
+function copyWidth(clone: HTMLCanvasElement, original: HTMLCanvasElement, tag=undefined): void {
+    clone.width = original.clientWidth;
     let cloneChildren;
     let originalChildren;
     if (tag) {
@@ -22,33 +31,16 @@ function copyWidth(clone, original, tag=undefined): void {
         originalChildren = original.childNodes;
     }
     for (let i = 0; i < cloneChildren.length; i++) { // make all children equally big
-        $(cloneChildren[i]).width($(originalChildren[i]).width());
+        cloneChildren[i].width = originalChildren[i].clientWidth;
     }
 }
 
-/**
- * Initializes drag and drop on the page
- * @param { Object } args: a JSON with the following keys:
- * --table_selector: the id used to find the table that is used for drag and drop
- * --item_selector: the id used to find the selected item
- * --item_data_selector: the key used to retrieve data of the item
- * --order_selector: the id used to find the ordered items
- * --order_data_selector: the key used to retrieve data of the order
- * --url_from_id: a function that constructs the URL given an id
- */
 function initDragAndDrop(args: DragAndDropArguments): void {
     const tableBody = document.querySelectorAll(args.table_selector)[0];
 
     dragula([tableBody], {
         moves: function (el, source, handle, sibling) {
-            let containsDragHandle = handle.classList.contains("drag-handle");
-            // if needed, search parents of handle for "drag-handle"
-            let next = handle;
-            while (next.parentElement && !containsDragHandle) {
-                next = next.parentElement;
-                containsDragHandle = next.classList.contains("drag-handle");
-            }
-            return containsDragHandle;
+            return handle.classList.contains("drag-handle") || findParent(handle, "drag-handle");
         },
         mirrorContainer: tableBody,
     })

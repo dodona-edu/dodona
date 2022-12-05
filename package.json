@@ -51,7 +51,7 @@
     "@types/serviceworker": "^0.0.57",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.44.0",
-    "eslint": "^8.28.0",
+    "eslint": "^8.29.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^27.1.6",
     "eslint-plugin-lit": "^1.6.1",

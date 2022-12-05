@@ -1,3 +1,5 @@
+import { findParent } from "util.js";
+
 function initSubmissionShow(parentClass: string, mediaPath: string, token: string): void {
     function init(): void {
         initDiffSwitchButtons();
@@ -10,13 +12,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         document.querySelectorAll(".diff-switch-buttons .btn").forEach( b => {
             b.addEventListener("click", e => {
                 const button = e.currentTarget;
-
-                // search parents of button for tab
-                let tab = button.parentElement;
-                while (!tab.classList.contains("tab-pane")) {
-                    tab = tab.parentElement;
-                }
-
+                const tab = findParent(button, ["tab-pane"]);
                 const tabButtons = tab.querySelectorAll(".diff-switch-buttons .btn");
                 tabButtons.forEach(b => b.classList.remove("active"));
                 button.classList.add("active");
@@ -34,13 +30,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         document.querySelectorAll(".correct-switch-buttons .btn").forEach( b => {
             b.addEventListener("click", e => {
                 const button = e.currentTarget;
-
-                // search parents of button for tab
-                let tab = button.parentElement;
-                while (!tab.classList.contains("feedback-tab-pane")) {
-                    tab = tab.parentElement;
-                }
-
+                const tab = findParent(button, ["feedback-tab-pane"]);
                 const tabButtons = tab.querySelectorAll(".correct-switch-buttons .btn");
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");

@@ -19,8 +19,7 @@ type DragAndDropArguments = {
     url_from_id: (courseId: string) => string;
 }
 
-function copyWidth(clone: HTMLCanvasElement, original: HTMLCanvasElement, tag=undefined): void {
-    clone.width = original.clientWidth;
+function copyWidth(clone: Element, original: Element, tag: string = undefined): void {
     let cloneChildren;
     let originalChildren;
     if (tag) {
@@ -31,7 +30,7 @@ function copyWidth(clone: HTMLCanvasElement, original: HTMLCanvasElement, tag=un
         originalChildren = original.childNodes;
     }
     for (let i = 0; i < cloneChildren.length; i++) { // make all children equally big
-        cloneChildren[i].width = originalChildren[i].clientWidth;
+        cloneChildren[i].style.width = `${originalChildren[i].clientWidth.toString()}px`;
     }
 }
 
@@ -39,15 +38,15 @@ function initDragAndDrop(args: DragAndDropArguments): void {
     const tableBody = document.querySelectorAll(args.table_selector)[0];
 
     dragula([tableBody], {
-        moves: function (el, source, handle, sibling) {
-            return handle.classList.contains("drag-handle") || findParent(handle, "drag-handle");
+        moves: (el, source, handle, sibling) => {
+            return handle.classList.contains("drag-handle") || findParent(handle, ["drag-handle"]);
         },
         mirrorContainer: tableBody,
     })
-        .on("cloned", function (clone, original, type) {
+        .on("cloned", (clone, original, type) => {
             copyWidth(clone, original, "td");
         })
-        .on("drop", function () {
+        .on("drop", () => {
             const id = (document.querySelector(args.item_selector) as HTMLElement).dataset[args.item_data_selector];
             const order = Array.from(document.querySelectorAll(args.order_selector)).map( (el: HTMLElement) => {
                 return parseInt(el.dataset[args.order_data_selector]);

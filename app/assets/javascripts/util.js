@@ -192,15 +192,15 @@ function htmlEncode(str) {
 }
 
 /**
- * Searches the parents of an element until it finds the parent containing a certain class
+ * Searches the parents of an element until it finds the parent containing certain classes
  * @param {HTMLElement} element - Iterate over the parents of this element
- * @param {string} classParam - The class to search for
- * @return {HTMLElement} The parent containing the class
+ * @param {string[]} classParams - The classes to search for
+ * @return {?HTMLElement} The parent containing the classes
  */
-function findParent(element, classParam) {
+function findParent(element, classParams) {
     let parent = element.parentElement;
     while (parent) {
-        if (parent.classList.contains(classParam)) {
+        if (classParams.every(param => parent.classList.contains(param))) {
             return parent;
         }
         parent = parent.parentElement;

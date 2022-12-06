@@ -11,13 +11,13 @@
 %>
 
 <%= link_to path do %>
-  <div class="card card-supporting-text series card-clickable" style="height: 100px; justify-content: space-between; display: flex">
-    <div class="card-subtitle mb-1">
+  <div class="card card-supporting-text action-card">
+    <div class="card-subtitle">
       <div style="margin-right: 16px">
         <%= activity_icon activity, 36 %>
       </div>
 
-      <h4 class="ellipsis-overflow" title="<%= activity.name %>" style="width: 100%">
+      <h4 class="ellipsis-overflow" title="<%= activity.name %>">
         <%= activity.name %><br>
 
         <% if course.present? %>

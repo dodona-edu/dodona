@@ -1,11 +1,11 @@
 <%= link_to course_path(I18n.locale, course.id) do %>
-  <div class="card card-supporting-text series card-clickable" style="height: 100px;">
+  <div class="card card-supporting-text action-card">
     <div class="card-subtitle mb-1">
       <div style="margin-right: 16px">
         <i class="mdi mdi-book-multiple mdi-36"></i>
       </div>
 
-      <h4 class="ellipsis-overflow" title="<%= course.name %>" style="width: 100%">
+      <h4 class="ellipsis-overflow" title="<%= course.name %>">
         <%= course.name %><br>
         <small class="ellipsis-overflow" title="<%= course.formatted_attribution %>">
           <%= course.formatted_attribution %>

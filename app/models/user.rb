@@ -499,7 +499,7 @@ class User < ApplicationRecord
 
     # There is no next exercise, start working on the next series
     next_series = latest_submission.series.next
-    if next_series.nil?
+    if next_series.nil? || (!next_series.open? && !course_admin?(latest_submission.course))
       # there is no next series, continue working on the course
       return result
     end

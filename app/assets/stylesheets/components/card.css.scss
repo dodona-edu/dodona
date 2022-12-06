@@ -423,16 +423,6 @@ a.card-title-link:hover {
     color: var(--on-clickable-card-color);
   }
 
-  &.series .card-title-icon {
-    background: var(--on-clickable-card-color) !important;
-
-    i {
-      color: var(--on-clickable-card-color) !important;
-      border: 5px solid var(--clickable-card-color) !important;
-      background: var(--clickable-card-color) !important;
-    }
-  }
-
   .progress-chart {
     .correct {
       stroke: var(--progress-chart-correct-color);

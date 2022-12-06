@@ -4,7 +4,13 @@
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-supporting-text series card-clickable <%= card_class %>" style="height: 100px">
     <div class="card-subtitle mb-1">
-      <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user} %>
+        <div style="margin-right: 16px">
+          <% if series.deadline.nil? %>
+            <%= custom_icon :exercises, class: "md-36" %>
+          <% else %>
+            <i class="mdi mdi-36 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>"></i>
+          <% end %>
+        </div>
       <h4 class="ellipsis-overflow" title="<%= series.name %>" style="width: 100%">
         <%= series.name %><br>
         <div style="display: flex; flex-direction: row; justify-content: space-between;" >

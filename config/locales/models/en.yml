@@ -73,7 +73,7 @@ en:
         repository_scopes:
           mine: "My activities"
           my_institution: "Activities of my institution"
-          featured: "Recommended activities"
+          featured: "Featured activities"
           all: "All activities"
       judge:
         name: Name

@@ -74,7 +74,7 @@ nl:
         repository_scopes:
           mine: "Mijn activiteiten"
           my_institution: "Activiteiten van mijn onderwijsinstelling"
-          featured: "Aanbevolen activiteiten"
+          featured: "Uitgelichte activiteiten"
           all: "Alle activiteiten"
       judge:
         name: Naam

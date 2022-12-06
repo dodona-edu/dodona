@@ -60,7 +60,7 @@ nl:
         institution_title: "Activiteiten van jou of een van jouw collega's"
         mine_title: "Activiteiten waarvan je de eigenaar bent"
         mine_course_title: "Activiteiten waarvan je de eigenaar bent of waar deze cursus toegang toe heeft"
-        featured_title: "Activiteiten die worden aanbevolen door het Dodona-team"
+        featured_title: "Activiteiten die zijn uitgelicht door het Dodona-team"
         all_title: "Alle activiteiten waar je toegang tot hebt"
     show:
       code: Code

@@ -1,6 +1,8 @@
 <% show_progress ||= false %>
+<% card_class = nil
+   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present?%>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
-  <div class="card card-supporting-text series card-clickable" style="height: 100px">
+  <div class="card card-supporting-text series card-clickable <%= card_class %>" style="height: 100px">
     <div class="card-subtitle mb-1">
       <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user} %>
       <h4 class="ellipsis-overflow" title="<%= series.name %>" style="width: 100%">
@@ -27,9 +29,9 @@
         width: '100%',
       } %>
     <% else %>
-        <span class="text-body mt-2 ellipsis-overflow" style="font-size: 12px">
+        <small class="ellipsis-overflow">
             <%= t ".jump_back_in_info" %>
-        </span>
+        </small>
     <% end %>
   </div>
 <% end %>

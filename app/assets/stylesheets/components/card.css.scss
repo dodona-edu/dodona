@@ -392,15 +392,65 @@ a.card-title-link:hover {
     opacity 145ms ease,
     border-color 145ms ease,
     background-color 145ms ease;
+  box-shadow: none;
 
-  @include shadow-z1;
+  --clickable-card-color: #{$primary};
+  --on-clickable-card-color: #{$on-primary};
+  --progress-chart-correct-color: #{rgba($on-primary, 0.8)};
+  --progress-chart-wrong-color: #{rgba($on-primary, 0.5)};
+  --progress-chart-not-started-color: #{rgba($on-primary, 0.2)};
+
+  &.colored-danger {
+    --clickable-card-color: #{$danger};
+    --on-clickable-card-color: #{$on-danger};
+    --progress-chart-correct-color: #{rgba($on-danger, 0.8)};
+    --progress-chart-wrong-color: #{rgba($on-danger, 0.5)};
+    --progress-chart-not-started-color: #{rgba($on-danger, 0.2)};
+  }
+
+  &.colored-success {
+    --clickable-card-color: #{$success};
+    --on-clickable-card-color: #{$on-success};
+    --progress-chart-correct-color: #{rgba($on-success, 0.8)};
+    --progress-chart-wrong-color: #{rgba($on-success, 0.5)};
+    --progress-chart-not-started-color: #{rgba($on-success, 0.2)};
+  }
+
+  background: var(--clickable-card-color);
+  color: var(--on-clickable-card-color);
+
+  small {
+    color: var(--on-clickable-card-color);
+  }
+
+  &.series .card-title-icon {
+    background: var(--on-clickable-card-color) !important;
+
+    i {
+      color: var(--on-clickable-card-color) !important;
+      border: 5px solid var(--clickable-card-color) !important;
+      background: var(--clickable-card-color) !important;
+    }
+  }
+
+  .progress-chart {
+    .correct {
+      stroke: var(--progress-chart-correct-color);
+    }
+
+    .wrong {
+      stroke: var(--progress-chart-wrong-color);
+    }
+
+    .not-started {
+      stroke: var(--progress-chart-not-started-color);
+    }
+  }
 
   &:hover,
   &:focus,
   &:active {
     opacity: 0.9;
-
-    @include shadow-z2;
   }
 
   &:disabled,

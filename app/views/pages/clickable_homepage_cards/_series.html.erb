@@ -1,44 +1,35 @@
 <% show_progress ||= false %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
-  <div class="card card-clickable" style="height: 100px">
-    <div class="card-title">
-      <% if series.deadline.present? %>
-        <% met = series.completed_before_deadline?(current_user) %>
-        <h2 class="card-title-text ellipsis-overflow d-block  <%= met ? "colored-correct" : "colored-wrong" %>" title="<%= series.name %>">
-          <i class="mdi mdi-24 <%= deadline_icon met, series.deadline %>"></i>
-          <%= series.name %>
-        </h2>
-        <h3 class="card-subtitle-text ellipsis-overflow mt-1 float-end text-body">
-          <i class="mdi mdi-12 <%= deadline_icon met, series.deadline %>"></i>
-          <% if series.deadline.past? && !met %>
-            <%= t('deadlines.missed') %>
-          <% else %>
-            <%= deadline_relative_time series.deadline %>
-          <% end %>
-        </h3>
-      <% else %>
-        <h2 class="card-title-text ellipsis-overflow d-block" title="<%= series.name %>">
-          <%= series.name %>
-        </h2>
-      <% end %>
-      <h3 class="card-subtitle-text ellipsis-overflow mt-1 mb-1 text-body" title="<%= series.course.name %>">
-        <%= series.course.name %>
-      </h3>
-
-      <% if show_progress %>
-        <%= render partial: 'progress_chart', locals: {
-          total: series.activity_count,
-          tried: series.started_activity_count(current_user),
-          correct: series.completed_activity_count(current_user),
-          info_tried: 'pages.clickable_homepage_cards.series.progress_chart_info_tried',
-          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-          width: '100%',
-        } %>
-      <% else %>
+  <div class="card card-supporting-text series card-clickable" style="height: 100px">
+    <div class="card-subtitle mb-1">
+      <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user} %>
+      <h4 class="ellipsis-overflow" title="<%= series.name %>" style="width: 100%">
+        <%= series.name %><br>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;" >
+          <span class="ellipsis-overflow" style="flex: 2">
+            <small  title="<%= series.course.name %>">
+              <%= series.course.name %>
+            </small>
+          </span>
+          <span style="flex: 1; text-align: right">
+          <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user) }%>
+          </span>
+        </div>
+      </h4>
+    </div>
+    <% if show_progress %>
+      <%= render partial: 'progress_chart', locals: {
+        total: series.activity_count,
+        tried: series.started_activity_count(current_user),
+        correct: series.completed_activity_count(current_user),
+        info_tried: 'pages.clickable_homepage_cards.series.progress_chart_info_tried',
+        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+        width: '100%',
+      } %>
+    <% else %>
         <span class="text-body mt-2 ellipsis-overflow" style="font-size: 12px">
             <%= t ".jump_back_in_info" %>
         </span>
-      <% end %>
-    </div>
+    <% end %>
   </div>
 <% end %>

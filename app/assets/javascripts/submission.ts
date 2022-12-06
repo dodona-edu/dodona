@@ -35,11 +35,11 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");
                 if (button.dataset.show === "true") {
-                    tab.querySelectorAll(".group.correct").forEach(testcase => {
+                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
                         testcase.style.display = "block";
                     });
                 } else {
-                    tab.querySelectorAll(".group.correct").forEach(testcase => {
+                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
                         testcase.style.display = "none";
                     });
                 }

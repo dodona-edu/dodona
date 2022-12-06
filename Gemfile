@@ -130,9 +130,9 @@ gem 'faker', '~> 3.0.0'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.22'
+gem 'stackprof', '~> 0.2.23'
 
-gem 'ddtrace', '~> 1.6.1'
+gem 'ddtrace', '~> 1.7.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -151,7 +151,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.6.1'
+  gem 'selenium-webdriver', '~> 4.7.1'
 end
 
 group :test do

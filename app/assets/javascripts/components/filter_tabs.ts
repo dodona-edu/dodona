@@ -19,7 +19,7 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
     param = "tab";
     @property()
     paramVal = (label: Label): string => label.id.toString();
-    @property( { type: Array })
+    @property({ type: Array })
     labels: {id: string, name: string, title: string}[];
 
     processClick(e: Event, label: Label): void {

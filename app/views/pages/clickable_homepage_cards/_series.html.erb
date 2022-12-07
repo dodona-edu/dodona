@@ -2,7 +2,7 @@
 <% card_class = nil
    card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present?%>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
-  <div class="card card-title action-card <%= card_class %>">
+  <div class="card card-supporting-text action-card <%= card_class %>">
     <div class="card-subtitle">
       <div class="card-title-icon">
         <% if series.deadline.nil? %>

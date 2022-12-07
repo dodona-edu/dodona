@@ -39,12 +39,15 @@ en:
         jump_back_in_info_success: "You solved the previous exercise. Start this one!"
       series:
         jump_back_in_info: "You finished the previous series. Start this one!"
-        progress_chart_info_tried:
-          one: "One exercise started."
-          other: "%{count} exercises started."
         progress_chart_info_correct:
           one: "One exercise solved correctly."
           other: "%{count} exercises solved correctly."
+        progress_chart_info_wrong:
+          one: "One exercise incorrect."
+          other: "%{count} exercises incorrect."
+        progress_chart_info_not_started:
+          one: "One exercise not started."
+          other: "%{count} exercises not started."
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises

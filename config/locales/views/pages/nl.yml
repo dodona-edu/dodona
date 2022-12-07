@@ -39,12 +39,15 @@ nl:
         jump_back_in_info_success: "De vorige oefening was correct, start met deze oefening."
       series:
         jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
-        progress_chart_info_tried:
-          one: "Eén oefening begonnen."
-          other: "%{count} oefeningen begonnen."
         progress_chart_info_correct:
           one: "Eén oefening correct opgelost."
           other: "%{count} oefeningen correct opgelost."
+        progress_chart_info_wrong:
+          one: "Eén oefening incorrect."
+          other: "%{count} oefeningen incorrect."
+        progress_chart_info_not_started:
+          one: "Eén oefening niet begonnen."
+          other: "%{count} oefeningen niet begonnen."
     user_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen

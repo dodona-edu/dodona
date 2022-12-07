@@ -163,6 +163,7 @@ export class SearchQuery {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
             if (this.queryParams.params.get("page") !== undefined && this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
+                // if we were not on the first page and we changed something else than the page, we should go back to the first page
                 this.changedParams = [];
                 this.queryParams.updateParam("page", "1");
                 return;

@@ -46,8 +46,8 @@ nl:
           one: "Eén oefening incorrect."
           other: "%{count} oefeningen incorrect."
         progress_chart_info_not_started:
-          one: "Eén oefening niet begonnen."
-          other: "%{count} oefeningen niet begonnen."
+          one: "Eén oefening nog niet begonnen."
+          other: "%{count} oefeningen nog niet begonnen."
     user_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen

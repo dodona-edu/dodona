@@ -46,8 +46,8 @@ en:
           one: "One exercise incorrect."
           other: "%{count} exercises incorrect."
         progress_chart_info_not_started:
-          one: "One exercise not started."
-          other: "%{count} exercises not started."
+          one: "One exercise not yet started."
+          other: "%{count} exercises not yet started."
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises

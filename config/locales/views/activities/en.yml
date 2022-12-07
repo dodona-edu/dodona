@@ -56,12 +56,15 @@ en:
         exercise_language: "%{language} exercise"
         content: Reading activity
       tabs:
-        institution: "%{institution} activities"
-        institution_title: "Activities owned by you or one of your colleagues"
+        my_institution: "%{institution} activities"
+        my_institution_title: "Activities owned by you or one of your colleagues"
         mine_title: "Activities owned by you"
         mine_course_title: "Activities owned by you or to which this course has been granted access"
         featured_title: "Activities featured by the Dodona team"
         all_title: "All activities to which you have access"
+        mine: "My activities"
+        featured: "Featured activities"
+        all: "All activities"
     show:
       code: Code
       handin: Hand in

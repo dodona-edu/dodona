@@ -70,11 +70,6 @@ en:
           ok: Ok
           not_valid: Not valid
           removed: Removed
-        repository_scopes:
-          mine: "My activities"
-          my_institution: "Activities of my institution"
-          featured: "Featured activities"
-          all: "All activities"
       judge:
         name: Name
         remote: Clone URL

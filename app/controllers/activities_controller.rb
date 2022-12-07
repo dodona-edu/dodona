@@ -76,14 +76,14 @@ class ActivitiesController < ApplicationController
     @title = I18n.t('activities.index.title')
 
     @tabs = []
-    @tabs << { id: :mine, name: Activity.human_enum_name(:repository_scope, :mine), title: I18n.t('activities.index.tabs.mine_title') }
+    @tabs << { id: :mine, name: I18n.t('activities.index.tabs.mine'), title: I18n.t('activities.index.tabs.mine_title') }
     if current_user.institution.present?
       @tabs << { id: :my_institution,
-                 name: I18n.t('activities.index.tabs.institution', institution: current_user.institution.short_name || current_user.institution.name),
-                 title: I18n.t('activities.index.tabs.institution_title') }
+                 name: I18n.t('activities.index.tabs.my_institution', institution: current_user.institution.short_name || current_user.institution.name),
+                 title: I18n.t('activities.index.tabs.my_institution_title') }
     end
-    @tabs << { id: :featured, name: Activity.human_enum_name(:repository_scope, :featured), title: I18n.t('activities.index.tabs.featured_title') }
-    @tabs << { id: :all, name: Activity.human_enum_name(:repository_scope, :all), title: I18n.t('activities.index.tabs.all_title') }
+    @tabs << { id: :featured, name: I18n.t('activities.index.tabs.featured'), title: I18n.t('activities.index.tabs.featured_title') }
+    @tabs << { id: :all, name: I18n.t('activities.index.tabs.all'), title: I18n.t('activities.index.tabs.all_title') }
     @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user).any? }
   end
 

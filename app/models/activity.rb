@@ -86,7 +86,6 @@ class Activity < ApplicationRecord
     by_language
   }
 
-  enum repository_scope: { mine: 1, my_institution: 2, featured: 3, all: 0 }, _prefix: true
   scope :repository_scope, lambda { |options|
     case options[:scope]&.to_sym
     when :mine

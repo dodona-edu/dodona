@@ -17,7 +17,7 @@
       <div class="row">
         <% @homepage_series.first(2).each do |series| %>
           <div class="col-lg-6">
-            <%= render partial: 'pages/clickable_homepage_cards/series', locals: {series: series, show_progress: true } %>
+            <%= render partial: 'pages/clickable_homepage_cards/series', locals: {series: series, show_progress: true} %>
           </div>
         <% end %>
       </div>

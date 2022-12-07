@@ -35,7 +35,7 @@ en:
       course:
         jump_back_in_info: "Continue working on this course."
       activity:
-        jump_back_in_info: "Continue working on this exercise"
+        jump_back_in_info: "Continue working on this exercise."
         jump_back_in_info_success: "You solved the previous exercise. Start this one!"
       series:
         jump_back_in_info: "You finished the previous series. Start this one!"

@@ -1,6 +1,6 @@
 <% show_progress ||= false %>
 <% card_class = nil
-   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present?%>
+   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-supporting-text action-card <%= card_class %>">
     <div class="card-subtitle">
@@ -20,7 +20,7 @@
             </small>
           </span>
           <span style="flex: 1; text-align: right">
-          <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user) }%>
+          <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
           </span>
         </div>
       </h4>

@@ -75,6 +75,10 @@
     opacity: 0.9;
   }
 
+  &:hover {
+    @include shadow-z2;
+  }
+
   &:disabled,
   &.disabled {
     opacity: 0.38;

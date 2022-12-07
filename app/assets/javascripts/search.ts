@@ -162,7 +162,7 @@ export class SearchQuery {
     paramChange(key: string): void {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
-            if (this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
+            if (this.queryParams.params.get("page") !== undefined && this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
                 this.changedParams = [];
                 this.queryParams.updateParam("page", "1");
                 return;

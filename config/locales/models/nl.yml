@@ -71,6 +71,11 @@ nl:
           ok: Ok
           not_valid: Ongeldig
           removed: Verwijderd
+        popularities:
+          unpopular: Onpopulair
+          neutral: Matig populair
+          popular: Populair
+          very_popular: Zeer populair
       judge:
         name: Naam
         remote: Clone URL

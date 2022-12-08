@@ -86,6 +86,20 @@ class Activity < ApplicationRecord
     by_language
   }
 
+  enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
+  def popularity
+    case courses.count
+    when 0..2
+      :unpopular
+    when 3..10
+      :neutral
+    when 11..100
+      :popular
+    else
+      :very_popular
+    end
+  end
+
   def content_page?
     false
   end

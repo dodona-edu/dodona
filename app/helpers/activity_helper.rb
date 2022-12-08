@@ -107,6 +107,23 @@ module ActivityHelper
     end
   end
 
+  POPULARITY_ICONS = {
+    unpopular: 'mdi mdi-heart-outline',
+    neutral: 'mdi mdi-heart-half-full',
+    popular: 'mdi mdi-heart',
+    very_popular: 'mdi mdi-heart-multiple'
+  }.freeze
+
+  # POPULARITY_ICONS = {
+  #   unpopular: 'mdi mdi-account-outline',
+  #   neutral: 'mdi mdi-account',
+  #   popular: 'mdi mdi-account-multiple',
+  #   very_popular: 'mdi mdi-account-group'
+  # }.freeze
+  def popularity_icon(activity)
+    content_tag(:i, '', class: POPULARITY_ICONS[activity.popularity], title: Activity.human_enum_name(:popularity, activity.popularity))
+  end
+
   class DescriptionRenderer
     require 'nokogiri'
     include Rails.application.routes.url_helpers

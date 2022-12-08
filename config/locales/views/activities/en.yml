@@ -38,6 +38,7 @@ en:
       programming_language: "Programming language"
       labels: "Labels"
       languages: "Languages"
+      popularity: "Popularity"
       repository: "Repository"
       path: "Path"
       class_progress: Class progress

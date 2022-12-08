@@ -38,6 +38,7 @@ nl:
       programming_language: "Programmeertaal"
       labels: "Labels"
       languages: "Talen"
+      popularity: "Populariteit"
       repository: "Repository"
       path: "Pad"
       class_progress: Voortgang groep

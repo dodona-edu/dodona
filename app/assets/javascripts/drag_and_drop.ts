@@ -19,18 +19,11 @@ type DragAndDropArguments = {
     url_from_id: (courseId: string) => string;
 }
 
-function copyWidth(clone: Element, original: Element, tag: string = undefined): void {
-    let cloneChildren;
-    let originalChildren;
-    if (tag) {
-        cloneChildren = clone.getElementsByTagName(tag);
-        originalChildren = original.getElementsByTagName(tag);
-    } else {
-        cloneChildren = clone.childNodes;
-        originalChildren = original.childNodes;
-    }
+function copyWidth(clone: Element, original: Element, tag: string): void {
+    const cloneChildren = clone.getElementsByTagName(tag);
+    const originalChildren = original.getElementsByTagName(tag);
     for (let i = 0; i < cloneChildren.length; i++) { // make all children equally big
-        cloneChildren[i].style.width = `${originalChildren[i].clientWidth.toString()}px`;
+        (cloneChildren[i] as HTMLElement).style.width = `${originalChildren[i].clientWidth.toString()}px`;
     }
 }
 

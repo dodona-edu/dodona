@@ -105,4 +105,83 @@ class ActivityTest < ActiveSupport::TestCase
     assert_equal 'foo', e.numbered_name(s)
     assert_equal 'bar', c.numbered_name(s)
   end
+
+  test 'should order by name' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'baz'
+    e2 = create :exercise, name_nl: 'bar', name_en: 'bar'
+    e3 = create :exercise, name_nl: 'baz', name_en: 'foo'
+    I18n.with_locale(:nl) do
+      assert_equal [e1.id, e3.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e2.id, e3.id, e1.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+    I18n.with_locale(:en) do
+      assert_equal [e3.id, e1.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e2.id, e1.id, e3.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+  end
+
+  test 'order by name should order nils last' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'foo'
+    e2 = create :exercise, name_nl: nil, name_en: 'test'
+    e3 = create :exercise, name_nl: 'test', name_en: nil
+    I18n.with_locale(:nl) do
+      assert_equal [e3.id, e1.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e1.id, e3.id, e2.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+    I18n.with_locale(:en) do
+      assert_equal [e2.id, e1.id, e3.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e1.id, e2.id, e3.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+  end
+
+  test 'order by popularity should order by number of courses using the activity' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'foo'
+    e2 = create :exercise, name_nl: 'bar', name_en: 'bar'
+    e3 = create :exercise, name_nl: 'baz', name_en: 'baz'
+    c1 = create :course
+    c2 = create :course
+    c3 = create :course
+    c4 = create :course
+    create :series, course: c1, exercises: [e1]
+    create :series, course: c2, exercises: [e1]
+    create :series, course: c3, exercises: [e1, e2]
+    create :series, course: c4, exercises: [e2, e3]
+    # should not count the same activity twice in the same course
+    5.times { create :series, course: c4, exercises: [e3] }
+    assert_equal [e1.id, e2.id, e3.id], Activity.order_by_popularity(:DESC).pluck(:id)
+    assert_equal [e3.id, e2.id, e1.id], Activity.order_by_popularity(:ASC).pluck(:id)
+  end
+
+  test 'popularity should return the correct enum value' do
+    e1 = create :exercise
+    assert_equal :unpopular, e1.popularity
+    rand(0..2).times do
+      c1 = create :course
+      create :series, course: c1, exercises: [e1]
+    end
+
+    e2 = create :exercise
+    rand(3..9).times do
+      c3 = create :course
+      create :series, course: c3, exercises: [e2]
+    end
+    assert_equal :neutral, e2.reload.popularity
+
+    e3 = create :exercise
+    rand(12..50).times do
+      c4 = create :course
+      create :series, course: c4, exercises: [e3]
+    end
+    assert_equal :popular, e3.reload.popularity
+
+    e4 = create :exercise
+    101.times do
+      c5 = create :course
+      create :series, course: c5, exercises: [e4]
+    end
+    assert_equal :very_popular, e4.reload.popularity
+  end
 end

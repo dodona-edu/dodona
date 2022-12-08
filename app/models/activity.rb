@@ -86,7 +86,7 @@ class Activity < ApplicationRecord
     by_language
   }
 
-  scope :order_by_name, ->(direction) { reorder("name_#{I18n.locale} #{direction}").order(path: direction) }
+  scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { joins(:courses).group(:id).reorder(Arel.sql("COUNT(DISTINCT courses.id) #{direction}")) }
 
   enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true

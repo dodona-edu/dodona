@@ -1,12 +1,23 @@
 <table class="table activity-table table-resource">
-  <colgroup>
-    <col/>
-    <col/>
-    <col class="col-5"/>
-    <col class="col-1">
-    <col class="col-4"/>
-    <col class="col-1"/>
-  </colgroup>
+  <thead>
+    <th/>
+    <th/>
+    <th class="col-5">
+      <% if local_assigns.fetch(:show_buttons_for_present, false) %>
+        <%= t "activities.index.activity_title" %>
+      <% else %>
+        <d-sort-button column="name"><%= t "activities.index.activity_title" %></d-sort-button>
+      <% end %>
+    </th>
+    <th class="col-1"><%= t "activities.index.languages" %></th>
+    <th class="col-4"/>
+    <% unless local_assigns.fetch(:show_buttons_for_present, false) %>
+      <th class="col-2">
+        <d-sort-button column="popularity" default="DESC"><%= t "activities.index.popularity" %></d-sort-button>
+      </th>
+    <% end %>
+    <th class="col-1"/>
+  </thead>
   <tbody>
   <% activities.each do |activity| %>
     <tr>
@@ -47,6 +58,11 @@
       <td class="series-activities-table-labels">
         <%= render partial: 'activities/labels', locals: { activity: activity } %>
       </td>
+      <% unless local_assigns.fetch(:show_buttons_for_present, false) %>
+        <th class="col-2">
+          <%= popularity_icon(activity) %>
+        </th>
+      <% end %>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>
           <a href="#" class="btn btn-icon remove-activity" title="<%= t "series.edit.remove_activity" %>" data-series_id="<%= series.id %>" data-scoped_url="<%= course_series_activity_path(series.course, series, activity)%>" data-activity_id="<%= activity.id %>" data-activity_name="<%= activity.name %>">

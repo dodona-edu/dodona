@@ -59,9 +59,9 @@
         <%= render partial: 'activities/labels', locals: { activity: activity } %>
       </td>
       <% unless local_assigns.fetch(:show_buttons_for_present, false) %>
-        <th class="col-2">
+        <td>
           <%= popularity_icon(activity) %>
-        </th>
+        </td>
       <% end %>
       <td class="actions">
         <% if local_assigns.fetch(:show_buttons_for_present, false) %>

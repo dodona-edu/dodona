@@ -11,10 +11,10 @@
     <tr>
       <th class='status-icon'></th>
       <th class='type-icon'></th>
-      <th><%= t "activities.index.activity_title" %></th>
+      <th><d-sort-button column="name"><%= t "activities.index.activity_title" %></d-sort-button></th>
       <th><%= t "activities.index.languages" %></th>
       <th></th>
-      <th><%= t "activities.index.popularity" %></th>
+      <th><d-sort-button column="popularity" default="DESC"><%= t "activities.index.popularity" %></d-sort-button></th>
       <% if user_signed_in? %>
         <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
         <th class='status-icon'></th>

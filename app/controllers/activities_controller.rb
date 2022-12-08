@@ -24,6 +24,15 @@ class ActivitiesController < ApplicationController
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
 
+  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[name popularity].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
+  end
+
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
     policy.worker_src -> { ['blob:', "'self'"] }
@@ -63,7 +72,7 @@ class ActivitiesController < ApplicationController
 
     unless @activities.empty?
       @activities = apply_scopes(@activities)
-      @activities = @activities.joins(:courses).group(:id).order(Arel.sql('COUNT(DISTINCT courses.id) DESC')).paginate(page: parse_pagination_param(params[:page]))
+      @activities = @activities.order_by_popularity(:DESC).paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)

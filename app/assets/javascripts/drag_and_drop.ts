@@ -1,5 +1,5 @@
 import dragula from "dragula";
-import { fetch, findParent } from "util.js";
+import { fetch, getParentByClassName } from "util.js";
 
 /**
  * Custom type for arguments of the drag and drop initialization
@@ -32,7 +32,7 @@ function initDragAndDrop(args: DragAndDropArguments): void {
 
     dragula([tableBody], {
         moves: (el, source, handle, sibling) => {
-            return handle.classList.contains("drag-handle") || findParent(handle, ["drag-handle"]);
+            return handle.classList.contains("drag-handle") || getParentByClassName(handle, "drag-handle");
         },
         mirrorContainer: tableBody,
     })

@@ -1,5 +1,5 @@
 import { Toast } from "./toast";
-import { fetch, findParent } from "util.js";
+import { fetch, getParentByClassName } from "util.js";
 
 function initFavoriteButtons(): void {
     function init(): void {
@@ -30,7 +30,7 @@ function initFavoriteButtons(): void {
                 tooltip.setContent({ ".tooltip-inner": I18n.t("js.unfavorite-course-do") });
                 tooltip.hide();
 
-                const card = findParent(element, ["course", "card"]).parentElement;
+                const card = getParentByClassName(element, "course card").parentElement;
                 const favoritesRow = document.querySelector(".favorites-row");
                 if (favoritesRow.children.length === 0) {
                     document.querySelector(".page-subtitle.first").classList.remove("hidden");
@@ -67,7 +67,7 @@ function initFavoriteButtons(): void {
                 });
                 // search the card in the favorites row and remove it
                 const course = document.querySelector(`.favorites-row [data-course_id="${courseId}"]`);
-                const card = findParent(course, ["course", "card"]).parentElement;
+                const card = getParentByClassName(course, "course card").parentElement;
                 card.remove();
                 const favoritesRow = document.querySelector(".favorites-row");
                 if (favoritesRow.children.length === 0) {

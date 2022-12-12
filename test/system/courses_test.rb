@@ -20,15 +20,15 @@ class CoursesTest < ApplicationSystemTestCase
     sign_in zeus
 
     visit(courses_path)
-    assert_selector '#course-tabs li', count: 4
-    assert_selector 'a[data-tab="institution"].active'
+    assert_selector 'd-filter-tabs li', count: 4
+    assert_selector 'd-filter-tabs li:first-child a.active'
     assert_selector '#courses-table-wrapper tbody tr', count: 2
 
-    find('#course-tabs').click_link 'All courses'
-    assert_selector 'a[data-tab="all"].active'
+    find('d-filter-tabs').click_link 'All courses'
+    assert_selector 'd-filter-tabs li:nth-of-type(3) a.active'
     assert_selector '#courses-table-wrapper tbody tr', count: 4
-    find('#course-tabs').click_link 'My courses'
-    assert_selector 'a[data-tab="my"].active'
+    find('d-filter-tabs').click_link 'My courses'
+    assert_selector 'd-filter-tabs li:nth-of-type(4) a.active'
     assert_selector '#courses-table-wrapper tbody tr', count: 1
   end
 end

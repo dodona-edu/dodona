@@ -333,45 +333,11 @@ function initCourseNew(): void {
     init();
 }
 
-function initCoursesListing(firstTab: string): void {
-    initCourseTabs(firstTab);
-
-    function initCourseTabs(firstTab: string): void {
-        document.querySelectorAll<HTMLElement>("#course-tabs li a").forEach(tab => {
-            tab.addEventListener("click", event => {
-                event.preventDefault(); // used to prevent popstate event from firing
-                selectTab(tab);
-            });
-        });
-
-        // If the url hash is a valid tab, use that, otherwise use the given tab
-        const hash = searchQuery.queryParams.params.get("tab");
-        const tab = document.querySelector<HTMLElement>(`a[data-tab='${hash}']`) ??
-            document.querySelector(`a[data-tab='${firstTab}']`);
-        selectTab(tab);
-    }
-
-    function selectTab(tab: HTMLElement): void {
-        // If the current tab is already loaded or if it's blank, do nothing
-        if (!tab || tab.classList.contains("active")) return;
-
-        const state = tab.getAttribute("data-tab");
-        loadCourses(state);
-        document.querySelector("#course-tabs a.active")?.classList?.remove("active");
-        tab.classList.add("active");
-    }
-
-    function loadCourses(tab: string): void {
-        searchQuery.queryParams.updateParam("tab", tab);
-    }
-}
-
 export {
     initSeriesReorder,
     initCourseForm,
     initCourseNew,
     initCourseShow,
     initCourseMembers,
-    initCoursesListing,
     loadUsers,
 };

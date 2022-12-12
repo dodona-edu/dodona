@@ -154,6 +154,27 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
       post remove_course_repository_url(@instance, course_id: course.id)
     end
   end
+
+  test 'only zeus should be able to edit featured' do
+    f = !@instance.featured
+    patch repository_path(@instance), params: { repository: { featured: f }, format: :json }
+    assert_response :success
+    @instance.reload
+    assert_equal f, @instance.featured
+
+    sign_out @admin
+    user = users(:staff)
+    @instance.admins << user
+    sign_in user
+
+    f = !@instance.featured
+    patch repository_path(@instance), params: { repository: { featured: f }, format: :json }
+    @instance.reload
+    assert_not_equal f, @instance.featured
+
+    sign_out user
+    sign_in @admin
+  end
 end
 
 class RepositoryGitControllerTest < ActionDispatch::IntegrationTest

@@ -66,7 +66,9 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    if user&.admin?
+    if user&.zeus?
+      %i[name remote judge_id featured]
+    elsif user&.admin?
       %i[name remote judge_id]
     else
       []

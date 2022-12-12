@@ -23,6 +23,10 @@ class ActivitiesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
+  has_scope :repository_scope, as: 'tab' do |controller, scope, value|
+    course = Series.find(controller.params[:id]).course if controller.params[:id]
+    scope.repository_scope(scope: value, user: controller.current_user, course: course)
+  end
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
@@ -63,13 +67,24 @@ class ActivitiesController < ApplicationController
 
     unless @activities.empty?
       @activities = apply_scopes(@activities)
-      @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+      @activities = @activities.order(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale}")).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
     @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
+
+    @tabs = []
+    @tabs << { id: :mine, name: I18n.t('activities.index.tabs.mine'), title: I18n.t('activities.index.tabs.mine_title') }
+    if current_user.institution.present?
+      @tabs << { id: :my_institution,
+                 name: I18n.t('activities.index.tabs.my_institution', institution: current_user.institution.short_name || current_user.institution.name),
+                 title: I18n.t('activities.index.tabs.my_institution_title') }
+    end
+    @tabs << { id: :featured, name: I18n.t('activities.index.tabs.featured'), title: I18n.t('activities.index.tabs.featured_title') }
+    @tabs << { id: :all, name: I18n.t('activities.index.tabs.all'), title: I18n.t('activities.index.tabs.all_title') }
+    @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user).any? }
   end
 
   def available

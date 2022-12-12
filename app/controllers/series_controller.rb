@@ -91,6 +91,17 @@ class SeriesController < ApplicationController
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
     @repositories = policy_scope(Repository.all)
+
+    @tabs = []
+    @tabs << { id: :mine, name: I18n.t('activities.index.tabs.mine'), title: I18n.t('activities.index.tabs.mine_course_title') }
+    if current_user.institution.present?
+      @tabs << { id: :my_institution,
+                 name: I18n.t('activities.index.tabs.my_institution', institution: current_user.institution.short_name || current_user.institution.name),
+                 title: I18n.t('activities.index.tabs.my_institution_title') }
+    end
+    @tabs << { id: :featured, name: I18n.t('activities.index.tabs.featured'), title: I18n.t('activities.index.tabs.featured_title') }
+    @tabs << { id: :all, name: I18n.t('activities.index.tabs.all'), title: I18n.t('activities.index.tabs.all_title') }
+    @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user, course: @series.course).any? }
   end
 
   # POST /series

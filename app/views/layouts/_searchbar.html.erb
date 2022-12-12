@@ -177,7 +177,7 @@
               paramVal: function (s) {
                 return s.id.toString();
               },
-              multi: false,
+              multi: true,
               data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
               color: function () {
                 return "pink";

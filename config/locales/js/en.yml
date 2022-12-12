@@ -197,6 +197,7 @@ en:
         description_languages: Languages
         courses: Courses
         question_states: Statuses
+        popularity: Popularity
       single:
         labels: Label
         programming_languages: Programming Language

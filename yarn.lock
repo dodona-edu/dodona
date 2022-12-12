@@ -1789,6 +1789,11 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
+"@types/dragula@^3.7.1":
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.1.tgz#79940c2b9a9f0bc5f7d0c486f2cb56651f73170c"
+  integrity sha512-hbMEG5+wZEwV6NK4cbexldLWEvYNox8PywM9ICIeCTM99g8nJxccE3C8vvl66TCfnN+R8ioNdOrHWJT+5X0pvw==
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.3"
   resolved "https://registry.yarnpkg.com/@types/eslint-scope/-/eslint-scope-3.7.3.tgz#125b88504b61e3c8bc6f870882003253005c3224"

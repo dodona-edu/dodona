@@ -208,6 +208,26 @@ class ActivityTest < ActiveSupport::TestCase
     assert_equal [very_popular1.id], Activity.by_popularity(:very_popular).pluck(:id)
   end
 
+  test 'should be able to filter by popularity with multiple values' do
+    Activity.delete_all
+    unpopular1 = create :exercise
+    unpopular2 = create :exercise
+    neutral1 = create :exercise
+    popular1 = create :exercise
+    popular2 = create :exercise
+    very_popular1 = create :exercise
+
+    create :series, course: create(:course), exercises: [unpopular2]
+
+    3.times { create :series, course: create(:course), exercises: [neutral1] }
+    12.times { create :series, course: create(:course), exercises: [popular1] }
+    50.times { create :series, course: create(:course), exercises: [popular2] }
+    101.times { create :series, course: create(:course), exercises: [very_popular1] }
+
+    assert_equal [unpopular1.id, unpopular2.id, popular1.id, popular2.id], Activity.by_popularities(%i[unpopular popular]).order_by_popularity('ASC').pluck(:id)
+    assert_equal [neutral1.id, very_popular1.id], Activity.by_popularities(%i[neutral very_popular]).order_by_popularity('ASC').pluck(:id)
+  end
+
   test 'repository mine should filter correctly' do
     repository = create(:repository, :git_stubbed)
     user = create(:staff)

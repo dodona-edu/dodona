@@ -92,6 +92,13 @@ class Activity < ApplicationRecord
     filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
     filtered
   }
+  scope :by_popularities, lambda { |popularities|
+    filtered = by_popularity(popularities.first)
+    popularities.drop(1).each do |popularity|
+      filtered = filtered.or(by_popularity(popularity))
+    end
+    filtered
+  }
 
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }

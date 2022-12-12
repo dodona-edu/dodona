@@ -85,22 +85,30 @@ class Activity < ApplicationRecord
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language
   }
+  scope :by_popularity, lambda { |popularity|
+    thresholds = POPULARITY_THRESHOLDS[popularity]
+    filtered = left_joins(:courses).group(:id)
+    filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) >= #{thresholds[:min]}"))
+    filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) <= #{thresholds[:max]}")) if thresholds[:max].present?
+    filtered
+  }
 
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { left_joins(:courses).group(:id).reorder(Arel.sql("COUNT(DISTINCT courses.id) #{direction}")) }
 
   enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
+  POPULARITY_THRESHOLDS = {
+    unpopular: { min: 0, max: 2 },
+    neutral: { min: 3, max: 10 },
+    popular: { min: 11, max: 100 },
+    very_popular: { min: 101, max: nil }
+  }.freeze
   def popularity
-    case courses.count
-    when 0..2
-      :unpopular
-    when 3..10
-      :neutral
-    when 11..100
-      :popular
-    else
-      :very_popular
-    end
+    popularity = :unpopular
+    popularity = :neutral if courses.count >= POPULARITY_THRESHOLDS[:neutral][:min]
+    popularity = :popular if courses.count >= POPULARITY_THRESHOLDS[:popular][:min]
+    popularity = :very_popular if courses.count >= POPULARITY_THRESHOLDS[:very_popular][:min]
+    popularity
   end
 
   def content_page?

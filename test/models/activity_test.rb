@@ -184,4 +184,26 @@ class ActivityTest < ActiveSupport::TestCase
     end
     assert_equal :very_popular, e4.reload.popularity
   end
+
+  test 'should be able to filter by popularity' do
+    Activity.delete_all
+    unpopular1 = create :exercise
+    unpopular2 = create :exercise
+    neutral1 = create :exercise
+    popular1 = create :exercise
+    popular2 = create :exercise
+    very_popular1 = create :exercise
+
+    create :series, course: create(:course), exercises: [unpopular2]
+
+    3.times { create :series, course: create(:course), exercises: [neutral1] }
+    12.times { create :series, course: create(:course), exercises: [popular1] }
+    50.times { create :series, course: create(:course), exercises: [popular2] }
+    101.times { create :series, course: create(:course), exercises: [very_popular1] }
+
+    assert_equal [unpopular1.id, unpopular2.id], Activity.by_popularity(:unpopular).order_by_popularity('ASC').pluck(:id)
+    assert_equal [neutral1.id], Activity.by_popularity(:neutral).pluck(:id)
+    assert_equal [popular1.id, popular2.id], Activity.by_popularity(:popular).order_by_popularity('ASC').pluck(:id)
+    assert_equal [very_popular1.id], Activity.by_popularity(:very_popular).pluck(:id)
+  end
 end

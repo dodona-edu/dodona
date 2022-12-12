@@ -15,7 +15,7 @@
         <div class="page-subtitle first">
           <h3><%= t('.courses') %></h3>
         </div>
-            <% unless @favorite_courses.empty? %>
+        <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
             <div class="col-12 col-sm-12 col-lg-6">
               <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>

@@ -108,10 +108,10 @@ module ActivityHelper
   end
 
   POPULARITY_ICONS = {
-    unpopular: 'mdi mdi-heart-outline',
-    neutral: 'mdi mdi-heart-half-full',
-    popular: 'mdi mdi-heart',
-    very_popular: 'mdi mdi-heart-multiple'
+    unpopular: 'mdi mdi-heart-outline mdi-18',
+    neutral: 'mdi mdi-heart-half-full mdi-18',
+    popular: 'mdi mdi-heart mdi-18',
+    very_popular: 'mdi mdi-heart-multiple mdi-18'
   }.freeze
   def popularity_icon(activity)
     content_tag(:i, '', class: POPULARITY_ICONS[activity.popularity], title: Activity.human_enum_name(:popularity, activity.popularity))

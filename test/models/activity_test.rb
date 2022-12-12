@@ -206,6 +206,7 @@ class ActivityTest < ActiveSupport::TestCase
     assert_equal [neutral1.id], Activity.by_popularity(:neutral).pluck(:id)
     assert_equal [popular1.id, popular2.id], Activity.by_popularity(:popular).order_by_popularity('ASC').pluck(:id)
     assert_equal [very_popular1.id], Activity.by_popularity(:very_popular).pluck(:id)
+  end
 
   test 'repository mine should filter correctly' do
     repository = create(:repository, :git_stubbed)

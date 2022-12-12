@@ -1,5 +1,5 @@
 import { Toast } from "./toast";
-import { initDragAndDrop } from "./drag_and_drop.js";
+import { initDragAndDrop } from "./drag_and_drop";
 import { initDatePicker } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin.ts";

@@ -191,6 +191,24 @@ function htmlEncode(str) {
     });
 }
 
+/**
+ * Returns the first parent of an element that has at least all of the given classes.
+ * Returns null if no such parent exists.
+ * @param {HTMLElement} element - Iterate over the parents of this element
+ * @param {string} classNames - The class names to search for, separated by white space
+ * @return {?HTMLElement} The parent containing the classes
+ */
+function getParentByClassName(element, classNames) {
+    let parent = element.parentElement;
+    while (parent) {
+        if (classNames.split(/\s+/).every(className => parent.classList.contains(className))) {
+            return parent;
+        }
+        parent = parent.parentElement;
+    }
+    return null;
+}
+
 export {
     createDelayer,
     delay,
@@ -210,4 +228,5 @@ export {
     initDatePicker,
     ready,
     htmlEncode,
+    getParentByClassName,
 };

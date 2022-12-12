@@ -21,6 +21,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
+#  series_count            :integer          default(0), not null
 #
 
 require 'test_helper'
@@ -136,7 +137,7 @@ class ActivityTest < ActiveSupport::TestCase
     end
   end
 
-  test 'order by popularity should order by number of courses using the activity' do
+  test 'order by popularity should order by number of series using the activity' do
     Activity.delete_all
     e1 = create :exercise, name_nl: 'foo', name_en: 'foo'
     e2 = create :exercise, name_nl: 'bar', name_en: 'bar'
@@ -149,10 +150,10 @@ class ActivityTest < ActiveSupport::TestCase
     create :series, course: c2, exercises: [e1]
     create :series, course: c3, exercises: [e1, e2]
     create :series, course: c4, exercises: [e2, e3]
-    # should not count the same activity twice in the same course
+    # should count the same activity twice in the same course
     5.times { create :series, course: c4, exercises: [e3] }
-    assert_equal [e1.id, e2.id, e3.id], Activity.order_by_popularity(:DESC).pluck(:id)
-    assert_equal [e3.id, e2.id, e1.id], Activity.order_by_popularity(:ASC).pluck(:id)
+    assert_equal [e3.id, e1.id, e2.id], Activity.order_by_popularity(:DESC).pluck(:id)
+    assert_equal [e2.id, e1.id, e3.id], Activity.order_by_popularity(:ASC).pluck(:id)
   end
 
   test 'popularity should return the correct enum value' do

@@ -21,6 +21,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
+#  series_count            :integer          default(0), not null
 #
 
 require 'pathname'
@@ -87,14 +88,13 @@ class Activity < ApplicationRecord
   }
   scope :by_popularity, lambda { |popularity|
     thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]
-    filtered = left_joins(:courses).group(:id)
-    filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) >= #{thresholds[:min]}"))
-    filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) <= #{thresholds[:max]}")) if thresholds[:max].present?
+    filtered = where("series_count >= #{thresholds[:min]}")
+    filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
     filtered
   }
 
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
-  scope :order_by_popularity, ->(direction) { left_joins(:courses).group(:id).reorder(Arel.sql("COUNT(DISTINCT courses.id) #{direction}")) }
+  scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
 
   enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
   POPULARITY_THRESHOLDS = {
@@ -105,9 +105,9 @@ class Activity < ApplicationRecord
   }.freeze
   def popularity
     popularity = :unpopular
-    popularity = :neutral if courses.count >= POPULARITY_THRESHOLDS[:neutral][:min]
-    popularity = :popular if courses.count >= POPULARITY_THRESHOLDS[:popular][:min]
-    popularity = :very_popular if courses.count >= POPULARITY_THRESHOLDS[:very_popular][:min]
+    popularity = :neutral if series.count >= POPULARITY_THRESHOLDS[:neutral][:min]
+    popularity = :popular if series.count >= POPULARITY_THRESHOLDS[:popular][:min]
+    popularity = :very_popular if series.count >= POPULARITY_THRESHOLDS[:very_popular][:min]
     popularity
   end
 

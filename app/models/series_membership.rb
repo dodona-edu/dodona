@@ -12,7 +12,7 @@
 
 class SeriesMembership < ApplicationRecord
   belongs_to :series, counter_cache: :activities_count
-  belongs_to :activity
+  belongs_to :activity, counter_cache: :series_count
 
   delegate :course, to: :series
 

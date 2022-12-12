@@ -72,8 +72,8 @@ class ActivitiesController < ApplicationController
     end
 
     unless @activities.empty?
-      @activities = apply_scopes(@activities)
-      @activities = @activities.order_by_popularity(:DESC).paginate(page: parse_pagination_param(params[:page]))
+      @activities = apply_scopes(@activities.order_by_popularity(:DESC))
+      @activities = @activities.paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)

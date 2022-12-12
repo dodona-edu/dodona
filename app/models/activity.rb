@@ -86,7 +86,7 @@ class Activity < ApplicationRecord
     by_language
   }
   scope :by_popularity, lambda { |popularity|
-    thresholds = POPULARITY_THRESHOLDS[popularity]
+    thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]
     filtered = left_joins(:courses).group(:id)
     filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) >= #{thresholds[:min]}"))
     filtered = filtered.having(Arel.sql("COUNT(DISTINCT courses.id) <= #{thresholds[:max]}")) if thresholds[:max].present?

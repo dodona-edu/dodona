@@ -23,6 +23,7 @@ class ActivitiesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
+  has_scope :by_popularity, as: 'popularity'
 
   has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
     column, direction = value

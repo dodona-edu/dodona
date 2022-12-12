@@ -210,6 +210,7 @@ en:
         description_languages: Language
         courses: Course
         question_states: Status
+        popularity: Popularity
     saved_annotation:
       title: Title
       annotation_text: Text

@@ -210,6 +210,7 @@ nl:
         description_languages: Taal
         courses: Cursus
         question_states: Toestand
+        popularity: Populariteit
     saved_annotation:
       title: Titel
       annotation_text: Tekst

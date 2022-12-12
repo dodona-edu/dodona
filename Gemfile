@@ -102,7 +102,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.0.1'
+gem 'i18n-js', '~> 4.2.0'
 gem 'rails-i18n', '~> 7.0.6'
 
 # email exceptions
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.20.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.9'
+gem 'nokogiri', '~> 1.13.10'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -159,7 +159,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.0.11'
+  gem 'test-prof', '~> 1.1.0'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

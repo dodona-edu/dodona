@@ -111,6 +111,20 @@ class Activity < ApplicationRecord
     popularity
   end
 
+  scope :repository_scope, lambda { |options|
+    case options[:scope]&.to_sym
+    when :mine
+      where(repository: Repository.has_admin(options[:user]))
+        .or(where(repository: Repository.has_allowed_course(options[:course])))
+    when :my_institution
+      joins(:repository).merge(Repository.owned_by_institution(options[:user].institution))
+    when :featured
+      joins(:repository).merge(Repository.featured)
+    else
+      all
+    end
+  }
+
   def content_page?
     false
   end

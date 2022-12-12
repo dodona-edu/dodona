@@ -550,7 +550,10 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     get courses_url
     assert_response :success
     # we only expect the "all courses" and "featured courses" tabs to show for signed out users
-    assert_select '#course-tabs li', 2
+    assert_select 'd-filter-tabs[labels*="featured"]', 1
+    assert_select 'd-filter-tabs[labels*="all"]', 1
+    assert_select 'd-filter-tabs[labels*="my"]', 0
+    assert_select 'd-filter-tabs[labels*="institution"]', 0
   end
 
   test 'users should be able to filter courses' do

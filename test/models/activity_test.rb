@@ -206,5 +206,51 @@ class ActivityTest < ActiveSupport::TestCase
     assert_equal [neutral1.id], Activity.by_popularity(:neutral).pluck(:id)
     assert_equal [popular1.id, popular2.id], Activity.by_popularity(:popular).order_by_popularity('ASC').pluck(:id)
     assert_equal [very_popular1.id], Activity.by_popularity(:very_popular).pluck(:id)
+
+  test 'repository mine should filter correctly' do
+    repository = create(:repository, :git_stubbed)
+    user = create(:staff)
+    repository.admins << user
+    exercise = create(:exercise, repository: repository)
+    content_page = create(:content_page, repository: repository)
+    assert_includes Activity.repository_scope(scope: :mine, user: user), exercise
+    assert_includes Activity.repository_scope(scope: :mine, user: user), content_page
+    assert_not_includes Activity.repository_scope(scope: :mine, user: create(:user)), exercise
+    assert_not_includes Activity.repository_scope(scope: :mine, user: create(:user)), content_page
+
+    course = create(:course)
+    repository = create(:repository, :git_stubbed)
+    exercise = create(:exercise, repository: repository)
+    content_page = create(:content_page, repository: repository)
+    repository.allowed_courses = [course]
+    assert_includes Activity.repository_scope(scope: :mine, user: user, course: course), exercise
+    assert_includes Activity.repository_scope(scope: :mine, user: user, course: course), content_page
+    assert_not_includes Activity.repository_scope(scope: :mine, user: user, course: create(:course)), exercise
+    assert_not_includes Activity.repository_scope(scope: :mine, user: user, course: create(:course)), content_page
+  end
+
+  test 'repository owned by institution scope should filter correctly' do
+    repository = create(:repository, :git_stubbed)
+    institution = create(:institution)
+    user = create(:staff, institution: institution)
+    repository.admins << user
+    exercise = create(:exercise, repository: repository)
+    content_page = create(:content_page, repository: repository)
+    assert_includes Activity.repository_scope(scope: :my_institution, user: user), exercise
+    assert_includes Activity.repository_scope(scope: :my_institution, user: user), content_page
+    assert_not_includes Activity.repository_scope(scope: :my_institution, user: create(:user)), exercise
+    assert_not_includes Activity.repository_scope(scope: :my_institution, user: create(:user)), content_page
+  end
+
+  test 'repository featured scope should filter correctly' do
+    repository = create(:repository, :git_stubbed)
+    exercise = create(:exercise, repository: repository)
+    content_page = create(:content_page, repository: repository)
+    repository.update(featured: true)
+    assert_includes Activity.repository_scope(scope: :featured), exercise
+    assert_includes Activity.repository_scope(scope: :featured), content_page
+    repository.update(featured: false)
+    assert_not_includes Activity.repository_scope(scope: :featured), exercise
+    assert_not_includes Activity.repository_scope(scope: :featured), content_page
   end
 end

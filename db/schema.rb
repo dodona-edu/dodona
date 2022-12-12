@@ -383,6 +383,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_12_094630) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "clone_status", default: 1, null: false
+    t.boolean "featured", default: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true

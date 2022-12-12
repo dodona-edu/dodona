@@ -80,14 +80,6 @@ export class SearchQuery {
         const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
         this.baseUrl = url.href;
 
-        // Reset old params
-        for (const key of this.arrayQueryParams.params.keys()) {
-            this.arrayQueryParams.updateParam(key, undefined);
-        }
-        for (const key of this.queryParams.params.keys()) {
-            this.queryParams.updateParam(key, undefined);
-        }
-
         // initialise present parameters
         this.initialiseParams(url.searchParams);
     }
@@ -117,6 +109,7 @@ export class SearchQuery {
 
         window.onpopstate = e => {
             if (this.updateAddressBar && e.state === "set_by_search") {
+                this.resetAllQueryParams();
                 this.setBaseUrl();
             }
         };
@@ -169,7 +162,8 @@ export class SearchQuery {
     paramChange(key: string): void {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
-            if (this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
+            if (this.queryParams.params.get("page") !== undefined && this.queryParams.params.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {
+                // if we were not on the first page and we changed something else than the page, we should go back to the first page
                 this.changedParams = [];
                 this.queryParams.updateParam("page", "1");
                 return;
@@ -217,15 +211,6 @@ export class SearchQuery {
             const searchParamsStringFromStorage = localStorage.getItem(this.localStorageKey);
             if (searchParamsStringFromStorage) {
                 const searchParamsFromStorage = new URLSearchParams(searchParamsStringFromStorage);
-                // don't overwrite currently set params with params from the localStorage
-                searchParamsFromStorage.forEach((_value: string, key:string) => {
-                    if (this.queryParams.params.get(key) !== undefined ||
-                        (this.isArrayQueryParamsKey(key) &&
-                            this.arrayQueryParams.params.get(this.extractArrayQueryParamsKey(key)) !== undefined)) {
-                        searchParamsFromStorage.delete(key);
-                    }
-                });
-
                 this.initialiseParams(searchParamsFromStorage);
             }
         }

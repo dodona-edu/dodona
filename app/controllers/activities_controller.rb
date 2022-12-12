@@ -25,6 +25,11 @@ class ActivitiesController < ApplicationController
   has_scope :by_judge, as: 'judge_id'
   has_scope :by_popularity, as: 'popularity'
 
+  has_scope :repository_scope, as: 'tab' do |controller, scope, value|
+    course = Series.find(controller.params[:id]).course if controller.params[:id]
+    scope.repository_scope(scope: value, user: controller.current_user, course: course)
+  end
+
   has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
     column, direction = value
     if %w[ASC DESC].include?(direction) && %w[name popularity].include?(column)
@@ -80,6 +85,17 @@ class ActivitiesController < ApplicationController
     @repositories = policy_scope(Repository.all)
     @judges = policy_scope(Judge.all)
     @title = I18n.t('activities.index.title')
+
+    @tabs = []
+    @tabs << { id: :mine, name: I18n.t('activities.index.tabs.mine'), title: I18n.t('activities.index.tabs.mine_title') }
+    if current_user.institution.present?
+      @tabs << { id: :my_institution,
+                 name: I18n.t('activities.index.tabs.my_institution', institution: current_user.institution.short_name || current_user.institution.name),
+                 title: I18n.t('activities.index.tabs.my_institution_title') }
+    end
+    @tabs << { id: :featured, name: I18n.t('activities.index.tabs.featured'), title: I18n.t('activities.index.tabs.featured_title') }
+    @tabs << { id: :all, name: I18n.t('activities.index.tabs.all'), title: I18n.t('activities.index.tabs.all_title') }
+    @tabs = @tabs.filter { |t| Activity.repository_scope(scope: t[:id], user: current_user).any? }
   end
 
   def available

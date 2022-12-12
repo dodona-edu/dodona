@@ -17,26 +17,17 @@
     </div>
     <div class="card course-search">
       <div class="card-supporting-text">
-        <div class="card-tab">
-          <ul id="course-tabs" class="nav nav-tabs" data-baseurl="<%= courses_url %>" role="tablist">
-            <% if @show_institution_courses %>
-              <li role="presentation"><a href="#" data-tab="institution"><%= t '.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name) %></a></li>
-            <% end %>
-            <li role="presentation"><a href="#" data-tab="featured"><%= t '.featured_courses' %></a></li>
-            <li role="presentation"><a href="#" data-tab="all"><%= t '.all_courses' %></a></li>
-            <% if @show_my_courses %>
-              <li role="presentation"><a href="#" data-tab="my"><%= t '.my_courses' %></a></li>
-            <% end %>
-          </ul>
-        </div>
-        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: false, no_dropdown_for: ["institutions"], actions: [{search: {can_register: true}, type: 'can-register', text: "#{t(".only_show_can_register")}"}]  } %>
+        <%
+          labels = []
+          labels << { name: t('.institution_courses', institution: (current_user.institution&.short_name || current_user.institution&.name)), id: 'institution' } if @show_institution_courses
+          labels << { name: t('courses.index.featured_courses'), id: 'featured' }
+          labels << { name: t('courses.index.all_courses'), id: 'all' }
+          labels << { name: t('courses.index.my_courses'), id: 'my' } if @show_my_courses
+        %>
+        <d-filter-tabs labels="<%= labels.to_json %>"></d-filter-tabs>
+        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: true, no_dropdown_for: ["institutions"], actions: [{search: {can_register: true}, type: 'can-register', text: "#{t(".only_show_can_register")}"}]  } %>
         <div id="courses-table-wrapper"></div>
       </div>
     </div>
   </div>
 </div>
-<script type="text/javascript">
-  dodona.ready.then(function () {
-    dodona.initCoursesListing('<%= @show_institution_courses ? "institution" : "featured" %>');
-  });
-</script>

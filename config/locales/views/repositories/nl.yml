@@ -3,6 +3,9 @@ nl:
     form:
       remote_help: "De SSH 'clone url' van de repository waar de oefeningen te vinden zijn. Dodona heeft lees- en schrijfrechten nodig om de repository te gebruiken."
       judge_help: "Deze judge zal gebruikt worden als de oefening zelf geen specifieert."
+      featured:
+        title: "Uitgelicht"
+        toggle-label: "Deze repository uitlichten"
       remote_cant_be_edited_html: De clone URL kan niet aangepast worden nadat de repository werd aangemaakt. Contacteer <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> als het toch aangepast moet worden.
     index:
       title: Alle oefeningen repository's

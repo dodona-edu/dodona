@@ -67,7 +67,6 @@ export class FilterCollectionElement extends ShadowlessLitElement {
 
     private multiSelect(label: Label): void {
         searchQuery.arrayQueryParams.updateParam(this.param, [...this.multiSelected, this.str(label)]);
-        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     private multiSubscribeToQueryParams(): void {
@@ -83,7 +82,6 @@ export class FilterCollectionElement extends ShadowlessLitElement {
 
     private singleSelect(label: Label): void {
         searchQuery.queryParams.updateParam(this.param, this.str(label));
-        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     private singleIsSelected(label: Label): boolean {

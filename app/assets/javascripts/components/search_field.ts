@@ -47,6 +47,7 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     handleClick(e: Event, label: Label): void {
         e.preventDefault();
         this.select(label);
+        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     render(): TemplateResult {
@@ -96,14 +97,19 @@ export class SearchField extends ShadowlessLitElement {
         if (this.hasSuggestions) {
             const field = this.suggestionFields.find(s => s.getFilteredLabels().length > 0);
             field.select(field.getFilteredLabels()[0]);
+            console.log("tab complete");
             this.filter = "";
         }
     }
 
     constructor() {
         super();
-        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
+        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => {
+            this.filter = n || "";
+            console.log("filter changed");
+        });
         this.filter = searchQuery.queryParams.params.get("filter") || "";
+        console.log("constructor");
         this.delay = createDelayer();
     }
 

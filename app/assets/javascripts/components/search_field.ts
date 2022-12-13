@@ -47,6 +47,7 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     handleClick(e: Event, label: Label): void {
         e.preventDefault();
         this.select(label);
+        searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     render(): TemplateResult {

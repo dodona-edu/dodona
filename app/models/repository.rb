@@ -56,7 +56,7 @@ class Repository < ApplicationRecord
 
   scope :has_allowed_course, ->(course) { joins(:course_repositories).where(course_repositories: { course_id: course&.id }) }
   scope :has_admin, ->(user) { joins(:repository_admins).where(repository_admins: { user_id: user&.id }) }
-  scope :owned_by_institution, ->(institution) { where(id: RepositoryAdmin.joins(:user).where(users: { institution_id: institution&.id }).group(:repository_id).select(:repository_id)) }
+  scope :owned_by_institution, ->(institution) { where(id: RepositoryAdmin.joins(:user).where(users: { institution_id: institution&.id }).where.not(users: { institution_id: nil }).group(:repository_id).select(:repository_id)) }
   scope :featured, -> { where(featured: true) }
 
   def full_path

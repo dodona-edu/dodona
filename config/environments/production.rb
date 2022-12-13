@@ -24,7 +24,9 @@ Rails.application.configure do
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
-  config.action_controller.asset_host = 'dodona.ugent.be'
+
+  # Where we host our assets, can be / for current host or a domain
+  config.action_controller.asset_host = '/'
 
   # Allowed hostnames
   config.hosts << config.default_host << config.sandbox_host << config.alt_host

@@ -274,4 +274,10 @@ class ActivityTest < ActiveSupport::TestCase
     assert_not_includes Activity.repository_scope(scope: :featured), exercise
     assert_not_includes Activity.repository_scope(scope: :featured), content_page
   end
+
+  test 'repository scope my institution should return nothing if user has no institution or is nil' do
+    assert_not_empty Activity.all
+    assert_empty Activity.repository_scope(scope: :my_institution, user: nil)
+    assert_empty Activity.repository_scope(scope: :my_institution, user: create(:user, institution_id: nil))
+  end
 end

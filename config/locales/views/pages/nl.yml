@@ -15,6 +15,7 @@ nl:
     home:
       more-courses: Meer cursussen
       favorites: "Favorieten"
+      courses: Cursussen
     course_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen
@@ -27,6 +28,26 @@ nl:
       course-hidden: Verborgen cursus
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
+    important_homepage_links:
+      jump_back_in: Ga verder
+      upcoming_deadlines: Aankomende deadlines
+    clickable_homepage_cards:
+      course:
+        jump_back_in_info: "Werk verder aan deze cursus."
+      activity:
+        jump_back_in_info: "Werk verder aan deze oefening."
+        jump_back_in_info_success: "De vorige oefening was correct, start met deze oefening."
+      series:
+        jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
+        progress_chart_info_correct:
+          one: "Eén oefening correct opgelost."
+          other: "%{count} oefeningen correct opgelost."
+        progress_chart_info_wrong:
+          one: "Eén oefening incorrect."
+          other: "%{count} oefeningen incorrect."
+        progress_chart_info_not_started:
+          one: "Eén oefening nog niet begonnen."
+          other: "%{count} oefeningen nog niet begonnen."
     user_card:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen

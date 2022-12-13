@@ -15,6 +15,7 @@ en:
     home:
       more-courses: More courses
       favorites: "Favorites"
+      courses: Courses
     course_card:
       submissions: Submissions
       correct-exercises: Correct exercises
@@ -27,6 +28,26 @@ en:
       course-hidden: Hidden course
       course-closed: Closed course
       favorite: "Favorite course"
+    important_homepage_links:
+      jump_back_in: Jump back in
+      upcoming_deadlines: Upcoming deadlines
+    clickable_homepage_cards:
+      course:
+        jump_back_in_info: "Continue working on this course."
+      activity:
+        jump_back_in_info: "Continue working on this exercise."
+        jump_back_in_info_success: "You solved the previous exercise. Start this one!"
+      series:
+        jump_back_in_info: "You finished the previous series. Start this one!"
+        progress_chart_info_correct:
+          one: "One exercise solved correctly."
+          other: "%{count} exercises solved correctly."
+        progress_chart_info_wrong:
+          one: "One exercise incorrect."
+          other: "%{count} exercises incorrect."
+        progress_chart_info_not_started:
+          one: "One exercise not yet started."
+          other: "%{count} exercises not yet started."
     user_card:
       submissions: Submissions
       correct-exercises: Correct exercises

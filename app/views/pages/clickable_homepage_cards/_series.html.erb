@@ -1,0 +1,44 @@
+<% show_progress ||= false %>
+<% card_class = nil
+   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? %>
+<%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
+  <div class="card card-supporting-text action-card <%= card_class %>">
+    <div class="card-subtitle">
+      <div class="card-title-icon">
+        <% if series.deadline.nil? %>
+          <%= custom_icon :exercises, class: "md-36" %>
+        <% else %>
+          <i class="mdi mdi-36 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>"></i>
+        <% end %>
+      </div>
+      <h4 class="ellipsis-overflow" title="<%= series.name %>">
+        <%= series.name %><br>
+        <div class="spread-line" >
+          <span class="ellipsis-overflow" style="flex: 2">
+            <small  title="<%= series.course.name %>">
+              <%= series.course.name %>
+            </small>
+          </span>
+          <span style="flex: 1; text-align: right">
+          <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+          </span>
+        </div>
+      </h4>
+    </div>
+    <% if show_progress %>
+      <%= render partial: 'progress_chart', locals: {
+        total: series.activity_count,
+        tried: series.started_activity_count(current_user),
+        correct: series.completed_activity_count(current_user),
+        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+        width: '100%',
+      } %>
+    <% else %>
+        <small class="ellipsis-overflow">
+            <%= t ".jump_back_in_info" %>
+        </small>
+    <% end %>
+  </div>
+<% end %>

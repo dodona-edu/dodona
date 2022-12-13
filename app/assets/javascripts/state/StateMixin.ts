@@ -11,13 +11,14 @@ export function stateMixin<T extends Constructor>(superClass: T): T {
      */
     abstract class StateMixinClass extends superClass {
         abstract get state(): string[];
+
         connectedCallback(): void {
             super.connectedCallback();
             this.initReactiveState();
         }
 
         private initReactiveState(): void {
-            this.state.forEach( event => events.subscribe(event, () => this.requestUpdate()));
+            this.state.forEach(event => events.subscribe(event, () => this.requestUpdate()));
         }
     }
 

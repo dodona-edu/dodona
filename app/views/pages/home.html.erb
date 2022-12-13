@@ -1,6 +1,7 @@
 <%= content_for :javascripts do %>
   <%= javascript_include_tag 'favorite_course_buttons' %>
 <% end %>
+<%= render partial: "pages/important_homepage_links" %>
 <div class="row">
   <div class="col-12 col-md-6 col-lg-8">
     <% if @subscribed_courses.empty? %>
@@ -10,6 +11,10 @@
       <% end %>
     <% else %>
       <div class="row favorites-row">
+
+        <div class="page-subtitle first">
+          <h3><%= t('.courses') %></h3>
+        </div>
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
             <div class="col-12 col-sm-12 col-lg-6">
@@ -22,7 +27,7 @@
       <% @grouped_courses.each do |year, courses| %>
         <% if first %>
           <% first = false %>
-          <div class="page-subtitle first <%= "hidden" if @favorite_courses.empty? %>">
+          <div class="page-subtitle <%= "hidden" if @favorite_courses.empty? %>">
             <a class="anchor" id="<%= year.parameterize %>"></a>
             <h3><%= Course.format_year year %></h3>
           </div>

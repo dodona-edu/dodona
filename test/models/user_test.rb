@@ -805,4 +805,140 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_not u1.persisted?
     assert_equal 2, u2.announcement_views.count
   end
+
+  test 'jump back in should return most recent incomplete activity' do
+    user = create :user
+
+    submission = create :wrong_submission, user: user
+
+    assert_equal submission, user.jump_back_in[:submission]
+    assert_equal submission.exercise, user.jump_back_in[:activity]
+    assert_nil user.jump_back_in[:course]
+    assert_nil user.jump_back_in[:series]
+  end
+
+  test 'jump back in should return most recent incomplete activity with series and course context' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    series = course.series.first
+    series.exercises << create(:exercise)
+    submission = create :wrong_submission, user: user, course: course, exercise: course.series.first.exercises.first
+
+    assert_equal submission, user.jump_back_in[:submission]
+    assert_equal submission.exercise, user.jump_back_in[:activity]
+    assert_equal course, user.jump_back_in[:course]
+    assert_equal series, user.jump_back_in[:series]
+  end
+
+  test 'jump back in should return next activity if most recent activity was complete' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    series = course.series.first
+    a1 = create :exercise
+    a2 = create :exercise
+    series.exercises << a1
+    series.exercises << a2
+    create :correct_submission, user: user, course: course, exercise: a1
+
+    assert_nil user.jump_back_in[:submission]
+    assert_equal a2, user.jump_back_in[:activity]
+    assert_equal course, user.jump_back_in[:course]
+    assert_equal series, user.jump_back_in[:series]
+  end
+
+  test 'jump back in should return next series if most recent activity was complete and it was the last in the series' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    series1 = course.series.first
+    series2 = course.series.second
+    a1 = create :exercise
+    a2 = create :exercise
+    series1.exercises << a1
+    series1.exercises << a2
+    create :correct_submission, user: user, course: course, exercise: a2
+
+    assert_nil user.jump_back_in[:submission]
+    assert_nil user.jump_back_in[:activity]
+    assert_equal course, user.jump_back_in[:course]
+    assert_equal series2, user.jump_back_in[:series]
+  end
+
+  test 'jump back in should return the course if most recent activity was complete and it was the last in the series and course' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    series = course.series.second
+    a1 = create :exercise
+    a2 = create :exercise
+    series.exercises << a1
+    series.exercises << a2
+    create :correct_submission, user: user, course: course, exercise: a2
+
+    assert_nil user.jump_back_in[:submission]
+    assert_nil user.jump_back_in[:activity]
+    assert_nil user.jump_back_in[:series]
+    assert_equal course, user.jump_back_in[:course]
+  end
+
+  test 'jump back in should return the course if most recent activity was complete and the submission has no series' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    a1 = create :exercise
+    create :correct_submission, user: user, course: course, exercise: a1
+
+    assert_nil user.jump_back_in[:submission]
+    assert_nil user.jump_back_in[:activity]
+    assert_nil user.jump_back_in[:series]
+    assert_equal course, user.jump_back_in[:course]
+  end
+
+  test 'jump back in should return nil if most recent activity was complete and the submission has no course' do
+    user = create :user
+
+    a1 = create :exercise
+    create :correct_submission, user: user, exercise: a1
+
+    assert_nil user.jump_back_in
+  end
+
+  test 'jump back in should only return series the user has access to' do
+    user = create :staff
+
+    course = create :course, series_count: 2
+    series = course.series.first
+    series.exercises << create(:exercise)
+    create :correct_submission, user: user, course: course, exercise: series.exercises.first
+
+    course.series.second.update(visibility: :hidden)
+
+    assert_nil user.jump_back_in[:submission]
+    assert_nil user.jump_back_in[:activity]
+    assert_equal course, user.jump_back_in[:course]
+    assert_nil user.jump_back_in[:series]
+
+    course.series.second.update(visibility: :closed)
+    assert_nil user.jump_back_in[:series]
+
+    course.series.second.update(visibility: :open)
+    assert_equal course.series.second, user.jump_back_in[:series]
+
+    CourseMembership.create user: user, course: course, status: :course_admin
+
+    # Refetch user to fix cached course_admin? method
+    user = User.find(user.id)
+    assert user.course_admin?(course)
+
+    course.series.second.update(visibility: :hidden)
+    assert_equal course.series.second, user.jump_back_in[:series]
+
+    course.series.second.update(visibility: :closed)
+    assert_equal course.series.second, user.jump_back_in[:series]
+
+    course.series.second.update(visibility: :open)
+    assert_equal course.series.second, user.jump_back_in[:series]
+  end
 end

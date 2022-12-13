@@ -1,0 +1,42 @@
+<%
+  if course.present?
+    if series.present?
+      path = course_series_activity_path(I18n.locale, course.id, series.id, activity.id, anchor: 'submission-card', edit_submission: submission)
+    else
+      path = course_activity_path(I18n.locale, course.id, activity.id, anchor: 'submission-card', edit_submission: submission)
+    end
+  else
+    path = activity_path(I18n.locale, activity.id, anchor: 'submission-card', edit_submission: submission)
+  end
+%>
+
+<%= link_to path do %>
+  <div class="card card-supporting-text action-card">
+    <div class="card-subtitle">
+      <div style="margin-right: 16px">
+        <%= activity_icon activity, 36 %>
+      </div>
+
+      <h4 class="ellipsis-overflow" title="<%= activity.name %>">
+        <%= activity.name %><br>
+
+        <% if course.present? %>
+          <small class="ellipsis-overflow" title="<%= course.name %>">
+            <%= course.name %>
+            <% if series.present? %>
+              > <%= series.name %>
+            <% end %>
+          </small>
+        <% end %>
+      </h4>
+    </div>
+
+    <small class="ellipsis-overflow">
+        <% if submission.present? %>
+            <%= t ".jump_back_in_info" %>
+        <% else %>
+            <%= t ".jump_back_in_info_success" %>
+        <% end %>
+    </small>
+  </div>
+<% end %>

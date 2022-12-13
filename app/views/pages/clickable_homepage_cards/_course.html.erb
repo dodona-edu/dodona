@@ -1,0 +1,20 @@
+<%= link_to course_path(I18n.locale, course.id) do %>
+  <div class="card card-supporting-text action-card">
+    <div class="card-subtitle mb-1">
+      <div style="margin-right: 16px">
+        <i class="mdi mdi-book-multiple mdi-36"></i>
+      </div>
+
+      <h4 class="ellipsis-overflow" title="<%= course.name %>">
+        <%= course.name %><br>
+        <small class="ellipsis-overflow" title="<%= course.formatted_attribution %>">
+          <%= course.formatted_attribution %>
+        </small>
+      </h4>
+    </div>
+
+    <small class="ellipsis-overflow">
+      <%= t ".jump_back_in_info" %>
+    </small>
+  </div>
+<% end %>

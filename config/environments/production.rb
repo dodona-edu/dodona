@@ -27,7 +27,7 @@ Rails.application.configure do
   config.action_controller.asset_host = 'dodona.ugent.be'
 
   # Allowed hostnames
-  config.hosts << config.default_host << config.sandbox_host
+  config.hosts << config.default_host << config.sandbox_host << config.alt_host
 
   # Where we host our assets (a single domain, for caching)
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.

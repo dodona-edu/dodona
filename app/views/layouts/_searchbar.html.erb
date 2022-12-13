@@ -171,6 +171,19 @@
             }
         };
         <% end %>
+        <% if local_assigns.fetch :popularity, false %>
+            filterCollections["popularity"] = {
+              param: "popularity",
+              paramVal: function (s) {
+                return s.id.toString();
+              },
+              multi: true,
+              data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
+              color: function () {
+                return "pink";
+              },
+            };
+        <% end %>
 
         dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 

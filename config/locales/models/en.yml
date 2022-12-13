@@ -70,6 +70,11 @@ en:
           ok: Ok
           not_valid: Not valid
           removed: Removed
+        popularities:
+          unpopular: Unpopular
+          neutral: Somewhat popular
+          popular: Popular
+          very_popular: Very popular
       judge:
         name: Name
         remote: Clone URL

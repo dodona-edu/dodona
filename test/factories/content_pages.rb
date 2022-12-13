@@ -21,6 +21,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
+#  series_count            :integer          default(0), not null
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

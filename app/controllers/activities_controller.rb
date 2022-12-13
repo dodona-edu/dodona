@@ -23,9 +23,20 @@ class ActivitiesController < ApplicationController
   has_scope :in_repository, as: 'repository_id'
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
+  has_scope :by_popularities, as: 'popularity', type: :array
+
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Series.find(controller.params[:id]).course if controller.params[:id]
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
+  end
+
+  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
+    column, direction = value
+    if %w[ASC DESC].include?(direction) && %w[name popularity].include?(column)
+      scope.send "order_by_#{column}", direction
+    else
+      scope
+    end
   end
 
   content_security_policy only: %i[show] do |policy|
@@ -66,8 +77,8 @@ class ActivitiesController < ApplicationController
     end
 
     unless @activities.empty?
-      @activities = apply_scopes(@activities)
-      @activities = @activities.order(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale}")).order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
+      @activities = apply_scopes(@activities.order_by_popularity(:DESC))
+      @activities = @activities.paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)
     @programming_languages = policy_scope(ProgrammingLanguage.all)
@@ -92,7 +103,7 @@ class ActivitiesController < ApplicationController
     @course = @series.course
     authorize @series, :edit?
     @activities = policy_scope(Activity)
-    @activities = @activities.or(Activity.where(repository: @course.usable_repositories))
+    @activities = @activities.or(Activity.where(repository: @course.usable_repositories)).order_by_popularity(:DESC)
     @activities = apply_scopes(@activities)
     @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
   end

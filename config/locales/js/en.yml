@@ -197,6 +197,7 @@ en:
         description_languages: Languages
         courses: Courses
         question_states: Statuses
+        popularity: Popularity
       single:
         labels: Label
         programming_languages: Programming Language
@@ -210,6 +211,7 @@ en:
         description_languages: Language
         courses: Course
         question_states: Status
+        popularity: Popularity
     saved_annotation:
       title: Title
       annotation_text: Text

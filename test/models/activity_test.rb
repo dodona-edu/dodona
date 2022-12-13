@@ -21,6 +21,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
+#  series_count            :integer          default(0), not null
 #
 
 require 'test_helper'
@@ -104,6 +105,127 @@ class ActivityTest < ActiveSupport::TestCase
     s.update(activity_numbers_enabled: false)
     assert_equal 'foo', e.numbered_name(s)
     assert_equal 'bar', c.numbered_name(s)
+  end
+
+  test 'should order by name' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'baz'
+    e2 = create :exercise, name_nl: 'bar', name_en: 'bar'
+    e3 = create :exercise, name_nl: 'baz', name_en: 'foo'
+    I18n.with_locale(:nl) do
+      assert_equal [e1.id, e3.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e2.id, e3.id, e1.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+    I18n.with_locale(:en) do
+      assert_equal [e3.id, e1.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e2.id, e1.id, e3.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+  end
+
+  test 'order by name should order nils last' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'foo'
+    e2 = create :exercise, name_nl: nil, name_en: 'test'
+    e3 = create :exercise, name_nl: 'test', name_en: nil
+    I18n.with_locale(:nl) do
+      assert_equal [e3.id, e1.id, e2.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e1.id, e3.id, e2.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+    I18n.with_locale(:en) do
+      assert_equal [e2.id, e1.id, e3.id], Activity.order_by_name(:DESC).pluck(:id)
+      assert_equal [e1.id, e2.id, e3.id], Activity.order_by_name(:ASC).pluck(:id)
+    end
+  end
+
+  test 'order by popularity should order by number of series using the activity' do
+    Activity.delete_all
+    e1 = create :exercise, name_nl: 'foo', name_en: 'foo'
+    e2 = create :exercise, name_nl: 'bar', name_en: 'bar'
+    e3 = create :exercise, name_nl: 'baz', name_en: 'baz'
+    c1 = create :course
+    c2 = create :course
+    c3 = create :course
+    c4 = create :course
+    create :series, course: c1, exercises: [e1]
+    create :series, course: c2, exercises: [e1]
+    create :series, course: c3, exercises: [e1, e2]
+    create :series, course: c4, exercises: [e2, e3]
+    # should count the same activity twice in the same course
+    5.times { create :series, course: c4, exercises: [e3] }
+    assert_equal [e3.id, e1.id, e2.id], Activity.order_by_popularity(:DESC).pluck(:id)
+    assert_equal [e2.id, e1.id, e3.id], Activity.order_by_popularity(:ASC).pluck(:id)
+  end
+
+  test 'popularity should return the correct enum value' do
+    e1 = create :exercise
+    assert_equal :unpopular, e1.popularity
+    rand(0..2).times do
+      c1 = create :course
+      create :series, course: c1, exercises: [e1]
+    end
+
+    e2 = create :exercise
+    rand(3..9).times do
+      c3 = create :course
+      create :series, course: c3, exercises: [e2]
+    end
+    assert_equal :neutral, e2.reload.popularity
+
+    e3 = create :exercise
+    rand(12..50).times do
+      c4 = create :course
+      create :series, course: c4, exercises: [e3]
+    end
+    assert_equal :popular, e3.reload.popularity
+
+    e4 = create :exercise
+    101.times do
+      c5 = create :course
+      create :series, course: c5, exercises: [e4]
+    end
+    assert_equal :very_popular, e4.reload.popularity
+  end
+
+  test 'should be able to filter by popularity' do
+    Activity.delete_all
+    unpopular1 = create :exercise
+    unpopular2 = create :exercise
+    neutral1 = create :exercise
+    popular1 = create :exercise
+    popular2 = create :exercise
+    very_popular1 = create :exercise
+
+    create :series, course: create(:course), exercises: [unpopular2]
+
+    3.times { create :series, course: create(:course), exercises: [neutral1] }
+    12.times { create :series, course: create(:course), exercises: [popular1] }
+    50.times { create :series, course: create(:course), exercises: [popular2] }
+    101.times { create :series, course: create(:course), exercises: [very_popular1] }
+
+    assert_equal [unpopular1.id, unpopular2.id], Activity.by_popularity(:unpopular).order_by_popularity('ASC').pluck(:id)
+    assert_equal [neutral1.id], Activity.by_popularity(:neutral).pluck(:id)
+    assert_equal [popular1.id, popular2.id], Activity.by_popularity(:popular).order_by_popularity('ASC').pluck(:id)
+    assert_equal [very_popular1.id], Activity.by_popularity(:very_popular).pluck(:id)
+  end
+
+  test 'should be able to filter by popularity with multiple values' do
+    Activity.delete_all
+    unpopular1 = create :exercise
+    unpopular2 = create :exercise
+    neutral1 = create :exercise
+    popular1 = create :exercise
+    popular2 = create :exercise
+    very_popular1 = create :exercise
+
+    create :series, course: create(:course), exercises: [unpopular2]
+
+    3.times { create :series, course: create(:course), exercises: [neutral1] }
+    12.times { create :series, course: create(:course), exercises: [popular1] }
+    50.times { create :series, course: create(:course), exercises: [popular2] }
+    101.times { create :series, course: create(:course), exercises: [very_popular1] }
+
+    assert_equal [unpopular1.id, unpopular2.id, popular1.id, popular2.id], Activity.by_popularities(%i[unpopular popular]).order_by_popularity('ASC').pluck(:id)
+    assert_equal [neutral1.id, very_popular1.id], Activity.by_popularities(%i[neutral very_popular]).order_by_popularity('ASC').pluck(:id)
   end
 
   test 'repository mine should filter correctly' do

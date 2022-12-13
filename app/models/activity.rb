@@ -21,6 +21,7 @@
 #  type                    :string(255)      default("Exercise"), not null
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
+#  series_count            :integer          default(0), not null
 #
 
 require 'pathname'
@@ -85,6 +86,37 @@ class Activity < ApplicationRecord
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language
   }
+  scope :by_popularity, lambda { |popularity|
+    thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]
+    filtered = where("series_count >= #{thresholds[:min]}")
+    filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
+    filtered
+  }
+  scope :by_popularities, lambda { |popularities|
+    filtered = by_popularity(popularities.first)
+    popularities.drop(1).each do |popularity|
+      filtered = filtered.or(by_popularity(popularity))
+    end
+    filtered
+  }
+
+  scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
+  scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
+
+  enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
+  POPULARITY_THRESHOLDS = {
+    unpopular: { min: 0, max: 2 },
+    neutral: { min: 3, max: 10 },
+    popular: { min: 11, max: 100 },
+    very_popular: { min: 101, max: nil }
+  }.freeze
+  def popularity
+    popularity = :unpopular
+    popularity = :neutral if series.count >= POPULARITY_THRESHOLDS[:neutral][:min]
+    popularity = :popular if series.count >= POPULARITY_THRESHOLDS[:popular][:min]
+    popularity = :very_popular if series.count >= POPULARITY_THRESHOLDS[:very_popular][:min]
+    popularity
+  end
 
   scope :repository_scope, lambda { |options|
     case options[:scope]&.to_sym

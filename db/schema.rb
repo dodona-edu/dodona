@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_29_091433) do
+ActiveRecord::Schema[7.0].define(version: 2022_12_12_094630) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -58,6 +58,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_29_091433) do
     t.string "type", default: "Exercise", null: false
     t.boolean "description_nl_present", default: false
     t.boolean "description_en_present", default: false
+    t.integer "series_count", default: 0, null: false
     t.index ["judge_id"], name: "index_activities_on_judge_id"
     t.index ["name_nl"], name: "index_activities_on_name_nl"
     t.index ["path", "repository_id"], name: "index_activities_on_path_and_repository_id", unique: true

@@ -197,6 +197,7 @@ nl:
         description_languages: Talen
         courses: Cursussen
         question_states: Toestanden
+        popularity: Populariteit
       single:
         labels: Label
         programming_languages: Programmeertaal
@@ -210,6 +211,7 @@ nl:
         description_languages: Taal
         courses: Cursus
         question_states: Toestand
+        popularity: Populariteit
     saved_annotation:
       title: Titel
       annotation_text: Tekst

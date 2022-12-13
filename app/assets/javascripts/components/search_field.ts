@@ -97,19 +97,14 @@ export class SearchField extends ShadowlessLitElement {
         if (this.hasSuggestions) {
             const field = this.suggestionFields.find(s => s.getFilteredLabels().length > 0);
             field.select(field.getFilteredLabels()[0]);
-            console.log("tab complete");
             this.filter = "";
         }
     }
 
     constructor() {
         super();
-        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => {
-            this.filter = n || "";
-            console.log("filter changed");
-        });
+        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
         this.filter = searchQuery.queryParams.params.get("filter") || "";
-        console.log("constructor");
         this.delay = createDelayer();
     }
 

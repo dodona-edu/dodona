@@ -124,7 +124,7 @@ class Activity < ApplicationRecord
       where(repository: Repository.has_admin(options[:user]))
         .or(where(repository: Repository.has_allowed_course(options[:course])))
     when :my_institution
-      joins(:repository).merge(Repository.owned_by_institution(options[:user].institution))
+      joins(:repository).merge(Repository.owned_by_institution(options[:user]&.institution))
     when :featured
       joins(:repository).merge(Repository.featured)
     else

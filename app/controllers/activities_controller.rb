@@ -88,7 +88,7 @@ class ActivitiesController < ApplicationController
 
     @tabs = []
     @tabs << { id: :mine, name: I18n.t('activities.index.tabs.mine'), title: I18n.t('activities.index.tabs.mine_title') }
-    if current_user.institution.present?
+    if current_user&.institution.present?
       @tabs << { id: :my_institution,
                  name: I18n.t('activities.index.tabs.my_institution', institution: current_user.institution.short_name || current_user.institution.name),
                  title: I18n.t('activities.index.tabs.my_institution_title') }

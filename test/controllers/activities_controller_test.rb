@@ -645,6 +645,12 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     resp = JSON.parse response.body
     assert_not resp['has_read']
   end
+
+  test 'should be able to acess index when not signed in' do
+    sign_out @user
+    get activities_url
+    assert_response :success
+  end
 end
 
 class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest

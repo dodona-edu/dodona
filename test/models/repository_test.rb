@@ -10,6 +10,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  clone_status :integer          default("queued"), not null
+#  featured     :boolean          default(FALSE)
 #
 
 require 'test_helper'
@@ -349,5 +350,43 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       @repository.process_activities_email_errors
     end
+  end
+
+  test 'has allowed course should filter correctly' do
+    @course = create(:course)
+    @repository.allowed_courses = [@course]
+    assert_includes Repository.has_allowed_course(@course), @repository
+    assert_not_includes Repository.has_allowed_course(create(:course)), @repository
+  end
+
+  test 'has admin scope should filter correctly' do
+    user = create(:staff)
+    @repository.admins << user
+    assert_includes Repository.has_admin(user), @repository
+    assert_not_includes Repository.has_admin(create(:staff)), @repository
+  end
+
+  test 'repository should only be included once in owned_by_institution scope' do
+    institution = create(:institution)
+    3.times do
+      user = create(:staff, institution: institution)
+      @repository.admins << user
+    end
+    assert_equal 1, Repository.owned_by_institution(institution).count
+  end
+
+  test 'owned by institution scope should filter correctly' do
+    institution = create(:institution)
+    user = create(:staff, institution: institution)
+    @repository.admins << user
+    assert_includes Repository.owned_by_institution(institution), @repository
+    assert_not_includes Repository.owned_by_institution(create(:institution)), @repository
+  end
+
+  test 'featured scope should filter correctly' do
+    @repository.update(featured: true)
+    assert_includes Repository.featured, @repository
+    @repository.update(featured: false)
+    assert_not_includes Repository.featured, @repository
   end
 end

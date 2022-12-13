@@ -585,7 +585,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     exercises = JSON.parse response.body
     assert_equal start_activities + 1, exercises.length
-    assert_equal visible.id, exercises.first['id']
+    assert_includes exercises.pluck('id'), visible.id
   end
 
   test 'exercise overview should include everything for admin' do

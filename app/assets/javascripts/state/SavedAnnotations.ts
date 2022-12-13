@@ -16,9 +16,9 @@ export type SavedAnnotation = {
     title: string,
     id: number,
     annotation_text: string,
-    user?: {name: string, url: string},
-    exercise?: {name: string, url: string},
-    course?: {name: string, url: string}
+    user?: { name: string, url: string },
+    exercise?: { name: string, url: string },
+    course?: { name: string, url: string }
 };
 export type Pagination = { total_pages: number, current_page: number };
 const URL = "/saved_annotations";
@@ -27,7 +27,7 @@ const savedAnnotationsByURL = new Map<string, SavedAnnotation[]>();
 const savedAnnotationsPaginationByURL = new Map<string, Pagination>();
 const savedAnnotationsById = new Map<number, SavedAnnotation>();
 
-type Delayer = (f: ()=>void, ms: number)=>void;
+type Delayer = (f: () => void, ms: number) => void;
 const delayerByURL = new MapWithDefault<string, Delayer>(createDelayer);
 const delayerByID = new MapWithDefault<number, Delayer>(createDelayer);
 
@@ -56,7 +56,7 @@ export async function fetchSavedAnnotation(id: number): Promise<SavedAnnotation>
     return savedAnnotationsById.get(id);
 }
 
-export async function createSavedAnnotation(data: { from: number, saved_annotation: {title: string, annotation_text: string}} ): Promise<number> {
+export async function createSavedAnnotation(data: { from: number, saved_annotation: { title: string, annotation_text: string } }): Promise<number> {
     const url = `${URL}.json`;
     const response = await fetch(url, {
         method: "post",
@@ -72,7 +72,7 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
     return savedAnnotation.id;
 }
 
-export async function updateSavedAnnotation(id: number, data: {saved_annotation: SavedAnnotation}): Promise<void> {
+export async function updateSavedAnnotation(id: number, data: { saved_annotation: SavedAnnotation }): Promise<void> {
     const url = `${URL}/${id}`;
     const response = await fetch(url, {
         method: "put",

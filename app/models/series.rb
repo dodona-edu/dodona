@@ -120,6 +120,21 @@ class Series < ApplicationRecord
   invalidateable_instance_cacheable(:wrong?,
                                     ->(this, options) { format(USER_WRONG_CACHE_STRING, user_id: options[:user].id.to_s, id: this.id.to_s, updated_at: this.updated_at.to_f.to_s) })
 
+  def next_activity(activity)
+    sm = series_memberships.find_by(activity: activity)
+    return nil if sm.nil?
+
+    activities.where(series_memberships: { order: (sm.order + 1).. })
+              .or(activities.where(series_memberships: { order: sm.order, id: (sm.id + 1).. }))
+              .first
+  end
+
+  def next
+    course.series.where(order: (order + 1)..)
+          .or(course.series.where(order: order, id: ..(id - 1)))
+          .first
+  end
+
   def indianio_support
     indianio_token.present?
   end
@@ -139,6 +154,14 @@ class Series < ApplicationRecord
 
   def activity_count
     activities_count || series_memberships.size
+  end
+
+  def completed_activity_count(user)
+    activities.count { |a| a.accepted_for?(user, self) }
+  end
+
+  def started_activity_count(user)
+    activities.count { |a| a.started_for?(user, self) }
   end
 
   def scoresheet

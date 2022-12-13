@@ -84,7 +84,8 @@
         <div class="card-supporting-text card-border">
           <div class="col-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], local_storage_key: 'seriesActivitySearch'} %>
+            <d-filter-tabs labels="<%= @tabs.to_json %>"></d-filter-tabs>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], popularity: Activity.popularities.keys, local_storage_key: 'seriesActivitySearch'} %>
             <div id="activities-table-wrapper">
             </div>
           </div>

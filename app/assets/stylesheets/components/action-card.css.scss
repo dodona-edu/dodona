@@ -1,0 +1,88 @@
+.card.action-card {
+  height: 100px;
+  cursor: pointer;
+  transition:
+    box-shadow 145ms ease,
+    opacity 145ms ease,
+    border-color 145ms ease,
+    background-color 145ms ease;
+  box-shadow: none;
+
+  .card-subtitle {
+    margin-bottom: 0.125rem;
+    height: 48px;
+
+    h4 {
+      width: 100%;
+      line-height: 20px;
+      min-height: 24px;
+
+      small {
+        font-size: 65%;
+      }
+
+      .spread-line {
+        display: flex;
+        justify-content: space-between;
+        flex-direction: row;
+      }
+    }
+
+    .card-title-icon {
+      margin-right: 1rem;
+    }
+  }
+
+  --clickable-card-color: #{$primary};
+  --on-clickable-card-color: #{$on-primary};
+
+  &.colored-danger {
+    --clickable-card-color: #{$danger};
+    --on-clickable-card-color: #{$on-danger};
+  }
+
+  &.colored-success {
+    --clickable-card-color: #{$success};
+    --on-clickable-card-color: #{$on-success};
+  }
+
+  background: var(--clickable-card-color);
+  color: var(--on-clickable-card-color);
+
+  small {
+    color: var(--on-clickable-card-color);
+  }
+
+  .progress-chart {
+    .correct {
+      stroke: var(--on-clickable-card-color);
+      opacity: 0.8;
+    }
+
+    .wrong {
+      stroke: var(--on-clickable-card-color);
+      opacity: 0.5;
+    }
+
+    .not-started {
+      stroke: var(--on-clickable-card-color);
+      opacity: 0.2;
+    }
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    opacity: 0.9;
+  }
+
+  &:hover {
+    @include shadow-z2;
+  }
+
+  &:disabled,
+  &.disabled {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}

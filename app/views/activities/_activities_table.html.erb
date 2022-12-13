@@ -11,24 +11,10 @@
     <tr>
       <th class='status-icon'></th>
       <th class='type-icon'></th>
-      <th><%= t "activities.index.activity_title" %></th>
+      <th><d-sort-button column="name"><%= t "activities.index.activity_title" %></d-sort-button></th>
       <th><%= t "activities.index.languages" %></th>
       <th></th>
-      <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
-        <th class='count d-none d-sm-table-cell'>
-          <% if @course %>
-            <%= t "activities.index.class_progress" %>
-            <% unless series.progress_enabled %>
-              <i class="mdi mdi-eye-off mdi-12 progress_visibility"
-               data-bs-toggle="tooltip"
-               data-bs-placement="top"
-               title="<%= t('activities.index.class_progress_visibility_disabled') %>"
-              >
-              </i>
-            <% end %>
-          <% end %>
-        </th>
-      <% end %>
+      <th><d-sort-button column="popularity" default="DESC"><%= t "activities.index.popularity" %></d-sort-button></th>
       <% if user_signed_in? %>
         <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
         <th class='status-icon'></th>
@@ -82,41 +68,9 @@
           <%= render partial: 'activities/labels', locals: { activity: activity } %>
         </td>
 
-        <% if @course.blank? || local_assigns[:series]&.progress_enabled || current_user&.course_admin?(@course) %>
-          <td class="d-none d-sm-table-cell">
-            <% if activity.exercise? %>
-              <% if @course %>
-                <%= render partial: 'application/progress_chart',
-                  locals: {
-                    total: @course.subscribed_members_count,
-                    tried: activity.users_tried(course: @course),
-                    correct: activity.users_correct(course: @course),
-                    info_tried: 'activities.index.progress_chart_info_tried',
-                    info_correct: 'activities.index.progress_chart_info_correct'
-                  }
-                %>
-              <% else %>
-                <%= content_tag :span, title: t('activities.activity.count_tooltip'), class: "text-end text-muted" do %>
-                  <%= activity.users_correct %>/<%= activity.users_tried %>
-                <% end %>
-              <% end %>
-            <% elsif activity.content_page? %>
-              <% if @course %>
-                <%= render partial: 'application/read_chart',
-                  locals: {
-                    total: @course.subscribed_members_count,
-                    read: activity.users_read(course: @course),
-                    info_read: 'activities.index.progress_chart_info_read'
-                  }
-                %>
-              <% else %>
-                <%= content_tag :span, title: t('activities.activity.read_tooltip'), class: "text-end text-muted" do %>
-                  <%= t 'activities.activity.read_by', count: activity.users_read %>
-                <% end %>
-              <% end %>
-            <% end %>
-          </td>
-        <% end %>
+        <td class='popularity-icon'>
+          <%= popularity_icon(activity) %>
+        </td>
 
         <% if user_signed_in? %>
           <td>

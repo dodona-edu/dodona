@@ -1,9 +1,10 @@
-<%
-    total += 0.0001
+<%  wrong = tried - correct
+    not_started = total - tried
+    _total = total + 0.0001
     parts = [
-        { percent: correct / total, class: 'correct' },
-        { percent: (tried - correct) / total, class: 'wrong' },
-        { percent: 1 - (tried / total), class: 'not-started' }
+        { percent: correct / _total, class: 'correct' },
+        { percent: wrong / _total, class: 'wrong' },
+        { percent: not_started / _total, class: 'not-started' }
     ]
     cumulativePercent = 0
 
@@ -14,11 +15,17 @@
 
         "<line class='#{part[:class]}' x1='#{startX}' y1='#{startY}' x2='#{endX}' y2='#{endY}' />"
     end
+
+    width ||= 100
+    tooltip = %w[tried correct wrong not_started]
+      .filter { |v| binding.local_variable_defined? "info_#{v}" }
+      .map { |v| t(binding.local_variable_get("info_#{v}"), count: binding.local_variable_get(v)) }
+      .join('<br />')
 %>
 
 <%# You might think that this span here is useless, but you think wrong: https://github.com/twbs/bootstrap/issues/20381 %>
-<span data-bs-html="true" data-bs-toggle='tooltip' title="<%= t(info_tried, count: tried) %><br/><%= t(info_correct, count: correct) %>">
-  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100" class='progress-chart'>
+<span data-bs-html="true" data-bs-toggle='tooltip' title="<%= tooltip %>">
+  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="<%= width %>" class='progress-chart'>
       <%= raw parts.join("") %>
   </svg>
 </span>

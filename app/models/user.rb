@@ -458,6 +458,57 @@ class User < ApplicationRecord
     end
   end
 
+  def jump_back_in
+    latest_submission = submissions.first
+    return nil if latest_submission.nil?
+    return nil if latest_submission.exercise.nil?
+
+    result = {
+      submission: nil,
+      activity: nil,
+      series: nil,
+      course: latest_submission.course
+    }
+
+    unless latest_submission.accepted?
+      # The last submission was wrong, continue working on it
+      result[:submission] = latest_submission
+      result[:activity] = latest_submission.exercise
+      result[:series] = latest_submission.series
+      return result
+    end
+
+    if latest_submission.course.nil?
+      # The last submission was correct, but we have no context to determine the next exercise
+      return nil
+    end
+
+    # The last submission was correct, start working on the next exercise
+    if latest_submission.series.nil?
+      # we don't know the series, thus have no idea what the next exercise is, continue working on the course
+      return result
+    end
+
+    next_activity = latest_submission.series.next_activity(latest_submission.exercise)
+    unless next_activity.nil?
+      # start working on the next exercise
+      result[:activity] = next_activity
+      result[:series] = latest_submission.series
+      return result
+    end
+
+    # There is no next exercise, start working on the next series
+    next_series = latest_submission.series.next
+    if next_series.nil? || (!next_series.open? && !course_admin?(latest_submission.course))
+      # there is no next series, continue working on the course
+      return result
+    end
+
+    # start working on the next series
+    result[:series] = next_series
+    result
+  end
+
   private
 
   def set_token

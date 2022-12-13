@@ -24,7 +24,7 @@
  *
  * This class is a generic implementation of the publisher subscriber scheme.
  * It allows subscribing to and publishing string based events.
-  */
+ */
 export class PubSub {
     events: Map<string, Array<(...params: Array<any>) => any>>;
 

@@ -21,19 +21,11 @@
           </d-standalone-dropdown-filter>
         </div>
         <% unless @favorite_courses.empty? %>
-          <% @favorite_courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-            </div>
-          <% end %>
+          <%= render partial: "course_cards", locals: {courses: @favorite_courses} %>
         <% end %>
       </div>
       <div class="row" id="course-for-year-row">
-        <% @courses.each do |course| %>
-          <div class="col-12 col-sm-12 col-lg-6">
-            <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-          </div>
-        <% end %>
+        <%= render partial: "course_cards", locals: {courses: @courses} %>
       </div>
     <% end %>
   </div>
@@ -56,5 +48,6 @@
 <script type="text/javascript">
     dodona.ready.then(function () {
         dodona.initFavoriteButtons();
+        dodona.searchQuery.autoSearch = true;
     });
 </script>

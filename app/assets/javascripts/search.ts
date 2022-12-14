@@ -180,7 +180,7 @@ export class SearchQuery {
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;
 
-        document.getElementById("progress-filter").style.visibility = "visible";
+        this.updateProgressFilterVisibility("visible");
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript"
@@ -193,7 +193,7 @@ export class SearchQuery {
                     this.appliedIndex = localIndex;
                     eval(data);
                 }
-                document.getElementById("progress-filter").style.visibility = "hidden";
+                this.updateProgressFilterVisibility("hidden");
 
                 // if there is local storage key => update the value to reuse later
                 if (this.localStorageKey) {
@@ -201,6 +201,12 @@ export class SearchQuery {
                     localStorage.setItem(this.localStorageKey, urlObj.searchParams.toString());
                 }
             });
+    }
+
+    updateProgressFilterVisibility(state: string): void {
+        if (document.getElementById("progress-filter")) {
+            document.getElementById("progress-filter").style.visibility = state;
+        }
     }
 
     /**

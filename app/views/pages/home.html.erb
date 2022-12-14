@@ -12,8 +12,13 @@
     <% else %>
       <div class="row favorites-row">
 
-        <div class="page-subtitle first">
+        <div class="page-subtitle justify-content-between">
           <h3><%= t('.courses') %></h3>
+          <d-standalone-dropdown-filter class="mt-2"
+                                        param="year"
+                                        labels="<%= @years.map { |y| { id: y, name: y } }.to_json %>"
+                                        default="<%= @year %>">
+          </d-standalone-dropdown-filter>
         </div>
         <% unless @favorite_courses.empty? %>
           <% @favorite_courses.each do |course| %>
@@ -23,7 +28,7 @@
           <% end %>
         <% end %>
       </div>
-      <div class="row">
+      <div class="row" id="course-for-year-row">
         <% @courses.each do |course| %>
           <div class="col-12 col-sm-12 col-lg-6">
             <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>

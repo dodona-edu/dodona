@@ -1,9 +1,9 @@
 import { Toast } from "./toast";
 import { fetch, getParentByClassName } from "util.js";
 
-function initFavoriteButtons(): void {
+function initFavoriteButtons(doc: Document | HTMLElement = document): void {
     function init(): void {
-        document.querySelectorAll(".favorite-button")
+        doc.querySelectorAll(".favorite-button")
             .forEach(btn => btn.addEventListener("click", toggleFavorite));
     }
 

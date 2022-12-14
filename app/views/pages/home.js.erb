@@ -1,3 +1,4 @@
-document.getElementById("course-for-year-row").innerHTML = "<%= escape_javascript(render partial: 'course_cards', locals: {courses: @courses}) %>";
-dodona.initFavoriteButtons();
+let row = document.getElementById("course-for-year-row")
+row.innerHTML = "<%= escape_javascript(render partial: 'course_cards', locals: {courses: @courses}) %>";
+dodona.initFavoriteButtons(row);
 dodona.initTooltips();

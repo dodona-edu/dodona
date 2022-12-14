@@ -171,6 +171,8 @@ class Course < ApplicationRecord
         .or(where(id: user&.subscribed_courses&.pluck(:id)))
     end
   }
+  scope :by_year, ->(year) { where(year: year) }
+  scope :latest_year, -> { order(year: :desc).limit(1).pick(:year) }
   default_scope { order(year: :desc, name: :asc) }
 
   token_generator :secret, unique: false, length: 5

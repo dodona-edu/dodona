@@ -4,7 +4,7 @@
 <%= render partial: "pages/important_homepage_links" %>
 <div class="row">
   <div class="col-12 col-md-6 col-lg-8">
-    <% if @subscribed_courses.empty? %>
+    <% if @courses.empty? %>
       <%= render "getting_started_card" %>
       <% if current_user.institutional? %>
         <%= render 'privacy_disclaimer' %>
@@ -23,28 +23,13 @@
           <% end %>
         <% end %>
       </div>
-      <% first = true %>
-      <% @grouped_courses.each do |year, courses| %>
-        <% if first %>
-          <% first = false %>
-          <div class="page-subtitle <%= "hidden" if @favorite_courses.empty? %>">
-            <a class="anchor" id="<%= year.parameterize %>"></a>
-            <h3><%= Course.format_year year %></h3>
-          </div>
-        <% else %>
-          <div class="page-subtitle">
-            <a class="anchor" id="<%= year.parameterize %>"></a>
-            <h3><%= Course.format_year year %></h3>
+      <div class="row">
+        <% @courses.each do |course| %>
+          <div class="col-12 col-sm-12 col-lg-6">
+            <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
           </div>
         <% end %>
-        <div class="row row-<%= year.parameterize %>">
-          <% courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
+      </div>
     <% end %>
   </div>
   <div class="col-12 col-md-6 col-lg-4">

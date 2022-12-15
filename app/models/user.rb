@@ -512,7 +512,6 @@ class User < ApplicationRecord
       end
     end
 
-
     if latest_submission.course.present?
       # continue working on this course
       result << {

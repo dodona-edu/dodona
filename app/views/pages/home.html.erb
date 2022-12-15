@@ -16,7 +16,7 @@
           <h3><%= t('.courses') %></h3>
           <d-standalone-dropdown-filter class="mt-2"
                                         param="year"
-                                        labels="<%= @years.map { |y| { id: y, name: y } }.to_json %>"
+                                        labels="<%= @years.map { |y| { id: y, name: Course.format_year(y) } }.to_json %>"
                                         default="<%= @year %>">
           </d-standalone-dropdown-filter>
         </div>

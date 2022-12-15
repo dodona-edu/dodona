@@ -1,6 +1,7 @@
 <% show_progress ||= false %>
+<% teacher_mode = current_user.course_admin?(series.course) %>
 <% card_class = nil
-   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? %>
+   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? && !teacher_mode %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-supporting-text action-card <%= card_class %>">
     <div class="card-subtitle">
@@ -26,15 +27,17 @@
       </h4>
     </div>
     <% if show_progress %>
-      <%= render partial: 'progress_chart', locals: {
-        total: series.activity_count,
-        tried: series.started_activity_count(current_user),
-        correct: series.completed_activity_count(current_user),
+      <%=
+        render partial: 'progress_chart', locals: {
+        total: series.course.subscribed_members.count,
+        tried: series.users_started,
+        correct: series.users_completed,
         info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
         info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
         info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
         width: '100%',
-      } %>
+      }
+      %>
     <% else %>
         <small class="ellipsis-overflow">
             <%= t ".jump_back_in_info" %>

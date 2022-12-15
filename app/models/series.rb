@@ -164,6 +164,24 @@ class Series < ApplicationRecord
     activities.count { |a| a.started_for?(user, self) }
   end
 
+  def users_started
+    users = course.subscribed_members.left_joins(:submissions).left_joins(:activity_read_states)
+    users.where(submissions: { exercise: activities, course: course_id })
+         .or(users.where(activity_read_states: { activity: activities, course: course_id })).distinct('users.id').count
+  end
+
+  def users_completed
+    most_recent_submission_by_user_and_activity_in_series = Submission.in_series(self).group(:user_id, :exercise_id).pluck('MAX(id)')
+
+    course.subscribed_members # all relevant users
+          .joins(:submissions).where(submissions: { accepted: true, id: most_recent_submission_by_user_and_activity_in_series }) # join with most recent correct submissions
+          .joins(:activity_read_states).where(activity_read_states: { activity: activities, course: course_id }) # join all read activities
+          .group('users.id') # make sure we only count each user once
+          .having('count(DISTINCT submissions.exercise_id) + count(DISTINCT activity_read_states.activity_id) = ?', activity_count) # only count users that have read all activities and solved all exercises
+          .count # first count applies to group by and is irrelevant (it counts the number of submissions/read states per user)
+          .count # second count is the actual number of users
+  end
+
   def scoresheet
     users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 

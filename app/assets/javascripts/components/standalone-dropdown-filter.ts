@@ -31,7 +31,7 @@ export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement
     };
 
     render(): TemplateResult {
-        if (this.labels.length === 0) {
+        if (this.labels.length <= 1) {
             return html``;
         }
 

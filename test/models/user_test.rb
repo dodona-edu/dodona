@@ -815,6 +815,8 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal submission.exercise, user.jump_back_in.first[:activity]
     assert_nil user.jump_back_in.first[:course]
     assert_nil user.jump_back_in.first[:series]
+
+    assert_equal 1, user.jump_back_in.count
   end
 
   test 'jump back in should return most recent incomplete activity with series and course context' do
@@ -823,12 +825,38 @@ class UserHasManyTest < ActiveSupport::TestCase
     course = create :course, series_count: 2
     series = course.series.first
     series.exercises << create(:exercise)
+    series.exercises << create(:exercise)
+    series.exercises << create(:exercise)
     submission = create :wrong_submission, user: user, course: course, exercise: course.series.first.exercises.first
 
     assert_equal submission, user.jump_back_in.first[:submission]
     assert_equal submission.exercise, user.jump_back_in.first[:activity]
-    assert_equal course, user.jump_back_in.first[:course]
     assert_equal series, user.jump_back_in.first[:series]
+    assert_equal course, user.jump_back_in.first[:course]
+
+    assert_equal 5, user.jump_back_in.count
+
+    # second should be next activity in series
+    assert_nil user.jump_back_in.second[:submission]
+    assert_equal series.exercises.second, user.jump_back_in.second[:activity]
+    assert_equal series, user.jump_back_in.second[:series]
+    assert_equal course, user.jump_back_in.second[:course]
+
+    # third should be this series
+    assert_nil user.jump_back_in.third[:submission]
+    assert_nil user.jump_back_in.third[:activity]
+    assert_equal series, user.jump_back_in.third[:series]
+    assert_equal course, user.jump_back_in.third[:course]
+
+    assert_nil user.jump_back_in.fourth[:submission]
+    assert_nil user.jump_back_in.fourth[:activity]
+    assert_equal course.series.second, user.jump_back_in.fourth[:series]
+    assert_equal course, user.jump_back_in.fourth[:course]
+
+    assert_nil user.jump_back_in.fifth[:submission]
+    assert_nil user.jump_back_in.fifth[:activity]
+    assert_nil user.jump_back_in.fifth[:series]
+    assert_equal course, user.jump_back_in.fifth[:course]
   end
 
   test 'jump back in should return next activity if most recent activity was complete' do
@@ -846,6 +874,18 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal a2, user.jump_back_in.first[:activity]
     assert_equal course, user.jump_back_in.first[:course]
     assert_equal series, user.jump_back_in.first[:series]
+
+    assert_equal 3, user.jump_back_in.count
+
+    assert_nil user.jump_back_in.second[:submission]
+    assert_nil user.jump_back_in.second[:activity]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
+    assert_equal course, user.jump_back_in.second[:course]
+
+    assert_nil user.jump_back_in.third[:submission]
+    assert_nil user.jump_back_in.third[:activity]
+    assert_nil user.jump_back_in.third[:series]
+    assert_equal course, user.jump_back_in.third[:course]
   end
 
   test 'jump back in should return next series if most recent activity was complete and it was the last in the series' do
@@ -864,6 +904,13 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_nil user.jump_back_in.first[:activity]
     assert_equal course, user.jump_back_in.first[:course]
     assert_equal series2, user.jump_back_in.first[:series]
+
+    assert_equal 2, user.jump_back_in.count
+
+    assert_nil user.jump_back_in.second[:submission]
+    assert_nil user.jump_back_in.second[:activity]
+    assert_nil user.jump_back_in.second[:series]
+    assert_equal course, user.jump_back_in.second[:course]
   end
 
   test 'jump back in should return the course if most recent activity was complete and it was the last in the series and course' do
@@ -881,6 +928,8 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_nil user.jump_back_in.first[:activity]
     assert_nil user.jump_back_in.first[:series]
     assert_equal course, user.jump_back_in.first[:course]
+
+    assert_equal 1, user.jump_back_in.count
   end
 
   test 'jump back in should return the course if most recent activity was complete and the submission has no series' do
@@ -894,6 +943,8 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_nil user.jump_back_in.first[:activity]
     assert_nil user.jump_back_in.first[:series]
     assert_equal course, user.jump_back_in.first[:course]
+
+    assert_equal 1, user.jump_back_in.count
   end
 
   test 'jump back in should return empty if most recent activity was complete and the submission has no course' do

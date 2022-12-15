@@ -42,7 +42,7 @@ export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
                     ${this.labels.map(s => html`
                             <li><a class="dropdown-item ${this.isSelected(s) ? "active" : ""}" @click="${() => this.select(s)}">${s.name}</a> </li>
                     `)}

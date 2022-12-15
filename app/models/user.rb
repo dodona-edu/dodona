@@ -460,52 +460,64 @@ class User < ApplicationRecord
 
   def jump_back_in
     latest_submission = submissions.first
-    return nil if latest_submission.nil?
-    return nil if latest_submission.exercise.nil?
+    return [] if latest_submission.nil?
+    return [] if latest_submission.exercise.nil?
 
-    result = {
-      submission: nil,
-      activity: nil,
-      series: nil,
-      course: latest_submission.course
-    }
-
+    result = []
     unless latest_submission.accepted?
       # The last submission was wrong, continue working on it
-      result[:submission] = latest_submission
-      result[:activity] = latest_submission.exercise
-      result[:series] = latest_submission.series
-      return result
+      result << {
+        submission: latest_submission,
+        activity: latest_submission.exercise,
+        series: latest_submission.series,
+        course: latest_submission.course
+      }
     end
 
-    if latest_submission.course.nil?
-      # The last submission was correct, but we have no context to determine the next exercise
-      return nil
+    if latest_submission.series.present? && (latest_submission.series.open? || course_admin?(latest_submission.course))
+      next_activity = latest_submission.series.next_activity(latest_submission.exercise)
+      if next_activity.present?
+        # start working on the next exercise
+        result << {
+          submission: nil,
+          activity: next_activity,
+          series: latest_submission.series,
+          course: latest_submission.course
+        }
+      end
+
+      if latest_submission.series.next_activity(next_activity).present?
+        # there is another exercise after the next one, so show the series
+        result << {
+          submission: nil,
+          activity: nil,
+          series: latest_submission.series,
+          course: latest_submission.course
+        }
+      end
+
+      next_series = latest_submission.series.next
+      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course))
+        # start working on the next series
+        result << {
+          submission: nil,
+          activity: nil,
+          series: next_series,
+          course: latest_submission.course
+        }
+      end
     end
 
-    # The last submission was correct, start working on the next exercise
-    if latest_submission.series.nil?
-      # we don't know the series, thus have no idea what the next exercise is, continue working on the course
-      return result
-    end
 
-    next_activity = latest_submission.series.next_activity(latest_submission.exercise)
-    unless next_activity.nil?
-      # start working on the next exercise
-      result[:activity] = next_activity
-      result[:series] = latest_submission.series
-      return result
+    if latest_submission.course.present?
+      # continue working on this course
+      result << {
+        submission: nil,
+        activity: nil,
+        series: nil,
+        course: latest_submission.course
+      }
     end
-
-    # There is no next exercise, start working on the next series
-    next_series = latest_submission.series.next
-    if next_series.nil? || (!next_series.open? && !course_admin?(latest_submission.course))
-      # there is no next series, continue working on the course
-      return result
-    end
-
-    # start working on the next series
-    result[:series] = next_series
     result
   end
 

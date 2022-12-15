@@ -11,7 +11,14 @@
       <% end %>
     <% else %>
       <div class="row favorites-row">
-
+        <div class="page-subtitle <%= @favorite_courses.empty? ? "hidden" : "" %>">
+          <h3><%= t('.favorites') %></h3>
+        </div>
+        <% unless @favorite_courses.empty? %>
+          <%= render partial: "course_cards", locals: {courses: @favorite_courses} %>
+        <% end %>
+      </div>
+      <div class="row">
         <div class="page-subtitle justify-content-between">
           <h3><%= t('.courses') %></h3>
           <d-standalone-dropdown-filter class="mt-2"
@@ -20,9 +27,6 @@
                                         default="<%= @year %>">
           </d-standalone-dropdown-filter>
         </div>
-        <% unless @favorite_courses.empty? %>
-          <%= render partial: "course_cards", locals: {courses: @favorite_courses} %>
-        <% end %>
       </div>
       <div class="row" id="course-for-year-row">
         <%= render partial: "course_cards", locals: {courses: @courses} %>

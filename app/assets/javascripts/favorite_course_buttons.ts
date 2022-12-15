@@ -32,8 +32,8 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
 
                 const card = getParentByClassName(element, "course card").parentElement;
                 const favoritesRow = document.querySelector(".favorites-row");
-                if (favoritesRow.children.length === 0) {
-                    document.querySelector(".page-subtitle.first").classList.remove("hidden");
+                if (favoritesRow.children.length === 1) {
+                    favoritesRow.querySelector(".page-subtitle").classList.remove("hidden");
                 }
                 // create clone of card to place up top on the favorites row
                 const clone = card.cloneNode(true) as HTMLElement;
@@ -70,8 +70,8 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
                 const card = getParentByClassName(course, "course card").parentElement;
                 card.remove();
                 const favoritesRow = document.querySelector(".favorites-row");
-                if (favoritesRow.children.length === 0) {
-                    document.querySelector(".page-subtitle.first").classList.add("hidden");
+                if (favoritesRow.children.length === 1) {
+                    favoritesRow.querySelector(".page-subtitle").classList.add("hidden");
                 }
             } else {
                 new Toast(I18n.t("js.unfavorite-course-failed"));

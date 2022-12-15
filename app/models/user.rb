@@ -470,7 +470,8 @@ class User < ApplicationRecord
         submission: latest_submission,
         activity: latest_submission.exercise,
         series: latest_submission.series,
-        course: latest_submission.course
+        course: latest_submission.course,
+        text: I18n.t('pages.clickable_homepage_cards.last_submission')
       }
     end
 
@@ -482,18 +483,20 @@ class User < ApplicationRecord
           submission: nil,
           activity: next_activity,
           series: latest_submission.series,
-          course: latest_submission.course
+          course: latest_submission.course,
+          text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_exercise_success') : I18n.t('pages.clickable_homepage_cards.next_exercise')
         }
-      end
 
-      if latest_submission.series.next_activity(next_activity).present?
-        # there is another exercise after the next one, so show the series
-        result << {
-          submission: nil,
-          activity: nil,
-          series: latest_submission.series,
-          course: latest_submission.course
-        }
+        if latest_submission.series.next_activity(next_activity).present?
+          # there is another exercise after the next one, so show the series
+          result << {
+            submission: nil,
+            activity: nil,
+            series: latest_submission.series,
+            course: latest_submission.course,
+            text: I18n.t('pages.clickable_homepage_cards.continue_series')
+          }
+        end
       end
 
       next_series = latest_submission.series.next
@@ -503,7 +506,8 @@ class User < ApplicationRecord
           submission: nil,
           activity: nil,
           series: next_series,
-          course: latest_submission.course
+          course: latest_submission.course,
+          text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_series_success') : I18n.t('pages.clickable_homepage_cards.next_series')
         }
       end
     end
@@ -515,7 +519,8 @@ class User < ApplicationRecord
         submission: nil,
         activity: nil,
         series: nil,
-        course: latest_submission.course
+        course: latest_submission.course,
+        text: I18n.t('pages.clickable_homepage_cards.course')
       }
     end
     result

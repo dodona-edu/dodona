@@ -29,7 +29,7 @@
       <div class="row">
         <% @homepage_series.first(no_deadlines).each do |series| %>
           <div class="col-lg-<%= 12 / no_deadlines %>">
-            <%= render partial: 'pages/clickable_homepage_cards/series', locals: { series: series, show_progress: true } %>
+            <%= render partial: 'pages/clickable_homepage_cards/series', locals: { series: series } %>
           </div>
         <% end %>
       </div>

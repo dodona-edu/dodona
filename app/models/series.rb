@@ -168,7 +168,8 @@ class Series < ApplicationRecord
     # users = course.subscribed_members.left_joins(:submissions).left_joins(:activity_read_states)
     # users.where(submissions: { exercise: activities, course: course_id })
     #      .or(users.where(activity_read_states: { activity: activities, course: course_id })).distinct('users.id').count
-    course.subscribed_members.count { |u| activities.any? { |a| a.started_for?(u, self) } }
+    # course.subscribed_members.count { |u| activities.any? { |a| a.started_for?(u, self) } }
+    activity_statuses.where(started: :true).group('user_id').count.count
   end
 
   def users_completed
@@ -181,7 +182,8 @@ class Series < ApplicationRecord
     #       .having('count(DISTINCT submissions.exercise_id) + count(DISTINCT activity_read_states.activity_id) = ?', activity_count) # only count users that have read all activities and solved all exercises
     #       .count # first count applies to group by and is irrelevant (it counts the number of submissions/read states per user)
     #       .count # second count is the actual number of users
-    course.subscribed_members.count { |u| activities.all? { |a| a.accepted_for?(u, self) } }
+    # course.subscribed_members.count { |u| activities.all? { |a| a.accepted_for?(u, self) } }
+    activity_statuses.where(accepted: :true).group('user_id').having('COUNT(*) = ?', activities_count).count.count
   end
 
   def scoresheet

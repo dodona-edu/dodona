@@ -27,17 +27,27 @@
       </h4>
     </div>
     <% if show_progress %>
-      <%=
-        render partial: 'progress_chart', locals: {
-        total: series.course.subscribed_members.count,
-        tried: series.users_started,
-        correct: series.users_completed,
-        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-        width: '100%',
-      }
-      %>
+      <% if teacher_mode %>
+        <%= render partial: 'progress_chart', locals: {
+          total: series.course.subscribed_members.count,
+          tried: series.users_started,
+          correct: series.users_completed,
+          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+        } %>
+      <% else %>
+        <%= render partial: 'progress_chart', locals: {
+          total: series.activity_count,
+          tried: series.started_activity_count(current_user),
+          correct: series.completed_activity_count(current_user),
+          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+        } %>
+      <% end %>
     <% else %>
         <small class="ellipsis-overflow">
             <%= t ".jump_back_in_info" %>

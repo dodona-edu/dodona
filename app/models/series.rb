@@ -166,12 +166,12 @@ class Series < ApplicationRecord
 
   def users_started
     # first count is used for the group by and ignored, second is used for the actual count of users
-    activity_statuses.where(started: true).group('user_id').count.count
+    activity_statuses.where(started: true, user: course.subscribed_members).group('user_id').count.count
   end
 
   def users_completed
     # first count is used for the group by and ignored, second is used for the actual count of users
-    activity_statuses.where(accepted: true).group('user_id').having('COUNT(*) = ?', activities_count).count.count
+    activity_statuses.where(accepted: true, user: course.subscribed_members).group('user_id').having('COUNT(*) = ?', activities_count).count.count
   end
 
   def scoresheet

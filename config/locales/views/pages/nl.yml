@@ -39,6 +39,13 @@ nl:
         jump_back_in_info_success: "De vorige oefening was correct, start met deze oefening."
       series:
         jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
+        teacher_mode_info: "De voortgang van de klas wordt enkel getoond aan leraren. Studenten zien enkel hun eigen voortgang."
+        teacher_progress_chart_info_correct:
+          one: "Eén student heeft alle oefeningen correct opgelost."
+          other: "%{count} studenten hebben alle oefeningen correct opgelost."
+        teacher_progress_chart_info_tried:
+          one: "Eén student is met deze reeks gestart."
+          other: "%{count} studenten zijn met deze reeks gestart."
         progress_chart_info_correct:
           one: "Eén oefening correct opgelost."
           other: "%{count} oefeningen correct opgelost."

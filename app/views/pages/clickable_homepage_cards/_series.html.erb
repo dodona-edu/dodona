@@ -12,8 +12,14 @@
           <i class="mdi mdi-36 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>"></i>
         <% end %>
       </div>
-      <h4 class="ellipsis-overflow" title="<%= series.name %>">
-        <%= series.name %><br>
+      <h4 class="ellipsis-overflow">
+        <div class="spread-line ellipsis-overflow" title="<%= series.name %>">
+          <%= series.name %>
+
+          <% if teacher_mode && show_progress %>
+            <i class="mdi mdi-school mdi-18" title="<%= t ".teacher_mode_info" %>"></i>
+          <% end %>
+        </div>
         <div class="spread-line" >
           <span class="ellipsis-overflow" style="flex: 2">
             <small  title="<%= series.course.name %>">
@@ -32,9 +38,8 @@
           total: series.course.subscribed_members.count,
           tried: series.users_started,
           correct: series.users_completed,
-          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          info_tried: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_tried',
+          info_correct: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_correct',
           width: '100%',
         } %>
       <% else %>

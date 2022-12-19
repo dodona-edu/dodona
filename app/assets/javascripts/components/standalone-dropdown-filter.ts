@@ -24,8 +24,8 @@ export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement
 
     watch = {
         default: () => {
-            if (this.getSelectedLabels().length == 0) {
-                this.select(this.labels.find(label => label.id == this.default));
+            if (this.getSelectedLabels().length === 0) {
+                this.select(this.labels.find(label => this.paramVal(label) === this.default));
             }
         }
     };

@@ -14,7 +14,7 @@ gem 'puma', '~> 6.0.0'
 gem 'cssbundling-rails', '~> 1.1.1'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.3'
+gem 'jsbundling-rails', '~> 1.1.1'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts

@@ -3521,10 +3521,10 @@ eslint-plugin-jest@^27.1.7:
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
-eslint-plugin-lit@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-lit/-/eslint-plugin-lit-1.7.0.tgz#3304c3b8bdae4792c766a5635011adf942c4e094"
-  integrity sha512-V9cflbK3qn91BKZsqjfU0KX2bXv36VtVAty9k7D+SauR1mvmEaZpmEDT74H1PDdsuFQG+0fmoU/ufhPYlAhJxA==
+eslint-plugin-lit@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-lit/-/eslint-plugin-lit-1.7.2.tgz#97d76a30c1c38f273dd289e1cf066b0b1db32173"
+  integrity sha512-vkz9KvwVfHg7yDQCmokLGzUDypg683miswSw5xBiTszv4Qyus5/CgAK7U7dMgbVBa8G5wxHedY2zr9VCMNTaPQ==
   dependencies:
     parse5 "^6.0.1"
     parse5-htmlparser2-tree-adapter "^6.0.1"

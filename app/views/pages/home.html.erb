@@ -4,47 +4,33 @@
 <%= render partial: "pages/important_homepage_links" %>
 <div class="row">
   <div class="col-12 col-md-6 col-lg-8">
-    <% if @subscribed_courses.empty? %>
+    <% if @courses.empty? %>
       <%= render "getting_started_card" %>
       <% if current_user.institutional? %>
         <%= render 'privacy_disclaimer' %>
       <% end %>
     <% else %>
       <div class="row favorites-row">
-
-        <div class="page-subtitle first">
-          <h3><%= t('.courses') %></h3>
+        <div class="page-subtitle <%= @favorite_courses.empty? ? "hidden" : "" %>">
+          <h3><%= t('.favorites') %></h3>
         </div>
         <% unless @favorite_courses.empty? %>
-          <% @favorite_courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-            </div>
-          <% end %>
+          <%= render partial: "course_cards", locals: {courses: @favorite_courses} %>
         <% end %>
       </div>
-      <% first = true %>
-      <% @grouped_courses.each do |year, courses| %>
-        <% if first %>
-          <% first = false %>
-          <div class="page-subtitle <%= "hidden" if @favorite_courses.empty? %>">
-            <a class="anchor" id="<%= year.parameterize %>"></a>
-            <h3><%= Course.format_year year %></h3>
-          </div>
-        <% else %>
-          <div class="page-subtitle">
-            <a class="anchor" id="<%= year.parameterize %>"></a>
-            <h3><%= Course.format_year year %></h3>
-          </div>
-        <% end %>
-        <div class="row row-<%= year.parameterize %>">
-          <% courses.each do |course| %>
-            <div class="col-12 col-sm-12 col-lg-6">
-              <%= render partial: "course_card", locals: {course: course, show_deadlines: true} %>
-            </div>
-          <% end %>
+      <div class="row">
+        <div class="page-subtitle justify-content-between">
+          <h3><%= t('.courses') %></h3>
+          <d-standalone-dropdown-filter class="mt-2"
+                                        param="year"
+                                        labels="<%= @years.map { |y| { id: y, name: Course.format_year(y) } }.to_json %>"
+                                        default="<%= @year %>">
+          </d-standalone-dropdown-filter>
         </div>
-      <% end %>
+      </div>
+      <div class="row" id="course-for-year-row">
+        <%= render partial: "course_cards", locals: {courses: @courses} %>
+      </div>
     <% end %>
   </div>
   <div class="col-12 col-md-6 col-lg-4">
@@ -66,5 +52,6 @@
 <script type="text/javascript">
     dodona.ready.then(function () {
         dodona.initFavoriteButtons();
+        dodona.searchQuery.autoSearch = true;
     });
 </script>

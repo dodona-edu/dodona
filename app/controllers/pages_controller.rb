@@ -17,7 +17,7 @@ class PagesController < ApplicationController
       courses = course_memberships.map(&:course)
       @years = courses.map(&:year).uniq.sort.reverse
       @year = params[:year] || @years.max
-      @courses = courses.select { |c| c.year === @year }
+      @courses = courses.select { |c| c.year == @year }
       @favorite_courses = course_memberships.select(&:favorite).map(&:course)
       @homepage_series = courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
 

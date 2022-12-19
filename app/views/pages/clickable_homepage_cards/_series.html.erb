@@ -13,9 +13,10 @@
         <% end %>
       </div>
       <h4 class="ellipsis-overflow">
-        <div class="spread-line ellipsis-overflow" title="<%= series.name %>">
-          <%= series.name %>
-
+        <div class="spread-line">
+          <span class="ellipsis-overflow" title="<%= series.name %>">
+            <%= series.name %>
+          </span>
           <% if teacher_mode && show_progress %>
             <i class="mdi mdi-school mdi-18" title="<%= t ".teacher_mode_info" %>"></i>
           <% end %>

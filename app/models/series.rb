@@ -165,8 +165,7 @@ class Series < ApplicationRecord
   end
 
   def users_started
-    # first count is used for the group by and ignored, second is used for the actual count of users
-    activity_statuses.where(started: true, user: course.subscribed_members).group('user_id').count.count
+    activity_statuses.where(started: true, user: course.subscribed_members).distinct.count(:user_id)
   end
 
   def users_completed

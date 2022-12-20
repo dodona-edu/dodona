@@ -19,7 +19,7 @@
 }
 
 .progress-chart.colored-muted {
-  --progress-chart-color: #{$primary};
+  --progress-chart-color: #{$text-muted};
 
   .correct {
     stroke: var(--progress-chart-color);

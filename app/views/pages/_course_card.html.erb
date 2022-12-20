@@ -1,6 +1,6 @@
 <div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
-    <div class="card-title card-colored-accent accent-<%= course.color %>">
+    <div class="card-title card-title-colored">
       <% if current_user.course_admin?(course) %>
         <% if current_user.admin_of?(course) %>
           <h2 class='card-title-text float-end' title='<%= t ".course-admin" %>'>
@@ -23,13 +23,25 @@
       <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
         <h2 class='card-title-text float-end' title='<%= t ".course-member" %>'><i class='mdi mdi-star'></i></h2>
       <% end %>
-      <h2 class="card-title-text course-name" title="<%= course.name %>"><%= course.name %></h2>
-      <h3 class="card-subtitle-text"><%= course.formatted_year %>&nbsp;</h3>
-      <% if course.formatted_attribution.present? %>
-        <h3 class="card-subtitle-text ellipsis-overflow" title="<%= course.formatted_attribution %>">
-          <%= course.formatted_attribution %>
-        </h3>
-      <% end %>
+      <h2 class="card-title-text course-name" title="<%= course.name %>">
+        <%= course.name %>
+        <br/>
+        <% if course.formatted_attribution.present? %>
+          <small class="card-subtitle-text ellipsis-overflow" title="<%= course.formatted_attribution %>">
+            <%= course.formatted_attribution %>
+          </small>
+        <% end %>
+      </h2>
+
+      <%= render partial: 'progress_chart', locals: {
+        total: course.activity_count,
+        tried: course.started_activity_count(current_user),
+        correct: course.completed_activity_count(current_user),
+        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+        width: '100%',
+      } %>
     </div>
   <% end %>
   <div class="card-supporting-text stats row">

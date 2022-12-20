@@ -351,6 +351,18 @@ class Course < ApplicationRecord
     colors[year.to_i % colors.size]
   end
 
+  def activity_count
+    series.visible.map(&:activity_count).sum
+  end
+
+  def completed_activity_count(user)
+    series.visible.map { |s| s.completed_activity_count(user) }.sum
+  end
+
+  def started_activity_count(user)
+    series.visible.map { |s| s.started_activity_count(user) }.sum
+  end
+
   private
 
   def nullify_submissions

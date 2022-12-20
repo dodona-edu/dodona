@@ -46,54 +46,52 @@
     </div>
   <% end %>
 
-  <div class="card-supporting-text card-border">
-    <div class="mb-0 flex-row" style="display: flex">
-      <div style="margin-right: 12px; align-content: center; display: grid;" >
-        <small class="deadline-future" title="22 januari 2023 11:03" >
-          <i class="mdi mdi-24 mdi-alarm"></i>
-        </small>
-      </div>
-      <div style="width: 100%">
-        <span class="float-end">
-          <small class="deadline-future" title="22 januari 2023 11:03">
-            <i class="mdi mdi-12 mdi-alarm"></i>
-            binnen ongeveer een maand
-          </small>
-        </span>
-        <a class="dynamic-homepage-series-link" title="Reeks 0" href="/nl/courses/1/?series=3#series-3-reeks-0">
-          Reeks 0
-        </a>
-        <span data-bs-html="true" data-bs-toggle="tooltip" aria-label="0 oefeningen correct opgelost.<br />Eén oefening incorrect.<br />3 oefeningen nog niet begonnen.">
-          <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="100%" class="progress-chart">
-              <line class="correct" x1="0" y1="0.5" x2="0.125" y2="0.5"></line><line class="wrong" x1="0.125" y1="0.5" x2="0.24999375015624611" y2="0.5"></line><line class="not-started" x1="0.24999375015624611" y1="0.5" x2="0.9999750006249845" y2="0.5"></line>
-          </svg>
-        </span>
-      </div>
+  <% course_series = course.homepage_series %>
+  <% if course_series.any? %>
+    <div class="card-supporting-text card-border">
+      <% course_series.first(2).each do |series| %>
+        <div class="course-item">
+          <div class="course-item-icon">
+            <i class="mdi mdi-24 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>
+                                 <%= deadline_class series.completed_before_deadline?(current_user), series.deadline %>"></i>
+          </div>
+          <div class="ellipsis-overflow" style="width: 100%">
+            <span class="float-end">
+              <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+            </span>
+            <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
+
+            <%= render partial: 'progress_chart', locals: {
+              total: series.activity_count,
+              tried: series.started_activity_count(current_user),
+              correct: series.completed_activity_count(current_user),
+              info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+              info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+              info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+              width: '100%',
+            } %>
+          </div>
+        </div>
+      <% end %>
     </div>
-  </div>
+  <% end %>
   <div class="card-supporting-text card-border">
-    <div class="mb-3 flex-row" style="display: flex">
-      <div style="margin-right: 12px; align-content: center; display: grid;" >
-        <small class="deadline-future" title="22 januari 2023 11:03" >
-          <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
-        </small>
+    <div class="course-item">
+      <div class="course-item-icon" >
+        <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
       </div>
       <div style="width: 100%">
         <a class="course-link" title="Het priemgetal van de UGent" href="/nl/courses/9/activities/830174145/">
           Het priemgetal van de UGent
         </a><br/>
         <span class="small text-muted ">
-        Werk verder aan deze oefening
-      </span>
+          Werk verder aan deze oefening
+        </span>
       </div>
     </div>
-<!--  </div>-->
-<!--  <div class="card-supporting-text">-->
-    <div class="mb-0 flex-row" style="display: flex">
-      <div style="margin-right: 12px; align-content: center; display: grid;" >
-        <small class="deadline-future" title="22 januari 2023 11:03" >
-          <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
-        </small>
+    <div class="course-item">
+      <div class="course-item-icon" >
+        <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
       </div>
       <div style="width: 100%">
         <a class="course-link" title="Echo" href="/nl/courses/8/activities/855910192/">Echo</a><br/>
@@ -102,25 +100,7 @@
       </span>
       </div>
     </div>
-
   </div>
-
-  <%# if local_assigns[:show_deadlines] %>
-    <%# course_series = course.homepage_series %>
-    <%# if course_series.any? %>
-<!--      <div class="card-supporting-text card-border deadlines">-->
-<!--        <h5>Deadlines</h5>-->
-        <%# course_series.first(3).each do |series| %>
-<!--          <p>-->
-<!--            <span class='float-end'>-->
-              <%#= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
-<!--            </span>-->
-            <%#= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
-<!--          </p>-->
-        <%# end %>
-<!--      </div>-->
-    <%# end %>
-  <%# end %>
   <div class="card-actions card-border">
     <div class="flex-grow-1">
       <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"

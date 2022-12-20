@@ -78,90 +78,6 @@ a.card-title-link:hover {
   text-decoration: none;
 }
 
-.card-title.card-colored-accent {
-  color: $on-primary-container;
-  border-top-left-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
-
-  .card-subtitle-text {
-    margin-top: 3px;
-    opacity: 0.75;
-  }
-
-  .card-subtitle-text + .card-subtitle-text {
-    margin-top: 10px;
-  }
-
-  a {
-    color: inherit;
-  }
-
-  &.accent-red {
-    background-color: $red-container;
-    color: $on-red-container;
-  }
-
-  &.accent-pink {
-    background-color: $pink-container;
-    color: $on-pink-container;
-  }
-
-  &.accent-purple {
-    background-color: $purple-container;
-    color: $on-purple-container;
-  }
-
-  &.accent-deep-purple {
-    background-color: $deep-purple-container;
-    color: $on-purple-container;
-  }
-
-  &.accent-indigo {
-    background-color: $indigo-container;
-    color: $on-indigo-container;
-  }
-
-  &.accent-teal {
-    background-color: $teal-container;
-    color: $on-teal-container;
-  }
-
-  &.accent-orange {
-    background-color: $orange-container;
-    color: $on-orange-container;
-  }
-
-  &.accent-brown {
-    background-color: $brown-container;
-    color: $on-brown-container;
-  }
-
-  &.accent-blue-gray {
-    background-color: $blue-gray-container;
-    color: $on-blue-gray-container;
-  }
-
-  &.accent-blue {
-    background-color: $blue-container;
-    color: $on-blue-container;
-  }
-
-  &.accent-yellow {
-    background-color: $yellow-container;
-    color: $on-yellow-container;
-  }
-
-  &.accent-green {
-    background-color: $green-container;
-    color: $on-green-container;
-  }
-
-  &.accent-cyan {
-    background-color: $cyan-container;
-    color: $on-cyan-container;
-  }
-}
-
 .card-title.card-title-plain li a {
   font-weight: 300;
   color: $on-surface;
@@ -390,4 +306,20 @@ a.card-title-link:hover {
 
 .card-subtitle-fab {
   top: 48px;
+}
+
+.card-supporting-text .course-item {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+
+  .course-item-icon {
+    margin-right: 12px;
+    align-content: center;
+    display: grid;
+  }
+}
+
+.card-supporting-text .course-item + .course-item {
+  margin-top: 16px;
 }

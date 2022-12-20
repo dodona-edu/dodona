@@ -64,7 +64,7 @@ $card-supporting-text-padding: 16px;
   border-top-right-radius: $border-radius-base;
 
   .progress-chart.colored-muted {
-    --progress-chart-color: $on-primary;
+    --progress-chart-color: #{$on-primary};
   }
 
   small {

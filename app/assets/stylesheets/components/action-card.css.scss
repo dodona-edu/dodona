@@ -53,21 +53,8 @@
     color: var(--on-clickable-card-color);
   }
 
-  .progress-chart {
-    .correct {
-      stroke: var(--on-clickable-card-color);
-      opacity: 0.8;
-    }
-
-    .wrong {
-      stroke: var(--on-clickable-card-color);
-      opacity: 0.5;
-    }
-
-    .not-started {
-      stroke: var(--on-clickable-card-color);
-      opacity: 0.2;
-    }
+  .progress-chart.colored-muted {
+    --progress-chart-color: var(--on-clickable-card-color);
   }
 
   &:hover,

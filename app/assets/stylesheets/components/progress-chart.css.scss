@@ -17,3 +17,22 @@
     stroke: $divider;
   }
 }
+
+.progress-chart.colored-muted {
+  --progress-chart-color: #{$primary};
+
+  .correct {
+    stroke: var(--progress-chart-color);
+    opacity: 0.8;
+  }
+
+  .wrong {
+    stroke: var(--progress-chart-color);
+    opacity: 0.5;
+  }
+
+  .not-started {
+    stroke: var(--progress-chart-color);
+    opacity: 0.2;
+  }
+}

@@ -63,21 +63,8 @@ $card-supporting-text-padding: 16px;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
 
-  .progress-chart {
-    .correct {
-      stroke: $on-primary;
-      opacity: 0.8;
-    }
-
-    .wrong {
-      stroke: $on-primary;
-      opacity: 0.5;
-    }
-
-    .not-started {
-      stroke: $on-primary;
-      opacity: 0.2;
-    }
+  .progress-chart.colored-muted {
+    --progress-chart-color: $on-primary;
   }
 
   small {

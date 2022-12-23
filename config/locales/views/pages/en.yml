@@ -31,7 +31,7 @@ en:
       few-activities-markdown:
         one: "**Doing great!** Only one activity left to complete this course."
         other: "**Doing great!** Only two activities left to complete this course."
-      no-activities-mardown: "**Congratulations!** You have completed this course!"
+      no-activities-markdown: "**Congratulations!** You have completed this course!"
       homepage_activities:
         continue: Or continue working on this exercise
         continue_first: Continue working on this exercise

@@ -100,43 +100,55 @@
     </div>
   <% end %>
   <% course_activities = course.homepage_activities(current_user, 3 - course_series.length) %>
-  <% if course_activities.any? %>
-    <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
-      <% course_activities.each do |ca| %>
-        <div class="course-item">
-          <div class="course-item-icon" >
-            <%= activity_icon ca[:activity], 24 %>
-          </div>
-          <div style="width: 100%">
-            <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
-            <br/>
-            <span class="small text-muted ">
-              <%= ca[:text] %>
-            </span>
-          </div>
+  <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
+    <% course_activities.each do |ca| %>
+      <div class="course-item">
+        <div class="course-item-icon" >
+          <%= activity_icon ca[:activity], 24 %>
         </div>
-      <% end %>
-      <% if course_series.length + course_activities.length < 3 && course_activities.length > 0 %>
-        <div class="course-item">
-          <div class="course-item-icon">
-            <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
-          </div>
-          <div style="width: 100%">
-            <%= markdown t ".few-activities-markdown", count: course_activities.length%>
-          </div>
+        <div style="width: 100%">
+          <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
+          <br/>
+          <span class="small text-muted ">
+            <%= ca[:text] %>
+          </span>
         </div>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
+      </div>
+    <% end %>
+    <% if course_series.length + course_activities.length < 3 && course_activities.length > 0 %>
+      <div class="course-item" style="height: 36px; align-items: center;">
+        <div class="course-item-icon">
+          <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
+        </div>
+        <div style="width: 100%">
+          <%= markdown t ".few-activities-markdown", count: course_activities.length%>
+        </div>
+      </div>
+    <% elsif course_series.length == 2 && course_activities.length == 0 %>
+      <div class="course-item" style="height: 36px; align-items: center;">
+        <div class="course-item-icon">
+          <i class="mdi mdi-24 mdi-party-popper"></i>
+        </div>
+        <div style="width: 100%">
+          <%= markdown t ".no-activities-markdown", count: course_activities.length%>
+        </div>
+      </div>
+    <% elsif course_series.length == 1 && course_activities.length == 0 %>
+      <div style="display: flex; align-items: center;">
+        <%= image_tag("straight-popper.svg", class: 'img-fluid', style: 'height: 88px; width: 88px') %>
+        <span style="margin-left: 16px">
+          <%= markdown t ".no-activities-markdown" %>
+        </span>
+      </div>
+    <% elsif course_series.length == 0 && course_activities.length == 0 %>
       <div style="width: 100%; text-align: center">
-        <%= image_tag("feedback.png", class: 'img-fluid col-8 col-sm-12', style: 'height: 125px; width: 125px') %>
+        <%= image_tag("straight-popper.svg", class: 'img-fluid', style: 'height: 130px; width: 130px') %>
       </div>
       <div style="width: 100%; text-align: center; margin-top: 16px">
-        <%= markdown t ".no-activities-mardown" %>
+        <%= markdown t ".no-activities-markdown" %>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
   <div class="card-actions card-border">
     <div class="flex-grow-1">
       <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"

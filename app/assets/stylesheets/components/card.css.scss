@@ -323,3 +323,10 @@ a.card-title-link:hover {
 .card-supporting-text .course-item + .course-item {
   margin-top: 16px;
 }
+
+.card-supporting-text.course-activities-full-height {
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}

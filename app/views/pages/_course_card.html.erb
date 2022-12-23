@@ -46,10 +46,10 @@
     </div>
   <% end %>
 
-  <% course_series = course.homepage_series %>
+  <% course_series = course.homepage_series.first(2) %>
   <% if course_series.any? %>
     <div class="card-supporting-text card-border">
-      <% course_series.first(2).each do |series| %>
+      <% course_series.each do |series| %>
         <div class="course-item">
           <div class="course-item-icon">
             <i class="mdi mdi-24 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>
@@ -75,32 +75,25 @@
       <% end %>
     </div>
   <% end %>
-  <div class="card-supporting-text card-border">
-    <div class="course-item">
-      <div class="course-item-icon" >
-        <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
-      </div>
-      <div style="width: 100%">
-        <a class="course-link" title="Het priemgetal van de UGent" href="/nl/courses/9/activities/830174145/">
-          Het priemgetal van de UGent
-        </a><br/>
-        <span class="small text-muted ">
-          Werk verder aan deze oefening
-        </span>
-      </div>
+  <% course_activities = course.homepage_activities(current_user, 3 - course_series.length) %>
+  <% if course_activities.any? %>
+    <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
+      <% course_activities.each do |ca| %>
+        <div class="course-item">
+          <div class="course-item-icon" >
+            <%= activity_icon ca[:activity], 24 %>
+          </div>
+          <div style="width: 100%">
+            <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
+            <br/>
+            <span class="small text-muted ">
+              <%= ca[:text] %>
+            </span>
+          </div>
+        </div>
+      <% end %>
     </div>
-    <div class="course-item">
-      <div class="course-item-icon" >
-        <i class="mdi mdi-language-python mdi-24" title="Python oefening"></i>
-      </div>
-      <div style="width: 100%">
-        <a class="course-link" title="Echo" href="/nl/courses/8/activities/855910192/">Echo</a><br/>
-        <span class="small text-muted ">
-        Of start met deze oefening
-      </span>
-      </div>
-    </div>
-  </div>
+  <% end %>
   <div class="card-actions card-border">
     <div class="flex-grow-1">
       <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"

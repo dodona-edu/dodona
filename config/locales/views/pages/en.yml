@@ -28,6 +28,11 @@ en:
       course-hidden: Hidden course
       course-closed: Closed course
       favorite: "Favorite course"
+      homepage_activities:
+        continue: Or continue working on this exercise
+        continue_first: Continue working on this exercise
+        start: Or start this activity
+        start_first: Start this activity
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines

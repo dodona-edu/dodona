@@ -195,6 +195,46 @@ class Course < ApplicationRecord
     passed_deadlines.to_a + future_deadlines.to_a
   end
 
+  def next_unaccepted_activities(user, series, limit = 3, activity = nil)
+    result = []
+    activity = series.activities.first if activity.nil?
+    while activity.present? && result.length < limit
+      unless activity.accepted_for?(user, series)
+        text = if activity.started_for?(user, series)
+                 I18n.t("pages.course_card.homepage_activities.continue#{result.empty? ? '_first' : ''}")
+               else
+                 I18n.t("pages.course_card.homepage_activities.start#{result.empty? ? '_first' : ''}")
+               end
+        result << {
+          series: series,
+          activity: activity,
+          submission: activity.exercise? ? activity.last_submission(user, series) : nil,
+          text: text
+        }
+      end
+      activity = series.next_activity(activity)
+    end
+
+    if result.length < limit
+      # add activities from next visible series
+      series = series.next
+      series = series.next while series.present? && !series.open?
+      result += next_unaccepted_activities(user, series, limit - result.length) if series.present?
+    end
+    result
+  end
+
+  def homepage_activities(user, limit = 3)
+    result = []
+    latest_activity_status = ActivityStatus.where(user: user, series: series.visible).joins(:last_submission).order('submissions.id DESC').limit(1).first
+
+    result += next_unaccepted_activities(user, latest_activity_status.series, limit, latest_activity_status.activity) if latest_activity_status.present?
+    result += next_unaccepted_activities(user, series.visible.first, limit - result.length) if result.length < limit
+
+    # remove duplicates
+    result.uniq { |a| a[:activity] }
+  end
+
   def pending_series(user)
     series.visible.select { |s| s.pending? && !s.completed?(user: user) }
   end

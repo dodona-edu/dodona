@@ -313,6 +313,10 @@ a.card-title-link:hover {
   display: flex;
   flex-direction: row;
 
+  p {
+    margin-bottom: 0;
+  }
+
   .course-item-icon {
     margin-right: 12px;
     align-content: center;

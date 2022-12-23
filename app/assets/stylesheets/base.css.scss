@@ -103,3 +103,10 @@ figcaption {
   white-space: normal;
   overflow-wrap: break-word;
 }
+
+svg {
+  --svg-fill-color: #{$primary};
+  --svg-correct-color: #{$success};
+  --svg-incorrect-color: #{$danger};
+  --svg-warning-color: #{$warning};
+}

@@ -127,7 +127,7 @@
     <% elsif course_series.length == 2 && course_activities.length == 0 %>
       <div class="course-item" style="height: 36px; align-items: center;">
         <div class="course-item-icon">
-          <i class="mdi mdi-24 mdi-party-popper"></i>
+          <i class="mdi mdi-24 mdi-party-popper colored-correct"></i>
         </div>
         <div style="width: 100%">
           <%= markdown t ".no-activities-markdown", count: course_activities.length%>
@@ -135,14 +135,18 @@
       </div>
     <% elsif course_series.length == 1 && course_activities.length == 0 %>
       <div style="display: flex; align-items: center;">
-        <%= image_tag("straight-popper.svg", class: 'img-fluid', style: 'height: 88px; width: 88px') %>
+        <div style='height: 88px; width: 88px'>
+          <%= render partial: "popper", style: 'height: 130px; width: 130px' %>
+        </div>
         <span style="margin-left: 16px">
           <%= markdown t ".no-activities-markdown" %>
         </span>
       </div>
     <% elsif course_series.length == 0 && course_activities.length == 0 %>
-      <div style="width: 100%; text-align: center">
-        <%= image_tag("straight-popper.svg", class: 'img-fluid', style: 'height: 130px; width: 130px') %>
+      <div style="width: 100%; display: flex; align-items: center; flex-direction: column;">
+        <div style='height: 130px; width: 130px'>
+          <%= render partial: "popper", style: 'height: 130px; width: 130px' %>
+        </div>
       </div>
       <div style="width: 100%; text-align: center; margin-top: 16px">
         <%= markdown t ".no-activities-markdown" %>

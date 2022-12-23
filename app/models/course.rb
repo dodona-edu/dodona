@@ -196,6 +196,8 @@ class Course < ApplicationRecord
   end
 
   def next_unaccepted_activities(user, series, limit = 3, activity = nil)
+    return [] if series.nil?
+
     result = []
     activity = series.activities.first if activity.nil?
     while activity.present? && result.length < limit

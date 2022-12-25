@@ -1,4 +1,4 @@
-import { initDeadlinePicker } from "series.js";
+import { initDeadlinePicker } from "series.ts";
 import { initCheckboxes, initCheckbox, initEvaluationStepper } from "evaluation.ts";
 import FeedbackActions from "feedback/actions";
 

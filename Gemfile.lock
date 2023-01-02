@@ -195,7 +195,7 @@ GEM
     httpclient (2.8.3)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
-    i18n-js (4.2.0)
+    i18n-js (4.2.1)
       glob (>= 0.4.0)
       i18n
     icalendar (2.8.0)
@@ -521,7 +521,7 @@ DEPENDENCIES
   has_scope (~> 0.8.0)
   hcaptcha (~> 7.1.0)
   httparty (~> 0.20.0)
-  i18n-js (~> 4.2.0)
+  i18n-js (~> 4.2.1)
   icalendar (~> 2.8)
   image_processing (~> 1.12.2)
   jbuilder (~> 2.11.5)

@@ -957,10 +957,10 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal series, user.jump_back_in[:series]
 
     series.update(visibility: :hidden)
-    assert_nil user.jump_back_in
+    assert_nil user.jump_back_in[:activity]
 
     series.update(visibility: :closed)
-    assert_nil user.jump_back_in
+    assert_nil user.jump_back_in[:activity]
 
     series.update(visibility: :open)
     assert_equal a1, user.jump_back_in[:activity]
@@ -972,10 +972,10 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert user.course_admin?(course)
 
     series.update(visibility: :hidden)
-    assert_nil user.jump_back_in
+    assert_nil user.jump_back_in[:activity]
 
     series.update(visibility: :closed)
-    assert_nil user.jump_back_in
+    assert_nil user.jump_back_in[:activity]
 
     series.update(visibility: :open)
     assert_equal a1, user.jump_back_in[:activity]

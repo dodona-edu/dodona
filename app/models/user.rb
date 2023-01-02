@@ -462,7 +462,6 @@ class User < ApplicationRecord
     latest_submission = submissions.first
     return nil if latest_submission.nil?
     return nil if latest_submission.exercise.nil?
-    return nil if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
 
     result = {
       submission: nil,
@@ -470,6 +469,8 @@ class User < ApplicationRecord
       series: nil,
       course: latest_submission.course
     }
+
+    return result if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
 
     unless latest_submission.accepted?
       # The last submission was wrong, continue working on it

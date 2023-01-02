@@ -470,6 +470,8 @@ class User < ApplicationRecord
       course: latest_submission.course
     }
 
+    # Don't give information about the exercise if the submission was within a course, but not within a visible series
+    # This is to prevent students from seeing exercises that are not made public explicitly
     return result if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
 
     unless latest_submission.accepted?

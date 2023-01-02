@@ -1,29 +1,6 @@
 <div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
     <div class="card-title card-title-colored">
-<!--      <h2 class="card-title-text float-end d-block"  style="text-align: right">-->
-        <%# if current_user.course_admin?(course) %>
-          <%# if current_user.admin_of?(course) %>
-<!--            <i class='mdi mdi-school' title='<%#= t ".course-admin" %>'></i>-->
-          <%# end %>
-          <%# if !course.open_for_all? || course.moderated %>
-            <%# title = [] %>
-            <%# title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) unless course.open_for_all? %>
-            <%# title.push t("courses.show.moderated-info") if course.moderated %>
-<!--            <i class="mdi mdi-account-remove-outline" title='<%#= title.join("\n") %>'></i>-->
-          <%# end %>
-          <%# unless course.visible_for_all? %>
-<!--            <i class="mdi mdi-eye-off-outline" title='<%#= t "courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name %>'></i>-->
-          <%# end %>
-        <%# elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
-<!--          <i class='mdi mdi-star' title='<%#= t ".course-member" %>'></i>-->
-        <%# end %>
-<!--        <br/>-->
-<!--        <small class="card-subtitle-text ellipsis-overflow" title="<%#= Course.format_year(course.year) %>">-->
-          <%#= Course.format_year(course.year) %>
-<!--        </small>-->
-<!--      </h2>-->
-
       <h2 class="card-title-text justify-content-between">
         <span class="ellipsis-overflow" title="<%= course.name %>"><%= course.name %></span>
         <span class="float-end" style="white-space: nowrap">

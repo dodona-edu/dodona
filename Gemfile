@@ -83,7 +83,7 @@ gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'
 
 # authorization
-gem 'pundit', '~> 2.2.0'
+gem 'pundit', '~> 2.3.0'
 
 # impersonate users
 gem 'pretender', '~> 0.4.0'

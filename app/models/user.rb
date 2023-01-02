@@ -462,6 +462,7 @@ class User < ApplicationRecord
     latest_submission = submissions.first
     return nil if latest_submission.nil?
     return nil if latest_submission.exercise.nil?
+    return nil if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
 
     result = {
       submission: nil,

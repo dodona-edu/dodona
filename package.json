@@ -50,7 +50,7 @@
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.58",
-    "@typescript-eslint/eslint-plugin": "^5.46.1",
+    "@typescript-eslint/eslint-plugin": "^5.47.0",
     "@typescript-eslint/parser": "^5.46.1",
     "eslint": "^8.30.0",
     "eslint-config-google": "^0.14.0",

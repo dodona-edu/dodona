@@ -227,7 +227,7 @@ class Course < ApplicationRecord
   end
 
   def homepage_activities(user, limit = 3)
-    latest_activity_status = ActivityStatus.where(user: user, series: series.visible).joins(:last_submission).order('submissions.id DESC').limit(1).first
+    latest_activity_status = ActivityStatus.where(user: user, series: series.visible).order('last_submission_id DESC').limit(1).first
     result = []
     incomplete_activities = series.visible.joins(:activities) # all activities in visible series
                                   .joins("LEFT JOIN activity_statuses ON activities.id = activity_statuses.activity_id AND series.id = activity_statuses.series_id AND activity_statuses.user_id = #{user.id}")

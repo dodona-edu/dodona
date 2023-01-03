@@ -92,10 +92,19 @@
         </div>
       </div>
     <% end %>
-    <% if course_series.length + course_activities.length < 3 && course_activities.length > 0 %>
+    <% if course_series.length + course_activities.length == 2 && course_activities.length > 0 %>
       <div class="course-item" style="height: 36px; align-items: center;">
         <div class="course-item-icon">
           <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
+        </div>
+        <div style="width: 100%">
+          <%= markdown t ".few-activities-markdown", count: course_activities.length%>
+        </div>
+      </div>
+    <% elsif course_series.length + course_activities.length == 1 && course_activities.length > 0 %>
+      <div class="course-item" style="height: 88px; align-items: center;">
+        <div class="course-item-icon">
+          <i class="mdi mdi-72 mdi-thumb-up-outline"></i>
         </div>
         <div style="width: 100%">
           <%= markdown t ".few-activities-markdown", count: course_activities.length%>

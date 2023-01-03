@@ -29,9 +29,9 @@ nl:
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
       few-activities-markdown:
-        one: "**Goed bezig!** Nog één activiteit en je hebt deze cursus afgewerkt."
-        other: "**Goed bezig!** Nog twee activiteiten en je hebt deze cursus afgewerkt."
-      no-activities-markdown: "**Gefeliciteerd!** Je hebt deze cursus afgewerkt!"
+        one: "**Goed bezig!** Nog één activiteit en je hebt alle oefeningen opgelost."
+        other: "**Goed bezig!** Nog twee activiteiten en je hebt alle oefeningen opgelost."
+      no-activities-markdown: "**Gefeliciteerd!** Je hebt alle oefeningen opgelost!"
       homepage_activities:
         continue: Of ga verder met deze oefening
         continue_first: Ga verder met deze oefening

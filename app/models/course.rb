@@ -439,11 +439,11 @@ class Course < ApplicationRecord
   end
 
   def completed_activity_count(user)
-    series.visible.map { |s| s.completed_activity_count(user) }.sum
+    ActivityStatus.where(accepted: true, user: user, series: series.visible).count
   end
 
   def started_activity_count(user)
-    series.visible.map { |s| s.started_activity_count(user) }.sum
+    ActivityStatus.where(started: true, user: user, series: series.visible).count
   end
 
   private

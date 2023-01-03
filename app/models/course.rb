@@ -227,14 +227,55 @@ class Course < ApplicationRecord
   end
 
   def homepage_activities(user, limit = 3)
-    result = []
     latest_activity_status = ActivityStatus.where(user: user, series: series.visible).joins(:last_submission).order('submissions.id DESC').limit(1).first
+    result = []
+    incomplete_activities = series.visible.joins(:activities) # all activities in visible series
+                                  .joins("LEFT JOIN activity_statuses ON activities.id = activity_statuses.activity_id AND series.id = activity_statuses.series_id AND activity_statuses.user_id = #{user.id}")
+                                  .where.not('activity_statuses.accepted = true') # filter out completed activities
+    if latest_activity_status.present?
+      series = latest_activity_status.series
+      activity = latest_activity_status.activity
+      series_membership = SeriesMembership.find_by(series: series, activity: activity)
 
-    result += next_unaccepted_activities(user, latest_activity_status.series, limit, latest_activity_status.activity) if latest_activity_status.present?
-    result += next_unaccepted_activities(user, series.visible.first, limit - result.length) if result.length < limit
+      if series_membership.present?
+        # first only activities after the last worked on activity
+        result += incomplete_activities
+                    .where('series.order > ? OR (series.order = ? AND series.id < ?) OR (series.order = ? AND series.id = ? AND (series_memberships.order >= ? OR series_memberships.id >= ?))', series.order, series.order, series.id, series.order, series.id, series_membership.order, series_membership.id)
+                    .limit(limit)
+                    .pluck('series.id', 'activities.id', 'activity_statuses.last_submission_id')
+
+      end
+    end
+
+    if result.length < limit
+      result += incomplete_activities
+                  .limit(limit - result.length)
+                  .pluck('series.id', 'activities.id', 'activity_statuses.last_submission_id')
+    end
+    final_result = []
+    result.map do |a|
+      activity = Activity.find(a[1])
+      series = Series.find(a[0])
+      submission = Submission.find(a[2]) if a[2].present?
+      text = if submission.present?
+               I18n.t("pages.course_card.homepage_activities.continue#{final_result.empty? ? '_first' : ''}")
+             else
+               I18n.t("pages.course_card.homepage_activities.start#{final_result.empty? ? '_first' : ''}")
+             end
+      final_result << {
+        series: series,
+        activity: activity,
+        submission: submission,
+        text: text
+      }
+    end
+    # result = []
+    #
+    # result += next_unaccepted_activities(user, latest_activity_status.series, limit, latest_activity_status.activity) if latest_activity_status.present?
+    # result += next_unaccepted_activities(user, series.visible.first, limit - result.length) if result.length < limit
 
     # remove duplicates
-    result.uniq { |a| a[:activity] }
+    final_result.uniq { |a| a[:activity] }
   end
 
   def pending_series(user)

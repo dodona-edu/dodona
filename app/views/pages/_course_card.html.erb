@@ -93,7 +93,7 @@
       </div>
     <% end %>
     <% if course_series.length + course_activities.length == 2 && course_activities.length > 0 %>
-      <div class="course-item" style="height: 36px; align-items: center;">
+      <div class="course-item">
         <div class="course-item-icon">
           <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
         </div>
@@ -102,7 +102,7 @@
         </div>
       </div>
     <% elsif course_series.length + course_activities.length == 1 && course_activities.length > 0 %>
-      <div class="course-item" style="height: 88px; align-items: center;">
+      <div class="course-item course-item-double">
         <div class="course-item-icon">
           <i class="mdi mdi-72 mdi-thumb-up-outline"></i>
         </div>
@@ -111,7 +111,7 @@
         </div>
       </div>
     <% elsif course_series.length == 2 && course_activities.length == 0 %>
-      <div class="course-item" style="height: 36px; align-items: center;">
+      <div class="course-item">
         <div class="course-item-icon">
           <i class="mdi mdi-24 mdi-party-popper colored-correct"></i>
         </div>
@@ -120,7 +120,7 @@
         </div>
       </div>
     <% elsif course_series.length == 1 && course_activities.length == 0 %>
-      <div style="display: flex; align-items: center;">
+      <div class="course-item course-item-double">
         <div style='height: 88px; width: 88px'>
           <%= render partial: "popper", style: 'height: 130px; width: 130px' %>
         </div>
@@ -129,9 +129,9 @@
         </span>
       </div>
     <% elsif course_series.length == 0 && course_activities.length == 0 %>
-      <div style="width: 100%; display: flex; align-items: center; flex-direction: column;">
+      <div class="course-item course-item-triple">
         <div style='height: 120px; width: 120px; margin-top: 16px'>
-          <%= render partial: "popper", style: 'height: 120px; width: 120px' %>
+          <%= render partial: "popper" %>
         </div>
       </div>
       <div style="width: 100%; text-align: center; margin-top: 16px">

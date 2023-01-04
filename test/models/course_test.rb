@@ -286,4 +286,84 @@ class CourseTest < ActiveSupport::TestCase
       end
     end
   end
+
+  test 'Activity count returns number of activities in vissible series' do
+    course = create :course, series_count: 2, exercises_per_series: 1, content_pages_per_series: 1
+    course.series.first.update(visibility: :hidden)
+    assert_equal 2, course.activity_count
+
+    course.series.first.update(visibility: :closed)
+    assert_equal 2, course.activity_count
+
+    course.series.last.update(visibility: :hidden)
+    assert_equal 0, course.activity_count
+
+    course.series.first.update(visibility: :open)
+    course.series.last.update(visibility: :open)
+    assert_equal 4, course.activity_count
+  end
+
+  test 'Completed activity count returns number of completed activities by the user in vissible series' do
+    course = create :course, series_count: 2, exercises_per_series: 1, content_pages_per_series: 1
+    course.series.first.update(visibility: :open)
+    course.series.last.update(visibility: :hidden)
+
+    user = create :user
+    CourseMembership.create user: user, course: course, status: :student
+    assert_equal 0, course.completed_activity_count(user)
+
+    # Don't count outside course
+    create :correct_submission, user: user, exercise: course.series.first.exercises.first
+    assert_equal 0, course.completed_activity_count(user)
+    # Don't count wrong submission
+    create :wrong_submission, user: user, exercise: course.series.first.exercises.first, course: course
+    assert_equal 0, course.completed_activity_count(user)
+    create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
+    assert_equal 1, course.completed_activity_count(user)
+    create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
+    assert_equal 2, course.completed_activity_count(user)
+
+    # dont count in non visible series
+    create :activity_read_state, user: user, activity: course.series.last.content_pages.first, course: course
+    assert_equal 2, course.completed_activity_count(user)
+
+    course.series.last.update(visibility: :open)
+    assert_equal 3, course.completed_activity_count(user)
+
+    # dont count in closed series
+    course.series.first.update(visibility: :closed)
+    assert_equal 1, course.completed_activity_count(user)
+  end
+
+  test 'Start activity count returns number of started activities by the user in vissible series' do
+    course = create :course, series_count: 2, exercises_per_series: 1, content_pages_per_series: 1
+    course.series.first.update(visibility: :open)
+    course.series.last.update(visibility: :hidden)
+
+    user = create :user
+    CourseMembership.create user: user, course: course, status: :student
+    assert_equal 0, course.started_activity_count(user)
+
+    # Don't count outside course
+    create :correct_submission, user: user, exercise: course.series.first.exercises.first
+    assert_equal 0, course.started_activity_count(user)
+    # Count wrong submission
+    create :wrong_submission, user: user, exercise: course.series.first.exercises.first, course: course
+    assert_equal 1, course.started_activity_count(user)
+    create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
+    assert_equal 1, course.started_activity_count(user)
+    create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
+    assert_equal 2, course.started_activity_count(user)
+
+    # dont count in non visible series
+    create :activity_read_state, user: user, activity: course.series.last.content_pages.first, course: course
+    assert_equal 2, course.started_activity_count(user)
+
+    course.series.last.update(visibility: :open)
+    assert_equal 3, course.started_activity_count(user)
+
+    # dont count in closed series
+    course.series.first.update(visibility: :closed)
+    assert_equal 1, course.started_activity_count(user)
+  end
 end

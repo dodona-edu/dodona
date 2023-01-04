@@ -45,6 +45,7 @@ function initSeriesEdit(): void {
                     return;
                 }
 
+                addButton.classList.add("hidden");
                 const row = addButton.parentElement.closest("tr").cloneNode(true);
                 row.classList.add("new");
                 row.getElementsByTagName("td")[0].innerHTML = "<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>";
@@ -53,7 +54,6 @@ function initSeriesEdit(): void {
                 row.querySelector("td.actions").innerHTML = `<a href='#' class='btn btn-icon remove-activity' data-activity_id='${activityId}' data-activity_name='${activityName}' data-series_id='${seriesId}'><i class='mdi mdi-delete'></i></a>`;
                 document.querySelector(".series-activity-list tbody").append(row);
                 row.classList.remove("new");
-                // TODO: opacity doesn't work because no "activity" class on activities
                 row.classList.add("pending");
                 fetch("/series/" + seriesId + "/add_activity.js", {
                     method: "POST",
@@ -66,9 +66,9 @@ function initSeriesEdit(): void {
                             if (noActivities) {
                                 noActivities.remove();
                             }
-                            activityAdded(row, addButton);
+                            activityAdded(row);
                         } else {
-                            addingActivityFailed(row);
+                            addingActivityFailed(row, addButton);
                         }
                     });
             });
@@ -78,18 +78,21 @@ function initSeriesEdit(): void {
     function initRemoveButtons(): void {
         document.querySelectorAll("a.remove-activity").forEach( b => {
             b.addEventListener("click", e => {
-                // prevent automatic scrolling to top of the page
-                e.preventDefault();
                 removeActivity(e);
             });
         });
     }
 
     function removeActivity(e: Event): void {
-        const currentTarget = e.currentTarget as HTMLHtmlElement;
-        const activityId = currentTarget.dataset.activity_id;
-        const seriesId = currentTarget.dataset.series_id;
-        const row = currentTarget.parentElement.closest("tr");
+        // prevent automatic scrolling to top of the page
+        e.preventDefault();
+
+        const removeButton = e.currentTarget as HTMLButtonElement;
+        const activityId = removeButton.dataset.activity_id;
+        const seriesId = removeButton.dataset.series_id;
+        const row = removeButton.parentElement.closest("tr");
+
+        removeButton.classList.add("hidden");
         row.classList.add("pending");
         fetch("/series/" + seriesId + "/remove_activity.js", {
             method: "POST",
@@ -100,26 +103,24 @@ function initSeriesEdit(): void {
                 if (response.ok) {
                     activityRemoved(row);
                 } else {
-                    removingActivityFailed(row);
+                    removingActivityFailed(row, removeButton);
                 }
             });
     }
 
-    function activityAdded(row: HTMLTableRowElement, addButton: HTMLButtonElement): void {
+    function activityAdded(row: HTMLTableRowElement): void {
         new Toast(I18n.t("js.activity-added-success"));
         row.querySelector("a.remove-activity").addEventListener("click", e => {
-            // prevent automatic scrolling to top of the page
-            e.preventDefault();
             removeActivity(e);
         });
         row.classList.remove("pending");
-        addButton.classList.add("hidden");
     }
 
-    function addingActivityFailed(row: HTMLTableRowElement): void {
+    function addingActivityFailed(row: HTMLTableRowElement, addButton: HTMLButtonElement): void {
         new Toast(I18n.t("js.activity-added-failed"));
         row.classList.add("new");
         row.classList.remove("pending");
+        addButton.classList.remove("hidden");
         setTimeout( () => {
             row.remove();
         }, 500);
@@ -138,8 +139,9 @@ function initSeriesEdit(): void {
         }
     }
 
-    function removingActivityFailed(row: HTMLTableRowElement):void {
+    function removingActivityFailed(row: HTMLTableRowElement, removeButton: HTMLButtonElement): void {
         row.classList.remove("pending");
+        removeButton.classList.remove("hidden");
         new Toast(I18n.t("js.activity-removed-failed"));
     }
 

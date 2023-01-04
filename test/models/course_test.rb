@@ -366,4 +366,129 @@ class CourseTest < ActiveSupport::TestCase
     course.series.first.update(visibility: :closed)
     assert_equal 1, course.started_activity_count(user)
   end
+
+  test 'Home page activities should return the activity with the latest submission in a visible series and subsequent activities' do
+    course = create :course, series_count: 5, exercises_per_series: 1, content_pages_per_series: 1
+    course.series.first.update(visibility: :open)
+    course.series.last.update(visibility: :hidden)
+
+    user = create :user
+    CourseMembership.create user: user, course: course, status: :student
+
+    # Should start from first activity when no submissions
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.first.activities.first, result.first[:activity]
+    assert_equal course.series.first, result.first[:series]
+    assert_nil result.first[:submission]
+
+    assert_equal course.series.first.activities.second, result.second[:activity]
+    assert_equal course.series.first, result.second[:series]
+    assert_nil result.second[:submission]
+
+    assert_equal course.series.second.activities.first, result.third[:activity]
+    assert_equal course.series.second, result.third[:series]
+    assert_nil result.third[:submission]
+
+    # Should start from after last submission if submission was correct
+    create :correct_submission, user: user, exercise: course.series.second.exercises.first, course: course
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.second.activities.second, result.first[:activity]
+    assert_equal course.series.second, result.first[:series]
+    assert_nil result.first[:submission]
+
+    assert_equal course.series.third.activities.first, result.second[:activity]
+    assert_equal course.series.third, result.second[:series]
+    assert_nil result.second[:submission]
+
+    assert_equal course.series.third.activities.second, result.third[:activity]
+    assert_equal course.series.third, result.third[:series]
+    assert_nil result.third[:submission]
+
+    # should only return limit number of activities
+    result = course.homepage_activities(user, 1)
+    assert_equal 1, result.count
+    assert_equal course.series.second.activities.second, result.first[:activity]
+    assert_equal course.series.second, result.first[:series]
+    assert_nil result.first[:submission]
+
+    # should start from last submission if submission was wrong
+    w1 = create :wrong_submission, user: user, exercise: course.series.third.exercises.first, course: course
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.third.activities.first, result.first[:activity]
+    assert_equal course.series.third, result.first[:series]
+    assert_equal w1, result.first[:submission]
+
+    assert_equal course.series.third.activities.second, result.second[:activity]
+    assert_equal course.series.third, result.second[:series]
+    assert_nil result.second[:submission]
+
+    assert_equal course.series.fourth.activities.first, result.third[:activity]
+    assert_equal course.series.fourth, result.third[:series]
+    assert_nil result.third[:submission]
+
+    # should skip completed activities
+    create :activity_read_state, user: user, activity: course.series.third.content_pages.first, course: course
+    create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
+    create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.second.activities.second, result.first[:activity]
+    assert_equal course.series.second, result.first[:series]
+    assert_nil result.first[:submission]
+
+    assert_equal course.series.third.activities.first, result.second[:activity]
+    assert_equal course.series.third, result.second[:series]
+    assert_equal w1, result.second[:submission]
+
+    assert_equal course.series.fourth.activities.first, result.third[:activity]
+    assert_equal course.series.fourth, result.third[:series]
+    assert_nil result.third[:submission]
+
+    # should skip activities in hidden series
+    course.series.second.update(visibility: :hidden)
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.third.activities.first, result.first[:activity]
+    assert_equal course.series.third, result.first[:series]
+    assert_equal w1, result.first[:submission]
+
+    assert_equal course.series.fourth.activities.first, result.second[:activity]
+    assert_equal course.series.fourth, result.second[:series]
+    assert_nil result.second[:submission]
+
+    assert_equal course.series.fourth.activities.second, result.third[:activity]
+    assert_equal course.series.fourth, result.third[:series]
+    assert_nil result.third[:submission]
+
+    # should start from first activity if end is reached
+    w2 = create :wrong_submission, user: user, exercise: course.series.fourth.exercises.first, course: course
+    result = course.homepage_activities(user, 3)
+    assert_equal 3, result.count
+    assert_equal course.series.fourth.activities.first, result.first[:activity]
+    assert_equal course.series.fourth, result.first[:series]
+    assert_equal w2, result.first[:submission]
+
+    assert_equal course.series.fourth.activities.second, result.second[:activity]
+    assert_equal course.series.fourth, result.second[:series]
+    assert_nil result.second[:submission]
+
+    assert_equal course.series.third.activities.first, result.third[:activity]
+    assert_equal course.series.third, result.third[:series]
+    assert_equal w1, result.third[:submission]
+
+    # should return less activities if limit can't be reached
+    create :activity_read_state, user: user, activity: course.series.fourth.content_pages.first, course: course
+    result = course.homepage_activities(user, 3)
+    assert_equal 2, result.count
+    assert_equal course.series.fourth.activities.first, result.first[:activity]
+    assert_equal course.series.fourth, result.first[:series]
+    assert_equal w2, result.first[:submission]
+
+    assert_equal course.series.third.activities.first, result.second[:activity]
+    assert_equal course.series.third, result.second[:series]
+    assert_equal w1, result.second[:submission]
+  end
 end

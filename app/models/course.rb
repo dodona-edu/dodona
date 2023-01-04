@@ -199,7 +199,8 @@ class Course < ApplicationRecord
     result = []
     incomplete_activities = series.visible.joins(:activities) # all activities in visible series
                                   .joins("LEFT JOIN activity_statuses ON activities.id = activity_statuses.activity_id AND series.id = activity_statuses.series_id AND activity_statuses.user_id = #{user.id}")
-                                  .where.not('activity_statuses.accepted = true') # filter out completed activities
+                                  .where('activity_statuses.accepted IS NULL OR activity_statuses.accepted = false') # filter out completed activities
+                                  .reorder('series.order': :asc, 'series.id': :desc, 'series_memberships.order': :asc, 'series_memberships.id': :asc)
 
     # try to find the latest activity by the user in this course
     latest_activity_status = ActivityStatus.where(user: user, series: series.visible).order('last_submission_id DESC').limit(1).first

@@ -105,8 +105,8 @@ figcaption {
 }
 
 svg {
-  --svg-fill-color: #{$primary};
-  --svg-correct-color: #{$success};
-  --svg-incorrect-color: #{$danger};
-  --svg-warning-color: #{$warning};
+  --svg-color-primary: #{$primary};
+  --svg-color-correct: #{$success};
+  --svg-color-incorrect: #{$danger};
+  --svg-color-warning: #{$warning};
 }

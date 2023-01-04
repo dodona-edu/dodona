@@ -28,10 +28,12 @@ en:
       course-hidden: Hidden course
       course-closed: Closed course
       favorite: "Favorite course"
-      few-activities-markdown:
-        one: "**Doing great!** Only one activity left and you have solved all exercises."
-        other: "**Doing great!** Only two activities left and you have solved all exercises."
-      no-activities-markdown: "**Congratulations!** You have solved all exercises!"
+      few-activities-title: "Doing great!"
+      few-activities-help:
+        one: "Only one activity left."
+        other: "Only two activities left."
+      no-activities-title: "Congratulations!"
+      no-activities-help: "You have solved all exercises!"
       homepage_activities:
         continue: Or continue working on this exercise
         continue_first: Continue working on this exercise

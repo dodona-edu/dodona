@@ -28,10 +28,12 @@ nl:
       course-hidden: Verborgen cursus
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
-      few-activities-markdown:
-        one: "**Goed bezig!** Nog één activiteit en je hebt alle oefeningen opgelost."
-        other: "**Goed bezig!** Nog twee activiteiten en je hebt alle oefeningen opgelost."
-      no-activities-markdown: "**Gefeliciteerd!** Je hebt alle oefeningen opgelost!"
+      few-activities-title: "Goed bezig!"
+      few-activities-help:
+        one: "Nog maar één activiteit te gaan."
+        other: "Nog maar twee activiteiten te gaan."
+      no-activities-title: "Gefeliciteerd!"
+      no-activities-help: "Je hebt alle oefeningen opgelost!"
       homepage_activities:
         continue: Of ga verder met deze oefening
         continue_first: Ga verder met deze oefening

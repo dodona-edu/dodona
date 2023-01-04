@@ -92,50 +92,39 @@
         </div>
       </div>
     <% end %>
-    <% if course_series.length + course_activities.length == 2 && course_activities.length > 0 %>
-      <div class="course-item">
-        <div class="course-item-icon">
-          <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
-        </div>
-        <div style="width: 100%">
-          <%= markdown t ".few-activities-markdown", count: course_activities.length%>
-        </div>
-      </div>
-    <% elsif course_series.length + course_activities.length == 1 && course_activities.length > 0 %>
-      <div class="course-item course-item-double">
-        <div class="course-item-icon">
-          <i class="mdi mdi-72 mdi-thumb-up-outline"></i>
-        </div>
-        <div style="width: 100%">
-          <%= markdown t ".few-activities-markdown", count: course_activities.length%>
-        </div>
-      </div>
-    <% elsif course_series.length == 2 && course_activities.length == 0 %>
-      <div class="course-item">
-        <div class="course-item-icon">
-          <i class="mdi mdi-24 mdi-party-popper colored-correct"></i>
-        </div>
-        <div style="width: 100%">
-          <%= markdown t ".no-activities-markdown", count: course_activities.length%>
-        </div>
-      </div>
-    <% elsif course_series.length == 1 && course_activities.length == 0 %>
-      <div class="course-item course-item-double">
-        <div style='height: 88px; width: 88px'>
-          <%= render partial: "popper", style: 'height: 130px; width: 130px' %>
-        </div>
-        <span style="margin-left: 16px">
-          <%= markdown t ".no-activities-markdown" %>
-        </span>
+    <% if course_series.length + course_activities.length < 3 && course_series.length + course_activities.length > 0 %>
+      <div class="course-item <%= course_series.length + course_activities.length == 1 ? "course-item-double" : "" %>">
+        <% if course_activities.length > 0 %>
+          <div class="course-item-icon">
+            <i class="mdi mdi-<%= course_series.length + course_activities.length == 1 ? "72" : "24" %> mdi-thumb-up-outline"></i>
+          </div>
+          <span>
+            <strong><%= t ".few-activities-title" %></strong>
+            <br/>
+            <%= t ".few-activities-help", count: course_activities.length %>
+          </span>
+        <% else %>
+          <div class="course-item course-item-double">
+            <div class="course-item-icon">
+              <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
+            </div>
+            <span>
+              <strong><%= t ".no-activities-title" %></strong>
+              <br/>
+              <%= t ".no-activities-help" %>
+            </span>
+          </div>
+        <% end %>
       </div>
     <% elsif course_series.length == 0 && course_activities.length == 0 %>
       <div class="course-item course-item-triple">
-        <div style='height: 120px; width: 120px; margin-top: 16px'>
-          <%= render partial: "popper" %>
+        <div>
+          <%= render partial: "popper", locals: { size: 120 } %>
         </div>
-      </div>
-      <div style="width: 100%; text-align: center; margin-top: 16px">
-        <%= markdown t ".no-activities-markdown" %>
+        <span style="margin-top: 16px">
+        <strong><%= t ".no-activities-title" %></strong>
+            <%= t ".no-activities-help" %>
+        </span>
       </div>
     <% end %>
   </div>

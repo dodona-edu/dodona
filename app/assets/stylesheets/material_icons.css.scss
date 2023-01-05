@@ -43,6 +43,10 @@
   line-height: 74px;
 }
 
+.mdi.mdi-vam::before {
+  vertical-align: middle;
+}
+
 .visible-xs.mdi::before {
   margin-top: 12px;
 }

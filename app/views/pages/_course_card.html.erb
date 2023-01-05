@@ -34,16 +34,37 @@
         </small>
       </div>
 
-      <%= render partial: 'progress_chart', locals: {
-        total: course.activity_count,
-        tried: course.started_activity_count(current_user),
-        correct: course.completed_activity_count(current_user),
-        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-        width: '100%',
-        muted: true,
-      } %>
+      <% if current_user.course_admin?(course) %>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;margin-bottom: -7px">
+          <div>
+            <i class="mdi mdi-24 mdi-account-multiple-outline mdi-vam"></i>
+            <%= course.users.count %>
+          </div>
+          <div>
+            <%= custom_icon "exercises" %>
+            <%= course.exercises.count %>
+          </div>
+          <div>
+            <%= custom_icon "submissions" %>
+            <%= course.submissions.count %>
+          </div>
+          <div>
+            <i class="mdi mdi-24 mdi-mdi mdi-account-question mdi-vam"></i>
+            <%= course.unanswered_questions.count %>
+          </div>
+        </div>
+      <% else %>
+        <%= render partial: 'progress_chart', locals: {
+          total: course.activity_count,
+          tried: course.started_activity_count(current_user),
+          correct: course.completed_activity_count(current_user),
+          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+          muted: true,
+        } %>
+      <% end %>
     </div>
   <% end %>
 

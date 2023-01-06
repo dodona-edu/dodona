@@ -772,7 +772,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     activities_json = JSON.parse response.body
-    assert_equal [exercise.id, other_exercise.id], activities_json.map { |a| a['id'] }
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
 
     SeriesMembership.find_by(series: series, activity: exercise).update(order: 2)
     SeriesMembership.find_by(series: series, activity: other_exercise).update(order: 1)
@@ -781,7 +781,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     activities_json = JSON.parse response.body
-    assert_equal [other_exercise.id, exercise.id], activities_json.map { |a| a['id'] }
+    assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
   end
 
   test 'activities should be ordered by popularity' do
@@ -794,7 +794,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     activities_json = JSON.parse response.body
-    assert_equal [exercise.id, other_exercise.id], activities_json.map { |a| a['id'] }
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
 
     create :series, exercises: [other_exercise]
     create :series, exercises: [other_exercise]
@@ -803,6 +803,6 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     activities_json = JSON.parse response.body
-    assert_equal [other_exercise.id, exercise.id], activities_json.map { |a| a['id'] }
+    assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
   end
 end

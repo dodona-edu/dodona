@@ -101,7 +101,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     create :activity_read_state, activity: activity, course: course, user: user
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert ActivityStatus.find_by(user: user, activity: activity, series: series).accepted_before_deadline
-    series.deadline = Time.now - 1.week
+    series.deadline = 1.week.ago
     series.save
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not ActivityStatus.find_by(user: user, activity: activity, series: series).accepted_before_deadline

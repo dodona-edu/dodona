@@ -1,6 +1,6 @@
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop";
-import { initDatePicker, fetch } from "./util.js";
+import { fetch } from "./util.js";
 
 import { ViolinGraph } from "visualisations/violin";
 import { StackedStatusGraph } from "visualisations/stacked_status";
@@ -77,9 +77,7 @@ function initSeriesEdit(): void {
 
     function initRemoveButtons(): void {
         document.querySelectorAll("a.remove-activity").forEach( b => {
-            b.addEventListener("click", e => {
-                removeActivity(e);
-            });
+            b.addEventListener("click", removeActivity);
         });
     }
 
@@ -110,9 +108,7 @@ function initSeriesEdit(): void {
 
     function activityAdded(row: HTMLTableRowElement): void {
         new Toast(I18n.t("js.activity-added-success"));
-        row.querySelector("a.remove-activity").addEventListener("click", e => {
-            removeActivity(e);
-        });
+        row.querySelector("a.remove-activity").addEventListener("click", removeActivity);
         row.classList.remove("pending");
     }
 
@@ -173,4 +169,4 @@ function initSeriesShow(id: string): void {
     });
 }
 
-export { initDatePicker as initDeadlinePicker, initSeriesEdit, initSeriesShow };
+export { initSeriesEdit, initSeriesShow };

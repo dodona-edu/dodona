@@ -27,7 +27,7 @@ function initAdminsEdit(): void {
         const repositoryId = cell.dataset.repository_id;
         const oldRow = cell.parentElement.closest("tr");
 
-        fetch(`/repositories/${repositoryId}/add_admin.js`, {
+        fetch(`/repositories/${repositoryId}/add_admin`, {
             method: "POST",
             body: JSON.stringify({ user_id: userId }),
             headers: { "Content-type": "application/json" },
@@ -47,7 +47,7 @@ function initAdminsEdit(): void {
         const userId = cell.dataset.user_id;
         const repositoryId = cell.dataset.repository_id;
 
-        fetch(`/repositories/${repositoryId}/remove_admin.js`, {
+        fetch(`/repositories/${repositoryId}/remove_admin`, {
             method: "POST",
             body: JSON.stringify({ user_id: userId }),
             headers: { "Content-type": "application/json" },
@@ -116,7 +116,7 @@ function initCoursesEdit(): void {
         const repositoryId = cell.dataset.repository_id;
         const oldRow = cell.parentElement.closest("tr");
 
-        fetch(`/repositories/${repositoryId}/add_course.js`, {
+        fetch(`/repositories/${repositoryId}/add_course`, {
             method: "POST",
             body: JSON.stringify({ course_id: courseId }),
             headers: { "Content-type": "application/json" },
@@ -136,7 +136,7 @@ function initCoursesEdit(): void {
         const courseId = cell.dataset.course_id;
         const repositoryId = cell.dataset.repository_id;
 
-        fetch(`/repositories/${repositoryId}/remove_course.js`, {
+        fetch(`/repositories/${repositoryId}/remove_course`, {
             method: "POST",
             body: JSON.stringify({ course_id: courseId }),
             headers: { "Content-type": "application/json" },

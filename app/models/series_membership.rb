@@ -20,26 +20,9 @@ class SeriesMembership < ApplicationRecord
 
   validates :series_id, uniqueness: { scope: :activity_id }
   after_create :invalidate_caches
-  after_create :add_activity_statuses_delayed
   after_destroy :invalidate_caches
   after_destroy :invalidate_status
   after_destroy :regenerate_activity_token
-
-  def add_activity_statuses_delayed
-    delay(queue: :statistics).add_activity_statuses
-  end
-
-  def add_activity_statuses
-    if activity.is_a? Exercise
-      activity.submissions.where(course: series.course).distinct(:user_id).find_each do |submission|
-        ActivityStatus.create(series: series, activity: activity, user: submission.user)
-      end
-    else
-      activity.activity_read_states.where(course: series.course).distinct(:user_id).find_each do |ars|
-        ActivityStatus.create(series: series, activity: activity, user: ars.user)
-      end
-    end
-  end
 
   def invalidate_caches
     course.invalidate_activities_count_cache

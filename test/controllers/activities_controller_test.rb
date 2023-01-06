@@ -761,4 +761,48 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
       get description_activity_url(exercise, token: exercise.access_token, format: :json)
     end
   end
+
+  test 'activities of a series should be ordered by order of series membership' do
+    course = courses(:course1)
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise]
+
+    get series_activities_url(series, format: :json)
+
+    assert_response :success
+    activities_json = JSON.parse response.body
+    assert_equal [exercise.id, other_exercise.id], activities_json.map { |a| a['id'] }
+
+    SeriesMembership.find_by(series: series, activity: exercise).update(order: 2)
+    SeriesMembership.find_by(series: series, activity: other_exercise).update(order: 1)
+
+    get series_activities_url(series, format: :json)
+
+    assert_response :success
+    activities_json = JSON.parse response.body
+    assert_equal [other_exercise.id, exercise.id], activities_json.map { |a| a['id'] }
+  end
+
+  test 'activities should be ordered by popularity' do
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    create :series, exercises: [exercise, other_exercise]
+    create :series, exercises: [exercise]
+
+    get activities_url(format: :json)
+
+    assert_response :success
+    activities_json = JSON.parse response.body
+    assert_equal [exercise.id, other_exercise.id], activities_json.map { |a| a['id'] }
+
+    create :series, exercises: [other_exercise]
+    create :series, exercises: [other_exercise]
+
+    get activities_url(format: :json)
+
+    assert_response :success
+    activities_json = JSON.parse response.body
+    assert_equal [other_exercise.id, exercise.id], activities_json.map { |a| a['id'] }
+  end
 end

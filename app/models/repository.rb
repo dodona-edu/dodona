@@ -275,7 +275,7 @@ class Repository < ApplicationRecord
     end
   rescue JSON::ParserError => e
     # ew.
-    groups = /\d+:(?<error_type>.*) at '(?<json>.*)'/m.match(e.to_s)
+    groups = /\d*:?(?<error_type>.*) at '(?<json>.*)'/m.match(e.to_s)
     error_type = groups[:error_type]
     json = groups[:json]
     raise ConfigParseError.new(self, rel_path, error_type, json)

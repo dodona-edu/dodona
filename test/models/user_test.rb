@@ -1002,19 +1002,23 @@ class UserHasManyTest < ActiveSupport::TestCase
     series.exercises << a1
     s = create :wrong_submission, user: user, course: course, exercise: a1
 
-    assert_equal s, user.jump_back_in[:submission]
-    assert_equal a1, user.jump_back_in[:activity]
-    assert_equal course, user.jump_back_in[:course]
-    assert_equal series, user.jump_back_in[:series]
+    assert_equal 3, user.jump_back_in.count
+    assert_equal s, user.jump_back_in.first[:submission]
+    assert_equal a1, user.jump_back_in.first[:activity]
+    assert_equal course, user.jump_back_in.first[:course]
+    assert_equal series, user.jump_back_in.first[:series]
 
     series.update(visibility: :hidden)
-    assert_nil user.jump_back_in[:activity]
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :closed)
-    assert_nil user.jump_back_in[:activity]
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :open)
-    assert_equal a1, user.jump_back_in[:activity]
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
 
     CourseMembership.create user: user, course: course, status: :course_admin
 
@@ -1023,12 +1027,15 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert user.course_admin?(course)
 
     series.update(visibility: :hidden)
-    assert_nil user.jump_back_in[:activity]
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :closed)
-    assert_nil user.jump_back_in[:activity]
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :open)
-    assert_equal a1, user.jump_back_in[:activity]
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
   end
 end

@@ -32,20 +32,27 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     @property({ type: String })
     value: string;
     @property({ type: String })
-    filter: string = this.label;
-    @property({ type: String })
     placeholder: string;
 
     inputRef: Ref<HTMLInputElement> = createRef();
 
+    _filter= this.label;
+
+    @property({ type: String })
+    get filter(): string {
+        return this._filter;
+    }
+
+    set filter(value: string) {
+        this._filter = value;
+        this.value = this.options.find(o => this.filter === o.label)?.value || "";
+        this.fireEvent();
+    }
+
     watch = {
-        filter: () => {
-            this.value = this.options.find(o => this.filter === o.label)?.value || "";
-            this.fireEvent();
-        },
         options: () => {
             if (!this.filter) {
-                this.filter = this.label;
+                this._filter = this.label;
             }
 
             // If we can find a result amongst the filtered options
@@ -103,13 +110,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     select(option: Option, e: Event): void {
         e.preventDefault();
         e.stopPropagation();
-        this.value = option.value;
         this.filter = option.label;
     }
 
     processInput(e): void {
         const input = this.inputRef.value.value;
-        this.value = "";
         this.filter = input;
         e.stopPropagation();
     }

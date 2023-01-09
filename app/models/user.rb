@@ -463,6 +463,18 @@ class User < ApplicationRecord
     return [] if latest_submission.nil?
     return [] if latest_submission.exercise.nil?
 
+    # Don't give information about the exercise if the submission was within a course, but not within a visible series
+    # This is to prevent students from seeing exercises that are not made public explicitly
+    if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
+      return [{
+        submission: nil,
+        activity: nil,
+        series: nil,
+        course: latest_submission.course,
+        text: I18n.t('pages.clickable_homepage_cards.course')
+      }]
+    end
+
     result = []
     unless latest_submission.accepted?
       # The last submission was wrong, continue working on it

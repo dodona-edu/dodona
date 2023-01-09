@@ -992,4 +992,50 @@ class UserHasManyTest < ActiveSupport::TestCase
     course.series.second.update(visibility: :open)
     assert_equal course.series.second, user.jump_back_in.first[:series]
   end
+
+  test 'jump back in should only return activities the user has access to' do
+    user = create :staff
+
+    course = create :course, series_count: 2
+    series = course.series.first
+    a1 = create :exercise
+    series.exercises << a1
+    s = create :wrong_submission, user: user, course: course, exercise: a1
+
+    assert_equal 3, user.jump_back_in.count
+    assert_equal s, user.jump_back_in.first[:submission]
+    assert_equal a1, user.jump_back_in.first[:activity]
+    assert_equal course, user.jump_back_in.first[:course]
+    assert_equal series, user.jump_back_in.first[:series]
+
+    series.update(visibility: :hidden)
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
+
+    series.update(visibility: :closed)
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
+
+    series.update(visibility: :open)
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
+
+    CourseMembership.create user: user, course: course, status: :course_admin
+
+    # Refetch user to fix cached course_admin? method
+    user = User.find(user.id)
+    assert user.course_admin?(course)
+
+    series.update(visibility: :hidden)
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
+
+    series.update(visibility: :closed)
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:activity]
+
+    series.update(visibility: :open)
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
+  end
 end

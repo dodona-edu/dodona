@@ -43,13 +43,14 @@ en:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines
     clickable_homepage_cards:
-      course:
-        jump_back_in_info: "Continue working on this course."
-      activity:
-        jump_back_in_info: "Continue working on this exercise."
-        jump_back_in_info_success: "You solved the previous exercise. Start this one!"
+      last_submission: "Continue working on this exercise."
+      next_exercise_success: "You solved the previous exercise. Start this one!"
+      next_exercise: "Or start the next exercise."
+      continue_series: "Continue working on this series."
+      next_series_success: "You solved the previous series. Start this one!"
+      next_series: "Or start the next series."
+      course: "Continue working on this course."
       series:
-        jump_back_in_info: "You finished the previous series. Start this one!"
         progress_chart_info_correct:
           one: "One exercise solved correctly."
           other: "%{count} exercises solved correctly."

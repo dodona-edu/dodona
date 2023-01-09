@@ -43,11 +43,14 @@ nl:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines
     clickable_homepage_cards:
-      course:
-        jump_back_in_info: "Werk verder aan deze cursus."
-      activity:
-        jump_back_in_info: "Werk verder aan deze oefening."
-        jump_back_in_info_success: "De vorige oefening was correct, start met deze oefening."
+      last_submission: "Werk verder aan deze oefening."
+      next_exercise_success: "De vorige oefening was correct, start met deze oefening."
+      next_exercise: "Of start met de volgende oefening."
+      continue_series: "Werk verder aan deze reeks."
+      next_series_success: "De vorige reeks was correct, start met deze reeks."
+      next_series: "Of start met de volgende reeks."
+      course: "Werk verder aan deze cursus."
+
       series:
         jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
         progress_chart_info_correct:

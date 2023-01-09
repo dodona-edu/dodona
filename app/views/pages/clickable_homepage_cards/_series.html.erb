@@ -1,4 +1,4 @@
-<% show_progress ||= false %>
+<% text ||= false %>
 <% card_class = nil
    card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
@@ -25,7 +25,7 @@
         </div>
       </h4>
     </div>
-    <% if show_progress %>
+    <% unless text %>
       <%= render partial: 'progress_chart', locals: {
         total: series.activity_count,
         tried: series.started_activity_count(current_user),
@@ -38,7 +38,7 @@
       } %>
     <% else %>
         <small class="ellipsis-overflow">
-            <%= t ".jump_back_in_info" %>
+            <%= text %>
         </small>
     <% end %>
   </div>

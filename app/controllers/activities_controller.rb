@@ -68,7 +68,7 @@ class ActivitiesController < ApplicationController
                     authorize @series, :show?
                     policy(@series).overview? ? @series.activities : []
                   else
-                    policy_scope(Activity)
+                    policy_scope(Activity).order_by_popularity(:DESC)
                   end
 
     if params[:repository_id]
@@ -77,7 +77,7 @@ class ActivitiesController < ApplicationController
     end
 
     unless @activities.empty?
-      @activities = apply_scopes(@activities.order_by_popularity(:DESC))
+      @activities = apply_scopes(@activities)
       @activities = @activities.paginate(page: parse_pagination_param(params[:page]))
     end
     @labels = policy_scope(Label.all)

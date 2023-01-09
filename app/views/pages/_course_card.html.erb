@@ -48,18 +48,30 @@
   <% end %>
 
   <% course_series = course.homepage_series.first(2) %>
+  <% course_activities = course.homepage_activities(current_user, 3 - [1, course_series.length].min) %>
+  <% if course_series.empty? && course_activities.any?
+       course_series << course_activities.first[:series]
+       course_activities = course_activities.first(2)
+     end
+  %>
   <% if course_series.any? %>
     <div class="card-supporting-text card-border">
       <% course_series.each do |series| %>
         <div class="course-item">
           <div class="course-item-icon">
-            <i class="mdi mdi-24 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>
-                                 <%= deadline_class series.completed_before_deadline?(current_user), series.deadline %>"></i>
+            <% if series.deadline.present? %>
+              <i class="mdi mdi-24 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>
+                                   <%= deadline_class series.completed_before_deadline?(current_user), series.deadline %>"></i>
+            <% else %>
+              <%= custom_icon :exercises, class: "md-24" %>
+            <% end %>
           </div>
           <div class="ellipsis-overflow" style="width: 100%">
-            <span class="float-end">
-              <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
-            </span>
+            <% if series.deadline.present? %>
+              <span class="float-end">
+                <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+              </span>
+            <% end %>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
 
             <%= render partial: 'progress_chart', locals: {
@@ -76,7 +88,6 @@
       <% end %>
     </div>
   <% end %>
-  <% course_activities = course.homepage_activities(current_user, 3 - course_series.length) %>
   <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
     <% course_activities.each do |ca| %>
       <div class="course-item">

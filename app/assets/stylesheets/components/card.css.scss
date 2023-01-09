@@ -72,6 +72,17 @@ $card-supporting-text-padding: 16px;
   }
 }
 
+.card-title.card-title-colored-container {
+  color: $on-primary-container;
+  background-color: $primary-container;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
+
+  .progress-chart.colored-muted {
+    --progress-chart-color: #{$on-primary-container};
+  }
+}
+
 a.card-title-link,
 a.card-title-link:hover {
   color: inherit;

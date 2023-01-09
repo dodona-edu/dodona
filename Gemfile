@@ -8,13 +8,13 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.4'
 # Use Puma as the app server
-gem 'puma', '~> 6.0.0'
+gem 'puma', '~> 6.0.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.1.1'
+gem 'cssbundling-rails', '~> 1.1.2'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.0.3'
+gem 'jsbundling-rails', '~> 1.1.1'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.0.0'
+gem 'rouge', '4.0.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -67,23 +67,23 @@ gem 'autoprefixer-rails', '~>10.4.7'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
-gem 'ruby-saml', '~> 1.14.0'
+gem 'ruby-saml', '~> 1.15.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.4.0'
+gem 'omniauth_openid_connect', '~> 0.5.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
-gem 'jwt', '~> 2.5.0'
+gem 'jwt', '~> 2.6.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'
 
 # authorization
-gem 'pundit', '~> 2.2.0'
+gem 'pundit', '~> 2.3.0'
 
 # impersonate users
 gem 'pretender', '~> 0.4.0'
@@ -102,12 +102,12 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.2.0'
+gem 'i18n-js', '~> 4.2.2'
 gem 'rails-i18n', '~> 7.0.6'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
-gem 'httparty', '~> 0.20.0'
+gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.3'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.0.0'
+gem 'faker', '~> 3.1.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.23'
 
-gem 'ddtrace', '~> 1.7.0'
+gem 'ddtrace', '~> 1.8.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -174,7 +174,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.17.3'
+  gem 'rubocop-rails', '~> 2.17.4'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

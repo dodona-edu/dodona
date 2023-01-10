@@ -192,6 +192,7 @@ class Series < ApplicationRecord
 
   def invalidate_activity_statuses
     ActivityStatus.delete_by(series: self)
+    series_memberships.each(&:add_activity_statuses_delayed)
   end
 
   def invalidate_caches(user)

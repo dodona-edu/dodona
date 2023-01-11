@@ -227,16 +227,10 @@ class Course < ApplicationRecord
 
     # Map the ids to the actual objects
     result = result.map.with_index do |a, i|
-      text = if a[2].present?
-               I18n.t("pages.course_card.homepage_activities.continue#{i == 0 ? '_first' : ''}")
-             else
-               I18n.t("pages.course_card.homepage_activities.start#{i == 0 ? '_first' : ''}")
-             end
       {
         series: Series.find(a[0]),
         activity: Activity.find(a[1]),
-        submission: a[2].present? ? Submission.find(a[2]) : nil,
-        text: text
+        submission: a[2].present? ? Submission.find(a[2]) : nil
       }
     end
 

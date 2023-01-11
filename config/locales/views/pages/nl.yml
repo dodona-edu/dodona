@@ -34,11 +34,6 @@ nl:
         other: "Nog maar twee activiteiten te gaan."
       no-activities-title: "Gefeliciteerd!"
       no-activities-help: "Je hebt alle oefeningen opgelost!"
-      homepage_activities:
-        continue: Of ga verder met deze oefening
-        continue_first: Ga verder met deze oefening
-        start: Of start deze activiteit
-        start_first: Start deze activiteit
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines

@@ -17,7 +17,7 @@
           <span class="ellipsis-overflow" title="<%= series.name %>">
             <%= series.name %>
           </span>
-          <% if teacher_mode && show_progress %>
+          <% if teacher_mode && !text %>
             <i class="mdi mdi-school mdi-18" title="<%= t ".teacher_mode_info" %>"></i>
           <% end %>
         </div>

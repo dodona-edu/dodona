@@ -640,5 +640,10 @@ if Rails.env.development?
     RightsRequest.create(user: s, context: Faker::Lorem.paragraph(sentence_count: 10))
   end
 
+  puts "Create activity statuses (#{Time.now - start})"
+  # We do these all at once, because we disabled the callbacks earlier
+  # This is a lot faster than doing it one by one after each submission
+  SeriesMembership.find_each(&:add_activity_statuses)
+
   puts "Finished! (#{Time.now - start})"
 end

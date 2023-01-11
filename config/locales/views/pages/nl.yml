@@ -50,9 +50,14 @@ nl:
       next_series_success: "De vorige reeks was correct, start met deze reeks."
       next_series: "Of start met de volgende reeks."
       course: "Werk verder aan deze cursus."
-
       series:
-        jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
+        teacher_mode_info: "De voortgang van de klas wordt enkel getoond aan leraren. Studenten zien enkel hun eigen voortgang."
+        teacher_progress_chart_info_correct:
+          one: "Eén student heeft alle oefeningen correct opgelost."
+          other: "%{count} studenten hebben alle oefeningen correct opgelost."
+        teacher_progress_chart_info_tried:
+          one: "Eén student is met deze reeks gestart."
+          other: "%{count} studenten zijn met deze reeks gestart."
         progress_chart_info_correct:
           one: "Eén oefening correct opgelost."
           other: "%{count} oefeningen correct opgelost."

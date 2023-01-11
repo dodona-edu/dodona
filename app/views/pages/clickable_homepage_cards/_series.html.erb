@@ -1,6 +1,7 @@
+<% teacher_mode = current_user.course_admin?(series.course) %>
 <% text ||= false %>
 <% card_class = nil
-   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? %>
+   card_class = series.completed_before_deadline?(current_user) ? "colored-success" : "colored-danger" if series.deadline.present? && !teacher_mode %>
 <%= link_to course_path(series.course, series: series, anchor: series.anchor) do %>
   <div class="card card-supporting-text action-card <%= card_class %>">
     <div class="card-subtitle">
@@ -11,8 +12,15 @@
           <i class="mdi mdi-36 <%= deadline_icon series.completed_before_deadline?(current_user), series.deadline %>"></i>
         <% end %>
       </div>
-      <h4 class="ellipsis-overflow" title="<%= series.name %>">
-        <%= series.name %><br>
+      <h4 class="ellipsis-overflow">
+        <div class="spread-line">
+          <span class="ellipsis-overflow" title="<%= series.name %>">
+            <%= series.name %>
+          </span>
+          <% if teacher_mode && !text %>
+            <i class="mdi mdi-school mdi-18" title="<%= t ".teacher_mode_info" %>"></i>
+          <% end %>
+        </div>
         <div class="spread-line" >
           <span class="ellipsis-overflow" style="flex: 2">
             <small  title="<%= series.course.name %>">
@@ -26,16 +34,28 @@
       </h4>
     </div>
     <% unless text %>
-      <%= render partial: 'progress_chart', locals: {
-        total: series.activity_count,
-        tried: series.started_activity_count(current_user),
-        correct: series.completed_activity_count(current_user),
-        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-        width: '100%',
-        muted: true,
-      } %>
+      <% if teacher_mode %>
+        <%= render partial: 'progress_chart', locals: {
+          total: series.course.subscribed_members.count,
+          tried: series.users_started,
+          correct: series.users_completed,
+          info_tried: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_tried',
+          info_correct: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_correct',
+          width: '100%',
+          muted: true,
+        } %>
+      <% else %>
+        <%= render partial: 'progress_chart', locals: {
+          total: series.activity_count,
+          tried: series.started_activity_count(current_user),
+          correct: series.completed_activity_count(current_user),
+          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+          muted: true,
+        } %>
+      <% end %>
     <% else %>
         <small class="ellipsis-overflow">
             <%= text %>

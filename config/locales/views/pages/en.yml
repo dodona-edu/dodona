@@ -51,6 +51,13 @@ en:
       next_series: "Or start the next series."
       course: "Continue working on this course."
       series:
+        teacher_mode_info: "Class progress is only shown to teachers. Students only see their own progress."
+        teacher_progress_chart_info_correct:
+          one: "One student has solved all exercises correctly."
+          other: "%{count} students have solved all exercises correctly."
+        teacher_progress_chart_info_tried:
+          one: "One student has started this series."
+          other: "%{count} students have started this series."
         progress_chart_info_correct:
           one: "One exercise solved correctly."
           other: "%{count} exercises solved correctly."

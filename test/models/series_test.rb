@@ -722,4 +722,130 @@ class SeriesTest < ActiveSupport::TestCase
     create :correct_submission, exercise: series.exercises.second, user: user, course: series.course
     assert_equal 4, series.started_activity_count(user)
   end
+
+  test 'users_started should return the number of users that submitted to an exercise in the series or read a content page' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+    unsubscribed_member = create :user
+    subscribed_member1 = create :user
+    series.course.course_memberships.create(user: subscribed_member1, status: :student)
+    subscribed_member2 = create :user
+    series.course.course_memberships.create(user: subscribed_member2, status: :student)
+    subscribed_member3 = create :user
+    series.course.course_memberships.create(user: subscribed_member3, status: :student)
+
+    assert_equal 0, series.users_started
+
+    create :activity_read_state, activity: series.content_pages.first, user: subscribed_member1, course: series.course
+    assert_equal 1, series.users_started
+
+    create :correct_submission, exercise: series.exercises.first, user: subscribed_member2, course: series.course
+    assert_equal 2, series.users_started
+
+    create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+    assert_equal 2, series.users_started
+
+    create :activity_read_state, activity: series.content_pages.second, user: subscribed_member2, course: series.course
+    assert_equal 2, series.users_started
+
+    create :wrong_submission, exercise: series.exercises.second, user: subscribed_member3, course: series.course
+    assert_equal 3, series.users_started
+
+    create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+    assert_equal 3, series.users_started
+  end
+
+  test 'users_completed should return the number of users that completed all activities in the series' do
+    series = create :series, exercise_count: 2, content_page_count: 2
+    unsubscribed_member = create :user
+    subscribed_member1 = create :user
+    series.course.course_memberships.create(user: subscribed_member1, status: :student)
+    subscribed_member2 = create :user
+    series.course.course_memberships.create(user: subscribed_member2, status: :student)
+    subscribed_member3 = create :user
+    series.course.course_memberships.create(user: subscribed_member3, status: :student)
+
+    assert_equal 0, series.users_completed
+
+    create :activity_read_state, activity: series.content_pages.first, user: subscribed_member1, course: series.course
+    create :correct_submission, exercise: series.exercises.first, user: subscribed_member2, course: series.course
+    create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+    create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+    assert_equal 0, series.users_completed # one exercise is not enough
+
+    create :correct_submission, exercise: series.exercises.second, user: subscribed_member2, course: series.course
+    create :activity_read_state, activity: series.content_pages.first, user: subscribed_member2, course: series.course
+    create :correct_submission, exercise: series.exercises.second, user: subscribed_member2, course: series.course
+    assert_equal 0, series.users_completed # subscribed_member2 has not completed the second content page
+
+    create :activity_read_state, activity: series.content_pages.second, user: subscribed_member2, course: series.course
+    assert_equal 1, series.users_completed # subscribed_member2 completed the series
+
+    create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+    create :correct_submission, exercise: series.exercises.second, user: subscribed_member3, course: series.course
+    create :activity_read_state, activity: series.content_pages.first, user: subscribed_member3, course: series.course
+    create :activity_read_state, activity: series.content_pages.second, user: subscribed_member3, course: series.course
+    assert_equal 1, series.users_completed # subscribed_member3 has not completed the first exercise (wrong submission)
+
+    create :correct_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+    assert_equal 2, series.users_completed # subscribed_member3 completed the series
+
+    create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+    assert_equal 1, series.users_completed # subscribed_member3 has no longer completed the series (wrong submission)
+
+    create :correct_submission, exercise: series.exercises.first, user: subscribed_member3
+    assert_equal 1, series.users_completed # submission is not in the same course
+
+    create :correct_submission, exercise: series.exercises.first, user: unsubscribed_member, course: series.course
+    create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+    create :activity_read_state, activity: series.content_pages.first, user: unsubscribed_member, course: series.course
+    create :activity_read_state, activity: series.content_pages.second, user: unsubscribed_member, course: series.course
+    assert_equal 1, series.users_completed # unsubscribed_member has not subscribed to the course
+  end
+
+  test 'users_started should count submissions to activity in course, before activity was added to series' do
+    series = create :series, exercise_count: 0, content_page_count: 0
+    user = create :user
+    series.course.course_memberships.create(user: user, status: :student)
+    exercise = create :exercise
+
+    create :correct_submission, exercise: exercise, user: user, course: series.course
+    assert_equal 0, series.users_started
+
+    series.exercises << exercise
+    assert_equal 1, series.users_started
+    assert_equal 1, series.users_completed
+
+    content_page = create :content_page
+    create :series, course: series.course, content_pages: [content_page]
+    create :activity_read_state, activity: content_page, user: user, course: series.course
+    assert_equal 1, series.users_started
+    assert_equal 1, series.users_completed
+
+    series.content_pages << content_page
+    assert_equal 1, series.users_started
+    assert_equal 1, series.users_completed
+  end
+
+  test 'activity statuses should be updated after deadline change' do
+    series = create :series, exercise_count: 1, content_page_count: 1
+    user = create :user
+    series.course.course_memberships.create(user: user, status: :student)
+    exercise = series.exercises.first
+    content_page = series.content_pages.first
+
+    create :correct_submission, exercise: exercise, user: user, course: series.course
+    create :activity_read_state, activity: content_page, user: user, course: series.course
+
+    series.update!(deadline: 1.day.ago)
+    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
+    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
+    assert_equal false, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
+    assert_equal false, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
+
+    series.update!(deadline: 1.day.from_now)
+    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
+    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
+    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
+    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
+  end
 end

@@ -164,6 +164,15 @@ class Series < ApplicationRecord
     activities.count { |a| a.started_for?(user, self) }
   end
 
+  def users_started
+    activity_statuses.where(started: true, user: course.subscribed_members).distinct.count(:user_id)
+  end
+
+  def users_completed
+    # first count is used for the group by and ignored, second is used for the actual count of users
+    activity_statuses.where(accepted: true, user: course.subscribed_members).group('user_id').having('COUNT(*) = ?', activities_count).count.count
+  end
+
   def scoresheet
     users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 

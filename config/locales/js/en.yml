@@ -25,6 +25,14 @@ en:
     unfavorite-course-succeeded: Unfavorited course
     unfavorite-course-failed: Unfavoriting course failed
     unfavorite-course-do: Unfavorite
+    course-added-success: Course added
+    course-added-failed: Adding course failed
+    course-removed-success: Course removed
+    course-removed-failed: Removing course failed
+    admin-added-success: Admin added
+    admin-added-failed: Adding admin failed
+    admin-removed-success: Admin removed
+    admin-removed-failed: Removing admin failed
     labels: Labels
     programming_languages: Programming Languages
     judges: Judges

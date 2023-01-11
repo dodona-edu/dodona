@@ -67,7 +67,7 @@ gem 'autoprefixer-rails', '~>10.4.7'
 
 # saml authentication
 gem 'devise', '~>4.8.1'
-gem 'ruby-saml', '~> 1.14.0'
+gem 'ruby-saml', '~> 1.15.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
@@ -81,6 +81,9 @@ gem 'jwt', '~> 2.6.0'
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.9.0'
+
+# set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
+gem 'mail', '~> 2.7.1'
 
 # authorization
 gem 'pundit', '~> 2.3.0'

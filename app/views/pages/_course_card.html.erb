@@ -113,12 +113,12 @@
       <div class="course-item <%= course_series.length + course_activities.length == 1 ? "course-item-double" : "" %>">
         <% if course_activities.length > 0 %>
           <div class="course-item-icon">
-            <i class="mdi mdi-<%= course_series.length + course_activities.length == 1 ? "72" : "24" %> mdi-thumb-up-outline"></i>
+            <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
           </div>
           <span>
             <strong><%= t ".few-activities-title" %></strong>
             <br/>
-            <%= t ".few-activities-help", count: course_activities.length %>
+            <%= t ".few-activities-help" %>
           </span>
         <% else %>
           <div class="course-item course-item-double">

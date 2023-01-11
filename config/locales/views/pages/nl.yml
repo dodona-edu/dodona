@@ -29,9 +29,7 @@ nl:
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
       few-activities-title: "Goed bezig!"
-      few-activities-help:
-        one: "Nog maar één activiteit te gaan."
-        other: "Nog maar twee activiteiten te gaan."
+      few-activities-help: "Nog maar één oefening te gaan."
       no-activities-title: "Gefeliciteerd!"
       no-activities-help: "Je hebt alle oefeningen opgelost!"
     important_homepage_links:

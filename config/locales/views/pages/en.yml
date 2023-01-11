@@ -29,9 +29,7 @@ en:
       course-closed: Closed course
       favorite: "Favorite course"
       few-activities-title: "Doing great!"
-      few-activities-help:
-        one: "Only one activity left."
-        other: "Only two activities left."
+      few-activities-help: "Only one exercise left."
       no-activities-title: "Congratulations!"
       no-activities-help: "You have solved all exercises!"
     important_homepage_links:

@@ -203,7 +203,7 @@ class Course < ApplicationRecord
                                   .reorder('series.order': :asc, 'series.id': :desc, 'series_memberships.order': :asc, 'series_memberships.id': :asc)
 
     # try to find the latest activity by the user in this course
-    latest_activity_status = ActivityStatus.where(user: user, series: series.visible).order('last_submission_id DESC').limit(1).first
+    latest_activity_status = ActivityStatus.where(user: user, series: series.visible, started: true).order('last_submission_id DESC').limit(1).first
     if latest_activity_status.present?
       series = latest_activity_status.series
       series_membership = SeriesMembership.find_by(series: series, activity: latest_activity_status.activity)

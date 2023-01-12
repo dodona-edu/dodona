@@ -5,7 +5,10 @@ function initSelection(): void {
 
     const errorWrapper = document.querySelector("#errors-wrapper");
     const choosePanel = document.querySelector("#choose-panel");
+    const chooseCollapse = new bootstrap.Collapse(choosePanel.querySelector(".panel-collapse"), { toggle: false });
     const chooseOptionsPanel = document.querySelector("#choose-options-panel");
+    const chooseOptionsElement = chooseOptionsPanel.querySelector(".panel-collapse");
+    const chooseOptionsCollapse = new bootstrap.Collapse(chooseOptionsElement, { toggle: false });
 
     const form = document.querySelector("#download_submissions") as HTMLFormElement;
     const defaultAction = form.action;
@@ -15,10 +18,10 @@ function initSelection(): void {
         initContinueButton();
 
         choosePanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", () => {
-            chooseOptionsPanel.querySelector(".panel-collapse").classList.remove("show");
+            chooseOptionsCollapse.hide();
         });
         chooseOptionsPanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", () => {
-            choosePanel.querySelector(".panel-collapse").classList.remove("show");
+            chooseCollapse.hide();
         });
     }
 
@@ -63,13 +66,13 @@ function initSelection(): void {
             }
             if (formUrl) {
                 errorWrapper.classList.add("hidden");
-                choosePanel.querySelector(".panel-collapse").classList.remove("show");
-                chooseOptionsPanel.classList.remove("hidden");
-                chooseOptionsPanel.querySelector(".panel-collapse").classList.add("show");
+                chooseOptionsPanel.classList.remove("hidden"); // this panel is initially hidden
+                chooseCollapse.hide();
+                chooseOptionsCollapse.show();
                 form.action = formUrl;
             } else {
-                choosePanel.querySelector(".panel-collapse").classList.add("show");
-                chooseOptionsPanel.classList.add("hidden");
+                chooseCollapse.show();
+                chooseOptionsCollapse.hide();
                 errorWrapper.classList.remove("hidden");
                 document.querySelector("#warning-message-wrapper").innerHTML = I18n.t("js.no_selection");
             }

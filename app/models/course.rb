@@ -226,7 +226,7 @@ class Course < ApplicationRecord
     end
 
     # Map the ids to the actual objects
-    result = result.map.with_index do |a, i|
+    result = result.map do |a|
       {
         series: Series.find(a[0]),
         activity: Activity.find(a[1]),

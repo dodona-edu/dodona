@@ -89,16 +89,17 @@
     <% course_activities.each do |ca| %>
       <div class="course-item">
         <div class="course-item-icon" >
-          <%= activity_icon ca[:activity], 24 %>
+          <% if ca[:submission].present? %>
+              <span title="<%= ca[:submission].summary %>">
+                <%= submission_status_icon(ca[:submission], 24) %>
+              </span>
+          <% else %>
+            <%= activity_icon ca[:activity], 24 %>
+          <% end %>
         </div>
         <div style="width: calc(100% - 36px)">
           <div class="ellipsis-overflow" title="<%= ca[:activity].name %>">
             <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
-            <% if ca[:submission].present? %>
-              <span title="<%= ca[:submission].summary %>" style="vertical-align: middle">
-                <%= submission_status_icon(ca[:submission]) %>
-              </span>
-            <% end %>
           </div>
           <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">
             <%= ca[:series].name %>

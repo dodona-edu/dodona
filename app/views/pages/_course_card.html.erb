@@ -48,7 +48,7 @@
   <% end %>
 
   <% course_series = course.homepage_series.first(2) %>
-  <% course_activities = course.homepage_activities(current_user, 3 - [1, course_series.length].min) %>
+  <% course_activities = course.homepage_activities(current_user, 3 - [1, course_series.length].max) %>
   <% if course_series.empty? && course_activities.any?
        course_series << course_activities.first[:series]
        course_activities = course_activities.first(2)

@@ -238,8 +238,11 @@ GEM
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
-    mail (2.7.1)
+    mail (2.8.0.1)
       mini_mime (>= 0.1.1)
+      net-imap
+      net-pop
+      net-smtp
     mail_form (1.9.0)
       actionmailer (>= 5.2)
       activemodel (>= 5.2)
@@ -533,7 +536,7 @@ DEPENDENCIES
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.8.1)
   listen (~> 3.7.1)
-  mail (~> 2.7.1)
+  mail (~> 2.8.0)
   mail_form (~> 1.9.0)
   memory_profiler (~> 1.0.1)
   minitest-ci (~> 3.4.0)

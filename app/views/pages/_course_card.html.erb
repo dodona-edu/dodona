@@ -1,6 +1,6 @@
 <div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
-    <div class="card-title card-title-colored-container">
+    <div class="card-title card-title-colored-container" style="height: 111px;">
       <h2 class="card-title-text justify-content-between">
         <span class="ellipsis-overflow" title="<%= course.name %>"><%= course.name %></span>
         <span class="float-end" style="white-space: nowrap">
@@ -35,22 +35,18 @@
       </div>
 
       <% if current_user.admin_of?(course) %>
-        <div style="display: flex; flex-direction: row; justify-content: space-between;margin-bottom: -7px">
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
           <div>
-            <i class="mdi mdi-24 mdi-account-multiple-outline mdi-vam"></i>
-            <%= course.users.count %>
+            <i class="mdi mdi-18 mdi-account-multiple-outline mdi-vam"></i>
+            <small><%= number_to_human(course.users.count) %> </small>
           </div>
           <div>
-            <%= custom_icon "exercises" %>
-            <%= course.exercises.count %>
+            <%= custom_icon "exercises", class: "md-18" %>
+            <small><%= number_to_human(course.exercises.count) %> </small>
           </div>
           <div>
-            <%= custom_icon "submissions" %>
-            <%= course.submissions.count %>
-          </div>
-          <div>
-            <i class="mdi mdi-24 mdi-mdi mdi-account-question mdi-vam"></i>
-            <%= course.unanswered_questions.count %>
+            <%= custom_icon "submissions", class: "md-18" %>
+            <small><%= number_to_human(course.submissions.count) %> </small>
           </div>
         </div>
       <% else %>

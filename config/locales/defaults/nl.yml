@@ -50,3 +50,14 @@ nl:
     updated: "%{model} werd succesvol aangepast."
     update_failed: "%{model} kon niet worden aangepast."
     destroyed: "%{model} werd succesvol verwijderd."
+  number:
+    human:
+      decimal_units:
+        format: "%n%u"
+        units:
+          unit: ""
+          thousand: "k"
+          million: mln.
+          billion: mld.
+          trillion: bln.
+          quadrillion: bld.

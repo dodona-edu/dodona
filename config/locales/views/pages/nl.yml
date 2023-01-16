@@ -29,27 +29,30 @@ nl:
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
       few-activities-title: "Goed bezig!"
-      few-activities-help:
-        one: "Nog maar één activiteit te gaan."
-        other: "Nog maar twee activiteiten te gaan."
+      few-activities-help: "Nog maar één oefening te gaan."
       no-activities-title: "Gefeliciteerd!"
       no-activities-help: "Je hebt alle oefeningen opgelost!"
-      homepage_activities:
-        continue: Of ga verder met deze oefening
-        continue_first: Ga verder met deze oefening
-        start: Of start deze activiteit
-        start_first: Start deze activiteit
+      start-activity: "Begin met %{activity}"
+      continue-activity: "Werk verder aan %{activity}"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines
     clickable_homepage_cards:
-      course:
-        jump_back_in_info: "Werk verder aan deze cursus."
-      activity:
-        jump_back_in_info: "Werk verder aan deze oefening."
-        jump_back_in_info_success: "De vorige oefening was correct, start met deze oefening."
+      last_submission: "Werk verder aan deze oefening."
+      next_exercise_success: "De vorige oefening was correct, start met deze oefening."
+      next_exercise: "Of start met de volgende oefening."
+      continue_series: "Werk verder aan deze reeks."
+      next_series_success: "De vorige reeks was correct, start met deze reeks."
+      next_series: "Of start met de volgende reeks."
+      course: "Werk verder aan deze cursus."
       series:
-        jump_back_in_info: "Je hebt de vorige reeks afgewerkt, start met deze reeks."
+        teacher_mode_info: "De voortgang van de klas wordt enkel getoond aan leraren. Studenten zien enkel hun eigen voortgang."
+        teacher_progress_chart_info_correct:
+          one: "Eén student heeft alle oefeningen correct opgelost."
+          other: "%{count} studenten hebben alle oefeningen correct opgelost."
+        teacher_progress_chart_info_tried:
+          one: "Eén student is met deze reeks gestart."
+          other: "%{count} studenten zijn met deze reeks gestart."
         progress_chart_info_correct:
           one: "Eén oefening correct opgelost."
           other: "%{count} oefeningen correct opgelost."

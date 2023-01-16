@@ -131,6 +131,10 @@
       "activity-removed-failed": "Removing activity failed",
       "activity-removed-success": "Activity removed",
       "activity_types": "Activity types",
+      "admin-added-failed": "Adding admin failed",
+      "admin-added-success": "Admin added",
+      "admin-removed-failed": "Removing admin failed",
+      "admin-removed-success": "Admin removed",
       "annotation": {
         "hidden": {
           "plural": "%{count} hidden annotations",
@@ -156,6 +160,10 @@
       "copy-fail": "Press Ctrl-C to copy",
       "copy-success": "Copied!",
       "copy-to-clipboard": "Click to copy",
+      "course-added-failed": "Adding course failed",
+      "course-added-success": "Course added",
+      "course-removed-failed": "Removing course failed",
+      "course-removed-success": "Course removed",
       "course_labels": "Member labels",
       "course_labels_search_bar": {
         "add": "Add",
@@ -571,6 +579,10 @@
       "activity-removed-failed": "Leeractiviteit verwijderen mislukt",
       "activity-removed-success": "Leeractiviteit verwijderd",
       "activity_types": "Activiteitstypes",
+      "admin-added-failed": "Beheerder toevoegen mislukt",
+      "admin-added-success": "Beheerder toegevoegd",
+      "admin-removed-failed": "Beheerder verwijderen mislukt",
+      "admin-removed-success": "Beheerder verwijderd",
       "annotation": {
         "hidden": {
           "plural": "%{count} verborgen annotaties",
@@ -596,6 +608,10 @@
       "copy-fail": "Druk Ctrl-C om te kopiëren",
       "copy-success": "Gekopieerd!",
       "copy-to-clipboard": "Klik om te kopiëren",
+      "course-added-failed": "Cursus toevoegen mislukt",
+      "course-added-success": "Cursus toegevoegd",
+      "course-removed-failed": "Cursus verwijderen mislukt",
+      "course-removed-success": "Cursus verwijderd",
       "course_labels": "Gebruikerlabels",
       "course_labels_search_bar": {
         "add": "Toevoegen",

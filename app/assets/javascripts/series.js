@@ -42,8 +42,9 @@ function initSeriesEdit() {
             }
             const $row = $addButton.parents("tr").clone();
             $row.addClass("new");
-            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal'></i></div>");
+            $row.children("td:first").html("<div class='drag-handle'><i class='mdi mdi-reorder-horizontal mdi-18'></i></div>");
             $row.children("td.link").children("span.ellipsis-overflow").html(`<a target='_blank' href='${scopedUrl}'>${activityName}</a>`);
+            $row.children("td.popularity-icon").remove();
             $row.children("td.actions").html(`<a href='#' class='btn btn-icon remove-activity' data-activity_id='${activityId}' data-activity_name='${activityName}' data-series_id='${seriesId}'><i class='mdi mdi-delete'></i></a>`);
             $(".series-activity-list tbody").append($row);
             $row.css("opacity"); // trigger paint

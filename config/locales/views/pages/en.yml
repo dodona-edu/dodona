@@ -29,27 +29,30 @@ en:
       course-closed: Closed course
       favorite: "Favorite course"
       few-activities-title: "Doing great!"
-      few-activities-help:
-        one: "Only one activity left."
-        other: "Only two activities left."
+      few-activities-help: "Only one exercise left."
       no-activities-title: "Congratulations!"
       no-activities-help: "You have solved all exercises!"
-      homepage_activities:
-        continue: Or continue working on this exercise
-        continue_first: Continue working on this exercise
-        start: Or start this activity
-        start_first: Start this activity
+      start-activity: "Start with %{activity}"
+      continue-activity: "Continue working on %{activity}"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines
     clickable_homepage_cards:
-      course:
-        jump_back_in_info: "Continue working on this course."
-      activity:
-        jump_back_in_info: "Continue working on this exercise."
-        jump_back_in_info_success: "You solved the previous exercise. Start this one!"
+      last_submission: "Continue working on this exercise."
+      next_exercise_success: "You solved the previous exercise. Start this one!"
+      next_exercise: "Or start the next exercise."
+      continue_series: "Continue working on this series."
+      next_series_success: "You solved the previous series. Start this one!"
+      next_series: "Or start the next series."
+      course: "Continue working on this course."
       series:
-        jump_back_in_info: "You finished the previous series. Start this one!"
+        teacher_mode_info: "Class progress is only shown to teachers. Students only see their own progress."
+        teacher_progress_chart_info_correct:
+          one: "One student has solved all exercises correctly."
+          other: "%{count} students have solved all exercises correctly."
+        teacher_progress_chart_info_tried:
+          one: "One student has started this series."
+          other: "%{count} students have started this series."
         progress_chart_info_correct:
           one: "One exercise solved correctly."
           other: "%{count} exercises solved correctly."

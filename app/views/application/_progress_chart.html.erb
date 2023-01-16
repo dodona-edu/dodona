@@ -31,7 +31,7 @@
 
 <%# You might think that this span here is useless, but you think wrong: https://github.com/twbs/bootstrap/issues/20381 %>
 <span data-bs-html="true" data-bs-toggle='tooltip' title="<%= tooltip %>">
-  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="<%= width %>" class='progress-chart <%= muted ? 'colored-muted' : ''%>'>
+  <svg viewBox="0 0 1 1" preserveAspectRatio="none" height="8" width="<%= width %>" class='progress-chart <%= muted ? 'colored-muted' : '' %>'>
       <%= raw parts.join("") %>
   </svg>
 </span>

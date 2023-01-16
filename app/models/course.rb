@@ -195,6 +195,22 @@ class Course < ApplicationRecord
     passed_deadlines.to_a + future_deadlines.to_a
   end
 
+  def series_being_worked_on(limit = 3, exclude = [])
+    candidates = series.visible.where.not(id: exclude)
+    result = ActivityStatus
+             .joins("JOIN (#{ActivityStatus
+                                 .where(series: candidates, started: true)
+                                 .group(:user_id)
+                                 .select('MAX(last_submission_id) as m').to_sql}) AS ls ON ls.m = activity_statuses.last_submission_id")
+             .where(series: candidates, started: true)
+             .group(:series_id)
+             .order(Arel.sql('COUNT(*) DESC'))
+             .limit(1)
+             .map(&:series)
+    result += series_being_worked_on(limit - 1, exclude + result) if limit > 1
+    result
+  end
+
   def homepage_activities(user, limit = 3)
     result = []
     incomplete_activities = series.visible.joins(:activities) # all activities in visible series

@@ -102,13 +102,20 @@
     </div>
   <% end %>
 
-  <% course_series = course.homepage_series.first([2, 3 - items].min) %>
-  <% items += course_series.length %>
-  <% course_activities = course.homepage_activities(current_user, 3 - [1, items].max) %>
-  <% if course_series.empty? && course_activities.any?
-       course_series << course_activities.first[:series]
-       items += course_series.length
-       course_activities = course_activities.first(3 - items)
+  <% course_series = course.homepage_series.first([2, 3 - items].min)
+     items += course_series.length
+
+     if current_user.admin_of?(course)
+       course_activities = []
+       test = course.series_being_worked_on(3 - items, course_series)
+       course_series += test
+     else
+       course_activities = course.homepage_activities(current_user, 3 - [1, items].max)
+       if course_series.empty? && course_activities.any?
+         course_series << course_activities.first[:series]
+         items += course_series.length
+         course_activities = course_activities.first(3 - items)
+       end
      end
   %>
   <% if course_series.any? %>
@@ -117,7 +124,7 @@
         <div class="course-item">
           <div class="course-item-icon">
             <div style="margin: -2px">
-              <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
+              <%#= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
             </div>
           </div>
           <div class="ellipsis-overflow" style="width: 100%">

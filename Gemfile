@@ -60,7 +60,7 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.5'
 
 # code editor
-gem 'ace-rails-ap', '~>4.4'
+gem 'ace-rails-ap', '~>4.5'
 
 # auto css prefixer
 gem 'autoprefixer-rails', '~>10.4.7'
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.13.10'
+gem 'nokogiri', '~> 1.14.0'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -173,7 +173,7 @@ end
 
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'listen', '~> 3.7.1'
+  gem 'listen', '~> 3.8.0'
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb

@@ -103,16 +103,17 @@
   <% end %>
 
   <% course_series = course.homepage_series.first([2, 3 - items].min) %>
-  <% course_activities = course.homepage_activities(current_user, 3 - [1, course_series.length].max) %>
+  <% items += course_series.length %>
+  <% course_activities = course.homepage_activities(current_user, 3 - [1, items].max) %>
   <% if course_series.empty? && course_activities.any?
        course_series << course_activities.first[:series]
-       course_activities = course_activities.first(2)
+       items += course_series.length
+       course_activities = course_activities.first(3 - items)
      end
   %>
   <% if course_series.any? %>
     <div class="card-supporting-text card-border">
       <% course_series.each do |series| %>
-        <% items += 1 %>
         <div class="course-item">
           <div class="course-item-icon">
             <div style="margin: -2px">
@@ -141,7 +142,7 @@
       <% end %>
     </div>
   <% end %>
-  <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
+  <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
     <% course_activities.each do |ca| %>
       <div class="course-item">
         <div class="course-item-icon" >
@@ -163,8 +164,8 @@
         </div>
       </div>
     <% end %>
-    <% if course_series.length + course_activities.length < 3 && course_series.length + course_activities.length > 0 %>
-      <div class="course-item <%= course_series.length + course_activities.length == 1 ? "course-item-double" : "" %>">
+    <% if items + course_activities.length < 3 && items + course_activities.length > 0 %>
+      <div class="course-item <%= items + course_activities.length == 1 ? "course-item-double" : "" %>">
         <% if course_activities.length > 0 %>
           <div class="course-item-icon">
             <i class="mdi mdi-24 mdi-thumb-up-outline"></i>

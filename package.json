@@ -49,7 +49,7 @@
     "@types/dragula": "^3.7.1",
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
-    "@types/serviceworker": "^0.0.59",
+    "@types/serviceworker": "^0.0.60",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.1",
     "eslint": "^8.31.0",

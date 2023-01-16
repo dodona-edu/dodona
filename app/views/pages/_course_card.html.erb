@@ -106,9 +106,7 @@
      items += course_series.length
 
      if current_user.admin_of?(course)
-       course_activities = []
-       test = course.series_being_worked_on(3 - items, course_series)
-       course_series += test
+       course_series += course.series_being_worked_on(3 - items, course_series)
      else
        course_activities = course.homepage_activities(current_user, 3 - [1, items].max)
        if course_series.empty? && course_activities.any?
@@ -124,7 +122,7 @@
         <div class="course-item">
           <div class="course-item-icon">
             <div style="margin: -2px">
-              <%#= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
+              <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
             </div>
           </div>
           <div class="ellipsis-overflow" style="width: 100%">
@@ -149,64 +147,66 @@
       <% end %>
     </div>
   <% end %>
-  <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
-    <% course_activities.each do |ca| %>
-      <div class="course-item">
-        <div class="course-item-icon" >
-          <% if ca[:submission].present? %>
-              <span title="<%= ca[:submission].summary %>">
-                <%= submission_status_icon(ca[:submission], 24) %>
-              </span>
-          <% else %>
-            <%= activity_icon ca[:activity], 24 %>
-          <% end %>
+  <% unless current_user.admin_of?(course) %>
+    <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
+      <% course_activities.each do |ca| %>
+        <div class="course-item">
+          <div class="course-item-icon" >
+            <% if ca[:submission].present? %>
+                <span title="<%= ca[:submission].summary %>">
+                  <%= submission_status_icon(ca[:submission], 24) %>
+                </span>
+            <% else %>
+              <%= activity_icon ca[:activity], 24 %>
+            <% end %>
+          </div>
+          <div style="width: calc(100% - 36px)">
+            <div class="ellipsis-overflow" title="<%= t (ca[:submission].present? ? ".continue-activity" : ".start-activity"), activity: ca[:activity].name %>">
+              <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
+            </div>
+            <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">
+              <%= ca[:series].name %>
+            </div>
+          </div>
         </div>
-        <div style="width: calc(100% - 36px)">
-          <div class="ellipsis-overflow" title="<%= t (ca[:submission].present? ? ".continue-activity" : ".start-activity"), activity: ca[:activity].name %>">
-            <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
-          </div>
-          <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">
-            <%= ca[:series].name %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if items + course_activities.length < 3 && items + course_activities.length > 0 %>
-      <div class="course-item <%= items + course_activities.length == 1 ? "course-item-double" : "" %>">
-        <% if course_activities.length > 0 %>
-          <div class="course-item-icon">
-            <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
-          </div>
-          <span>
-            <strong><%= t ".few-activities-title" %></strong>
-            <br/>
-            <%= t ".few-activities-help" %>
-          </span>
-        <% else %>
-          <div class="course-item course-item-double">
+      <% end %>
+      <% if items + course_activities.length < 3 && items + course_activities.length > 0 %>
+        <div class="course-item <%= items + course_activities.length == 1 ? "course-item-double" : "" %>">
+          <% if course_activities.length > 0 %>
             <div class="course-item-icon">
-              <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
+              <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
             </div>
             <span>
-              <strong><%= t ".no-activities-title" %></strong>
+              <strong><%= t ".few-activities-title" %></strong>
               <br/>
-              <%= t ".no-activities-help" %>
+              <%= t ".few-activities-help" %>
             </span>
-          </div>
-        <% end %>
-      </div>
-    <% elsif course_series.length == 0 && course_activities.length == 0 %>
-      <div class="course-item course-item-triple">
-        <div>
-          <%= render partial: "popper", locals: { size: 120 } %>
+          <% else %>
+            <div class="course-item course-item-double">
+              <div class="course-item-icon">
+                <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
+              </div>
+              <span>
+                <strong><%= t ".no-activities-title" %></strong>
+                <br/>
+                <%= t ".no-activities-help" %>
+              </span>
+            </div>
+          <% end %>
         </div>
-        <span style="margin-top: 16px">
-        <strong><%= t ".no-activities-title" %></strong>
-          <%= t ".no-activities-help" %>
-        </span>
-      </div>
-    <% end %>
-  </div>
+      <% elsif course_series.length == 0 && course_activities.length == 0 %>
+        <div class="course-item course-item-triple">
+          <div>
+            <%= render partial: "popper", locals: { size: 120 } %>
+          </div>
+          <span style="margin-top: 16px">
+          <strong><%= t ".no-activities-title" %></strong>
+            <%= t ".no-activities-help" %>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   <div class="card-actions card-border">
     <div class="flex-grow-1">
       <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"

@@ -32,6 +32,8 @@ en:
       few-activities-help: "Only one exercise left."
       no-activities-title: "Congratulations!"
       no-activities-help: "You have solved all exercises!"
+      start-activity: "Start with %{activity}"
+      continue-activity: "Continue working on %{activity}"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines

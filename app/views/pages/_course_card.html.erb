@@ -98,7 +98,7 @@
           <% end %>
         </div>
         <div style="width: calc(100% - 36px)">
-          <div class="ellipsis-overflow" title="<%= ca[:activity].name %>">
+          <div class="ellipsis-overflow" title="<%= t (ca[:submission].present? ? ".continue-activity" : ".start-activity"), activity: ca[:activity].name %>">
             <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
           </div>
           <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">

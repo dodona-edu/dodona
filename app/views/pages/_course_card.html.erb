@@ -75,6 +75,7 @@
 
      if current_user.admin_of?(course)
        course_series += course.series_being_worked_on(3 - items, course_series)
+       items = course_series.length + admin_notifications.count
      else
        course_activities = course.homepage_activities(current_user, 3 - [1, items].max)
        if course_series.empty? && course_activities.any?
@@ -131,6 +132,20 @@
           </div>
         </div>
       <% end %>
+      <% if items < 3 %>
+        <div class="course-item <%= items <= 1 ? "course-item-double" : "" %>">
+          <div class="course-item-icon" >
+            <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
+          </div>
+          <div>
+            <%= link_to "Add series", new_course_series_path(course) %>
+            <br/>
+            <span class="small text-muted ">
+              Add more content to this course
+            </span>
+          </div>
+        </div>
+      <% end %>
     </div>
   <% else %>
     <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
@@ -167,16 +182,14 @@
               <%= t ".few-activities-help" %>
             </span>
           <% else %>
-            <div class="course-item course-item-double">
-              <div class="course-item-icon">
-                <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
-              </div>
-              <span>
-                <strong><%= t ".no-activities-title" %></strong>
-                <br/>
-                <%= t ".no-activities-help" %>
-              </span>
+            <div class="course-item-icon">
+              <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
             </div>
+            <span>
+              <strong><%= t ".no-activities-title" %></strong>
+              <br/>
+              <%= t ".no-activities-help" %>
+            </span>
           <% end %>
         </div>
       <% elsif course_series.length == 0 && course_activities.length == 0 %>

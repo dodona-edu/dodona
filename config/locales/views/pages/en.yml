@@ -34,6 +34,24 @@ en:
       no-activities-help: "You have solved all exercises!"
       start-activity: "Start with %{activity}"
       continue-activity: "Continue working on %{activity}"
+      unanswered-questions:
+        one: "One open question"
+        other: "%{count} open questions"
+      unanswered-questions-subtitle:
+        one: "Answer it"
+        other: "Answer them"
+      pending-members:
+        one: "One pending member"
+        other: "%{count} pending members"
+      pending-members-subtitle:
+        one: "Review it"
+        other: "Review them"
+      incomplete-feedbacks:
+        one: "One incomplete feedback"
+        other: "%{count} incomplete feedbacks"
+      incomplete-feedbacks-subtitle:
+        one: "Complete it"
+        other: "Complete them"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines

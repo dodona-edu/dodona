@@ -34,6 +34,24 @@ nl:
       no-activities-help: "Je hebt alle oefeningen opgelost!"
       start-activity: "Begin met %{activity}"
       continue-activity: "Werk verder aan %{activity}"
+      unanswered-questions:
+        one: "Één open vraag"
+        other: "%{count} open vragen"
+      unanswered-questions-subtitle:
+        one: "Beantwoord hem"
+        other: "Beantwoord ze"
+      pending-members:
+        one: "Één gebruiker wacht op goedkeuring"
+        other: "%{count} gebruikers wachten op goedkeuring"
+      pending-members-subtitle:
+        one: "Keur hem goed"
+        other: "Keur ze goed"
+      incomplete-feedbacks:
+        one: "Één onvolledige feedback"
+        other: "%{count} onvolledige feedbacks"
+      incomplete-feedbacks-subtitle:
+        one: "Voltooi hem"
+        other: "Voltooi ze"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines

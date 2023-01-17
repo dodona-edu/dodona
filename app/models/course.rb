@@ -220,6 +220,41 @@ class Course < ApplicationRecord
     result
   end
 
+  def homepage_admin_notifications
+    return unless Current.user&.course_admin?(self)
+
+    result = []
+    if unanswered_questions.count > 0
+      result << {
+        title: I18n.t('pages.course_card.unanswered-questions', count: unanswered_questions.count),
+        link: Rails.application.routes.url_helpers.questions_course_path(I18n.locale, self),
+        icon: 'mdi-account-question',
+        subtitle: I18n.t('pages.course_card.unanswered-questions-subtitle', count: unanswered_questions.count)
+      }
+    end
+
+    if pending_members.count > 0
+      result << {
+        title: I18n.t('pages.course_card.pending-members', count: pending_members.count),
+        link:  Rails.application.routes.url_helpers.course_members_path(I18n.locale, self),
+        icon: 'mdi-account-clock',
+        subtitle: I18n.t('pages.course_card.pending-members-subtitle', count: pending_members.count)
+      }
+    end
+
+    if feedbacks.incomplete.count > 0
+      linked_feedback = feedbacks.incomplete.first
+      result << {
+        title: I18n.t('pages.course_card.incomplete-feedbacks', count: feedbacks.incomplete.count),
+        link:  Rails.application.routes.url_helpers.evaluation_feedback_path(I18n.locale, linked_feedback.evaluation, linked_feedback),
+        icon: 'mdi-comment-multiple-outline',
+        subtitle: I18n.t('pages.course_card.incomplete-feedbacks-subtitle', count: feedbacks.incomplete.count)
+      }
+    end
+
+    result
+  end
+
   def homepage_activities(user, limit = 3)
     result = []
     incomplete_activities = series.visible.joins(:activities) # all activities in visible series

@@ -64,64 +64,13 @@
     </div>
   <% end %>
 
-  <% items = 0 %>
+  <% items = 0
+     if current_user.admin_of?(course)
+       admin_notifications = course.homepage_admin_notifications
+       items += admin_notifications.count
+     end
 
-  <% if current_user.admin_of?(course) && course.unanswered_questions.count > 0 %>
-    <% items += 1 %>
-    <div class="card-supporting-text card-border">
-      <div class="course-item">
-        <div class="course-item-icon" >
-          <i class="mdi mdi-24 mdi-account-question"></i>
-        </div>
-        <div style="width: 100%">
-          <%= link_to "#{course.unanswered_questions.count} open question", questions_course_path(course) %>
-          <br/>
-          <span class="small text-muted ">
-              Start answering
-            </span>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-  <% if current_user.admin_of?(course) && course.pending_members.count > 0 %>
-    <% items += 1 %>
-    <div class="card-supporting-text card-border">
-      <div class="course-item">
-        <div class="course-item-icon" >
-          <i class="mdi mdi-24 mdi-account-clock"></i>
-        </div>
-        <div style="width: 100%">
-          <%= link_to "#{course.pending_members.count} member pending", course_members_path(course) %>
-          <br/>
-          <span class="small text-muted ">
-              Evaluate them
-            </span>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-  <% if current_user.admin_of?(course) && course.feedbacks.incomplete.count > 0 %>
-    <% items += 1 %>
-    <div class="card-supporting-text card-border">
-      <div class="course-item">
-        <div class="course-item-icon" >
-          <i class="mdi mdi-24 mdi-account-clock"></i>
-        </div>
-        <div style="width: 100%">
-          <% linked_feedback = course.feedbacks.incomplete.first %>
-          <%= link_to "#{course.feedbacks.incomplete.count} incomplete feedbacks", evaluation_feedback_path(linked_feedback.evaluation, linked_feedback) %>
-          <br/>
-          <span class="small text-muted ">
-              Evaluate them
-            </span>
-        </div>
-      </div>
-    </div>
-  <% end %>
-
-  <% course_series = course.homepage_series.first(3 - items)
+     course_series = course.homepage_series.first([2, 3 - items].min)
      items += course_series.length
 
      if current_user.admin_of?(course)
@@ -166,7 +115,24 @@
       <% end %>
     </div>
   <% end %>
-  <% unless current_user.admin_of?(course) %>
+  <% if current_user.admin_of?(course) %>
+    <div class="card-supporting-text card-border <%= course_series.length == 0 ? 'course-activities-full-height' : '' %>">
+      <% admin_notifications.each do |an| %>
+        <div class="course-item">
+          <div class="course-item-icon" >
+            <i class="mdi mdi-24 <%= an[:icon] %>"></i>
+          </div>
+          <div style="width: 100%">
+            <%= link_to an[:title], an[:link] %>
+            <br/>
+            <span class="small text-muted ">
+              <%= an[:subtitle] %>
+            </span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
     <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
       <% course_activities.each do |ca| %>
         <div class="course-item">

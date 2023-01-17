@@ -236,7 +236,7 @@ class Course < ApplicationRecord
     if pending_members.count > 0
       result << {
         title: I18n.t('pages.course_card.pending-members', count: pending_members.count),
-        link:  Rails.application.routes.url_helpers.course_members_path(I18n.locale, self),
+        link: Rails.application.routes.url_helpers.course_members_path(I18n.locale, self),
         icon: 'mdi-account-clock',
         subtitle: I18n.t('pages.course_card.pending-members-subtitle', count: pending_members.count)
       }
@@ -246,7 +246,7 @@ class Course < ApplicationRecord
       linked_feedback = feedbacks.incomplete.first
       result << {
         title: I18n.t('pages.course_card.incomplete-feedbacks', count: feedbacks.incomplete.count),
-        link:  Rails.application.routes.url_helpers.evaluation_feedback_path(I18n.locale, linked_feedback.evaluation, linked_feedback),
+        link: Rails.application.routes.url_helpers.evaluation_feedback_path(I18n.locale, linked_feedback.evaluation, linked_feedback),
         icon: 'mdi-comment-multiple-outline',
         subtitle: I18n.t('pages.course_card.incomplete-feedbacks-subtitle', count: feedbacks.incomplete.count)
       }

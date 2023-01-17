@@ -102,7 +102,26 @@
     </div>
   <% end %>
 
-  <% course_series = course.homepage_series.first([2, 3 - items].min)
+  <% if current_user.admin_of?(course) && course.feedbacks.incomplete.count > 0 %>
+    <% items += 1 %>
+    <div class="card-supporting-text card-border">
+      <div class="course-item">
+        <div class="course-item-icon" >
+          <i class="mdi mdi-24 mdi-account-clock"></i>
+        </div>
+        <div style="width: 100%">
+          <% linked_feedback = course.feedbacks.incomplete.first %>
+          <%= link_to "#{course.feedbacks.incomplete.count} incomplete feedbacks", evaluation_feedback_path(linked_feedback.evaluation, linked_feedback) %>
+          <br/>
+          <span class="small text-muted ">
+              Evaluate them
+            </span>
+        </div>
+      </div>
+    </div>
+  <% end %>
+
+  <% course_series = course.homepage_series.first(3 - items)
      items += course_series.length
 
      if current_user.admin_of?(course)

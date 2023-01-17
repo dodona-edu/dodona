@@ -153,6 +153,9 @@ class Course < ApplicationRecord
            inverse_of: :course,
            dependent: :restrict_with_error
 
+  has_many :evaluations, through: :series, class_name: 'Evaluation'
+  has_many :feedbacks, through: :evaluations, class_name: 'Feedback'
+
   validates :name, presence: true
   validates :year, presence: true
   validate :should_have_institution_when_visible_for_institution
@@ -198,6 +201,8 @@ class Course < ApplicationRecord
   end
 
   def series_being_worked_on(limit = 3, exclude = [])
+    return [] if limit < 1
+
     candidates = series.where.not(id: exclude)
     candidates = candidates.visible unless Current.user&.course_admin?(self)
     result = ActivityStatus
@@ -210,7 +215,8 @@ class Course < ApplicationRecord
              .order(Arel.sql('COUNT(*) DESC'))
              .limit(1)
              .map(&:series)
-    result += series_being_worked_on(limit - 1, exclude + result) if limit > 1
+    result += [candidates.first] if result.empty? && candidates.any?
+    result += series_being_worked_on(limit - 1, exclude + result)
     result
   end
 

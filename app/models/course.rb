@@ -188,7 +188,9 @@ class Course < ApplicationRecord
   end
 
   def homepage_series(passed_series = 1)
-    with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
+    with_deadlines = series
+    with_deadlines = with_deadlines.visible unless Current.user&.course_admin?(self)
+    with_deadlines = with_deadlines.reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
                        .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
@@ -196,7 +198,8 @@ class Course < ApplicationRecord
   end
 
   def series_being_worked_on(limit = 3, exclude = [])
-    candidates = series.visible.where.not(id: exclude)
+    candidates = series.where.not(id: exclude)
+    candidates = candidates.visible unless Current.user&.course_admin?(self)
     result = ActivityStatus
              .joins("JOIN (#{ActivityStatus
                                  .where(series: candidates, started: true)

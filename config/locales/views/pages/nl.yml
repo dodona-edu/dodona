@@ -52,6 +52,11 @@ nl:
       incomplete-feedbacks-subtitle:
         one: "Voltooi hem"
         other: "Voltooi ze"
+      add-series: "Voeg een reeks toe"
+      add-series-subtitle:
+        zero: "Begin met het vormgeven van jouw cursus"
+        one: "Voeg meer inhoud toe aan jouw cursus"
+        other: "Voeg meer inhoud toe aan je cursus"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines

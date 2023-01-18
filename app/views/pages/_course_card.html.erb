@@ -86,7 +86,7 @@
      end
   %>
   <% if course_series.any? %>
-    <div class="card-supporting-text card-border">
+    <div class="card-supporting-text card-border <%= course_series.length == 3 ? 'course-activities-full-height' : '' %>">
       <% course_series.each do |series| %>
         <div class="course-item">
           <div class="course-item-icon">
@@ -116,7 +116,7 @@
       <% end %>
     </div>
   <% end %>
-  <% if current_user.admin_of?(course) %>
+  <% if current_user.admin_of?(course) && course_series.length < 3 %>
     <div class="card-supporting-text card-border <%= course_series.length == 0 ? 'course-activities-full-height' : '' %>">
       <% admin_notifications.each do |an| %>
         <div class="course-item">
@@ -133,21 +133,23 @@
         </div>
       <% end %>
       <% if items < 3 %>
-        <div class="course-item <%= items <= 1 ? "course-item-double" : "" %>">
-          <div class="course-item-icon" >
-            <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
+        <%= link_to new_course_series_path(course) do %>
+          <div class="course-item <%= items <= 1 ? "course-item-double" : "" %>">
+            <div class="course-item-icon">
+              <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
+            </div>
+            <div>
+              <%= t ".add-series" %>
+              <br/>
+              <span class="small text-muted ">
+                <%= t ".add-series-subtitle", count: course_series.length %>
+              </span>
+            </div>
           </div>
-          <div>
-            <%= link_to "Add series", new_course_series_path(course) %>
-            <br/>
-            <span class="small text-muted ">
-              Add more content to this course
-            </span>
-          </div>
-        </div>
+        <% end %>
       <% end %>
     </div>
-  <% else %>
+  <% elsif course_series.length < 3 %>
     <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
       <% course_activities.each do |ca| %>
         <div class="course-item">

@@ -52,6 +52,11 @@ en:
       incomplete-feedbacks-subtitle:
         one: "Complete it"
         other: "Complete them"
+      add-series: "Add a series"
+      add-series-subtitle:
+        zero: "Start adding content to your course"
+        one: "Add more content to your course"
+        other: "Add more content to your course"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines

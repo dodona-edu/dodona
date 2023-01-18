@@ -38,20 +38,20 @@ nl:
         one: "Één open vraag"
         other: "%{count} open vragen"
       unanswered-questions-subtitle:
-        one: "Beantwoord hem"
-        other: "Beantwoord ze"
+        one: "Klik hier om deze vraag te bekijken"
+        other: "Klik hier om deze vragen te bekijken"
       pending-members:
         one: "Één gebruiker wacht op goedkeuring"
         other: "%{count} gebruikers wachten op goedkeuring"
       pending-members-subtitle:
-        one: "Keur hem goed"
-        other: "Keur ze goed"
+        one: "Klik hier om deze gebruiker te bekijken"
+        other: "Bekijk alle gebruikers die toegang to de cursus vragen"
       incomplete-feedbacks:
         one: "Één onvolledige feedback"
         other: "%{count} onvolledige feedbacks"
       incomplete-feedbacks-subtitle:
-        one: "Voltooi hem"
-        other: "Voltooi ze"
+        one: "Klik hier om deze indiening te verbeteren"
+        other: "Ga verder met het verbeteren van deze indieningen"
       add-series: "Voeg een reeks toe"
       add-series-subtitle:
         zero: "Begin met het vormgeven van jouw cursus"

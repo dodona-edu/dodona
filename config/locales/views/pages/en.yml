@@ -38,20 +38,20 @@ en:
         one: "One open question"
         other: "%{count} open questions"
       unanswered-questions-subtitle:
-        one: "Answer it"
-        other: "Answer them"
+        one: "Click here to view this question"
+        other: "Click here to view these questions"
       pending-members:
         one: "One pending member"
         other: "%{count} pending members"
       pending-members-subtitle:
-        one: "Review it"
-        other: "Review them"
+        one: "Click here to view this member"
+        other: "View all users that want to join this course"
       incomplete-feedbacks:
         one: "One incomplete feedback"
         other: "%{count} incomplete feedbacks"
       incomplete-feedbacks-subtitle:
-        one: "Complete it"
-        other: "Complete them"
+        one: "Click here to evaluate this submission"
+        other: "Continue evaluating these submissions"
       add-series: "Add a series"
       add-series-subtitle:
         zero: "Start adding content to your course"

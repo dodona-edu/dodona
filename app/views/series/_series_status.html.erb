@@ -1,9 +1,17 @@
 <% # arguments: loaded (bool), series (Series), user (User) %>
-<% if loaded && user.present? %>
+<% size ||= 40 %>
+<% if defined?(series).nil? %>
+  <svg viewBox="0 0 40 40" style="width: <%= size %>px; height: <%= size %>px; " class="series-icon">
+    <circle cx="50%" cy="50%" r= "50%" fill="var(--icon-color)" class="outer-circle"></circle>
+    <circle cx="50%" cy="50%" r= "42%" fill="var(--icon-background-color)"></circle>
+    <foreignObject x="8" y="8"  height="24" width="24" style="color: var(--icon-color)">
+      <i class="mdi mdi-school"></i>
+    </foreignObject>
+  </svg>
+<% elsif loaded && user.present? %>
   <% deadline_class, deadline_icon = series_status_deadline(series, user) %>
   <% progress_class, progress_icon = series_status_progress(series, user) %>
   <% overlay_class = series_status_overlay %>
-  <% size ||= 40 %>
   <svg viewBox="0 0 40 40"
        style="width: <%= size %>px; height: <%= size %>px; "
        class="series-icon <%= overlay_class %> <%= progress_class %>  <%= deadline_class %>"

@@ -104,7 +104,12 @@ function initTooltips(root = document) {
 
     // Then reinitialize tooltips
     const elements = root.querySelectorAll("[data-bs-toggle=\"tooltip\"]");
-    elements.forEach(element => new window.bootstrap.Tooltip(element));
+    for (const element of elements) {
+        const tooltip = window.bootstrap.Tooltip.getOrCreateInstance(element);
+        if (element.title) {
+            tooltip.setContent({ ".tooltip-inner": element.title });
+        }
+    }
 }
 
 function tooltip(target, message, disappearAfter=1000) {

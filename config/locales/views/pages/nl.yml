@@ -57,6 +57,18 @@ nl:
         zero: "Begin met het vormgeven van jouw cursus"
         one: "Voeg meer inhoud toe aan jouw cursus"
         other: "Voeg meer inhoud toe aan je cursus"
+      user-count:
+        one: "1 gebruiker"
+        other: "%{count} gebruikers"
+      series-count:
+        one: "1 reeks"
+        other: "%{count} reeksen"
+      exercise-count:
+        one: "1 oefening"
+        other: "%{count} oefeningen"
+      submission-count:
+        one: "1 ingediende oplossing"
+        other: "%{count} ingediende oplossingen"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines

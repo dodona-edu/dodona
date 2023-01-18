@@ -264,7 +264,7 @@
       "progress_bar": {
         "series-admin-progress": {
           "key": ".singular |||| .plural",
-          "plural": "One user has completed ${index} activities |||| %{smart_count} users have completed ${index} activities",
+          "plural": "One user has completed %{index} activities |||| %{smart_count} users have completed %{index} activities",
           "singular": "One user has completed one activity |||| %{smart_count} users have completed one activity"
         }
       },

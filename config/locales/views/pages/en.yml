@@ -57,6 +57,18 @@ en:
         zero: "Start adding content to your course"
         one: "Add more content to your course"
         other: "Add more content to your course"
+      user-count:
+        one: "One user"
+        other: "%{count} users"
+      exercise-count:
+        one: "One exercise"
+        other: "%{count} exercises"
+      series-count:
+        one: "One series"
+        other: "%{count} series"
+      submission-count:
+        one: "One submission"
+        other: "%{count} submissions"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines

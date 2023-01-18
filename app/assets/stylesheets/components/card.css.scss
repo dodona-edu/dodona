@@ -81,6 +81,11 @@ $card-supporting-text-padding: 16px;
   .progress-chart.colored-muted {
     --progress-chart-color: #{$on-primary-container};
   }
+
+  .series-icon {
+    --icon-color: #{$on-primary-container};
+    --icon-background-color: #{$primary-container};
+  }
 }
 
 a.card-title-link,

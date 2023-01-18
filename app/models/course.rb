@@ -195,6 +195,49 @@ class Course < ApplicationRecord
     passed_deadlines.to_a + future_deadlines.to_a
   end
 
+  def homepage_activities(user, limit = 3)
+    result = []
+    incomplete_activities = series.visible.joins(:activities) # all activities in visible series
+                                  .joins("LEFT JOIN activity_statuses ON activities.id = activity_statuses.activity_id AND series.id = activity_statuses.series_id AND activity_statuses.user_id = #{user.id}")
+                                  .where('activity_statuses.accepted IS NULL OR activity_statuses.accepted = false') # filter out completed activities
+                                  .reorder('series.order': :asc, 'series.id': :desc, 'series_memberships.order': :asc, 'series_memberships.id': :asc)
+
+    # try to find the latest activity by the user in this course
+    latest_activity_status = ActivityStatus.where(user: user, series: series.visible, started: true).order('last_submission_id DESC').limit(1).first
+    if latest_activity_status.present?
+      series = latest_activity_status.series
+      series_membership = SeriesMembership.find_by(series: series, activity: latest_activity_status.activity)
+
+      if series_membership.present?
+        # first list only activities after or equal to the last worked on activity
+        result += incomplete_activities
+                  .where('series.order > ? OR (series.order = ? AND series.id < ?) OR (series.order = ? AND series.id = ? AND (series_memberships.order >= ? OR series_memberships.id >= ?))', series.order, series.order, series.id, series.order, series.id, series_membership.order, series_membership.id)
+                  .limit(limit)
+                  .pluck('series.id', 'activities.id', 'activity_statuses.last_submission_id')
+
+      end
+    end
+
+    # if no activity was found or the limit is not reached, add more activities starting from the beginning of the course
+    if result.length < limit
+      result += incomplete_activities
+                .limit(limit - result.length)
+                .pluck('series.id', 'activities.id', 'activity_statuses.last_submission_id')
+    end
+
+    # Map the ids to the actual objects
+    result = result.map do |a|
+      {
+        series: Series.find(a[0]),
+        activity: Activity.find(a[1]),
+        submission: a[2].present? ? Submission.find(a[2]) : nil
+      }
+    end
+
+    # We could have duplicates when only few unsolved activities are left
+    result.uniq { |a| a[:activity] }
+  end
+
   def pending_series(user)
     series.visible.select { |s| s.pending? && !s.completed?(user: user) }
   end
@@ -349,6 +392,18 @@ class Course < ApplicationRecord
   def color
     colors = %w[blue-gray orange cyan purple teal pink indigo brown deep-purple]
     colors[year.to_i % colors.size]
+  end
+
+  def activity_count
+    series.visible.map(&:activity_count).sum
+  end
+
+  def completed_activity_count(user)
+    ActivityStatus.where(accepted: true, user: user, series: series.visible).count
+  end
+
+  def started_activity_count(user)
+    ActivityStatus.where(started: true, user: user, series: series.visible).count
   end
 
   private

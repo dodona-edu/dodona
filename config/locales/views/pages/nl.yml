@@ -28,6 +28,12 @@ nl:
       course-hidden: Verborgen cursus
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
+      few-activities-title: "Goed bezig!"
+      few-activities-help: "Nog maar één oefening te gaan."
+      no-activities-title: "Gefeliciteerd!"
+      no-activities-help: "Je hebt alle oefeningen opgelost!"
+      start-activity: "Begin met %{activity}"
+      continue-activity: "Werk verder aan %{activity}"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines

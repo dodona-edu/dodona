@@ -66,105 +66,58 @@
     vertical-align: text-bottom;
   }
 
-  .card-title-icon {
-    min-width: 40px;
-    width: 40px;
-    min-height: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 22px;
+  .series-icon {
     margin-right: 16px;
-    border-radius: 50%;
-    background-color: $gray;
+  }
+}
 
-    & > .mdi::before {
-      line-height: 24px;
+.series-icon {
+  position: relative;
+  padding: 0;
+  overflow: visible;
+
+  --icon-color: #{$gray};
+  --icon-background-color: #{$content-bg};
+  --deadline-icon-background-color: #{$content-bg};
+  --deadline-icon-color: #{$success};
+
+  #rainbow {
+    --red: #{$red-70};
+    --orange: #{$orange-70};
+    --yellow: #{$yellow-70};
+    --green: #{$green-70};
+    --blue: #{$blue-70};
+    --purple: #{$purple-70};
+  }
+
+  &.deadline-missed {
+    --deadline-icon-color: #{$danger};
+  }
+
+  &.wrong {
+    --icon-color: #{$danger};
+  }
+
+  &.started,
+  &.completed.deadline-missed {
+    --icon-color: #{$success};
+  }
+
+  &.completed:not(.deadline-missed) {
+    --icon-color: #{white};
+    --icon-background-color: transparent;
+
+    .outer-circle {
+      fill: url("#rainbow");
     }
+  }
 
-    &.deadline-missed .mdi-alarm-off {
-      &::before {
-        color: $danger;
-      }
+  .mdi::before {
+    line-height: 24px;
+  }
 
-      background-color: $content-bg;
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      border: 1px solid $content-bg;
-    }
-
-    &.deadline-met .mdi-alarm-check {
-      &::before {
-        color: $success;
-      }
-
-      background-color: $content-bg;
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      border: 1px solid $content-bg;
-    }
-
-    i {
-      color: $gray;
-      background: $content-bg;
-      border-radius: 50%;
-      border: 5px solid $content-bg;
-    }
-
-    &.wrong {
-      background-color: $danger;
-
-      i {
-        color: $danger;
-      }
-    }
-
-    &.started,
-    &.completed.deadline-missed {
-      background-color: $success;
-
-      i {
-        color: $success;
-      }
-    }
-
-    &.completed:not(.deadline-missed) {
-      $red: $red-500;
-      $orange: $orange-500;
-      $yellow: $yellow-500;
-      $green: $green-500;
-      $blue: $blue-500;
-      $purple: $purple-500;
-
-      $p1: 10%;
-      $p2: 25%;
-      $p3: 40%;
-      $p4: 60%;
-      $p5: 75%;
-      $p6: 90%;
-
-      background-image:
-        linear-gradient(
-          -135deg,
-          $red-70 $p1,
-          $orange-70 $p2,
-          $yellow-70 $p3,
-          $green-70 $p4,
-          $blue-70 $p5,
-          $purple-70 $p6
-        );
-
-      i {
-        font-weight: bolder;
-        font-size: 32px;
-        background: transparent;
-        border: transparent;
-        color: white;
-      }
-    }
+  .mdi.mdi-18::before {
+    line-height: 18px;
   }
 }
 

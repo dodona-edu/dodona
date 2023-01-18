@@ -96,7 +96,14 @@ async function initCSRF() {
 }
 
 function initTooltips() {
-    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body" });
+    // First remove dead tooltips
+    const tooltips = document.querySelectorAll(".tooltip");
+    for (const tooltip of tooltips) {
+        tooltip.remove();
+    }
+
+    // Then reinitialize tooltips
+    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body", trigger: "hover" });
 }
 
 function tooltip(target, message, disappearAfter=1000) {

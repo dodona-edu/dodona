@@ -38,7 +38,7 @@
         <div style="display: flex; flex-direction: row; justify-content: space-between;">
           <div>
             <i class="mdi mdi-18 mdi-account-multiple-outline mdi-vam"></i>
-            <small><%= number_to_human(course.users.count) %> </small>
+            <small><%= number_to_human(course.subscribed_members.count) %> </small>
           </div>
           <div>
             <%= custom_icon "exercises", class: "md-18" %>
@@ -146,18 +146,16 @@
         </div>
       <% end %>
       <% if items < 3 %>
-        <%= link_to new_course_series_path(course) do %>
-          <div class="course-item <%= items <= 1 ? "course-item-double" : "" %>">
-            <div class="course-item-icon">
-              <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
-            </div>
-            <div>
-              <%= t ".add-series" %>
-              <br/>
-              <span class="small text-muted ">
-                <%= t ".add-series-subtitle", count: course_series.length %>
-              </span>
-            </div>
+        <%= link_to new_course_series_path(course), class: "course-item #{items <= 1 ? "course-item-double" : ""}" do %>
+          <div class="course-item-icon">
+            <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
+          </div>
+          <div>
+            <%= t ".add-series" %>
+            <br/>
+            <span class="small text-muted ">
+              <%= t ".add-series-subtitle", count: course_series.length %>
+            </span>
           </div>
         <% end %>
       <% end %>

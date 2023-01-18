@@ -228,7 +228,7 @@ class Course < ApplicationRecord
       result << {
         title: I18n.t('pages.course_card.unanswered-questions', count: unanswered_questions.count),
         link: Rails.application.routes.url_helpers.questions_course_path(I18n.locale, self),
-        icon: 'mdi-account-question',
+        icon: 'mdi-account-question colored-secondary',
         subtitle: I18n.t('pages.course_card.unanswered-questions-subtitle', count: unanswered_questions.count)
       }
     end
@@ -237,7 +237,7 @@ class Course < ApplicationRecord
       result << {
         title: I18n.t('pages.course_card.pending-members', count: pending_members.count),
         link: Rails.application.routes.url_helpers.course_members_path(I18n.locale, self),
-        icon: 'mdi-account-clock',
+        icon: 'mdi-account-clock colored-secondary',
         subtitle: I18n.t('pages.course_card.pending-members-subtitle', count: pending_members.count)
       }
     end

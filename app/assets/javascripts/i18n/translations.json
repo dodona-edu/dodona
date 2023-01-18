@@ -261,6 +261,13 @@
       "no_selection": "You must select at least one item before being able to download solutions.",
       "options": "Options",
       "programming_languages": "Programming Languages",
+      "progress_bar": {
+        "series-admin-progress": {
+          "key": ".singular |||| .plural",
+          "plural": "One user has completed ${index} activities |||| %{smart_count} users have completed ${index} activities",
+          "singular": "One user has completed one activity |||| %{smart_count} users have completed one activity"
+        }
+      },
       "question": {
         "state": {
           "answered": "Answered",
@@ -709,6 +716,13 @@
       "no_selection": "Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.",
       "options": "Opties",
       "programming_languages": "Programmeertalen",
+      "progress_bar": {
+        "series-admin-progress": {
+          "key": ".singular |||| .plural",
+          "plural": "Eén gebruiker heeft %{index} oefeningen correct opgelost |||| %{smart_count} gebruikers hebben %{index} oefeningen correct opgelost",
+          "singular": "Eén gebruiker heeft één oefening correct opgelost |||| %{smart_count} gebruikers hebben één oefening correct opgelost"
+        }
+      },
       "question": {
         "state": {
           "answered": "Beantwoord",

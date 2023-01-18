@@ -35,15 +35,9 @@
     </div>
     <% unless text %>
       <% if teacher_mode %>
-        <%= render partial: 'progress_chart', locals: {
-          total: series.course.subscribed_members.count,
-          tried: series.users_started,
-          correct: series.users_completed,
-          info_tried: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_tried',
-          info_correct: 'pages.clickable_homepage_cards.series.teacher_progress_chart_info_correct',
-          width: '100%',
-          muted: true,
-        } %>
+        <d-progress-bar values="<%=series.users_by_number_of_completed_activities.to_json%>"
+                        title-key="js.progress_bar.series-admin-progress"
+        ></d-progress-bar>
       <% else %>
         <%= render partial: 'progress_chart', locals: {
           total: series.activity_count,

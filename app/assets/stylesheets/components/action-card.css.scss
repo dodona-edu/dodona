@@ -57,6 +57,12 @@
     --progress-chart-color: var(--on-clickable-card-color);
   }
 
+  d-progress-bar {
+    .bar {
+      background-color: var(--on-clickable-card-color);
+    }
+  }
+
   &:hover,
   &:focus,
   &:active {

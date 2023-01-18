@@ -97,20 +97,33 @@
           <div class="ellipsis-overflow" style="width: 100%">
             <% if series.deadline.present? %>
               <span class="float-end">
-                <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+                <% if current_user.admin_of?(course) %>
+                  <small title="<%= l(series.deadline, format: :long) %>">
+                    <i class="mdi mdi-12 mdi-alarm"></i>
+                    <%= deadline_relative_time series.deadline %>
+                  </small>
+                <% else %>
+                  <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+                <%end %>
               </span>
             <% end %>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
 
-            <%= render partial: 'progress_chart', locals: {
-              total: series.activity_count,
-              tried: series.started_activity_count(current_user),
-              correct: series.completed_activity_count(current_user),
-              info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-              info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-              info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-              width: '100%',
-            } %>
+            <% if current_user.admin_of?(course) %>
+              <d-progress-bar values="<%=series.users_by_number_of_completed_activities.to_json%>"
+                              title-key="js.progress_bar.series-admin-progress"
+              ></d-progress-bar>
+            <% else %>
+              <%= render partial: 'progress_chart', locals: {
+                total: series.activity_count,
+                tried: series.started_activity_count(current_user),
+                correct: series.completed_activity_count(current_user),
+                info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+                info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+                info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+                width: '100%',
+              } %>
+            <% end %>
           </div>
         </div>
       <% end %>

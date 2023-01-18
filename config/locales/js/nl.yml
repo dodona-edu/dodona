@@ -25,14 +25,14 @@ nl:
     unfavorite-course-succeeded: Cursus verwijderd uit favorieten
     unfavorite-course-failed: Cursus uit favorieten verwijderen mislukt
     unfavorite-course-do: "Verwijder uit favorieten"
-    course-added-success: Cursus toegevoegd 
-    course-added-failed: Cursus toevoegen mislukt 
-    course-removed-success: Cursus verwijderd 
-    course-removed-failed: Cursus verwijderen mislukt 
-    admin-added-success: Beheerder toegevoegd 
-    admin-added-failed: Beheerder toevoegen mislukt 
-    admin-removed-success: Beheerder verwijderd 
-    admin-removed-failed: Beheerder verwijderen mislukt 
+    course-added-success: Cursus toegevoegd
+    course-added-failed: Cursus toevoegen mislukt
+    course-removed-success: Cursus verwijderd
+    course-removed-failed: Cursus verwijderen mislukt
+    admin-added-success: Beheerder toegevoegd
+    admin-added-failed: Beheerder toevoegen mislukt
+    admin-removed-success: Beheerder verwijderd
+    admin-removed-failed: Beheerder verwijderen mislukt
     labels: Labels
     programming_languages: Programmeertalen
     judges: Judges
@@ -261,3 +261,8 @@ nl:
       placeholder: "Label"
       add: "Toevoegen"
       edit_explanation: "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan."
+    progress_bar:
+      series-admin-progress:
+        key: ".singular |||| .plural"
+        singular: "Eén gebruiker heeft één oefening correct opgelost |||| %{smart_count} gebruikers hebben één oefening correct opgelost"
+        plural: "Eén gebruiker heeft %{index} oefeningen correct opgelost |||| %{smart_count} gebruikers hebben %{index} oefeningen correct opgelost"

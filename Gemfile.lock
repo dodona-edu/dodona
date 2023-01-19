@@ -181,7 +181,7 @@ GEM
     ffi (1.15.5)
     flamegraph (0.9.5)
     glob (0.4.0)
-    globalid (1.0.0)
+    globalid (1.0.1)
       activesupport (>= 5.0)
     has_scope (0.8.0)
       actionpack (>= 5.2)

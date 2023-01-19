@@ -105,9 +105,9 @@ class Feedback < ApplicationRecord
   end
 
   def reset_feedback_after_submission_update
-    return unless will_save_change_to_submission_id? && submission_id_in_database.present?
+    return unless will_save_change_to_submission_id?
 
-    Submission.find(submission_id_in_database).annotations.where(evaluation_id: evaluation_id).destroy_all
+    Submission.find(submission_id_in_database).annotations.where(evaluation_id: evaluation_id).destroy_all if submission_id_in_database.present?
     scores.each(&:destroy)
   end
 

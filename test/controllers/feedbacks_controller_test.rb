@@ -5,6 +5,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @evaluation = create :evaluation, :with_submissions
+    @evaluation.update(users: @evaluation.users + [users(:student)])
     exercise = @evaluation.evaluation_exercises.first
     @score_item1 = create :score_item, evaluation_exercise: exercise,
                                        description: 'First item',
@@ -55,6 +56,22 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
     @feedback.reload
     assert_equal s.id, @feedback.submission_id
     assert_equal 0, @feedback.scores.count
+  end
+
+  test 'scores are reset when a submission is changed from empty' do
+    feedback = @evaluation.feedbacks.find_by(submission_id: nil, evaluation_exercise: @evaluation.evaluation_exercises.first)
+    assert_not_empty feedback.scores
+
+    s = create :submission, exercise: feedback.exercise, user: feedback.user, course: feedback.evaluation.series.course
+
+    patch evaluation_feedback_path(@evaluation, feedback), params: {
+      feedback: {
+        submission_id: s.id
+      }
+    }
+    feedback.reload
+    assert_equal s.id, feedback.submission_id
+    assert_empty feedback.scores
   end
 
   test 'A lot of scores are reset when a submission is changed' do

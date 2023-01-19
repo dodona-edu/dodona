@@ -203,19 +203,24 @@ class Course < ApplicationRecord
   def series_being_worked_on(limit = 3, exclude = [])
     return [] if limit < 1
 
+    # we don't want to return series that are already selected or not visible to the user
     candidates = series.where.not(id: exclude)
     candidates = candidates.visible unless Current.user&.course_admin?(self)
-    result = ActivityStatus
-             .joins("JOIN (#{ActivityStatus
-                                 .where(series: candidates, started: true)
-                                 .group(:user_id)
-                                 .select('MAX(last_submission_id) as m').to_sql}) AS ls ON ls.m = activity_statuses.last_submission_id")
-             .where(series: candidates, started: true)
-             .group(:series_id)
-             .order(Arel.sql('COUNT(*) DESC'))
-             .limit(1)
-             .map(&:series)
-    result += [candidates.first] if result.empty? && candidates.any?
+
+    # To find the series that was worked on most recently,
+    # we look at the last submission of each student
+    # and return the series that has the highest number of those submissions
+    series = candidates.joins(:activity_statuses)
+                       .joins("INNER JOIN (#{ActivityStatus
+                                         .where(series: candidates, started: true)
+                                         .group(:user_id)
+                                         .select('MAX(last_submission_id) as m').to_sql}) AS ls ON ls.m = activity_statuses.last_submission_id")
+                       .where(activity_statuses: { started: true })
+                       .group(:series_id)
+                       .reorder(Arel.sql('COUNT(*) DESC'))
+                       .first
+    series = candidates.first if series.nil? && candidates.any?
+    result = series.nil? ? [] : [series]
     result += series_being_worked_on(limit - 1, exclude + result)
     result
   end

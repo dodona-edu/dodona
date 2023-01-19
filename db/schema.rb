@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_03_141404) do
+ActiveRecord::Schema[7.0].define(version: 2023_01_19_083641) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -104,6 +104,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_03_141404) do
     t.integer "series_id_non_nil", null: false
     t.index ["accepted", "user_id", "series_id"], name: "index_activity_statuses_on_accepted_and_user_id_and_series_id"
     t.index ["activity_id"], name: "index_activity_statuses_on_activity_id"
+    t.index ["series_id", "started", "user_id", "last_submission_id"], name: "index_as_on_series_and_started_and_user_and_last_submission"
     t.index ["series_id"], name: "fk_rails_1bc42c2178"
     t.index ["started", "user_id", "series_id"], name: "index_activity_statuses_on_started_and_user_id_and_series_id"
     t.index ["user_id", "series_id", "last_submission_id"], name: "index_as_on_user_and_series_and_last_submission"

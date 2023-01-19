@@ -47,8 +47,8 @@ en:
         one: "Click here to view this member"
         other: "View all users that want to join this course"
       incomplete-feedbacks:
-        one: "One incomplete feedback"
-        other: "%{count} incomplete feedbacks"
+        one: "One unreviewed submission"
+        other: "%{count} unreviewed submissions"
       incomplete-feedbacks-subtitle:
         one: "Click here to evaluate this submission"
         other: "Continue evaluating these submissions"

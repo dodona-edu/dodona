@@ -47,11 +47,11 @@ nl:
         one: "Klik hier om deze gebruiker te bekijken"
         other: "Bekijk alle gebruikers die toegang to de cursus vragen"
       incomplete-feedbacks:
-        one: "Één onvolledige feedback"
-        other: "%{count} onvolledige feedbacks"
+        one: "Één onbekeken oplossing"
+        other: "%{count} onbekeken oplossingen"
       incomplete-feedbacks-subtitle:
-        one: "Klik hier om deze indiening te verbeteren"
-        other: "Ga verder met het verbeteren van deze indieningen"
+        one: "Klik hier om deze oplossing na te beoordelen"
+        other: "Ga verder met het beoordelen van deze oplossingen"
       add-series: "Voeg een reeks toe"
       add-series-subtitle:
         zero: "Begin met het vormgeven van jouw cursus"

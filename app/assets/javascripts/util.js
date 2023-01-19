@@ -108,6 +108,7 @@ function initTooltips(root = document) {
         const tooltip = window.bootstrap.Tooltip.getOrCreateInstance(element);
         if (element.title) {
             tooltip.setContent({ ".tooltip-inner": element.title });
+            element.removeAttribute("title");
         }
     }
 }

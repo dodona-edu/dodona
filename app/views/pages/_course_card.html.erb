@@ -22,20 +22,20 @@
           <% end %>
         </span>
       </h2>
-      <div class="d-flex justify-content-between mb-3 w-100">
+      <div class="course-subtitle">
         <% if course.formatted_attribution.present? %>
-          <small class="ellipsis-overflow mt-1 d-inline-block" title="<%= course.formatted_attribution %>">
+          <small class="ellipsis-overflow d-inline-block" title="<%= course.formatted_attribution %>">
             <%= course.formatted_attribution %>
           </small>
         <% end %>
 
-        <small class="float-end mt-1 text-nowrap" title="<%= Course.format_year(course.year) %>">
+        <small class="float-end text-nowrap" title="<%= Course.format_year(course.year) %>">
           <%= Course.format_year(course.year) %>
         </small>
       </div>
 
       <% if current_user.admin_of?(course) %>
-        <div class="spread-line">
+        <div class="spread-line ">
           <div data-bs-toggle="tooltip" title="<%= t ".user-count", count: course.subscribed_members.count %>">
             <i class="mdi mdi-18 mdi-account-multiple-outline mdi-vam"></i>
             <small><%= number_to_human(course.subscribed_members.count) %> </small>

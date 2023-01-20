@@ -55,6 +55,14 @@ $card-supporting-text-padding: 16px;
     flex-direction: row;
     align-items: center;
   }
+
+  .course-subtitle {
+    margin-bottom: 0.75rem;
+    margin-top: 0.25rem;
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+  }
 }
 
 .card-title.card-title-colored {

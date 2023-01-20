@@ -1,7 +1,7 @@
 # Dodona
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dodona-edu/dodona)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/dodona-edu/dodona/Test)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dodona-edu/dodona/test.yml?branch=develop)
 ![Codecov](https://img.shields.io/codecov/c/github/dodona-edu/dodona)
 [![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me)
 [![General chat](https://img.shields.io/static/v1?label=general%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be)

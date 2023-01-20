@@ -1,5 +1,6 @@
 import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
 import { InactiveTimeout } from "auto_reload";
+import { LoadingBar } from "components/loading_bar";
 const RELOAD_SECONDS = 2;
 
 
@@ -56,6 +57,7 @@ export class SearchQuery {
     arrayQueryParams: QueryParameters<string[]> = new QueryParameters<string[]>();
     queryParams: QueryParameters<string> = new QueryParameters<string>();
     localStorageKey?: string;
+    loadingBars: LoadingBar[] = [];
 
     setRefreshElement(refreshElement: string): void {
         this.refreshElement = refreshElement;
@@ -180,7 +182,7 @@ export class SearchQuery {
         const url = this.addParametersToUrl();
         const localIndex = ++this.searchIndex;
 
-        this.updateProgressFilterVisibility("visible");
+        this.loadingBars.forEach(bar => bar.show());
         fetch(updateURLParameter(url, "format", "js"), {
             headers: {
                 "accept": "text/javascript"
@@ -193,7 +195,7 @@ export class SearchQuery {
                     this.appliedIndex = localIndex;
                     eval(data);
                 }
-                this.updateProgressFilterVisibility("hidden");
+                this.loadingBars.forEach(bar => bar.hide());
 
                 // if there is local storage key => update the value to reuse later
                 if (this.localStorageKey) {
@@ -201,12 +203,6 @@ export class SearchQuery {
                     localStorage.setItem(this.localStorageKey, urlObj.searchParams.toString());
                 }
             });
-    }
-
-    updateProgressFilterVisibility(state: string): void {
-        if (document.getElementById("progress-filter")) {
-            document.getElementById("progress-filter").style.visibility = state;
-        }
     }
 
     /**

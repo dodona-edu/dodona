@@ -73,13 +73,13 @@ en:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines
     clickable_homepage_cards:
-      last_submission: "Continue working on this exercise."
-      next_exercise_success: "You solved the previous exercise. Start this one!"
-      next_exercise: "Or start the next exercise."
-      continue_series: "Continue working on this series."
-      next_series_success: "You solved the previous series. Start this one!"
-      next_series: "Or start the next series."
-      course: "Continue working on this course."
+      last_submission: "Continue working on this exercise"
+      next_exercise_success: "You solved the previous exercise. Start this one"
+      next_exercise: "Or start the next exercise"
+      continue_series: "Continue working on this series"
+      next_series_success: "You solved the previous series. Start this one"
+      next_series: "Or start the next series"
+      course: "Continue working on this course"
       series:
         teacher_mode_info: "Class progress is only shown to teachers. Students only see their own progress."
         teacher_progress_chart_info_correct:

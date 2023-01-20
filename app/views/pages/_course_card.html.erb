@@ -95,7 +95,11 @@
         <div class="course-item">
           <div class="course-item-icon">
             <div style="margin: -2px">
-              <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
+              <% if current_user.admin_of?(course) %>
+                <%= render partial: "series/series_status", locals: { size: 28 } %>
+              <% else %>
+                <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
+              <% end %>
             </div>
           </div>
           <div class="ellipsis-overflow" style="width: 100%">

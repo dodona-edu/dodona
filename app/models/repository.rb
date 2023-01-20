@@ -33,12 +33,15 @@ class Repository < ApplicationRecord
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error
   has_many :labels,
+           -> { distinct },
            through: :activities,
            source: :labels
   has_many :programming_languages,
+           -> { distinct },
            through: :activities,
            source: :programming_language
   has_many :judges,
+           -> { distinct },
            through: :activities,
            source: :judge
   has_many :repository_admins, dependent: :restrict_with_error

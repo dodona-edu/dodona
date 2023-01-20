@@ -190,9 +190,9 @@ class Course < ApplicationRecord
     end
   end
 
-  def homepage_series(passed_series = 1)
+  def homepage_series(user, passed_series = 1)
     with_deadlines = series
-    with_deadlines = with_deadlines.visible unless Current.user&.admin_of?(self)
+    with_deadlines = with_deadlines.visible unless user&.admin_of?(self)
     with_deadlines = with_deadlines.reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
                        .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
@@ -203,9 +203,7 @@ class Course < ApplicationRecord
   def series_being_worked_on(limit = 3, exclude = [])
     return [] if limit < 1
 
-    # we don't want to return series that are already selected or not visible to the user
     candidates = series.where.not(id: exclude)
-    candidates = candidates.visible unless Current.user&.admin_of?(self)
 
     # To find the series that was worked on most recently,
     # we look at the last submission of each student
@@ -226,8 +224,6 @@ class Course < ApplicationRecord
   end
 
   def homepage_admin_notifications
-    return unless Current.user&.course_admin?(self)
-
     result = []
     if unanswered_questions.count > 0
       result << {

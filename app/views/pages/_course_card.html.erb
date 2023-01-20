@@ -74,7 +74,7 @@
        items += admin_notifications.count
      end
 
-     course_series = course.homepage_series.first([2, 3 - items].min)
+     course_series = course.homepage_series(current_user).first([2, 3 - items].min)
      items += course_series.length
 
      if current_user.admin_of?(course)

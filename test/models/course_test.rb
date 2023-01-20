@@ -590,24 +590,23 @@ class CourseTest < ActiveSupport::TestCase
 
   test 'students should not see non visible homepage series' do
     course = create :course, series_count: 2, exercises_per_series: 2
-    assert_equal 0, course.homepage_series.count
+    user = create :student
+    CourseMembership.create(user: user, course: course, status: :student)
+
+    assert_equal 0, course.homepage_series(user).count
     course.series.first.update(deadline: DateTime.now + 1.hour)
-    assert_equal 1, course.homepage_series.count
+    assert_equal 1, course.homepage_series(user).count
     course.series.first.update(visibility: :hidden)
-    assert_equal 0, course.homepage_series.count
-    Current.user = create :student
-    assert_equal 0, course.homepage_series.count
-    Current.user = create :staff
-    assert_equal 0, course.homepage_series.count
-    Current.user = create :zeus
-    assert_equal 0, course.homepage_series.count
+    assert_equal 0, course.homepage_series(user).count
+    user = create :student
+    assert_equal 0, course.homepage_series(user).count
+    user = create :staff
+    assert_equal 0, course.homepage_series(user).count
+    user = create :zeus
+    assert_equal 0, course.homepage_series(user).count
 
-    teacher = create :staff
-    CourseMembership.create(user: teacher, course: course, status: :course_admin)
-    assert_equal 0, course.homepage_series.count
-
-    Current.user = teacher
-    assert_equal 1, course.homepage_series.count
-
+    user = create :staff
+    CourseMembership.create(user: user, course: course, status: :course_admin)
+    assert_equal 1, course.homepage_series(user).count
   end
 end

@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
-import { fetch } from "util.js";
+import { fetch, ready } from "util.js";
 import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
@@ -132,6 +132,13 @@ export class SearchActions extends ShadowlessLitElement {
         }
 
         return false;
+    }
+
+    constructor() {
+        super();
+
+        // Reload when I18n is loaded
+        ready.then(() => this.requestUpdate());
     }
 
 

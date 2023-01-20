@@ -70,7 +70,7 @@
 
   <% items = 0
      if current_user.admin_of?(course)
-       admin_notifications = course.homepage_admin_notifications
+       admin_notifications = homepage_course_admin_notifications(course)
        items += admin_notifications.count
      end
 

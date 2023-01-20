@@ -539,55 +539,6 @@ class CourseTest < ActiveSupport::TestCase
     assert_not_includes course.series_being_worked_on(7, [course.series.first]), course.series.first
   end
 
-  test 'home page admin notifications should return nothing if no admin' do
-    course = create :course
-    assert_nil course.homepage_admin_notifications
-  end
-
-  test 'home page admin notifications should contain notifications' do
-    course = create :course, series_count: 2, exercises_per_series: 2
-    3.times { course.enrolled_members << create(:user) }
-    staff = create :staff
-    CourseMembership.create(user: staff, course: course, status: :course_admin)
-    Current.user = staff
-    assert_empty course.homepage_admin_notifications
-
-    # open questions
-    s = create :correct_submission, course: course, exercise: course.series.first.exercises.first, user: course.enrolled_members.first, created_at: DateTime.now - 1.hour
-    q = create :question, submission: s
-    assert_equal 1, course.homepage_admin_notifications.count
-
-    q.question_state = :answered
-    q.save
-    assert_empty course.homepage_admin_notifications
-
-    3.times do
-      s = create :correct_submission, course: course, exercise: course.series.first.exercises.first, user: course.enrolled_members.sample, created_at: DateTime.now - 1.hour
-      create :question, submission: s
-    end
-    assert_equal 1, course.homepage_admin_notifications.count
-
-    # pending users
-    course.pending_members << create(:user)
-    assert_equal 2, course.homepage_admin_notifications.count
-
-    course.course_memberships.where(status: :pending).first.update(status: :student)
-    assert_equal 1, course.homepage_admin_notifications.count
-
-    3.times { course.pending_members << create(:user) }
-    assert_equal 2, course.homepage_admin_notifications.count
-
-    # Incomplete feedbacks
-    e = create :evaluation, series: course.series.first
-    assert_equal 3, course.homepage_admin_notifications.count
-
-    e.feedbacks.each do |f|
-      f.update(completed: true)
-      f.save
-    end
-    assert_equal 2, course.homepage_admin_notifications.count
-  end
-
   test 'students should not see non visible homepage series' do
     course = create :course, series_count: 2, exercises_per_series: 2
     user = create :student

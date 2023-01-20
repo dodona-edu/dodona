@@ -1,9 +1,9 @@
 <div class="card home-summary-card course">
   <%= link_to course_path(course), class: 'card-title-link' do %>
-    <div class="card-title card-title-colored-container" style="height: 111px;">
+    <div class="card-title card-title-colored-container">
       <h2 class="card-title-text justify-content-between">
         <span class="ellipsis-overflow" title="<%= course.name %>"><%= course.name %></span>
-        <span class="float-end" style="white-space: nowrap">
+        <span class="float-end text-nowrap">
           <% if current_user.course_admin?(course) %>
             <% if current_user.admin_of?(course) %>
               <i class='mdi mdi-school' title='<%= t ".course-admin" %>'></i>
@@ -22,20 +22,20 @@
           <% end %>
         </span>
       </h2>
-      <div class="d-flex justify-content-between mb-1" style="width: 100%">
+      <div class="d-flex justify-content-between mb-2 w-100">
         <% if course.formatted_attribution.present? %>
-          <small class="ellipsis-overflow mt-2 d-inline-block" title="<%= course.formatted_attribution %>">
+          <small class="ellipsis-overflow mt-1 d-inline-block" title="<%= course.formatted_attribution %>">
             <%= course.formatted_attribution %>
           </small>
         <% end %>
 
-        <small class="float-end mt-2" style="white-space: nowrap" title="<%= Course.format_year(course.year) %>">
+        <small class="float-end mt-1 text-nowrap" title="<%= Course.format_year(course.year) %>">
           <%= Course.format_year(course.year) %>
         </small>
       </div>
 
       <% if current_user.admin_of?(course) %>
-        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div class="spread-line">
           <div data-bs-toggle="tooltip" title="<%= t ".user-count", count: course.subscribed_members.count %>">
             <i class="mdi mdi-18 mdi-account-multiple-outline mdi-vam"></i>
             <small><%= number_to_human(course.subscribed_members.count) %> </small>
@@ -102,7 +102,7 @@
               <% end %>
             </div>
           </div>
-          <div class="ellipsis-overflow" style="width: 100%">
+          <div class="ellipsis-overflow w-100">
             <% if series.deadline.present? %>
               <span class="float-end">
                 <% if current_user.admin_of?(course) %>
@@ -144,13 +144,13 @@
           <div class="course-item-icon" >
             <i class="mdi mdi-24 <%= an[:icon] %>"></i>
           </div>
-          <div style="width: 100%">
+          <span>
             <%= link_to an[:title], an[:link] %>
             <br/>
             <span class="small text-muted ">
               <%= an[:subtitle] %>
             </span>
-          </div>
+          </span>
         </div>
       <% end %>
       <% if items < 3 %>
@@ -218,8 +218,8 @@
           <div>
             <%= render partial: "popper", locals: { size: 120 } %>
           </div>
-          <span style="margin-top: 16px">
-          <strong><%= t ".no-activities-title" %></strong>
+          <span class="mt-4">
+            <strong><%= t ".no-activities-title" %></strong>
             <%= t ".no-activities-help" %>
           </span>
         </div>

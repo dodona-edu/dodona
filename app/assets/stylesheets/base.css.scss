@@ -114,3 +114,9 @@ svg {
   --svg-color-incorrect: #{$danger};
   --svg-color-warning: #{$warning};
 }
+
+.spread-line {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+}

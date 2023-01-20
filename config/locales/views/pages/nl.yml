@@ -45,7 +45,7 @@ nl:
         other: "%{count} gebruikers wachten op goedkeuring"
       pending-members-subtitle:
         one: "Klik hier om deze gebruiker te bekijken"
-        other: "Bekijk alle gebruikers die toegang to de cursus vragen"
+        other: "Bekijk alle gebruikers die toegang tot de cursus vragen"
       incomplete-feedbacks:
         one: "Één onbeoordeelde oplossing"
         other: "%{count} onbeoordeelde oplossingen"
@@ -56,7 +56,7 @@ nl:
       add-series-subtitle:
         zero: "Begin met het vormgeven van jouw cursus"
         one: "Voeg meer inhoud toe aan jouw cursus"
-        other: "Voeg meer inhoud toe aan je cursus"
+        other: "Voeg meer inhoud toe aan jouw cursus"
       user-count:
         one: "1 gebruiker"
         other: "%{count} gebruikers"

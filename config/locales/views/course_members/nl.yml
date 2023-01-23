@@ -32,4 +32,5 @@ nl:
       could_not_find_labels_column: "We konden de kolom met labels van de gebruiker met ID %{user_id} niet vinden. Controleer of het aangepaste bestand aan de voorwaarden voldoet."
     upload_labels_csv:
       no_file: "Gelieve een bestand op te laden."
+      malformed: Er ging iets mis bij het inlezen van het bestand. Controleer of het aangepaste bestand aan de voorwaarden voldoet.
 

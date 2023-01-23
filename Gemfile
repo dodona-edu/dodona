@@ -72,7 +72,7 @@ gem 'ruby-saml', '~> 1.15.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.5.0'
+gem 'omniauth_openid_connect', '~> 0.6.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens

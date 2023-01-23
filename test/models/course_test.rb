@@ -491,4 +491,73 @@ class CourseTest < ActiveSupport::TestCase
     assert_equal course.series.third, result.second[:series]
     assert_equal w1, result.second[:submission]
   end
+
+  test 'Series being worked on should return the series most students are working on' do
+    course = create :course, series_count: 5, exercises_per_series: 2
+    5.times { course.enrolled_members << create(:user) }
+
+    # no activity should default to first series
+    assert_equal course.series.first, course.series_being_worked_on.first
+    assert_equal course.series.second, course.series_being_worked_on.second
+
+    # should return series with most users with recent activity
+    # should be ignored because not most recent for user
+    create :submission, user: course.enrolled_members.first, exercise: course.series.third.exercises.first, course: course
+    # should be counted
+    create :submission, user: course.enrolled_members.first, exercise: course.series.third.exercises.second, course: course
+    # should be ignored because not most recent for user
+    create :submission, user: course.enrolled_members.second, exercise: course.series.third.exercises.first, course: course
+    # should be counted
+    create :submission, user: course.enrolled_members.second, exercise: course.series.fourth.exercises.first, course: course
+    # should be counted
+    create :submission, user: course.enrolled_members.third, exercise: course.series.fourth.exercises.second, course: course
+
+    assert_equal course.series.fourth, course.series_being_worked_on.first
+    assert_equal course.series.third, course.series_being_worked_on.second
+    assert_equal course.series.first, course.series_being_worked_on.third
+
+    # should exclude all submissions from first series to calculate second series
+    create :submission, user: course.enrolled_members.second, exercise: course.series.second.exercises.first, course: course
+    create :submission, user: course.enrolled_members.third, exercise: course.series.second.exercises.first, course: course
+
+    assert_equal course.series.second, course.series_being_worked_on.first
+    assert_equal course.series.fourth, course.series_being_worked_on.second
+    assert_equal course.series.third, course.series_being_worked_on.third
+
+    # should be able to manually exclude series
+    assert_equal course.series.fourth, course.series_being_worked_on(3, [course.series.second]).first
+    assert_equal course.series.third, course.series_being_worked_on(3, [course.series.second]).second
+    assert_equal course.series.first, course.series_being_worked_on(3, [course.series.second]).third
+
+    # should be able to limit number of series
+    assert_equal 3, course.series_being_worked_on.count
+    assert_equal 2, course.series_being_worked_on(2).count
+    assert_equal 5, course.series_being_worked_on(7).count
+
+    # can never return excluded series
+    assert_equal 4, course.series_being_worked_on(7, [course.series.first]).count
+    assert_not_includes course.series_being_worked_on(7, [course.series.first]), course.series.first
+  end
+
+  test 'students should not see non visible homepage series' do
+    course = create :course, series_count: 2, exercises_per_series: 2
+    user = create :student
+    CourseMembership.create(user: user, course: course, status: :student)
+
+    assert_equal 0, course.homepage_series(user).count
+    course.series.first.update(deadline: DateTime.now + 1.hour)
+    assert_equal 1, course.homepage_series(user).count
+    course.series.first.update(visibility: :hidden)
+    assert_equal 0, course.homepage_series(user).count
+    user = create :student
+    assert_equal 0, course.homepage_series(user).count
+    user = create :staff
+    assert_equal 0, course.homepage_series(user).count
+    user = create :zeus
+    assert_equal 0, course.homepage_series(user).count
+
+    user = create :staff
+    CourseMembership.create(user: user, course: course, status: :course_admin)
+    assert_equal 1, course.homepage_series(user).count
+  end
 end

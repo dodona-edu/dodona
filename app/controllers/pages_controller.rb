@@ -19,7 +19,7 @@ class PagesController < ApplicationController
       @year = params[:year] || @years.max
       @courses = courses.select { |c| c.year == @year }
       @favorite_courses = course_memberships.select(&:favorite).map(&:course)
-      @homepage_series = courses.map { |c| c.homepage_series(0) }.flatten.sort_by(&:deadline)
+      @homepage_series = courses.map { |c| c.homepage_series(current_user, 0) }.flatten.sort_by(&:deadline)
 
       @jump_back_in = current_user.jump_back_in
     else

@@ -848,4 +848,54 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
     assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
   end
+
+  test 'users by number of completed activities should return a list with the number of user indexed by the number of completed activities' do
+    course = create :course
+    10.times { course.enrolled_members << create(:user) }
+    series = create :series, exercise_count: 3, content_page_count: 3, course: course
+
+    assert_equal [10, 0, 0, 0, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+    assert_equal [9, 1, 0, 0, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.second, user: course.enrolled_members.first, course: course
+    assert_equal [9, 0, 1, 0, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.first, course: course
+    assert_equal [9, 0, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.second, course: course
+    assert_equal [8, 1, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.third, course: course
+    assert_equal [7, 2, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :activity_read_state, activity: series.content_pages.first, user: course.enrolled_members.first, course: course
+    assert_equal [7, 2, 0, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :activity_read_state, activity: series.content_pages.second, user: course.enrolled_members.fourth, course: course
+    assert_equal [6, 3, 0, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :activity_read_state, activity: series.content_pages.first, user: course.enrolled_members.fourth, course: course
+    assert_equal [6, 2, 1, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :activity_read_state, activity: series.content_pages.second, user: course.enrolled_members.fifth, course: course
+    assert_equal [5, 3, 1, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :activity_read_state, activity: series.content_pages.third, user: course.enrolled_members.fifth, course: course
+    assert_equal [5, 2, 2, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :wrong_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+    assert_equal [5, 2, 2, 1, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :wrong_submission, exercise: series.exercises.first, user: course.enrolled_members.fifth, course: course
+    assert_equal [5, 2, 2, 1, 0, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+    assert_equal [5, 2, 2, 0, 1, 0, 0], series.users_by_number_of_completed_activities
+
+    create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.fifth, course: course
+    assert_equal [5, 2, 1, 1, 1, 0, 0], series.users_by_number_of_completed_activities
+  end
 end

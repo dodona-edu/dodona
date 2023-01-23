@@ -102,19 +102,13 @@
 }
 
 .dodona-progress > .progressbar {
-  background-color: $progress-bar-bg;
+  background-color: $on-secondary-container;
   z-index: 1;
   left: 0;
 }
 
 .dodona-progress > .bufferbar {
-  background-image:
-    linear-gradient(
-      to right,
-      rgba(255, 255, 255, 0.7),
-      rgba(255, 255, 255, 0.7)
-    ),
-    linear-gradient(to right, $secondary, $secondary);
+  background-color: $secondary-container;
   z-index: 0;
   left: 0;
 }
@@ -125,15 +119,10 @@
 
 .dodona-progress.dodona-progress-indeterminate > .bar1,
 .dodona-progress.dodona-progress-indeterminate > .bar3 {
-  background-color: $progress-bar-bg;
+  background-color: $on-secondary-container;
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-}
-
-.mdl-progress.mdl-progress-indeterminate > .bar3 {
-  background-image: none;
-  animation-name: indeterminate2;
 }
 
 .dodona-progress.dodona-progress-indeterminate > .bar1 {
@@ -152,24 +141,6 @@
   }
 
   75% {
-    left: 100%;
-    width: 0%;
-  }
-}
-
-@keyframes indeterminate2 {
-  0%,
-  50% {
-    left: 0%;
-    width: 0%;
-  }
-
-  75% {
-    left: 0%;
-    width: 25%;
-  }
-
-  100% {
     left: 100%;
     width: 0%;
   }

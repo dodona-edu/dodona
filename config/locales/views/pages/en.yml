@@ -34,17 +34,52 @@ en:
       no-activities-help: "You have solved all exercises!"
       start-activity: "Start with %{activity}"
       continue-activity: "Continue working on %{activity}"
+      unanswered-questions:
+        one: "One open question"
+        other: "%{count} open questions"
+      unanswered-questions-subtitle:
+        one: "Click here to view this question"
+        other: "Click here to view these questions"
+      pending-members:
+        one: "One pending member"
+        other: "%{count} pending members"
+      pending-members-subtitle:
+        one: "Click here to view this member"
+        other: "View all users that want to join this course"
+      incomplete-feedbacks:
+        one: "One unreviewed submission"
+        other: "%{count} unreviewed submissions"
+      incomplete-feedbacks-subtitle:
+        one: "Click here to evaluate this submission"
+        other: "Continue evaluating these submissions"
+      add-series: "Add a series"
+      add-series-subtitle:
+        zero: "Start adding content to your course"
+        one: "Add more content to your course"
+        other: "Add more content to your course"
+      user-count:
+        one: "One user"
+        other: "%{count} users"
+      exercise-count:
+        one: "One exercise"
+        other: "%{count} exercises"
+      series-count:
+        one: "One series"
+        other: "%{count} series"
+      submission-count:
+        one: "One submission"
+        other: "%{count} submissions"
     important_homepage_links:
       jump_back_in: Jump back in
       upcoming_deadlines: Upcoming deadlines
     clickable_homepage_cards:
-      last_submission: "Continue working on this exercise."
-      next_exercise_success: "You solved the previous exercise. Start this one!"
-      next_exercise: "Or start the next exercise."
-      continue_series: "Continue working on this series."
-      next_series_success: "You solved the previous series. Start this one!"
-      next_series: "Or start the next series."
-      course: "Continue working on this course."
+      last_submission: "Continue working on this exercise"
+      next_exercise_success: "You solved the previous exercise. Start this one"
+      next_exercise: "Or start the next exercise"
+      continue_series: "Continue working on this series"
+      next_series_success: "You solved the previous series. Start this one"
+      next_series: "Or start the next series"
+      course: "Continue working on this course"
       series:
         teacher_mode_info: "Class progress is only shown to teachers. Students only see their own progress."
         teacher_progress_chart_info_correct:

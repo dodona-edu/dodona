@@ -173,6 +173,16 @@ class Series < ApplicationRecord
     activity_statuses.where(accepted: true, user: course.subscribed_members).group('user_id').having('COUNT(*) = ?', activities_count).count.count
   end
 
+  def users_by_number_of_completed_activities
+    tally = activity_statuses.where(accepted: true, user: course.subscribed_members).group('user_id').count.values.tally
+    result = Array.new(activity_count + 1, 0)
+    tally.each do |k, v|
+      result[k] = v
+    end
+    result[0] = course.subscribed_members.count - tally.values.sum
+    result
+  end
+
   def scoresheet
     users = course.subscribed_members.order_by_status_in_course_and_name 'ASC'
 

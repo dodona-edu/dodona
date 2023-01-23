@@ -153,6 +153,9 @@ class Course < ApplicationRecord
            inverse_of: :course,
            dependent: :restrict_with_error
 
+  has_many :evaluations, through: :series, class_name: 'Evaluation'
+  has_many :feedbacks, through: :evaluations, class_name: 'Feedback'
+
   validates :name, presence: true
   validates :year, presence: true
   validate :should_have_institution_when_visible_for_institution
@@ -187,12 +190,37 @@ class Course < ApplicationRecord
     end
   end
 
-  def homepage_series(passed_series = 1)
-    with_deadlines = series.select(&:open?).reject { |s| s.deadline.nil? }.sort_by(&:deadline)
+  def homepage_series(user, passed_series = 1)
+    with_deadlines = series
+    with_deadlines = with_deadlines.visible unless user&.admin_of?(self)
+    with_deadlines = with_deadlines.reject { |s| s.deadline.nil? }.sort_by(&:deadline)
     passed_deadlines = with_deadlines
                        .select { |s| s.deadline < Time.zone.now && s.deadline > 1.week.ago }[-1 * passed_series, 1 * passed_series]
     future_deadlines = with_deadlines.select { |s| s.deadline > Time.zone.now }
     passed_deadlines.to_a + future_deadlines.to_a
+  end
+
+  def series_being_worked_on(limit = 3, exclude = [])
+    return [] if limit < 1
+
+    candidates = series.where.not(id: exclude)
+
+    # To find the series that was worked on most recently,
+    # we look at the last submission of each student
+    # and return the series that has the highest number of those submissions
+    series = candidates.joins(:activity_statuses)
+                       .joins("INNER JOIN (#{ActivityStatus
+                                         .where(series: candidates, started: true)
+                                         .group(:user_id)
+                                         .select('MAX(last_submission_id) as m').to_sql}) AS ls ON ls.m = activity_statuses.last_submission_id")
+                       .where(activity_statuses: { started: true })
+                       .group(:series_id)
+                       .reorder(Arel.sql('COUNT(*) DESC'))
+                       .first
+    series = candidates.first if series.nil? && candidates.any?
+    result = series.nil? ? [] : [series]
+    result += series_being_worked_on(limit - 1, exclude + result)
+    result
   end
 
   def homepage_activities(user, limit = 3)

@@ -3,18 +3,18 @@
     <div class="card-title card-title-colored-container">
       <h2 class="card-title-text justify-content-between">
         <span class="ellipsis-overflow" title="<%= course.name %>"><%= course.name %></span>
-        <span class="float-end" style="white-space: nowrap">
+        <span class="float-end text-nowrap">
           <% if current_user.course_admin?(course) %>
             <% if current_user.admin_of?(course) %>
               <i class='mdi mdi-school' title='<%= t ".course-admin" %>'></i>
             <% end %>
-              <% if !course.open_for_all? || course.moderated %>
+              <% if (!course.open_for_all? && !course.open_for_institution?) || course.moderated %>
               <% title = [] %>
                 <% title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) unless course.open_for_all? %>
                 <% title.push t("courses.show.moderated-info") if course.moderated %>
                 <i class="mdi mdi-account-remove-outline" title='<%= title.join("\n") %>'></i>
             <% end %>
-              <% unless course.visible_for_all? %>
+            <% unless course.visible_for_all? || course.visible_for_institution? %>
               <i class="mdi mdi-eye-off-outline" title='<%= t "courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name %>'></i>
             <% end %>
           <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
@@ -22,127 +22,210 @@
           <% end %>
         </span>
       </h2>
-      <div class="d-flex justify-content-between mb-1" style="width: 100%">
+      <div class="course-subtitle">
         <% if course.formatted_attribution.present? %>
-          <small class="ellipsis-overflow mt-2 d-inline-block" title="<%= course.formatted_attribution %>">
+          <small class="ellipsis-overflow d-inline-block" title="<%= course.formatted_attribution %>">
             <%= course.formatted_attribution %>
           </small>
         <% end %>
 
-        <small class="float-end mt-2" style="white-space: nowrap" title="<%= Course.format_year(course.year) %>">
+        <small class="float-end text-nowrap" title="<%= Course.format_year(course.year) %>">
           <%= Course.format_year(course.year) %>
         </small>
       </div>
 
-      <%= render partial: 'progress_chart', locals: {
-        total: course.activity_count,
-        tried: course.started_activity_count(current_user),
-        correct: course.completed_activity_count(current_user),
-        info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-        info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-        info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-        width: '100%',
-        muted: true,
-      } %>
+      <% if current_user.admin_of?(course) %>
+        <div class="spread-line ">
+          <div data-bs-toggle="tooltip" title="<%= t ".user-count", count: course.subscribed_members.count %>">
+            <i class="mdi mdi-18 mdi-account-multiple-outline mdi-vam"></i>
+            <small><%= number_to_human(course.subscribed_members.count) %> </small>
+          </div>
+          <div data-bs-toggle="tooltip" title="<%= t ".series-count", count: course.series.count %>">
+            <%= render partial: "series/series_status", locals: { size: 18 } %>
+            <small><%= number_to_human(course.series.count) %> </small>
+          </div>
+          <div data-bs-toggle="tooltip" title="<%= t ".exercise-count", count: course.activities.count%>">
+            <%= custom_icon "exercises", class: "md-18" %>
+            <small><%= number_to_human(course.activities.count) %> </small>
+          </div>
+          <div data-bs-toggle="tooltip" title="<%= t ".submission-count", count: course.submissions.count %>">
+            <%= custom_icon "submissions", class: "md-18" %>
+            <small><%= number_to_human(course.submissions.count) %> </small>
+          </div>
+        </div>
+      <% else %>
+        <%= render partial: 'progress_chart', locals: {
+          total: course.activity_count,
+          tried: course.started_activity_count(current_user),
+          correct: course.completed_activity_count(current_user),
+          info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+          info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+          info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+          width: '100%',
+          muted: true,
+        } %>
+      <% end %>
     </div>
   <% end %>
 
-  <% course_series = course.homepage_series.first(2) %>
-  <% course_activities = course.homepage_activities(current_user, 3 - [1, course_series.length].max) %>
-  <% if course_series.empty? && course_activities.any?
-       course_series << course_activities.first[:series]
-       course_activities = course_activities.first(2)
+  <% items = 0
+     if current_user.admin_of?(course)
+       admin_notifications = homepage_course_admin_notifications(course)
+       items += admin_notifications.count
+     end
+
+     course_series = course.homepage_series(current_user).first([2, 3 - items].min)
+     items += course_series.length
+
+     if current_user.admin_of?(course)
+       course_series += course.series_being_worked_on(3 - items, course_series)
+       items = course_series.length + admin_notifications.count
+     else
+       course_activities = course.homepage_activities(current_user, 3 - [1, items].max)
+       if course_series.empty? && course_activities.any?
+         course_series << course_activities.first[:series]
+         items += course_series.length
+         course_activities = course_activities.first(3 - items)
+       end
      end
   %>
   <% if course_series.any? %>
-    <div class="card-supporting-text card-border">
+    <div class="card-supporting-text card-border <%= course_series.length == 3 ? 'course-activities-full-height' : '' %>">
       <% course_series.each do |series| %>
         <div class="course-item">
           <div class="course-item-icon">
             <div style="margin: -2px">
-              <%= render partial: 'series/series_status', locals: {loaded: true, series: series, user: current_user, size: 28 } %>
+              <% if current_user.admin_of?(course) %>
+                <%= render partial: "series/series_status", locals: { size: 28 } %>
+              <% else %>
+                <%= render partial: 'series/series_status', locals: { loaded: true, series: series, user: current_user, size: 28 } %>
+              <% end %>
             </div>
           </div>
-          <div class="ellipsis-overflow" style="width: 100%">
+          <div class="ellipsis-overflow w-100">
             <% if series.deadline.present? %>
               <span class="float-end">
-                <%= render partial: 'deadlines/relative', locals: {deadline: series.deadline, met: series.completed_before_deadline?(current_user)} %>
+                <% if current_user.admin_of?(course) %>
+                  <small title="<%= l(series.deadline, format: :long) %>">
+                    <i class="mdi mdi-12 mdi-alarm"></i>
+                    <%= deadline_relative_time series.deadline %>
+                  </small>
+                <% else %>
+                  <%= render partial: 'deadlines/relative', locals: { deadline: series.deadline, met: series.completed_before_deadline?(current_user) } %>
+                <%end %>
               </span>
             <% end %>
             <%= link_to series.name, course_path(course, series: series, anchor: series.anchor), class: "dynamic-homepage-series-link", title: series.name %>
 
-            <%= render partial: 'progress_chart', locals: {
-              total: series.activity_count,
-              tried: series.started_activity_count(current_user),
-              correct: series.completed_activity_count(current_user),
-              info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
-              info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
-              info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
-              width: '100%',
-            } %>
+            <% if current_user.admin_of?(course) %>
+              <d-progress-bar values="<%= series.users_by_number_of_completed_activities.to_json %>"
+                              title-key="js.progress_bar.series-admin-progress"
+              ></d-progress-bar>
+            <% else %>
+              <%= render partial: 'progress_chart', locals: {
+                total: series.activity_count,
+                tried: series.started_activity_count(current_user),
+                correct: series.completed_activity_count(current_user),
+                info_wrong: 'pages.clickable_homepage_cards.series.progress_chart_info_wrong',
+                info_not_started: 'pages.clickable_homepage_cards.series.progress_chart_info_not_started',
+                info_correct: 'pages.clickable_homepage_cards.series.progress_chart_info_correct',
+                width: '100%',
+              } %>
+            <% end %>
           </div>
         </div>
       <% end %>
     </div>
   <% end %>
-  <div class="card-supporting-text card-border <%= course_series.empty? ? 'course-activities-full-height' : '' %>">
-    <% course_activities.each do |ca| %>
-      <div class="course-item">
-        <div class="course-item-icon" >
-          <% if ca[:submission].present? %>
-              <span title="<%= ca[:submission].summary %>">
-                <%= submission_status_icon(ca[:submission], 24) %>
-              </span>
-          <% else %>
-            <%= activity_icon ca[:activity], 24 %>
-          <% end %>
-        </div>
-        <div style="width: calc(100% - 36px)">
-          <div class="ellipsis-overflow" title="<%= t (ca[:submission].present? ? ".continue-activity" : ".start-activity"), activity: ca[:activity].name %>">
-            <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission])%>
-          </div>
-          <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">
-            <%= ca[:series].name %>
-          </div>
-        </div>
-      </div>
-    <% end %>
-    <% if course_series.length + course_activities.length < 3 && course_series.length + course_activities.length > 0 %>
-      <div class="course-item <%= course_series.length + course_activities.length == 1 ? "course-item-double" : "" %>">
-        <% if course_activities.length > 0 %>
+  <% if current_user.admin_of?(course) && course_series.length < 3 %>
+    <div class="card-supporting-text card-border <%= course_series.length == 0 ? 'course-activities-full-height' : '' %>">
+      <% admin_notifications.each do |an| %>
+        <div class="course-item">
           <div class="course-item-icon">
-            <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
+            <i class="mdi mdi-24 <%= an[:icon] %>"></i>
           </div>
           <span>
-            <strong><%= t ".few-activities-title" %></strong>
+            <%= link_to an[:title], an[:link] %>
             <br/>
-            <%= t ".few-activities-help" %>
+            <span class="small text-muted ">
+              <%= an[:subtitle] %>
+            </span>
           </span>
-        <% else %>
-          <div class="course-item course-item-double">
+        </div>
+      <% end %>
+      <% if items < 3 %>
+        <%= link_to new_course_series_path(course), class: "course-item #{items <= 1 ? "course-item-double" : ""}" do %>
+          <div class="course-item-icon">
+            <i class="mdi mdi-<%= items <= 1 ? 72 : 24 %> mdi-plus"></i>
+          </div>
+          <div>
+            <%= t ".add-series" %>
+            <br/>
+            <span class="small text-muted ">
+              <%= t ".add-series-subtitle", count: course_series.length %>
+            </span>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  <% elsif course_series.length < 3 %>
+    <div class="card-supporting-text card-border <%= items == 0 ? 'course-activities-full-height' : '' %>">
+      <% course_activities.each do |ca| %>
+        <div class="course-item">
+          <div class="course-item-icon">
+            <% if ca[:submission].present? %>
+                <span title="<%= ca[:submission].summary %>">
+                  <%= submission_status_icon(ca[:submission], 24) %>
+                </span>
+            <% else %>
+              <%= activity_icon ca[:activity], 24 %>
+            <% end %>
+          </div>
+          <div style="width: calc(100% - 36px)">
+            <div class="ellipsis-overflow" title="<%= t (ca[:submission].present? ? ".continue-activity" : ".start-activity"), activity: ca[:activity].name %>">
+              <%= link_to ca[:activity].name, course_series_activity_path(I18n.locale, course.id, ca[:series].id, ca[:activity].id, anchor: 'submission-card', edit_submission: ca[:submission]) %>
+            </div>
+            <div class="small text-muted ellipsis-overflow" title="<%= ca[:series].name %>">
+              <%= ca[:series].name %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+      <% if items + course_activities.length < 3 && items + course_activities.length > 0 %>
+        <div class="course-item <%= items + course_activities.length == 1 ? "course-item-double" : "" %>">
+          <% if course_activities.length > 0 %>
             <div class="course-item-icon">
-              <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 }%>
+              <i class="mdi mdi-24 mdi-thumb-up-outline"></i>
+            </div>
+            <span>
+              <strong><%= t ".few-activities-title" %></strong>
+              <br/>
+              <%= t ".few-activities-help" %>
+            </span>
+          <% else %>
+            <div class="course-item-icon">
+              <%= render partial: "popper", locals: { size: course_series.length == 1 ? 88 : 24 } %>
             </div>
             <span>
               <strong><%= t ".no-activities-title" %></strong>
               <br/>
               <%= t ".no-activities-help" %>
             </span>
-          </div>
-        <% end %>
-      </div>
-    <% elsif course_series.length == 0 && course_activities.length == 0 %>
-      <div class="course-item course-item-triple">
-        <div>
-          <%= render partial: "popper", locals: { size: 120 } %>
+          <% end %>
         </div>
-        <span style="margin-top: 16px">
-        <strong><%= t ".no-activities-title" %></strong>
+      <% elsif course_series.length == 0 && course_activities.length == 0 %>
+        <div class="course-item course-item-triple">
+          <div>
+            <%= render partial: "popper", locals: { size: 120 } %>
+          </div>
+          <span class="mt-4">
+            <strong><%= t ".no-activities-title" %></strong>
             <%= t ".no-activities-help" %>
-        </span>
-      </div>
-    <% end %>
-  </div>
+          </span>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
   <div class="card-actions card-border">
     <div class="flex-grow-1">
       <i class="favorite-button mdi <%= @favorite_courses.include?(course)? "favorited mdi-heart" : "mdi-heart-outline" %>"

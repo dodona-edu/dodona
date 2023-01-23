@@ -95,15 +95,22 @@ async function initCSRF() {
     });
 }
 
-function initTooltips() {
+function initTooltips(root = document) {
     // First remove dead tooltips
-    const tooltips = document.querySelectorAll(".tooltip");
+    const tooltips = root.querySelectorAll(".tooltip");
     for (const tooltip of tooltips) {
         tooltip.remove();
     }
 
     // Then reinitialize tooltips
-    $("[data-bs-toggle=\"tooltip\"]").tooltip({ container: "body", trigger: "hover" });
+    const elements = root.querySelectorAll("[data-bs-toggle=\"tooltip\"]");
+    for (const element of elements) {
+        const tooltip = window.bootstrap.Tooltip.getOrCreateInstance(element);
+        if (element.title) {
+            tooltip.setContent({ ".tooltip-inner": element.title });
+            element.removeAttribute("title");
+        }
+    }
 }
 
 function tooltip(target, message, disappearAfter=1000) {

@@ -74,6 +74,7 @@ function initCourseMembers(): void {
     function initLabelsEditModal(): void {
         document.getElementById("labelsUploadButton").addEventListener("click", () => {
             const modal = document.getElementById("labelsUploadModal");
+            modal.querySelectorAll(".alert").forEach(al => al.remove());
             const input = document.getElementById("newCsvFileInput") as HTMLInputElement;
             const formData = new FormData();
             formData.append("file", input.files[0]);

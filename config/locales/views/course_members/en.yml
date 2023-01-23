@@ -30,3 +30,5 @@ en:
       finally_upload: "If you are satisfied with your changes, select the modified file below."
       download: "Download list"
       could_not_find_labels_column: "We couldn't find the labels column of the user with ID %{user_id}. Make sure the uploaded file is in the correct format."
+    upload_labels_csv:
+      no_file: "Please upload a file."

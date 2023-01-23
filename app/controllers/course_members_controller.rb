@@ -80,18 +80,26 @@ class CourseMembersController < ApplicationController
   end
 
   def upload_labels_csv
-    CSV.foreach(params[:file].path, headers: true) do |row|
-      row = row.to_hash
-      cm = CourseMembership.find_by(user_id: row['id'], course: @course)
-      if cm.present?
-        if row['labels'].nil?
-          @error = I18n.t('course_members.index.could_not_find_labels_column', user_id: row['id'])
-          break
+    return render json: { message: I18n.t('course_members.upload_labels_csv.no_file') }, status: :unprocessable_entity if params[:file] == 'undefined'
+
+    begin
+      CSV.foreach(params[:file].path, headers: true) do |row|
+        row = row.to_hash
+        cm = CourseMembership.find_by(user_id: row['id'], course: @course)
+        if cm.present?
+          if row['labels'].nil?
+            @error = I18n.t('course_members.index.could_not_find_labels_column', user_id: row['id'])
+            return render json: { message: @error }, status: :unprocessable_entity
+          end
+          labels = row['labels'].split(';').map(&:downcase).uniq.map { |name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course) }
+          cm.update(course_labels: labels)
         end
-        labels = row['labels'].split(';').map(&:downcase).uniq.map { |name| CourseLabel.find_by(name: name.strip, course: @course) || CourseLabel.create(name: name.strip, course: @course) }
-        cm.update(course_labels: labels)
       end
+    rescue CSV::MalformedCSVError
+      return render json: { message: I18n.t('course_members.upload_labels_csv.malformed') }, status: :unprocessable_entity
     end
+
+    render json: {}, status: :ok
   end
 
   private

@@ -26,7 +26,7 @@ module OmniAuth
         super
       end
 
-      def key_or_secret
+      def configured_public_key
         parse_jwks_uri(options.client_options.jwks_uri)
       end
 

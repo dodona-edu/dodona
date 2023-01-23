@@ -423,7 +423,7 @@ class SubmissionTest < ActiveSupport::TestCase
 
   class StatisticsTest < ActiveSupport::TestCase
     setup do
-      @date = DateTime.new(1302, 7, 11, 13, 37, 42)
+      @date = DateTime.new(1831, 7, 21, 13, 37, 42)
       @exercise = exercises(:python_exercise)
       @course = courses(:course1)
       @series = create :series, exercises: [@exercise], course: @course

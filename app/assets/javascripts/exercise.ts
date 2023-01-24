@@ -101,7 +101,7 @@ function initMathJax(): void {
             packages: { "[+]": ["noerrors"] }
         },
         options: {
-            ignoreHtmlClass: "feedback-table",
+            ignoreHtmlClass: "feedback-table|tex2jax_ignore",
             processHtmlClass: "tex2jax_process|annotation user"
         },
         loader: {

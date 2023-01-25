@@ -21,6 +21,11 @@ class TextDiffer
                 end
               end
             end
+    if @generated_linecount > @expected_linecount + 100
+      @to_many_lines = @generated_linecount
+      @generated_linecount = @expected_linecount + 100
+      @generated = @generated.split("\n", -1).first(@generated_linecount).to_a.join("\n")
+    end
   end
 
   def unified
@@ -47,6 +52,8 @@ class TextDiffer
         nil
       end
     end.html_safe
+    cut_off_message(builder) if @to_many_lines
+    builder
   end
 
   def split
@@ -236,5 +243,11 @@ class TextDiffer
     gen_result += '</strong>' if in_gen_strong
     exp_result += '</strong>' if in_exp_strong
     [gen_result, exp_result]
+  end
+
+  def cut_off_message(builder)
+    builder.div(class: 'callout callout-warning') do
+      builder << I18n.t('submissions.show.cut_off_message', generated: @to_many_lines, count: @expected_linecount)
+    end
   end
 end

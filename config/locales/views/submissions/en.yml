@@ -70,3 +70,6 @@ en:
       tab_staff: This tab is only visible for course admins
       tab_zeus: This tab is only visisble for administrators
       for: "for"
+      cut_off_message:
+        one: Your output was cut off as it is much longer than expected. You produced %{generated} lines while only one line was expected.
+        other: Your output was cut off as it is much longer than expected. You produced %{generated} lines while %{count} lines were expected.

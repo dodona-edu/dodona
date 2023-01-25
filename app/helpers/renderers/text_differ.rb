@@ -21,11 +21,11 @@ class TextDiffer
                 end
               end
             end
-    if @generated_linecount > @expected_linecount + 100
-      @to_many_lines = @generated_linecount
-      @generated_linecount = @expected_linecount + 100
-      @generated = @generated.split("\n", -1).first(@generated_linecount).to_a.join("\n")
-    end
+    return unless @generated_linecount > @expected_linecount + 100
+
+    @to_many_lines = @generated_linecount
+    @generated_linecount = @expected_linecount + 100
+    @generated = @generated.split("\n", -1).first(@generated_linecount).to_a.join("\n")
   end
 
   def unified

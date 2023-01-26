@@ -23,7 +23,7 @@ class TextDiffer
             end
     return unless @generated_linecount > @expected_linecount + 100
 
-    @to_many_lines = @generated_linecount
+    @too_many_lines = @generated_linecount
     @generated_linecount = @expected_linecount + 100
     @generated = @generated.split("\n", -1).first(@generated_linecount).to_a.join("\n")
   end
@@ -52,7 +52,7 @@ class TextDiffer
         nil
       end
     end.html_safe
-    cut_off_message(builder) if @to_many_lines
+    cut_off_message(builder) if @too_many_lines
     builder
   end
 
@@ -247,7 +247,7 @@ class TextDiffer
 
   def cut_off_message(builder)
     builder.div(class: 'callout callout-warning') do
-      builder << I18n.t('submissions.show.cut_off_message', generated: @to_many_lines, count: @expected_linecount)
+      builder << I18n.t('submissions.show.cut_off_message', generated: @too_many_lines, count: @expected_linecount)
     end
   end
 end

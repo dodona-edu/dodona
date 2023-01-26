@@ -70,3 +70,6 @@ nl:
       tab_staff: Dit tabblad is enkel zichtbaar voor cursusbeheerders
       tab_zeus: Dit tabblad is enkel zichtbaar voor admins
       for: "voor"
+      cut_off_message:
+        one: De uitvoer van je programma is ingekort aangezien je veel meer uitvoer had dan het verwachte resultaat. Je genereerde %{generated} karakters terwijl er slechts één karakter verwacht werd.
+        other: De uitvoer van je programma is ingekort aangezien je veel meer uitvoer had dan het verwachte resultaat. Je genereerde %{generated} karakters terwijl er slechts %{count} karakters verwacht werden.

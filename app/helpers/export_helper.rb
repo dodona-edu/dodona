@@ -156,7 +156,7 @@ module ExportHelper
       unless @item.is_a?(Series)
         series = @series_per_exercise[exercise.id]
         if series.nil?
-          ex_and_series_fn = "#{I18n.t('export.download_submissions.no_series')}/#{ex_and_series_fn}"
+          ex_and_series_fn = "#{I18n.t('exports.download_submissions.no_series')}/#{ex_and_series_fn}"
         else
           ex_and_series_fn = "#{series_fn(series)}/#{ex_and_series_fn}"
           ex_and_series_fn = "#{course_fn(series.course)}/#{ex_and_series_fn}" if @item.is_a?(User)

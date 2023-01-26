@@ -26,6 +26,8 @@ class Score < ApplicationRecord
   validates :score_item_id, uniqueness: { scope: :feedback_id }
   validate :not_out_of_bounds
 
+  default_scope { joins(:score_item).order('score_items.id': :asc) }
+
   private
 
   def maybe_complete_feedback

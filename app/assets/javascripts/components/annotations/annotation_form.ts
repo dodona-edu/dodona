@@ -55,6 +55,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     saveAnnotation = false;
 
     inputRef: Ref<HTMLTextAreaElement> = createRef();
+    titleRef: Ref<HTMLInputElement> = createRef();
 
     watch = {
         annotation: () => {
@@ -134,9 +135,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         }
     }
 
-    handleUpdateTitle(e: Event): void {
-        this.savedAnnotationTitle = (e.target as HTMLInputElement).value;
-        e.stopPropagation();
+    handleUpdateTitle(): void {
+        this.savedAnnotationTitle = this.titleRef.value.value;
     }
 
     firstUpdated(): void {
@@ -206,8 +206,15 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             <label class="form-label" for="saved-annotation-title">
                                 ${I18n.t("js.saved_annotation.title")}
                             </label>
-                            <input required="required" class="form-control" type="text"
-                                   @change=${e => this.handleUpdateTitle(e)} value=${this.savedAnnotationTitle} id="saved-annotation-title">
+                            <input required="required"
+                                   class="form-control"
+                                   type="text"
+                                   ${ref(this.titleRef)}
+                                   @keydown="${e => this.handleKeyDown(e)}"
+                                   @input=${() => this.handleUpdateTitle()}
+                                   value=${this.savedAnnotationTitle}
+                                   id="saved-annotation-title"
+                            >
                         </div>
                     ` : html``}
                 `}

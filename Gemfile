@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.15.0', require: false
+gem 'bootsnap', '~> 1.16.0', require: false
 
 # used to validate container responses
 gem 'json-schema', '~> 3.0.0'
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.7.1'
+  gem 'selenium-webdriver', '~> 4.8.0'
 end
 
 group :test do

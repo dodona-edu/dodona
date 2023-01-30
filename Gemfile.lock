@@ -121,7 +121,7 @@ GEM
       xpath (~> 3.2)
     codecov (0.6.0)
       simplecov (>= 0.15, < 0.22)
-    concurrent-ruby (1.1.10)
+    concurrent-ruby (1.2.0)
     counter_culture (3.3.0)
       activerecord (>= 4.2)
       activesupport (>= 4.2)

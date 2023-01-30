@@ -6,6 +6,7 @@ import {
     UserAnnotationEditor, UserAnnotationFormData,
     UserAnnotationPermissionData
 } from "code_listing/user_annotation";
+import { Notification } from "notification";
 
 interface QuestionAnnotationPermissionData extends UserAnnotationPermissionData {
     transition: {[state in QuestionState]: boolean};
@@ -154,6 +155,9 @@ export async function createUserAnnotation(formData: UserAnnotationFormData,
     const data = await response.json();
 
     if (response.ok) {
+        if (mode == "question") {
+            Notification.checkNotifications();
+        }
         return annotationFromData(data, editFn);
     }
     throw new Error();

@@ -390,8 +390,8 @@ export class CodeListing {
                 invalidateSavedAnnotation(e.detail.savedAnnotationId);
                 annotationForm.remove();
             } catch (err) {
-                annotationForm.hasErrors= true;
-                annotationForm.disabled= false;
+                annotationForm.hasErrors = true;
+                annotationForm.disabled = false;
             }
         });
 

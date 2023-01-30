@@ -1039,4 +1039,35 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 3, user.jump_back_in.count
     assert_equal a1, user.jump_back_in.first[:activity]
   end
+
+  test 'Open questions count gets updated when a new question is created' do
+    user = create :user
+    assert_equal 0, user.open_questions_count
+    create :question, submission: create(:submission, user: user, course: create(:course))
+    assert_equal 1, user.reload.open_questions_count
+    s = create :submission, user: user, course: create(:course)
+    create :question, submission: s
+    assert_equal 2, user.reload.open_questions_count
+    create :question, submission: s
+    assert_equal 3, user.reload.open_questions_count
+    create :question, submission: create(:submission, user: create(:user), course: create(:course))
+    assert_equal 3, user.reload.open_questions_count
+  end
+
+  test 'Open questions count gets updated when a question is answered' do
+    user = create :user
+    question = create :question, submission: create(:submission, user: user, course: create(:course))
+    assert_equal 1, user.reload.open_questions_count
+    question.update(question_state: :answered)
+    assert_equal 0, user.reload.open_questions_count
+  end
+
+  test 'has open questions is always correct' do
+    user = create :user
+    assert_equal false, user.open_questions?
+    question = create :question, submission: create(:submission, user: user, course: create(:course))
+    assert_equal true, user.reload.open_questions?
+    question.update(question_state: :answered)
+    assert_equal false, user.reload.open_questions?
+  end
 end

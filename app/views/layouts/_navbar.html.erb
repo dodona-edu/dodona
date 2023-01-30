@@ -34,9 +34,11 @@
               <div class="dropdown-menu dropdown-menu-end notification-dropdown">
                 <%= render partial: 'notifications/small_notifications_table', locals: { notifications: @last_notifications } %>
               </div>
-              <script>
-                dodona.ready.then(function() { dodona.Notification.checkNotifications() })
-              </script>
+              <% if current_user.open_questions? %>
+                <script>
+                  dodona.ready.then(dodona.Notification.checkNotifications);
+                </script>
+              <% end %>
             </li>
           <% end %>
           <li class="dropdown">

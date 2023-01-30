@@ -17,6 +17,9 @@
 #  saved_annotation_id :bigint
 #
 class Question < Annotation
+  belongs_to :user, inverse_of: :questions
+  counter_culture :user, column_name: proc { |question| question.answered? ? nil : 'open_questions_count' }
+
   after_commit :clear_transition
 
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }

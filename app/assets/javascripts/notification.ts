@@ -1,5 +1,6 @@
 import { FaviconManager } from "favicon";
 import { fetch } from "util.js";
+import { InactiveTimeout } from "auto_reload";
 
 /**
  * Model for a notification in the navbar. It adds three listeners to the notification view:
@@ -86,5 +87,19 @@ export class Notification {
     static async checkNotifications(): Promise<void> {
         const response = await fetch("/notifications.js?per_page=5");
         eval(await response.text());
+    }
+
+    static notificationRefreshTimeout: InactiveTimeout;
+    static startNotificationRefresh(): void {
+        if (Notification.notificationRefreshTimeout == undefined) {
+            Notification.notificationRefreshTimeout = new InactiveTimeout(
+                document.getElementById("page-wrapper"),
+                60 * 1000,
+                Notification.checkNotifications,
+                60 * 1000
+            );
+        }
+
+        Notification.notificationRefreshTimeout.start();
     }
 }

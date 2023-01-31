@@ -67,12 +67,14 @@ export class InactiveTimeout {
      * @param {HTMLElement} element The element for detecting user interaction.
      * @param {number} delay The delay in ms.
      * @param {function()} callback Function to call when the timout hits.
+     * @param {inactiveIncrease} number How much ms the delay is increased if the page is inactive.
      */
-    constructor(element: HTMLElement, delay: number, callback: () => void) {
+    constructor(element: HTMLElement, delay: number, callback: () => void, inactiveIncrease = 1000) {
         this.interactionElement = element;
         this.callback = callback;
         this.initialDelay = delay;
         this.delay = delay;
+        this.inactiveIncrease = inactiveIncrease;
 
         this.listener = () => {
             requestAnimationFrame(() => {

@@ -1,5 +1,5 @@
 import { FaviconManager } from "favicon";
-import { fetch, ready } from "util.js";
+import { fetch } from "util.js";
 import { InactiveTimeout } from "auto_reload";
 
 /**

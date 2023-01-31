@@ -1,3 +1,3 @@
-import { initSelection } from "export.js";
+import { initSelection } from "export.ts";
 
 window.dodona.initSelection = initSelection;

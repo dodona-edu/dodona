@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "If you use this software in your research, please cite it as below."
+preferred-citation:
+  type: article
+  doi: "10.1177/07356331221085595"
+  title: "Pass/Fail Prediction in Programming Courses"
+  journal: "Journal of Educational Computing Research"
+  year: 2022
+  authors:
+    - family-names: "Van Petegem"
+      given-names: "Charlotte"
+    - family-names: "Deconinck"
+      given-names: "Louise"
+    - family-names: "Mourisse"
+      given-names: "Dieter"
+    - family-names: "Maertens"
+      given-names: "Rien"
+    - family-names: "Strijbol"
+      given-names: "Niko"
+    - family-names: "Dhoedt"
+      given-names: "Bart"
+    - family-names: "De Wever"
+      given-names: "Bram"
+    - family-names: "Dawyndt"
+      given-names: "Peter"
+    - family-names: "Mesuere"
+      given-names: "Bart"
+repository-code: "https://github.com/dodona-edu/dodona"
+license: "MIT"

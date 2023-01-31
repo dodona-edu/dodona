@@ -89,6 +89,10 @@
   color: $info;
 }
 
+.colored-secondary {
+  color: $secondary;
+}
+
 figcaption {
   margin: 0 10px;
 }
@@ -102,4 +106,17 @@ figcaption {
 .wrap-overflow {
   white-space: normal;
   overflow-wrap: break-word;
+}
+
+svg {
+  --svg-color-primary: #{$primary};
+  --svg-color-correct: #{$success};
+  --svg-color-incorrect: #{$danger};
+  --svg-color-warning: #{$warning};
+}
+
+.spread-line {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }

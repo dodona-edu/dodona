@@ -2,8 +2,10 @@ import { initDragAndDrop } from "./drag_and_drop";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
 import { searchQuery } from "./search";
+import { html, render } from "lit";
+import { Modal } from "bootstrap";
 
-function loadUsers(_baseUrl: string, _status): void {
+function loadUsers(_status = undefined): void {
     const status = _status || getURLParameter("status");
     searchQuery.queryParams.updateParam("status", status);
 }
@@ -46,7 +48,7 @@ function initCourseMembers(): void {
                 return;
             }
 
-            loadUsers(baseUrl, status);
+            loadUsers(status);
             document.querySelector("#user-tabs li.active").classList.remove("active");
             tab.parentNode.classList.add("active");
         };
@@ -72,13 +74,27 @@ function initCourseMembers(): void {
     function initLabelsEditModal(): void {
         document.getElementById("labelsUploadButton").addEventListener("click", () => {
             const modal = document.getElementById("labelsUploadModal");
+            modal.querySelectorAll(".alert").forEach(al => al.remove());
             const input = document.getElementById("newCsvFileInput") as HTMLInputElement;
             const formData = new FormData();
             formData.append("file", input.files[0]);
             fetch(`/courses/${modal.dataset.course_id}/members/upload_labels_csv`, {
                 method: "POST",
                 body: formData,
-            }).then(loadUsers);
+            }).then(async response => {
+                if (!response.ok) {
+                    const error = await response.json();
+                    const alert = html`
+                        <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>${error.message}</div>
+                    `;
+                    const modalBody = modal.getElementsByClassName("modal-body")[0] as HTMLElement;
+                    render(alert, modalBody, { renderBefore: modalBody.firstChild } );
+                } else {
+                    loadUsers();
+                    Modal.getOrCreateInstance(modal).hide();
+                }
+            });
         });
     }
 

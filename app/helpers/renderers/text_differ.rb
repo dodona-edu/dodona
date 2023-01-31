@@ -8,6 +8,12 @@ class TextDiffer
   def initialize(generated, expected)
     @generated = generated || ''
     @expected = expected || ''
+
+    if @generated.length > @expected.length + 5000
+      @too_many_characters = @generated.length
+      @generated = "#{@generated.first(@expected.length + 5000)}..."
+    end
+
     @generated_linecount = generated&.lines&.count || 0
     @expected_linecount = expected&.lines&.count || 0
     @simplified_table = @generated_linecount > 100 || @expected_linecount > 100
@@ -47,6 +53,8 @@ class TextDiffer
         nil
       end
     end.html_safe
+    cut_off_message(builder) if @too_many_characters
+    builder
   end
 
   def split
@@ -236,5 +244,11 @@ class TextDiffer
     gen_result += '</strong>' if in_gen_strong
     exp_result += '</strong>' if in_exp_strong
     [gen_result, exp_result]
+  end
+
+  def cut_off_message(builder)
+    builder.div(class: 'callout callout-warning') do
+      builder << I18n.t('submissions.show.cut_off_message', generated: @too_many_characters, count: @expected.length)
+    end
   end
 end

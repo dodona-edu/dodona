@@ -28,17 +28,58 @@ nl:
       course-hidden: Verborgen cursus
       course-closed: Gesloten cursus
       favorite: "Favoriete cursus"
+      few-activities-title: "Goed bezig!"
+      few-activities-help: "Nog maar één oefening te gaan."
+      no-activities-title: "Gefeliciteerd!"
+      no-activities-help: "Je hebt alle oefeningen opgelost!"
+      start-activity: "Begin met %{activity}"
+      continue-activity: "Werk verder aan %{activity}"
+      unanswered-questions:
+        one: "Één open vraag"
+        other: "%{count} open vragen"
+      unanswered-questions-subtitle:
+        one: "Klik hier om deze vraag te bekijken"
+        other: "Klik hier om deze vragen te bekijken"
+      pending-members:
+        one: "Één gebruiker wacht op goedkeuring"
+        other: "%{count} gebruikers wachten op goedkeuring"
+      pending-members-subtitle:
+        one: "Klik hier om deze gebruiker te bekijken"
+        other: "Bekijk alle gebruikers die toegang tot de cursus vragen"
+      incomplete-feedbacks:
+        one: "Één onbeoordeelde oplossing"
+        other: "%{count} onbeoordeelde oplossingen"
+      incomplete-feedbacks-subtitle:
+        one: "Klik hier om deze oplossing te beoordelen"
+        other: "Ga verder met het beoordelen van deze oplossingen"
+      add-series: "Voeg een reeks toe"
+      add-series-subtitle:
+        zero: "Begin met het vormgeven van jouw cursus"
+        one: "Voeg meer inhoud toe aan jouw cursus"
+        other: "Voeg meer inhoud toe aan jouw cursus"
+      user-count:
+        one: "1 gebruiker"
+        other: "%{count} gebruikers"
+      series-count:
+        one: "1 reeks"
+        other: "%{count} reeksen"
+      exercise-count:
+        one: "1 oefening"
+        other: "%{count} oefeningen"
+      submission-count:
+        one: "1 ingediende oplossing"
+        other: "%{count} ingediende oplossingen"
     important_homepage_links:
       jump_back_in: Ga verder
       upcoming_deadlines: Aankomende deadlines
     clickable_homepage_cards:
-      last_submission: "Werk verder aan deze oefening."
-      next_exercise_success: "De vorige oefening was correct, start met deze oefening."
-      next_exercise: "Of start met de volgende oefening."
-      continue_series: "Werk verder aan deze reeks."
-      next_series_success: "De vorige reeks was correct, start met deze reeks."
-      next_series: "Of start met de volgende reeks."
-      course: "Werk verder aan deze cursus."
+      last_submission: "Werk verder aan deze oefening"
+      next_exercise_success: "De vorige oefening was correct, start met deze oefening"
+      next_exercise: "Of start met de volgende oefening"
+      continue_series: "Werk verder aan deze reeks"
+      next_series_success: "De vorige reeks was correct, start met deze reeks"
+      next_series: "Of start met de volgende reeks"
+      course: "Werk verder aan deze cursus"
       series:
         teacher_mode_info: "De voortgang van de klas wordt enkel getoond aan leraren. Studenten zien enkel hun eigen voortgang."
         teacher_progress_chart_info_correct:

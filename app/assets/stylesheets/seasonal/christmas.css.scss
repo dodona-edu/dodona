@@ -1,44 +1,36 @@
-.card.series {
-  .card-title-icon.christmas {
-    &::before {
-      content: "";
-      position: absolute;
-      width: 75px;
-      height: 75px;
-      margin-left: -5px;
-      background-size: contain;
-      background-repeat: no-repeat;
+.series-icon.christmas {
+  .overlay {
+    overflow: visible;
+  }
+
+  .overlay div {
+    content: "";
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    margin-left: -5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: -17px;
+    left: -17px;
+  }
+
+  &.started,
+  &.completed.deadline-missed {
+    .overlay div {
+      content: url("seasonal/series_status_overlays/christmas.svg");
     }
 
-    &.started,
-    &.completed.deadline-missed {
-      &::before {
-        background-image: url("seasonal/series_status_overlays/christmas.svg");
-      }
-
-      &:hover {
-        background: transparent;
-
-        &::before {
-          background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
-        }
-
-        i {
-          color: transparent;
-          background: transparent;
-          border: transparent;
-
-          &::before {
-            color: transparent;
-          }
-        }
+    &:hover {
+      .overlay div {
+        content: url("seasonal/series_status_overlays/christmas-hover.svg");
       }
     }
+  }
 
-    &.completed:not(.deadline-missed) {
-      &::before {
-        background-image: url("seasonal/series_status_overlays/christmas-hover.svg");
-      }
+  &.completed:not(.deadline-missed) {
+    .overlay div {
+      content: url("seasonal/series_status_overlays/christmas-hover.svg");
     }
   }
 }

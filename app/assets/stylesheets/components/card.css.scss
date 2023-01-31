@@ -55,6 +55,14 @@ $card-supporting-text-padding: 16px;
     flex-direction: row;
     align-items: center;
   }
+
+  .course-subtitle {
+    margin-bottom: 0.75rem;
+    margin-top: 0.25rem;
+    justify-content: space-between;
+    display: flex;
+    width: 100%;
+  }
 }
 
 .card-title.card-title-colored {
@@ -62,96 +70,40 @@ $card-supporting-text-padding: 16px;
   background-color: $primary;
   border-top-left-radius: $border-radius-base;
   border-top-right-radius: $border-radius-base;
+
+  .progress-chart.colored-muted {
+    --progress-chart-color: #{$on-primary};
+  }
+
+  small {
+    color: $on-primary;
+  }
+}
+
+.card-title.card-title-colored-container {
+  color: $on-primary-container;
+  background-color: $primary-container;
+  border-top-left-radius: $border-radius-base;
+  border-top-right-radius: $border-radius-base;
+
+  .progress-chart.colored-muted {
+    --progress-chart-color: #{$on-primary-container};
+  }
+
+  .series-icon {
+    --icon-color: #{$on-primary-container};
+    --icon-background-color: #{$primary-container};
+  }
+}
+
+.home-summary-card.course .card-title {
+  height: 111px;
 }
 
 a.card-title-link,
 a.card-title-link:hover {
   color: inherit;
   text-decoration: none;
-}
-
-.card-title.card-colored-accent {
-  color: $on-primary-container;
-  border-top-left-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
-
-  .card-subtitle-text {
-    margin-top: 3px;
-    opacity: 0.75;
-  }
-
-  .card-subtitle-text + .card-subtitle-text {
-    margin-top: 10px;
-  }
-
-  a {
-    color: inherit;
-  }
-
-  &.accent-red {
-    background-color: $red-container;
-    color: $on-red-container;
-  }
-
-  &.accent-pink {
-    background-color: $pink-container;
-    color: $on-pink-container;
-  }
-
-  &.accent-purple {
-    background-color: $purple-container;
-    color: $on-purple-container;
-  }
-
-  &.accent-deep-purple {
-    background-color: $deep-purple-container;
-    color: $on-purple-container;
-  }
-
-  &.accent-indigo {
-    background-color: $indigo-container;
-    color: $on-indigo-container;
-  }
-
-  &.accent-teal {
-    background-color: $teal-container;
-    color: $on-teal-container;
-  }
-
-  &.accent-orange {
-    background-color: $orange-container;
-    color: $on-orange-container;
-  }
-
-  &.accent-brown {
-    background-color: $brown-container;
-    color: $on-brown-container;
-  }
-
-  &.accent-blue-gray {
-    background-color: $blue-gray-container;
-    color: $on-blue-gray-container;
-  }
-
-  &.accent-blue {
-    background-color: $blue-container;
-    color: $on-blue-container;
-  }
-
-  &.accent-yellow {
-    background-color: $yellow-container;
-    color: $on-yellow-container;
-  }
-
-  &.accent-green {
-    background-color: $green-container;
-    color: $on-green-container;
-  }
-
-  &.accent-cyan {
-    background-color: $cyan-container;
-    color: $on-cyan-container;
-  }
 }
 
 .card-title.card-title-plain li a {
@@ -382,4 +334,43 @@ a.card-title-link:hover {
 
 .card-subtitle-fab {
   top: 48px;
+}
+
+.card-supporting-text .course-item {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: row;
+  height: 36px;
+  align-items: center;
+
+  &.course-item-double {
+    height: 88px;
+  }
+
+  &.course-item-triple {
+    height: 156px;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  p {
+    margin-bottom: 0;
+  }
+
+  .course-item-icon {
+    margin-right: 12px;
+    align-content: center;
+    display: grid;
+  }
+}
+
+.card-supporting-text .course-item + .course-item {
+  margin-top: 16px;
+}
+
+.card-supporting-text.course-activities-full-height {
+  height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
 }

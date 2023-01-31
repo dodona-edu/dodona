@@ -28,6 +28,12 @@ export class I18n extends Polyglot {
         }
     }
 
+    constructor() {
+        super();
+        // set default locale, avoids a lot of errors when the locale is not yet set
+        this.locale = "en";
+    }
+
     get locale(): string {
         return super.locale();
     }

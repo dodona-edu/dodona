@@ -33,6 +33,20 @@
   line-height: 50px;
 }
 
+.mdi.mdi-60::before {
+  font-size: 60px;
+  line-height: 62px;
+}
+
+.mdi.mdi-72::before {
+  font-size: 72px;
+  line-height: 74px;
+}
+
+.mdi.mdi-vam::before {
+  vertical-align: middle;
+}
+
 .visible-xs.mdi::before {
   margin-top: 12px;
 }

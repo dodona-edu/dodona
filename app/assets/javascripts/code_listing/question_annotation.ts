@@ -155,7 +155,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData,
     const data = await response.json();
 
     if (response.ok) {
-        if (mode == "question") {
+        if (mode === "question") {
             Notification.checkNotifications();
         }
         return annotationFromData(data, editFn);

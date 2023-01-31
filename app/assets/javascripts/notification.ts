@@ -84,17 +84,22 @@ export class Notification {
         window.location.href = this.notifiableUrl;
     }
 
-    static checkNotificationsTimeout = ready.then(() => new InactiveTimeout(
-        document.getElementById("page-wrapper"),
-        60 * 1000,
-        async () => {
-            const response = await fetch("/notifications.js?per_page=5");
-            eval(await response.text());
-        },
-        60 * 1000
-    ));
+    static async checkNotifications(): Promise<void> {
+        const response = await fetch("/notifications.js?per_page=5");
+        eval(await response.text());
+    }
 
-    static checkNotifications(): void {
-        Notification.checkNotificationsTimeout.then( t => t.start());
+    static notificationRefreshTimeout: InactiveTimeout;
+    static startNotificationRefresh(): void {
+        if (Notification.notificationRefreshTimeout == undefined) {
+            Notification.notificationRefreshTimeout = new InactiveTimeout(
+                document.getElementById("page-wrapper"),
+                60 * 1000,
+                Notification.checkNotifications,
+                60 * 1000
+            );
+        }
+
+        Notification.notificationRefreshTimeout.start();
     }
 }

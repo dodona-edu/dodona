@@ -156,7 +156,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData,
 
     if (response.ok) {
         if (mode === "question") {
-            Notification.checkNotifications();
+            Notification.startNotificationRefresh();
         }
         return annotationFromData(data, editFn);
     }

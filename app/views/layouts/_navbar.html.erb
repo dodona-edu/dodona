@@ -36,7 +36,7 @@
               </div>
               <% if current_user.open_questions? %>
                 <script>
-                  dodona.ready.then(dodona.Notification.checkNotifications);
+                  dodona.ready.then(dodona.Notification.startNotificationRefresh);
                 </script>
               <% end %>
             </li>

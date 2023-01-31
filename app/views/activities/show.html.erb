@@ -1,4 +1,7 @@
 <% content_for :javascripts do %>
+  <% if @activity.exercise? %>
+    <%= javascript_include_tag 'ace_editor' %>
+  <% end %>
   <%= javascript_include_tag 'exercise' %>
   <% if @activity.exercise? %>
     <%= javascript_include_tag 'submission' %>

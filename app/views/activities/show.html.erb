@@ -1,5 +1,4 @@
 <% content_for :javascripts do %>
-  <%= javascript_include_tag 'exercise' %>
   <% if @activity.exercise? %>
     <%= javascript_include_tag 'submission' %>
     <%= javascript_include_tag 'ace_editor' %>
@@ -9,6 +8,7 @@
     <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
     <%= javascript_include_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
+  <%= javascript_include_tag 'exercise' %>
 <% end %>
 <%= render 'navbar_links' %>
 

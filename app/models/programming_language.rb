@@ -23,16 +23,12 @@ class ProgrammingLanguage < ApplicationRecord
   # There are only a few programming languages, so we can keep them in memory
   @@in_memory_instances = {} # rubocop:disable Style/ClassVars
 
-  def self.find(*ids)
-    # We don't have cache keys for this stuff yet
-    return super unless ids.length == 1
-
-    id = ids.first
+  def self.cached_find(id)
     return nil if id.nil?
 
-    return super unless id.is_a?(Integer)
+    return nil unless id.is_a?(Integer)
 
-    @@in_memory_instances[id] ||= super
+    @@in_memory_instances[id] ||= find(id)
   end
 
   def remove_from_cache

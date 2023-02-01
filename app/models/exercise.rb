@@ -44,7 +44,7 @@ class Exercise < Activity
   scope :unstarted_by, ->(users) { where.not(id: Submission.where(user_id: users).select(:exercise_id)) }
 
   def programming_language
-    ProgrammingLanguage.find(programming_language_id) || super
+    ProgrammingLanguage.cached_find(programming_language_id) || super
   end
 
   def exercise?

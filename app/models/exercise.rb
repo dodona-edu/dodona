@@ -43,6 +43,10 @@ class Exercise < Activity
   # Only used manually from the console
   scope :unstarted_by, ->(users) { where.not(id: Submission.where(user_id: users).select(:exercise_id)) }
 
+  def programming_language
+    ProgrammingLanguage.find(programming_language_id) || super
+  end
+
   def exercise?
     true
   end

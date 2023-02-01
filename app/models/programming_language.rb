@@ -21,7 +21,7 @@ class ProgrammingLanguage < ApplicationRecord
   has_many :exercises, dependent: :restrict_with_error
 
   # There are only a few programming languages, so we can keep them in memory
-  @@in_memory_instances = {}
+  @@in_memory_instances = {} # rubocop:disable Style/ClassVars
 
   def self.find(*ids)
     # We don't have cache keys for this stuff yet

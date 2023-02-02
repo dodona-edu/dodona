@@ -34,7 +34,7 @@
     </tr>
     </thead>
     <tbody>
-    <% local_assigns[:activities].each_with_index do |activity, index| %>
+    <% local_assigns[:activities].includes(:repository).each_with_index do |activity, index| %>
       <tr>
         <td class='status-icon'>
           <% if user_signed_in? %>

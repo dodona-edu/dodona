@@ -164,6 +164,6 @@ class Evaluation < ApplicationRecord
   end
 
   def annotate_submissions
-    annotated_submissions.update_all(annotated: true)
+    annotated_submissions.update_all(annotated: true) # rubocop:disable Rails/SkipsModelValidations
   end
 end

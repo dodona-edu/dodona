@@ -24,12 +24,15 @@ class Evaluation < ApplicationRecord
   has_many :exercises, through: :evaluation_exercises
   has_many :score_items, through: :evaluation_exercises
 
+  has_many :annotated_submissions, -> { distinct }, through: :annotations, source: :submission
+
   validates :deadline, presence: true
   validate :deadline_in_past
 
   before_save :manage_feedbacks
   before_destroy :destroy_notification
   after_save :manage_user_notifications
+  after_save :annotate_submissions, if: :released?
 
   def users=(new_users)
     removed = users - new_users
@@ -158,5 +161,9 @@ class Evaluation < ApplicationRecord
 
   def destroy_notification
     Notification.where(notifiable: self)&.destroy_all
+  end
+
+  def annotate_submissions
+    annotated_submissions.update_all(annotated: true)
   end
 end

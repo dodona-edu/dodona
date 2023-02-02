@@ -40,7 +40,9 @@ class Annotation < ApplicationRecord
 
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create
+  after_create :annotate_submission
   after_destroy :destroy_notification
+  after_destroy :reset_submission_annotated
   after_save :create_notification
 
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
@@ -71,5 +73,13 @@ class Annotation < ApplicationRecord
 
   def set_course_id
     self.course_id = submission.course_id
+  end
+
+  def annotate_submission
+    submission.update(annotated: true) if evaluation.nil? || evaluation.released?
+  end
+
+  def reset_submission_annotated
+    submission.update(annotated: false) unless submission.annotations.left_joins(:evaluation).released.any?
   end
 end

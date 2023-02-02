@@ -2,17 +2,19 @@
 #
 # Table name: submissions
 #
-#  id          :integer          not null, primary key
-#  exercise_id :integer
-#  user_id     :integer
-#  summary     :string(255)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer
-#  accepted    :boolean          default(FALSE)
-#  course_id   :integer
-#  fs_key      :string(24)
-#  number      :integer
+#  id                        :integer          not null, primary key
+#  exercise_id               :integer
+#  user_id                   :integer
+#  summary                   :string(255)
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  status                    :integer
+#  accepted                  :boolean          default(FALSE)
+#  course_id                 :integer
+#  fs_key                    :string(24)
+#  number                    :integer
+#  released_annotation_count :integer          default(0), not null
+#  annotated                 :boolean          default(FALSE), not null
 #
 
 require 'test_helper'
@@ -419,6 +421,20 @@ class SubmissionTest < ActiveSupport::TestCase
 
     course.series.second.update!(visibility: :hidden)
     assert_nil submission.series
+  end
+
+  test 'Annotations should be counted once an evaluation is released' do
+    submission = create :submission, status: :correct, course: courses(:course1)
+    assert_not submission.reload.annotated?
+    a = create :annotation, submission: submission
+    assert submission.reload.annotated?
+    a.destroy
+    assert_not submission.reload.annotated?
+    evaluation = create :evaluation
+    create :annotation, submission: submission, evaluation: evaluation
+    assert_not submission.reload.annotated?
+    evaluation.update!(released: true)
+    assert submission.reload.annotated?
   end
 
   class StatisticsTest < ActiveSupport::TestCase

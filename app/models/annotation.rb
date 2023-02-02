@@ -56,7 +56,6 @@ class Annotation < ApplicationRecord
                   column_name: proc { |annotation| annotation.released? ? 'released_annotation_count' : nil },
                   column_names: { Annotation.released => 'released_annotation_count' }
 
-
   def released?
     evaluation.blank? || evaluation.released
   end

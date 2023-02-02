@@ -493,7 +493,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_02_123413) do
     t.integer "course_id"
     t.string "fs_key", limit: 24
     t.integer "number"
-    t.integer "released_annotation_count", default: 0, null: false
     t.boolean "annotated", default: false, null: false
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"

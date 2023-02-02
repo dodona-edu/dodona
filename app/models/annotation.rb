@@ -33,7 +33,7 @@ class Annotation < ApplicationRecord
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
+  scope :released, -> { left_joins(:evaluation).where(evaluation_id: nil).or(where(evaluations: { released: true })) }
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
@@ -52,6 +52,15 @@ class Annotation < ApplicationRecord
     end.reduce(includes(submission: [:exercise], user: []), &:merge)
   }
 
+  counter_culture :submission,
+                  column_name: proc { |annotation| annotation.released? ? 'released_annotation_count' : nil },
+                  column_names: { Annotation.released => 'released_annotation_count' }
+
+
+  def released?
+    evaluation.blank? || evaluation.released
+  end
+
   private
 
   def create_notification
@@ -62,7 +71,7 @@ class Annotation < ApplicationRecord
   end
 
   def destroy_notification
-    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.left_joins(:evaluation).released.any?
+    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.released.any?
   end
 
   def set_last_updated_by

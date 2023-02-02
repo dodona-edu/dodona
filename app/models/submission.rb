@@ -2,17 +2,18 @@
 #
 # Table name: submissions
 #
-#  id          :integer          not null, primary key
-#  exercise_id :integer
-#  user_id     :integer
-#  summary     :string(255)
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  status      :integer
-#  accepted    :boolean          default(FALSE)
-#  course_id   :integer
-#  fs_key      :string(24)
-#  number      :integer
+#  id                        :integer          not null, primary key
+#  exercise_id               :integer
+#  user_id                   :integer
+#  summary                   :string(255)
+#  created_at                :datetime         not null
+#  updated_at                :datetime         not null
+#  status                    :integer
+#  accepted                  :boolean          default(FALSE)
+#  course_id                 :integer
+#  fs_key                    :string(24)
+#  number                    :integer
+#  released_annotation_count :integer          default(0), not null
 #
 
 class Submission < ApplicationRecord
@@ -203,7 +204,7 @@ class Submission < ApplicationRecord
   end
 
   def annotated?
-    annotations.left_joins(:evaluation).released.any?
+    released_annotation_count > 0
   end
 
   def skip_rate_limit_check?

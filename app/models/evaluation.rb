@@ -30,6 +30,7 @@ class Evaluation < ApplicationRecord
   before_save :manage_feedbacks
   before_destroy :destroy_notification
   after_save :manage_user_notifications
+  after_save :update_released_annotation_counts, if: :released?
 
   def users=(new_users)
     removed = users - new_users
@@ -158,5 +159,9 @@ class Evaluation < ApplicationRecord
 
   def destroy_notification
     Notification.where(notifiable: self)&.destroy_all
+  end
+
+  def update_released_annotation_counts
+    annotations.counter_culture_fix_counts
   end
 end

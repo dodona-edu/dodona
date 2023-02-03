@@ -31,11 +31,6 @@
     </tbody>
   </table>
 </div>
-<% if users.empty? %>
+<% if users.empty? || too_many_results %>
   <p class="text-center text-muted lead table-placeholder"><%= t too_many_results ? '.too_many_results' : 'users.index.no_users' %></p>
-<% end %>
-<% if local_assigns.fetch(:paginate, true) %>
-  <center>
-    <%= user_page_navigation_links users, local_assigns.fetch(:pagination_opts, {}), :available_for_repository %>
-  </center>
 <% end %>

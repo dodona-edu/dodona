@@ -12,7 +12,7 @@
       <div class="card-supporting-text">
         <p><%= raw t(".admin_explanation") %></p>
         <div id="admin-table-wrapper">
-          <%= render(partial: 'users/repository_users_table', locals: {users: @users, show_delete_button: true, paginate: false, too_many_results: false}) %>
+          <%= render(partial: 'users/repository_users_table', locals: {users: @users, show_delete_button: true, too_many_results: false}) %>
         </div>
       </div>
       <div class="card-supporting-text card-border">

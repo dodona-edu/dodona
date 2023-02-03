@@ -15,8 +15,9 @@ class UsersController < ApplicationController
   def available_for_repository
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
 
-    @too_many_results = @users.count > 5 && (params[:filter].nil? || params[:filter].length < 3)
-    @users = @users.none if @too_many_results
+    @too_many_results = @users.count > 10 || params[:filter].nil? || params[:filter].length < 3
+    @users = @users.none if params[:filter].nil? || params[:filter].length < 3
+    @users = @users.first(10)
 
     respond_to do |format|
       format.html { redirect_to @repository }

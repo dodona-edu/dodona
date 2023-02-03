@@ -62,6 +62,11 @@
                 </td>
               </tr>
             <% end %>
+            <% if @repositories.empty? %>
+               <tr>
+                  <td colspan="6" class="empty"><%= t ".empty" %></td>
+                </tr>
+            <% end %>
             </tbody>
           </table>
         </div>

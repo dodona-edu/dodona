@@ -15,6 +15,7 @@ nl:
       edit: "Aanpassen"
       delete: "Verwijderen"
       admin: "Je bent beheerder van deze repository"
+      empty: "Je hebt nog geen repository's.\nJe kan een repository aanmaken via de plus knop, of je kan aan een repository beheerder vragen om je toe te voegen aan een repository."
     new:
       title: Een repository met oefeningen toevoegen
       help_html: "Een handleiding met meer informatie over het beheren van een repository kan je in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>onze documentatie</a> terugvinden."

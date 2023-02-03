@@ -9,13 +9,13 @@ nl:
       remote_cant_be_edited_html: De clone URL kan niet aangepast worden nadat de repository werd aangemaakt. Contacteer <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> als het toch aangepast moet worden.
     index:
       title_zeus: Alle oefeningen repository's
-      title: Jouw oefeningen repository's
+      title: Jouw oefeningenrepository's
       admins: "Beheerders aanpassen"
       courses: "Toegelaten cursussen aanpassen"
       edit: "Aanpassen"
       delete: "Verwijderen"
       admin: "Je bent beheerder van deze repository"
-      empty_html: "Je hebt nog geen repository's.<br/>Je kan een repository aanmaken via de plus knop, of je kan aan een repository beheerder vragen om je toe te voegen aan een repository."
+      empty_html: "Je hebt nog geen repository's.<br/>Je kan een repository aanmaken via de plus-knop, of je kan aan een repository-beheerder vragen om je toe te voegen aan een repository."
     new:
       title: Een repository met oefeningen toevoegen
       help_html: "Een handleiding met meer informatie over het beheren van een repository kan je in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>onze documentatie</a> terugvinden."

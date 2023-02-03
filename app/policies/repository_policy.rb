@@ -22,7 +22,7 @@ class RepositoryPolicy < ApplicationPolicy
   end
 
   def update?
-    user&.zeus?
+    user&.repository_admin?(record)
   end
 
   def destroy?

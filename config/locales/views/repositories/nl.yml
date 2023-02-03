@@ -8,7 +8,8 @@ nl:
         toggle-label: "Deze repository uitlichten"
       remote_cant_be_edited_html: De clone URL kan niet aangepast worden nadat de repository werd aangemaakt. Contacteer <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> als het toch aangepast moet worden.
     index:
-      title: Alle oefeningen repository's
+      title_zeus: Alle oefeningen repository's
+      title: Jouw oefeningen repository's
       admins: "Beheerders aanpassen"
       courses: "Toegelaten cursussen aanpassen"
       edit: "Aanpassen"

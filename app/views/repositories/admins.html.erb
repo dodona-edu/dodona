@@ -17,7 +17,7 @@
       </div>
       <div class="card-supporting-text card-border">
         <h3><%= t ".add_admins" %></h3>
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: available_for_repository_users_path(:repository_id => @repository.id), eager: true}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: available_for_repository_users_path(:repository_id => @repository.id), eager: true, institutions: Institution.all}) %>
         <div id="users-table-wrapper">
         </div>
       </div>

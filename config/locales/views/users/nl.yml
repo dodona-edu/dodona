@@ -48,3 +48,4 @@ nl:
       no_institution: Deze gebruiker heeft geen onderwijsinstelling
     repository_users_table:
       no_institution: "Geen onderwijsinstelling"
+      too_many_results: "Er werden te veel gebruikers gevonden. Gebruik de zoekbalk om de resultaten te filteren."

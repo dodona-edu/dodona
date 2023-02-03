@@ -32,7 +32,7 @@
   </table>
 </div>
 <% if users.empty? %>
-  <p class="text-center text-muted lead table-placeholder"><%= t 'users.index.no_users' %></p>
+  <p class="text-center text-muted lead table-placeholder"><%= t too_many_results ? '.too_many_results' : 'users.index.no_users' %></p>
 <% end %>
 <% if local_assigns.fetch(:paginate, true) %>
   <center>

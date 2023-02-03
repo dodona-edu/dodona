@@ -10,6 +10,9 @@ en:
           attributes:
             activity:
               taken: You have already read this activity
+        gitable:
+          repository:
+            not_accessible: The repository is not accessible for our git user. Please double check if you have given the correct permissions. Take notice that it might take a while before a github/gitlab invitation is accepted by our team.
     models:
       course: Course
       activity: Activity

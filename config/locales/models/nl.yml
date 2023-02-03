@@ -10,6 +10,9 @@ nl:
           attributes:
             activity:
               taken: Je hebt deze activiteit al gelezen
+        gitable:
+          repository:
+            not_accessible: De repository is niet toegankelijk voor onze git-gebruiker. Controleer of je de juiste permissies hebt ingesteld. Hou er rekening mee dat het even kan duren voor een github/gitlab uitnodiging wordt geaccepteerd door ons team.
     models:
       course: Cursus
       activity: Activiteit

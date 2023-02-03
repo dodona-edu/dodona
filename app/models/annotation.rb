@@ -33,14 +33,16 @@ class Annotation < ApplicationRecord
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
-  scope :released, -> { where(evaluation_id: nil).or(where(evaluations: { released: true })) }
+  scope :released, -> { left_joins(:evaluation).where(evaluation_id: nil).or(where(evaluations: { released: true })) }
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
 
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create
+  after_create :annotate_submission
   after_destroy :destroy_notification
+  after_destroy :reset_submission_annotated
   after_save :create_notification
 
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
@@ -62,7 +64,7 @@ class Annotation < ApplicationRecord
   end
 
   def destroy_notification
-    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.left_joins(:evaluation).released.any?
+    Notification.find_by(notifiable: submission)&.destroy unless submission.annotations.released.any?
   end
 
   def set_last_updated_by
@@ -71,5 +73,13 @@ class Annotation < ApplicationRecord
 
   def set_course_id
     self.course_id = submission.course_id
+  end
+
+  def annotate_submission
+    submission.update(annotated: true) if evaluation.nil? || evaluation.released?
+  end
+
+  def reset_submission_annotated
+    submission.update(annotated: false) unless submission.annotations.released.any?
   end
 end

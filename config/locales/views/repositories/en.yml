@@ -8,15 +8,17 @@ en:
         toggle-label: "Feature this repository"
       remote_cant_be_edited_html: The clone URL can't be edited after the repository was created. Contact <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> if it needs to be changed.
     index:
-      title: All exercise repositories
+      title_zeus: All exercise repositories
+      title: Your exercise repositories
       admins: "Edit administrators"
       courses: "Edit allowed courses"
       edit: "Edit"
       delete: "Delete"
       admin: "You are an administrator of this repository"
+      empty_html: "You don't have any repositories yet.<br/>Click on the plus button to create your first repository or ask a repository admin you know to add you as an administrator."
     new:
       title: Add an exercise repository
-      help_html: "You can find a guide with more information on managing repositories in <a href='https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/#_1-een-git-repository-aanmaken'>our documentation</a>."
+      help_html: "You can find a guide with more information on managing repositories in <a href='https://docs.dodona.be/en/guides/teachers/new-exercise-repo/#_1-create-a-git-repository'>our documentation</a>."
     show:
       repository: Repository
       empty_repo_title: "Getting started"

@@ -274,6 +274,10 @@ class User < ApplicationRecord
     @repository_admin.include?(repository.id)
   end
 
+  def a_repository_admin?
+    zeus? || repositories.any?
+  end
+
   def personal?
     institution.nil?
   end

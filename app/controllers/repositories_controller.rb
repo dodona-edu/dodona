@@ -7,8 +7,9 @@ class RepositoriesController < ApplicationController
   # GET /repositories.json
   def index
     authorize Repository
-    @repositories = Repository.all
-    @title = I18n.t('repositories.index.title')
+    @repositories = policy_scope(Repository.all)
+    @repositories = @repositories.has_admin(current_user) unless current_user&.zeus?
+    @title = current_user&.zeus? ? I18n.t('repositories.index.title_zeus') : I18n.t('repositories.index.title')
   end
 
   # GET /repositories/1

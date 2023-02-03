@@ -17,7 +17,7 @@ class UsersController < ApplicationController
 
     @too_many_results = @users.count > 10 || params[:filter].nil? || params[:filter].length < 3
     @users = @users.none if params[:filter].nil? || params[:filter].length < 3
-    @users = @users.first(10)
+    @users = @users.order_by_name_length(:asc).first(10)
 
     respond_to do |format|
       format.html { redirect_to @repository }

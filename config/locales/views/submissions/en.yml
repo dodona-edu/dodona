@@ -63,13 +63,13 @@ en:
         hide_all: Hide all annotations
         show_errors: Only show errors
         hidden: Hidden annotations
-      judge_output_too_long: "The judge generated too much output. This usually happens when the submission itself generates too much output. Try to reduce how much output your submission generates."
-      reading_failed: "Something went wrong while loading your results. Try again later or resubmit your solution if the problem persists."
-      message_staff: This message is only visible for course admins
-      message_zeus: This message is only visible for administrators
-      tab_staff: This tab is only visible for course admins
-      tab_zeus: This tab is only visisble for administrators
+      judge_output_too_long: "The judge has generated too much output. This usually happens when the submission itself generates too much output. Try to reduce the amount of output your submission generates."
+      reading_failed: "Something has gone wrong while loading your results. Please try again later or resubmit your solution if the problem persists."
+      message_staff: This message is only visible to course admins
+      message_zeus: This message is only visible to administrators
+      tab_staff: This tab is only visible to course admins
+      tab_zeus: This tab is only visisble to administrators
       for: "for"
       cut_off_message:
-        one: Your output was cut off as it is much longer than expected. You produced %{generated} characters while only one character was expected.
-        other: Your output was cut off as it is much longer than expected. You produced %{generated} characters while only %{count} characters were expected.
+        one: Your output has been cut off as it is much longer than expected. You produced %{generated} characters while only one character was expected.
+        other: Your output has been cut off as it is much longer than expected. You produced %{generated} characters while only %{count} characters were expected.

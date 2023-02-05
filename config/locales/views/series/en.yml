@@ -11,7 +11,7 @@ en:
       hide_activities_help: "Hiding learning activities will only show the description for this series. Teachers can use this setting to release the course material for a series early while holding back the exercises and reading activities."
       advanced_settings: Advanced settings
       activity_numbers_enabled: "Number learning activities"
-      activity_numbers_enabled_help: "Every exercise and reading activity gets a sequential number starting at 1. This number will be displayed titles and listings and can simplify communicating about those activities."
+      activity_numbers_enabled_help: "Each exercise and reading activity is given a sequential number, starting with 1. This number is displayed in titles and listings and can make it easier to communicate about these activities."
     index:
       title: All series
       load_more: Load more series
@@ -36,14 +36,14 @@ en:
       evaluation_overview: Show feedback
       series_overview: Series overview
       apply: apply
-      hidden_not_registered: You are not registered for this course. You have to register before you can start solving the exercises.
+      hidden_not_registered: You are not registered for this course. You must register before you can start solving the exercises.
     edit:
       title: Edit series
       add_activities: Add activities
       activities_in_series: Exercises and reading activities in this series
-      activities_in_series_info: Use the drag handle in front of each row to reorder the activities.
+      activities_in_series_info: Use the drag handle in front of each row to rearrange the activities.
       manage_activities: Manage learning activities
-      manage_activities_info: Changes made here will be saved instantly.
+      manage_activities_info: Changes made here are saved immediately.
       add_activity: add activity
       no_activities: This series currently contains no exericises or reading activities.
       no_activities_bis: Get started by using the search box below.
@@ -55,7 +55,7 @@ en:
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.
-      confirm_evaluation: Note there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will be deleted as well.
+      confirm_evaluation: Note that there is an evaluation linked to this series. If you delete this series all feedback in that evaluation will also be deleted.
     scoresheet:
       user: User
       at_least_one_started: "Only show users that started at least one learning activity"
@@ -70,16 +70,16 @@ en:
         one: 1 user
         other: "%{count} users"
     series_status:
-      completed_after_deadline_missed: You completed all learning activities, but unfortunately not before the deadline.
-      wrong_after_deadline_missed: You missed the deadline, and there are still incorrect exercises.
-      started_after_deadline_missed: You missed the deadline, and there are still some incomplete activities.
-      unstarted_after_deadline_missed: You missed the deadline, and you haven't started any exercises yet.
-      completed_after_deadline_met: You completed all activities before the deadline. Congratulations!
+      completed_after_deadline_missed: You have completed all learning activities, but unfortunately not before the deadline.
+      wrong_after_deadline_missed: You have missed the deadline, and there are still incorrect exercises.
+      started_after_deadline_missed: You have missed the deadline, and there are still some incomplete activities.
+      unstarted_after_deadline_missed: You have missed the deadline, and you haven't started any exercises yet.
+      completed_after_deadline_met: You have completed all activities before the deadline. Congratulations!
       wrong_after_deadline_met: Don't worry, you correctly completed activities before the deadline, but submitted at least one wrong solution after the deadline.
-      completed_before_deadline: You completed all activities before the deadline. Congratulations!
-      wrong_before_deadline: There are still incorrect exercises, but you still have time. Success!
-      started_before_deadline: There are still unstarted activities, but you still have time. Success!
-      unstarted_before_deadline: You haven't started any activity yet, but you still have time. Success!
+      completed_before_deadline: You have completed all activities before the deadline. Congratulations!
+      wrong_before_deadline: There are still incorrect exercises, but you still have time. Good luck!
+      started_before_deadline: There are still unstarted activities, but you still have time. Good luck!
+      unstarted_before_deadline: You haven't started any activity yet, but you still have time. Good luck!
       completed_no_deadline: You completed all activities. Congratulations!
       wrong_no_deadline: There are still incorrect exercises.
       started_no_deadline: There are still unstarted activities.

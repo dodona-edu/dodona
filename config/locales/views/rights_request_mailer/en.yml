@@ -1,6 +1,6 @@
 en:
   rights_request_mailer:
     approved:
-      subject: "[Dodona] Your request for teacher rights was granted"
+      subject: "[Dodona] Your request for teacher rights has been granted"
     rejected:
-      subject: "[Dodona] Your request for teacher rights was not granted"
+      subject: "[Dodona] Your request for teacher rights has not be granted"

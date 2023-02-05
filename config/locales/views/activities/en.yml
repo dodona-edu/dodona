@@ -7,8 +7,8 @@ en:
       edit: Edit activity
       read_states: Log for this reading activity
     activity:
-      count_tooltip: Number of students that solved this exercise correctly
-      read_tooltip: Number of students that read this
+      count_tooltip: Number of students who solved this exercise correctly
+      read_tooltip: Number of students who read this
       read_by: Read %{count} times
       read: Read
       not_read: Not yet read
@@ -16,14 +16,14 @@ en:
       correct: Correct
       correct_after_deadline: You missed the deadline, but your latest submission (after the deadline) is correct.
       wrong: Wrong
-      wrong_after_deadline: You met the deadline, but your latest submission (after the deadline) is wrong. Click to go to your last correct solution.
+      wrong_after_deadline: You met the deadline, but your latest submission (after the deadline) is wrong. Click to go to your last correct submission.
       deadline_missed: You missed the deadline (your last submission before the deadline was wrong)
       deadline_met: You met the deadline
       not_solved: Not yet solved
     form:
       edit_activity: Edit activity
       open_on_github: Open in repository
-      labels_delimiter: "Use a comma to delimit labels"
+      labels_delimiter: "Use a comma to separate labels"
       labels: New label
       info: Information
       info_description: Go to the information page of this learning activity
@@ -42,7 +42,7 @@ en:
       repository: "Repository"
       path: "Path"
       class_progress: Class progress
-      class_progress_visibility_disabled: "The class progress is not visible for students."
+      class_progress_visibility_disabled: "The class progress is not visible to students."
       progress_chart_info_tried:
         one: "One user started this exercise."
         other: "%{count} users started this exercise."
@@ -60,9 +60,9 @@ en:
         my_institution: "%{institution} activities"
         my_institution_title: "Activities owned by you or one of your colleagues"
         mine_title: "Activities owned by you"
-        mine_course_title: "Activities owned by you or to which this course has been granted access"
+        mine_course_title: "Activities owned by you or to which this course was granted access"
         featured_title: "Activities featured by the Dodona team"
-        all_title: "All activities to which you have access"
+        all_title: "All activities you have access to"
         mine: "My activities"
         featured: "Featured activities"
         all: "All activities"
@@ -72,7 +72,7 @@ en:
       feedback: Feedback
       solutions: Submissions
       not_logged_in_html: <a href="%{url}">Sign in</a> to test your solution.
-      hand_in_info: You can submit as many times as you want. Only your last submission is taken into account.
+      hand_in_info: You can submit as many times as you like. Only your latest submission will be taken into account.
       hide_correct: hide correct
       correct: correct
       wrong: wrong
@@ -80,9 +80,9 @@ en:
       not_found: Sorry, we can't find this exercise.
       not_accessible: This exercise isn't accessible to students.
       not_visible: This exercise isn't visible for students without the correct link.
-      not_a_member: You are viewing this exercise within a course of which you are not a member. You won't show up on your teacher's scoresheets until you register.
-      alert_not_valid: There's something wrong with this exercise. You can't hand in new solutions but can still see your old submissions.
-      alert_removed: This exercise is no longer available, but can still see your old submissions.
+      not_a_member: You are viewing this exercise in a course that you are not a member of. You won't appear on your teacher's scoresheets until you register.
+      alert_not_valid: There's something wrong with this exercise. You can't submit new solutions, but you can still see your old submissions.
+      alert_removed: This exercise is no longer available, but you can still see your old submissions.
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
       navigation:
@@ -92,14 +92,14 @@ en:
         next_actionable: Go to the next exercise
         back_to_course_actionable: Go back to course
       mark_as_read: Mark as read
-      read_at: "Marked as read at %{timestamp}"
+      read_at: "Marked as read on %{timestamp}"
     series_activities_add_table:
-      course_added_to_usable: "Adding this exercise will allow this course to use all private exercises in this exercise's repository. Are you sure?"
+      course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:
       courses: "Courses using this exercise"
     info:
-      no_readme_present: "This learning activity does not yet have extra information."
-      no_readme_present_admin: "This activity does not yet have a 'readme' with extra information. You can add this to the learning activity in the repository."
+      no_readme_present: "This learning activity does not have any additional information yet."
+      no_readme_present_admin: "This activity does not have a 'readme' with extra information yet. You can add this to the learning activity in the repository."
       author_information: "Created by %{contact} in repository %{repository}."
       programming_language: Programming language
       natural_language: Natural language
@@ -108,7 +108,7 @@ en:
       network_enabled: Network enabled
       network_disabled: Network disabled
       submission_count: Submitted solutions
-      submission_details: "This exercises has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
+      submission_details: "This exercise has %{total} submissions by %{users} unique users. Of these submissions, %{correct} were correct."
       sample_solutions: Sample solutions
       sample_solutions_hint: Click on one of the tabs above to view a sample solution.
       sample_solution_submit: Submit this solution
@@ -128,14 +128,14 @@ en:
       config_set_by: "This value was set by %{file}"
       config_default: "This is the default value."
       description_files: "We found files for these languages in the descriptions folder %{path}"
-      config_info: 'Take a look at the %{doc_site} for more information about configuring exercises.'
+      config_info: 'Take a look at the %{doc_site} for more information on configuring exercises.'
       doc_site: 'documentation site'
-      activity_invalid: This exercise's configuration is invalid.
+      activity_invalid: The configuration of this exercise is invalid.
       visibility_solution_warning: This page is only accessible to teachers. Students do not have access to the sample solutions.
       visibility_warning: This page is only accessible to teachers and not to students.
     series_activities_table:
       course_has_no_rights_with_fix: This course is not allowed to use this private exercise. Click here to grant this course those rights.
-      course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to grant rights or remove this exercise from the course.
+      course_has_no_rights_with_contact: This course is not allowed to use this private exercise. Contact the author to obtain rights or remove this exercise from the course.
     coding_scratchpad:
       title: "Run %{programming_language} code in your browser"
       experimental_feature_html: This window allows you to run Python code without installing a thing. The code you write here is <b>not</b> automatically submitted to Dodona. This feature is still in full development, so we're happy to hear about your suggestions and issues using <a href="%{url}">the contact form</a>.

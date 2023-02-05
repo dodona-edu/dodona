@@ -17,7 +17,7 @@ en:
         number_of_identities: Identities
     merge:
       title: "Merge %{name}"
-      pick_institution: "Choose the institution to merge into"
+      pick_institution: "Select the institution you wish to merge into"
       confirm: "Confirm changes"
       done: "The institutions were merged"
     merge_changes:

@@ -2,7 +2,7 @@ en:
   feedbacks:
     show:
       feedback: "Give feedback"
-      no_linked_submission: "This user did not submit a solution for this exercise before the evaluation deadline."
+      no_linked_submission: "This user did not submit a solution to this exercise before the evaluation deadline."
       submission_for: "Submission for"
       by: "by"
       submission:
@@ -22,7 +22,7 @@ en:
     feedback_actions:
       automatically_mark: Automatically mark as completed
       skip_completed: Skip completed submissions
-      auto-mark-help: This makes it so that submission are automatically marked as completed if you use the next button.
+      auto-mark-help: This will automatically mark the submission as completed when you use the next button.
       progress: Progress
       direction:
         next: Next
@@ -35,7 +35,7 @@ en:
       completed:
         failure: "Could not set state"
       total: "Total"
-      give_max_all: "Assign the maximal score to all score items"
+      give_max_all: "Assign maximum score to all score items"
       give_zero_all: "Assign 0 to all score items"
     progress_row:
       exercise_progress: "%{feedback_count} / %{feedback_total} evaluations completed"
@@ -50,7 +50,7 @@ en:
           zero: "No comments"
           one: "One comment"
           other: "%{count} comments"
-      title: "Overview of all submissions that were given feedback"
+      title: "Overview of all submissions that have received feedback"
     edit:
       title: "Change submission of %{user} for %{exercise}"
       short_title: "Select another submission."

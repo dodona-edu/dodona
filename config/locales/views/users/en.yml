@@ -24,7 +24,7 @@ en:
       edit: Edit
       courses: Courses
       my_courses: My courses
-      no_courses: "You aren't registered for a course yet."
+      no_courses: "You have not yet registered for a course."
       correctly_solved: Correct exercises
       unfinished: Unfinished exercises
       solutions: Number of submissions
@@ -38,7 +38,7 @@ en:
       active_tokens: Active tokens
       create_new_token: Create new token
       token_help_html: API tokens allow other tools such as the <a href="https://docs.dodona.be/en/guides/pycharm-plugin/#dodona-pycharm-plugin">Dodona plugin for Jetbrains IDEs</a> and <a href="https://docs.dodona.be/en/guides/vs-code-extension/#dodona-vs-code-extensie"> VS Code extension</a> to access Dodona on your behalf without having to share your password. These tools will have full access to your account, but you can easily revoke that access by removing the token on this page. You can find more information about this in <a href="https://docs.dodona.be/nl/guides/creating-an-api-token/#een-api-token-aanmaken">our documentation</a>.
-      description_help: The description helps you to remember which program uses a certain token. This allows you to easily withdraw permissions without having to delete all your tokens.
+      description_help: The description helps you to remember which program uses a particular token. This allows you to easily revoke permissions without having to delete all your tokens.
       providers_message: "You can sign in using the following sign in methods"
       identifier: "ID: %{identifier}"
     users_table:

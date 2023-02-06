@@ -2,7 +2,7 @@ en:
   judges:
     form:
       remote_help: "The SSH clone URL of the judge repository. Dodona needs access rights to the repository in order to clone it."
-      image_help: "The name of the Docker image in which the judge will be started. The image will be fetched from Docker Hub if it isn't available locally."
+      image_help: "The name of the Docker image in which the judge will be started."
       renderer_help: "Pick 'FeedbackTableRenderer' except if you wrote a custom renderer in collaboration with the Dodona team."
       remote_cant_be_edited_html: The clone URL can't be edited after the judge was created. Contact <a href="mailto:dodona@ugent.be">dodona@ugent.be</a> if it needs to be changed."
     index:

@@ -29,24 +29,32 @@
 /* Variations */
 .callout-danger {
   border-left-color: $danger;
-}
 
-.callout-danger h4 {
-  color: $danger;
+  h4 {
+    color: $danger;
+  }
 }
 
 .callout-warning {
   border-left-color: $warning;
-}
 
-.callout-warning h4 {
-  color: $warning;
+  h4 {
+    color: $warning;
+  }
 }
 
 .callout-info {
   border-left-color: $info;
+
+  h4 {
+    color: $info;
+  }
 }
 
-.callout-info h4 {
-  color: $info;
+.callout-success {
+  border-left-color: $success;
+
+  h4 {
+    color: $success;
+  }
 }

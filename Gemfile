@@ -118,7 +118,7 @@ gem 'nokogiri', '~> 1.14.0'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
-gem 'has_scope', '~> 0.8.0'
+gem 'has_scope', '~> 0.8.1'
 
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'

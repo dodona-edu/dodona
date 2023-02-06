@@ -2,6 +2,9 @@ name: Deploy Naos
 
 on:
   workflow_dispatch:
+  pull_request:
+    types:
+      - labeled
 
 concurrency: 
   group: deploy-naos
@@ -9,6 +12,7 @@ concurrency:
 
 jobs:
   deploy:
+    if: ${{ github.event.action != 'labeled' || (github.event.action == 'labeled' && github.event.label.name == 'deploy naos') }}
     environment: 
       name: naos
       url: https://naos.ugent.be
@@ -21,4 +25,11 @@ jobs:
         known_hosts: ${{ secrets.MESTRA_HOST }}
     - name: Run deploy
       run: |
-        echo "deploy naos $GITHUB_REF" | ssh -p 4840 dodona@mestra.ugent.be
+        echo "deploy naos $GITHUB_SHA" | ssh -p 4840 dodona@mestra.ugent.be
+    - name: Remove deploy label
+      if: github.event.action == 'labeled'
+      uses: buildsville/add-remove-label@v1
+      with:
+        token: ${{secrets.GITHUB_TOKEN}}
+        label: deploy naos
+        type: remove

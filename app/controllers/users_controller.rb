@@ -12,11 +12,16 @@ class UsersController < ApplicationController
     @title = I18n.t('users.index.title')
   end
 
+  MAXIMUM_USERS_AFR = 10
+  MINIMUM_FILTER_LENGTH_AFR = 3
+
   def available_for_repository
     @repository = Repository.find(params[:repository_id]) if params[:repository_id]
 
-    @too_many_results = @users.count > 10 || params[:filter].nil? || params[:filter].length < 3
-    @users = @users.none if params[:filter].nil? || params[:filter].length < 3
+    @imprecise_filter = params[:filter].nil? || params[:filter].length < MINIMUM_FILTER_LENGTH_AFR
+    @too_many_results = @users.count > MAXIMUM_USERS_AFR
+    @users = @users.none if @imprecise_filter
+    @users = @users.first(MAXIMUM_USERS_AFR) if @too_many_results
 
     respond_to do |format|
       format.html { redirect_to @repository }

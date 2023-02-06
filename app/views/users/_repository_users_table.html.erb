@@ -31,6 +31,12 @@
     </tbody>
   </table>
 </div>
-<% if users.empty? || too_many_results %>
-  <p class="text-center text-muted lead table-placeholder"><%= t too_many_results ? '.too_many_results' : 'users.index.no_users' %></p>
+<% if users.empty? || too_many_results || imprecise_filter %>
+  <p class="text-center text-muted lead table-placeholder">
+    <%= if imprecise_filter
+          t '.imprecise_filter'
+        else
+          t too_many_results ? '.too_many_results' : 'users.index.no_users'
+        end %>
+  </p>
 <% end %>

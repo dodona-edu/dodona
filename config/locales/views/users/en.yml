@@ -48,4 +48,6 @@ en:
       no_institution: This user has no institution
     repository_users_table:
       no_institution: "No institution"
-      too_many_results: "Too many results, please refine your search"
+      too_many_results: "Only the first 10 results are shown. Can't find who you're looking for? Try searching on their full name or filter by institution."
+      imprecise_filter: "Enter at least 3 characters to search for users by first or last name."
+

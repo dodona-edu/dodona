@@ -46,7 +46,6 @@ class RepositoriesController < ApplicationController
     if saved
       Event.create(event_type: :exercise_repository, user: current_user, message: "#{@repository.name} (id: #{@repository.id})")
       RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
-      @repository.delay(queue: 'git').process_activities_email_errors(user: current_user)
     end
 
     respond_to do |format|

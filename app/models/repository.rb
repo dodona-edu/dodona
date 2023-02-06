@@ -105,7 +105,14 @@ class Repository < ApplicationRecord
     activity_dirs_below(full_path)
   end
 
+  def clone_repo
+    super
+    process_activities_email_errors if clone_complete?
+  end
+
   def process_activities_email_errors(kwargs = {})
+    kwargs[:user] = admins.first if kwargs.empty?
+
     process_activities
   rescue AggregatedConfigErrors => e
     ErrorMailer.json_error(e, **kwargs).deliver

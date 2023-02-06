@@ -201,9 +201,6 @@ class User < ApplicationRecord
       .joins("LEFT JOIN (#{attempted_exercises.to_sql}) attempted ON attempted.user_id = users.id")
       .reorder 'correct.count': direction, 'attempted.count': direction
   }
-  scope :order_by_name_length, lambda { |direction|
-    reorder Arel.sql("(LENGTH(first_name) + LENGTH(last_name)) #{direction}")
-  }
 
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?

@@ -43,6 +43,7 @@ nl:
       path: "Pad"
       class_progress: Voortgang groep
       class_progress_visibility_disabled: "De voortgang van de groep is niet zichtbaar voor studenten."
+      empty: "Geen activiteiten gevonden"
       progress_chart_info_tried:
         one: "Één gebruiker begon aan deze oefening."
         other: "%{count} gebruikers begonnen aan deze oefening."

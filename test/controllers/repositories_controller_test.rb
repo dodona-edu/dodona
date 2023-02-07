@@ -25,11 +25,6 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
-  test 'should process activities on create' do
-    Repository.any_instance.expects(:process_activities)
-    create_request_expect
-  end
-
   test 'should reprocess activities' do
     Repository.any_instance.expects(:process_activities)
     get reprocess_repository_path(@instance)
@@ -205,6 +200,14 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
   test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
     assert_equal 'private', find_echo.access
+  end
+
+  test 'should process activities on create' do
+    Repository.any_instance.expects(:process_activities)
+    user = users(:staff)
+    judge = create :judge, :git_stubbed
+    sign_in user
+    post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
   end
 
   test 'should email during repository creation' do

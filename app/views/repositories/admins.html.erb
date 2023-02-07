@@ -12,12 +12,12 @@
       <div class="card-supporting-text">
         <p><%= raw t(".admin_explanation") %></p>
         <div id="admin-table-wrapper">
-          <%= render(partial: 'users/repository_users_table', locals: {users: @users, show_delete_button: true, paginate: false}) %>
+          <%= render(partial: 'users/repository_users_table', locals: {users: @users, show_delete_button: true, too_many_results: false, imprecise_filter: false}) %>
         </div>
       </div>
       <div class="card-supporting-text card-border">
         <h3><%= t ".add_admins" %></h3>
-        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: available_for_repository_users_path(:repository_id => @repository.id), eager: true}) %>
+        <%= render(partial: 'layouts/searchbar', locals: {baseUrl: available_for_repository_users_path(:repository_id => @repository.id), eager: true, institutions: Institution.all}) %>
         <div id="users-table-wrapper">
         </div>
       </div>

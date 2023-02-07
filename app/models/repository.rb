@@ -62,6 +62,9 @@ class Repository < ApplicationRecord
   scope :owned_by_institution, ->(institution) { where(id: RepositoryAdmin.joins(:user).where(users: { institution_id: institution&.id }).where.not(users: { institution_id: nil }).group(:repository_id).select(:repository_id)) }
   scope :featured, -> { where(featured: true) }
 
+  # used to cache the user which should receive the error email in the case of an error after_save
+  attr_accessor :email_receiver
+
   def full_path
     Pathname.new File.join(ACTIVITY_LOCATIONS, path)
   end
@@ -111,7 +114,7 @@ class Repository < ApplicationRecord
   end
 
   def process_activities_email_errors(kwargs = {})
-    kwargs[:user] = admins.first if kwargs.empty?
+    kwargs[:user] = email_receiver if kwargs.empty? && email_receiver.present?
 
     process_activities
   rescue AggregatedConfigErrors => e

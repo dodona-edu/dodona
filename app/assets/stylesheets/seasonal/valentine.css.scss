@@ -1,0 +1,24 @@
+.series-icon.valentine {
+    .overlay {
+      overflow: visible;
+    }
+  
+    .overlay div {
+      content: "";
+      position: absolute;
+      width: 62px;
+      height: 62px;
+      margin-left: -5px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      top: -15px;
+      left: -5px;
+    }
+  
+    &.completed:not(.deadline-missed) {
+      .overlay div {
+        content: url("seasonal/series_status_overlays/heart-rainbow.svg");
+      }
+    }
+  }
+  

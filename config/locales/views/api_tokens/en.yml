@@ -2,7 +2,7 @@ en:
   api_tokens:
     show:
       new-token: New token created
-      new-token-explanation: This is your newly created token. Please copy this token now, since you won't be able to access the token again, once you leave this page.
+      new-token-explanation: This is your newly created token. Please copy this token now as you won't be able to see it again once you leave this page.
     form:
       description-placeholder: "Description (ex. 'Dodona CLI')"
     table:

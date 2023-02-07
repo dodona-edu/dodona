@@ -5,18 +5,18 @@ en:
       evaluation: "Evaluation"
       title: "Evaluation for %{series}"
       explanation_title: "How do I evaluate a submission?"
-      explanation_no_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incompleted submission of a random student. If you wish, you can leave feedback on the code and mark the submission as completed. Note that you can also mark a submission as completed without leaving feedback. To get started, we already marked all exercises without submissions as completed.</p><p>You can find more information in <a href='https://docs.dodona.be/en/guides/teachers/grading/#het-evaluatieoverzicht'>our documentation</a>.</p><p>As a reminder, students will <b>not</b> be able see the given feedback until you click on the 'release feedback' button below.</p>"
-      explanation_yes_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incomplete submission of a random student. If you wish, you can leave feedback on the code and assign scores using the score items you configured. Note that you can also assign scores without leaving feedback. You can not give scores to exercises without submissions, these are automatically assigned a 0 in the grade overview.</p><p>You can find information in <a href='https://docs.dodona.be/en/guides/teachers/grading/#het-evaluatieoverzicht'>our documentation</a>.</p><p>As a reminder, students will <b>not</b> be able see the given feedback and scores until you click on the 'Release feedback' button below.</p>"
+      explanation_no_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incompleted submission of a random student. If you wish, you can leave feedback on the code and mark the submission as completed. Note that you can also mark a submission as completed without leaving feedback. To get started, we already marked all exercises without submissions as completed.</p><p>You can find more information in <a href='https://docs.dodona.be/en/guides/teachers/grading/#het-evaluatieoverzicht'>our documentation</a>.</p><p>As a reminder, students will <b>not</b> be able to see the feedback you have given until you click the 'release feedback' button below.</p>"
+      explanation_yes_grading_html: "<p>In the summary table, you can click on the <i class='mdi mdi-chevron-right mdi-18'></i> icon next to an exercise. You will then be taken to an incomplete submission of a random student. If you wish, you can leave feedback on the code and assign scores using the score items you configured. Note that you can also assign scores without leaving feedback. You can not give scores to exercises without submissions, these are automatically assigned a 0 in the grade overview.</p><p>You can find information in <a href='https://docs.dodona.be/en/guides/teachers/grading/#het-evaluatieoverzicht'>our documentation</a>.</p><p>As a reminder, students will <b>not</b> be able to see the feedback and scores until you click the 'Release feedback' button below.</p>"
       release: Release feedback
       unrelease: Unrelease feedback
       deadline_html: This evaluation of <b>%{users} students</b> contains the submissions of <b>%{exercises} exercises</b> with <b>%{deadline}</b> as a deadline.
       next_incomplete_feedback: Go to the next incomplete solution
       evaluation_progress: Evaluation progress
       evaluation_details: Evaluation details
-      evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the check mark inside the speech bubble if the submission was completed already.
+      evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the tick in the speech bubble if the submission has already been completed.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
       grading_details: Grade overview
-      grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br>If not all scores for a submission have been entered, the score is shown in gray.
+      grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br>If not all scores have been entered for a submission, the score is shown in gray.
     new:
       exercises: Exercises
       create_evaluation: Evaluate series
@@ -27,8 +27,8 @@ en:
     add_users:
       title: Select users
       explanation_title: "Why do I have to select users?"
-      explanation_part1: "An evaluation consists out of exercises from a single exercise series coupled with a group of students. Using the buttons you can easily select all users of this course or only who submitted at least once to any of the exercises in this series."
-      explanation_part2: "You can also add and remove individual students below by searching for their name or any label. You can also edit the users of this evaluation later on."
+      explanation_part1: "An evaluation consists out of exercises from a single exercise series coupled with a group of students. Using the buttons you can easily select all users of this course or only those who have submitted at least once to any of the exercises in this series."
+      explanation_part2: "You can also add and remove individual students below by searching for their name or any label. You can also edit the users of this evaluation at a later time."
       users_in_course_html:
         one: "<h1>1 <small>student</small></h1> is registered for this course"
         other: "<h1>%{count} <small>students</small></h1> are registered for this course"
@@ -76,7 +76,7 @@ en:
       submission_wrong: "Wrong submission, "
     overview:
       title: Evaluation overview
-      explanation: A course admin evaluated your submissions for the series "%{series}". For each exercise, your last submission before %{deadline} was automatically selected, but the course admin might have manually selected a different one. Note that this evaluation doesn't necessarily mean that feedback was added to all of your submissions.
+      explanation: A course admin has evaluated your submissions for the series "%{series}". For each exercise, your last submission before %{deadline} was automatically selected, but the course admin may have manually selected a different one. Note that this evaluation doesn't necessarily mean that feedback has been added to all of your submissions.
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# comments"

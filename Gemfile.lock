@@ -224,7 +224,7 @@ GEM
       faraday-follow_redirects
     json-schema (3.0.0)
       addressable (>= 2.8)
-    jwt (2.6.0)
+    jwt (2.7.0)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -534,7 +534,7 @@ DEPENDENCIES
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.1.1)
   json-schema (~> 3.0.0)
-  jwt (~> 2.6.0)
+  jwt (~> 2.7.0)
   kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.8.1)

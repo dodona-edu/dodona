@@ -1,10 +1,4 @@
 .series-icon.valentine {
-  &.completed:not(.deadline-missed) {
-    .icon-base {
-      visibility: hidden;
-    }
-  }
-
   .overlay {
     overflow: visible;
   }
@@ -21,6 +15,10 @@
   }
 
   &.completed:not(.deadline-missed) {
+    .icon-base {
+      visibility: hidden;
+    }
+
     .overlay div {
       content: url("seasonal/series_status_overlays/heart-rainbow.svg");
     }

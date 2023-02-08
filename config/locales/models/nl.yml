@@ -10,6 +10,9 @@ nl:
           attributes:
             activity:
               taken: Je hebt deze activiteit al gelezen
+        gitable:
+          repository:
+            not_accessible_markdown: De repository is niet toegankelijk voor onze git-gebruiker. Controleer of je de juiste permissies hebt ingesteld. Hou er rekening mee dat het even kan duren eer een uitnodiging voor GitHub/GitLab wordt geaccepteerd door ons team. Bekijk [de documentatie](https://docs.dodona.be/nl/guides/teachers/new-exercise-repo/) voor meer informatie.
     models:
       course: Cursus
       activity: Activiteit

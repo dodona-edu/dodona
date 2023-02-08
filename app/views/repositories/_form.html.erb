@@ -7,7 +7,7 @@
       <h4><%= t('errors.validation_errors', :count => repository.errors.count) %></h4>
       <ul>
         <% repository.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <li><%= markdown message %></li>
         <% end %>
       </ul>
     </div>
@@ -25,7 +25,7 @@
     <div class="col-sm-6">
       <%= f.text_field :remote,
                        class: "form-control",
-                       placeholder: "git@github.ugent.be/...",
+                       placeholder: "git@github.com/...",
                        disabled: repository.new_record?.! %>
     </div>
     <span class="help-block offset-sm-3 col-sm-6">

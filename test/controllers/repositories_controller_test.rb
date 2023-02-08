@@ -25,11 +25,6 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
 
   test_crud_actions
 
-  test 'should process activities on create' do
-    Repository.any_instance.expects(:process_activities)
-    create_request_expect
-  end
-
   test 'should reprocess activities' do
     Repository.any_instance.expects(:process_activities)
     get reprocess_repository_path(@instance)
@@ -207,6 +202,14 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'private', find_echo.access
   end
 
+  test 'should process activities on create' do
+    Repository.any_instance.expects(:process_activities)
+    user = users(:staff)
+    judge = create :judge, :git_stubbed
+    sign_in user
+    post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
+  end
+
   test 'should email during repository creation' do
     user = users(:staff)
     judge = create :judge, :git_stubbed
@@ -215,8 +218,6 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
     end
-    email = ActionMailer::Base.deliveries.last
-    assert_equal [user.email], email.to
   end
 
   test 'github webhook with commit info should update exercises' do

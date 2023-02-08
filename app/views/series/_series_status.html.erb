@@ -11,7 +11,7 @@
 <% elsif loaded && user.present? %>
   <% deadline_class, deadline_icon = series_status_deadline(series, user) %>
   <% progress_class, progress_icon = series_status_progress(series, user) %>
-  <% overlay_class = series_status_overlay %>
+  <% overlay_class, hide_background = series_status_overlay %>
   <svg viewBox="0 0 40 40"
        style="width: <%= size %>px; height: <%= size %>px; "
        class="series-icon <%= overlay_class %> <%= progress_class %>  <%= deadline_class %>"
@@ -29,18 +29,21 @@
         <stop stop-color="var(--purple)" offset="99%" />
       </linearGradient>
     </defs>
-    <circle cx="50%" cy="50%" r= "50%" fill="var(--icon-color)" class="outer-circle"></circle>
-    <circle cx="50%" cy="50%" r= "42%" fill="var(--icon-background-color)"></circle>
-    <foreignObject x="8" y="8"  height="24" width="24" style="color: var(--icon-color)">
-      <i class="mdi <%= progress_icon %>"></i>
-    </foreignObject>
 
-    <% if deadline_icon %>
-      <circle cx="33" cy="34.5" r= "11" fill="var(--deadline-icon-background-color)"></circle>
-      <foreignObject x="24" y="26"  height="18" width="18" style="color: var(--deadline-icon-color)">
-        <i class="mdi mdi-18 <%= deadline_icon %>"></i>
+    <g class="icon-base" >
+      <circle cx="50%" cy="50%" r= "50%" fill="var(--icon-color)" class="outer-circle"></circle>
+      <circle cx="50%" cy="50%" r= "42%" fill="var(--icon-background-color)"></circle>
+      <foreignObject x="8" y="8"  height="24" width="24" style="color: var(--icon-color)">
+        <i class="mdi <%= progress_icon %>"></i>
       </foreignObject>
-    <% end %>
+
+      <% if deadline_icon %>
+        <circle cx="33" cy="34.5" r= "11" fill="var(--deadline-icon-background-color)"></circle>
+        <foreignObject x="24" y="26"  height="18" width="18" style="color: var(--deadline-icon-color)">
+          <i class="mdi mdi-18 <%= deadline_icon %>"></i>
+        </foreignObject>
+      <% end %>
+    </g>
 
     <% if overlay_class  %>
       <foreignObject width="100%" height="100%" class="overlay">

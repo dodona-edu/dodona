@@ -83,7 +83,7 @@ gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.10.0'
 
 # set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
-gem 'mail', '~> 2.7.1'
+gem 'mail', '~> 2.8.1'
 
 # authorization
 gem 'pundit', '~> 2.3.0'

@@ -42,7 +42,6 @@ class RepositoriesController < ApplicationController
   def create
     authorize Repository
     @repository = Repository.new(permitted_attributes(Repository))
-    @repository.email_receiver = current_user
     saved = @repository.save
     if saved
       Event.create(event_type: :exercise_repository, user: current_user, message: "#{@repository.name} (id: #{@repository.id})")

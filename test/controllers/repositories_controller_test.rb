@@ -218,8 +218,6 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
     end
-    email = ActionMailer::Base.deliveries.last
-    assert_equal [user.email], email.to
   end
 
   test 'github webhook with commit info should update exercises' do

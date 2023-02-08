@@ -7,7 +7,7 @@
       <h4><%= t('errors.validation_errors', :count => repository.errors.count) %></h4>
       <ul>
         <% repository.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
+          <li><%= markdown message %></li>
         <% end %>
       </ul>
     </div>

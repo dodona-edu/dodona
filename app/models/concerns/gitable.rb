@@ -54,7 +54,7 @@ module Gitable
   def repo_is_accessible
     cmd = ['git', 'ls-remote', remote.shellescape]
     _out, _error, status = Open3.capture3(*cmd)
-    errors.add(:remote, I18n.t('activerecord.errors.models.gitable.repository.not_accessible')) unless status.success?
+    errors.add(:remote, I18n.t('activerecord.errors.models.gitable.repository.not_accessible_markdown')) unless status.success?
   end
 
   def github_remote?

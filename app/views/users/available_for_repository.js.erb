@@ -1,4 +1,4 @@
-$("#users-table-wrapper").html("<%= escape_javascript(render partial: 'users/repository_users_table', locals: {users: @users, pagination_opts: @pagination_opts }) %>");
+$("#users-table-wrapper").html("<%= escape_javascript(render partial: 'users/repository_users_table', locals: {users: @users, too_many_results: @too_many_results, imprecise_filter: @imprecise_filter }) %>");
 <% if @repository %>
 dodona.repositoryAdminsUsersLoaded();
 <% end %>

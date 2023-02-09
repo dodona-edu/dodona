@@ -5,29 +5,29 @@ en:
       status: "Status"
       filename: "Filename"
       started: "Started"
-      ready_for_download: "Your export is ready for download"
+      ready_for_download: "Your export is ready to download"
       created: "%{when} ago"
       export_started: "We are preparing your data export and will notify you when it's ready"
-      automatic_deletion: Generated data archives will stay available for 30 days after which they will be removed from our servers.
-      explanation: "At Dodona, we firmly believe that your data belongs to you. This is why we allow you to export and download all the submissions you ever made on the platform. Each course and exercise series has a link to our data export wizard where you can create an archive of your submissions in just a few easy steps. Teachers can also easily download all students' submissions made in their course."
+      automatic_deletion: Generated data archives will remain available for 30 days after which they will be removed from our servers.
+      explanation: "At Dodona, we firmly believe that your data belongs to you. That is why we allow you to export and download all the submissions you have ever made on the platform. Each course and exercise series has a link to our data export wizard where you can create an archive of your submissions in just a few easy steps. Teachers can also easily download all students' submissions made in their course."
       no_exports_yet_html: "It seems like you haven't created any recent data archives. Get started and <a href=\"%{user_link}\">export your submissions</a>."
     download_submissions:
       title: Export submissions
       title_students: Export student submissions
-      choose_exercises: From which exercises do you want to download the submissions?
-      choose_series: From which series do you want to download the submissions?
-      choose_courses: From which courses do you want to download the submissions?
+      choose_exercises: For which exercises would you like to download the submissions?
+      choose_series: For which series would you like to download the submissions?
+      choose_courses: For which courses would you like to download the submissions?
       next_step: Next step
       start_download: Start export
-      choose_options: Select any extra options you wish to apply to your download.
+      choose_options: Select any additional options you would like to apply to your download.
       with_info_label: Include a summary
-      with_info_label_help: The summary is a CSV-file with information about the students, the exercises and the submissions.
+      with_info_label_help: The summary is a CSV-file containing information about the students, the exercises and the submissions.
       only_last_submission_label: Should the submission history be included?
       only_last_submission: No, only the last submission
       all_submissions: Yes, include all submissions
       consider_deadline: Which submissions should be considered?
       with_deadline: Only submissions made before the deadline
-      with_deadline_help: If a series doesn't have a deadline this option is ignored.
+      with_deadline_help: If a series doesn't have a deadline this option will be ignored.
       no_deadline: Also include submissions made after the deadline
       no_deadline_help: The deadline is not taken into account when selecting submissions.
       group_submissions_label: How should the submissions be organized?

@@ -13,6 +13,7 @@
 #  course_id   :integer
 #  fs_key      :string(24)
 #  number      :integer
+#  annotated   :boolean          default(FALSE), not null
 #
 
 class Submission < ApplicationRecord
@@ -200,10 +201,6 @@ class Submission < ApplicationRecord
 
   def evaluate?
     @evaluate
-  end
-
-  def annotated?
-    annotations.left_joins(:evaluation).released.any?
   end
 
   def skip_rate_limit_check?

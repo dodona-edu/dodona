@@ -10,9 +10,9 @@ en:
       send_mail: "Send an email to this user."
     form:
       course_labels: "Labels"
-      labels_delimiter: "Use a comma to delimit labels"
+      labels_delimiter: "Use a comma to separate labels"
     members_table:
-      teacher_rights: "This user has teacher rights on Dodona. Although they aren't an administrator of this course, it is possible they can access the sample solutions of exercises."
+      teacher_rights: "This user has teacher rights on Dodona. Although they are not an administrator of this course, it's possible that they can access the sample solutions of exercises."
       labels: "Labels"
       member_progress_chart_info_tried:
         one: "Started one exercise."
@@ -27,9 +27,9 @@ en:
       edit_all_labels: "Edit all labels"
       first_download_labels: "Download a list of all users and their labels as a CSV file."
       then_edit: "Open the file you just downloaded and edit the labels. Only changes to the labels column will be used. Note that the labels are in one field, separated by semicolons."
-      finally_upload: "If you are satisfied with your changes, select the modified file below."
+      finally_upload: "When you are happy with your changes, select the modified file below."
       download: "Download list"
-      could_not_find_labels_column: "We couldn't find the labels column of the user with ID %{user_id}. Make sure the uploaded file is in the correct format."
+      could_not_find_labels_column: "We couldn't find the labels column for the user with ID %{user_id}. Check that the file you uploaded is in the correct format."
     upload_labels_csv:
       no_file: "Please upload a file."
-      malformed: Something went wrong while reading the file. Make sure the uploaded file is in the correct format.
+      malformed: Something went wrong while reading the file. Check that the file you uploaded is in the correct format.

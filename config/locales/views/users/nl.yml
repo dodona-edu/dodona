@@ -48,3 +48,5 @@ nl:
       no_institution: Deze gebruiker heeft geen onderwijsinstelling
     repository_users_table:
       no_institution: "Geen onderwijsinstelling"
+      too_many_results: "Alleen de eerste 10 resultaten worden getoond. Kan je de gebruiker niet vinden? Probeer dan te zoeken op volledige naam of filter op onderwijsinstelling."
+      imprecise_filter: "Geef minstens 3 tekens in om te zoeken op voornaam of achternaam."

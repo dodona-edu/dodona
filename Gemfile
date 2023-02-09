@@ -76,14 +76,14 @@ gem 'omniauth_openid_connect', '~> 0.6.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
-gem 'jwt', '~> 2.6.0'
+gem 'jwt', '~> 2.7.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
-gem 'mail_form', '~> 1.9.0'
+gem 'mail_form', '~> 1.10.0'
 
 # set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
-gem 'mail', '~> 2.7.1'
+gem 'mail', '~> 2.8.1'
 
 # authorization
 gem 'pundit', '~> 2.3.0'
@@ -114,11 +114,11 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.14.0'
+gem 'nokogiri', '~> 1.14.1'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
-gem 'has_scope', '~> 0.8.0'
+gem 'has_scope', '~> 0.8.1'
 
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
@@ -127,7 +127,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.3'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.1.0'
+gem 'faker', '~> 3.1.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -135,7 +135,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.23'
 
-gem 'ddtrace', '~> 1.8.0'
+gem 'ddtrace', '~> 1.9.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'

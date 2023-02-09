@@ -7,7 +7,7 @@ en:
       write-code: Write code
       hand-in: Hand in
       get-feedback: Get feedback
-      write-code-text: Subscribe for a course and pick one of the hundreds of programming exercises.
+      write-code-text: Subscribe to a course and choose from hundreds of programming exercises.
       hand-in-text: Solve the exercise and hand in using the built-in code editor.
       get-feedback-text: Your code is automatically tested. Get your results in seconds!
       we: Faculty of Sciences
@@ -81,7 +81,7 @@ en:
       next_series: "Or start the next series"
       course: "Continue working on this course"
       series:
-        teacher_mode_info: "Class progress is only shown to teachers. Students only see their own progress."
+        teacher_mode_info: "Class progress is only visible to teachers. Students can only see their own progress."
         teacher_progress_chart_info_correct:
           one: "One student has solved all exercises correctly."
           other: "%{count} students have solved all exercises correctly."
@@ -119,7 +119,7 @@ en:
       unknown: 'unknown'
     contact:
       title: Get in touch
-      contact_p1_html: You can use the form on this page to send a message to Team Dodona. We'll answer your question as soon as possible by email.
+      contact_p1_html: You can use the form on this page to send a message to Team Dodona. We'll answer your question by email as soon as possible.
       contact_p2_html: "You can find our manual on <a href='https://docs.dodona.be/en' target = '_blank'>docs.dodona.be</a>."
       contact_p3_html: "If you have a general question of which the answer can be of use to others, please consider posting it on <a href='https://github.com/dodona-edu/dodona/discussions' target = '_blank'>GitHub Discussions</a>. Reporting a bug or requesting a feature can also be done on GitHub."
       name: Name
@@ -128,7 +128,7 @@ en:
       message: Message
       prompt: Contact us if the problem persists.
       rights_request_title: Teacher rights
-      rights_request_redirect_html: Do you want to request teacher rights for your account? Please use <strong><a href="%{url}">this form</a></strong>.
+      rights_request_redirect_html: Would you like to request teacher rights for your account? Please use <strong><a href="%{url}">this form</a></strong>.
       send: Send message
     create_contact:
       mail_sent: "Your message has been sent. Thanks for getting in touch."

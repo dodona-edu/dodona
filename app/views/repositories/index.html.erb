@@ -2,7 +2,7 @@
   <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <h2 class="card-title-text"><%= @title %></h2>
         <% if policy(Repository).new? %>
           <div class="card-title-fab">
             <%= render 'application/fab_link', url: new_repository_path, icon: 'plus' %>
@@ -61,6 +61,11 @@
                   <% end %>
                 </td>
               </tr>
+            <% end %>
+            <% if @repositories.empty? %>
+               <tr>
+                  <td colspan="6" class="empty"><%= t ".empty_html" %></td>
+                </tr>
             <% end %>
             </tbody>
           </table>

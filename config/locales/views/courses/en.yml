@@ -9,17 +9,17 @@ en:
       questions: Questions from students
     form:
       teacher-help: Optional. Can help users find your course.
-      year-help: Using a year of the form yyyy-yyyy will make sure your course gets sorted correctly.
+      year-help: Using a year in the form yyyy-yyyy will ensure that your course is sorted correctly.
       institution-help_html: Assigning an institution can help users find your course and can be used to limit the visibility of and registrations for this course.
-      visibility-visible_for_all-help_html: This course is part of the public course overview, and everyone can see the contents.
+      visibility-visible_for_all-help_html: This course is part of the public course overview and everyone can see its content.
       visibility-visible_for_institution-help_html: This course is only accessible for users of <span class="fill-institution">the configured institution</span> and via the direct link below.
       visibility-hidden-help_html: This course will not be part of the public course overview and is only accessible via the direct link below.
       registration-open_for_all-help_html: Anyone can register for this course.
       registration-open_for_institution-help_html: Only members of <span class="fill-institution">the configured institution</span> can register for this course.
       registration-closed-help_html: All new registrations are disabled.
-      registration-open_for_institutional_users-help_html: Anyone that belongs to an institution can register for this course. Users that signed in using a <b>personal account</b>, such as a personal Google or Microsoft account, <b>cannot</b> register.
+      registration-open_for_institutional_users-help_html: Anyone that belongs to an institution can register for this course. Users who signed in with a <b>personal account</b>, such as a personal Google or Microsoft account, <b>cannot</b> register.
       description-help_html: A description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting can be used.
-      visibility-label: For whom is this course visible?
+      visibility-label: Who can see this course?
       registration-label: Who can register for this course?
       moderated-label: How do you want to approve new registrations
       visibility-visible_for_all_html: Everyone
@@ -32,21 +32,21 @@ en:
       no_institution: "No institution"
       copy_admins: "Course admins"
       copy_options: "Copy options"
-      copy_options_details: "What elements do you want to copy from the selected course?"
-      copy_admins_details: "In new courses, you are always added as a course admin. With this setting, you can add the course admins from the original course as well."
+      copy_options_details: "Which elements do you want to copy from the selected course?"
+      copy_admins_details: "In new courses, you are always added as a course admin. This setting also allows you to add the original course admins."
       copy_exercises: "Exercises"
       copy_deadlines: "Deadlines"
       hide_series: "Make the copied series hidden"
       hide_series_details: "Useful if you want to make the series available week by week, for example."
       other_copy_options: "Other settings"
       copy_series: "Series"
-      copy_series_details: "The series' title and description are always copied. Beneath you can choose whether you want to copy the exercises and the deadlines."
+      copy_series_details: "The series' title and description are always copied. Below you can choose if you want to copy the exercises and the deadlines."
       access: "Access rights"
       moderated: "Moderated"
       automatically: "Automatically"
       moderated-automatically-help: Registered users are approved automatically.
-      moderated-moderated-help: Registered users need to be approved by a course admin.
-      secret-link-placeholder: "This link will be generated after creation"
+      moderated-moderated-help: Registered users must be approved by a course admin.
+      secret-link-placeholder: "This link will be generated after course creation"
       questions:
         title: Questions
         toggle-label: Allow students to ask questions
@@ -72,7 +72,7 @@ en:
       copied_course: "Existing course"
       copied_course_subtitle: "Start with a copy of an existing course"
       pick_type: "How do you want to create a new course?"
-      choose_course: "Which course do you want to base your new one on?"
+      choose_course: "Which course would you like to base your new course on?"
       data_entry: "What should your new course look like?"
       create: "Create course"
     edit:
@@ -96,14 +96,14 @@ en:
       has_private_help: "Contact us if you don't know how to solve this."
       course: Course
       hidden_show_link: "Secret link"
-      visibility-visible_for_all-info: "This course is visible for everyone: everyone can access this course from the course overview, and the contents are visible for everyone."
-      visibility-visible_for_institution-info: "This course is visible for members of %{institution}: they can access this course from the course overview and see its contents. Members of other institutions need the secret link."
+      visibility-visible_for_all-info: "This course is visible to everyone: everyone can access this course from the course overview and the content is visible to everyone."
+      visibility-visible_for_institution-info: "This course is visible to members of %{institution}: they can access this course from the course overview and see its content. Members of other institutions need the secret link."
       visibility-hidden-info: "This course is hidden: it is not listed in the course overview, and users need the secret link to access this course."
       registration-open_for_all-info: "Registrations are open for everyone: all users can register for this course."
       registration-open_for_institution-info: "Registrations are open for members of %{institution}: only they can register for this course."
       registration-closed-info: "Registrations are closed: users can't register until you change the registration settings. Users who are currently registered still have access."
-      registration-open_for_institutional_users-info: "Registrations are open for users that belong to any institution. Registrations are closed for users who signed in using a personal account, such as a personal Google or Microsoft account."
-      moderated-info: "This course is moderated. Users who register will have to be explicitly approved by a course admin."
+      registration-open_for_institutional_users-info: "Registrations are open to users who are affiliated with any institution. Registrations are closed to users who have signed in with a personal account, such as a personal Google or Microsoft account."
+      moderated-info: "This course is moderated. Users who register must be explicitly approved by a course admin."
       subscribe: Register
       request_registration: Request registration
       unsubscribe: Unregister
@@ -118,15 +118,15 @@ en:
       pending: Pending
       unsubscribed: Unregistered
       decline_all: Decline all
-      confirm_decline_all: Are you sure you want to decline all pending users?
+      confirm_decline_all: Are you sure you want to reject all pending users?
       accept_all: Accept all
       confirm_accept_all: Are you sure you want to accept all pending users?
       mass_accept_toast:
         one: 1 pending user is accepted.
         other: "%{count} pending users are accepted."
       mass_decline_toast:
-        one: 1 pending user is declined.
-        other: "%{count} pending users are declined."
+        one: 1 pending user is rejected.
+        other: "%{count} pending users are rejected."
       copy: "Copy this course"
       manage_series: "Manage series"
       download_deadlines: "Add course to calendar"
@@ -141,8 +141,8 @@ en:
       select_view: Select view
       started: "Started in %{series}"
     not_a_member_card:
-      not_a_member: You are not a member of this course. Do you wish to register?
-      not_a_member_moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
+      not_a_member: You are not a member of this course. Would you like to register?
+      not_a_member_moderated: Your registration must be approved by a course administrator before you can access this course.
       registration_closed: Registrations are closed for this course.
     registration:
       registration-tooltip: Registering only influences your status on this website, not within your institution.
@@ -150,7 +150,7 @@ en:
       page_title: Registration
       not_a_member: You are not a member of this course.
       already_a_member: You are a member of this course.
-      moderated: Your registration needs to be approved by a course administrator before you gain access to this course.
+      moderated: Your registration must be approved by a course administrator before you can access this course.
       pending: Your registration is pending.
       remove_from_pending: Withdraw registration request
       closed: You are currently not able to subscribe to this course.
@@ -163,7 +163,7 @@ en:
       key_mismatch: "The key didn't match"
       registration_closed: "Registration closed."
       lti_title: Welcome to Dodona!
-      lti: You followed a link from %{lms} to this page. To correctly store your submissions, you should register for this course on Dodona. You can do this easily by clicking the "register" button below, or later from the course page.
+      lti: You followed a link from %{lms} to this page. In order to correctly save your submissions, you should register for this course on Dodona. You can do this easily by clicking the "register" button below, or later from the course page.
       lms_default: "another learning environment"
     favorite:
       succeeded: "Course favorited"

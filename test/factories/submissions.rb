@@ -13,6 +13,7 @@
 #  course_id   :integer
 #  fs_key      :string(24)
 #  number      :integer
+#  annotated   :boolean          default(FALSE), not null
 #
 
 FactoryBot.define do

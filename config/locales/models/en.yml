@@ -10,6 +10,9 @@ en:
           attributes:
             activity:
               taken: You have already read this activity
+        gitable:
+          repository:
+            not_accessible_markdown: The repository is not accessible to our git user. Please double check that you have given the correct permissions. Note that it may take a while before a GitHub/GitLab invitation is accepted by our team. See [the documentation](https://docs.dodona.be/en/guides/teachers/new-exercise-repo/) for more information.
     models:
       course: Course
       activity: Activity

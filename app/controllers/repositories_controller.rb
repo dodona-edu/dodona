@@ -7,8 +7,9 @@ class RepositoriesController < ApplicationController
   # GET /repositories.json
   def index
     authorize Repository
-    @repositories = Repository.all
-    @title = I18n.t('repositories.index.title')
+    @repositories = policy_scope(Repository.all)
+    @repositories = @repositories.has_admin(current_user) unless current_user&.zeus?
+    @title = current_user&.zeus? ? I18n.t('repositories.index.title_zeus') : I18n.t('repositories.index.title')
   end
 
   # GET /repositories/1
@@ -45,7 +46,6 @@ class RepositoriesController < ApplicationController
     if saved
       Event.create(event_type: :exercise_repository, user: current_user, message: "#{@repository.name} (id: #{@repository.id})")
       RepositoryAdmin.create(user_id: current_user.id, repository_id: @repository.id)
-      @repository.delay(queue: 'git').process_activities_email_errors(user: current_user)
     end
 
     respond_to do |format|

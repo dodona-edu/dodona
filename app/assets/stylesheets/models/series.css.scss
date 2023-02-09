@@ -7,11 +7,11 @@
   transition: opacity 0.5s ease-in-out;
 }
 
-.series-activity-list .activity.new {
+.series-activity-list .new {
   opacity: 0;
 }
 
-.series-activity-list .activity.pending {
+.series-activity-list .pending {
   opacity: 0.5;
 }
 

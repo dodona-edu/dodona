@@ -73,4 +73,26 @@ class AnnotationTest < ActiveSupport::TestCase
     annotation.reload
     assert_equal other_user, annotation.last_updated_by
   end
+
+  test 'can create a response to an annotation' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    assert_equal annotation, response.thread_root
+  end
+
+  test 'can create multiple responses to an annotation' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response1 = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    response2 = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    assert_equal annotation, response1.thread_root
+    assert_equal annotation, response2.thread_root
+    assert_equal [response1, response2], annotation.responses
+  end
+
+  test 'cannot create a response to a response' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    response2 = create :annotation, submission: @submission, user: @annotating_user, thread_root: response
+    assert_not response2.valid?
+  end
 end

@@ -28,7 +28,7 @@ class Annotation < ApplicationRecord
   belongs_to :last_updated_by, class_name: 'User'
   belongs_to :thread_root, class_name: 'Annotation', optional: true
 
-  has_many :responses, class_name: 'Annotation', dependent: :destroy, inverse_of: :thread_root, scope: -> { order(created_at: :asc) }
+  has_many :responses, -> { order(created_at: :asc) }, class_name: 'Annotation', dependent: :destroy, inverse_of: :thread_root, foreign_key: :thread_root_id
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
   validates :line_nr, allow_nil: true, numericality: {
@@ -36,8 +36,8 @@ class Annotation < ApplicationRecord
   }, if: ->(attr) { attr.line_nr.present? }
 
   # Only allow responses if the annotation is not a response itself
-  validates :thread_root_id, absence: true, if: ->(attr) { attr.responses.any? }
-  validates_associated :thread_root, if: ->(attr) { attr.thread_root_id.present? }
+  validates :thread_root_id, absence: true, if: -> { responses.any? }
+  validates_associated :thread_root
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }

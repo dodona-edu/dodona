@@ -95,4 +95,33 @@ class AnnotationTest < ActiveSupport::TestCase
     response2 = create :annotation, submission: @submission, user: @annotating_user, thread_root: response
     assert_not response2.valid?
   end
+
+  test 'A question with a response is marked as answered' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?, 'Question should start as unanswered'
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+
+    assert q.reload.answered?, 'Question should have moved onto answered status'
+  end
+
+  test 'In a thread with multiple questions, only the last one can be unanswered' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+    assert q.reload.answered?
+
+    q2 = create :question, submission: @submission, user: @student, thread_root: q
+    assert q2.reload.unanswered?
+
+    q3 = create :question, submission: @submission, user: @student, thread_root: q
+    assert q2.reload.answered?
+    assert q3.reload.unanswered?
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+    assert q.reload.answered?
+    assert q2.reload.answered?
+    assert q3.reload.answered?
+  end
 end

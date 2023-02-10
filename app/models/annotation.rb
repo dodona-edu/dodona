@@ -15,6 +15,7 @@
 #  last_updated_by_id  :integer          not null
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
+#  thread_root_id      :integer
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
@@ -25,11 +26,18 @@ class Annotation < ApplicationRecord
   belongs_to :evaluation, optional: true
   belongs_to :saved_annotation, optional: true, counter_cache: true
   belongs_to :last_updated_by, class_name: 'User'
+  belongs_to :thread_root, class_name: 'Annotation', optional: true
+
+  has_many :responses, class_name: 'Annotation', dependent: :destroy, inverse_of: :thread_root, scope: -> { order(created_at: :asc) }
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
   validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
+
+  # Only allow responses if the annotation is not a response itself
+  validates :thread_root_id, absence: true, if: ->(attr) { attr.responses.any? }
+  validates_associated :thread_root, if: ->(attr) { attr.thread_root_id.present? }
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }

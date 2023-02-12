@@ -47,7 +47,6 @@ class Series < ApplicationRecord
   validates :visibility, presence: true
 
   token_generator :access_token, length: 5
-  token_generator :indianio_token
 
   scope :visible, -> { where(visibility: :open) }
   scope :with_deadline, -> { where.not(deadline: nil) }
@@ -133,23 +132,6 @@ class Series < ApplicationRecord
     course.series.where(order: (order + 1)..)
           .or(course.series.where(order: order, id: ..(id - 1)))
           .first
-  end
-
-  def indianio_support
-    indianio_token.present?
-  end
-
-  def indianio_support?
-    indianio_support
-  end
-
-  def indianio_support=(value)
-    value = false if ['0', 0, 'false'].include? value
-    if indianio_token.nil? && value
-      generate_indianio_token
-    elsif !value
-      self.indianio_token = nil
-    end
   end
 
   def activity_count

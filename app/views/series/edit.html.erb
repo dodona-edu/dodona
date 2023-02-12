@@ -11,29 +11,11 @@
         </div>
       </div>
       <%= render 'form', series: @series %>
-      <% if @series.indianio_token || !@series.open? %>
+      <% if !@series.open? %>
         <div class="card-supporting-text card-border">
           <h4><%= t '.confidential' %></h4>
           <div class="col-12 col-md-10">
             <div class="form-horizontal">
-              <% if @series.indianio_token %>
-                <div class="field form-group row">
-                  <%= label_tag :indianio_token, 'Indianio token', class: 'col-sm-3 col-form-label' %>
-                  <div class="col-sm-9">
-                    <div class="input-group" id="indianio_token">
-                      <%= render partial: 'token_field',
-                                 locals: {
-                                     name: :indianio_token,
-                                     value: @series.indianio_token,
-                                     reset_url: reset_token_series_path(@series, type: :indianio_token)
-                                 } %>
-                    </div>
-                  </div>
-                  <span class="help-block offset-sm-3 col-sm-9">
-                <%= t '.indianio-help' %>
-              </span>
-                </div>
-              <% end %>
               <% unless @series.open? %>
                 <div class="field form-group row">
                   <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 col-form-label' %>

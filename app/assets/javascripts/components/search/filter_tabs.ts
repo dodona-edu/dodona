@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollectionElement, Label } from "components/filter_collection_element";
-import { watchMixin } from "components/watch_mixin";
+import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { watchMixin } from "components/meta/watch_mixin";
 
 /**
  * This component inherits from FilterCollectionElement.

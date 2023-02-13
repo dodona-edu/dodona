@@ -1,11 +1,11 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { createDelayer } from "util.js";
+import { createDelayer } from "../../util";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { FilterCollectionElement, Label } from "components/filter_collection_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
 
 /**
  * This component inherits from FilterCollectionElement.

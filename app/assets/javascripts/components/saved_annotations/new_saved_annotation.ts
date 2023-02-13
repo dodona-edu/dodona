@@ -1,9 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
-import { modalMixin } from "components/modal_mixin";
+import { modalMixin } from "components/meta/modal_mixin";
 import { stateMixin } from "state/StateMixin";
 
 /**

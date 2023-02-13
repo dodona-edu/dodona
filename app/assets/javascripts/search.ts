@@ -1,6 +1,6 @@
 import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
 import { InactiveTimeout } from "auto_reload";
-import { LoadingBar } from "components/loading_bar";
+import { LoadingBar } from "components/search/loading_bar";
 const RELOAD_SECONDS = 2;
 
 

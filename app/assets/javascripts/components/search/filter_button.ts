@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 /**
  * This is a very simple clickable component

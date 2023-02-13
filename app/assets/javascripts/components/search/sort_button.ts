@@ -1,4 +1,4 @@
-import "search.ts";
+import "../../search";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery } from "search";

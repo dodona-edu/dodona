@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { initTooltips, ready } from "util.js";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { initTooltips, ready } from "../../util";
 
 /**
  * This component displays a progress bar consisting of consecutive divs

@@ -12,7 +12,6 @@
 #  updated_at               :datetime         not null
 #  deadline                 :datetime
 #  access_token             :string(255)
-#  indianio_token           :string(255)
 #  progress_enabled         :boolean          default(TRUE), not null
 #  activities_visible       :boolean          default(TRUE), not null
 #  activities_count         :integer

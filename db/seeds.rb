@@ -284,6 +284,9 @@ if Rails.env.development?
       FileUtils.cp_r(dir, dir + i.to_s)
     end
   end
+  # Add all these new activities to the git repository
+  Open3.capture3('git', 'add', "*", chdir: big_activity_repo.full_path.to_path)
+
   big_activity_repo.process_activities
 
   RepositoryAdmin.create(repository: activity_repo, user: zeus)

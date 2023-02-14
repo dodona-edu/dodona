@@ -24,7 +24,7 @@ import "@boulevard/vampire";
  *
  * Usage in parent:
  * <my-component>
- *     <div slot="footer">Footer</div>
+ *     <div v-slot="footer">Footer</div>
  *     <div>Content</div>
  *     <div>Content</div>
  * </my-component>

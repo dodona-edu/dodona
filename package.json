@@ -50,9 +50,9 @@
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.62",
-    "@typescript-eslint/eslint-plugin": "^5.50.0",
+    "@typescript-eslint/eslint-plugin": "^5.51.0",
     "@typescript-eslint/parser": "^5.51.0",
-    "eslint": "^8.33.0",
+    "eslint": "^8.34.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^27.2.1",
     "eslint-plugin-lit": "^1.8.2",
@@ -64,6 +64,6 @@
     "stylelint-config-standard": "^29.0.0",
     "stylelint-config-standard-scss": "^6.1.0",
     "ts-jest": "^26.5.6",
-    "webpack-bundle-analyzer": "^4.7.0"
+    "webpack-bundle-analyzer": "^4.8.0"
   }
 }

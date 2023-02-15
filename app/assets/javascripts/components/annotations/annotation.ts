@@ -1,31 +1,36 @@
 import { html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 /**
  *
  */
-@customElement("d-annotation-template")
-export class AnnotationTemplate extends ShadowlessLitElement {
-    @property({ type: String })
-    class = "";
-    @property({ type: String })
-    meta = "";
-    @property({ type: String })
-    text = "";
+export abstract class Annotation extends ShadowlessLitElement {
+    protected abstract get text(): TemplateResult | string | TemplateResult[];
+    protected abstract get meta(): TemplateResult | string | TemplateResult[];
+    protected abstract get class(): string;
+
+    protected get buttons(): TemplateResult | TemplateResult[] {
+        return html``;
+    }
+
+    protected get footer(): TemplateResult | TemplateResult[] {
+        return html``;
+    }
 
     render(): TemplateResult {
         return html`
             <div class="annotation ${this.class}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
-                        <v-slot name="meta">${this.meta}</v-slot>
+                        ${this.meta}
                     </span>
+                    ${this.buttons}
                     <v-slot name="buttons"></v-slot>
                 </div>
                 <div class="annotation-text">
-                    <v-slot name="text">${this.text}</v-slot>
+                    ${this.text}
                 </div>
+                ${this.footer}
                 <v-slot name="footer"></v-slot>
             </div>
         `;

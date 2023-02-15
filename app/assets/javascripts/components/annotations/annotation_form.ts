@@ -1,7 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { Annotation } from "code_listing/annotation";
 import { isBetaCourse } from "saved_annotation_beta";
 import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
@@ -30,9 +29,11 @@ const maxLength = 10_000;
  */
 @customElement("d-annotation-form")
 export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
-    @property({ type: Object })
-    annotation: Annotation;
-    @property({ type: Boolean })
+    @property({ type: String, attribute: "annotation-text" })
+    annotationText: string;
+    @property({ type: Number, attribute: "saved-annotation-id" })
+    savedAnnotationId: number;
+    @property({ type: Boolean, attribute: "question-mode" })
     questionMode: boolean;
     @property({ type: Number, attribute: "course-id" })
     courseId: number;
@@ -46,9 +47,9 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     hasErrors = false;
 
     @property({ state: true })
-    annotationText = "";
+    __annotationText = "";
     @property({ state: true })
-    savedAnnotationId = "";
+    __savedAnnotationId = "";
     @property({ state: true })
     savedAnnotationTitle: string;
     @property({ state: true })
@@ -58,9 +59,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     titleRef: Ref<HTMLInputElement> = createRef();
 
     watch = {
-        annotation: () => {
-            this.annotationText = this.annotation?.rawText;
-            this.savedAnnotationId = this.annotation?.savedAnnotationId?.toString() || "";
+        annotationText: () => {
+            this.__annotationText = this.annotationText;
+        },
+        savedAnnotationId: () => {
+            this.__savedAnnotationId = this.savedAnnotationId?.toString() || "";
         }
     };
 
@@ -69,18 +72,18 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     get rows(): number {
-        return Math.max(3, this.annotationText.split("\n").length + 1);
+        return Math.max(3, this.__annotationText.split("\n").length + 1);
     }
 
     handleSavedAnnotationInput(e: CustomEvent): void {
         if (e.detail.text) {
-            this.annotationText = e.detail.text;
+            this.__annotationText = e.detail.text;
         }
-        this.savedAnnotationId = e.detail.id;
+        this.__savedAnnotationId = e.detail.id;
     }
 
     handleTextInput(): void {
-        this.annotationText = this.inputRef.value.value;
+        this.__annotationText = this.inputRef.value.value;
     }
 
     handleCancel(): void {
@@ -109,8 +112,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
             const event = new CustomEvent("submit", {
                 detail: {
-                    text: this.annotationText,
-                    savedAnnotationId: this.savedAnnotationId,
+                    text: this.__annotationText,
+                    savedAnnotationId: this.__savedAnnotationId,
                     savedAnnotationTitle: this.savedAnnotationTitle,
                     saveAnnotation: this.saveAnnotation,
                 },
@@ -147,7 +150,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         this.saveAnnotation = !this.saveAnnotation;
         if (this.saveAnnotation && !this.savedAnnotationTitle) {
             // Take the first five words, with a max of 40 chars as default title
-            this.savedAnnotationTitle = this.annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
+            this.savedAnnotationTitle = this.__annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
         }
     }
 
@@ -161,8 +164,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             exercise-id="${this.exerciseId}"
                             user-id="${this.userId}"
                             class="saved-annotation-input"
-                            .value=${this.savedAnnotationId}
-                            annotation-text="${this.annotationText}"
+                            .value=${this.__savedAnnotationId}
+                            annotation-text="${this.__annotationText}"
                             @input="${e => this.handleSavedAnnotationInput(e)}"
                         ></d-saved-annotation-input>
                     `}
@@ -177,7 +180,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                               .rows=${this.rows}
                               minlength="1"
                               maxlength="${maxLength}"
-                              .value=${this.annotationText}
+                              .value=${this.__annotationText}
                               ${ref(this.inputRef)}
                               @keydown="${e => this.handleKeyDown(e)}"
                               @input="${() => this.handleTextInput()}"
@@ -188,7 +191,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
                         ` : ""}
                         <span class="help-block float-end">
-                            <span class="used-characters">${I18n.formatNumber(this.annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
+                            <span class="used-characters">${I18n.formatNumber(this.__annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
                         </span>
                     </div>
                 </div>

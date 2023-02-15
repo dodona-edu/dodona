@@ -31,6 +31,12 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to(@instance)
   end
 
+  test 'should reprocess activities on judge change' do
+    Repository.any_instance.expects(:process_activities)
+    patch repository_path(@instance), params: { repository: { judge_id: create(:judge, :git_stubbed).id } }
+    assert_redirected_to(@instance)
+  end
+
   test 'should get public media' do
     request_public_image
   end

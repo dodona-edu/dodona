@@ -39,7 +39,13 @@
   <div class="field form-group row">
     <%= f.label :judge, :class => "col-sm-3 col-form-label" %>
     <div class="col-sm-6"><%= f.select :judge_id, Judge.all.collect {|j| [j.name, j.id]}, {}, {class: "form-select"} %></div>
-    <span class="help-block offset-sm-3 col-sm-6"><%= t ".judge_help" %></span>
+    <span class="help-block offset-sm-3 col-sm-6">
+      <% if repository.new_record? %>
+        <%= markdown t ".judge_help_markdown" %>
+      <% else %>
+        <%= markdown t ".judge_help_edit_markdown" %>
+      <% end %>
+    </span>
   </div>
 
   <% if f.permission?(:featured) %>

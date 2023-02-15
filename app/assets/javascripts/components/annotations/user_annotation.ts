@@ -107,7 +107,7 @@ export class UserAnnotation extends stateMixin(Annotation) {
     protected get buttons(): TemplateResult {
         return html`
             ${this.data.permission.update ? html`
-                <a class="btn btn-icon annotation-edit" @click="${this.edit}">
+                <a class="btn btn-icon annotation-edit" @click="${() => this.editing = true}">
                     <i class="mdi mdi-pencil"></i>
                 </a>
                 ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`

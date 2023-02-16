@@ -3,7 +3,6 @@ import { customElement, property } from "lit/decorators.js";
 import { isBetaCourse } from "saved_annotation_beta";
 import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
-import { Annotation } from "components/annotations/annotation";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 

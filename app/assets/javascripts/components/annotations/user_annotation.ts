@@ -5,6 +5,7 @@ import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { UserAnnotationData } from "state/UserAnnotations";
 
 
 /**

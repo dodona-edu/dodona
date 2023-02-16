@@ -1,14 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { AnnotationType } from "components/annotations/user_annotation";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
-export interface MachineAnnotationData {
-    type: AnnotationType;
-    text: string;
-    row: number;
-    externalUrl: string | null;
-}
 
 /**
  *

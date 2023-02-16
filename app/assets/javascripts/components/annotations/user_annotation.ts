@@ -6,48 +6,6 @@ import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
-export type QuestionState = "unanswered" | "answered" | "in_progress";
-export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
-
-interface UserAnnotationUserData {
-    name: string;
-}
-
-export interface UserAnnotationPermissionData {
-    update: boolean;
-    destroy: boolean;
-    can_see_annotator: boolean
-}
-
-export interface UserAnnotationData {
-    // eslint-disable-next-line camelcase
-    annotation_text: string;
-    // eslint-disable-next-line camelcase
-    created_at: string;
-    id: number;
-    // eslint-disable-next-line camelcase
-    line_nr: number;
-    permission: UserAnnotationPermissionData;
-    released: boolean;
-    // eslint-disable-next-line camelcase
-    rendered_markdown: string;
-    // eslint-disable-next-line camelcase
-    evaluation_id: number | null;
-    // eslint-disable-next-line camelcase
-    saved_annotation_id: number | null;
-    url: string;
-    user: UserAnnotationUserData;
-    type: AnnotationType;
-    // eslint-disable-next-line camelcase
-    last_updated_by: UserAnnotationUserData;
-    // REMOVE AFTER CLOSED BETA
-    // eslint-disable-next-line camelcase
-    course_id: number;
-    // eslint-disable-next-line camelcase
-    question_state?: QuestionState;
-    // eslint-disable-next-line camelcase
-    newer_submission_url?: string | null;
-}
 
 /**
  *

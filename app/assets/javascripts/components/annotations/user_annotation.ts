@@ -5,6 +5,10 @@ import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { Annotation } from "components/annotations/annotation";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+
+export type QuestionState = "unanswered" | "answered" | "in_progress";
+export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
 
 interface UserAnnotationUserData {
     name: string;
@@ -34,19 +38,23 @@ export interface UserAnnotationData {
     saved_annotation_id: number | null;
     url: string;
     user: UserAnnotationUserData;
-    type: string;
+    type: AnnotationType;
     // eslint-disable-next-line camelcase
     last_updated_by: UserAnnotationUserData;
     // REMOVE AFTER CLOSED BETA
     // eslint-disable-next-line camelcase
     course_id: number;
+    // eslint-disable-next-line camelcase
+    question_state?: QuestionState;
+    // eslint-disable-next-line camelcase
+    newer_submission_url?: string | null;
 }
 
 /**
  *
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends stateMixin(Annotation) {
+export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -101,6 +109,18 @@ export class UserAnnotation extends stateMixin(Annotation) {
                             title="${I18n.t("js.saved_annotation.new.linked", { title: this.savedAnnotation.title })}"
                         ></i>
                     ` : ""}
+            ${this.data.newer_submission_url !== null ? html`
+                <span>
+                    ·
+                    <a href="${this.data.newer_submission_url}" target="_blank">
+                        <i class="mdi mdi-information mdi-18 colored-info"
+                           title="${I18n.t("js.user_question.has_newer_submission")}"
+                           data-bs-toggle="tooltip"
+                           data-bs-placement="top"
+                        ></i>
+                    </a>
+                </span>
+            ` : ""}
         `;
     }
 
@@ -121,30 +141,31 @@ export class UserAnnotation extends stateMixin(Annotation) {
         `;
     }
 
-    protected get footer(): TemplateResult {
-        if (this.editing) {
-            return html`
-                <d-annotation-form
-                    annotation-text="${this.data.annotation_text}"
-                    saved-annotation-id="${this.savedAnnotationId}"
-                    question-mode="false"
-                    course-id="${this.data.course_id}"
-                    user-id="TODO"
-                    @cancel="${() => this.editing = false}"
-                    @delete="TODO"
-                    @submit="TODO"
-                ></d-annotation-form>
-            `;
-        }
-
-        return html``;
-    }
-
-    protected get text(): TemplateResult {
-        return html`${unsafeHTML(this.data.rendered_markdown)}`;
-    }
-
-    protected get class(): string {
-        return "user";
+    render(): TemplateResult {
+        return html`
+            <div class="annotation ${this.data.type}">
+                <div class="annotation-header">
+                    <span class="annotation-meta">
+                        ${this.meta}
+                    </span>
+                    ${this.buttons}
+                </div>
+                <div class="annotation-text">
+                    ${unsafeHTML(this.data.rendered_markdown)}
+                </div>
+                ${this.editing ? html`
+                    <d-annotation-form
+                        annotation-text="${this.data.annotation_text}"
+                        saved-annotation-id="${this.savedAnnotationId}"
+                        question-mode="TODO"
+                        course-id="${this.data.course_id}"
+                        user-id="TODO"
+                        @cancel="${() => this.editing = false}"
+                        @delete="TODO"
+                        @submit="TODO"
+                    ></d-annotation-form>
+                ` : ""}
+            </div>
+        `;
     }
 }

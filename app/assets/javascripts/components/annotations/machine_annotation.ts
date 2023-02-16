@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { AnnotationType } from "code_listing/annotation";
-import { Annotation } from "components/annotations/annotation";
+import { AnnotationType } from "components/annotations/user_annotation";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 export interface MachineAnnotationData {
     type: AnnotationType;
@@ -14,7 +14,7 @@ export interface MachineAnnotationData {
  *
  */
 @customElement("d-machine-annotation")
-export class MachineAnnotation extends Annotation {
+export class MachineAnnotation extends ShadowlessLitElement {
     @property({ type: Object })
     data: MachineAnnotationData;
 
@@ -27,25 +27,31 @@ export class MachineAnnotation extends Annotation {
             .filter(s => !s.match("^--*$"))
             .join("\n");
     }
-    protected get meta(): TemplateResult {
-        return html`
-            ${I18n.t(`js.annotation.type.${this.data.type}`)}
-            ${this.hasNotice ? html`
-                <span>
-                    ·
-                    <a href="${this.data.externalUrl}" target="_blank">
-                        <i class="mdi mdi-information mdi-18 colored-info"
-                           title="${I18n.t("js.machine_annotation.external_url")}"
-                           data-bs-toggle="tooltip"
-                           data-bs-placement="top"
-                        ></i>
-                    </a>
-                </span>
-            ` : ""}
-        `;
-    }
 
-    protected get class(): string {
-        return "machine-annotation";
+    render(): TemplateResult {
+        return html`
+            <div class="annotation machine-annotation ${this.data.type}">
+                <div class="annotation-header">
+                    <span class="annotation-meta">
+                        ${I18n.t(`js.annotation.type.${this.data.type}`)}
+                        ${this.hasNotice ? html`
+                            <span>
+                                ·
+                                <a href="${this.data.externalUrl}" target="_blank">
+                                    <i class="mdi mdi-information mdi-18 colored-info"
+                                       title="${I18n.t("js.machine_annotation.external_url")}"
+                                       data-bs-toggle="tooltip"
+                                       data-bs-placement="top"
+                                    ></i>
+                                </a>
+                            </span>
+                        ` : ""}
+                    </span>
+                </div>
+                <div class="annotation-text">
+                    ${this.text}
+                </div>
+            </div>
+        `;
     }
 }

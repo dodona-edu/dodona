@@ -16,11 +16,7 @@
         <% end %>
         ...</span>
     <% elsif labels.any? %>
-      <% labels.each do |label| %>
-        <d-filter-button param="labels" value="<%= label.name %>" multi>
-          <%= label.name %>,
-        </d-filter-button>
-      <% end %>
+      <%= raw labels.map {|label| "<d-filter-button param='labels' value='#{label.name}' multi >#{label.name}</d-filter-button>"}.join(", ") %>
     <% end %>
   </small>
 </div>

@@ -87,6 +87,25 @@ export class CodeListing {
         this.evaluationId = id;
     }
 
+    // /////////////////////////////////////////////////////////////////////////
+    // Highlighting ////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    clearHighlights(): void {
+        const markedAnnotations = this.table.querySelectorAll(`tr.lineno.${this.markingClass}`);
+        markedAnnotations.forEach(markedAnnotation => {
+            markedAnnotation.classList.remove(this.markingClass);
+        });
+    }
+
+    highlightLine(lineNr: number, scrollToLine = false): void {
+        const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
+        toMarkAnnotationRow.classList.add(this.markingClass);
+        if (scrollToLine) {
+            toMarkAnnotationRow.scrollIntoView({ block: "center" });
+        }
+    }
+
 
     // /////////////////////////////////////////////////////////////////////////
     // Annotation management ///////////////////////////////////////////////////

@@ -69,47 +69,4 @@ export class CodeListing {
     setEvaluation(id: number): void {
         this.evaluationId = id;
     }
-
-    // /////////////////////////////////////////////////////////////////////////
-    // Highlighting ////////////////////////////////////////////////////////////
-    // /////////////////////////////////////////////////////////////////////////
-
-    clearHighlights(): void {
-        const markedAnnotations = this.table.querySelectorAll(`tr.lineno.${this.markingClass}`);
-        markedAnnotations.forEach(markedAnnotation => {
-            markedAnnotation.classList.remove(this.markingClass);
-        });
-    }
-
-    highlightLine(lineNr: number, scrollToLine = false): void {
-        const toMarkAnnotationRow = this.table.querySelector(`tr.lineno#line-${lineNr}`);
-        toMarkAnnotationRow.classList.add(this.markingClass);
-        if (scrollToLine) {
-            toMarkAnnotationRow.scrollIntoView({ block: "center" });
-        }
-    }
-
-    // /////////////////////////////////////////////////////////////////////////
-    // Annotation management ///////////////////////////////////////////////////
-    // /////////////////////////////////////////////////////////////////////////
-
-    public addAnnotation(annotation: Annotation, line: number): void {
-        coline ??= 0;
-
-        if (!this.annotations.has(line)) {
-            this.annotations.set(line, []);
-        }
-
-        // Add the annotation in the map.
-        this.annotations.get(line).push(annotation);
-
-        // Append the HTML component of the annotation to the code table.
-        if (annotation.global) {
-            this.appendAnnotationToGlobal(annotation);
-        } else {
-            this.appendAnnotationToTable(annotation);
-        }
-
-        this.updateViewState();
-    }
 }

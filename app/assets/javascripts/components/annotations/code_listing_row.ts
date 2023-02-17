@@ -69,7 +69,9 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
             <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
                     <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen"></button>
-                    <span class="dot ${this.infoDotClasses}" id="dot-12" title="${this.infoDotTitle}"></span>
+                    ${this.hiddenAnnotations.length > 0 ? html`
+                        <span class="dot ${this.infoDotClasses}" title="${this.infoDotTitle}"></span>
+                    ` : ""}
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">

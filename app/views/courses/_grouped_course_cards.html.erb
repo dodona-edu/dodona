@@ -1,0 +1,16 @@
+<% grouped_courses.each do |year, courses| %>
+  <div class="page-subtitle">
+    <a class="anchor" id="<%= year.parameterize %>"></a>
+    <h3><%= Course.format_year year %></h3>
+  </div>
+  <div class="row">
+    <% courses.each do |course| %>
+      <div class="col-12 col-sm-6 col-lg-4">
+        <%= render partial: "pages/course_card", locals: {course: course, show_membership: true, course_index: true} %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<center>
+  <%= page_navigation_links @courses, true, 'courses' %>
+</center>

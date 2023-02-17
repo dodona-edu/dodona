@@ -15,22 +15,10 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     state = ["getUserAnnotations", "getMachineAnnotations", "getAnnotationVisibility"];
 
     get machineAnnotations(): MachineAnnotationData[] {
-        if (this.annotationVisibility === "none") {
-            return [];
-        }
-
-        let mas = getMachineAnnotationsByLine(this.row);
-        if (this.annotationVisibility === "important") {
-            mas = mas.filter(ma => ma.type === "error");
-        }
-        return mas;
+        return getMachineAnnotationsByLine(this.row);
     }
 
     get userAnnotations(): UserAnnotationData[] {
-        if (this.annotationVisibility === "none") {
-            return [];
-        }
-
         return getUserAnnotationsByLine(this.row);
     }
 
@@ -38,35 +26,68 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         return getAnnotationVisibility();
     }
 
-    getMachineAnnotationsOfType(type: string): TemplateResult[] {
-        return this.machineAnnotations.filter(a => a.type === type).map(a => html`
-            <d-machine-annotation .data=${a}></d-machine-annotation>
+    getVisibleMachineAnnotationsOfType(type: string): TemplateResult[] {
+        return this.machineAnnotations
+            .filter(this.isVisible)
+            .filter(a => a.type === type).map(a => html`
+                <d-machine-annotation .data=${a}></d-machine-annotation>
         `);
+    }
+
+    isVisible(annotation: MachineAnnotationData | UserAnnotationData): boolean {
+        if (this.annotationVisibility === "none") {
+            return false;
+        }
+
+        if (this.annotationVisibility === "important") {
+            return annotation.type === "error" || annotation.type === "user" || annotation.type === "question";
+        }
+
+        return true;
+    }
+
+    get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {
+        return [...this.machineAnnotations, ...this.userAnnotations].filter(a => !this.isVisible(a));
+    }
+
+    get infoDotClasses(): string {
+        const hiddenTypes = this.hiddenAnnotations.map(a => a.type);
+        return [...new Set(hiddenTypes)].map(t => `dot-${t}`).join(" ");
+    }
+
+    get infoDotTitle(): string {
+        const count = this.hiddenAnnotations.length;
+        if (count === 1) {
+            return I18n.t("js.annotation.hidden.single");
+        } else {
+            return I18n.t("js.annotation.hidden.plural", { count: count });
+        }
     }
 
     render(): TemplateResult {
         return html`
             <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
-                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen">
+                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen"></button>
+                    <span class="dot ${this.infoDotClasses}" id="dot-12" title="${this.infoDotTitle}"></span>
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
                     <pre>${this.renderedCode}</pre>
                     <div class="annotation-cell" id="annotation-cell-1">
                         <div class="annotation-group-error">
-                            ${this.getMachineAnnotationsOfType("error")}
+                            ${this.getVisibleMachineAnnotationsOfType("error")}
                         </div>
                         <div class="annotation-group-conversation">
-                            ${this.userAnnotations.map(a => html`
+                            ${this.userAnnotations.filter(this.isVisible).map(a => html`
                                 <d-user-annotation .data=${a}></d-user-annotation>
                             `)}
                         </div>
                         <div class="annotation-group-warning">
-                            ${this.getMachineAnnotationsOfType("warning")}
+                            ${this.getVisibleMachineAnnotationsOfType("warning")}
                         </div>
                         <div class="annotation-group-info">
-                            ${this.getMachineAnnotationsOfType("info")}
+                            ${this.getVisibleMachineAnnotationsOfType("info")}
                         </div>
                     </div>
                 </td>

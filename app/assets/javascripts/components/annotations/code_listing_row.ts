@@ -4,6 +4,7 @@ import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
+import { AnnotationVisibilityOptions, getAnnotationVisibility } from "state/Annotations";
 
 export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number })
@@ -11,14 +12,30 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     @property({ type: Object })
     renderedCode: HTMLElement;
 
-    state = ["getUserAnnotations", "getMachineAnnotations"];
+    state = ["getUserAnnotations", "getMachineAnnotations", "getAnnotationVisibility"];
 
     get machineAnnotations(): MachineAnnotationData[] {
-        return getMachineAnnotationsByLine(this.row);
+        if (this.annotationVisibility === "none") {
+            return [];
+        }
+
+        let mas = getMachineAnnotationsByLine(this.row);
+        if (this.annotationVisibility === "important") {
+            mas = mas.filter(ma => ma.type === "error");
+        }
+        return mas;
     }
 
     get userAnnotations(): UserAnnotationData[] {
+        if (this.annotationVisibility === "none") {
+            return [];
+        }
+
         return getUserAnnotationsByLine(this.row);
+    }
+
+    get annotationVisibility(): AnnotationVisibilityOptions {
+        return getAnnotationVisibility();
     }
 
     getMachineAnnotationsOfType(type: string): TemplateResult[] {

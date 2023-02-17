@@ -12,21 +12,11 @@
             <i class="mdi mdi-star-outline"></i>
           </h2>
         <% end %>
-        <% if !@course.open_for_all? || @course.moderated %>
-          <% title = [] %>
-          <% title.push t(".registration-#{@course.registration}-info", institution: @course.institution&.name) unless @course.open_for_all? %>
-          <% title.push t(".moderated-info") if @course.moderated %>
-          <h2 class='card-title-text float-end' title='<%= title.join("\n") %>'>
-            <i class="mdi mdi-account-remove-outline"></i>
-          </h2>
-        <% end %>
-        <% unless @course.visible_for_all? %>
-          <h2 class='card-title-text float-end' title='<%= t ".visibility-#{@course.visibility}-info", institution: @course.institution&.name %>'>
-            <i class="mdi mdi-eye-off-outline"></i>
-          </h2>
-        <% end %>
-        <h2 class="card-title-text">
+        <h2 class="card-title-text justify-content-between">
           <%= @course.name %> (<%= @course.formatted_year %>)
+            <span class="float-end text-nowrap">
+            <%= render partial: "courses/course_visibility_icons", locals: {course: @course} %>
+          </span>
         </h2>
         <% if @course.formatted_attribution.present? %>
           <h3 class="card-subtitle-text">

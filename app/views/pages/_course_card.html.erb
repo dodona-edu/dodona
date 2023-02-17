@@ -8,17 +8,7 @@
             <% if current_user.admin_of?(course) %>
               <i class='mdi mdi-school' title='<%= t ".course-admin" %>'></i>
             <% end %>
-              <% if (!course.open_for_all? && !course.open_for_institution?) || course.moderated %>
-              <% title = [] %>
-                <% title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) unless course.open_for_all? %>
-                <% title.push t("courses.show.moderated-info") if course.moderated %>
-                <i class="mdi mdi-account-remove-outline" title='<%= title.join("\n") %>'></i>
-            <% end %>
-            <% unless course.visible_for_all? || course.visible_for_institution? %>
-              <i class="mdi mdi-eye-off-outline" title='<%= t "courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name %>'></i>
-            <% end %>
-          <% elsif local_assigns[:show_membership] and current_user.subscribed_courses.include? course %>
-            <i class='mdi mdi-star' title='<%= t ".course-member" %>'></i>
+            <%= render partial: "courses/course_visibility_icons", locals: {course: course} %>
           <% end %>
         </span>
       </h2>

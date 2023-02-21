@@ -8,7 +8,7 @@
             <% if current_user.admin_of?(course) %>
               <i class='mdi mdi-school' title='<%= t ".course-admin" %>'></i>
             <% end %>
-            <%= render partial: "courses/course_visibility_icons", locals: {course: course} %>
+            <%= visibility_icons_for course %>
           <% end %>
         </span>
       </h2>

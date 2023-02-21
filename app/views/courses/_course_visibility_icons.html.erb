@@ -1,9 +1,0 @@
-<% if course.closed? || course.moderated %>
-  <% title = [] %>
-  <% title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) if course.hidden? %>
-  <% title.push t("courses.show.moderated-info") if course.moderated %>
-  <i class="mdi mdi-account-remove-outline" title='<%= title.join("\n") %>'></i>
-<% end %>
-<% if course.hidden? %>
-  <i class="mdi mdi-eye-off-outline" title='<%= t "courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name %>'></i>
-<% end %>

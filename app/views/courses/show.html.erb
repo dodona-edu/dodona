@@ -15,7 +15,7 @@
         <h2 class="card-title-text justify-content-between">
           <%= @course.name %> (<%= @course.formatted_year %>)
             <span class="float-end text-nowrap">
-            <%= render partial: "courses/course_visibility_icons", locals: {course: @course} %>
+            <%= visibility_icons_for @course %>
           </span>
         </h2>
         <% if @course.formatted_attribution.present? %>

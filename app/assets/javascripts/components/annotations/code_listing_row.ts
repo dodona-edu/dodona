@@ -1,16 +1,20 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { property } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
 import { AnnotationVisibilityOptions, getAnnotationVisibility } from "state/Annotations";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import "components/annotations/machine_annotation";
+import "components/annotations/user_annotation";
 
+@customElement("d-code-listing-row")
 export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
     @property({ type: Object })
-    renderedCode: HTMLElement;
+    renderedCode: string;
 
     state = ["getUserAnnotations", "getMachineAnnotations", "getAnnotationVisibility"];
 
@@ -65,23 +69,25 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
+        console.log("rendering row", this.row);
         return html`
-            <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
-                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen"></button>
+                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen">
+                        <i class="mdi mdi-comment-plus-outline mdi-18"></i>
+                    </button>
                     ${this.hiddenAnnotations.length > 0 ? html`
                         <span class="dot ${this.infoDotClasses}" title="${this.infoDotTitle}"></span>
                     ` : ""}
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre>${this.renderedCode}</pre>
+                    <pre>${unsafeHTML(this.renderedCode)}</pre>
                     <div class="annotation-cell" id="annotation-cell-1">
                         <div class="annotation-group-error">
                             ${this.getVisibleMachineAnnotationsOfType("error")}
                         </div>
                         <div class="annotation-group-conversation">
-                            ${this.userAnnotations.filter(this.isVisible).map(a => html`
+                            ${this.userAnnotations.filter(a => this.isVisible(a)).map(a => html`
                                 <d-user-annotation .data=${a}></d-user-annotation>
                             `)}
                         </div>
@@ -93,7 +99,6 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
                         </div>
                     </div>
                 </td>
-            </tr>
         `;
     }
 }

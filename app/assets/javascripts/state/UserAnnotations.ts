@@ -76,6 +76,7 @@ export async function fetchUserAnnotations(submissionId: number): Promise<UserAn
         addAnnotationToMap(annotation);
     }
     events.publish("getUserAnnotations");
+    console.log("user annotations loaded", userAnnotationsByLine);
     return json;
 }
 

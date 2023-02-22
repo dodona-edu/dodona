@@ -1,49 +1,20 @@
-import { MachineAnnotation } from "components/annotations/machine_annotation";
-import { AnnotationType, UserAnnotation } from "components/annotations/user_annotation";
-
-
-type Annotation = MachineAnnotation | UserAnnotation;
-type OrderGroup = "error" | "conversation" | "warning" | "info";
-
-// Map in which annotation group the annotation should appear.
-const GROUP_MAPPING: Record<AnnotationType, OrderGroup> = {
-    "error": "error",
-    "user": "conversation",
-    "warning": "warning",
-    "info": "info",
-    "question": "conversation"
-};
-
-// Order the groups. We use the same order as appearance in the mapping.
-const GROUP_ORDER: OrderGroup[] = Array.from(new Set(Object.values(GROUP_MAPPING)));
+import { CodeListingRow } from "components/annotations/code_listing_row";
+import { render } from "lit";
+import { fetchUserAnnotations } from "state/UserAnnotations";
+import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
 
 export class CodeListing {
-    private readonly annotations: Map<number, Annotation[]>;
-
     public readonly code: string;
     public readonly codeLines: number;
     public readonly submissionId: number;
     public readonly courseId: number | null;
     public readonly exerciseId: number;
     public readonly userId: number;
-
-    private readonly markingClass: string = "marked";
     private evaluationId: number;
-
-    private readonly badge: HTMLSpanElement;
-    private readonly table: HTMLTableElement;
-
-    private readonly globalAnnotations: HTMLDivElement;
-    private readonly globalAnnotationGroups: HTMLDivElement;
-    private readonly hideAllAnnotations: HTMLButtonElement;
-    private readonly showAllAnnotations: HTMLButtonElement;
-    private readonly showErrorAnnotations: HTMLButtonElement;
-    private readonly annotationToggles: HTMLDivElement;
 
     private readonly questionMode: boolean;
 
     constructor(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false) {
-        this.annotations = new Map<number, Annotation[]>();
         this.code = code;
         this.codeLines = codeLines;
         this.submissionId = submissionId;
@@ -52,21 +23,40 @@ export class CodeListing {
         this.userId = userId;
         this.questionMode = questionMode;
 
-        this.badge = document.querySelector<HTMLSpanElement>(badge);
-        this.table = document.querySelector<HTMLTableElement>("table.code-listing");
-
-        this.hideAllAnnotations = document.querySelector<HTMLButtonElement>(annotationHideAll);
-        this.showAllAnnotations = document.querySelector<HTMLButtonElement>(annotationShowAll);
-        this.showErrorAnnotations = document.querySelector<HTMLButtonElement>(annotationShowErrors);
-        this.annotationToggles = document.querySelector<HTMLDivElement>(annotationToggles);
-
-        this.globalAnnotations = document.querySelector<HTMLDivElement>(annotationsGlobal);
-        this.globalAnnotationGroups = document.querySelector<HTMLDivElement>(annotationsGlobalGroups);
 
         this.initAnnotations();
     }
 
     setEvaluation(id: number): void {
         this.evaluationId = id;
+    }
+
+    private initAnnotations(): void {
+        fetchUserAnnotations(this.submissionId);
+        const table = document.querySelector<HTMLTableElement>("table.code-listing");
+        const rows = table.querySelectorAll("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            const code = rows[i].querySelector("td.rouge-code > pre").innerHTML;
+            const codeListingRow = new CodeListingRow();
+            codeListingRow.row = i + 1;
+            codeListingRow.renderedCode = code;
+            codeListingRow.style = "display: contents;";
+            rows[i].innerHTML = "";
+            render(codeListingRow, rows[i]);
+        }
+    }
+
+    public addMachineAnnotations(data: MachineAnnotationData[]): void {
+        setMachineAnnotations(data);
+    }
+
+    public initAnnotateButtons(): void {
+    }
+
+    public loadUserAnnotations(): void {
+    }
+
+    public showAnnotations(): void {
     }
 }

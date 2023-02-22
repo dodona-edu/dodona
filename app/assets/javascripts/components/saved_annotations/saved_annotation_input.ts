@@ -5,6 +5,9 @@ import "components/datalist_input";
 import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { getCourseId } from "state/Courses";
+import { getExerciseId } from "state/Exercises";
+import { getUserId } from "state/Users";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -13,9 +16,6 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
  * @element d-saved-annotation-input
  *
  * @prop {String} name - name of the input field (used in form submit)
- * @prop {Number} courseId - used to fetch saved annotations by course
- * @prop {Number} exerciseId - used to fetch saved annotations by exercise
- * @prop {Number} userId - used to fetch saved annotations by user
  * @prop {String} value - the initial saved annotation id
  * @prop {String} annotationText - the current text of the real annotation, used to detect if there are manual changes from the selected saved annotation
  *
@@ -25,12 +25,6 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     @property({ type: String })
     name = "";
-    @property({ type: Number, attribute: "course-id" })
-    courseId: number;
-    @property({ type: Number, attribute: "exercise-id" })
-    exerciseId: number;
-    @property({ type: Number, attribute: "user-id" })
-    userId: number;
     @property({ type: String })
     value: string;
     @property( { type: String, attribute: "annotation-text" })
@@ -40,7 +34,23 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     __label: string;
 
     get state(): string[] {
-        return this.value ? [`getSavedAnnotation${this.value}`, "getSavedAnnotations"] : ["getSavedAnnotations"];
+        const state = ["getSavedAnnotations", "getCourseId", "getExerciseId", "getUserId"];
+        if (this.value) {
+            state.push(`getSavedAnnotation${this.value}`);
+        }
+        return state;
+    }
+
+    get courseId(): number {
+        return getCourseId();
+    }
+
+    get exerciseId(): number {
+        return getExerciseId();
+    }
+
+    get userId(): number {
+        return getUserId();
     }
 
     get label(): string {

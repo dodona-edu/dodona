@@ -1,6 +1,7 @@
 import { fetch } from "util.js";
 import { events } from "state/PubSub";
 import { Notification } from "notification";
+import { UserAnnotation, UserAnnotationEditor } from "code_listing/user_annotation";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -80,7 +81,7 @@ export async function fetchUserAnnotations(submissionId: number): Promise<UserAn
     return json;
 }
 
-export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation"): Promise<void> {
+export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation"): Promise<UserAnnotationData> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -94,7 +95,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
         }
         addAnnotationToMap(data);
         events.publish("getUserAnnotations");
-        return;
+        return data;
     }
     throw new Error();
 }

@@ -6,6 +6,8 @@ import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { getCourseId } from "state/Courses";
+import { stateMixin } from "state/StateMixin";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -16,9 +18,6 @@ const maxLength = 10_000;
  * @element d-annotation-form
  *
  * @prop {Annotation} annotation - the annotation that will be edited (Null for a creation form)
- * @prop {Number} courseId - used to fetch saved annotations by course
- * @prop {Number} exerciseId - used to fetch saved annotations by exercise
- * @prop {Number} userId - used to fetch saved annotations by user
  * @prop {Boolean} questionMode - whether we are editing questions or userAnnotations
  * @prop {Boolean} disabled - disables all buttons
  * @prop {Boolean} hasErrors - Shows red validation styling
@@ -28,28 +27,24 @@ const maxLength = 10_000;
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")
-export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
+export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement)) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
     @property({ type: Number, attribute: "saved-annotation-id" })
     savedAnnotationId: number;
     @property({ type: Boolean, attribute: "question-mode" })
     questionMode: boolean;
-    @property({ type: Number, attribute: "course-id" })
-    courseId: number;
-    @property({ type: Number, attribute: "exercise-id" })
-    exerciseId: number;
-    @property({ type: Number, attribute: "user-id" })
-    userId: number;
+    @property({ type: Boolean })
+    removable = false;
     @property({ type: Boolean })
     disabled = false;
     @property({ type: Boolean, attribute: "has-errors" })
     hasErrors = false;
 
     @property({ state: true })
-    __annotationText = "";
+    _annotationText = "";
     @property({ state: true })
-    __savedAnnotationId = "";
+    _savedAnnotationId = "";
     @property({ state: true })
     savedAnnotationTitle: string;
     @property({ state: true })
@@ -60,30 +55,37 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
     watch = {
         annotationText: () => {
-            this.__annotationText = this.annotationText;
+            this._annotationText = this.annotationText;
         },
         savedAnnotationId: () => {
-            this.__savedAnnotationId = this.savedAnnotationId?.toString() || "";
+            this._savedAnnotationId = this.savedAnnotationId?.toString() || "";
         }
     };
+
+    state = ["getCourseId"]; /* REMOVE AFTER CLOSED BETA */
+
+    /* REMOVE AFTER CLOSED BETA */
+    get courseId(): number {
+        return getCourseId();
+    }
 
     get type(): string {
         return this.questionMode ? "user_question" : "user_annotation";
     }
 
     get rows(): number {
-        return Math.max(3, this.__annotationText.split("\n").length + 1);
+        return Math.max(3, this._annotationText.split("\n").length + 1);
     }
 
     handleSavedAnnotationInput(e: CustomEvent): void {
         if (e.detail.text) {
-            this.__annotationText = e.detail.text;
+            this._annotationText = e.detail.text;
         }
-        this.__savedAnnotationId = e.detail.id;
+        this._savedAnnotationId = e.detail.id;
     }
 
     handleTextInput(): void {
-        this.__annotationText = this.inputRef.value.value;
+        this._annotationText = this.inputRef.value.value;
     }
 
     handleCancel(): void {
@@ -112,8 +114,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
             const event = new CustomEvent("submit", {
                 detail: {
-                    text: this.__annotationText,
-                    savedAnnotationId: this.__savedAnnotationId,
+                    text: this._annotationText,
+                    savedAnnotationId: this._savedAnnotationId,
                     savedAnnotationTitle: this.savedAnnotationTitle,
                     saveAnnotation: this.saveAnnotation,
                 },
@@ -150,7 +152,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         this.saveAnnotation = !this.saveAnnotation;
         if (this.saveAnnotation && !this.savedAnnotationTitle) {
             // Take the first five words, with a max of 40 chars as default title
-            this.savedAnnotationTitle = this.__annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
+            this.savedAnnotationTitle = this._annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
         }
     }
 
@@ -160,12 +162,9 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                 ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                         <d-saved-annotation-input
                             name="saved_annotation_id"
-                            course-id="${this.courseId}"
-                            exercise-id="${this.exerciseId}"
-                            user-id="${this.userId}"
                             class="saved-annotation-input"
-                            .value=${this.__savedAnnotationId}
-                            annotation-text="${this.__annotationText}"
+                            .value=${this._savedAnnotationId}
+                            annotation-text="${this._annotationText}"
                             @input="${e => this.handleSavedAnnotationInput(e)}"
                         ></d-saved-annotation-input>
                     `}
@@ -180,7 +179,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                               .rows=${this.rows}
                               minlength="1"
                               maxlength="${maxLength}"
-                              .value=${this.__annotationText}
+                              .value=${this._annotationText}
                               ${ref(this.inputRef)}
                               @keydown="${e => this.handleKeyDown(e)}"
                               @input="${() => this.handleTextInput()}"
@@ -191,7 +190,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
                         ` : ""}
                         <span class="help-block float-end">
-                            <span class="used-characters">${I18n.formatNumber(this.__annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
+                            <span class="used-characters">${I18n.formatNumber(this._annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
                         </span>
                     </div>
                 </div>
@@ -222,7 +221,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                     ` : html``}
                 `}
                 <div class="annotation-submission-button-container">
-                    ${this.annotation && this.annotation.removable ? html`
+                    ${this.annotationText && this.removable ? html`
                         <button class="btn btn-text annotation-control-button annotation-delete-button"
                                 type="button"
                                 @click="${() => this.handleDelete()}"
@@ -243,13 +242,13 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             @click="${() => this.handleSubmit()}"
                             .disabled=${this.disabled}
                     >
-                        ${this.annotation !== undefined ? I18n.t(`js.${this.type}.update`) : I18n.t(`js.${this.type}.send`)}
+                        ${this.annotationText ? I18n.t(`js.${this.type}.update`) : I18n.t(`js.${this.type}.send`)}
                     </button>
                 </div>
             </form>
         `;
 
-        return this.annotation !== undefined ? form : html`
+        return this.annotationText ? form : html`
             <div class="annotation user">
                 ${form}
             </div>

@@ -3,11 +3,17 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
-import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
+import { createUserAnnotation, getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
 import { AnnotationVisibilityOptions, getAnnotationVisibility } from "state/Annotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
+import "components/annotations/annotation_form";
+import { UserAnnotationFormData } from "code_listing/user_annotation";
+import { invalidateSavedAnnotation } from "state/SavedAnnotations";
+import { getEvaluationId } from "state/Evaluations";
+import { getSubmissionId } from "state/Submissions";
+import { createSavedAnnotation } from "state/SavedAnnotations";
 
 @customElement("d-code-listing-row")
 export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
@@ -15,6 +21,11 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     row: number;
     @property({ type: Object })
     renderedCode: string;
+    @property({ type: Boolean, attribute: "question-mode" })
+    questionMode: boolean;
+
+    @property({ state: true })
+    showForm: boolean;
 
     state = ["getUserAnnotations", "getMachineAnnotations", "getAnnotationVisibility"];
 
@@ -68,11 +79,49 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         }
     }
 
+    async createSavedAnnotation(from: UserAnnotationData, eventDetail: { savedAnnotationTitle: string, text: string, saveAnnotation: boolean }): Promise<void> {
+        if (eventDetail.saveAnnotation) {
+            try {
+                from.saved_annotation_id = await createSavedAnnotation({
+                    from: from.id,
+                    saved_annotation: {
+                        title: eventDetail.savedAnnotationTitle,
+                        annotation_text: eventDetail.text,
+                    }
+                });
+            } catch (errors) {
+                alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+            }
+        }
+    }
+
+    async createAnnotation(e: CustomEvent): void {
+        const annotationData: UserAnnotationFormData = {
+            "annotation_text": e.detail.text,
+            "line_nr": this.row,
+            "evaluation_id": getEvaluationId(),
+            "saved_annotation_id": e.detail.savedAnnotationId || undefined,
+        };
+
+        try {
+            const mode = this.questionMode ? "question" : "annotation";
+            const annotation = await createUserAnnotation(annotationData, getSubmissionId(), mode);
+            await this.createSavedAnnotation(annotation, e.detail);
+            invalidateSavedAnnotation(e.detail.savedAnnotationId);
+            this.showForm = false;
+        } catch (err) {
+            // annotationForm.hasErrors = true;
+            // annotationForm.disabled = false;
+        }
+    }
+
     render(): TemplateResult {
         console.log("rendering row", this.row);
         return html`
                 <td class="rouge-gutter gl">
-                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button" title="Toevoegen">
+                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
+                            @click=${() => this.showForm = !this.showForm}
+                            title="Toevoegen">
                         <i class="mdi mdi-comment-plus-outline mdi-18"></i>
                     </button>
                     ${this.hiddenAnnotations.length > 0 ? html`
@@ -82,7 +131,13 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
                 </td>
                 <td class="rouge-code">
                     <pre>${unsafeHTML(this.renderedCode)}</pre>
-                    <div class="annotation-cell" id="annotation-cell-1">
+                    <div class="annotation-cell">
+                        ${this.showForm ? html`
+                            <d-annotation-form question-mode="${this.questionMode}"
+                                               @cancel=${() => this.showForm = false}
+                                               @submit=${e => this.createAnnotation(e)}
+                            ></d-annotation-form>
+                        ` : ""}
                         <div class="annotation-group-error">
                             ${this.getVisibleMachineAnnotationsOfType("error")}
                         </div>

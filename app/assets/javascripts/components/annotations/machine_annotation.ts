@@ -17,6 +17,7 @@ export class MachineAnnotation extends ShadowlessLitElement {
     }
 
     protected get text(): string {
+        // Filter out lines only containing dashes.
         return this.data.text.split("\n")
             .filter(s => !s.match("^--*$"))
             .join("\n");
@@ -42,9 +43,7 @@ export class MachineAnnotation extends ShadowlessLitElement {
                         ` : ""}
                     </span>
                 </div>
-                <div class="annotation-text">
-                    ${this.text}
-                </div>
+                <div class="annotation-text">${this.text}</div>
             </div>
         `;
     }

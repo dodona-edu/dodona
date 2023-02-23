@@ -19,7 +19,7 @@ import { createSavedAnnotation } from "state/SavedAnnotations";
 export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
-    @property({ type: Object })
+    @property({ type: String })
     renderedCode: string;
 
     @property({ state: true })
@@ -41,7 +41,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
 
     getVisibleMachineAnnotationsOfType(type: string): TemplateResult[] {
         return this.machineAnnotations
-            .filter(this.isVisible)
+            .filter(a => this.isVisible(a))
             .filter(a => a.type === type).map(a => html`
                 <d-machine-annotation .data=${a}></d-machine-annotation>
         `);

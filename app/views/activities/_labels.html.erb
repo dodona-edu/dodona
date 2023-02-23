@@ -17,7 +17,7 @@
         ...</span>
     <% elsif labels.any? %>
       <%labels.each_with_index do |label, index| %><%#
-        %><d-filter-button param="labels" value="<%= label.name %>" multi><%=index == 0 ? "" : ", " %><%=label.name%></d-filter-button><%#
+        %><d-filter-button param="labels" value="<%= label.name %>" multi><%= index == 0 ? "" : ", " %><%=label.name%></d-filter-button><%#
       %><% end %>
     <% end %>
   </small>

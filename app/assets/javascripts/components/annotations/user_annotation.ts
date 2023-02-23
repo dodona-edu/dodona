@@ -5,7 +5,7 @@ import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { UserAnnotationData } from "state/UserAnnotations";
+import { deleteUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
 
 
 /**
@@ -99,7 +99,12 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
         `;
     }
 
+    deleteAnnotation(): void {
+        deleteUserAnnotation(this.data);
+    }
+
     render(): TemplateResult {
+        console.log(this.data);
         return html`
             <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
                 <div class="annotation-header">
@@ -115,8 +120,9 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
                     <d-annotation-form
                         annotation-text="${this.data.annotation_text}"
                         saved-annotation-id="${this.savedAnnotationId}"
+                        removable="${this.data.permission.destroy}"
                         @cancel="${() => this.editing = false}"
-                        @delete="TODO"
+                        @delete="${() => this.deleteAnnotation()}"
                         @submit="TODO"
                     ></d-annotation-form>
                 ` : ""}

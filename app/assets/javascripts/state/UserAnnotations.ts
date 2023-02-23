@@ -68,6 +68,14 @@ function addAnnotationToMap(annotation: UserAnnotationData): void {
     }
 }
 
+function removeAnnotationFromMap(annotation: UserAnnotationData): void {
+    const line = annotation.line_nr ?? 0;
+    if (userAnnotationsByLine.has(line)) {
+        const annotations = userAnnotationsByLine.get(line);
+        userAnnotationsByLine.set(line, annotations?.filter(a => a.id !== annotation.id));
+    }
+}
+
 export async function fetchUserAnnotations(submissionId: number): Promise<UserAnnotationData[]> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`);
     const json = await response.json();
@@ -98,6 +106,18 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
         return data;
     }
     throw new Error();
+}
+
+export async function deleteUserAnnotation(annotation: UserAnnotationData): Promise<void> {
+    const response = await fetch(annotation.url, {
+        method: "DELETE",
+    });
+    if (response.ok) {
+        removeAnnotationFromMap(annotation);
+        events.publish("getUserAnnotations");
+    } else {
+        throw new Error();
+    }
 }
 
 

@@ -55,7 +55,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         }
 
         if (this.annotationVisibility === "important") {
-            return annotation.type === "error" || annotation.type === "user" || annotation.type === "question";
+            return annotation.type === "error" || annotation.type === "annotation" || annotation.type === "question";
         }
 
         return true;
@@ -95,7 +95,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         }
     }
 
-    async createAnnotation(e: CustomEvent): void {
+    async createAnnotation(e: CustomEvent): Promise<void> {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
             "line_nr": this.row,

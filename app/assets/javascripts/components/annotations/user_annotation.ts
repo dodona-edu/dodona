@@ -101,7 +101,7 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <div class="annotation ${this.data.type}">
+            <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${this.meta}

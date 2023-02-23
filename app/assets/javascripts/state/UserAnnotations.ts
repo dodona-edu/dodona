@@ -15,7 +15,7 @@ export interface UserAnnotationFormData {
 }
 
 export type QuestionState = "unanswered" | "answered" | "in_progress";
-export type AnnotationType = "error" | "info" | "user" | "warning" | "question";
+export type AnnotationType = "error" | "info" | "annotation" | "warning" | "question";
 
 interface UserAnnotationUserData {
     name: string;

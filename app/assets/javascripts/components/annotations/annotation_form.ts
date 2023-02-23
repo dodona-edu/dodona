@@ -249,7 +249,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
         `;
 
         return this.annotationText ? form : html`
-            <div class="annotation user">
+            <div class="annotation ${this.questionMode ? "question" : "user" }">
                 ${form}
             </div>
         `;

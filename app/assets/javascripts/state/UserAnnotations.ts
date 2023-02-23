@@ -1,7 +1,7 @@
 import { fetch } from "util.js";
 import { events } from "state/PubSub";
 import { Notification } from "notification";
-import { UserAnnotation, UserAnnotationEditor } from "code_listing/user_annotation";
+import { createSavedAnnotation, invalidateSavedAnnotation } from "state/SavedAnnotations";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -11,7 +11,7 @@ export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
     evaluation_id?: number | undefined;
     // eslint-disable-next-line camelcase
-    saved_annotation_id?: string;
+    saved_annotation_id?: number | null;
 }
 
 export type QuestionState = "unanswered" | "answered" | "in_progress";
@@ -85,11 +85,10 @@ export async function fetchUserAnnotations(submissionId: number): Promise<UserAn
         addAnnotationToMap(annotation);
     }
     events.publish("getUserAnnotations");
-    console.log("user annotations loaded", userAnnotationsByLine);
     return json;
 }
 
-export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation"): Promise<UserAnnotationData> {
+export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotationData> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -97,27 +96,68 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
     });
     const data = await response.json();
 
-    if (response.ok) {
-        if (mode === "question") {
-            Notification.startNotificationRefresh();
-        }
-        addAnnotationToMap(data);
-        events.publish("getUserAnnotations");
-        return data;
+    if (!response.ok) {
+        throw new Error();
     }
-    throw new Error();
+
+    if (mode === "question") {
+        Notification.startNotificationRefresh();
+    }
+    if (saveAnnotation) {
+        try {
+            data.saved_annotation_id = await createSavedAnnotation({
+                from: data.id,
+                saved_annotation: {
+                    title: savedAnnotationTitle,
+                    annotation_text: data.annotation_text,
+                }
+            });
+        } catch (errors) {
+            alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+        }
+    }
+    addAnnotationToMap(data);
+    if (data.saved_annotation_id) {
+        invalidateSavedAnnotation(data.saved_annotation_id);
+    }
+    events.publish("getUserAnnotations");
+    return data;
 }
 
 export async function deleteUserAnnotation(annotation: UserAnnotationData): Promise<void> {
     const response = await fetch(annotation.url, {
         method: "DELETE",
     });
-    if (response.ok) {
-        removeAnnotationFromMap(annotation);
-        events.publish("getUserAnnotations");
-    } else {
+    if (!response.ok) {
         throw new Error();
     }
+
+    removeAnnotationFromMap(annotation);
+    invalidateSavedAnnotation(annotation.saved_annotation_id);
+    events.publish("getUserAnnotations");
+}
+
+export async function updateUserAnnotation(annotation: UserAnnotationData, formData: UserAnnotationFormData): Promise<void> {
+    const response = await fetch(annotation.url, {
+        headers: { "Content-Type": "application/json" },
+        method: "PATCH",
+        body: JSON.stringify({
+            annotation: formData
+        })
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    removeAnnotationFromMap(annotation);
+    addAnnotationToMap(data);
+    if (formData.saved_annotation_id != annotation.saved_annotation_id ) {
+        invalidateSavedAnnotation(formData.saved_annotation_id);
+        invalidateSavedAnnotation(annotation.saved_annotation_id);
+    }
+    events.publish("getUserAnnotations");
 }
 
 

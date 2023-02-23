@@ -3,13 +3,12 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
-import { createUserAnnotation, getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
+import { createUserAnnotation, getUserAnnotationsByLine, UserAnnotationData, UserAnnotationFormData } from "state/UserAnnotations";
 import { AnnotationVisibilityOptions, getAnnotationVisibility, getQuestionMode } from "state/Annotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
-import { UserAnnotationFormData } from "code_listing/user_annotation";
 import { invalidateSavedAnnotation } from "state/SavedAnnotations";
 import { getEvaluationId } from "state/Evaluations";
 import { getSubmissionId } from "state/Submissions";
@@ -77,22 +76,6 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         }
     }
 
-    async createSavedAnnotation(from: UserAnnotationData, eventDetail: { savedAnnotationTitle: string, text: string, saveAnnotation: boolean }): Promise<void> {
-        if (eventDetail.saveAnnotation) {
-            try {
-                from.saved_annotation_id = await createSavedAnnotation({
-                    from: from.id,
-                    saved_annotation: {
-                        title: eventDetail.savedAnnotationTitle,
-                        annotation_text: eventDetail.text,
-                    }
-                });
-            } catch (errors) {
-                alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
-            }
-        }
-    }
-
     async createAnnotation(e: CustomEvent): Promise<void> {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
@@ -103,9 +86,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
 
         try {
             const mode = getQuestionMode() ? "question" : "annotation";
-            const annotation = await createUserAnnotation(annotationData, getSubmissionId(), mode);
-            await this.createSavedAnnotation(annotation, e.detail);
-            invalidateSavedAnnotation(e.detail.savedAnnotationId);
+            const annotation = await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.showForm = false;
         } catch (err) {
             // annotationForm.hasErrors = true;
@@ -114,7 +95,6 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        console.log("rendering row", this.row);
         return html`
                 <td class="rouge-gutter gl">
                     <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"

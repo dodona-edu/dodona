@@ -1,11 +1,11 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { isBetaCourse } from "saved_annotation_beta";
 import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { deleteUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
+import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
 
 
 /**
@@ -103,8 +103,27 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
         deleteUserAnnotation(this.data);
     }
 
+    async updateAnnotation(e: CustomEvent): Promise<void> {
+        try {
+            await updateUserAnnotation(this.data, {
+                annotation_text: e.detail.text,
+                saved_annotation_id: e.detail.savedAnnotationId || undefined,
+            });
+            this.editing = false;
+        } catch (e) {
+            // annotationForm.hasErrors= true;
+            // annotationForm.disabled= false;
+        }
+    }
+
+    protected updated(_changedProperties: PropertyValues): void {
+        super.updated(_changedProperties);
+
+        // Ask MathJax to search for math in the annotations
+        window.MathJax.typeset();
+    }
+
     render(): TemplateResult {
-        console.log(this.data);
         return html`
             <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
                 <div class="annotation-header">
@@ -123,7 +142,7 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
                         removable="${this.data.permission.destroy}"
                         @cancel="${() => this.editing = false}"
                         @delete="${() => this.deleteAnnotation()}"
-                        @submit="TODO"
+                        @submit="${e => this.updateAnnotation(e)}"
                     ></d-annotation-form>
                 ` : ""}
             </div>

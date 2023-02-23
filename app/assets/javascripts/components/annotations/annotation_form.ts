@@ -31,8 +31,8 @@ const maxLength = 10_000;
 export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement)) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
-    @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number;
+    @property({ type: String, attribute: "saved-annotation-id" })
+    savedAnnotationId: string;
     @property({ type: Boolean })
     removable = false;
     @property({ type: Boolean })
@@ -57,7 +57,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
             this._annotationText = this.annotationText;
         },
         savedAnnotationId: () => {
-            this._savedAnnotationId = this.savedAnnotationId?.toString() || "";
+            this._savedAnnotationId = this.savedAnnotationId || "";
         }
     };
 

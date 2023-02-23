@@ -58,19 +58,6 @@
         <%= t('.class_progress_disable_help') %>
       </span>
     </div>
-  <% if series.course.institution == Institution.first %>
-    <div class="field form-group row">
-      <div class="col-sm-6 offset-sm-3">
-        <div class="form-check">
-          <%= f.check_box :indianio_support, class: "form-check-input" %>
-          <%= f.label :indianio_support, Series.human_attribute_name(:indianio_support), class:"form-check-label" %>
-        </div>
-      </div>
-      <span class="help-block offset-sm-3 col-sm-6">
-        <%= t '.indianio-support-help' %>
-      </span>
-    </div>
-  <% end %>
     <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
         <div class="form-check">

@@ -2,7 +2,7 @@ class SeriesController < ApplicationController
   include ExportHelper
   include SetLtiMessage
 
-  before_action :set_series, except: %i[index new create indianio_download]
+  before_action :set_series, except: %i[index new create]
   before_action :check_token, only: %i[show overview]
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
@@ -148,9 +148,6 @@ class SeriesController < ApplicationController
     type = params[:type].to_sym
     value =
       case type
-      when :indianio_token
-        @series.generate_indianio_token
-        @series.indianio_token
       when :access_token
         @series.generate_access_token
         series_url(@series, token: @series.access_token)
@@ -168,25 +165,6 @@ class SeriesController < ApplicationController
       value: value,
       reset_url: reset_token_series_path(@series, type: type)
     }
-  end
-
-  def indianio_download
-    token = params[:token]
-    email = params[:email]
-    @series = Series.find_by(indianio_token: token)
-    if token.blank? || @series.nil?
-      render json: { errors: ['Wrong token'] }, status: :unauthorized
-    elsif email.blank?
-      render json: { errors: ['No email given'] }, status: :unprocessable_entity
-    else
-      user = User.find_by(email: email)
-      if user
-        options = { deadline: true, only_last_submission: true, with_info: true, all_students: true, indianio: true }
-        send_zip Zipper.new(item: @series, list: @series.exercises, users: [user], options: options, for_user: user).bundle
-      else
-        render json: { errors: ['Unknown email'] }, status: :not_found
-      end
-    end
   end
 
   def add_activity

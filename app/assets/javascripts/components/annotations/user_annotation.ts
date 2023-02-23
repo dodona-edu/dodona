@@ -115,9 +115,6 @@ export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
                     <d-annotation-form
                         annotation-text="${this.data.annotation_text}"
                         saved-annotation-id="${this.savedAnnotationId}"
-                        question-mode="TODO"
-                        course-id="${this.data.course_id}"
-                        user-id="TODO"
                         @cancel="${() => this.editing = false}"
                         @delete="TODO"
                         @submit="TODO"

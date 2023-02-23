@@ -4,7 +4,7 @@ import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import { createUserAnnotation, getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
-import { AnnotationVisibilityOptions, getAnnotationVisibility } from "state/Annotations";
+import { AnnotationVisibilityOptions, getAnnotationVisibility, getQuestionMode } from "state/Annotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
@@ -21,8 +21,6 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
     row: number;
     @property({ type: Object })
     renderedCode: string;
-    @property({ type: Boolean, attribute: "question-mode" })
-    questionMode: boolean;
 
     @property({ state: true })
     showForm: boolean;
@@ -104,7 +102,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
         };
 
         try {
-            const mode = this.questionMode ? "question" : "annotation";
+            const mode = getQuestionMode() ? "question" : "annotation";
             const annotation = await createUserAnnotation(annotationData, getSubmissionId(), mode);
             await this.createSavedAnnotation(annotation, e.detail);
             invalidateSavedAnnotation(e.detail.savedAnnotationId);
@@ -133,8 +131,7 @@ export class CodeListingRow extends stateMixin(ShadowlessLitElement) {
                     <pre>${unsafeHTML(this.renderedCode)}</pre>
                     <div class="annotation-cell">
                         ${this.showForm ? html`
-                            <d-annotation-form question-mode="${this.questionMode}"
-                                               @cancel=${() => this.showForm = false}
+                            <d-annotation-form @cancel=${() => this.showForm = false}
                                                @submit=${e => this.createAnnotation(e)}
                             ></d-annotation-form>
                         ` : ""}

@@ -8,6 +8,7 @@ import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";
+import { getQuestionMode } from "state/Annotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -32,8 +33,6 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     annotationText: string;
     @property({ type: Number, attribute: "saved-annotation-id" })
     savedAnnotationId: number;
-    @property({ type: Boolean, attribute: "question-mode" })
-    questionMode: boolean;
     @property({ type: Boolean })
     removable = false;
     @property({ type: Boolean })
@@ -62,11 +61,15 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
         }
     };
 
-    state = ["getCourseId"]; /* REMOVE AFTER CLOSED BETA */
+    state = ["getCourseId"/* REMOVE AFTER CLOSED BETA */, "getQuestionMode"];
 
     /* REMOVE AFTER CLOSED BETA */
     get courseId(): number {
         return getCourseId();
+    }
+
+    get questionMode(): boolean {
+        return getQuestionMode();
     }
 
     get type(): string {

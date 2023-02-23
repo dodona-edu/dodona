@@ -6,29 +6,28 @@ import { setCourseId } from "state/Courses";
 import { setExerciseId } from "state/Exercises";
 import { setUserId } from "state/Users";
 import { getSubmissionId, setSubmissionId } from "state/Submissions";
+import { setQuestionMode } from "state/Annotations";
+import { setEvaluationId } from "state/Evaluations";
 
 export class CodeListing {
     public readonly code: string;
     public readonly codeLines: number;
-    private evaluationId: number;
-
-    private readonly questionMode: boolean;
 
     constructor(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false) {
         this.code = code;
         this.codeLines = codeLines;
-        this.questionMode = questionMode;
         setCourseId(courseId);
         setExerciseId(exerciseId);
         setUserId(userId);
         setSubmissionId(submissionId);
+        setQuestionMode(questionMode);
 
 
         this.initAnnotations();
     }
 
     setEvaluation(id: number): void {
-        this.evaluationId = id;
+        setEvaluationId(id);
     }
 
     private initAnnotations(): void {
@@ -41,7 +40,6 @@ export class CodeListing {
             const codeListingRow = new CodeListingRow();
             codeListingRow.row = i + 1;
             codeListingRow.renderedCode = code;
-            codeListingRow.questionMode = this.questionMode;
             codeListingRow.style = "display: contents;";
             rows[i].innerHTML = "";
             render(codeListingRow, rows[i]);

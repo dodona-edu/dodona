@@ -67,22 +67,7 @@ class FeedbackCodeRenderer
       end
 
       @builder.span(class: 'flex-spacer') {}
-      @builder.span(class: 'diff-switch-buttons switch-buttons hide', id: 'annotations_toggles') do
-        @builder.span(id: 'diff-switch-prefix') do
-          @builder.text!(I18n.t('submissions.show.annotations.title'))
-        end
-        @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-bs-toggle': 'buttons') do
-          @builder.button(class: 'btn annotation-toggle active', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-comment-multiple-outline') {}
-          end
-          @builder.button(class: 'btn annotation-toggle', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-comment-alert-outline') {}
-          end
-          @builder.button(class: 'btn annotation-toggle', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-            @builder.i(class: 'mdi mdi-comment-remove-outline') {}
-          end
-        end
-      end
+      @builder.tag!('d-annotations-toggles') {}
     end
 
     @builder.div(id: 'feedback-table-global-annotations') do

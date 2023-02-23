@@ -8,6 +8,7 @@ import { setUserId } from "state/Users";
 import { getSubmissionId, setSubmissionId } from "state/Submissions";
 import { setQuestionMode } from "state/Annotations";
 import { setEvaluationId } from "state/Evaluations";
+import "components/annotations/annotations_toggles";
 
 export class CodeListing {
     public readonly code: string;

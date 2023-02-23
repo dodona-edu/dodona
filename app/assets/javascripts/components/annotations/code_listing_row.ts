@@ -9,10 +9,8 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
-import { invalidateSavedAnnotation } from "state/SavedAnnotations";
 import { getEvaluationId } from "state/Evaluations";
 import { getSubmissionId } from "state/Submissions";
-import { createSavedAnnotation } from "state/SavedAnnotations";
 
 @customElement("d-code-listing-row")
 export class CodeListingRow extends stateMixin(ShadowlessLitElement) {

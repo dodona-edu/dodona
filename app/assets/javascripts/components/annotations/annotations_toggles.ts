@@ -1,7 +1,7 @@
 import { customElement } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { stateMixin } from "state/StateMixin";
-import { html, PropertyValues, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { AnnotationVisibilityOptions, getAnnotationVisibility, setAnnotationVisibility } from "state/Annotations";
 
 @customElement("d-annotations-toggles")

@@ -42,8 +42,7 @@ module CoursesHelper
       title.push t('courses.show.moderated-info') if course.moderated
       icons.push tag.i class: 'mdi mdi-account-remove-outline', title: title.join("\n")
     end
-    icons.push ' ' if course.hidden? && (course.closed? || course.moderated)
     icons.push tag.i class: 'mdi mdi-eye-off-outline', title: t("courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name) if course.hidden?
-    icons.reduce(:+)
+    icons.join(' ').html_safe
   end
 end

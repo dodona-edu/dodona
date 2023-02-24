@@ -85,6 +85,7 @@ export async function fetchUserAnnotations(submissionId: number): Promise<UserAn
         addAnnotationToMap(annotation);
     }
     events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
     return json;
 }
 
@@ -121,6 +122,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
         invalidateSavedAnnotation(data.saved_annotation_id);
     }
     events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
     return data;
 }
 
@@ -135,6 +137,7 @@ export async function deleteUserAnnotation(annotation: UserAnnotationData): Prom
     removeAnnotationFromMap(annotation);
     invalidateSavedAnnotation(annotation.saved_annotation_id);
     events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
 }
 
 export async function updateUserAnnotation(annotation: UserAnnotationData, formData: UserAnnotationFormData): Promise<void> {
@@ -158,9 +161,16 @@ export async function updateUserAnnotation(annotation: UserAnnotationData, formD
         invalidateSavedAnnotation(annotation.saved_annotation_id);
     }
     events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
 }
 
 
 export function getUserAnnotationsByLine(line: number): UserAnnotationData[] {
     return userAnnotationsByLine.get(line) ?? [];
+}
+
+export function getUserAnnotationsCount(): number {
+    return [...userAnnotationsByLine.values()]
+        .map(annotations => annotations.length)
+        .reduce((a, b) => a + b, 0);
 }

@@ -21,8 +21,15 @@ export function setMachineAnnotations(annotations: MachineAnnotationData[]): voi
         }
     }
     events.publish("getMachineAnnotations");
+    events.publish("getMachineAnnotationsCount");
 }
 
 export function getMachineAnnotationsByLine(line: number): MachineAnnotationData[] {
     return machineAnnotationsByLine.get(line) ?? [];
+}
+
+export function getMachineAnnotationsCount(): number {
+    return [...machineAnnotationsByLine.values()]
+        .map(annotations => annotations.length)
+        .reduce((a, b) => a + b, 0);
 }

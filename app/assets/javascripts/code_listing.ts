@@ -9,6 +9,7 @@ import { getSubmissionId, setSubmissionId } from "state/Submissions";
 import { setQuestionMode } from "state/Annotations";
 import { setEvaluationId } from "state/Evaluations";
 import "components/annotations/annotation_options";
+import "components/annotations/annotations_count_badge";
 
 export class CodeListing {
     public readonly code: string;

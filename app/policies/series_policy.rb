@@ -54,10 +54,6 @@ class SeriesPolicy < ApplicationPolicy
     user && show?
   end
 
-  def indianio_download?
-    true
-  end
-
   def modify_activities?
     course_admin?
   end
@@ -99,7 +95,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline indianio_support progress_enabled activities_visible activity_numbers_enabled]
+      %i[name description course_id visibility order deadline progress_enabled activities_visible activity_numbers_enabled]
     else
       []
     end

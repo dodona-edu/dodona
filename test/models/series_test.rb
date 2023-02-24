@@ -12,7 +12,6 @@
 #  updated_at               :datetime         not null
 #  deadline                 :datetime
 #  access_token             :string(255)
-#  indianio_token           :string(255)
 #  progress_enabled         :boolean          default(TRUE), not null
 #  activities_visible       :boolean          default(TRUE), not null
 #  activities_count         :integer
@@ -63,10 +62,6 @@ class SeriesTest < ActiveSupport::TestCase
   test 'factory should create series with submissions' do
     series = create :series, :with_submissions
     assert_not_empty series.course.submissions
-  end
-
-  test 'indianio_token should not be set' do
-    assert_nil @series.indianio_token
   end
 
   test 'changing deadline should invalidate exercise statuses' do
@@ -271,48 +266,9 @@ class SeriesTest < ActiveSupport::TestCase
     end
   end
 
-  test 'enabling indianio_support should generate a new token if there was none' do
-    @series.indianio_support = true
-    assert_not_nil @series.indianio_token
-
-    @series.indianio_token = nil
-
-    @series.indianio_support = '1'
-    assert_not_nil @series.indianio_token
-
-    @series.indianio_token = nil
-
-    @series.indianio_support = 1
-    assert_not_nil @series.indianio_token
-  end
-
-  test 'indianio_support should be true when there is a token' do
-    @series.indianio_token = 'something'
-    assert_equal true, @series.indianio_support?
-  end
-
-  test 'disabling indianio_support should set token to nil' do
-    @series.indianio_token = 'something'
-    @series.indianio_support = false
-    assert_nil @series.indianio_token
-
-    @series.indianio_token = 'something'
-
-    @series.indianio_support = '0'
-    assert_nil @series.indianio_token
-
-    @series.indianio_token = 'something'
-
-    @series.indianio_support = 0
-    assert_nil @series.indianio_token
-  end
-
   test 'generate_token should generate a new token' do
-    indianio = 'indianio'
     access = 'access'
-    @series.update(indianio_token: indianio, access_token: access)
-    @series.generate_indianio_token
-    assert_not_equal indianio, @series.indianio_token
+    @series.update(access_token: access)
 
     @series.generate_access_token
     assert_not_equal access, @series.access_token

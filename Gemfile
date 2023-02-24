@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.0.2'
+gem 'puma', '~> 6.1.0'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.2'
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.0.1'
+gem 'rouge', '4.1.0'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -66,7 +66,7 @@ gem 'ace-rails-ap', '~>4.5'
 gem 'autoprefixer-rails', '~>10.4.7'
 
 # saml authentication
-gem 'devise', '~>4.8.1'
+gem 'devise', '~>4.9.0'
 gem 'ruby-saml', '~> 1.15.0'
 
 # omniauth
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.14.1'
+gem 'nokogiri', '~> 1.14.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -124,7 +124,7 @@ gem 'has_scope', '~> 0.8.1'
 gem 'rubyzip', '~> 2.3.2'
 
 # memcache
-gem 'dalli', '~> 3.2.3'
+gem 'dalli', '~> 3.2.4'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 3.1.1'
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.8.0'
+  gem 'selenium-webdriver', '~> 4.8.1'
 end
 
 group :test do
@@ -165,7 +165,7 @@ group :test do
   gem 'codecov', '~> 0.6.0', require: false
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.21.2', require: false
-  gem 'test-prof', '~> 1.1.0'
+  gem 'test-prof', '~> 1.2.0'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

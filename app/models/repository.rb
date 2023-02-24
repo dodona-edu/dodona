@@ -30,6 +30,8 @@ class Repository < ApplicationRecord
   before_create :create_full_path
   after_create :clone_repo_delayed
 
+  after_save :process_activities_email_errors_delayed, if: :saved_change_to_judge_id?
+
   belongs_to :judge
   has_many :activities, dependent: :restrict_with_error
   has_many :labels,
@@ -108,6 +110,10 @@ class Repository < ApplicationRecord
   def clone_repo
     super
     process_activities_email_errors if clone_complete?
+  end
+
+  def process_activities_email_errors_delayed(kwargs = {})
+    delay(queue: 'git').process_activities_email_errors(kwargs)
   end
 
   def process_activities_email_errors(kwargs = {})

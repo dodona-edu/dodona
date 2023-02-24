@@ -78,7 +78,6 @@ Rails.application.routes.draw do
         post 'reset_token'
       end
     end
-    get 'series/indianio/:token', to: 'series#indianio_download', as: 'indianio_download'
 
     resources :exports, except: %i[show edit update new destroy create] do
       get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'

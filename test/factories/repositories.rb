@@ -31,6 +31,7 @@ FactoryBot.define do
 
       after :build do |repository|
         stub_git(repository)
+        repository.stubs(:process_activities)
       end
     end
   end

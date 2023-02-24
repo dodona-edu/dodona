@@ -124,7 +124,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_084858) do
     t.integer "last_updated_by_id", null: false
     t.integer "course_id", null: false
     t.bigint "saved_annotation_id"
-    t.integer "thread_root_id"
     t.index ["course_id", "type", "question_state"], name: "index_annotations_on_course_id_and_type_and_question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"

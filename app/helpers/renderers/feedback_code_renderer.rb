@@ -56,24 +56,6 @@ class FeedbackCodeRenderer
                 end
 
     @builder.tag!('d-annotation-options') {}
-    # @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do
-    #   if user_perm
-    #     @builder.button(class: 'btn btn-text', id: 'add_global_annotation') do
-    #       if user_is_student
-    #         @builder.text!(I18n.t('submissions.show.questions.add_global'))
-    #       else
-    #         @builder.text!(I18n.t('submissions.show.annotations.add_global'))
-    #       end
-    #     end
-    #   end
-    #
-    #   @builder.span(class: 'flex-spacer') {}
-    #   @builder.tag!('d-annotations-toggles') {}
-    # end
-    #
-    # @builder.div(id: 'feedback-table-global-annotations') do
-    #   @builder.div(id: 'feedback-table-global-annotations-list') {}
-    # end
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC

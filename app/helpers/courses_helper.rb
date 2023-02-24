@@ -33,4 +33,16 @@ module CoursesHelper
       tag.p t('courses.registration.already_a_member')
     end
   end
+
+  def visibility_icons_for(course)
+    icons = []
+    if course.closed? || course.moderated
+      title = []
+      title.push t("courses.show.registration-#{course.registration}-info", institution: course.institution&.name) if course.hidden?
+      title.push t('courses.show.moderated-info') if course.moderated
+      icons.push tag.i class: 'mdi mdi-account-remove-outline', title: title.join("\n")
+    end
+    icons.push tag.i class: 'mdi mdi-eye-off-outline', title: t("courses.show.visibility-#{course.visibility}-info", institution: course.institution&.name) if course.hidden?
+    icons.join(' ').html_safe
+  end
 end

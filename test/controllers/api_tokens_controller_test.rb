@@ -56,7 +56,7 @@ class ApiTokensSignInTest < ActionDispatch::IntegrationTest
   test 'should login with token' do
     fetch_root_with_token(@token)
     assert_response :success
-    result = JSON.parse response.body
+    result = response.parsed_body
     assert_not_nil result['user']
     assert_equal result['user']['email'], @user.email
   end

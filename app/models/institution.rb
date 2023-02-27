@@ -95,7 +95,8 @@ class Institution < ApplicationRecord
       # we group by domain to get all institutions with the same domain, we update the similarity matrix for all pairs of institutions
       domains.group_by { |u| u[:domain] }.each do |_, institution|
         institution.combination(2).each do |i1, i2|
-          matrix[i1[:institution_id]][i2[:institution_id]] = [matrix[i1[:institution_id]][i2[:institution_id]], [i1[:count], i2[:count]].min].max
+          overlap = [i1[:count], i2[:count]].min
+          matrix[i1[:institution_id]][i2[:institution_id]] = [matrix[i1[:institution_id]][i2[:institution_id]], overlap].max
           matrix[i2[:institution_id]][i1[:institution_id]] = matrix[i1[:institution_id]][i2[:institution_id]]
         end
       end

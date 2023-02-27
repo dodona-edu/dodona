@@ -33,7 +33,6 @@ export class CodeListing {
     }
 
     private initAnnotations(): void {
-        fetchUserAnnotations(getSubmissionId());
         const table = document.querySelector<HTMLTableElement>("table.code-listing");
         const rows = table.querySelectorAll("tr");
 
@@ -56,6 +55,7 @@ export class CodeListing {
     }
 
     public loadUserAnnotations(): void {
+        fetchUserAnnotations(getSubmissionId());
     }
 
     public showAnnotations(): void {

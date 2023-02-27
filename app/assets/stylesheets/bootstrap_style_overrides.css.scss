@@ -113,6 +113,10 @@ code {
   @include shadow-z5;
 }
 
+.dropdown-divider {
+  overflow: visible;
+}
+
 // tables
 .table {
   margin-bottom: 0;

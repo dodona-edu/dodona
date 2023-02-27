@@ -1,11 +1,13 @@
 import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory } from "submission.ts";
 import { initMathJax } from "exercise.ts";
-import { CodeListing } from "code_listing.ts";
 import { attachClipboard } from "copy";
+import { setEvaluationId } from "state/Evaluations";
+import { codeListing } from "code_listing";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
-window.dodona.codeListingClass = CodeListing;
+window.dodona.codeListing = codeListing;
 window.dodona.attachClipboard = attachClipboard;
 window.dodona.initMathJax = initMathJax;
 window.dodona.initCorrectSubmissionToNextLink = initCorrectSubmissionToNextLink;
 window.dodona.initSubmissionHistory = initSubmissionHistory;
+window.dodona.setEvaluationId = setEvaluationId;

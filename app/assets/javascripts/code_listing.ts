@@ -7,12 +7,11 @@ import { setExerciseId } from "state/Exercises";
 import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
 import { setQuestionMode } from "state/Annotations";
-import { setEvaluationId } from "state/Evaluations";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 
-export class CodeListing {
-    constructor(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false) {
+export const codeListing = {
+    initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
         setCode(code);
         setCourseId(courseId);
         setExerciseId(exerciseId);
@@ -20,15 +19,6 @@ export class CodeListing {
         setSubmissionId(submissionId);
         setQuestionMode(questionMode);
 
-
-        this.initAnnotations();
-    }
-
-    setEvaluation(id: number): void {
-        setEvaluationId(id);
-    }
-
-    private initAnnotations(): void {
         const table = document.querySelector<HTMLTableElement>("table.code-listing");
         const rows = table.querySelectorAll("tr");
 
@@ -41,17 +31,17 @@ export class CodeListing {
             rows[i].innerHTML = "";
             render(codeListingRow, rows[i]);
         }
-    }
+    },
 
-    public addMachineAnnotations(data: MachineAnnotationData[]): void {
+    addMachineAnnotations(data: MachineAnnotationData[]): void {
         setMachineAnnotations(data);
-    }
+    },
 
-    public initAnnotateButtons(): void {
+    initAnnotateButtons(): void {
         addPermission("annotation.create");
-    }
+    },
 
-    public loadUserAnnotations(): void {
+    loadUserAnnotations(): void {
         fetchUserAnnotations(getSubmissionId());
     }
-}
+};

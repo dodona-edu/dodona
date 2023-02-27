@@ -64,7 +64,6 @@ class FeedbackCodeRenderer
           window.dodona.codeListing.addMachineAnnotations(#{messages.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_perm}
           #{'window.dodona.codeListing.loadUserAnnotations();' if submission.annotated? || (!user_is_student && submission.annotations.any?)}
-          window.dodona.codeListing.showAnnotations();
         });
       HEREDOC
     end

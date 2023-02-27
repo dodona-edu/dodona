@@ -4,7 +4,7 @@ import { fetchUserAnnotations } from "state/UserAnnotations";
 import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
 import { setCourseId } from "state/Courses";
 import { setExerciseId } from "state/Exercises";
-import { setUserId } from "state/Users";
+import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setSubmissionId } from "state/Submissions";
 import { setQuestionMode } from "state/Annotations";
 import { setEvaluationId } from "state/Evaluations";
@@ -52,12 +52,10 @@ export class CodeListing {
     }
 
     public initAnnotateButtons(): void {
+        addPermission("annotation.create");
     }
 
     public loadUserAnnotations(): void {
         fetchUserAnnotations(getSubmissionId());
-    }
-
-    public showAnnotations(): void {
     }
 }

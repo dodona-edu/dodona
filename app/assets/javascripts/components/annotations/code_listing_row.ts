@@ -9,6 +9,7 @@ import { getQuestionMode } from "state/Annotations";
 import { stateMixin } from "state/StateMixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
+import { hasPermission } from "state/Users";
 
 
 @customElement("d-code-listing-row")
@@ -21,7 +22,7 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     @property({ state: true })
     showForm: boolean;
 
-    state = ["getQuestionMode"];
+    state = ["getQuestionMode", "hasPermission"];
 
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
@@ -32,6 +33,10 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
         return getQuestionMode();
     }
 
+    get canCreateAnnotation(): boolean {
+        return hasPermission("annotation.create");
+    }
+
     get addAnnotationTitle(): string {
         return this.questionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
@@ -39,14 +44,16 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     render(): TemplateResult {
         return html`
                 <td class="rouge-gutter gl">
-                    <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
-                            @click=${() => this.showForm = !this.showForm}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            data-bs-trigger="hover"
-                            title="${this.addAnnotationTitle}">
-                        <i class="mdi mdi-comment-plus-outline mdi-18"></i>
-                    </button>
+                    ${this.canCreateAnnotation ? html`
+                        <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
+                                @click=${() => this.showForm = !this.showForm}
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                data-bs-trigger="hover"
+                                title="${this.addAnnotationTitle}">
+                            <i class="mdi mdi-comment-plus-outline mdi-18"></i>
+                        </button>
+                    ` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre>${this.row}</pre>
                 </td>

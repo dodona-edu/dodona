@@ -6,13 +6,14 @@ import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 
 /**
  *
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends stateMixin(ShadowlessLitElement) {
+export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Object })
     data: UserAnnotationData;
 

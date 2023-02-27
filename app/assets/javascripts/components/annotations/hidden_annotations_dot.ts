@@ -5,9 +5,12 @@ import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
 import { isAnnotationVisible } from "state/Annotations";
+import { i18nMixin } from "components/meta/i18n_mixin";
+import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
+import { initTooltips } from "util";
 
 @customElement("d-hidden-annotations-dot")
-export class HiddenAnnotationsDot extends stateMixin(ShadowlessLitElement) {
+export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Number })
     row: number;
 
@@ -39,10 +42,20 @@ export class HiddenAnnotationsDot extends stateMixin(ShadowlessLitElement) {
         }
     }
 
+    updated(_changedProperties: PropertyValues): void {
+        super.updated(_changedProperties);
+        initTooltips(this);
+    }
+
     render(): TemplateResult {
+        console.log("Hidden annotations length: " + this.hiddenAnnotations.length);
         if (this.hiddenAnnotations.length > 0) {
             return html`
-                <span class="dot ${this.infoDotClasses}" title="${this.infoDotTitle}"></span>
+                <span class="dot ${this.infoDotClasses}"
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-trigger="hover"
+                      title="${this.infoDotTitle}"></span>
             `;
         }
 

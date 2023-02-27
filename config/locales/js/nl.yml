@@ -266,3 +266,16 @@ nl:
         key: ".singular |||| .plural"
         singular: "Eén gebruiker heeft één oefening correct opgelost |||| %{smart_count} gebruikers hebben één oefening correct opgelost"
         plural: "Eén gebruiker heeft %{index} oefeningen correct opgelost |||| %{smart_count} gebruikers hebben %{index} oefeningen correct opgelost"
+    annotations:
+      options:
+        add_global_annotation: Globale opmerking toevoegen
+        add_global_question: "Stel een vraag over je code"
+        add_annotation: Voeg een opmerking toe aan deze regel
+        add_question: "Stel een vraag over deze regel"
+      toggles:
+        title: Annotaties
+        show_all: Toon alle annotaties
+        hide_all: Verberg alle annotaties
+        show_errors: Enkel errors en opmerkingen tonen
+
+

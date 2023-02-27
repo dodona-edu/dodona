@@ -5,10 +5,11 @@ import { stateMixin } from "state/StateMixin";
 import { getQuestionMode } from "state/Annotations";
 import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 
 @customElement("d-annotation-options")
-export class AnnotationOptions extends stateMixin(ShadowlessLitElement) {
+export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ state: true })
     showForm = false;
 
@@ -23,7 +24,7 @@ export class AnnotationOptions extends stateMixin(ShadowlessLitElement) {
             <div class="feedback-table-options">
                 <d-hidden-annotations-dot .row=${0}></d-hidden-annotations-dot>
                 <button class="btn btn-text" @click="${() => this.showForm = true}">
-                    ${this.questionMode ? I18n.t("submissions.show.questions.add_global") : I18n.t("submissions.show.annotations.add_global")}
+                    ${this.questionMode ? I18n.t("js.annotations.options.add_global_question") : I18n.t("js.annotations.options.add_global_annotation")}
                 </button>
                 <span class="flex-spacer"></span>
                 <d-annotations-toggles></d-annotations-toggles>

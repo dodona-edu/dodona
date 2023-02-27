@@ -29,7 +29,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
 
-    results = JSON.parse response.body
+    results = response.parsed_body
     result_ids = results.pluck('id')
 
     assert_equal submissions.count, result_ids.count
@@ -48,7 +48,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     get submissions_url, params: { filter: 'abcd', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by user name' do
@@ -59,7 +59,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     get submissions_url, params: { filter: 'abcd', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by status' do
@@ -70,7 +70,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     get submissions_url, params: { status: 'correct', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by course label' do
@@ -84,7 +84,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     create :submission, status: :wrong, user: u2, course: course
     get course_submissions_url course, params: { course_labels: ['test'], format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'normal user should not be able to search by course label' do
@@ -100,7 +100,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     get course_submissions_url course, params: { course_labels: ['test'], format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'submission http caching works' do

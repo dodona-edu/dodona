@@ -223,7 +223,7 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    result_series = JSON.parse response.body
+    result_series = response.parsed_body
 
     assert_equal 1, result_series.count, 'expected only one (visible) series'
 
@@ -239,7 +239,7 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    result_series = JSON.parse response.body
+    result_series = response.parsed_body
 
     assert_equal 3, result_series.count, 'expected all series (open, visible and closed)'
   end

@@ -3,6 +3,7 @@ import { initTooltips, updateURLParameter, fetch } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
+import { getCode } from "state/Submissions";
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -146,7 +147,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            const codeString = dodona.codeListing.code;
+            const codeString = getCode();
             editor.setValue(codeString, 1);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });

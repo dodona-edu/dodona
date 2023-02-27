@@ -5,19 +5,15 @@ import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnot
 import { setCourseId } from "state/Courses";
 import { setExerciseId } from "state/Exercises";
 import { addPermission, setUserId } from "state/Users";
-import { getSubmissionId, setSubmissionId } from "state/Submissions";
+import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
 import { setQuestionMode } from "state/Annotations";
 import { setEvaluationId } from "state/Evaluations";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 
 export class CodeListing {
-    public readonly code: string;
-    public readonly codeLines: number;
-
     constructor(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false) {
-        this.code = code;
-        this.codeLines = codeLines;
+        setCode(code);
         setCourseId(courseId);
         setExerciseId(exerciseId);
         setUserId(userId);

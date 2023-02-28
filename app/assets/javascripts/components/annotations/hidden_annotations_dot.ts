@@ -48,7 +48,6 @@ export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElem
     }
 
     render(): TemplateResult {
-        console.log("Hidden annotations length: " + this.hiddenAnnotations.length);
         if (this.hiddenAnnotations.length > 0) {
             return html`
                 <span class="dot ${this.infoDotClasses}"

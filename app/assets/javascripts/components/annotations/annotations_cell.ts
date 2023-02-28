@@ -15,6 +15,8 @@ import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
 import { stateMixin } from "state/StateMixin";
+import { AnnotationForm } from "components/annotations/annotation_form";
+import { createRef, Ref, ref } from "lit/directives/ref.js";
 
 
 @customElement("d-annotations-cell")
@@ -23,6 +25,8 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
     showForm: boolean;
     @property({ type: Number })
     row: number;
+
+    annotationFormRef: Ref<AnnotationForm> = createRef();
 
     state = ["getUserAnnotations", "getMachineAnnotations", "isAnnotationVisible"];
 
@@ -50,8 +54,8 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
             const event = new CustomEvent("close-form", { bubbles: true, composed: true });
             this.dispatchEvent(event);
         } catch (err) {
-            // annotationForm.hasErrors = true;
-            // annotationForm.disabled = false;
+            this.annotationFormRef.value.hasErrors = true;
+            this.annotationFormRef.value.disabled = false;
         }
     }
 
@@ -69,6 +73,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
                 ${this.showForm ? html`
                     <d-annotation-form @cancel=${() => this.showForm = false}
                                        @submit=${e => this.createAnnotation(e)}
+                                       ${ref(this.annotationFormRef)}
                     ></d-annotation-form>
                 ` : ""}
                 <div class="annotation-group-error">

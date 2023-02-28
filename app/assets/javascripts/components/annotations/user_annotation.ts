@@ -7,6 +7,8 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
+import { AnnotationForm } from "components/annotations/annotation_form";
+import { createRef, Ref, ref } from "lit/directives/ref.js";
 
 
 /**
@@ -21,6 +23,8 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     __savedAnnotationId: number | null;
     @property({ state: true })
     editing = false;
+
+    annotationFormRef: Ref<AnnotationForm> = createRef();
 
     get savedAnnotationId(): number | null {
         return this.__savedAnnotationId ?? this.data.saved_annotation_id;
@@ -112,8 +116,8 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
             });
             this.editing = false;
         } catch (e) {
-            // annotationForm.hasErrors= true;
-            // annotationForm.disabled= false;
+            this.annotationFormRef.value.hasErrors = true;
+            this.annotationFormRef.value.disabled = false;
         }
     }
 
@@ -144,6 +148,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                         @cancel="${() => this.editing = false}"
                         @delete="${() => this.deleteAnnotation()}"
                         @submit="${e => this.updateAnnotation(e)}"
+                        ${ref(this.annotationFormRef)}
                     ></d-annotation-form>
                 ` : ""}
             </div>

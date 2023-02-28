@@ -60,7 +60,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     protected get meta(): TemplateResult {
         return html`
             ${this.metaText}
-            ${this.data.released ? html`
+            ${!this.data.released ? html`
                         <i class="mdi mdi-eye-off mdi-18 annotation-meta-icon"
                            title="${I18n.t("js.user_annotation.not_released")}"
                            data-bs-toggle="tooltip"

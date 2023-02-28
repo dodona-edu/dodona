@@ -43,11 +43,11 @@ export class Thread extends stateMixin(ShadowlessLitElement) {
     render(): TemplateResult {
         return html`
             <d-user-annotation .data=${this.data}>
-                <a class="btn btn-icon annotation-edit"
+                <a class="btn btn-text with-icon annotation-edit"
                    @click="${() => this.showResponses = !this.showResponses}"
                    v-slot="buttons"
                 >
-                    <i class="mdi mdi-comment-plus-outline"></i>
+                    <i class="mdi mdi-comment-plus-outline"></i> ${this.showResponses ? "Close thread" : "Reply"}
                 </a>
             </d-user-annotation>
             ${this.showResponses ? html`

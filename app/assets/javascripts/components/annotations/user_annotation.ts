@@ -91,7 +91,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
         return html`
             <v-slot name="buttons"></v-slot>
             ${this.data.permission.update ? html`
-                <a class="btn btn-icon annotation-edit" @click="${() => this.editing = true}">
+                <a class="btn btn-text annotation-edit" @click="${() => this.editing = true}">
                     <i class="mdi mdi-pencil"></i>
                 </a>
                 ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`

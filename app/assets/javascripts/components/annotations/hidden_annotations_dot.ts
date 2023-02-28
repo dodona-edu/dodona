@@ -7,7 +7,7 @@ import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotati
 import { isAnnotationVisible } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
-import { initTooltips } from "util";
+import { initTooltips } from "util.js";
 
 @customElement("d-hidden-annotations-dot")
 export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElement)) {

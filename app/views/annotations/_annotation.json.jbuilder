@@ -34,3 +34,8 @@ json.permission do
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
 json.type annotation.type&.downcase
+
+json.responses annotation.responses do |response|
+  json.partial! response, as: :annotation
+end
+json.thread_root_id annotation.thread_root_id

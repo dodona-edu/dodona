@@ -12,6 +12,8 @@ export interface UserAnnotationFormData {
     evaluation_id?: number | undefined;
     // eslint-disable-next-line camelcase
     saved_annotation_id?: number | null;
+    // eslint-disable-next-line camelcase
+    thread_root_id?: number | null;
 }
 
 export type QuestionState = "unanswered" | "answered" | "in_progress";
@@ -55,6 +57,9 @@ export interface UserAnnotationData {
     question_state?: QuestionState;
     // eslint-disable-next-line camelcase
     newer_submission_url?: string | null;
+    responses: UserAnnotationData[];
+    // eslint-disable-next-line camelcase
+    thread_root_id?: number | null;
 }
 
 const userAnnotationsByLine = new Map<number, UserAnnotationData[]>();
@@ -62,7 +67,17 @@ const userAnnotationsByLine = new Map<number, UserAnnotationData[]>();
 function addAnnotationToMap(annotation: UserAnnotationData): void {
     const line = annotation.line_nr ?? 0;
     if (userAnnotationsByLine.has(line)) {
-        userAnnotationsByLine.get(line)?.push(annotation);
+        if (annotation.thread_root_id === null) {
+            userAnnotationsByLine.get(line)?.push(annotation);
+        } else {
+            const annotations = userAnnotationsByLine.get(line);
+            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
+            if (rootAnnotation) {
+                rootAnnotation.responses.push(annotation);
+            } else {
+                userAnnotationsByLine.get(line)?.push(annotation);
+            }
+        }
     } else {
         userAnnotationsByLine.set(line, [annotation]);
     }

@@ -101,6 +101,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                     </d-new-saved-annotation>
                 ` : ""}
             ` : ""}
+            <v-slot name="buttons"></v-slot>
         `;
     }
 

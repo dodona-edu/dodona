@@ -14,6 +14,7 @@ import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/Machin
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
+import "components/annotations/thread";
 import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
@@ -81,7 +82,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
                 </div>
                 <div class="annotation-group-conversation">
                     ${this.userAnnotations.filter(isAnnotationVisible).map(a => html`
-                        <d-user-annotation .data=${a}></d-user-annotation>
+                        <d-thread .data=${a}></d-thread>
                     `)}
                 </div>
                 <div class="annotation-group-warning">

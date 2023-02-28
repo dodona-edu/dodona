@@ -1,5 +1,6 @@
 import { LitElement } from "lit";
 import "@boulevard/vampire";
+import { VampireRoot } from "@boulevard/vampire";
 
 /**
  * This class removes the shadow dom functionality from lit elements
@@ -31,7 +32,8 @@ import "@boulevard/vampire";
  */
 export class ShadowlessLitElement extends LitElement {
     createRenderRoot(): Element | ShadowRoot {
-        this.appendChild(document.createElement("v-root"));
-        return this;
+        const vRoot = document.createElement("v-root");
+        this.appendChild(vRoot);
+        return vRoot;
     }
 }

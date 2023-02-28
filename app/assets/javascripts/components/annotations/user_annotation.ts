@@ -72,7 +72,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                             title="${I18n.t("js.saved_annotation.new.linked", { title: this.savedAnnotation.title })}"
                         ></i>
                     ` : ""}
-            ${this.data.newer_submission_url !== null ? html`
+            ${this.data.newer_submission_url ? html`
                 <span>
                     ·
                     <a href="${this.data.newer_submission_url}" target="_blank">
@@ -83,24 +83,6 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                         ></i>
                     </a>
                 </span>
-            ` : ""}
-        `;
-    }
-
-    protected get buttons(): TemplateResult {
-        return html`
-            <v-slot name="buttons"></v-slot>
-            ${this.data.permission.update ? html`
-                <a class="btn btn-text annotation-edit" @click="${() => this.editing = true}">
-                    <i class="mdi mdi-pencil"></i>
-                </a>
-                ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`
-                    <d-new-saved-annotation
-                        from-annotation-id="${this.data.id}"
-                        annotation-text="${this.data.annotation_text}"
-                        @created="${e => this.__savedAnnotationId = e.detail.id}">
-                    </d-new-saved-annotation>
-                ` : ""}
             ` : ""}
         `;
     }
@@ -136,15 +118,40 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                     <span class="annotation-meta">
                         ${this.meta}
                     </span>
-                    ${this.buttons}
+                    ${this.data.permission.update ? html`
+                        <div class="dropdown actions float-end" id="kebab-menu">
+                            <a class="btn btn-icon btn-icon-inverted dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="mdi mdi-dots-horizontal text-muted"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                 <li>
+                                    <a class="action dropdown-item" @click="${() => this.editing = true}">
+                                        <i class="mdi mdi-pencil mdi-18"></i> Edit
+                                    </a>
+                                </li>
+                                ${ this.data.permission.destroy ? html`
+                                    <li>
+                                        <a class="action dropdown-item" @click="${() => this.deleteAnnotation()}">
+                                            <i class="mdi mdi-delete mdi-18"></i> Delete
+                                        </a>
+                                    </li>
+                                ` : ""}
+                                ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`
+                                    <d-new-saved-annotation
+                                        from-annotation-id="${this.data.id}"
+                                        annotation-text="${this.data.annotation_text}"
+                                        @created="${e => this.__savedAnnotationId = e.detail.id}">
+                                    </d-new-saved-annotation>
+                                ` : ""}
+                            </ul>
+                        </div>
+                    ` : ""}
                 </div>
                 ${this.editing ? html`
                     <d-annotation-form
                         annotation-text="${this.data.annotation_text}"
                         saved-annotation-id="${this.savedAnnotationId}"
-                        removable="${this.data.permission.destroy}"
                         @cancel="${() => this.editing = false}"
-                        @delete="${() => this.deleteAnnotation()}"
                         @submit="${e => this.updateAnnotation(e)}"
                         ${ref(this.annotationFormRef)}
                     ></d-annotation-form>

@@ -16,11 +16,15 @@ export class Thread extends stateMixin(ShadowlessLitElement) {
     data: UserAnnotationData;
 
     @property({ state: true })
-    showResponses = false;
+    showForm = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations"];
+    state = ["getUserAnnotations", "getQuestionMode"];
+
+    get questionMode(): boolean {
+        return getQuestionMode();
+    }
 
     async createAnnotation(e: CustomEvent): Promise<void> {
         const annotationData: UserAnnotationFormData = {
@@ -34,6 +38,8 @@ export class Thread extends stateMixin(ShadowlessLitElement) {
         try {
             const mode = getQuestionMode() ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
+
+            this.showForm = false;
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
@@ -42,26 +48,24 @@ export class Thread extends stateMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <d-user-annotation .data=${this.data}>
-                <a class="btn btn-text with-icon annotation-edit"
-                   @click="${() => this.showResponses = !this.showResponses}"
-                   v-slot="buttons"
-                >
-                    <i class="mdi mdi-comment-plus-outline"></i> ${this.showResponses ? "Close thread" : "Reply"}
-                </a>
-            </d-user-annotation>
-            ${this.showResponses ? html`
-                <div style="margin-left: 1.5rem;">
-                    <div class="responses">
-                        ${this.data.responses.map(response => html`
-                            <d-user-annotation .data=${response}></d-user-annotation>
-                        `)}
-                    </div>
+            <d-user-annotation .data=${this.data}></d-user-annotation>
+            <div style="margin-left: 1.5rem;">
+                <div class="responses">
+                    ${this.data.responses.map(response => html`
+                        <d-user-annotation .data=${response}></d-user-annotation>
+                    `)}
+                </div>
+                ${this.showForm ? html`
                     <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                        ${ref(this.annotationFormRef)}
+                                       @cancel=${() => this.showForm = false}
                     ></d-annotation-form>
-                </div>
-            ` : ""}
+                ` : html`
+                    <div class="annotation ${this.questionMode ? "question" : "user" }">
+                        <input type="text" class="form-control" placeholder="Reply.." @click="${() => this.showForm = true}" />
+                    </div>
+                `}
+            </div>
         `;
     }
 }

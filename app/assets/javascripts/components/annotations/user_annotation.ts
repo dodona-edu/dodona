@@ -89,6 +89,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
 
     protected get buttons(): TemplateResult {
         return html`
+            <v-slot name="buttons"></v-slot>
             ${this.data.permission.update ? html`
                 <a class="btn btn-icon annotation-edit" @click="${() => this.editing = true}">
                     <i class="mdi mdi-pencil"></i>
@@ -101,7 +102,6 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                     </d-new-saved-annotation>
                 ` : ""}
             ` : ""}
-            <v-slot name="buttons"></v-slot>
         `;
     }
 
@@ -138,9 +138,6 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                     </span>
                     ${this.buttons}
                 </div>
-                <div class="annotation-text">
-                    ${unsafeHTML(this.data.rendered_markdown)}
-                </div>
                 ${this.editing ? html`
                     <d-annotation-form
                         annotation-text="${this.data.annotation_text}"
@@ -151,7 +148,11 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                         @submit="${e => this.updateAnnotation(e)}"
                         ${ref(this.annotationFormRef)}
                     ></d-annotation-form>
-                ` : ""}
+                ` : html`
+                    <div class="annotation-text">
+                        ${unsafeHTML(this.data.rendered_markdown)}
+                    </div>
+                `}
             </div>
         `;
     }

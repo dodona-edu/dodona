@@ -172,9 +172,9 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                         ></d-saved-annotation-input>
                     `}
                 <div class="field form-group">
-                    ${ false ? html`<label class="form-label" for="annotation-text">
+                    <label class="form-label" for="annotation-text">
                         ${I18n.t("js.user_annotation.fields.annotation_text")}
-                    </label>` : ""}
+                    </label>
                     <textarea id="annotation-text"
                               autofocus
                               required

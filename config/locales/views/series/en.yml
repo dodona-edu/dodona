@@ -24,7 +24,7 @@ en:
       activities: Learning activities
       download_submissions: Export my submissions
       download_all_solutions: Export student submissions
-      make_visible_html: "<a href=%{series_url} data-method=\"patch\">Make visible</a> for students."
+      make_visible_text: Make visible for students.
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
       activities_not_visible: The learning activities in this series are not visible to students!

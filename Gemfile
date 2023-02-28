@@ -72,7 +72,7 @@ gem 'ruby-saml', '~> 1.15.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.6.0'
+gem 'omniauth_openid_connect', '~> 0.6.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.17.4'
+  gem 'rubocop-rails', '~> 2.18.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

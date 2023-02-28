@@ -527,7 +527,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     @course.update(visibility: 'hidden')
     with_users_signed_in @admins do |who|
       get courses_url, params: { format: :json }
-      courses = JSON.parse response.body
+      courses = response.parsed_body
       assert courses.any? { |c| c['id'] == @course.id }, "#{who} should be able to see a hidden course of which he is course administrator"
     end
   end
@@ -538,7 +538,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_subscribed do |who|
       get courses_url, params: { format: :json }
       if response.successful?
-        courses = JSON.parse response.body
+        courses = response.parsed_body
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
         assert response.forbidden? || response.unauthorized?
@@ -571,53 +571,53 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     # all courses
     get courses_url, params: { format: :json }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 3, courses.length
     # my courses
     get courses_url, params: { format: :json, tab: 'my' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 1, courses.length
     # institution courses
     get courses_url, params: { format: :json, tab: 'institution' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 2, courses.length
     # copy courses
     get courses_url, params: { format: :json, copy_courses: true }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 3, courses.length
     # copy courses filtered
     get courses_url, params: { format: :json, copy_courses: true, filter: 'course' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 2, courses.length
     # All courses filtered
     get courses_url, params: { format: :json, filter: 'greatest' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 1, courses.length
     # Institution courses filtered
     get courses_url, params: { format: :json, filter: 'worst' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 1, courses.length
   end
 
   test 'featured courses should only show featured courses' do
     get courses_url, params: { format: :json }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal Course.count, courses.length
     get courses_url, params: { format: :json, tab: 'featured' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 0, courses.length
     @course.update(featured: true)
     get courses_url, params: { format: :json, tab: 'featured' }
     assert_response :success
-    courses = JSON.parse response.body
+    courses = response.parsed_body
     assert_equal 1, courses.length
   end
 
@@ -682,7 +682,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     new_course = build :course
     post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
-    assert_equal 0, Course.find(JSON.parse(response.body)['id']).series.count
+    assert_equal 0, Course.find(response.parsed_body['id']).series.count
   end
 
   test 'hidden course page shown to unsubscribed student should include registration url with secret' do

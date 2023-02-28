@@ -16,22 +16,22 @@ class StatisticsControllerTest < ActionDispatch::IntegrationTest
 
     # violin
     get violin_path format: :json, params: { series_id: series.id }
-    results = JSON.parse response.body
+    results = response.parsed_body
     assert_equal 2, results['data'].count
 
     # stacked
     get stacked_status_path format: :json, params: { series_id: series.id }
-    results = JSON.parse response.body
+    results = response.parsed_body
     assert_equal 2, results['data'].count
 
     # time series
     get timeseries_path format: :json, params: { series_id: series.id }
-    results = JSON.parse response.body
+    results = response.parsed_body
     assert_equal 2, results['data'].count
 
     # ctimeseries
     get cumulative_timeseries_path format: :json, params: { series_id: series.id }
-    results = JSON.parse response.body
+    results = response.parsed_body
     assert_equal 2, results['data'].count
   end
 end

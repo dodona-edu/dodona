@@ -2,6 +2,7 @@ import { fetch } from "util.js";
 import { events } from "state/PubSub";
 import { Notification } from "notification";
 import { createSavedAnnotation, invalidateSavedAnnotation } from "state/SavedAnnotations";
+import { Annotation } from "code_listing/annotation";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -67,15 +68,15 @@ const userAnnotationsByLine = new Map<number, UserAnnotationData[]>();
 function addAnnotationToMap(annotation: UserAnnotationData): void {
     const line = annotation.line_nr ?? 0;
     if (userAnnotationsByLine.has(line)) {
+        const annotations = userAnnotationsByLine.get(line);
         if (annotation.thread_root_id === null) {
-            userAnnotationsByLine.get(line)?.push(annotation);
+            annotations?.push(annotation);
         } else {
-            const annotations = userAnnotationsByLine.get(line);
             const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
             if (rootAnnotation) {
                 rootAnnotation.responses.push(annotation);
             } else {
-                userAnnotationsByLine.get(line)?.push(annotation);
+                annotations?.push(annotation);
             }
         }
     } else {
@@ -87,7 +88,14 @@ function removeAnnotationFromMap(annotation: UserAnnotationData): void {
     const line = annotation.line_nr ?? 0;
     if (userAnnotationsByLine.has(line)) {
         const annotations = userAnnotationsByLine.get(line);
-        userAnnotationsByLine.set(line, annotations?.filter(a => a.id !== annotation.id));
+        if (annotation.thread_root_id === null) {
+            userAnnotationsByLine.set(line, annotations?.filter(a => a.id !== annotation.id));
+        } else {
+            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
+            if (rootAnnotation) {
+                rootAnnotation.responses = rootAnnotation.responses.filter(a => a.id !== annotation.id);
+            }
+        }
     }
 }
 
@@ -182,7 +190,7 @@ export async function updateUserAnnotation(annotation: UserAnnotationData, formD
 
     removeAnnotationFromMap(annotation);
     addAnnotationToMap(data);
-    if (formData.saved_annotation_id != annotation.saved_annotation_id ) {
+    if (formData.saved_annotation_id != annotation.saved_annotation_id) {
         invalidateSavedAnnotation(formData.saved_annotation_id);
         invalidateSavedAnnotation(annotation.saved_annotation_id);
     }
@@ -199,4 +207,42 @@ export function getUserAnnotationsCount(): number {
     return [...userAnnotationsByLine.values()]
         .map(annotations => annotations.length)
         .reduce((a, b) => a + b, 0);
+}
+
+export async function transition(annotation: UserAnnotationData, newState: QuestionState): Promise<void> {
+    const response = await fetch(annotation.url, {
+        method: "PATCH",
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            from: annotation.question_state,
+            question: {
+                // eslint-disable-next-line camelcase
+                question_state: newState
+            }
+        })
+    });
+
+    if (response.ok) {
+        const json = await response.json();
+
+        removeAnnotationFromMap(annotation);
+        addAnnotationToMap(json);
+        events.publish("getUserAnnotations");
+        events.publish("getUserAnnotationsCount");
+    } else if (response.status === 404) {
+        // Someone already deleted this question.
+        new dodona.Toast(I18n.t("js.user_question.deleted"));
+        removeAnnotationFromMap(annotation);
+        events.publish("getUserAnnotations");
+        events.publish("getUserAnnotationsCount");
+    } else if (response.status == 403) {
+        // Someone already changed the status of this question.
+        new dodona.Toast(I18n.t("js.user_question.conflict"));
+        // We now need to update the annotation, but we don't have the new data.
+        // Get the annotation from the backend.
+        invalidateUserAnnotation(annotation.id);
+    }
 }

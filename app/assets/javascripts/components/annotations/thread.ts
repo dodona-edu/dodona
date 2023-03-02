@@ -1,6 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { createUserAnnotation, UserAnnotationData, UserAnnotationFormData } from "state/UserAnnotations";
+import { createUserAnnotation, transition, UserAnnotationData, UserAnnotationFormData } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { getEvaluationId } from "state/Evaluations";
 import { getQuestionMode } from "state/Annotations";
@@ -27,6 +27,10 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         return getQuestionMode();
     }
 
+    get isUnanswered(): boolean {
+        return this.data.question_state === "unanswered" || this.data.responses.some(response => response.question_state === "unanswered");
+    }
+
     async createAnnotation(e: CustomEvent): Promise<void> {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
@@ -44,6 +48,13 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
+        }
+    }
+
+    markAsResolved(): void {
+        const unansweredQuestion = this.data.question_state === "unanswered" ? this.data : this.data.responses.find(response => response.question_state === "unanswered");
+        if (unansweredQuestion) {
+            transition(unansweredQuestion, "answered");
         }
     }
 
@@ -68,6 +79,12 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
                         <input type="text" class="form-control"
                                placeholder="${I18n.t("js.user_annotation.reply")}..."
                                @click="${() => this.showForm = true}" />
+                        ${this.isUnanswered ? html`
+                            <span>${I18n.t("js.user_question.or")}</span>
+                            <a class="btn btn-text" @click="${() => this.markAsResolved()}">
+                                ${I18n.t("js.user_question.resolve")}
+                            </a>
+                        ` : html``}
                     </div>
                 `}
             </div>

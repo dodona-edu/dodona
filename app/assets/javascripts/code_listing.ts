@@ -10,6 +10,8 @@ import { setQuestionMode } from "state/Annotations";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 
+const MARKING_CLASS = "marked";
+
 export const codeListing = {
     initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
         setCode(code);
@@ -43,5 +45,25 @@ export const codeListing = {
 
     loadUserAnnotations(): void {
         fetchUserAnnotations(getSubmissionId());
+    },
+
+
+    // /////////////////////////////////////////////////////////////////////////
+    // Highlighting ////////////////////////////////////////////////////////////
+    // /////////////////////////////////////////////////////////////////////////
+
+    clearHighlights(): void {
+        const markedAnnotations = document.querySelectorAll(`tr.lineno.${MARKING_CLASS}`);
+        markedAnnotations.forEach(markedAnnotation => {
+            markedAnnotation.classList.remove(this.markingClass);
+        });
+    },
+
+    highlightLine(lineNr: number, scrollToLine = false): void {
+        const toMarkAnnotationRow = document.querySelector(`tr.lineno#line-${lineNr}`);
+        toMarkAnnotationRow.classList.add(MARKING_CLASS);
+        if (scrollToLine) {
+            toMarkAnnotationRow.scrollIntoView({ block: "center" });
+        }
     }
 };

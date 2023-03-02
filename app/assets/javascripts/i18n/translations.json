@@ -399,6 +399,7 @@
         "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
+        "reply": "Reply",
         "save": "Save comment",
         "send": "Comment",
         "update": "Update"
@@ -412,6 +413,7 @@
         "in_progress": "Mark question as in progress",
         "meta_else": "%{user} · %{time} · %{state} by %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
+        "reply": "Reply",
         "resolve": "Mark as answered",
         "send": "Ask question",
         "unresolve": "Re-open question",
@@ -868,6 +870,7 @@
         "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
+        "reply": "Beantwoorden",
         "save": "Opmerking opslaan",
         "send": "Toevoegen",
         "update": "Updaten"
@@ -881,6 +884,7 @@
         "in_progress": "In behandeling markeren",
         "meta_else": "%{user} · %{time} · %{state} door %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
+        "reply": "Beantwoorden",
         "resolve": "Als beantwoord markeren",
         "send": "Vraag stellen",
         "unresolve": "Vraag terug openen",

@@ -29,7 +29,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations", "getMachineAnnotations", "isAnnotationVisible"];
+    state = ["getUserAnnotations", "getMachineAnnotations", "isAnnotationVisible", "getQuestionMode"];
 
     get machineAnnotations(): MachineAnnotationData[] {
         return getMachineAnnotationsByLine(this.row);
@@ -37,6 +37,10 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     get userAnnotations(): UserAnnotationData[] {
         return getUserAnnotationsByLine(this.row);
+    }
+
+    get questionMode(): boolean {
+        return getQuestionMode();
     }
 
 
@@ -72,10 +76,13 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         return html`
             <div class="annotation-cell">
                 ${this.showForm ? html`
-                    <d-annotation-form @cancel=${() => this.showForm = false}
-                                       @submit=${e => this.createAnnotation(e)}
-                                       ${ref(this.annotationFormRef)}
-                    ></d-annotation-form>
+                    <div class="annotation ${this.questionMode ? "question" : "user" }">
+                        <d-annotation-form @cancel=${() => this.showForm = false}
+                                           @submit=${e => this.createAnnotation(e)}
+                                           ${ref(this.annotationFormRef)}
+                                           submit-button-text="send"
+                        ></d-annotation-form>
+                    </div>
                 ` : ""}
                 <div class="annotation-group-error">
                     ${this.getVisibleMachineAnnotationsOfType("error")}

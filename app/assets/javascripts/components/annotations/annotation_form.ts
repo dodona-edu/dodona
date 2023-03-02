@@ -34,11 +34,11 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     @property({ type: String, attribute: "saved-annotation-id" })
     savedAnnotationId: string;
     @property({ type: Boolean })
-    removable = false;
-    @property({ type: Boolean })
     disabled = false;
     @property({ type: Boolean, attribute: "has-errors" })
     hasErrors = false;
+    @property({ type: String, attribute: "submit-button-text" })
+    submitButtonText: string;
 
     @property({ state: true })
     _annotationText = "";
@@ -94,14 +94,6 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     handleCancel(): void {
         const event = new CustomEvent("cancel", { bubbles: true, composed: true });
         this.dispatchEvent(event);
-    }
-
-    handleDelete(): void {
-        const confirmText = I18n.t(`js.${this.type}.delete_confirm`);
-        if (confirm(confirmText)) {
-            const event = new CustomEvent("delete", { bubbles: true, composed: true });
-            this.dispatchEvent(event);
-        }
     }
 
     handleSubmit(): void {
@@ -160,7 +152,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     }
 
     render(): TemplateResult {
-        const form = html`
+        return html`
             <form class="annotation-submission form">
                 ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                         <d-saved-annotation-input
@@ -226,15 +218,6 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                     ` : html``}
                 `}
                 <div class="annotation-submission-button-container">
-                    ${this.annotationText && this.removable ? html`
-                        <button class="btn btn-text annotation-control-button annotation-delete-button"
-                                type="button"
-                                @click="${() => this.handleDelete()}"
-                                .disabled=${this.disabled}
-                        >
-                           ${I18n.t("js.user_annotation.delete")}
-                        </button>
-                    ` : ""}
                     <button class="btn btn-text annotation-control-button annotation-cancel-button"
                             type="button"
                             @click="${() => this.handleCancel()}"
@@ -247,16 +230,10 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                             @click="${() => this.handleSubmit()}"
                             .disabled=${this.disabled}
                     >
-                        ${this.annotationText ? I18n.t(`js.${this.type}.update`) : I18n.t(`js.${this.type}.send`)}
+                        ${I18n.t(`js.${this.type}.${this.submitButtonText}`)}
                     </button>
                 </div>
             </form>
-        `;
-
-        return this.annotationText ? form : html`
-            <div class="annotation ${this.questionMode ? "question" : "user" }">
-                ${form}
-            </div>
         `;
     }
 }

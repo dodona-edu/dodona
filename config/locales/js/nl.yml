@@ -147,6 +147,7 @@ nl:
       meta: "%{user} · %{time}"
       anonymous_message: 'Deze opmerking maakt deel uit van een evaluatie'
       send: 'Toevoegen'
+      reply: 'Beantwoorden'
       update: 'Updaten'
       cancel: 'Annuleren'
       delete: 'Verwijderen'
@@ -164,6 +165,7 @@ nl:
       meta_else: "%{user} · %{time} · %{state} door %{last}"
       update: 'Vraag aanpassen'
       send: 'Vraag stellen'
+      reply: 'Beantwoorden'
       edit: 'Vraag aanpassen'
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
       resolve: 'Als beantwoord markeren'

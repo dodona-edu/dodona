@@ -154,6 +154,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                         @cancel="${() => this.editing = false}"
                         @submit="${e => this.updateAnnotation(e)}"
                         ${ref(this.annotationFormRef)}
+                        submit-button-text="update"
                     ></d-annotation-form>
                 ` : html`
                     <div class="annotation-text">

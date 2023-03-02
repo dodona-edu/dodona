@@ -8,10 +8,11 @@ import { getSubmissionId } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 
 @customElement("d-thread")
-export class Thread extends stateMixin(ShadowlessLitElement) {
+export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -55,16 +56,18 @@ export class Thread extends stateMixin(ShadowlessLitElement) {
                         <d-user-annotation .data=${response}></d-user-annotation>
                     `)}
                 </div>
-                ${this.showForm ? html`
-                    <d-annotation-form @submit=${e => this.createAnnotation(e)}
-                                       ${ref(this.annotationFormRef)}
-                                       @cancel=${() => this.showForm = false}
-                    ></d-annotation-form>
-                ` : html`
-                    <div class="annotation ${this.questionMode ? "question" : "user" }">
-                        <input type="text" class="form-control" placeholder="Reply.." @click="${() => this.showForm = true}" />
-                    </div>
-                `}
+                <div class="annotation ${this.questionMode ? "question" : "user" }">
+                    ${this.showForm ? html`
+                        <d-annotation-form @submit=${e => this.createAnnotation(e)}
+                                           ${ref(this.annotationFormRef)}
+                                           @cancel=${() => this.showForm = false}
+                                           submit-button-text="reply"
+                        ></d-annotation-form>
+                    ` : html`
+                            <input type="text" class="form-control" placeholder="${I18n.t("js.user_annotation.reply")}..."
+                                   @click="${() => this.showForm = true}" />
+                    `}
+                </div>
             </div>
         `;
     }

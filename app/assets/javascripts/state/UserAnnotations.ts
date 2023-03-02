@@ -104,6 +104,17 @@ export async function fetchUserAnnotations(submissionId: number): Promise<UserAn
     return json;
 }
 
+export async function invalidateUserAnnotation(annotationId: number): Promise<UserAnnotationData> {
+    const response = await fetch(`/annotations/${annotationId}.json`);
+    const json = await response.json();
+
+    removeAnnotationFromMap(json);
+    addAnnotationToMap(json);
+    events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
+    return json;
+}
+
 export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotationData> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
         method: "POST",

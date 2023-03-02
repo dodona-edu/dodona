@@ -9,6 +9,8 @@ import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
+import "components/saved_annotations/new_saved_annotation";
+import { getQuestionMode } from "state/Annotations";
 
 
 /**
@@ -35,7 +37,11 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     }
 
     get state(): string[] {
-        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`] : [];
+        const state = ["getQuestionMode"];
+        if (this.isAlreadyLinked) {
+            state.push(`getSavedAnnotation${this.savedAnnotationId}`);
+        }
+        return state;
     }
 
     get savedAnnotation(): SavedAnnotation | undefined {
@@ -55,6 +61,10 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
         const user = this.data.user?.name;
 
         return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
+    }
+
+    get type(): string {
+        return getQuestionMode() ? "user_question" : "user_annotation";
     }
 
     protected get meta(): TemplateResult {
@@ -88,7 +98,9 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     }
 
     deleteAnnotation(): void {
-        deleteUserAnnotation(this.data);
+        if (confirm(I18n.t(`js.${this.type}.delete_confirm`))) {
+            deleteUserAnnotation(this.data);
+        }
     }
 
     async updateAnnotation(e: CustomEvent): Promise<void> {
@@ -125,14 +137,14 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                  <li>
-                                    <a class="action dropdown-item" @click="${() => this.editing = true}">
-                                        <i class="mdi mdi-pencil mdi-18"></i> Edit
+                                    <a class="dropdown-item" @click="${() => this.editing = true}">
+                                        <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
                                     </a>
                                 </li>
                                 ${ this.data.permission.destroy ? html`
                                     <li>
-                                        <a class="action dropdown-item" @click="${() => this.deleteAnnotation()}">
-                                            <i class="mdi mdi-delete mdi-18"></i> Delete
+                                        <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
+                                            <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.${this.type}.delete`)}
                                         </a>
                                     </li>
                                 ` : ""}

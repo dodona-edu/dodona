@@ -1,6 +1,7 @@
 import { events } from "state/PubSub";
 import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "util.js";
 import { MapWithDefault } from "map_with_default";
+import { invalidateUserAnnotation } from "state/UserAnnotations";
 
 /**
  * This file contains all state management functions for saved annotations
@@ -69,6 +70,7 @@ export async function createSavedAnnotation(data: { from: number, saved_annotati
     }
     const savedAnnotation: SavedAnnotation = await response.json();
     invalidateSavedAnnotation(savedAnnotation.id, savedAnnotation);
+    invalidateUserAnnotation(data.from);
     return savedAnnotation.id;
 }
 

@@ -1,10 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
+import { createSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/meta/modal_mixin";
-import { stateMixin } from "state/StateMixin";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -17,30 +16,16 @@ import { stateMixin } from "state/StateMixin";
  * @prop {Number} savedAnnotationId - the id of the saved annotation
  */
 @customElement("d-new-saved-annotation")
-export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitElement)) {
+export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "from-annotation-id" })
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
-    @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number;
 
     @property({ state: true })
     errors: string[];
 
     savedAnnotation: SavedAnnotation;
-
-    get isAlreadyLinked(): boolean {
-        return this.savedAnnotationId != undefined;
-    }
-
-    get state(): string[] {
-        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`] : [];
-    }
-
-    get linkedSavedAnnotation(): SavedAnnotation {
-        return getSavedAnnotation(this.savedAnnotationId);
-    }
 
     get newSavedAnnotation(): SavedAnnotation {
         return {
@@ -53,18 +38,12 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
 
     async createSavedAnnotation(): Promise<void> {
         try {
-            this.savedAnnotationId = await createSavedAnnotation({
+            await createSavedAnnotation({
                 from: this.fromAnnotationId,
                 saved_annotation: this.savedAnnotation || this.newSavedAnnotation
             });
             this.errors = undefined;
             this.hideModal();
-            const event = new CustomEvent("created", {
-                detail: { id: this.savedAnnotationId },
-                bubbles: true,
-                composed: true }
-            );
-            this.dispatchEvent(event);
         } catch (errors) {
             this.errors = errors;
         }
@@ -95,12 +74,13 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     render(): TemplateResult {
-        return this.isAlreadyLinked && this.linkedSavedAnnotation!= undefined ? html`` : html`
-            <a class="btn btn-icon annotation-control-button annotation-edit"
-               title="${I18n.t("js.saved_annotation.new.button_title")}"
-               @click=${() => this.showModal()}
-            >
-                <i class="mdi mdi-content-save"></i>
-            </a>`;
+        return html`
+            <li>
+                <a class="dropdown-item" @click="${() => this.showModal()}">
+                    <i class="mdi mdi-content-save"></i>
+                    ${I18n.t("js.saved_annotation.new.button_title")}
+                </a>
+            </li>
+        `;
     }
 }

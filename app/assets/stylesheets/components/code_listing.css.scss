@@ -167,6 +167,34 @@ $annotation-info: $info;
     padding-bottom: 10px;
   }
 
+  .thread {
+    margin: 3px 5px;
+    padding-left: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid $divider;
+    background: $content-bg;
+    white-space: normal;
+
+    .annotation {
+      margin: 2px 0;
+      border: none;
+      border-left: 3px solid $outline;
+    }
+
+    d-user-annotation {
+      display: block;
+    }
+
+    .fake-input {
+      margin: 4px 5px 4px 0;
+
+      .form-control {
+        border-color: $divider;
+      }
+    }
+  }
+
   .annotation {
     margin: 3px 5px;
     padding: 2px 5px 2px 10px;
@@ -265,10 +293,10 @@ $annotation-info: $info;
     }
   }
 
-  .annotation.question,
-  .annotation.user {
-    border-left-width: 5px;
-  }
+  //.annotation.question,
+  //.annotation.user {
+  //  border-left-width: 5px;
+  //}
 
   .annotation.question {
     border-left-color: $annotation-question;

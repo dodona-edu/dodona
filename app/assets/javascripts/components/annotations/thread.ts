@@ -49,25 +49,27 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
     render(): TemplateResult {
         return html`
-            <d-user-annotation .data=${this.data}></d-user-annotation>
-            <div style="margin-left: 1.5rem;">
-                <div class="responses">
-                    ${this.data.responses.map(response => html`
-                        <d-user-annotation .data=${response}></d-user-annotation>
-                    `)}
-                </div>
-                <div class="annotation ${this.questionMode ? "question" : "user" }">
-                    ${this.showForm ? html`
+
+            <div class="thread">
+                <d-user-annotation .data=${this.data}></d-user-annotation>
+                ${this.data.responses.map(response => html`
+                    <d-user-annotation .data=${response}></d-user-annotation>
+                `)}
+                ${this.showForm ? html`
+                    <div class="annotation ${this.questionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}
                                            @cancel=${() => this.showForm = false}
                                            submit-button-text="reply"
                         ></d-annotation-form>
-                    ` : html`
-                            <input type="text" class="form-control" placeholder="${I18n.t("js.user_annotation.reply")}..."
-                                   @click="${() => this.showForm = true}" />
-                    `}
-                </div>
+                    </div>
+                ` : html`
+                    <div class="fake-input">
+                        <input type="text" class="form-control"
+                               placeholder="${I18n.t("js.user_annotation.reply")}..."
+                               @click="${() => this.showForm = true}" />
+                    </div>
+                `}
             </div>
         `;
     }

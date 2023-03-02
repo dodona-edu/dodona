@@ -144,7 +144,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                                 ${ this.data.permission.destroy ? html`
                                     <li>
                                         <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
-                                            <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.${this.type}.delete`)}
+                                            <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.user_annotation.delete`)}
                                         </a>
                                     </li>
                                 ` : ""}

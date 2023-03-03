@@ -488,6 +488,8 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     admin = @submission.course.administrating_members[0]
     random = create :user
 
+    orig = Delayed::Worker.delay_jobs
+    Delayed::Worker.delay_jobs = true
     users = [[zeus, true], [staff, false], [admin, true], [random, false]]
     users.each do |user, valid|
       sign_in user
@@ -527,6 +529,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
 
       sign_out user
     end
+    Delayed::Worker.delay_jobs = orig
   end
 
   test 'questions cannot transition if logged out' do

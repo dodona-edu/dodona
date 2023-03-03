@@ -33,7 +33,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record&.user == user
+    record&.user == user && (record&.thread_root_id.present? || record.responses.empty?)
   end
 
   def transition?(_from, _to = nil)

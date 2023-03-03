@@ -11,6 +11,7 @@ import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
 import { getQuestionMode } from "state/Annotations";
+import { initTooltips } from "util";
 
 
 /**
@@ -94,6 +95,20 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                     </a>
                 </span>
             ` : ""}
+            ${ this.data.question_state == "unanswered" ? html`
+                <i class="mdi mdi-comment-question-outline mdi-18 annotation-meta-icon colored-secondary"
+                   title="${I18n.t("js.user_question.is_unanswered")}"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                ></i>
+            ` : ""}
+            ${ this.data.question_state == "in_progress" ? html`
+                <i class="mdi mdi-comment-processing-outline mdi-18 annotation-meta-icon"
+                   title="${I18n.t("js.user_question.is_in_progress")}"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                ></i>
+            ` : ""}
         `;
     }
 
@@ -121,6 +136,8 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
 
         // Ask MathJax to search for math in the annotations
         window.MathJax.typeset();
+        // Reinitialize tooltips
+        initTooltips(this);
     }
 
     render(): TemplateResult {

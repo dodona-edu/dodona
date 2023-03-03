@@ -1,6 +1,12 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { createUserAnnotation, transition, UserAnnotationData, UserAnnotationFormData } from "state/UserAnnotations";
+import {
+    createUserAnnotation, invalidateUserAnnotation,
+    transition,
+    updateUserAnnotation,
+    UserAnnotationData,
+    UserAnnotationFormData
+} from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { getEvaluationId } from "state/Evaluations";
 import { getQuestionMode } from "state/Annotations";
@@ -27,8 +33,14 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         return getQuestionMode();
     }
 
+    get openQuestion(): UserAnnotationData | undefined {
+        return this.data.question_state !== undefined && this.data.question_state !== "answered" ?
+            this.data :
+            this.data.responses.find(response => response.question_state !== undefined && response.question_state !== "answered");
+    }
+
     get isUnanswered(): boolean {
-        return this.data.question_state === "unanswered" || this.data.responses.some(response => response.question_state === "unanswered");
+        return this.openQuestion != undefined;
     }
 
     async createAnnotation(e: CustomEvent): Promise<void> {
@@ -44,6 +56,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
             const mode = getQuestionMode() ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
 
+            invalidateUserAnnotation(this.data.id);
             this.showForm = false;
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
@@ -52,10 +65,31 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     }
 
     markAsResolved(): void {
-        const unansweredQuestion = this.data.question_state === "unanswered" ? this.data : this.data.responses.find(response => response.question_state === "unanswered");
-        if (unansweredQuestion) {
-            transition(unansweredQuestion, "answered");
+        if (this.openQuestion !== undefined) {
+            transition(this.openQuestion, "answered");
         }
+    }
+
+    markAsInProgress(): void {
+        if (this.openQuestion?.question_state !== "in_progress") {
+            transition(this.openQuestion, "in_progress");
+        }
+    }
+
+    markAsUnanswered(): void {
+        if (this.openQuestion?.question_state !== "unanswered") {
+            transition(this.openQuestion, "unanswered");
+        }
+    }
+
+    addReply(): void {
+        this.showForm = true;
+        this.markAsInProgress();
+    }
+
+    cancelReply(): void {
+        this.showForm = false;
+        this.markAsUnanswered();
     }
 
     render(): TemplateResult {
@@ -70,7 +104,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
                     <div class="annotation ${this.questionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}
-                                           @cancel=${() => this.showForm = false}
+                                           @cancel=${() => this.cancelReply()}
                                            submit-button-text="reply"
                         ></d-annotation-form>
                     </div>
@@ -78,7 +112,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
                     <div class="fake-input">
                         <input type="text" class="form-control"
                                placeholder="${I18n.t("js.user_annotation.reply")}..."
-                               @click="${() => this.showForm = true}" />
+                               @click="${() => this.addReply()}" />
                         ${this.isUnanswered ? html`
                             <span>${I18n.t("js.user_question.or")}</span>
                             <a class="btn btn-text" @click="${() => this.markAsResolved()}">

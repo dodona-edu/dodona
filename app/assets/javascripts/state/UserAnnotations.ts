@@ -99,6 +99,25 @@ function removeAnnotationFromMap(annotation: UserAnnotationData): void {
     }
 }
 
+function replaceAnnotationInMap(annotation: UserAnnotationData): void {
+    const line = annotation.line_nr ?? 0;
+    if (userAnnotationsByLine.has(line)) {
+        const annotations = userAnnotationsByLine.get(line);
+        if (annotation.thread_root_id === null) {
+            userAnnotationsByLine.set(line, annotations?.map(a => a.id === annotation.id ? annotation : a));
+        } else {
+            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
+            if (rootAnnotation) {
+                rootAnnotation.responses = rootAnnotation.responses.map(a => a.id === annotation.id ? annotation : a);
+            } else {
+                annotations?.push(annotation);
+            }
+        }
+    } else {
+        userAnnotationsByLine.set(line, [annotation]);
+    }
+}
+
 export async function fetchUserAnnotations(submissionId: number): Promise<UserAnnotationData[]> {
     const response = await fetch(`/submissions/${submissionId}/annotations.json`);
     const json = await response.json();
@@ -116,8 +135,7 @@ export async function invalidateUserAnnotation(annotationId: number): Promise<Us
     const response = await fetch(`/annotations/${annotationId}.json`);
     const json = await response.json();
 
-    removeAnnotationFromMap(json);
-    addAnnotationToMap(json);
+    replaceAnnotationInMap(json);
     events.publish("getUserAnnotations");
     events.publish("getUserAnnotationsCount");
     return json;
@@ -228,8 +246,7 @@ export async function transition(annotation: UserAnnotationData, newState: Quest
     if (response.ok) {
         const json = await response.json();
 
-        removeAnnotationFromMap(annotation);
-        addAnnotationToMap(json);
+        replaceAnnotationInMap(json);
         events.publish("getUserAnnotations");
         events.publish("getUserAnnotationsCount");
     } else if (response.status === 404) {

@@ -175,6 +175,8 @@ en:
       deleted: This question was deleted by another user
       conflict: The status of this question was already changed by another user
       has_newer_submission: There was a newer submission since this question. Click here to go to the latest submission.
+      is_in_progress: This question is currently being answered.
+      is_unanswered: This question is unanswered.
     machine_annotation:
       external_url: more information
     score:

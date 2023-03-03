@@ -175,6 +175,8 @@ nl:
       deleted: Deze vraag is verwijderd door een andere gebruiker
       conflict: De status van deze vraag is al aangepast door een andere gebruiker
       has_newer_submission: Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.
+      is_in_progress: Deze vraag wordt momenteel beantwoord.
+      is_unanswered: Deze vraag is nog niet beantwoord.
     machine_annotation:
         external_url: meer informatie
     score:

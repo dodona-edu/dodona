@@ -21,6 +21,7 @@ class Question < Annotation
   belongs_to :user, inverse_of: :questions
   counter_culture :user, column_name: proc { |question| question.answered? ? nil : 'open_questions_count' }
 
+  after_save :schedule_reset_in_progress, if: :saved_change_to_question_state?
   after_commit :clear_transition
 
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
@@ -52,5 +53,17 @@ class Question < Annotation
   def clear_transition
     @transition_to = nil
     @transition_from = nil
+  end
+
+  def reset_in_progress
+    return unless question_state == 'in_progress'
+
+    update(question_state: 'unanswered')
+  end
+
+  def schedule_reset_in_progress
+    return unless question_state == 'in_progress'
+
+    delay(run_at: 1.hour.from_now).reset_in_progress
   end
 end

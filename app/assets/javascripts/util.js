@@ -1,7 +1,6 @@
 import { isInIframe } from "iframe";
 import { Dutch } from "flatpickr/dist/l10n/nl";
 import flatpickr from "flatpickr";
-import { LitElement } from "lit";
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.

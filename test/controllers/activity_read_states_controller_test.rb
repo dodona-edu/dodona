@@ -42,7 +42,7 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
 
     get activity_read_states_url, params: { filter: 'abcd', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by user name' do
@@ -54,7 +54,7 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
 
     get activity_read_states_url, params: { filter: 'abcd', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by course label' do
@@ -71,7 +71,7 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     create :activity_read_state,  user: u2, activity: a1, course: course
     get course_activity_read_states_url course, params: { course_labels: ['test'], format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'normal user should not be able to search by course label' do
@@ -89,7 +89,7 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     create :activity_read_state,  user: u2, activity: a1, course: course
     get course_activity_read_states_url course, params: { course_labels: ['test'], format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should not mark content_page as read twice' do

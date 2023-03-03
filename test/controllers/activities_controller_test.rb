@@ -163,25 +163,25 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     start_exercises = Activity.exercises.count
     start_content = Activity.content_pages.count
     get activities_url(format: :json, type: ContentPage.name)
-    assert_equal start_content, JSON.parse(response.body).count
+    assert_equal start_content, response.parsed_body.count
     get activities_url(format: :json, type: Exercise.name)
-    assert_equal start_exercises, JSON.parse(response.body).count
+    assert_equal start_exercises, response.parsed_body.count
   end
 
   test 'should get activities with certain description languages available' do
     @instance = create(:exercise, :description_html)
     # @instance has a Dutch and Englisch description
     get activities_url(format: :json, description_languages: ['en'])
-    assert_equal 1, JSON.parse(response.body).count
-    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+    assert_equal 1, response.parsed_body.count
+    assert_equal @instance.id, response.parsed_body[0]['id']
 
     get activities_url(format: :json, description_languages: ['nl'])
-    assert_equal 1, JSON.parse(response.body).count
-    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+    assert_equal 1, response.parsed_body.count
+    assert_equal @instance.id, response.parsed_body[0]['id']
 
     get activities_url(format: :json, description_languages: %w[en nl])
-    assert_equal 1, JSON.parse(response.body).count
-    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+    assert_equal 1, response.parsed_body.count
+    assert_equal @instance.id, response.parsed_body[0]['id']
 
     # create exercises to obtain all possible condition combinations
     create :exercise, description_en_present: true
@@ -189,21 +189,21 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     create :exercise, description_nl_present: true, description_en_present: true
 
     get activities_url(format: :json, description_languages: ['nl'])
-    assert_equal 3, JSON.parse(response.body).count
+    assert_equal 3, response.parsed_body.count
     get activities_url(format: :json, description_languages: ['en'])
-    assert_equal 3, JSON.parse(response.body).count
+    assert_equal 3, response.parsed_body.count
     get activities_url(format: :json, description_languages: [])
-    assert_equal Exercise.count, JSON.parse(response.body).count # should yield all exercises
+    assert_equal Exercise.count, response.parsed_body.count # should yield all exercises
   end
 
   test 'should get activities filtered by judge' do
     judge = @instance.judge
     get activities_url(format: :json, judge_id: judge.id)
-    assert_equal Activity.where(judge: judge).count, JSON.parse(response.body).count
-    assert_equal @instance.id, JSON.parse(response.body)[0]['id']
+    assert_equal Activity.where(judge: judge).count, response.parsed_body.count
+    assert_equal @instance.id, response.parsed_body[0]['id']
 
     get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
-    assert_equal 0, JSON.parse(response.body).count
+    assert_equal 0, response.parsed_body.count
   end
 
   test 'should get available activities for series' do
@@ -221,7 +221,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get available_activities_series_url(series, format: :json)
 
     assert_response :success
-    result_exercises = JSON.parse response.body
+    result_exercises = response.parsed_body
 
     assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise usable by course'
     assert result_exercises.any? { |ex| ex['id'] == other_exercise.id }, 'should contain exercise usable by repo admin'
@@ -245,7 +245,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get available_activities_series_url(series, labels: [label.name], format: :json)
 
     assert_response :success
-    result_exercises = JSON.parse response.body
+    result_exercises = response.parsed_body
     assert_equal 0, result_exercises.count, 'should not contain exercises'
 
     label.activities << @instance
@@ -253,7 +253,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get available_activities_series_url(series, labels: [label.name], format: :json)
 
     assert_response :success
-    result_exercises = JSON.parse response.body
+    result_exercises = response.parsed_body
 
     assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise with label'
     assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise without label'
@@ -275,7 +275,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get available_activities_series_url(series, programming_language: programming_language.name, format: :json)
 
     assert_response :success
-    result_exercises = JSON.parse response.body
+    result_exercises = response.parsed_body
     assert_equal 0, result_exercises.count, 'should not contain exercises'
 
     @instance.update(programming_language: programming_language)
@@ -283,7 +283,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get available_activities_series_url(series, programming_language: programming_language.name, format: :json)
 
     assert_response :success
-    result_exercises = JSON.parse response.body
+    result_exercises = response.parsed_body
 
     assert result_exercises.any? { |ex| ex['id'] == @instance.id }, 'should contain exercise with programming language'
     assert result_exercises.all? { |ex| ex['id'] != other_exercise.id }, 'should not contain exercise with other programming language'
@@ -305,7 +305,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
 
   def assert_response_contains_activity(activity, msg = nil)
     assert_response :success
-    result_activities = JSON.parse response.body
+    result_activities = response.parsed_body
     assert result_activities.any? { |ex| ex['id'] == activity.id }, msg
   end
 
@@ -349,7 +349,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     get series_activities_url(series, format: :json)
 
     assert_response :success
-    exercises_response = JSON.parse response.body
+    exercises_response = response.parsed_body
     assert_equal 2, exercises_response.count
 
     exercise_response_ids = exercises_response.pluck('id')
@@ -583,7 +583,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     get activities_url, params: { format: :json }
 
-    exercises = JSON.parse response.body
+    exercises = response.parsed_body
     assert_equal start_activities + 1, exercises.length
     assert_includes exercises.pluck('id'), visible.id
   end
@@ -596,7 +596,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     get activities_url, params: { format: :json }
 
-    exercises = JSON.parse response.body
+    exercises = response.parsed_body
     assert_equal 3, exercises.length - start
   end
 
@@ -610,17 +610,17 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     s2.course.enrolled_members << @user
     create :correct_submission, user: @user, course: s1.course, exercise: ex
     get activity_url(ex, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert resp['last_solution_is_best']
     assert resp['has_solution']
     assert resp['has_correct_solution']
     get course_series_activity_url(s1.course, s1, ex, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert resp['last_solution_is_best']
     assert resp['has_solution']
     assert resp['has_correct_solution']
     get course_series_activity_url(s2.course, s2, ex, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert resp['last_solution_is_best']
     assert_not resp['has_solution']
     assert_not resp['has_correct_solution']
@@ -636,13 +636,13 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     s2.course.enrolled_members << @user
     create :activity_read_state, activity: ra, user: @user, course: s1.course
     get activity_url(ra, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert resp['has_read']
     get course_series_activity_url(s1.course, s1, ra, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert resp['has_read']
     get course_series_activity_url(s2.course, s2, ra, format: :json)
-    resp = JSON.parse response.body
+    resp = response.parsed_body
     assert_not resp['has_read']
   end
 
@@ -746,7 +746,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    exercise_json = JSON.parse response.body
+    exercise_json = response.parsed_body
     description_url = exercise_json['description_url']
 
     assert description_url.include?(Rails.configuration.sandbox_host)
@@ -771,7 +771,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get series_activities_url(series, format: :json)
 
     assert_response :success
-    activities_json = JSON.parse response.body
+    activities_json = response.parsed_body
     assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
 
     SeriesMembership.find_by(series: series, activity: exercise).update(order: 2)
@@ -780,7 +780,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get series_activities_url(series, format: :json)
 
     assert_response :success
-    activities_json = JSON.parse response.body
+    activities_json = response.parsed_body
     assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
   end
 
@@ -793,7 +793,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get activities_url(format: :json)
 
     assert_response :success
-    activities_json = JSON.parse response.body
+    activities_json = response.parsed_body
     assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
 
     create :series, exercises: [other_exercise]
@@ -802,7 +802,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     get activities_url(format: :json)
 
     assert_response :success
-    activities_json = JSON.parse response.body
+    activities_json = response.parsed_body
     assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
   end
 end

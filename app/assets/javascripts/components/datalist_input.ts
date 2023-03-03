@@ -45,7 +45,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     set filter(value: string) {
         this._filter = value;
-        this.value = this.options.find(o => this.filter === o.label)?.value || "";
+        this.value = this.options?.find(o => this.filter === o.label)?.value || "";
         this.fireEvent();
     }
 
@@ -58,7 +58,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
             // If we can find a result amongst the filtered options
             // dispatch an event
             if (!this.value) {
-                this.value = this.options.find(o => this.filter === o.label)?.value || "";
+                this.value = this.options?.find(o => this.filter === o.label)?.value || "";
                 if (this.value) {
                     this.fireEvent();
                 }

@@ -2,7 +2,8 @@ en:
   repositories:
     form:
       remote_help: "The SSH clone URL of the exercise repository. Dodona needs read and write permissions to use the repository."
-      judge_help: "This judge will be used when the exercise doesn't specify one."
+      judge_help_markdown: "This judge will be used when the exercise doesn't specify one. You can find an overview of available judges in [our documentation](https://docs.dodona.be/en/references/judges/)."
+      judge_help_edit_markdown: "Changing the judge will change the judge of existing exercises that do not specify a judge themselves. You can find an overview of available judges in [our documentation](https://docs.dodona.be/en/references/judges/)."
       featured:
         title: "Featured"
         toggle-label: "Feature this repository"

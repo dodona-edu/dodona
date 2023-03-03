@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_10_122730) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_13_084858) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -459,7 +459,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_122730) do
     t.datetime "updated_at", precision: nil, null: false
     t.datetime "deadline", precision: nil
     t.string "access_token"
-    t.string "indianio_token"
     t.boolean "progress_enabled", default: true, null: false
     t.boolean "activities_visible", default: true, null: false
     t.integer "activities_count"
@@ -467,7 +466,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_10_122730) do
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"
-    t.index ["indianio_token"], name: "index_series_on_indianio_token"
     t.index ["name"], name: "index_series_on_name"
     t.index ["visibility"], name: "index_series_on_visibility"
   end

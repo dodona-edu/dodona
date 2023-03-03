@@ -6,8 +6,8 @@ module ExportHelper
 
     attr_reader :users, :item, :errors
 
-    CONVERT_TO_BOOL = %w[indianio deadline all_students only_last_submission with_info all with_labels].freeze
-    SUPPORTED_OPTIONS = %w[indianio deadline all_students group_by only_last_submission with_info all with_labels].freeze
+    CONVERT_TO_BOOL = %w[deadline all_students only_last_submission with_info all with_labels].freeze
+    SUPPORTED_OPTIONS = %w[deadline all_students group_by only_last_submission with_info all with_labels].freeze
 
     # Keywords used:
     # :item    : A User, Course or Series for which submissions will be exported
@@ -62,11 +62,6 @@ module ExportHelper
       @options[:with_labels].present?
     end
 
-    # Exporting a zip for Indianio: make sure to return specific output for this request
-    def indianio?
-      @options[:indianio].present?
-    end
-
     # Whether to include all submissions or just the last one per exercise
     def only_last_submission?
       @options[:only_last_submission].present?
@@ -93,8 +88,6 @@ module ExportHelper
     end
 
     def zip_filename
-      return "#{@item.name.parameterize}-#{@users.first.full_name.parameterize}.zip" if indianio?
-
       @item.is_a?(User) ? "#{@item.full_name.parameterize}.zip" : "#{@item.name.parameterize}.zip"
     end
 
@@ -150,8 +143,6 @@ module ExportHelper
     # If a course is being exported, the names of the series will be present in the filenames
     # If the submissions of a user are being exported, the course name will also be present if it exists for the submission
     def get_filename(user, exercise, submission = nil)
-      return exercise.file_name if indianio?
-
       ex_and_series_fn = ex_fn(exercise)
       unless @item.is_a?(Series)
         series = @series_per_exercise[exercise.id]
@@ -181,14 +172,10 @@ module ExportHelper
       exercises_per_user = Hash.new { |hash, user| hash[user] = Set.new }
       stringio = Zip::OutputStream.write_buffer do |zio|
         info = CSV.generate(force_quotes: true) do |csv|
-          csv << if indianio?
-                   %w[filename status submission_id name_en name_nl exercise_id]
-                 else
-                   headers = %w[filename id username last_name first_name full_name email]
-                   headers << 'labels' if labels?
-                   headers += %w[status submission_id name_en name_nl exercise_id created_at]
-                   headers
-                 end
+          headers = %w[filename id username last_name first_name full_name email]
+          headers << 'labels' if labels?
+          headers += %w[status submission_id name_en name_nl exercise_id created_at]
+          csv << headers
           submissions.each do |submission|
             exercises_per_user[submission.user.id].add(submission.exercise.id)
             filename = get_filename submission.user, submission.exercise, submission
@@ -224,14 +211,10 @@ module ExportHelper
     end
 
     def csv_submission(csv, user, exercise, submission, filename)
-      csv << if indianio?
-               [filename, submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id]
-             else
-               row = [filename, user.id, user.username, user.last_name, user.first_name, user.full_name, user.email]
-               row << @users_labels[user].map(&:name).join(';') if labels?
-               row += [submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
-               row
-             end
+      row = [filename, user.id, user.username, user.last_name, user.first_name, user.full_name, user.email]
+      row << @users_labels[user].map(&:name).join(';') if labels?
+      row += [submission&.status, submission&.id, exercise.name_en, exercise.name_nl, exercise.id, submission&.created_at]
+      csv << row
     end
 
     def bundle

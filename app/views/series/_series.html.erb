@@ -139,19 +139,19 @@
   <% if current_user&.course_admin?(series.course) && series.hidden? %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.series_not_visible" %>
-      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
     </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && series.closed? %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.series_not_accessible" %>
-      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {visibility: :open}), method: :patch) %>
+      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
     </div>
   <% end %>
   <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
     <div class="alert alert-info hidden-print">
       <%= t "series.show.activities_not_visible" %>
-      <%= t('series.show.make_visible_html', series_url: series_path(series, series: {activities_visible: true}), method: :patch) %>
+      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {activities_visible: true}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
     </div>
   <% end %>
   <div class="tab-content">

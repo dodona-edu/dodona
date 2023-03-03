@@ -2,7 +2,8 @@ nl:
   repositories:
     form:
       remote_help: "De SSH 'clone url' van de repository waar de oefeningen te vinden zijn. Dodona heeft lees- en schrijfrechten nodig om de repository te gebruiken."
-      judge_help: "Deze judge zal gebruikt worden als de oefening zelf geen specifieert."
+      judge_help_markdown: "Deze judge zal gebruikt worden als de oefening zelf geen specifieert. Je vindt een overzicht van de beschikbare judges in [onze documentatie](https://docs.dodona.be/nl/references/judges/)."
+      judge_help_edit_markdown: "Het aanpassen van de judge zal de judge van bestaande oefeningen die zelf geen judge specifieerden aanpassen. Je vindt een overzicht van de beschikbare judges in [onze documentatie](https://docs.dodona.be/nl/references/judges/)."
       featured:
         title: "Uitgelicht"
         toggle-label: "Deze repository uitlichten"

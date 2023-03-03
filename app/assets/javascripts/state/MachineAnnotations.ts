@@ -5,7 +5,7 @@ export interface MachineAnnotationData {
     type: AnnotationType;
     text: string;
     row: number;
-    externalUrl: string | null;
+    externalUrl?: string | null;
 }
 
 const machineAnnotationsByLine = new Map<number, MachineAnnotationData[]>();

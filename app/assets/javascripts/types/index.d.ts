@@ -42,3 +42,26 @@ declare interface Window {
 }
 
 declare var dodona;
+
+declare module "util.js" {
+    export function createDelayer(): (func: () => void, delay: number) => void;
+    export function delay(func: () => void, delay: number): void;
+    export function fetch(url: string, options?: RequestInit): Promise<Response>;
+    export function updateURLParameter(uri: string, key: string, value: string): string;
+    export function updateArrayURLParameter(uri: string, key: string, value: string[]): string;
+    export function getURLParameter(uri: string, key: string): string | null;
+    export function getArrayURLParameter(uri: string, key: string): string[] | null;
+    export function checkTimeZone(): void;
+    export function checkIframe(): void;
+    export function initCSRF(): void;
+    export function tooltip(selector: string, placement?: string, trigger?: string): void;
+    export function initTooltips(root: HTMLElement): void;
+    export function makeInvisible(selector: string): void;
+    export function makeVisible(selector: string): void;
+    export function setDocumentTitle(title: string): void;
+    export function initDatePicker(selector: string, options?: Record<string, unknown>): void;
+    export const ready: Promise<void>;
+    export function htmlEncode(value: string): string;
+    export function getParentByClassName(element: HTMLElement, className: string): HTMLElement | null;
+
+}

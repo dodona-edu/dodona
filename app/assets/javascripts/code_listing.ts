@@ -29,7 +29,6 @@ export const codeListing = {
             const codeListingRow = new CodeListingRow();
             codeListingRow.row = i + 1;
             codeListingRow.renderedCode = code;
-            codeListingRow.style = "display: contents;";
             rows[i].innerHTML = "";
             render(codeListingRow, rows[i]);
         }
@@ -55,7 +54,7 @@ export const codeListing = {
     clearHighlights(): void {
         const markedAnnotations = document.querySelectorAll(`tr.lineno.${MARKING_CLASS}`);
         markedAnnotations.forEach(markedAnnotation => {
-            markedAnnotation.classList.remove(this.markingClass);
+            markedAnnotation.classList.remove(MARKING_CLASS);
         });
     },
 

@@ -11,7 +11,7 @@ import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
 import { getQuestionMode } from "state/Annotations";
-import { initTooltips } from "util";
+import { initTooltips } from "util.js";
 
 
 /**

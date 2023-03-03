@@ -2,7 +2,6 @@ import { fetch } from "util.js";
 import { events } from "state/PubSub";
 import { Notification } from "notification";
 import { createSavedAnnotation, invalidateSavedAnnotation } from "state/SavedAnnotations";
-import { Annotation } from "code_listing/annotation";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -25,9 +24,9 @@ interface UserAnnotationUserData {
 }
 
 export interface UserAnnotationPermissionData {
-    update: boolean;
-    destroy: boolean;
-    can_see_annotator: boolean
+    update?: boolean;
+    destroy?: boolean;
+    can_see_annotator?: boolean
 }
 
 export interface UserAnnotationData {
@@ -43,9 +42,9 @@ export interface UserAnnotationData {
     // eslint-disable-next-line camelcase
     rendered_markdown: string;
     // eslint-disable-next-line camelcase
-    evaluation_id: number | null;
+    evaluation_id?: number | null;
     // eslint-disable-next-line camelcase
-    saved_annotation_id: number | null;
+    saved_annotation_id?: number | null;
     url: string;
     user: UserAnnotationUserData;
     type: AnnotationType;
@@ -64,6 +63,20 @@ export interface UserAnnotationData {
 }
 
 const userAnnotationsByLine = new Map<number, UserAnnotationData[]>();
+
+// exported for testing purposes
+export function addTestUserAnnotation(annotation: UserAnnotationData): void {
+    addAnnotationToMap(annotation);
+    events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
+}
+
+// exported for testing purposes
+export function resetUserAnnotations(): void {
+    userAnnotationsByLine.clear();
+    events.publish("getUserAnnotations");
+    events.publish("getUserAnnotationsCount");
+}
 
 function addAnnotationToMap(annotation: UserAnnotationData): void {
     const line = annotation.line_nr ?? 0;

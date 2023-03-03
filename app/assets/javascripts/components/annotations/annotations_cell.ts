@@ -55,9 +55,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         try {
             const mode = getQuestionMode() ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
-
-            const event = new CustomEvent("close-form", { bubbles: true, composed: true });
-            this.dispatchEvent(event);
+            this.closeForm();
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
@@ -72,13 +70,18 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         `);
     }
 
+    closeForm(): void {
+        const event = new CustomEvent("close-form", { bubbles: true, composed: true });
+        this.dispatchEvent(event);
+    }
+
     protected render(): TemplateResult {
         return html`
             <div class="annotation-cell">
                 ${this.showForm ? html`
                     <div class="annotation ${this.questionMode ? "question" : "user" }">
-                        <d-annotation-form @cancel=${() => this.showForm = false}
-                                           @submit=${e => this.createAnnotation(e)}
+                        <d-annotation-form @submit=${e => this.createAnnotation(e)}
+                                           @cancel=${() => this.closeForm()}
                                            ${ref(this.annotationFormRef)}
                                            submit-button-text="send"
                         ></d-annotation-form>

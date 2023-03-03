@@ -46,7 +46,7 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
                 <td class="rouge-gutter gl">
                     ${this.canCreateAnnotation ? html`
                         <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
-                                @click=${() => this.showForm = !this.showForm}
+                                @click=${() => this.showForm = true}
                                 data-bs-toggle="tooltip"
                                 data-bs-placement="top"
                                 data-bs-trigger="hover"

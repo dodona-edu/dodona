@@ -1,4 +1,4 @@
-import { codeListing } from "code_listing";
+import codeListing from "code_listing";
 import { setAnnotationVisibility } from "state/Annotations";
 
 // bootstrap

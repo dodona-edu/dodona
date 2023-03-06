@@ -242,8 +242,10 @@ export function getUserAnnotationsByLine(line: number): UserAnnotationData[] {
 
 export function getUserAnnotationsCount(): number {
     return [...userAnnotationsByLine.values()]
-        .map(annotations => annotations.length)
-        .reduce((a, b) => a + b, 0);
+        .map(annotations => annotations
+            .map(a => a.responses.length)
+            .reduce((a, b) => a + b, annotations.length)
+        ).reduce((a, b) => a + b, 0);
 }
 
 export async function transition(annotation: UserAnnotationData, newState: QuestionState): Promise<void> {

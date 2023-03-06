@@ -59,7 +59,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
         return this.isAlreadyLinked && this.savedAnnotation != undefined;
     }
 
-    get metaText(): string {
+    get headerText(): string {
         if (!this.data.permission.can_see_annotator) {
             return I18n.t("js.user_annotation.anonymous_message");
         }
@@ -74,9 +74,9 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
         return getQuestionMode() ? "user_question" : "user_annotation";
     }
 
-    protected get meta(): TemplateResult {
+    protected get header(): TemplateResult {
         return html`
-            ${this.metaText}
+            ${this.headerText}
             ${!this.data.released ? html`
                         <i class="mdi mdi-eye-off mdi-18 annotation-meta-icon"
                            title="${I18n.t("js.user_annotation.not_released")}"
@@ -151,7 +151,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
             <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
-                        ${this.meta}
+                        ${this.header}
                     </span>
                     ${this.data.permission.update ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">

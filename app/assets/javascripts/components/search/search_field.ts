@@ -1,6 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { createDelayer } from "../../util";
+import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { searchQuery } from "search";

@@ -29,30 +29,26 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     data: UserAnnotationData;
 
     @property({ state: true })
-    __savedAnnotationId: number | null;
-    @property({ state: true })
     editing = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    get savedAnnotationId(): number | null {
-        return this.__savedAnnotationId ?? this.data.saved_annotation_id;
-    }
-
     get isAlreadyLinked(): boolean {
-        return this.savedAnnotationId != undefined;
+        return this.data.saved_annotation_id != undefined;
     }
 
     get state(): string[] {
         const state = ["getQuestionMode"];
         if (this.isAlreadyLinked) {
-            state.push(`getSavedAnnotation${this.savedAnnotationId}`);
+            // We need to keep track of changes to the saved annotation
+            // To correctly display either the is already linked icon or the save annotation button
+            state.push(`getSavedAnnotation${this.data.saved_annotation_id}`);
         }
         return state;
     }
 
     get savedAnnotation(): SavedAnnotation | undefined {
-        return getSavedAnnotation(this.savedAnnotationId);
+        return getSavedAnnotation(this.data.saved_annotation_id);
     }
 
     get hasSavedAnnotation(): boolean {
@@ -174,8 +170,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                                 ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`
                                     <d-new-saved-annotation
                                         from-annotation-id="${this.data.id}"
-                                        annotation-text="${this.data.annotation_text}"
-                                        @created="${e => this.__savedAnnotationId = e.detail.id}">
+                                        annotation-text="${this.data.annotation_text}">
                                     </d-new-saved-annotation>
                                 ` : ""}
                             </ul>
@@ -185,7 +180,7 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                 ${this.editing ? html`
                     <d-annotation-form
                         annotation-text="${this.data.annotation_text}"
-                        saved-annotation-id="${this.savedAnnotationId}"
+                        saved-annotation-id="${this.data.saved_annotation_id}"
                         @cancel="${() => this.editing = false}"
                         @submit="${e => this.updateAnnotation(e)}"
                         ${ref(this.annotationFormRef)}

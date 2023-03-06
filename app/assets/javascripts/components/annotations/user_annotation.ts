@@ -1,8 +1,5 @@
 import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { isBetaCourse } from "saved_annotation_beta";
-import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
-import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
@@ -12,7 +9,7 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
 import { getQuestionMode } from "state/Annotations";
 import { initTooltips } from "util.js";
-
+import "components/saved_annotations/saved_annotation_icon";
 
 /**
  * This component represents a single user annotation.
@@ -24,7 +21,7 @@ import { initTooltips } from "util.js";
  * @prop {UserAnnotationData} data - the data of the annotation
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -32,28 +29,6 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
     editing = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
-
-    get isAlreadyLinked(): boolean {
-        return this.data.saved_annotation_id != undefined;
-    }
-
-    get state(): string[] {
-        const state = ["getQuestionMode"];
-        if (this.isAlreadyLinked) {
-            // We need to keep track of changes to the saved annotation
-            // To correctly display either the is already linked icon or the save annotation button
-            state.push(`getSavedAnnotation${this.data.saved_annotation_id}`);
-        }
-        return state;
-    }
-
-    get savedAnnotation(): SavedAnnotation | undefined {
-        return getSavedAnnotation(this.data.saved_annotation_id);
-    }
-
-    get hasSavedAnnotation(): boolean {
-        return this.isAlreadyLinked && this.savedAnnotation != undefined;
-    }
 
     get headerText(): string {
         if (!this.data.permission.can_see_annotator) {
@@ -80,11 +55,8 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                            data-bs-placement="top"
                         ></i>
                     ` : ""}
-            ${ isBetaCourse(this.data.course_id) && this.hasSavedAnnotation ? html`
-                        <i class="mdi mdi-link-variant mdi-18 annotation-meta-icon"
-                            title="${I18n.t("js.saved_annotation.new.linked", { title: this.savedAnnotation.title })}"
-                        ></i>
-                    ` : ""}
+            <d-saved-annotation-icon .savedAnnotationId="${this.data.saved_annotation_id}">
+            </d-saved-annotation-icon>
             ${this.data.newer_submission_url ? html`
                 <span>
                     ·
@@ -167,12 +139,11 @@ export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) 
                                         </a>
                                     </li>
                                 ` : ""}
-                                ${ isBetaCourse(this.data.course_id) && !this.hasSavedAnnotation ? html`
-                                    <d-new-saved-annotation
-                                        from-annotation-id="${this.data.id}"
-                                        annotation-text="${this.data.annotation_text}">
-                                    </d-new-saved-annotation>
-                                ` : ""}
+                                <d-new-saved-annotation
+                                    from-annotation-id="${this.data.id}"
+                                    annotation-text="${this.data.annotation_text}"
+                                    .savedAnnotationId="${this.data.saved_annotation_id}">
+                                </d-new-saved-annotation>
                             </ul>
                         </div>
                     ` : ""}

@@ -1,9 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { createSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
+import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/meta/modal_mixin";
+import { isBetaCourse } from "saved_annotation_beta";
+import { getCourseId } from "state/Courses";
+import { stateMixin } from "state/StateMixin";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -16,16 +19,30 @@ import { modalMixin } from "components/meta/modal_mixin";
  * @prop {Number} savedAnnotationId - the id of the saved annotation
  */
 @customElement("d-new-saved-annotation")
-export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
+export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitElement)) {
     @property({ type: Number, attribute: "from-annotation-id" })
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
+    @property({ type: Number, attribute: "saved-annotation-id" })
+    savedAnnotationId: number;
 
     @property({ state: true })
     errors: string[];
 
     savedAnnotation: SavedAnnotation;
+
+    get isAlreadyLinked(): boolean {
+        return this.savedAnnotationId != undefined;
+    }
+
+    get state(): string[] {
+        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`, "getCourseId"] : ["getCourseId"];
+    }
+
+    get linkedSavedAnnotation(): SavedAnnotation {
+        return getSavedAnnotation(this.savedAnnotationId);
+    }
 
     get newSavedAnnotation(): SavedAnnotation {
         return {
@@ -74,13 +91,13 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return html`
+        return isBetaCourse(getCourseId()) && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
             <li>
                 <a class="dropdown-item" @click="${() => this.showModal()}">
                     <i class="mdi mdi-content-save"></i>
                     ${I18n.t("js.saved_annotation.new.button_title")}
                 </a>
             </li>
-        `;
+        ` : html``;
     }
 }

@@ -18,13 +18,13 @@ const maxLength = 10_000;
  *
  * @element d-annotation-form
  *
- * @prop {Annotation} annotation - the annotation that will be edited (Null for a creation form)
- * @prop {Boolean} questionMode - whether we are editing questions or userAnnotations
+ * @prop {String} annotationText - the text of the annotation
+ * @prop {String} savedAnnotationId - the id of the saved annotation
  * @prop {Boolean} disabled - disables all buttons
  * @prop {Boolean} hasErrors - Shows red validation styling
+ * @prop {String} submitButtonText - the I18n key of the text for the submit button
  *
  * @fires cancel - if a users uses the cancel button
- * @fires delete - if the user confirms after pressing the delete button
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")

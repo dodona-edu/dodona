@@ -5,7 +5,11 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 
 
 /**
+ * This component represents a machine annotation.
  *
+ * @element d-machine-annotation
+ *
+ * @prop {MachineAnnotationData} data - The machine annotation data.
  */
 @customElement("d-machine-annotation")
 export class MachineAnnotation extends ShadowlessLitElement {

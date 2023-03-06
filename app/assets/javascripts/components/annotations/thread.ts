@@ -3,7 +3,6 @@ import { customElement, property } from "lit/decorators.js";
 import {
     createUserAnnotation, invalidateUserAnnotation,
     transition,
-    updateUserAnnotation,
     UserAnnotationData,
     UserAnnotationFormData
 } from "state/UserAnnotations";
@@ -16,7 +15,14 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
 
-
+/**
+ * This component represents a thread of annotations.
+ * It also contains the form for creating new annotations.
+ *
+ * @element d-thread
+ *
+ * @prop {UserAnnotationData} data - the data of the root annotation for this thread
+ */
 @customElement("d-thread")
 export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Object })

@@ -5,6 +5,12 @@ import { html, TemplateResult } from "lit";
 import { AnnotationVisibilityOptions, getAnnotationVisibility, setAnnotationVisibility } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 
+/**
+ * This component represents the toggles to show/hide annotations.
+ * It contains the buttons to show all annotations, only important annotations or no annotations.
+ *
+ * @element d-annotations-toggles
+ */
 @customElement("d-annotations-toggles")
 export class AnnotationsToggles extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     state = ["getAnnotationVisibility"];

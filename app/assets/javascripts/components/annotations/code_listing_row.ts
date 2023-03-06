@@ -11,7 +11,16 @@ import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { hasPermission } from "state/Users";
 
-
+/**
+ * This component represents a row in the code listing.
+ * It contains the line number and the code itself, and the button to add a new annotation for this row.
+ * It also contains the annotations for this row.
+ *
+ * @element d-code-listing-row
+ *
+ * @prop {number} row - The row number.
+ * @prop {string} renderedCode - The code to display.
+ */
 @customElement("d-code-listing-row")
 export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) {
     @property({ type: Number })

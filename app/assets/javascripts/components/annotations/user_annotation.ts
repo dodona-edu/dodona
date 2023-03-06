@@ -15,7 +15,13 @@ import { initTooltips } from "util.js";
 
 
 /**
+ * This component represents a single user annotation.
+ * It can be either a root annotation or a response.
+ * It also contains the form for editing the annotation.
  *
+ * @element d-user-annotation
+ *
+ * @prop {UserAnnotationData} data - the data of the annotation
  */
 @customElement("d-user-annotation")
 export class UserAnnotation extends i18nMixin(stateMixin(ShadowlessLitElement)) {

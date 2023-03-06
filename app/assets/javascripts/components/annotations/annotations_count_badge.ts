@@ -5,6 +5,11 @@ import { getUserAnnotationsCount } from "state/UserAnnotations";
 import { getMachineAnnotationsCount } from "state/MachineAnnotations";
 import { html, TemplateResult } from "lit";
 
+/**
+ * This component represents a badge that shows the total number of annotations.
+ *
+ * @element d-annotations-count-badge
+ */
 @customElement("d-annotations-count-badge")
 export class AnnotationsCountBadge extends stateMixin(ShadowlessLitElement) {
     state = ["getUserAnnotationsCount", "getMachineAnnotationsCount"];

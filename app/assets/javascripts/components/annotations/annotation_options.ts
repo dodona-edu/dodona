@@ -9,6 +9,12 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { hasPermission } from "state/Users";
 
 
+/**
+ * This component represents the top row with options about annotations, that is displayed above the code listing.
+ * It contains the button to add a new global annotation, the global annotations themselves and the toggles to show/hide annotations.
+ *
+ * @element d-annotation-options
+ */
 @customElement("d-annotation-options")
 export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ state: true })

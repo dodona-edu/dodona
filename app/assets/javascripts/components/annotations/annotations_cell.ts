@@ -19,7 +19,17 @@ import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 
-
+/**
+ * This component represents a cell that groups all annotations for a specific line.
+ * It also contains the form for creating new annotations.
+ *
+ * @element d-annotations-cell
+ *
+ * @prop {Number} row - the line number
+ * @prop {Boolean} showForm - if the form should be shown
+ *
+ * @fires close-form - if the form should be closed
+ */
 @customElement("d-annotations-cell")
 export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
     @property({ type: Boolean, attribute: "show-form" })

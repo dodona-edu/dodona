@@ -46,8 +46,7 @@ class QuestionsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     within '.code-table' do
-      button = find('#add_global_annotation')
-      button.click
+      click_button 'Ask a question about your code'
       assert_css 'form.annotation-submission'
     end
   end
@@ -59,8 +58,7 @@ class QuestionsTest < ApplicationSystemTestCase
     question = Faker::Lorem.question
 
     within '.code-table' do
-      button = find('#add_global_annotation')
-      button.click
+      click_button 'Ask a question about your code'
 
       form = find('form.annotation-submission')
 
@@ -89,9 +87,9 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: @submission.id))
     click_link 'Code'
 
-    question_div = find('div.annotation.question')
-    within question_div do
-      resolve_button = find('.question-control-button.question-resolve')
+    thread = find('d-thread')
+    within thread do
+      resolve_button = find('.btn', text: 'Mark as answered')
       resolve_button.click
       assert_no_css '.question-control-button.question-resolve'
       # Wait until ajax call is complete

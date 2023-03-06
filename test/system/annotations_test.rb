@@ -130,7 +130,9 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     assert_selector('.annotation', count: 1)
 
-    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    dropdown = find('.annotation .dropdown')
+    dropdown.click
+    dropdown.find('i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.paragraph(sentence_count: 3)
 
     within 'form.annotation-submission' do
@@ -155,12 +157,10 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     assert_selector '.annotation', count: 1
 
-    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
-
-    within 'form.annotation-submission' do
-      click_button 'Delete'
-      accept_confirm('Are you sure you want to delete this comment?')
-    end
+    dropdown = find('.annotation .dropdown')
+    dropdown.click
+    dropdown.find('i.mdi.mdi-delete').click
+    accept_confirm('Are you sure you want to delete this comment?')
 
     assert_no_css '.annotation'
   end
@@ -199,7 +199,10 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text annot.annotation_text
     end
 
-    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    dropdown = find('.annotation .dropdown')
+    dropdown.click
+    dropdown.find('i.mdi.mdi-pencil').click
+
     replacement = Faker::Lorem.characters number: 10_010
     assert_selector 'form.annotation-submission', count: 1
     # Attempt to type more than 10.000 characters.
@@ -222,7 +225,9 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text annot.annotation_text
     end
 
-    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    dropdown = find('.annotation .dropdown')
+    dropdown.click
+    dropdown.find('i.mdi.mdi-pencil').click
     replacement = ''
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
@@ -301,7 +306,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_button 'Add global comment'
 
     initial = Faker::Lorem.words(number: 128).join(' ')
-    within '#feedback-table-global-annotations' do
+    within 'd-annotation-form' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Comment'
     end
@@ -333,7 +338,9 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     old_text = annot.annotation_text
 
-    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+    dropdown = find('.annotation .dropdown')
+    dropdown.click
+    dropdown.find('i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.words(number: 32).join(' ')
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement

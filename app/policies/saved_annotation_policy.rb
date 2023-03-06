@@ -1,6 +1,6 @@
 class SavedAnnotationPolicy < ApplicationPolicy
   # REMOVE AFTER CLOSED BETA
-  BETA_COURSES = [10, 773, 1151, 1659].freeze
+  BETA_COURSES = [10, 773, 1151, 1659, 2258].freeze
 
   class Scope < ApplicationPolicy::Scope
     def resolve

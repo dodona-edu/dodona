@@ -2,7 +2,7 @@ import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHist
 import { initMathJax } from "exercise.ts";
 import { attachClipboard } from "copy";
 import { setEvaluationId } from "state/Evaluations";
-import { codeListing } from "code_listing";
+import codeListing from "code_listing";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
 window.dodona.codeListing = codeListing;

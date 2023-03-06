@@ -188,6 +188,10 @@ $annotation-info: $info;
 
     d-user-annotation {
       display: block;
+
+      .dropdown {
+        position: static;
+      }
     }
 
     .fake-input {

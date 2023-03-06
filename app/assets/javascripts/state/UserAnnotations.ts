@@ -186,6 +186,9 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
     if (data.saved_annotation_id) {
         invalidateSavedAnnotation(data.saved_annotation_id);
     }
+    if (data.thread_root_id) {
+        invalidateUserAnnotation(data.thread_root_id);
+    }
     events.publish("getUserAnnotations");
     events.publish("getUserAnnotationsCount");
     return data;
@@ -201,6 +204,9 @@ export async function deleteUserAnnotation(annotation: UserAnnotationData): Prom
 
     removeAnnotationFromMap(annotation);
     invalidateSavedAnnotation(annotation.saved_annotation_id);
+    if (annotation.thread_root_id) {
+        invalidateUserAnnotation(annotation.thread_root_id);
+    }
     events.publish("getUserAnnotations");
     events.publish("getUserAnnotationsCount");
 }

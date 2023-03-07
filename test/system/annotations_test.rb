@@ -389,7 +389,6 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     click_link 'Code'
 
-
     within 'd-thread' do
       assert_selector '.annotation', count: 2
 

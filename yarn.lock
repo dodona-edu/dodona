@@ -1958,10 +1958,10 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.12.tgz#920447fdd78d76b19de0438b7f60df3c4a80bf1c"
   integrity sha512-WwA1MW0++RfXmCr12xeYOOC5baSC9mSb0ZqCquFzKhcoF4TvHu5MKOuXsncgZcpVFhB1pXd5hZmM0ryAoCp12A==
 
-"@types/serviceworker@^0.0.62":
-  version "0.0.62"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.62.tgz#814e603f373314bc2b08332a306b0a76af68857f"
-  integrity sha512-DVoelQjcHaPshqyg0duirwuuaZ/teG4E3QGiQXbzso8akd12VRtgGYCao8viRFXHVLJOlo/Elh1nfbMsRQJXVA==
+"@types/serviceworker@^0.0.64":
+  version "0.0.64"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.64.tgz#48c4bdf0882d754bbecf183ba7c998580359815f"
+  integrity sha512-zDywAaAAOvYdCAQomyaMlW/D5u74mAHMfSOO5V67jYKhE68tE9da6tRHJFpFzkUlDVvHQ/4inBKvqWdXBc4vSg==
 
 "@types/sizzle@*":
   version "2.3.3"
@@ -2584,13 +2584,6 @@ brace-expansion@^1.1.7:
   dependencies:
     balanced-match "^1.0.0"
     concat-map "0.0.1"
-
-brace-expansion@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-2.0.1.tgz#1edc459e0f0c548486ecf9fc99f2221364b9a0ae"
-  integrity sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==
-  dependencies:
-    balanced-match "^1.0.0"
 
 braces@^2.3.1:
   version "2.3.2"
@@ -4134,17 +4127,6 @@ glob@^7.1.1, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^8.1.0:
-  version "8.1.0"
-  resolved "https://registry.yarnpkg.com/glob/-/glob-8.1.0.tgz#d388f656593ef708ee3e34640fdfb99a9fd1c33e"
-  integrity sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==
-  dependencies:
-    fs.realpath "^1.0.0"
-    inflight "^1.0.4"
-    inherits "2"
-    minimatch "^5.0.1"
-    once "^1.3.0"
-
 global-modules@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/global-modules/-/global-modules-2.0.0.tgz#997605ad2345f27f51539bea26574421215c7780"
@@ -4390,10 +4372,10 @@ iconv-lite@0.6:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-iframe-resizer@^4.3.4:
-  version "4.3.4"
-  resolved "https://registry.yarnpkg.com/iframe-resizer/-/iframe-resizer-4.3.4.tgz#6395c4bc8264db3f28eb1e6776c2570be28def80"
-  integrity sha512-l4tLVWLrK87+i/0/63XpOJIOHHYC+f4P/QNsS1zZm5JHcldR7krohBZLV7tVyAAsZ8sa1bmiDUjK4YRhyu7NBg==
+iframe-resizer@^4.3.5:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/iframe-resizer/-/iframe-resizer-4.3.5.tgz#d8bdc843f36eaebe2dd7b258e7234f438073cf8b"
+  integrity sha512-pziqOCczYtbVFgzU3KcjQDS+pMhj4QgL7JutUVazt73xeIWtx+CSRlFQp7aJ2i1bUSZwgbjSP2dez4yelV76yw==
 
 ignore@^5.2.0, ignore@^5.2.1:
   version "5.2.1"
@@ -5645,13 +5627,6 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.2:
   integrity sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==
   dependencies:
     brace-expansion "^1.1.7"
-
-minimatch@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-5.0.1.tgz#fb9022f7528125187c92bd9e9b6366be1cf3415b"
-  integrity sha512-nLDxIFRyhDblz3qMuq+SoRZED4+miJ/G+tdDrjkkkRnjAsBexeGpgjLEQ0blJy7rHhR2b93rhQY4SvyWu9v03g==
-  dependencies:
-    brace-expansion "^2.0.1"
 
 minimist-options@4.1.0:
   version "4.1.0"

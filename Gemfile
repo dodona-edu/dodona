@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.1.0'
+gem 'puma', '~> 6.1.1'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.2'
@@ -63,7 +63,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'ace-rails-ap', '~>4.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.7'
+gem 'autoprefixer-rails', '~>10.4.13'
 
 # saml authentication
 gem 'devise', '~>4.9.0'

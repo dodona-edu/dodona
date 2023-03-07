@@ -68,7 +68,12 @@ jobs:
         yarn install
     - name: Test
       run: |
-        yarn test --ci --runInBand
+        yarn test --ci --runInBand --coverage
+    - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: javscript
 
   system:
     name: System

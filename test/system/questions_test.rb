@@ -16,6 +16,13 @@ class QuestionsTest < ApplicationSystemTestCase
     @submission.exercise.judge.save
     @student = @submission.user
     sign_in @student
+
+    @orig = Delayed::Worker.delay_jobs
+    Delayed::Worker.delay_jobs = true
+  end
+
+  teardown do
+    Delayed::Worker.delay_jobs = @orig
   end
 
   test 'Can ask question for each line of the available lines of code' do
@@ -91,8 +98,7 @@ class QuestionsTest < ApplicationSystemTestCase
     within thread do
       resolve_button = find('.btn', text: 'Mark as answered')
       resolve_button.click
-      assert_no_css '.question-control-button.question-resolve'
-      # Wait until ajax call is complete
+      assert_no_css '.mdi-comment-question-outline'
     end
 
     assert_equal 1, Question.count, 'There should still only be one question'
@@ -152,17 +158,14 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: @submission.id))
     click_link 'Code'
 
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true
     thread = find('d-thread')
     within thread do
       assert_selector '.mdi-comment-question-outline'
       fake_answer_input = find('input')
       fake_answer_input.click
-      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
       assert_selector '.mdi-comment-processing-outline'
+      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
     end
-    Delayed::Worker.delay_jobs = orig
   end
 
   test 'The question becomes unanswered again when a teacher cancels the reply' do
@@ -173,20 +176,17 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: @submission.id))
     click_link 'Code'
 
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true
     thread = find('d-thread')
     within thread do
       assert_selector '.mdi-comment-question-outline'
       fake_answer_input = find('input')
       fake_answer_input.click
-      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
       assert_selector '.mdi-comment-processing-outline'
+      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
 
       click_button 'Cancel'
       assert_selector '.mdi-comment-question-outline'
       assert q.reload.unanswered?, 'Question should have moved onto unanswered status'
     end
-    Delayed::Worker.delay_jobs = orig
   end
 end

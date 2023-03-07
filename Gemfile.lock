@@ -569,7 +569,7 @@ DEPENDENCIES
   rubyzip (~> 2.3.2)
   selenium-webdriver (~> 4.8.1)
   simplecov (~> 0.21.2)
-  simplecov-cobertura
+  simplecov-cobertura (~> 2.1.0)
   slack-notifier (~> 2.4.0)
   sprockets-rails (~> 3.4.2)
   stackprof (~> 0.2.23)

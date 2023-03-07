@@ -360,4 +360,86 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     assert_no_css 'form.annotation-submission'
   end
+
+  test 'Can reply to an annotation' do
+    create :annotation, submission: @instance, user: @zeus
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    thread = find('d-thread')
+    within thread do
+      assert_selector '.annotation', count: 1
+
+      fake_answer_input = find('input')
+      fake_answer_input.click
+
+      answer = Faker::Lorem.sentence
+      answer_field = find('textarea')
+      answer_field.fill_in with: answer
+
+      click_button 'Reply'
+
+      assert_selector '.annotation', count: 2
+    end
+  end
+
+  test 'Cannot delete an annotation with replies' do
+    annot = create :annotation, submission: @instance, user: @zeus
+    create :annotation, submission: @instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+
+    within 'd-thread' do
+      assert_selector '.annotation', count: 2
+
+      root = first('.annotation')
+      dropdown = root.find('.dropdown')
+      dropdown.click
+      assert_no_selector 'i.mdi.mdi-delete'
+    end
+  end
+
+  test 'Can delete an annotation after deleting all replies' do
+    annot = create :annotation, submission: @instance, user: @zeus
+    create :annotation, submission: @instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    within 'd-thread' do
+      assert_selector '.annotation', count: 2
+
+      child = all('.annotation').last
+      dropdown = child.find('.dropdown')
+      dropdown.click
+      dropdown.find('i.mdi.mdi-delete').click
+      accept_confirm('Are you sure you want to delete this comment?')
+
+      assert_selector '.annotation', count: 1
+      root = first('.annotation')
+      dropdown = root.find('.dropdown')
+      dropdown.click
+      assert_selector 'i.mdi.mdi-delete'
+    end
+  end
+
+  test 'can delete the middle annotation in a thread' do
+    annot = create :annotation, submission: @instance, user: @zeus
+    create :annotation, submission: @instance, user: @zeus, thread_root: annot
+    create :annotation, submission: @instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: @instance.id))
+    click_link 'Code'
+
+    within 'd-thread' do
+      assert_selector '.annotation', count: 3
+
+      child = all('.annotation')[1]
+      dropdown = child.find('.dropdown')
+      dropdown.click
+      dropdown.find('i.mdi.mdi-delete').click
+      accept_confirm('Are you sure you want to delete this comment?')
+
+      assert_selector '.annotation', count: 2
+    end
+  end
 end

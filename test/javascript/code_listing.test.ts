@@ -14,6 +14,7 @@ beforeEach(async () => {
     window.MathJax.typeset = () => "";
 
     document.body.innerHTML = `
+    <div id="modal-container"></div>
     <a href="#" data-bs-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
     <div class="code-table" data-submission-id="54">
     <div id="feedback-table-options" class="feedback-table-options">

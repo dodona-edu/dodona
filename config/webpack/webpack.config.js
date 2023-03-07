@@ -5,7 +5,7 @@ const fs = require("fs");
 const sourceDirectory = "./app/javascript/packs";
 const sourceFiles = fs.readdirSync(sourceDirectory)
     .filter(v => v.endsWith(".js") || v.endsWith(".ts"))
-    .reduce((acc, v) => ({ ...acc, [v]: `${sourceDirectory}/${v}` }), {});
+    .reduce((acc, v) => ({ ...acc, [v.slice(0, -3)]: `${sourceDirectory}/${v}` }), {});
 
 
 const config = {

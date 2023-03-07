@@ -2,10 +2,8 @@ require 'simplecov'
 SimpleCov.start 'rails'
 
 if ENV['CI'] == 'true'
-  require 'codecov'
-  Codecov.pass_ci_if_error = true
-  Codecov.flags = ['rails']
-  SimpleCov.formatter = SimpleCov::Formatter::Codecov
+  require 'simplecov-cobertura'
+  SimpleCov.formatter = SimpleCov::Formatter::CoberturaFormatter
 end
 
 require_relative '../config/environment'

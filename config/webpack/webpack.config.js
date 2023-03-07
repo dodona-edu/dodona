@@ -1,5 +1,12 @@
 const path = require("path");
-const glob = require("glob");
+const fs = require("fs");
+
+// https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
+const sourceDirectory = "./app/javascript/packs";
+const sourceFiles = fs.readdirSync(sourceDirectory)
+    .filter(v => v.endsWith(".js") || v.endsWith(".ts"))
+    .reduce((acc, v) => ({ ...acc, [v]: `${sourceDirectory}/${v}` }), {});
+
 
 const config = {
     mode: "production",
@@ -30,11 +37,7 @@ const config = {
             },
         },
     },
-    // https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
-    entry: glob.sync("./app/javascript/packs/**.{js,ts}").reduce(function (obj, el) {
-        obj[path.parse(el).name] = el;
-        return obj;
-    }, {}),
+    entry: sourceFiles,
     output: {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map",

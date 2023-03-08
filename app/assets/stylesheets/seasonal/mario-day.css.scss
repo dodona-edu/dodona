@@ -1,23 +1,22 @@
 .series-icon.mario-day {
-    .overlay {
-      overflow: visible;
-    }
-  
+  .overlay {
+    overflow: visible;
+  }
+
+  .overlay div {
+    content: "";
+    position: absolute;
+    width: 48px;
+    height: 48px;
+    margin-left: -4px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: -21px;
+  }
+
+  &.completed:not(.deadline-missed) {
     .overlay div {
-      content: "";
-      position: absolute;
-      width: 48px;
-      height: 48px;
-      margin-left: -4px;
-      background-size: contain;
-      background-repeat: no-repeat;
-      top: -21px;
-    }
-  
-    &.completed:not(.deadline-missed) {
-      .overlay div {
-        content: url("seasonal/series_status_overlays/mario.svg");
-      }
+      content: url("seasonal/series_status_overlays/mario.svg");
     }
   }
-  
+}

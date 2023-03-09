@@ -5,7 +5,7 @@ import { screen } from "@testing-library/dom";
 import { SearchField, SearchFieldSuggestion } from "components/search_field";
 import { Label, FilterCollection } from "components/filter_collection_element";
 import { html } from "lit";
-import { searchQuery } from "search";
+import { SearchQuery, searchQuery } from "search";
 
 /**
  * https://github.com/testing-library/dom-testing-library/issues/410#issuecomment-1060917305
@@ -42,13 +42,15 @@ function textContentMatcher(textMatch: string | RegExp): (_content: string, node
 describe("SearchFieldSuggestion", () => {
     let searchFieldSuggestion;
     beforeEach(async () => {
+        const searchQuery = new SearchQuery("test.dodona.be");
         searchFieldSuggestion = await fixture(html`
             <d-search-field-suggestion param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                        type="test"
                                        .paramVal=${(l: Label) => l.id}
                                        filter="ba"
-                                        .multi=${false}>
+                                       .multi=${false}
+                                       .searchQuery=${searchQuery}>
             </d-search-field-suggestion>`) as SearchFieldSuggestion;
     });
 
@@ -68,8 +70,8 @@ describe("SearchFieldSuggestion", () => {
 
     it("should set the query param to the selected label", async () => {
         await userEvent.click(screen.getByText(textContentMatcher("bar")));
-        expect(searchQuery.queryParams.params.get("foo")).toBe("2");
-        expect(searchQuery.queryParams.params.get("filter")).toBe(undefined);
+        expect(searchFieldSuggestion.searchQuery.queryParams.params.get("foo")).toBe("2");
+        expect(searchFieldSuggestion.searchQuery.queryParams.params.get("filter")).toBe(undefined);
     });
 
     it("should display nothing if the filter does not match any label", async () => {
@@ -84,13 +86,15 @@ describe("SearchFieldSuggestion", () => {
         await userEvent.click(screen.getByText(textContentMatcher("bar")));
         searchFieldSuggestion.filter = "ba";
         await nextFrame();
+        expect(searchFieldSuggestion.searchQuery.queryParams.params.get("foo")).toBe("2");
+
+        expect(searchFieldSuggestion.getFilteredLabels().length).toBe(1);
         expect(screen.queryByText(textContentMatcher("bar"))).toBeNull();
     });
 });
 
 describe("SearchField", () => {
-    let searchField: SearchField;
-    beforeEach(async () => {
+    async function searchFieldFactory(): Promise<SearchField> {
         const filterCollections: Record<string, FilterCollection> = {
             first: {
                 param: "foo",
@@ -115,27 +119,32 @@ describe("SearchField", () => {
                 paramVal: (l: Label) => l.id,
             }
         };
+        const searchQuery = new SearchQuery("test.dodona.be");
 
-        searchField = await fixture(html`
+        return await fixture(html`
             <d-search-field placeholder="Search"
                             .filterCollections="${filterCollections}"
+                            .searchQuery=${searchQuery}
             ></d-search-field>
         `);
-    });
+    }
 
     it("should display the placeholder", async () => {
+        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         expect(input.placeholder).toBe("Search");
     });
 
     it("should update the filter query param when the input changes", async () => {
+        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
         await aTimeout(500); // the update is delayed
-        expect(searchQuery.queryParams.params.get("filter")).toBe("foo");
+        expect(searchField.searchQuery.queryParams.params.get("filter")).toBe("foo");
     });
 
     it("should filter the labels", async () => {
+        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
         expect(screen.queryByText(textContentMatcher("bar"))).toBeNull();
@@ -145,21 +154,23 @@ describe("SearchField", () => {
     });
 
     it("should autocomplete the input with the first label on tab", async () => {
+        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo{tab}");
         await aTimeout(500); // the update is delayed
-        expect(searchQuery.queryParams.params.get("filter")).toBeFalsy();
-        expect(searchQuery.queryParams.params.get("foo")).toBe("1");
-        expect(searchQuery.queryParams.params.get("bar")).toBeFalsy();
+        expect(searchField.searchQuery.queryParams.params.get("foo")).toBe("1");
+        expect(searchField.searchQuery.queryParams.params.get("filter")).toBeFalsy();
+        expect(searchField.searchQuery.queryParams.params.get("bar")).toBeFalsy();
     });
 
     it("should reset the filter when a label is selected", async () => {
+        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
         await aTimeout(500); // the update is delayed
-        expect(searchQuery.queryParams.params.get("filter")).toBe("foo");
+        expect(searchField.searchQuery.queryParams.params.get("filter")).toBe("foo");
         await userEvent.click(screen.getByText(textContentMatcher("fool")));
-        expect(searchQuery.queryParams.params.get("filter")).toBeFalsy();
+        expect(searchField.searchQuery.queryParams.params.get("filter")).toBeFalsy();
         expect(input.value).toBe("");
     });
 });

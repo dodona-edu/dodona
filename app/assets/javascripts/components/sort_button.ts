@@ -1,7 +1,7 @@
 import "search.ts";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { searchQuery } from "search";
+import { searchQuery, SearchQuery } from "search";
 
 /**
  * This class is made to manage the currently active sort parameter in the search query
@@ -10,15 +10,17 @@ export class SortQuery {
     active_column: string;
     ascending: boolean;
     listeners: Array<(c: string, a: boolean) => void> = [];
+    searchQuery: SearchQuery;
 
-    constructor() {
-        this.active_column = searchQuery.queryParams.params.get("order_by[column]");
-        this.ascending = searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
-        searchQuery.queryParams.subscribeByKey("order_by[column]", (k, o, n) => {
+    constructor(_searchQuery: SearchQuery = searchQuery) {
+        this.searchQuery = _searchQuery;
+        this.active_column = this.searchQuery.queryParams.params.get("order_by[column]");
+        this.ascending = this.searchQuery.queryParams.params.get("order_by[direction]") === "ASC";
+        this.searchQuery.queryParams.subscribeByKey("order_by[column]", (k, o, n) => {
             this.active_column = n;
             this.notify();
         });
-        searchQuery.queryParams.subscribeByKey("order_by[direction]", (k, o, n) => {
+        this.searchQuery.queryParams.subscribeByKey("order_by[direction]", (k, o, n) => {
             this.ascending = n === "ASC";
             this.notify();
         });
@@ -44,8 +46,8 @@ export class SortQuery {
         this.active_column = column;
         this.ascending = ascending;
         if (this.active_column) {
-            searchQuery.queryParams.updateParam("order_by[column]", this.active_column);
-            searchQuery.queryParams.updateParam("order_by[direction]", this.getDirectionValue());
+            this.searchQuery.queryParams.updateParam("order_by[column]", this.active_column);
+            this.searchQuery.queryParams.updateParam("order_by[direction]", this.getDirectionValue());
         }
     }
 }
@@ -71,11 +73,21 @@ export class SortButton extends LitElement {
     default: string;
     @property({ type: Boolean })
     disabled = false;
+    @property({ type: Object })
+    sortQuery: SortQuery = sortQuery;
 
     active_column: string;
     ascending: boolean;
 
     update(changedProperties: Map<string, unknown>): void {
+        if (changedProperties.has("sortQuery")) {
+            this.ascending = this.sortQuery.ascending;
+            this.active_column = this.sortQuery.active_column;
+            this.sortQuery.subscribe((c, a) => {
+                this.active_column = c;
+                this.ascending = a;
+            });
+        }
         if ( changedProperties.has("disabled") ) {
             if (!this.disabled) {
                 this.addEventListener("click", this.sort);
@@ -146,17 +158,17 @@ export class SortButton extends LitElement {
 
     sort(): void {
         if (!this.isActive() || !this.ascending) {
-            sortQuery.sortBy(this.column, true);
+            this.sortQuery.sortBy(this.column, true);
         } else {
-            sortQuery.sortBy(this.column, false);
+            this.sortQuery.sortBy(this.column, false);
         }
     }
 
     constructor() {
         super();
-        this.ascending = sortQuery.ascending;
-        this.active_column = sortQuery.active_column;
-        sortQuery.subscribe((c, a) => {
+        this.ascending = this.sortQuery.ascending;
+        this.active_column = this.sortQuery.active_column;
+        this.sortQuery.subscribe((c, a) => {
             this.active_column = c;
             this.ascending = a;
         });

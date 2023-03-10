@@ -1,6 +1,3 @@
-
-// Write tests for the dropdown filter component in the same style as the search_field tests
-
 import "components/dropdown_filter";
 import { DropdownFilter } from "components/dropdown_filter";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";

@@ -1,5 +1,5 @@
 import "components/search_field";
-import { aTimeout, fixture, nextFrame, oneEvent } from "@open-wc/testing-helpers";
+import { aTimeout, fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { SearchField, SearchFieldSuggestion } from "components/search_field";

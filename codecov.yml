@@ -1,0 +1,15 @@
+# When modifying this file, please validate using
+# curl -X POST --data-binary @codecov.yml https://codecov.io/validate
+
+coverage:
+  status:
+    project:
+      rails:
+        flags:
+          - rails
+      system:
+        flags:
+          - system
+      javascript:
+        flags:
+          - javascript

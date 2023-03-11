@@ -18,7 +18,6 @@ export type Option = {label: string, value: string, extra?: string};
  *          If the user input does not match any label, the value sent to the server wil be ""
  *          The extra string is added in the options and also used to match the input
  * @prop {String} value - the initial value for this field
- * @prop {String} filter - the initial filter value for this field
  * @prop {String} placeholder - placeholder text shown in input
  *
  * @fires input - on value change, event details contain {label: string, value: string}
@@ -28,7 +27,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     @property({ type: String })
     name: string;
     @property({ type: Array })
-    options: Option[];
+    options: Option[] = [];
     @property({ type: String })
     value: string;
     @property({ type: String })
@@ -45,7 +44,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     set filter(value: string) {
         this._filter = value;
-        this.value = this.options.find(o => this.filter === o.label)?.value || "";
+        this.value = this.options?.find(o => this.filter === o.label)?.value || "";
         this.fireEvent();
     }
 
@@ -58,7 +57,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
             // If we can find a result amongst the filtered options
             // dispatch an event
             if (!this.value) {
-                this.value = this.options.find(o => this.filter === o.label)?.value || "";
+                this.value = this.options?.find(o => this.filter === o.label)?.value || "";
                 if (this.value) {
                     this.fireEvent();
                 }

@@ -49,8 +49,7 @@
     <div class="field form-group row">
       <div class="offset-sm-3 col-sm-6">
         <div class="form-check">
-          <input type="hidden" value="1" name="series[progress_enabled]">
-          <%= check_box_tag "series[progress_enabled]", "0", !@series.progress_enabled, class: "form-check-input" %>
+          <%= f.check_box :progress_enabled, {checked: !@series.progress_enabled, class: "form-check-input" }, '0', '1' %>
           <%= f.label :progress_enabled, t('.class_progress_disable'), class: 'form-check-label' %>
         </div>
       </div>
@@ -58,24 +57,10 @@
         <%= t('.class_progress_disable_help') %>
       </span>
     </div>
-  <% if series.course.institution == Institution.first %>
     <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
         <div class="form-check">
-          <%= f.check_box :indianio_support, class: "form-check-input" %>
-          <%= f.label :indianio_support, Series.human_attribute_name(:indianio_support), class:"form-check-label" %>
-        </div>
-      </div>
-      <span class="help-block offset-sm-3 col-sm-6">
-        <%= t '.indianio-support-help' %>
-      </span>
-    </div>
-  <% end %>
-    <div class="field form-group row">
-      <div class="col-sm-6 offset-sm-3">
-        <div class="form-check">
-          <input type="hidden" value="1" name="series[activities_visible]">
-          <%= check_box_tag "series[activities_visible]", "0", !@series.activities_visible, class: "form-check-input" %>
+          <%= f.check_box :activities_visible, {checked: !@series.activities_visible, class: "form-check-input" }, '0', '1' %>
           <%= f.label :activities_visible, t('.hide_activities'), class:"form-check-label" %>
         </div>
       </div>
@@ -86,7 +71,6 @@
     <div class="field form-group row">
       <div class="col-sm-6 offset-sm-3">
         <div class="form-check">
-          <input type="hidden" value="1" name="series[activities_visible]">
           <%= f.check_box :activity_numbers_enabled, class: "form-check-input" %>
           <%= f.label :activity_numbers_enabled, t('.activity_numbers_enabled'), class:"form-check-label" %>
         </div>

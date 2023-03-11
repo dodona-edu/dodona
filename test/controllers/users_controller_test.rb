@@ -34,7 +34,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     get user_url(@instance, format: :json)
 
     assert_response :success
-    user_json = JSON.parse(response.body)
+    user_json = response.parsed_body
     assert user_json.key?('subscribed_courses')
 
     course_ids = user_json['subscribed_courses'].pluck('id')

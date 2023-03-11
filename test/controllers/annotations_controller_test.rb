@@ -65,7 +65,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in admin
     get questions_url(format: :json)
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by exercise name' do
@@ -80,7 +80,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     get questions_url, params: { filter: 'abcd', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to search by user name' do
@@ -93,7 +93,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     get questions_url, params: { filter: 'abcd', everything: true, format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to filter by status' do
@@ -106,7 +106,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
 
     get questions_url, params: { question_state: 'answered', format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to filter by course' do
@@ -120,7 +120,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     # Filter mode
     get questions_url, params: { course_id: s1.course.id, format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'should be able to filter by user' do
@@ -132,7 +132,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     # Filter mode
     get questions_url, params: { user_id: s1.user_id, format: :json }
 
-    assert_equal 1, JSON.parse(response.body).count
+    assert_equal 1, response.parsed_body.count
   end
 
   test 'annotation index should contain all annotations user can see' do
@@ -149,15 +149,15 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json)
-    assert_equal 5, JSON.parse(response.body).count
+    assert_equal 5, response.parsed_body.count
 
     sign_in course_admin
     get annotations_url(format: :json)
-    assert_equal 3, JSON.parse(response.body).count
+    assert_equal 3, response.parsed_body.count
 
     sign_in user
     get annotations_url(format: :json)
-    assert_equal 3, JSON.parse(response.body).count
+    assert_equal 3, response.parsed_body.count
   end
 
   test 'annotation index should be filterable by user' do
@@ -171,10 +171,10 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json, user_id: user.id)
-    assert_equal 3, JSON.parse(response.body).count
+    assert_equal 3, response.parsed_body.count
 
     get annotations_url(format: :json, user_id: other_user.id)
-    assert_equal 2, JSON.parse(response.body).count
+    assert_equal 2, response.parsed_body.count
   end
 
   test 'user who created submission should be able to see the annotation' do

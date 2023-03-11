@@ -16,9 +16,9 @@
         <% end %>
         ...</span>
     <% elsif labels.any? %>
-      <% labels.each do |label| %>
+      <% labels.each_with_index do |label, index| %>
         <d-filter-button param="labels" value="<%= label.name %>" multi>
-          <%= label.name %>,
+          <%= label.name %><%= "," unless index == labels.count - 1 %>
         </d-filter-button>
       <% end %>
     <% end %>

@@ -4,7 +4,6 @@ nl:
       description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
       visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
-      indianio-support-help: Laat toe dat oplossingen van studenten kunnen gedownload worden door Indianio.
       class_progress_disable: "Verberg de \"Voortgang groep\" visualisatie voor studenten"
       class_progress_disable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
       hide_activities: Verberg leeractiviteiten
@@ -20,13 +19,12 @@ nl:
       title: Reeks aanmaken
     show:
       copy: 'Om te kopiëren: Ctrl+c, Enter'
-      indianio_token: 'Indianio-token'
       token_link: 'Geheime link'
       series: Reeks
       activities: Leeractiviteiten
       download_submissions: Mijn oplossingen exporteren
       download_all_solutions: Oplossingen van studenten exporteren
-      make_visible_html: "<a href=%{series_url} data-method=\"patch\">Maak zichtbaar</a> voor studenten."
+      make_visible_text: "Maak zichtbaar voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       activities_not_visible: De leeractiviteiten in deze reeks zijn niet zichtbaar voor studenten!
@@ -49,7 +47,6 @@ nl:
       no_activities_bis: Gebruik de zoekfunctie hieronder om aan de slag te gaan.
       remove_activity: leeractiviteit verwijderen
       confidential: Geheime links en tokens
-      indianio-help: Kopieer dit token en plak het in Indianio om Indianio toe te laten oplossingen van studenten te downloaden voor deze reeks.
       access-link: Geheime link
       access-help: Als de zichtbaarheid van de reeks op verborgen staat ingesteld, dan krijgen studenten met deze geheime link toegang.
     delete:

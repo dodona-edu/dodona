@@ -4,7 +4,6 @@ en:
       description-help_html: Adding a description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting is supported.
       visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
-      indianio-support-help: Allow students' solutions to be extracted by Indianio.
       class_progress_disable: 'Hide the "Class progress" visualisation for students'
       class_progress_disable_help: "This visualisation is an added value for students, but teachers may wish to disable it for exams."
       hide_activities: "Hide learning activities"
@@ -20,13 +19,12 @@ en:
       title: Create series
     show:
       copy: "To copy to clipboard: Ctrl+c, Enter"
-      indianio_token: "Indianio token"
       token_link: "Secret link"
       series: Series
       activities: Learning activities
       download_submissions: Export my submissions
       download_all_solutions: Export student submissions
-      make_visible_html: "<a href=%{series_url} data-method=\"patch\">Make visible</a> for students."
+      make_visible_text: Make visible for students.
       series_not_visible: This series is only visible for students using the secret link!
       series_not_accessible: This series is not accessible to students!
       activities_not_visible: The learning activities in this series are not visible to students!
@@ -49,7 +47,6 @@ en:
       no_activities_bis: Get started by using the search box below.
       remove_activity: remove activity
       confidential: Confidential information
-      indianio-help: Copy this token and paste it in Indianio to allow Indianio to download students' submissions for this series.
       access-link: Secret link
       access-help: If the visibility of the series is set to hidden, students will get access to it when using this secret link.
     delete:

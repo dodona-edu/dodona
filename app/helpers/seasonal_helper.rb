@@ -12,7 +12,7 @@ module SeasonalHelper
   end
 
   def pi_day(current_time)
-    current_time.month == 3 && current_time.day == 13
+    current_time.month == 3 && current_time.day == 14
   end
 
   # returns seasonal class

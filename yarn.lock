@@ -1558,10 +1558,10 @@
     "@lit/reactive-element" "^1.0.0"
     "@open-wc/dedupe-mixin" "^1.3.0"
 
-"@open-wc/testing-helpers@^2.1.4":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.1.4.tgz#4b439442ecb1ea3fbcbb1ef76e8717574d78dc97"
-  integrity sha512-iZJxxKI9jRgnPczm8p2jpuvBZ3DHYSLrBmhDfzs7ol8vXMNt+HluzM1j1TSU95MFVGnfaspvvt9fMbXKA7cNcA==
+"@open-wc/testing-helpers@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.2.0.tgz#cba3145d3b7ad3984183d340df68e83207733cef"
+  integrity sha512-4TGG5WLHeHyCgki5qsLTDZahA2gaJA0W8uc4ribNwR77vmYhEZMgfkgeCmaACoMQ9dfUCA2LOdnHtlxeR9Klyw==
   dependencies:
     "@open-wc/scoped-elements" "^2.1.3"
     lit "^2.0.0"

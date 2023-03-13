@@ -52,6 +52,11 @@ jobs:
         bin/rake css:build
         yarn build:js
         bundle exec rails test
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: rails
 
   javascript:
     name: JavaScript
@@ -68,7 +73,12 @@ jobs:
         yarn install
     - name: Test
       run: |
-        yarn test --ci --runInBand
+        yarn test --ci --runInBand --coverage
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: javascript
 
   system:
     name: System
@@ -121,3 +131,8 @@ jobs:
       with:
         name: screenshots-failure
         path: tmp/capybara
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        flags: system

@@ -2004,10 +2004,10 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.12.tgz#920447fdd78d76b19de0438b7f60df3c4a80bf1c"
   integrity sha512-WwA1MW0++RfXmCr12xeYOOC5baSC9mSb0ZqCquFzKhcoF4TvHu5MKOuXsncgZcpVFhB1pXd5hZmM0ryAoCp12A==
 
-"@types/serviceworker@^0.0.64":
-  version "0.0.64"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.64.tgz#48c4bdf0882d754bbecf183ba7c998580359815f"
-  integrity sha512-zDywAaAAOvYdCAQomyaMlW/D5u74mAHMfSOO5V67jYKhE68tE9da6tRHJFpFzkUlDVvHQ/4inBKvqWdXBc4vSg==
+"@types/serviceworker@^0.0.65":
+  version "0.0.65"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.65.tgz#333d0c1dbbe1de60a7d9fca127ab42977dbe475a"
+  integrity sha512-3Pwcoesimmnvx0/01GtXxMOuzNJUgk3JnqK6EzUwD+yTde4NqjHvd97wtvduj63uUBmL4cAuzVDL5cGsl1ZZtA==
 
 "@types/sizzle@*":
   version "2.3.3"

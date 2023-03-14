@@ -94,7 +94,7 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
         return isBetaCourse(getCourseId()) && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
             <li>
                 <a class="dropdown-item" @click="${() => this.showModal()}">
-                    <i class="mdi mdi-content-save"></i>
+                    <i class="mdi mdi-content-save mdi-18"></i>
                     ${I18n.t("js.saved_annotation.new.button_title")}
                 </a>
             </li>

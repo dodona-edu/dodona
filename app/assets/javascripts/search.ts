@@ -254,5 +254,4 @@ export class SearchQuery {
     }
 }
 
-dodona.searchQuery = dodona.searchQuery || new SearchQuery();
-export const searchQuery = dodona.searchQuery;
+export const searchQuery = new SearchQuery();

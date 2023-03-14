@@ -9,7 +9,7 @@ class SeriesPolicy < ApplicationPolicy
              .or(scope.where(course: { course_memberships: { status: :course_admin, user_id: user.id } }))
              .distinct
       else
-        scope.where(visibility: :visible)
+        scope.where(visibility: :open)
       end
     end
   end

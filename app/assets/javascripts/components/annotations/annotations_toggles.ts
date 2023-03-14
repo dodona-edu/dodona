@@ -1,9 +1,10 @@
 import { customElement } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { stateMixin } from "state/StateMixin";
-import { html, TemplateResult } from "lit";
+import { html, TemplateResult, PropertyValues } from "lit";
 import { AnnotationVisibilityOptions, getAnnotationVisibility, setAnnotationVisibility } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
+import { initTooltips } from "util.js";
 
 /**
  * This component represents the toggles to show/hide annotations.
@@ -14,6 +15,11 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 @customElement("d-annotations-toggles")
 export class AnnotationsToggles extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     state = ["getAnnotationVisibility"];
+
+    protected update(changedProperties: PropertyValues): void {
+        super.update(changedProperties);
+        initTooltips(this);
+    }
 
     get annotationVisibility(): AnnotationVisibilityOptions {
         return getAnnotationVisibility();

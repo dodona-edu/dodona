@@ -135,7 +135,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
 gem 'stackprof', '~> 0.2.23'
 
-gem 'ddtrace', '~> 1.9.0'
+gem 'ddtrace', '~> 1.10.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -163,7 +163,7 @@ end
 group :test do
   # For measuring coverage
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.21.2', require: false
+  gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
   gem 'test-prof', '~> 1.2.0'
 

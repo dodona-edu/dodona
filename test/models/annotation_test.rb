@@ -135,8 +135,20 @@ class AnnotationTest < ActiveSupport::TestCase
     end
 
     run_delayed_jobs
-
-    q.update(question_state: :in_progress)
     assert q.reload.unanswered?
+  end
+
+  test 'should not reset question state to unanswered if it is answered before delayed job execution' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    with_delayed_jobs do
+      q.update(question_state: :in_progress)
+      assert q.reload.in_progress?
+      q.update(question_state: :answered)
+    end
+
+    run_delayed_jobs
+    assert q.reload.answered?
   end
 end

@@ -71,7 +71,7 @@ describe("SortButton", () => {
         expect(sortQuery.ascending).toBe(true);
     });
 
-    it("Also updates the search query", async () => {
+    it("also updates the search query", async () => {
         await userEvent.click(screen.getByText("Bar"));
         expect(sortQuery.searchQuery.queryParams.params.get("order_by[column]")).toBe("bar");
         expect(sortQuery.searchQuery.queryParams.params.get("order_by[direction]")).toBe("ASC");

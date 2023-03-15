@@ -23,18 +23,18 @@ describe("DropdownFilter", () => {
         dropdownButton = screen.getByRole("button");
     });
 
-    it("Should always display all labels", async () => {
+    it("should always display all labels", async () => {
         expect(queryByText(dropdownMenu, "bar")).not.toBeNull();
         expect(queryByText(dropdownMenu, "baz")).not.toBeNull();
         expect(queryByText(dropdownMenu, "fool")).not.toBeNull();
     });
 
-    it("Should set the query param to the selected label", async () => {
+    it("should set the query param to the selected label", async () => {
         await userEvent.click(getByText(dropdownMenu, "bar"));
         expect(standaloneDropdownFilter.searchQuery.queryParams.params.get("foo")).toBe("2");
     });
 
-    it("Should mark selected labels as active", async () => {
+    it("should mark selected labels as active", async () => {
         await userEvent.click(getByText(dropdownMenu, "bar"));
         expect(getByText(dropdownMenu, "bar").classList).toContain("active");
     });

@@ -22,18 +22,18 @@ describe("DropdownFilter", () => {
             </d-dropdown-filter>`) as DropdownFilter;
     });
 
-    it("Should always display all labels", async () => {
+    it("should always display all labels", async () => {
         expect(screen.queryByText("bar")).not.toBeNull();
         expect(screen.queryByText("baz")).not.toBeNull();
         expect(screen.queryByText("fool")).not.toBeNull();
     });
 
-    it("Should set the query param to the selected label", async () => {
+    it("should set the query param to the selected label", async () => {
         await userEvent.click(screen.getByText("bar"));
         expect(dropdownFilter.searchQuery.queryParams.params.get("foo")).toBe("2");
     });
 
-    it("Should mark selected labels as active", async () => {
+    it("should mark selected labels as active", async () => {
         await userEvent.click(screen.getByText("bar"));
         const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(true);
@@ -75,7 +75,7 @@ describe("DropdownFilter", () => {
         expect(button.querySelectorAll(".accent-pink").length).toBe(2);
     });
 
-    it("Should display a search field if more then 15 labels are present", async () => {
+    it("should display a search field if more then 15 labels are present", async () => {
         expect(dropdownFilter.querySelector("input[type='text']")).toBeNull();
         dropdownFilter.labels = Array.from({ length: 16 }, (_, i) => {
             return { name: `label ${i}`, id: `${i}` };
@@ -84,7 +84,7 @@ describe("DropdownFilter", () => {
         expect(dropdownFilter.querySelector("input[type='text']")).not.toBeNull();
     });
 
-    it("Should filter the labels based on the input field", async () => {
+    it("should filter the labels based on the input field", async () => {
         dropdownFilter.labels = Array.from({ length: 16 }, (_, i) => {
             return { name: `label ${i}`, id: `${i}` };
         });
@@ -96,7 +96,7 @@ describe("DropdownFilter", () => {
         expect(screen.queryByText("label 14")).not.toBeNull();
     });
 
-    it("Should update if the search query changes", async () => {
+    it("should update if the search query changes", async () => {
         dropdownFilter.searchQuery.queryParams.updateParam("foo", "2");
         await nextFrame();
         const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;

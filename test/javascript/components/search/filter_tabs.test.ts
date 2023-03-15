@@ -14,18 +14,18 @@ describe("FilterTabs", () => {
                                        ></d-filter-tabs>`);
     });
 
-    it("Should always display all labels", async () => {
+    it("should always display all labels", async () => {
         expect(screen.queryByText("bar")).not.toBeNull();
         expect(screen.queryByText("baz")).not.toBeNull();
         expect(screen.queryByText("fool")).not.toBeNull();
     });
 
-    it("Should set the query param to the selected label", async () => {
+    it("should set the query param to the selected label", async () => {
         await userEvent.click(screen.getByText("bar"));
         expect(filterTabs.searchQuery.queryParams.params.get("tab")).toBe("2");
     });
 
-    it("Should mark selected labels as active", async () => {
+    it("should mark selected labels as active", async () => {
         await userEvent.click(screen.getByText("bar"));
         expect(screen.getByText("bar").classList).toContain("active");
     });

@@ -37,9 +37,7 @@ import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import "components/saved_annotations/saved_annotation_list";
 import "components/saved_annotations/saved_annotations_sidecard";
-import "components/search/standalone-dropdown-filter";
-import "components/search/progress_bar";
-import "components/search/loading_bar";
+import "components/progress_bar";
 
 // Initialize clipboard.js
 initClipboard();

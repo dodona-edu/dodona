@@ -95,7 +95,7 @@ class Annotation < ApplicationRecord
   def previous_annotation
     return nil if thread_root.nil?
 
-    [thread_root, thread_root&.responses&.where('created_at < ?', created_at)].flatten.last
+    [thread_root, thread_root&.responses&.where(created_at: ...created_at)].flatten.last
   end
 
   def answer_previous_question

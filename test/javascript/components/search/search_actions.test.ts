@@ -71,7 +71,7 @@ describe("SearchActions", () => {
         jest.spyOn(window, "confirm").mockImplementation(() => true);
         jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
             json: () => Promise.resolve({ js: "window.alert('test')" }),
-        } as Response ));
+        } as Response));
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         jest.spyOn(window, "alert").mockImplementation(() => {});
         await userEvent.click(screen.queryByText("bar"));

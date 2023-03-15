@@ -5,7 +5,7 @@ import { screen } from "@testing-library/dom";
 import { SearchField, SearchFieldSuggestion } from "components/search_field";
 import { Label, FilterCollection } from "components/filter_collection_element";
 import { html } from "lit";
-import { SearchQuery, searchQuery } from "search";
+import { SearchQuery } from "search";
 
 /**
  * https://github.com/testing-library/dom-testing-library/issues/410#issuecomment-1060917305

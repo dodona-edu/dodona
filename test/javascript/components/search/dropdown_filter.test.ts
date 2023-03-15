@@ -35,23 +35,23 @@ describe("DropdownFilter", () => {
 
     it("Should mark selected labels as active", async () => {
         await userEvent.click(screen.getByText("bar"));
-        const input = getByLabelText( dropdownFilter, "bar") as HTMLInputElement;
+        const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(true);
     });
 
     it("should unchecked the selected label when clicked again", async () => {
         await userEvent.click(screen.getByText("bar"));
         await userEvent.click(screen.getByText("bar"));
-        const input = getByLabelText( dropdownFilter, "bar") as HTMLInputElement;
+        const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(false);
     });
 
     it("should uncheck the selected label when another label is selected", async () => {
         await userEvent.click(screen.getByText("bar"));
         await userEvent.click(screen.getByText("baz"));
-        const input = getByLabelText( dropdownFilter, "bar") as HTMLInputElement;
+        const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(false);
-        const input2 = getByLabelText( dropdownFilter, "baz") as HTMLInputElement;
+        const input2 = getByLabelText(dropdownFilter, "baz") as HTMLInputElement;
         expect(input2.checked).toBe(true);
     });
 
@@ -60,9 +60,9 @@ describe("DropdownFilter", () => {
         await nextFrame();
         await userEvent.click(screen.getByText("bar"));
         await userEvent.click(screen.getByText("baz"));
-        const input = getByLabelText( dropdownFilter, "bar") as HTMLInputElement;
+        const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(true);
-        const input2 = getByLabelText( dropdownFilter, "baz") as HTMLInputElement;
+        const input2 = getByLabelText(dropdownFilter, "baz") as HTMLInputElement;
         expect(input2.checked).toBe(true);
     });
 
@@ -99,7 +99,7 @@ describe("DropdownFilter", () => {
     it("Should update if the search query changes", async () => {
         dropdownFilter.searchQuery.queryParams.updateParam("foo", "2");
         await nextFrame();
-        const input = getByLabelText( dropdownFilter, "bar") as HTMLInputElement;
+        const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(true);
     });
 });

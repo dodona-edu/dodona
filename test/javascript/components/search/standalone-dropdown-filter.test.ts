@@ -39,7 +39,7 @@ describe("DropdownFilter", () => {
         expect(getByText(dropdownMenu, "bar").classList).toContain("active");
     });
 
-    it("should not unchecked the selected label when clicked again", async () => {
+    it("should not uncheck the selected label when clicked again", async () => {
         await userEvent.click(getByText(dropdownMenu, "bar"));
         await userEvent.click(getByText(dropdownMenu, "bar"));
         expect(getByText(dropdownMenu, "bar").classList).toContain("active");

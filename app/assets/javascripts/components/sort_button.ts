@@ -164,16 +164,6 @@ export class SortButton extends LitElement {
         }
     }
 
-    constructor() {
-        super();
-        this.ascending = this.sortQuery.ascending;
-        this.active_column = this.sortQuery.active_column;
-        this.sortQuery.subscribe((c, a) => {
-            this.active_column = c;
-            this.ascending = a;
-        });
-    }
-
     render(): TemplateResult {
         return html`
             <slot></slot>

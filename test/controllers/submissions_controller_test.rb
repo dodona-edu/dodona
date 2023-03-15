@@ -232,15 +232,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     create(:series, :with_submissions)
 
     # in test env, default and export queues are evaluated inline
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true # delay all
-
-    # should only enqueue a single job which will then enqueue all other jobs
-    assert_jobs_enqueued(1) do
-      rejudge_submissions
+    with_delayed_jobs do
+      # should only enqueue a single job which will then enqueue all other jobs
+      assert_jobs_enqueued(1) do
+        rejudge_submissions
+      end
     end
-
-    Delayed::Worker.delay_jobs = orig
   end
 
   test 'should rejudge all submissions' do

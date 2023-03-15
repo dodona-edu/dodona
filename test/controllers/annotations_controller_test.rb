@@ -488,48 +488,47 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     admin = @submission.course.administrating_members[0]
     random = create :user
 
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true
-    users = [[zeus, true], [staff, false], [admin, true], [random, false]]
-    users.each do |user, valid|
-      sign_in user
+    with_delayed_jobs do
+      users = [[zeus, true], [staff, false], [admin, true], [random, false]]
+      users.each do |user, valid|
+        sign_in user
 
-      # In progress -> in progress
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :in_progress
-        },
-        format: :json
-      }
-      assert_response :forbidden
+        # In progress -> in progress
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :in_progress
+          },
+          format: :json
+        }
+        assert_response :forbidden
 
-      # In progress -> answered
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :answered
-        },
-        format: :json
-      }
-      assert_response valid ? :ok : :forbidden
+        # In progress -> answered
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :answered
+          },
+          format: :json
+        }
+        assert_response valid ? :ok : :forbidden
 
-      # In progress -> unanswered
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :unanswered
-        },
-        format: :json
-      }
-      assert_response valid ? :ok : :forbidden
+        # In progress -> unanswered
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :unanswered
+          },
+          format: :json
+        }
+        assert_response valid ? :ok : :forbidden
 
-      sign_out user
+        sign_out user
+      end
     end
-    Delayed::Worker.delay_jobs = orig
   end
 
   test 'questions cannot transition if logged out' do

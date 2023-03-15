@@ -124,4 +124,19 @@ class AnnotationTest < ActiveSupport::TestCase
     assert q2.reload.answered?
     assert q3.reload.answered?
   end
+
+  test 'a question that is set to in progress transitions back to unanswered after delayed job execution' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    with_delayed_jobs do
+      q.update(question_state: :in_progress)
+      assert q.reload.in_progress?
+    end
+
+    run_delayed_jobs
+
+    q.update(question_state: :in_progress)
+    assert q.reload.unanswered?
+  end
 end

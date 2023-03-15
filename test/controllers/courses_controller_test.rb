@@ -801,20 +801,19 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'question page title is correct' do
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true
-    add_admins
-    sign_in @admins.first
-    get questions_course_path(@course)
-    assert_select 'title', /^([^0-9]*)$/
+    with_delayed_jobs do
+      add_admins
+      sign_in @admins.first
+      get questions_course_path(@course)
+      assert_select 'title', /^([^0-9]*)$/
 
-    submission = create :submission, course: @course
-    create :question, question_state: :answered, submission: submission
-    create :question, question_state: :unanswered, submission: submission
-    create :question, question_state: :in_progress, submission: submission
-    get questions_course_path(@course)
-    assert_select 'title', /\(1\)/
-    Delayed::Worker.delay_jobs = orig
+      submission = create :submission, course: @course
+      create :question, question_state: :answered, submission: submission
+      create :question, question_state: :unanswered, submission: submission
+      create :question, question_state: :in_progress, submission: submission
+      get questions_course_path(@course)
+      assert_select 'title', /\(1\)/
+    end
   end
 
   test 'Icalendar link exports valid and correct ics file' do

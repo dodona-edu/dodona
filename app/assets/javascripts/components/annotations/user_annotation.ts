@@ -127,7 +127,12 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                                 <i class="mdi mdi-dots-horizontal text-muted"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                 <li>
+                                <d-new-saved-annotation
+                                    from-annotation-id="${this.data.id}"
+                                    annotation-text="${this.data.annotation_text}"
+                                    .savedAnnotationId="${this.data.saved_annotation_id}">
+                                </d-new-saved-annotation>
+                                <li>
                                     <a class="dropdown-item" @click="${() => this.editing = true}">
                                         <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
                                     </a>
@@ -139,11 +144,6 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                                         </a>
                                     </li>
                                 ` : ""}
-                                <d-new-saved-annotation
-                                    from-annotation-id="${this.data.id}"
-                                    annotation-text="${this.data.annotation_text}"
-                                    .savedAnnotationId="${this.data.saved_annotation_id}">
-                                </d-new-saved-annotation>
                             </ul>
                         </div>
                     ` : ""}

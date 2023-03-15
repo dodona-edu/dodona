@@ -23,18 +23,15 @@ import { SearchQuery } from "search";
 function textContentMatcher(textMatch: string | RegExp): (_content: string, node: Element) => boolean {
     // https://stackoverflow.com/questions/42920985/textcontent-without-spaces-from-formatting-text
     const cleanupExcessWhitespace: (string) => string = (text: string) => text.replace(/[\n\r]+|[\s]{2,}/g, " ").trim();
-    const hasText = (typeof textMatch === "string") ?
-        (node: Element) => cleanupExcessWhitespace(node.textContent) === textMatch :
-        (node: Element) => textMatch.test(cleanupExcessWhitespace(node.textContent));
+    const matchText = typeof textMatch === "string" ? text => text === textMatch : text => textMatch.test(text);
+    const hasText: (node: Element) => boolean = node => matchText(cleanupExcessWhitespace(node.textContent));
 
     return (_content: string, node: Element) => {
         if (!hasText(node)) {
             return false;
         }
 
-        const childrenDontHaveText = Array.from(node?.children || []).every(child => !hasText(child));
-
-        return childrenDontHaveText;
+        return Array.from(node?.children || []).every(child => !hasText(child));
     };
 }
 

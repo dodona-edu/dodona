@@ -29,7 +29,7 @@ export class AnnotationsToggles extends i18nMixin(stateMixin(ShadowlessLitElemen
         return html`
             <span class="diff-switch-buttons switch-buttons">
                 <span>${I18n.t("js.annotations.toggles.title")}</span>
-                <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-bs-toggle="buttons">
+                <div class="btn-group btn-toggle" role="group" aria-label="${I18n.t("js.annotations.toggles.title")}" data-bs-toggle="buttons">
                     <button class="btn annotation-toggle ${this.annotationVisibility === "all" ? "active" : ""}"
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"

@@ -185,3 +185,15 @@ center img {
     padding-top: 0;
   }
 }
+
+code {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+
+  d-copy-button {
+    position: absolute;
+    right: 0;
+    top: -8px;
+  }
+}

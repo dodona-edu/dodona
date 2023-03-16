@@ -3,6 +3,8 @@ import { initTooltips, updateURLParameter, fetch } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
+import { render } from "lit";
+import { CopyButton } from "components/copy_button";
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -110,9 +112,23 @@ function initMathJax(): void {
     };
 }
 
+function initCodeFragments(): void {
+    const codeElements = document.querySelectorAll("code");
+    codeElements.forEach(codeElement => {
+        const code = codeElement.textContent;
+
+        const copyButton = new CopyButton();
+        copyButton.code = code;
+
+        render(copyButton, codeElement, { renderBefore: codeElement.firstChild });
+        initTooltips(codeElement);
+    });
+}
+
 function initExerciseDescription(): void {
     initLightboxes();
     centerImagesAndTables();
+    initCodeFragments();
 }
 
 function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string): void {

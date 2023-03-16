@@ -124,11 +124,14 @@ class ActivitiesController < ApplicationController
       @submissions = @activity.submissions.includes(:annotations)
       @submissions = @submissions.in_course(@course) if @course.present? && current_user&.member_of?(@course)
       @submissions = @submissions.of_user(current_user) if current_user
-      @submissions = policy_scope(@submissions).paginate(page: parse_pagination_param(params[:page]))
+      @submissions = policy_scope(@submissions)
       if params[:edit_submission]
         @edit_submission = Submission.find(params[:edit_submission])
         authorize @edit_submission, :edit?
+      elsif @submissions.any?
+        @edit_submission = @submissions.first
       end
+      @submissions = @submissions.paginate(page: parse_pagination_param(params[:page]))
       if params[:from_solution]
         @solution = @activity.solutions[params[:from_solution]]
         authorize @activity, :info?

@@ -94,7 +94,7 @@ nl:
         back_to_course_actionable: Ga terug naar de cursus
       mark_as_read: Markeren als gelezen
       read_at: "Gelezen op %{timestamp}"
-      preloaded_info_html: We hebben jouw laatste oplossing <a href="%{path}">#%{number}</a> ingeladen in de editor.
+      preloaded_info: We hebben jouw laatste oplossing ingeladen in de editor.
       preloaded_clear: Maak de editor leeg.
       preloaded_restore: Herstel de boilerplate-code.
     series_activities_add_table:

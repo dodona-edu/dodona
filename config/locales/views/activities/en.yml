@@ -94,6 +94,9 @@ en:
         back_to_course_actionable: Go back to course
       mark_as_read: Mark as read
       read_at: "Marked as read on %{timestamp}"
+      preloaded_info_html: "We have preloaded your latest submission <a href=\"%{path}\">#%{number}</a> into the editor."
+      preloaded_clear: Clear editor.
+      preloaded_restore: Restore the boilerplate code.
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

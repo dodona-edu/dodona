@@ -128,8 +128,8 @@ class ActivitiesController < ApplicationController
       if params[:edit_submission]
         @edit_submission = Submission.find(params[:edit_submission])
         authorize @edit_submission, :edit?
-      elsif @submissions.any?
-        @edit_submission = @submissions.first
+      elsif @submissions.any? && !params[:show_boilerplate]
+        @last_submission = @submissions.first
       end
       @submissions = @submissions.paginate(page: parse_pagination_param(params[:page]))
       if params[:from_solution]
@@ -137,7 +137,7 @@ class ActivitiesController < ApplicationController
         authorize @activity, :info?
       end
 
-      @code = @edit_submission.try(:code) || @solution || @activity.boilerplate
+      @code = @edit_submission.try(:code) || @solution || @last_submission.try(:code) || @activity.boilerplate
     elsif @activity.content_page?
       @read_state = if current_user&.member_of?(@course)
                       @activity.activity_read_states.find_by(user: current_user, course: @course)

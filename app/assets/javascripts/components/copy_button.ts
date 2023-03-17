@@ -5,8 +5,12 @@ import { initTooltips, ready } from "util.js";
 
 @customElement("d-copy-button")
 export class CopyButton extends ShadowlessLitElement {
-    @property({ type: String })
-    code: string;
+    @property({ type: Object })
+    codeElement: HTMLElement;
+
+    get code(): string {
+        return this.codeElement.textContent;
+    }
 
     @property({ state: true })
     status: "idle" | "success" | "error" = "idle";
@@ -16,6 +20,7 @@ export class CopyButton extends ShadowlessLitElement {
             await navigator.clipboard.writeText(this.code);
             this.status = "success";
         } catch (err) {
+            window.getSelection().selectAllChildren(this.codeElement);
             this.status = "error";
         }
     }

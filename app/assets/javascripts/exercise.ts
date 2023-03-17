@@ -115,10 +115,8 @@ function initMathJax(): void {
 function initCodeFragments(): void {
     const codeElements = document.querySelectorAll("code");
     codeElements.forEach(codeElement => {
-        const code = codeElement.textContent;
-
         const copyButton = new CopyButton();
-        copyButton.code = code;
+        copyButton.codeElement = codeElement;
 
         render(copyButton, codeElement, { renderBefore: codeElement.firstChild });
         initTooltips(codeElement);

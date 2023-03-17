@@ -113,8 +113,8 @@ function initMathJax(): void {
 }
 
 function initCodeFragments(): void {
-    const codeElements = document.querySelectorAll("code");
-    codeElements.forEach(codeElement => {
+    const codeElements = document.querySelectorAll("pre code");
+    codeElements.forEach((codeElement: HTMLElement) => {
         const copyButton = new CopyButton();
         copyButton.codeElement = codeElement;
 

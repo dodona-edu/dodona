@@ -85,8 +85,8 @@ class Submission < ApplicationRecord
     HEREDOC
   }
 
-  scope :most_recent_correct_per_user, lambda { |*|
-    correct.group(:user_id).most_recent
+  scope :most_recent_per_user, lambda { |*|
+    group(:user_id).most_recent
   }
 
   scope :least_recent, lambda {

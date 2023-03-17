@@ -186,14 +186,18 @@ center img {
   }
 }
 
-code {
+code:has(d-copy-button) {
   display: inline-block;
   position: relative;
   width: 100%;
+  min-height: 23px;
 
   d-copy-button {
     position: absolute;
     right: 0;
     top: -8px;
   }
+}
+
+pre:has(d-copy-button) {
 }

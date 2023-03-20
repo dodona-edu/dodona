@@ -186,16 +186,13 @@ center img {
   }
 }
 
-pre code {
-  display: inline-block;
+pre {
   position: relative;
-  width: 100%;
-  min-height: 23px;
 
   d-copy-button {
     position: absolute;
     right: 0;
-    top: -8px;
+    top: 0;
     background-color: $code-bg;
   }
 }

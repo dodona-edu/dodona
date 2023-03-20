@@ -118,7 +118,7 @@ function initCodeFragments(): void {
         const copyButton = new CopyButton();
         copyButton.codeElement = codeElement;
 
-        render(copyButton, codeElement, { renderBefore: codeElement.firstChild });
+        render(copyButton, codeElement.parentElement, { renderBefore: codeElement });
         initTooltips(codeElement);
     });
 }

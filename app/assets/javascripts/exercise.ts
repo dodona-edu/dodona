@@ -115,7 +115,7 @@ function initExerciseDescription(): void {
     centerImagesAndTables();
 }
 
-function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string): void {
+function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): void {
     let editor: AceAjax.Editor;
     let lastSubmission: string;
     let lastTimeout: number;
@@ -126,6 +126,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
+            initRestoreBoilerplateButton(boilerplate);
         }
 
         // submit source code if button is clicked on editor panel
@@ -428,6 +429,20 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         }
 
         showDeadlineAlerts();
+    }
+
+    function initRestoreBoilerplateButton(boilerplate: string): void {
+        const restoreWarning = document.getElementById("restore-boilerplate");
+        if (!restoreWarning) {
+            return;
+        }
+
+        const resetButton = restoreWarning.querySelector("a");
+        resetButton.addEventListener("click", () => {
+            editor.setValue(boilerplate);
+            editor.focus();
+            restoreWarning.hidden = true;
+        });
     }
 
     init();

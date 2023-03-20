@@ -128,7 +128,7 @@ class ActivitiesController < ApplicationController
       if params[:edit_submission]
         @edit_submission = Submission.find(params[:edit_submission])
         authorize @edit_submission, :edit?
-      elsif @submissions.any? && !params[:show_boilerplate]
+      elsif @submissions.any?
         @last_submission = @submissions.first
       end
       @submissions = @submissions.paginate(page: parse_pagination_param(params[:page]))

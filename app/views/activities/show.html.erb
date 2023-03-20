@@ -182,7 +182,7 @@ end %>
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
             "<%= submissions_url %>",
-            "<%= @activity.boilerplate || "" %>",
+            `<%= raw @activity.boilerplate || "" %>`,
         );
     });
 </script>

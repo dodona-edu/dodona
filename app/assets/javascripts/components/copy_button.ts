@@ -9,7 +9,7 @@ export class CopyButton extends ShadowlessLitElement {
     codeElement: HTMLElement;
 
     get code(): string {
-        return this.codeElement.textContent;
+        return this.codeElement.textContent.trim();
     }
 
     @property({ state: true })

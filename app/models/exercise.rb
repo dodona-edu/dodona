@@ -163,7 +163,7 @@ class Exercise < Activity
       c = config
       c['evaluation'] ||= {}
       c['evaluation']['memory_limit'] = 10_000_000 # 10 MB
-      store_config(c, "raised memory limit for #{name}\n\nThe underlying system used to evaluate submissions does not allow a memory limity lower than 6MB.")
+      store_config(c, "raised memory limit for #{name}\n\nThe underlying system used to evaluate submissions does not allow a memory limit lower than 6MB.")
     end
   end
 

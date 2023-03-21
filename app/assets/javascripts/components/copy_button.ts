@@ -8,6 +8,8 @@ import { initTooltips, ready } from "util.js";
  * The button is styled as a small icon button.
  * The button is a tooltip that shows the current status of the copy operation.
  *
+ * @element d-copy-button
+ *
  * @property {HTMLElement} codeElement - The element whose text content is copied to the clipboard.
  */
 @customElement("d-copy-button")

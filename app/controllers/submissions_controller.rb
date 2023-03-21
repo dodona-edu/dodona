@@ -195,6 +195,6 @@ class SubmissionsController < ApplicationController
 
     # this cannot use has_scope, because we need the scopes in this method
     # to be applied before this one
-    @submissions = @submissions.most_recent_correct_per_user if params[:most_recent_correct_per_user]
+    @submissions = @submissions.most_recent_per_user if params[:most_recent_per_user]
   end
 end

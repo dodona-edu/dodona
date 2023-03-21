@@ -27,7 +27,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # most_recent works
     create :correct_submission, user: users.first
 
-    get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
+    get course_activity_submissions_url c, e, most_recent_per_user: true, status: :correct, format: :json
 
     results = response.parsed_body
     result_ids = results.pluck('id')

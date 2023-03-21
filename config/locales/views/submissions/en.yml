@@ -21,7 +21,7 @@ en:
       for: for
       from: from
       read-states: Read activity log
-      most_recent_correct: Most recent correct submissions per user
+      most_recent: Most recent submissions per user
       watch_submissions: Automatically reload submissions
       reevaluate_submissions: Retest submissions
       confirm_reevaluate_submissions: Are you sure you want to retest these submissions?
@@ -36,7 +36,6 @@ en:
       course: Course
       handed_in: Handed in
       ago: ago
-      today: today
       status: Status
       result: Result
       code: Code

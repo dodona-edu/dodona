@@ -429,6 +429,7 @@
       "with": "with"
     },
     "time": {
+      "ago": "%{time} ago",
       "am": "am",
       "formats": {
         "annotation": "MMMM DD, YYYY HH:mm",
@@ -445,13 +446,15 @@
         "us": "%m/%d/%Y %I:%M %p"
       },
       "pm": "pm",
+      "today": "today",
       "units": {
         "day": "%{smart_count} day |||| %{smart_count} days",
         "hour": "%{smart_count} hour |||| %{smart_count} hours",
         "min": "%{smart_count} minute |||| %{smart_count} minutes",
         "sec": "%{smart_count} second |||| %{smart_count} seconds",
         "week": "%{smart_count} week |||| %{smart_count} weeks"
-      }
+      },
+      "yesterday": "yesterday"
     }
   },
   "nl": {
@@ -884,6 +887,7 @@
       "with": "met"
     },
     "time": {
+      "ago": "%{time} geleden",
       "am": "'s ochtends",
       "formats": {
         "annotation": "D MMMM YYYY, HH:mm",
@@ -899,13 +903,15 @@
         "submission": "%d %B %Y %H:%M:%S"
       },
       "pm": "'s middags",
+      "today": "vandaag",
       "units": {
         "day": "%{smart_count} dag |||| %{smart_count} dagen",
         "hour": "%{smart_count} uur |||| %{smart_count} uren",
         "min": "%{smart_count} minuut |||| %{smart_count} minuten",
         "sec": "%{smart_count} seconde |||| %{smart_count} seconden",
         "week": "%{smart_count} week |||| %{smart_count} weken"
-      }
+      },
+      "yesterday": "gisteren"
     }
   }
 }

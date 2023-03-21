@@ -80,7 +80,7 @@ module ActivityHelper
                class: 'dodona-iframe',
                scrolling: 'no',
                onload: resizeframe,
-               allow: 'fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
+               allow: 'clipboard-write; fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
                src: url,
                height: '500px'
   end

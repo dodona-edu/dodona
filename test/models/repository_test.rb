@@ -250,6 +250,16 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
 
+  test 'should overwrite memory limit that is too low' do
+    @remote.update_json("#{@echo.path}/config.json", 'set a very low memory limit') do |json|
+      json['evaluation']['memory_limit'] = 10
+      json
+    end
+    @repository.reset
+    @repository.process_activities
+    assert_equal 10_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
+  end
+
   test 'should convert to content page' do
     assert @echo.submissions.empty?
     @remote.update_json("#{@echo.path}/config.json", 'convert to content page') do |json|

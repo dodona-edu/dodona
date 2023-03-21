@@ -148,14 +148,23 @@ class Exercise < Activity
 
   def check_memory_limit
     return unless ok?
-    return unless merged_config.fetch('evaluation', {}).fetch('memory_limit', 0) > 500_000_000 # 500MB
 
-    c = config
-    c['evaluation'] ||= {}
-    c['evaluation']['memory_limit'] = 500_000_000
-    store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
-                    "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
-                    'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
+    limit = merged_config.fetch('evaluation', {}).fetch('memory_limit', nil)
+    return if limit.nil?
+
+    if limit > 500_000_000 # 500MB
+      c = config
+      c['evaluation'] ||= {}
+      c['evaluation']['memory_limit'] = 500_000_000
+      store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
+                      "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
+                      'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
+    elsif limit < 6_000_000 # 6 MB
+      c = config
+      c['evaluation'] ||= {}
+      c['evaluation']['memory_limit'] = 10_000_000 # 10 MB
+      store_config(c, "raised memory limit for #{name}\n\nThe underlying system used to evaluate submissions does not allow a memory limity lower than 6MB.")
+    end
   end
 
   def self.move_relations(from, to)

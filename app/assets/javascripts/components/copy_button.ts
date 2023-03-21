@@ -3,6 +3,13 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { initTooltips, ready } from "util.js";
 
+/**
+ * A button that copies the text content of a given element to the clipboard.
+ * The button is styled as a small icon button.
+ * The button is a tooltip that shows the current status of the copy operation.
+ *
+ * @property {HTMLElement} codeElement - The element whose text content is copied to the clipboard.
+ */
 @customElement("d-copy-button")
 export class CopyButton extends ShadowlessLitElement {
     @property({ type: Object })

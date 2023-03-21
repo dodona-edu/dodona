@@ -159,11 +159,11 @@ class Exercise < Activity
       store_config(c, "lowered memory limit for #{name}\n\nThe workers running the student's code only have 4 GB of memory " \
                       "and can run 6 students' code at the same time. The maximum memory limit is 500 MB so that if 6 students submit " \
                       'bad code at the same time, there is still 1 GB of memory left for Dodona itself and the operating system.')
-    elsif limit < 6_000_000 # 6 MB
+    elsif limit < 10_000_000 # 10 MB
       c = config
       c['evaluation'] ||= {}
       c['evaluation']['memory_limit'] = 10_000_000 # 10 MB
-      store_config(c, "raised memory limit for #{name}\n\nThe underlying system used to evaluate submissions does not allow a memory limit lower than 6MB.")
+      store_config(c, "raised memory limit for #{name}\n\nMemory limits under 10MB are not allowed.")
     end
   end
 

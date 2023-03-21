@@ -185,3 +185,14 @@ center img {
     padding-top: 0;
   }
 }
+
+pre {
+  position: relative;
+
+  d-copy-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: $code-bg;
+  }
+}

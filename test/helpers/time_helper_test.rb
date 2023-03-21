@@ -11,5 +11,4 @@ class TimeHelperTest < ActiveSupport::TestCase
       assert_equal '2 days ago', days_ago_in_words(2.days.ago)
     end
   end
-
 end

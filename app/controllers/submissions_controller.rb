@@ -1,5 +1,6 @@
 class SubmissionsController < ApplicationController
   include SeriesHelper
+  include TimeHelper
   include ActionView::Helpers::DateHelper
 
   before_action :set_submission, only: %i[show download evaluate edit media]
@@ -83,7 +84,7 @@ class SubmissionsController < ApplicationController
     @submissions_time_stamps = []
     prev = nil
     @submissions.each do |s|
-      current = s.created_at.before?(1.day.ago) ? "#{time_ago_in_words(s.created_at)} #{t '.ago'}" : (t '.today')
+      current = days_ago_in_words(s.created_at)
       if current == prev
         @submissions_time_stamps.push nil
       else

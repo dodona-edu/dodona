@@ -44,6 +44,9 @@ en:
       read_state: '%B %d, %Y %H:%M:%S'
       question: '%B %d, %Y %H:%M:%S'
       plain_time: '%H:%M'
+    yesterday: "yesterday"
+    today: "today"
+    ago: "%{time} ago"
   controllers:
     created: "%{model} was successfully created."
     updated: "%{model} was successfully updated."

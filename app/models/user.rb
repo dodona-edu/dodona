@@ -517,7 +517,7 @@ class User < ApplicationRecord
       end
 
       next_series = latest_submission.series.next
-      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course))
+      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course)) && !next_series.completed?(user: self)
         # start working on the next series
         result << {
           submission: nil,

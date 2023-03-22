@@ -202,6 +202,8 @@ class User < ApplicationRecord
       .reorder 'correct.count': direction, 'attempted.count': direction
   }
 
+  scope :online, -> { where(seen_at: 5.minutes.ago..) }
+
   def provider_allows_blank_email
     return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
 

@@ -527,4 +527,13 @@ class CoursesController < ApplicationController
                   :exercises,
                   :deadlines)
   end
+
+  def live_statistics
+    time_range = 1.hour.ago..Time.zone.now
+
+    @online_users = @course.users.online.count
+    # number of submissions per minute for the last hour
+    @submissions_per_minute = @course.submissions.where(created_at: time_range).group('MINUTE(created_at)').count
+    @activities_being_worked_on = @course.activities_being_worked_on(3, time_range)
+  end
 end

@@ -560,4 +560,46 @@ class CourseTest < ActiveSupport::TestCase
     CourseMembership.create(user: user, course: course, status: :course_admin)
     assert_equal 1, course.homepage_series(user).count
   end
+
+  test 'activities being worked on should return the activities with most recent submissions' do
+    course = create :course, series_count: 2, exercises_per_series: 2
+    user = create :student
+    CourseMembership.create(user: user, course: course, status: :student)
+
+    # no activity should return empty array
+    assert_equal [], course.activities_being_worked_on
+
+    # should return activities with most recent submissions
+    create :submission, user: user, exercise: course.series.first.exercises.first, course: course, created_at: DateTime.now - 30.minutes
+    # 2 submissions
+    create :submission, user: user, exercise: course.series.first.exercises.second, course: course
+    create :submission, user: user, exercise: course.series.first.exercises.second, course: course
+    # 3 submissions
+    create :submission, user: user, exercise: course.series.second.exercises.second, course: course
+    create :submission, user: user, exercise: course.series.second.exercises.second, course: course
+    create :submission, user: user, exercise: course.series.second.exercises.second, course: course
+    # should be ignored, more than 1 hour ago
+    create :submission, user: user, exercise: course.series.second.exercises.first, course: course, created_at: DateTime.now - 2.hours
+    create :submission, user: user, exercise: course.series.second.exercises.first, course: course, created_at: DateTime.now - 2.hours
+    create :submission, user: user, exercise: course.series.second.exercises.first, course: course, created_at: DateTime.now - 2.hours
+    create :submission, user: user, exercise: course.series.second.exercises.first, course: course, created_at: DateTime.now - 2.hours
+
+    assert_equal course.series.second.exercises.second, course.activities_being_worked_on.first
+    assert_equal course.series.first.exercises.second, course.activities_being_worked_on.second
+    assert_equal course.series.first.exercises.first, course.activities_being_worked_on.third
+
+    # should be able to limit number of activities
+    assert_equal 3, course.activities_being_worked_on.count
+    assert_equal 2, course.activities_being_worked_on(2).count
+    assert_equal 3, course.activities_being_worked_on(7).count
+
+    # should include submission_count
+    assert_equal 3, course.activities_being_worked_on.first[:submission_count]
+    assert_equal 2, course.activities_being_worked_on.second[:submission_count]
+    assert_equal 1, course.activities_being_worked_on.third[:submission_count]
+
+    # should be able to specify time range
+    assert_equal 4, course.activities_being_worked_on(7, 4.hours.ago..).count
+    assert_equal 2, course.activities_being_worked_on(7, 3.hours.ago..15.minutes.ago).count
+  end
 end

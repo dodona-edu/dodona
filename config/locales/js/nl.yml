@@ -154,7 +154,7 @@ nl:
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
-      help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!"
+      help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen."
       fields:
         annotation_text: 'Opmerking'
         saved_annotation_title: 'Sla opmerking op om te hergebruiken'

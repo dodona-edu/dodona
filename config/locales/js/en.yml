@@ -154,7 +154,7 @@ en:
       edit: 'Edit comment'
       save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
-      help_student: "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!"
+      help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:
         annotation_text: 'Comment'
         saved_annotation_title: 'Save comment for reuse'

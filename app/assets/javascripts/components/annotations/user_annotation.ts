@@ -2,7 +2,7 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData } from "state/UserAnnotations";
+import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData, transition } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
@@ -114,6 +114,10 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
         initTooltips(this);
     }
 
+    reopenQuestion(): void {
+        transition(this.data, "unanswered");
+    }
+
     render(): TemplateResult {
         return html`
             <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
@@ -121,7 +125,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     <span class="annotation-meta">
                         ${this.header}
                     </span>
-                    ${this.data.permission.update ? html`
+                    ${this.data.permission.update || this.data.permission.transition?.unanswered ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">
                             <a class="btn btn-icon btn-icon-inverted dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="mdi mdi-dots-horizontal text-muted"></i>
@@ -141,6 +145,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                                     <li>
                                         <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
                                             <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.user_annotation.delete`)}
+                                        </a>
+                                    </li>
+                                ` : ""}
+                                ${ this.data.permission.transition?.unanswered ? html`
+                                    <li>
+                                        <a class="dropdown-item" @click="${() => this.reopenQuestion()}">
+                                            <i class="mdi mdi-comment-question-outline mdi-18"></i> ${I18n.t("js.user_question.unresolve")}
                                         </a>
                                     </li>
                                 ` : ""}

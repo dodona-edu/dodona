@@ -24,6 +24,7 @@ interface UserAnnotationUserData {
 }
 
 export interface UserAnnotationPermissionData {
+    transition?: Record<QuestionState, boolean>
     update?: boolean;
     destroy?: boolean;
     can_see_annotator?: boolean

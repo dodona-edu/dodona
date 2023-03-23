@@ -396,7 +396,7 @@
           "saved_annotation_title": "Save comment for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
-        "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",
+        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
         "reply": "Reply",
@@ -873,7 +873,7 @@
           "saved_annotation_title": "Sla opmerking op om te hergebruiken"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
-        "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
+        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
         "reply": "Beantwoorden",

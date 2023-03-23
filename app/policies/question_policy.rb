@@ -28,9 +28,6 @@ class QuestionPolicy < AnnotationPolicy
     return transition?(record.transition_to, record.transition_from) if transitioning?
 
     # Otherwise, we are updating the text of the annotation.
-    # Only allow if the question was not answered yet.
-    return false unless record.unanswered?
-
     record.user == user
   end
 

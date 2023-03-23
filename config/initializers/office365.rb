@@ -33,10 +33,18 @@ module OmniAuth
       uid { raw_info['oid'] }
 
       info do
+        if raw_info['family_name'] || raw_info['given_name']
+          last_name = raw_info['family_name'] || ''
+          first_name = raw_info['given_name'] || ''
+        else
+          last_name = raw_info['name']
+          first_name = ''
+        end
+
         {
             username: username,
-            first_name: raw_info['name'].split(' ').first,
-            last_name: raw_info['name'].split(' ').drop(1).join(' '),
+            first_name: first_name,
+            last_name: last_name,
             email: raw_info['email'],
             institution: raw_info['tid']
         }

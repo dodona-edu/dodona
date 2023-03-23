@@ -177,6 +177,7 @@ en:
       has_newer_submission: There was a newer submission since this question. Click here to go to the latest submission.
       is_in_progress: This question is currently being answered.
       is_unanswered: This question is unanswered.
+      is_answered: This question is answered.
     machine_annotation:
       external_url: more information
     score:

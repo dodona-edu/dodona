@@ -83,6 +83,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                    data-bs-placement="top"
                 ></i>
             ` : ""}
+            ${ this.data.question_state == "answered" ? html`
+                <i class="mdi mdi-comment-check-outline mdi-18 annotation-meta-icon"
+                   title="${I18n.t("js.user_question.is_answered")}"
+                   data-bs-toggle="tooltip"
+                   data-bs-placement="top"
+                ></i>
+            ` : ""}
         `;
     }
 

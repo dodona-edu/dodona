@@ -3,7 +3,7 @@ import { html, TemplateResult } from "lit";
 import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
-import { searchQuery } from "search";
+import { SearchQuery, searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { FilterCollectionElement, Label } from "components/filter_collection_element";
 
@@ -47,7 +47,7 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     handleClick(e: Event, label: Label): void {
         e.preventDefault();
         this.select(label);
-        searchQuery.queryParams.updateParam("filter", undefined);
+        this.searchQuery.queryParams.updateParam("filter", undefined);
     }
 
     render(): TemplateResult {
@@ -83,6 +83,8 @@ export class SearchField extends ShadowlessLitElement {
     eager: boolean;
     @property( { type: Array })
     filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
+    @property({ type: Object })
+    searchQuery: SearchQuery = searchQuery;
 
     @property({ state: true })
     filter?: string = "";
@@ -103,14 +105,17 @@ export class SearchField extends ShadowlessLitElement {
 
     constructor() {
         super();
-        searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
-        this.filter = searchQuery.queryParams.params.get("filter") || "";
         this.delay = createDelayer();
+    }
+
+    firstUpdated(): void {
+        this.searchQuery.queryParams.subscribeByKey("filter", (k, o, n) => this.filter = n || "");
+        this.filter = this.searchQuery.queryParams.params.get("filter") || "";
     }
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("eager") && this.eager) {
-            searchQuery.search();
+            this.searchQuery.search();
         }
         super.update(changedProperties);
     }
@@ -126,7 +131,7 @@ export class SearchField extends ShadowlessLitElement {
         if (e.key === "Tab") {
             this.tabComplete();
         }
-        this.delay(() => searchQuery.queryParams.updateParam("filter", this.filter), 300);
+        this.delay(() => this.searchQuery.queryParams.updateParam("filter", this.filter), 300);
     }
 
     updated(): void {
@@ -170,6 +175,7 @@ export class SearchField extends ShadowlessLitElement {
                         .param=${c.param}
                         .multi=${c.multi}
                         .index=${i}
+                        .searchQuery=${this.searchQuery}
                         ${ref(this.suggestionFieldChanged)}
                     >
                     </d-search-field-suggestion>

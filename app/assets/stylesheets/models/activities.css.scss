@@ -185,3 +185,20 @@ center img {
     padding-top: 0;
   }
 }
+
+#restore-boilerplate {
+  a {
+    cursor: pointer;
+  }
+}
+
+pre {
+  position: relative;
+
+  d-copy-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: $code-bg;
+  }
+}

@@ -45,6 +45,9 @@ nl:
       read_state: '%d %B %Y %H:%M:%S'
       question: '%d %B %Y %H:%M:%S'
       plain_time: '%H:%M'
+    yesterday: "gisteren"
+    today: "vandaag"
+    ago: "%{time} geleden"
   controllers:
     created: "%{model} werd succesvol aangemaakt."
     updated: "%{model} werd succesvol aangepast."

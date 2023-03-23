@@ -24,6 +24,8 @@ export class FilterButton extends LitElement {
     value: string;
     @property({ type: Boolean })
     multi = false;
+    @property({ type: Object })
+    searchQuery = searchQuery;
 
     static styles = css`
         :host {
@@ -33,11 +35,11 @@ export class FilterButton extends LitElement {
 
     addFilter(): void {
         if (this.multi) {
-            const selected = new Set(searchQuery.arrayQueryParams.params.get(this.param));
+            const selected = new Set(this.searchQuery.arrayQueryParams.params.get(this.param));
             selected.add(this.value);
-            searchQuery.arrayQueryParams.updateParam(this.param, Array.from(selected));
+            this.searchQuery.arrayQueryParams.updateParam(this.param, Array.from(selected));
         } else {
-            searchQuery.queryParams.updateParam(this.param, this.value);
+            this.searchQuery.queryParams.updateParam(this.param, this.value);
         }
     }
 

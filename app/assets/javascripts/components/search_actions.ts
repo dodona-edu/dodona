@@ -2,17 +2,17 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch, ready } from "util.js";
-import { searchQuery } from "search";
+import { SearchQuery, searchQuery } from "search";
 import { ShadowlessLitElement } from "components/shadowless_lit_element";
 
-type SearchOption = {search: Record<string, string>, type: string, text: string};
-type SearchAction = {
-    url: string,
-    type: string,
+export type SearchOption = {search: Record<string, string>, type?: string, text: string};
+export type SearchAction = {
+    url?: string,
+    type?: string,
     text: string,
-    action: string,
-    js: string,
-    confirm: string,
+    action?: string,
+    js?: string,
+    confirm?: string,
     icon: string
 };
 
@@ -34,14 +34,17 @@ export class SearchOptionElement extends ShadowlessLitElement {
     searchOption: SearchOption;
     @property( { type: Number })
     key: number;
+    @property({ type: Object })
+    searchQuery: SearchQuery = searchQuery;
 
+    @property({ state: true })
     private _active = false;
 
     update(changedProperties: Map<string, unknown>): void {
         if (changedProperties.has("searchOption") && this.searchOption) {
             this.setActive();
             Object.keys(this.searchOption.search).forEach(k => {
-                searchQuery.queryParams.subscribeByKey(k, () => this.setActive());
+                this.searchQuery.queryParams.subscribeByKey(k, () => this.setActive());
             });
         }
         super.update(changedProperties);
@@ -49,18 +52,18 @@ export class SearchOptionElement extends ShadowlessLitElement {
 
     setActive(): void {
         this._active = Object.entries(this.searchOption.search).every(([key, value]) => {
-            return searchQuery.queryParams.params.get(key) == value.toString();
+            return this.searchQuery.queryParams.params.get(key) == value.toString();
         });
     }
 
     performSearch(): void {
         if (!this._active) {
             Object.entries(this.searchOption.search).forEach(([key, value]) => {
-                searchQuery.queryParams.updateParam(key, value.toString());
+                this.searchQuery.queryParams.updateParam(key, value.toString());
             });
         } else {
             Object.keys(this.searchOption.search).forEach(key => {
-                searchQuery.queryParams.updateParam(key, undefined);
+                this.searchQuery.queryParams.updateParam(key, undefined);
             });
         }
     }
@@ -96,6 +99,8 @@ export class SearchOptionElement extends ShadowlessLitElement {
 export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
     actions: (SearchOption|SearchAction)[] = [];
+    @property({ type: Object })
+    searchQuery: SearchQuery = searchQuery;
 
     getSearchOptions(): Array<SearchOption> {
         return this.actions.filter(isSearchOption);
@@ -116,7 +121,7 @@ export class SearchActions extends ShadowlessLitElement {
         }
 
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            const url: string = searchQuery.addParametersToUrl(action.action);
+            const url: string = this.searchQuery.addParametersToUrl(action.action);
 
             const response = await fetch(url, {
                 method: "POST",
@@ -127,7 +132,7 @@ export class SearchActions extends ShadowlessLitElement {
             if (data.js) {
                 eval(data.js);
             } else {
-                searchQuery.resetAllQueryParams();
+                this.searchQuery.resetAllQueryParams();
             }
         }
 
@@ -153,7 +158,9 @@ export class SearchActions extends ShadowlessLitElement {
                         <li><h6 class='dropdown-header'>${I18n.t("js.options")}</h6></li>
                     ` : html``}
                     ${this.getSearchOptions().map((opt, id) => html`
-                        <d-search-option .searchOption=${opt} .key=${id}>
+                        <d-search-option .searchOption=${opt}
+                                         .key=${id}
+                                         .searchQuery=${this.searchQuery}>
                         </d-search-option>
                     `)}
 

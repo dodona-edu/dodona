@@ -107,6 +107,7 @@ Rails.application.routes.draw do
       end
       member do
         get 'statistics'
+        get 'live_statistics'
         get 'subscribe/:secret', to: 'courses#registration', as: 'registration'
         get 'manage_series'
         get 'scoresheet'

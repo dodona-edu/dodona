@@ -854,4 +854,75 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     event3 = cal.events.third
     assert_nil event3
   end
+
+  test 'live statistics should contain the number of online users' do
+    add_admins
+    sign_in @admins.first
+    # Visit the course page to register the user as online
+    get course_path(@course)
+
+    get live_statistics_course_path(@course, format: :json)
+
+    stats = response.parsed_body
+    assert_equal 1, stats['online_users']
+  end
+
+  test 'live submissions contain the number of submissions per minute for the last hour' do
+    add_admins
+    sign_in @admins.first
+
+    time1 = 1.minutes.ago
+    time2 = 27.minutes.ago
+    time3 = 45.minutes.ago
+    time4 = 3.hours.ago
+
+    # Create a submissions
+    create :submission, course: @course, created_at: time1
+    create :submission, course: @course, created_at: time2
+    create :submission, course: @course, created_at: time2
+    create :submission, course: @course, created_at: time3
+    create :submission, course: @course, created_at: time4
+
+    get live_statistics_course_path(@course, format: :json)
+
+    stats = response.parsed_body
+    assert_equal 1, stats['submissions_per_minute'][time1.min.to_s]
+    assert_equal 2, stats['submissions_per_minute'][time2.min.to_s]
+    assert_equal 1, stats['submissions_per_minute'][time3.min.to_s]
+  end
+
+  test 'live statistics should contain the three activities with most submissions in the past hour and their submission count' do
+    add_admins
+    sign_in @admins.first
+
+    exercise1 = create :exercise
+    exercise2 = create :exercise
+    exercise3 = create :exercise
+    exercise4 = create :exercise
+
+    create :series, course: @course, exercises: [exercise1, exercise2, exercise3, exercise4]
+
+    # Create a submissions
+    create :submission, course: @course, exercise: exercise1
+    3.times do
+      create :submission, course: @course, exercise: exercise2
+    end
+    2.times do
+      create :submission, course: @course, exercise: exercise3
+    end
+    4.times do
+      create :submission, course: @course, exercise: exercise4, created_at: 2.hours.ago
+    end
+
+    get live_statistics_course_path(@course, format: :json)
+
+    stats = response.parsed_body
+    assert_equal 3, stats['activities_being_worked_on'][0]['submission_count']
+    assert_equal 2, stats['activities_being_worked_on'][1]['submission_count']
+    assert_equal 1, stats['activities_being_worked_on'][2]['submission_count']
+
+    assert_equal exercise2.name, stats['activities_being_worked_on'][0]['name']
+    assert_equal exercise3.name, stats['activities_being_worked_on'][1]['name']
+    assert_equal exercise1.name, stats['activities_being_worked_on'][2]['name']
+  end
 end

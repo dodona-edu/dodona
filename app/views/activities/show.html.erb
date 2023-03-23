@@ -114,6 +114,14 @@ end %>
                   <%= t('.deadline_passed', deadline: @series.deadline.today? ? @series.deadline.strftime('%R') : @series.deadline.strftime('%F %R')) %>
                 </div>
               <% end %>
+              <% if !@edit_submission && !@solution && @last_submission %>
+                <div class="alert alert-info" id="restore-boilerplate">
+                  <%= t ".preloaded_info" %>
+                  <a >
+                    <%= t(@activity.boilerplate ? ".preloaded_restore" : ".preloaded_clear") %>
+                  </a>
+                </div>
+              <% end %>
               <div id="editor-window" class='tex2jax_ignore'>
                 <div id="editor-text"><%= @code %></div>
               </div>
@@ -173,7 +181,8 @@ end %>
             <%= policy(@activity).submit? || !user_signed_in? %>,
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
-            "<%= submissions_url %>"
+            "<%= submissions_url %>",
+            `<%= (@activity.exercise? && raw(@activity.boilerplate&.gsub!('`', '\\\\`')))|| "" %>`,
         );
     });
 </script>

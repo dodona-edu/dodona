@@ -4,6 +4,8 @@ import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
 import { getCode } from "state/Submissions";
+import { render } from "lit";
+import { CopyButton } from "components/copy_button";
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -111,12 +113,24 @@ function initMathJax(): void {
     };
 }
 
+function initCodeFragments(): void {
+    const codeElements = document.querySelectorAll("pre code");
+    codeElements.forEach((codeElement: HTMLElement) => {
+        const copyButton = new CopyButton();
+        copyButton.codeElement = codeElement;
+
+        render(copyButton, codeElement.parentElement, { renderBefore: codeElement });
+        initTooltips(codeElement);
+    });
+}
+
 function initExerciseDescription(): void {
     initLightboxes();
     centerImagesAndTables();
+    initCodeFragments();
 }
 
-function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string): void {
+function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): void {
     let editor: AceAjax.Editor;
     let lastSubmission: string;
     let lastTimeout: number;
@@ -127,6 +141,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
+            initRestoreBoilerplateButton(boilerplate);
         }
 
         // submit source code if button is clicked on editor panel
@@ -429,6 +444,20 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         }
 
         showDeadlineAlerts();
+    }
+
+    function initRestoreBoilerplateButton(boilerplate: string): void {
+        const restoreWarning = document.getElementById("restore-boilerplate");
+        if (!restoreWarning) {
+            return;
+        }
+
+        const resetButton = restoreWarning.querySelector("a");
+        resetButton.addEventListener("click", () => {
+            editor.setValue(boilerplate);
+            editor.focus();
+            restoreWarning.hidden = true;
+        });
     }
 
     init();

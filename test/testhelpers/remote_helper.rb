@@ -33,11 +33,8 @@ class TempRepository < GitRepository
   end
 
   def update_file(rel_path, msg = nil)
-    File.open(File.join(@path, rel_path), 'r+') do |f|
-      contents = f.read
-      f.seek(0, IO::SEEK_SET)
-      f.write(yield contents)
-    end
+    contents = File.read(File.join(@path, rel_path))
+    File.write(File.join(@path, rel_path), (yield contents))
     msg ||= "update #{rel_path}"
     commit msg
   end

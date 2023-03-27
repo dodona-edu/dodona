@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@open-wc/testing-helpers": "^2.2.0",
-    "@testing-library/dom": "^9.0.1",
+    "@testing-library/dom": "^9.2.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/ace": "^0.0.48",
     "@types/bootstrap": "^5.2.4",

@@ -49,7 +49,7 @@ class Annotation < ApplicationRecord
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create
   after_create :annotate_submission
-  after_create :answer_previous_question
+  after_create :answer_previous_questions
   after_destroy :destroy_notification
   after_destroy :reset_submission_annotated
   after_save :create_notification
@@ -92,13 +92,15 @@ class Annotation < ApplicationRecord
     submission.update(annotated: false) unless submission.annotations.released.any?
   end
 
-  def previous_annotation
+  def previous_annotations
     return nil if thread_root.nil?
 
-    [thread_root, thread_root&.responses&.where(created_at: ...created_at)].flatten.last
+    [thread_root, thread_root&.responses&.where(created_at: ...created_at)].flatten
   end
 
-  def answer_previous_question
-    previous_annotation.update(question_state: :answered) if previous_annotation.is_a?(Question) && !previous_annotation.answered?
+  def answer_previous_questions
+    previous_annotations.each do |previous_annotation|
+      previous_annotation.update(question_state: :answered) if previous_annotation.is_a?(Question) && !previous_annotation.answered?
+    end
   end
 end

@@ -2,7 +2,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import {
     createUserAnnotation, invalidateUserAnnotation,
-    transition,
+    transition, transitionAll,
     UserAnnotationData,
     UserAnnotationFormData
 } from "state/UserAnnotations";
@@ -39,14 +39,13 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         return getQuestionMode();
     }
 
-    get openQuestion(): UserAnnotationData | undefined {
-        return this.data.question_state !== undefined && this.data.question_state !== "answered" ?
-            this.data :
-            this.data.responses.find(response => response.question_state !== undefined && response.question_state !== "answered");
+    get openQuestions(): UserAnnotationData[] | undefined {
+        return [this.data, ...this.data.responses]
+            .filter(response => response.question_state !== undefined && response.question_state !== "answered");
     }
 
     get isUnanswered(): boolean {
-        return this.openQuestion != undefined;
+        return this.openQuestions.length > 0;
     }
 
     async createAnnotation(e: CustomEvent): Promise<void> {
@@ -71,21 +70,15 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     }
 
     markAsResolved(): void {
-        if (this.openQuestion !== undefined) {
-            transition(this.openQuestion, "answered");
-        }
+        transitionAll(this.openQuestions, "answered");
     }
 
     markAsInProgress(): void {
-        if (this.openQuestion?.question_state !== "in_progress") {
-            transition(this.openQuestion, "in_progress");
-        }
+        transitionAll(this.openQuestions.filter(question => question.question_state !== "in_progress"), "in_progress");
     }
 
     markAsUnanswered(): void {
-        if (this.openQuestion?.question_state !== "unanswered") {
-            transition(this.openQuestion, "unanswered");
-        }
+        transitionAll(this.openQuestions.filter(question => question.question_state !== "unanswered"), "unanswered");
     }
 
     addReply(): void {

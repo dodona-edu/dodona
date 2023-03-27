@@ -286,3 +286,11 @@ export async function transition(annotation: UserAnnotationData, newState: Quest
         invalidateUserAnnotation(annotation.id);
     }
 }
+
+export async function transitionAll(annotations: UserAnnotationData[], newState: QuestionState): Promise<void> {
+    for (const annotation of annotations) {
+        // we wait for each transition to finish before starting the next one
+        // this prevents inconsistencies questionstates being shown
+        await transition(annotation, newState);
+    }
+}

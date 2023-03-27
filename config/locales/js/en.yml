@@ -184,12 +184,42 @@ en:
       copy_code: Copy to Dodona
       overwrite_code: Do you want to overwrite the code in the scratchpad with your latest changes?
     submission_motivational_message:
-      1: Congratulations!
-      2: You did it!
-      3: Keep up the good work!
-      4: Nice!
-      5: Good job!
-      6: Well done!
+      1: "Code-tastic! You just crushed that exercise like a bug! 🐛"
+      2: "🚀 Houston, we have a programmer! Great job on that exercise!"
+      3: "💻 Code Whisperer alert! You're making that computer sing!"
+      4: "🌟 You did it! Another exercise bites the dust! Keep rockin' that code!"
+      5: "🤖 Beep boop! You've impressed the robots with your coding skills!"
+      6: "🎉 Congratulations! You've just unlocked a new level in the coding game!"
+      7: "🦸‍ Holy code compilation! You've just saved the day with that solution!"
+      8: "👍 You're a coding superstar! Keep up the great work!"
+      9: "🔥 You're on fire! Keep up the great work and watch your coding skills soar!"
+      10: "🍕 Coding and pizza? A match made in heaven! Treat yourself to a slice for acing that exercise!"
+      11: "👾 You've just defeated the Coding Boss! Level up, my friend!"
+      12: "💪 Code muscles getting stronger! Keep flexing those programming skills!"
+      13: "🎯 Bullseye! You hit the target with your coding precision. Well done!"
+      14: "🎓 You've just earned your honorary degree in Exercise Crushing! Congrats!"
+      15: "🕶️ You're the James Bond of coding! Smooth, stylish, and always getting the job done!"
+      16: "🌊 Surf's up, coder! You just rode that exercise like a pro!"
+      17: "🐱‍🏍 You're the Coding Cat, always landing on your feet and acing those exercises!"
+      18: "🍪 A coding cookie for you! Enjoy the sweet taste of success!"
+      19: "🎮 You're a coding master! Keep coding and level up your skills!"
+      20: "🎵 You're the maestro of code, composing beautiful solutions one exercise at a time!"
+      21: "🎉 Nailed it! Next!"
+      22: "🚀 Blast off!"
+      23: "💡 Bright move!"
+      24: "🌟 Stellar!"
+      25: "🦁 Roaring success!"
+      26: "🔨 Hammered it!"
+      27: "💻 Super coder!"
+      28: "🏆 Woohoo!"
+      29: "🎯 Bullseye!"
+      30: "🍕 Pizza time!"
+      31: "🤖 Beep boop!"
+      32: "🏰 Code royalty!"
+      33: "🔥 On fire!"
+      34: "🌈 Colorful win!"
+      35: "🍪 Cookie time!"
+      36: "🎸 Rock that code!"
     dropdown:
       search: Search
       multi:

@@ -130,20 +130,20 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
 
         if (this.data.permission.update) {
             options.push(html`
-                <d-new-saved-annotation
-                    from-annotation-id="${this.data.id}"
-                    annotation-text="${this.data.annotation_text}"
-                    .savedAnnotationId="${this.data.saved_annotation_id}">
-                </d-new-saved-annotation>
-            `);
-        }
-        if (this.data.permission.save) {
-            options.push(html`
                 <li>
                     <a class="dropdown-item" @click="${() => this.editing = true}">
                         <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
                     </a>
                 </li>
+            `);
+        }
+        if (this.data.permission.save) {
+            options.push(html`
+                <d-new-saved-annotation
+                    from-annotation-id="${this.data.id}"
+                    annotation-text="${this.data.annotation_text}"
+                    .savedAnnotationId="${this.data.saved_annotation_id}">
+                </d-new-saved-annotation>
             `);
         }
         if (this.data.permission.destroy) {

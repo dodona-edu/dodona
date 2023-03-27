@@ -147,23 +147,26 @@ nl:
       meta: "%{user} · %{time}"
       anonymous_message: 'Deze opmerking maakt deel uit van een evaluatie'
       send: 'Toevoegen'
+      reply: 'Antwoorden'
       update: 'Updaten'
       cancel: 'Annuleren'
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
-      help_student: "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!"
+      help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen."
       fields:
         annotation_text: 'Opmerking'
         saved_annotation_title: 'Sla opmerking op om te hergebruiken'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'
       not_released: Deze opmerking is nog niet zichtbaar voor studenten
     user_question:
+      or: of
       meta_unanswered: "%{user} · %{time} · %{state}"
       meta_else: "%{user} · %{time} · %{state} door %{last}"
       update: 'Vraag aanpassen'
       send: 'Vraag stellen'
+      reply: 'Beantwoorden'
       edit: 'Vraag aanpassen'
       delete_confirm: 'Ben je zeker dat je deze vraag wilt verwijderen?'
       resolve: 'Als beantwoord markeren'
@@ -172,6 +175,9 @@ nl:
       deleted: Deze vraag is verwijderd door een andere gebruiker
       conflict: De status van deze vraag is al aangepast door een andere gebruiker
       has_newer_submission: Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.
+      is_in_progress: Deze vraag wordt momenteel beantwoord.
+      is_unanswered: Deze vraag is nog niet beantwoord.
+      is_answered: Deze vraag is beantwoord.
     machine_annotation:
         external_url: meer informatie
     score:
@@ -266,3 +272,16 @@ nl:
         key: ".singular |||| .plural"
         singular: "Eén gebruiker heeft één oefening correct opgelost |||| %{smart_count} gebruikers hebben één oefening correct opgelost"
         plural: "Eén gebruiker heeft %{index} oefeningen correct opgelost |||| %{smart_count} gebruikers hebben %{index} oefeningen correct opgelost"
+    annotations:
+      options:
+        add_global_annotation: Globale opmerking toevoegen
+        add_global_question: "Stel een vraag over je code"
+        add_annotation: Voeg een opmerking toe aan deze regel
+        add_question: "Stel een vraag over deze regel"
+      toggles:
+        title: Annotaties
+        show_all: Toon alle annotaties
+        hide_all: Verberg alle annotaties
+        show_errors: Enkel errors en opmerkingen tonen
+
+

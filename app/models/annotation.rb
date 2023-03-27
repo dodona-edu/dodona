@@ -15,6 +15,7 @@
 #  last_updated_by_id  :integer          not null
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
+#  thread_root_id      :integer
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
@@ -25,11 +26,18 @@ class Annotation < ApplicationRecord
   belongs_to :evaluation, optional: true
   belongs_to :saved_annotation, optional: true, counter_cache: true
   belongs_to :last_updated_by, class_name: 'User'
+  belongs_to :thread_root, class_name: 'Annotation', optional: true
+
+  has_many :responses, -> { order(created_at: :asc) }, class_name: 'Annotation', dependent: :destroy, inverse_of: :thread_root, foreign_key: :thread_root_id
 
   validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
   validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
+
+  # Only allow responses if the annotation is not a response itself
+  validates :thread_root_id, absence: true, if: -> { responses.any? }
+  validates_associated :thread_root
 
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
@@ -41,6 +49,7 @@ class Annotation < ApplicationRecord
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create
   after_create :annotate_submission
+  after_create :answer_previous_questions
   after_destroy :destroy_notification
   after_destroy :reset_submission_annotated
   after_save :create_notification
@@ -81,5 +90,17 @@ class Annotation < ApplicationRecord
 
   def reset_submission_annotated
     submission.update(annotated: false) unless submission.annotations.released.any?
+  end
+
+  def previous_annotations
+    return nil if thread_root.nil?
+
+    [thread_root, thread_root&.responses&.where(created_at: ...created_at)].flatten
+  end
+
+  def answer_previous_questions
+    previous_annotations.each do |previous_annotation|
+      previous_annotation.update(question_state: :answered) if previous_annotation.is_a?(Question) && !previous_annotation.answered?
+    end
   end
 end

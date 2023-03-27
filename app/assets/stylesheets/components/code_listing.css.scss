@@ -9,10 +9,45 @@ $annotation-warning: $warning;
 $annotation-info: $info;
 
 .code-table {
+  .dot {
+    float: left;
+    margin-left: 4px;
+    margin-top: 4px;
+    height: $dot-size;
+    width: $dot-size;
+    border-radius: 100%;
+  }
+
+  .feedback-table-options .dot {
+    margin-left: 5px;
+    margin-top: 15px;
+  }
+
+  .dot-info {
+    background-color: $annotation-info;
+  }
+
+  .dot-warning {
+    background-color: $annotation-warning;
+  }
+
+  .dot-annotation {
+    background-color: $annotation-user;
+  }
+
+  .dot-error {
+    background-color: $annotation-error;
+  }
+
+  .dot-question {
+    background-color: $annotation-question;
+  }
+
   .code-listing-container {
     position: relative;
     left: 0;
     top: 0;
+    margin-top: 10px;
 
     .copy-btn {
       margin-right: 5px;
@@ -109,35 +144,6 @@ $annotation-info: $info;
           font-family: $font-family-monospace;
           color: $on-surface-muted;
         }
-
-        .dot {
-          float: left;
-          margin-left: 4px;
-          margin-top: 4px;
-          height: $dot-size;
-          width: $dot-size;
-          border-radius: 100%;
-        }
-
-        .dot-info {
-          background-color: $annotation-info;
-        }
-
-        .dot-warning {
-          background-color: $annotation-warning;
-        }
-
-        .dot-user {
-          background-color: $annotation-user;
-        }
-
-        .dot-error {
-          background-color: $annotation-error;
-        }
-
-        .dot-question {
-          background-color: $annotation-question;
-        }
       }
 
       // General lighter background on the right side
@@ -159,6 +165,49 @@ $annotation-info: $info;
 
   #feedback-table-global-annotations.has-annotations {
     padding-bottom: 10px;
+  }
+
+  d-code-listing-row {
+    display: contents;
+  }
+
+  .thread {
+    margin: 3px 5px;
+    padding-left: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 1px solid $divider;
+    background: $content-bg;
+    white-space: normal;
+
+    .annotation {
+      margin: 2px 0;
+      border: none;
+      border-left: 3px solid $outline;
+    }
+
+    d-user-annotation {
+      display: block;
+
+      .dropdown {
+        position: static;
+      }
+    }
+
+    .fake-input {
+      margin: 4px 5px 4px 0;
+      display: flex;
+      align-items: center;
+
+      span {
+        margin-left: 15px;
+        margin-right: 5px;
+      }
+
+      .form-control {
+        border-color: $divider;
+      }
+    }
   }
 
   .annotation {
@@ -257,11 +306,6 @@ $annotation-info: $info;
         }
       }
     }
-  }
-
-  .annotation.question,
-  .annotation.user {
-    border-left-width: 5px;
   }
 
   .annotation.question {

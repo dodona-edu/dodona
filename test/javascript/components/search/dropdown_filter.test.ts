@@ -1,11 +1,11 @@
-import "components/dropdown_filter";
-import { DropdownFilter } from "components/dropdown_filter";
+import "components/search/dropdown_filter";
+import { DropdownFilter } from "components/search/dropdown_filter";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByLabelText, screen } from "@testing-library/dom";
 import { SearchQuery } from "search";
 import { html } from "lit/development";
-import { Label } from "components/filter_collection_element";
+import { Label } from "components/search/filter_collection_element";
 
 describe("DropdownFilter", () => {
     let dropdownFilter;

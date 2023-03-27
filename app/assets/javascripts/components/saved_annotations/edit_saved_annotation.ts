@@ -1,9 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { SavedAnnotation, updateSavedAnnotation, deleteSavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
-import { modalMixin } from "components/modal_mixin";
+import { modalMixin } from "components/meta/modal_mixin";
 
 /**
  * This component represents an edit button for a saved annotation

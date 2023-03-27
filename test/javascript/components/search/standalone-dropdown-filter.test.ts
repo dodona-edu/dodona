@@ -1,5 +1,5 @@
-import "components/standalone-dropdown-filter";
-import { StandaloneDropdownFilter } from "components/standalone-dropdown-filter";
+import "components/search/standalone-dropdown-filter";
+import { StandaloneDropdownFilter } from "components/search/standalone-dropdown-filter";
 import { fixture } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByText, queryByText, screen } from "@testing-library/dom";

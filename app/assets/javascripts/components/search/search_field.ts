@@ -4,9 +4,8 @@ import { createDelayer } from "util.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { SearchQuery, searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { FilterCollectionElement, Label } from "components/filter_collection_element";
-
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
 /**
  * This component inherits from FilterCollectionElement.
  * It represents a list of filters to be used in a dropdown as typeahead suggestions

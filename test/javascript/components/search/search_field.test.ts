@@ -1,9 +1,9 @@
-import "components/search_field";
+import "components/search/search_field";
 import { aTimeout, fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
-import { SearchField, SearchFieldSuggestion } from "components/search_field";
-import { Label, FilterCollection } from "components/filter_collection_element";
+import { SearchField, SearchFieldSuggestion } from "components/search/search_field";
+import { Label, FilterCollection } from "components/search/filter_collection_element";
 import { html } from "lit";
 import { SearchQuery } from "search";
 

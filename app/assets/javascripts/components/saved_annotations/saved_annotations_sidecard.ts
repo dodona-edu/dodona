@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import "./saved_annotation_list";
 import { getSavedAnnotations } from "state/SavedAnnotations";

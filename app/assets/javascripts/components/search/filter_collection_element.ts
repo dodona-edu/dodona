@@ -1,6 +1,6 @@
 import { property } from "lit/decorators.js";
 import { SearchQuery, searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 export type Label = {id: string, name: string};
 export type FilterCollection = {

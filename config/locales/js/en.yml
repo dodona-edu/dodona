@@ -147,23 +147,26 @@ en:
       meta: "%{user} · %{time}"
       anonymous_message: 'This comment is part of an evaluation'
       send: 'Comment'
+      reply: 'Reply'
       update: 'Update'
       cancel: 'Cancel'
       delete: 'Delete'
       edit: 'Edit comment'
       save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
-      help_student: "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!"
+      help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:
         annotation_text: 'Comment'
         saved_annotation_title: 'Save comment for reuse'
       delete_confirm: 'Are you sure you want to delete this comment?'
       not_released: This comment is not yet visible for students
     user_question:
+      or: or
       meta_unanswered: "%{user} · %{time} · %{state}"
       meta_else: "%{user} · %{time} · %{state} by %{last}"
       update: 'Update question'
       send: 'Ask question'
+      reply: 'Reply'
       edit: 'Edit question'
       delete_confirm: 'Are you sure you want to delete this question?'
       resolve: 'Mark as answered'
@@ -172,6 +175,9 @@ en:
       deleted: This question was deleted by another user
       conflict: The status of this question was already changed by another user
       has_newer_submission: There was a newer submission since this question. Click here to go to the latest submission.
+      is_in_progress: This question is currently being answered.
+      is_unanswered: This question is unanswered.
+      is_answered: This question is answered.
     machine_annotation:
       external_url: more information
     score:
@@ -266,4 +272,15 @@ en:
         key: ".singular |||| .plural"
         singular: "One user has completed one activity |||| %{smart_count} users have completed one activity"
         plural: "One user has completed %{index} activities |||| %{smart_count} users have completed %{index} activities"
+    annotations:
+      options:
+        add_global_annotation: Add global comment
+        add_global_question: "Ask a question about your code"
+        add_annotation: Add a comment to this line
+        add_question: "Ask a question about this line"
+      toggles:
+        title: Annotations
+        show_all: Show all annotations
+        hide_all: Hide all annotations
+        show_errors: Only show errors
 

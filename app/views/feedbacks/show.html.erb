@@ -91,9 +91,7 @@
 <% if @feedback.submission.present? %>
   <script>
       dodona.ready.then(function () {
-        window.MathJax.startup.promise.then(() => {
-          window.dodona.codeListing.setEvaluation(<%= @feedback.evaluation.id %>);
-        });
+        window.dodona.setEvaluationId(<%= @feedback.evaluation.id %>);
         $(".nav.nav-tabs li:last-child a").tab("show");
       });
   </script>

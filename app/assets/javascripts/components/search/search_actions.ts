@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch, ready } from "util.js";
 import { SearchQuery, searchQuery } from "search";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 export type SearchOption = {search: Record<string, string>, type?: string, text: string};
 export type SearchAction = {

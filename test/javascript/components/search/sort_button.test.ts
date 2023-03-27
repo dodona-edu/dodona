@@ -1,5 +1,5 @@
-import "components/sort_button";
-import { SortQuery } from "components/sort_button";
+import "components/search/sort_button";
+import { SortQuery } from "components/search/sort_button";
 import { SearchQuery } from "search";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { screen } from "@testing-library/dom";

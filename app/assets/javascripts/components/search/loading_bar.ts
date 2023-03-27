@@ -1,6 +1,6 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { searchQuery } from "search";
 
 /**

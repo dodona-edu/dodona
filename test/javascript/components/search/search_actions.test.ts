@@ -1,5 +1,5 @@
-import "components/search_actions";
-import { SearchAction, SearchActions, SearchOption } from "components/search_actions";
+import "components/search/search_actions";
+import { SearchAction, SearchActions, SearchOption } from "components/search/search_actions";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";

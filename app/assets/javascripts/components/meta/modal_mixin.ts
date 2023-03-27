@@ -1,7 +1,7 @@
 import { html, TemplateResult, render } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { Modal as Modal } from "bootstrap";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
 /**
  * This mixin adds support for rendering bootstrap modals within a webcomponent.

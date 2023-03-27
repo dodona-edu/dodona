@@ -644,7 +644,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :no_content
   end
 
-  test 'cannot modify if question was answered' do
+  test 'can modify if question was answered' do
     question = create :question, submission: @submission, question_state: :answered
 
     put annotation_path(question), params: {
@@ -653,7 +653,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
-    assert_response :forbidden
+    assert_response :success
 
     question = create :question, submission: @submission, question_state: :unanswered
 

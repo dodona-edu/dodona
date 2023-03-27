@@ -459,7 +459,7 @@ GEM
       httpclient (>= 2.4)
     terser (1.1.14)
       execjs (>= 0.3.0, < 3)
-    test-prof (1.2.0)
+    test-prof (1.2.1)
     thor (1.2.1)
     tilt (2.0.11)
     timeout (0.3.2)
@@ -574,7 +574,7 @@ DEPENDENCIES
   sprockets-rails (~> 3.4.2)
   stackprof (~> 0.2.23)
   terser (>= 1.1.1)
-  test-prof (~> 1.2.0)
+  test-prof (~> 1.2.1)
   tzinfo-data
   web-console (~> 4.2.0)
   webmock

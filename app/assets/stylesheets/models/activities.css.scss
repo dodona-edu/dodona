@@ -192,8 +192,15 @@ center img {
   }
 }
 
-pre {
+.code-wrapper {
   position: relative;
+  overflow: hidden;
+
+  code {
+    overflow: auto;
+    width: 100%;
+    display: block;
+  }
 
   d-copy-button {
     position: absolute;

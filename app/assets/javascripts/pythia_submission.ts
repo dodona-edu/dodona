@@ -9,7 +9,7 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
         if (document.querySelectorAll(".tutormodal").length == 1) {
             initFullScreen();
         } else {
-            const tutorModal = document.querySelector(".tutormodal:last");
+            const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
             if (tutorModal) {
                 tutorModal.remove();
             }
@@ -18,21 +18,21 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
 
     function initTutorLinks(): void {
         // add disabled to tutorlinks that are not valid
-        document.querySelectorAll(".tutorlink").forEach( l => {
+        document.querySelectorAll(".tutorlink").forEach(l => {
             const group = l.closest(".group") as HTMLElement;
             if (!(group.dataset.statements || group.dataset.stdin)) {
                 l.remove();
             }
         });
 
-        document.querySelectorAll(".tutorlink").forEach( l => l.addEventListener("click", e => {
+        document.querySelectorAll(".tutorlink").forEach(l => l.addEventListener("click", e => {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
             const group = e.currentTarget.closest(".group");
             const stdin = group.dataset.stdin.slice(0, -1);
             const statements = group.dataset.statements;
             const files = { inline: {}, href: {} };
 
-            group.querySelectorAll(".contains-file").forEach( g => {
+            group.querySelectorAll(".contains-file").forEach(g => {
                 const content = JSON.parse(g.dataset.files);
 
                 Object.values(content).forEach(value => {
@@ -45,18 +45,20 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
                 submissionCode,
                 statements,
                 stdin,
-                files["inline"],
-                files["href"]
+                files.inline,
+                files.href
             );
         }));
     }
 
     function initFileViewers(activityPath: string): void {
-        document.querySelectorAll("a.file-link").forEach( l => l.addEventListener("click", e => {
+        document.querySelectorAll("a.file-link").forEach(l => l.addEventListener("click", e => {
             const link = e.currentTarget as HTMLLinkElement;
             const fileName = link.innerText;
             const tc = link.closest(".testcase.contains-file") as HTMLDivElement;
-            if (tc === null) return;
+            if (tc === null) {
+                return;
+            }
             const files = JSON.parse(tc.dataset.files);
             const file = files[fileName];
             if (file.location === "inline") {
@@ -68,24 +70,22 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
     }
 
     function showInlineFile(name: string, content: string): void {
-        showInfoModal(name, "<div class='code'>" + content + "</div>");
+        showInfoModal(name, `<div class='code'>${content}</div>`);
     }
 
     function showRealFile(name: string, activityPath: string, filePath: string): void {
         const path = activityPath + "/" + filePath;
         const random = Math.floor(Math.random() * 10000 + 1);
         showInfoModal(
-            name +
-            " <a href='" + path +
-            "' title='Download' download><i class='mdi mdi-download'></i></a>",
-            "<div class='code' id='file-" + random + "'>Loading...</div>"
+            `${name} <a href='${path}' title='Download' download><i class='mdi mdi-download'></i></a>`,
+            `<div class='code' id='file-${random}'>Loading...</div>`
         );
 
         fetch(path, {
             method: "GET"
-        }).then( response => {
+        }).then(response => {
             if (response.ok) {
-                response.text().then( data => {
+                response.text().then(data => {
                     let lines = data.split("\n");
                     const maxLines = 99;
                     if (lines.length > maxLines) {
@@ -184,7 +184,7 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
                 } else {
                     const error = document.createElement("div");
                     error.classList.add("alert", "alert-danger", "alert-dismissible", "show", "tutor-error");
-                    error.innerHTML = "<button type=\"button\" class=\"btn-close btn-close-white\" data-bs-dismiss=\"alert\"></button>" + I18n.t("js.tutor-failed");
+                    error.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${I18n.t("js.tutor-failed")}`;
                     document.querySelector(".feedback-table").before(error);
                     window.scrollTo(0, 0); // scroll to top of page to see error
                 }
@@ -194,7 +194,7 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
     function createTutor(codeTrace: string): void {
         showInfoModal(
             "Python Tutor",
-            "<div id=\"tutorcontent\"><div class=\"progress\"><div class=\"progress-bar progress-bar-striped progress-bar-info active\" role=\"progressbar\" style=\"width: 100%\">Loading</div></div></div>",
+            `<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>`,
             { allowFullscreen: true }
         );
         const modal = document.querySelector("#tutor #info-modal");

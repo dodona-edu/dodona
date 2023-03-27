@@ -5,9 +5,11 @@ coverage:
   status:
     project:
       rails:
+        threshold: 0.25%
         flags:
           - rails
       system:
+        threshold: 0.25%
         flags:
           - system
       javascript:

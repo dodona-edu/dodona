@@ -24,6 +24,7 @@ interface UserAnnotationUserData {
 }
 
 export interface UserAnnotationPermissionData {
+    save?: boolean;
     transition?: Record<QuestionState, boolean>
     update?: boolean;
     destroy?: boolean;

@@ -125,6 +125,49 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
         transition(this.data, "unanswered");
     }
 
+    get dropdownOptions(): TemplateResult[] {
+        const options = [];
+
+        if (this.data.permission.update) {
+            options.push(html`
+                <d-new-saved-annotation
+                    from-annotation-id="${this.data.id}"
+                    annotation-text="${this.data.annotation_text}"
+                    .savedAnnotationId="${this.data.saved_annotation_id}">
+                </d-new-saved-annotation>
+            `);
+        }
+        if (this.data.permission.save) {
+            options.push(html`
+                <li>
+                    <a class="dropdown-item" @click="${() => this.editing = true}">
+                        <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
+                    </a>
+                </li>
+            `);
+        }
+        if (this.data.permission.destroy) {
+            options.push(html`
+                <li>
+                    <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
+                        <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.user_annotation.delete`)}
+                    </a>
+                </li>
+            `);
+        }
+        if (this.data.permission.transition?.unanswered) {
+            options.push(html`
+                <li>
+                    <a class="dropdown-item" @click="${() => this.reopenQuestion()}">
+                        <i class="mdi mdi-comment-question-outline mdi-18"></i> ${I18n.t("js.user_question.unresolve")}
+                    </a>
+                </li>
+            `);
+        }
+
+        return options;
+    }
+
     render(): TemplateResult {
         return html`
             <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
@@ -132,36 +175,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     <span class="annotation-meta">
                         ${this.header}
                     </span>
-                    ${this.data.permission.update || this.data.permission.transition?.unanswered ? html`
+                    ${this.dropdownOptions.length > 0 ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">
                             <a class="btn btn-icon btn-icon-inverted dropdown-toggle" data-bs-toggle="dropdown">
                                 <i class="mdi mdi-dots-horizontal text-muted"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
-                                <d-new-saved-annotation
-                                    from-annotation-id="${this.data.id}"
-                                    annotation-text="${this.data.annotation_text}"
-                                    .savedAnnotationId="${this.data.saved_annotation_id}">
-                                </d-new-saved-annotation>
-                                <li>
-                                    <a class="dropdown-item" @click="${() => this.editing = true}">
-                                        <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
-                                    </a>
-                                </li>
-                                ${ this.data.permission.destroy ? html`
-                                    <li>
-                                        <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
-                                            <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.user_annotation.delete`)}
-                                        </a>
-                                    </li>
-                                ` : ""}
-                                ${ this.data.permission.transition?.unanswered ? html`
-                                    <li>
-                                        <a class="dropdown-item" @click="${() => this.reopenQuestion()}">
-                                            <i class="mdi mdi-comment-question-outline mdi-18"></i> ${I18n.t("js.user_question.unresolve")}
-                                        </a>
-                                    </li>
-                                ` : ""}
+                                ${this.dropdownOptions}
                             </ul>
                         </div>
                     ` : ""}

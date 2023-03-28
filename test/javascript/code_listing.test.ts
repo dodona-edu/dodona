@@ -5,6 +5,9 @@ import { setAnnotationVisibility } from "state/Annotations";
 import bootstrap from "bootstrap";
 import { addTestUserAnnotation, resetUserAnnotations } from "state/UserAnnotations";
 import { setMachineAnnotations } from "state/MachineAnnotations";
+import userEvent from "@testing-library/user-event";
+import { fixture, nextFrame } from "@open-wc/testing-helpers";
+import { html } from "lit";
 window.bootstrap = bootstrap;
 
 beforeEach(async () => {
@@ -13,44 +16,33 @@ beforeEach(async () => {
     // Mock typeset function of MathJax
     window.MathJax.typeset = () => "";
 
-    document.body.innerHTML = `
+    // Bootstrap incorrectly detects jquery, so we need to disable it
+    document.body.setAttribute("data-bs-no-jquery", "true");
+
+    await fixture( html`
     <div id="modal-container"></div>
-    <a href="#" data-bs-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
+    <a href="#" data-bs-toggle="tab">Code <d-annotations-count-badge></d-annotations-count-badge></a>
     <div class="code-table" data-submission-id="54">
-    <div id="feedback-table-options" class="feedback-table-options">
-        <button class="btn btn-text" id="add_global_annotation">Annotatie toevoegen</button>
-        <span class="flex-spacer"></span>
-        <span class="diff-switch-buttons switch-buttons hide" id="annotations_toggles">
-            <span id="diff-switch-prefix">Annotaties</span>
-            <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-bs-toggle="buttons">
-                <button class="annotation-toggle active" id="show_all_annotations"></button>
-                <button class="annotation-toggle" id="show_only_errors"></button>
-                <button class="annotation-toggle" id="hide_all_annotations"></button>
-            </div>
-        </span>
-    </div>
-    <div id="feedback-table-global-annotations">
-        <div id="feedback-table-global-annotations-list"></div>
-    </div>
-    <div class="code-listing-container">
-        <table class="code-listing highlighter-rouge">
-            <tbody>
-            <tr id="line-1" class="lineno">
-                <td class="rouge-gutter gl"><pre>1</pre></td>
-                <td class="rouge-code"><pre>print(5 + 6)</pre></td>
-            </tr>
-            <tr id="line-2" class="lineno">
-                <td class="rouge-gutter gl"><pre>2</pre></td>
-                <td class="rouge-code"><pre>print(6 + 3)</pre></td>
-            </tr>
-            <tr id="line-3" class="lineno">
-                <td class="rouge-gutter gl"><pre>1</pre></td>
-                <td class="rouge-code"><pre>print(9 + 15)</pre></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>`;
+        <d-annotation-options></d-annotation-options>
+        <div class="code-listing-container">
+            <table class="code-listing highlighter-rouge">
+                <tbody>
+                <tr id="line-1" class="lineno">
+                    <td class="rouge-gutter gl"><pre>1</pre></td>
+                    <td class="rouge-code"><pre>print(5 + 6)</pre></td>
+                </tr>
+                <tr id="line-2" class="lineno">
+                    <td class="rouge-gutter gl"><pre>2</pre></td>
+                    <td class="rouge-code"><pre>print(6 + 3)</pre></td>
+                </tr>
+                <tr id="line-3" class="lineno">
+                    <td class="rouge-gutter gl"><pre>1</pre></td>
+                    <td class="rouge-code"><pre>print(9 + 15)</pre></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>`);
     codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
     setAnnotationVisibility("all");
     resetUserAnnotations();
@@ -64,7 +56,7 @@ test("create feedback table with default settings", async () => {
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
     ]);
 
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(3);
 });
@@ -72,7 +64,7 @@ test("create feedback table with default settings", async () => {
 test("html in annotations should be escaped", async () => {
     codeListing.addMachineAnnotations([{ "text": "<b>test</b>", "row": 0, "type": "warning" }]);
 
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelector(".annotation .annotation-text").textContent).toBe("<b>test</b>");
 });
@@ -87,7 +79,7 @@ test("feedback table should support more than 1 annotation per row (first and la
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
     ]);
 
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(6);
 });
@@ -99,7 +91,7 @@ test("annotation types should be transmitted into the view", async () => {
         { "text": "Division by zero", "row": 2, "type": "error" },
     ]);
 
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation.info").length).toBe(1);
     expect(document.querySelectorAll(".annotation.warning").length).toBe(1);
@@ -131,9 +123,9 @@ test("dots only for non-shown messages and only the worst", async () => {
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    setAnnotationVisibility("none");
 
-    await new Promise(process.nextTick);
+    const button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     // Dot on line 1 should be shown.
     expect(document.querySelectorAll(".dot").length).toBe(1);
@@ -150,9 +142,8 @@ test("dots not visible when all annotations are shown", async () => {
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    setAnnotationVisibility("all");
-
-    await new Promise(process.nextTick);
+    const button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
 
     // no dots visible
     expect(document.querySelectorAll(".dot").length).toBe(0);
@@ -165,19 +156,18 @@ test("only warning dot visible when in compressed error mode", async () => {
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    setAnnotationVisibility("important");
-
-    await new Promise(process.nextTick);
+    let button = document.querySelector(".mdi-comment-alert-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-warning").length).toBe(1);
 
     // Simulating user switching
-    setAnnotationVisibility("all");
-    setAnnotationVisibility("none");
-
-    await new Promise(process.nextTick);
+    button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
+    button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(1);
@@ -190,30 +180,27 @@ test("no double dots", async () => {
         { "text": "Division by zero", "row": 0, "type": "info" },
     ]);
 
-    setAnnotationVisibility("none");
-    await new Promise(process.nextTick);
+    let button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
 
-    setAnnotationVisibility("all");
-
-    await new Promise(process.nextTick);
+    button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    setAnnotationVisibility("important");
-
-    await new Promise(process.nextTick);
+    button = document.querySelector(".mdi-comment-alert-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    setAnnotationVisibility("none");
-
-    await new Promise(process.nextTick);
+    button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
@@ -261,7 +248,7 @@ test("annotations should be transmitted into view", async () => {
             name: "Piet Hein",
         }
     });
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
@@ -308,7 +295,7 @@ test("feedback table should support more than 1 annotation per row", async () =>
             name: "Piet Hein",
         }
     });
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
@@ -364,27 +351,25 @@ test("feedback table should be able to contain both machine annotations and user
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
         { "text": "Value could be assigned", "row": 2, "type": "info" },
     ]);
-    await new Promise(process.nextTick);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2 + 6);
 });
 
 test("ensure that all buttons are created", async () => {
     codeListing.initAnnotateButtons();
-    await new Promise(process.nextTick);
+    await nextFrame();
     expect(document.querySelectorAll(".annotation-button").length).toBe(3);
 });
 
 test("click on comment button", async () => {
     codeListing.initAnnotateButtons();
 
-    await new Promise(process.nextTick);
+    await nextFrame();
     expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
     const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
-    annotationButton.click();
-    await new Promise(process.nextTick);
+    await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
-    annotationButton.click();
-    await new Promise(process.nextTick);
+    await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
 });

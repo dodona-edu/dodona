@@ -54,6 +54,18 @@ if (process.env.NODE_ENV === "development") {
     config.devtool = "inline-source-map";
 }
 
+if (process.env.CI === "true") {
+    config.module.rules.push({
+        test: /\.(js|jsx|ts|tsx|)$/,
+        exclude: /node_modules/,
+        use: {
+            loader: "istanbul-instrumenter-loader",
+            options: { esModules: true }
+        },
+        enforce: "post",
+    });
+}
+
 // Test, Staging and Production use default config
 
 module.exports = config;

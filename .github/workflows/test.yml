@@ -131,6 +131,9 @@ jobs:
       with:
         name: screenshots-failure
         path: tmp/capybara
+    - name: merge system js coverage
+      run: |
+        nyc merge ./coverage/system-js  coverage.json
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:

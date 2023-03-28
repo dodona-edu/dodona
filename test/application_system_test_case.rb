@@ -9,7 +9,9 @@ def dump_js_coverage
   return if page_coverage.blank?
 
   # we will store one file for each system test, and we save all of them in the coverage/system-js dir
-  Rails.root.join('coverage', 'system-js', "system_test_#{Time.current.to_i}.json").open('w') do |report|
+  dir = Rails.root.join('coverage/system-js')
+  FileUtils.mkdir_p(dir)
+  dir.join("system_test_#{Time.current.to_i}.json").open('w') do |report|
     report.puts page_coverage
   end
 end

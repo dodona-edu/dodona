@@ -133,7 +133,7 @@ jobs:
         path: tmp/capybara
     - name: merge system js coverage
       run: |
-        nyc merge ./coverage/system-js  coverage.json
+        yarn test:system:coverage:merge
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:

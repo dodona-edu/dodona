@@ -8,7 +8,8 @@
     "build:css": "./bin/build-css",
     "build:js": "webpack --config ./config/webpack/webpack.config.js",
     "build": "yarn build:js",
-    "typeCheck": "yarn tsc --skipLibCheck --noEmit"
+    "typeCheck": "yarn tsc --skipLibCheck --noEmit",
+    "test:system:coverage:merge": "nyc merge ./coverage/system-js  ./coverage/coverage.json"
   },
   "dependencies": {
     "@babel/core": "^7.21.3",

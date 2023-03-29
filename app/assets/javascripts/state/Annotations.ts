@@ -34,6 +34,6 @@ export function setQuestionMode(mode: boolean): void {
     events.publish("getQuestionMode");
 }
 
-export function getQuestionMode(): boolean {
+export function isQuestionMode(): boolean {
     return questionMode;
 }

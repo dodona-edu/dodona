@@ -8,7 +8,7 @@ import {
     UserAnnotationFormData
 } from "state/UserAnnotations";
 import { getEvaluationId } from "state/Evaluations";
-import { getQuestionMode, isAnnotationVisible } from "state/Annotations";
+import { isQuestionMode, isAnnotationVisible } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
@@ -49,8 +49,8 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         return getUserAnnotationsByLine(this.row);
     }
 
-    get questionMode(): boolean {
-        return getQuestionMode();
+    get isQuestionMode(): boolean {
+        return isQuestionMode();
     }
 
 
@@ -63,7 +63,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         };
 
         try {
-            const mode = getQuestionMode() ? "question" : "annotation";
+            const mode = isQuestionMode() ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.closeForm();
         } catch (err) {
@@ -89,7 +89,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         return html`
             <div class="annotation-cell">
                 ${this.showForm ? html`
-                    <div class="annotation ${this.questionMode ? "question" : "user" }">
+                    <div class="annotation ${this.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            @cancel=${() => this.closeForm()}
                                            ${ref(this.annotationFormRef)}

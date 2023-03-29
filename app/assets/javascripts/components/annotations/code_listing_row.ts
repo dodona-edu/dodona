@@ -5,7 +5,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { getQuestionMode } from "state/Annotations";
+import { isQuestionMode } from "state/Annotations";
 import { stateMixin } from "state/StateMixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
@@ -38,8 +38,8 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
         initTooltips(this);
     }
 
-    get questionMode(): boolean {
-        return getQuestionMode();
+    get isQuestionMode(): boolean {
+        return isQuestionMode();
     }
 
     get canCreateAnnotation(): boolean {
@@ -47,7 +47,7 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     }
 
     get addAnnotationTitle(): string {
-        return this.questionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
+        return this.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
     render(): TemplateResult {

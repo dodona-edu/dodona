@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
-import { getQuestionMode } from "state/Annotations";
+import { isQuestionMode } from "state/Annotations";
 import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
@@ -22,8 +22,8 @@ export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement
 
     state = ["getQuestionMode", "hasPermission"];
 
-    get questionMode(): boolean {
-        return getQuestionMode();
+    get isQuestionMode(): boolean {
+        return isQuestionMode();
     }
 
     get canCreateAnnotation(): boolean {
@@ -31,7 +31,7 @@ export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement
     }
 
     get addAnnotationTitle(): string {
-        return this.questionMode ?
+        return this.isQuestionMode ?
             I18n.t("js.annotations.options.add_global_question") :
             I18n.t("js.annotations.options.add_global_annotation");
     }

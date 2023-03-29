@@ -8,7 +8,7 @@ import {
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { getEvaluationId } from "state/Evaluations";
-import { getQuestionMode } from "state/Annotations";
+import { isQuestionMode } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
@@ -35,8 +35,8 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
     state = ["getUserAnnotations", "getQuestionMode"];
 
-    get questionMode(): boolean {
-        return getQuestionMode();
+    get isQuestionMode(): boolean {
+        return isQuestionMode();
     }
 
     get openQuestions(): UserAnnotationData[] | undefined {
@@ -58,7 +58,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         };
 
         try {
-            const mode = getQuestionMode() ? "question" : "annotation";
+            const mode = isQuestionMode() ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
 
             invalidateUserAnnotation(this.data.id);
@@ -100,7 +100,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
                     <d-user-annotation .data=${response}></d-user-annotation>
                 `)}
                 ${this.showForm ? html`
-                    <div class="annotation ${this.questionMode ? "question" : "user" }">
+                    <div class="annotation ${this.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}
                                            @cancel=${() => this.cancelReply()}

@@ -7,7 +7,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { getQuestionMode } from "state/Annotations";
+import { isQuestionMode } from "state/Annotations";
 import { initTooltips } from "util.js";
 import "components/saved_annotations/saved_annotation_icon";
 
@@ -42,7 +42,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     }
 
     get type(): string {
-        return getQuestionMode() ? "user_question" : "user_annotation";
+        return isQuestionMode() ? "user_question" : "user_annotation";
     }
 
     protected get header(): TemplateResult {

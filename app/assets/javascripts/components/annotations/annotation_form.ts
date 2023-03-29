@@ -8,7 +8,7 @@ import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";
-import { getQuestionMode } from "state/Annotations";
+import { isQuestionMode } from "state/Annotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -68,12 +68,12 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
         return getCourseId();
     }
 
-    get questionMode(): boolean {
-        return getQuestionMode();
+    get isQuestionMode(): boolean {
+        return isQuestionMode();
     }
 
     get type(): string {
-        return this.questionMode ? "user_question" : "user_annotation";
+        return this.isQuestionMode ? "user_question" : "user_annotation";
     }
 
     get rows(): number {
@@ -154,7 +154,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     render(): TemplateResult {
         return html`
             <form class="annotation-submission form">
-                ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                         <d-saved-annotation-input
                             name="saved_annotation_id"
                             class="saved-annotation-input"
@@ -164,7 +164,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                         ></d-saved-annotation-input>
                     `}
                 <div class="field form-group">
-                    ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                    ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                         <label class="form-label" for="annotation-text">
                             ${I18n.t("js.user_annotation.fields.annotation_text")}
                         </label>
@@ -183,7 +183,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                     ></textarea>
                     <div class="clearfix annotation-help-block">
                         <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
-                        ${this.questionMode ? html`
+                        ${this.isQuestionMode ? html`
                             <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
                         ` : ""}
                         <span class="help-block float-end">
@@ -191,7 +191,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                         </span>
                     </div>
                 </div>
-                ${this.questionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
                     <div class="field form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">

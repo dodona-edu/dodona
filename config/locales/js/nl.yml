@@ -147,7 +147,7 @@ nl:
       meta: "%{user} · %{time}"
       anonymous_message: 'Deze opmerking maakt deel uit van een evaluatie'
       send: 'Toevoegen'
-      reply: 'Antwoorden'
+      reply: 'Reageer'
       update: 'Updaten'
       cancel: 'Annuleren'
       delete: 'Verwijderen'

@@ -11,7 +11,9 @@ def dump_js_coverage
   # we will store one file for each system test, and we save all of them in the coverage/system-js dir
   dir = Rails.root.join('coverage/system-js')
   FileUtils.mkdir_p(dir)
-  dir.join("system_test_#{Time.current.to_i}.json").open('w') do |report|
+  filename = "system_test_#{Time.current.to_i}"
+  filename += '_' while File.exist?(dir.join("#{filename}.json"))
+  dir.join("#{filename}.json").open('w') do |report|
     report.puts page_coverage
   end
 end

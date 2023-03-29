@@ -1,10 +1,10 @@
 require 'test_helper'
 require 'selenium/webdriver'
 
-# this function should be executed when we want to store the current `window.__coverage__` info in a file
 def dump_js_coverage
   return unless ENV['CI'] == 'true'
 
+  # the coverage report is stored in the window.__coverage__ variable by the istanbul plugin for babel
   page_coverage = page.evaluate_script('JSON.stringify(window.__coverage__);')
   return if page_coverage.blank?
 
@@ -33,7 +33,7 @@ Capybara.register_driver :chrome do |app|
   client.read_timeout = 120 # instead of the default 60 end
   Capybara::Selenium::Driver.new(app,
                                  browser: :chrome,
-                                 options: options, http_client: client, clear_local_storage: false)
+                                 options: options, http_client: client)
 end
 
 Capybara.configure do |config|

@@ -4,7 +4,7 @@
   "scripts": {
     "lint": "eslint  --ext '.js' --ext '.ts' app/javascript app/assets/javascripts",
     "lint:css": "stylelint app/assets/stylesheets",
-    "test": "jest --coverage",
+    "test": "jest",
     "build:css": "./bin/build-css",
     "build:js": "webpack --config ./config/webpack/webpack.config.js",
     "build": "yarn build:js",

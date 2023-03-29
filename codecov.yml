@@ -4,12 +4,14 @@
 coverage:
   status:
     project:
+      default:
+        threshold: 0.25
       rails:
-        threshold: 0.25%
+        threshold: 0.25
         flags:
           - rails
       system:
-        threshold: 0.25%
+        threshold: 0.25
         flags:
           - system
       javascript:

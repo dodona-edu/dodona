@@ -3,7 +3,7 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
-import { modalMixin } from "components/meta/modal_mixin";
+import { modalMixin } from "components/modal_mixin";
 import { isBetaCourse } from "saved_annotation_beta";
 import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";

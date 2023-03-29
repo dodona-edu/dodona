@@ -54,7 +54,6 @@ if (process.env.NODE_ENV === "development") {
     config.devtool = "inline-source-map";
 }
 
-
 // Test, Staging and Production use default config
 
 module.exports = config;

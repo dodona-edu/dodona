@@ -39,22 +39,24 @@ class ActivitiesTest < ApplicationSystemTestCase
   end
 
   test 'should show message to restore boilerplate if latest submission is shown' do
-    @instance.stubs(:boilerplate).returns('boilerplate') do
-      create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
-      visit exercise_path(id: @instance.id)
-      assert_text 'Restore boilerplate'
-    end
+    Exercise.any_instance.stubs(:boilerplate).returns('boilerplate')
+    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
+    visit exercise_path(id: @instance.id)
+    assert_text 'Restore the boilerplate code.'
+    find('a', text: 'Restore the boilerplate code.').click
+    assert_text 'boilerplate'
   end
 
   test 'should not break on complex unicode characters' do
-    @instance.stubs(:boilerplate).returns('`<script>alert("😀")</script>`') do
-      visit exercise_path(id: @instance.id)
-      assert_text '`<script>alert("😀")</script>`'
+    Exercise.any_instance.stubs(:boilerplate).returns('`<script>alert("😀")</script>`')
+    visit exercise_path(id: @instance.id)
+    assert_text '`<script>alert("😀")</script>`'
 
-      create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")')
-      visit exercise_path(id: @instance.id)
-      assert_text 'print("😀")'
-      assert_text 'Restore boilerplate'
-    end
+    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")')
+    visit exercise_path(id: @instance.id)
+    assert_text 'print("😀")'
+    assert_text 'Restore the boilerplate code.'
+    find('a', text: 'Restore the boilerplate code.').click
+    assert_text '`<script>alert("😀")</script>`'
   end
 end

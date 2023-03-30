@@ -40,7 +40,7 @@ module.exports = function (api) {
             "@babel/plugin-syntax-dynamic-import",
             "@babel/plugin-transform-for-of",
             isTestEnv && "babel-plugin-dynamic-import-node",
-            isDevelopmentEnv && ["istanbul", { include: ["app/assets/javascripts/**/*.{js,ts}"] }],
+            isDevelopmentEnv && ["istanbul", { include: ["app/assets/javascripts/**/*.{js,ts}"], coverageGlobalScopeFunc: false, coverageGlobalScope: "window" }],
             "@babel/plugin-transform-destructuring",
             ["@babel/plugin-proposal-class-properties", { loose: true }],
             ["@babel/plugin-proposal-decorators", { decoratorsBeforeExport: true }],

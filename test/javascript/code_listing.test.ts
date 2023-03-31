@@ -1,5 +1,5 @@
 import codeListing from "code_listing";
-import { setAnnotationVisibility } from "state/Annotations";
+import { annotationState } from "state/Annotations";
 
 // bootstrap
 import bootstrap from "bootstrap";
@@ -44,7 +44,7 @@ beforeEach(async () => {
         </div>
     </div>`);
     codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
-    setAnnotationVisibility("all");
+    annotationState.visibility = "all";
     resetUserAnnotations();
     setMachineAnnotations([]);
 });

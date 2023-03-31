@@ -5,11 +5,12 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { isQuestionMode } from "state/Annotations";
 import { stateMixin } from "state/StateMixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { hasPermission } from "state/Users";
+import { observeState } from "lit-element-state";
+import { annotationState } from "state/Annotations";
 
 /**
  * This component represents a row in the code listing.
@@ -22,7 +23,7 @@ import { hasPermission } from "state/Users";
  * @prop {string} renderedCode - The code to display.
  */
 @customElement("d-code-listing-row")
-export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) {
+export class CodeListingRow extends observeState(stateMixin(i18nMixin(ShadowlessLitElement))) {
     @property({ type: Number })
     row: number;
     @property({ type: String })
@@ -31,15 +32,11 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     @property({ state: true })
     showForm: boolean;
 
-    state = ["getQuestionMode", "hasPermission"];
+    state = ["hasPermission"];
 
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
-    }
-
-    get isQuestionMode(): boolean {
-        return isQuestionMode();
     }
 
     get canCreateAnnotation(): boolean {
@@ -47,7 +44,7 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     }
 
     get addAnnotationTitle(): string {
-        return this.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
+        return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
     render(): TemplateResult {

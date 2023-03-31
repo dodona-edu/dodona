@@ -8,7 +8,7 @@ import {
     UserAnnotationFormData
 } from "state/UserAnnotations";
 import { getEvaluationId } from "state/Evaluations";
-import { isQuestionMode, isAnnotationVisible } from "state/Annotations";
+import { annotationState } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
@@ -18,6 +18,7 @@ import "components/annotations/thread";
 import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
+import { observeState } from "lit-element-state";
 
 /**
  * This component represents a cell that groups all annotations for a specific line.
@@ -31,7 +32,7 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
  * @fires close-form - if the form should be closed
  */
 @customElement("d-annotations-cell")
-export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
+export class AnnotationsCell extends observeState(stateMixin(ShadowlessLitElement)) {
     @property({ type: Boolean, attribute: "show-form" })
     showForm: boolean;
     @property({ type: Number })
@@ -39,7 +40,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations", "getMachineAnnotations", "isAnnotationVisible", "getQuestionMode"];
+    state = ["getUserAnnotations", "getMachineAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
         return getMachineAnnotationsByLine(this.row);
@@ -47,10 +48,6 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     get userAnnotations(): UserAnnotationData[] {
         return getUserAnnotationsByLine(this.row);
-    }
-
-    get isQuestionMode(): boolean {
-        return isQuestionMode();
     }
 
 
@@ -63,7 +60,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         };
 
         try {
-            const mode = isQuestionMode() ? "question" : "annotation";
+            const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.closeForm();
         } catch (err) {
@@ -74,7 +71,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     getVisibleMachineAnnotationsOfType(type: string): TemplateResult[] {
         return this.machineAnnotations
-            .filter(isAnnotationVisible)
+            .filter(a => annotationState.isVisible(a))
             .filter(a => a.type === type).map(a => html`
                 <d-machine-annotation .data=${a}></d-machine-annotation>
         `);
@@ -89,7 +86,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         return html`
             <div class="annotation-cell">
                 ${this.showForm ? html`
-                    <div class="annotation ${this.isQuestionMode ? "question" : "user" }">
+                    <div class="annotation ${annotationState.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            @cancel=${() => this.closeForm()}
                                            ${ref(this.annotationFormRef)}
@@ -101,7 +98,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
                     ${this.getVisibleMachineAnnotationsOfType("error")}
                 </div>
                 <div class="annotation-group-conversation">
-                    ${this.userAnnotations.filter(isAnnotationVisible).map(a => html`
+                    ${this.userAnnotations.filter(a => annotationState.isVisible(a)).map(a => html`
                         <d-thread .data=${a}></d-thread>
                     `)}
                 </div>

@@ -8,12 +8,13 @@ import {
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { getEvaluationId } from "state/Evaluations";
-import { isQuestionMode } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
+import { observeState } from "lit-element-state";
+import { annotationState } from "state/Annotations";
 
 /**
  * This component represents a thread of annotations.
@@ -24,7 +25,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
  * @prop {UserAnnotationData} data - the data of the root annotation for this thread
  */
 @customElement("d-thread")
-export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class Thread extends observeState(i18nMixin(stateMixin(ShadowlessLitElement))) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -33,11 +34,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations", "getQuestionMode"];
-
-    get isQuestionMode(): boolean {
-        return isQuestionMode();
-    }
+    state = ["getUserAnnotations"];
 
     get openQuestions(): UserAnnotationData[] | undefined {
         return [this.data, ...this.data.responses]
@@ -58,7 +55,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         };
 
         try {
-            const mode = isQuestionMode() ? "question" : "annotation";
+            const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
 
             invalidateUserAnnotation(this.data.id);
@@ -100,7 +97,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
                     <d-user-annotation .data=${response}></d-user-annotation>
                 `)}
                 ${this.showForm ? html`
-                    <div class="annotation ${this.isQuestionMode ? "question" : "user" }">
+                    <div class="annotation ${annotationState.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}
                                            @cancel=${() => this.cancelReply()}

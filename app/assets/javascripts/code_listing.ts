@@ -6,9 +6,9 @@ import { setCourseId } from "state/Courses";
 import { setExerciseId } from "state/Exercises";
 import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
-import { setQuestionMode } from "state/Annotations";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
+import { annotationState } from "state/Annotations";
 
 const MARKING_CLASS = "marked";
 
@@ -18,7 +18,7 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
     setExerciseId(exerciseId);
     setUserId(userId);
     setSubmissionId(submissionId);
-    setQuestionMode(questionMode);
+    annotationState.isQuestionMode = questionMode;
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
     const rows = table.querySelectorAll("tr");

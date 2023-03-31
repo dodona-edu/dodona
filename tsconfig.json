@@ -11,12 +11,17 @@
     "downlevelIteration": true,
     "baseUrl": "app",
     "paths": {
-      "*": ["assets/javascripts/*"]
+      "*": ["assets/javascripts/*"],
+      "lit-element-state": ["assets/javascripts/types/module-types/lit-element-state"],
     },
     "pretty": true,
     "allowUmdGlobalAccess": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "assets/javascripts/types/module-types"
+    ]
   },
-  "exclude": ["**/*.spec.ts", "node_modules", "public", "data"],
+  "exclude": ["**/*.spec.ts", "node_modules", "public", "data", "assets/javascripts/types/module-types/**"],
   "compileOnSave": false
 }

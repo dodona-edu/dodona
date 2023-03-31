@@ -1,39 +1,24 @@
-import { events } from "state/PubSub";
 import { MachineAnnotationData } from "state/MachineAnnotations";
 import { UserAnnotationData } from "state/UserAnnotations";
-
+import { LitState, stateVar } from "lit-element-state";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
-let annotationVisibility: AnnotationVisibilityOptions = "all";
-let questionMode = false;
 
-export function setAnnotationVisibility(visibility: AnnotationVisibilityOptions): void {
-    annotationVisibility = visibility;
-    events.publish("getAnnotationVisibility");
-    events.publish("isAnnotationVisible");
-}
+class AnnotationState extends LitState {
+    @stateVar() visibility: AnnotationVisibilityOptions = "all";
+    @stateVar() isQuestionMode = false;
 
-export function getAnnotationVisibility(): AnnotationVisibilityOptions {
-    return annotationVisibility;
-}
+    isVisible(annotation: MachineAnnotationData | UserAnnotationData): boolean {
+        if (this.visibility === "none") {
+            return false;
+        }
 
-export function isAnnotationVisible(annotation: MachineAnnotationData | UserAnnotationData): boolean {
-    if (annotationVisibility === "none") {
-        return false;
+        if (this.visibility === "important") {
+            return annotation.type === "error" || annotation.type === "annotation" || annotation.type === "question";
+        }
+
+        return true;
     }
-
-    if (annotationVisibility === "important") {
-        return annotation.type === "error" || annotation.type === "annotation" || annotation.type === "question";
-    }
-
-    return true;
 }
 
-export function setQuestionMode(mode: boolean): void {
-    questionMode = mode;
-    events.publish("getQuestionMode");
-}
-
-export function isQuestionMode(): boolean {
-    return questionMode;
-}
+export const annotationState = new AnnotationState();

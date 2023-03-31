@@ -4,10 +4,11 @@ import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
 import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
-import { isAnnotationVisible } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 import { initTooltips } from "util.js";
+import { observeState } from "lit-element-state";
+import { annotationState } from "state/Annotations";
 
 /**
  * This component represents a dot that shows the number of hidden annotations for a line.
@@ -17,11 +18,11 @@ import { initTooltips } from "util.js";
  * @prop {number} row - The row number.
  */
 @customElement("d-hidden-annotations-dot")
-export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class HiddenAnnotationsDot extends observeState(i18nMixin(stateMixin(ShadowlessLitElement))) {
     @property({ type: Number })
     row: number;
 
-    state = ["getUserAnnotations", "getMachineAnnotations", "isAnnotationVisible"];
+    state = ["getUserAnnotations", "getMachineAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
         return getMachineAnnotationsByLine(this.row);
@@ -32,7 +33,7 @@ export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElem
     }
 
     get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {
-        return [...this.machineAnnotations, ...this.userAnnotations].filter(a => !isAnnotationVisible(a));
+        return [...this.machineAnnotations, ...this.userAnnotations].filter(a => !annotationState.isVisible(a));
     }
 
     get infoDotClasses(): string {

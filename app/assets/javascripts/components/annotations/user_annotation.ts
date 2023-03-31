@@ -7,9 +7,10 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { isQuestionMode } from "state/Annotations";
 import { initTooltips } from "util.js";
 import "components/saved_annotations/saved_annotation_icon";
+import { observeState } from "lit-element-state";
+import { annotationState } from "state/Annotations";
 
 /**
  * This component represents a single user annotation.
@@ -21,7 +22,7 @@ import "components/saved_annotations/saved_annotation_icon";
  * @prop {UserAnnotationData} data - the data of the annotation
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
+export class UserAnnotation extends observeState(i18nMixin(ShadowlessLitElement)) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -42,7 +43,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     }
 
     get type(): string {
-        return isQuestionMode() ? "user_question" : "user_annotation";
+        return annotationState.isQuestionMode ? "user_question" : "user_annotation";
     }
 
     protected get header(): TemplateResult {

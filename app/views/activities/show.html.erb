@@ -182,7 +182,7 @@ end %>
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
             "<%= submissions_url %>",
-            `<%= (@activity.exercise? && raw(@activity.boilerplate&.gsub!('`', '\\\\`')))|| "" %>`,
+            `<%= (@activity.exercise? && @activity.boilerplate&.gsub('`', '\\\\`'))|| "" %>`,
         );
     });
 </script>

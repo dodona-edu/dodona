@@ -133,7 +133,7 @@ gem 'faker', '~> 3.1.1'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.23'
+gem 'stackprof', '~> 0.2.24'
 
 gem 'ddtrace', '~> 1.10.1'
 
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.8.1'
+  gem 'selenium-webdriver', '~> 4.8.3'
 end
 
 group :test do
@@ -165,7 +165,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.0'
+  gem 'test-prof', '~> 1.2.1'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

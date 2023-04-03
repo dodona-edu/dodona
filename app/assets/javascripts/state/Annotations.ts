@@ -1,12 +1,13 @@
 import { MachineAnnotationData } from "state/MachineAnnotations";
 import { UserAnnotationData } from "state/UserAnnotations";
-import { LitState, stateVar } from "lit-element-state";
+import { State } from "state/state_system/State";
+import { stateProperty } from "state/state_system/StateProperty";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
 
-class AnnotationState extends LitState {
-    @stateVar() visibility: AnnotationVisibilityOptions = "all";
-    @stateVar() isQuestionMode = false;
+class AnnotationState extends State {
+    @stateProperty visibility: AnnotationVisibilityOptions = "all";
+    @stateProperty isQuestionMode = false;
 
     isVisible(annotation: MachineAnnotationData | UserAnnotationData): boolean {
         if (this.visibility === "none") {

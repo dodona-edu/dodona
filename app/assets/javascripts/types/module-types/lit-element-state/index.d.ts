@@ -10,6 +10,8 @@ declare function observeState<T extends Constructor>(superClass: T): T;
 
 declare class LitState {}
 
-declare function stateVar(options?: any): any;
+// property decorator
+type decorator = (target: object, propertyKey: string) => void;
+declare function stateVar(options?: any): decorator;
 
 export { observeState, LitState, stateVar };

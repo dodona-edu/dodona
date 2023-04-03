@@ -5,9 +5,9 @@ import "components/datalist_input";
 import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { getCourseId } from "state/Courses";
 import { getExerciseId } from "state/Exercises";
 import { getUserId } from "state/Users";
+import { courseState } from "state/Courses";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -34,15 +34,11 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     __label: string;
 
     get state(): string[] {
-        const state = ["getSavedAnnotations", "getCourseId", "getExerciseId", "getUserId"];
+        const state = ["getSavedAnnotations", "getExerciseId", "getUserId"];
         if (this.value) {
             state.push(`getSavedAnnotation${this.value}`);
         }
         return state;
-    }
-
-    get courseId(): number {
-        return getCourseId();
     }
 
     get exerciseId(): number {
@@ -59,7 +55,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
 
     get savedAnnotations(): SavedAnnotation[] {
         return getSavedAnnotations(new Map([
-            ["course_id", this.courseId.toString()],
+            ["course_id", courseState.id.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()],
             ["filter", this.__label]
@@ -68,7 +64,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
 
     get potentialSavedAnnotationsExist(): boolean {
         return getSavedAnnotations(new Map([
-            ["course_id", this.courseId.toString()],
+            ["course_id", courseState.id.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()]
         ])).length > 0;

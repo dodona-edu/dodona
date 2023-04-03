@@ -5,7 +5,6 @@ import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "stat
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 import { isBetaCourse } from "saved_annotation_beta";
-import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";
 
 /**
@@ -37,7 +36,7 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     get state(): string[] {
-        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`, "getCourseId"] : ["getCourseId"];
+        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`] : [];
     }
 
     get linkedSavedAnnotation(): SavedAnnotation {
@@ -91,7 +90,7 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     render(): TemplateResult {
-        return isBetaCourse(getCourseId()) && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
+        return isBetaCourse() && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
             <li>
                 <a class="dropdown-item" @click="${() => this.showModal()}">
                     <i class="mdi mdi-content-save mdi-18"></i>

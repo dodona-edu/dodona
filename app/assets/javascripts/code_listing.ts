@@ -2,7 +2,7 @@ import { CodeListingRow } from "components/annotations/code_listing_row";
 import { render } from "lit";
 import { fetchUserAnnotations } from "state/UserAnnotations";
 import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
-import { setCourseId } from "state/Courses";
+import { courseState } from "state/Courses";
 import { setExerciseId } from "state/Exercises";
 import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
@@ -14,7 +14,7 @@ const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
     setCode(code);
-    setCourseId(courseId);
+    courseState.id = courseId;
     setExerciseId(exerciseId);
     setUserId(userId);
     setSubmissionId(submissionId);

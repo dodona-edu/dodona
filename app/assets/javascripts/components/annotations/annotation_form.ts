@@ -27,7 +27,7 @@ const maxLength = 10_000;
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")
-export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement)) {
+export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
     @property({ type: String, attribute: "saved-annotation-id" })

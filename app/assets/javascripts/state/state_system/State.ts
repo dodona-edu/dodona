@@ -1,11 +1,6 @@
 import { StateEvent } from "./StateEvent";
 import { stateRecorder } from "state/state_system/StateRecorder";
 
-export const notEqual = (value: unknown, old: unknown): boolean => {
-    // This ensures (old==NaN, value==NaN) always returns false
-    return old !== value && (old === old || value === value);
-};
-
 /**
  * Callback function - used as callback subscription to a state change
  */

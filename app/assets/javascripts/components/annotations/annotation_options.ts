@@ -6,7 +6,6 @@ import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { hasPermission } from "state/Users";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 
@@ -17,7 +16,7 @@ import { annotationState } from "state/Annotations";
  * @element d-annotation-options
  */
 @customElement("d-annotation-options")
-export class AnnotationOptions extends observeState(i18nMixin(stateMixin(ShadowlessLitElement))) {
+export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ state: true })
     showForm = false;
 

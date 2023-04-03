@@ -13,7 +13,6 @@ import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 /**
@@ -25,7 +24,7 @@ import { annotationState } from "state/Annotations";
  * @prop {UserAnnotationData} data - the data of the root annotation for this thread
  */
 @customElement("d-thread")
-export class Thread extends observeState(i18nMixin(stateMixin(ShadowlessLitElement))) {
+export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Object })
     data: UserAnnotationData;
 

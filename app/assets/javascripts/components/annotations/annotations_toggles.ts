@@ -4,7 +4,6 @@ import { html, TemplateResult, PropertyValues } from "lit";
 import { annotationState } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
-import { observeState } from "lit-element-state";
 
 /**
  * This component represents the toggles to show/hide annotations.
@@ -13,7 +12,7 @@ import { observeState } from "lit-element-state";
  * @element d-annotations-toggles
  */
 @customElement("d-annotations-toggles")
-export class AnnotationsToggles extends i18nMixin(observeState(ShadowlessLitElement)) {
+export class AnnotationsToggles extends i18nMixin(ShadowlessLitElement) {
     protected update(changedProperties: PropertyValues): void {
         super.update(changedProperties);
         initTooltips(this);

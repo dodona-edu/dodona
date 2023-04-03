@@ -9,7 +9,6 @@ import { stateMixin } from "state/StateMixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { hasPermission } from "state/Users";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 /**
@@ -23,7 +22,7 @@ import { annotationState } from "state/Annotations";
  * @prop {string} renderedCode - The code to display.
  */
 @customElement("d-code-listing-row")
-export class CodeListingRow extends observeState(stateMixin(i18nMixin(ShadowlessLitElement))) {
+export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) {
     @property({ type: Number })
     row: number;
     @property({ type: String })

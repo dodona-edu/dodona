@@ -18,7 +18,6 @@ import "components/annotations/thread";
 import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
-import { observeState } from "lit-element-state";
 
 /**
  * This component represents a cell that groups all annotations for a specific line.
@@ -32,7 +31,7 @@ import { observeState } from "lit-element-state";
  * @fires close-form - if the form should be closed
  */
 @customElement("d-annotations-cell")
-export class AnnotationsCell extends observeState(stateMixin(ShadowlessLitElement)) {
+export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
     @property({ type: Boolean, attribute: "show-form" })
     showForm: boolean;
     @property({ type: Number })

@@ -7,7 +7,6 @@ import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotati
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 import { initTooltips } from "util.js";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 /**
@@ -18,7 +17,7 @@ import { annotationState } from "state/Annotations";
  * @prop {number} row - The row number.
  */
 @customElement("d-hidden-annotations-dot")
-export class HiddenAnnotationsDot extends observeState(i18nMixin(stateMixin(ShadowlessLitElement))) {
+export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     @property({ type: Number })
     row: number;
 

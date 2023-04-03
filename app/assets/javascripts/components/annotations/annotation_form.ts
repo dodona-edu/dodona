@@ -8,7 +8,6 @@ import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 // Min and max of the annotation text is defined in the annotation model.
@@ -29,7 +28,7 @@ const maxLength = 10_000;
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")
-export class AnnotationForm extends observeState(stateMixin(watchMixin(ShadowlessLitElement))) {
+export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement)) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
     @property({ type: String, attribute: "saved-annotation-id" })

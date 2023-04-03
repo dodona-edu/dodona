@@ -9,7 +9,6 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
 import { initTooltips } from "util.js";
 import "components/saved_annotations/saved_annotation_icon";
-import { observeState } from "lit-element-state";
 import { annotationState } from "state/Annotations";
 
 /**
@@ -22,7 +21,7 @@ import { annotationState } from "state/Annotations";
  * @prop {UserAnnotationData} data - the data of the annotation
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends observeState(i18nMixin(ShadowlessLitElement)) {
+export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Object })
     data: UserAnnotationData;
 

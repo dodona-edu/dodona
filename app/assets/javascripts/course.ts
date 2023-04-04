@@ -1,13 +1,13 @@
 import { initDragAndDrop } from "./drag_and_drop";
 import { fetch, getURLParameter } from "./util.js";
 import { ScrollSpy } from "./scrollspy";
-import { searchQuery } from "./search";
 import { html, render } from "lit";
 import { Modal } from "bootstrap";
+import { searchQueryState } from "state/SearchQuery";
 
 function loadUsers(_status = undefined): void {
     const status = _status || getURLParameter("status");
-    searchQuery.queryParams.updateParam("status", status);
+    searchQueryState.queryParams.set("status", status);
 }
 
 function initCourseMembers(): void {
@@ -63,7 +63,7 @@ function initCourseMembers(): void {
             });
 
         // Determine which tab to show first
-        const status = searchQuery.queryParams.params.get("status");
+        const status = searchQueryState.queryParams.get("status");
         let tab = document.querySelector("a[data-status='" + status + "']");
         if (tab === null) {
             tab = document.querySelector("a[data-status='enrolled']");

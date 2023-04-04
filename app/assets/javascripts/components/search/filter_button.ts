@@ -1,8 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { ref } from "lit/directives/ref.js";
-import { searchQuery } from "search";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { searchQueryState } from "state/SearchQuery";
+import { StateController } from "state/state_system/StateController";
 
 /**
  * This is a very simple clickable component
@@ -24,8 +25,8 @@ export class FilterButton extends LitElement {
     value: string;
     @property({ type: Boolean })
     multi = false;
-    @property({ type: Object })
-    searchQuery = searchQuery;
+
+    state = new StateController(this);
 
     static styles = css`
         :host {
@@ -35,11 +36,11 @@ export class FilterButton extends LitElement {
 
     addFilter(): void {
         if (this.multi) {
-            const selected = new Set(this.searchQuery.arrayQueryParams.params.get(this.param));
+            const selected = new Set(searchQueryState.arrayQueryParams.get(this.param));
             selected.add(this.value);
-            this.searchQuery.arrayQueryParams.updateParam(this.param, Array.from(selected));
+            searchQueryState.arrayQueryParams.set(this.param, Array.from(selected));
         } else {
-            this.searchQuery.queryParams.updateParam(this.param, this.value);
+            searchQueryState.queryParams.set(this.param, this.value);
         }
     }
 

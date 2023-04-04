@@ -2,8 +2,8 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch, ready } from "util.js";
-import { SearchQuery, searchQuery } from "search";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { searchQueryState } from "state/SearchQuery";
 
 export type SearchOption = {search: Record<string, string>, type?: string, text: string};
 export type SearchAction = {
@@ -34,36 +34,21 @@ export class SearchOptionElement extends ShadowlessLitElement {
     searchOption: SearchOption;
     @property( { type: Number })
     key: number;
-    @property({ type: Object })
-    searchQuery: SearchQuery = searchQuery;
 
-    @property({ state: true })
-    private _active = false;
-
-    update(changedProperties: Map<string, unknown>): void {
-        if (changedProperties.has("searchOption") && this.searchOption) {
-            this.setActive();
-            Object.keys(this.searchOption.search).forEach(k => {
-                this.searchQuery.queryParams.subscribeByKey(k, () => this.setActive());
-            });
-        }
-        super.update(changedProperties);
-    }
-
-    setActive(): void {
-        this._active = Object.entries(this.searchOption.search).every(([key, value]) => {
-            return this.searchQuery.queryParams.params.get(key) == value.toString();
+    get active(): boolean {
+        return Object.entries(this.searchOption.search).every(([key, value]) => {
+            return searchQueryState.queryParams.get(key) == value.toString();
         });
     }
 
     performSearch(): void {
-        if (!this._active) {
+        if (!this.active) {
             Object.entries(this.searchOption.search).forEach(([key, value]) => {
-                this.searchQuery.queryParams.updateParam(key, value.toString());
+                searchQueryState.queryParams.set(key, value.toString());
             });
         } else {
             Object.keys(this.searchOption.search).forEach(key => {
-                this.searchQuery.queryParams.updateParam(key, undefined);
+                searchQueryState.queryParams.set(key, undefined);
             });
         }
     }
@@ -75,7 +60,7 @@ export class SearchOptionElement extends ShadowlessLitElement {
                             <input
                                 class="form-check-input"
                                 type="checkbox"
-                                .checked=${this._active}
+                                .checked=${this.active}
                                 @click="${() => this.performSearch()}"
                                 id="check-${this.searchOption.type}-${this.key}"
                             >
@@ -99,8 +84,6 @@ export class SearchOptionElement extends ShadowlessLitElement {
 export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
     actions: (SearchOption|SearchAction)[] = [];
-    @property({ type: Object })
-    searchQuery: SearchQuery = searchQuery;
 
     getSearchOptions(): Array<SearchOption> {
         return this.actions.filter(isSearchOption);
@@ -121,7 +104,7 @@ export class SearchActions extends ShadowlessLitElement {
         }
 
         if (action.confirm === undefined || window.confirm(action.confirm)) {
-            const url: string = this.searchQuery.addParametersToUrl(action.action);
+            const url: string = searchQueryState.addParametersToUrl(action.action);
 
             const response = await fetch(url, {
                 method: "POST",
@@ -132,7 +115,8 @@ export class SearchActions extends ShadowlessLitElement {
             if (data.js) {
                 eval(data.js);
             } else {
-                this.searchQuery.resetAllQueryParams();
+                searchQueryState.arrayQueryParams.clear();
+                searchQueryState.queryParams.clear();
             }
         }
 
@@ -159,8 +143,7 @@ export class SearchActions extends ShadowlessLitElement {
                     ` : html``}
                     ${this.getSearchOptions().map((opt, id) => html`
                         <d-search-option .searchOption=${opt}
-                                         .key=${id}
-                                         .searchQuery=${this.searchQuery}>
+                                         .key=${id}>
                         </d-search-option>
                     `)}
 

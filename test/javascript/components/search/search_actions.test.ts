@@ -3,9 +3,9 @@ import { SearchAction, SearchActions, SearchOption } from "components/search/sea
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
-import { SearchQuery } from "search";
 import { html } from "lit";
 import * as util from "util.js";
+import { searchQueryState } from "state/SearchQuery";
 
 describe("SearchActions", () => {
     let searchActions: SearchActions;
@@ -16,11 +16,9 @@ describe("SearchActions", () => {
             { icon: "test", text: "js-test", js: "window.alert('test')" },
             { icon: "link", text: "link-test", url: "https://test.dodona.be" },
         ];
-        const searchQuery = new SearchQuery("test.dodona.be");
         await fixture(`<div class="toasts"></div>`);
         searchActions = await fixture(html`
-            <d-search-actions .searchQuery=${searchQuery}
-                              .actions=${actions}
+            <d-search-actions .actions=${actions}
             ></d-search-actions>`);
     });
 
@@ -40,12 +38,12 @@ describe("SearchActions", () => {
         expect(checkbox.checked).toBe(false);
         await userEvent.click(checkbox);
         expect(checkbox.checked).toBe(true);
-        expect(searchActions.searchQuery.queryParams.params.get("foo")).toBe("bar");
-        expect(searchActions.searchQuery.queryParams.params.get("fool")).toBe("bars");
-        searchActions.searchQuery.queryParams.updateParam("foo", undefined);
+        expect(searchQueryState.queryParams.get("foo")).toBe("bar");
+        expect(searchQueryState.queryParams.get("fool")).toBe("bars");
+        searchQueryState.queryParams.set("foo", undefined);
         await nextFrame();
         expect(checkbox.checked).toBe(false);
-        searchActions.searchQuery.queryParams.updateParam("foo", "bar");
+        searchQueryState.queryParams.set("foo", "bar");
         await nextFrame();
         expect(checkbox.checked).toBe(true);
     });
@@ -98,7 +96,7 @@ describe("SearchActions", () => {
         jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
             json: () => Promise.resolve({}),
         } as Response));
-        searchActions.searchQuery.queryParams.updateParam("foo", "bar");
+        searchQueryState.queryParams.set("foo", "bar");
         await userEvent.click(screen.queryByText("bar"));
         expect(util.fetch).toHaveBeenCalledWith("https://test.dodona.be/destroy?foo=bar", {
             method: "POST",

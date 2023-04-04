@@ -52,7 +52,7 @@ export class FilterCollectionElement extends ShadowlessLitElement {
     }
 
     private get multiSelected(): string[] {
-        return searchQueryState.arrayQueryParams.get(this.param);
+        return searchQueryState.arrayQueryParams.get(this.param) || [];
     }
 
     private multiUnSelect(label: Label): void {

@@ -10,6 +10,8 @@ import { searchQueryState } from "state/SearchQuery";
 describe("SearchActions", () => {
     let searchActions: SearchActions;
     beforeEach(async () => {
+        searchQueryState.queryParams.clear();
+        searchQueryState.arrayQueryParams.clear();
         const actions: (SearchOption | SearchAction)[] = [
             { text: "foo", search: { foo: "bar", fool: "bars" } },
             { text: "bar", icon: "replay", confirm: "Are you sure?", action: "https://test.dodona.be/destroy" },

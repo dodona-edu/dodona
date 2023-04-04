@@ -10,6 +10,8 @@ import { searchQueryState } from "state/SearchQuery";
 describe("DropdownFilter", () => {
     let dropdownFilter;
     beforeEach(async () => {
+        searchQueryState.queryParams.clear();
+        searchQueryState.arrayQueryParams.clear();
         dropdownFilter = await fixture(html`
             <d-dropdown-filter param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'

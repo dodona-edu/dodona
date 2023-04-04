@@ -25,6 +25,17 @@ export class SortButton extends LitElement {
 
     state = new StateController(this);
 
+    update(changedProperties: Map<string, unknown>): void {
+        if ( changedProperties.has("disabled") ) {
+            if (!this.disabled) {
+                this.addEventListener("click", this.sort);
+            } else {
+                this.removeEventListener("click", this.sort);
+            }
+        }
+        super.update(changedProperties);
+    }
+
     static styles = css`
         :host {
             white-space: nowrap;

@@ -7,7 +7,7 @@ class StateRecorder {
         this.log = new Map();
     }
 
-    recordRead(stateObj: State, key: string): void {
+    recordRead(stateObj: State, key?: string): void {
         if (this.log === null) return;
         const keys = this.log.get(stateObj) || [];
         if (!keys.includes(key)) keys.push(key);

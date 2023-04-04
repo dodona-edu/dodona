@@ -1,5 +1,7 @@
-import { events } from "state/PubSub";
 import { AnnotationType } from "state/UserAnnotations";
+import { State } from "state/state_system/State";
+import { stateProperty } from "state/state_system/StateProperty";
+import { StateMap } from "state/state_system/StateMap";
 
 export interface MachineAnnotationData {
     type: AnnotationType;
@@ -8,28 +10,22 @@ export interface MachineAnnotationData {
     externalUrl?: string | null;
 }
 
-const machineAnnotationsByLine = new Map<number, MachineAnnotationData[]>();
+class MachineAnnotationState extends State {
+    @stateProperty public annotationsByLine = new StateMap<number, MachineAnnotationData[]>();
+    @stateProperty public annotationsCount = 0;
 
-export function setMachineAnnotations(annotations: MachineAnnotationData[]): void {
-    machineAnnotationsByLine.clear();
-    for (const annotation of annotations) {
-        const line = annotation.row + 1 ?? 0;
-        if (machineAnnotationsByLine.has(line)) {
-            machineAnnotationsByLine.get(line)?.push(annotation);
-        } else {
-            machineAnnotationsByLine.set(line, [annotation]);
+    public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
+        this.annotationsCount = annotations.length;
+        this.annotationsByLine.clear();
+        for (const annotation of annotations) {
+            const line = annotation.row + 1 ?? 0;
+            if (this.annotationsByLine.has(line)) {
+                this.annotationsByLine.get(line)?.push(annotation);
+            } else {
+                this.annotationsByLine.set(line, [annotation]);
+            }
         }
     }
-    events.publish("getMachineAnnotations");
-    events.publish("getMachineAnnotationsCount");
 }
 
-export function getMachineAnnotationsByLine(line: number): MachineAnnotationData[] {
-    return machineAnnotationsByLine.get(line) ?? [];
-}
-
-export function getMachineAnnotationsCount(): number {
-    return [...machineAnnotationsByLine.values()]
-        .map(annotations => annotations.length)
-        .reduce((a, b) => a + b, 0);
-}
+export const machineAnnotationState = new MachineAnnotationState();

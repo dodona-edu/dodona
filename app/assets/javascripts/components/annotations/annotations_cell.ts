@@ -9,7 +9,7 @@ import {
 } from "state/UserAnnotations";
 import { annotationState } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
-import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
+import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
@@ -39,10 +39,10 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations", "getMachineAnnotations"];
+    state = ["getUserAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
-        return getMachineAnnotationsByLine(this.row);
+        return machineAnnotationState.annotationsByLine.get(this.row);
     }
 
     get userAnnotations(): UserAnnotationData[] {

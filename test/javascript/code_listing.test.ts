@@ -4,7 +4,7 @@ import { annotationState } from "state/Annotations";
 // bootstrap
 import bootstrap from "bootstrap";
 import { addTestUserAnnotation, resetUserAnnotations } from "state/UserAnnotations";
-import { setMachineAnnotations } from "state/MachineAnnotations";
+import { machineAnnotationState } from "state/MachineAnnotations";
 import userEvent from "@testing-library/user-event";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { html } from "lit";
@@ -46,7 +46,7 @@ beforeEach(async () => {
     codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
     annotationState.visibility = "all";
     resetUserAnnotations();
-    setMachineAnnotations([]);
+    machineAnnotationState.setMachineAnnotations([]);
 });
 
 test("create feedback table with default settings", async () => {

@@ -1,7 +1,7 @@
 import { CodeListingRow } from "components/annotations/code_listing_row";
 import { render } from "lit";
 import { fetchUserAnnotations } from "state/UserAnnotations";
-import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
+import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { courseState } from "state/Courses";
 import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
@@ -34,7 +34,7 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
 }
 
 function addMachineAnnotations(data: MachineAnnotationData[]): void {
-    setMachineAnnotations(data);
+    machineAnnotationState.setMachineAnnotations(data);
 }
 
 function initAnnotateButtons(): void {

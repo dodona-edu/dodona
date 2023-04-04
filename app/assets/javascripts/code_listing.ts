@@ -3,19 +3,19 @@ import { render } from "lit";
 import { fetchUserAnnotations } from "state/UserAnnotations";
 import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
 import { courseState } from "state/Courses";
-import { setExerciseId } from "state/Exercises";
 import { addPermission, setUserId } from "state/Users";
 import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
+import { exerciseState } from "state/Exercises";
 
 const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
     setCode(code);
     courseState.id = courseId;
-    setExerciseId(exerciseId);
+    exerciseState.id = exerciseId;
     setUserId(userId);
     setSubmissionId(submissionId);
     annotationState.isQuestionMode = questionMode;

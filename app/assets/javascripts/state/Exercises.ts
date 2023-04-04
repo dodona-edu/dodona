@@ -1,12 +1,9 @@
-import { events } from "state/PubSub";
+import { stateProperty } from "state/state_system/StateProperty";
+import { State } from "state/state_system/State";
 
-let exerciseId: number;
-
-export function setExerciseId(id: number): void {
-    exerciseId = id;
-    events.publish("getExerciseId");
+class ExerciseState extends State {
+    @stateProperty public id: number;
 }
 
-export function getExerciseId(): number {
-    return exerciseId;
-}
+export const exerciseState = new ExerciseState();
+

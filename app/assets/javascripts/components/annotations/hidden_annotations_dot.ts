@@ -24,7 +24,7 @@ export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElem
     state = ["getUserAnnotations", "getMachineAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
-        return machineAnnotationState.annotationsByLine.get(this.row);
+        return machineAnnotationState.byLine.get(this.row);
     }
 
     get userAnnotations(): UserAnnotationData[] {

@@ -15,7 +15,7 @@ export class AnnotationsCountBadge extends stateMixin(ShadowlessLitElement) {
     state = ["getUserAnnotationsCount"];
 
     get annotationsCount(): number {
-        return getUserAnnotationsCount() + machineAnnotationState.annotationsCount;
+        return getUserAnnotationsCount() + machineAnnotationState.count;
     }
 
     render(): TemplateResult {

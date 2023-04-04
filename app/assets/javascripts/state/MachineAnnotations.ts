@@ -11,18 +11,18 @@ export interface MachineAnnotationData {
 }
 
 class MachineAnnotationState extends State {
-    @stateProperty public annotationsByLine = new StateMap<number, MachineAnnotationData[]>();
-    @stateProperty public annotationsCount = 0;
+    @stateProperty public byLine = new StateMap<number, MachineAnnotationData[]>();
+    @stateProperty public count = 0;
 
     public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
-        this.annotationsCount = annotations.length;
-        this.annotationsByLine.clear();
+        this.count = annotations.length;
+        this.byLine.clear();
         for (const annotation of annotations) {
             const line = annotation.row + 1 ?? 0;
-            if (this.annotationsByLine.has(line)) {
-                this.annotationsByLine.get(line)?.push(annotation);
+            if (this.byLine.has(line)) {
+                this.byLine.get(line)?.push(annotation);
             } else {
-                this.annotationsByLine.set(line, [annotation]);
+                this.byLine.set(line, [annotation]);
             }
         }
     }

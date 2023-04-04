@@ -20,7 +20,7 @@ export class State extends EventTarget {
     subscribe(callback: Callback, nameOrNames?: string | string[]): Unsubscribe {
         const names: string[] = (nameOrNames && !Array.isArray(nameOrNames)) ? [nameOrNames] : nameOrNames as string[];
         const cb: EventListener = (event: StateEvent) => {
-            if (!names || names.includes(event.key)) {
+            if (!names || names.includes(event.key) || !event.key || names.includes(undefined)) {
                 callback(event.key, event.value, this);
             }
         };

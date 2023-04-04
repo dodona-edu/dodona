@@ -42,9 +42,6 @@ export class StateController implements ReactiveController {
         for (const [state, keys] of stateVars) {
             const unsubscribe = state.subscribe(() => this.host.requestUpdate(), keys);
             this.unsubscribeList.push(unsubscribe);
-            if (keys.includes(undefined)) {
-                this.unsubscribeList.push(state.subscribe(() => this.host.requestUpdate()));
-            }
         }
     }
 

@@ -1,8 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
-import { stateMixin } from "state/StateMixin";
+import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { isBetaCourse } from "saved_annotation_beta";
 
 /**
@@ -13,7 +12,7 @@ import { isBetaCourse } from "saved_annotation_beta";
  * @prop {Number} savedAnnotationId - the id of the saved annotation
  */
 @customElement("d-saved-annotation-icon")
-export class SavedAnnotationIcon extends stateMixin(ShadowlessLitElement) {
+export class SavedAnnotationIcon extends ShadowlessLitElement {
     @property({ type: Number, attribute: "saved-annotation-id" })
     savedAnnotationId: number | null;
 
@@ -21,12 +20,8 @@ export class SavedAnnotationIcon extends stateMixin(ShadowlessLitElement) {
         return this.savedAnnotationId != undefined;
     }
 
-    get state(): string[] {
-        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`] : [];
-    }
-
     get savedAnnotation(): SavedAnnotation {
-        return getSavedAnnotation(this.savedAnnotationId);
+        return savedAnnotationState.get(this.savedAnnotationId);
     }
 
     render(): TemplateResult {

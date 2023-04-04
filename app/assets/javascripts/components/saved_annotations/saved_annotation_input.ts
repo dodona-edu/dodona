@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import "components/datalist_input";
-import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
+import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { getUserId } from "state/Users";
@@ -34,11 +34,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     __label: string;
 
     get state(): string[] {
-        const state = ["getSavedAnnotations", "getUserId"];
-        if (this.value) {
-            state.push(`getSavedAnnotation${this.value}`);
-        }
-        return state;
+        return ["getUserId"];
     }
 
     get userId(): number {
@@ -46,11 +42,11 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     get label(): string {
-        return this.value ? getSavedAnnotation(parseInt(this.value))?.title : this.__label;
+        return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;
     }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return getSavedAnnotations(new Map([
+        return savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", this.userId.toString()],
@@ -59,7 +55,7 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     }
 
     get potentialSavedAnnotationsExist(): boolean {
-        return getSavedAnnotations(new Map([
+        return savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", this.userId.toString()]

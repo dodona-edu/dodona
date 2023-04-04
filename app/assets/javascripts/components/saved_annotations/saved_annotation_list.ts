@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { getSavedAnnotations, getSavedAnnotationsPagination, Pagination, SavedAnnotation } from "state/SavedAnnotations";
+import { Pagination, SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { stateMixin } from "state/StateMixin";
 import "./edit_saved_annotation";
 import "components/pagination";
@@ -28,7 +28,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     @property({ type: Boolean })
     small = false;
 
-    state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams", "getSavedAnnotationsPagination"];
+    state = ["getQueryParams", "getArrayQueryParams"];
 
     get queryParams(): Map<string, string> {
         const params: Map<string, string> = getQueryParams();
@@ -52,11 +52,11 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return getSavedAnnotations(this.queryParams, this.arrayQueryParams);
+        return savedAnnotationState.getList(this.queryParams, this.arrayQueryParams);
     }
 
     get pagination(): Pagination {
-        return getSavedAnnotationsPagination(this.queryParams, this.arrayQueryParams);
+        return savedAnnotationState.getPagination(this.queryParams, this.arrayQueryParams);
     }
 
     render(): TemplateResult {

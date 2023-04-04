@@ -1,7 +1,7 @@
 import { fetch } from "util.js";
 import { events } from "state/PubSub";
 import { Notification } from "notification";
-import { createSavedAnnotation, invalidateSavedAnnotation } from "state/SavedAnnotations";
+import { savedAnnotationState } from "state/SavedAnnotations";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -173,7 +173,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
     }
     if (saveAnnotation) {
         try {
-            data.saved_annotation_id = await createSavedAnnotation({
+            data.saved_annotation_id = await savedAnnotationState.create({
                 from: data.id,
                 saved_annotation: {
                     title: savedAnnotationTitle,
@@ -186,7 +186,7 @@ export async function createUserAnnotation(formData: UserAnnotationFormData, sub
     }
     addAnnotationToMap(data);
     if (data.saved_annotation_id) {
-        invalidateSavedAnnotation(data.saved_annotation_id);
+        savedAnnotationState.invalidate(data.saved_annotation_id);
     }
     if (data.thread_root_id) {
         invalidateUserAnnotation(data.thread_root_id);
@@ -205,7 +205,7 @@ export async function deleteUserAnnotation(annotation: UserAnnotationData): Prom
     }
 
     removeAnnotationFromMap(annotation);
-    invalidateSavedAnnotation(annotation.saved_annotation_id);
+    savedAnnotationState.invalidate(annotation.saved_annotation_id);
     if (annotation.thread_root_id) {
         invalidateUserAnnotation(annotation.thread_root_id);
     }
@@ -230,8 +230,8 @@ export async function updateUserAnnotation(annotation: UserAnnotationData, formD
     removeAnnotationFromMap(annotation);
     addAnnotationToMap(data);
     if (formData.saved_annotation_id != annotation.saved_annotation_id) {
-        invalidateSavedAnnotation(formData.saved_annotation_id);
-        invalidateSavedAnnotation(annotation.saved_annotation_id);
+        savedAnnotationState.invalidate(formData.saved_annotation_id);
+        savedAnnotationState.invalidate(annotation.saved_annotation_id);
     }
     events.publish("getUserAnnotations");
     events.publish("getUserAnnotationsCount");

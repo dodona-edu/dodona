@@ -39,6 +39,7 @@ function textContentMatcher(textMatch: string | RegExp): (_content: string, node
 describe("SearchFieldSuggestion", () => {
     let searchFieldSuggestion;
     beforeEach(async () => {
+        searchQueryState.queryParams.clear();
         searchFieldSuggestion = await fixture(html`
             <d-search-field-suggestion param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
@@ -89,7 +90,9 @@ describe("SearchFieldSuggestion", () => {
 });
 
 describe("SearchField", () => {
-    async function searchFieldFactory(): Promise<SearchField> {
+    let searchField: SearchField;
+    beforeEach(async () => {
+        searchQueryState.queryParams.clear();
         const filterCollections: Record<string, FilterCollection> = {
             first: {
                 param: "foo",
@@ -115,21 +118,19 @@ describe("SearchField", () => {
             }
         };
 
-        return await fixture(html`
+        searchField = await fixture(html`
             <d-search-field placeholder="Search"
                             .filterCollections="${filterCollections}"
             ></d-search-field>
         `);
-    }
+    });
 
     it("should display the placeholder", async () => {
-        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         expect(input.placeholder).toBe("Search");
     });
 
     it("should update the filter query param when the input changes", async () => {
-        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
         await aTimeout(500); // the update is delayed
@@ -137,9 +138,9 @@ describe("SearchField", () => {
     });
 
     it("should filter the labels", async () => {
-        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
+        await aTimeout(500); // the update is delayed
         expect(screen.queryByText(textContentMatcher("bar"))).toBeNull();
         expect(screen.queryByText(textContentMatcher("baz"))).toBeNull();
         expect(screen.queryByText(textContentMatcher("fool"))).not.toBeNull();
@@ -147,7 +148,6 @@ describe("SearchField", () => {
     });
 
     it("should autocomplete the input with the first label on tab", async () => {
-        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo{tab}");
         await aTimeout(500); // the update is delayed
@@ -157,7 +157,6 @@ describe("SearchField", () => {
     });
 
     it("should reset the filter when a label is selected", async () => {
-        const searchField = await searchFieldFactory();
         const input = searchField.querySelector("input");
         await userEvent.type(input, "foo");
         await aTimeout(500); // the update is delayed

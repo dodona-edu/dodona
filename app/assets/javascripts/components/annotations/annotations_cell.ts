@@ -42,7 +42,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
     state = ["getUserAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
-        return machineAnnotationState.byLine.get(this.row);
+        return machineAnnotationState.byLine.get(this.row) || [];
     }
 
     get userAnnotations(): UserAnnotationData[] {

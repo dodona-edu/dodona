@@ -7,7 +7,6 @@ import {
     UserAnnotationData,
     UserAnnotationFormData
 } from "state/UserAnnotations";
-import { getEvaluationId } from "state/Evaluations";
 import { annotationState } from "state/Annotations";
 import { getSubmissionId } from "state/Submissions";
 import { getMachineAnnotationsByLine, MachineAnnotationData } from "state/MachineAnnotations";
@@ -18,6 +17,7 @@ import "components/annotations/thread";
 import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
+import { evaluationState } from "state/Evaluations";
 
 /**
  * This component represents a cell that groups all annotations for a specific line.
@@ -54,7 +54,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
             "line_nr": this.row,
-            "evaluation_id": getEvaluationId(),
+            "evaluation_id": evaluationState.id,
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
         };
 

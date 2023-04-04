@@ -1,12 +1,8 @@
-import { events } from "state/PubSub";
+import { stateProperty } from "state/state_system/StateProperty";
+import { State } from "state/state_system/State";
 
-let evaluationId: number;
-
-export function setEvaluationId(id: number): void {
-    evaluationId = id;
-    events.publish("getEvaluationId");
+class EvaluationState extends State {
+    @stateProperty public id: number;
 }
 
-export function getEvaluationId(): number {
-    return evaluationId;
-}
+export const evaluationState = new EvaluationState();

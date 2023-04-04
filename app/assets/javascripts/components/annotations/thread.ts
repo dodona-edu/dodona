@@ -7,13 +7,13 @@ import {
     UserAnnotationFormData
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
-import { getEvaluationId } from "state/Evaluations";
 import { getSubmissionId } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { annotationState } from "state/Annotations";
+import { evaluationState } from "state/Evaluations";
 
 /**
  * This component represents a thread of annotations.
@@ -48,7 +48,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
             "line_nr": this.data.line_nr,
-            "evaluation_id": getEvaluationId(),
+            "evaluation_id": evaluationState.id,
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
             "thread_root_id": this.data.id,
         };

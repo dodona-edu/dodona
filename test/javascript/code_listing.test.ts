@@ -45,7 +45,8 @@ beforeEach(async () => {
     </div>`);
     codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
     annotationState.visibility = "all";
-    userAnnotationState.byLine.clear();
+    userAnnotationState.rootIdsByLine.clear();
+    userAnnotationState.byId.clear();
     machineAnnotationState.setMachineAnnotations([]);
 });
 

@@ -25,7 +25,7 @@ export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     }
 
     get userAnnotations(): UserAnnotationData[] {
-        return userAnnotationState.byLine.get(this.row) || [];
+        return userAnnotationState.rootIdsByLine.get(this.row)?.map(id => userAnnotationState.byId.get(id)) || [];
     }
 
     get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {

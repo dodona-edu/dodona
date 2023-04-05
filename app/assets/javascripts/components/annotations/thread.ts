@@ -19,17 +19,21 @@ import { evaluationState } from "state/Evaluations";
  *
  * @element d-thread
  *
- * @prop {UserAnnotationData} data - the data of the root annotation for this thread
+ * @prop {number} rootId - the id of the root annotation for this thread
  */
 @customElement("d-thread")
 export class Thread extends i18nMixin(ShadowlessLitElement) {
-    @property({ type: Object })
-    data: UserAnnotationData;
+    @property({ type: Number, attribute: "root-id" })
+    rootId: number;
 
     @property({ state: true })
     showForm = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
+
+    get data(): UserAnnotationData {
+        return userAnnotationState.byId.get(this.rootId);
+    }
 
     get openQuestions(): UserAnnotationData[] | undefined {
         return [this.data, ...this.data.responses]
@@ -83,8 +87,7 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-
-            <div class="thread">
+            <div class="thread ${annotationState.isVisible(this.data) ? "" : "hidden"}">
                 <d-user-annotation .data=${this.data}></d-user-annotation>
                 ${this.data.responses.map(response => html`
                     <d-user-annotation .data=${response}></d-user-annotation>

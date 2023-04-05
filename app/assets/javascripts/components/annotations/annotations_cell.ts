@@ -37,8 +37,8 @@ export class AnnotationsCell extends ShadowlessLitElement {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 
-    get userAnnotations(): UserAnnotationData[] {
-        return userAnnotationState.byLine.get(this.row) || [];
+    get userAnnotationIds(): number[] {
+        return userAnnotationState.rootIdsByLine.get(this.row) || [];
     }
 
 
@@ -89,8 +89,8 @@ export class AnnotationsCell extends ShadowlessLitElement {
                     ${this.getVisibleMachineAnnotationsOfType("error")}
                 </div>
                 <div class="annotation-group-conversation">
-                    ${this.userAnnotations.filter(a => annotationState.isVisible(a)).map(a => html`
-                        <d-thread .data=${a}></d-thread>
+                    ${this.userAnnotationIds.map(a => html`
+                        <d-thread .rootId=${a}></d-thread>
                     `)}
                 </div>
                 <div class="annotation-group-warning">

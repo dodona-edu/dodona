@@ -66,46 +66,47 @@ export interface UserAnnotationData {
 }
 
 class UserAnnotationState extends State {
-    readonly byLine = new StateMap<number, UserAnnotationData[]>();
+    readonly rootIdsByLine = new StateMap<number, number[]>();
+    readonly byId = new StateMap<number, UserAnnotationData>();
 
     get count(): number {
-        return [...this.byLine.values()]
-            .map(annotations => annotations
-                .map(a => a.responses.length)
-                .reduce((a, b) => a + b, annotations.length)
-            ).reduce((a, b) => a + b, 0);
+        return this.byId.size;
     }
 
     // public for testing purposes
     public async addToMap(annotation: UserAnnotationData): Promise<void> {
-        if (annotation.thread_root_id) {
-            return await this.invalidate(annotation.thread_root_id);
-        }
-        const line = annotation.line_nr ?? 0;
-        if (this.byLine.has(line)) {
-            const annotations = this.byLine.get(line);
-            this.byLine.set(line, [...annotations, annotation]);
+        this.byId.set(annotation.id, annotation);
+        if (!annotation.thread_root_id) {
+            const line = annotation.line_nr ?? 0;
+            if (this.rootIdsByLine.has(line)) {
+                const annotations = this.rootIdsByLine.get(line);
+                this.rootIdsByLine.set(line, [...annotations, annotation.id]);
+            } else {
+                this.rootIdsByLine.set(line, [annotation.id]);
+            }
+            annotation.responses.forEach(response => this.addToMap(response));
         } else {
-            this.byLine.set(line, [annotation]);
+            await this.invalidate(annotation.thread_root_id);
         }
     }
 
     private async replaceInMap(annotation: UserAnnotationData): Promise<void> {
+        this.byId.set(annotation.id, annotation);
         if (annotation.thread_root_id) {
-            return await this.invalidate(annotation.thread_root_id);
+            await this.invalidate(annotation.thread_root_id);
         }
-        await this.removeFromMap(annotation);
-        await this.addToMap(annotation);
     }
 
     private async removeFromMap(annotation: UserAnnotationData): Promise<void> {
-        if (annotation.thread_root_id) {
-            return await this.invalidate(annotation.thread_root_id);
-        }
-        const line = annotation.line_nr ?? 0;
-        if (this.byLine.has(line)) {
-            const annotations = this.byLine.get(line);
-            this.byLine.set(line, annotations?.filter(a => a.id !== annotation.id));
+        this.byId.delete(annotation.id);
+        if (!annotation.thread_root_id) {
+            const line = annotation.line_nr ?? 0;
+            if (this.rootIdsByLine.has(line)) {
+                const annotations = this.rootIdsByLine.get(line);
+                this.rootIdsByLine.set(line, annotations?.filter(id => id !== annotation.id));
+            }
+        } else {
+            await this.invalidate(annotation.thread_root_id);
         }
     }
 
@@ -113,7 +114,8 @@ class UserAnnotationState extends State {
         const response = await fetch(`/submissions/${submissionId}/annotations.json`);
         const json = await response.json();
 
-        this.byLine.clear();
+        this.rootIdsByLine.clear();
+        this.byId.clear();
         for (const annotation of json) {
             await this.addToMap(annotation);
         }
@@ -159,6 +161,7 @@ class UserAnnotationState extends State {
         }
 
         await this.addToMap(data);
+
         return data;
     }
 

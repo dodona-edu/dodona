@@ -4,6 +4,7 @@ import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { screen } from "@testing-library/dom";
+import { stateRecorder } from "state/state_system/StateRecorder";
 
 describe( "StateMap", () => {
     const stateMap: StateMap<string, string> = new StateMap<string, string>();
@@ -41,5 +42,27 @@ describe( "StateMap", () => {
         stateMap.clear();
         await nextFrame();
         expect(screen.queryByText("bar")).toBeNull();
+    });
+
+    test("should record read on a values call", async () => {
+        jest.spyOn(stateRecorder, "recordRead");
+        stateMap.values();
+        expect(stateRecorder.recordRead).toHaveBeenCalled();
+    });
+
+    test("subscriber should get notified for any change to the map", () => {
+        const subscriber = jest.fn();
+        stateMap.subscribe(subscriber);
+        stateMap.set("foo", "bar");
+        expect(subscriber).toHaveBeenCalled();
+    });
+
+    test("A subscriber to a specific key should get notified for any change to that key", () => {
+        const subscriber = jest.fn();
+        stateMap.subscribe(subscriber, "foo");
+        stateMap.set("fool", "bar");
+        expect(subscriber).not.toHaveBeenCalled();
+        stateMap.set("foo", "bar");
+        expect(subscriber).toHaveBeenCalled();
     });
 });

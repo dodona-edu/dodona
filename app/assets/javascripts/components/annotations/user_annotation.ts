@@ -2,7 +2,7 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { deleteUserAnnotation, updateUserAnnotation, UserAnnotationData, transition } from "state/UserAnnotations";
+import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
@@ -95,13 +95,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
 
     deleteAnnotation(): void {
         if (confirm(I18n.t(`js.${this.type}.delete_confirm`))) {
-            deleteUserAnnotation(this.data);
+            userAnnotationState.delete(this.data);
         }
     }
 
     async updateAnnotation(e: CustomEvent): Promise<void> {
         try {
-            await updateUserAnnotation(this.data, {
+            await userAnnotationState.update(this.data, {
                 annotation_text: e.detail.text,
                 saved_annotation_id: e.detail.savedAnnotationId || undefined,
             });
@@ -122,7 +122,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     }
 
     reopenQuestion(): void {
-        transition(this.data, "unanswered");
+        userAnnotationState.transition(this.data, "unanswered");
     }
 
     get dropdownOptions(): TemplateResult[] {

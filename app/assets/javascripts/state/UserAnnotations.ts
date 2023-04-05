@@ -1,7 +1,8 @@
 import { fetch } from "util.js";
-import { events } from "state/PubSub";
 import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
+import { State } from "state/state_system/State";
+import { StateMap } from "state/state_system/StateMap";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -64,233 +65,172 @@ export interface UserAnnotationData {
     thread_root_id?: number | null;
 }
 
-const userAnnotationsByLine = new Map<number, UserAnnotationData[]>();
+class UserAnnotationState extends State {
+    readonly byLine = new StateMap<number, UserAnnotationData[]>();
 
-// exported for testing purposes
-export function addTestUserAnnotation(annotation: UserAnnotationData): void {
-    addAnnotationToMap(annotation);
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-}
+    get count(): number {
+        return [...this.byLine.values()]
+            .map(annotations => annotations
+                .map(a => a.responses.length)
+                .reduce((a, b) => a + b, annotations.length)
+            ).reduce((a, b) => a + b, 0);
+    }
 
-// exported for testing purposes
-export function resetUserAnnotations(): void {
-    userAnnotationsByLine.clear();
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-}
-
-function addAnnotationToMap(annotation: UserAnnotationData): void {
-    const line = annotation.line_nr ?? 0;
-    if (userAnnotationsByLine.has(line)) {
-        const annotations = userAnnotationsByLine.get(line);
-        if (annotation.thread_root_id === null) {
-            annotations?.push(annotation);
+    // public for testing purposes
+    public async addToMap(annotation: UserAnnotationData): Promise<void> {
+        if (annotation.thread_root_id) {
+            return await this.invalidate(annotation.thread_root_id);
+        }
+        const line = annotation.line_nr ?? 0;
+        if (this.byLine.has(line)) {
+            const annotations = this.byLine.get(line);
+            this.byLine.set(line, [...annotations, annotation]);
         } else {
-            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
-            if (rootAnnotation) {
-                rootAnnotation.responses.push(annotation);
-            } else {
-                annotations?.push(annotation);
-            }
-        }
-    } else {
-        userAnnotationsByLine.set(line, [annotation]);
-    }
-}
-
-function removeAnnotationFromMap(annotation: UserAnnotationData): void {
-    const line = annotation.line_nr ?? 0;
-    if (userAnnotationsByLine.has(line)) {
-        const annotations = userAnnotationsByLine.get(line);
-        if (annotation.thread_root_id === null) {
-            userAnnotationsByLine.set(line, annotations?.filter(a => a.id !== annotation.id));
-        } else {
-            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
-            if (rootAnnotation) {
-                rootAnnotation.responses = rootAnnotation.responses.filter(a => a.id !== annotation.id);
-            }
+            this.byLine.set(line, [annotation]);
         }
     }
-}
 
-function replaceAnnotationInMap(annotation: UserAnnotationData): void {
-    const line = annotation.line_nr ?? 0;
-    if (userAnnotationsByLine.has(line)) {
-        const annotations = userAnnotationsByLine.get(line);
-        if (annotation.thread_root_id === null) {
-            userAnnotationsByLine.set(line, annotations?.map(a => a.id === annotation.id ? annotation : a));
-        } else {
-            const rootAnnotation = annotations?.find(a => a.id === annotation.thread_root_id);
-            if (rootAnnotation) {
-                rootAnnotation.responses = rootAnnotation.responses.map(a => a.id === annotation.id ? annotation : a);
-            } else {
-                annotations?.push(annotation);
-            }
+    private async replaceInMap(annotation: UserAnnotationData): Promise<void> {
+        if (annotation.thread_root_id) {
+            return await this.invalidate(annotation.thread_root_id);
         }
-    } else {
-        userAnnotationsByLine.set(line, [annotation]);
-    }
-}
-
-export async function fetchUserAnnotations(submissionId: number): Promise<UserAnnotationData[]> {
-    const response = await fetch(`/submissions/${submissionId}/annotations.json`);
-    const json = await response.json();
-
-    userAnnotationsByLine.clear();
-    for (const annotation of json) {
-        addAnnotationToMap(annotation);
-    }
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-    return json;
-}
-
-export async function invalidateUserAnnotation(annotationId: number): Promise<UserAnnotationData> {
-    const response = await fetch(`/annotations/${annotationId}.json`);
-    const json = await response.json();
-
-    replaceAnnotationInMap(json);
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-    return json;
-}
-
-export async function createUserAnnotation(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotationData> {
-    const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ [mode]: formData })
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error();
+        await this.removeFromMap(annotation);
+        await this.addToMap(annotation);
     }
 
-    if (mode === "question") {
-        Notification.startNotificationRefresh();
-    }
-    if (saveAnnotation) {
-        try {
-            data.saved_annotation_id = await savedAnnotationState.create({
-                from: data.id,
-                saved_annotation: {
-                    title: savedAnnotationTitle,
-                    annotation_text: data.annotation_text,
-                }
-            });
-        } catch (errors) {
-            alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+    private async removeFromMap(annotation: UserAnnotationData): Promise<void> {
+        if (annotation.thread_root_id) {
+            return await this.invalidate(annotation.thread_root_id);
+        }
+        const line = annotation.line_nr ?? 0;
+        if (this.byLine.has(line)) {
+            const annotations = this.byLine.get(line);
+            this.byLine.set(line, annotations?.filter(a => a.id !== annotation.id));
         }
     }
-    addAnnotationToMap(data);
-    if (data.saved_annotation_id) {
-        savedAnnotationState.invalidate(data.saved_annotation_id);
-    }
-    if (data.thread_root_id) {
-        invalidateUserAnnotation(data.thread_root_id);
-    }
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-    return data;
-}
 
-export async function deleteUserAnnotation(annotation: UserAnnotationData): Promise<void> {
-    const response = await fetch(annotation.url, {
-        method: "DELETE",
-    });
-    if (!response.ok) {
-        throw new Error();
-    }
-
-    removeAnnotationFromMap(annotation);
-    savedAnnotationState.invalidate(annotation.saved_annotation_id);
-    if (annotation.thread_root_id) {
-        invalidateUserAnnotation(annotation.thread_root_id);
-    }
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-}
-
-export async function updateUserAnnotation(annotation: UserAnnotationData, formData: UserAnnotationFormData): Promise<void> {
-    const response = await fetch(annotation.url, {
-        headers: { "Content-Type": "application/json" },
-        method: "PATCH",
-        body: JSON.stringify({
-            annotation: formData
-        })
-    });
-    const data = await response.json();
-
-    if (!response.ok) {
-        throw new Error();
-    }
-
-    removeAnnotationFromMap(annotation);
-    addAnnotationToMap(data);
-    if (formData.saved_annotation_id != annotation.saved_annotation_id) {
-        savedAnnotationState.invalidate(formData.saved_annotation_id);
-        savedAnnotationState.invalidate(annotation.saved_annotation_id);
-    }
-    events.publish("getUserAnnotations");
-    events.publish("getUserAnnotationsCount");
-}
-
-
-export function getUserAnnotationsByLine(line: number): UserAnnotationData[] {
-    return userAnnotationsByLine.get(line) ?? [];
-}
-
-export function getUserAnnotationsCount(): number {
-    return [...userAnnotationsByLine.values()]
-        .map(annotations => annotations
-            .map(a => a.responses.length)
-            .reduce((a, b) => a + b, annotations.length)
-        ).reduce((a, b) => a + b, 0);
-}
-
-export async function transition(annotation: UserAnnotationData, newState: QuestionState): Promise<void> {
-    const response = await fetch(annotation.url, {
-        method: "PATCH",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            from: annotation.question_state,
-            question: {
-                // eslint-disable-next-line camelcase
-                question_state: newState
-            }
-        })
-    });
-
-    if (response.ok) {
+    async fetch(submissionId: number): Promise<void> {
+        const response = await fetch(`/submissions/${submissionId}/annotations.json`);
         const json = await response.json();
 
-        replaceAnnotationInMap(json);
-        events.publish("getUserAnnotations");
-        events.publish("getUserAnnotationsCount");
-    } else if (response.status === 404) {
-        // Someone already deleted this question.
-        new dodona.Toast(I18n.t("js.user_question.deleted"));
-        removeAnnotationFromMap(annotation);
-        events.publish("getUserAnnotations");
-        events.publish("getUserAnnotationsCount");
-    } else if (response.status == 403) {
-        // Someone already changed the status of this question.
-        new dodona.Toast(I18n.t("js.user_question.conflict"));
-        // We now need to update the annotation, but we don't have the new data.
-        // Get the annotation from the backend.
-        invalidateUserAnnotation(annotation.id);
+        this.byLine.clear();
+        for (const annotation of json) {
+            await this.addToMap(annotation);
+        }
+    }
+
+    async invalidate(annotationId: number): Promise<void> {
+        const response = await fetch(`/annotations/${annotationId}.json`);
+        const json = await response.json();
+
+        await this.replaceInMap(json);
+    }
+
+    async create(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotationData> {
+        const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ [mode]: formData })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        if (mode === "question") {
+            Notification.startNotificationRefresh();
+        }
+        if (saveAnnotation) {
+            try {
+                data.saved_annotation_id = await savedAnnotationState.create({
+                    from: data.id,
+                    saved_annotation: {
+                        title: savedAnnotationTitle,
+                        annotation_text: data.annotation_text,
+                    }
+                });
+            } catch (errors) {
+                alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+            }
+        }
+        if (data.saved_annotation_id) {
+            savedAnnotationState.invalidate(data.saved_annotation_id);
+        }
+
+        await this.addToMap(data);
+        return data;
+    }
+
+    async delete(annotation: UserAnnotationData): Promise<void> {
+        const response = await fetch(annotation.url, { method: "DELETE" });
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        savedAnnotationState.invalidate(annotation.saved_annotation_id);
+        await this.removeFromMap(annotation);
+    }
+
+    async update(annotation: UserAnnotationData, formData: UserAnnotationFormData): Promise<void> {
+        const response = await fetch(annotation.url, {
+            headers: { "Content-Type": "application/json" },
+            method: "PATCH",
+            body: JSON.stringify({
+                annotation: formData
+            })
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error();
+        }
+
+        await this.replaceInMap(data);
+        if (formData.saved_annotation_id != annotation.saved_annotation_id) {
+            savedAnnotationState.invalidate(formData.saved_annotation_id);
+            savedAnnotationState.invalidate(annotation.saved_annotation_id);
+        }
+    }
+
+    async transition(annotation: UserAnnotationData, newState: QuestionState): Promise<void> {
+        const response = await fetch(annotation.url, {
+            method: "PATCH",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                from: annotation.question_state,
+                question: {
+                    question_state: newState
+                }
+            })
+        });
+
+        if (response.ok) {
+            const json = await response.json();
+            await this.replaceInMap(json);
+        } else if (response.status === 404) {
+            // Someone already deleted this question.
+            new dodona.Toast(I18n.t("js.user_question.deleted"));
+            await this.removeFromMap(annotation);
+        } else if (response.status == 403) {
+            // Someone already changed the status of this question.
+            new dodona.Toast(I18n.t("js.user_question.conflict"));
+            // We now need to update the annotation, but we don't have the new data.
+            // Get the annotation from the backend.
+            await this.invalidate(annotation.id);
+        }
+    }
+
+    async transitionAll(annotations: UserAnnotationData[], newState: QuestionState): Promise<void> {
+        for (const annotation of annotations) {
+            // we wait for each transition to finish before starting the next one
+            // this prevents inconsistencies questionstates being shown
+            await this.transition(annotation, newState);
+        }
     }
 }
 
-export async function transitionAll(annotations: UserAnnotationData[], newState: QuestionState): Promise<void> {
-    for (const annotation of annotations) {
-        // we wait for each transition to finish before starting the next one
-        // this prevents inconsistencies questionstates being shown
-        await transition(annotation, newState);
-    }
-}
+export const userAnnotationState = new UserAnnotationState();

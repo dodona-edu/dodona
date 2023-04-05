@@ -1,6 +1,6 @@
 import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "util.js";
 import { MapWithDefault } from "map_with_default";
-import { invalidateUserAnnotation } from "state/UserAnnotations";
+import { userAnnotationState } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
@@ -60,7 +60,7 @@ class SavedAnnotationState extends State {
         }
         const savedAnnotation: SavedAnnotation = await response.json();
         this.invalidate(savedAnnotation.id, savedAnnotation);
-        invalidateUserAnnotation(data.from);
+        userAnnotationState.invalidate(data.from);
         return savedAnnotation.id;
     }
 

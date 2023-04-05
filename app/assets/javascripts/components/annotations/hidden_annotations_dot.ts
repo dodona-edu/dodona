@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { stateMixin } from "state/StateMixin";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { getUserAnnotationsByLine, UserAnnotationData } from "state/UserAnnotations";
+import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 import { initTooltips } from "util.js";
@@ -17,18 +17,16 @@ import { annotationState } from "state/Annotations";
  * @prop {number} row - The row number.
  */
 @customElement("d-hidden-annotations-dot")
-export class HiddenAnnotationsDot extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
-
-    state = ["getUserAnnotations", "getMachineAnnotations"];
 
     get machineAnnotations(): MachineAnnotationData[] {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 
     get userAnnotations(): UserAnnotationData[] {
-        return getUserAnnotationsByLine(this.row);
+        return userAnnotationState.byLine.get(this.row) || [];
     }
 
     get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {

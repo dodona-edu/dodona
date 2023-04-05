@@ -1,7 +1,6 @@
 import { customElement } from "lit/decorators.js";
-import { stateMixin } from "state/StateMixin";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { getUserAnnotationsCount } from "state/UserAnnotations";
+import { userAnnotationState } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { machineAnnotationState } from "state/MachineAnnotations";
 
@@ -11,11 +10,9 @@ import { machineAnnotationState } from "state/MachineAnnotations";
  * @element d-annotations-count-badge
  */
 @customElement("d-annotations-count-badge")
-export class AnnotationsCountBadge extends stateMixin(ShadowlessLitElement) {
-    state = ["getUserAnnotationsCount"];
-
+export class AnnotationsCountBadge extends ShadowlessLitElement {
     get annotationsCount(): number {
-        return getUserAnnotationsCount() + machineAnnotationState.count;
+        return userAnnotationState.count + machineAnnotationState.count;
     }
 
     render(): TemplateResult {

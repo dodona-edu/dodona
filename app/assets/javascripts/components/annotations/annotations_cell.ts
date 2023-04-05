@@ -1,12 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
-import {
-    createUserAnnotation,
-    getUserAnnotationsByLine,
-    UserAnnotationData,
-    UserAnnotationFormData
-} from "state/UserAnnotations";
+import { UserAnnotationData, UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
 import { annotationState } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
@@ -14,7 +9,6 @@ import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
 import "components/annotations/thread";
-import { stateMixin } from "state/StateMixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { evaluationState } from "state/Evaluations";
@@ -31,7 +25,7 @@ import { evaluationState } from "state/Evaluations";
  * @fires close-form - if the form should be closed
  */
 @customElement("d-annotations-cell")
-export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
+export class AnnotationsCell extends ShadowlessLitElement {
     @property({ type: Boolean, attribute: "show-form" })
     showForm: boolean;
     @property({ type: Number })
@@ -39,14 +33,12 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations"];
-
     get machineAnnotations(): MachineAnnotationData[] {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 
     get userAnnotations(): UserAnnotationData[] {
-        return getUserAnnotationsByLine(this.row);
+        return userAnnotationState.byLine.get(this.row);
     }
 
 
@@ -60,7 +52,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
-            await createUserAnnotation(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
+            await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.closeForm();
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;

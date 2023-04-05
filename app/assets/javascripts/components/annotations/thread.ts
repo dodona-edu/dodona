@@ -1,16 +1,14 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import {
-    createUserAnnotation, invalidateUserAnnotation,
-    transition, transitionAll,
+
     UserAnnotationData,
-    UserAnnotationFormData
+    UserAnnotationFormData, userAnnotationState
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
 import { submissionState } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
-import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { annotationState } from "state/Annotations";
 import { evaluationState } from "state/Evaluations";
@@ -24,7 +22,7 @@ import { evaluationState } from "state/Evaluations";
  * @prop {UserAnnotationData} data - the data of the root annotation for this thread
  */
 @customElement("d-thread")
-export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class Thread extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Object })
     data: UserAnnotationData;
 
@@ -32,8 +30,6 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     showForm = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
-
-    state = ["getUserAnnotations"];
 
     get openQuestions(): UserAnnotationData[] | undefined {
         return [this.data, ...this.data.responses]
@@ -55,9 +51,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
-            await createUserAnnotation(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
-
-            invalidateUserAnnotation(this.data.id);
+            await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.showForm = false;
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
@@ -66,15 +60,15 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     }
 
     markAsResolved(): void {
-        transitionAll(this.openQuestions, "answered");
+        userAnnotationState.transitionAll(this.openQuestions, "answered");
     }
 
     markAsInProgress(): void {
-        transitionAll(this.openQuestions.filter(question => question.question_state !== "in_progress"), "in_progress");
+        userAnnotationState.transitionAll(this.openQuestions.filter(question => question.question_state !== "in_progress"), "in_progress");
     }
 
     markAsUnanswered(): void {
-        transitionAll(this.openQuestions.filter(question => question.question_state !== "unanswered"), "unanswered");
+        userAnnotationState.transitionAll(this.openQuestions.filter(question => question.question_state !== "unanswered"), "unanswered");
     }
 
     addReply(): void {

@@ -1,6 +1,6 @@
 import { CodeListingRow } from "components/annotations/code_listing_row";
 import { render } from "lit";
-import { fetchUserAnnotations } from "state/UserAnnotations";
+import { userAnnotationState } from "state/UserAnnotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { courseState } from "state/Courses";
 import { addPermission, setUserId } from "state/Users";
@@ -42,7 +42,7 @@ function initAnnotateButtons(): void {
 }
 
 function loadUserAnnotations(): void {
-    fetchUserAnnotations(submissionState.id);
+    userAnnotationState.fetch(submissionState.id);
 }
 
 

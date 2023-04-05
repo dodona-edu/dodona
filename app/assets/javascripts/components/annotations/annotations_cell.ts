@@ -38,7 +38,7 @@ export class AnnotationsCell extends ShadowlessLitElement {
     }
 
     get userAnnotations(): UserAnnotationData[] {
-        return userAnnotationState.byLine.get(this.row);
+        return userAnnotationState.byLine.get(this.row) || [];
     }
 
 

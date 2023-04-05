@@ -8,7 +8,7 @@ import {
     UserAnnotationFormData
 } from "state/UserAnnotations";
 import { annotationState } from "state/Annotations";
-import { getSubmissionId } from "state/Submissions";
+import { submissionState } from "state/Submissions";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
@@ -60,7 +60,7 @@ export class AnnotationsCell extends stateMixin(ShadowlessLitElement) {
 
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
-            await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
+            await createUserAnnotation(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.closeForm();
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;

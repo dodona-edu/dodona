@@ -3,7 +3,7 @@ import { initTooltips, updateURLParameter, fetch } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
-import { getCode } from "state/Submissions";
+import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
 
@@ -163,7 +163,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            const codeString = getCode();
+            const codeString = submissionState.code;
             editor.setValue(codeString, 1);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });

@@ -4,7 +4,7 @@ import { fetchUserAnnotations } from "state/UserAnnotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { courseState } from "state/Courses";
 import { addPermission, setUserId } from "state/Users";
-import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
+import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
@@ -13,11 +13,11 @@ import { exerciseState } from "state/Exercises";
 const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
-    setCode(code);
+    submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
     setUserId(userId);
-    setSubmissionId(submissionId);
+    submissionState.id = submissionId;
     annotationState.isQuestionMode = questionMode;
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
@@ -42,7 +42,7 @@ function initAnnotateButtons(): void {
 }
 
 function loadUserAnnotations(): void {
-    fetchUserAnnotations(getSubmissionId());
+    fetchUserAnnotations(submissionState.id);
 }
 
 

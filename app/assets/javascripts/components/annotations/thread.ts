@@ -7,7 +7,7 @@ import {
     UserAnnotationFormData
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
-import { getSubmissionId } from "state/Submissions";
+import { submissionState } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { stateMixin } from "state/StateMixin";
@@ -55,7 +55,7 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
-            await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
+            await createUserAnnotation(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
 
             invalidateUserAnnotation(this.data.id);
             this.showForm = false;

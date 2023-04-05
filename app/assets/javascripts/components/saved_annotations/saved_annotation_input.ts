@@ -3,9 +3,8 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import "components/datalist_input";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
-import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { getUserId } from "state/Users";
+import { userState } from "state/Users";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
 
@@ -22,7 +21,7 @@ import { exerciseState } from "state/Exercises";
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
 @customElement("d-saved-annotation-input")
-export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
+export class SavedAnnotationInput extends ShadowlessLitElement {
     @property({ type: String })
     name = "";
     @property({ type: String })
@@ -33,12 +32,8 @@ export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     @property({ state: true })
     __label: string;
 
-    get state(): string[] {
-        return ["getUserId"];
-    }
-
     get userId(): number {
-        return getUserId();
+        return userState.id;
     }
 
     get label(): string {

@@ -3,7 +3,7 @@ import { render } from "lit";
 import { userAnnotationState } from "state/UserAnnotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { courseState } from "state/Courses";
-import { addPermission, setUserId } from "state/Users";
+import { userState } from "state/Users";
 import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
@@ -16,7 +16,7 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
-    setUserId(userId);
+    userState.id = userId;
     submissionState.id = submissionId;
     annotationState.isQuestionMode = questionMode;
 
@@ -38,7 +38,7 @@ function addMachineAnnotations(data: MachineAnnotationData[]): void {
 }
 
 function initAnnotateButtons(): void {
-    addPermission("annotation.create");
+    userState.addPermission("annotation.create");
 }
 
 function loadUserAnnotations(): void {

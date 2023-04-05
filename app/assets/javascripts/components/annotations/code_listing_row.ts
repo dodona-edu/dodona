@@ -5,10 +5,9 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { stateMixin } from "state/StateMixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
-import { hasPermission } from "state/Users";
+import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 
 /**
@@ -22,7 +21,7 @@ import { annotationState } from "state/Annotations";
  * @prop {string} renderedCode - The code to display.
  */
 @customElement("d-code-listing-row")
-export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) {
+export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
     @property({ type: String })
@@ -31,15 +30,13 @@ export class CodeListingRow extends stateMixin(i18nMixin(ShadowlessLitElement)) 
     @property({ state: true })
     showForm: boolean;
 
-    state = ["hasPermission"];
-
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
     }
 
     get canCreateAnnotation(): boolean {
-        return hasPermission("annotation.create");
+        return userState.hasPermission("annotation.create");
     }
 
     get addAnnotationTitle(): string {

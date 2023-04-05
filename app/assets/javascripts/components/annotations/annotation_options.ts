@@ -1,11 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
-import { stateMixin } from "state/StateMixin";
 import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { hasPermission } from "state/Users";
+import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 
 
@@ -16,14 +15,12 @@ import { annotationState } from "state/Annotations";
  * @element d-annotation-options
  */
 @customElement("d-annotation-options")
-export class AnnotationOptions extends i18nMixin(stateMixin(ShadowlessLitElement)) {
+export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
     showForm = false;
 
-    state = ["hasPermission"];
-
     get canCreateAnnotation(): boolean {
-        return hasPermission("annotation.create");
+        return userState.hasPermission("annotation.create");
     }
 
     get addAnnotationTitle(): string {

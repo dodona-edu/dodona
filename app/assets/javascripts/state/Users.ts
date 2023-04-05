@@ -1,24 +1,20 @@
-import { events } from "state/PubSub";
+import { State } from "state/state_system/State";
+import { stateProperty } from "state/state_system/StateProperty";
 
 export type Permission = "annotation.create"
 
-let userId: number;
-const permissions: Set<Permission> = new Set();
+class UserState extends State {
+    @stateProperty id: number;
+    @stateProperty private permissions: Set<Permission> = new Set<Permission>();
 
-export function setUserId(id: number): void {
-    userId = id;
-    events.publish("getUserId");
+    addPermission(permission: Permission): void {
+        // reassigning the set is necessary to trigger a state change
+        this.permissions = new Set<Permission>([...this.permissions, permission]);
+    }
+
+    hasPermission(permission: Permission): boolean {
+        return this.permissions.has(permission);
+    }
 }
 
-export function getUserId(): number {
-    return userId;
-}
-
-export function addPermission(permission: Permission): void {
-    permissions.add(permission);
-    events.publish("hasPermission");
-}
-
-export function hasPermission(permission: Permission): boolean {
-    return permissions.has(permission);
-}
+export const userState = new UserState();

@@ -1,5 +1,11 @@
 import { State } from "./State";
 
+/**
+ * A global instance that records every property of a state that gets read between it's start and finish.
+ * Credits to _litState_.
+ *
+ * Based on the code from the [litState StateRecorder](https://github.com/gitaarik/lit-state/blob/8cd66223612c3b115c0275f58f6cee5e900ee534/lit-state.js#L233)
+ */
 class StateRecorder {
     log: Map<State, string[]> = null;
 

@@ -8,6 +8,14 @@ export type Callback = (key: string, value: any, state: State) => void
 
 export type Unsubscribe = () => void;
 
+/**
+ * `State` a class that inherits from `EventTarget`.
+ * It can be subscribed to and will dispatch an event to all subscribers when any of its properties change.
+ * It also records every read of it's properties to the stateRecorder.
+ * All credits to _@lit-app/state_ for the idea to use `EventTarget` to avoid reinventing an event system.
+ *
+ * This code was inspired on the code from the [@lit-app/state State](https://github.com/lit-apps/lit-app/blob/main/packages/state/src/state.ts)
+ */
 export class State extends EventTarget {
     /**
      * subscribe to state change event. The callback will be called anytime

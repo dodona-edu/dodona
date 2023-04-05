@@ -1,6 +1,13 @@
 import { State } from "./State";
 import { ClassElement, Constructor } from "@lit/reactive-element/decorators/base.js";
 
+/**
+ * This function is used to decorate a property of a State class.
+ * It will make the property reactive and will dispatch a StateEvent when the property changes.
+ * It will also record every read of the property to the stateRecorder.
+ * @param stateClass
+ * @param property
+ */
 function finisher(stateClass: typeof State, property: PropertyKey): void {
     const key = typeof property === "symbol" ? Symbol() : `__${property}`;
     const currentVal = stateClass.prototype[property];
@@ -21,6 +28,7 @@ function finisher(stateClass: typeof State, property: PropertyKey): void {
 
 /**
  * Function for decorating a property that is compatible with both TypeScript and Babel decorators.
+ * It will apply the `finisher` function to the property.
  *
  * @returns {ClassElement|void}
  */

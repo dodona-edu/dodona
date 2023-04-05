@@ -2,6 +2,16 @@ import { ReactiveController, ReactiveControllerHost } from "lit";
 import { stateRecorder } from "state/state_system/StateRecorder";
 import { State, Unsubscribe } from "state/state_system/State";
 
+/**
+ * `StateController` a [ReactiveController](https://lit.dev/docs/composition/controllers/) that
+ *  uses the `stateRecorder` to track all stateProperties that are read during a render cycle.
+ *  It then subscribes to the relevant states to trigger an update of its host every time one
+ *  of those stateProperties changes. Thanks to _@lit-app/state_ for introducing me to controllers
+ *  for this usecase Reactive controllers
+ *
+ * This code is a combination of the code from the [@lit-app/state StateController](https://github.com/lit-apps/lit-app/blob/main/packages/state/src/state-controller.ts)
+ * and the [litState observeState mixin](https://github.com/gitaarik/lit-state/blob/8cd66223612c3b115c0275f58f6cee5e900ee534/lit-state.js#L1)
+ */
 export class StateController implements ReactiveController {
     unsubscribeList: Unsubscribe[] = [];
     wasConnected = false;

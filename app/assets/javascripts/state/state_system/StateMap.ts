@@ -1,5 +1,9 @@
 import { State } from "state/state_system/State";
 
+/**
+ * This class extends the Map class to allow for state tracking
+ * It notifies subscribers of key changes as if it where `stateProperties`.
+ */
 export class StateMap<K, V> extends State implements Map<K, V> {
     private map: Map<K, V> = new Map<K, V>();
 

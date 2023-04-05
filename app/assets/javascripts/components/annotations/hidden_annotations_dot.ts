@@ -1,7 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { stateMixin } from "state/StateMixin";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";

@@ -1,7 +1,7 @@
 import { State } from "./State";
 import { ClassElement, Constructor } from "@lit/reactive-element/decorators/base.js";
 
-function finisher(stateClass: any, property: PropertyKey): void {
+function finisher(stateClass: typeof State, property: PropertyKey): void {
     const key = typeof property === "symbol" ? Symbol() : `__${property}`;
     const currentVal = stateClass.prototype[property];
     Object.defineProperty(stateClass.prototype, property, {
@@ -48,7 +48,7 @@ export const stateProperty = (
             key: Symbol(),
             descriptor: {},
             finisher: function <State> (ctor: Constructor<State>) {
-                finisher(ctor as unknown as typeof State, element.key);
+                finisher(ctor as typeof State, element.key);
             },
             initializer(this: {[key: symbol]: unknown}) {
                 if (typeof element.initializer === "function") {

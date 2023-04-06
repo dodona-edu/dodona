@@ -57,7 +57,11 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 // prevent automatic scrolling to top of the page when clicking a link
                 e.preventDefault();
 
-                const tab = document.querySelector(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']`);
+                const tabs = document.querySelectorAll(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}-']`);
+                if (tabs.length === 0) {
+                    return;
+                }
+                const tab = tabs[tabs.length - 1];
                 new bootstrap.Tab(tab).show();
 
                 if (line !== undefined) {

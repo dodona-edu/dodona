@@ -51,17 +51,17 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         document.querySelectorAll("a.tab-link").forEach(t => {
             t.addEventListener("click", e => {
                 const link = e.currentTarget;
-                const tabName = link.dataset.tab || "code";
+                const tabName = link.dataset.tab;
                 const line = link.dataset.line;
 
                 // prevent automatic scrolling to top of the page when clicking a link
                 e.preventDefault();
 
-                const tabs = document.querySelectorAll(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}-']`);
-                if (tabs.length > 0) {
-                    const tab = tabs[tabs.length - 1];
-                    new bootstrap.Tab(tab).show();
-                }
+                const query = tabName ?
+                    `.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']` :
+                    "#link-to-code-tab";
+                const tab = document.querySelector(query);
+                new bootstrap.Tab(tab).show();
 
                 if (line !== undefined) {
                     dodona.codeListing.clearHighlights();

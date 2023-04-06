@@ -461,6 +461,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
             editor.setValue(rawBoilerplate);
             editor.focus();
+            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

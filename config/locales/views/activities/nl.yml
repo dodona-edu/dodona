@@ -96,7 +96,7 @@ nl:
       read_at: "Gelezen op %{timestamp}"
       preloaded_info: We hebben jouw laatste oplossing ingeladen in de editor.
       preloaded_clear: Maak de editor leeg.
-      preloaded_restore: Herstel de boilerplate-code.
+      preloaded_restore: Zet de voorbeeldcode terug.
     series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

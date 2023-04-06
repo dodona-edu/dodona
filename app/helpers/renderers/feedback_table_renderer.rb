@@ -91,7 +91,7 @@ class FeedbackTableRenderer
         end
         if show_code_tab
           @builder.li(class: ('active' if submission[:groups].blank?)) do
-            @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
+            @builder.a(href: '#tab-code--1', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
               @builder.span(class: 'badge rounded-pill', id: 'badge_code')
             end
@@ -101,7 +101,7 @@ class FeedbackTableRenderer
       @builder.div(class: 'tab-content') do
         @result[:groups].each_with_index { |t, i| tab(t, i) } if submission[:groups]
         if show_code_tab
-          @builder.div(class: "tab-pane #{'active' if submission[:groups].blank?}", id: 'code-tab') do
+          @builder.div(class: "tab-pane #{'active' if submission[:groups].blank?}", id: 'tab-code--1') do
             if submission[:annotations]
               @builder.div(class: 'linter') do
                 source(@code, submission[:annotations])

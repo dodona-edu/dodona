@@ -57,7 +57,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 // prevent automatic scrolling to top of the page when clicking a link
                 e.preventDefault();
 
-                const query = tabName ?
+                const query = tabName && tabName !== "code" ?
                     `.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']` :
                     "#link-to-code-tab";
                 const tab = document.querySelector(query);

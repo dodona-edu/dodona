@@ -58,11 +58,10 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 e.preventDefault();
 
                 const tabs = document.querySelectorAll(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}-']`);
-                if (tabs.length === 0) {
-                    return;
+                if (tabs.length > 0) {
+                    const tab = tabs[tabs.length - 1];
+                    new bootstrap.Tab(tab).show();
                 }
-                const tab = tabs[tabs.length - 1];
-                new bootstrap.Tab(tab).show();
 
                 if (line !== undefined) {
                     dodona.codeListing.clearHighlights();

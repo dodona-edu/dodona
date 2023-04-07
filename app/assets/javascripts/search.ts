@@ -49,8 +49,8 @@ class Search {
 
     constructor() {
         // subscribe relevant listeners
-        searchQueryState.arrayQueryParams.subscribe(k => this.paramChange(k));
-        searchQueryState.queryParams.subscribe(k => this.paramChange(k));
+        searchQueryState.arrayQueryParams.subscribe((s, k) => this.paramChange(k));
+        searchQueryState.queryParams.subscribe((s, k) => this.paramChange(k));
         searchQueryState.queryParams.subscribe( () => this.toggleRefresh(), "refresh");
     }
 
@@ -81,7 +81,7 @@ class Search {
 
     paramChangeDelayer = createDelayer();
     changedParams = [];
-    paramChange(key: string): void {
+    paramChange(key?: string): void {
         this.changedParams.push(key);
         this.paramChangeDelayer(() => {
             if (searchQueryState.queryParams.get("page") !== undefined && searchQueryState.queryParams.get("page") !== "1" && this.changedParams.every(k => k !== "page")) {

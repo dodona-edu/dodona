@@ -7,20 +7,17 @@ import { State } from "state/state_system/State";
  */
 export class StateEvent extends Event {
     static readonly eventName = "lit-state-changed";
-    readonly key: string;
+    readonly key: string | undefined;
     readonly state: State;
-
-    readonly value: unknown;
 
     /**
      * @param  {string} key of the state that has changed
      * @param  {unknown} value for the changed key
      * @param  {State} state the state that has changed
      */
-    constructor(key: string, value: unknown, state: State) {
+    constructor(state: State, key?: string ) {
         super(StateEvent.eventName, { cancelable: false });
         this.key = key;
-        this.value = value;
         this.state = state;
     }
 }

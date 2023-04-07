@@ -18,7 +18,7 @@ function finisher(stateClass: typeof State, property: PropertyKey): void {
         },
         set(value: unknown) {
             this[key] = value;
-            this.dispatchStateEvent(property, value);
+            this.dispatchStateEvent(property);
         },
         configurable: true,
         enumerable: true,

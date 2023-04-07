@@ -8,7 +8,8 @@ test("stateRecorder should record all record read events between start and finis
     stateRecorder.recordRead(state, "bar");
     stateRecorder.recordRead(state, "foo");
     const log = stateRecorder.finish();
-    expect(log.get(state)).toEqual(["foo", "bar"]);
+    expect(log.get(state).has("foo")).toBe(true);
+    expect(log.get(state).has("bar")).toBe(true);
 });
 
 test("stateRecorder should be able to record from multiple states", () => {
@@ -19,27 +20,34 @@ test("stateRecorder should be able to record from multiple states", () => {
     stateRecorder.recordRead(state2, "bar");
     stateRecorder.recordRead(state2, "foo");
     const log = stateRecorder.finish();
-    expect(log.get(state1)).toEqual(["foo"]);
-    expect(log.get(state2)).toEqual(["bar", "foo"]);
+    expect(log.get(state1).has("foo")).toBe(true);
+    expect(log.get(state1).has("bar")).toBe(false);
+    expect(log.get(state2).has("bar")).toBe(true);
+    expect(log.get(state2).has("foo")).toBe(true);
 });
 
-test("stateRecorder should ignore record read events if not started", () => {
+test("stateRecorder should not ignore reads before start", () => {
     const state = new State();
     stateRecorder.recordRead(state, "foo");
     stateRecorder.recordRead(state, "bar");
     stateRecorder.recordRead(state, "foo");
+    expect(() => stateRecorder.finish()).toThrow();
+    stateRecorder.start();
     const log = stateRecorder.finish();
-    expect(log).toBeNull();
+    expect(log.size).toBe(0);
 });
 
 test("stateRecorder should ignore record read events if already finished", () => {
     const state = new State();
     stateRecorder.start();
-    stateRecorder.finish();
+    let log = stateRecorder.finish();
     stateRecorder.recordRead(state, "foo");
     stateRecorder.recordRead(state, "bar");
     stateRecorder.recordRead(state, "foo");
-    const log = stateRecorder.finish();
-    expect(log).toBeNull();
+    expect(log.size).toBe(0);
+    expect(() => stateRecorder.finish()).toThrow();
+    stateRecorder.start();
+    log = stateRecorder.finish();
+    expect(log.size).toBe(0);
 });
 

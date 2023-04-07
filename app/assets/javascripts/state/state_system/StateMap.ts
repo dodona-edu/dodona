@@ -27,7 +27,7 @@ export class StateMap<K, V> extends State implements Map<K, V> {
         this.map.forEach(callbackfn, thisArg);
     }
 
-    public get(key: K): V {
+    public get(key: K): V | undefined {
         this.recordRead(key.toString());
         return this.map.get(key);
     }
@@ -39,7 +39,7 @@ export class StateMap<K, V> extends State implements Map<K, V> {
 
     public set(key: K, value: V): this {
         this.map.set(key, value);
-        this.dispatchStateEvent(key.toString(), value);
+        this.dispatchStateEvent(key.toString());
         return this;
     }
 

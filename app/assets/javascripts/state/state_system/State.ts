@@ -4,7 +4,7 @@ import { stateRecorder } from "state/state_system/StateRecorder";
 /**
  * Callback function - used as callback subscription to a state change
  */
-export type Callback = (key: string, value: any, state: State) => void
+export type Callback = (state: State, key?: string) => void
 
 export type Unsubscribe = () => void;
 
@@ -25,11 +25,11 @@ export class State extends EventTarget {
      * @param nameOrNames
      * @returns a unsubscribe function.
      */
-    subscribe(callback: Callback, nameOrNames?: string | string[]): Unsubscribe {
-        const names: string[] = (nameOrNames && !Array.isArray(nameOrNames)) ? [nameOrNames] : nameOrNames as string[];
+    subscribe(callback: Callback, nameOrNames?: string | Set<string|undefined>): Unsubscribe {
+        const names = nameOrNames instanceof Set ? nameOrNames : new Set([nameOrNames]);
         const cb: EventListener = (event: StateEvent) => {
-            if (!names || names.includes(event.key) || !event.key || names.includes(undefined)) {
-                callback(event.key, event.value, this);
+            if (names.has(event.key) || !event.key || names.has(undefined)) {
+                callback(this, event.key);
             }
         };
         this.addEventListener(StateEvent.eventName, cb);
@@ -40,7 +40,7 @@ export class State extends EventTarget {
         stateRecorder.recordRead(this, key);
     }
 
-    protected dispatchStateEvent(key?: string, eventValue?: unknown): void {
-        this.dispatchEvent(new StateEvent(key, eventValue, this));
+    protected dispatchStateEvent(key?: string): void {
+        this.dispatchEvent(new StateEvent(this, key));
     }
 }

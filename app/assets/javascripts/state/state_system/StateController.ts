@@ -1,6 +1,6 @@
 import { ReactiveController, ReactiveControllerHost } from "lit";
 import { stateRecorder } from "state/state_system/StateRecorder";
-import { State, Unsubscribe } from "state/state_system/State";
+import { Unsubscribe } from "state/state_system/State";
 
 /**
  * `StateController` a [ReactiveController](https://lit.dev/docs/composition/controllers/) that
@@ -17,7 +17,7 @@ export class StateController implements ReactiveController {
     wasConnected = false;
     isConnected = false;
 
-    constructor( protected host: ReactiveControllerHost) {
+    constructor(protected host: ReactiveControllerHost) {
         this.host.addController(this);
     }
 
@@ -39,20 +39,15 @@ export class StateController implements ReactiveController {
     }
 
     hostUpdated(): void {
-        this.initStateObservers();
-    }
-
-    private initStateObservers(): void {
         this.clearStateObservers();
-        if (!this.isConnected) return;
-        this.addStateObservers(stateRecorder.finish());
-    }
-
-    private addStateObservers(stateVars: Map<State, string[]>): void {
-        for (const [state, keys] of stateVars) {
+        if (!this.isConnected) {
+            return;
+        }
+        const log = stateRecorder.finish();
+        log.forEach((keys, state) => {
             const unsubscribe = state.subscribe(() => this.host.requestUpdate(), keys);
             this.unsubscribeList.push(unsubscribe);
-        }
+        });
     }
 
     private clearStateObservers(): void {

@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
-import { UserAnnotationData, UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
+import { UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
 import { annotationState } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";

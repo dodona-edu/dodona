@@ -105,7 +105,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.2.2'
+gem 'i18n-js', '~> 4.2.3'
 gem 'rails-i18n', '~> 7.0.6'
 
 # email exceptions

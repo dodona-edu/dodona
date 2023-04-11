@@ -190,12 +190,42 @@ nl:
       copy_code: Kopieer naar Dodona
       overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
     submission_motivational_message:
-      1: Proficiat!
-      2: Goed bezig!
-      3: Doe zo verder!
-      4: Mooi!
-      5: Puik werk!
-      6: Goed gedaan!
+      1: "👾 Monsterprogrammeur! Je hebt die oefening helemaal verslonden!"
+      2: "🚀 Super programmeur! Je hebt die oefening gelanceerd als een raket!"
+      3: "💡 Eureka! Je hebt het licht gezien en die oefening opgelost! Ga zo door!"
+      4: "🌟 Schitterend! Je schittert als een ster in de programmeerhemel!"
+      5: "👍 Goed gedaan! Je hebt die oefening als een pro opgelost!"
+      6: "👏 Geweldig! Jij hebt deze oefening echt onder de knie!"
+      7: "🤩 Geweldig werk! Jij verdient een staande ovatie!"
+      8: "💻 Super coder! Je gaat door die oefeningen als een warm mes door de boter!"
+      9: "Goed gedaan! Je hebt deze oefening met succes voltooid."
+      10: "🎯 In de roos! Met jouw programmeervaardigheden raak je altijd het doel!"
+      11: "Fantastisch gedaan! Je hebt deze oefening onder de knie."
+      12: "🤖 Beep boop! De robots zijn onder de indruk van jouw programmeerkunsten!"
+      13: "🏰 Code-koning(in)!"
+      14: "🔥 Je bent on fire! Ga zo door en je programmeerskills schieten omhoog!"
+      15: "Voortreffelijk! Je hebt deze oefening goed aangepakt."
+      16: "Je bent echt goed in programmeren! Ga zo door."
+      17: "Perfect! Je hebt deze oefening helemaal correct opgelost."
+      18: "Prima werk! Je hebt deze oefening goed begrepen en opgelost."
+      19: "🎸 Rock die code! Je speelt de sterren van de hemel met je programmeervaardigheden!"
+      20: "Geweldige prestatie! Je hebt laten zien dat je een programmeertalent bent."
+      21: "🎉 Goed gedaan! Volgende!"
+      22: "🚀 Lancering geslaagd!"
+      23: "💡 Slimme zet!"
+      24: "🌟 Schitterend!"
+      25: "🔨 Klus geklaard!"
+      26: "💻 Super coder!"
+      27: "🏆 Hoppa!"
+      28: "🎯 In de roos!"
+      29: "🍟 Traktatie verdiend!"
+      30: "🤖 Beep boop!"
+      31: "🔥 On fire!"
+      32: "🌈 Regenboog van succes!"
+      33: "🍩 Donut tijd!"
+      34: "🎸 Rock die code!"
+      35: "Uitmuntend werk!"
+      36: "Bravo! Je hebt deze oefening tot een goed einde gebracht."
     dropdown:
       search: Zoeken
       multi:

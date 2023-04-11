@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.1.1'
+gem 'puma', '~> 6.2.1'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.2'
@@ -66,7 +66,7 @@ gem 'ace-rails-ap', '~>4.5'
 gem 'autoprefixer-rails', '~>10.4.13'
 
 # saml authentication
-gem 'devise', '~>4.9.0'
+gem 'devise', '~>4.9.2'
 gem 'ruby-saml', '~> 1.15.0'
 
 # omniauth
@@ -105,7 +105,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.2.2'
+gem 'i18n-js', '~> 4.2.3'
 gem 'rails-i18n', '~> 7.0.6'
 
 # email exceptions
@@ -133,7 +133,7 @@ gem 'faker', '~> 3.1.1'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.24'
+gem 'stackprof', '~> 0.2.25'
 
 gem 'ddtrace', '~> 1.10.1'
 
@@ -156,8 +156,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.8.3'
+  gem 'capybara', '~> 3.39.0'
+  gem 'selenium-webdriver', '~> 4.8.6'
 end
 
 group :test do
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.18.0'
+  gem 'rubocop-rails', '~> 2.19.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

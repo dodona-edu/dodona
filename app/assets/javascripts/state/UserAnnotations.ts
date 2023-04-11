@@ -230,7 +230,7 @@ class UserAnnotationState extends State {
     async transitionAll(annotations: UserAnnotationData[], newState: QuestionState): Promise<void> {
         for (const annotation of annotations) {
             // we wait for each transition to finish before starting the next one
-            // this prevents inconsistencies questionstates being shown
+            // this prevents inconsistent questionstates being shown
             await this.transition(annotation, newState);
         }
     }

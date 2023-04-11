@@ -31,12 +31,10 @@ class ActivityStatus < ApplicationRecord
   belongs_to :series, optional: true
   belongs_to :user
 
-  validates :series_id_non_nil, uniqueness: { scope: %i[user_id activity_id] }, on: :create
-
   scope :in_series, ->(series) { where(series: series) }
   scope :for_user, ->(user) { where(user: user) }
 
-  before_validation :initialise_series_id_non_nil, if: -> { new_record? }
+  before_create :initialise_series_id_non_nil
   before_create :initialise_values_for_content_page, if: -> { activity.content_page? }
   before_create :initialise_values_for_exercise, if: -> { activity.exercise? }
 

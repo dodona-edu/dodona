@@ -1,5 +1,5 @@
-import "components/filter_button";
-import { FilterButton } from "components/filter_button";
+import "components/search/filter_button";
+import { FilterButton } from "components/search/filter_button";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";

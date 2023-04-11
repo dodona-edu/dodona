@@ -17,8 +17,8 @@ class QuestionPolicy < AnnotationPolicy
     return false if from.present? && record.question_state.to_s != from.to_s
     # Don't allow transition if already in the requested state
     return false if record.question_state.to_s == to.to_s
-    # Only the course admins can transition, except for the answered state.
-    return true if to.to_s == 'answered' && record.user == user
+    # Users can transition their own annotations.
+    return true if record.user == user
 
     user&.course_admin?(record.submission.course)
   end
@@ -28,9 +28,6 @@ class QuestionPolicy < AnnotationPolicy
     return transition?(record.transition_to, record.transition_from) if transitioning?
 
     # Otherwise, we are updating the text of the annotation.
-    # Only allow if the question was not answered yet.
-    return false unless record.unanswered?
-
     record.user == user
   end
 

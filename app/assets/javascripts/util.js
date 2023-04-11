@@ -95,6 +95,9 @@ async function initCSRF() {
     });
 }
 
+/**
+ * @param {Document | Element} root
+ */
 function initTooltips(root = document) {
     // First remove dead tooltips
     const tooltips = root.querySelectorAll(".tooltip");

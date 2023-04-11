@@ -1,9 +1,11 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { createSavedAnnotation, getSavedAnnotation, SavedAnnotation } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
+import { isBetaCourse } from "saved_annotation_beta";
+import { getCourseId } from "state/Courses";
 import { stateMixin } from "state/StateMixin";
 
 /**
@@ -35,7 +37,7 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     get state(): string[] {
-        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`] : [];
+        return this.isAlreadyLinked ? [`getSavedAnnotation${this.savedAnnotationId}`, "getCourseId"] : ["getCourseId"];
     }
 
     get linkedSavedAnnotation(): SavedAnnotation {
@@ -53,18 +55,12 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
 
     async createSavedAnnotation(): Promise<void> {
         try {
-            this.savedAnnotationId = await createSavedAnnotation({
+            await createSavedAnnotation({
                 from: this.fromAnnotationId,
                 saved_annotation: this.savedAnnotation || this.newSavedAnnotation
             });
             this.errors = undefined;
             this.hideModal();
-            const event = new CustomEvent("created", {
-                detail: { id: this.savedAnnotationId },
-                bubbles: true,
-                composed: true }
-            );
-            this.dispatchEvent(event);
         } catch (errors) {
             this.errors = errors;
         }
@@ -95,12 +91,13 @@ export class NewSavedAnnotation extends stateMixin(modalMixin(ShadowlessLitEleme
     }
 
     render(): TemplateResult {
-        return this.isAlreadyLinked && this.linkedSavedAnnotation!= undefined ? html`` : html`
-            <a class="btn btn-icon annotation-control-button annotation-edit"
-               title="${I18n.t("js.saved_annotation.new.button_title")}"
-               @click=${() => this.showModal()}
-            >
-                <i class="mdi mdi-content-save"></i>
-            </a>`;
+        return isBetaCourse(getCourseId()) && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
+            <li>
+                <a class="dropdown-item" @click="${() => this.showModal()}">
+                    <i class="mdi mdi-content-save mdi-18"></i>
+                    ${I18n.t("js.saved_annotation.new.button_title")}
+                </a>
+            </li>
+        ` : html``;
     }
 }

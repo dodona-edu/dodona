@@ -488,44 +488,46 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     admin = @submission.course.administrating_members[0]
     random = create :user
 
-    users = [[zeus, true], [staff, false], [admin, true], [random, false]]
-    users.each do |user, valid|
-      sign_in user
+    with_delayed_jobs do
+      users = [[zeus, true], [staff, false], [admin, true], [random, false]]
+      users.each do |user, valid|
+        sign_in user
 
-      # In progress -> in progress
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :in_progress
-        },
-        format: :json
-      }
-      assert_response :forbidden
+        # In progress -> in progress
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :in_progress
+          },
+          format: :json
+        }
+        assert_response :forbidden
 
-      # In progress -> answered
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :answered
-        },
-        format: :json
-      }
-      assert_response valid ? :ok : :forbidden
+        # In progress -> answered
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :answered
+          },
+          format: :json
+        }
+        assert_response valid ? :ok : :forbidden
 
-      # In progress -> unanswered
-      question = create :question, submission: @submission, question_state: :in_progress
-      patch annotation_path(question), params: {
-        from: question.question_state,
-        question: {
-          question_state: :unanswered
-        },
-        format: :json
-      }
-      assert_response valid ? :ok : :forbidden
+        # In progress -> unanswered
+        question = create :question, submission: @submission, question_state: :in_progress
+        patch annotation_path(question), params: {
+          from: question.question_state,
+          question: {
+            question_state: :unanswered
+          },
+          format: :json
+        }
+        assert_response valid ? :ok : :forbidden
 
-      sign_out user
+        sign_out user
+      end
     end
   end
 
@@ -642,7 +644,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     assert_response :no_content
   end
 
-  test 'cannot modify if question was answered' do
+  test 'can modify if question was answered' do
     question = create :question, submission: @submission, question_state: :answered
 
     put annotation_path(question), params: {
@@ -651,7 +653,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
-    assert_response :forbidden
+    assert_response :success
 
     question = create :question, submission: @submission, question_state: :unanswered
 

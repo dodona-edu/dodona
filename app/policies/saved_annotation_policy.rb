@@ -37,7 +37,7 @@ class SavedAnnotationPolicy < ApplicationPolicy
 
   def create?
     # EDIT AFTER CLOSED BETA
-    record.course_id.present? && user&.course_admin?(record.course) && user_admin_of_beta_course? && record_in_beta_course?
+    record.course_id.present? && user&.course_admin?(record.course) && user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def show?
@@ -47,12 +47,12 @@ class SavedAnnotationPolicy < ApplicationPolicy
 
   def update?
     # EDIT AFTER CLOSED BETA
-    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course?
+    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def destroy?
     # EDIT AFTER CLOSED BETA
-    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course?
+    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def permitted_attributes

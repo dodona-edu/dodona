@@ -25,6 +25,7 @@ end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
+  json.save SavedAnnotationPolicy.new(current_user, annotation).create?
   json.transition do
     Question.question_states.each_key do |state|
       json.set! state, policy(annotation).transition?(state)
@@ -34,3 +35,8 @@ json.permission do
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
 json.type annotation.type&.downcase
+
+json.responses annotation.responses do |response|
+  json.partial! response, as: :annotation
+end
+json.thread_root_id annotation.thread_root_id

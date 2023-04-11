@@ -17,6 +17,11 @@ export function stateMixin<T extends Constructor>(superClass: T): T {
             this.initReactiveState();
         }
 
+        update(changedProperties: Map<string, unknown>): void {
+            super.update(changedProperties);
+            this.initReactiveState();
+        }
+
         private initReactiveState(): void {
             this.state.forEach(event => events.subscribe(event, () => this.requestUpdate()));
         }

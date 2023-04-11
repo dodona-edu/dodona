@@ -1,11 +1,11 @@
-import "components/search_token";
-import { SearchToken } from "components/search_token";
+import "components/search/search_token";
+import { SearchToken } from "components/search/search_token";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { SearchQuery } from "search";
 import { html } from "lit/development";
-import { Label } from "components/filter_collection_element";
+import { Label } from "components/search/filter_collection_element";
 
 describe("SearchToken", () => {
     let searchToken;

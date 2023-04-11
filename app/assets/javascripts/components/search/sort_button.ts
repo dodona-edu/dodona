@@ -1,4 +1,3 @@
-import "search.ts";
 import { css, html, LitElement, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { searchQuery, SearchQuery } from "search";

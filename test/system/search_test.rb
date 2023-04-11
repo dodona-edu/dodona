@@ -44,16 +44,15 @@ class SearchTest < ApplicationSystemTestCase
   end
 
   test 'Going to a page with search does not create an extra history entry' do
-    assert_equal 1, page.evaluate_script('window.history.length')
+    history_length = page.evaluate_script('window.history.length')
     sign_in create(:zeus)
     visit root_path
-    assert_equal 2, page.evaluate_script('window.history.length')
+    assert_equal history_length + 1, page.evaluate_script('window.history.length')
     click_on 'Toggle drawer'
     click_on 'Exercises'
     page.assert_current_path activities_path
-    assert_equal 3, page.evaluate_script('window.history.length')
+    assert_equal history_length + 2, page.evaluate_script('window.history.length')
     page.go_back
     page.assert_current_path root_path
   end
-
 end

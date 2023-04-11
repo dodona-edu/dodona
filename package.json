@@ -53,7 +53,7 @@
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.67",
-    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
     "babel-plugin-istanbul": "^6.1.1",
     "@typescript-eslint/parser": "^5.57.1",
     "eslint": "^8.37.0",

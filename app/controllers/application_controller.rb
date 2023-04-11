@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
   end
 
   def sandbox?
-    request.host == Rails.configuration.sandbox_host && \
+    request.host == Rails.configuration.sandbox_host &&
       request.host != Rails.configuration.default_host
   end
 

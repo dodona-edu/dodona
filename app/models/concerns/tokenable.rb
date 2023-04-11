@@ -18,7 +18,7 @@ module Tokenable
           new_token = SecureRandom.urlsafe_base64(length)
                                   .tr('1lL0oO', '')
                                   .slice(0, length)
-        end until (new_token.length == length) && \
+        end until (new_token.length == length) &&
           !(unique && self.class.exists?(token_name => new_token))
         self[token_name] = new_token
       end

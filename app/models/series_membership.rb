@@ -32,11 +32,11 @@ class SeriesMembership < ApplicationRecord
   def add_activity_statuses
     if activity.is_a? Exercise
       activity.submissions.where(course: series.course).distinct(:user_id).find_each do |submission|
-        ActivityStatus.create(series: series, activity: activity, user: submission.user)
+        ActivityStatus.create_or_find_by(series: series, activity: activity, user: submission.user)
       end
     else
       activity.activity_read_states.where(course: series.course).distinct(:user_id).find_each do |ars|
-        ActivityStatus.create(series: series, activity: activity, user: ars.user)
+        ActivityStatus.create_or_find_by(series: series, activity: activity, user: ars.user)
       end
     end
   end

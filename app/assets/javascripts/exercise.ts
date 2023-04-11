@@ -455,8 +455,14 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
         const resetButton = restoreWarning.querySelector("a");
         resetButton.addEventListener("click", () => {
-            editor.setValue(boilerplate);
+            // the boilerplate has been escaped, so we need to unescape it
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = boilerplate;
+            const rawBoilerplate = wrapper.textContent || wrapper.innerText || "";
+
+            editor.setValue(rawBoilerplate);
             editor.focus();
+            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

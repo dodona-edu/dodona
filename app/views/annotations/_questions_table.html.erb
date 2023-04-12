@@ -12,9 +12,9 @@
         <% unless @course.present? %>
           <d-filter-icon icon-title="<%= t('questions.question.filter-by-user') %>" value="<%= question.user.full_name %>" class="d-none d-md-inline"></d-filter-icon>
         <% end %>
-        <span class="ellipsis-overflow" title="<%= question.user.full_name %>">
+        <div class="ellipsis-overflow" title="<%= question.user.full_name %>">
           <%= question.user.full_name %>
-        </span>
+        </div>
         <% unless @course.present? %>
           <div class="ellipsis-overflow text-muted icon-indent" title="<%= question.submission.course.name %>">
             <%= question.submission.course.name %>
@@ -25,9 +25,9 @@
         <% unless @course.present? %>
           <d-filter-icon icon-title="<%= t('questions.question.filter-by-exercise') %>" value="<%= question.submission.exercise.name %>" class="d-none d-md-inline"></d-filter-icon>
         <% end %>
-        <span class="ellipsis-overflow" title="<%= question.submission.exercise.name %>">
+        <div class="ellipsis-overflow" title="<%= question.submission.exercise.name %>">
           <%= question.submission.exercise.name %>
-        </span>
+        </div>
         <div class="ellipsis-overflow text-muted <%= "icon-indent" unless @course.present? %>">
           <%= question.question_text %>
         </div>

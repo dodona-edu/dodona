@@ -154,6 +154,17 @@
     &:focus,
     &:active {
       opacity: 1;
+      background: rgba(white, 0.1);
+    }
+  }
+
+  &.btn-icon-muted {
+    color: $text-muted;
+
+    &:hover,
+    &:focus,
+    &:active {
+      opacity: 1;
       background: rgba($on-surface, 0.1);
     }
   }

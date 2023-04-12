@@ -65,7 +65,7 @@ class Repository < ApplicationRecord
   scope :featured, -> { where(featured: true) }
 
   def full_path
-    Pathname.new File.join(ACTIVITY_LOCATIONS, path)
+    Pathname.new File.join(ACTIVITY_LOCATIONS, path || "")
   end
 
   def public_path

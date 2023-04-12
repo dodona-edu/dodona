@@ -12,7 +12,7 @@
   }
 
   col.name {
-    width: 170px;
+    width: 120px;
   }
 
   .selection-row {
@@ -26,6 +26,14 @@
   table-layout: fixed;
 }
 
-.icon-indent {
-  padding-left: 23px;
+@include media-breakpoint-up(md) {
+  .question-table {
+    .icon-indent {
+      padding-left: 23px;
+    }
+
+    col.name {
+      width: 170px;
+    }
+  }
 }

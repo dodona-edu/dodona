@@ -70,3 +70,13 @@ $btn-border-width: 0;
 
 // Tooltip
 $tooltip-max-width: 400px;
+
+$utilities: (
+  "display": (
+    responsive: true,
+    print: true,
+    property: display,
+    class: d,
+    values: inline inline-block block grid table table-row table-cell flex inline-flex none table-column
+  ),
+);

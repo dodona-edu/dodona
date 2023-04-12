@@ -12,39 +12,7 @@
   }
 
   col.name {
-    width: 150px;
-  }
-
-  .selection-row {
-    cursor: pointer;
-
-    &:hover {
-      background-color: $table-hover-bg;
-    }
-  }
-
-  table-layout: fixed;
-}
-
-.question-index-table {
-  col.actions {
-    width: 100px;
-  }
-
-  col.age {
-    width: 240px;
-  }
-
-  col.status {
-    width: 240px;
-  }
-
-  col.name {
     width: 170px;
-  }
-
-  col.view {
-    width: 35px;
   }
 
   .selection-row {

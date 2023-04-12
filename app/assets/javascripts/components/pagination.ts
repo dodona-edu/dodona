@@ -1,7 +1,8 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { searchQuery } from "search";
+import { search } from "search";
+import { searchQueryState } from "state/SearchQuery";
 
 /**
  * This component represents a pagination component as commonly found at the bottom of a paginated list page
@@ -38,7 +39,7 @@ export class Pagination extends ShadowlessLitElement {
     }
 
     gotToPage(page: number): void {
-        searchQuery.queryParams.updateParam("page", page.toString());
+        searchQueryState.queryParams.set("page", page.toString());
     }
 
     pageButton(page?: number, text?: string): TemplateResult {

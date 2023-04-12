@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { searchQuery } from "search";
+import { search } from "search";
 
 /**
  * This component represents a loading bar.
@@ -16,7 +16,7 @@ export class LoadingBar extends ShadowlessLitElement {
 
     constructor() {
         super();
-        searchQuery.loadingBars.push(this);
+        search.loadingBars.push(this);
     }
 
     show(): void {

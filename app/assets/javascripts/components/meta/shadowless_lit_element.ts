@@ -1,4 +1,5 @@
 import { LitElement } from "lit";
+import { StateController } from "state/state_system/StateController";
 
 /**
  * This class removes the shadow dom functionality from lit elements
@@ -12,6 +13,11 @@ import { LitElement } from "lit";
  * When shadow dom is required just use a normal LitElement
  */
 export class ShadowlessLitElement extends LitElement {
+    constructor() {
+        super();
+        new StateController(this);
+    }
+
     // don't use shadow dom
     createRenderRoot(): Element {
         return this;

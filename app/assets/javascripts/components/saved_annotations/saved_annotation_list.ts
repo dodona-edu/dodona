@@ -1,11 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { getSavedAnnotations, getSavedAnnotationsPagination, Pagination, SavedAnnotation } from "state/SavedAnnotations";
-import { stateMixin } from "state/StateMixin";
+import { Pagination, SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./edit_saved_annotation";
 import "components/pagination";
-import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
+import { searchQueryState } from "state/SearchQuery";
 
 /**
  * This component represents a list of saved annotations
@@ -18,7 +17,7 @@ import { getArrayQueryParams, getQueryParams } from "state/SearchQuery";
  * @prop {Boolean} small - When present, less columns and rows will be displayed in the table
  */
 @customElement("d-saved-annotation-list")
-export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
+export class SavedAnnotationList extends ShadowlessLitElement {
     @property({ type: Number, attribute: "course-id" })
     courseId: number;
     @property({ type: Number, attribute: "exercise-id" })
@@ -28,10 +27,8 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     @property({ type: Boolean })
     small = false;
 
-    state = ["getSavedAnnotations", "getQueryParams", "getArrayQueryParams", "getSavedAnnotationsPagination"];
-
     get queryParams(): Map<string, string> {
-        const params: Map<string, string> = getQueryParams();
+        const params: Map<string, string> = searchQueryState.queryParams;
         if (this.courseId) {
             params.set("course_id", this.courseId.toString());
         }
@@ -48,15 +45,15 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     get arrayQueryParams(): Map<string, string[]> {
-        return getArrayQueryParams();
+        return searchQueryState.arrayQueryParams;
     }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return getSavedAnnotations(this.queryParams, this.arrayQueryParams);
+        return savedAnnotationState.getList(this.queryParams, this.arrayQueryParams);
     }
 
     get pagination(): Pagination {
-        return getSavedAnnotationsPagination(this.queryParams, this.arrayQueryParams);
+        return savedAnnotationState.getPagination(this.queryParams, this.arrayQueryParams);
     }
 
     render(): TemplateResult {

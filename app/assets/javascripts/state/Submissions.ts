@@ -1,22 +1,9 @@
-import { events } from "state/PubSub";
+import { State } from "state/state_system/State";
+import { stateProperty } from "state/state_system/StateProperty";
 
-let submissionId: number;
-let _code: string;
-
-export function setSubmissionId(id: number): void {
-    submissionId = id;
-    events.publish("getSubmissionId");
+class SubmissionState extends State {
+    @stateProperty id;
+    @stateProperty code;
 }
 
-export function getSubmissionId(): number {
-    return submissionId;
-}
-
-export function setCode(code: string): void {
-    _code = code;
-    events.publish("getCode");
-}
-
-export function getCode(): string {
-    return _code;
-}
+export const submissionState = new SubmissionState();

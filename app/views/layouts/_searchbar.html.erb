@@ -181,13 +181,13 @@
             };
         <% end %>
 
-        dodona.searchQuery.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
+        dodona.search.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 
         // load the given localStorageKey if present. This key is used to retrieve the values stored in localStorage
         const localStorageKey = "<%= local_assigns.fetch :local_storage_key, "" %>"
-        dodona.searchQuery.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
-        dodona.searchQuery.autoSearch = <%= local_assigns.fetch :autoSearch, true %>;
-        dodona.searchQuery.setLocalStorageKey(localStorageKey);
+        dodona.search.setBaseUrl("<%= local_assigns.fetch :baseUrl, "" %>");
+        dodona.search.autoSearch = <%= local_assigns.fetch :autoSearch, true %>;
+        dodona.search.setLocalStorageKey(localStorageKey);
 
         const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
         searchFields.forEach( searchField => {

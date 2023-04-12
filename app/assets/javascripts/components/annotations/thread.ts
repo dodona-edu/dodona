@@ -1,19 +1,17 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import {
-    createUserAnnotation, invalidateUserAnnotation,
-    transition, transitionAll,
+
     UserAnnotationData,
-    UserAnnotationFormData
+    UserAnnotationFormData, userAnnotationState
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
-import { getEvaluationId } from "state/Evaluations";
-import { isQuestionMode } from "state/Annotations";
-import { getSubmissionId } from "state/Submissions";
+import { submissionState } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
-import { stateMixin } from "state/StateMixin";
 import { i18nMixin } from "components/meta/i18n_mixin";
+import { annotationState } from "state/Annotations";
+import { evaluationState } from "state/Evaluations";
 
 /**
  * This component represents a thread of annotations.
@@ -21,22 +19,20 @@ import { i18nMixin } from "components/meta/i18n_mixin";
  *
  * @element d-thread
  *
- * @prop {UserAnnotationData} data - the data of the root annotation for this thread
+ * @prop {number} rootId - the id of the root annotation for this thread
  */
 @customElement("d-thread")
-export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
-    @property({ type: Object })
-    data: UserAnnotationData;
+export class Thread extends i18nMixin(ShadowlessLitElement) {
+    @property({ type: Number, attribute: "root-id" })
+    rootId: number;
 
     @property({ state: true })
     showForm = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    state = ["getUserAnnotations", "getQuestionMode"];
-
-    get isQuestionMode(): boolean {
-        return isQuestionMode();
+    get data(): UserAnnotationData {
+        return userAnnotationState.byId.get(this.rootId);
     }
 
     get openQuestions(): UserAnnotationData[] | undefined {
@@ -52,16 +48,14 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
         const annotationData: UserAnnotationFormData = {
             "annotation_text": e.detail.text,
             "line_nr": this.data.line_nr,
-            "evaluation_id": getEvaluationId(),
+            "evaluation_id": evaluationState.id,
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
             "thread_root_id": this.data.id,
         };
 
         try {
-            const mode = isQuestionMode() ? "question" : "annotation";
-            await createUserAnnotation(annotationData, getSubmissionId(), mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
-
-            invalidateUserAnnotation(this.data.id);
+            const mode = annotationState.isQuestionMode ? "question" : "annotation";
+            await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.showForm = false;
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
@@ -70,15 +64,15 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
     }
 
     markAsResolved(): void {
-        transitionAll(this.openQuestions, "answered");
+        userAnnotationState.transitionAll(this.openQuestions, "answered");
     }
 
     markAsInProgress(): void {
-        transitionAll(this.openQuestions.filter(question => question.question_state !== "in_progress"), "in_progress");
+        userAnnotationState.transitionAll(this.openQuestions.filter(question => question.question_state !== "in_progress"), "in_progress");
     }
 
     markAsUnanswered(): void {
-        transitionAll(this.openQuestions.filter(question => question.question_state !== "unanswered"), "unanswered");
+        userAnnotationState.transitionAll(this.openQuestions.filter(question => question.question_state !== "unanswered"), "unanswered");
     }
 
     addReply(): void {
@@ -93,14 +87,13 @@ export class Thread extends i18nMixin(stateMixin(ShadowlessLitElement)) {
 
     render(): TemplateResult {
         return html`
-
-            <div class="thread">
+            <div class="thread ${annotationState.isVisible(this.data) ? "" : "hidden"}">
                 <d-user-annotation .data=${this.data}></d-user-annotation>
                 ${this.data.responses.map(response => html`
                     <d-user-annotation .data=${response}></d-user-annotation>
                 `)}
                 ${this.showForm ? html`
-                    <div class="annotation ${this.isQuestionMode ? "question" : "user" }">
+                    <div class="annotation ${annotationState.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}
                                            @cancel=${() => this.cancelReply()}

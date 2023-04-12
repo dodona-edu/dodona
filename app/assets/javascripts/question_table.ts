@@ -47,6 +47,12 @@ export class QuestionTable {
                 return;
             }
 
+            const dropdownToggle = target.closest<HTMLDivElement>(".dropdown-toggle");
+            if (dropdownToggle) {
+                e.preventDefault();
+                return;
+            }
+
             const tr = target.closest<HTMLElement>("tr.selection-row");
             if (enableClick && tr) {
                 e.preventDefault();

@@ -1,6 +1,6 @@
 .question-table {
   col.actions {
-    width: 100px;
+    width: 50px;
   }
 
   col.question {
@@ -15,15 +15,11 @@
     width: 150px;
   }
 
-  td.actions {
-    vertical-align: middle;
-  }
-
   .selection-row {
     cursor: pointer;
 
     &:hover {
-      background-color: table-hover-bg;
+      background-color: $table-hover-bg;
     }
   }
 

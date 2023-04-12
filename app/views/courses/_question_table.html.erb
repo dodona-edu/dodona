@@ -1,56 +1,65 @@
 <% if questions.present? %>
-  <div class="table-scroll-wrapper">
-    <table class="table question-table">
-      <colgroup>
-        <col class="name"/>
-        <col class="question"/>
-        <col class="age"/>
-        <col class="actions"/>
-      </colgroup>
-      <tbody>
-      <% questions.each do |question| %>
-        <tr class="selection-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
-          <td>
-            <%= question.user.full_name %>
-          </td>
-          <td>
-            <%= question.submission.exercise.name %>
-            <div class="ellipsis-overflow text-muted">
-              <%= question.question_text %>
+  <table class="table question-table">
+    <colgroup>
+      <col class="name"/>
+      <col class="question"/>
+      <col class="age"/>
+      <col class="actions"/>
+    </colgroup>
+    <tbody>
+    <% questions.each do |question| %>
+      <tr class="selection-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
+        <td>
+          <%= question.user.full_name %>
+        </td>
+        <td>
+          <%= question.submission.exercise.name %>
+          <div class="ellipsis-overflow text-muted">
+            <%= question.question_text %>
+          </div>
+        </td>
+        <td>
+          <span title="<%= l question.created_at, format: :question %>">
+            <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
+          </span>
+          <% unless question.unanswered? %>
+            <div class="text-muted ellipsis-overflow">
+              <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>
             </div>
-          </td>
-          <td>
-            <span title="<%= l question.created_at, format: :question %>">
-              <%= t "courses.questions.ago", when: time_ago_in_words(question.created_at) %>
-            </span>
-            <% unless question.unanswered? %>
-              <div class="text-muted ellipsis-overflow">
-                <%= t "courses.questions.last_edited_by.#{question.question_state}", who: question.last_updated_by.full_name %>
-              </div>
-            <% end %>
-          </td>
-          <td class="actions">
+          <% end %>
+        </td>
+        <td class="actions">
+          <a class="btn btn-icon btn-icon-inverted dropdown-toggle" data-bs-toggle="dropdown">
+            <i class="mdi mdi-dots-horizontal text-muted"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
             <% if policy(question).transition?(:unanswered) %>
-              <%= link_to annotation_path(question), data: { from: question.question_state, to: :unanswered }, class: 'btn btn-icon state-changer' do %>
-                <i class="mdi mdi-restart" title="<%= t('courses.questions.buttons.to_unresolved') %>"></i>
-              <% end %>
+              <li>
+                <%= link_to annotation_path(question), data: { from: question.question_state, to: :unanswered }, class: 'dropdown-item state-changer' do %>
+                  <i class="mdi mdi-restart"></i> <%= t('courses.questions.buttons.to_unresolved') %>
+                <% end %>
+              </li>
             <% end %>
             <% if policy(question).transition?(:in_progress) && !question.answered? %>
-              <%= link_to annotation_path(question), data: { from: question.question_state, to: :in_progress }, class: 'btn btn-icon state-changer' do %>
-                <i class="mdi mdi-comment-processing-outline" title="<%= t('courses.questions.buttons.to_in_progress') %>"></i>
+              <li>
+              <%= link_to annotation_path(question), data: { from: question.question_state, to: :in_progress }, class: 'dropdown-item state-changer' do %>
+                <i class="mdi mdi-comment-processing-outline"></i> <%= t('courses.questions.buttons.to_in_progress') %>
               <% end %>
+              </li>
             <% end %>
             <% if policy(question).transition?(:answered) %>
-              <%= link_to annotation_path(question), data: { from: question.question_state, to: :answered }, class: 'btn btn-icon state-changer' do %>
-                <i class="mdi mdi-check" title="<%= t('courses.questions.buttons.to_resolved') %>"></i>
+              <li>
+              <%= link_to annotation_path(question), data: { from: question.question_state, to: :answered }, class: 'dropdown-item state-changer' do %>
+                <i class="mdi mdi-check"></i> <%= t('courses.questions.buttons.to_resolved') %>
               <% end %>
+              </li>
             <% end %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
 <% else %>
   <%= t("courses.questions.no_questions.#{state}") %>
 <% end %>

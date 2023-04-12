@@ -1,5 +1,5 @@
 <% if questions.present? %>
-  <%= render partial: "annotations/question_table", locals: { questions: questions } %>
+  <%= render partial: "annotations/questions_table", locals: { questions: questions } %>
 <% else %>
   <%= t("courses.questions.no_questions.#{state}") %>
 <% end %>

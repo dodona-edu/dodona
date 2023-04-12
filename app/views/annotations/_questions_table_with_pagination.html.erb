@@ -1,0 +1,4 @@
+<%= render partial: 'questions_table', locals: { questions: questions} %>
+<% if questions.try(:total_pages) %>
+  <center><%= page_navigation_links questions, true, "annotations", {}, 'question_index' %></center>
+<% end %>

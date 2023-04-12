@@ -23,7 +23,7 @@
       </td>
       <td>
         <% unless @course.present? %>
-          <d-filter-icon title="<%= t('questions.question.filter-by-exercise') %>" value="<%= question.submission.exercise.name %>"></d-filter-icon>
+          <d-filter-icon icon-title="<%= t('questions.question.filter-by-exercise') %>" value="<%= question.submission.exercise.name %>"></d-filter-icon>
         <% end %>
         <span class="ellipsis-overflow" title="<%= question.submission.exercise.name %>">
           <%= question.submission.exercise.name %>

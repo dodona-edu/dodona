@@ -6,9 +6,7 @@ import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { getCourseId } from "state/Courses";
-import { stateMixin } from "state/StateMixin";
-import { isQuestionMode } from "state/Annotations";
+import { annotationState } from "state/Annotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -28,7 +26,7 @@ const maxLength = 10_000;
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")
-export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement)) {
+export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
     @property({ type: String, attribute: "saved-annotation-id" })
@@ -61,19 +59,8 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
         }
     };
 
-    state = ["getCourseId"/* REMOVE AFTER CLOSED BETA */, "getQuestionMode"];
-
-    /* REMOVE AFTER CLOSED BETA */
-    get courseId(): number {
-        return getCourseId();
-    }
-
-    get isQuestionMode(): boolean {
-        return isQuestionMode();
-    }
-
     get type(): string {
-        return this.isQuestionMode ? "user_question" : "user_annotation";
+        return annotationState.isQuestionMode ? "user_question" : "user_annotation";
     }
 
     get rows(): number {
@@ -154,7 +141,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
     render(): TemplateResult {
         return html`
             <form class="annotation-submission form">
-                ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
                         <d-saved-annotation-input
                             name="saved_annotation_id"
                             class="saved-annotation-input"
@@ -164,7 +151,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                         ></d-saved-annotation-input>
                     `}
                 <div class="field form-group">
-                    ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                    ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
                         <label class="form-label" for="annotation-text">
                             ${I18n.t("js.user_annotation.fields.annotation_text")}
                         </label>
@@ -183,7 +170,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                     ></textarea>
                     <div class="clearfix annotation-help-block">
                         <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
-                        ${this.isQuestionMode ? html`
+                        ${annotationState.isQuestionMode ? html`
                             <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
                         ` : ""}
                         <span class="help-block float-end">
@@ -191,7 +178,7 @@ export class AnnotationForm extends stateMixin(watchMixin(ShadowlessLitElement))
                         </span>
                     </div>
                 </div>
-                ${this.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse(this.courseId) ? "" : html`
+                ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
                     <div class="field form-group">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">

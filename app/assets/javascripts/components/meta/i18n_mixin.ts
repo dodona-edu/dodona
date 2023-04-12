@@ -12,7 +12,13 @@ export function i18nMixin<T extends Constructor>(superClass: T): T {
         constructor(...args: any[]) {
             super(args);
             // Reload when I18n is available
-            ready.then(() => this.requestUpdate());
+            this.initI18n();
+        }
+
+        async initI18n(): Promise<void> {
+            // Reload when I18n is available
+            await ready;
+            this.requestUpdate();
         }
     }
 

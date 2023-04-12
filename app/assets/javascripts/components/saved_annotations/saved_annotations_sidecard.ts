@@ -2,8 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import "./saved_annotation_list";
-import { getSavedAnnotations } from "state/SavedAnnotations";
-import { stateMixin } from "state/StateMixin";
+import { savedAnnotationState } from "state/SavedAnnotations";
 
 /**
  * This component represents a list of saved annotations
@@ -15,7 +14,7 @@ import { stateMixin } from "state/StateMixin";
  * @prop {Number} userId - used to fetch saved annotations by user
  */
 @customElement("d-saved-annotations-sidecard")
-export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
+export class SavedAnnotationList extends ShadowlessLitElement {
     @property({ type: Number, attribute: "course-id" })
     courseId: number;
     @property({ type: Number, attribute: "exercise-id" })
@@ -23,10 +22,8 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "user-id" })
     userId: number;
 
-    state = ["getSavedAnnotations"];
-
     get potentialSavedAnnotationsExist(): boolean {
-        return getSavedAnnotations(new Map([
+        return savedAnnotationState.getList(new Map([
             ["course_id", this.courseId.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()]
@@ -34,6 +31,7 @@ export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
+        console.log("rendering saved annotations sidecard");
         return this.potentialSavedAnnotationsExist ? html`
             <div class="card">
                 <div class="card-supporting-text">

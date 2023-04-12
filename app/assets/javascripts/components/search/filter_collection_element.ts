@@ -1,6 +1,6 @@
 import { property } from "lit/decorators.js";
-import { SearchQuery, searchQuery } from "search";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { searchQueryState } from "state/SearchQuery";
 
 export type Label = {id: string, name: string};
 export type FilterCollection = {
@@ -30,23 +30,15 @@ export class FilterCollectionElement extends ShadowlessLitElement {
     paramVal: (l: Label) => string;
     @property({ type: Array })
     labels: Array<Label> = [];
-    @property({ type: Object })
-    searchQuery: SearchQuery = searchQuery;
-    @property({ state: true })
-    private multiSelected: string[] = [];
-    @property({ state: true })
-    private singleSelected = "";
 
     update(changedProperties: Map<string, unknown>): void {
-        if ((changedProperties.has("param") || changedProperties.has("multi") || changedProperties.has("searchQuery")) &&
+        if ((changedProperties.has("param") || changedProperties.has("multi")) &&
             this.param !== undefined && this.multi !== undefined) {
             if (this.multi) {
-                this.multiSubscribeToQueryParams();
                 this.select = this.multiSelect;
                 this.unSelect = this.multiUnSelect;
                 this.isSelected = this.multiIsSelected;
             } else {
-                this.singleSubscribeToQueryParams();
                 this.select = this.singleSelect;
                 this.unSelect = this.singleUnSelect;
                 this.isSelected = this.singleIsSelected;
@@ -59,8 +51,12 @@ export class FilterCollectionElement extends ShadowlessLitElement {
         return this.paramVal(label).toString();
     }
 
+    private get multiSelected(): string[] {
+        return searchQueryState.arrayQueryParams.get(this.param) || [];
+    }
+
     private multiUnSelect(label: Label): void {
-        this.searchQuery.arrayQueryParams.updateParam(this.param, this.multiSelected.filter(s => s !== this.str(label)));
+        searchQueryState.arrayQueryParams.set(this.param, this.multiSelected.filter(s => s !== this.str(label)));
     }
 
     private multiIsSelected(label: Label): boolean {
@@ -68,31 +64,19 @@ export class FilterCollectionElement extends ShadowlessLitElement {
     }
 
     private multiSelect(label: Label): void {
-        this.searchQuery.arrayQueryParams.updateParam(this.param, [...this.multiSelected, this.str(label)]);
-    }
-
-    private multiSubscribeToQueryParams(): void {
-        this.multiSelected = this.searchQuery.arrayQueryParams.params.get(this.param) || [];
-        this.searchQuery.arrayQueryParams.subscribeByKey(this.param, (k, o, n) => {
-            this.multiSelected = n || [];
-        });
+        searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, this.str(label)]);
     }
 
     private singleUnSelect(label: Label): void {
-        this.searchQuery.queryParams.updateParam(this.param, undefined);
+        searchQueryState.queryParams.set(this.param, undefined);
     }
 
     private singleSelect(label: Label): void {
-        this.searchQuery.queryParams.updateParam(this.param, this.str(label));
+        searchQueryState.queryParams.set(this.param, this.str(label));
     }
 
     private singleIsSelected(label: Label): boolean {
-        return this.singleSelected === this.str(label);
-    }
-
-    private singleSubscribeToQueryParams(): void {
-        this.singleSelected = this.searchQuery.queryParams.params.get(this.param);
-        this.searchQuery.queryParams.subscribeByKey(this.param, (k, o, n) => this.singleSelected = n || "");
+        return searchQueryState.queryParams.get(this.param) === this.str(label);
     }
 
     isSelected = this.singleIsSelected;

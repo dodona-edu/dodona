@@ -11,11 +11,11 @@
     "downlevelIteration": true,
     "baseUrl": "app",
     "paths": {
-      "*": ["assets/javascripts/*"]
+      "*": ["assets/javascripts/*"],
     },
     "pretty": true,
     "allowUmdGlobalAccess": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
   },
   "exclude": ["**/*.spec.ts", "node_modules", "public", "data"],
   "compileOnSave": false

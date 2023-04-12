@@ -1,24 +1,24 @@
 import { CodeListingRow } from "components/annotations/code_listing_row";
 import { render } from "lit";
-import { fetchUserAnnotations } from "state/UserAnnotations";
-import { MachineAnnotationData, setMachineAnnotations } from "state/MachineAnnotations";
-import { setCourseId } from "state/Courses";
-import { setExerciseId } from "state/Exercises";
-import { addPermission, setUserId } from "state/Users";
-import { getSubmissionId, setCode, setSubmissionId } from "state/Submissions";
-import { setQuestionMode } from "state/Annotations";
+import { userAnnotationState } from "state/UserAnnotations";
+import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
+import { courseState } from "state/Courses";
+import { userState } from "state/Users";
+import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
+import { annotationState } from "state/Annotations";
+import { exerciseState } from "state/Exercises";
 
 const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
-    setCode(code);
-    setCourseId(courseId);
-    setExerciseId(exerciseId);
-    setUserId(userId);
-    setSubmissionId(submissionId);
-    setQuestionMode(questionMode);
+    submissionState.code = code;
+    courseState.id = courseId;
+    exerciseState.id = exerciseId;
+    userState.id = userId;
+    submissionState.id = submissionId;
+    annotationState.isQuestionMode = questionMode;
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
     const rows = table.querySelectorAll("tr");
@@ -34,15 +34,15 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
 }
 
 function addMachineAnnotations(data: MachineAnnotationData[]): void {
-    setMachineAnnotations(data);
+    machineAnnotationState.setMachineAnnotations(data);
 }
 
 function initAnnotateButtons(): void {
-    addPermission("annotation.create");
+    userState.addPermission("annotation.create");
 }
 
 function loadUserAnnotations(): void {
-    fetchUserAnnotations(getSubmissionId());
+    userAnnotationState.fetch(submissionState.id);
 }
 
 

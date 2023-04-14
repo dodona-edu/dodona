@@ -8,16 +8,77 @@ export interface MachineAnnotationData {
     text: string;
     row: number;
     externalUrl?: string | null;
+    rows?: number;
+    column?: number;
+    columns?: number;
 }
+
+const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
+    {
+        "text": "Undefined variable 'ijzer'",
+        "type": "error",
+        "row": 3,
+        "rows": 1,
+        "column": 10,
+        "columns": 5,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
+    },
+    {
+        "text": "Trailing whitespace",
+        "type": "info",
+        "row": 4,
+        "rows": 1,
+        "column": 0,
+        "columns": 4,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
+    },
+    {
+        "text": "Division by zero",
+        "type": "error",
+        "row": 5,
+        "rows": 1,
+        "column": 11,
+        "columns": 1,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
+    },
+    {
+        "text": "Assigning the same variable 'dict' to itself",
+        "type": "warning",
+        "row": 8,
+        "rows": 1,
+        "column": 0,
+        "columns": 12,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/warning/self-assigning-variable.html"
+    },
+    {
+        "text": "Class name \"dict\" doesn't conform to PascalCase naming style",
+        "type": "info",
+        "row": 8,
+        "rows": 1,
+        "column": 0,
+        "columns": 4,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/invalid-name.html"
+    },
+    {
+        "text": "Trailing newlines",
+        "type": "info",
+        "row": 9,
+        "rows": 6,
+        "column": 0,
+        "columns": 1,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-newlines.html"
+    }
+];
 
 class MachineAnnotationState extends State {
     @stateProperty public byLine = new StateMap<number, MachineAnnotationData[]>();
     @stateProperty public count = 0;
 
     public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
-        this.count = annotations.length;
+        console.log("setMachineAnnotations", annotations);
+        this.count = MACHINE_ANNOTATIONS.length;
         this.byLine.clear();
-        for (const annotation of annotations) {
+        for (const annotation of MACHINE_ANNOTATIONS) {
             const line = annotation.row + 1 ?? 0;
             if (this.byLine.has(line)) {
                 this.byLine.get(line)?.push(annotation);

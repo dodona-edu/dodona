@@ -9,6 +9,9 @@ import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
+import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
+import { Mark } from "components/annotations/mark";
+import { ref } from "lit/directives/ref.js";
 
 /**
  * This component represents a row in the code listing.
@@ -30,6 +33,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
     showForm: boolean;
 
+    markInstance: Mark;
+
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
@@ -42,6 +47,30 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get addAnnotationTitle(): string {
         return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
+
+    get machineAnnotations(): MachineAnnotationData[] {
+        return machineAnnotationState.byLine.get(this.row) || [];
+    }
+
+    initMarkInstance(pre: Element): void {
+        this.markInstance = new Mark(pre);
+    }
+
+    protected updated(_changedProperties: PropertyValues): void {
+        super.updated(_changedProperties);
+        this.markInstance.unmark({
+            done: () => {
+                const ranges = this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, annotation: a }));
+                this.markInstance.markRanges(ranges, {
+                    debug: true,
+                    each: (node, range) => {
+                        console.log("Marking range", range);
+                    }
+                });
+            },
+        });
+    }
+
 
     render(): TemplateResult {
         return html`
@@ -60,7 +89,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre>${unsafeHTML(this.renderedCode)}</pre>
+                    <pre ${ref(this.initMarkInstance)}>${unsafeHTML(this.renderedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.showForm = false}

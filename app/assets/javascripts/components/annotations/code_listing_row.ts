@@ -1,9 +1,10 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { html, render, TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
+import "components/annotations/machine_annotation_marker";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
@@ -12,6 +13,7 @@ import { annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { Mark } from "components/annotations/mark";
 import { ref } from "lit/directives/ref.js";
+import { MachineAnnotationMarker } from "components/annotations/machine_annotation_marker";
 
 /**
  * This component represents a row in the code listing.
@@ -38,6 +40,13 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
+        const ranges = this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, annotation: a }));
+        this.markInstance.markRanges(ranges, {
+            element: "d-machine-annotation-marker",
+            each: (node: MachineAnnotationMarker, range) => {
+                node.data = range.annotation;
+            },
+        });
     }
 
     get canCreateAnnotation(): boolean {
@@ -56,22 +65,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         this.markInstance = new Mark(pre);
     }
 
-    protected updated(_changedProperties: PropertyValues): void {
-        super.updated(_changedProperties);
-        this.markInstance.unmark({
-            done: () => {
-                const ranges = this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, annotation: a }));
-                this.markInstance.markRanges(ranges, {
-                    debug: true,
-                    each: (node, range) => {
-                        console.log("Marking range", range);
-                    }
-                });
-            },
-        });
-    }
-
-
     render(): TemplateResult {
         return html`
                 <td class="rouge-gutter gl">
@@ -89,7 +82,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre ${ref(this.initMarkInstance)}>${unsafeHTML(this.renderedCode)}</pre>
+                    <pre ${ref(this.initMarkInstance)} style="overflow: visible" >${unsafeHTML(this.renderedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.showForm = false}

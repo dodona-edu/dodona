@@ -24,6 +24,15 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
     },
     {
+        "text": "Undefined variable 'erts'",
+        "type": "error",
+        "row": 3,
+        "rows": 1,
+        "column": 18,
+        "columns": 4,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
+    },
+    {
         "text": "Trailing whitespace",
         "type": "info",
         "row": 4,

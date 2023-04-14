@@ -372,4 +372,35 @@ $annotation-info: $info;
       border-color: $danger;
     }
   }
+
+  d-machine-annotation-marker {
+    position: relative;
+
+    d-machine-annotation {
+      display: none;
+      position: absolute;
+      width: max-content;
+      white-space: initial;
+      z-index: 1000;
+      left: 0;
+      color: $on-surface;
+      font-style: initial;
+    }
+
+    &:hover d-machine-annotation {
+      display: block;
+    }
+
+    .mark-error {
+      text-decoration: wavy underline $danger;
+    }
+
+    .mark-warning {
+      text-decoration: wavy underline $warning;
+    }
+
+    .mark-info {
+      text-decoration: wavy underline $info;
+    }
+  }
 }

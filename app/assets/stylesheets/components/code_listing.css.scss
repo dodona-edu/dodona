@@ -377,18 +377,19 @@ $annotation-info: $info;
     position: relative;
 
     d-machine-annotation {
-      display: none;
+      visibility: hidden;
       position: absolute;
       width: max-content;
       white-space: initial;
       z-index: 1000;
-      left: 0;
+      left: -14px;
       color: $on-surface;
       font-style: initial;
+      padding: 14px;
     }
 
     &:hover d-machine-annotation {
-      display: block;
+      visibility: visible;
     }
 
     .mark-error {

@@ -823,9 +823,8 @@ class UserHasManyTest < ActiveSupport::TestCase
   test 'jump back in should return most recent incomplete activity with series and course context' do
     user = create :user
 
-    course = create :course, series_count: 2
+    course = create :course, series_count: 2, exercises_per_series: 1
     series = course.series.first
-    series.exercises << create(:exercise)
     series.exercises << create(:exercise)
     series.exercises << create(:exercise)
     submission = create :wrong_submission, user: user, course: course, exercise: course.series.first.exercises.first
@@ -869,6 +868,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     a2 = create :exercise
     series.exercises << a1
     series.exercises << a2
+    course.series.second.exercises << create(:exercise)
     create :correct_submission, user: user, course: course, exercise: a1
 
     assert_nil user.jump_back_in.first[:submission]
@@ -899,6 +899,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     a2 = create :exercise
     series1.exercises << a1
     series1.exercises << a2
+    series2.exercises << create(:exercise)
     create :correct_submission, user: user, course: course, exercise: a2
 
     assert_nil user.jump_back_in.first[:submission]
@@ -960,9 +961,8 @@ class UserHasManyTest < ActiveSupport::TestCase
   test 'jump back in should only return series the user has access to' do
     user = create :staff
 
-    course = create :course, series_count: 2
+    course = create :course, series_count: 2, exercises_per_series: 1
     series = course.series.first
-    series.exercises << create(:exercise)
     create :correct_submission, user: user, course: course, exercise: series.exercises.first
 
     course.series.second.update(visibility: :hidden)
@@ -997,10 +997,9 @@ class UserHasManyTest < ActiveSupport::TestCase
   test 'jump back in should only return activities the user has access to' do
     user = create :staff
 
-    course = create :course, series_count: 2
+    course = create :course, series_count: 2, exercises_per_series: 1
     series = course.series.first
-    a1 = create :exercise
-    series.exercises << a1
+    a1 = series.exercises.first
     s = create :wrong_submission, user: user, course: course, exercise: a1
 
     assert_equal 3, user.jump_back_in.count
@@ -1038,6 +1037,22 @@ class UserHasManyTest < ActiveSupport::TestCase
     series.update(visibility: :open)
     assert_equal 3, user.jump_back_in.count
     assert_equal a1, user.jump_back_in.first[:activity]
+  end
+
+  test 'jump back in does not return finished series' do
+    user = create :user
+
+    course = create :course, series_count: 2
+    series = course.series.first
+    series.exercises << create(:exercise)
+    create :correct_submission, user: user, course: course, exercise: series.exercises.first
+
+    assert_nil user.jump_back_in.first[:submission]
+    assert_nil user.jump_back_in.first[:activity]
+    assert_equal course, user.jump_back_in.first[:course]
+    assert_nil user.jump_back_in.first[:series]
+
+    assert_equal 1, user.jump_back_in.count
   end
 
   test 'Open questions count gets updated when a new question is created' do

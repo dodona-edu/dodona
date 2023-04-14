@@ -1,6 +1,23 @@
 require 'test_helper'
 require 'selenium/webdriver'
 
+def dump_js_coverage
+  return unless ENV['CI'] == 'true'
+
+  # the coverage report is stored in the window.__coverage__ variable by the istanbul plugin for babel
+  page_coverage = page.evaluate_script('JSON.stringify(window.__coverage__);')
+  return if page_coverage.blank?
+
+  # we will store one file for each system test, and we save all of them in the coverage/system-js dir
+  dir = Rails.root.join('coverage/system-js')
+  FileUtils.mkdir_p(dir)
+  filename = "system_test_#{Time.current.to_i}"
+  filename += '_' while File.exist?(dir.join("#{filename}.json"))
+  dir.join("#{filename}.json").open('w') do |report|
+    report.puts page_coverage
+  end
+end
+
 Capybara.register_driver :chrome do |app|
   options = Selenium::WebDriver::Chrome::Options.new
   options.add_argument('--window-size=1400,1400')
@@ -33,6 +50,10 @@ class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
     Rails.application.config.sandbox_host = '127.0.0.1'
     @forgery = ActionController::Base.allow_forgery_protection
     ActionController::Base.allow_forgery_protection = true
+  end
+
+  def before_teardown
+    dump_js_coverage
   end
 
   teardown do

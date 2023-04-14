@@ -405,10 +405,10 @@ class User < ApplicationRecord
         other_cm = other.course_memberships.find { |ocm| ocm.course_id == cm.course_id }
         if other_cm.nil?
           cm.update!(user: other)
-        elsif other_cm.status == cm.status \
-          || other_cm.status == 'course_admin' \
-          || (other_cm.status == 'student' && cm.status != 'course_admin') \
-          || (other_cm.status == 'unsubscribed' && cm.status == 'pending')
+        elsif other_cm.status == cm.status ||
+              other_cm.status == 'course_admin' ||
+              (other_cm.status == 'student' && cm.status != 'course_admin') ||
+              (other_cm.status == 'unsubscribed' && cm.status == 'pending')
           other_cm.update!(favorite: true) if cm.favorite
           cm.destroy!
         else
@@ -517,7 +517,7 @@ class User < ApplicationRecord
       end
 
       next_series = latest_submission.series.next
-      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course))
+      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course)) && !next_series.completed?(user: self)
         # start working on the next series
         result << {
           submission: nil,

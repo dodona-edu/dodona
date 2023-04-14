@@ -148,6 +148,20 @@
           "warning": "Warning"
         }
       },
+      "annotations": {
+        "options": {
+          "add_annotation": "Add a comment to this line",
+          "add_global_annotation": "Add global comment",
+          "add_global_question": "Ask a question about your code",
+          "add_question": "Ask a question about this line"
+        },
+        "toggles": {
+          "hide_all": "Hide all annotations",
+          "show_all": "Show all annotations",
+          "show_errors": "Only show errors",
+          "title": "Annotations"
+        }
+      },
       "attempts": "attempts",
       "code": {
         "copy-to-clipboard": "Copy code to clipboard"
@@ -353,12 +367,42 @@
       "submission-saved": "Submission saved",
       "submission-too-long": "Oops, something went wrong while saving your solution. Your solution is too long. Try to make it shorter and try again.",
       "submission_motivational_message": {
-        "1": "Congratulations!",
-        "2": "You did it!",
-        "3": "Keep up the good work!",
-        "4": "Nice!",
-        "5": "Good job!",
-        "6": "Well done!"
+        "1": "Code-tastic! You just crushed that exercise like a bug! 🐛",
+        "10": "You did it! That programming exercise may have been tough, but you persevered.",
+        "11": "👾 You've just defeated the Coding Boss! Level up, my friend!",
+        "12": "💪 Code muscles getting stronger! Keep flexing those programming skills!",
+        "13": "🎯 Bullseye! You hit the target with your coding precision. Well done!",
+        "14": "🎓 You've just earned your honorary degree in Exercise Crushing! Congrats!",
+        "15": "Awesome job! You're proving yourself to be a talented programmer.",
+        "16": "🌊 Surf's up, coder! You just rode that exercise like a pro!",
+        "17": "You're doing an excellent job! Keep pushing yourself to become an even better programmer.",
+        "18": "🍪 A coding cookie for you! Enjoy the sweet taste of success!",
+        "19": "🎮 You're a coding master! Keep coding and level up your skills!",
+        "2": "🚀 Houston, we have a programmer! Great job on that exercise!",
+        "20": "Keep up the great work! You're becoming a skilled programmer with every exercise you complete.",
+        "21": "🎉 Nailed it! Next!",
+        "22": "🚀 Blast off!",
+        "23": "💡 Bright move!",
+        "24": "🌟 Stellar!",
+        "25": "🦁 Roaring success!",
+        "26": "🔨 Hammered it!",
+        "27": "💻 Super coder!",
+        "28": "🏆 Woohoo!",
+        "29": "🎯 Bullseye!",
+        "3": "💻 Code Whisperer alert! You're making that computer sing!",
+        "30": "🍕 Pizza time!",
+        "31": "Congratulations on your success! Your dedication and hard work are paying off.",
+        "32": "Fantastic job! You're getting closer to becoming a coding master.",
+        "33": "🔥 On fire!",
+        "34": "Keep up the momentum! You're on the right track with your programming studies.",
+        "35": "🍪 Cookie time!",
+        "36": "🎸 Rock that code!",
+        "4": "🌟 You did it! Another exercise bites the dust! Keep rockin' that code!",
+        "5": "🤖 Beep boop! You've impressed the robots with your coding skills!",
+        "6": "🎉 Congratulations! You've just unlocked a new level in the coding game!",
+        "7": "Keep up the excellent work! You're mastering those programming skills.",
+        "8": "👍 You're a coding superstar! Keep up the great work!",
+        "9": "🔥 You're on fire! Keep up the great work and watch your coding skills soar!"
       },
       "submissions": "submissions",
       "submissions_on": "submissions on",
@@ -382,9 +426,10 @@
           "saved_annotation_title": "Save comment for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
-        "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",
+        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
+        "reply": "Reply",
         "save": "Save comment",
         "send": "Comment",
         "update": "Update"
@@ -396,8 +441,13 @@
         "edit": "Edit question",
         "has_newer_submission": "There was a newer submission since this question. Click here to go to the latest submission.",
         "in_progress": "Mark question as in progress",
+        "is_answered": "This question is answered.",
+        "is_in_progress": "This question is currently being answered.",
+        "is_unanswered": "This question is unanswered.",
         "meta_else": "%{user} · %{time} · %{state} by %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
+        "or": "or",
+        "reply": "Reply",
         "resolve": "Mark as answered",
         "send": "Ask question",
         "unresolve": "Re-open question",
@@ -429,6 +479,7 @@
       "with": "with"
     },
     "time": {
+      "ago": "%{time} ago",
       "am": "am",
       "formats": {
         "annotation": "MMMM DD, YYYY HH:mm",
@@ -445,13 +496,15 @@
         "us": "%m/%d/%Y %I:%M %p"
       },
       "pm": "pm",
+      "today": "today",
       "units": {
         "day": "%{smart_count} day |||| %{smart_count} days",
         "hour": "%{smart_count} hour |||| %{smart_count} hours",
         "min": "%{smart_count} minute |||| %{smart_count} minutes",
         "sec": "%{smart_count} second |||| %{smart_count} seconds",
         "week": "%{smart_count} week |||| %{smart_count} weeks"
-      }
+      },
+      "yesterday": "yesterday"
     }
   },
   "nl": {
@@ -601,6 +654,20 @@
           "question": "Vraag",
           "user": "Opmerking",
           "warning": "Waarschuwing"
+        }
+      },
+      "annotations": {
+        "options": {
+          "add_annotation": "Voeg een opmerking toe aan deze regel",
+          "add_global_annotation": "Globale opmerking toevoegen",
+          "add_global_question": "Stel een vraag over je code",
+          "add_question": "Stel een vraag over deze regel"
+        },
+        "toggles": {
+          "hide_all": "Verberg alle annotaties",
+          "show_all": "Toon alle annotaties",
+          "show_errors": "Enkel errors en opmerkingen tonen",
+          "title": "Annotaties"
         }
       },
       "attempts": "pogingen",
@@ -808,12 +875,42 @@
       "submission-saved": "Oplossing opgeslagen",
       "submission-too-long": "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing is te lang. Maak ze korter en probeer opnieuw.",
       "submission_motivational_message": {
-        "1": "Proficiat!",
-        "2": "Goed bezig!",
-        "3": "Doe zo verder!",
-        "4": "Mooi!",
-        "5": "Puik werk!",
-        "6": "Goed gedaan!"
+        "1": "👾 Monsterprogrammeur! Je hebt die oefening helemaal verslonden!",
+        "10": "🎯 In de roos! Met jouw programmeervaardigheden raak je altijd het doel!",
+        "11": "Fantastisch gedaan! Je hebt deze oefening onder de knie.",
+        "12": "🤖 Beep boop! De robots zijn onder de indruk van jouw programmeerkunsten!",
+        "13": "🏰 Code-koning(in)!",
+        "14": "🔥 Je bent on fire! Ga zo door en je programmeerskills schieten omhoog!",
+        "15": "Voortreffelijk! Je hebt deze oefening goed aangepakt.",
+        "16": "Je bent echt goed in programmeren! Ga zo door.",
+        "17": "Perfect! Je hebt deze oefening helemaal correct opgelost.",
+        "18": "Prima werk! Je hebt deze oefening goed begrepen en opgelost.",
+        "19": "🎸 Rock die code! Je speelt de sterren van de hemel met je programmeervaardigheden!",
+        "2": "🚀 Super programmeur! Je hebt die oefening gelanceerd als een raket!",
+        "20": "Geweldige prestatie! Je hebt laten zien dat je een programmeertalent bent.",
+        "21": "🎉 Goed gedaan! Volgende!",
+        "22": "🚀 Lancering geslaagd!",
+        "23": "💡 Slimme zet!",
+        "24": "🌟 Schitterend!",
+        "25": "🔨 Klus geklaard!",
+        "26": "💻 Super coder!",
+        "27": "🏆 Hoppa!",
+        "28": "🎯 In de roos!",
+        "29": "🍟 Traktatie verdiend!",
+        "3": "💡 Eureka! Je hebt het licht gezien en die oefening opgelost! Ga zo door!",
+        "30": "🤖 Beep boop!",
+        "31": "🔥 On fire!",
+        "32": "🌈 Regenboog van succes!",
+        "33": "🍩 Donut tijd!",
+        "34": "🎸 Rock die code!",
+        "35": "Uitmuntend werk!",
+        "36": "Bravo! Je hebt deze oefening tot een goed einde gebracht.",
+        "4": "🌟 Schitterend! Je schittert als een ster in de programmeerhemel!",
+        "5": "👍 Goed gedaan! Je hebt die oefening als een pro opgelost!",
+        "6": "👏 Geweldig! Jij hebt deze oefening echt onder de knie!",
+        "7": "🤩 Geweldig werk! Jij verdient een staande ovatie!",
+        "8": "💻 Super coder! Je gaat door die oefeningen als een warm mes door de boter!",
+        "9": "Goed gedaan! Je hebt deze oefening met succes voltooid."
       },
       "submissions": "oplossingen",
       "submissions_on": "ingediende oplossingen op",
@@ -837,9 +934,10 @@
           "saved_annotation_title": "Sla opmerking op om te hergebruiken"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
-        "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
+        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
+        "reply": "Reageer",
         "save": "Opmerking opslaan",
         "send": "Toevoegen",
         "update": "Updaten"
@@ -851,8 +949,13 @@
         "edit": "Vraag aanpassen",
         "has_newer_submission": "Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.",
         "in_progress": "In behandeling markeren",
+        "is_answered": "Deze vraag is beantwoord.",
+        "is_in_progress": "Deze vraag wordt momenteel beantwoord.",
+        "is_unanswered": "Deze vraag is nog niet beantwoord.",
         "meta_else": "%{user} · %{time} · %{state} door %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
+        "or": "of",
+        "reply": "Beantwoorden",
         "resolve": "Als beantwoord markeren",
         "send": "Vraag stellen",
         "unresolve": "Vraag terug openen",
@@ -884,6 +987,7 @@
       "with": "met"
     },
     "time": {
+      "ago": "%{time} geleden",
       "am": "'s ochtends",
       "formats": {
         "annotation": "D MMMM YYYY, HH:mm",
@@ -899,13 +1003,15 @@
         "submission": "%d %B %Y %H:%M:%S"
       },
       "pm": "'s middags",
+      "today": "vandaag",
       "units": {
         "day": "%{smart_count} dag |||| %{smart_count} dagen",
         "hour": "%{smart_count} uur |||| %{smart_count} uren",
         "min": "%{smart_count} minuut |||| %{smart_count} minuten",
         "sec": "%{smart_count} seconde |||| %{smart_count} seconden",
         "week": "%{smart_count} week |||| %{smart_count} weken"
-      }
+      },
+      "yesterday": "gisteren"
     }
   }
 }

@@ -1,7 +1,9 @@
 // REMOVE FILE AND USAGES AFTER CLOSED BETA
 
-const BETA_COURSES = new Set([10, 773, 1151, 1659, 2258]);
+import { courseState } from "state/Courses";
 
-export function isBetaCourse(courseId: number): boolean {
-    return BETA_COURSES.has(courseId);
+const BETA_COURSES = new Set([10, 773, 1151, 1659, 2258, 2263]);
+
+export function isBetaCourse(courseId?: number): boolean {
+    return BETA_COURSES.has(courseId || courseState.id );
 }

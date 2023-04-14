@@ -16,4 +16,5 @@ module.exports = {
         "app/assets/javascripts"
     ],
     transformIgnorePatterns: ["node_modules/?!(d3)"],
+    collectCoverageFrom: ["app/assets/javascripts/**/*.{js,ts}"],
 };

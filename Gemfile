@@ -8,7 +8,7 @@ gem 'rails', '~> 7.0.4'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.1.1'
+gem 'puma', '~> 6.2.1'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.2'
@@ -66,7 +66,7 @@ gem 'ace-rails-ap', '~>4.5'
 gem 'autoprefixer-rails', '~>10.4.13'
 
 # saml authentication
-gem 'devise', '~>4.9.0'
+gem 'devise', '~>4.9.2'
 gem 'ruby-saml', '~> 1.15.0'
 
 # omniauth
@@ -105,7 +105,7 @@ gem 'bcrypt_pbkdf'
 gem 'ed25519'
 
 # i18n
-gem 'i18n-js', '~> 4.2.2'
+gem 'i18n-js', '~> 4.2.3'
 gem 'rails-i18n', '~> 7.0.6'
 
 # email exceptions
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.14.2'
+gem 'nokogiri', '~> 1.14.3'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -133,9 +133,9 @@ gem 'faker', '~> 3.1.1'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.0.0'
-gem 'stackprof', '~> 0.2.23'
+gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.9.0'
+gem 'ddtrace', '~> 1.10.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -156,16 +156,16 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.38.0'
-  gem 'selenium-webdriver', '~> 4.8.1'
+  gem 'capybara', '~> 3.39.0'
+  gem 'selenium-webdriver', '~> 4.8.6'
 end
 
 group :test do
   # For measuring coverage
   gem 'minitest-ci', '~> 3.4.0'
-  gem 'simplecov', '~> 0.21.2', require: false
+  gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.0'
+  gem 'test-prof', '~> 1.2.1'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.18.0'
+  gem 'rubocop-rails', '~> 2.19.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

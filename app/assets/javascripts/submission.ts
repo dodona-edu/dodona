@@ -51,13 +51,16 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         document.querySelectorAll("a.tab-link").forEach(t => {
             t.addEventListener("click", e => {
                 const link = e.currentTarget;
-                const tabName = link.dataset.tab || "code";
+                const tabName = link.dataset.tab;
                 const line = link.dataset.line;
 
                 // prevent automatic scrolling to top of the page when clicking a link
                 e.preventDefault();
 
-                const tab = document.querySelector(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']`);
+                const query = tabName && tabName !== "code" ?
+                    `.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']` :
+                    "#link-to-code-tab";
+                const tab = document.querySelector(query);
                 new bootstrap.Tab(tab).show();
 
                 if (line !== undefined) {
@@ -101,9 +104,9 @@ function initCorrectSubmissionToNextLink(status: string): void {
         return;
     }
     const message = document.getElementById("submission-motivational-message");
-    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 6)}`;
+    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
     message.innerHTML = `
-        <div class="alert alert-success" role="alert">
+        <div class="callout callout-success mt-0" role="alert">
             <span>${I18n.t(congrats)}</span>
             <a href="${link.href}" class="m-1">
                 ${link.dataset.title}

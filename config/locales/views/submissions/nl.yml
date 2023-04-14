@@ -22,7 +22,7 @@ nl:
       from: van
       read-states: Gelezen activiteiten
       watch_submissions: Oplossingen automatisch herladen
-      most_recent_correct: Meest recente correcte oplossing per gebruiker
+      most_recent: Meest recente oplossing per gebruiker
       reevaluate_submissions: Oplossingen hertesten
       confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil hertesten?
       reevaluating_submissions:
@@ -36,7 +36,6 @@ nl:
       course: Cursus
       handed_in: Ingediend
       ago: geleden
-      today: vandaag
       status: Status
       result: Resultaat
       code: Code

@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/shadowless_lit_element";
-import { SavedAnnotation, updateSavedAnnotation, deleteSavedAnnotation } from "state/SavedAnnotations";
+import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 
@@ -23,7 +23,7 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
 
     async updateSavedAnnotation(): Promise<void> {
         try {
-            await updateSavedAnnotation(this.savedAnnotation.id, {
+            await savedAnnotationState.update(this.savedAnnotation.id, {
                 saved_annotation: this.savedAnnotation
             });
             this.errors = undefined;
@@ -35,7 +35,7 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
 
     async deleteSavedAnnotation(): Promise<void> {
         if (confirm(I18n.t("js.saved_annotation.delete.confirm"))) {
-            await deleteSavedAnnotation(this.savedAnnotation.id);
+            await savedAnnotationState.delete(this.savedAnnotation.id);
             this.hideModal();
         }
     }

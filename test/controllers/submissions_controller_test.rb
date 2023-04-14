@@ -27,7 +27,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # most_recent works
     create :correct_submission, user: users.first
 
-    get course_activity_submissions_url c, e, most_recent_correct_per_user: true, format: :json
+    get course_activity_submissions_url c, e, most_recent_per_user: true, status: :correct, format: :json
 
     results = response.parsed_body
     result_ids = results.pluck('id')
@@ -232,15 +232,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     create(:series, :with_submissions)
 
     # in test env, default and export queues are evaluated inline
-    orig = Delayed::Worker.delay_jobs
-    Delayed::Worker.delay_jobs = true # delay all
-
-    # should only enqueue a single job which will then enqueue all other jobs
-    assert_jobs_enqueued(1) do
-      rejudge_submissions
+    with_delayed_jobs do
+      # should only enqueue a single job which will then enqueue all other jobs
+      assert_jobs_enqueued(1) do
+        rejudge_submissions
+      end
     end
-
-    Delayed::Worker.delay_jobs = orig
   end
 
   test 'should rejudge all submissions' do

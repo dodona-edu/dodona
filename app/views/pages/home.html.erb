@@ -1,5 +1,6 @@
 <%= content_for :javascripts do %>
   <%= javascript_include_tag 'favorite_course_buttons' %>
+  <%= javascript_include_tag 'search' %>
 <% end %>
 <%= render partial: "pages/important_homepage_links" %>
 <div class="row">
@@ -53,6 +54,6 @@
 <script type="text/javascript">
     dodona.ready.then(function () {
         dodona.initFavoriteButtons();
-        dodona.searchQuery.autoSearch = true;
+        dodona.search.autoSearch = true;
     });
 </script>

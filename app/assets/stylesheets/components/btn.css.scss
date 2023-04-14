@@ -138,7 +138,7 @@
     cursor: default;
   }
 
-  &:not(.btn-icon-filled) &:not(.disabled-with-tooltip) {
+  &:not(.btn-icon-filled, .disabled-with-tooltip) {
     &:hover,
     &:focus,
     &:active {

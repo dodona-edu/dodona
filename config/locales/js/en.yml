@@ -147,23 +147,26 @@ en:
       meta: "%{user} · %{time}"
       anonymous_message: 'This comment is part of an evaluation'
       send: 'Comment'
+      reply: 'Reply'
       update: 'Update'
       cancel: 'Cancel'
       delete: 'Delete'
       edit: 'Edit comment'
       save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
-      help_student: "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!"
+      help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:
         annotation_text: 'Comment'
         saved_annotation_title: 'Save comment for reuse'
       delete_confirm: 'Are you sure you want to delete this comment?'
       not_released: This comment is not yet visible for students
     user_question:
+      or: or
       meta_unanswered: "%{user} · %{time} · %{state}"
       meta_else: "%{user} · %{time} · %{state} by %{last}"
       update: 'Update question'
       send: 'Ask question'
+      reply: 'Reply'
       edit: 'Edit question'
       delete_confirm: 'Are you sure you want to delete this question?'
       resolve: 'Mark as answered'
@@ -172,6 +175,9 @@ en:
       deleted: This question was deleted by another user
       conflict: The status of this question was already changed by another user
       has_newer_submission: There was a newer submission since this question. Click here to go to the latest submission.
+      is_in_progress: This question is currently being answered.
+      is_unanswered: This question is unanswered.
+      is_answered: This question is answered.
     machine_annotation:
       external_url: more information
     score:
@@ -184,12 +190,42 @@ en:
       copy_code: Copy to Dodona
       overwrite_code: Do you want to overwrite the code in the scratchpad with your latest changes?
     submission_motivational_message:
-      1: Congratulations!
-      2: You did it!
-      3: Keep up the good work!
-      4: Nice!
-      5: Good job!
-      6: Well done!
+      1: "Code-tastic! You just crushed that exercise like a bug! 🐛"
+      2: "🚀 Houston, we have a programmer! Great job on that exercise!"
+      3: "💻 Code Whisperer alert! You're making that computer sing!"
+      4: "🌟 You did it! Another exercise bites the dust! Keep rockin' that code!"
+      5: "🤖 Beep boop! You've impressed the robots with your coding skills!"
+      6: "🎉 Congratulations! You've just unlocked a new level in the coding game!"
+      7: "Keep up the excellent work! You're mastering those programming skills."
+      8: "👍 You're a coding superstar! Keep up the great work!"
+      9: "🔥 You're on fire! Keep up the great work and watch your coding skills soar!"
+      10: "You did it! That programming exercise may have been tough, but you persevered."
+      11: "👾 You've just defeated the Coding Boss! Level up, my friend!"
+      12: "💪 Code muscles getting stronger! Keep flexing those programming skills!"
+      13: "🎯 Bullseye! You hit the target with your coding precision. Well done!"
+      14: "🎓 You've just earned your honorary degree in Exercise Crushing! Congrats!"
+      15: "Awesome job! You're proving yourself to be a talented programmer."
+      16: "🌊 Surf's up, coder! You just rode that exercise like a pro!"
+      17: "You're doing an excellent job! Keep pushing yourself to become an even better programmer."
+      18: "🍪 A coding cookie for you! Enjoy the sweet taste of success!"
+      19: "🎮 You're a coding master! Keep coding and level up your skills!"
+      20: "Keep up the great work! You're becoming a skilled programmer with every exercise you complete."
+      21: "🎉 Nailed it! Next!"
+      22: "🚀 Blast off!"
+      23: "💡 Bright move!"
+      24: "🌟 Stellar!"
+      25: "🦁 Roaring success!"
+      26: "🔨 Hammered it!"
+      27: "💻 Super coder!"
+      28: "🏆 Woohoo!"
+      29: "🎯 Bullseye!"
+      30: "🍕 Pizza time!"
+      31: "Congratulations on your success! Your dedication and hard work are paying off."
+      32: "Fantastic job! You're getting closer to becoming a coding master."
+      33: "🔥 On fire!"
+      34: "Keep up the momentum! You're on the right track with your programming studies."
+      35: "🍪 Cookie time!"
+      36: "🎸 Rock that code!"
     dropdown:
       search: Search
       multi:
@@ -266,4 +302,15 @@ en:
         key: ".singular |||| .plural"
         singular: "One user has completed one activity |||| %{smart_count} users have completed one activity"
         plural: "One user has completed %{index} activities |||| %{smart_count} users have completed %{index} activities"
+    annotations:
+      options:
+        add_global_annotation: Add global comment
+        add_global_question: "Ask a question about your code"
+        add_annotation: Add a comment to this line
+        add_question: "Ask a question about this line"
+      toggles:
+        title: Annotations
+        show_all: Show all annotations
+        hide_all: Hide all annotations
+        show_errors: Only show errors
 

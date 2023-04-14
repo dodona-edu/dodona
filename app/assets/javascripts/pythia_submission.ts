@@ -17,7 +17,6 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
     }
 
     function initTutorLinks(): void {
-        // add disabled to tutorlinks that are not valid
         document.querySelectorAll(".tutorlink").forEach(l => {
             const group = l.closest(".group") as HTMLElement;
             if (!(group.dataset.statements || group.dataset.stdin)) {

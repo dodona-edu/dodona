@@ -9,10 +9,10 @@
   <% questions.each do |question| %>
     <tr class="selection-row" data-href="<%= submission_url(question.submission, anchor: 'code') %>">
       <td>
-        <% unless @course.present? %>
-          <d-filter-icon icon-title="<%= t('questions.question.filter-by-user') %>" value="<%= question.user.full_name %>" class="d-none d-md-inline"></d-filter-icon>
-        <% end %>
         <div class="ellipsis-overflow" title="<%= question.user.full_name %>">
+          <% unless @course.present? %>
+            <d-filter-icon icon-title="<%= t('questions.question.filter-by-user') %>" value="<%= question.user.full_name %>" class="d-none d-md-inline"></d-filter-icon>
+          <% end %>
           <%= question.user.full_name %>
         </div>
         <% unless @course.present? %>
@@ -22,10 +22,10 @@
         <% end %>
       </td>
       <td>
-        <% unless @course.present? %>
-          <d-filter-icon icon-title="<%= t('questions.question.filter-by-exercise') %>" value="<%= question.submission.exercise.name %>" class="d-none d-md-inline"></d-filter-icon>
-        <% end %>
         <div class="ellipsis-overflow" title="<%= question.submission.exercise.name %>">
+          <% unless @course.present? %>
+            <d-filter-icon icon-title="<%= t('questions.question.filter-by-exercise') %>" value="<%= question.submission.exercise.name %>" class="d-none d-md-inline"></d-filter-icon>
+          <% end %>
           <%= question.submission.exercise.name %>
         </div>
         <div class="ellipsis-overflow text-muted <%= "icon-indent" unless @course.present? %>">

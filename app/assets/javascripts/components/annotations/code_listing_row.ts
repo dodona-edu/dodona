@@ -1,6 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, render, TemplateResult } from "lit";
+import { html, TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
@@ -11,9 +11,8 @@ import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { Mark } from "components/annotations/mark";
-import { ref } from "lit/directives/ref.js";
 import { MachineAnnotationMarker } from "components/annotations/machine_annotation_marker";
+import { wrapRangesInHtml } from "mark";
 
 /**
  * This component represents a row in the code listing.
@@ -35,18 +34,19 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
     showForm: boolean;
 
-    markInstance: Mark;
+    get wrappedCode(): string {
+        return wrapRangesInHtml(
+            this.renderedCode,
+            this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, data: a })),
+            "d-machine-annotation-marker",
+            (node: MachineAnnotationMarker, range) => {
+                node.setAttribute("data", JSON.stringify(range.data));
+            });
+    }
 
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
-        const ranges = this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, annotation: a }));
-        this.markInstance.markRanges(ranges, {
-            element: "d-machine-annotation-marker",
-            each: (node: MachineAnnotationMarker, range) => {
-                node.data = range.annotation;
-            },
-        });
     }
 
     get canCreateAnnotation(): boolean {
@@ -59,10 +59,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get machineAnnotations(): MachineAnnotationData[] {
         return machineAnnotationState.byLine.get(this.row) || [];
-    }
-
-    initMarkInstance(pre: Element): void {
-        this.markInstance = new Mark(pre);
     }
 
     render(): TemplateResult {
@@ -82,7 +78,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre ${ref(this.initMarkInstance)} style="overflow: visible" >${unsafeHTML(this.renderedCode)}</pre>
+                    <pre style="overflow: visible" >${unsafeHTML(this.wrappedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.showForm = false}

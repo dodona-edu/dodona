@@ -37,7 +37,7 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
     const end = start + range.length;
     const nodes = getTextNodes(root);
     nodes.forEach(node => {
-        if (node.end > start && node.start <= end && !nodeContainedIn(node.node, wrapper)) {
+        if (node.end >= start && node.start < end && !nodeContainedIn(node.node, wrapper) && node.node.textContent !== "") {
             const splitStart = Math.max(0, start - node.start);
             const splitEnd = Math.min(node.end, end) - node.start - splitStart;
             const startNode = node.node.splitText(splitStart);
@@ -48,6 +48,13 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
             callback(wrapperNode, range);
         }
     });
+
+    if (nodes.length === 0) {
+        const wrapperNode = document.createElement(wrapper);
+        wrapperNode.textContent = root.textContent;
+        root.appendChild(wrapperNode);
+        callback(wrapperNode, range);
+    }
 }
 
 function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: callback): void {

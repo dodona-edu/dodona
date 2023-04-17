@@ -20,7 +20,6 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "row": 3,
         "rows": 1,
         "column": 10,
-        "columns": 5,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
     },
     {
@@ -56,7 +55,7 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "row": 8,
         "rows": 1,
         "column": 0,
-        "columns": 12,
+        "columns": 11,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/warning/self-assigning-variable.html"
     },
     {
@@ -74,7 +73,7 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "row": 9,
         "rows": 6,
         "column": 0,
-        "columns": 1,
+        "columns": 0,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-newlines.html"
     }
 ];

@@ -37,7 +37,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get wrappedCode(): string {
         return wrapRangesInHtml(
             this.renderedCode,
-            this.machineAnnotations.map(a => ({ start: a.column, length: a.columns, data: a })),
+            this.machineAnnotations.map(a => ({ start: a.column, length: a.columns || 0, data: a })),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
                 node.setAttribute("data", JSON.stringify(range.data));
@@ -78,7 +78,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre>${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre style="overflow: visible" >${unsafeHTML(this.wrappedCode)}</pre>
+                    <pre style="overflow: visible; display: inline-block;" >${unsafeHTML(this.wrappedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.showForm = false}

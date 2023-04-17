@@ -22,6 +22,7 @@ function setParam(
 
 export class QuestionTable {
     refreshUrl: string;
+    openDropdowns = 0;
 
     /**
      * Initiate the question table. The table containing the questions should have the html id
@@ -47,6 +48,12 @@ export class QuestionTable {
                 return;
             }
 
+            const dropdownToggle = target.closest<HTMLLinkElement>(".dropdown-toggle");
+            if (dropdownToggle) {
+                e.preventDefault();
+                return;
+            }
+
             const tr = target.closest<HTMLElement>("tr.selection-row");
             if (enableClick && tr) {
                 e.preventDefault();
@@ -54,9 +61,20 @@ export class QuestionTable {
                 return;
             }
         });
+
+        document.getElementById(questionContainerId).addEventListener("show.bs.dropdown", () => {
+            this.openDropdowns++;
+        });
+
+        document.getElementById(questionContainerId).addEventListener("hide.bs.dropdown", () => {
+            this.openDropdowns--;
+        });
     }
 
     refresh(): void {
+        if (this.openDropdowns > 0) {
+            return;
+        }
         fetch(this.getRefreshUrl(), {
             headers: {
                 "accept": "text/javascript",

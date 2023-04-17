@@ -1,1 +1,1 @@
-$("#questions-table-wrapper").html("<%= escape_javascript(render partial: 'questions_table', locals: {questions: @questions}) %>");
+$("#questions-table-wrapper").html("<%= escape_javascript(render partial: 'questions_table_with_pagination', locals: {questions: @questions}) %>");

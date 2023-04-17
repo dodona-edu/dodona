@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
-import { css, html, LitElement, TemplateResult } from "lit";
-import { ref } from "lit/directives/ref.js";
+import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { initTooltips } from "util.js";
 import { searchQueryState } from "state/SearchQuery";
 import { StateController } from "state/state_system/StateController";
 
@@ -34,7 +34,9 @@ export class FilterButton extends LitElement {
         }
     `;
 
-    addFilter(): void {
+    addFilter(e: Event): void {
+        e.preventDefault();
+        e.stopPropagation();
         if (this.multi) {
             const selected = new Set(searchQueryState.arrayQueryParams.get(this.param));
             selected.add(this.value);
@@ -45,7 +47,7 @@ export class FilterButton extends LitElement {
     }
 
     render(): TemplateResult {
-        return html`<slot @click=${() => this.addFilter()}></slot>`;
+        return html`<slot @click=${e => this.addFilter(e)}></slot>`;
     }
 }
 
@@ -62,35 +64,25 @@ export class FilterButton extends LitElement {
 export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })
     value: string;
-    @property({ type: String })
-    title: string;
+    @property({ type: String, attribute: "icon-title" })
+    iconTitle: string;
 
-    element: Element;
-
-    initialiseTooltip(e: Element): void {
-        if (e) {
-            this.element = e;
-            const tooltip = window.bootstrap.Tooltip.getInstance(this.element);
-            if (!tooltip) {
-                new window.bootstrap.Tooltip(this.element);
-            }
-        }
+    protected update(changedProperties: PropertyValues): void {
+        super.update(changedProperties);
+        initTooltips(this);
     }
 
     disconnectedCallback(): void {
-        const tooltip = window.bootstrap.Tooltip.getInstance(this.element);
-        tooltip.hide();
-        super.disconnectedCallback();
+        initTooltips();
     }
 
     render(): TemplateResult {
         return html`
         <d-filter-button param="filter" .value=${this.value}>
             <i class="mdi mdi-filter-outline mdi-18 filter-icon"
-               title="${this.title}"
+               title="${this.iconTitle}"
                data-bs-toggle="tooltip"
                data-bs-placement="top"
-               ${ref(r => this.initialiseTooltip(r))}
             >
             </i>
         </d-filter-button>

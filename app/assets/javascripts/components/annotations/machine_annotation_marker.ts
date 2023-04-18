@@ -7,8 +7,8 @@ import { createRef, ref, Ref } from "lit/directives/ref.js";
 
 @customElement("d-machine-annotation-marker")
 export class MachineAnnotationMarker extends ShadowlessLitElement {
-    @property({ type: Object })
-    data: MachineAnnotationData;
+    @property({ type: Array })
+    annotations: MachineAnnotationData[];
 
     @property({ state: true })
     empty: boolean;
@@ -28,7 +28,16 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
         }
     }
 
+    get firstAnnotation(): MachineAnnotationData {
+        return this.annotations[0];
+    }
+
     render(): TemplateResult {
-        return html`<span class="mark-${this.data.type} ${this.empty ? "mark-empty" : ""}"><v-slot ${ref(s => this.initSlot(s as VampireSlot))}></v-slot></span><d-machine-annotation .data=${this.data}></d-machine-annotation>`;
+        return html`<span class="mark-${this.firstAnnotation.type} ${this.empty ? "mark-empty" : ""}"
+        ><v-slot ${ref(s => this.initSlot(s as VampireSlot))}
+        ></v-slot
+        ></span
+        ><div class="marker-tooltip">${this.annotations.map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation></div>`)}
+        </div>`;
     }
 }

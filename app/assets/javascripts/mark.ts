@@ -20,15 +20,15 @@ function getTextNodes(root: Node): { start: number, end: number, node: Text; }[]
     return nodes;
 }
 
-function nodeContainedIn(node: Node, wrapper: string): boolean {
+function closestWrapper(node: Node, wrapper: string): Node | null {
     let parent = node;
     while (parent !== null) {
         if (parent.nodeName.toUpperCase() === wrapper.toUpperCase()) {
-            return true;
+            return parent;
         }
         parent = parent.parentNode;
     }
-    return false;
+    return null;
 }
 
 
@@ -37,15 +37,20 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
     const end = start + range.length;
     const nodes = getTextNodes(root);
     nodes.forEach(node => {
-        if (node.end >= start && node.start < end && !nodeContainedIn(node.node, wrapper) && node.node.textContent !== "") {
-            const splitStart = Math.max(0, start - node.start);
-            const splitEnd = Math.min(node.end, end) - node.start - splitStart;
-            const startNode = node.node.splitText(splitStart);
-            startNode.splitText(splitEnd);
-            const wrapperNode = document.createElement(wrapper);
-            wrapperNode.textContent = startNode.textContent;
-            startNode.parentNode.replaceChild(wrapperNode, startNode);
-            callback(wrapperNode, range);
+        if (node.end >= start && node.start < end && node.node.textContent !== "") {
+            const closest = closestWrapper(node.node, wrapper);
+            if ( closest === null ) {
+                const splitStart = Math.max(0, start - node.start);
+                const splitEnd = Math.min(node.end, end) - node.start - splitStart;
+                const startNode = node.node.splitText(splitStart);
+                startNode.splitText(splitEnd);
+                const wrapperNode = document.createElement(wrapper);
+                wrapperNode.textContent = startNode.textContent;
+                startNode.parentNode.replaceChild(wrapperNode, startNode);
+                callback(wrapperNode, range);
+            } else {
+                callback(closest, range);
+            }
         }
     });
 

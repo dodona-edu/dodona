@@ -40,7 +40,9 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             this.machineAnnotations.map(a => ({ start: a.column, length: a.columns || 0, data: a })),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
-                node.setAttribute("data", JSON.stringify(range.data));
+                const annotations = JSON.parse(node.getAttribute("annotations")) || [];
+                annotations.push(range.data);
+                node.setAttribute("annotations", JSON.stringify(annotations));
             });
     }
 

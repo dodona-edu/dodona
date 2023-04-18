@@ -376,19 +376,31 @@ $annotation-info: $info;
   d-machine-annotation-marker {
     position: relative;
 
-    d-machine-annotation {
+    .marker-tooltip {
       visibility: hidden;
       position: absolute;
       width: max-content;
       white-space: initial;
       z-index: 1000;
-      left: -14px;
+      left: -7px;
+      top: 14px;
       color: $on-surface;
       font-style: initial;
-      padding: 14px;
+      padding-left: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border: 1px solid #47464a;
+      background: #303034;
+
+      .annotation {
+        margin: 4px 0;
+        border-right: none;
+        border-top: none;
+        border-bottom: none;
+      }
     }
 
-    &:hover d-machine-annotation {
+    &:hover .marker-tooltip {
       visibility: visible;
     }
 

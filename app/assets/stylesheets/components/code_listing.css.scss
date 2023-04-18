@@ -377,13 +377,11 @@ $annotation-info: $info;
     position: relative;
 
     .marker-tooltip {
+      display: inline-block;
       visibility: hidden;
-      position: absolute;
       width: max-content;
       white-space: initial;
       z-index: 1000;
-      left: -7px;
-      top: 14px;
       color: $on-surface;
       font-style: initial;
       padding-left: 5px;

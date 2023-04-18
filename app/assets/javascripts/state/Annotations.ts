@@ -6,7 +6,7 @@ import { stateProperty } from "state/state_system/StateProperty";
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
 
 class AnnotationState extends State {
-    @stateProperty visibility: AnnotationVisibilityOptions = "all";
+    @stateProperty visibility: AnnotationVisibilityOptions = "none";
     @stateProperty isQuestionMode = false;
 
     isVisible(annotation: MachineAnnotationData | UserAnnotationData): boolean {

@@ -54,8 +54,6 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "type": "warning",
         "row": 8,
         "rows": 1,
-        "column": 0,
-        "columns": 11,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/warning/self-assigning-variable.html"
     },
     {

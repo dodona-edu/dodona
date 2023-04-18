@@ -37,7 +37,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get wrappedCode(): string {
         return wrapRangesInHtml(
             this.renderedCode,
-            this.machineAnnotations.map(a => ({ start: a.column, length: a.columns || 0, data: a })),
+            this.machineAnnotations.map(a => ({ start: a.column || 0, length: a.column !== undefined ? a.columns || 0 : Infinity, data: a })),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
                 const annotations = JSON.parse(node.getAttribute("annotations")) || [];

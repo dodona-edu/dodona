@@ -1,7 +1,7 @@
 import { html, render } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
-type range = { start: number, length: number, data?: unknown }; // data is optional
+export type range = { start: number, length: number, data?: unknown }; // data is optional
 type callback = (node: Node, range: range) => void;
 
 function getTextNodes(root: Node): { start: number, end: number, node: Text; }[] {
@@ -37,7 +37,7 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
     const end = start + range.length;
     const nodes = getTextNodes(root);
     nodes.forEach(node => {
-        if (node.end >= start && node.start < end && node.node.textContent !== "") {
+        if (node.end >= start && node.start < end && node.node.textContent && node.node.textContent !== "\n") {
             const closest = closestWrapper(node.node, wrapper);
             if ( closest === null ) {
                 const splitStart = Math.max(0, start - node.start);

@@ -64,6 +64,7 @@ class SubmissionRunner
   end
 
   def prepare
+    @start = Time.zone.now
     # set the submission's status
     @submission.status = 'running'
     @submission.save
@@ -82,6 +83,10 @@ class SubmissionRunner
     copy_or_create(@exercise.full_path.join('workdir'), @mountsrc.join('workdir'))
     copy_or_create(@exercise.full_path.join('evaluation'), @mountsrc.join(@hidden_path, 'resources'))
     copy_or_create(@judge.full_path, @mountsrc.join(@hidden_path, 'judge'))
+
+    end_preparing = Time.zone.now
+    @time_messages = []
+    @time_messages << build_message(format('<strong>Prepare:</strong> %<time>.2f seconds', time: (end_preparing - @start)), 'zeus', 'html')
   end
 
   def execute
@@ -214,10 +219,16 @@ class SubmissionRunner
       ]
     end
 
+    @time_messages << build_message(format('<strong>Runtime:</strong> %<time>.2f seconds', time: (after_time - before_time)), 'zeus', 'html')
+
     result = begin
+      start_rc = Time.zone.now
       rc = ResultConstructor.new @submission.user.lang
       rc.feed(stdout.force_encoding('utf-8'))
-      rc.result(timeout)
+      result = rc.result(timeout)
+      end_rc = Time.zone.now
+      @time_messages << build_message(format('<strong>Result construction:</strong> %<time>.2f seconds', time: (end_rc - start_rc)), 'zeus', 'html')
+      result
     rescue ResultConstructorError => e
       if [134, 137, 143].include? exit_status
         description = timeout ? 'time limit exceeded' : 'memory limit exceeded'
@@ -237,7 +248,6 @@ class SubmissionRunner
 
     result[:messages] ||= []
     result[:messages] << build_message("<strong>Worker:</strong> #{`hostname`.strip}", 'zeus', 'html')
-    result[:messages] << build_message(format('<strong>Runtime:</strong> %<time>.2f seconds', time: (after_time - before_time)), 'zeus', 'html')
     result[:messages] << build_message(format('<strong>Memory usage:</strong> %<memory>.2f MiB', memory: memory), 'zeus', 'html')
     result
   end
@@ -247,9 +257,13 @@ class SubmissionRunner
   def finalize
     return if @mountsrc.nil?
 
+    start_final = Time.zone.now
+
     # remove path on file system used as temporary working directory for processing the submission
     FileUtils.remove_entry_secure(@mountsrc, verbose: true)
     @mountsrc = nil
+    end_final = Time.zone.now
+    @time_messages << build_message(format('<strong>Finalize:</strong> %<time>.2f seconds', time: (end_final - start_final)), 'zeus', 'html')
   end
 
   def run
@@ -261,6 +275,8 @@ class SubmissionRunner
     ]
   ensure
     finalize
+    @time_messages << build_message(format('<strong>Total time:</strong> %<time>.2f seconds', time: (Time.zone.now - @start)), 'zeus', 'html')
+    result[:messages]&.concat @time_messages
     result
   end
 

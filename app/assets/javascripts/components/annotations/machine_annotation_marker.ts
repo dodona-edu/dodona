@@ -6,11 +6,20 @@ import { VampireSlot } from "@boulevard/vampire";
 import { ref } from "lit/directives/ref.js";
 import { createPopper, Instance as Popper } from "@popperjs/core";
 
+/**
+ * A marker that shows a tooltip with machine annotations.
+ *
+ * @prop {MachineAnnotationData[]} annotations The annotations to show in the tooltip.
+ *
+ * @element d-machine-annotation-marker
+ */
 @customElement("d-machine-annotation-marker")
 export class MachineAnnotationMarker extends ShadowlessLitElement {
     @property({ type: Array })
     annotations: MachineAnnotationData[];
 
+    // We need this to apply different styles to the marker when it is empty.
+    // We can't use the :empty pseudo selector because the vampire slot is always present even if it is empty.
     @property({ state: true })
     empty: boolean;
 
@@ -53,6 +62,10 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
 
     constructor() {
         super();
+        // Popper fails to detect the marker appearing by a tab change.
+        // We need to force an update when the marker becomes visible.
+        // This code is a bit more general, to fix all cases where the marker becomes visible.
+        // This should avoid future bugs.
         new IntersectionObserver((entries, _observer) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {

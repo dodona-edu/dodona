@@ -40,6 +40,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             this.machineAnnotationToMark.map(a => ({ start: a.column || 0, length: a.column !== undefined ? a.columns || 0 : Infinity, data: a })),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
+                // these nodes will be recompiled to html, so we need to store the data in a json string
                 const annotations = JSON.parse(node.getAttribute("annotations")) || [];
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));

@@ -37,7 +37,9 @@ export class ShadowlessLitElement extends LitElement {
         new StateController(this);
     }
 
-    // don't use shadow dom
+    // replace the shadow root with a vampire root
+    // this allows us to use slot like functionality
+    // without the css scoping provided by the shadow root
     createRenderRoot(): Element {
         const vRoot = document.createElement("v-root");
         this.appendChild(vRoot);

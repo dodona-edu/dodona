@@ -37,7 +37,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get wrappedCode(): string {
         return wrapRangesInHtml(
             this.renderedCode,
-            this.machineAnnotations.map(a => ({ start: a.column || 0, length: a.column !== undefined ? a.columns || 0 : Infinity, data: a })),
+            this.machineAnnotationToMark.map(a => ({ start: a.column || 0, length: a.column !== undefined ? a.columns || 0 : Infinity, data: a })),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
                 const annotations = JSON.parse(node.getAttribute("annotations")) || [];
@@ -59,8 +59,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
-    get machineAnnotations(): MachineAnnotationData[] {
-        return machineAnnotationState.byLine.get(this.row) || [];
+    get machineAnnotationToMark(): MachineAnnotationData[] {
+        return machineAnnotationState.byMarkedLine.get(this.row) || [];
     }
 
     render(): TemplateResult {

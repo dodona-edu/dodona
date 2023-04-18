@@ -44,10 +44,12 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
                 const splitEnd = Math.min(node.end, end) - node.start - splitStart;
                 const startNode = node.node.splitText(splitStart);
                 startNode.splitText(splitEnd);
-                const wrapperNode = document.createElement(wrapper);
-                wrapperNode.textContent = startNode.textContent;
-                startNode.parentNode.replaceChild(wrapperNode, startNode);
-                callback(wrapperNode, range);
+                if (startNode.textContent || range.length === 0) {
+                    const wrapperNode = document.createElement(wrapper);
+                    wrapperNode.textContent = startNode.textContent;
+                    startNode.parentNode.replaceChild(wrapperNode, startNode);
+                    callback(wrapperNode, range);
+                }
             } else {
                 callback(closest, range);
             }

@@ -1,6 +1,3 @@
-import { html, render } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
-
 export type range = { start: number, length: number, data?: unknown }; // data is optional
 type callback = (node: Node, range: range) => void;
 
@@ -69,7 +66,7 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
 
     let wrappedLength = 0;
     for (const node of nodes) {
-        if (node.end >= start && node.start <= end && node.node.textContent !== "\n") {
+        if (node.end > start && node.start <= end && node.node.textContent !== "\n" || (range.length === 0 && node.end === start)) {
             const closest = closestWrapper(node.node, wrapper);
             if ( closest === null ) {
                 const splitStart = Math.max(0, start - node.start);
@@ -81,17 +78,15 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
                 if (node.end > end) {
                     nodeToWrap.splitText(end - node.start - splitStart);
                 }
-                if (nodeToWrap.textContent || range.length === 0) {
-                    const wrapperNode = document.createElement(wrapper);
-                    wrapperNode.textContent = nodeToWrap.textContent;
-                    nodeToWrap.parentNode.replaceChild(wrapperNode, nodeToWrap);
-                    callback(wrapperNode, range);
+                const wrapperNode = document.createElement(wrapper);
+                wrapperNode.textContent = nodeToWrap.textContent;
+                nodeToWrap.parentNode.replaceChild(wrapperNode, nodeToWrap);
+                callback(wrapperNode, range);
 
-                    // Avoid needless wrapping of empty text nodes
-                    wrappedLength += wrapperNode.textContent.length;
-                    if (wrappedLength >= range.length) {
-                        return;
-                    }
+                // Avoid needless wrapping of empty text nodes
+                wrappedLength += wrapperNode.textContent.length;
+                if (wrappedLength >= range.length) {
+                    return;
                 }
             } else {
                 callback(closest, range);
@@ -132,7 +127,7 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
  */
 export function wrapRangesInHtml(target: string, ranges: range[], wrapper: string, callback: callback): string {
     const root = document.createElement("div");
-    render(html`${unsafeHTML(target)}`, root);
+    root.innerHTML = target;
     wrapRanges(root, ranges, wrapper, callback);
     return root.innerHTML;
 }

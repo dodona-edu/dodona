@@ -23,6 +23,14 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "columns": 5,
     },
     {
+        "text": "End of line marker",
+        "type": "info",
+        "row": 2,
+        "rows": 1,
+        "column": 18,
+        "columns": 0,
+    },
+    {
         "text": "Undefined variable 'ijzer'",
         "type": "error",
         "row": 3,

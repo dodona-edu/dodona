@@ -64,15 +64,12 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
         super();
         // Popper fails to detect the marker appearing by a tab change.
         // We need to force an update when the marker becomes visible.
-        // This code is a bit more general, to fix all cases where the marker becomes visible.
-        // This should avoid future bugs.
-        new IntersectionObserver((entries, _observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    this.popper?.update();
-                }
+        const codeTab = document.querySelector("#link-to-code-tab");
+        if (codeTab) {
+            codeTab.addEventListener("click", () => {
+                this.popper?.update();
             });
-        }).observe(this);
+        }
     }
 
     render(): TemplateResult {

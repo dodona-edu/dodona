@@ -59,7 +59,8 @@ test("create feedback table with default settings", async () => {
 
     await nextFrame();
 
-    expect(document.querySelectorAll(".annotation").length).toBe(3);
+    // Every annotation is rendered twice
+    expect(document.querySelectorAll(".annotation").length).toBe(2*3);
 });
 
 test("html in annotations should be escaped", async () => {
@@ -82,7 +83,8 @@ test("feedback table should support more than 1 annotation per row (first and la
 
     await nextFrame();
 
-    expect(document.querySelectorAll(".annotation").length).toBe(6);
+    // Every annotation is rendered twice
+    expect(document.querySelectorAll(".annotation").length).toBe(2*6);
 });
 
 test("annotation types should be transmitted into the view", async () => {
@@ -94,9 +96,10 @@ test("annotation types should be transmitted into the view", async () => {
 
     await nextFrame();
 
-    expect(document.querySelectorAll(".annotation.info").length).toBe(1);
-    expect(document.querySelectorAll(".annotation.warning").length).toBe(1);
-    expect(document.querySelectorAll(".annotation.error").length).toBe(1);
+    // Every annotation is rendered twice
+    expect(document.querySelectorAll(".annotation.info").length).toBe(2);
+    expect(document.querySelectorAll(".annotation.warning").length).toBe(2);
+    expect(document.querySelectorAll(".annotation.error").length).toBe(2);
 });
 
 test("line highlighting", () => {
@@ -354,7 +357,8 @@ test("feedback table should be able to contain both machine annotations and user
     ]);
     await nextFrame();
 
-    expect(document.querySelectorAll(".annotation").length).toBe(2 + 6);
+    // 2 user annotations, 6 machine annotations shown once inline and once as tooltip
+    expect(document.querySelectorAll(".annotation").length).toBe(2 + 2 * 6);
 });
 
 test("ensure that all buttons are created", async () => {

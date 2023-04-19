@@ -127,12 +127,12 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.4'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.1.1'
+gem 'faker', '~> 3.2.0'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.0.0'
+gem 'rack-mini-profiler', '~> 3.1.0'
 gem 'stackprof', '~> 0.2.25'
 
 gem 'ddtrace', '~> 1.10.1'
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.19.0'
+  gem 'rubocop-rails', '~> 2.19.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

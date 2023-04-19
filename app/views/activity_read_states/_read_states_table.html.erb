@@ -18,7 +18,7 @@
         <% if @user.nil? && (current_user.admin? || current_user.administrating_courses.any?) %>
           <td>
             <% unless @activity.present? %>
-              <d-filter-icon title="<%= t('.filter-by-user') %>" value="<%= read_state.user.full_name %>"></d-filter-icon>
+              <d-filter-icon icon-title="<%= t('.filter-by-user') %>" value="<%= read_state.user.full_name %>"></d-filter-icon>
             <% end %>
             <% if read_state.course.nil? %>
               <%= read_state.user.full_name %>
@@ -29,7 +29,7 @@
         <% end %>
         <% unless @activity.present? %>
           <td>
-            <d-filter-icon title="<%= t('.filter-by-exercise') %>" value="<%= read_state.activity.name %>"></d-filter-icon>
+            <d-filter-icon icon-title="<%= t('.filter-by-exercise') %>" value="<%= read_state.activity.name %>"></d-filter-icon>
             <% if read_state.course.nil? %>
               <%= link_to read_state.activity.name, activity_path(read_state.activity) %>
             <% else %>

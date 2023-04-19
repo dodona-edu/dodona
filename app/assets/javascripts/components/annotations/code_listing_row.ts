@@ -45,8 +45,17 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         const lastRow = annotation.row + rowsLength ?? 0;
         const firstRow = annotation.row + 1 ?? 0;
 
-        const start = this.row === firstRow ? annotation.column || 0 : 0;
-        const length = annotation.column !== undefined && this.row === lastRow ? annotation.columns || 0 : Infinity;
+        let start = 0;
+        if (this.row === firstRow) {
+            start = annotation.column || 0;
+        }
+
+        let length = Infinity;
+        if (this.row === lastRow) {
+            if (annotation.column !== undefined && annotation.column !== null) {
+                length = annotation.columns || 0;
+            }
+        }
 
         return { start: start, length: length, data: annotation };
     }

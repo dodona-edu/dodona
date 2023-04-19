@@ -5,13 +5,23 @@ export type range = { start: number, length: number, data?: unknown }; // data i
 type callback = (node: Node, range: range) => void;
 
 /**
- * Returns an array of text nodes and their start and end indices in the root node.
+ * Returns an array of text nodes or empty wrapper nodes and their start and end indices in the root node.
  * @param root The root node to search for text nodes.
+ * @param wrapper The type of wrapper to search for.
  */
-function getTextNodes(root: Node): { start: number, end: number, node: Text; }[] {
+function getTextNodes(root: Node, wrapper: string): { start: number, end: number, node: Text; }[] {
     let val = "";
     const nodes = [];
-    const iterator = document.createNodeIterator(root, NodeFilter.SHOW_TEXT);
+    const iterator = document.createNodeIterator(root, NodeFilter.SHOW_ALL, node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+            return NodeFilter.FILTER_ACCEPT;
+        } else if (node.nodeName.toUpperCase() === wrapper.toUpperCase() && node.childNodes.length === 0) {
+            // Accept empty wrapper nodes
+            return NodeFilter.FILTER_ACCEPT;
+        } else {
+            return NodeFilter.FILTER_REJECT;
+        }
+    });
 
     let node;
     while (node = iterator.nextNode()) {
@@ -55,26 +65,44 @@ function closestWrapper(node: Node, wrapper: string): Node | null {
 function wrapRange(root: Node, range: range, wrapper: string, callback: callback): void {
     const start = range.start;
     const end = start + range.length;
-    const nodes = getTextNodes(root);
-    nodes.forEach(node => {
-        if (node.end >= start && node.start < end && node.node.textContent && node.node.textContent !== "\n") {
+    const nodes = getTextNodes(root, wrapper);
+
+    let wrappedLength = 0;
+    for (const node of nodes) {
+        if (node.end >= start && node.start <= end && node.node.textContent !== "\n") {
             const closest = closestWrapper(node.node, wrapper);
             if ( closest === null ) {
                 const splitStart = Math.max(0, start - node.start);
-                const splitEnd = Math.min(node.end, end) - node.start - splitStart;
-                const startNode = node.node.splitText(splitStart);
-                startNode.splitText(splitEnd);
-                if (startNode.textContent || range.length === 0) {
+                let nodeToWrap = node.node;
+                if (start > node.start) {
+                    nodeToWrap = node.node.splitText(splitStart);
+                }
+
+                if (node.end > end) {
+                    nodeToWrap.splitText(end - node.start - splitStart);
+                }
+                if (nodeToWrap.textContent || range.length === 0) {
                     const wrapperNode = document.createElement(wrapper);
-                    wrapperNode.textContent = startNode.textContent;
-                    startNode.parentNode.replaceChild(wrapperNode, startNode);
+                    wrapperNode.textContent = nodeToWrap.textContent;
+                    nodeToWrap.parentNode.replaceChild(wrapperNode, nodeToWrap);
                     callback(wrapperNode, range);
+
+                    // Avoid needless wrapping of empty text nodes
+                    wrappedLength += wrapperNode.textContent.length;
+                    if (wrappedLength >= range.length) {
+                        return;
+                    }
                 }
             } else {
                 callback(closest, range);
+                // Avoid needless wrapping of empty text nodes
+                wrappedLength += closest.textContent.length;
+                if (wrappedLength >= range.length) {
+                    return;
+                }
             }
         }
-    });
+    }
 
     if (nodes.length === 0) {
         const wrapperNode = document.createElement(wrapper);

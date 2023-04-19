@@ -41,12 +41,39 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/error/undefined-variable.html"
     },
     {
+        "text": "unexpected indentation",
+        "type": "warning",
+        "row": 4,
+        "rows": 1,
+        "column": 0,
+        "columns": null,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
+    },
+    {
         "text": "Trailing whitespace",
         "type": "info",
         "row": 4,
         "rows": 1,
         "column": 0,
-        "columns": 4,
+        "columns": null,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
+    },
+    {
+        "text": "should show",
+        "type": "error",
+        "row": 4,
+        "rows": 1,
+        "column": 3,
+        "columns": null,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
+    },
+    {
+        "text": "should not block next empty annotation",
+        "type": "warning",
+        "row": 4,
+        "rows": 1,
+        "column": 2,
+        "columns": 1,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
     },
     {
@@ -91,11 +118,10 @@ class MachineAnnotationState extends State {
     @stateProperty public count = 0;
 
     public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
-        console.log("setMachineAnnotations", annotations);
-        this.count = MACHINE_ANNOTATIONS.length;
+        this.count = annotations.length;
         this.byLine.clear();
         this.byMarkedLine.clear();
-        for (const annotation of MACHINE_ANNOTATIONS) {
+        for (const annotation of annotations) {
             const markedLength = annotation.rows ?? 1;
             const line = annotation.row + markedLength ?? 0;
             if (this.byLine.has(line)) {

@@ -47,5 +47,8 @@ module Dodona
     config.active_storage.queues.purge    = :default
 
     config.action_view.default_form_builder = "StandardFormBuilder"
+
+    # Should the slower but fuller validation of judge results happen
+    config.slow_judge_results_validation = true
   end
 end

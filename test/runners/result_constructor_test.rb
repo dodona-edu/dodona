@@ -3,13 +3,11 @@ require 'test_helper'
 require 'result_constructor'
 
 class ResultConstructorTest < ActiveSupport::TestCase
-  MINIMAL_FULL_S =
-
-    test 'empty output should fail' do
-      assert_raises ResultConstructorError do
-        construct_result([''])
-      end
+  test 'empty output should fail' do
+    assert_raises ResultConstructorError do
+      construct_result([''])
     end
+  end
 
   test 'empty json should fail' do
     assert_raises ResultConstructorError do
@@ -43,6 +41,41 @@ class ResultConstructorTest < ActiveSupport::TestCase
   test 'invalid json should fail' do
     assert_raises ResultConstructorError do
       construct_result(['{ Aaargh'])
+    end
+  end
+
+  test 'intentionally annoyingly wrong json should fail' do
+    assert_raises ResultConstructorError do
+      construct_result([
+        # This command is invalid
+        '{ "command": "start-nothing" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+
+    assert_raises ResultConstructorError do
+      construct_result([
+        # There is a type in "command"
+        '{ "commund": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+
+    assert_raises ResultConstructorError do
+      construct_result([
+        '{ "command": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        # A nested object is invalid: a description is a list
+        '{ "description": ["yes"], "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
     end
   end
 
@@ -339,11 +372,23 @@ class ResultConstructorTest < ActiveSupport::TestCase
     end
   end
 
+  protected
+
+  def create_rc(locale: 'en')
+    ResultConstructor.new(locale)
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)
-    rc = ResultConstructor.new(locale)
+    rc = create_rc(locale: locale)
     food.each { |f| rc.feed f }
     rc.result(timeout)
+  end
+end
+
+class CheckingResultConstructorTest < ResultConstructorTest
+  def create_rc(locale: 'en')
+    ResultConstructor.new(locale, full_check: true)
   end
 end

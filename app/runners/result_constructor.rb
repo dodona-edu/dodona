@@ -19,25 +19,49 @@ class ResultConstructor
   LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }.freeze
   GATHER = { tab: :groups, context: :groups, testcase: :groups, test: :tests }.freeze
 
-  def initialize(locale)
+  def initialize(locale, full_check: false)
     @locale = locale
     @level = nil
     @result = {}
+    @full_check = full_check || Rails.configuration.slow_judge_results_validation
   end
 
   def feed(judge_output)
     raise ResultConstructorError, 'No judge output' if judge_output.empty?
 
-    split_jsons(judge_output).each do |json|
-      if PART_SCHEMER.valid?(json.deep_stringify_keys)
-        update(json)
-      elsif FULL_SCHEMER.valid?(json.deep_stringify_keys)
-        @result = json
-      else
-        raise ResultConstructorError.new(
-          'Judge output is not a valid json',
-          json.to_s
-        )
+    if @full_check
+      # In development, we validate each update object.
+      split_jsons(judge_output).each do |json|
+        if PART_SCHEMER.valid?(json.deep_stringify_keys)
+          update(json)
+        elsif FULL_SCHEMER.valid?(json.deep_stringify_keys)
+          @result = json
+        else
+          raise ResultConstructorError.new(
+            'Judge output is not a valid json',
+            json.to_s
+          )
+        end
+      end
+    else
+      # In production, we do one validation at the end (in result)
+      split_jsons(judge_output).each do |json|
+        if json.key?(:command)
+          begin
+            # Clone the object to have better errors, since the update method
+            # may modify the json hash.
+            update(json.clone)
+          rescue StandardError
+            # We rescue all errors, since the json may have invalid data, resulting
+            # in stuff like TypeErrors, NoMethodErrors or KeyErrors
+            raise ResultConstructorError.new(
+              'Judge output is not a valid json',
+              json.to_s
+            )
+          end
+        else
+          @result = json
+        end
       end
     end
   end
@@ -55,6 +79,14 @@ class ResultConstructor
     close_context(accepted: false) if @level == :context
     close_tab(badgeCount: @tab[:badgeCount] || 1) if @level == :tab
     close_judgement(accepted: false, status: status) if @level == :judgement
+
+    # Before finalizing the result, check if it is valid.
+    unless FULL_SCHEMER.valid?(@result.deep_stringify_keys)
+      raise ResultConstructorError.new(
+        'Judge output is not a valid json',
+        @result.to_s
+      )
+    end
 
     @result
   end

@@ -15,6 +15,15 @@ export interface MachineAnnotationData {
 
 const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
     {
+        "text": "This is not really an error",
+        "type": "info",
+        "row": 0,
+        "rows": 3,
+        "column": 7,
+        "columns": 5,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
+    },
+    {
         "text": "Undefined variable 'ijzer'",
         "type": "error",
         "row": 3,

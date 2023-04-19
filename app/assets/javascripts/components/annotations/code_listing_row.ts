@@ -12,7 +12,7 @@ import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { MachineAnnotationMarker } from "components/annotations/machine_annotation_marker";
-import { wrapRangesInHtml } from "mark";
+import { wrapRangesInHtml, range } from "mark";
 
 /**
  * This component represents a row in the code listing.
@@ -34,10 +34,27 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
     showForm: boolean;
 
+    /**
+     * Calculates the range of the code that is covered by the given annotation.
+     * If the annotation spans multiple lines, the range will be the whole line unless this is the first or last line.
+     * In that case, the range will be the part of the line that is covered by the annotation.
+     * @param annotation The annotation to calculate the range for.
+     */
+    getRangeFromAnnotation(annotation: MachineAnnotationData): range {
+        const rowsLength = annotation.rows ?? 1;
+        const lastRow = annotation.row + rowsLength ?? 0;
+        const firstRow = annotation.row + 1 ?? 0;
+
+        const start = this.row === firstRow ? annotation.column || 0 : 0;
+        const length = annotation.column !== undefined && this.row === lastRow ? annotation.columns || 0 : Infinity;
+
+        return { start: start, length: length, data: annotation };
+    }
+
     get wrappedCode(): string {
         return wrapRangesInHtml(
             this.renderedCode,
-            this.machineAnnotationToMark.map(a => ({ start: a.column || 0, length: a.column !== undefined ? a.columns || 0 : Infinity, data: a })),
+            this.machineAnnotationToMark.map(a => this.getRangeFromAnnotation(a)),
             "d-machine-annotation-marker",
             (node: MachineAnnotationMarker, range) => {
                 // these nodes will be recompiled to html, so we need to store the data in a json string

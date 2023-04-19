@@ -21,7 +21,6 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "rows": 3,
         "column": 7,
         "columns": 5,
-        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
     },
     {
         "text": "Undefined variable 'ijzer'",
@@ -106,6 +105,15 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "type": "info",
         "row": 9,
         "rows": 7,
+        "column": 0,
+        "columns": 0,
+        "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-newlines.html"
+    },
+    {
+        "text": "Should show",
+        "type": "info",
+        "row": 11,
+        "rows": 1,
         "column": 0,
         "columns": 0,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-newlines.html"

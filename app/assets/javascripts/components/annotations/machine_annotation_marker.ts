@@ -66,12 +66,13 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
         MachineAnnotationMarker.registerTippyInstance(this.tippy);
     }
 
-    get firstAnnotation(): MachineAnnotationData {
-        return this.annotations[0];
+    get markClasses(): string {
+        const hiddenTypes = this.annotations.map(a => a.type);
+        return [...new Set(hiddenTypes)].map(t => `mark-${t}`).join(" ");
     }
 
     render(): TemplateResult {
-        return html`<span class="mark-${this.firstAnnotation.type} ${this.empty ? "mark-empty" : ""}"
+        return html`<span class="${this.markClasses} ${this.empty ? "mark-empty" : ""}"
         ><v-slot ${ref(s => this.initSlot(s as VampireSlot))}
         ></v-slot
         ></span

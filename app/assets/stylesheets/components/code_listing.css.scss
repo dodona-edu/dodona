@@ -374,11 +374,11 @@ $annotation-info: $info;
   }
 
   d-machine-annotation-marker {
-    .mark-error {
-      text-decoration: wavy underline $danger;
+    .mark-info {
+      text-decoration: wavy underline $info;
 
       &.mark-empty::before {
-        color: $danger;
+        color: $info;
       }
     }
 
@@ -390,11 +390,11 @@ $annotation-info: $info;
       }
     }
 
-    .mark-info {
-      text-decoration: wavy underline $info;
+    .mark-error {
+      text-decoration: wavy underline $danger;
 
       &.mark-empty::before {
-        color: $info;
+        color: $danger;
       }
     }
 

@@ -1,5 +1,5 @@
 require 'json' # JSON support
-require 'json-schema' # json schema validation, from json-schema gem
+require 'json_schemer' # json schema validation
 
 class ResultConstructorError < StandardError
   attr_accessor :title, :description
@@ -12,8 +12,8 @@ class ResultConstructorError < StandardError
 end
 
 class ResultConstructor
-  FULL_SCHEMA = JSON.parse(Rails.public_path.join('schemas/judge_output.json').read)
-  PART_SCHEMA = JSON.parse(Rails.public_path.join('schemas/partial_output.json').read)
+  FULL_SCHEMER = JSONSchemer.schema(Rails.public_path.join('schemas/judge_output.json'))
+  PART_SCHEMER = JSONSchemer.schema(Rails.public_path.join('schemas/partial_output.json'))
 
   LEVELSA = %i[judgement tab context testcase test].freeze
   LEVELSH = { judgement: 0, tab: 1, context: 2, testcase: 3, test: 4 }.freeze
@@ -29,9 +29,12 @@ class ResultConstructor
     raise ResultConstructorError, 'No judge output' if judge_output.empty?
 
     split_jsons(judge_output).each do |json|
-      if JSON::Validator.validate(PART_SCHEMA, json)
+      # Required by the gem. See issue below for context.
+      # https://github.com/davishmcclurg/json_schemer/issues/123
+      json_with_string_keys = json.deep_stringify_keys
+      if PART_SCHEMER.valid?(json_with_string_keys)
         update(json)
-      elsif JSON::Validator.validate(FULL_SCHEMA, json)
+      elsif FULL_SCHEMER.valid?(json_with_string_keys)
         @result = json
       else
         raise ResultConstructorError.new(

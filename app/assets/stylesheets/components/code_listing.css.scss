@@ -372,44 +372,12 @@ $annotation-info: $info;
       border-color: $danger;
     }
   }
+}
 
-  d-machine-annotation-marker {
-    .mark-info {
-      text-decoration: wavy underline $info;
-
-      &.mark-empty::before {
-        color: $info;
-      }
-    }
-
-    .mark-warning {
-      text-decoration: wavy underline $warning;
-
-      &.mark-empty::before {
-        color: $warning;
-      }
-    }
-
-    .mark-error {
-      text-decoration: wavy underline $danger;
-
-      &.mark-empty::before {
-        color: $danger;
-      }
-    }
-
-    .mark-empty {
-      position: relative;
-
-      &::before {
-        font: normal normal normal 14px/1 "Material Design Icons", sans-serif;
-        position: absolute;
-        content: "\F0143";
-        top: 9px;
-        left: -7px;
-      }
-    }
-  }
+d-machine-annotation-marker {
+  --info-color: #{$annotation-info};
+  --warning-color: #{$annotation-warning};
+  --error-color: #{$annotation-error};
 }
 
 .marker-tooltip {

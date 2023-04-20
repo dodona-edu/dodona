@@ -76,7 +76,7 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
         ><v-slot ${ref(s => this.initSlot(s as VampireSlot))}
         ></v-slot
         ></span
-        ><div ${ref(t => this.initTooltip(t as HTMLDivElement))} class="marker-tooltip">${this.annotations.map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation></div>`)}
+        ><div ${ref(t => this.initTooltip(t as HTMLDivElement))} class="marker-tooltip">${this.annotations.map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation>`)}
         </div>`;
     }
 }

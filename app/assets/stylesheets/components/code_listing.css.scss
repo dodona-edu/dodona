@@ -374,34 +374,6 @@ $annotation-info: $info;
   }
 
   d-machine-annotation-marker {
-    position: relative;
-
-    .marker-tooltip {
-      display: inline-block;
-      visibility: hidden;
-      width: max-content;
-      white-space: initial;
-      z-index: 1000;
-      color: $on-surface;
-      font-style: initial;
-      padding-left: 5px;
-      border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
-      border: 1px solid #47464a;
-      background: #303034;
-
-      .annotation {
-        margin: 4px 0;
-        border-right: none;
-        border-top: none;
-        border-bottom: none;
-      }
-    }
-
-    &:hover .marker-tooltip {
-      visibility: visible;
-    }
-
     .mark-error {
       text-decoration: wavy underline $danger;
 
@@ -437,5 +409,24 @@ $annotation-info: $info;
         left: -7px;
       }
     }
+  }
+}
+
+.marker-tooltip {
+  width: max-content;
+  white-space: initial;
+  color: $on-surface;
+  font-style: initial;
+  padding-left: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid #47464a;
+  background: #303034;
+
+  .annotation {
+    margin: 4px 0;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
   }
 }

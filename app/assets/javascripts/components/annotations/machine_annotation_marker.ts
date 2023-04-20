@@ -4,7 +4,7 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { VampireSlot } from "@boulevard/vampire";
 import { ref } from "lit/directives/ref.js";
-import { createPopper, Instance as Popper } from "@popperjs/core";
+import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
 
 /**
  * A marker that shows a tooltip with machine annotations.
@@ -23,7 +23,25 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
     @property({ state: true })
     empty: boolean;
 
-    popper: Popper;
+    static tippyInstances: Tippy[] = [];
+    static tippySingleton = createSingleton([], {
+        placement: "bottom-start",
+        interactive: true,
+        interactiveDebounce: 25,
+        delay: [500, 25],
+        offset: [-10, 2],
+        popperOptions: {
+            modifiers: [{ name: "flip" }],
+        },
+        moveTransition: "transform 0.001s ease-out",
+        appendTo: () => document.querySelector(".code-table"),
+    });
+    static registerTippyInstance(instance: Tippy): void {
+        this.tippyInstances.push(instance);
+        this.tippySingleton.setInstances(this.tippyInstances);
+    }
+
+    tippy: Tippy;
 
     setEmpty(slot: VampireSlot): void {
         this.empty = slot.assignedNodes().length === 0;
@@ -41,35 +59,18 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
     }
 
     initTooltip(tooltip: HTMLDivElement): void {
-        if (!tooltip) {
+        if (!tooltip || this.tippy) {
             return;
         }
 
-        if (this.popper) {
-            this.popper.forceUpdate();
-            return;
-        }
-
-        this.popper = createPopper(this, tooltip, {
-            placement: "bottom-start",
-            modifiers: [{ name: "flip" }],
+        this.tippy = tippy(this, {
+            content: tooltip,
         });
+        MachineAnnotationMarker.registerTippyInstance(this.tippy);
     }
 
     get firstAnnotation(): MachineAnnotationData {
         return this.annotations[0];
-    }
-
-    constructor() {
-        super();
-        // Popper fails to detect the marker appearing by a tab change.
-        // We need to force an update when the marker becomes visible.
-        const codeTab = document.querySelector("#link-to-code-tab");
-        if (codeTab) {
-            codeTab.addEventListener("click", () => {
-                this.popper?.update();
-            });
-        }
     }
 
     render(): TemplateResult {

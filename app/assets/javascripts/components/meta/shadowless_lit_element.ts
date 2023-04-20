@@ -1,7 +1,6 @@
 import { LitElement } from "lit";
 import { StateController } from "state/state_system/StateController";
 
-
 /**
  * This class removes the shadow dom functionality from lit elements
  * Shadow dom allows for:

@@ -59,7 +59,6 @@ test("create feedback table with default settings", async () => {
 
     await nextFrame();
 
-    // Every annotation is rendered twice
     expect(document.querySelectorAll(".annotation").length).toBe(3);
 });
 

@@ -30,9 +30,6 @@ export class MachineAnnotationMarker extends ShadowlessLitElement {
         interactiveDebounce: 25,
         delay: [500, 25],
         offset: [-10, 2],
-        popperOptions: {
-            modifiers: [{ name: "flip" }],
-        },
         moveTransition: "transform 0.001s ease-out",
         appendTo: () => document.querySelector(".code-table"),
     });

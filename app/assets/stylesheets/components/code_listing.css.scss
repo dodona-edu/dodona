@@ -420,8 +420,8 @@ $annotation-info: $info;
   padding-left: 5px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  border: 1px solid #47464a;
-  background: #303034;
+  border: 1px solid $divider;
+  background-color: $content-bg;
 
   .annotation {
     margin: 4px 0;

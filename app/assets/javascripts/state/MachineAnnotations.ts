@@ -67,7 +67,7 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
     },
     {
         "text": "should show",
-        "type": "error",
+        "type": "info",
         "row": 4,
         "rows": 1,
         "column": 3,
@@ -79,8 +79,8 @@ const MACHINE_ANNOTATIONS: MachineAnnotationData[] = [
         "type": "warning",
         "row": 4,
         "rows": 1,
-        "column": 2,
-        "columns": 1,
+        "column": 1,
+        "columns": 2,
         "externalUrl": "https://pylint.pycqa.org/en/latest/messages/convention/trailing-whitespace.html"
     },
     {

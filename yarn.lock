@@ -1022,11 +1022,6 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@boulevard/vampire@^1.0.0-beta.2":
-  version "1.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@boulevard/vampire/-/vampire-1.0.0-beta.2.tgz#55cb5275ebffeda36f957e764edee646124a1f03"
-  integrity sha512-x+Udj2iTPZ4wlQsceOFacqRlgaqHcdbtNNLteBOECUVgr1q/5Ygz0S0S6EOBT9k/fINIBKmIeExDWB9l61A7jw==
-
 "@cnakazawa/watch@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@cnakazawa/watch/-/watch-1.0.4.tgz#f864ae85004d0fcab6f50be9141c4da368d1656a"

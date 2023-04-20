@@ -48,12 +48,6 @@ export class SavedAnnotationList extends ShadowlessLitElement {
                     ></d-saved-annotation-list>
                 </div>
             </div>
-        ` : html`
-            <style>
-                d-saved-annotations-sidecard {
-                    display: none;
-                }
-            </style>
-        `;
+        ` : html``;
     }
 }

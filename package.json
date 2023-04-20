@@ -17,7 +17,6 @@
     "@babel/plugin-transform-runtime": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
-    "@boulevard/vampire": "^1.0.0-beta.2",
     "@dodona/papyros": "^1.0.1",
     "@popperjs/core": "^2.11.7",
     "@rails/activestorage": "^7.0.4",

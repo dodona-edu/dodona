@@ -19,7 +19,7 @@ export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): n
 }
 
 class AnnotationState extends State {
-    @stateProperty visibility: AnnotationVisibilityOptions = "important";
+    @stateProperty visibility: AnnotationVisibilityOptions = "all";
     @stateProperty isQuestionMode = false;
 
     isVisible(annotation: AnnotationData): boolean {

@@ -43,6 +43,8 @@ function initAnnotateButtons(): void {
 
 function loadUserAnnotations(): void {
     userAnnotationState.fetch(submissionState.id);
+    // only show important annotations if any user annotations exist
+    annotationState.visibility = "important";
 }
 
 

@@ -68,7 +68,7 @@ function wrapRange(root: Node, range: range, wrapper: string, callback: callback
     for (const node of nodes) {
         if (node.end > start && node.start <= end && node.node.textContent !== "\n" || (range.length === 0 && node.end === start)) {
             const closest = closestWrapper(node.node, wrapper);
-            if ( closest === null ) {
+            if (closest === null) {
                 const splitStart = Math.max(0, start - node.start);
                 let nodeToWrap = node.node;
                 if (start > node.start) {

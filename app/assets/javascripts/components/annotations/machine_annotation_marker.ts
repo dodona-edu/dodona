@@ -2,6 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { render, html, LitElement, TemplateResult, PropertyValues } from "lit";
 import { MachineAnnotationData } from "state/MachineAnnotations";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
+import { compareAnnotationOrders } from "state/Annotations";
 
 /**
  * A marker that shows a tooltip with machine annotations.
@@ -34,7 +35,7 @@ export class MachineAnnotationMarker extends LitElement {
         super.firstUpdated(_changedProperties);
         const tooltip = document.createElement("div");
         tooltip.classList.add("marker-tooltip");
-        render(this.annotations.map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation>`), tooltip);
+        render(this.annotations.sort(compareAnnotationOrders).map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation>`), tooltip);
 
         const t = tippy(this, {
             content: tooltip,
@@ -43,16 +44,13 @@ export class MachineAnnotationMarker extends LitElement {
     }
 
     get markColor(): string {
-        const types = new Set(this.annotations.map(a => a.type));
-        if (types.has("error")) {
-            return "var(--error-color, red)";
-        } else if (types.has("warning")) {
-            return "var(--warning-color, yellow)";
-        } else if (types.has("info")) {
-            return "var(--info-color, blue)";
-        } else {
-            return undefined;
-        }
+        const type = this.annotations.sort(compareAnnotationOrders)[0].type;
+        const colors = {
+            error: "var(--error-color, red)",
+            warning: "var(--warning-color, yellow)",
+            info: "var(--info-color, blue)",
+        };
+        return colors[type];
     }
 
     render(): TemplateResult {

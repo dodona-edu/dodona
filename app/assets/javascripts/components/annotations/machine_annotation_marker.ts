@@ -1,8 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
-import { render, html, LitElement, TemplateResult, PropertyValues } from "lit";
+import { render, html, LitElement, TemplateResult } from "lit";
 import { MachineAnnotationData } from "state/MachineAnnotations";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
-import { compareAnnotationOrders } from "state/Annotations";
+import { annotationState, compareAnnotationOrders } from "state/Annotations";
+import { StateController } from "state/state_system/StateController";
 
 /**
  * A marker that shows a tooltip with machine annotations.
@@ -15,6 +16,8 @@ import { compareAnnotationOrders } from "state/Annotations";
 export class MachineAnnotationMarker extends LitElement {
     @property({ type: Array })
     annotations: MachineAnnotationData[];
+
+    state = new StateController(this);
 
     static tippyInstances: Tippy[] = [];
     static tippySingleton = createSingleton([], {
@@ -30,17 +33,36 @@ export class MachineAnnotationMarker extends LitElement {
         this.tippyInstances.push(instance);
         this.tippySingleton.setInstances(this.tippyInstances);
     }
+    static unregisterTippyInstance(instance: Tippy): void {
+        this.tippyInstances = this.tippyInstances.filter(i => i !== instance);
+        this.tippySingleton.setInstances(this.tippyInstances);
+    }
 
-    protected firstUpdated(_changedProperties: PropertyValues): void {
-        super.firstUpdated(_changedProperties);
+    get hiddenAnnotations(): MachineAnnotationData[] {
+        return this.annotations.filter(a => !annotationState.isVisible(a)).sort(compareAnnotationOrders);
+    }
+
+    tippyInstance: Tippy;
+
+    renderTooltip(): void {
+        if (this.tippyInstance) {
+            MachineAnnotationMarker.unregisterTippyInstance(this.tippyInstance);
+            this.tippyInstance.destroy();
+            this.tippyInstance = undefined;
+        }
+
+        if (this.hiddenAnnotations.length === 0) {
+            return;
+        }
+
         const tooltip = document.createElement("div");
         tooltip.classList.add("marker-tooltip");
-        render(this.annotations.sort(compareAnnotationOrders).map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation>`), tooltip);
+        render(this.hiddenAnnotations.map(a => html`<d-machine-annotation .data=${a}></d-machine-annotation>`), tooltip);
 
-        const t = tippy(this, {
+        this.tippyInstance = tippy(this, {
             content: tooltip,
         });
-        MachineAnnotationMarker.registerTippyInstance(t);
+        MachineAnnotationMarker.registerTippyInstance(this.tippyInstance);
     }
 
     get markColor(): string {
@@ -54,6 +76,8 @@ export class MachineAnnotationMarker extends LitElement {
     }
 
     render(): TemplateResult {
+        this.renderTooltip();
+
         return html`<style>
             :host {
                 position: relative;

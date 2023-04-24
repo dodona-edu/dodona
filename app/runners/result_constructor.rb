@@ -121,8 +121,8 @@ class ResultConstructor
       type: values[:type] || 'info',
       row: values[:row] || 0,
       rows: values[:rows] || 1,
-      column: values[:column] || 0,
-      columns: values[:columns] || 1,
+      column: values[:column] || nil,
+      columns: values[:columns] || nil,
       externalUrl: values[:externalUrl] || nil
     }
   end

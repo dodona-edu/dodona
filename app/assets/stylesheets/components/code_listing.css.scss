@@ -373,3 +373,28 @@ $annotation-info: $info;
     }
   }
 }
+
+d-machine-annotation-marker {
+  --info-color: #{$annotation-info};
+  --warning-color: #{$annotation-warning};
+  --error-color: #{$annotation-error};
+}
+
+.marker-tooltip {
+  width: max-content;
+  white-space: initial;
+  color: $on-surface;
+  font-style: initial;
+  padding-left: 5px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: 1px solid $divider;
+  background-color: $content-bg;
+
+  .annotation {
+    margin: 4px 0;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+  }
+}

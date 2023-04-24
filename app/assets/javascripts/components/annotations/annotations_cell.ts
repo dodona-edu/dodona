@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import { UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
-import { annotationState } from "state/Annotations";
+import { annotationState, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
@@ -60,14 +60,6 @@ export class AnnotationsCell extends ShadowlessLitElement {
         }
     }
 
-    getVisibleMachineAnnotationsOfType(type: string): TemplateResult[] {
-        return this.machineAnnotations
-            .filter(a => annotationState.isVisible(a))
-            .filter(a => a.type === type).map(a => html`
-                <d-machine-annotation .data=${a}></d-machine-annotation>
-        `);
-    }
-
     closeForm(): void {
         const event = new CustomEvent("close-form", { bubbles: true, composed: true });
         this.dispatchEvent(event);
@@ -85,20 +77,14 @@ export class AnnotationsCell extends ShadowlessLitElement {
                         ></d-annotation-form>
                     </div>
                 ` : ""}
-                <div class="annotation-group-error">
-                    ${this.getVisibleMachineAnnotationsOfType("error")}
-                </div>
-                <div class="annotation-group-conversation">
-                    ${this.userAnnotationIds.map(a => html`
-                        <d-thread .rootId=${a}></d-thread>
-                    `)}
-                </div>
-                <div class="annotation-group-warning">
-                    ${this.getVisibleMachineAnnotationsOfType("warning")}
-                </div>
-                <div class="annotation-group-info">
-                    ${this.getVisibleMachineAnnotationsOfType("info")}
-                </div>
+                ${this.userAnnotationIds.map(a => html`
+                    <d-thread .rootId=${a}></d-thread>
+                `)}
+                ${this.machineAnnotations
+        .filter(a => annotationState.isVisible(a))
+        .sort(compareAnnotationOrders).map(a => html`
+                        <d-machine-annotation .data=${a}></d-machine-annotation>
+                `)}
             </div>
         `;
     }

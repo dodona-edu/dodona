@@ -6,7 +6,7 @@ import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 import { initTooltips } from "util.js";
-import { annotationState } from "state/Annotations";
+import { annotationState, compareAnnotationOrders } from "state/Annotations";
 
 /**
  * This component represents a dot that shows the number of hidden annotations for a line.
@@ -33,8 +33,8 @@ export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     }
 
     get infoDotClasses(): string {
-        const hiddenTypes = this.hiddenAnnotations.map(a => a.type);
-        return [...new Set(hiddenTypes)].map(t => `dot-${t}`).join(" ");
+        const hiddenType = this.hiddenAnnotations.sort(compareAnnotationOrders)[0]?.type;
+        return `dot-${hiddenType}`;
     }
 
     get infoDotTitle(): string {

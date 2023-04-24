@@ -31,7 +31,6 @@ export class SavedAnnotationList extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        console.log("rendering saved annotations sidecard");
         return this.potentialSavedAnnotationsExist ? html`
             <div class="card">
                 <div class="card-supporting-text">

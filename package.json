@@ -59,7 +59,7 @@
     "eslint": "^8.38.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^27.2.1",
-    "eslint-plugin-lit": "^1.8.2",
+    "eslint-plugin-lit": "^1.8.3",
     "eslint-plugin-no-jquery": "^2.7.0",
     "eslint-plugin-wc": "^1.4.0",
     "jest": "^26.6.3",

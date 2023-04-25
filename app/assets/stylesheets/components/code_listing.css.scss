@@ -374,10 +374,12 @@ $annotation-info: $info;
   }
 }
 
-d-machine-annotation-marker {
+d-annotation-marker {
   --info-color: #{$annotation-info};
   --warning-color: #{$annotation-warning};
   --error-color: #{$annotation-error};
+  --question-color: #{rgb($annotation-question, 0.2)};
+  --annotation-color: #{rgb($annotation-user, 0.2)};
 }
 
 .marker-tooltip {

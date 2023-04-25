@@ -63,10 +63,15 @@ export interface UserAnnotationData {
     responses: UserAnnotationData[];
     // eslint-disable-next-line camelcase
     thread_root_id?: number | null;
+    row: number;
+    rows: number;
+    column?: number;
+    columns?: number;
 }
 
 class UserAnnotationState extends State {
     readonly rootIdsByLine = new StateMap<number, number[]>();
+    readonly rootIdsByMarkedLine = new StateMap<number, number[]>();
     readonly byId = new StateMap<number, UserAnnotationData>();
 
     get count(): number {
@@ -83,6 +88,14 @@ class UserAnnotationState extends State {
                 this.rootIdsByLine.set(line, [...annotations, annotation.id]);
             } else {
                 this.rootIdsByLine.set(line, [annotation.id]);
+            }
+            for (let markedLine = line; markedLine < line + annotation.rows; markedLine++) {
+                if (this.rootIdsByMarkedLine.has(markedLine)) {
+                    const annotations = this.rootIdsByMarkedLine.get(markedLine);
+                    this.rootIdsByMarkedLine.set(markedLine, [...annotations, annotation.id]);
+                } else {
+                    this.rootIdsByMarkedLine.set(markedLine, [annotation.id]);
+                }
             }
             annotation.responses.forEach(response => this.addToMap(response));
         } else {
@@ -104,6 +117,12 @@ class UserAnnotationState extends State {
             if (this.rootIdsByLine.has(line)) {
                 const annotations = this.rootIdsByLine.get(line);
                 this.rootIdsByLine.set(line, annotations?.filter(id => id !== annotation.id));
+            }
+            for (let markedLine = line; markedLine < line + annotation.rows; markedLine++) {
+                if (this.rootIdsByMarkedLine.has(markedLine)) {
+                    const annotations = this.rootIdsByMarkedLine.get(markedLine);
+                    this.rootIdsByMarkedLine.set(markedLine, annotations?.filter(id => id !== annotation.id));
+                }
             }
         } else {
             await this.invalidate(annotation.thread_root_id);

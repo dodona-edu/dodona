@@ -18,6 +18,10 @@ export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): n
     return annotationOrder[a.type] - annotationOrder[b.type];
 }
 
+export function isUserAnnotation(annotation: AnnotationData): annotation is UserAnnotationData {
+    return annotation.type === "annotation" || annotation.type === "question";
+}
+
 class AnnotationState extends State {
     @stateProperty visibility: AnnotationVisibilityOptions = "all";
     @stateProperty isQuestionMode = false;

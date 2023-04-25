@@ -1,4 +1,5 @@
-json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :saved_annotation_id, :created_at, :updated_at, :course_id
+json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :saved_annotation_id, :created_at, :updated_at, :course_id, :column, :rows, :columns
+json.row annotation.line_nr || 0
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
   json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })

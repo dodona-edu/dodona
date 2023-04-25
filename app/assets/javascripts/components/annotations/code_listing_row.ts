@@ -4,15 +4,16 @@ import { html, TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
-import "components/annotations/machine_annotation_marker";
+import "components/annotations/annotation_marker";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { annotationState } from "state/Annotations";
+import { AnnotationData, annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { MachineAnnotationMarker } from "components/annotations/machine_annotation_marker";
 import { wrapRangesInHtml, range } from "mark";
+import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
+import { AnnotationMarker } from "components/annotations/annotation_marker";
 
 /**
  * This component represents a row in the code listing.
@@ -40,7 +41,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
      * In that case, the range will be the part of the line that is covered by the annotation.
      * @param annotation The annotation to calculate the range for.
      */
-    getRangeFromAnnotation(annotation: MachineAnnotationData): range {
+    getRangeFromAnnotation(annotation: AnnotationData): range {
         const rowsLength = annotation.rows ?? 1;
         const lastRow = annotation.row + rowsLength ?? 0;
         const firstRow = annotation.row + 1 ?? 0;
@@ -61,11 +62,12 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     get wrappedCode(): string {
+        const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark];
         return wrapRangesInHtml(
             this.renderedCode,
-            this.machineAnnotationToMark.map(a => this.getRangeFromAnnotation(a)),
-            "d-machine-annotation-marker",
-            (node: MachineAnnotationMarker, range) => {
+            annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
+            "d-annotation-marker",
+            (node: AnnotationMarker, range) => {
                 // these nodes will be recompiled to html, so we need to store the data in a json string
                 const annotations = JSON.parse(node.getAttribute("annotations")) || [];
                 annotations.push(range.data);
@@ -86,8 +88,12 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
-    get machineAnnotationToMark(): MachineAnnotationData[] {
+    get machineAnnotationsToMark(): MachineAnnotationData[] {
         return machineAnnotationState.byMarkedLine.get(this.row) || [];
+    }
+
+    get userAnnotationsToMark(): UserAnnotationData[] {
+        return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
     render(): TemplateResult {

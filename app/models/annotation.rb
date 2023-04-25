@@ -16,6 +16,9 @@
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
 #  thread_root_id      :integer
+#  column              :integer
+#  rows                :integer          default(1), not null
+#  columns             :integer
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
@@ -34,6 +37,15 @@ class Annotation < ApplicationRecord
   validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }
+  validates :column, allow_nil: true, numericality: {
+    greater_than_or_equal_to: 0
+  }, if: ->(attr) { attr.column.present? }
+  validates :columns, allow_nil: true, numericality: {
+    greater_than_or_equal_to: 0
+  }, if: ->(attr) { attr.columns.present? }
+  validates :rows, numericality: {
+    greater_than_or_equal_to: 1
+  }, if: ->(attr) { attr.rows.present? }
 
   # Only allow responses if the annotation is not a response itself
   validates :thread_root_id, absence: true, if: -> { responses.any? }

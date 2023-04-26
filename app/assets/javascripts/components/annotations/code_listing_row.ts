@@ -59,28 +59,28 @@ function selectedRangeFromSelection(s: Selection): SelectedRange | undefined {
     let range: SelectedRange;
     if (anchorRow.row < focusRow.row) {
         range = {
-            row: anchorRow.row - 1,
+            row: anchorRow.row,
             rows: focusRow.row - anchorRow.row + 1,
             column: anchorColumn,
             columns: focusColumn,
         };
     } else if (anchorRow.row > focusRow.row) {
         range = {
-            row: focusRow.row - 1,
+            row: focusRow.row,
             rows: anchorRow.row - focusRow.row + 1,
             column: focusColumn,
             columns: anchorColumn,
         };
     } else if (anchorColumn < focusColumn) {
         range = {
-            row: anchorRow.row - 1,
+            row: anchorRow.row,
             rows: 1,
             column: anchorColumn,
             columns: focusColumn - anchorColumn,
         };
     } else {
         range = {
-            row: anchorRow.row - 1,
+            row: anchorRow.row,
             rows: 1,
             column: focusColumn,
             columns: anchorColumn - focusColumn,
@@ -172,9 +172,15 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
      * @param annotation The annotation to calculate the range for.
      */
     getRangeFromAnnotation(annotation: AnnotationData | SelectedRange): range {
+        const isMachineAnnotation = (annotation as AnnotationData).type in ["error", "warning", "info"];
         const rowsLength = annotation.rows ?? 1;
-        const lastRow = annotation.row + rowsLength ?? 0;
-        const firstRow = annotation.row + 1 ?? 0;
+        let lastRow = annotation.row + rowsLength ?? 0;
+        let firstRow = annotation.row + 1 ?? 0;
+
+        if (!isMachineAnnotation) {
+            firstRow -= 1;
+            lastRow -= 1;
+        }
 
         let start = 0;
         if (this.row === firstRow) {
@@ -184,7 +190,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         let length = Infinity;
         if (this.row === lastRow) {
             if (annotation.column !== undefined && annotation.column !== null) {
-                const isMachineAnnotation = (annotation as AnnotationData).type in ["error", "warning", "info"];
                 const defaultLength = isMachineAnnotation ? 0 : Infinity;
                 length = annotation.columns || defaultLength;
             }
@@ -205,7 +210,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if (userAnnotationState.selectedRange && userAnnotationState.selectedRange.row < this.row && userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) >= this.row) {
+        if (userAnnotationState.selectedRange && userAnnotationState.selectedRange.row <= this.row && userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;
@@ -249,7 +254,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get showForm(): boolean {
         const range = userAnnotationState.selectedRange;
-        return userAnnotationState.showForm && range && range.row + range.rows === this.row;
+        return userAnnotationState.showForm && range && range.row + range.rows - 1 === this.row;
     }
 
     closeForm(): void {
@@ -259,7 +264,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     openForm(): void {
         userAnnotationState.showForm = true;
-        userAnnotationState.selectedRange = { row: this.row - 1, rows: 1 };
+        userAnnotationState.selectedRange = { row: this.row, rows: 1 };
     }
 
     render(): TemplateResult {
@@ -274,6 +279,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 <d-annotations-cell .row=${this.row}
                                     .showForm="${this.showForm}"
                                     @close-form=${() => this.closeForm()}
+                                    use-selection="true"
                 ></d-annotations-cell>
             </td>
         `;

@@ -56,21 +56,42 @@ function selectedRangeFromSelection(s: Selection): SelectedRange | undefined {
         return undefined;
     }
 
-    if (anchorRow.row < focusRow.row || (anchorRow.row === focusRow.row && anchorColumn < focusColumn)) {
-        return {
+    let range: SelectedRange;
+    if (anchorRow.row < focusRow.row) {
+        range = {
             row: anchorRow.row - 1,
             rows: focusRow.row - anchorRow.row + 1,
             column: anchorColumn,
-            columns: anchorRow.row === focusRow.row ? focusColumn - anchorColumn: focusColumn,
+            columns: focusColumn,
         };
-    } else {
-        return {
+    } else if (anchorRow.row > focusRow.row) {
+        range = {
             row: focusRow.row - 1,
             rows: anchorRow.row - focusRow.row + 1,
             column: focusColumn,
             columns: anchorColumn,
         };
+    } else if (anchorColumn < focusColumn) {
+        range = {
+            row: anchorRow.row - 1,
+            rows: 1,
+            column: anchorColumn,
+            columns: focusColumn - anchorColumn,
+        };
+    } else {
+        range = {
+            row: anchorRow.row - 1,
+            rows: 1,
+            column: focusColumn,
+            columns: anchorColumn - focusColumn,
+        };
     }
+
+    if (range.columns === 0 && range.rows > 1) {
+        range.columns = undefined;
+        range.rows -= 1;
+    }
+    return range;
 }
 
 /**
@@ -90,8 +111,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: String })
     renderedCode: string;
 
-    @property({ state: true })
-    showForm: boolean;
     tippyInstance: Tippy;
 
     renderTooltip(): void {
@@ -101,7 +120,11 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         }
 
         const tooltip = document.createElement("div");
-        render(this.createButton, tooltip);
+        const buttonClick = (): void => {
+            userAnnotationState.showForm = true;
+            this.tippyInstance.hide();
+        };
+        render(this.getCreateButton(buttonClick), tooltip);
         initTooltips(tooltip);
 
         this.tippyInstance = tippy(this, {
@@ -116,12 +139,19 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             plugins: [followCursor],
             onHidden: () => {
                 initTooltips();
-                userAnnotationState.selectedRange = undefined;
+
+                if (!userAnnotationState.showForm) {
+                    userAnnotationState.selectedRange = undefined;
+                }
             }
         });
     }
 
     async triggerTooltip(): Promise<void> {
+        if (userAnnotationState.showForm) {
+            return;
+        }
+
         // Wait for the selection to be updated
         await sleep(10);
         const selection = window.getSelection();
@@ -154,7 +184,9 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         let length = Infinity;
         if (this.row === lastRow) {
             if (annotation.column !== undefined && annotation.column !== null) {
-                length = annotation.columns || 0;
+                const isMachineAnnotation = (annotation as AnnotationData).type in ["error", "warning", "info"];
+                const defaultLength = isMachineAnnotation ? 0 : Infinity;
+                length = annotation.columns || defaultLength;
             }
         }
 
@@ -202,10 +234,10 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
-    get createButton(): TemplateResult {
+    getCreateButton(click: () => void): TemplateResult {
         return html`
             <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
-                    @click=${() => this.showForm = true}
+                    @click=${() => click()}
                     data-bs-toggle="tooltip"
                     data-bs-placement="top"
                     data-bs-trigger="hover"
@@ -215,10 +247,25 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         `;
     }
 
+    get showForm(): boolean {
+        const range = userAnnotationState.selectedRange;
+        return userAnnotationState.showForm && range && range.row + range.rows === this.row;
+    }
+
+    closeForm(): void {
+        userAnnotationState.showForm = false;
+        userAnnotationState.selectedRange = undefined;
+    }
+
+    openForm(): void {
+        userAnnotationState.showForm = true;
+        userAnnotationState.selectedRange = { row: this.row - 1, rows: 1 };
+    }
+
     render(): TemplateResult {
         return html`
             <td class="rouge-gutter gl">
-                ${this.canCreateAnnotation ? this.createButton : html``}
+                ${this.canCreateAnnotation ? this.getCreateButton(() => this.openForm()) : html``}
                 <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                 <pre style="user-select: none;">${this.row}</pre>
             </td>
@@ -226,7 +273,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 <pre class="code-line" style="overflow: visible; display: inline-block;">${unsafeHTML(this.wrappedCode)}</pre>
                 <d-annotations-cell .row=${this.row}
                                     .showForm="${this.showForm}"
-                                    @close-form=${() => this.showForm = false}
+                                    @close-form=${() => this.closeForm()}
                 ></d-annotations-cell>
             </td>
         `;

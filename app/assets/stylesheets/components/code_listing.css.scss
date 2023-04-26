@@ -374,7 +374,7 @@ $annotation-info: $info;
   }
 }
 
-d-annotation-marker {
+d-annotation-marker, d-selection-marker {
   --info-color: #{$annotation-info};
   --warning-color: #{$annotation-warning};
   --error-color: #{$annotation-error};

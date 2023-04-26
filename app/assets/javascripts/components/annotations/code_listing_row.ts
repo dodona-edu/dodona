@@ -1,6 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { html, TemplateResult, render } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
@@ -9,13 +9,69 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips, sleep } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
+import { AnnotationData, annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { wrapRangesInHtml, range } from "mark";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
+import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
-import tippy, { createSingleton, Instance as Tippy, followCursor } from "tippy.js";
-import { timeout } from "d3";
+import tippy, { Instance as Tippy, followCursor } from "tippy.js";
+import "components/annotations/selection_marker";
+
+function getOffset(e: Node, o: number): number | undefined {
+    if (e.nodeName === "PRE") {
+        return o;
+    }
+
+    const parent = e.parentNode;
+    if (!parent) {
+        return undefined;
+    }
+
+    let precedingText = "";
+    for (const child of parent.childNodes) {
+        if (child === e) {
+            break;
+        }
+        if (child.nodeType !== Node.COMMENT_NODE) {
+            precedingText += child.textContent;
+        }
+    }
+    return getOffset(parent, o + precedingText.length);
+}
+
+function selectedRangeFromSelection(s: Selection): SelectedRange | undefined {
+    // Selection.anchorNode does not behave as expected in firefox, see https://bugzilla.mozilla.org/show_bug.cgi?id=1420854
+    // So we use the startContainer of the range instead
+    const anchorNode = s.getRangeAt(0).startContainer;
+    const focusNode = s.getRangeAt(s.rangeCount - 1).endContainer;
+    const anchorOffset = s.getRangeAt(0).startOffset;
+    const focusOffset = s.getRangeAt(s.rangeCount - 1).endOffset;
+
+    const anchorRow = anchorNode?.parentElement.closest("d-code-listing-row") as CodeListingRow;
+    const focusRow = focusNode?.parentElement.closest("d-code-listing-row") as CodeListingRow;
+    const anchorColumn = getOffset(anchorNode, anchorOffset);
+    const focusColumn = getOffset(focusNode, focusOffset);
+
+    if (!anchorRow || !focusRow || anchorColumn === undefined || focusColumn === undefined) {
+        return undefined;
+    }
+
+    if (anchorRow.row < focusRow.row || (anchorRow.row === focusRow.row && anchorColumn < focusColumn)) {
+        return {
+            row: anchorRow.row - 1,
+            rows: focusRow.row - anchorRow.row + 1,
+            column: anchorColumn,
+            columns: anchorRow.row === focusRow.row ? focusColumn - anchorColumn: focusColumn,
+        };
+    } else {
+        return {
+            row: focusRow.row - 1,
+            rows: anchorRow.row - focusRow.row + 1,
+            column: focusColumn,
+            columns: anchorColumn,
+        };
+    }
+}
 
 /**
  * This component represents a row in the code listing.
@@ -45,7 +101,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         }
 
         const tooltip = document.createElement("div");
-        tooltip.innerHTML = "TEST";
+        render(this.createButton, tooltip);
+        initTooltips(tooltip);
 
         this.tippyInstance = tippy(this, {
             content: tooltip,
@@ -57,13 +114,21 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             offset: [-10, 2],
             appendTo: () => document.querySelector(".code-table"),
             plugins: [followCursor],
+            onHidden: () => {
+                initTooltips();
+                userAnnotationState.selectedRange = undefined;
+            }
         });
     }
 
     async triggerTooltip(): Promise<void> {
         // Wait for the selection to be updated
         await sleep(10);
-        if (!window.getSelection().isCollapsed) {
+        const selection = window.getSelection();
+        const selectedRange = selectedRangeFromSelection(selection);
+        if (!selection.isCollapsed && selectedRange) {
+            userAnnotationState.selectedRange = selectedRange;
+            selection.removeAllRanges();
             this.tippyInstance.show();
         } else {
             this.tippyInstance.hide();
@@ -76,7 +141,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
      * In that case, the range will be the part of the line that is covered by the annotation.
      * @param annotation The annotation to calculate the range for.
      */
-    getRangeFromAnnotation(annotation: AnnotationData): range {
+    getRangeFromAnnotation(annotation: AnnotationData | SelectedRange): range {
         const rowsLength = annotation.rows ?? 1;
         const lastRow = annotation.row + rowsLength ?? 0;
         const firstRow = annotation.row + 1 ?? 0;
@@ -98,7 +163,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark];
-        return wrapRangesInHtml(
+        let annotationsMarked = wrapRangesInHtml(
             this.renderedCode,
             annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
             "d-annotation-marker",
@@ -108,11 +173,17 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
+        if (userAnnotationState.selectedRange && userAnnotationState.selectedRange.row < this.row && userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) >= this.row) {
+            annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
+        }
+        return annotationsMarked;
     }
 
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
+        this.renderTooltip();
+        this.addEventListener("pointerup", () => this.triggerTooltip());
     }
 
     get canCreateAnnotation(): boolean {
@@ -131,31 +202,33 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
-    render(): TemplateResult {
-        this.renderTooltip();
-
+    get createButton(): TemplateResult {
         return html`
-                <td class="rouge-gutter gl">
-                    ${this.canCreateAnnotation ? html`
-                        <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
-                                @click=${() => this.showForm = true}
-                                data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                data-bs-trigger="hover"
-                                title="${this.addAnnotationTitle}">
-                            <i class="mdi mdi-comment-plus-outline mdi-18"></i>
-                        </button>
-                    ` : html``}
-                    <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
-                    <pre style="user-select: none;">${this.row}</pre>
-                </td>
-                <td class="rouge-code">
-                    <pre class="code-line" style="overflow: visible; display: inline-block;" @pointerup="${() => this.triggerTooltip()}" >${unsafeHTML(this.wrappedCode)}</pre>
-                    <d-annotations-cell .row=${this.row}
-                                        .showForm="${this.showForm}"
-                                        @close-form=${() => this.showForm = false}
-                    ></d-annotations-cell>
-                </td>
+            <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
+                    @click=${() => this.showForm = true}
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-trigger="hover"
+                    title="${this.addAnnotationTitle}">
+                <i class="mdi mdi-comment-plus-outline mdi-18"></i>
+            </button>
+        `;
+    }
+
+    render(): TemplateResult {
+        return html`
+            <td class="rouge-gutter gl">
+                ${this.canCreateAnnotation ? this.createButton : html``}
+                <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
+                <pre style="user-select: none;">${this.row}</pre>
+            </td>
+            <td class="rouge-code">
+                <pre class="code-line" style="overflow: visible; display: inline-block;">${unsafeHTML(this.wrappedCode)}</pre>
+                <d-annotations-cell .row=${this.row}
+                                    .showForm="${this.showForm}"
+                                    @close-form=${() => this.showForm = false}
+                ></d-annotations-cell>
+            </td>
         `;
     }
 }

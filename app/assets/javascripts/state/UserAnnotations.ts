@@ -3,6 +3,7 @@ import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
+import { stateProperty } from "state/state_system/StateProperty";
 
 export interface UserAnnotationFormData {
     // eslint-disable-next-line camelcase
@@ -69,10 +70,20 @@ export interface UserAnnotationData {
     columns?: number;
 }
 
+export interface SelectedRange {
+    row: number;
+    rows: number;
+    column?: number;
+    columns?: number;
+}
+
 class UserAnnotationState extends State {
     readonly rootIdsByLine = new StateMap<number, number[]>();
     readonly rootIdsByMarkedLine = new StateMap<number, number[]>();
     readonly byId = new StateMap<number, UserAnnotationData>();
+
+    @stateProperty public selectedRange: SelectedRange | null = null;
+    @stateProperty public showForm = false;
 
     get count(): number {
         return this.byId.size;

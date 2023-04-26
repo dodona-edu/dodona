@@ -6,14 +6,16 @@ import "components/annotations/hidden_annotations_dot";
 import "components/annotations/annotations_cell";
 import "components/annotations/annotation_marker";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { initTooltips } from "util.js";
+import { initTooltips, sleep } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { AnnotationData, annotationState } from "state/Annotations";
+import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { wrapRangesInHtml, range } from "mark";
 import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
+import tippy, { createSingleton, Instance as Tippy, followCursor } from "tippy.js";
+import { timeout } from "d3";
 
 /**
  * This component represents a row in the code listing.
@@ -34,6 +36,39 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     @property({ state: true })
     showForm: boolean;
+    tippyInstance: Tippy;
+
+    renderTooltip(): void {
+        if (this.tippyInstance) {
+            this.tippyInstance.destroy();
+            this.tippyInstance = undefined;
+        }
+
+        const tooltip = document.createElement("div");
+        tooltip.innerHTML = "TEST";
+
+        this.tippyInstance = tippy(this, {
+            content: tooltip,
+            trigger: "manual",
+            followCursor: "initial",
+            interactive: true,
+            interactiveDebounce: 25,
+            delay: [0, 25],
+            offset: [-10, 2],
+            appendTo: () => document.querySelector(".code-table"),
+            plugins: [followCursor],
+        });
+    }
+
+    async triggerTooltip(): Promise<void> {
+        // Wait for the selection to be updated
+        await sleep(10);
+        if (!window.getSelection().isCollapsed) {
+            this.tippyInstance.show();
+        } else {
+            this.tippyInstance.hide();
+        }
+    }
 
     /**
      * Calculates the range of the code that is covered by the given annotation.
@@ -97,6 +132,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
+        this.renderTooltip();
+
         return html`
                 <td class="rouge-gutter gl">
                     ${this.canCreateAnnotation ? html`
@@ -110,10 +147,10 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                         </button>
                     ` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
-                    <pre>${this.row}</pre>
+                    <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre style="overflow: visible; display: inline-block;" >${unsafeHTML(this.wrappedCode)}</pre>
+                    <pre class="code-line" style="overflow: visible; display: inline-block;" @pointerup="${() => this.triggerTooltip()}" >${unsafeHTML(this.wrappedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.showForm = false}

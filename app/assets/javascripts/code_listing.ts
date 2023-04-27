@@ -9,6 +9,7 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
+import { triggerSelectionEnd } from "components/annotations/select";
 
 const MARKING_CLASS = "marked";
 
@@ -31,6 +32,9 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
         render(codeListingRow, rows[i].parentElement, { renderBefore: rows[i] });
         rows[i].remove();
     }
+
+
+    document.addEventListener("pointerup", () => triggerSelectionEnd());
 }
 
 function addMachineAnnotations(data: MachineAnnotationData[]): void {

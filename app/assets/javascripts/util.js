@@ -226,15 +226,6 @@ function getParentByClassName(element, classNames) {
     return null;
 }
 
-/**
- * Sleep for a given amount of milliseconds. This is a promise, so you can use await.
- * @param ms: The amount of milliseconds to sleep
- * @return {Promise<unknown>}
- */
-async function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 export {
     createDelayer,
     delay,
@@ -255,5 +246,4 @@ export {
     ready,
     htmlEncode,
     getParentByClassName,
-    sleep,
 };

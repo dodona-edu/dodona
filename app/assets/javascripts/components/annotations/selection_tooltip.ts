@@ -21,6 +21,8 @@ export class SelectionTooltip extends ShadowlessLitElement {
                 row: this.row,
                 rows: 1,
             };
+        } else {
+            window.getSelection()?.removeAllRanges();
         }
     }
 

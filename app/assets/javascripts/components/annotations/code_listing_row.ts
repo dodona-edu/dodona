@@ -112,6 +112,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     renderedCode: string;
 
     async triggerTooltip(): Promise<void> {
+        console.log("triggerTooltip");
         if (userAnnotationState.showForm) {
             return;
         }

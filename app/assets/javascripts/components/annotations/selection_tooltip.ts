@@ -41,7 +41,8 @@ export class SelectionTooltip extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
                <button class="btn btn-icon annotation-button ${this.isRangeEnd ? "is-range-end" : ""} ${this.rangeExists ? "hide" : ""}"
-                        @click=${() => this.openForm()}
+                       style="${this.row >= 10 ? "left: -22px;" : "left: -12px;"}"
+                        @pointerup=${() => this.openForm()}
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         data-bs-trigger="hover"

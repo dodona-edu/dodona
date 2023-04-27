@@ -16,6 +16,7 @@ import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/Us
 import { AnnotationMarker } from "components/annotations/annotation_marker";
 import tippy, { Instance as Tippy, followCursor } from "tippy.js";
 import "components/annotations/selection_marker";
+import { SelectionTooltip } from "components/annotations/selection_tooltip";
 
 function getOffset(e: Node, o: number): number | undefined {
     if (e.nodeName === "PRE") {
@@ -119,13 +120,10 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             this.tippyInstance = undefined;
         }
 
-        const tooltip = document.createElement("div");
-        const buttonClick = (): void => {
-            userAnnotationState.showForm = true;
+        const tooltip = new SelectionTooltip();
+        tooltip.addEventListener("click", () => {
             this.tippyInstance.hide();
-        };
-        render(this.getCreateButton(buttonClick), tooltip);
-        initTooltips(tooltip);
+        });
 
         this.tippyInstance = tippy(this, {
             content: tooltip,
@@ -134,7 +132,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             interactive: true,
             interactiveDebounce: 25,
             delay: [0, 25],
-            offset: [-10, 2],
+            offset: [0, 15],
             appendTo: () => document.querySelector(".code-table"),
             plugins: [followCursor],
             onHidden: () => {
@@ -172,7 +170,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
      * @param annotation The annotation to calculate the range for.
      */
     getRangeFromAnnotation(annotation: AnnotationData | SelectedRange): range {
-        const isMachineAnnotation = (annotation as AnnotationData).type in ["error", "warning", "info"];
+        const isMachineAnnotation = ["error", "warning", "info"].includes((annotation as AnnotationData).type);
         const rowsLength = annotation.rows ?? 1;
         let lastRow = annotation.row + rowsLength ?? 0;
         let firstRow = annotation.row + 1 ?? 0;

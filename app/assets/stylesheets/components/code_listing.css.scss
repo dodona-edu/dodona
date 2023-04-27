@@ -374,7 +374,8 @@ $annotation-info: $info;
   }
 }
 
-d-annotation-marker, d-selection-marker {
+d-annotation-marker,
+d-selection-marker {
   --info-color: #{$annotation-info};
   --warning-color: #{$annotation-warning};
   --error-color: #{$annotation-error};
@@ -398,5 +399,28 @@ d-annotation-marker, d-selection-marker {
     border-right: none;
     border-top: none;
     border-bottom: none;
+  }
+}
+
+d-selection-tooltip {
+  background-color: $content-bg;
+  //border: 1px solid $inverse-surface;
+  display: block;
+  border-radius: 20px;
+
+  .btn-group .btn {
+    border-color: $outline;
+  }
+
+  &::after {
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid $outline;
+    content: " ";
+    position: absolute;
+    top: 100%;
+    left: 40px;
   }
 }

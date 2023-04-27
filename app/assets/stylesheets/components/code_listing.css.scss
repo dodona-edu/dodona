@@ -115,19 +115,19 @@ $annotation-info: $info;
         }
       }
 
-      .lineno:first-child {
-        .rouge-code,
-        .rouge-gutter {
-          padding-top: 5px;
-        }
-      }
-
-      .lineno:last-child {
-        .rouge-code,
-        .rouge-gutter {
-          padding-bottom: 5px;
-        }
-      }
+      //.d-code-listing-row:first-child {
+      //  .rouge-code,
+      //  .rouge-gutter {
+      //    padding-top: 5px;
+      //  }
+      //}
+      //
+      //.d-code-listing-row:last-child {
+      //  .rouge-code,
+      //  .rouge-gutter {
+      //    padding-bottom: 5px;
+      //  }
+      //}
 
       .lineno:hover .annotation-button:not(.hide) {
         display: block;
@@ -410,5 +410,21 @@ d-selection-marker {
     border-right: none;
     border-top: none;
     border-bottom: none;
+  }
+}
+
+.no-selection-outside-code {
+  user-select: none;
+
+  d-code-listing-row {
+    user-select: text;
+
+    td {
+      user-select: text;
+
+      d-annotations-cell {
+        user-select: none;
+      }
+    }
   }
 }

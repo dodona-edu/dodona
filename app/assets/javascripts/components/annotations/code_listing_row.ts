@@ -111,8 +111,9 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: String })
     renderedCode: string;
 
-    async triggerTooltip(): Promise<void> {
-        console.log("triggerTooltip");
+    async triggerSelectionEnd(): Promise<void> {
+        console.log("triggerSelectionEnd");
+        document.body.classList.remove("no-selection-outside-code");
         if (userAnnotationState.showForm) {
             return;
         }
@@ -120,12 +121,20 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         // Wait for the selection to be updated
         await sleep(10);
         const selection = window.getSelection();
-        const selectedRange = selectedRangeFromSelection(selection);
-        if (!selection.isCollapsed && selectedRange) {
-            userAnnotationState.selectedRange = selectedRange;
-            selection.removeAllRanges();
+        if (!selection.isCollapsed) {
+            userAnnotationState.selectedRange = selectedRangeFromSelection(selection);
+            if (userAnnotationState.selectedRange) {
+                selection.removeAllRanges();
+            }
         } else {
             userAnnotationState.selectedRange = undefined;
+        }
+    }
+
+    triggerSelectionStart(e: PointerEvent): void {
+        if (!(e.target as Element).closest(".annotation")) {
+            console.log("triggerSelectionStart");
+            document.body.classList.add("no-selection-outside-code");
         }
     }
 
@@ -183,7 +192,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
-        this.addEventListener("pointerup", () => this.triggerTooltip());
+        this.addEventListener("pointerup", () => this.triggerSelectionEnd());
+        this.addEventListener("pointerdown", e => this.triggerSelectionStart(e));
     }
 
     get canCreateAnnotation(): boolean {
@@ -210,19 +220,21 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <td class="rouge-gutter gl">
-                ${this.canCreateAnnotation ? html`<d-selection-tooltip row="${this.row}"></d-selection-tooltip>` : html``}
-                <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
-                <pre style="user-select: none;">${this.row}</pre>
-            </td>
-            <td class="rouge-code">
-                <pre class="code-line" style="overflow: visible; display: inline-block;">${unsafeHTML(this.wrappedCode)}</pre>
-                <d-annotations-cell .row=${this.row}
-                                    .showForm="${this.showForm}"
-                                    @close-form=${() => this.closeForm()}
-                                    use-selection="true"
-                ></d-annotations-cell>
-            </td>
+            <tr id="line-${this.row}" class="lineno">
+                <td class="rouge-gutter gl">
+                    ${this.canCreateAnnotation ? html`<d-selection-tooltip row="${this.row}"></d-selection-tooltip>` : html``}
+                    <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
+                    <pre style="user-select: none;">${this.row}</pre>
+                </td>
+                <td class="rouge-code">
+                    <pre class="code-line" style="overflow: visible; display: inline-block;">${unsafeHTML(this.wrappedCode)}</pre>
+                    <d-annotations-cell .row=${this.row}
+                                        .showForm="${this.showForm}"
+                                        @close-form=${() => this.closeForm()}
+                                        use-selection="true"
+                    ></d-annotations-cell>
+                </td>
+            </tr>
         `;
     }
 }

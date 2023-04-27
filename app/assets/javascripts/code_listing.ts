@@ -28,8 +28,8 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
         const codeListingRow = new CodeListingRow();
         codeListingRow.row = i + 1;
         codeListingRow.renderedCode = code;
-        rows[i].innerHTML = "";
-        render(codeListingRow, rows[i]);
+        render(codeListingRow, rows[i].parentElement, { renderBefore: rows[i] });
+        rows[i].remove();
     }
 }
 

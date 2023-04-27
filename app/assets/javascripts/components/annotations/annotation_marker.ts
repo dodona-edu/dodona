@@ -97,7 +97,13 @@ export class AnnotationMarker extends LitElement {
     get userAnnotationMarkStyle(): string {
         const firstUserAnnotation = this.sortedAnnotations.find(a => isUserAnnotation(a));
         if (firstUserAnnotation) {
-            return `background: ${AnnotationMarker.colors[firstUserAnnotation.type]};`;
+            return `
+                background: ${AnnotationMarker.colors[firstUserAnnotation.type]};
+                padding-top: 3px;
+                padding-bottom: 2px;
+                margin-top: -3px;
+                margin-bottom: -2px;
+            `;
         }
         return "";
     }

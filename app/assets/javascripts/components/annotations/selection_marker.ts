@@ -9,6 +9,10 @@ class SelectionMarker extends LitElement {
         return html`<style>
             :host {
                 background: ${AnnotationMarker.colors[annotationState.isQuestionMode ? "question" : "annotation"]};
+                padding-top: 3px;
+                padding-bottom: 2px;
+                margin-top: -3px;
+                margin-bottom: -2px;
             }
         </style><slot></slot>`;
     }

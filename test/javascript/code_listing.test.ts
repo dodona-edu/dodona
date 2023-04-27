@@ -227,7 +227,9 @@ test("annotations should be transmitted into view", async () => {
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
     await userAnnotationState.addToMap({
         "id": 2,
@@ -247,7 +249,9 @@ test("annotations should be transmitted into view", async () => {
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
     await nextFrame();
 
@@ -273,7 +277,9 @@ test("feedback table should support more than 1 annotation per row", async () =>
         "released": true,
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
     await userAnnotationState.addToMap({
@@ -294,7 +300,9 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
     await nextFrame();
 
@@ -320,7 +328,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
     await userAnnotationState.addToMap({
@@ -341,7 +351,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
 
     codeListing.addMachineAnnotations([

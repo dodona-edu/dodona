@@ -130,7 +130,7 @@
 .btn.btn-icon {
   width: 40px;
   padding: 0;
-  color: $on-surface-variant;
+  color: $primary;
 
   // enable pointer events to enable tooltips to be shown on disabled buttons
   &.disabled-with-tooltip {

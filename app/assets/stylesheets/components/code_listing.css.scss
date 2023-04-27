@@ -91,17 +91,28 @@ $annotation-info: $info;
       .annotation-button {
         display: none;
         position: absolute;
-        width: 30px;
-        height: 30px;
-        left: -15px;
-        margin-top: -7px;
+        width: 40px;
+        height: 40px;
+        left: -12px;
+        margin-top: -11px;
         border-radius: 50%;
         padding-top: 4px;
-      }
 
-      .annotation-button:hover {
-        transform: scale(1.15);
-        transition: 0.1s ease-in-out;
+        &.is-range-end {
+          display: block;
+        }
+
+        &::after {
+          width: 0;
+          height: 0;
+          border-bottom: 5px solid transparent;
+          border-top: 5px solid transparent;
+          border-left: 5px solid $primary;
+          content: " ";
+          position: absolute;
+          top: 15px;
+          left: 34px;
+        }
       }
 
       .lineno:first-child {
@@ -118,7 +129,7 @@ $annotation-info: $info;
         }
       }
 
-      .lineno:hover .annotation-button {
+      .lineno:hover .annotation-button:not(.hide) {
         display: block;
       }
 
@@ -399,28 +410,5 @@ d-selection-marker {
     border-right: none;
     border-top: none;
     border-bottom: none;
-  }
-}
-
-d-selection-tooltip {
-  background-color: $content-bg;
-  //border: 1px solid $inverse-surface;
-  display: block;
-  border-radius: 20px;
-
-  .btn-group .btn {
-    border-color: $outline;
-  }
-
-  &::after {
-    width: 0;
-    height: 0;
-    border-left: 10px solid transparent;
-    border-right: 10px solid transparent;
-    border-top: 10px solid $outline;
-    content: " ";
-    position: absolute;
-    top: 100%;
-    left: 40px;
   }
 }

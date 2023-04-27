@@ -14,9 +14,8 @@ import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnno
 import { wrapRangesInHtml, range } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
-import tippy, { Instance as Tippy, followCursor } from "tippy.js";
 import "components/annotations/selection_marker";
-import { SelectionTooltip } from "components/annotations/selection_tooltip";
+import "components/annotations/selection_tooltip";
 
 function getOffset(e: Node, o: number): number | undefined {
     if (e.nodeName === "PRE") {
@@ -112,39 +111,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: String })
     renderedCode: string;
 
-    tippyInstance: Tippy;
-
-    renderTooltip(): void {
-        if (this.tippyInstance) {
-            this.tippyInstance.destroy();
-            this.tippyInstance = undefined;
-        }
-
-        const tooltip = new SelectionTooltip();
-        tooltip.addEventListener("click", () => {
-            this.tippyInstance.hide();
-        });
-
-        this.tippyInstance = tippy(this, {
-            content: tooltip,
-            trigger: "manual",
-            followCursor: "initial",
-            interactive: true,
-            interactiveDebounce: 25,
-            delay: [0, 25],
-            offset: [0, 15],
-            appendTo: () => document.querySelector(".code-table"),
-            plugins: [followCursor],
-            onHidden: () => {
-                initTooltips();
-
-                if (!userAnnotationState.showForm) {
-                    userAnnotationState.selectedRange = undefined;
-                }
-            }
-        });
-    }
-
     async triggerTooltip(): Promise<void> {
         if (userAnnotationState.showForm) {
             return;
@@ -157,9 +123,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         if (!selection.isCollapsed && selectedRange) {
             userAnnotationState.selectedRange = selectedRange;
             selection.removeAllRanges();
-            this.tippyInstance.show();
         } else {
-            this.tippyInstance.hide();
+            userAnnotationState.selectedRange = undefined;
         }
     }
 
@@ -217,16 +182,11 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
-        this.renderTooltip();
         this.addEventListener("pointerup", () => this.triggerTooltip());
     }
 
     get canCreateAnnotation(): boolean {
         return userState.hasPermission("annotation.create");
-    }
-
-    get addAnnotationTitle(): string {
-        return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
     get machineAnnotationsToMark(): MachineAnnotationData[] {
@@ -235,19 +195,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get userAnnotationsToMark(): UserAnnotationData[] {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
-    }
-
-    getCreateButton(click: () => void): TemplateResult {
-        return html`
-            <button class="btn btn-icon btn-icon-filled bg-primary annotation-button"
-                    @click=${() => click()}
-                    data-bs-toggle="tooltip"
-                    data-bs-placement="top"
-                    data-bs-trigger="hover"
-                    title="${this.addAnnotationTitle}">
-                <i class="mdi mdi-comment-plus-outline mdi-18"></i>
-            </button>
-        `;
     }
 
     get showForm(): boolean {
@@ -260,15 +207,10 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         userAnnotationState.selectedRange = undefined;
     }
 
-    openForm(): void {
-        userAnnotationState.showForm = true;
-        userAnnotationState.selectedRange = { row: this.row, rows: 1 };
-    }
-
     render(): TemplateResult {
         return html`
             <td class="rouge-gutter gl">
-                ${this.canCreateAnnotation ? this.getCreateButton(() => this.openForm()) : html``}
+                ${this.canCreateAnnotation ? html`<d-selection-tooltip row="${this.row}"></d-selection-tooltip>` : html``}
                 <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                 <pre style="user-select: none;">${this.row}</pre>
             </td>

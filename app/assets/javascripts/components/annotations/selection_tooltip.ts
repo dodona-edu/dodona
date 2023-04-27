@@ -1,18 +1,36 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
-import { initTooltips } from "util";
+import { initTooltips } from "util.js";
 
 @customElement("d-selection-tooltip")
 export class SelectionTooltip extends ShadowlessLitElement {
+    @property({ type: Number })
+    row: number;
+
     get addAnnotationTitle(): string {
         return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
     }
 
     openForm(): void {
         userAnnotationState.showForm = true;
+        if (!this.rangeExists) {
+            userAnnotationState.selectedRange = {
+                row: this.row,
+                rows: 1,
+            };
+        }
+    }
+
+    get rangeExists(): boolean {
+        return userAnnotationState.selectedRange !== undefined && userAnnotationState.selectedRange !== null;
+    }
+
+    get isRangeEnd(): boolean {
+        return this.rangeExists &&
+            userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
     protected firstUpdated(_changedProperties: PropertyValues): void {
@@ -22,23 +40,13 @@ export class SelectionTooltip extends ShadowlessLitElement {
 
     protected render(): TemplateResult {
         return html`
-            <div class="btn-group btn-toggle" role="group"  data-bs-toggle="buttons">
-                <button class="btn"
+               <button class="btn btn-icon annotation-button ${this.isRangeEnd ? "is-range-end" : ""} ${this.rangeExists ? "hide" : ""}"
                         @click=${() => this.openForm()}
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         data-bs-trigger="hover"
                         title="${this.addAnnotationTitle}">
                     <i class="mdi mdi-comment-plus-outline"></i>
-                </button>
-                <button class="btn"
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        data-bs-trigger="hover"
-                        title="${I18n.t("js.code.copy-to-clipboard")}"
-                        @click=${() => undefined}>
-                    <i class="mdi mdi-clipboard-outline"></i>
-                </button>
-            </div>`;
+                </button>`;
     }
 }

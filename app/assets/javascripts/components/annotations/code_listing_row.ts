@@ -4,6 +4,7 @@ import { html, TemplateResult } from "lit";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/annotations_cell";
 import "components/annotations/annotation_marker";
+import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
@@ -119,6 +120,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
                     ${this.canCreateAnnotation ? html`<d-selection-tooltip row="${this.row}"></d-selection-tooltip>` : html``}
+                    <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">

@@ -115,19 +115,19 @@ $annotation-info: $info;
         }
       }
 
-      //.d-code-listing-row:first-child {
-      //  .rouge-code,
-      //  .rouge-gutter {
-      //    padding-top: 5px;
-      //  }
-      //}
-      //
-      //.d-code-listing-row:last-child {
-      //  .rouge-code,
-      //  .rouge-gutter {
-      //    padding-bottom: 5px;
-      //  }
-      //}
+      d-code-listing-row:first-child {
+        .rouge-code,
+        .rouge-gutter {
+          padding-top: 5px;
+        }
+      }
+
+      d-code-listing-row:last-child {
+        .rouge-code,
+        .rouge-gutter {
+          padding-bottom: 5px;
+        }
+      }
 
       .lineno:hover .annotation-button:not(.hide) {
         display: block;

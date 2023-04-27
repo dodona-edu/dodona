@@ -34,10 +34,13 @@ function selectedRangeFromSelection(s: Selection): SelectedRange | undefined {
     const anchorRow = anchorNode?.parentElement.closest("d-code-listing-row") as CodeListingRow;
     const focusRow = focusNode?.parentElement.closest("d-code-listing-row") as CodeListingRow;
 
+    // Both the start and end of the selection must be inside a code listing row to get a valid code selection
     if (!anchorRow || !focusRow) {
         return undefined;
     }
 
+    // Find the exact position of the selection in the code `pre` element
+    // If the selection is not inside a `pre` element, we assume the offset is zero
     const anchorColumn = getOffset(anchorNode, anchorOffset) || 0;
     const focusColumn = getOffset(focusNode, focusOffset) || 0;
 
@@ -72,6 +75,8 @@ function selectedRangeFromSelection(s: Selection): SelectedRange | undefined {
         };
     }
 
+    // If we have selected nothing on the last row, we don't want to include that row
+    // Instead end the selection on the last char of the previous row
     if (range.columns === 0 && range.rows > 1) {
         range.columns = undefined;
         range.rows -= 1;

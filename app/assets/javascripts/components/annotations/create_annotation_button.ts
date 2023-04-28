@@ -5,8 +5,17 @@ import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "util.js";
 
-@customElement("d-selection-tooltip")
-export class SelectionTooltip extends ShadowlessLitElement {
+/**
+ * This component represents a button to create a new annotation.
+ * It is displayed in the gutter of the code editor.
+ * It will only display on the last row that is currently selected if any code is selected.
+ *
+ * @attr {number} row - The row number.
+ *
+ * @element d-create-annotation-button
+ */
+@customElement("d-create-annotation-button")
+export class CreateAnnotationButton extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
 

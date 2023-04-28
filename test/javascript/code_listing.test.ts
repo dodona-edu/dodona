@@ -371,7 +371,7 @@ test("feedback table should be able to contain both machine annotations and user
 test("ensure that all buttons are created", async () => {
     codeListing.initAnnotateButtons();
     await nextFrame();
-    expect(document.querySelectorAll("d-selection-tooltip").length).toBe(3);
+    expect(document.querySelectorAll("d-create-annotation-button").length).toBe(3);
 });
 
 test("click on comment button", async () => {

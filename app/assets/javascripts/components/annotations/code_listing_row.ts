@@ -15,7 +15,7 @@ import { wrapRangesInHtml, range } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
 import "components/annotations/selection_marker";
-import "components/annotations/selection_tooltip";
+import "components/annotations/create_annotation_button";
 import { triggerSelectionStart } from "components/annotations/select";
 
 /**
@@ -120,7 +120,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return html`
             <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
-                    ${this.canCreateAnnotation ? html`<d-selection-tooltip row="${this.row}"></d-selection-tooltip>` : html``}
+                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}"></d-create-annotation-button>` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>

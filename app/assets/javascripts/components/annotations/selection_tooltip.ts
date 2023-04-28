@@ -11,7 +11,13 @@ export class SelectionTooltip extends ShadowlessLitElement {
     row: number;
 
     get addAnnotationTitle(): string {
-        return annotationState.isQuestionMode ? I18n.t("js.annotations.options.add_question") : I18n.t("js.annotations.options.add_annotation");
+        const key = annotationState.isQuestionMode ? "question" : "annotation";
+
+        if (this.isRangeEnd) {
+            return I18n.t(`js.annotations.options.add_${key}_for_selection`);
+        }
+
+        return I18n.t(`js.annotations.options.add_${key}`);
     }
 
     openForm(): void {
@@ -35,8 +41,8 @@ export class SelectionTooltip extends ShadowlessLitElement {
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
-    protected firstUpdated(_changedProperties: PropertyValues): void {
-        super.firstUpdated(_changedProperties);
+    protected updated(_changedProperties: PropertyValues): void {
+        super.updated(_changedProperties);
         initTooltips(this);
     }
 

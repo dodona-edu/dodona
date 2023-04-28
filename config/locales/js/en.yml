@@ -308,6 +308,8 @@ en:
         add_global_question: "Ask a question about your code"
         add_annotation: Add a comment to this line
         add_question: "Ask a question about this line"
+        add_annotation_for_selection: Add a comment to this code
+        add_question_for_selection: "Ask a question about this code"
       toggles:
         title: Annotations
         show_all: Show all annotations

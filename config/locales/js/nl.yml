@@ -308,6 +308,8 @@ nl:
         add_global_question: "Stel een vraag over je code"
         add_annotation: Voeg een opmerking toe aan deze regel
         add_question: "Stel een vraag over deze regel"
+        add_annotation_for_selection: Voeg een opmerking toe aan deze code
+        add_question_for_selection: "Stel een vraag over deze code"
       toggles:
         title: Annotaties
         show_all: Toon alle annotaties

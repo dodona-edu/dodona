@@ -33,9 +33,6 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
         render(codeListingRow, rows[i].parentElement, { renderBefore: rows[i] });
         rows[i].remove();
     }
-
-
-    document.addEventListener("pointerup", () => triggerSelectionEnd());
 }
 
 function addMachineAnnotations(data: MachineAnnotationData[]): void {
@@ -44,6 +41,8 @@ function addMachineAnnotations(data: MachineAnnotationData[]): void {
 
 function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
+
+    document.addEventListener("pointerup", () => triggerSelectionEnd());
 }
 
 function loadUserAnnotations(): void {

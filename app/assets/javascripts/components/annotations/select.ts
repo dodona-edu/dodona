@@ -91,6 +91,8 @@ export async function triggerSelectionEnd(): Promise<void> {
         return;
     }
 
+    // Wait for the selection to be updated
+    await new Promise(resolve => setTimeout(resolve, 10));
     const selection = window.getSelection();
     if (!selection.isCollapsed) {
         userAnnotationState.selectedRange = selectedRangeFromSelection(selection);

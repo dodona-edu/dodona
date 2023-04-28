@@ -76,6 +76,14 @@ class UserAnnotationState extends State {
         return this.byId.size;
     }
 
+    public reset(): void {
+        this.byId.clear();
+        this.rootIdsByLine.clear();
+        this.rootIdsByMarkedLine.clear();
+        this.selectedRange = null;
+        this.showForm = false;
+    }
+
     // public for testing purposes
     public async addToMap(annotation: UserAnnotationData): Promise<void> {
         this.byId.set(annotation.id, annotation);

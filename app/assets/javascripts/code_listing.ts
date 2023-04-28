@@ -14,6 +14,7 @@ import { triggerSelectionEnd } from "components/annotations/select";
 const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
+    userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;

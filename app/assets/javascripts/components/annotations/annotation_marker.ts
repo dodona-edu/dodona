@@ -5,7 +5,7 @@ import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotat
 import { StateController } from "state/state_system/StateController";
 
 /**
- * A marker that shows a tooltip with machine annotations.
+ * A marker that styles the slotted content and shows a tooltip with annotations.
  *
  * @prop {AnnotationData[]} annotations The annotations to show in the tooltip.
  *
@@ -28,12 +28,14 @@ export class AnnotationMarker extends LitElement {
     };
 
     static tippyInstances: Tippy[] = [];
+    // Using a singleton to avoid multiple tooltips being open at the same time.
     static tippySingleton = createSingleton([], {
         placement: "bottom-start",
         interactive: true,
         interactiveDebounce: 25,
         delay: [500, 25],
         offset: [-10, 2],
+        // This transition fixes a bug where overlap with the previous tooltip was taken into account when positioning
         moveTransition: "transform 0.001s ease-out",
         appendTo: () => document.querySelector(".code-table"),
     });
@@ -46,6 +48,7 @@ export class AnnotationMarker extends LitElement {
         this.tippySingleton.setInstances(this.tippyInstances);
     }
 
+    // Annotations that are displayed inline should show up as tooltips.
     get hiddenAnnotations(): AnnotationData[] {
         return this.annotations.filter(a => !annotationState.isVisible(a)).sort(compareAnnotationOrders);
     }

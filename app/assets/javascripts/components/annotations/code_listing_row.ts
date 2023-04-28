@@ -49,6 +49,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         let firstRow = annotation.row + 1 ?? 0;
 
         if (!isMachineAnnotation) {
+            // rows on user annotations are 1-based, so we need to subtract 1
             firstRow -= 1;
             lastRow -= 1;
         }

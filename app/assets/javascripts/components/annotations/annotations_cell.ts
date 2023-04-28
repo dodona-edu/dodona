@@ -30,8 +30,6 @@ export class AnnotationsCell extends ShadowlessLitElement {
     showForm: boolean;
     @property({ type: Number })
     row: number;
-    @property({ type: Boolean, attribute: "use-selection" })
-    useSelection = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
@@ -52,7 +50,7 @@ export class AnnotationsCell extends ShadowlessLitElement {
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
         };
 
-        if (this.useSelection && userAnnotationState.selectedRange) {
+        if (this.row > 0 && userAnnotationState.selectedRange) {
             annotationData["line_nr"] = userAnnotationState.selectedRange.row;
             annotationData["rows"] = userAnnotationState.selectedRange.rows;
             annotationData["column"] = userAnnotationState.selectedRange.column;

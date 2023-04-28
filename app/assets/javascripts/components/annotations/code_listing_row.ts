@@ -128,7 +128,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.closeForm()}
-                                        use-selection="true"
                     ></d-annotations-cell>
                 </td>
             </tr>

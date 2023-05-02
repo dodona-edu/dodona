@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:color";
 $dot-size: 9px;
 
 // Annotation colors
@@ -7,17 +8,19 @@ $annotation-user: $success;
 $annotation-error: $danger;
 $annotation-warning: $warning;
 $annotation-info: $info;
+$annotation-question-background: color.mix($annotation-question, $background, 20%);
+$annotation-user-background: color.mix($annotation-user, $background, 20%);
 
 .code-table {
   &.selection-color-question {
     ::selection {
-      background-color: rgb($annotation-question, 0.2);
+      background-color: $annotation-question-background;
     }
   }
 
   &.selection-color-annotation {
     ::selection {
-      background-color: rgb($annotation-user, 0.2);
+      background-color: $annotation-user-background;
     }
   }
 
@@ -152,6 +155,16 @@ $annotation-info: $info;
           padding-left: 5px;
           white-space: pre-wrap;
           word-break: break-word;
+
+          &.code-line-question {
+            background-color: $annotation-question-background;
+            width: 100%;
+          }
+
+          &.code-line-annotation {
+            background-color: $annotation-user-background;
+            width: 100%;
+          }
         }
       }
 
@@ -412,8 +425,8 @@ d-selection-marker {
   --info-color: #{$annotation-info};
   --warning-color: #{$annotation-warning};
   --error-color: #{$annotation-error};
-  --question-color: #{rgb($annotation-question, 0.2)};
-  --annotation-color: #{rgb($annotation-user, 0.2)};
+  --question-color: #{$annotation-question-background};
+  --annotation-color: #{$annotation-user-background};
 }
 
 .marker-tooltip {

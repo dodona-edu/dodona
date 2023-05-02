@@ -102,9 +102,9 @@ export class AnnotationMarker extends LitElement {
         if (firstUserAnnotation) {
             return `
                 background: ${AnnotationMarker.colors[firstUserAnnotation.type]};
-                padding-top: 3px;
+                padding-top: 2px;
                 padding-bottom: 2px;
-                margin-top: -3px;
+                margin-top: -2px;
                 margin-bottom: -2px;
             `;
         }

@@ -9,7 +9,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { AnnotationData, annotationState } from "state/Annotations";
+import { AnnotationData, annotationState, compareAnnotationOrders } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { wrapRangesInHtml, range } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
@@ -72,8 +72,9 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark];
+        const codeToMark = this.renderedCode || "<span style=\"user-select: none;\"> </span>";
         let annotationsMarked = wrapRangesInHtml(
-            this.renderedCode,
+            codeToMark,
             annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
             "d-annotation-marker",
             (node: AnnotationMarker, range) => {
@@ -82,7 +83,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if ( userAnnotationState.showForm && userAnnotationState.selectedRange && userAnnotationState.selectedRange.row <= this.row && userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row) {
+        if ( this.shouldMarkSelection ) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;
@@ -106,6 +107,12 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
+    get shouldMarkSelection(): boolean {
+        return userAnnotationState.selectedRange &&
+            userAnnotationState.selectedRange.row <= this.row &&
+            userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
+    }
+
     get showForm(): boolean {
         const range = userAnnotationState.selectedRange;
         return userAnnotationState.showForm && range && range.row + range.rows - 1 === this.row;
@@ -114,6 +121,21 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     closeForm(): void {
         userAnnotationState.showForm = false;
         userAnnotationState.selectedRange = undefined;
+    }
+
+    get codeLineClass(): string {
+        if (this.shouldMarkSelection && userAnnotationState.selectedRange.column === 0 && userAnnotationState.selectedRange.columns === undefined) {
+            return `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}`;
+        }
+
+        const fullLineAnnotations = this.userAnnotationsToMark
+            .filter(a => a.column === 0 && (a.columns === undefined || a.columns === null))
+            .sort(compareAnnotationOrders);
+        if (fullLineAnnotations.length > 0) {
+            return `code-line-${fullLineAnnotations[0].type}`;
+        }
+
+        return "";
     }
 
     render(): TemplateResult {
@@ -125,7 +147,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre class="code-line">${unsafeHTML(this.wrappedCode)}</pre>
+                    <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.closeForm()}

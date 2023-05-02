@@ -94,6 +94,13 @@ function selectedRangeFromSelection(selection: Selection): SelectedRange | undef
         range.columns = undefined;
         range.rows -= 1;
     }
+
+    // If we selected multiple rows, we want to select the entire row
+    if (range.rows > 1) {
+        range.column = 0;
+        range.columns = undefined;
+    }
+
     return range;
 }
 
@@ -147,6 +154,11 @@ export async function triggerSelectionEnd(): Promise<void> {
 export function triggerSelectionStart(e: PointerEvent): void {
     if (!(e.target as Element).closest(".annotation")) {
         document.body.classList.add("no-selection-outside-code");
-        setSelectionColor();
+        if (!userAnnotationState.showForm) {
+            setSelectionColor();
+            if (!(e.target as Element).closest("button")) {
+                userAnnotationState.selectedRange = undefined;
+            }
+        }
     }
 }

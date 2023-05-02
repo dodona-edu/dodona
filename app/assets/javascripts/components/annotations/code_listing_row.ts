@@ -9,7 +9,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "util.js";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { AnnotationData } from "state/Annotations";
+import { AnnotationData, annotationState } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { wrapRangesInHtml, range } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
@@ -125,7 +125,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre class="code-line" style="overflow: visible; display: inline-block;">${unsafeHTML(this.wrappedCode)}</pre>
+                    <pre class="code-line">${unsafeHTML(this.wrappedCode)}</pre>
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.closeForm()}

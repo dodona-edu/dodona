@@ -9,6 +9,18 @@ $annotation-warning: $warning;
 $annotation-info: $info;
 
 .code-table {
+  &.selection-color-question {
+    ::selection {
+      background-color: rgb($annotation-question, 0.2);
+    }
+  }
+
+  &.selection-color-annotation {
+    ::selection {
+      background-color: rgb($annotation-user, 0.2);
+    }
+  }
+
   .dot {
     float: left;
     margin-left: 4px;
@@ -180,6 +192,11 @@ $annotation-info: $info;
 
   d-code-listing-row {
     display: contents;
+
+    .code-line {
+      overflow: visible;
+      display: inline-block;
+    }
   }
 
   .thread {

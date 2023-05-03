@@ -62,16 +62,24 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
-               <button class="btn annotation-button ${this.isRangeEnd ? "is-range-end with-icon btn-text" : "btn-icon"} ${this.rangeExists ? "hide" : ""}"
-                       style="right: ${this.rowCharLength * 10 + 5}px"
-                        @pointerup=${() => this.openForm()}
-                        data-bs-toggle="tooltip"
-                        data-bs-placement="top"
-                        data-bs-trigger="hover"
-                        title="${this.addAnnotationTitle}">
-                   <i class="mdi mdi-comment-plus-outline "></i>
-                    ${this.isRangeEnd ? this.addAnnotationTitle : ""}
-                </button>
+                ${this.isRangeEnd ? html`
+                    <button class="btn annotation-button is-range-end with-icon btn-text"
+                           style="right: ${this.rowCharLength * 10 + 5}px"
+                            @pointerup=${() => this.openForm()}>
+                       <i class="mdi mdi-comment-plus-outline "></i>
+                        ${this.isRangeEnd ? this.addAnnotationTitle : ""}
+                    </button>
+                ` : html`
+                    <button class="btn annotation-button btn-icon ${this.rangeExists ? "hide" : ""}"
+                           style="right: ${this.rowCharLength * 10 + 5}px"
+                            @pointerup=${() => this.openForm()}
+                            data-bs-toggle="tooltip"
+                            data-bs-placement="top"
+                            data-bs-trigger="hover"
+                            title="${this.addAnnotationTitle}">
+                       <i class="mdi mdi-comment-plus-outline "></i>
+                    </button>
+                `}
             </div>`;
     }
 }

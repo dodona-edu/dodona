@@ -440,6 +440,10 @@ d-selection-marker {
     border-right: none;
     border-top: none;
     border-bottom: none;
+
+    #kebab-menu {
+      display: none;
+    }
   }
 }
 

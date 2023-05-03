@@ -33,6 +33,12 @@ function getOffset(node: Node, offset: number): number | undefined {
 }
 
 /**
+ * This function translates a selection into a range within the code listing.
+ * If the selection is not inside a code listing row, returns undefined.
+ *
+ * Multiline selections will always return the whole line for each line in the selection.
+ * In this case the selection param might be modified to match the returned range.
+ *
  * @param selection The selection to get the range for
  * @returns The range of the selection in the code listing
  * Unless both the start and end of the selection are inside a code listing row, returns undefined
@@ -97,6 +103,7 @@ function selectedRangeFromSelection(selection: Selection): SelectedRange | undef
         range.rows -= 1;
     }
 
+    // If we selected multiple rows, we want to select the entire rows
     if (range.rows > 1) {
         // If we have selected nothing on the first row, we don't want to include that row
         while (codeLines[range.row - 1].length <= range.column && range.rows > 1) {
@@ -105,7 +112,7 @@ function selectedRangeFromSelection(selection: Selection): SelectedRange | undef
             range.row += 1;
         }
 
-        // If we selected multiple rows, we want to select the entire row
+        // Ignore the columns if we have selected multiple rows
         range.column = 0;
         range.columns = undefined;
 
@@ -158,19 +165,20 @@ function anyRangeInAnnotation(selection: Selection): boolean {
     return false;
 }
 
-function setSelectionColor(): void {
+function addSelectionClasses(): void {
     const selectionType = annotationState.isQuestionMode ? "question" : "annotation";
     document.querySelector(".code-table")?.classList.add(`selection-color-${selectionType}`);
+    document.body.classList.add("no-selection-outside-code");
 }
 
-function removeSelectionColor(): void {
+function removeSelectionClasses(): void {
     document.querySelector(".code-table")?.classList.remove("selection-color-annotation", "selection-color-question");
     document.body.classList.remove("no-selection-outside-code");
 }
 
 export async function triggerSelectionEnd(): Promise<void> {
     if (userAnnotationState.showForm) {
-        removeSelectionColor();
+        removeSelectionClasses();
         return;
     }
 
@@ -180,24 +188,21 @@ export async function triggerSelectionEnd(): Promise<void> {
     if (!selection.isCollapsed && !anyRangeInAnnotation(selection)) {
         userAnnotationState.selectedRange = selectedRangeFromSelection(selection);
         if (userAnnotationState.selectedRange) {
-            setSelectionColor();
+            addSelectionClasses();
         } else {
-            removeSelectionColor();
+            removeSelectionClasses();
         }
     } else {
-        removeSelectionColor();
+        removeSelectionClasses();
         userAnnotationState.selectedRange = undefined;
     }
 }
 
 export function triggerSelectionStart(e: PointerEvent): void {
-    if (!(e.target as Element).closest(".annotation")) {
-        document.body.classList.add("no-selection-outside-code");
-        if (!userAnnotationState.showForm) {
-            setSelectionColor();
-            if (!(e.target as Element).closest("button")) {
-                userAnnotationState.selectedRange = undefined;
-            }
+    if (!(e.target as Element).closest(".annotation") && !userAnnotationState.showForm) {
+        addSelectionClasses();
+        if (!(e.target as Element).closest("button")) {
+            userAnnotationState.selectedRange = undefined;
         }
     }
 }

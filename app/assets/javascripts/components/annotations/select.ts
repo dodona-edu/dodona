@@ -10,7 +10,7 @@ import { submissionState } from "state/Submissions";
  * @returns The offset in number of characters from the start of the `closest` PRE element
  * If the element is not inside a PRE element, returns undefined
  */
-function getOffset(node: Node, offset: number): number | undefined {
+export function getOffset(node: Node, offset: number): number | undefined {
     if (node.nodeName === "PRE") {
         return offset;
     }
@@ -43,7 +43,7 @@ function getOffset(node: Node, offset: number): number | undefined {
  * @returns The range of the selection in the code listing
  * Unless both the start and end of the selection are inside a code listing row, returns undefined
  */
-function selectedRangeFromSelection(selection: Selection): SelectedRange | undefined {
+export function selectedRangeFromSelection(selection: Selection): SelectedRange | undefined {
     // Selection.anchorNode does not behave as expected in firefox, see https://bugzilla.mozilla.org/show_bug.cgi?id=1420854
     // So we use the startContainer of the range instead
     const anchorNode = selection.getRangeAt(0).startContainer;

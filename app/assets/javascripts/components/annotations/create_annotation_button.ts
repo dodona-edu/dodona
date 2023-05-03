@@ -46,7 +46,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     }
 
     get isRangeEnd(): boolean {
-        return this.rangeExists &&
+        return this.rangeExists && !userAnnotationState.showForm &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
@@ -55,16 +55,23 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         initTooltips(this);
     }
 
+    get rowCharLength(): number {
+        return this.row.toString().length;
+    }
+
     protected render(): TemplateResult {
         return html`
-               <button class="btn btn-icon annotation-button ${this.isRangeEnd ? "is-range-end" : ""} ${this.rangeExists ? "hide" : ""}"
-                       style="${this.row >= 10 ? "left: -22px;" : "left: -12px;"}"
+            <div style="position: relative">
+               <button class="btn annotation-button ${this.isRangeEnd ? "is-range-end with-icon btn-text" : "btn-icon"} ${this.rangeExists ? "hide" : ""}"
+                       style="right: ${this.rowCharLength * 10 + 5}px"
                         @pointerup=${() => this.openForm()}
                         data-bs-toggle="tooltip"
                         data-bs-placement="top"
                         data-bs-trigger="hover"
                         title="${this.addAnnotationTitle}">
-                    <i class="mdi mdi-comment-plus-outline"></i>
-                </button>`;
+                   <i class="mdi mdi-comment-plus-outline "></i>
+                    ${this.isRangeEnd ? this.addAnnotationTitle : ""}
+                </button>
+            </div>`;
     }
 }

@@ -74,7 +74,6 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
 
     .code-listing {
       display: block;
-      overflow-x: auto;
       white-space: nowrap;
       background-color: $content-bg;
 
@@ -106,15 +105,11 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
       .annotation-button {
         display: none;
         position: absolute;
-        width: 40px;
-        height: 40px;
-        left: -12px;
-        margin-top: -12px;
-        border-radius: 50%;
-        padding-top: 4px;
+        right: 15px;
+        top: -12px;
 
         &.is-range-end {
-          display: block;
+          display: inline-flex;
         }
 
         &::after {
@@ -125,8 +120,8 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
           border-left: 5px solid $primary;
           content: " ";
           position: absolute;
-          top: 15px;
-          left: 34px;
+          top: 14px;
+          right: 2px;
         }
       }
 
@@ -145,7 +140,7 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
       }
 
       .lineno:hover .annotation-button:not(.hide) {
-        display: block;
+        display: inline-flex;
       }
 
       .rouge-code {

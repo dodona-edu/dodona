@@ -32,7 +32,7 @@ import { triggerSelectionStart } from "components/annotations/select";
 export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
-    @property({ type: String })
+    @property({ type: String, attribute: "rendered-code" })
     renderedCode: string;
 
 

@@ -124,12 +124,12 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     get codeLineClass(): string {
-        if (this.shouldMarkSelection && userAnnotationState.selectedRange.column === 0 && userAnnotationState.selectedRange.columns === undefined) {
+        if (this.shouldMarkSelection && !userAnnotationState.selectedRange.column && !userAnnotationState.selectedRange.columns) {
             return `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}`;
         }
 
         const fullLineAnnotations = this.userAnnotationsToMark
-            .filter(a => a.column === 0 && (a.columns === undefined || a.columns === null))
+            .filter(a => !a.column&& !a.columns)
             .sort(compareAnnotationOrders);
         if (fullLineAnnotations.length > 0) {
             return `code-line-${fullLineAnnotations[0].type}`;

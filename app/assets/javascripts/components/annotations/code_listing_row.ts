@@ -71,7 +71,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     get wrappedCode(): string {
-        const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark];
+        const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
         const codeToMark = this.renderedCode || "<span style=\"user-select: none;\"> </span>";
         let annotationsMarked = wrapRangesInHtml(
             codeToMark,

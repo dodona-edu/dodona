@@ -1,6 +1,7 @@
 import { SelectedRange, userAnnotationState } from "state/UserAnnotations";
 import { CodeListingRow } from "components/annotations/code_listing_row";
 import { annotationState } from "state/Annotations";
+import { submissionState } from "state/Submissions";
 
 /**
  * @param node The node to get the offset for
@@ -87,6 +88,7 @@ function selectedRangeFromSelection(selection: Selection): SelectedRange | undef
             columns: anchorColumn - focusColumn,
         };
     }
+    const codeLines = submissionState.code.split("\n");
 
     // If we have selected nothing on the last row, we don't want to include that row
     // Instead end the selection on the last char of the previous row
@@ -95,10 +97,33 @@ function selectedRangeFromSelection(selection: Selection): SelectedRange | undef
         range.rows -= 1;
     }
 
-    // If we selected multiple rows, we want to select the entire row
     if (range.rows > 1) {
+        // If we have selected nothing on the first row, we don't want to include that row
+        while (codeLines[range.row - 1].length <= range.column && range.rows > 1) {
+            range.column = 0;
+            range.rows -= 1;
+            range.row += 1;
+        }
+
+        // If we selected multiple rows, we want to select the entire row
         range.column = 0;
         range.columns = undefined;
+
+        // If we have selected nothing on the last row, we don't want to include that row
+        while (codeLines[range.row + range.rows - 2] === "" && range.rows > 1) {
+            range.rows -= 1;
+        }
+
+        // Update the selection to match the newly calculated Selected Range
+        const startLine = document.querySelector(`#line-${range.row}`);
+        const endLine = document.querySelector(`#line-${range.row + range.rows - 1}`);
+        if (anchorRow.row < focusRow.row) {
+            selection.getRangeAt(0).setStart(startLine.querySelector(".code-line"), 0);
+            selection.getRangeAt(selection.rangeCount - 1).setEnd(endLine.querySelector(".code-line"), endLine.querySelector(".code-line").childNodes.length);
+        } else {
+            selection.getRangeAt(0).setStart(endLine.querySelector(".code-line"), endLine.querySelector(".code-line").childNodes.length);
+            selection.getRangeAt(selection.rangeCount - 1).setEnd(startLine.querySelector(".code-line"), 0);
+        }
     }
 
     return range;
@@ -126,17 +151,17 @@ function setSelectionColor(): void {
 
 function removeSelectionColor(): void {
     document.querySelector(".code-table")?.classList.remove("selection-color-annotation", "selection-color-question");
+    document.body.classList.remove("no-selection-outside-code");
 }
 
 export async function triggerSelectionEnd(): Promise<void> {
-    document.body.classList.remove("no-selection-outside-code");
     if (userAnnotationState.showForm) {
         removeSelectionColor();
         return;
     }
 
     // Wait for the selection to be updated
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise(resolve => setTimeout(resolve, 100));
     const selection = window.getSelection();
     if (!selection.isCollapsed && !anyRangeInAnnotation(selection)) {
         userAnnotationState.selectedRange = selectedRangeFromSelection(selection);

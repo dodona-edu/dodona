@@ -83,7 +83,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if ( this.shouldMarkSelection ) {
+        if ( userAnnotationState.showForm && this.shouldMarkSelection ) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;

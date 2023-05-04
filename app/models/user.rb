@@ -471,6 +471,9 @@ class User < ApplicationRecord
     # Don't give information about the exercise if the submission was within a course, but not within a visible series
     # This is to prevent students from seeing exercises that are not made public explicitly
     if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
+      # Don't show complete courses
+      return [] if latest_submission.course.incomplete_series(self).blank?
+
       return [{
         submission: nil,
         activity: nil,
@@ -495,17 +498,19 @@ class User < ApplicationRecord
     if latest_submission.series.present? && (latest_submission.series.open? || course_admin?(latest_submission.course))
       next_activity = latest_submission.series.next_activity(latest_submission.exercise)
       if next_activity.present?
-        # start working on the next exercise
-        result << {
-          submission: nil,
-          activity: next_activity,
-          series: latest_submission.series,
-          course: latest_submission.course,
-          text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_exercise_success') : I18n.t('pages.clickable_homepage_cards.next_exercise')
-        }
+        # start working on the next exercise, if that one was not accepted
+        unless next_activity.accepted_for?(self, latest_submission.series)
+          result << {
+            submission: nil,
+            activity: next_activity,
+            series: latest_submission.series,
+            course: latest_submission.course,
+            text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_exercise_success') : I18n.t('pages.clickable_homepage_cards.next_exercise')
+          }
+        end
 
-        if latest_submission.series.next_activity(next_activity).present?
-          # there is another exercise after the next one, so show the series
+        if latest_submission.series.next_activity(next_activity).present? && !latest_submission.series.completed?(user: self)
+          # there is another exercise after the next one and the series is not yet completed, so show the series
           result << {
             submission: nil,
             activity: nil,
@@ -529,7 +534,7 @@ class User < ApplicationRecord
       end
     end
 
-    if latest_submission.course.present?
+    if latest_submission.course.present? && latest_submission.course.incomplete_series(self).present?
       # continue working on this course
       result << {
         submission: nil,

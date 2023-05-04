@@ -199,6 +199,11 @@ export async function triggerSelectionEnd(): Promise<void> {
 }
 
 export function triggerSelectionStart(e: PointerEvent): void {
+    if (e.pointerType === "mouse" && e.button !== 0) {
+        // ignore all mouse events except left click
+        return;
+    }
+
     if (!(e.target as Element).closest(".annotation") && !userAnnotationState.showForm) {
         addSelectionClasses();
         if (!(e.target as Element).closest("button")) {

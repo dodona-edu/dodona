@@ -192,19 +192,20 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
         min-width: 100%;
       }
     }
+
+    d-code-listing-row {
+      display: contents;
+
+      pre.code-line {
+        overflow: visible;
+        display: inline-block;
+        padding-top: 1px;
+      }
+    }
   }
 
   #feedback-table-global-annotations.has-annotations {
     padding-bottom: 10px;
-  }
-
-  d-code-listing-row {
-    display: contents;
-
-    .code-line {
-      overflow: visible;
-      display: inline-block;
-    }
   }
 
   .thread {

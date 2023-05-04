@@ -86,7 +86,7 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return html`
+        return this.data ? html`
             <div class="thread ${annotationState.isVisible(this.data) ? "" : "hidden"}">
                 <d-user-annotation .data=${this.data}></d-user-annotation>
                 ${this.data.responses.map(response => html`
@@ -114,6 +114,6 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
                     </div>
                 `}
             </div>
-        `;
+        ` : html``;
     }
 }

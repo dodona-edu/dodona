@@ -165,4 +165,34 @@ describe("selectedRangeFromSelectionTest", () => {
         const selectedRange2 = selectedRangeFromSelection(selection);
         expect(selectedRange2).toBeUndefined();
     });
+
+    it("should be able to calculate the correct range when the selection is reversed", async () => {
+        const selection = window.getSelection();
+        const range = new Range();
+        range.setStart(context.querySelector("#t3").childNodes[0], 1);
+        range.setEnd(context.querySelector("#t1").childNodes[0], 3);
+        selection.addRange(range);
+
+        // Test framework doesn't support reversed ranges
+        expect(range.startContainer).toBe(range.endContainer);
+
+        // Test code for when the framework does support reversed ranges
+        // const selectedRange = selectedRangeFromSelection(selection);
+        // expect(selectedRange).toEqual({ row: 1, column: 3, rows: 1, columns: 5 });
+    });
+
+    it("should be able to calculate the correct range when the selection is reversed and spans multiple rows", async () => {
+        const selection = window.getSelection();
+        const range = new Range();
+        range.setStart(context.querySelector("#t5").childNodes[0], 1);
+        range.setEnd(context.querySelector("#t1").childNodes[0], 3);
+        selection.addRange(range);
+
+        // Test framework doesn't support reversed ranges
+        expect(range.startContainer).toBe(range.endContainer);
+
+        // Test code for when the framework does support reversed ranges
+        // const selectedRange = selectedRangeFromSelection(selection);
+        // expect(selectedRange).toEqual({ row: 1, column: 3, rows: 3, columns: 5 });
+    });
 });

@@ -937,7 +937,7 @@ class UserHasManyTest < ActiveSupport::TestCase
   test 'jump back in should return the course if most recent activity was complete and the submission has no series' do
     user = create :user
 
-    course = create :course, series_count: 2
+    course = create :course, series_count: 2, exercises_per_series: 1
     a1 = create :exercise
     create :correct_submission, user: user, course: course, exercise: a1
 
@@ -966,14 +966,10 @@ class UserHasManyTest < ActiveSupport::TestCase
     create :correct_submission, user: user, course: course, exercise: series.exercises.first
 
     course.series.second.update(visibility: :hidden)
-
-    assert_nil user.jump_back_in.first[:submission]
-    assert_nil user.jump_back_in.first[:activity]
-    assert_equal course, user.jump_back_in.first[:course]
-    assert_nil user.jump_back_in.first[:series]
+    assert_empty user.jump_back_in
 
     course.series.second.update(visibility: :closed)
-    assert_nil user.jump_back_in.first[:series]
+    assert_empty user.jump_back_in
 
     course.series.second.update(visibility: :open)
     assert_equal course.series.second, user.jump_back_in.first[:series]
@@ -1039,12 +1035,14 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal a1, user.jump_back_in.first[:activity]
   end
 
-  test 'jump back in does not return finished series' do
+  test 'jump back in does not return finished activities, series or course' do
     user = create :user
 
-    course = create :course, series_count: 2
+    course = create :course, series_count: 3, exercises_per_series: 1
     series = course.series.first
     series.exercises << create(:exercise)
+    create :correct_submission, user: user, course: course, exercise: series.exercises.second
+    create :correct_submission, user: user, course: course, exercise: course.series.second.exercises.first
     create :correct_submission, user: user, course: course, exercise: series.exercises.first
 
     assert_nil user.jump_back_in.first[:submission]
@@ -1053,6 +1051,10 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_nil user.jump_back_in.first[:series]
 
     assert_equal 1, user.jump_back_in.count
+
+    course.series.third.exercises = []
+
+    assert_equal 0, user.jump_back_in.count
   end
 
   test 'Open questions count gets updated when a new question is created' do

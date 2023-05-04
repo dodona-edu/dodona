@@ -72,6 +72,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
+        // This default value is a hack to be able to mark the whole line if there is no code on the line.
         const codeToMark = this.renderedCode || "<span style=\"user-select: none;\"> </span>";
         let annotationsMarked = wrapRangesInHtml(
             codeToMark,

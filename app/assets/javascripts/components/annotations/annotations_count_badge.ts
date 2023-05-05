@@ -16,8 +16,8 @@ export class AnnotationsCountBadge extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        return html`
+        return this.annotationsCount ? html`
             <div class="badge rounded-pill">${this.annotationsCount}</div>
-        `;
+        ` : html``;
     }
 }

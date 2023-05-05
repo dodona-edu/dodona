@@ -43,14 +43,17 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         }
     }
 
-    createStrikeThrough(): void {
-        userAnnotationState.create({
+    async createStrikeThrough(): Promise<void> {
+        await userAnnotationState.create({
             line_nr: userAnnotationState.selectedRange.row,
             rows: userAnnotationState.selectedRange.rows,
             column: userAnnotationState.selectedRange.column,
             columns: userAnnotationState.selectedRange.columns,
             evaluation_id: evaluationState.id,
         }, submissionState.id, "strikethrough");
+
+        userAnnotationState.selectedRange = undefined;
+        window.getSelection()?.removeAllRanges();
     }
 
     get rangeExists(): boolean {
@@ -64,7 +67,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
 
     protected updated(_changedProperties: PropertyValues): void {
         super.updated(_changedProperties);
-        initTooltips(this);
+        initTooltips();
     }
 
     get rowCharLength(): number {
@@ -74,23 +77,8 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
-                ${this.isRangeEnd ? html`
-                    <button class="btn annotation-button is-range-end with-icon btn-text btn-elevated "
-                           style="right: ${this.rowCharLength * 10 + 5}px"
-                            @pointerup=${() => this.openForm()}>
-                       <i class="mdi mdi-comment-plus-outline "></i>
-                        ${this.isRangeEnd ? this.addAnnotationTitle : ""}
-                    </button>
-                    ${annotationState.isQuestionMode ? "" : html`
-                        <button class="btn annotation-button is-range-end with-icon btn-text btn-elevated "
-                               style="right: ${this.rowCharLength * 10 + 5}px"
-                                @pointerup=${() => this.createStrikeThrough()}>
-                           <i class="mdi mdi-format-strikethrough "></i>
-                        </button>
-                    `}
-                ` : html`
-                    <button class="btn annotation-button btn-icon btn-elevated  ${this.rangeExists ? "hide" : ""}"
-                           style="right: ${this.rowCharLength * 10 + 5}px"
+                <div class="annotation-buttons ${this.isRangeEnd ? "is-range-end" : ""} ${this.rangeExists ? "hide" : ""}">
+                    <button class="btn btn-icon"
                             @pointerup=${() => this.openForm()}
                             data-bs-toggle="tooltip"
                             data-bs-placement="top"
@@ -98,7 +86,18 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                             title="${this.addAnnotationTitle}">
                        <i class="mdi mdi-comment-plus-outline "></i>
                     </button>
-                `}
+                    ${ !this.rangeExists || annotationState.isQuestionMode ? "" : html`
+                        <button class="btn btn-icon"
+                               style="right: ${this.rowCharLength * 10 + 5}px"
+                                @pointerup=${() => this.createStrikeThrough()}
+                                data-bs-toggle="tooltip"
+                                data-bs-placement="bottom"
+                                data-bs-trigger="hover"
+                                title="${I18n.t("js.annotations.options.add_strikethrough")}">
+                           <i class="mdi mdi-format-strikethrough "></i>
+                        </button>
+                    `}
+                </div>
             </div>`;
     }
 }

@@ -102,16 +102,30 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
         background-color: $warning-container;
       }
 
-      .annotation-button {
+      .annotation-buttons {
         display: none;
         position: absolute;
-        right: 15px;
-        top: -10px;
+        left: -37px;
+        transform: translateY(-50%);
+        top: 8px;
         background-color: $background;
+        border-radius: 20px;
+        flex-direction: column;
 
-        &:hover {
-          opacity: 1;
-          background: color.mix($primary, $background, 10%);
+        @include shadow-z2;
+
+        .btn {
+          border-radius: 0;
+        }
+
+        .btn:last-child {
+          border-bottom-left-radius: 20px;
+          border-bottom-right-radius: 20px;
+        }
+
+        .btn:first-child {
+          border-top-left-radius: 20px;
+          border-top-right-radius: 20px;
         }
 
         &.is-range-end {
@@ -126,8 +140,10 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
           border-left: 5px solid $primary;
           content: " ";
           position: absolute;
-          top: 14px;
-          right: 2px;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+          right: -5px;
         }
       }
 
@@ -145,7 +161,7 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
         }
       }
 
-      .lineno:hover .annotation-button:not(.hide) {
+      .lineno:hover .annotation-buttons:not(.hide) {
         display: inline-flex;
       }
 

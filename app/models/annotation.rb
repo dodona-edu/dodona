@@ -33,7 +33,7 @@ class Annotation < ApplicationRecord
 
   has_many :responses, -> { order(created_at: :asc) }, class_name: 'Annotation', dependent: :destroy, inverse_of: :thread_root, foreign_key: :thread_root_id
 
-  validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }
+  validates :annotation_text, presence: true, length: { minimum: 1, maximum: 10_000 }, unless: proc { |a| a.is_a? Strikethrough}
   validates :line_nr, allow_nil: true, numericality: {
     greater_than_or_equal_to: 0
   }, if: ->(attr) { attr.line_nr.present? }

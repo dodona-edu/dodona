@@ -371,6 +371,15 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
     border-left-color: $annotation-user;
   }
 
+  .annotation.strikethrough {
+    border-left-color: $annotation-error;
+
+    #kebab-menu {
+      margin-top: -7px;
+      margin-bottom: -7px;
+    }
+  }
+
   .annotation.machine-annotation {
     .annotation-text {
       font-family: $font-family-monospace;

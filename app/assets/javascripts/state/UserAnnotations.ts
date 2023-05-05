@@ -6,7 +6,7 @@ import { StateMap } from "state/state_system/StateMap";
 import { stateProperty } from "state/state_system/StateProperty";
 
 export interface UserAnnotationFormData {
-    annotation_text: string;
+    annotation_text?: string;
     line_nr?: number | null;
     evaluation_id?: number | undefined;
     saved_annotation_id?: number | null;
@@ -17,7 +17,7 @@ export interface UserAnnotationFormData {
 }
 
 export type QuestionState = "unanswered" | "answered" | "in_progress";
-export type AnnotationType = "error" | "info" | "annotation" | "warning" | "question";
+export type AnnotationType = "error" | "info" | "annotation" | "warning" | "question" | "strikethrough";
 
 interface UserAnnotationUserData {
     name: string;
@@ -32,13 +32,13 @@ export interface UserAnnotationPermissionData {
 }
 
 export interface UserAnnotationData {
-    annotation_text: string;
+    annotation_text?: string;
     created_at: string;
     id: number;
     line_nr: number;
     permission: UserAnnotationPermissionData;
     released: boolean;
-    rendered_markdown: string;
+    rendered_markdown?: string;
     evaluation_id?: number | null;
     saved_annotation_id?: number | null;
     url: string;

@@ -1,1 +1,1 @@
-json.partial! @annotation, as: :annotation
+json.partial! @annotation.becomes(Annotation), as: :annotation

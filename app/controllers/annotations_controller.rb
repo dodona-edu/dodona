@@ -51,7 +51,11 @@ class AnnotationsController < ApplicationController
     raise Pundit::NotAuthorizedError, 'Unauthorized' if current_user.blank?
 
     clazz = if current_user.course_admin?(@submission.course)
-              Annotation
+              if params[:strikethrough].present?
+                Strikethrough
+              else
+                Annotation
+              end
             else
               Question
             end

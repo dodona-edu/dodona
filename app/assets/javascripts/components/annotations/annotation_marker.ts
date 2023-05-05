@@ -24,6 +24,7 @@ export class AnnotationMarker extends LitElement {
         warning: "var(--warning-color, yellow)",
         info: "var(--info-color, blue)",
         annotation: "var(--annotation-color, green)",
+        strikethrough: "var(--error-color, red)",
         question: "var(--question-color, orange)",
     };
 
@@ -99,6 +100,12 @@ export class AnnotationMarker extends LitElement {
 
     get userAnnotationMarkStyle(): string {
         const firstUserAnnotation = this.sortedAnnotations.find(a => isUserAnnotation(a));
+        if (firstUserAnnotation && firstUserAnnotation.type === "strikethrough") {
+            return `
+                text-decoration: line-through;
+                text-decoration-color: ${AnnotationMarker.colors[firstUserAnnotation.type]};
+            `;
+        }
         if (firstUserAnnotation) {
             return `
                 background: ${AnnotationMarker.colors[firstUserAnnotation.type]};

@@ -4,6 +4,8 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "util.js";
+import { submissionState } from "state/Submissions";
+import { evaluationState } from "state/Evaluations";
 
 /**
  * This component represents a button to create a new annotation.
@@ -41,6 +43,16 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         }
     }
 
+    createStrikeThrough(): void {
+        userAnnotationState.create({
+            line_nr: userAnnotationState.selectedRange.row,
+            rows: userAnnotationState.selectedRange.rows,
+            column: userAnnotationState.selectedRange.column,
+            columns: userAnnotationState.selectedRange.columns,
+            evaluation_id: evaluationState.id,
+        }, submissionState.id, "strikethrough");
+    }
+
     get rangeExists(): boolean {
         return userAnnotationState.selectedRange !== undefined && userAnnotationState.selectedRange !== null;
     }
@@ -69,6 +81,13 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                        <i class="mdi mdi-comment-plus-outline "></i>
                         ${this.isRangeEnd ? this.addAnnotationTitle : ""}
                     </button>
+                    ${annotationState.isQuestionMode ? "" : html`
+                        <button class="btn annotation-button is-range-end with-icon btn-text btn-elevated "
+                               style="right: ${this.rowCharLength * 10 + 5}px"
+                                @pointerup=${() => this.createStrikeThrough()}>
+                           <i class="mdi mdi-format-strikethrough "></i>
+                        </button>
+                    `}
                 ` : html`
                     <button class="btn annotation-button btn-icon btn-elevated  ${this.rangeExists ? "hide" : ""}"
                            style="right: ${this.rowCharLength * 10 + 5}px"

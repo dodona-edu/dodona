@@ -168,9 +168,16 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
         return options;
     }
 
+    get colorClass(): string {
+        if (this.data.type == "annotation") {
+            return "user";
+        }
+        return this.data.type;
+    }
+
     render(): TemplateResult {
         return html`
-            <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
+            <div class="annotation ${this.colorClass}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${this.header}

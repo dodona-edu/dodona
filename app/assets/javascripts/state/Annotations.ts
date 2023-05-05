@@ -9,9 +9,10 @@ export type AnnotationData = MachineAnnotationData | UserAnnotationData;
 const annotationOrder: Record<AnnotationType, number> = {
     annotation: 0,
     question: 1,
-    error: 2,
-    warning: 3,
-    info: 4,
+    strikethrough: 2,
+    error: 3,
+    warning: 4,
+    info: 5,
 };
 
 export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): number {
@@ -19,7 +20,7 @@ export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): n
 }
 
 export function isUserAnnotation(annotation: AnnotationData): annotation is UserAnnotationData {
-    return annotation.type === "annotation" || annotation.type === "question";
+    return annotation.type === "annotation" || annotation.type === "question" || annotation.type === "strikethrough";
 }
 
 class AnnotationState extends State {
@@ -32,7 +33,7 @@ class AnnotationState extends State {
         }
 
         if (this.visibility === "important") {
-            return annotation.type === "error" || annotation.type === "annotation" || annotation.type === "question";
+            return annotation.type === "error" || annotation.type === "annotation" || annotation.type === "question" || annotation.type === "strikethrough";
         }
 
         return true;

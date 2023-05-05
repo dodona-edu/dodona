@@ -88,7 +88,7 @@ class UserAnnotationState extends State {
     public async addToMap(annotation: UserAnnotationData): Promise<void> {
         this.byId.set(annotation.id, annotation);
         if (!annotation.thread_root_id) {
-            const line = annotation.line_nr + annotation.rows - 1 ?? 0;
+            const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
             if (this.rootIdsByLine.has(line)) {
                 const annotations = this.rootIdsByLine.get(line);
                 this.rootIdsByLine.set(line, [...annotations, annotation.id]);
@@ -119,7 +119,7 @@ class UserAnnotationState extends State {
     private async removeFromMap(annotation: UserAnnotationData): Promise<void> {
         this.byId.delete(annotation.id);
         if (!annotation.thread_root_id) {
-            const line = annotation.line_nr + annotation.rows - 1 ?? 0;
+            const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
             if (this.rootIdsByLine.has(line)) {
                 const annotations = this.rootIdsByLine.get(line);
                 this.rootIdsByLine.set(line, annotations?.filter(id => id !== annotation.id));

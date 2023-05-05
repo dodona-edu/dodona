@@ -45,8 +45,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     getRangeFromAnnotation(annotation: AnnotationData | SelectedRange): range {
         const isMachineAnnotation = ["error", "warning", "info"].includes((annotation as AnnotationData).type);
         const rowsLength = annotation.rows ?? 1;
-        let lastRow = annotation.row + rowsLength ?? 0;
-        let firstRow = annotation.row + 1 ?? 0;
+        let lastRow = annotation.row ? annotation.row + rowsLength : 0;
+        let firstRow = annotation.row ? annotation.row + 1 : 0;
 
         if (!isMachineAnnotation) {
             // rows on user annotations are 1-based, so we need to subtract 1

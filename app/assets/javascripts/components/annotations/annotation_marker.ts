@@ -3,6 +3,7 @@ import { render, html, LitElement, TemplateResult } from "lit";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
 import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
 import { StateController } from "state/state_system/StateController";
+import { AnnotationType } from "state/UserAnnotations";
 
 /**
  * A marker that styles the slotted content and shows a tooltip with annotations.
@@ -27,6 +28,22 @@ export class AnnotationMarker extends LitElement {
         strikethrough: "var(--error-color, red)",
         question: "var(--question-color, orange)",
     };
+
+    static getStyle(type: AnnotationType): string {
+        if (["error", "warning", "info"].includes(type)) {
+            return `text-decoration: wavy underline ${AnnotationMarker.colors[type]};`;
+        } else if (type === "strikethrough") {
+            return `text-decoration: line-through ${AnnotationMarker.colors[type]};`;
+        } else {
+            return `
+                background: ${AnnotationMarker.colors[type]};
+                padding-top: 2px;
+                padding-bottom: 2px;
+                margin-top: -2px;
+                margin-bottom: -2px;
+            `;
+        }
+    }
 
     static tippyInstances: Tippy[] = [];
     // Using a singleton to avoid multiple tooltips being open at the same time.
@@ -83,39 +100,15 @@ export class AnnotationMarker extends LitElement {
         return this.annotations.sort(compareAnnotationOrders);
     }
 
-    get machineAnnotationColor(): string | undefined {
-        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a));
-        return firstMachineAnnotation && AnnotationMarker.colors[firstMachineAnnotation.type];
-    }
-
-    get machineAnnotationMarkStyle(): string | undefined {
-        return this.machineAnnotationColor && `text-decoration: wavy underline ${this.machineAnnotationColor};`;
-    }
-
     get machineAnnotationMarkerSVG(): TemplateResult | undefined {
-        return this.machineAnnotationColor && html`<svg style="position: absolute; top: 9px; left: -7px" width="14" height="14" viewBox="0 0 24 24">
-            <path fill="${this.machineAnnotationColor}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>
+        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a));
+        return firstMachineAnnotation && html`<svg style="position: absolute; top: 9px; left: -7px" width="14" height="14" viewBox="0 0 24 24">
+            <path fill="${AnnotationMarker.colors[firstMachineAnnotation.type]}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>
         </svg>`;
     }
 
-    get userAnnotationMarkStyle(): string {
-        const firstUserAnnotation = this.sortedAnnotations.find(a => isUserAnnotation(a));
-        if (firstUserAnnotation && firstUserAnnotation.type === "strikethrough") {
-            return `
-                text-decoration: line-through;
-                text-decoration-color: ${AnnotationMarker.colors[firstUserAnnotation.type]};
-            `;
-        }
-        if (firstUserAnnotation) {
-            return `
-                background: ${AnnotationMarker.colors[firstUserAnnotation.type]};
-                padding-top: 2px;
-                padding-bottom: 2px;
-                margin-top: -2px;
-                margin-bottom: -2px;
-            `;
-        }
-        return "";
+    get annotationStyles(): string {
+        return this.sortedAnnotations.reverse().map(a => AnnotationMarker.getStyle(a.type)).join(" ");
     }
 
     render(): TemplateResult {
@@ -124,8 +117,7 @@ export class AnnotationMarker extends LitElement {
         return html`<style>
             :host {
                 position: relative;
-                ${this.userAnnotationMarkStyle}
-                ${this.machineAnnotationMarkStyle}
+                ${this.annotationStyles}
             }
         </style><slot>${this.machineAnnotationMarkerSVG}</slot>`;
     }

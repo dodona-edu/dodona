@@ -114,7 +114,7 @@ class SeriesController < ApplicationController
       @series.errors.add(:course, I18n.t('errors.messages.blank'))
     end
     respond_to do |format|
-      if @series.course.present? and @series.save
+      if @series.course.present? && @series.save
         format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else

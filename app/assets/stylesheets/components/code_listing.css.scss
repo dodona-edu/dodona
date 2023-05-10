@@ -106,28 +106,44 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
         display: none;
         position: absolute;
         right: 15px;
-        top: -10px;
-        background-color: $background;
+        top: -12px;
 
-        &:hover {
-          opacity: 1;
-          background: color.mix($primary, $background, 10%);
+        .btn-fab-small-extended {
+          display: none;
         }
 
-        &.is-range-end {
+        &:hover {
+          .btn-fab-small-extended {
+            display: inline-flex;
+          }
+
+          .btn-fab-small {
+            display: none;
+          }
+        }
+
+        &.expanded {
           display: inline-flex;
+
+          .btn-fab-small-extended {
+            display: inline-flex;
+          }
+
+          .btn-fab-small {
+            display: none;
+          }
         }
 
         &::after {
           width: 0;
           height: 0;
-          border-bottom: 5px solid transparent;
-          border-top: 5px solid transparent;
-          border-left: 5px solid $primary;
+          border-bottom: 8px solid transparent;
+          border-top: 8px solid transparent;
+          border-left: 8px solid $secondary-container;
           content: " ";
           position: absolute;
-          top: 14px;
-          right: 2px;
+          top: 13px;
+          right: -7px;
         }
       }
 
@@ -145,8 +161,20 @@ $annotation-user-background: color.mix($annotation-user, $background, 20%);
         }
       }
 
-      .lineno:hover .annotation-button:not(.hide) {
+      .lineno:hover .annotation-button {
         display: inline-flex;
+
+        &.hide {
+          display: none;
+
+          &.expanded {
+            display: inline-flex;
+
+            .btn-fab-small {
+              display: none;
+            }
+          }
+        }
       }
 
       .rouge-code {

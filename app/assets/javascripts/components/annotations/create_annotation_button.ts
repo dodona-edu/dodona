@@ -22,11 +22,10 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     get addAnnotationTitle(): string {
         const key = annotationState.isQuestionMode ? "question" : "annotation";
 
-        if (this.isRangeEnd) {
-            return I18n.t(`js.annotations.options.add_${key}_for_selection`);
-        }
 
-        return I18n.t(`js.annotations.options.add_${key}`);
+        return I18n.t(`js.annotations.options.add_${key}_for_selection`);
+
+        // return I18n.t(`js.annotations.options.add_${key}`);
     }
 
     openForm(): void {
@@ -62,24 +61,18 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
-                ${this.isRangeEnd ? html`
-                    <button class="btn annotation-button is-range-end with-icon btn-text btn-elevated "
-                           style="right: ${this.rowCharLength * 10 + 5}px"
+                <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
+                            style="right: ${this.rowCharLength * 10 + 12}px;">
+                    <button class="btn btn-fab-small-extended with-icon"
                             @pointerup=${() => this.openForm()}>
                        <i class="mdi mdi-comment-plus-outline "></i>
-                        ${this.isRangeEnd ? this.addAnnotationTitle : ""}
+                        ${this.addAnnotationTitle}
                     </button>
-                ` : html`
-                    <button class="btn annotation-button btn-icon btn-elevated  ${this.rangeExists ? "hide" : ""}"
-                           style="right: ${this.rowCharLength * 10 + 5}px"
-                            @pointerup=${() => this.openForm()}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
-                            data-bs-trigger="hover"
-                            title="${this.addAnnotationTitle}">
+                    <button class="btn btn-fab-small"
+                            @pointerup=${() => this.openForm()}>
                        <i class="mdi mdi-comment-plus-outline "></i>
                     </button>
-                `}
+                </div>
             </div>`;
     }
 }

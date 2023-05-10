@@ -209,6 +209,48 @@
   }
 }
 
+.btn.btn-fab-small {
+  height: 40px;
+  width: 40px;
+  border-radius: 12px;
+  background: $secondary-container;
+  color: $on-secondary-container;
+  padding: 6px;
+
+  @include shadow-z2;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:disabled,
+  &.disabled {
+    opacity: 1;
+    filter: brightness(0.95);
+
+    @include shadow-z3;
+  }
+}
+
+.btn.btn-fab-small-extended {
+  height: 40px;
+  border-radius: 12px;
+  background: $secondary-container;
+  color: $on-secondary-container;
+
+  @include shadow-z2;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:disabled,
+  &.disabled {
+    opacity: 1;
+    filter: brightness(0.95);
+
+    @include shadow-z3;
+  }
+}
+
 .btn-group {
   & > .btn {
     padding-left: 12px;

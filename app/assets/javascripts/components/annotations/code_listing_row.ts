@@ -131,6 +131,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
         const fullLineAnnotations = this.userAnnotationsToMark
             .filter(a => !a.column&& !a.columns)
+            .filter(a => annotationState.isHovered(a) || !annotationState.isVisible(a))
             .sort(compareAnnotationOrders);
         if (fullLineAnnotations.length > 0) {
             return `code-line-${fullLineAnnotations[0].type}`;

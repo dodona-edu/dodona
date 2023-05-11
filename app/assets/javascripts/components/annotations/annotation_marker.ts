@@ -27,6 +27,22 @@ export class AnnotationMarker extends LitElement {
         question: "var(--question-color, orange)",
     };
 
+    static getStyle(annotation: AnnotationData): string {
+        if (["error", "warning", "info"].includes(annotation.type)) {
+            return `text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} ${annotationState.isHovered(annotation) ? 2 : 1}px;`;
+        } else if (annotationState.isHovered(annotation) || !annotationState.isVisible(annotation)) {
+            return `
+                background: ${AnnotationMarker.colors[annotation.type]};
+                padding-top: 2px;
+                padding-bottom: 2px;
+                margin-top: -2px;
+                margin-bottom: -2px;
+            `;
+        } else {
+            return "";
+        }
+    }
+
     static tippyInstances: Tippy[] = [];
     // Using a singleton to avoid multiple tooltips being open at the same time.
     static tippySingleton = createSingleton([], {
@@ -79,36 +95,27 @@ export class AnnotationMarker extends LitElement {
     }
 
     get sortedAnnotations(): AnnotationData[] {
-        return this.annotations.sort(compareAnnotationOrders);
-    }
-
-    get machineAnnotationColor(): string | undefined {
-        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a));
-        return firstMachineAnnotation && AnnotationMarker.colors[firstMachineAnnotation.type];
-    }
-
-    get machineAnnotationMarkStyle(): string | undefined {
-        return this.machineAnnotationColor && `text-decoration: wavy underline ${this.machineAnnotationColor};`;
+        return this.annotations.sort( (a, b) => {
+            if (annotationState.isHovered(a)) {
+                return -1;
+            } else if (annotationState.isHovered(b)) {
+                return 1;
+            } else {
+                return compareAnnotationOrders(a, b);
+            }
+        });
     }
 
     get machineAnnotationMarkerSVG(): TemplateResult | undefined {
-        return this.machineAnnotationColor && html`<svg style="position: absolute; top: 9px; left: -7px" width="14" height="14" viewBox="0 0 24 24">
-            <path fill="${this.machineAnnotationColor}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>
+        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a));
+        const size = annotationState.isHovered(firstMachineAnnotation) ? 20 : 14;
+        return firstMachineAnnotation && html`<svg style="position: absolute; top: ${16 - size/2}px; left: -${size/2}px" width="${size}" height="${size}" viewBox="0 0 24 24">
+            <path fill="${AnnotationMarker.colors[firstMachineAnnotation.type]}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>
         </svg>`;
     }
 
-    get userAnnotationMarkStyle(): string {
-        const firstUserAnnotation = this.sortedAnnotations.find(a => isUserAnnotation(a));
-        if (firstUserAnnotation) {
-            return `
-                background: ${AnnotationMarker.colors[firstUserAnnotation.type]};
-                padding-top: 2px;
-                padding-bottom: 2px;
-                margin-top: -2px;
-                margin-bottom: -2px;
-            `;
-        }
-        return "";
+    get annotationStyles(): string {
+        return this.sortedAnnotations.reverse().map(a => AnnotationMarker.getStyle(a)).join(" ");
     }
 
     render(): TemplateResult {
@@ -117,8 +124,7 @@ export class AnnotationMarker extends LitElement {
         return html`<style>
             :host {
                 position: relative;
-                ${this.userAnnotationMarkStyle}
-                ${this.machineAnnotationMarkStyle}
+                ${this.annotationStyles}
             }
         </style><slot>${this.machineAnnotationMarkerSVG}</slot>`;
     }

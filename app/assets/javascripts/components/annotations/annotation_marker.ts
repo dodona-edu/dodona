@@ -20,26 +20,27 @@ export class AnnotationMarker extends LitElement {
 
 
     static colors = {
-        error: "var(--error-color, red)",
-        warning: "var(--warning-color, yellow)",
-        info: "var(--info-color, blue)",
-        annotation: "var(--annotation-color, green)",
-        question: "var(--question-color, orange)",
+        "error": "var(--error-color, red)",
+        "warning": "var(--warning-color, yellow)",
+        "info": "var(--info-color, blue)",
+        "annotation": "var(--annotation-color, green)",
+        "question": "var(--question-color, orange)",
+        "annotation-intense": "var(--annotation-intense-color, green)",
+        "question-intense": "var(--question-intense-color, orange)",
     };
 
     static getStyle(annotation: AnnotationData): string {
         if (["error", "warning", "info"].includes(annotation.type)) {
             return `text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} ${annotationState.isHovered(annotation) ? 2 : 1}px;`;
-        } else if (annotationState.isHovered(annotation) || !annotationState.isVisible(annotation)) {
+        } else {
+            const colorKey = annotationState.isHovered(annotation) ? `${annotation.type}-intense` : annotation.type;
             return `
-                background: ${AnnotationMarker.colors[annotation.type]};
+                background: ${AnnotationMarker.colors[colorKey]};
                 padding-top: 2px;
                 padding-bottom: 2px;
                 margin-top: -2px;
                 margin-bottom: -2px;
             `;
-        } else {
-            return "";
         }
     }
 

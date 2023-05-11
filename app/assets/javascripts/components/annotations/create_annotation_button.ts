@@ -58,11 +58,24 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return this.row.toString().length;
     }
 
+    dragStart(e: DragEvent): void {
+        userAnnotationState.selectedRange = {
+            row: this.row,
+            rows: 1,
+        };
+        e.dataTransfer?.setData("origin", this.row.toString());
+        e.dataTransfer.dropEffect = "link";
+    }
+
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
                 <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
-                            style="right: ${this.rowCharLength * 10 + 12}px;">
+                     style="right: ${this.rowCharLength * 10 + 12}px;"
+                     draggable="${!this.rangeExists}"
+                     @dragstart=${e => this.dragStart(e)}
+                     @dragend=${() => this.openForm()}
+                >
                     <button class="btn btn-fab-small-extended with-icon"
                             @pointerup=${() => this.openForm()}>
                        <i class="mdi mdi-comment-plus-outline "></i>

@@ -72,8 +72,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
-        // This default value is a hack to be able to mark the whole line if there is no code on the line.
-        const codeToMark = this.renderedCode || "<span style=\"user-select: none;\"> </span>";
+        const codeToMark = this.renderedCode;
         let annotationsMarked = wrapRangesInHtml(
             codeToMark,
             annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
@@ -124,20 +123,18 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         userAnnotationState.selectedRange = undefined;
     }
 
-    get codeLineClass(): string {
-        if (this.shouldMarkSelection && !userAnnotationState.selectedRange.column && !userAnnotationState.selectedRange.columns) {
-            return `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}`;
-        }
-
-        const fullLineAnnotations = this.userAnnotationsToMark
+    get fullLineAnnotations(): UserAnnotationData[] {
+        return this.userAnnotationsToMark
             .filter(a => !a.column&& !a.columns)
             .sort(compareAnnotationOrders);
-        if (fullLineAnnotations.length > 0) {
-            const hovered = fullLineAnnotations.find(a => annotationState.isHovered(a));
-            return `code-line-${fullLineAnnotations[0].type} ${hovered ? "hovered" : ""}`;
-        }
+    }
 
-        return "";
+    get hasFullLineSelection(): boolean {
+        return this.shouldMarkSelection && !userAnnotationState.selectedRange.column && !userAnnotationState.selectedRange.columns;
+    }
+
+    get codeLineClass(): string {
+        return this.hasFullLineSelection ? `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}` : "";
     }
 
     render(): TemplateResult {
@@ -149,7 +146,13 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
+                    ${this.fullLineAnnotations.length > 0 ? html`
+                        <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                            <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
+                        </d-annotation-marker>
+                    ` : html`
+                        <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
+                    `}
                     <d-annotations-cell .row=${this.row}
                                         .showForm="${this.showForm}"
                                         @close-form=${() => this.closeForm()}

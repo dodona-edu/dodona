@@ -51,7 +51,7 @@ export class AnnotationMarker extends LitElement {
         interactive: true,
         interactiveDebounce: 25,
         delay: [500, 25],
-        offset: [-10, 2],
+        offset: [-10, -2],
         // This transition fixes a bug where overlap with the previous tooltip was taken into account when positioning
         moveTransition: "transform 0.001s ease-out",
         appendTo: () => document.querySelector(".code-table"),

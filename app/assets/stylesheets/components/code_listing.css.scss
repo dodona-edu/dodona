@@ -186,21 +186,26 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           padding-left: 5px;
           white-space: pre-wrap;
           word-break: break-word;
+          min-height: 20px;
+          margin-bottom: -3px;
+          padding-bottom: 3px;
+          margin-top: -2px;
+          padding-top: 2px;
 
           &.code-line-question {
-            background-color: $annotation-question-background;
+            background-color: $annotation-question-background-intense;
             width: 100%;
 
-            &.hovered {
+            d-annotation-marker {
               background-color: $annotation-question-background-intense;
             }
           }
 
           &.code-line-annotation {
-            background-color: $annotation-user-background;
+            background-color: $annotation-user-background-intense;
             width: 100%;
 
-            &.hovered {
+            d-annotation-marker {
               background-color: $annotation-user-background-intense;
             }
           }

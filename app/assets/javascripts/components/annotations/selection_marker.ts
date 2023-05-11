@@ -14,7 +14,7 @@ class SelectionMarker extends LitElement {
     render(): TemplateResult {
         return html`<style>
             :host {
-                background: ${AnnotationMarker.colors[annotationState.isQuestionMode ? "question" : "annotation"]};
+                background: ${AnnotationMarker.colors[annotationState.isQuestionMode ? "question-intense" : "annotation-intense"]};
                 padding-top: 2px;
                 padding-bottom: 2px;
                 margin-top: -2px;

@@ -5,7 +5,7 @@ declare interface Window {
 }
 
 declare class MathJaxObject {
-    typeset?(args?: string[]) :void;
+    typeset?(args?: string[] | Node[]) :void;
 
     tex: {
         inlineMath: string[][];

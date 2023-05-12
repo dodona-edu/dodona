@@ -115,8 +115,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     protected updated(_changedProperties: PropertyValues): void {
         super.updated(_changedProperties);
 
-        // Ask MathJax to search for math in the annotations
-        window.MathJax.typeset();
+        try {
+            // Ask MathJax to search for math in the annotations
+            window.MathJax.typeset([this]);
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
         // Reinitialize tooltips
         initTooltips(this);
     }

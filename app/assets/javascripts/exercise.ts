@@ -12,7 +12,12 @@ function showLightbox(content): void {
     lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).
-        window.MathJax.typeset([".gslide-description"]);
+        try {
+            window.MathJax.typeset( Array.from(document.querySelectorAll(".gslide-description")));
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
     });
     lightbox.open();
 

@@ -36,7 +36,7 @@ class QuestionsTest < ApplicationSystemTestCase
         line_element.hover
 
         within line_element do
-          button = find('button.annotation-button')
+          button = find('.annotation-button button')
           button.click
           assert_css 'form.annotation-submission'
           # cancel form to limit page space taken

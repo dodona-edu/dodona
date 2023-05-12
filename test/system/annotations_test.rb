@@ -50,7 +50,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       (1..@code_lines.length).each do |index|
         line = "tr#line-#{index}"
         find(line).hover
-        assert_css 'button.annotation-button'
+        assert_css '.annotation-button button'
       end
     end
   end
@@ -60,7 +60,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
     within '.code-listing' do
       @code_lines.each do |code_line|
         assert_text code_line
@@ -74,7 +74,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -94,7 +94,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -111,7 +111,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
     within 'form.annotation-submission' do
       click_button 'Cancel'
     end
@@ -261,7 +261,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = ''
     within 'form.annotation-submission' do
@@ -286,7 +286,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do

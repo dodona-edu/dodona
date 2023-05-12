@@ -379,7 +379,7 @@ test("click on comment button", async () => {
 
     await nextFrame();
     expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
-    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
     await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
     await userEvent.click(annotationButton);

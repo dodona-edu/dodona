@@ -115,25 +115,29 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           display: none;
         }
 
-        &:hover {
-          .btn-fab-small-extended {
-            display: inline-flex;
-          }
+        @include media-breakpoint-up(lg) {
+          &:hover {
+            .btn-fab-small-extended {
+              display: inline-flex;
+            }
 
-          .btn-fab-small {
-            display: none;
+            .btn-fab-small {
+              display: none;
+            }
           }
         }
 
         &.expanded {
           display: inline-flex;
 
-          .btn-fab-small-extended {
-            display: inline-flex;
-          }
+          @include media-breakpoint-up(lg) {
+            .btn-fab-small-extended {
+              display: inline-flex;
+            }
 
-          .btn-fab-small {
-            display: none;
+            .btn-fab-small {
+              display: none;
+            }
           }
         }
 
@@ -173,8 +177,16 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           &.expanded {
             display: inline-flex;
 
-            .btn-fab-small {
-              display: none;
+            @include media-breakpoint-up(lg) {
+              .btn-fab-small {
+                display: none;
+              }
+            }
+
+            @include media-breakpoint-down(lg) {
+              .btn-fab-small-extended {
+                display: none;
+              }
             }
           }
         }

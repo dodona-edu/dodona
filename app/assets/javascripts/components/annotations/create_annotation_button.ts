@@ -70,6 +70,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
+                <div class="drop-target-extension"></div>
                 <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"

@@ -218,9 +218,6 @@
     "severity": {
       "type": "string",
       "enum": ["error", "warning", "info"]
-    },
-    "debug": {
-      "type": "boolean"
     }
   }
 }

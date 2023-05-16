@@ -340,7 +340,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
   end
 
   test 'intentionally annoyingly wrong json should fail' do
-    assert_raises ResultConstructorError do
+    error = assert_raises ResultConstructorError do
       construct_result([
         # This command is invalid
         '{ "command": "start-nothing" }',
@@ -350,8 +350,9 @@ class ResultConstructorTest < ActiveSupport::TestCase
         '{ "expected": "70", "command": "start-test" }'
       ])
     end
+    assert_equal 'Judge output is not a valid json', error.title
 
-    assert_raises ResultConstructorError do
+    error = assert_raises ResultConstructorError do
       construct_result([
         # There is a typo in "command"
         '{ "commund": "start-judgement" }',
@@ -361,8 +362,9 @@ class ResultConstructorTest < ActiveSupport::TestCase
         '{ "expected": "70", "command": "start-test" }'
       ])
     end
+    assert_equal 'Dodona encountered an error while processing this valid judge output', error.title
 
-    assert_raises ResultConstructorError do
+    error = assert_raises ResultConstructorError do
       construct_result([
         '{ "command": "start-judgement" }',
         '{ "title": "Test", "command": "start-tab" }',
@@ -372,14 +374,16 @@ class ResultConstructorTest < ActiveSupport::TestCase
         '{ "expected": "70", "command": "start-test" }'
       ])
     end
+    assert_equal 'Constructed result based on judge output is not a valid json', error.title
   end
 
   test 'invalid code in the result constructor should fail' do
     rc = ResultConstructor.new('en')
     rc.stubs('start_judgement').raises('error')
-    assert_raises ResultConstructorError do
+    error = assert_raises(ResultConstructorError) do
       rc.feed('{ "command": "start-judgement" }')
     end
+    assert_equal 'Dodona encountered an error while processing this valid judge output', error.title
   end
 
   private

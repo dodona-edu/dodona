@@ -32,6 +32,15 @@ class ResultConstructor
     @judge_output = judge_output
 
     split_jsons(judge_output).each do |json|
+      if json.key?(:debug) && json[:debug] == true &&
+         !PART_SCHEMER.valid?(json.deep_stringify_keys) &&
+         !FULL_SCHEMER.valid?(json.deep_stringify_keys)
+        raise ResultConstructorError.new(
+          'Judge output is not a valid json',
+          json.to_s
+        )
+      end
+
       if json.key?(:command)
         begin
           # Clone the object to have better errors, since the update method

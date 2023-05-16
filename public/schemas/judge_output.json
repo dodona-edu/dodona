@@ -14,9 +14,10 @@
         "annotations": { "type": "array", "items": { "$ref": "#/definitions/annotation" } }
       },
       "not": {
-        "required": ["command"],
+        "required": ["command", "debug"],
         "properties": {
-          "command": { "type": "string" }
+          "command": { "type": "string" },
+          "debug":   { "type": "boolean"}
         }
       }
     },

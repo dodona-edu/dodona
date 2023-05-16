@@ -339,6 +339,49 @@ class ResultConstructorTest < ActiveSupport::TestCase
     end
   end
 
+  test 'intentionally annoyingly wrong json should fail' do
+    assert_raises ResultConstructorError do
+      construct_result([
+        # This command is invalid
+        '{ "command": "start-nothing" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+
+    assert_raises ResultConstructorError do
+      construct_result([
+        # There is a typo in "command"
+        '{ "commund": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+
+    assert_raises ResultConstructorError do
+      construct_result([
+        '{ "command": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        # A nested object is invalid: a description is a list
+        '{ "description": ["yes"], "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+  end
+
+  test 'invalid code in the result constructor should fail' do
+    rc = ResultConstructor.new('en')
+    rc.stubs('start_judgement').raises('error')
+    assert_raises ResultConstructorError do
+      rc.feed('{ "command": "start-judgement" }')
+    end
+  end
+
   private
 
   def construct_result(food, locale: 'en', timeout: false)

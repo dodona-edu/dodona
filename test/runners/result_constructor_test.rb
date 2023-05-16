@@ -189,7 +189,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       status: 'correct',
       description: 'Correct',
       annotations: [
-        { row: 0, column: nil, rows: 1, columns: nil, text: 'asdf', type: 'info', externalUrl: nil }
+        { row: 0, rows: 1, text: 'asdf', type: 'info' }
       ]
     }, construct_result([
       '{ "command": "start-judgement" }',

@@ -268,6 +268,18 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         display: inline-block;
         padding-top: 1px;
       }
+
+      // This is a hack to extend the drop target more to the left
+      .drop-target-extension {
+        position: absolute;
+        width: 200px;
+        height: 20px;
+        top: 0;
+        right: -4px;
+        opacity: 0;
+        display: block;
+        left: -200px;
+      }
     }
   }
 

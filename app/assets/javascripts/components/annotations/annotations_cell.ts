@@ -50,6 +50,13 @@ export class AnnotationsCell extends ShadowlessLitElement {
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
         };
 
+        if (this.row > 0 && userAnnotationState.selectedRange) {
+            annotationData["line_nr"] = userAnnotationState.selectedRange.row;
+            annotationData["rows"] = userAnnotationState.selectedRange.rows;
+            annotationData["column"] = userAnnotationState.selectedRange.column;
+            annotationData["columns"] = userAnnotationState.selectedRange.columns;
+        }
+
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);

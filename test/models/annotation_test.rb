@@ -16,6 +16,9 @@
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
 #  thread_root_id      :integer
+#  column              :integer
+#  rows                :integer          default(1), not null
+#  columns             :integer
 #
 require 'test_helper'
 

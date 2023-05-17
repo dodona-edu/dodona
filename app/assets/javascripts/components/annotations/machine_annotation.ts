@@ -2,6 +2,7 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { MachineAnnotationData } from "state/MachineAnnotations";
+import { annotationState } from "state/Annotations";
 
 
 /**
@@ -29,7 +30,9 @@ export class MachineAnnotation extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <div class="annotation machine-annotation ${this.data.type}">
+            <div class="annotation machine-annotation ${this.data.type}"
+                 @mouseenter="${() => annotationState.hoveredAnnotation = this.data}"
+                 @mouseleave="${() => annotationState.hoveredAnnotation = null}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${I18n.t(`js.annotation.type.${this.data.type}`)}

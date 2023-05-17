@@ -45,8 +45,7 @@ beforeEach(async () => {
     </div>`);
     codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
     annotationState.visibility = "all";
-    userAnnotationState.rootIdsByLine.clear();
-    userAnnotationState.byId.clear();
+    userAnnotationState.reset();
     machineAnnotationState.setMachineAnnotations([]);
 });
 
@@ -227,7 +226,9 @@ test("annotations should be transmitted into view", async () => {
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
     await userAnnotationState.addToMap({
         "id": 2,
@@ -247,7 +248,9 @@ test("annotations should be transmitted into view", async () => {
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
     await nextFrame();
 
@@ -273,7 +276,9 @@ test("feedback table should support more than 1 annotation per row", async () =>
         "released": true,
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
     await userAnnotationState.addToMap({
@@ -294,7 +299,9 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
     await nextFrame();
 
@@ -320,7 +327,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
     await userAnnotationState.addToMap({
@@ -341,7 +350,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
 
     codeListing.addMachineAnnotations([
@@ -360,7 +371,7 @@ test("feedback table should be able to contain both machine annotations and user
 test("ensure that all buttons are created", async () => {
     codeListing.initAnnotateButtons();
     await nextFrame();
-    expect(document.querySelectorAll(".annotation-button").length).toBe(3);
+    expect(document.querySelectorAll("d-create-annotation-button").length).toBe(3);
 });
 
 test("click on comment button", async () => {
@@ -368,7 +379,7 @@ test("click on comment button", async () => {
 
     await nextFrame();
     expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
-    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
     await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
     await userEvent.click(annotationButton);

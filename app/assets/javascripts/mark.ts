@@ -125,7 +125,7 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
  * @param wrapper the type of wrapper to create
  * @param callback the callback to call for each wrapper node
  */
-export function wrapRangesInHtml(target: string, ranges: range[], wrapper: string, callback: callback): string {
+export function wrapRangesInHtml(target: string, ranges: range[], wrapper: string, callback: callback = () => undefined): string {
     const root = document.createElement("div");
     root.innerHTML = target;
     wrapRanges(root, ranges, wrapper, callback);

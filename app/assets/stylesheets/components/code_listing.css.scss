@@ -1,4 +1,5 @@
 @use "sass:map";
+@use "sass:color";
 $dot-size: 9px;
 
 // Annotation colors
@@ -7,8 +8,24 @@ $annotation-user: $success;
 $annotation-error: $danger;
 $annotation-warning: $warning;
 $annotation-info: $info;
+$annotation-question-background: color.mix($annotation-question, $background, 8%);
+$annotation-user-background: color.mix($annotation-user, $background, 8%);
+$annotation-question-background-intense: color.mix($annotation-question, $background, 20%);
+$annotation-user-background-intense: color.mix($annotation-user, $background, 20%);
 
 .code-table {
+  &.selection-color-question {
+    ::selection {
+      background-color: $annotation-question-background-intense;
+    }
+  }
+
+  &.selection-color-annotation {
+    ::selection {
+      background-color: $annotation-user-background-intense;
+    }
+  }
+
   .dot {
     float: left;
     margin-left: 4px;
@@ -59,7 +76,6 @@ $annotation-info: $info;
 
     .code-listing {
       display: block;
-      overflow-x: auto;
       white-space: nowrap;
       background-color: $content-bg;
 
@@ -91,27 +107,66 @@ $annotation-info: $info;
       .annotation-button {
         display: none;
         position: absolute;
-        width: 30px;
-        height: 30px;
-        left: -15px;
-        margin-top: -7px;
-        border-radius: 50%;
-        padding-top: 4px;
+        right: 15px;
+        top: -12px;
+        z-index: 2;
+
+        .btn-fab-small-extended {
+          display: none;
+        }
+
+        @include media-breakpoint-up(lg) {
+          &:hover {
+            .btn-fab-small-extended {
+              display: inline-flex;
+            }
+
+            .btn-fab-small {
+              display: none;
+            }
+          }
+        }
+
+        &.expanded {
+          display: inline-flex;
+
+          @include media-breakpoint-up(lg) {
+            .btn-fab-small-extended {
+              display: inline-flex;
+            }
+
+            .btn-fab-small {
+              display: none;
+            }
+          }
+        }
+
+        &::after {
+          width: 0;
+          height: 0;
+          border-bottom: 8px solid transparent;
+          border-top: 8px solid transparent;
+          border-left: 8px solid $secondary-container;
+          content: " ";
+          position: absolute;
+          top: 13px;
+          right: -7px;
+        }
+
+        &:hover::after {
+          opacity: 1;
+          filter: brightness(0.95);
+        }
       }
 
-      .annotation-button:hover {
-        transform: scale(1.15);
-        transition: 0.1s ease-in-out;
-      }
-
-      .lineno:first-child {
+      d-code-listing-row:first-child {
         .rouge-code,
         .rouge-gutter {
           padding-top: 5px;
         }
       }
 
-      .lineno:last-child {
+      d-code-listing-row:last-child {
         .rouge-code,
         .rouge-gutter {
           padding-bottom: 5px;
@@ -119,7 +174,27 @@ $annotation-info: $info;
       }
 
       .lineno:hover .annotation-button {
-        display: block;
+        display: inline-flex;
+
+        &.hide {
+          display: none;
+
+          &.expanded {
+            display: inline-flex;
+
+            @include media-breakpoint-up(lg) {
+              .btn-fab-small {
+                display: none;
+              }
+            }
+
+            @include media-breakpoint-down(lg) {
+              .btn-fab-small-extended {
+                display: none;
+              }
+            }
+          }
+        }
       }
 
       .rouge-code {
@@ -129,6 +204,29 @@ $annotation-info: $info;
           padding-left: 5px;
           white-space: pre-wrap;
           word-break: break-word;
+          min-height: 20px;
+          margin-bottom: -3px;
+          padding-bottom: 3px;
+          margin-top: -2px;
+          padding-top: 2px;
+
+          &.code-line-question {
+            background-color: $annotation-question-background-intense;
+            width: 100%;
+
+            d-annotation-marker {
+              background-color: $annotation-question-background-intense;
+            }
+          }
+
+          &.code-line-annotation {
+            background-color: $annotation-user-background-intense;
+            width: 100%;
+
+            d-annotation-marker {
+              background-color: $annotation-user-background-intense;
+            }
+          }
         }
       }
 
@@ -161,14 +259,20 @@ $annotation-info: $info;
         min-width: 100%;
       }
     }
+
+    d-code-listing-row {
+      display: contents;
+
+      pre.code-line {
+        overflow: visible;
+        display: inline-block;
+        padding-top: 1px;
+      }
+    }
   }
 
   #feedback-table-global-annotations.has-annotations {
     padding-bottom: 10px;
-  }
-
-  d-code-listing-row {
-    display: contents;
   }
 
   .thread {
@@ -372,12 +476,22 @@ $annotation-info: $info;
       border-color: $danger;
     }
   }
+
+  td {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
 }
 
-d-machine-annotation-marker {
+d-annotation-marker,
+d-selection-marker {
   --info-color: #{$annotation-info};
   --warning-color: #{$annotation-warning};
   --error-color: #{$annotation-error};
+  --question-color: #{$annotation-question-background};
+  --annotation-color: #{$annotation-user-background};
+  --question-intense-color: #{$annotation-question-background-intense};
+  --annotation-intense-color: #{$annotation-user-background-intense};
 }
 
 .marker-tooltip {
@@ -396,5 +510,25 @@ d-machine-annotation-marker {
     border-right: none;
     border-top: none;
     border-bottom: none;
+
+    #kebab-menu {
+      display: none;
+    }
+  }
+}
+
+.no-selection-outside-code {
+  user-select: none;
+
+  d-code-listing-row {
+    user-select: text;
+
+    td {
+      user-select: text;
+
+      d-annotations-cell {
+        user-select: none;
+      }
+    }
   }
 }

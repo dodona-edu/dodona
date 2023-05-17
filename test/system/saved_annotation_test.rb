@@ -34,7 +34,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     assert_no_css 'd-saved-annotations-sidecard'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
@@ -70,7 +70,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     assert_no_css 'd-saved-annotations-sidecard'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
@@ -99,7 +99,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     # assert_css `d-saved-annotations-sidecard td[title="#{sa.title}"]`
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button button').click
 
     within 'form.annotation-submission' do
       assert_css 'd-saved-annotation-input'

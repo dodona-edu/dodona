@@ -77,10 +77,10 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                      @dragstart=${e => this.dragStart(e)}
                      @dragend=${() => this.openForm()}
                 >
-                    <button class="btn btn-fab-small-extended with-icon"
+                    <button class="btn btn-fab-small-extended with-icon right"
                             @pointerup=${() => this.openForm()}>
-                       <i class="mdi mdi-comment-plus-outline "></i>
                         ${this.addAnnotationTitle}
+                       <i class="mdi mdi-comment-plus-outline "></i>
                     </button>
                     <button class="btn btn-fab-small"
                             @pointerup=${() => this.openForm()}>

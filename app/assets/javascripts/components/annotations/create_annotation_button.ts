@@ -46,6 +46,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
 
     get isRangeEnd(): boolean {
         return this.rangeExists && !userAnnotationState.showForm &&
+            !userAnnotationState.dragStart &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
@@ -58,11 +59,14 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return this.row.toString().length;
     }
 
-    dragStart(): void {
+    async dragStart(): Promise<void> {
         userAnnotationState.selectedRange = {
             row: this.row,
             rows: 1,
         };
+        // updating dragStart triggers a rerender that hides this button,
+        // so we need to wait for the drag trigger to complete before we can update dragStart
+        await new Promise(resolve => setTimeout(resolve, 10));
         userAnnotationState.dragStart = this.row;
     }
 

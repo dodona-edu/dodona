@@ -58,13 +58,17 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return this.row.toString().length;
     }
 
-    dragStart(e: DragEvent): void {
+    dragStart(): void {
         userAnnotationState.selectedRange = {
             row: this.row,
             rows: 1,
         };
-        e.dataTransfer?.setData("origin", this.row.toString());
-        e.dataTransfer.dropEffect = "link";
+        userAnnotationState.dragStart = this.row;
+    }
+
+    dragEnd(): void {
+        this.openForm();
+        userAnnotationState.dragStart = null;
     }
 
     protected render(): TemplateResult {
@@ -74,8 +78,8 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                 <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"
-                     @dragstart=${e => this.dragStart(e)}
-                     @dragend=${() => this.openForm()}
+                     @dragstart=${() => this.dragStart()}
+                     @dragend=${() => this.dragEnd()}
                 >
                     <button class="btn btn-fab-small-extended with-icon right"
                             @pointerup=${() => this.openForm()}>

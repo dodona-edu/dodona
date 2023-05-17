@@ -70,6 +70,7 @@ class UserAnnotationState extends State {
     readonly byId = new StateMap<number, UserAnnotationData>();
 
     @stateProperty public selectedRange: SelectedRange | null = null;
+    @stateProperty public dragStart: number | null = null;
     @stateProperty public showForm = false;
 
     get count(): number {

@@ -110,6 +110,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         right: 15px;
         top: -12px;
         z-index: 2;
+        border-radius: 12px;
 
         .btn-fab-small-flex {
           height: 40px;
@@ -127,17 +128,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
           .text {
             display: none;
-          }
-
-          &:hover,
-          &:focus,
-          &:active,
-          &:disabled,
-          &.disabled {
-            opacity: 1;
-            filter: brightness(0.95);
-
-            @include shadow-z3;
           }
         }
 
@@ -177,9 +167,14 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           right: -7px;
         }
 
-        &:hover::after {
-          opacity: 1;
-          filter: brightness(0.95);
+        &:hover {
+          @include shadow-z3;
+
+          &::after,
+          .btn-fab-small-flex {
+            opacity: 1;
+            filter: brightness(0.95);
+          }
         }
       }
 

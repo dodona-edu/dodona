@@ -152,6 +152,11 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           top: 13px;
           right: -7px;
         }
+
+        &:hover::after {
+          opacity: 1;
+          filter: brightness(0.95);
+        }
       }
 
       d-code-listing-row:first-child {

@@ -51,7 +51,7 @@ gem 'will_paginate', '~>3.3.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.1.0'
+gem 'rouge', '4.1.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -72,7 +72,7 @@ gem 'ruby-saml', '~> 1.15.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.6.1'
+gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
@@ -106,7 +106,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 4.2.3'
-gem 'rails-i18n', '~> 7.0.6'
+gem 'rails-i18n', '~> 7.0.7'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.14.3'
+gem 'nokogiri', '~> 1.14.4'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -135,7 +135,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.1.0'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.10.1'
+gem 'ddtrace', '~> 1.11.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'
@@ -156,8 +156,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.39.0'
-  gem 'selenium-webdriver', '~> 4.9.0'
+  gem 'capybara', '~> 3.39.1'
+  gem 'selenium-webdriver', '~> 4.9.1'
 end
 
 group :test do

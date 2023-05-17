@@ -189,7 +189,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       status: 'correct',
       description: 'Correct',
       annotations: [
-        { row: 0, column: nil, rows: 1, columns: nil, text: 'asdf', type: 'info', externalUrl: nil }
+        { row: 0, rows: 1, text: 'asdf', type: 'info' }
       ]
     }, construct_result([
       '{ "command": "start-judgement" }',
@@ -337,6 +337,53 @@ class ResultConstructorTest < ActiveSupport::TestCase
         '{ "generated": "45", "status": "wrong", "accepted": false, "command": "close-test" }'
       ])
     end
+  end
+
+  test 'intentionally annoyingly wrong json should fail' do
+    error = assert_raises ResultConstructorError do
+      construct_result([
+        # This command is invalid
+        '{ "command": "start-nothing" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+    assert_equal 'Judge output is not a valid json', error.title
+
+    error = assert_raises ResultConstructorError do
+      construct_result([
+        # There is a typo in "command"
+        '{ "commund": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        '{ "description": { "format": "code", "description": "..." }, "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+    assert_equal 'Dodona encountered an error while processing this valid judge output', error.title
+
+    error = assert_raises ResultConstructorError do
+      construct_result([
+        '{ "command": "start-judgement" }',
+        '{ "title": "Test", "command": "start-tab" }',
+        # A nested object is invalid: a description is a list
+        '{ "description": ["yes"], "command": "start-context" }',
+        '{ "description": { "format": "plain", "description": "" }, "command": "start-testcase" }',
+        '{ "expected": "70", "command": "start-test" }'
+      ])
+    end
+    assert_equal 'Constructed result based on judge output is not a valid json', error.title
+  end
+
+  test 'invalid code in the result constructor should fail' do
+    rc = ResultConstructor.new('en')
+    rc.stubs('start_judgement').raises('error')
+    error = assert_raises(ResultConstructorError) do
+      rc.feed('{ "command": "start-judgement" }')
+    end
+    assert_equal 'Dodona encountered an error while processing this valid judge output', error.title
   end
 
   private

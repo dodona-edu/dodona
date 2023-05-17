@@ -137,21 +137,9 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return this.hasFullLineSelection ? `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}` : "";
     }
 
-    dragEnter(e: DragEvent): void {
-        e.preventDefault();
-        const origin = parseInt(e.dataTransfer.getData("origin"));
-        if ( origin > this.row ) {
-            userAnnotationState.selectedRange = { row: this.row, rows: origin - this.row + 1 };
-        } else {
-            userAnnotationState.selectedRange = { row: origin, rows: this.row - origin + 1 };
-        }
-    }
-
     render(): TemplateResult {
         return html`
-            <tr id="line-${this.row}" class="lineno"
-                @dragenter=${e => this.dragEnter(e)}
-            >
+            <tr id="line-${this.row}" class="lineno">
                 <td class="rouge-gutter gl">
                     ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}"></d-create-annotation-button>` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>

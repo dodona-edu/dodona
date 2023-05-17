@@ -110,7 +110,7 @@ class ResultConstructor
   def start_tab(title: nil, hidden: nil, permission: nil)
     check_level(:judgement, 'tab started')
     @tab = {}
-    @tab[:description] = title
+    @tab[:description] = title unless title.nil?
     @tab[:badgeCount] = 0
     @tab[:permission] = permission unless permission.nil?
     @hiddentab = hidden || false
@@ -128,7 +128,7 @@ class ResultConstructor
   def start_testcase(description: nil)
     check_level(:context, 'testcase started')
     @testcase = {}
-    @testcase[:description] = description
+    @testcase[:description] = description unless description.nil?
     @testcase[:accepted] = true
     @level = :testcase
   end
@@ -137,7 +137,7 @@ class ResultConstructor
     check_level(:testcase, 'test started')
     @test = {}
     @test[:description] = description unless description.nil?
-    @test[:expected] = expected
+    @test[:expected] = expected unless expected.nil?
     @test[:channel] = channel unless channel.nil?
     @test[:format] = format unless format.nil?
     @level = :test
@@ -173,7 +173,7 @@ class ResultConstructor
 
   def close_test(generated: nil, accepted: nil, status: nil)
     check_level(:test, 'test closed')
-    @test[:generated] = generated
+    @test[:generated] = generated unless generated.nil?
     escalate_status(status: status)
     @test[:accepted] = if accepted.nil?
                        then status[:enum] == 'correct'

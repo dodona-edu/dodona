@@ -46,5 +46,11 @@ class PagesHelperTest < ActiveSupport::TestCase
       f.save
     end
     assert_equal 2, homepage_course_admin_notifications(course).count
+
+    # released evaluation
+    e.feedbacks.first.update(completed: false)
+    assert_equal 3, homepage_course_admin_notifications(course).count
+    e.update(released: true)
+    assert_equal 2, homepage_course_admin_notifications(course).count
   end
 end

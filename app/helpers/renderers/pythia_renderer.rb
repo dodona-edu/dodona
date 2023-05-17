@@ -267,6 +267,9 @@ class PythiaRenderer < FeedbackTableRenderer
   def convert_lint_message(message)
     {
       row: message[:line] - 1,
+      column: message[:column],
+      rows: message[:rows],
+      columns: message[:columns],
       type: convert_lint_type(message[:type]),
       text: message[:description],
       externalUrl: message[:externalUrl]

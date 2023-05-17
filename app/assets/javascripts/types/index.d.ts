@@ -5,7 +5,7 @@ declare interface Window {
 }
 
 declare class MathJaxObject {
-    typeset?(args?: string[]) :void;
+    typeset?(args?: string[] | Node[]) :void;
 
     tex: {
         inlineMath: string[][];
@@ -36,9 +36,10 @@ declare module I18n {
     export var locale: string;
 }
 
-// add parentIFrame from iFrame Resizer to the window to make typescript happy
+// add parentIFrame and iFrameResize from iFrame Resizer to the window to make typescript happy
 declare interface Window {
     parentIFrame: any;
+    iFrameResize: any;
 }
 
 declare var dodona;

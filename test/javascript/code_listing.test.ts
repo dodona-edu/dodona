@@ -1,70 +1,75 @@
-import { CodeListing } from "code_listing/code_listing";
+import codeListing from "code_listing";
+import { annotationState } from "state/Annotations";
 
-let codeListing;
+// bootstrap
+import bootstrap from "bootstrap";
+import { machineAnnotationState } from "state/MachineAnnotations";
+import userEvent from "@testing-library/user-event";
+import { fixture, nextFrame } from "@open-wc/testing-helpers";
+import { html } from "lit";
+import { userAnnotationState } from "state/UserAnnotations";
+window.bootstrap = bootstrap;
 
-beforeEach(() => {
+beforeEach(async () => {
     // Mock MathJax
     window.MathJax = {} as MathJaxObject;
     // Mock typeset function of MathJax
     window.MathJax.typeset = () => "";
 
-    document.body.innerHTML = `
-    <a href="#" data-bs-toggle="tab">Code <span class="badge" id="badge_code"></span></a>
+    // Bootstrap incorrectly detects jquery, so we need to disable it
+    document.body.setAttribute("data-bs-no-jquery", "true");
+
+    await fixture( html`
+    <div id="modal-container"></div>
+    <a href="#" data-bs-toggle="tab">Code <d-annotations-count-badge></d-annotations-count-badge></a>
     <div class="code-table" data-submission-id="54">
-    <div id="feedback-table-options" class="feedback-table-options">
-        <button class="btn btn-text" id="add_global_annotation">Annotatie toevoegen</button>
-        <span class="flex-spacer"></span>
-        <span class="diff-switch-buttons switch-buttons hide" id="annotations_toggles">
-            <span id="diff-switch-prefix">Annotaties</span>
-            <div class="btn-group btn-toggle" role="group" aria-label="Annotaties" data-bs-toggle="buttons">
-                <button class="annotation-toggle active" id="show_all_annotations"></button>
-                <button class="annotation-toggle" id="show_only_errors"></button>
-                <button class="annotation-toggle" id="hide_all_annotations"></button>
-            </div>
-        </span>
-    </div>
-    <div id="feedback-table-global-annotations">
-        <div id="feedback-table-global-annotations-list"></div>
-    </div>
-    <div class="code-listing-container">
-        <table class="code-listing highlighter-rouge">
-            <tbody>
-            <tr id="line-1" class="lineno">
-                <td class="rouge-gutter gl"><pre>1</pre></td>
-                <td class="rouge-code"><pre>print(5 + 6)</pre></td>
-            </tr>
-            <tr id="line-2" class="lineno">
-                <td class="rouge-gutter gl"><pre>2</pre></td>
-                <td class="rouge-code"><pre>print(6 + 3)</pre></td>
-            </tr>
-            <tr id="line-3" class="lineno">
-                <td class="rouge-gutter gl"><pre>1</pre></td>
-                <td class="rouge-code"><pre>print(9 + 15)</pre></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>`;
-    codeListing = new CodeListing(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+        <d-annotation-options></d-annotation-options>
+        <div class="code-listing-container">
+            <table class="code-listing highlighter-rouge">
+                <tbody>
+                <tr id="line-1" class="lineno">
+                    <td class="rouge-gutter gl"><pre>1</pre></td>
+                    <td class="rouge-code"><pre>print(5 + 6)</pre></td>
+                </tr>
+                <tr id="line-2" class="lineno">
+                    <td class="rouge-gutter gl"><pre>2</pre></td>
+                    <td class="rouge-code"><pre>print(6 + 3)</pre></td>
+                </tr>
+                <tr id="line-3" class="lineno">
+                    <td class="rouge-gutter gl"><pre>1</pre></td>
+                    <td class="rouge-code"><pre>print(9 + 15)</pre></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>`);
+    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+    annotationState.visibility = "all";
+    userAnnotationState.reset();
+    machineAnnotationState.setMachineAnnotations([]);
 });
 
-test("create feedback table with default settings", () => {
+test("create feedback table with default settings", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 1, "type": "warning" },
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
     ]);
+
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(3);
 });
 
-test("html in annotations should be escaped", () => {
+test("html in annotations should be escaped", async () => {
     codeListing.addMachineAnnotations([{ "text": "<b>test</b>", "row": 0, "type": "warning" }]);
+
+    await nextFrame();
 
     expect(document.querySelector(".annotation .annotation-text").textContent).toBe("<b>test</b>");
 });
 
-test("feedback table should support more than 1 annotation per row (first and last row)", () => {
+test("feedback table should support more than 1 annotation per row (first and last row)", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
@@ -74,15 +79,19 @@ test("feedback table should support more than 1 annotation per row (first and la
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
     ]);
 
+    await nextFrame();
+
     expect(document.querySelectorAll(".annotation").length).toBe(6);
 });
 
-test("annotation types should be transmitted into the view", () => {
+test("annotation types should be transmitted into the view", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 1, "type": "warning" },
         { "text": "Division by zero", "row": 2, "type": "error" },
     ]);
+
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation.info").length).toBe(1);
     expect(document.querySelectorAll(".annotation.warning").length).toBe(1);
@@ -107,14 +116,16 @@ test("line highlighting", () => {
     expect(document.querySelectorAll(".lineno.marked").length).toBe(0);
 });
 
-test("dots only for non-shown messages and only the worst", () => {
+test("dots only for non-shown messages and only the worst", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.hideAnnotations();
+
+    const button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     // Dot on line 1 should be shown.
     expect(document.querySelectorAll(".dot").length).toBe(1);
@@ -124,101 +135,90 @@ test("dots only for non-shown messages and only the worst", () => {
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(1);
 });
 
-test("dots not visible when all annotations are shown", () => {
+test("dots not visible when all annotations are shown", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.showAnnotations();
+    const button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
 
-    // 1 dot that should not be visible.
-    expect(document.querySelectorAll(".dot").length).toBe(1);
-    expect(document.querySelectorAll(".dot.hide").length).toBe(1);
+    // no dots visible
+    expect(document.querySelectorAll(".dot").length).toBe(0);
 });
 
-test("only warning dot visible when in compressed error mode", () => {
+test("only warning dot visible when in compressed error mode", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "warning" },
         { "text": "Division by zero", "row": 0, "type": "error" },
     ]);
 
-    codeListing.hideAnnotations(true);
+    let button = document.querySelector(".mdi-comment-alert-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-warning").length).toBe(1);
 
     // Simulating user switching
-    codeListing.showAnnotations();
-    codeListing.hideAnnotations();
+    button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
+    button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-error").length).toBe(1);
 });
 
-test("no double dots", () => {
+test("no double dots", async () => {
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "info" },
         { "text": "Float transformed into int", "row": 0, "type": "info" },
         { "text": "Division by zero", "row": 0, "type": "info" },
     ]);
 
+    let button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
+
     expect(document.querySelectorAll(".dot").length).toBe(1);
 
-    codeListing.showAnnotations();
+    button = document.querySelector(".mdi-comment-multiple-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    codeListing.hideAnnotations(true);
+    button = document.querySelector(".mdi-comment-alert-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 
-    codeListing.hideAnnotations();
+    button = document.querySelector(".mdi-comment-remove-outline");
+    await userEvent.click(button);
 
     expect(document.querySelectorAll(".dot.dot-info:not(.hide)").length).toBe(1);
     expect(document.querySelectorAll(".dot.dot-warning:not(.hide)").length).toBe(0);
     expect(document.querySelectorAll(".dot.dot-error:not(.hide)").length).toBe(0);
 });
 
-test("correct buttons & elements are hidden and unhidden", () => {
-    codeListing.addMachineAnnotations([
-        { "text": "Value could be assigned", "row": 0, "type": "info" },
-        { "text": "Float transformed into int", "row": 0, "type": "info" },
-        { "text": "Division by zero", "row": 0, "type": "info" },
-    ]);
-
-    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
-    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(1);
-    expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(0);
-
-    codeListing.addMachineAnnotations([
-        { "text": "Value could be assigned", "row": 0, "type": "error" },
-        { "text": "Float transformed into int", "row": 0, "type": "error" },
-        { "text": "Division by zero", "row": 0, "type": "error" },
-    ]);
-
-    expect(document.querySelectorAll("#feedback-table-options.hide").length).toBe(0);
-    expect(document.querySelectorAll("#feedback-table-options:not(.hide)").length).toBe(1);
-
-    expect(document.querySelectorAll("#show_only_errors.hide").length).toBe(0);
-    expect(document.querySelectorAll("#show_only_errors:not(.hide)").length).toBe(1);
-});
-
-test("annotations should be transmitted into view", () => {
-    codeListing.addUserAnnotation({
+test("annotations should be transmitted into view", async () => {
+    await userAnnotationState.addToMap({
         "id": 1,
         "line_nr": 1,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This could be shorter",
-        "markdown_text": "<p>This could be shorter</p>",
+        "rendered_markdown": "<p>This could be shorter</p>",
         "released": true,
         "permission": {
             update: false,
@@ -226,14 +226,21 @@ test("annotations should be transmitted into view", () => {
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
-
-    codeListing.addUserAnnotation({
+    await userAnnotationState.addToMap({
         "id": 2,
         "line_nr": 2,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This should be faster",
-        "markdown_text": "<p>This should be faster</p>",
+        "rendered_markdown": "<p>This should be faster</p>",
         "released": true,
         "permission": {
             update: true,
@@ -241,18 +248,27 @@ test("annotations should be transmitted into view", () => {
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
-test("feedback table should support more than 1 annotation per row", () => {
-    codeListing.addUserAnnotation({
+test("feedback table should support more than 1 annotation per row", async () => {
+    await userAnnotationState.addToMap({
         "id": 1,
         "line_nr": 1,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This could be shorter",
-        "markdown_text": "<p>This could be shorter</p>",
+        "rendered_markdown": "<p>This could be shorter</p>",
         "permission": {
             update: false,
             destroy: false,
@@ -260,14 +276,22 @@ test("feedback table should support more than 1 annotation per row", () => {
         "released": true,
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
-    codeListing.addUserAnnotation({
+    await userAnnotationState.addToMap({
         "id": 2,
         "line_nr": 1,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This should be faster",
-        "markdown_text": "<p>This should be faster</p>",
+        "rendered_markdown": "<p>This should be faster</p>",
         "released": true,
         "permission": {
             update: true,
@@ -275,18 +299,27 @@ test("feedback table should support more than 1 annotation per row", () => {
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
-test("feedback table should be able to contain both machine annotations and user annotations", () => {
-    codeListing.addUserAnnotation({
+test("feedback table should be able to contain both machine annotations and user annotations", async () => {
+    await userAnnotationState.addToMap({
         "id": 1,
         "line_nr": 1,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This could be shorter",
-        "markdown_text": "<p>This could be shorter</p>",
+        "rendered_markdown": "<p>This could be shorter</p>",
         "released": true,
         "permission": {
             update: false,
@@ -294,14 +327,22 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Jan Klaassen",
-        }
+        },
+        "row": 1,
+        "rows": 1,
     });
 
-    codeListing.addUserAnnotation({
+    await userAnnotationState.addToMap({
         "id": 2,
         "line_nr": 2,
+        "created_at": "2023-03-02T15:15:48.776+01:00",
+        "url": "http://dodona.localhost:3000/nl/annotations/1.json",
+        "last_updated_by": { "name": "Zeus Kronosson" },
+        "course_id": 1,
+        "responses": [],
+        "type": "question",
         "annotation_text": "This should be faster",
-        "markdown_text": "<p>This should be faster</p>",
+        "rendered_markdown": "<p>This should be faster</p>",
         "released": true,
         "permission": {
             update: true,
@@ -309,7 +350,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "user": {
             name: "Piet Hein",
-        }
+        },
+        "row": 2,
+        "rows": 1,
     });
 
     codeListing.addMachineAnnotations([
@@ -320,22 +363,25 @@ test("feedback table should be able to contain both machine annotations and user
         { "text": "Value could be assigned", "row": 2, "type": "warning" },
         { "text": "Value could be assigned", "row": 2, "type": "info" },
     ]);
+    await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2 + 6);
 });
 
-test("ensure that all buttons are created", () => {
+test("ensure that all buttons are created", async () => {
     codeListing.initAnnotateButtons();
-    expect(document.querySelectorAll(".annotation-button").length).toBe(3);
+    await nextFrame();
+    expect(document.querySelectorAll("d-create-annotation-button").length).toBe(3);
 });
 
-test("click on comment button", () => {
+test("click on comment button", async () => {
     codeListing.initAnnotateButtons();
 
+    await nextFrame();
     expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
-    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
-    annotationButton.click();
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
+    await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
-    annotationButton.click();
+    await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
 });

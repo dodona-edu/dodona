@@ -15,6 +15,10 @@
 #  last_updated_by_id  :integer          not null
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
+#  thread_root_id      :integer
+#  column              :integer
+#  rows                :integer          default(1), not null
+#  columns             :integer
 #
 FactoryBot.define do
   factory :annotation do

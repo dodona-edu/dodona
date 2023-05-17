@@ -15,6 +15,10 @@
 #  last_updated_by_id  :integer          not null
 #  course_id           :integer          not null
 #  saved_annotation_id :bigint
+#  thread_root_id      :integer
+#  column              :integer
+#  rows                :integer          default(1), not null
+#  columns             :integer
 #
 require 'test_helper'
 
@@ -71,5 +75,83 @@ class AnnotationTest < ActiveSupport::TestCase
     annotation.update(last_updated_by: other_user)
     annotation.reload
     assert_equal other_user, annotation.last_updated_by
+  end
+
+  test 'can create a response to an annotation' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    assert_equal annotation, response.thread_root
+  end
+
+  test 'can create multiple responses to an annotation' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response1 = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    response2 = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    assert_equal annotation, response1.thread_root
+    assert_equal annotation, response2.thread_root
+    assert_equal [response1, response2], annotation.responses
+  end
+
+  test 'cannot create a response to a response' do
+    annotation = create :annotation, submission: @submission, user: @user
+    response = create :annotation, submission: @submission, user: @annotating_user, thread_root: annotation
+    response2 = create :annotation, submission: @submission, user: @annotating_user, thread_root: response
+    assert_not response2.valid?
+  end
+
+  test 'A question with a response is marked as answered' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?, 'Question should start as unanswered'
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+
+    assert q.reload.answered?, 'Question should have moved onto answered status'
+  end
+
+  test 'In a thread with multiple questions, only the last one can be unanswered' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+    assert q.reload.answered?
+
+    q2 = create :question, submission: @submission, user: @student, thread_root: q
+    assert q2.reload.unanswered?
+
+    q3 = create :question, submission: @submission, user: @student, thread_root: q
+    assert q2.reload.answered?
+    assert q3.reload.unanswered?
+
+    create :annotation, submission: @submission, user: @annotating_user, thread_root: q
+    assert q.reload.answered?
+    assert q2.reload.answered?
+    assert q3.reload.answered?
+  end
+
+  test 'a question that is set to in progress transitions back to unanswered after delayed job execution' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    with_delayed_jobs do
+      q.update(question_state: :in_progress)
+      assert q.reload.in_progress?
+    end
+
+    run_delayed_jobs
+    assert q.reload.unanswered?
+  end
+
+  test 'should not reset question state to unanswered if it is answered before delayed job execution' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    with_delayed_jobs do
+      q.update(question_state: :in_progress)
+      assert q.reload.in_progress?
+      q.update(question_state: :answered)
+    end
+
+    run_delayed_jobs
+    assert q.reload.answered?
   end
 end

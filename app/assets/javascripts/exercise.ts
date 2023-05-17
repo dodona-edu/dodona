@@ -3,6 +3,7 @@ import { initTooltips, updateURLParameter, fetch } from "util.js";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
+import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
 
@@ -11,7 +12,12 @@ function showLightbox(content): void {
     lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).
-        window.MathJax.typeset([".gslide-description"]);
+        try {
+            window.MathJax.typeset( Array.from(document.querySelectorAll(".gslide-description")));
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
     });
     lightbox.open();
 
@@ -162,7 +168,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            const codeString = dodona.codeListing.code;
+            const codeString = submissionState.code;
             editor.setValue(codeString, 1);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
@@ -461,6 +467,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
             editor.setValue(rawBoilerplate);
             editor.focus();
+            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

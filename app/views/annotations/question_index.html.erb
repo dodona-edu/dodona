@@ -1,3 +1,7 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'questions' %>
+<% end %>
+
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -16,17 +20,22 @@
           </span>
         </h2>
       </div>
-      <div class="card-supporting-text" id="refresh-element">
+      <div class="card-supporting-text" id="question-container">
         <% actions = [] %>
         <% if current_user&.a_course_admin? %>
           <% actions << { text: t('questions.index.watch'), search: { refresh: true }, click: 'window.dodona.toggleIndexReload()' } %>
           <% actions << { text: t('questions.index.everything'), search: { everything: true } } if @unfiltered %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: { actions: actions, refresh_element: "#refresh-element", courses: @courses, question_states: Question.question_states.keys } %>
+        <%= render partial: 'layouts/searchbar', locals: { actions: actions, refresh_element: "#question-container", courses: @courses, question_states: Question.question_states.keys } %>
         <div id="questions-table-wrapper">
-          <%= render partial: 'questions_table', locals: { questions: @questions } %>
+          <%= render partial: 'questions_table_with_pagination', locals: { questions: @questions } %>
         </div>
       </div>
     </div>
   </div>
 </div>
+<script type="text/javascript">
+  dodona.ready.then(function () {
+    new window.dodona.questionTable("<%= questions_path %>", true);
+  });
+</script>

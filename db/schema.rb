@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_13_084858) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -124,6 +124,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_13_084858) do
     t.integer "last_updated_by_id", null: false
     t.integer "course_id", null: false
     t.bigint "saved_annotation_id"
+    t.integer "thread_root_id"
+    t.integer "column"
+    t.integer "rows", default: 1, null: false
+    t.integer "columns"
     t.index ["course_id", "type", "question_state"], name: "index_annotations_on_course_id_and_type_and_question_state"
     t.index ["evaluation_id"], name: "index_annotations_on_evaluation_id"
     t.index ["last_updated_by_id"], name: "index_annotations_on_last_updated_by_id"

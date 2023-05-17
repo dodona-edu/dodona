@@ -1,4 +1,5 @@
-json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :saved_annotation_id, :created_at, :updated_at, :course_id
+json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :saved_annotation_id, :created_at, :updated_at, :course_id, :column, :rows, :columns
+json.row annotation.line_nr || 0
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
   json.newer_submission_url(annotation.newer_submission&.then { |s| submission_url(s) })
@@ -25,6 +26,7 @@ end
 json.permission do
   json.update policy(annotation).update?
   json.destroy policy(annotation).destroy?
+  json.save SavedAnnotationPolicy.new(current_user, annotation).create?
   json.transition do
     Question.question_states.each_key do |state|
       json.set! state, policy(annotation).transition?(state)
@@ -34,3 +36,8 @@ json.permission do
 end
 json.released AnnotationPolicy.new(annotation.submission.user, annotation).show?
 json.type annotation.type&.downcase
+
+json.responses annotation.responses do |response|
+  json.partial! response, as: :annotation
+end
+json.thread_root_id annotation.thread_root_id

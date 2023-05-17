@@ -111,34 +111,58 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         top: -12px;
         z-index: 2;
 
-        .btn-fab-small-extended {
-          display: none;
+        .btn-fab-small-flex {
+          height: 40px;
+          width: auto;
+          max-width: 40px;
+          border-radius: 12px;
+          background: $secondary-container;
+          color: $on-secondary-container;
+          padding: 6px;
+          transition: max-width 0.2s ease-in-out, padding 0.2s ease-in-out;
+          justify-content: end;
+          overflow: hidden;
+
+          @include shadow-z2;
+
+          .text {
+            display: none;
+          }
+
+          &:hover,
+          &:focus,
+          &:active,
+          &:disabled,
+          &.disabled {
+            opacity: 1;
+            filter: brightness(0.95);
+
+            @include shadow-z3;
+          }
         }
 
         @include media-breakpoint-up(lg) {
-          &:hover {
-            .btn-fab-small-extended {
-              display: inline-flex;
-            }
+          &:hover,
+          &.expanded {
+            .btn-fab-small-flex {
+              max-width: 1000px;
+              padding-left: 24px;
+              padding-right: 16px;
 
-            .btn-fab-small {
-              display: none;
+              .text {
+                display: inline;
+              }
+
+              .mdi {
+                padding: 0;
+                padding-left: 8px;
+              }
             }
           }
         }
 
         &.expanded {
           display: inline-flex;
-
-          @include media-breakpoint-up(lg) {
-            .btn-fab-small-extended {
-              display: inline-flex;
-            }
-
-            .btn-fab-small {
-              display: none;
-            }
-          }
         }
 
         &::after {
@@ -181,18 +205,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
           &.expanded {
             display: inline-flex;
-
-            @include media-breakpoint-up(lg) {
-              .btn-fab-small {
-                display: none;
-              }
-            }
-
-            @include media-breakpoint-down(lg) {
-              .btn-fab-small-extended {
-                display: none;
-              }
-            }
           }
         }
       }

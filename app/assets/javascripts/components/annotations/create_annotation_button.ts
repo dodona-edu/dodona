@@ -63,13 +63,9 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
             <div style="position: relative">
                 <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;">
-                    <button class="btn btn-fab-small-extended with-icon right"
+                    <button class="btn btn-fab-small-flex"
                             @pointerup=${() => this.openForm()}>
-                        ${this.addAnnotationTitle}
-                       <i class="mdi mdi-comment-plus-outline "></i>
-                    </button>
-                    <button class="btn btn-fab-small"
-                            @pointerup=${() => this.openForm()}>
+                        <span class="text">${this.addAnnotationTitle}</span>
                        <i class="mdi mdi-comment-plus-outline "></i>
                     </button>
                 </div>

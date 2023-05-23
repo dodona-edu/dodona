@@ -448,9 +448,9 @@ class Activity < ApplicationRecord
   def activity_status_for!(user, series = nil)
     first_try = true
     begin
-      ActivityStatus.create_or_find_by(activity: self, series: series, user: user)
+      ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
     rescue StandardError
-      # https://github.com/dodona-edu/dodona/pull/4547
+      # https://github.com/dodona-edu/dodona/issues/1877
       raise unless first_try
 
       first_try = false

@@ -32,7 +32,7 @@ function initDragAndDrop(args: DragAndDropArguments): void {
 
     dragula([tableBody], {
         moves: (el, source, handle, sibling) => {
-            return handle.classList.contains("drag-handle") || getParentByClassName(handle, "drag-handle") !== null;
+            return handle.classList.contains("drag-handle") || getParentByClassName(handle, "drag-handle");
         },
         mirrorContainer: tableBody,
     })

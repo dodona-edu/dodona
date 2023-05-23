@@ -1,12 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import "components/datalist_input";
-import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
+import { getSavedAnnotation, getSavedAnnotations, SavedAnnotation } from "state/SavedAnnotations";
+import { stateMixin } from "state/StateMixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { userState } from "state/Users";
-import { courseState } from "state/Courses";
-import { exerciseState } from "state/Exercises";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -15,15 +13,24 @@ import { exerciseState } from "state/Exercises";
  * @element d-saved-annotation-input
  *
  * @prop {String} name - name of the input field (used in form submit)
+ * @prop {Number} courseId - used to fetch saved annotations by course
+ * @prop {Number} exerciseId - used to fetch saved annotations by exercise
+ * @prop {Number} userId - used to fetch saved annotations by user
  * @prop {String} value - the initial saved annotation id
  * @prop {String} annotationText - the current text of the real annotation, used to detect if there are manual changes from the selected saved annotation
  *
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
 @customElement("d-saved-annotation-input")
-export class SavedAnnotationInput extends ShadowlessLitElement {
+export class SavedAnnotationInput extends stateMixin(ShadowlessLitElement) {
     @property({ type: String })
     name = "";
+    @property({ type: Number, attribute: "course-id" })
+    courseId: number;
+    @property({ type: Number, attribute: "exercise-id" })
+    exerciseId: number;
+    @property({ type: Number, attribute: "user-id" })
+    userId: number;
     @property({ type: String })
     value: string;
     @property( { type: String, attribute: "annotation-text" })
@@ -32,27 +39,27 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     @property({ state: true })
     __label: string;
 
-    get userId(): number {
-        return userState.id;
+    get state(): string[] {
+        return this.value ? [`getSavedAnnotation${this.value}`, "getSavedAnnotations"] : ["getSavedAnnotations"];
     }
 
     get label(): string {
-        return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;
+        return this.value ? getSavedAnnotation(parseInt(this.value))?.title : this.__label;
     }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return savedAnnotationState.getList(new Map([
-            ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
+        return getSavedAnnotations(new Map([
+            ["course_id", this.courseId.toString()],
+            ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()],
             ["filter", this.__label]
         ]));
     }
 
     get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
-            ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
+        return getSavedAnnotations(new Map([
+            ["course_id", this.courseId.toString()],
+            ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()]
         ])).length > 0;
     }

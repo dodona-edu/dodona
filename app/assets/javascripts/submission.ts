@@ -51,16 +51,13 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         document.querySelectorAll("a.tab-link").forEach(t => {
             t.addEventListener("click", e => {
                 const link = e.currentTarget;
-                const tabName = link.dataset.tab;
+                const tabName = link.dataset.tab || "code";
                 const line = link.dataset.line;
 
                 // prevent automatic scrolling to top of the page when clicking a link
                 e.preventDefault();
 
-                const query = tabName && tabName !== "code" ?
-                    `.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']` :
-                    "#link-to-code-tab";
-                const tab = document.querySelector(query);
+                const tab = document.querySelector(`.feedback-table .nav-tabs > li a[href*='#tab-${tabName}']`);
                 new bootstrap.Tab(tab).show();
 
                 if (line !== undefined) {

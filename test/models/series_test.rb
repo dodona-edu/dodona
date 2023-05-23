@@ -366,10 +366,10 @@ class SeriesTest < ActiveSupport::TestCase
     # Only latest submissions in the course and after the deadline are counted.
     assert_equal 2 * series.exercises.count, scoresheet[:submissions].count
     # Submissions are for the correct user.
-    assert_equal users[0, 2].to_set(&:id), scoresheet[:submissions].keys.to_set(&:first)
+    assert_equal users[0, 2].map(&:id).to_set, scoresheet[:submissions].keys.map(&:first).to_set
     # Expected submissions are returned.
-    assert_equal expected_submissions.to_set, scoresheet[:submissions].values.to_set(&:id)
-    assert_equal expected_read_states.to_set, scoresheet[:read_states].values.to_set(&:id)
+    assert_equal expected_submissions.to_set, scoresheet[:submissions].values.map(&:id).to_set
+    assert_equal expected_read_states.to_set, scoresheet[:read_states].values.map(&:id).to_set
     # Hash mapping is correct.
     scoresheet[:submissions].each do |key, submission|
       assert_equal [submission.user_id, submission.exercise.id], key

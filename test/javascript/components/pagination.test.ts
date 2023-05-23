@@ -2,7 +2,7 @@ import "components/pagination";
 import { Pagination } from "components/pagination";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { screen } from "@testing-library/dom";
-import { searchQueryState } from "state/SearchQuery";
+import { searchQuery } from "search";
 
 describe("Pagination", () => {
     it("always shows the current page as active", async () => {
@@ -89,6 +89,6 @@ describe("Pagination", () => {
         expect(page3).toBeDefined();
         page3?.click();
 
-        expect(searchQueryState.queryParams.get("page")).toBe("3");
+        expect(searchQuery.queryParams.params.get("page")).toBe("3");
     });
 });

@@ -28,34 +28,19 @@ class ResultConstructor
   def feed(judge_output)
     raise ResultConstructorError, 'No judge output' if judge_output.empty?
 
-    # save the judge output for later validation should the final result be invalid
-    @judge_output = judge_output
-
     split_jsons(judge_output).each do |json|
-      if json.key?(:command)
-        begin
-          # Clone the object to have better errors, since the update method
-          # may modify the json hash.
-          update(json.clone)
-        rescue StandardError
-          # We rescue all errors, since the json may have invalid data, resulting
-          # in stuff like TypeErrors, NoMethodErrors or KeyErrors
-
-          # Try to establish if the error was cause by the judge or by dodona
-          if PART_SCHEMER.valid?(json.deep_stringify_keys)
-            raise ResultConstructorError.new(
-              'Dodona encountered an error while processing this valid judge output',
-              json.to_s
-            )
-          else
-            raise ResultConstructorError.new(
-              'Judge output is not a valid json',
-              json.to_s
-            )
-          end
-        end
-      else
+      # Required by the gem. See issue below for context.
+      # https://github.com/davishmcclurg/json_schemer/issues/123
+      json_with_string_keys = json.deep_stringify_keys
+      if PART_SCHEMER.valid?(json_with_string_keys)
+        update(json)
+      elsif FULL_SCHEMER.valid?(json_with_string_keys)
         @result = json
+      else
+        raise ResultConstructorError.new(
+          'Judge output is not a valid json',
+          json.to_s
+        )
       end
     end
   end
@@ -73,24 +58,6 @@ class ResultConstructor
     close_context(accepted: false) if @level == :context
     close_tab(badgeCount: @tab[:badgeCount] || 1) if @level == :tab
     close_judgement(accepted: false, status: status) if @level == :judgement
-
-    # Before finalizing the result, check if it is valid.
-    unless FULL_SCHEMER.valid?(@result.deep_stringify_keys)
-      # If it is not valid, check if a partial result is the problem and try to give a better error message.
-      split_jsons(@judge_output).each do |json|
-        next if PART_SCHEMER.valid?(json.deep_stringify_keys) || FULL_SCHEMER.valid?(json.deep_stringify_keys)
-
-        raise ResultConstructorError.new(
-          'Judge output is not a valid json',
-          json.to_s
-        )
-      end
-
-      raise ResultConstructorError.new(
-        'Constructed result based on judge output is not a valid json',
-        @result.to_s
-      )
-    end
 
     @result
   end
@@ -149,18 +116,15 @@ class ResultConstructor
   end
 
   def annotate_code(values)
-    annotation = {
+    (@judgement[:annotations] ||= []) << {
       text: values[:text] || '',
       type: values[:type] || 'info',
       row: values[:row] || 0,
-      rows: values[:rows] || 1
+      rows: values[:rows] || 1,
+      column: values[:column] || 0,
+      columns: values[:columns] || 1,
+      externalUrl: values[:externalUrl] || nil
     }
-
-    annotation[:column] = values[:column] unless values[:column].nil?
-    annotation[:columns] = values[:columns] unless values[:columns].nil?
-    annotation[:externalUrl] = values[:externalUrl] unless values[:externalUrl].nil?
-
-    (@judgement[:annotations] ||= []) << annotation
   end
 
   def escalate_status(status: nil)

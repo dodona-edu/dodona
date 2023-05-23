@@ -54,7 +54,8 @@
   }
 }
 
-.btn.btn-tonal {
+.btn.btn-tonal,
+.btn.btn-elevated {
   background: $secondary-container;
   color: $on-secondary-container;
 
@@ -129,7 +130,7 @@
 .btn.btn-icon {
   width: 40px;
   padding: 0;
-  color: $primary;
+  color: $on-surface-variant;
 
   // enable pointer events to enable tooltips to be shown on disabled buttons
   &.disabled-with-tooltip {
@@ -154,17 +155,6 @@
     &:active {
       opacity: 1;
       background: rgba(white, 0.1);
-    }
-  }
-
-  &.btn-icon-muted {
-    color: $text-muted;
-
-    &:hover,
-    &:focus,
-    &:active {
-      opacity: 1;
-      background: rgba($on-surface, 0.1);
     }
   }
 
@@ -206,48 +196,6 @@
 
   &.wrong {
     background-color: $danger;
-  }
-}
-
-.btn.btn-fab-small {
-  height: 40px;
-  width: 40px;
-  border-radius: 12px;
-  background: $secondary-container;
-  color: $on-secondary-container;
-  padding: 6px;
-
-  @include shadow-z2;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &:disabled,
-  &.disabled {
-    opacity: 1;
-    filter: brightness(0.95);
-
-    @include shadow-z3;
-  }
-}
-
-.btn.btn-fab-small-extended {
-  height: 40px;
-  border-radius: 12px;
-  background: $secondary-container;
-  color: $on-secondary-container;
-
-  @include shadow-z2;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &:disabled,
-  &.disabled {
-    opacity: 1;
-    filter: brightness(0.95);
-
-    @include shadow-z3;
   }
 }
 

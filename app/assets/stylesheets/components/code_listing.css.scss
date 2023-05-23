@@ -1,5 +1,4 @@
 @use "sass:map";
-@use "sass:color";
 $dot-size: 9px;
 
 // Annotation colors
@@ -8,63 +7,12 @@ $annotation-user: $success;
 $annotation-error: $danger;
 $annotation-warning: $warning;
 $annotation-info: $info;
-$annotation-question-background: color.mix($annotation-question, $background, 8%);
-$annotation-user-background: color.mix($annotation-user, $background, 8%);
-$annotation-question-background-intense: color.mix($annotation-question, $background, 20%);
-$annotation-user-background-intense: color.mix($annotation-user, $background, 20%);
 
 .code-table {
-  &.selection-color-question {
-    ::selection {
-      background-color: $annotation-question-background-intense;
-    }
-  }
-
-  &.selection-color-annotation {
-    ::selection {
-      background-color: $annotation-user-background-intense;
-    }
-  }
-
-  .dot {
-    float: left;
-    margin-left: 4px;
-    margin-top: 4px;
-    height: $dot-size;
-    width: $dot-size;
-    border-radius: 100%;
-  }
-
-  .feedback-table-options .dot {
-    margin-left: 5px;
-    margin-top: 15px;
-  }
-
-  .dot-info {
-    background-color: $annotation-info;
-  }
-
-  .dot-warning {
-    background-color: $annotation-warning;
-  }
-
-  .dot-annotation {
-    background-color: $annotation-user;
-  }
-
-  .dot-error {
-    background-color: $annotation-error;
-  }
-
-  .dot-question {
-    background-color: $annotation-question;
-  }
-
   .code-listing-container {
     position: relative;
     left: 0;
     top: 0;
-    margin-top: 10px;
 
     .copy-btn {
       margin-right: 5px;
@@ -76,6 +24,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
     .code-listing {
       display: block;
+      overflow-x: auto;
       white-space: nowrap;
       background-color: $content-bg;
 
@@ -107,85 +56,27 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       .annotation-button {
         display: none;
         position: absolute;
-        right: 15px;
-        top: -12px;
-        z-index: 2;
-        border-radius: 12px;
-
-        .btn-fab-small-flex {
-          height: 40px;
-          width: auto;
-          max-width: 40px;
-          border-radius: 12px;
-          background: $secondary-container;
-          color: $on-secondary-container;
-          padding: 6px;
-          transition: max-width 0.2s ease-in-out, padding 0.2s ease-in-out;
-          justify-content: end;
-          overflow: hidden;
-
-          @include shadow-z2;
-
-          .text {
-            display: none;
-          }
-        }
-
-        @include media-breakpoint-up(lg) {
-          &:hover,
-          &.expanded {
-            .btn-fab-small-flex {
-              max-width: 1000px;
-              padding-left: 24px;
-              padding-right: 16px;
-
-              .text {
-                display: inline;
-              }
-
-              .mdi {
-                padding: 0;
-                padding-left: 8px;
-              }
-            }
-          }
-        }
-
-        &.expanded {
-          display: inline-flex;
-        }
-
-        &::after {
-          width: 0;
-          height: 0;
-          border-bottom: 8px solid transparent;
-          border-top: 8px solid transparent;
-          border-left: 8px solid $secondary-container;
-          content: " ";
-          position: absolute;
-          top: 13px;
-          right: -7px;
-        }
-
-        &:hover {
-          @include shadow-z3;
-
-          &::after,
-          .btn-fab-small-flex {
-            opacity: 1;
-            filter: brightness(0.95);
-          }
-        }
+        width: 30px;
+        height: 30px;
+        left: -15px;
+        margin-top: -7px;
+        border-radius: 50%;
+        padding-top: 4px;
       }
 
-      d-code-listing-row:first-child {
+      .annotation-button:hover {
+        transform: scale(1.15);
+        transition: 0.1s ease-in-out;
+      }
+
+      .lineno:first-child {
         .rouge-code,
         .rouge-gutter {
           padding-top: 5px;
         }
       }
 
-      d-code-listing-row:last-child {
+      .lineno:last-child {
         .rouge-code,
         .rouge-gutter {
           padding-bottom: 5px;
@@ -193,15 +84,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       }
 
       .lineno:hover .annotation-button {
-        display: inline-flex;
-
-        &.hide {
-          display: none;
-
-          &.expanded {
-            display: inline-flex;
-          }
-        }
+        display: block;
       }
 
       .rouge-code {
@@ -211,29 +94,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           padding-left: 5px;
           white-space: pre-wrap;
           word-break: break-word;
-          min-height: 20px;
-          margin-bottom: -3px;
-          padding-bottom: 3px;
-          margin-top: -2px;
-          padding-top: 2px;
-
-          &.code-line-question {
-            background-color: $annotation-question-background-intense;
-            width: 100%;
-
-            d-annotation-marker {
-              background-color: $annotation-question-background-intense;
-            }
-          }
-
-          &.code-line-annotation {
-            background-color: $annotation-user-background-intense;
-            width: 100%;
-
-            d-annotation-marker {
-              background-color: $annotation-user-background-intense;
-            }
-          }
         }
       }
 
@@ -248,6 +108,35 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           white-space: nowrap;
           font-family: $font-family-monospace;
           color: $on-surface-muted;
+        }
+
+        .dot {
+          float: left;
+          margin-left: 4px;
+          margin-top: 4px;
+          height: $dot-size;
+          width: $dot-size;
+          border-radius: 100%;
+        }
+
+        .dot-info {
+          background-color: $annotation-info;
+        }
+
+        .dot-warning {
+          background-color: $annotation-warning;
+        }
+
+        .dot-user {
+          background-color: $annotation-user;
+        }
+
+        .dot-error {
+          background-color: $annotation-error;
+        }
+
+        .dot-question {
+          background-color: $annotation-question;
         }
       }
 
@@ -266,59 +155,10 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         min-width: 100%;
       }
     }
-
-    d-code-listing-row {
-      display: contents;
-
-      pre.code-line {
-        overflow: visible;
-        display: inline-block;
-        padding-top: 1px;
-      }
-    }
   }
 
   #feedback-table-global-annotations.has-annotations {
     padding-bottom: 10px;
-  }
-
-  .thread {
-    margin: 3px 5px;
-    padding-left: 5px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 1px solid $divider;
-    background: $content-bg;
-    white-space: normal;
-
-    .annotation {
-      margin: 2px 0;
-      border: none;
-      border-left: 3px solid $outline;
-    }
-
-    d-user-annotation {
-      display: block;
-
-      .dropdown {
-        position: static;
-      }
-    }
-
-    .fake-input {
-      margin: 4px 5px 4px 0;
-      display: flex;
-      align-items: center;
-
-      span {
-        margin-left: 15px;
-        margin-right: 5px;
-      }
-
-      .form-control {
-        border-color: $divider;
-      }
-    }
   }
 
   .annotation {
@@ -419,6 +259,11 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     }
   }
 
+  .annotation.question,
+  .annotation.user {
+    border-left-width: 5px;
+  }
+
   .annotation.question {
     border-left-color: $annotation-question;
   }
@@ -481,61 +326,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
     .annotation-submission-input.validation-error {
       border-color: $danger;
-    }
-  }
-
-  td {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-}
-
-d-annotation-marker,
-d-selection-marker {
-  --info-color: #{$annotation-info};
-  --warning-color: #{$annotation-warning};
-  --error-color: #{$annotation-error};
-  --question-color: #{$annotation-question-background};
-  --annotation-color: #{$annotation-user-background};
-  --question-intense-color: #{$annotation-question-background-intense};
-  --annotation-intense-color: #{$annotation-user-background-intense};
-}
-
-.marker-tooltip {
-  width: max-content;
-  white-space: initial;
-  color: $on-surface;
-  font-style: initial;
-  padding-left: 5px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
-  border: 1px solid $divider;
-  background-color: $content-bg;
-
-  .annotation {
-    margin: 4px 0;
-    border-right: none;
-    border-top: none;
-    border-bottom: none;
-
-    #kebab-menu {
-      display: none;
-    }
-  }
-}
-
-.no-selection-outside-code {
-  user-select: none;
-
-  d-code-listing-row {
-    user-select: text;
-
-    td {
-      user-select: text;
-
-      d-annotations-cell {
-        user-select: none;
-      }
     }
   }
 }

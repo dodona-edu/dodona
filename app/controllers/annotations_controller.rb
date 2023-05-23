@@ -12,7 +12,7 @@ class AnnotationsController < ApplicationController
 
   def index
     authorize Annotation
-    @annotations = apply_scopes(policy_scope(Annotation.all)).where(thread_root_id: nil)
+    @annotations = apply_scopes(policy_scope(Annotation.all))
   end
 
   def question_index

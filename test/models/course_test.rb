@@ -224,9 +224,9 @@ class CourseTest < ActiveSupport::TestCase
     # All series and users are counted.
     assert_equal course.series.count * users.count, scoresheet[:hash].count
     # Correct series are counted.
-    assert_equal scoresheet[:hash].keys.pluck(1).to_set, scoresheet[:series].to_set(&:id)
+    assert_equal scoresheet[:hash].keys.pluck(1).to_set, scoresheet[:series].map(&:id).to_set
     # Correct users are counted.
-    assert_equal scoresheet[:hash].keys.to_set(&:first), users.to_set(&:id)
+    assert_equal scoresheet[:hash].keys.map(&:first).to_set, users.map(&:id).to_set
     # Counts are correct.
     scoresheet[:hash].each do |key, counts|
       assert_equal expected_accepted[key], counts[:accepted]

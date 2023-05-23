@@ -1,10 +1,10 @@
-import "components/search/standalone-dropdown-filter";
-import { StandaloneDropdownFilter } from "components/search/standalone-dropdown-filter";
+import "components/standalone-dropdown-filter";
+import { StandaloneDropdownFilter } from "components/standalone-dropdown-filter";
 import { fixture } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByText, queryByText, screen } from "@testing-library/dom";
+import { SearchQuery } from "search";
 import { html } from "lit/development";
-import { searchQueryState } from "state/SearchQuery";
 
 
 describe("DropdownFilter", () => {
@@ -12,10 +12,11 @@ describe("DropdownFilter", () => {
     let dropdownMenu: HTMLElement;
     let dropdownButton: HTMLElement;
     beforeEach(async () => {
-        searchQueryState.queryParams.clear();
+        const searchQuery = new SearchQuery("test.dodona.be");
         standaloneDropdownFilter = await fixture(html`
             <d-standalone-dropdown-filter param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
+                                       .searchQuery=${searchQuery}
                                         default="1">
             </d-standalone-dropdown-filter>`);
         dropdownMenu = screen.getByRole("list");
@@ -30,7 +31,7 @@ describe("DropdownFilter", () => {
 
     it("should set the query param to the selected label", async () => {
         await userEvent.click(getByText(dropdownMenu, "bar"));
-        expect(searchQueryState.queryParams.get("foo")).toBe("2");
+        expect(standaloneDropdownFilter.searchQuery.queryParams.params.get("foo")).toBe("2");
     });
 
     it("should mark selected labels as active", async () => {
@@ -62,7 +63,7 @@ describe("DropdownFilter", () => {
     });
 
     it("should set the default option as active on the search query", async () => {
-        expect(searchQueryState.queryParams.get("foo")).toBe("1");
+        expect(standaloneDropdownFilter.searchQuery.queryParams.params.get("foo")).toBe("1");
     });
 });
 

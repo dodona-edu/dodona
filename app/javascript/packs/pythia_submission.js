@@ -1,4 +1,4 @@
-import { initPythiaSubmissionShow } from "pythia_submission.ts";
+import { initPythiaSubmissionShow } from "pythia_submission.js";
 
 window.dodona.initPythiaSubmissionShow = initPythiaSubmissionShow;
 

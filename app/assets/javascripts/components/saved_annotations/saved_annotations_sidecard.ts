@@ -1,8 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import "./saved_annotation_list";
-import { savedAnnotationState } from "state/SavedAnnotations";
+import { getSavedAnnotations } from "state/SavedAnnotations";
+import { stateMixin } from "state/StateMixin";
 
 /**
  * This component represents a list of saved annotations
@@ -14,7 +15,7 @@ import { savedAnnotationState } from "state/SavedAnnotations";
  * @prop {Number} userId - used to fetch saved annotations by user
  */
 @customElement("d-saved-annotations-sidecard")
-export class SavedAnnotationList extends ShadowlessLitElement {
+export class SavedAnnotationList extends stateMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "course-id" })
     courseId: number;
     @property({ type: Number, attribute: "exercise-id" })
@@ -22,8 +23,10 @@ export class SavedAnnotationList extends ShadowlessLitElement {
     @property({ type: Number, attribute: "user-id" })
     userId: number;
 
+    state = ["getSavedAnnotations"];
+
     get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
+        return getSavedAnnotations(new Map([
             ["course_id", this.courseId.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()]

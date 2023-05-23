@@ -55,15 +55,48 @@ class FeedbackCodeRenderer
                   AnnotationPolicy.new(user, Annotation.new(submission: submission, user: user)).create?
                 end
 
-    @builder.tag!('d-annotation-options') {}
+    @builder.div(id: 'feedback-table-options', class: 'feedback-table-options') do
+      if user_perm
+        @builder.button(class: 'btn btn-text', id: 'add_global_annotation') do
+          if user_is_student
+            @builder.text!(I18n.t('submissions.show.questions.add_global'))
+          else
+            @builder.text!(I18n.t('submissions.show.annotations.add_global'))
+          end
+        end
+      end
+
+      @builder.span(class: 'flex-spacer') {}
+      @builder.span(class: 'diff-switch-buttons switch-buttons hide', id: 'annotations_toggles') do
+        @builder.span(id: 'diff-switch-prefix') do
+          @builder.text!(I18n.t('submissions.show.annotations.title'))
+        end
+        @builder.div(class: 'btn-group btn-toggle', role: 'group', 'aria-label': I18n.t('submissions.show.annotations.title'), 'data-bs-toggle': 'buttons') do
+          @builder.button(class: 'btn annotation-toggle active', id: 'show_all_annotations', title: I18n.t('submissions.show.annotations.show_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-multiple-outline') {}
+          end
+          @builder.button(class: 'btn annotation-toggle', id: 'show_only_errors', title: I18n.t('submissions.show.annotations.show_errors'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-alert-outline') {}
+          end
+          @builder.button(class: 'btn annotation-toggle', id: 'hide_all_annotations', title: I18n.t('submissions.show.annotations.hide_all'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.i(class: 'mdi mdi-comment-remove-outline') {}
+          end
+        end
+      end
+    end
+
+    @builder.div(id: 'feedback-table-global-annotations') do
+      @builder.div(id: 'feedback-table-global-annotations-list') {}
+    end
 
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
-        window.dodona.ready.then(() => {
-          window.dodona.codeListing.initAnnotations(#{submission.id}, #{submission.course_id.to_json}, #{submission.exercise_id}, #{user.id}, #{@code.to_json}, #{@code.lines.length}, #{user_is_student});
+        window.MathJax.startup.promise.then(() => {
+          window.dodona.codeListing = new window.dodona.codeListingClass(#{submission.id}, #{submission.course_id.to_json}, #{submission.exercise_id}, #{user.id}, #{@code.to_json}, #{@code.lines.length}, #{user_is_student});
           window.dodona.codeListing.addMachineAnnotations(#{messages.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_perm}
           #{'window.dodona.codeListing.loadUserAnnotations();' if submission.annotated? || (!user_is_student && submission.annotations.any?)}
+          window.dodona.codeListing.showAnnotations();
         });
       HEREDOC
     end

@@ -42,8 +42,8 @@ class ActivitiesTest < ApplicationSystemTestCase
     Exercise.any_instance.stubs(:boilerplate).returns('boilerplate')
     create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
     visit exercise_path(id: @instance.id)
-    assert_text 'Restore the initial code.'
-    find('a', text: 'Restore the initial code.').click
+    assert_text 'Restore the boilerplate code.'
+    find('a', text: 'Restore the boilerplate code.').click
     assert_text 'boilerplate'
   end
 
@@ -55,8 +55,8 @@ class ActivitiesTest < ApplicationSystemTestCase
     create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")')
     visit exercise_path(id: @instance.id)
     assert_text 'print("😀")'
-    assert_text 'Restore the initial code.'
-    find('a', text: 'Restore the initial code.').click
+    assert_text 'Restore the boilerplate code.'
+    find('a', text: 'Restore the boilerplate code.').click
     assert_text '`<script>alert("😀")</script>`'
   end
 end

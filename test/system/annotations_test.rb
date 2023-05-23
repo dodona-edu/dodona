@@ -50,7 +50,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       (1..@code_lines.length).each do |index|
         line = "tr#line-#{index}"
         find(line).hover
-        assert_css '.annotation-button button'
+        assert_css 'button.annotation-button'
       end
     end
   end
@@ -60,7 +60,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
     within '.code-listing' do
       @code_lines.each do |code_line|
         assert_text code_line
@@ -74,7 +74,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -94,7 +94,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -111,7 +111,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
     within 'form.annotation-submission' do
       click_button 'Cancel'
     end
@@ -130,9 +130,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     assert_selector('.annotation', count: 1)
 
-    dropdown = find('.annotation .dropdown')
-    dropdown.click
-    dropdown.find('i.mdi.mdi-pencil').click
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.paragraph(sentence_count: 3)
 
     within 'form.annotation-submission' do
@@ -157,10 +155,12 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     assert_selector '.annotation', count: 1
 
-    dropdown = find('.annotation .dropdown')
-    dropdown.click
-    dropdown.find('i.mdi.mdi-delete').click
-    accept_confirm('Are you sure you want to delete this comment?')
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
+
+    within 'form.annotation-submission' do
+      click_button 'Delete'
+      accept_confirm('Are you sure you want to delete this comment?')
+    end
 
     assert_no_css '.annotation'
   end
@@ -199,10 +199,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text annot.annotation_text
     end
 
-    dropdown = find('.annotation .dropdown')
-    dropdown.click
-    dropdown.find('i.mdi.mdi-pencil').click
-
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.characters number: 10_010
     assert_selector 'form.annotation-submission', count: 1
     # Attempt to type more than 10.000 characters.
@@ -225,9 +222,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text annot.annotation_text
     end
 
-    dropdown = find('.annotation .dropdown')
-    dropdown.click
-    dropdown.find('i.mdi.mdi-pencil').click
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = ''
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
@@ -261,7 +256,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
 
     initial = ''
     within 'form.annotation-submission' do
@@ -286,7 +281,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('button.annotation-button').click
 
     initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do
@@ -306,7 +301,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_button 'Add global comment'
 
     initial = Faker::Lorem.words(number: 128).join(' ')
-    within 'd-annotation-form' do
+    within '#feedback-table-global-annotations' do
       find('textarea.annotation-submission-input').fill_in with: initial
       click_button 'Comment'
     end
@@ -338,9 +333,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
     old_text = annot.annotation_text
 
-    dropdown = find('.annotation .dropdown')
-    dropdown.click
-    dropdown.find('i.mdi.mdi-pencil').click
+    find('.annotation .annotation-control-button.annotation-edit i.mdi.mdi-pencil').click
     replacement = Faker::Lorem.words(number: 32).join(' ')
     within 'form.annotation-submission' do
       find('textarea.annotation-submission-input').fill_in with: replacement
@@ -359,86 +352,5 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text replacement
     end
     assert_no_css 'form.annotation-submission'
-  end
-
-  test 'Can reply to an annotation' do
-    create :annotation, submission: @instance, user: @zeus
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-
-    thread = find('d-thread')
-    within thread do
-      assert_selector '.annotation', count: 1
-
-      fake_answer_input = find('input')
-      fake_answer_input.click
-
-      answer = Faker::Lorem.sentence
-      answer_field = find('textarea')
-      answer_field.fill_in with: answer
-
-      click_button 'Reply'
-
-      assert_selector '.annotation', count: 2
-    end
-  end
-
-  test 'Cannot delete an annotation with replies' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-
-    within 'd-thread' do
-      assert_selector '.annotation', count: 2
-
-      root = first('.annotation')
-      dropdown = root.find('.dropdown')
-      dropdown.click
-      assert_no_selector 'i.mdi.mdi-delete'
-    end
-  end
-
-  test 'Can delete an annotation after deleting all replies' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-
-    within 'd-thread' do
-      assert_selector '.annotation', count: 2
-
-      child = all('.annotation').last
-      dropdown = child.find('.dropdown')
-      dropdown.click
-      dropdown.find('i.mdi.mdi-delete').click
-      accept_confirm('Are you sure you want to delete this comment?')
-
-      assert_selector '.annotation', count: 1
-      root = first('.annotation')
-      dropdown = root.find('.dropdown')
-      dropdown.click
-      assert_selector 'i.mdi.mdi-delete'
-    end
-  end
-
-  test 'can delete the middle annotation in a thread' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
-    click_link 'Code'
-
-    within 'd-thread' do
-      assert_selector '.annotation', count: 3
-
-      child = all('.annotation')[1]
-      dropdown = child.find('.dropdown')
-      dropdown.click
-      dropdown.find('i.mdi.mdi-delete').click
-      accept_confirm('Are you sure you want to delete this comment?')
-
-      assert_selector '.annotation', count: 2
-    end
   end
 end

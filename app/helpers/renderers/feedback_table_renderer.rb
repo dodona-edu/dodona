@@ -79,26 +79,21 @@ class FeedbackTableRenderer
                     end
           @builder.li do
             id = tab_id(t, i)
-            # the pythonic devil has the code tab as a generic tab
-            is_code_tab = t[:data] && t[:data][:source_annotations]
-            @builder.a(href: "##{id}", 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip, id: is_code_tab ? 'link-to-code-tab' : nil) do
+            @builder.a(href: "##{id}", 'data-bs-toggle': 'tab', class: "tab-#{permission} #{'active' if i.zero?}", title: tooltip) do
               @builder.text!("#{(t[:description] || 'Test').upcase_first} ")
               # Choose between the pythonic devil and the deep blue sea.
-              if is_code_tab
-                @builder.tag!('d-annotations-count-badge')
-              else
-                @builder.span(class: 'badge rounded-pill', id: "badge_#{id}") do
-                  @builder.text! tab_count(t)
-                end
+              badge_id = t[:data] && t[:data][:source_annotations] ? 'code' : id
+              @builder.span(class: 'badge rounded-pill', id: "badge_#{badge_id}") do
+                @builder.text! tab_count(t)
               end
             end
           end
         end
         if show_code_tab
           @builder.li(class: ('active' if submission[:groups].blank?)) do
-            @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab', id: 'link-to-code-tab') do
+            @builder.a(href: '#code-tab', 'data-bs-toggle': 'tab') do
               @builder.text!("#{I18n.t('submissions.show.code')} ")
-              @builder.tag!('d-annotations-count-badge')
+              @builder.span(class: 'badge rounded-pill', id: 'badge_code')
             end
           end
         end

@@ -28,9 +28,8 @@ module PagesHelper
       }
     end
 
-    incomplete_unreleased_feedbacks = course.feedbacks.joins(:evaluation).where(evaluation: { released: false }).incomplete
-    if incomplete_unreleased_feedbacks.count > 0
-      linked_feedback = incomplete_unreleased_feedbacks.first
+    if course.feedbacks.incomplete.count > 0
+      linked_feedback = course.feedbacks.incomplete.first
       result << {
         title: I18n.t('pages.course_card.incomplete-feedbacks', count: course.feedbacks.incomplete.count),
         link: evaluation_feedback_path(I18n.locale, linked_feedback.evaluation, linked_feedback),

@@ -1,26 +1,26 @@
-import "components/search/search_actions";
-import { SearchAction, SearchActions, SearchOption } from "components/search/search_actions";
+import "components/search_actions";
+import { SearchAction, SearchActions, SearchOption } from "components/search_actions";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
+import { SearchQuery } from "search";
 import { html } from "lit";
 import * as util from "util.js";
-import { searchQueryState } from "state/SearchQuery";
 
 describe("SearchActions", () => {
     let searchActions: SearchActions;
     beforeEach(async () => {
-        searchQueryState.queryParams.clear();
-        searchQueryState.arrayQueryParams.clear();
         const actions: (SearchOption | SearchAction)[] = [
             { text: "foo", search: { foo: "bar", fool: "bars" } },
             { text: "bar", icon: "replay", confirm: "Are you sure?", action: "https://test.dodona.be/destroy" },
             { icon: "test", text: "js-test", js: "window.alert('test')" },
             { icon: "link", text: "link-test", url: "https://test.dodona.be" },
         ];
+        const searchQuery = new SearchQuery("test.dodona.be");
         await fixture(`<div class="toasts"></div>`);
         searchActions = await fixture(html`
-            <d-search-actions .actions=${actions}
+            <d-search-actions .searchQuery=${searchQuery}
+                              .actions=${actions}
             ></d-search-actions>`);
     });
 
@@ -40,12 +40,12 @@ describe("SearchActions", () => {
         expect(checkbox.checked).toBe(false);
         await userEvent.click(checkbox);
         expect(checkbox.checked).toBe(true);
-        expect(searchQueryState.queryParams.get("foo")).toBe("bar");
-        expect(searchQueryState.queryParams.get("fool")).toBe("bars");
-        searchQueryState.queryParams.set("foo", undefined);
+        expect(searchActions.searchQuery.queryParams.params.get("foo")).toBe("bar");
+        expect(searchActions.searchQuery.queryParams.params.get("fool")).toBe("bars");
+        searchActions.searchQuery.queryParams.updateParam("foo", undefined);
         await nextFrame();
         expect(checkbox.checked).toBe(false);
-        searchQueryState.queryParams.set("foo", "bar");
+        searchActions.searchQuery.queryParams.updateParam("foo", "bar");
         await nextFrame();
         expect(checkbox.checked).toBe(true);
     });
@@ -98,7 +98,7 @@ describe("SearchActions", () => {
         jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
             json: () => Promise.resolve({}),
         } as Response));
-        searchQueryState.queryParams.set("foo", "bar");
+        searchActions.searchQuery.queryParams.updateParam("foo", "bar");
         await userEvent.click(screen.queryByText("bar"));
         expect(util.fetch).toHaveBeenCalledWith("https://test.dodona.be/destroy?foo=bar", {
             method: "POST",

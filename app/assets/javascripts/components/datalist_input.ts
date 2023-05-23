@@ -1,8 +1,8 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { ShadowlessLitElement } from "components/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
-import { watchMixin } from "components/meta/watch_mixin";
+import { watchMixin } from "components/watch_mixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { htmlEncode } from "util.js";
 

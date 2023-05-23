@@ -115,9 +115,9 @@ end %>
                 </div>
               <% end %>
               <% if !@edit_submission && !@solution && @last_submission %>
-                <div class="callout callout-info mt-0" id="restore-boilerplate">
+                <div class="alert alert-info" id="restore-boilerplate">
                   <%= t ".preloaded_info" %>
-                  <a class="link-primary">
+                  <a >
                     <%= t(@activity.boilerplate ? ".preloaded_restore" : ".preloaded_clear") %>
                   </a>
                 </div>

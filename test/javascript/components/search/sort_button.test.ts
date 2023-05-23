@@ -1,22 +1,28 @@
-import "components/search/sort_button";
+import "components/sort_button";
+import { SortQuery } from "components/sort_button";
+import { SearchQuery } from "search";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { screen } from "@testing-library/dom";
 import userEvent from "@testing-library/user-event";
 import { html } from "lit";
-import { searchQueryState } from "state/SearchQuery";
 
 describe("SortButton", () => {
+    let sortQuery: SortQuery;
     beforeEach(async () => {
-        searchQueryState.queryParams.clear();
+        const searchQuery = new SearchQuery("test.dodona.be");
+        sortQuery = new SortQuery(searchQuery);
         await fixture(html`
-            <d-sort-button column="foo"
+            <d-sort-button .sortQuery=${sortQuery}
+                           column="foo"
                            default="ASC">
                 Foo
             </d-sort-button>
-            <d-sort-button column="bar">
+            <d-sort-button .sortQuery=${sortQuery}
+                           column="bar">
                 Bar
             </d-sort-button>
-            <d-sort-button column="bal"
+            <d-sort-button .sortQuery=${sortQuery}
+                           column="bal"
                            .disabled="${true}">
                 Bal
             </d-sort-button>
@@ -25,49 +31,49 @@ describe("SortButton", () => {
 
     it("should set the sort query parameter when clicked", async () => {
         await userEvent.click(screen.getByText("Bar"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("bar");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("ASC");
+        expect(sortQuery.active_column).toBe("bar");
+        expect(sortQuery.ascending).toBe(true);
     });
 
     it("should set the sort query parameter to descending when clicked twice", async () => {
         await userEvent.click(screen.getByText("Bar"));
         await userEvent.click(screen.getByText("Bar"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("bar");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("DESC");
+        expect(sortQuery.active_column).toBe("bar");
+        expect(sortQuery.ascending).toBe(false);
     });
 
     it("should set the sort query back to ascending when clicked three times", async () => {
         await userEvent.click(screen.getByText("Bar"));
         await userEvent.click(screen.getByText("Bar"));
         await userEvent.click(screen.getByText("Bar"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("bar");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("ASC");
+        expect(sortQuery.active_column).toBe("bar");
+        expect(sortQuery.ascending).toBe(true);
     });
 
     it("should trigger descending when starting as ascending", async () => {
         await userEvent.click(screen.getByText("Foo"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("foo");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("DESC");
+        expect(sortQuery.active_column).toBe("foo");
+        expect(sortQuery.ascending).toBe(false);
     });
 
     it("should not do anything when clicking a disabled button", async () => {
         await userEvent.click(screen.getByText("Bal"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe(undefined);
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe(undefined);
+        expect(sortQuery.active_column).toBe(undefined);
+        expect(sortQuery.ascending).toBe(false);
     });
 
     it("should update if change is set from outside", async () => {
-        searchQueryState.queryParams.set("order_by[column]", "bar");
-        searchQueryState.queryParams.set("order_by[direction]", "DESC");
+        sortQuery.active_column = "bar";
+        sortQuery.ascending = false;
         await nextFrame();
         await userEvent.click(screen.getByText("Bar"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("bar");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("ASC");
+        expect(sortQuery.active_column).toBe("bar");
+        expect(sortQuery.ascending).toBe(true);
     });
 
     it("also updates the search query", async () => {
         await userEvent.click(screen.getByText("Bar"));
-        expect(searchQueryState.queryParams.get("order_by[column]")).toBe("bar");
-        expect(searchQueryState.queryParams.get("order_by[direction]")).toBe("ASC");
+        expect(sortQuery.searchQuery.queryParams.params.get("order_by[column]")).toBe("bar");
+        expect(sortQuery.searchQuery.queryParams.params.get("order_by[direction]")).toBe("ASC");
     });
 });

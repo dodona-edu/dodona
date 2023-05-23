@@ -252,8 +252,8 @@ module ApplicationHelper
       %(
         #{container}
         <script>
-        if(dodona.search){
-            dodona.search.initPagination();
+        if(dodona.searchQuery){
+            dodona.searchQuery.initPagination();
         }
         </script>
       )

@@ -1,24 +1,24 @@
-import "components/search/dropdown_filter";
-import { DropdownFilter } from "components/search/dropdown_filter";
+import "components/dropdown_filter";
+import { DropdownFilter } from "components/dropdown_filter";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByLabelText, screen } from "@testing-library/dom";
+import { SearchQuery } from "search";
 import { html } from "lit/development";
-import { Label } from "components/search/filter_collection_element";
-import { searchQueryState } from "state/SearchQuery";
+import { Label } from "components/filter_collection_element";
 
 describe("DropdownFilter", () => {
     let dropdownFilter;
     beforeEach(async () => {
-        searchQueryState.queryParams.clear();
-        searchQueryState.arrayQueryParams.clear();
+        const searchQuery = new SearchQuery("test.dodona.be");
         dropdownFilter = await fixture(html`
             <d-dropdown-filter param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                        type="test"
                                        .paramVal=${(l: Label) => l.id}
                                        .color=${() => "pink"}
-                                       .multi=${false}>
+                                       .multi=${false}
+                                       .searchQuery=${searchQuery}>
             </d-dropdown-filter>`) as DropdownFilter;
     });
 
@@ -30,7 +30,7 @@ describe("DropdownFilter", () => {
 
     it("should set the query param to the selected label", async () => {
         await userEvent.click(screen.getByText("bar"));
-        expect(searchQueryState.queryParams.get("foo")).toBe("2");
+        expect(dropdownFilter.searchQuery.queryParams.params.get("foo")).toBe("2");
     });
 
     it("should mark selected labels as active", async () => {
@@ -97,7 +97,7 @@ describe("DropdownFilter", () => {
     });
 
     it("should update if the search query changes", async () => {
-        searchQueryState.queryParams.set("foo", "2");
+        dropdownFilter.searchQuery.queryParams.updateParam("foo", "2");
         await nextFrame();
         const input = getByLabelText(dropdownFilter, "bar") as HTMLInputElement;
         expect(input.checked).toBe(true);

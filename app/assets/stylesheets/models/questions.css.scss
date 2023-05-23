@@ -1,6 +1,6 @@
 .question-table {
   col.actions {
-    width: 50px;
+    width: 100px;
   }
 
   col.question {
@@ -12,7 +12,43 @@
   }
 
   col.name {
-    width: 120px;
+    width: 150px;
+  }
+
+  td.actions {
+    vertical-align: middle;
+  }
+
+  .selection-row {
+    cursor: pointer;
+
+    &:hover {
+      background-color: table-hover-bg;
+    }
+  }
+
+  table-layout: fixed;
+}
+
+.question-index-table {
+  col.actions {
+    width: 100px;
+  }
+
+  col.age {
+    width: 240px;
+  }
+
+  col.status {
+    width: 240px;
+  }
+
+  col.name {
+    width: 170px;
+  }
+
+  col.view {
+    width: 35px;
   }
 
   .selection-row {
@@ -26,14 +62,6 @@
   table-layout: fixed;
 }
 
-@include media-breakpoint-up(md) {
-  .question-table {
-    .icon-indent {
-      padding-left: 23px;
-    }
-
-    col.name {
-      width: 170px;
-    }
-  }
+.icon-indent {
+  padding-left: 23px;
 }

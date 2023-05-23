@@ -33,7 +33,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record&.user == user && (record&.thread_root_id.present? || record.responses.empty?)
+    record&.user == user
   end
 
   def transition?(_from, _to = nil)
@@ -41,7 +41,7 @@ class AnnotationPolicy < ApplicationPolicy
   end
 
   def permitted_attributes_for_create
-    %i[annotation_text saved_annotation_id line_nr evaluation_id thread_root_id rows column columns]
+    %i[annotation_text saved_annotation_id line_nr evaluation_id]
   end
 
   def permitted_attributes_for_update

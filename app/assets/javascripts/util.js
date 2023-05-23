@@ -95,9 +95,6 @@ async function initCSRF() {
     });
 }
 
-/**
- * @param {Document | Element} root
- */
 function initTooltips(root = document) {
     // First remove dead tooltips
     const tooltips = root.querySelectorAll(".tooltip");
@@ -211,9 +208,9 @@ function htmlEncode(str) {
 /**
  * Returns the first parent of an element that has at least all of the given classes.
  * Returns null if no such parent exists.
- * @param {Element} element - Iterate over the parents of this element
+ * @param {HTMLElement} element - Iterate over the parents of this element
  * @param {string} classNames - The class names to search for, separated by white space
- * @return {?Element} The parent containing the classes
+ * @return {?HTMLElement} The parent containing the classes
  */
 function getParentByClassName(element, classNames) {
     let parent = element.parentElement;

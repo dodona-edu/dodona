@@ -66,19 +66,19 @@
     "datetime": {
       "distance_in_words": {
         "about_x_hours": {
-          "one": "about %{count} hour",
+          "one": "about 1 hour",
           "other": "about %{count} hours"
         },
         "about_x_months": {
-          "one": "about %{count} month",
+          "one": "about 1 month",
           "other": "about %{count} months"
         },
         "about_x_years": {
-          "one": "about %{count} year",
+          "one": "about 1 year",
           "other": "about %{count} years"
         },
         "almost_x_years": {
-          "one": "almost %{count} year",
+          "one": "almost 1 year",
           "other": "almost %{count} years"
         },
         "half_a_minute": "half a minute",
@@ -87,31 +87,31 @@
           "other": "less than %{count} minutes"
         },
         "less_than_x_seconds": {
-          "one": "less than %{count} second",
+          "one": "less than 1 second",
           "other": "less than %{count} seconds"
         },
         "over_x_years": {
-          "one": "over %{count} year",
+          "one": "over 1 year",
           "other": "over %{count} years"
         },
         "x_days": {
-          "one": "%{count} day",
+          "one": "1 day",
           "other": "%{count} days"
         },
         "x_minutes": {
-          "one": "%{count} minute",
+          "one": "1 minute",
           "other": "%{count} minutes"
         },
         "x_months": {
-          "one": "%{count} month",
+          "one": "1 month",
           "other": "%{count} months"
         },
         "x_seconds": {
-          "one": "%{count} second",
+          "one": "1 second",
           "other": "%{count} seconds"
         },
         "x_years": {
-          "one": "%{count} year",
+          "one": "1 year",
           "other": "%{count} years"
         }
       },
@@ -146,22 +146,6 @@
           "question": "Question",
           "user": "Comment",
           "warning": "Warning"
-        }
-      },
-      "annotations": {
-        "options": {
-          "add_annotation": "Add a comment to this line",
-          "add_annotation_for_selection": "Add a comment",
-          "add_global_annotation": "Add global comment",
-          "add_global_question": "Ask a question about your code",
-          "add_question": "Ask a question about this line",
-          "add_question_for_selection": "Ask a question"
-        },
-        "toggles": {
-          "hide_all": "Hide all annotations",
-          "show_all": "Show all annotations",
-          "show_errors": "Only show errors",
-          "title": "Annotations"
         }
       },
       "attempts": "attempts",
@@ -428,10 +412,9 @@
           "saved_annotation_title": "Save comment for reuse"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
-        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
+        "help_student": "Follow our guide in <a href='https://docs.dodona.be/en/guides/students/exercises/#interpreteren-van-feedback'>the documentation</a> to learn how you can ask questions in Dodona and more!",
         "meta": "%{user} · %{time}",
         "not_released": "This comment is not yet visible for students",
-        "reply": "Reply",
         "save": "Save comment",
         "send": "Comment",
         "update": "Update"
@@ -443,13 +426,8 @@
         "edit": "Edit question",
         "has_newer_submission": "There was a newer submission since this question. Click here to go to the latest submission.",
         "in_progress": "Mark question as in progress",
-        "is_answered": "This question is answered.",
-        "is_in_progress": "This question is currently being answered.",
-        "is_unanswered": "This question is unanswered.",
         "meta_else": "%{user} · %{time} · %{state} by %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
-        "or": "or",
-        "reply": "Reply",
         "resolve": "Mark as answered",
         "send": "Ask question",
         "unresolve": "Re-open question",
@@ -605,23 +583,23 @@
           "other": "meer dan %{count} jaar"
         },
         "x_days": {
-          "one": "%{count} dag",
+          "one": "1 dag",
           "other": "%{count} dagen"
         },
         "x_minutes": {
-          "one": "%{count} minuut",
+          "one": "1 minuut",
           "other": "%{count} minuten"
         },
         "x_months": {
-          "one": "%{count} maand",
+          "one": "1 maand",
           "other": "%{count} maanden"
         },
         "x_seconds": {
-          "one": "%{count} seconde",
+          "one": "1 seconde",
           "other": "%{count} seconden"
         },
         "x_years": {
-          "one": "%{count} jaar",
+          "one": "1 jaar",
           "other": "%{count} jaar"
         }
       },
@@ -656,22 +634,6 @@
           "question": "Vraag",
           "user": "Opmerking",
           "warning": "Waarschuwing"
-        }
-      },
-      "annotations": {
-        "options": {
-          "add_annotation": "Voeg een opmerking toe aan deze regel",
-          "add_annotation_for_selection": "Voeg een opmerking toe",
-          "add_global_annotation": "Globale opmerking toevoegen",
-          "add_global_question": "Stel een vraag over je code",
-          "add_question": "Stel een vraag over deze regel",
-          "add_question_for_selection": "Stel een vraag"
-        },
-        "toggles": {
-          "hide_all": "Verberg alle annotaties",
-          "show_all": "Toon alle annotaties",
-          "show_errors": "Enkel errors en opmerkingen tonen",
-          "title": "Annotaties"
         }
       },
       "attempts": "pogingen",
@@ -938,10 +900,9 @@
           "saved_annotation_title": "Sla opmerking op om te hergebruiken"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
-        "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",
+        "help_student": "Volg onze handleiding in <a href='https://docs.dodona.be/nl/guides/students/exercises/#interpreteren-van-feedback'>de documentatie</a> om te weten te komen hoe je vragen kunt stellen in Dodona en meer!",
         "meta": "%{user} · %{time}",
         "not_released": "Deze opmerking is nog niet zichtbaar voor studenten",
-        "reply": "Reageer",
         "save": "Opmerking opslaan",
         "send": "Toevoegen",
         "update": "Updaten"
@@ -953,13 +914,8 @@
         "edit": "Vraag aanpassen",
         "has_newer_submission": "Er is een nieuwe oplosssing ingediend sinds deze vraag. Klik hier om naar de nieuwste oplossing te gaan.",
         "in_progress": "In behandeling markeren",
-        "is_answered": "Deze vraag is beantwoord.",
-        "is_in_progress": "Deze vraag wordt momenteel beantwoord.",
-        "is_unanswered": "Deze vraag is nog niet beantwoord.",
         "meta_else": "%{user} · %{time} · %{state} door %{last}",
         "meta_unanswered": "%{user} · %{time} · %{state}",
-        "or": "of",
-        "reply": "Beantwoorden",
         "resolve": "Als beantwoord markeren",
         "send": "Vraag stellen",
         "unresolve": "Vraag terug openen",

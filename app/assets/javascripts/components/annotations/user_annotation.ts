@@ -183,7 +183,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     ${this.dropdownOptions.length > 0 ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">
                             <a class="btn btn-icon btn-icon-muted dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-dots-vertical text-muted"></i>
+                                <i class="mdi mdi-dots-horizontal text-muted"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 ${this.dropdownOptions}

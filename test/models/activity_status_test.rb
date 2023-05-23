@@ -44,10 +44,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     activity = exercises(:python_exercise)
     user = users(:student)
     ActivityStatus.create(user: user, activity: activity, series: nil)
-    assert_equal 1, ActivityStatus.count
-    assert_raises ActiveRecord::RecordNotUnique do
-      ActivityStatus.create(user: user, activity: activity, series: nil)
-    end
+    ActivityStatus.create(user: user, activity: activity, series: nil)
     assert_equal 1, ActivityStatus.count
   end
 

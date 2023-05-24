@@ -1,6 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, PropertyValues, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult, render } from "lit";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "util.js";
@@ -59,14 +59,16 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return this.row.toString().length;
     }
 
-    async dragStart(): Promise<void> {
+    dragStart(): void {
         userAnnotationState.selectedRange = {
             row: this.row,
             rows: 1,
         };
-        // updating dragStart triggers a rerender that hides this button,
-        // so we need to wait for the drag trigger to complete before we can update dragStart
-        await new Promise(resolve => setTimeout(resolve, 10));
+    }
+
+    drag(): void {
+        // updating userAnnotationState.dragStart triggers a rerender that hides this button,
+        // doing this in dragStart would cause the button to disappear before the browser can make the pseudo image
         userAnnotationState.dragStart = this.row;
     }
 
@@ -84,6 +86,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                      draggable="${!this.rangeExists}"
                      @dragstart=${() => this.dragStart()}
                      @dragend=${() => this.dragEnd()}
+                     @drag="${() => this.drag()}"
                 >
                     <button class="btn btn-fab-small-flex"
                             @pointerup=${() => this.openForm()}>

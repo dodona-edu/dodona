@@ -66,19 +66,19 @@
     "datetime": {
       "distance_in_words": {
         "about_x_hours": {
-          "one": "about %{count} hour",
+          "one": "about 1 hour",
           "other": "about %{count} hours"
         },
         "about_x_months": {
-          "one": "about %{count} month",
+          "one": "about 1 month",
           "other": "about %{count} months"
         },
         "about_x_years": {
-          "one": "about %{count} year",
+          "one": "about 1 year",
           "other": "about %{count} years"
         },
         "almost_x_years": {
-          "one": "almost %{count} year",
+          "one": "almost 1 year",
           "other": "almost %{count} years"
         },
         "half_a_minute": "half a minute",
@@ -87,31 +87,31 @@
           "other": "less than %{count} minutes"
         },
         "less_than_x_seconds": {
-          "one": "less than %{count} second",
+          "one": "less than 1 second",
           "other": "less than %{count} seconds"
         },
         "over_x_years": {
-          "one": "over %{count} year",
+          "one": "over 1 year",
           "other": "over %{count} years"
         },
         "x_days": {
-          "one": "%{count} day",
+          "one": "1 day",
           "other": "%{count} days"
         },
         "x_minutes": {
-          "one": "%{count} minute",
+          "one": "1 minute",
           "other": "%{count} minutes"
         },
         "x_months": {
-          "one": "%{count} month",
+          "one": "1 month",
           "other": "%{count} months"
         },
         "x_seconds": {
-          "one": "%{count} second",
+          "one": "1 second",
           "other": "%{count} seconds"
         },
         "x_years": {
-          "one": "%{count} year",
+          "one": "1 year",
           "other": "%{count} years"
         }
       },
@@ -605,23 +605,23 @@
           "other": "meer dan %{count} jaar"
         },
         "x_days": {
-          "one": "%{count} dag",
+          "one": "1 dag",
           "other": "%{count} dagen"
         },
         "x_minutes": {
-          "one": "%{count} minuut",
+          "one": "1 minuut",
           "other": "%{count} minuten"
         },
         "x_months": {
-          "one": "%{count} maand",
+          "one": "1 maand",
           "other": "%{count} maanden"
         },
         "x_seconds": {
-          "one": "%{count} seconde",
+          "one": "1 seconde",
           "other": "%{count} seconden"
         },
         "x_years": {
-          "one": "%{count} jaar",
+          "one": "1 jaar",
           "other": "%{count} jaar"
         }
       },

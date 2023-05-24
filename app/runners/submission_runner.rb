@@ -65,6 +65,7 @@ class SubmissionRunner
 
   def prepare
     @start = Time.zone.now
+    @time_messages = []
     # set the submission's status
     @submission.status = 'running'
     @submission.save
@@ -85,7 +86,6 @@ class SubmissionRunner
     copy_or_create(@judge.full_path, @mountsrc.join(@hidden_path, 'judge'))
 
     end_preparing = Time.zone.now
-    @time_messages = []
     @time_messages << build_message(format('<strong>Prepare:</strong> %<time>.2f seconds', time: (end_preparing - @start)), 'zeus', 'html')
   end
 

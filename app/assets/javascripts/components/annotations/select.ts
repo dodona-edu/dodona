@@ -188,7 +188,9 @@ export async function triggerSelectionEnd(): Promise<void> {
     if (!selection.isCollapsed && !anyRangeInAnnotation(selection)) {
         userAnnotationState.selectedRange = selectedRangeFromSelection(selection);
         if (userAnnotationState.selectedRange) {
-            addSelectionClasses();
+            const selectionType = annotationState.isQuestionMode ? "question" : "annotation";
+            document.querySelector(".code-table")?.classList.add(`selection-color-${selectionType}`);
+            document.body.classList.remove("no-selection-outside-code");
         } else {
             removeSelectionClasses();
         }

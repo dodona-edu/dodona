@@ -118,6 +118,17 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
     ranges.forEach(range => wrapRange(root, range, wrapper, callback));
 }
 
+function cached<Args extends any[], Return>(f: (...args: Args) => Return): (...args: Args) => Return {
+    const cache = new Map<string, Return>();
+    return (...args: Args) => {
+        const key = JSON.stringify(args);
+        if (!cache.has(key)) {
+            cache.set(key, f(...args));
+        }
+        return cache.get(key);
+    };
+}
+
 /**
  * Wraps all elements in the given ranges of the given target string in the given wrapper node.
  * @param target a html string whose text nodes should be wrapped
@@ -125,9 +136,12 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
  * @param wrapper the type of wrapper to create
  * @param callback the callback to call for each wrapper node
  */
+
 export function wrapRangesInHtml(target: string, ranges: range[], wrapper: string, callback: callback = () => undefined): string {
     const root = document.createElement("div");
     root.innerHTML = target;
     wrapRanges(root, ranges, wrapper, callback);
     return root.innerHTML;
 }
+
+export const wrapRangesInHtmlCached = cached(wrapRangesInHtml);

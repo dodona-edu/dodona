@@ -11,7 +11,7 @@ import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { AnnotationData, annotationState, compareAnnotationOrders } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { wrapRangesInHtml, range } from "mark";
+import { wrapRangesInHtml, range, wrapRangesInHtmlCached } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
 import "components/annotations/selection_marker";
@@ -73,7 +73,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
         const codeToMark = this.renderedCode;
-        let annotationsMarked = wrapRangesInHtml(
+        let annotationsMarked = wrapRangesInHtmlCached(
             codeToMark,
             annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
             "d-annotation-marker",

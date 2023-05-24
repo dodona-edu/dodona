@@ -144,7 +144,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
 
         e.preventDefault();
         const origin = userAnnotationState.dragStart;
-        if ( origin > this.row ) {
+        if (origin > this.row) {
             userAnnotationState.selectedRange = { row: this.row, rows: origin - this.row + 1 };
         } else {
             userAnnotationState.selectedRange = { row: origin, rows: this.row - origin + 1 };

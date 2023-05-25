@@ -91,17 +91,58 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       }
 
       // Highlight for the line numbers.
-      .lineno.marked {
+      .lineno.marked .rouge-gutter {
         background-color: $warning-container;
-
-        // border-left: $code-warning-border-left solid $warning;
-        // Only do the line number, don't extend to the full height
-        background-clip: content-box;
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
         background-color: $warning-container;
+        width: 100%;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      .lineno.marked .rouge-code d-annotation-marker {
+        padding: 0;
+        margin: 0;
+
+        --question-color: #{$warning-container};
+        --annotation-color: #{$warning-container};
+
+        pre {
+          background-color: inherit;
+
+          &.code-line-question {
+            background-color: $annotation-question-background-intense;
+          }
+
+          &.code-line-annotation {
+            background-color: $annotation-user-background-intense;
+          }
+        }
+      }
+
+      .lineno .rouge-code pre {
+        &.code-line-question {
+          background-color: $annotation-question-background-intense;
+          width: 100%;
+
+          d-annotation-marker {
+            background-color: $annotation-question-background-intense;
+          }
+        }
+
+        &.code-line-annotation {
+          background-color: $annotation-user-background-intense;
+          width: 100%;
+
+          d-annotation-marker {
+            background-color: $annotation-user-background-intense;
+          }
+        }
       }
 
       .annotation-button {
@@ -216,24 +257,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           padding-bottom: 3px;
           margin-top: -2px;
           padding-top: 2px;
-
-          &.code-line-question {
-            background-color: $annotation-question-background-intense;
-            width: 100%;
-
-            d-annotation-marker {
-              background-color: $annotation-question-background-intense;
-            }
-          }
-
-          &.code-line-annotation {
-            background-color: $annotation-user-background-intense;
-            width: 100%;
-
-            d-annotation-marker {
-              background-color: $annotation-user-background-intense;
-            }
-          }
         }
       }
 

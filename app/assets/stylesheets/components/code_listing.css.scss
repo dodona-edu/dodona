@@ -105,6 +105,8 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         margin-bottom: 0;
       }
 
+      // A highlight is more important then annotation background
+      // but less important then intense annotation background or selection markers
       .lineno.marked .rouge-code d-annotation-marker {
         padding: 0;
         margin: 0;
@@ -125,6 +127,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         }
       }
 
+      // Highlight fully selected lines, also force all annotations in the line to the selection color
       .lineno .rouge-code pre {
         &.code-line-question {
           background-color: $annotation-question-background-intense;

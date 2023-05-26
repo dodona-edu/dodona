@@ -10,8 +10,10 @@ on:
 jobs:
   run-tests:
     uses: ./.github/workflows/test.yml
+  run-linting:
+    uses: ./.github/workflows/lint.yml
   deploy-naos:
     uses: ./.github/workflows/deploy-naos.yml
   deploy-production:
-    needs: [run-tests, deploy-naos]
+    needs: [run-tests, deploy-naos, run-linting]
     uses: ./.github/workflows/deploy-production.yml

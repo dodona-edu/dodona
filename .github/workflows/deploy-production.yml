@@ -1,0 +1,20 @@
+name: Deploy production unchecked
+
+# Queue the deploy, but don't cancel any currently running workflows
+concurrency: deploy-production
+
+jobs:
+  deploy:
+    environment:
+      name: dodona
+      url: https://dodona.be
+    runs-on: ubuntu-latest
+    steps:
+    - name: Install SSH key
+      uses: shimataro/ssh-key-action@v2
+      with:
+        key: ${{ secrets.MESTRA_KEY }}
+        known_hosts: ${{ secrets.MESTRA_HOST }}
+    - name: Run deploy
+      run: |
+        echo "deploy production $GITHUB_SHA" | ssh -p 4840 dodona@mestra.ugent.be

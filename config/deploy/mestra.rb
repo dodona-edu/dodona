@@ -4,7 +4,7 @@ server 'mestra.ugent.be', user: 'dodona', roles: %i[web app worker], ssh_options
     port: 4840
 }
 
-set :branch, ENV['GITHUB_SHA'] || 'develop'
+set :branch, ENV['GITHUB_SHA'] || 'main'
 set :rails_env, :development
 
 set :default_env, {skip_test_database: true}

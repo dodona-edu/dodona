@@ -10,7 +10,7 @@ server 'tantalus.ugent.be', user: 'dodona', port: '4840', roles: %w[app worker]
 server 'ixion.ugent.be',    user: 'dodona', port: '4840', roles: %w[app worker]
 server 'tityos.ugent.be',   user: 'dodona', port: '4840', roles: %w[app worker]
 
-set :branch, 'master'
+set :branch, 'main'
 
 set :delayed_job_pools_per_server,
     'dodona' => {

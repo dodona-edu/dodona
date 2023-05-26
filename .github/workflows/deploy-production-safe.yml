@@ -1,0 +1,17 @@
+name: Deploy production
+
+concurrency:
+  group: deploy-production-safe
+  cancel-in-progress: true
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/test.yml
+  deploy-naos:
+    uses: ./.github/workflows/deploy-naos.yml
+  deploy-production:
+    needs: [run-tests, deploy-naos]
+    uses: ./.github/workflows/deploy-production.yml

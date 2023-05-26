@@ -3,6 +3,10 @@ name: Deploy production unchecked
 # Queue the deploy, but don't cancel any currently running workflows
 concurrency: deploy-production
 
+on:
+  workflow_call:
+  workflow_dispatch:
+
 jobs:
   deploy:
     environment:

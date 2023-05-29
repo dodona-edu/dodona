@@ -18,7 +18,7 @@
     "@babel/preset-env": "^7.21.5",
     "@babel/preset-typescript": "^7.21.5",
     "@dodona/papyros": "^1.0.1",
-    "@popperjs/core": "^2.11.7",
+    "@popperjs/core": "^2.11.8",
     "@rails/activestorage": "^7.0.4",
     "@rails/ujs": "^7.0.4",
     "@types/d3": "^7.4.0",

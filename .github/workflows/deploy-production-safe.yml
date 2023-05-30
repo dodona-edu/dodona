@@ -1,8 +1,7 @@
 name: Deploy production
 
-concurrency:
-  group: deploy-production-safe
-  cancel-in-progress: true
+# Queue the deploy, but don't cancel any currently running workflows
+concurrency: deploy-production-safe
 
 on:
   workflow_dispatch:

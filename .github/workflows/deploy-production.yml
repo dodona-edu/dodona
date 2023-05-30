@@ -10,7 +10,7 @@ on:
 jobs:
   deploy:
     environment:
-      name: dodona
+      name: production
       url: https://dodona.be
     runs-on: ubuntu-latest
     steps:

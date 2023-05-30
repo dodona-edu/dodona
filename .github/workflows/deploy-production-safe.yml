@@ -1,7 +1,7 @@
 name: Deploy production
 
 # Queue the deploy, but don't cancel any currently running workflows
-concurrency: deploy-production
+concurrency: deploy-production-safe
 
 on:
   workflow_dispatch:
@@ -18,3 +18,4 @@ jobs:
   deploy-production:
     needs: [run-tests, deploy-naos, run-linting]
     uses: ./.github/workflows/deploy-production.yml
+    secrets: inherit

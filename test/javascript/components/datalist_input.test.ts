@@ -6,6 +6,9 @@ import { screen } from "@testing-library/dom";
 
 
 describe("DatalistInput", () => {
+    // Mock scrollIntoView as it is not implemented in jsdom
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
     it("has an input field", async () => {
         const datalistInput = await fixture(`<d-datalist-input></d-datalist-input>`);
         expect(datalistInput.querySelector("input:not([type=hidden])")).toBeDefined();

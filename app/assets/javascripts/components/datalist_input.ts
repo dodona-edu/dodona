@@ -143,7 +143,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     }
 
     keydown(e: KeyboardEvent): void {
-        if (e.key === "Tab" && this.softSelectedOption) {
+        if ((e.key === "Tab" || e.key === "Enter") && this.softSelectedOption) {
             this.value = this.softSelectedOption.value;
             this.filter = this.softSelectedOption.label;
         }

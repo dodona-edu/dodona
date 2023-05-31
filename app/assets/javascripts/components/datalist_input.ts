@@ -172,6 +172,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        .value="${this.filter}"
                        placeholder="${this.placeholder}"
                        @keydown=${e => this.keydown(e)}
+                       @focus=${() => this.requestUpdate()}
                 >
                 <ul class="dropdown-menu ${this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">

@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/meta/watch_mixin";
@@ -36,6 +36,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     inputRef: Ref<HTMLInputElement> = createRef();
 
     _filter= this.label;
+    @property({ state: true })
     _softSelectedValue: string;
 
     @property({ type: String })
@@ -49,9 +50,9 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         this.fireEvent();
     }
 
-    @property({ type: String, state: true })
+    @property({ state: true })
     get softSelectedValue(): string {
-        return this.value || this._softSelectedValue || this.filtered_options[0]?.value || undefined;
+        return this._softSelectedValue || this.value || this.filtered_options[0]?.value || undefined;
     }
 
     set softSelectedValue(value: string) {
@@ -129,7 +130,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     }
 
     keydown(e: KeyboardEvent): void {
-        if (e.key === "Tab" && this.filtered_options.length > 0) {
+        if (e.key === "Tab" && this.softSelectedValue) {
             this.value = this.softSelectedValue;
             this.filter = this.options?.find(o => this.value === o.value)?.label || "";
         }
@@ -138,6 +139,21 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         if (e.key === "Enter") {
             e.preventDefault();
         }
+
+        if (e.key === "ArrowDown") {
+            const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
+            this.softSelectedValue = this.filtered_options[(index + 1) % this.filtered_options.length].value;
+        } else if (e.key === "ArrowUp") {
+            const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
+            this.softSelectedValue = this.filtered_options[(index - 1 + this.filtered_options.length) % this.filtered_options.length].value;
+        } else {
+            this.softSelectedValue = undefined;
+        }
+    }
+
+    protected updated(_changedProperties: PropertyValues): void {
+        super.updated(_changedProperties);
+        this.getElementsByClassName("active")[0]?.scrollIntoView({ block: "nearest" });
     }
 
     mark(s: string): TemplateResult {

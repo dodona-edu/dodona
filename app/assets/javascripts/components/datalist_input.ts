@@ -141,9 +141,11 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         }
 
         if (e.key === "ArrowDown") {
+            e.preventDefault();
             const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
             this.softSelectedValue = this.filtered_options[(index + 1) % this.filtered_options.length].value;
         } else if (e.key === "ArrowUp") {
+            e.preventDefault();
             const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
             this.softSelectedValue = this.filtered_options[(index - 1 + this.filtered_options.length) % this.filtered_options.length].value;
         } else {

@@ -1,7 +1,7 @@
-name: Deploy production
+name: Test and deploy to production
 
 # Queue the deploy, but don't cancel any currently running workflows
-concurrency: deploy-production-safe
+concurrency: test-and-deploy-production
 
 on:
   workflow_dispatch:

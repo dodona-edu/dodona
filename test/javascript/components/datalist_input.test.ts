@@ -164,4 +164,13 @@ describe("DatalistInput", () => {
         await userEvent.type(input, "{arrowdown}");
         expect(datalistInput.querySelector("a.active").textContent.trim()).toBe("foo");
     });
+
+    it("should select the marked option even with duplicate values", async () => {
+        const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}, {"label": "food", "value": "bar"}]'></d-datalist-input>`) as DatalistInput;
+        const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
+        await userEvent.type(input, "foo");
+        await userEvent.type(input, "{arrowdown}");
+        await userEvent.type(input, "{tab}");
+        expect(input.value).toBe("food");
+    });
 });

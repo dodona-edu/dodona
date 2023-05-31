@@ -36,6 +36,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     inputRef: Ref<HTMLInputElement> = createRef();
 
     _filter= this.label;
+    _softSelectedValue: string;
 
     @property({ type: String })
     get filter(): string {
@@ -46,6 +47,15 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         this._filter = value;
         this.value = this.options?.find(o => this.filter === o.label)?.value || "";
         this.fireEvent();
+    }
+
+    @property({ type: String, state: true })
+    get softSelectedValue(): string {
+        return this.value || this._softSelectedValue || this.filtered_options[0]?.value || undefined;
+    }
+
+    set softSelectedValue(value: string) {
+        this._softSelectedValue = value;
     }
 
     watch = {
@@ -120,8 +130,8 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     keydown(e: KeyboardEvent): void {
         if (e.key === "Tab" && this.filtered_options.length > 0) {
-            this.value = this.filtered_options[0].value;
-            this.filter = this.filtered_options[0].label;
+            this.value = this.softSelectedValue;
+            this.filter = this.options?.find(o => this.value === o.value)?.label || "";
         }
         // When pressing enter while in this component, the default action shouldn't happen
         // e.g. when used in a form, enter will save the entire form
@@ -150,7 +160,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                 <ul class="dropdown-menu ${this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
-                        <li><a class="dropdown-item ${this.value === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
+                        <li><a class="dropdown-item ${this.softSelectedValue === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
                             ${this.mark(option.label)}
                             ${option.extra ? html`
                                 <br/><span class="small">${this.mark(option.extra)}</span>

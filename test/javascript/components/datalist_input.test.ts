@@ -126,4 +126,42 @@ describe("DatalistInput", () => {
         await userEvent.type(input, "fool");
         expect(screen.queryByText("foo")).toBeNull();
     });
+
+    it("marks the first option as active", async () => {
+        await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}, {"label": "foo2", "value": "bar2"}]'></d-datalist-input>`) as DatalistInput;
+        expect(screen.getByText("foo").closest("a").classList).toContain("active");
+    });
+
+    it("should update the active option using the arrow keys", async () => {
+        const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}, {"label": "foo2", "value": "bar2"}, {"label": "foo3", "value": "bar3"}]'></d-datalist-input>`) as DatalistInput;
+        const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
+        expect(screen.getByText("foo").closest("a").classList).toContain("active");
+        await userEvent.type(input, "{arrowdown}");
+        expect(screen.getByText("foo2").closest("a").classList).toContain("active");
+        await userEvent.type(input, "{arrowdown}");
+        expect(screen.getByText("foo3").closest("a").classList).toContain("active");
+        await userEvent.type(input, "{arrowdown}");
+        expect(screen.getByText("foo").closest("a").classList).toContain("active");
+        await userEvent.type(input, "{arrowup}");
+        expect(screen.getByText("foo3").closest("a").classList).toContain("active");
+    });
+
+    it("should tabcomplete the active option", async () => {
+        const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}, {"label": "foo2", "value": "bar2"}, {"label": "foo3", "value": "bar3"}]'></d-datalist-input>`) as DatalistInput;
+        const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
+        await userEvent.type(input, "{arrowdown}");
+        await userEvent.type(input, "{tab}");
+        expect(input.value).toBe("foo2");
+    });
+
+    it("should mark a matched option as active when the input is changed", async () => {
+        const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}, {"label": "fo", "value": "ba"}, {"label": "food", "value": "bard"}]'></d-datalist-input>`) as DatalistInput;
+        const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
+        await userEvent.type(input, "fo");
+        expect(datalistInput.querySelector("a.active").textContent.trim()).toBe("fo");
+        await userEvent.type(input, "{arrowdown}");
+        expect(datalistInput.querySelector("a.active").textContent.trim()).toBe("food");
+        await userEvent.type(input, "{arrowdown}");
+        expect(datalistInput.querySelector("a.active").textContent.trim()).toBe("foo");
+    });
 });

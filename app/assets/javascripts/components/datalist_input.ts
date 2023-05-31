@@ -35,9 +35,10 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
     inputRef: Ref<HTMLInputElement> = createRef();
 
+    @property({ state: true })
     _filter= this.label;
     @property({ state: true })
-    _softSelectedValue: string;
+    _softSelectedOption: Option;
 
     @property({ type: String })
     get filter(): string {
@@ -51,12 +52,15 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     }
 
     @property({ state: true })
-    get softSelectedValue(): string {
-        return this._softSelectedValue || this.value || this.filtered_options[0]?.value || undefined;
+    get softSelectedOption(): Option {
+        return this._softSelectedOption ||
+            this.filtered_options.find(o => o.value === this.value) ||
+            this.filtered_options[0] ||
+            undefined;
     }
 
-    set softSelectedValue(value: string) {
-        this._softSelectedValue = value;
+    set softSelectedOption(value: Option) {
+        this._softSelectedOption = value;
     }
 
     watch = {
@@ -129,10 +133,19 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         e.stopPropagation();
     }
 
+    isSoftSelected(option: Option): boolean {
+        return this.softSelectedOption === option || (
+            this.softSelectedOption !== undefined &&
+            option !== undefined &&
+            this.softSelectedOption.label === option.label &&
+            this.softSelectedOption.value === option.value
+        );
+    }
+
     keydown(e: KeyboardEvent): void {
-        if (e.key === "Tab" && this.softSelectedValue) {
-            this.value = this.softSelectedValue;
-            this.filter = this.options?.find(o => this.value === o.value)?.label || "";
+        if (e.key === "Tab" && this.softSelectedOption) {
+            this.value = this.softSelectedOption.value;
+            this.filter = this.softSelectedOption.label;
         }
         // When pressing enter while in this component, the default action shouldn't happen
         // e.g. when used in a form, enter will save the entire form
@@ -142,14 +155,14 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
 
         if (e.key === "ArrowDown") {
             e.preventDefault();
-            const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
-            this.softSelectedValue = this.filtered_options[(index + 1) % this.filtered_options.length].value;
+            const index = this.filtered_options.findIndex(o => this.isSoftSelected(o));
+            this.softSelectedOption = this.filtered_options[(index + 1) % this.filtered_options.length];
         } else if (e.key === "ArrowUp") {
             e.preventDefault();
-            const index = this.filtered_options.findIndex(o => o.value === this.softSelectedValue);
-            this.softSelectedValue = this.filtered_options[(index - 1 + this.filtered_options.length) % this.filtered_options.length].value;
+            const index = this.filtered_options.findIndex(o => this.isSoftSelected(o));
+            this.softSelectedOption = this.filtered_options[(index - 1 + this.filtered_options.length) % this.filtered_options.length];
         } else {
-            this.softSelectedValue = undefined;
+            this.softSelectedOption = undefined;
         }
     }
 
@@ -179,7 +192,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                 <ul class="dropdown-menu ${this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
-                        <li><a class="dropdown-item ${this.softSelectedValue === option.value ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
+                        <li><a class="dropdown-item ${this.isSoftSelected(option) ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
                             ${this.mark(option.label)}
                             ${option.extra ? html`
                                 <br/><span class="small">${this.mark(option.extra)}</span>

@@ -3,6 +3,7 @@ import { DatalistInput } from "components/datalist_input";
 import { fixture, nextFrame, oneEvent } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
+import { textContentMatcher } from "../test_helpers";
 
 
 describe("DatalistInput", () => {
@@ -102,10 +103,8 @@ describe("DatalistInput", () => {
         expect(e.detail).toEqual({ label: "foo2", value: "bar2" });
     });
 
-    it("thows a list of options when the input field is focused", async () => {
-        const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}]'></d-datalist-input>`) as DatalistInput;
-        const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
-        await userEvent.type(input, "f");
+    it("shows a list of options when the input field is focused", async () => {
+        await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}]'></d-datalist-input>`) as DatalistInput;
         expect(screen.getByText("foo")).toBeDefined();
     });
 
@@ -113,7 +112,7 @@ describe("DatalistInput", () => {
         const datalistInput = await fixture(`<d-datalist-input options='[{"label": "foo", "value": "bar"}]'></d-datalist-input>`) as DatalistInput;
         const input = datalistInput.querySelector("input:not([type=hidden])") as HTMLInputElement;
         await userEvent.type(input, "f");
-        const option = screen.getByText("foo");
+        const option = screen.getByText(textContentMatcher("foo"));
         userEvent.click(option);
         const e = await oneEvent(datalistInput, "input");
         expect(e.detail).toEqual({ label: "foo", value: "bar" });

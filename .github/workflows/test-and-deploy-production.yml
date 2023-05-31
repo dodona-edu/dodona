@@ -1,4 +1,4 @@
-name: Deploy production
+name: Test and Deploy to production
 
 # Queue the deploy, but don't cancel any currently running workflows
 concurrency: test-and-deploy-production

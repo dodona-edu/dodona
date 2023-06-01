@@ -42,17 +42,17 @@ class SavedAnnotationPolicy < ApplicationPolicy
 
   def show?
     # EDIT AFTER CLOSED BETA
-    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course?
+    user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def update?
     # EDIT AFTER CLOSED BETA
-    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
+    user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def destroy?
     # EDIT AFTER CLOSED BETA
-    record.user_id == user.id && user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
+    user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
   def permitted_attributes

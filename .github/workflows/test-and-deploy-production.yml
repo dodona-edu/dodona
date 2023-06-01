@@ -1,0 +1,21 @@
+name: Test and deploy to production
+
+# Queue the deploy, but don't cancel any currently running workflows
+concurrency: test-and-deploy-production
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-tests:
+    uses: ./.github/workflows/test.yml
+    secrets: inherit
+  run-linting:
+    uses: ./.github/workflows/lint.yml
+  deploy-naos:
+    uses: ./.github/workflows/deploy-naos.yml
+    secrets: inherit
+  deploy-production:
+    needs: [run-tests, deploy-naos, run-linting]
+    uses: ./.github/workflows/deploy-production.yml
+    secrets: inherit

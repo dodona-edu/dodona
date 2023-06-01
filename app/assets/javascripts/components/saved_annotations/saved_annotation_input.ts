@@ -89,9 +89,6 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     render(): TemplateResult {
         return this.potentialSavedAnnotationsExist ? html`
             <div class="field form-group">
-                <label class="form-label">
-                    ${I18n.t("js.saved_annotation.input.title")}
-                </label>
                 <div class="position-relative">
                     <d-datalist-input
                         name="${this.name}"

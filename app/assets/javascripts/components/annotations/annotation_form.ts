@@ -43,9 +43,17 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     @property({ state: true })
     _savedAnnotationId = "";
     @property({ state: true })
-    savedAnnotationTitle: string;
+    _savedAnnotationTitle: string;
     @property({ state: true })
     saveAnnotation = false;
+
+    get savedAnnotationTitle(): string {
+        return this._savedAnnotationTitle || this._annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
+    }
+
+    set savedAnnotationTitle(title: string) {
+        this._savedAnnotationTitle = title;
+    }
 
     inputRef: Ref<HTMLTextAreaElement> = createRef();
     titleRef: Ref<HTMLInputElement> = createRef();
@@ -132,16 +140,40 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
     toggleSaveAnnotation(): void {
         this.saveAnnotation = !this.saveAnnotation;
-        if (this.saveAnnotation && !this.savedAnnotationTitle) {
-            // Take the first five words, with a max of 40 chars as default title
-            this.savedAnnotationTitle = this._annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);
-        }
     }
 
     render(): TemplateResult {
+        console.log(this._savedAnnotationId);
         return html`
             <form class="annotation-submission form">
-                ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="field form-group">
+                            <textarea id="annotation-text"
+                                      autofocus
+                                      required
+                                      class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
+                                      .rows=${this.rows}
+                                      minlength="1"
+                                      maxlength="${maxLength}"
+                                      .value=${this._annotationText}
+                                      ${ref(this.inputRef)}
+                                      @keydown="${e => this.handleKeyDown(e)}"
+                                      @input="${() => this.handleTextInput()}"
+                            ></textarea>
+                            <div class="clearfix annotation-help-block">
+                                <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
+                                ${annotationState.isQuestionMode ? html`
+                                    <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
+                                ` : ""}
+                                <span class="help-block float-end">
+                                    <span class="used-characters">${I18n.formatNumber(this._annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
+                    <div class="col-md-4">
                         <d-saved-annotation-input
                             name="saved_annotation_id"
                             class="saved-annotation-input"
@@ -149,60 +181,48 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             annotation-text="${this._annotationText}"
                             @input="${e => this.handleSavedAnnotationInput(e)}"
                         ></d-saved-annotation-input>
-                    `}
-                <div class="field form-group">
-                    ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
-                        <label class="form-label" for="annotation-text">
-                            ${I18n.t("js.user_annotation.fields.annotation_text")}
-                        </label>
-                    `}
-                    <textarea id="annotation-text"
-                              autofocus
-                              required
-                              class="form-control annotation-submission-input ${this.hasErrors ? "validation-error" : ""}"
-                              .rows=${this.rows}
-                              minlength="1"
-                              maxlength="${maxLength}"
-                              .value=${this._annotationText}
-                              ${ref(this.inputRef)}
-                              @keydown="${e => this.handleKeyDown(e)}"
-                              @input="${() => this.handleTextInput()}"
-                    ></textarea>
-                    <div class="clearfix annotation-help-block">
-                        <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
-                        ${annotationState.isQuestionMode ? html`
-                            <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
-                        ` : ""}
-                        <span class="help-block float-end">
-                            <span class="used-characters">${I18n.formatNumber(this._annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
-                        </span>
                     </div>
+                    `}
                 </div>
                 ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
-                    <div class="field form-group">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" @click="${() => this.toggleSaveAnnotation()}" id="check-save-annotation">
-                            <label class="form-check-label" for="check-save-annotation">
-                                ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
-                            </label>
+                    <div class="row row-cols-md-auto g-3 align-items-center">
+                        <div class="col-12">
+                            <div class="field form-group">
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           @click="${() => this.toggleSaveAnnotation()}"
+                                           id="check-save-annotation"
+                                           .checked=${this.saveAnnotation || this._savedAnnotationId != ""}
+                                           .disabled=${this._savedAnnotationId != ""}
+                                    >
+                                    <label class="form-check-label" for="check-save-annotation">
+                                        ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
+                                    </label>
+                                </div>
+                            </div>
                         </div>
+                        ${!this.saveAnnotation ? "" : html`
+                            <div class="col-12">
+                                <div class="row mb-3">
+                                    <label class="col-sm-2 col-form-label" for="saved-annotation-title">
+                                        ${I18n.t("js.saved_annotation.title")}
+                                    </label>
+                                    <div class="col-sm-10">
+                                        <input required="required"
+                                               class="form-control"
+                                               type="text"
+                                               ${ref(this.titleRef)}
+                                               @keydown="${e => this.handleKeyDown(e)}"
+                                               @input=${() => this.handleUpdateTitle()}
+                                               value=${this.savedAnnotationTitle}
+                                               id="saved-annotation-title"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        `}
                     </div>
-                    ${ this.saveAnnotation ? html`
-                        <div class="field form-group">
-                            <label class="form-label" for="saved-annotation-title">
-                                ${I18n.t("js.saved_annotation.title")}
-                            </label>
-                            <input required="required"
-                                   class="form-control"
-                                   type="text"
-                                   ${ref(this.titleRef)}
-                                   @keydown="${e => this.handleKeyDown(e)}"
-                                   @input=${() => this.handleUpdateTitle()}
-                                   value=${this.savedAnnotationTitle}
-                                   id="saved-annotation-title"
-                            >
-                        </div>
-                    ` : html``}
                 `}
                 <div class="annotation-submission-button-container">
                     <button class="btn btn-text annotation-control-button annotation-cancel-button"

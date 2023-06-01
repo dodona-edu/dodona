@@ -4,15 +4,14 @@ on:
   push:
     # branches to consider in the event; optional, defaults to all
     branches:
-      - master
-      - develop
+      - main
 
 jobs:
   update_draft_release:
     name: Update Draft Release
     runs-on: ubuntu-latest
     steps:
-      # Drafts next release notes as Pull Requests are merged into "develop"
+      # Drafts next release notes as Pull Requests are merged into "main"
       - uses: toolmantim/release-drafter@v5.23.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

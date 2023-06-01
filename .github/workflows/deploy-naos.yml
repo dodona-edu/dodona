@@ -1,19 +1,20 @@
 name: Deploy Naos
 
 on:
+  workflow_call:
   workflow_dispatch:
   pull_request:
     types:
       - labeled
 
-concurrency: 
+concurrency:
   group: deploy-naos
   cancel-in-progress: true
 
 jobs:
   deploy:
     if: ${{ github.event.action != 'labeled' || (github.event.action == 'labeled' && github.event.label.name == 'deploy naos') }}
-    environment: 
+    environment:
       name: naos
       url: https://naos.ugent.be
     runs-on: ubuntu-latest

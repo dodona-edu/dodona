@@ -4,7 +4,6 @@ server 'naos.ugent.be', user: 'dodona', roles: %i[web app db worker], ssh_option
     port: 4840
 }
 
-set :branch, ENV['BRANCH'] || 'main'
 set :rails_env, :staging
 
 set :default_env, {node_env: 'production'}

@@ -11,7 +11,7 @@ on:
 
 jobs:
   ruby:
-    name: Ruby
+    name: Lint Ruby
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -26,7 +26,7 @@ jobs:
         bundle exec rubocop -c  .rubocop.yml
 
   javascript:
-    name: JavaScript
+    name: Lint JavaScript
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
         yarn typeCheck
 
   css:
-    name: CSS
+    name: Lint CSS
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

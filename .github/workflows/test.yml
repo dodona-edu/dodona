@@ -11,7 +11,7 @@ on:
 
 jobs:
   ruby:
-    name: Ruby
+    name: Test Ruby
     env:
       RAILS_ENV: "test"
       TEST_DATABASE_URL: "mysql2://root:dodona@127.0.0.1:3306/dodona_test"
@@ -59,7 +59,7 @@ jobs:
         flags: rails
 
   javascript:
-    name: JavaScript
+    name: Test JavaScript
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -81,7 +81,7 @@ jobs:
         flags: javascript
 
   system:
-    name: System
+    name: Test System
     env:
       DISABLE_SPRING: "true"
       RAILS_ENV: "test"

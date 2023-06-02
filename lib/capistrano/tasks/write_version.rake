@@ -18,4 +18,4 @@ task :create_version_yml do
   end
 end
 
-before 'deploy:started', 'create_version_yml'
+after 'deploy:symlink:linked_dirs', 'create_version_yml'

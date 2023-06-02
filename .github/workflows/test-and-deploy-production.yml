@@ -16,15 +16,16 @@ jobs:
     # This workflow should only run on a manual trigger or when a pull request is merged into main
     # A deploy on merge can be avoided by adding the label 'no deploy' to the pull request
     # PRs with the label 'dependencies' will also not trigger a deploy
-    if: ${{ github.event.action == 'workflow_dispatch' || (
-      github.event.action == 'pull_request' &&
-      github.event.pull_request.merged == true &&
-      !contains(github.event.pull_request.labels.*.name == 'no deploy') &&
-      !contains(github.event.pull_request.labels.*.name == 'dependencies')
-    ) }}
+    if: |
+      ${{ github.event.action == 'workflow_dispatch' || (
+        github.event.action == 'pull_request' &&
+        github.event.pull_request.merged == true &&
+        !contains(github.event.pull_request.labels.*.name == 'no deploy') &&
+        !contains(github.event.pull_request.labels.*.name == 'dependencies')
+      ) }}
     runs-on: ubuntu-latest
-      steps:
-          - run: echo "Deploying to production"
+    steps:
+        - run: echo "Deploying to production"
   run-tests:
     needs: [should-deploy]
     uses: ./.github/workflows/test.yml

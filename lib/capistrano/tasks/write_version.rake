@@ -18,4 +18,4 @@ task :create_version_yml do
   end
 end
 
-before 'deploy:start', 'create_version_yml'
+before 'deploy:started', 'create_version_yml'

@@ -9,4 +9,4 @@ namespace :my_tasks do
   end
 end
 
-after 'deploy:symlink', 'my_tasks:set_version_info'
+after 'deploy:symlink:shared', 'my_tasks:set_version_info'

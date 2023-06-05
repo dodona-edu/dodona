@@ -33,6 +33,20 @@ jobs:
           HAS_NO_DEPLOY_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') }}
           HAS_DEPENDENCIES_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+          IF_TEST_RESULT: |
+          ${{ github.event.action == 'workflow_dispatch' || (
+            github.event.action == 'pull_request' &&
+            github.event.pull_request.merged == true &&
+            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
+            !contains(github.event.pull_request.labels.*.name, 'dependencies')
+          ) }}
+          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (
+            github.event.action == 'pull_request' &&
+            github.event.pull_request.merged == true &&
+            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
+            !contains(github.event.pull_request.labels.*.name, 'dependencies')
+          ) }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"
@@ -40,6 +54,9 @@ jobs:
           echo "HAS_NO_DEPLOY_LABEL: $HAS_NO_DEPLOY_LABEL"
           echo "HAS_DEPENDENCIES_LABEL: $HAS_DEPENDENCIES_LABEL"
           echo "LABELS: $LABELS"
+          echo "IS_WORKFLOW_DISPATCH: $IS_WORKFLOW_DISPATCH"
+          echo "IF_TEST_RESULT: $IF_TEST_RESULT"
+          echo "IF_TEST_RESULT_NO_NEWLINE: $IF_TEST_RESULT_NO_NEWLINE"
 
   run-tests:
     needs: [should-deploy]

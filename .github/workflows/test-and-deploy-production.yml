@@ -19,33 +19,8 @@ jobs:
     if: github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies'))
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github.event) }}
-          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
-          IS_MERGED: ${{ github.event.pull_request.merged == true }}
-          HAS_NO_DEPLOY_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') }}
-          HAS_DEPENDENCIES_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
-          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
-          IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
-          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
-          IF_TEST_RESULT: |
-            ${{ github.event.action == 'workflow_dispatch' || (
-              github.event.action == 'pull_request' &&
-              github.event.pull_request.merged == true &&
-              !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
-              !contains(github.event.pull_request.labels.*.name, 'dependencies')
-            ) }}
         run: |
-          echo "$GITHUB_CONTEXT"
-          echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"
-          echo "IS_MERGED: $IS_MERGED"
-          echo "HAS_NO_DEPLOY_LABEL: $HAS_NO_DEPLOY_LABEL"
-          echo "HAS_DEPENDENCIES_LABEL: $HAS_DEPENDENCIES_LABEL"
-          echo "LABELS: $LABELS"
-          echo "IS_WORKFLOW_DISPATCH: $IS_WORKFLOW_DISPATCH"
-          echo "IF_TEST_RESULT: $IF_TEST_RESULT"
-          echo "IF_TEST_RESULT_NO_NEWLINE: $IF_TEST_RESULT_NO_NEWLINE"
+          echo "Start the test and deploy workflow"
 
   run-tests:
     needs: [should-deploy]
@@ -59,7 +34,6 @@ jobs:
     uses: ./.github/workflows/deploy-naos.yml
     secrets: inherit
   deploy-production:
-    if: ${{ github.event.action == 'workflow_dispatch' }}
     needs: [should-deploy, run-tests, deploy-naos, run-linting]
     uses: ./.github/workflows/deploy-production.yml
     secrets: inherit

@@ -25,7 +25,12 @@ jobs:
       ) }}
     runs-on: ubuntu-latest
     steps:
-        - run: echo "Deploying to production"
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+
   run-tests:
     needs: [should-deploy]
     uses: ./.github/workflows/test.yml
@@ -38,6 +43,7 @@ jobs:
     uses: ./.github/workflows/deploy-naos.yml
     secrets: inherit
   deploy-production:
+    if: ${{ github.event.action == 'workflow_dispatch' }}
     needs: [should-deploy, run-tests, deploy-naos, run-linting]
     uses: ./.github/workflows/deploy-production.yml
     secrets: inherit

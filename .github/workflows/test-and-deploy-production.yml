@@ -34,19 +34,14 @@ jobs:
           HAS_DEPENDENCIES_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
           IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
           IF_TEST_RESULT: |
-          ${{ github.event.action == 'workflow_dispatch' || (
-            github.event.action == 'pull_request' &&
-            github.event.pull_request.merged == true &&
-            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
-            !contains(github.event.pull_request.labels.*.name, 'dependencies')
-          ) }}
-          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (
-            github.event.action == 'pull_request' &&
-            github.event.pull_request.merged == true &&
-            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
-            !contains(github.event.pull_request.labels.*.name, 'dependencies')
-          ) }}
+            ${{ github.event.action == 'workflow_dispatch' || (
+              github.event.action == 'pull_request' &&
+              github.event.pull_request.merged == true &&
+              !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
+              !contains(github.event.pull_request.labels.*.name, 'dependencies')
+            ) }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"

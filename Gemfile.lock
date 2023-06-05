@@ -466,7 +466,7 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
-    terser (1.1.15)
+    terser (1.1.16)
       execjs (>= 0.3.0, < 3)
     test-prof (1.2.1)
     thor (1.2.2)

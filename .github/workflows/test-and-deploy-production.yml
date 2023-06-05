@@ -19,8 +19,7 @@ jobs:
     if: github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies'))
     runs-on: ubuntu-latest
     steps:
-        run: |
-          echo "Start the test and deploy workflow"
+      - run: echo "Start the test and deploy workflow"
 
   run-tests:
     needs: [should-deploy]

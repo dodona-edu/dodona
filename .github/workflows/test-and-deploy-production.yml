@@ -16,8 +16,7 @@ jobs:
     # This workflow should only run on a manual trigger or when a pull request is merged into main
     # A deploy on merge can be avoided by adding the label 'no deploy' to the pull request
     # PRs with the label 'dependencies' will also not trigger a deploy
-    if: |
-      ${{
+    if: ${{
         github.event.action == 'workflow_dispatch' || (
           github.event.action == 'pull_request' &&
           github.event.pull_request.merged == true &&

@@ -14,6 +14,8 @@ task :create_version_yml do
       yml = { 'version' => Time.now.strftime("%y.%m.%d%H%M")}
       puts "Creating version.yml, with version #{yml['version']}"
       puts(execute :pwd)
+      puts "Release path: #{release_path}"
+      puts "Current path: #{current_path}"
     end
   end
 end

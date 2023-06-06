@@ -4,7 +4,6 @@ class ApplicationController < ActionController::Base
   include ApplicationHelper
 
   MAX_STORED_URL_LENGTH = 1024
-  VERSION = YAML.load_file(Rails.root.join('config/version.yml'))['version'].freeze
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
   rescue_from ActionDispatch::Http::Parameters::ParseError, with: :bad_request
@@ -24,8 +23,6 @@ class ApplicationController < ActionController::Base
                 if: :sandbox?
 
   before_action :set_locale
-
-  before_action :set_version
 
   before_action :look_for_token, unless: :current_user
 
@@ -217,9 +214,5 @@ class ApplicationController < ActionController::Base
 
   def set_user_seen_at
     current_user.touch(:seen_at)
-  end
-
-  def set_version
-    @version = VERSION
   end
 end

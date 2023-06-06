@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.16.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 0.2.24'
+gem 'json_schemer', '~> 1.0.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'

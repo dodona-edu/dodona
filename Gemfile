@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.4'
+gem 'rails', '~> 7.0.5'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.2.2'
+gem 'puma', '~> 6.3.0'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.1.2'
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.16.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 0.2.24'
+gem 'json_schemer', '~> 1.0.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'
@@ -46,12 +46,12 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 gem 'delayed_job_web', '~>1.4.4'
 
 # pagination
-gem 'will_paginate', '~>3.3.1'
+gem 'will_paginate', '~>4.0.0'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.1.1'
+gem 'rouge', '4.1.2'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.1'
+gem 'nokogiri', '~> 1.15.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -132,10 +132,10 @@ gem 'faker', '~> 3.2.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.0.0'
+gem 'rack-mini-profiler', '~> 3.1.0'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.10.1'
+gem 'ddtrace', '~> 1.12.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.0'

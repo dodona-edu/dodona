@@ -1,0 +1,49 @@
+name: Trigger production deploy
+
+# Queue the deploy, but don't cancel any currently running workflows
+concurrency: test-and-deploy-production
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  should-deploy:
+    # This workflow should only run when a pull request is merged into main
+    # A deploy on merge can be avoided by adding the label 'no deploy' to the pull request
+    # PRs with the label 'dependencies' will also not trigger a deploy
+    if: github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies')
+    uses: ./.github/workflows/test-and-deploy-production.yml
+    secrets: inherit
+  log-context:
+    steps:
+      - name: Echo context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event) }}
+          IS_PULL_REQUEST: ${{ github.event_name == 'pull_request' }}
+          IS_MERGED: ${{ github.event.pull_request.merged == true }}
+          HAS_NO_DEPLOY_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') }}
+          HAS_DEPENDENCIES_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+          IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
+          IF_TEST_RESULT: |
+            ${{ github.event.action == 'workflow_dispatch' || (
+            github.event.action == 'pull_request' &&
+            github.event.pull_request.merged == true &&
+            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
+            !contains(github.event.pull_request.labels.*.name, 'dependencies')
+            ) }}
+          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
+          IF_TEST_WITH_STRING: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+        run: |
+          echo "$GITHUB_CONTEXT"
+          echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"
+          echo "IS_MERGED: $IS_MERGED"
+          echo "HAS_NO_DEPLOY_LABEL: $HAS_NO_DEPLOY_LABEL"
+          echo "HAS_DEPENDENCIES_LABEL: $HAS_DEPENDENCIES_LABEL"
+          echo "LABELS: $LABELS"
+          echo "IS_WORKFLOW_DISPATCH: $IS_WORKFLOW_DISPATCH"
+          echo "IF_TEST_RESULT: $IF_TEST_RESULT"
+          echo "IF_TEST_RESULT_NO_NEWLINE: $IF_TEST_RESULT_NO_NEWLINE"
+          echo "IF_TEST_WITH_STRING: $IF_TEST_WITH_STRING"

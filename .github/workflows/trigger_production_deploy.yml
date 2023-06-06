@@ -17,6 +17,7 @@ jobs:
     uses: ./.github/workflows/test-and-deploy-production.yml
     secrets: inherit
   log-context:
+    # This job is only here to log the context of the event
     runs-on: ubuntu-latest
     steps:
       - name: Echo context

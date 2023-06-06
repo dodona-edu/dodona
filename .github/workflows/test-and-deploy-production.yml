@@ -5,17 +5,37 @@ concurrency: test-and-deploy-production
 
 on:
   workflow_dispatch:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - main
 
 jobs:
+  should-deploy:
+    # This workflow should only run on a manual dispatch or when a pull request is merged into main
+    # A deploy on merge can be avoided by adding the label 'no deploy' to the pull request
+    # PRs with the label 'dependencies' will also not trigger a deploy
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github.event) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
   run-tests:
+    needs: [should-deploy]
     uses: ./.github/workflows/test.yml
     secrets: inherit
   run-linting:
+    needs: [should-deploy]
     uses: ./.github/workflows/lint.yml
   deploy-naos:
+    needs: [should-deploy]
     uses: ./.github/workflows/deploy-naos.yml
     secrets: inherit
   deploy-production:
-    needs: [run-tests, deploy-naos, run-linting]
+    needs: [should-deploy, run-tests, deploy-naos, run-linting]
     uses: ./.github/workflows/deploy-production.yml
     secrets: inherit

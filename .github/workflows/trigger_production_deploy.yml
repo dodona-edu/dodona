@@ -31,10 +31,10 @@ jobs:
           IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
           IF_TEST_RESULT: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
           MULTIPLE_CONTAINS_TESTS: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
-          PULL_REQUEST_AND_MERGED_TESTS: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true }}
+          PULL_REQUEST_AND_MERGED_TESTS: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true }}
           MULTIPLE_CONTAINS_WITH_OR: ${{ !(contains(github.event.pull_request.labels.*.name, 'no deploy') || contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
-          STRING_TRUE_TEST: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == 'true' }}
-          BOOLEAN_TRUE_TEST: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged }}
+          STRING_TRUE_TEST: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == 'true' }}
+          BOOLEAN_TRUE_TEST: ${{ github.event_namen == 'pull_request' && github.event.pull_request.merged }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"

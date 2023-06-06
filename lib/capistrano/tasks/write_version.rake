@@ -11,11 +11,9 @@ task :create_version_yml do
   on roles(:web) do
     within(shared_path) do
       version_file = "config/version.yml"
-      File.delete(version_file) if File.exist?(version_file)
       yml = { 'version' => Time.now.strftime("%y.%m.%d%H%M")}
       puts "Creating version.yml, with version #{yml['version']}"
-      File.write(version_file, yml.to_yaml)
-      puts "Created version.yml in #{Dir.pwd}"
+      puts(execute :pwd)
     end
   end
 end

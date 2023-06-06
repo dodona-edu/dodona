@@ -33,6 +33,7 @@ jobs:
           MULTIPLE_CONTAINS_TESTS: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
           PULL_REQUEST_AND_MERGED_TESTS: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true }}
           MULTIPLE_CONTAINS_WITH_OR: ${{ !(contains(github.event.pull_request.labels.*.name, 'no deploy') || contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
+          STRING_TRUE_TEST: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == 'true' }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"
@@ -45,3 +46,4 @@ jobs:
           echo "MULTIPLE_CONTAINS_TESTS: $MULTIPLE_CONTAINS_TESTS"
           echo "PULL_REQUEST_AND_MERGED_TESTS: $PULL_REQUEST_AND_MERGED_TESTS"
           echo "MULTIPLE_CONTAINS_WITH_OR: $MULTIPLE_CONTAINS_WITH_OR"
+          echo "STRING_TRUE_TEST: $STRING_TRUE_TEST"

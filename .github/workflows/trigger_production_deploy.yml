@@ -17,6 +17,7 @@ jobs:
     uses: ./.github/workflows/test-and-deploy-production.yml
     secrets: inherit
   log-context:
+    runs-on: ubuntu-latest
     steps:
       - name: Echo context
         env:

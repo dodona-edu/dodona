@@ -29,15 +29,10 @@ jobs:
           HAS_DEPENDENCIES_LABEL: ${{ !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
           LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
           IS_WORKFLOW_DISPATCH: ${{ github.event_name == 'workflow_dispatch' }}
-          IF_TEST_RESULT: |
-            ${{ github.event.action == 'workflow_dispatch' || (
-            github.event.action == 'pull_request' &&
-            github.event.pull_request.merged == true &&
-            !contains(github.event.pull_request.labels.*.name, 'no deploy') &&
-            !contains(github.event.pull_request.labels.*.name, 'dependencies')
-            ) }}
-          IF_TEST_RESULT_NO_NEWLINE: ${{ github.event.action == 'workflow_dispatch' || (github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
-          IF_TEST_WITH_STRING: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+          IF_TEST_RESULT: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+          MULTIPLE_CONTAINS_TESTS: ${{ !contains(github.event.pull_request.labels.*.name, 'no deploy') && !contains(github.event.pull_request.labels.*.name, 'dependencies') }}
+          PULL_REQUEST_AND_MERGED_TESTS: ${{ github.event.action == 'pull_request' && github.event.pull_request.merged == true }}
+          MULTIPLE_CONTAINS_WITH_OR: ${{ !(contains(github.event.pull_request.labels.*.name, 'no deploy') || contains(github.event.pull_request.labels.*.name, 'dependencies')) }}
         run: |
           echo "$GITHUB_CONTEXT"
           echo "IS_PULL_REQUEST: $IS_PULL_REQUEST"
@@ -47,5 +42,6 @@ jobs:
           echo "LABELS: $LABELS"
           echo "IS_WORKFLOW_DISPATCH: $IS_WORKFLOW_DISPATCH"
           echo "IF_TEST_RESULT: $IF_TEST_RESULT"
-          echo "IF_TEST_RESULT_NO_NEWLINE: $IF_TEST_RESULT_NO_NEWLINE"
-          echo "IF_TEST_WITH_STRING: $IF_TEST_WITH_STRING"
+          echo "MULTIPLE_CONTAINS_TESTS: $MULTIPLE_CONTAINS_TESTS"
+          echo "PULL_REQUEST_AND_MERGED_TESTS: $PULL_REQUEST_AND_MERGED_TESTS"
+          echo "MULTIPLE_CONTAINS_WITH_OR: $MULTIPLE_CONTAINS_WITH_OR"

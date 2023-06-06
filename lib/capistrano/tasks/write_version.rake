@@ -18,4 +18,4 @@ task :create_version_yml do
   end
 end
 
-after 'deploy:git:create_release', 'create_version_yml'
+after 'git:create_release', 'create_version_yml'

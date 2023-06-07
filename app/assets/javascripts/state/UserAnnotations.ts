@@ -72,6 +72,13 @@ class UserAnnotationState extends State {
     @stateProperty public selectedRange: SelectedRange | null = null;
     @stateProperty public dragStart: number | null = null;
     @stateProperty public showForm = false;
+    @stateProperty public formHasContent = false;
+
+    constructor() {
+        super();
+        // reset formHasContent when the form is shown or hidden
+        this.subscribe(() => this.formHasContent = false, "showForm");
+    }
 
     get count(): number {
         return this.byId.size;

@@ -7,6 +7,7 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { annotationState } from "state/Annotations";
+import { userAnnotationState } from "state/UserAnnotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -76,6 +77,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
     handleTextInput(): void {
         this._annotationText = this.inputRef.value.value;
+        userAnnotationState.formHasContent = this._annotationText.length > 0;
     }
 
     handleCancel(): void {

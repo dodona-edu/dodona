@@ -123,7 +123,7 @@ namespace :deploy do
     on roles :web do
       within release_path do
         version = Time.now.strftime("%y.%m.%d-%H:%M")
-        execute :sed, "-i", "s/VERSION = .*/VERSION = \"#{version}\".freeze/", "config/initializers/00_version.rb"
+        execute :sed, "-i 's/VERSION = .*/VERSION = \"#{version}\".freeze/' config/initializers/00_version.rb"
       end
     end
   end

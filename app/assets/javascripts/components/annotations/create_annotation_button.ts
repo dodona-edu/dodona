@@ -5,6 +5,12 @@ import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "util.js";
 
+// The image has to be created before the event is fired
+// otherwise safari will not create the drag image
+const DRAG_IMAGE = document.createElement("img");
+// Set image to a transparent 1x1px gif using data string
+DRAG_IMAGE.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+
 /**
  * This component represents a button to create a new annotation.
  * It is displayed in the gutter of the code editor.
@@ -59,11 +65,13 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return this.row.toString().length;
     }
 
-    dragStart(): void {
+    dragStart(e: DragEvent): void {
         userAnnotationState.selectedRange = {
             row: this.row,
             rows: 1,
         };
+
+        e.dataTransfer?.setDragImage(DRAG_IMAGE, 0, 0);
     }
 
     drag(): void {
@@ -84,7 +92,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                 <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"
-                     @dragstart=${() => this.dragStart()}
+                     @dragstart=${e => this.dragStart(e)}
                      @dragend=${() => this.dragEnd()}
                      @drag="${() => this.drag()}"
                 >

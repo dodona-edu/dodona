@@ -117,3 +117,15 @@ namespace :deploy do
     end
   end
 end
+
+version = Time.now.strftime("%y.%m.%d-%H:%M")
+
+namespace :deploy do
+  before :publishing, :set_version do
+    on roles :app do
+      within release_path do
+        execute :sed, "-i 's/VERSION = .*/VERSION = \"#{version}\".freeze/' config/initializers/00_version.rb"
+      end
+    end
+  end
+end

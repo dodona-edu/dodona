@@ -119,7 +119,7 @@ namespace :deploy do
 end
 
 namespace :deploy do
-  before :publishing do
+  before :publishing, :asset_stuff do
     on roles :web do
       within release_path do
         version = Time.now.strftime("%y.%m.%d-%H:%M")

@@ -47,7 +47,7 @@
 }
 
 .home-card .info-step img {
-  @if $theme == "dark" {
+  @include color-mode(dark) {
     filter: invert(1);
   }
 }

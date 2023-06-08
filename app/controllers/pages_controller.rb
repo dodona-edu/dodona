@@ -50,9 +50,9 @@ class PagesController < ApplicationController
     session[:demo] = !Current.demo_mode
   end
 
-  def toggle_dark_mode
+  def set_theme
     authorize :pages
-    session[:dark] = params[:dark].nil? ? !session[:dark] : ActiveModel::Type::Boolean.new.cast(params[:dark])
+    session[:theme] = params[:theme].nil? ? 'auto' : ActiveModel::Type::String.new.cast(params[:theme])
   end
 
   def contact

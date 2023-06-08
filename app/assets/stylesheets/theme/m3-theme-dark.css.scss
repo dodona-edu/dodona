@@ -3,7 +3,7 @@
 
 @import "theme/m3-theme.css.scss";
 
-@mixin theme-dark {
+@include color-mode(dark) {
 
   $primary: $primary-80 !global;
   $primary-container: $primary-30 !global;

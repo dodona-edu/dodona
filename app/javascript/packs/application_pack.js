@@ -35,9 +35,11 @@ import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
+import { themeState } from "state/Theme";
 import "components/saved_annotations/saved_annotation_list";
 import "components/saved_annotations/saved_annotations_sidecard";
 import "components/progress_bar";
+import "components/theme_picker";
 
 // Initialize clipboard.js
 initClipboard();
@@ -61,5 +63,6 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
+dodona.setTheme = theme => themeState.selectedTheme = theme;
 dodona.ready = ready;
 window.dodona = dodona;

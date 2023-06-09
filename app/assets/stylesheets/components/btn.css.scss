@@ -46,8 +46,8 @@
 }
 
 .btn.btn-filled {
-  background: $primary;
-  color: $on-primary;
+  background: var(--d-primary);
+  color: var(--d-on-primary);
 
   &:hover {
     @include shadow-z2;
@@ -55,8 +55,8 @@
 }
 
 .btn.btn-tonal {
-  background: $secondary-container;
-  color: $on-secondary-container;
+  background: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 
   &:hover {
     @include shadow-z1;
@@ -74,13 +74,13 @@
 .btn.btn-text,
 .btn.btn-outline {
   background: none;
-  color: $primary;
+  color: var(--d-primary);
 
   &:hover,
   &:focus,
   &:active {
     opacity: 1;
-    background: rgba($primary, 0.1);
+    background: rgba(var(--d-primary), 0.1);
   }
 }
 
@@ -111,17 +111,17 @@
 }
 
 .btn.btn-outline {
-  border: 1px solid $divider;
+  border: 1px solid var(--d-divider);
 
   &:hover,
   &:focus,
   &:active {
-    border-color: $primary;
+    border-color: var(--d-primary);
   }
 
   &:disabled {
-    color: $on-surface;
-    border: 1px solid rgba($on-surface, 0.12);
+    color: var(--d-on-surface);
+    border: 1px solid rgba(var(--d-on-surface), 0.12);
     opacity: 0.38;
   }
 }
@@ -129,7 +129,7 @@
 .btn.btn-icon {
   width: 40px;
   padding: 0;
-  color: $primary;
+  color: var(--d-primary);
 
   // enable pointer events to enable tooltips to be shown on disabled buttons
   &.disabled-with-tooltip {
@@ -142,12 +142,12 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba($primary, 0.1);
+      background: rgba(var(--d-primary), 0.1);
     }
   }
 
   &.btn-icon-inverted {
-    color: $on-primary;
+    color: var(--d-on-primary);
 
     &:hover,
     &:focus,
@@ -158,18 +158,18 @@
   }
 
   &.btn-icon-muted {
-    color: $text-muted;
+    color: var(--d-text-muted);
 
     &:hover,
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba($on-surface, 0.1);
+      background: rgba(var(--d-on-surface), 0.1);
     }
   }
 
   &.btn-icon-filled {
-    color: $on-primary;
+    color: var(--d-on-primary);
 
     &:hover,
     &:focus,
@@ -184,8 +184,8 @@
   height: 56px;
   width: 56px;
   border-radius: 16px;
-  background: $secondary-container;
-  color: $on-secondary-container;
+  background: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 
   @include shadow-z2;
 
@@ -201,11 +201,11 @@
   }
 
   &.correct {
-    background-color: $success;
+    background-color: var(--d-success);
   }
 
   &.wrong {
-    background-color: $danger;
+    background-color: var(--d-danger);
   }
 }
 
@@ -213,8 +213,8 @@
   height: 40px;
   width: 40px;
   border-radius: 12px;
-  background: $secondary-container;
-  color: $on-secondary-container;
+  background: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
   padding: 6px;
 
   @include shadow-z2;
@@ -234,8 +234,8 @@
 .btn.btn-fab-small-extended {
   height: 40px;
   border-radius: 12px;
-  background: $secondary-container;
-  color: $on-secondary-container;
+  background: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 
   @include shadow-z2;
 
@@ -255,28 +255,28 @@
   & > .btn {
     padding-left: 12px;
     padding-right: 12px;
-    border: 1px solid $divider;
+    border: 1px solid var(--d-divider);
     border-right: 0;
 
     &:last-of-type {
-      border-right: 1px solid $divider;
+      border-right: 1px solid var(--d-divider);
     }
 
     &:hover,
     &:focus,
     &:active {
-      background: rgba($primary, 0.1);
+      background: rgba(var(--d-primary), 0.1);
     }
 
     &.active {
-      background: rgba($primary, 0.2);
+      background: rgba(var(--d-primary), 0.2);
     }
   }
 }
 
 .input-group {
   .btn {
-    border: 1px solid $outline;
+    border: 1px solid var(--d-outline);
     border-radius: 4px;
   }
 
@@ -297,7 +297,7 @@
   align-items: center;
   margin-bottom: 15px;
   padding: 12px;
-  background-color: $surface;
+  background-color: var(--d-surface);
   border-radius: 4px;
   transition: box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -345,24 +345,24 @@
 
 .single-zero-button:hover:not(:focus),
 #zero-button:hover:not(:focus) {
-  color: $danger;
+  color: var(--d-danger);
 }
 
 .single-max-button:hover:not(:focus),
 #max-button:hover:not(:focus) {
-  color: $success;
+  color: var(--d-success);
 }
 
 .single-zero-button:active,
 #zero-button:active {
-  background-color: rgba($danger, 0.6);
+  background-color: rgba(var(--d-danger), 0.6);
   color: unset;
   transition: background-color 0s;
 }
 
 .single-max-button:active,
 #max-button:active {
-  background-color: rgba($success, 0.6);
+  background-color: rgba(var(--d-success), 0.6);
   color: unset;
   transition: background-color 0s;
 }

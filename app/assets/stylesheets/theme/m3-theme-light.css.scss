@@ -3,190 +3,189 @@
 
 @import "theme/m3-theme.css.scss";
 
-@include color-mode(light) {
+:root,
+[data-bs-theme="light"] {
+  // primary
+  --d-primary: $primary-40;
+  --d-primary-container: $primary-90;
+  --d-on-primary: $primary-100;
+  --d-on-primary-container: $primary-10;
+
+  // secondary
+  --d-secondary: $secondary-40;
+  --d-secondary-container: $secondary-90;
+  --d-on-secondary: $secondary-100;
+  --d-on-secondary-container: $secondary-10;
+
+  // tertiary
+  --d-tertiary: $tertiary-40;
+  --d-tertiary-container: $tertiary-90;
+  --d-on-tertiary: $tertiary-100;
+  --d-on-tertiary-container: $tertiary-10;
+
+  // neutral
+  --d-surface: $neutral-99;
+  --d-surface-variant: $neutral-variant-90;
+  --d-background: $neutral-98;
+  --d-on-surface: $neutral-10;
+  --d-on-surface-variant: $neutral-variant-30;
+  --d-on-surface-muted: $neutral-30;
+  --d-on-background: $neutral-10;
+  --d-outline: $neutral-variant-50;
+  --d-divider: $neutral-90;
+  --d-shadow: $neutral-0;
+  --d-surface-tint: $primary;
+  --d-inverse-surface: $neutral-20;
+  --d-inverse-on-surface: $neutral-95;
+  --d-inverse-primary: $primary-80;
+
+  // info
+  --d-info: $info-40;
+  --d-info-container: $info-90;
+  --d-on-info: $info-100;
+  --d-on-info-container: $info-10;
+
+  // changed from 40 to 60
+  --d-success: $success-60;
+  --d-success-container: $success-90;
+  --d-on-success: $success-100;
+  --d-on-success-container: $success-10;
+
+  // changed from 40 to 60
+  --d-danger: $danger-60;
+  --d-danger-container: $danger-90;
+  --d-on-danger: $danger-100;
+  --d-on-danger-container: $danger-10;
+
+  // changed from 40 to 70
+  --d-warning: $warning-70;
+  --d-warning-container: $warning-90;
+  --d-on-warning: $warning-100;
+  --d-on-warning-container: $warning-10;
+
+  // red
+  --d-red: $red-40;
+  --d-red-container: $red-90;
+  --d-on-red: $red-100;
+  --d-on-red-container: $red-10;
+
+  // pink
+  --d-pink: $pink-40;
+  --d-pink-container: $pink-90;
+  --d-on-pink: $pink-100;
+  --d-on-pink-container: $pink-10;
+
+  // purple
+  --d-purple: $purple-40;
+  --d-purple-container: $purple-90;
+  --d-on-purple: $purple-100;
+  --d-on-purple-container: $purple-10;
+
+  // deep-purple
+  --d-deep-purple: $deep-purple-40;
+  --d-deep-purple-container: $deep-purple-90;
+  --d-on-deep-purple: $deep-purple-100;
+  --d-on-deep-purple-container: $deep-purple-10;
+
+  // indigo
+  --d-indigo: $indigo-40;
+  --d-indigo-container: $indigo-90;
+  --d-on-indigo: $indigo-100;
+  --d-on-indigo-container: $indigo-10;
+
+  // blue
+  --d-blue: $blue-40;
+  --d-blue-container: $blue-90;
+  --d-on-blue: $blue-100;
+  --d-on-blue-container: $blue-10;
+
+  // light-blue
+  --d-light-blue: $light-blue-40;
+  --d-light-blue-container: $light-blue-90;
+  --d-on-light-blue: $light-blue-100;
+  --d-on-light-blue-container: $light-blue-10;
+
+  // cyan
+  --d-cyan: $cyan-40;
+  --d-cyan-container: $cyan-90;
+  --d-on-cyan: $cyan-100;
+  --d-on-cyan-container: $cyan-10;
+
+  // teal
+  --d-teal: $teal-40;
+  --d-teal-container: $teal-90;
+  --d-on-teal: $teal-100;
+  --d-on-teal-container: $teal-10;
+
+  // green
+  --d-green: $green-40;
+  --d-green-container: $green-90;
+  --d-on-green: $green-100;
+  --d-on-green-container: $green-10;
+
+  // light-green
+  --d-light-green: $light-green-40;
+  --d-light-green-container: $light-green-90;
+  --d-on-light-green: $light-green-100;
+  --d-on-light-green-container: $light-green-10;
+
+  // yellow
+  --d-yellow: $yellow-40;
+  --d-yellow-container: $yellow-90;
+  --d-on-yellow: $yellow-100;
+  --d-on-yellow-container: $yellow-10;
+
+  // amber
+  --d-amber: $amber-40;
+  --d-amber-container: $amber-90;
+  --d-on-amber: $amber-100;
+  --d-on-amber-container: $amber-10;
+
+  // orange
+  --d-orange: $orange-40;
+  --d-orange-container: $orange-90;
+  --d-on-orange: $orange-100;
+  --d-on-orange-container: $orange-10;
+
+  // deep-orange
+  --d-deep-orange: $deep-orange-40;
+  --d-deep-orange-container: $deep-orange-90;
+  --d-on-deep-orange: $deep-orange-100;
+  --d-on-deep-orange-container: $deep-orange-10;
+
+  // brown
+  --d-brown: $brown-40;
+  --d-brown-container: $brown-90;
+  --d-on-brown: $brown-100;
+  --d-on-brown-container: $brown-10;
+
+  // gray
+  --d-gray: $gray-40;
+  --d-gray-container: $gray-90;
+  --d-on-gray: $gray-100;
+  --d-on-gray-container: $gray-10;
+
+  // blue-gray
+  --d-blue-gray: $blue-gray-40;
+  --d-blue-gray-container: $blue-gray-90;
+  --d-on-blue-gray: $blue-gray-100;
+  --d-on-blue-gray-container: $blue-gray-10;
+
+  // misc
+  --d-off-surface: $neutral-95;
+  --d-code-bg: $neutral-95;
+  --d-skeleton-color: var(--d-surface-variant);
+
+  // this should be fixed using css and not in scss
+  .dark-only {
+    display: none;
+  }
+
+  .light-only {
+    display: unset;
+  }
+
   :root {
-    // primary
-    --d-primary: $primary-40;
-    --d-primary-container: $primary-90;
-    --d-on-primary: $primary-100;
-    --d-on-primary-container: $primary-10;
-
-    // secondary
-    --d-secondary: $secondary-40;
-    --d-secondary-container: $secondary-90;
-    --d-on-secondary: $secondary-100;
-    --d-on-secondary-container: $secondary-10;
-
-    // tertiary
-    --d-tertiary: $tertiary-40;
-    --d-tertiary-container: $tertiary-90;
-    --d-on-tertiary: $tertiary-100;
-    --d-on-tertiary-container: $tertiary-10;
-
-    // neutral
-    --d-surface: $neutral-99;
-    --d-surface-variant: $neutral-variant-90;
-    --d-background: $neutral-98;
-    --d-on-surface: $neutral-10;
-    --d-on-surface-variant: $neutral-variant-30;
-    --d-on-surface-muted: $neutral-30;
-    --d-on-background: $neutral-10;
-    --d-outline: $neutral-variant-50;
-    --d-divider: $neutral-90;
-    --d-shadow: $neutral-0;
-    --d-surface-tint: $primary;
-    --d-inverse-surface: $neutral-20;
-    --d-inverse-on-surface: $neutral-95;
-    --d-inverse-primary: $primary-80;
-
-    // info
-    --d-info: $info-40;
-    --d-info-container: $info-90;
-    --d-on-info: $info-100;
-    --d-on-info-container: $info-10;
-
-    // changed from 40 to 60
-    --d-success: $success-60;
-    --d-success-container: $success-90;
-    --d-on-success: $success-100;
-    --d-on-success-container: $success-10;
-
-    // changed from 40 to 60
-    --d-danger: $danger-60;
-    --d-danger-container: $danger-90;
-    --d-on-danger: $danger-100;
-    --d-on-danger-container: $danger-10;
-
-    // changed from 40 to 70
-    --d-warning: $warning-70;
-    --d-warning-container: $warning-90;
-    --d-on-warning: $warning-100;
-    --d-on-warning-container: $warning-10;
-
-    // red
-    --d-red: $red-40;
-    --d-red-container: $red-90;
-    --d-on-red: $red-100;
-    --d-on-red-container: $red-10;
-
-    // pink
-    --d-pink: $pink-40;
-    --d-pink-container: $pink-90;
-    --d-on-pink: $pink-100;
-    --d-on-pink-container: $pink-10;
-
-    // purple
-    --d-purple: $purple-40;
-    --d-purple-container: $purple-90;
-    --d-on-purple: $purple-100;
-    --d-on-purple-container: $purple-10;
-
-    // deep-purple
-    --d-deep-purple: $deep-purple-40;
-    --d-deep-purple-container: $deep-purple-90;
-    --d-on-deep-purple: $deep-purple-100;
-    --d-on-deep-purple-container: $deep-purple-10;
-
-    // indigo
-    --d-indigo: $indigo-40;
-    --d-indigo-container: $indigo-90;
-    --d-on-indigo: $indigo-100;
-    --d-on-indigo-container: $indigo-10;
-
-    // blue
-    --d-blue: $blue-40;
-    --d-blue-container: $blue-90;
-    --d-on-blue: $blue-100;
-    --d-on-blue-container: $blue-10;
-
-    // light-blue
-    --d-light-blue: $light-blue-40;
-    --d-light-blue-container: $light-blue-90;
-    --d-on-light-blue: $light-blue-100;
-    --d-on-light-blue-container: $light-blue-10;
-
-    // cyan
-    --d-cyan: $cyan-40;
-    --d-cyan-container: $cyan-90;
-    --d-on-cyan: $cyan-100;
-    --d-on-cyan-container: $cyan-10;
-
-    // teal
-    --d-teal: $teal-40;
-    --d-teal-container: $teal-90;
-    --d-on-teal: $teal-100;
-    --d-on-teal-container: $teal-10;
-
-    // green
-    --d-green: $green-40;
-    --d-green-container: $green-90;
-    --d-on-green: $green-100;
-    --d-on-green-container: $green-10;
-
-    // light-green
-    --d-light-green: $light-green-40;
-    --d-light-green-container: $light-green-90;
-    --d-on-light-green: $light-green-100;
-    --d-on-light-green-container: $light-green-10;
-
-    // yellow
-    --d-yellow: $yellow-40;
-    --d-yellow-container: $yellow-90;
-    --d-on-yellow: $yellow-100;
-    --d-on-yellow-container: $yellow-10;
-
-    // amber
-    --d-amber: $amber-40;
-    --d-amber-container: $amber-90;
-    --d-on-amber: $amber-100;
-    --d-on-amber-container: $amber-10;
-
-    // orange
-    --d-orange: $orange-40;
-    --d-orange-container: $orange-90;
-    --d-on-orange: $orange-100;
-    --d-on-orange-container: $orange-10;
-
-    // deep-orange
-    --d-deep-orange: $deep-orange-40;
-    --d-deep-orange-container: $deep-orange-90;
-    --d-on-deep-orange: $deep-orange-100;
-    --d-on-deep-orange-container: $deep-orange-10;
-
-    // brown
-    --d-brown: $brown-40;
-    --d-brown-container: $brown-90;
-    --d-on-brown: $brown-100;
-    --d-on-brown-container: $brown-10;
-
-    // gray
-    --d-gray: $gray-40;
-    --d-gray-container: $gray-90;
-    --d-on-gray: $gray-100;
-    --d-on-gray-container: $gray-10;
-
-    // blue-gray
-    --d-blue-gray: $blue-gray-40;
-    --d-blue-gray-container: $blue-gray-90;
-    --d-on-blue-gray: $blue-gray-100;
-    --d-on-blue-gray-container: $blue-gray-10;
-
-    // misc
-    --d-off-surface: $neutral-95;
-    --d-code-bg: $neutral-95;
-    --d-skeleton-color: var(--d-surface-variant);
-
-    // this should be fixed using css and not in scss
-    .dark-only {
-      display: none;
-    }
-
-    .light-only {
-      display: unset;
-    }
-
-    :root {
-      color-scheme: light;
-    }
+    color-scheme: light;
   }
 }

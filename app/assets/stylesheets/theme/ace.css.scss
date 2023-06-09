@@ -96,20 +96,20 @@
   }
 
   .ace_string.ace_regexp {
-    color: $teal;
+    color: var(--d-teal);
   }
 
   .ace_comment {
     font-style: italic;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   .ace_meta.ace_tag {
-    color: $primary;
+    color: var(--d-primary);
   }
 
   .ace_attribute-name.ace_xml {
-    color: $tertiary;
+    color: var(--d-tertiary);
   }
 }
 /* stylelint-enable selector-class-pattern */

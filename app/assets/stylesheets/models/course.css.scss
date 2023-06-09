@@ -77,7 +77,7 @@
   }
 
   .nav > li.header {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   .nav > li > a {
@@ -85,22 +85,22 @@
     padding: 6px;
     font-size: 13px;
     font-weight: 500;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     opacity: 0.75;
   }
 
   .nav > li > a.active,
   .nav > li > a.active:hover {
-    border-left: 2px solid $secondary;
+    border-left: 2px solid var(--d-secondary);
     padding-left: 4px;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     opacity: 1;
   }
 
   .nav > li > a:hover {
-    border-left: 1px solid $secondary;
+    border-left: 1px solid var(--d-secondary);
     padding-left: 5px;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     opacity: 1;
   }
 }

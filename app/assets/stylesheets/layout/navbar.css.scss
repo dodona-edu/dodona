@@ -6,7 +6,7 @@ $navbar-height: 50px;
   @include shadow-z3;
 
   background: var(--d-primary);
-  height: $navbar-height;
+  height: var(--d-navbar-height);
   display: flex;
   position: fixed;
   top: 0;
@@ -286,7 +286,7 @@ $navbar-height: 50px;
           background-color: var(--d-background);
           border: 0;
           box-shadow: none;
-          color: $on-surface;
+          color: var(--d-on-surface);
           width: 100%;
         }
       }
@@ -303,7 +303,7 @@ $navbar-height: 50px;
     right: 10px;
     border: none;
     background: none;
-    color: $on-primary;
+    color: var(--d-on-primary);
 
     i {
       line-height: $navbar-height;
@@ -329,7 +329,7 @@ $navbar-height: 50px;
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: $primary;
+      background-color: var(--d-primary);
 
       li {
         display: block;
@@ -401,7 +401,7 @@ $navbar-height: 50px;
   .crumb,
   .crumb a,
   .crumb-separator {
-    color: $on-primary;
+    color: var(--d-on-primary);
   }
 
   .crumb a:hover {
@@ -427,7 +427,7 @@ a.notification::before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  background-color: $danger;
+  background-color: var(--d-danger);
   position: relative;
   margin-left: -15px;
   left: 30px;

@@ -157,8 +157,8 @@
     }
 
     .line-nr {
-      background: $feedback-diff-table-header-bg;
-      color: $feedback-diff-table-header-fg;
+      background: var(--d-feedback-diff-table-header-bg);
+      color: var(--d-feedback-diff-table-header-fg);
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -252,7 +252,7 @@
   }
 
   .linter pre.lineno {
-    border-right: 1px solid $divider;
+    border-right: 1px solid var(--d-divider);
     padding-right: 25px;
   }
 
@@ -290,7 +290,7 @@
 
   .message-zeus,
   .message-staff {
-    border-left: 3px solid $on-surface-muted;
+    border-left: 3px solid var(--d-on-surface-muted);
     padding-left: 25px;
   }
 
@@ -300,7 +300,7 @@
   .tab-staff::before {
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
     font: normal normal normal 24px/1 "Material Design Icons";
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-size: 18px;
   }
 
@@ -331,7 +331,7 @@
   }
 
   .tab-link-marker {
-    background: $warning !important;
+    background: var(--d-warning) !important;
   }
 }
 
@@ -341,7 +341,7 @@
 
 /* stylelint-disable-next-line selector-class-pattern */
 #editor-result .ace_content {
-  background-color: $code-bg;
+  background-color: var(--d-code-bg);
   cursor: default;
 }
 
@@ -355,19 +355,19 @@ iframe.file {
 }
 
 .colored-correct {
-  color: $success;
+  color: var(--d-success);
 }
 
 .colored-wrong {
-  color: $danger;
+  color: var(--d-danger);
 }
 
 .colored-warning {
-  color: $warning;
+  color: var(--d-warning);
 }
 
 .colored-secondary {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .submission-summary {

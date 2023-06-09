@@ -434,15 +434,15 @@
         max-width: 300px;
 
         @include media-breakpoint-up(md) {
-          max-width: calc(#{map.get(var(--d-container-max-widths), "md")} * 0.6);
+          max-width: calc(#{map.get($container-max-widths, "md")} * 0.6);
         }
 
         @include media-breakpoint-up(lg) {
-          max-width: calc(#{map.get(var(--d-container-max-widths), "lg")} * 0.7);
+          max-width: calc(#{map.get($container-max-widths, "lg")} * 0.7);
         }
 
         @include media-breakpoint-up(xl) {
-          max-width: calc(#{map.get(var(--d-container-max-widths), "xl")} * 0.7);
+          max-width: calc(#{map.get($container-max-widths, "xl")} * 0.7);
         }
       }
     }

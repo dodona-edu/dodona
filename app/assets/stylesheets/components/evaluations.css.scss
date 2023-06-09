@@ -249,13 +249,13 @@
 
     // Raise index, to prevent sticky column from rolling over the header.
     z-index: 2;
-    left: $user-column-width - 4px;
+    left: var(--d-user-column-width) - 4px;
   }
 
   tbody td:nth-child(2) {
     background: var(--d-content-bg);
     position: sticky;
-    left: $user-column-width - 4px;
+    left: var(--d-user-column-width) - 4px;
   }
 }
 

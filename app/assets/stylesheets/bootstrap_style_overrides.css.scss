@@ -21,9 +21,9 @@ pre {
   line-height: 1.38461538;
   word-break: break-all;
   word-wrap: break-word;
-  background-color: var(--d-code-bg)
-  border: 1px solid var(--d-outline)
-  border-radius: var(--d-border-radius-base)
+  background-color: var(--d-code-bg);
+  border: 1px solid var(--d-outline);
+  border-radius: var(--d-border-radius-base);
 
   code {
     // Code inside a pre block is not an inline element, so don't add padding.
@@ -34,7 +34,7 @@ pre {
 }
 
 code {
-  background-color: var(--d-code-bg)
+  background-color: var(--d-code-bg);
   padding-left: 3px;
   padding-right: 3px;
   border-radius: 3px;
@@ -52,7 +52,7 @@ code {
 
 // alerts
 .alert {
-  border-radius: var(--d-border-radius-base)
+  border-radius: var(--d-border-radius-base);
   border: 0;
 
   a {
@@ -65,28 +65,28 @@ code {
   }
 
   &.alert-info {
-    background-color: var(--d-info-container)
-    color: var(--d-on-info-container)
+    background-color: var(--d-info-container);
+    color: var(--d-on-info-container);
   }
 
   &.alert-warning {
-    background-color: var(--d-warning-container)
-    color: var(--d-on-warning-container)
+    background-color: var(--d-warning-container);
+    color: var(--d-on-warning-container);
   }
 
   &.alert-danger {
-    background-color: var(--d-danger-container)
-    color: var(--d-on-danger-container)
+    background-color: var(--d-danger-container);
+    color: var(--d-on-danger-container);
   }
 
   &.alert-success {
-    background-color: var(--d-success-container)
-    color: var(--d-on-success-container)
+    background-color: var(--d-success-container);
+    color: var(--d-on-success-container);
   }
 
   &.alert-primary {
-    background-color: var(--d-primary-container)
-    color: var(--d-on-primary-container)
+    background-color: var(--d-primary-container);
+    color: var(--d-on-primary-container);
   }
 }
 
@@ -138,17 +138,17 @@ code {
   line-height: 16px;
   letter-spacing: 0;
   font-size: 12px;
-  color: var(--d-on-surface-muted)
+  color: var(--d-on-surface-muted);
   padding-bottom: 8px;
   border-bottom-width: 2px;
-  border-bottom-color: var(--d-divider)
+  border-bottom-color: var(--d-divider);
 }
 
 .help-block {
   margin-top: 4px;
   font-size: 12px;
   line-height: 14px;
-  color: var(--d-on-surface-muted)
+  color: var(--d-on-surface-muted);
 }
 
 .help-block:not(:last-child) {
@@ -176,8 +176,8 @@ code {
     font-size: 16px;
     color: inherit;
     padding: 12px;
-    background-color: var(--d-background)
-    border-bottom: 1px solid var(--d-divider)
+    background-color: var(--d-background);
+    border-bottom: 1px solid var(--d-divider);
 
     a {
       color: inherit;
@@ -192,7 +192,7 @@ code {
 // mark
 mark,
 .mark {
-  background-color: var(--d-mark-bg)
+  background-color: var(--d-mark-bg);
 }
 
 .lead {
@@ -214,7 +214,7 @@ mark,
 
 blockquote {
   padding-left: 6px;
-  border-left: 3px solid var(--d-border-color)
+  border-left: 3px solid var(--d-border-color);
 }
 
 @media screen {
@@ -234,5 +234,5 @@ blockquote {
 }
 
 .list-group .list-group-item {
-  background-color: var(--d-background)
+  background-color: var(--d-background);
 }

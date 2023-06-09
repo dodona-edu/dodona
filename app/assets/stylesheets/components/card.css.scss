@@ -9,22 +9,22 @@ $card-supporting-text-padding: 16px;
   z-index: auto;
   position: relative;
   overflow: visible;
-  background: $surface;
-  border-radius: $border-radius-base;
+  background: var(--d-surface);
+  border-radius: var(--d-border-radius-base);
   transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 
   @include shadow-z2;
 
-  margin-bottom: $card-margin-bottom;
+  margin-bottom: var(--d-card-margin-bottom);
 }
 
 .card-outlined {
   box-shadow: none;
-  border: 1px solid $outline;
+  border: 1px solid var(--d-outline);
 }
 
 .card-media {
-  background-color: $surface;
+  background-color: var(--d-surface);
   background-repeat: repeat;
   background-position: 50% 50%;
   background-size: cover;
@@ -66,33 +66,33 @@ $card-supporting-text-padding: 16px;
 }
 
 .card-title.card-title-colored {
-  color: $on-primary;
-  background-color: $primary;
-  border-top-left-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
+  color: var(--d-on-primary);
+  background-color: var(--d-primary);
+  border-top-left-radius: var(--d-border-radius-base);
+  border-top-right-radius: var(--d-border-radius-base);
 
   .progress-chart.colored-muted {
-    --progress-chart-color: #{$on-primary};
+    --progress-chart-color: var(--d-on-primary);
   }
 
   small {
-    color: $on-primary;
+    color: var(--d-on-primary);
   }
 }
 
 .card-title.card-title-colored-container {
-  color: $on-primary-container;
-  background-color: $primary-container;
-  border-top-left-radius: $border-radius-base;
-  border-top-right-radius: $border-radius-base;
+  color: var(--d-on-primary-container);
+  background-color: var(--d-primary-container);
+  border-top-left-radius: var(--d-border-radius-base);
+  border-top-right-radius: var(--d-border-radius-base);
 
   .progress-chart.colored-muted {
-    --progress-chart-color: #{$on-primary-container};
+    --progress-chart-color: var(--d-on-primary-container);
   }
 
   .series-icon {
-    --icon-color: #{$on-primary-container};
-    --icon-background-color: #{$primary-container};
+    --icon-color: var(--d-on-primary-container);
+    --icon-background-color: var(--d-primary-container);
   }
 }
 
@@ -108,11 +108,11 @@ a.card-title-link:hover {
 
 .card-title.card-title-plain li a {
   font-weight: 300;
-  color: $on-surface;
+  color: var(--d-on-surface);
 }
 
 .card-title.card-border {
-  border-bottom: 1px solid $divider;
+  border-bottom: 1px solid var(--d-divider);
 }
 
 .card-title-text {
@@ -137,12 +137,12 @@ a.card-title-link:hover {
 
 .card-title-colored .card-title-text,
 .card-title-colored .card-title-text a {
-  color: $on-primary;
+  color: var(--d-on-primary);
 }
 
 .card-title-image {
   background: rgba(0, 0, 0, 0.5);
-  color: $on-primary;
+  color: var(--d-on-primary);
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   height: 61px;
   margin-top: -61px;
@@ -162,10 +162,10 @@ a.card-title-link:hover {
 }
 
 .card-supporting-text {
-  color: $on-surface;
+  color: var(--d-on-surface);
   font-size: 14px;
   line-height: 18px;
-  padding: $card-supporting-text-padding;
+  padding: var(--d-card-supporting-text-padding);
 }
 
 .card-actions {
@@ -182,7 +182,7 @@ a.card-title-link:hover {
 
 .card-supporting-text.card-border,
 .card-actions.card-border {
-  border-top: 1px solid $divider;
+  border-top: 1px solid var(--d-divider);
 }
 
 .card-title + .card-border {
@@ -216,7 +216,7 @@ a.card-title-link:hover {
 
 .card-subtitle-actions a.dropdown-item {
   margin-left: unset;
-  color: $on-surface;
+  color: var(--d-on-surface);
 }
 
 .card-nav,
@@ -254,7 +254,7 @@ a.card-title-link:hover {
   margin-right: 10px;
   height: 55px;
   border: none;
-  border-bottom: 5px solid $secondary-container;
+  border-bottom: 5px solid var(--d-secondary-container);
   font-size: 18px;
   transition-duration: 0.2s;
   transition-property: height;
@@ -267,18 +267,18 @@ a.card-title-link:hover {
 .card-title-colored .nav-tabs li a,
 .card-title-colored .nav-tabs li a:hover,
 .card-title-colored .nav-tabs li a:focus {
-  color: $on-primary;
+  color: var(--d-on-primary);
 }
 
 .card-tab .nav-tabs li a {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .card-tab .nav-tabs li a.active,
 .card-tab .nav-tabs li.active a,
 .card-tab .nav-tabs li a:hover,
 .card-tab .nav-tabs li a:focus {
-  color: $on-surface;
+  color: var(--d-on-surface);
 }
 
 .card-tab .nav-tabs li.active a,
@@ -301,18 +301,18 @@ a.card-title-link:hover {
 
 .card-nav .badge {
   margin-left: 3px;
-  background-color: $secondary-container;
-  color: $on-secondary-container;
+  background-color: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 }
 
 .nav-tabs .badge {
-  background-color: $surface-variant;
-  color: $on-surface-variant;
+  background-color: var(--d-surface-variant);
+  color: var(--d-on-surface-variant);
 }
 
 .nav-tabs .active .badge {
-  background-color: $secondary-container;
-  color: $on-secondary-container;
+  background-color: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 }
 
 .card-title-fab {

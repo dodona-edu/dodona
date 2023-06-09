@@ -4,174 +4,174 @@
 @import "theme/m3-theme.css.scss";
 
 [data-bs-theme="dark"] {
-  --d-primary: $primary-80;
-  --d-primary-container: $primary-30;
-  --d-on-primary: $primary-20;
-  --d-on-primary-container: $primary-90;
+  --d-primary: #{$primary-80};
+  --d-primary-container: #{$primary-30};
+  --d-on-primary: #{$primary-20};
+  --d-on-primary-container: #{$primary-90};
 
   // secondary
-  --d-secondary: $secondary-80;
-  --d-secondary-container: $secondary-30;
-  --d-on-secondary: $secondary-20;
-  --d-on-secondary-container: $secondary-90;
+  --d-secondary: #{$secondary-80};
+  --d-secondary-container: #{$secondary-30};
+  --d-on-secondary: #{$secondary-20};
+  --d-on-secondary-container: #{$secondary-90};
 
   // tertiary
-  --d-tertiary: $tertiary-80;
-  --d-tertiary-container: $tertiary-30;
-  --d-on-tertiary: $tertiary-20;
-  --d-on-tertiary-container: $tertiary-90;
+  --d-tertiary: #{$tertiary-80};
+  --d-tertiary-container: #{$tertiary-30};
+  --d-on-tertiary: #{$tertiary-20};
+  --d-on-tertiary-container: #{$tertiary-90};
 
   // neutral
-  --d-surface: $neutral-20;
-  --d-surface-variant: $neutral-variant-30;
-  --d-background: $neutral-25;
-  --d-on-surface: $neutral-90;
-  --d-on-surface-variant: $neutral-variant-80;
-  --d-on-surface-muted: $neutral-80;
-  --d-on-background: $neutral-90;
-  --d-outline: $neutral-variant-60;
-  --d-divider: $neutral-30;
-  --d-shadow: $neutral-0;
-  --d-surface-tint: $primary;
-  --d-inverse-surface: $neutral-90;
-  --d-inverse-on-surface: $neutral-20;
-  --d-inverse-primary: $primary-40;
+  --d-surface: #{$neutral-20};
+  --d-surface-variant: #{$neutral-variant-30};
+  --d-background: #{$neutral-25};
+  --d-on-surface: #{$neutral-90};
+  --d-on-surface-variant: #{$neutral-variant-80};
+  --d-on-surface-muted: #{$neutral-80};
+  --d-on-background: #{$neutral-90};
+  --d-outline: #{$neutral-variant-60};
+  --d-divider: #{$neutral-30};
+  --d-shadow: #{$neutral-0};
+  --d-surface-tint: #{$primary-80};
+  --d-inverse-surface: #{$neutral-90};
+  --d-inverse-on-surface: #{$neutral-20};
+  --d-inverse-primary: #{$primary-40};
 
   // info
-  --d-info: $info-80;
-  --d-info-container: $info-30;
-  --d-on-info: $info-20;
-  --d-on-info-container: $info-90;
+  --d-info: #{$info-80};
+  --d-info-container: #{$info-30};
+  --d-on-info: #{$info-20};
+  --d-on-info-container: #{$info-90};
 
   // success changed from 80 to 70
-  --d-success: $success-70;
-  --d-success-container: $success-30;
-  --d-on-success: $success-20;
-  --d-on-success-container: $success-90;
+  --d-success: #{$success-70};
+  --d-success-container: #{$success-30};
+  --d-on-success: #{$success-20};
+  --d-on-success-container: #{$success-90};
 
   // danger changed from 80 to 70
-  --d-danger: $danger-70;
-  --d-danger-container: $danger-30;
-  --d-on-danger: $danger-20;
-  --d-on-danger-container: $danger-90;
+  --d-danger: #{$danger-70};
+  --d-danger-container: #{$danger-30};
+  --d-on-danger: #{$danger-20};
+  --d-on-danger-container: #{$danger-90};
 
   // warning
-  --d-warning: $warning-80;
-  --d-warning-container: $warning-30;
-  --d-on-warning: $warning-20;
-  --d-on-warning-container: $warning-90;
+  --d-warning: #{$warning-80};
+  --d-warning-container: #{$warning-30};
+  --d-on-warning: #{$warning-20};
+  --d-on-warning-container: #{$warning-90};
 
   // red
-  --d-red: $red-80;
-  --d-red-container: $red-30;
-  --d-on-red: $red-20;
-  --d-on-red-container: $red-90;
+  --d-red: #{$red-80};
+  --d-red-container: #{$red-30};
+  --d-on-red: #{$red-20};
+  --d-on-red-container: #{$red-90};
 
   // pink
-  --d-pink: $pink-80;
-  --d-pink-container: $pink-30;
-  --d-on-pink: $pink-20;
-  --d-on-pink-container: $pink-90;
+  --d-pink: #{$pink-80};
+  --d-pink-container: #{$pink-30};
+  --d-on-pink: #{$pink-20};
+  --d-on-pink-container: #{$pink-90};
 
   // purple
-  --d-purple: $purple-80;
-  --d-purple-container: $purple-30;
-  --d-on-purple: $purple-20;
-  --d-on-purple-container: $purple-90;
+  --d-purple: #{$purple-80};
+  --d-purple-container: #{$purple-30};
+  --d-on-purple: #{$purple-20};
+  --d-on-purple-container: #{$purple-90};
 
   // deep purple
-  --d-deep-purple: $deep-purple-80;
-  --d-deep-purple-container: $deep-purple-30;
-  --d-on-deep-purple: $deep-purple-20;
-  --d-on-deep-purple-container: $deep-purple-90;
+  --d-deep-purple: #{$deep-purple-80};
+  --d-deep-purple-container: #{$deep-purple-30};
+  --d-on-deep-purple: #{$deep-purple-20};
+  --d-on-deep-purple-container: #{$deep-purple-90};
 
   // indigo
-  --d-indigo: $indigo-80;
-  --d-indigo-container: $indigo-30;
-  --d-on-indigo: $indigo-20;
-  --d-on-indigo-container: $indigo-90;
+  --d-indigo: #{$indigo-80};
+  --d-indigo-container: #{$indigo-30};
+  --d-on-indigo: #{$indigo-20};
+  --d-on-indigo-container: #{$indigo-90};
 
   // blue
-  --d-blue: $blue-80;
-  --d-blue-container: $blue-30;
-  --d-on-blue: $blue-20;
-  --d-on-blue-container: $blue-90;
+  --d-blue: #{$blue-80};
+  --d-blue-container: #{$blue-30};
+  --d-on-blue: #{$blue-20};
+  --d-on-blue-container: #{$blue-90};
 
   // light blue
-  --d-light-blue: $light-blue-80;
-  --d-light-blue-container: $light-blue-30;
-  --d-on-light-blue: $light-blue-20;
-  --d-on-light-blue-container: $light-blue-90;
+  --d-light-blue: #{$light-blue-80};
+  --d-light-blue-container: #{$light-blue-30};
+  --d-on-light-blue: #{$light-blue-20};
+  --d-on-light-blue-container: #{$light-blue-90};
 
   // cyan
-  --d-cyan: $cyan-80;
-  --d-cyan-container: $cyan-30;
-  --d-on-cyan: $cyan-20;
-  --d-on-cyan-container: $cyan-90;
+  --d-cyan: #{$cyan-80};
+  --d-cyan-container: #{$cyan-30};
+  --d-on-cyan: #{$cyan-20};
+  --d-on-cyan-container: #{$cyan-90};
 
   // teal
-  --d-teal: $teal-80;
-  --d-teal-container: $teal-30;
-  --d-on-teal: $teal-20;
-  --d-on-teal-container: $teal-90;
+  --d-teal: #{$teal-80};
+  --d-teal-container: #{$teal-30};
+  --d-on-teal: #{$teal-20};
+  --d-on-teal-container: #{$teal-90};
 
   // green
-  --d-green: $green-80;
-  --d-green-container: $green-30;
-  --d-on-green: $green-20;
-  --d-on-green-container: $green-90;
+  --d-green: #{$green-80};
+  --d-green-container: #{$green-30};
+  --d-on-green: #{$green-20};
+  --d-on-green-container: #{$green-90};
 
   // light green
-  --d-light-green: $light-green-80;
-  --d-light-green-container: $light-green-30;
-  --d-on-light-green: $light-green-20;
-  --d-on-light-green-container: $light-green-90;
+  --d-light-green: #{$light-green-80};
+  --d-light-green-container: #{$light-green-30};
+  --d-on-light-green: #{$light-green-20};
+  --d-on-light-green-container: #{$light-green-90};
 
   // yellow
-  --d-yellow: $yellow-80;
-  --d-yellow-container: $yellow-30;
-  --d-on-yellow: $yellow-20;
-  --d-on-yellow-container: $yellow-90;
+  --d-yellow: #{$yellow-80};
+  --d-yellow-container: #{$yellow-30};
+  --d-on-yellow: #{$yellow-20};
+  --d-on-yellow-container: #{$yellow-90};
 
   // amber
-  --d-amber: $amber-80;
-  --d-amber-container: $amber-30;
-  --d-on-amber: $amber-20;
-  --d-on-amber-container: $amber-90;
+  --d-amber: #{$amber-80};
+  --d-amber-container: #{$amber-30};
+  --d-on-amber: #{$amber-20};
+  --d-on-amber-container: #{$amber-90};
 
   // orange
-  --d-orange: $orange-80;
-  --d-orange-container: $orange-30;
-  --d-on-orange: $orange-20;
-  --d-on-orange-container: $orange-90;
+  --d-orange: #{$orange-80};
+  --d-orange-container: #{$orange-30};
+  --d-on-orange: #{$orange-20};
+  --d-on-orange-container: #{$orange-90};
 
   // deep orange
-  --d-deep-orange: $deep-orange-80;
-  --d-deep-orange-container: $deep-orange-30;
-  --d-on-deep-orange: $deep-orange-20;
-  --d-on-deep-orange-container: $deep-orange-90;
+  --d-deep-orange: #{$deep-orange-80};
+  --d-deep-orange-container: #{$deep-orange-30};
+  --d-on-deep-orange: #{$deep-orange-20};
+  --d-on-deep-orange-container: #{$deep-orange-90};
 
   // brown
-  --d-brown: $brown-80;
-  --d-brown-container: $brown-30;
-  --d-on-brown: $brown-20;
-  --d-on-brown-container: $brown-90;
+  --d-brown: #{$brown-80};
+  --d-brown-container: #{$brown-30};
+  --d-on-brown: #{$brown-20};
+  --d-on-brown-container: #{$brown-90};
 
   // gray
-  --d-gray: $gray-80;
-  --d-gray-container: $gray-30;
-  --d-on-gray: $gray-20;
-  --d-on-gray-container: $gray-90;
+  --d-gray: #{$gray-80};
+  --d-gray-container: #{$gray-30};
+  --d-on-gray: #{$gray-20};
+  --d-on-gray-container: #{$gray-90};
 
   // blue gray
-  --d-blue-gray: $blue-gray-80;
-  --d-blue-gray-container: $blue-gray-30;
-  --d-on-blue-gray: $blue-gray-20;
-  --d-on-blue-gray-container: $blue-gray-90;
+  --d-blue-gray: #{$blue-gray-80};
+  --d-blue-gray-container: #{$blue-gray-30};
+  --d-on-blue-gray: #{$blue-gray-20};
+  --d-on-blue-gray-container: #{$blue-gray-90};
 
   // misc
-  --d-off-surface: $neutral-20;
-  --d-code-bg: $neutral-30;
+  --d-off-surface: #{$neutral-20};
+  --d-code-bg: #{$neutral-30};
   --d-skeleton-color: var(--d-surface-variant);
 
   .light-only {

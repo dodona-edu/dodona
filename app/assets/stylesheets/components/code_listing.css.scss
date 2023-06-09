@@ -275,7 +275,7 @@
           padding-right: 5px;
           margin-left: 20px;
           white-space: nowrap;
-          font-family: var(--d-font-family-monospace);
+          font-family: var(--d-font-monospace);
           color: var(--d-on-surface-muted);
         }
       }
@@ -470,7 +470,7 @@
 
   .annotation.machine-annotation {
     .annotation-text {
-      font-family: var(--d-font-family-monospace);
+      font-family: var(--d-font-monospace);
 
       // pre-wrap for browsers that don't support break-spaces.
       white-space: pre-wrap;

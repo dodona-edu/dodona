@@ -1,6 +1,6 @@
 :root {
-  --d-feedback-diff-table-header-bg: $code-bg;
-  --d-feedback-diff-table-header-fg: $on-background;
+  --d-feedback-diff-table-header-bg: var(--d-code-bg);
+  --d-feedback-diff-table-header-fg: var(--d-on-background);
 }
 
 .submissions-table {
@@ -88,7 +88,7 @@
 
   .test .output,
   .code {
-    font-family: var(--d-font-family-monospace);
+    font-family: var(--d-font-monospace);
     font-size: 13px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
@@ -128,7 +128,7 @@
       word-wrap: break-word;
       word-break: break-all;
       white-space: pre-wrap;
-      font-family: var(--d-font-family-monospace);
+      font-family: var(--d-font-monospace);
 
       strong {
         font-weight: normal;

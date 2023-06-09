@@ -1,5 +1,7 @@
-$card-margin-bottom: 24px;
-$card-supporting-text-padding: 16px;
+:root {
+  --d-card-margin-bottom: 24px;
+  --d-card-supporting-text-padding: 16px;
+}
 
 .card {
   display: flex;

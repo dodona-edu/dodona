@@ -69,8 +69,7 @@
   // --bs-tertiary-bg: #f8f9fa;
   // --bs-heading-color: inherit;
   --bs-link-color: var(--d-primary);
-
-  // --bs-link-decoration: underline;
+  --bs-link-decoration: none;
   --bs-link-hover-color: var(--d-on-primary-container);
   --bs-code-color: var(--d-secondary);
   --bs-highlight-bg: var(--d-surface-variant);
@@ -98,4 +97,13 @@
   --bs-form-valid-border-color: var(--d-success);
   --bs-form-invalid-color: var(--d-danger);
   --bs-form-invalid-border-color: var(--d-danger);
+
+  // font
+  --bs-font-sans-serif: var(--d-font-sans-serif);
+  --bs-font-monospace: var(--d-font-family-monospace);
+  --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+  --bs-body-font-family: var(--bs-font-sans-serif);
+  --bs-body-font-size: var(--d-font-size-base);
+  --bs-body-font-weight: 400;
+  --bs-body-line-height: 24px;
 }

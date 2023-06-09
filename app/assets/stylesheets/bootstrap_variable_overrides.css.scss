@@ -7,33 +7,33 @@
 //$content-bg: $surface;
 //$body-color: $on-background;
 //$link-color: $primary;
-$text-secondary: $on-surface-muted;
-$text-disabled: $on-surface-muted;
+//$text-secondary: $on-surface-muted;
+//$text-disabled: $on-surface-muted;
 
 // dropdowns
-$dropdown-bg: $background;
-$dropdown-color: $on-background;
-$dropdown-link-color: $on-background;
-$dropdown-link-hover-bg: $secondary-container;
-$dropdown-link-hover-color: $on-secondary-container;
-$dropdown-link-active-bg: $secondary;
+//$dropdown-bg: $background;
+//$dropdown-color: $on-background;
+//$dropdown-link-color: $on-background;
+//$dropdown-link-hover-bg: $secondary-container;
+//$dropdown-link-hover-color: $on-secondary-container;
+//$dropdown-link-active-bg: $secondary;
 
 // inputs
-$input-disabled-bg: $background;
-$input-border-color: $outline;
-$form-select-indicator-color: $on-background;
+//$input-disabled-bg: $background;
+//$input-border-color: $outline;
+//$form-select-indicator-color: $on-background;
 
 // pagination
-$pagination-bg: $surface;
-$pagination-hover-bg: $surface;
-$pagination-disabled-bg: $background;
-
-$modal-content-bg: $surface;
-
-$form-check-input-checked-bg-color: $secondary;
-$form-check-input-border: 1px solid rgba($text-disabled, 0.25);
-
-$table-border-color: $divider;
+//$pagination-bg: $surface;
+//$pagination-hover-bg: $surface;
+//$pagination-disabled-bg: $background;
+//
+//$modal-content-bg: $surface;
+//
+//$form-check-input-checked-bg-color: $secondary;
+//$form-check-input-border: 1px solid rgba($text-disabled, 0.25);
+//
+//$table-border-color: $divider;
 
 // disable rfs
 $enable-rfs: false;
@@ -41,8 +41,6 @@ $enable-rfs: false;
 // disable carrets
 $enable-caret: false;
 
-// other values
-$border-radius-base: 12px;
 
 // font stuff
 $font-family-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
@@ -50,8 +48,6 @@ $font-size-base: 0.875rem; // 14px;
 $baseLineHeight: 24px; /* stylelint-disable-line scss/dollar-variable-pattern */
 $line-height-base: 1.3846153846;
 $min-contrast-ratio: 3;
-
-$link-decoration: none;
 
 $paragraph-margin-bottom: 0.875rem;
 

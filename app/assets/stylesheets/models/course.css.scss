@@ -37,21 +37,21 @@
 .activity-sidebar,
 .series-sidebar {
   position: sticky;
-  top: calc(#{$navbar-height} + 20px);
+  top: calc(var(--d-navbar-height) + 20px);
   padding: 0;
   height: 100px; // hack, overflow is shown
 
   @include media-breakpoint-up(md) {
     .nav {
       width: calc((100vw - var(--scrollbar-width) - (#{map.get($container-max-widths, "md")} / 12 * 10)) / 2);
-      max-height: calc(100vh - (#{$navbar-height} + 20px));
+      max-height: calc(100vh - (var(--d-navbar-height) + 20px));
       display: block;
       overflow-y: auto;
       position: sticky;
-      top: calc(#{$navbar-height} + 20px);
+      top: calc(var(--d-navbar-height) + 20px);
 
       &.affix-bottom {
-        height: calc(100vh - (#{$navbar-height} + 120px));
+        height: calc(100vh - (var(--d-navbar-height) + 120px));
         position: fixed;
         top: 70px !important;
       }

@@ -1,6 +1,9 @@
 @use "sass:math";
 @use "sass:map";
-$navbar-height: 50px;
+
+:root {
+  --d-navbar-height: 50px;
+}
 
 .dodona-navbar {
   @include shadow-z3;
@@ -91,7 +94,7 @@ $navbar-height: 50px;
     // Drawer toggle & brand link
     .drawer-toggle {
       i {
-        line-height: $navbar-height;
+        line-height: var(--d-navbar-height);
         font-size: 24px;
       }
 
@@ -102,7 +105,7 @@ $navbar-height: 50px;
     }
 
     .brand {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
       font-size: 18px;
       padding-left: 18px;
 
@@ -111,7 +114,7 @@ $navbar-height: 50px;
       }
 
       i {
-        line-height: $navbar-height;
+        line-height: var(--d-navbar-height);
 
         @include media-breakpoint-up(sm) {
           display: none;
@@ -306,7 +309,7 @@ $navbar-height: 50px;
     color: var(--d-on-primary);
 
     i {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
     }
   }
 
@@ -325,7 +328,7 @@ $navbar-height: 50px;
       @include shadow-z3;
 
       position: absolute;
-      top: $navbar-height;
+      top: var(--d-navbar-height);
       right: 0;
       width: fit-content;
       height: fit-content;
@@ -374,7 +377,7 @@ $navbar-height: 50px;
   text-overflow: ellipsis;
   overflow: hidden;
   display: flex;
-  line-height: $navbar-height;
+  line-height: var(--d-navbar-height);
 
   .crumb {
     flex-shrink: 10;
@@ -392,7 +395,7 @@ $navbar-height: 50px;
     flex-shrink: 1;
 
     .mdi::before {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
       margin-left: 4px;
       margin-right: 4px;
     }

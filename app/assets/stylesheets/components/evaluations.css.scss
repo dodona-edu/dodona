@@ -1,9 +1,9 @@
 @include media-breakpoint-up(lg) {
   .feedback-metadata {
     position: sticky;
-    top: calc(#{$navbar-height} + 20px) !important;
+    top: calc(var(--d-navbar-height) + 20px) !important;
     min-height: 100px;
-    max-height: calc(100vh - (#{$navbar-height} + 20px));
+    max-height: calc(100vh - (var(--d-navbar-height) + 20px));
     overflow-y: auto;
   }
 }

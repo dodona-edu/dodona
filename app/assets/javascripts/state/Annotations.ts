@@ -2,6 +2,7 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 import { AnnotationType, UserAnnotationData } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
+import { StateMap } from "state/state_system/StateMap";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
 export type AnnotationData = MachineAnnotationData | UserAnnotationData;
@@ -25,24 +26,28 @@ export function isUserAnnotation(annotation: AnnotationData): annotation is User
 class AnnotationState extends State {
     @stateProperty visibility: AnnotationVisibilityOptions = "all";
     @stateProperty isQuestionMode = false;
-    @stateProperty hoveredAnnotation: AnnotationData | null = null;
+    readonly isHoveredByKey = new StateMap<string, boolean>();
+
+    private getKeyFromAnnotation(annotation: AnnotationData): string {
+        if (annotation === undefined || annotation === null) {
+            return "";
+        }
+
+        if (isUserAnnotation(annotation)) {
+            return `${annotation.id}`;
+        }
+
+        return `${annotation.row}-${annotation.column}-${annotation.type}-${annotation.text}`;
+    }
+
+    setHovered(annotation: AnnotationData, hovered: boolean): void {
+        const key = this.getKeyFromAnnotation(annotation);
+        this.isHoveredByKey.set(key, hovered);
+    }
 
     isHovered = (annotation: AnnotationData): boolean => {
-        return this.hoveredAnnotation === annotation || (
-            this.hoveredAnnotation !== null &&
-            annotation !== null &&
-            annotation !== undefined && ((
-                isUserAnnotation(annotation) &&
-                isUserAnnotation(this.hoveredAnnotation) &&
-                annotation.id === this.hoveredAnnotation.id
-            ) || (
-                !isUserAnnotation(annotation) &&
-                !isUserAnnotation(this.hoveredAnnotation) &&
-                annotation.row === this.hoveredAnnotation.row &&
-                annotation.column === this.hoveredAnnotation.column &&
-                annotation.type === this.hoveredAnnotation.type &&
-                annotation.text === this.hoveredAnnotation.text
-            )));
+        const key = this.getKeyFromAnnotation(annotation);
+        return this.isHoveredByKey.get(key) ?? false;
     };
 
     isVisible(annotation: AnnotationData): boolean {

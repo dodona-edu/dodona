@@ -1,13 +1,13 @@
 .table-scroll-wrapper {
   overflow-x: auto;
   background-image:
-    linear-gradient(to right, $content-bg, $content-bg),
-    linear-gradient(to right, $content-bg, $content-bg),
-    linear-gradient(to right, $divider, rgba(255, 255, 255, 0)),
-    linear-gradient(to left, $divider, rgba(255, 255, 255, 0));
+    linear-gradient(to right, var(--d-content-bg), var(--d-content-bg)),
+    linear-gradient(to right, var(--d-content-bg), var(--d-content-bg)),
+    linear-gradient(to right, var(--d-divider), rgba(255, 255, 255, 0)),
+    linear-gradient(to left, var(--d-divider), rgba(255, 255, 255, 0));
   background-position: left center, right center, left center, right center;
   background-repeat: no-repeat;
-  background-color: $content-bg;
+  background-color: var(--d-content-bg);
   background-size: 20px 100%, 20px 100%, 10px 100%, 10px 100%;
   background-attachment: local, local, scroll, scroll;
 }
@@ -91,13 +91,13 @@ tr.gu-mirror {
 .sticky-header {
   th {
     position: sticky;
-    background: $content-bg;
+    background: var(--d-content-bg);
   }
 }
 
 .sticky-column {
   thead tr th:first-child {
-    background: $content-bg;
+    background: var(--d-content-bg);
     position: sticky;
     left: 0;
 
@@ -106,7 +106,7 @@ tr.gu-mirror {
   }
 
   tbody td:first-child {
-    background: $content-bg;
+    background: var(--d-content-bg);
     position: sticky;
     left: 0;
   }
@@ -132,7 +132,7 @@ tr.gu-mirror {
 .table {
   .placeholder-text {
     text-align: center;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   td.empty {
@@ -141,7 +141,7 @@ tr.gu-mirror {
     padding: 16px;
     line-height: 22px;
     width: 100%;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 }
 
@@ -152,12 +152,12 @@ tr.gu-mirror {
 #scoresheet-table-wrapper .summary-row td {
   height: 35px;
   font-size: 12px;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 #scoresheet-table-wrapper .summary-col {
   font-size: 12px;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .table-resource .btn-icon {

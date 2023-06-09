@@ -130,7 +130,7 @@
 }
 
 .filter-icon {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
   letter-spacing: -2px;
 
   /* make sure the tooltip with the filtering information is centered
@@ -142,7 +142,7 @@
   margin-right: 3px; // add spacing between text and the icon
 
   &:hover {
-    color: $on-surface;
+    color: var(--d-on-surface);
   }
 }
 
@@ -189,54 +189,54 @@
 
 .mdi.mdi-colored-accent {
   &.accent-red {
-    color: $red-container;
+    color: var(--d-red-container);
   }
 
   &.accent-pink {
-    color: $pink-container;
+    color: var(--d-pink-container);
   }
 
   &.accent-purple {
-    color: $purple-container;
+    color: var(--d-purple-container);
   }
 
   &.accent-deep-purple {
-    color: $deep-purple-container;
+    color: var(--d-deep-purple-container);
   }
 
   &.accent-indigo {
-    color: $indigo-container;
+    color: var(--d-indigo-container);
   }
 
   &.accent-teal {
-    color: $teal-container;
+    color: var(--d-teal-container);
   }
 
   &.accent-orange {
-    color: $orange-container;
+    color: var(--d-orange-container);
   }
 
   &.accent-brown {
-    color: $brown-container;
+    color: var(--d-brown-container);
   }
 
   &.accent-blue-gray {
-    color: $blue-gray-container;
+    color: var(--d-blue-gray-container);
   }
 
   &.accent-blue {
-    color: $blue-container;
+    color: var(--d-blue-container);
   }
 
   &.accent-yellow {
-    color: $yellow-container;
+    color: var(--d-yellow-container);
   }
 
   &.accent-green {
-    color: $green-container;
+    color: var(--d-green-container);
   }
 
   &.accent-cyan {
-    color: $cyan-container;
+    color: var(--d-cyan-container);
   }
 }

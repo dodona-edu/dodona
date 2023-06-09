@@ -6,7 +6,7 @@ th.status-icon {
   &.unread {
     .notification-icon,
     .read-indicator {
-      color: $info;
+      color: var(--d-info);
     }
   }
 }

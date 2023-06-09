@@ -2,7 +2,7 @@
 .callout {
   padding: 20px;
   margin: 20px 0;
-  border: 1px solid $divider;
+  border: 1px solid var(--d-divider);
   border-left-width: 5px;
   border-radius: 3px;
 }
@@ -28,31 +28,31 @@
 
 /* Variations */
 .callout-danger {
-  border-left-color: $danger;
+  border-left-color: var(--d-danger);
 
   h4 {
-    color: $danger;
+    color: var(--d-danger);
   }
 }
 
 .callout-warning {
-  border-left-color: $warning;
+  border-left-color: var(--d-warning);
 
   h4 {
-    color: $warning;
+    color: var(--d-warning);
   }
 }
 
 .callout-info {
-  border-left-color: $info;
+  border-left-color: var(--d-info);
 
   h4 {
-    color: $info;
+    color: var(--d-info);
   }
 }
 
 .callout-success {
-  border-left-color: $success;
+  border-left-color: var(--d-success);
 
   h4 {
     color: $success;

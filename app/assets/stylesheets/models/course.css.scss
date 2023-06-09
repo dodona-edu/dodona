@@ -9,7 +9,7 @@
 }
 
 .badge-pending {
-  background-color: $danger;
+  background-color: var(--d-danger);
 }
 
 .card.course {
@@ -23,7 +23,7 @@
 
 .copy-courses-table tbody tr {
   &:hover {
-    background-color: $table-hover-bg;
+    background-color: var(--d-table-hover-bg);
     cursor: pointer;
   }
 }

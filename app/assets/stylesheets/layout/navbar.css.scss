@@ -5,7 +5,7 @@ $navbar-height: 50px;
 .dodona-navbar {
   @include shadow-z3;
 
-  background: $primary;
+  background: var(--d-primary);
   height: $navbar-height;
   display: flex;
   position: fixed;
@@ -21,7 +21,7 @@ $navbar-height: 50px;
   }
 
   a {
-    color: $on-primary;
+    color: var(--d-on-primary);
     text-decoration: none;
   }
 
@@ -98,7 +98,7 @@ $navbar-height: 50px;
       border: none;
       outline: none;
       background: none;
-      color: $on-primary;
+      color: var(--d-on-primary);
     }
 
     .brand {
@@ -167,7 +167,7 @@ $navbar-height: 50px;
 
           &.active {
             padding-bottom: 8px;
-            border-bottom: solid $on-primary 3px;
+            border-bottom: solid var(--d-on-primary) 3px;
           }
         }
       }
@@ -214,15 +214,15 @@ $navbar-height: 50px;
 
         a {
           padding-left: 0;
-          color: $on-surface;
+          color: var(--d-on-surface);
 
           &.btn-icon {
-            color: $on-surface-muted;
+            color: var(--d-on-surface-muted);
           }
         }
 
         .notification-overflow a {
-          color: $link-color;
+          color: var(--d-link-color);
 
           &:hover {
             text-decoration: underline;
@@ -253,7 +253,7 @@ $navbar-height: 50px;
         }
 
         a {
-          color: $on-surface;
+          color: var(--d-on-surface);
         }
       }
 
@@ -275,7 +275,7 @@ $navbar-height: 50px;
         .dropdown-menu {
           li,
           a {
-            color: $on-surface;
+            color: var(--d-on-surface);
           }
 
           position: relative;
@@ -283,7 +283,7 @@ $navbar-height: 50px;
           float: none;
           margin-top: 0;
           margin-left: 20px;
-          background-color: $background;
+          background-color: var(--d-background);
           border: 0;
           box-shadow: none;
           color: $on-surface;

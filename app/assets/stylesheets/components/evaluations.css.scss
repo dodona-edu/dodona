@@ -72,10 +72,10 @@
         font-size: 14px;
         font-weight: 400;
         line-height: 1;
-        color: $on-surface;
+        color: var(--d-on-surface);
         text-align: center;
-        background-color: $surface;
-        border: 1px solid $outline;
+        background-color: var(--d-surface);
+        border: 1px solid var(--d-outline);
         opacity: 1;
         cursor: auto;
       }
@@ -87,7 +87,7 @@
       }
 
       .form-control {
-        border-color: $outline;
+        border-color: var(--d-outline);
         line-height: initial;
       }
 
@@ -100,7 +100,7 @@
       .score-state {
         border-left: none;
         width: 28px;
-        background-color: $input-bg;
+        background-color: var(--d-input-bg);
         padding: 0;
       }
 
@@ -119,8 +119,8 @@
 
 .evaluation-user-select {
   .user-select-option {
-    border: 1px solid $divider;
-    border-radius: $border-radius-base;
+    border: 1px solid var(--d-divider);
+    border-radius: var(--d-border-radius-base);
     text-align: center;
     padding: 6px;
 
@@ -132,7 +132,7 @@
   }
 
   .user-select-option:hover {
-    border: 1px solid $divider;
+    border: 1px solid var(--d-divider);
   }
 
   .user-select-option h1 small {
@@ -156,27 +156,27 @@
   padding-bottom: 6px;
 
   &.correct {
-    border-bottom: 3px solid $success;
+    border-bottom: 3px solid var(--d-success);
   }
 
   &.wrong {
-    border-bottom: 3px solid $danger;
+    border-bottom: 3px solid var(--d-danger);
   }
 
   &.not-started {
-    border-bottom: 3px solid $divider;
+    border-bottom: 3px solid var(--d-divider);
   }
 
   .done,
   .provisional {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   a:hover .done,
   a:hover .provisional,
   .done:hover,
   .provisional:hover {
-    color: $on-surface;
+    color: var(--d-on-surface);
   }
 }
 
@@ -185,14 +185,14 @@
   justify-content: space-around;
 
   a .done {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   .active a {
-    background-color: $info-container;
+    background-color: var(--d-info-container);
 
     i {
-      color: $info;
+      color: var(--d-info);
     }
   }
 }
@@ -201,9 +201,9 @@
   line-height: normal;
 }
 
-$user-column-width: 170px;
-
 .score-table {
+  --d-user-column-width: 170px;
+
   // Allows borders to be sticky.
   border-collapse: separate;
 
@@ -212,7 +212,7 @@ $user-column-width: 170px;
 
   .score-text {
     a {
-      color: $on-surface;
+      color: var(--d-on-surface);
     }
   }
 
@@ -230,7 +230,7 @@ $user-column-width: 170px;
   }
 
   .user-name {
-    width: $user-column-width;
+    width: var(--d-user-column-width);
   }
 
   .status-header {
@@ -240,11 +240,11 @@ $user-column-width: 170px;
   }
 
   .total-column {
-    border-right: 2px solid $border-color;
+    border-right: 2px solid var(--d-border-color);
   }
 
   thead tr th:nth-child(2) {
-    background: $content-bg;
+    background: var(--d-content-bg);
     position: sticky;
 
     // Raise index, to prevent sticky column from rolling over the header.
@@ -253,14 +253,14 @@ $user-column-width: 170px;
   }
 
   tbody td:nth-child(2) {
-    background: $content-bg;
+    background: var(--d-content-bg);
     position: sticky;
     left: $user-column-width - 4px;
   }
 }
 
 a.score-click {
-  color: $on-surface;
+  color: var(--d-on-surface);
 }
 
 .score-buttons {

@@ -1,28 +1,31 @@
 @use "sass:map";
 @use "sass:color";
-$dot-size: 9px;
 
-// Annotation colors
-$annotation-question: $purple;
-$annotation-user: $success;
-$annotation-error: $danger;
-$annotation-warning: $warning;
-$annotation-info: $info;
-$annotation-question-background: color.mix($annotation-question, $background, 8%);
-$annotation-user-background: color.mix($annotation-user, $background, 8%);
-$annotation-question-background-intense: color.mix($annotation-question, $background, 20%);
-$annotation-user-background-intense: color.mix($annotation-user, $background, 20%);
+:root {
+  --d-dot-size: 9px;
+
+  // Annotation colors
+  --d-annotation-question: var(--d-purple);
+  --d-annotation-user: var(--d-success);
+  --d-annotation-error: var(--d-danger);
+  --d-annotation-warning: var(--d-warning);
+  --d-annotation-info: var(--d-info);
+  --d-annotation-question-background: color.mix(var(--d-annotation-question), var(--d-background), 8%);
+  --d-annotation-user-background: color.mix(var(--d-annotation-user), var(--d-background), 8%);
+  --d-annotation-question-background-intense: color.mix(var(--d-annotation-question), var(--d-background), 20%);
+  --d-annotation-user-background-intense: color.mix(var(--d-annotation-user), var(--d-background), 20%);
+}
 
 .code-table {
   &.selection-color-question {
     ::selection {
-      background-color: $annotation-question-background-intense;
+      background-color: var(--d-annotation-question-background-intense);
     }
   }
 
   &.selection-color-annotation {
     ::selection {
-      background-color: $annotation-user-background-intense;
+      background-color: var(--d-annotation-user-background-intense);
     }
   }
 
@@ -30,8 +33,8 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     float: left;
     margin-left: 4px;
     margin-top: 4px;
-    height: $dot-size;
-    width: $dot-size;
+    height: var(--d-dot-size);
+    width: var(--d-dot-size);
     border-radius: 100%;
   }
 
@@ -41,23 +44,23 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
   }
 
   .dot-info {
-    background-color: $annotation-info;
+    background-color: var(--d-annotation-info);
   }
 
   .dot-warning {
-    background-color: $annotation-warning;
+    background-color: var(--d-annotation-warning);
   }
 
   .dot-annotation {
-    background-color: $annotation-user;
+    background-color: var(--d-annotation-user);
   }
 
   .dot-error {
-    background-color: $annotation-error;
+    background-color: var(--d-annotation-error);
   }
 
   .dot-question {
-    background-color: $annotation-question;
+    background-color: var(--d-annotation-question);
   }
 
   .code-listing-container {
@@ -77,7 +80,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     .code-listing {
       display: block;
       white-space: nowrap;
-      background-color: $content-bg;
+      background-color: var(--d-content-bg);
 
       // Override the normal pre padding & coloring
       pre {
@@ -92,12 +95,12 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
       // Highlight for the line numbers.
       .lineno.marked .rouge-gutter {
-        background-color: $warning-container;
+        background-color: var(--d-warning-container);
       }
 
       // Highlight for the code itself.
       .lineno.marked .rouge-code pre {
-        background-color: $warning-container;
+        background-color: var(--d-warning-container);
         width: 100%;
         padding-top: 0;
         padding-bottom: 0;
@@ -111,18 +114,18 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         padding: 0;
         margin: 0;
 
-        --question-color: #{$warning-container};
-        --annotation-color: #{$warning-container};
+        --question-color: #{var(--d-warning-container)};
+        --annotation-color: #{var(--d-warning-container)};
 
         pre {
           background-color: inherit;
 
           &.code-line-question {
-            background-color: $annotation-question-background-intense;
+            background-color: var(--d-annotation-question-background-intense);
           }
 
           &.code-line-annotation {
-            background-color: $annotation-user-background-intense;
+            background-color: var(--d-annotation-user-background-intense);
           }
         }
       }
@@ -130,20 +133,20 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       // Highlight fully selected lines, also force all annotations in the line to the selection color
       .lineno .rouge-code pre {
         &.code-line-question {
-          background-color: $annotation-question-background-intense;
+          background-color: var(--d-annotation-question-background-intense);
           width: 100%;
 
           d-annotation-marker {
-            background-color: $annotation-question-background-intense;
+            background-color: var(--d-annotation-question-background-intense);
           }
         }
 
         &.code-line-annotation {
-          background-color: $annotation-user-background-intense;
+          background-color: var(--d-annotation-user-background-intense);
           width: 100%;
 
           d-annotation-marker {
-            background-color: $annotation-user-background-intense;
+            background-color: var(--d-annotation-user-background-intense);
           }
         }
       }
@@ -161,8 +164,8 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           width: auto;
           max-width: 40px;
           border-radius: 12px;
-          background: $secondary-container;
-          color: $on-secondary-container;
+          background: var(--d-secondary-container);
+          color: var(--d-on-secondary-container);
           padding: 6px;
           transition: max-width 0.2s ease-in-out, padding 0.2s ease-in-out;
           justify-content: end;
@@ -204,7 +207,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           height: 0;
           border-bottom: 8px solid transparent;
           border-top: 8px solid transparent;
-          border-left: 8px solid $secondary-container;
+          border-left: 8px solid var(--d-secondary-container);
           content: " ";
           position: absolute;
           top: 13px;
@@ -272,15 +275,15 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           padding-right: 5px;
           margin-left: 20px;
           white-space: nowrap;
-          font-family: $font-family-monospace;
-          color: $on-surface-muted;
+          font-family: var(--d-font-family-monospace);
+          color: var(--d-on-surface-muted);
         }
       }
 
       // General lighter background on the right side
       .rouge-code,
       .annotation-cell {
-        background-color: $background;
+        background-color: var(--d-background);
       }
 
       .hide {
@@ -313,14 +316,14 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     padding-left: 5px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border: 1px solid $divider;
-    background: $content-bg;
+    border: 1px solid var(--d-divider);
+    background: var(--d-content-bg);
     white-space: normal;
 
     .annotation {
       margin: 2px 0;
       border: none;
-      border-left: 3px solid $outline;
+      border-left: 3px solid var(--d-outline);
     }
 
     d-user-annotation {
@@ -342,7 +345,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       }
 
       .form-control {
-        border-color: $divider;
+        border-color: var(--d-divider);
       }
     }
   }
@@ -352,16 +355,16 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     padding: 2px 5px 2px 10px;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    border: 1px solid $divider;
+    border: 1px solid var(--d-divider);
     border-left-width: 3px;
-    border-left-color: $outline;
-    background: $content-bg;
+    border-left-color: var(--d-outline);
+    background: var(--d-content-bg);
     white-space: normal;
 
     .annotation-header {
       .annotation-meta {
         font-size: 85%;
-        color: $on-surface-muted;
+        color: var(--d-on-surface-muted);
       }
       /* stylelint-disable selector-class-pattern */
       .annotation-edit,
@@ -396,7 +399,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
       // Override the normal pre padding & coloring
       pre {
         padding: 0;
-        background-color: $code-bg !important;
+        background-color: var(--d-code-bg) !important;
         margin-bottom: 0;
         border: none;
         border-radius: 0;
@@ -411,7 +414,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         margin-left: 10px;
         margin-right: 10px;
         margin-bottom: 10px;
-        background: $code-bg;
+        background: var(--d-code-bg);
         border-radius: 3px;
       }
 
@@ -431,43 +434,43 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         max-width: 300px;
 
         @include media-breakpoint-up(md) {
-          max-width: calc(#{map.get($container-max-widths, "md")} * 0.6);
+          max-width: calc(#{map.get(var(--d-container-max-widths), "md")} * 0.6);
         }
 
         @include media-breakpoint-up(lg) {
-          max-width: calc(#{map.get($container-max-widths, "lg")} * 0.7);
+          max-width: calc(#{map.get(var(--d-container-max-widths), "lg")} * 0.7);
         }
 
         @include media-breakpoint-up(xl) {
-          max-width: calc(#{map.get($container-max-widths, "xl")} * 0.7);
+          max-width: calc(#{map.get(var(--d-container-max-widths), "xl")} * 0.7);
         }
       }
     }
   }
 
   .annotation.question {
-    border-left-color: $annotation-question;
+    border-left-color: var(--d-annotation-question);
   }
 
   .annotation.error {
-    border-left-color: $annotation-error;
+    border-left-color: var(--d-annotation-error);
   }
 
   .annotation.warning {
-    border-left-color: $annotation-warning;
+    border-left-color: var(--d-annotation-warning);
   }
 
   .annotation.info {
-    border-left-color: $annotation-info;
+    border-left-color: var(--d-annotation-info);
   }
 
   .annotation.user {
-    border-left-color: $annotation-user;
+    border-left-color: var(--d-annotation-user);
   }
 
   .annotation.machine-annotation {
     .annotation-text {
-      font-family: $font-family-monospace;
+      font-family: var(--d-font-family-monospace);
 
       // pre-wrap for browsers that don't support break-spaces.
       white-space: pre-wrap;
@@ -506,7 +509,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
     }
 
     .annotation-submission-input.validation-error {
-      border-color: $danger;
+      border-color: var(--d-danger);
     }
   }
 
@@ -518,25 +521,25 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
 d-annotation-marker,
 d-selection-marker {
-  --info-color: #{$annotation-info};
-  --warning-color: #{$annotation-warning};
-  --error-color: #{$annotation-error};
-  --question-color: #{$annotation-question-background};
-  --annotation-color: #{$annotation-user-background};
-  --question-intense-color: #{$annotation-question-background-intense};
-  --annotation-intense-color: #{$annotation-user-background-intense};
+  --info-color: var(--d-annotation-info);
+  --warning-color: var(--d-annotation-warning);
+  --error-color: var(--d-annotation-error);
+  --question-color: var(--d-annotation-question-background);
+  --annotation-color: var(--d-annotation-user-background);
+  --question-intense-color: var(--d-annotation-question-background-intense);
+  --annotation-intense-color: var(--d-annotation-user-background-intense);
 }
 
 .marker-tooltip {
   width: max-content;
   white-space: initial;
-  color: $on-surface;
+  color: var(--d-on-surface);
   font-style: initial;
   padding-left: 5px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
-  border: 1px solid $divider;
-  background-color: $content-bg;
+  border: 1px solid var(--d-divider);
+  background-color: var(--d-content-bg);
 
   .annotation {
     margin: 4px 0;

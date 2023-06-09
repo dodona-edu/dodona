@@ -7,9 +7,9 @@
 }
 
 .toasts .toast {
-  background-color: $inverse-surface;
+  background-color: var(--d-inverse-surface);
   border-radius: 3px;
-  color: $inverse-on-surface;
+  color: var(--d-inverse-on-surface);
   display: block;
   line-height: 20px;
   margin-top: 8px;
@@ -33,5 +33,5 @@
   height: 20px;
   float: right;
   margin-left: 10px;
-  background-color: $inverse-primary;
+  background-color: var(--d-inverse-primary);
 }

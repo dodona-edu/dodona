@@ -1,24 +1,24 @@
 /* stylelint-disable selector-class-pattern */
 .ace-tm {
-  background-color: $code-bg;
-  color: $on-background;
+  background-color: var(--d-code-bg);
+  color: var(--d-on-background);
 
   .ace_gutter {
-    background: $surface;
-    color: $on-surface-muted;
+    background: var(--d-surface);
+    color: var(--d-on-surface-muted);
   }
 
   .ace_print-margin {
     width: 1px;
-    background: $divider;
+    background: var(--d-divider);
   }
 
   .ace_cursor {
-    color: $secondary;
+    color: var(--d-secondary);
   }
 
   .ace_marker-layer .ace_selection {
-    background: $surface-variant;
+    background: var(--d-surface-variant);
   }
 
   &.ace_multiselect .ace_selection.ace_start {
@@ -26,35 +26,35 @@
   }
 
   .ace_marker-layer .ace_step {
-    background: $secondary-container;
+    background: var(--d-secondary-container);
   }
 
   .ace_marker-layer .ace_bracket {
-    background-color: $secondary-container;
+    background-color: var(--d-secondary-container);
     border: none;
   }
 
   .ace_marker-layer .ace_active-line {
-    background: $background;
+    background: var(--d-background);
   }
 
   .ace_gutter-active-line {
-    background-color: $background;
+    background-color: var(--d-background);
   }
 
   .ace_marker-layer .ace_selected-word {
-    background-color: $secondary-container;
+    background-color: var(--d-secondary-container);
     border: none;
   }
 
   .ace_invisible {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   .ace_keyword,
   .ace_keyword.ace_operator,
   .ace_meta {
-    color: $primary;
+    color: var(--d-primary);
   }
 
   .ace_constant,
@@ -64,27 +64,27 @@
   .ace_support.ace_constant,
   .ace_constant.ace_numeric,
   .ace_constant.ace_language {
-    color: $secondary;
+    color: var(--d-secondary);
   }
 
   .ace_storage.ace_type {
-    color: $secondary;
+    color: var(--d-secondary);
   }
 
   .ace_invalid {
-    color: $on-danger-container;
-    background-color: $danger-container;
+    color: var(--d-on-danger-container);
+    background-color: var(--d-danger-container);
   }
 
   .ace_fold {
-    background-color: $warning-container;
-    border-color: $warning-container;
+    background-color: var(--d-warning-container);
+    border-color: var(--d-warning-container);
   }
 
   .ace_entity.ace_name,
   .ace_entity.ace_name.ace_function,
   .ace_support.ace_function {
-    color: $tertiary;
+    color: var(--d-tertiary);
   }
 
   .ace_variable.ace_parameter {
@@ -92,7 +92,7 @@
   }
 
   .ace_string {
-    color: $teal;
+    color: var(--d-teal);
   }
 
   .ace_string.ace_regexp {

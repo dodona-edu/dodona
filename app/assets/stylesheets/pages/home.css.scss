@@ -35,8 +35,8 @@
   .btn,
   .btn:active {
     border-radius: 4px;
-    background-color: $content-bg;
-    color: $primary;
+    background-color: var(--d-content-bg);
+    color: var(--d-primary);
   }
 
   .lead {

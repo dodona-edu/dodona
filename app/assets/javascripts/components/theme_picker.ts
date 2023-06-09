@@ -19,6 +19,7 @@ export class ThemePicker extends ShadowlessLitElement {
         fetch("/theme", {
             method: "POST",
             body: JSON.stringify({ theme }),
+            headers: { "Content-type": "application/json" },
         });
     }
 
@@ -26,10 +27,7 @@ export class ThemePicker extends ShadowlessLitElement {
         return html`
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                    <i class='mdi mdi-web'></i>
-                    <span class="dropdown-title">
                         <i class="mdi ${ThemePicker.THEME_ICON_MAP[themeState.selectedTheme]}"></i>
-                    </span>
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     ${ THEME_OPTIONS.map(theme => html`
@@ -37,7 +35,7 @@ export class ThemePicker extends ShadowlessLitElement {
                             <i class="mdi ${ThemePicker.THEME_ICON_MAP[theme]}"></i>
                             ${I18n.t(`js.theme.${theme}`)}
                         </a></li>
-                    `)};
+                    `)}
                 </ul>
             </li>`;
     }

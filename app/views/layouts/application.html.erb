@@ -31,14 +31,13 @@
     window.dodona.tutorUrl = "<%= Rails.configuration.tutor_url.to_s %>";
   </script>
 
-  <%= stylesheet_link_tag "application" %>
-  <script>
-    window.dodona.setTheme(<%= session[:theme] || "auto" %>)
-  </script>
-
   <%= javascript_include_tag 'application_pack' %>
   <%= javascript_include_tag 'commons' %>
   <%= javascript_include_tag 'runtime' %>
+  <%= stylesheet_link_tag "application" %>
+  <script>
+    window.dodona.setTheme("<%= session[:theme] || "auto" %>");
+  </script>
   <%= yield :javascripts %>
   <%= csrf_meta_tags %>
   <%= csp_meta_tag %>

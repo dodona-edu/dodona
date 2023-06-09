@@ -14,6 +14,7 @@ class ThemeState extends State {
     }
 
     set selectedTheme(theme: ThemeOption) {
+        console.log("Setting theme to", theme);
         this._selectedTheme = theme;
         this.theme = theme === "auto" ? this.preferredTheme : theme;
     }
@@ -27,6 +28,9 @@ class ThemeState extends State {
     }
 
     set theme(theme: Theme) {
+        document.querySelectorAll(`[data-bs-theme="${this._theme}"]`).forEach(element => {
+            element.setAttribute("data-bs-theme", theme);
+        });
         document.documentElement.setAttribute("data-bs-theme", theme);
         this._theme = theme;
     }

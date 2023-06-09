@@ -151,6 +151,7 @@ class ActivitiesController < ApplicationController
   end
 
   def description
+    Rails.logger.info "Description: #{params}"
     respond_to :html
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
 

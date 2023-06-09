@@ -2,6 +2,7 @@
 // @ts-nocheck
 import * as d3 from "d3";
 import { initDatePicker } from "util.js";
+import { themeState } from "state/Theme";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
@@ -67,7 +68,7 @@ export abstract class SeriesGraph {
         this.container = d3.select(this.selector);
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
-        this.darkMode = window.dodona.darkMode;
+        this.darkMode = themeState.theme === "dark";
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {

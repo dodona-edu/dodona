@@ -62,11 +62,12 @@ module ActivityHelper
   end
 
   def description_iframe(activity)
-    dark = current_user.present? && session[:dark]
+    theme = session[:theme] || 'auto'
     id = "activity-description-#{activity.id}"
     url = description_activity_url(activity,
                                    token: activity.access_token,
-                                   dark: dark).html_safe
+                                   theme: theme,
+                                   dark: true).html_safe
     resizeframe = %{
       window.iFrameResize({
           onResized: dodona.afterResize,

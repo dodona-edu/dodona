@@ -32,7 +32,6 @@ beforeAll(() => {
                 "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
         }[arg]) as string[]);
     I18n.locale = "nl";
-    window.dodona = { darkMode: false };
 
 
     document.body.innerHTML = "" +

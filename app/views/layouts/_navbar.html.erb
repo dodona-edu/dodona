@@ -61,7 +61,7 @@
               <% if Export.where(user: current_user).any? %>
                 <li><%= link_to t("layout.menu.my_exports"), exports_path, class: "dropdown-item"  %></li>
               <% end %>
-              <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
+              <% if policy(:pages).toggle_demo_mode? || policy(:pages).set_theme? %>
                 <li role="separator" class="dropdown-divider"></li>
               <% end %>
               <% if policy(:pages).toggle_demo_mode? %>

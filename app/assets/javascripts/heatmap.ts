@@ -6,6 +6,7 @@ import utc from "dayjs/plugin/utc";
 import minMax from "dayjs/plugin/minMax";
 import duration from "dayjs/plugin/duration";
 import isoWeek from "dayjs/plugin/isoWeek";
+import { themeState } from "state/Theme";
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
@@ -70,7 +71,7 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
 }
 
 function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: string | undefined): void {
-    const darkMode = window.dodona.darkMode;
+    const darkMode = themeState.theme === "dark";
     const emptyColor = darkMode ? "#303034" : "#fcfcff";
     const lowColor = darkMode ? "#4a4046" : "#ffd9df";
     const highColor = darkMode ? "#ffb2c0" : "#bc0049";

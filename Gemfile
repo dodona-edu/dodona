@@ -156,7 +156,7 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.39.1'
+  gem 'capybara', '~> 3.39.2'
   gem 'selenium-webdriver', '~> 4.9.1'
 end
 

@@ -1582,25 +1582,25 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@open-wc/dedupe-mixin@^1.3.0":
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/@open-wc/dedupe-mixin/-/dedupe-mixin-1.3.1.tgz#5c1a1eeb0386b344290ebe3f1fca0c4869933dbf"
-  integrity sha512-ukowSvzpZQDUH0Y3znJTsY88HkiGk3Khc0WGpIPhap1xlerieYi27QBg6wx/nTurpWfU6XXXsx9ocxDYCdtw0Q==
+"@open-wc/dedupe-mixin@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/dedupe-mixin/-/dedupe-mixin-1.4.0.tgz#b3c58f8699b197bb5e923d624c720e67c9f324d6"
+  integrity sha512-Sj7gKl1TLcDbF7B6KUhtvr+1UCxdhMbNY5KxdU5IfMFWqL8oy1ZeAcCANjoB1TL0AJTcPmcCFsCbHf8X2jGDUA==
 
-"@open-wc/scoped-elements@^2.1.3":
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-2.1.4.tgz#8064abaa69bc2fb67695115c077aabedc9333b68"
-  integrity sha512-KX/bOkcDG9kbBDSmgsbpp40ZjEWxpWNrNRZZVSO0KqBygMfvfiEeVfP16uJp9YyWHi/PVZ/C0aUEgf8Pg1Eq7A==
+"@open-wc/scoped-elements@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-2.2.0.tgz#4d65d7ba796c2bb76ef7934068532ca1795ea7b6"
+  integrity sha512-Qe+vWsuVHFzUkdChwlmJGuQf9cA3I+QOsSHULV/6qf6wsqLM2/32svNRH+rbBIMwiPEwzZprZlkvkqQRucYnVA==
   dependencies:
     "@lit/reactive-element" "^1.0.0"
-    "@open-wc/dedupe-mixin" "^1.3.0"
+    "@open-wc/dedupe-mixin" "^1.4.0"
 
-"@open-wc/testing-helpers@^2.2.1":
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.2.1.tgz#10ed75c33faec0ed68c76e027ebe8be262a36921"
-  integrity sha512-8zuJK7tUQYuXRIC/cVcPbAPOhtBJCe3Jfpk7im7WK0DIAXH9Q/ycB+yu3R8g4BQ31f/FdLjIFRbPZzIU75kkRg==
+"@open-wc/testing-helpers@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.3.0.tgz#6ee88baaf316a6217c43e7ba536cb187d15cb6f4"
+  integrity sha512-wkDipkia/OMWq5Z1KkAgvqNLfIOCiPGrrtfoCKuQje8u7F0Bz9Un44EwBtWcCdYtLc40quWP7XFpFsW8poIfUA==
   dependencies:
-    "@open-wc/scoped-elements" "^2.1.3"
+    "@open-wc/scoped-elements" "^2.2.0"
     lit "^2.0.0"
     lit-html "^2.0.0"
 

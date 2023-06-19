@@ -224,7 +224,7 @@ GEM
       hana (~> 1.3)
       regexp_parser (~> 2.0)
       simpleidn (~> 0.2)
-    jwt (2.7.0)
+    jwt (2.7.1)
     kramdown (2.4.0)
       rexml
     kramdown-parser-gfm (1.1.0)
@@ -549,7 +549,7 @@ DEPENDENCIES
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.1.1)
   json_schemer (~> 1.0.1)
-  jwt (~> 2.7.0)
+  jwt (~> 2.7.1)
   kramdown (~> 2.4.0)
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.8.1)

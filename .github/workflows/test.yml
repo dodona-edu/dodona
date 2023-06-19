@@ -21,7 +21,7 @@ jobs:
         image: mariadb
         env:
           MYSQL_DATABASE: "dodona_test"
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: "dodona"
           MARIADB_MYSQL_LOCALHOST_USER: 1
           MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
@@ -94,7 +94,7 @@ jobs:
         image: mariadb
         env:
           MYSQL_DATABASE: "dodona_test"
-          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+          MYSQL_ROOT_PASSWORD: "dodona"
           MARIADB_MYSQL_LOCALHOST_USER: 1
           MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"

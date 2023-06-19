@@ -18,14 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: 'mariadb:10.11.3'
+        image: mariadb
         env:
           MYSQL_DATABASE: "dodona_test"
-          MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v3
     - name: Use ruby from .ruby-version
@@ -89,14 +91,16 @@ jobs:
     runs-on: ubuntu-latest
     services:
       mysql:
-        image: 'mariadb:10.11.3'
+        image: mariadb
         env:
           MYSQL_DATABASE: "dodona_test"
-          MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: true
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v3
     - name: Use ruby from .ruby-version

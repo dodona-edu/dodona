@@ -46,7 +46,7 @@
     "webpack-cli": "^4.9.2"
   },
   "devDependencies": {
-    "@open-wc/testing-helpers": "^2.2.1",
+    "@open-wc/testing-helpers": "^2.3.0",
     "@testing-library/dom": "^9.3.0",
     "@testing-library/user-event": "^14.4.3",
     "@types/ace": "^0.0.48",

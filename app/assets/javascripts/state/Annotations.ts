@@ -26,29 +26,6 @@ export function isUserAnnotation(annotation: AnnotationData): annotation is User
 class AnnotationState extends State {
     @stateProperty visibility: AnnotationVisibilityOptions = "all";
     @stateProperty isQuestionMode = false;
-    readonly isHoveredByKey = new StateMap<string, boolean>();
-
-    private getKeyFromAnnotation(annotation: AnnotationData): string {
-        if (annotation === undefined || annotation === null) {
-            return "";
-        }
-
-        if (isUserAnnotation(annotation)) {
-            return `${annotation.id}`;
-        }
-
-        return `${annotation.row}-${annotation.column}-${annotation.type}-${annotation.text}`;
-    }
-
-    setHovered(annotation: AnnotationData, hovered: boolean): void {
-        const key = this.getKeyFromAnnotation(annotation);
-        this.isHoveredByKey.set(key, hovered);
-    }
-
-    isHovered = (annotation: AnnotationData): boolean => {
-        const key = this.getKeyFromAnnotation(annotation);
-        return this.isHoveredByKey.get(key) ?? false;
-    };
 
     isVisible(annotation: AnnotationData): boolean {
         if (this.visibility === "none") {

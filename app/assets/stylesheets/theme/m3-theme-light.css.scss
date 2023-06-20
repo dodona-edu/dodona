@@ -40,6 +40,7 @@
   --d-inverse-surface: #{$neutral-20};
   --d-inverse-on-surface: #{$neutral-95};
   --d-inverse-primary: #{$primary-80};
+  --d-on-surface-rgb: #{color.red($neutral-10)}, #{color.green($neutral-10)}, #{color.blue($neutral-10)};
 
   // info
   --d-info: #{$info-40};
@@ -52,12 +53,14 @@
   --d-success-container: #{$success-90};
   --d-on-success: #{$success-100};
   --d-on-success-container: #{$success-10};
+  --d-success-rgb: #{color.red($success-60)}, #{color.green($success-60)}, #{color.blue($success-60)};
 
   // changed from 40 to 60
   --d-danger: #{$danger-60};
   --d-danger-container: #{$danger-90};
   --d-on-danger: #{$danger-100};
   --d-on-danger-container: #{$danger-10};
+  --d-danger-rgb: #{color.red($danger-60)}, #{color.green($danger-60)}, #{color.blue($danger-60)};
 
   // changed from 40 to 70
   --d-warning: #{$warning-70};

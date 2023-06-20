@@ -80,7 +80,7 @@
   &:focus,
   &:active {
     opacity: 1;
-    background: rgba(var(--d-primary), 0.1);
+    background: rgba(var(--d-primary-rgb), 0.1);
   }
 }
 
@@ -121,7 +121,7 @@
 
   &:disabled {
     color: var(--d-on-surface);
-    border: 1px solid rgba(var(--d-on-surface), 0.12);
+    border: 1px solid rgba(var(--d-on-surface-rgb), 0.12);
     opacity: 0.38;
   }
 }
@@ -142,7 +142,7 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba(var(--d-primary), 0.1);
+      background: rgba(var(--d-primary-rgb), 0.1);
     }
   }
 
@@ -164,7 +164,7 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba(var(--d-on-surface), 0.1);
+      background: rgba(var(--d-on-surface-rgb), 0.1);
     }
   }
 
@@ -265,11 +265,11 @@
     &:hover,
     &:focus,
     &:active {
-      background: rgba(var(--d-primary), 0.1);
+      background: rgba(var(--d-primary-rgb), 0.1);
     }
 
     &.active {
-      background: rgba(var(--d-primary), 0.2);
+      background: rgba(var(--d-primary-rgb), 0.2);
     }
   }
 }
@@ -355,14 +355,14 @@
 
 .single-zero-button:active,
 #zero-button:active {
-  background-color: rgba(var(--d-danger), 0.6);
+  background-color: rgba(var(--d-danger-rgb), 0.6);
   color: unset;
   transition: background-color 0s;
 }
 
 .single-max-button:active,
 #max-button:active {
-  background-color: rgba(var(--d-success), 0.6);
+  background-color: rgba(var(--d-success-rgb), 0.6);
   color: unset;
   transition: background-color 0s;
 }

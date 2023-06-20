@@ -33,7 +33,7 @@
       &.line-nr {
         text-align: right;
         white-space: pre-wrap;
-        background: var(--d-content-bg);
+        background: var(--d-surface);
         color: var(--d-on-surface-muted);
         padding-left: 10px;
         padding-right: 10px;
@@ -65,7 +65,7 @@
 }
 
 #tutorviz {
-  background-color: var(--d-content-bg);
+  background-color: var(--d-surface);
   min-height: 200px;
 }
 
@@ -93,7 +93,7 @@
 
 .tutor-strip {
   position: absolute;
-  color: var(--d-content-bg);
+  color: var(--d-surface);
   width: 20px;
   z-index: 4;
   top: 0;

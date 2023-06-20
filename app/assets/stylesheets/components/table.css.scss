@@ -1,13 +1,13 @@
 .table-scroll-wrapper {
   overflow-x: auto;
   background-image:
-    linear-gradient(to right, var(--d-content-bg), var(--d-content-bg)),
-    linear-gradient(to right, var(--d-content-bg), var(--d-content-bg)),
+    linear-gradient(to right, var(--d-surface), var(--d-surface)),
+    linear-gradient(to right, var(--d-surface), var(--d-surface)),
     linear-gradient(to right, var(--d-divider), rgba(255, 255, 255, 0)),
     linear-gradient(to left, var(--d-divider), rgba(255, 255, 255, 0));
   background-position: left center, right center, left center, right center;
   background-repeat: no-repeat;
-  background-color: var(--d-content-bg);
+  background-color: var(--d-surface);
   background-size: 20px 100%, 20px 100%, 10px 100%, 10px 100%;
   background-attachment: local, local, scroll, scroll;
 }
@@ -91,13 +91,13 @@ tr.gu-mirror {
 .sticky-header {
   th {
     position: sticky;
-    background: var(--d-content-bg);
+    background: var(--d-surface);
   }
 }
 
 .sticky-column {
   thead tr th:first-child {
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     position: sticky;
     left: 0;
 
@@ -106,7 +106,7 @@ tr.gu-mirror {
   }
 
   tbody td:first-child {
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     position: sticky;
     left: 0;
   }

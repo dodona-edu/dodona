@@ -244,7 +244,7 @@
   }
 
   thead tr th:nth-child(2) {
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     position: sticky;
 
     // Raise index, to prevent sticky column from rolling over the header.
@@ -253,7 +253,7 @@
   }
 
   tbody td:nth-child(2) {
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     position: sticky;
     left: var(--d-user-column-width) - 4px;
   }

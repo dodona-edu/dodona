@@ -50,7 +50,7 @@
     .panel-heading + .panel-collapse > .panel-body {
       @include shadow-z2;
 
-      background-color: var(--d-content-bg);
+      background-color: var(--d-surface);
 
       @include media-breakpoint-up(sm) {
         margin-left: 45px;

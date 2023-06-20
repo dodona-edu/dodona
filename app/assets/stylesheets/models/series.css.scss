@@ -77,8 +77,8 @@
   overflow: visible;
 
   --icon-color: var(--d-gray);
-  --icon-background-color: var(--d-content-bg);
-  --deadline-icon-background-color: var(--d-content-bg);
+  --icon-background-color: var(--d-surface);
+  --deadline-icon-background-color: var(--d-surface);
   --deadline-icon-color: var(--d-success);
 
   #rainbow {
@@ -197,6 +197,6 @@
 .d3-tooltip-label {
   font-size: 12px;
   paint-order: stroke;
-  stroke: var(--d-content-bg);
+  stroke: var(--d-surface);
   stroke-width: 2px;
 }

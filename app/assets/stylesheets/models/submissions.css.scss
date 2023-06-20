@@ -23,13 +23,13 @@
     .badge.bg-danger {
       color: var(--d-danger);
       border-color: var(--d-danger);
-      background-color: var(--d-content-bg) !important;
+      background-color: var(--d-surface) !important;
     }
 
     .badge.bg-success {
       color: var(--d-success);
       border-color: var(--d-success);
-      background-color: var(--d-content-bg) !important;
+      background-color: var(--d-surface) !important;
     }
   }
 
@@ -42,7 +42,7 @@
   }
 
   .group {
-    background-color: var(--d-content-bg);
+    background-color: var(--d-surface);
     margin-bottom: 12px;
     border-left: 4px solid gray;
     position: relative;

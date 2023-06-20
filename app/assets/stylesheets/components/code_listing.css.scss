@@ -80,7 +80,7 @@
     .code-listing {
       display: block;
       white-space: nowrap;
-      background-color: var(--d-content-bg);
+      background-color: var(--d-surface);
 
       // Override the normal pre padding & coloring
       pre {
@@ -317,7 +317,7 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     border: 1px solid var(--d-divider);
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     white-space: normal;
 
     .annotation {
@@ -358,7 +358,7 @@
     border: 1px solid var(--d-divider);
     border-left-width: 3px;
     border-left-color: var(--d-outline);
-    background: var(--d-content-bg);
+    background: var(--d-surface);
     white-space: normal;
 
     .annotation-header {
@@ -539,7 +539,7 @@ d-selection-marker {
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   border: 1px solid var(--d-divider);
-  background-color: var(--d-content-bg);
+  background-color: var(--d-surface);
 
   .annotation {
     margin: 4px 0;

@@ -1,5 +1,6 @@
 import { stateProperty } from "state/state_system/StateProperty";
 import { State } from "state/state_system/State";
+import { getURLParameter, updateURLParameter } from "util.js";
 
 export type ThemeOption = "light" | "dark" | "auto";
 export type Theme = "light" | "dark";
@@ -14,7 +15,6 @@ class ThemeState extends State {
     }
 
     set selectedTheme(theme: ThemeOption) {
-        console.log("Setting theme to", theme);
         this._selectedTheme = theme;
         this.theme = theme === "auto" ? this.preferredTheme : theme;
     }
@@ -28,10 +28,18 @@ class ThemeState extends State {
     }
 
     set theme(theme: Theme) {
+        // update the page theme
+        document.documentElement.setAttribute("data-bs-theme", theme);
+        // update the theme of all elements that have a data-bs-theme attribute with the current theme
         document.querySelectorAll(`[data-bs-theme="${this._theme}"]`).forEach(element => {
             element.setAttribute("data-bs-theme", theme);
         });
-        document.documentElement.setAttribute("data-bs-theme", theme);
+        // update the theme of all iframes that have a theme parameter with the current theme
+        Array.from(document.getElementsByTagName("iframe")).forEach(iframe => {
+            if (getURLParameter("theme", iframe.src) === this._theme) {
+                iframe.src = updateURLParameter(iframe.src, "theme", theme);
+            }
+        });
         this._theme = theme;
     }
 

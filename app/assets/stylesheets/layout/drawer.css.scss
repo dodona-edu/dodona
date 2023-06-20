@@ -25,7 +25,7 @@ aside.drawer {
 
   nav {
     position: fixed;
-    left: -var(--d-drawer-width);
+    left: calc(-1 * var(--d-drawer-width));
     top: 0;
     height: 100vh;
     padding-top: 50px;

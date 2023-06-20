@@ -1,6 +1,7 @@
 // This file contains all "design tokens" according to material 3 in light mode.
 // At the bottom of this file, there are a number of dodona-specific variables
 
+@use "sass:color";
 @import "theme/m3-theme.css.scss";
 
 :root,
@@ -10,6 +11,7 @@
   --d-primary-container: #{$primary-90};
   --d-on-primary: #{$primary-100};
   --d-on-primary-container: #{$primary-10};
+  --d-primary-rgb: #{color.red($primary-40)}, #{color.green($primary-40)}, #{color.blue($primary-40)};
 
   // secondary
   --d-secondary: #{$secondary-40};

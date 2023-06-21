@@ -18,6 +18,7 @@
   --d-secondary-container: #{$secondary-90};
   --d-on-secondary: #{$secondary-100};
   --d-on-secondary-container: #{$secondary-10};
+  --d-secondary-rgb: #{color.red($secondary-40)}, #{color.green($secondary-40)}, #{color.blue($secondary-40)};
 
   // tertiary
   --d-tertiary: #{$tertiary-40};
@@ -47,6 +48,7 @@
   --d-info-container: #{$info-90};
   --d-on-info: #{$info-100};
   --d-on-info-container: #{$info-10};
+  --d-info-rgb: #{color.red($info-40)}, #{color.green($info-40)}, #{color.blue($info-40)};
 
   // changed from 40 to 60
   --d-success: #{$success-60};
@@ -67,6 +69,7 @@
   --d-warning-container: #{$warning-90};
   --d-on-warning: #{$warning-100};
   --d-on-warning-container: #{$warning-10};
+  --d-warning-rgb: #{color.red($warning-70)}, #{color.green($warning-70)}, #{color.blue($warning-70)};
 
   // red
   --d-red: #{$red-40};

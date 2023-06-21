@@ -19,14 +19,12 @@
 //$dropdown-link-active-bg: $secondary;
 
 // inputs
-//$input-disabled-bg: $background;
-//$input-border-color: $outline;
-//$form-select-indicator-color: $on-background;
+$input-border-color: var(--d-outline);
 
 // pagination
-//$pagination-bg: $surface;
-//$pagination-hover-bg: $surface;
-//$pagination-disabled-bg: $background;
+$pagination-bg: var(--d-surface);
+$pagination-hover-bg: var(--d-surface);
+$pagination-disabled-bg: var(--d-background);
 //
 //$modal-content-bg: $surface;
 //
@@ -79,7 +77,7 @@ $utilities: (
 );
 
 // checkbox color does not have css variables yet
-$form-check-input-checked-bg-color: $secondary-40;
+$form-check-input-checked-bg-color: var(--d-secondary);
 $form-check-input-focus-box-shadow: none;
-$form-check-input-focus-border: $secondary-80;
-$form-switch-focus-color: $secondary-80;
+$form-check-input-focus-border: $neutral-70;
+$form-switch-focus-color: $neutral-70; // cannot use a variable in the image svg

@@ -109,6 +109,15 @@
   --bs-body-font-weight: 400;
   --bs-body-line-height: 24px;
 
+  .pagination {
+    --bs-pagination-active-bg: var(--d-primary);
+    --bs-pagination-active-border-color: var(--d-primary);
+    --bs-pagination-active-color: var(--d-on-primary);
+    --bs-pagination-focus-box-shadow: none;
+    --bs-pagination-hover-bg: rgba(var(--d-primary-rgb), 0.1);
+    --bs-pagination-hover-color: var(--d-primary);
+  }
+
   .table {
     --bs-table-color: var(--d-on-surface);
     --bs-table-bg: var(--d-surface);

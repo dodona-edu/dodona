@@ -136,4 +136,9 @@
     --bs-dropdown-link-hover-color: var(--d-on-secondary-container);
     --bs-dropdown-link-active-bg: var(--d-secondary);
   }
+
+  .tooltip {
+    --bs-tooltip-color: white;
+    --bs-tooltip-bg: black;
+  }
 }

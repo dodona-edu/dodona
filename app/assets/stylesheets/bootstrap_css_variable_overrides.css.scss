@@ -141,4 +141,9 @@
     --bs-tooltip-color: white;
     --bs-tooltip-bg: black;
   }
+
+  .modal {
+    --bs-modal-color: var(--d-on-surface);
+    --bs-modal-bg: var(--d-surface);
+  }
 }

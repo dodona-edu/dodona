@@ -195,8 +195,19 @@
   }
 
   // font
-  --d-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --d-font-monospace: sfmono-regular, menlo, monaco, consolas, "Liberation Mono", "Courier New", monospace;
   --d-font-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
   --d-border-radius-base: 12px;
   --d-font-size-base: 0.875rem; // 14px;
+
+  // Annotation colors
+  --d-annotation-question: var(--d-purple);
+  --d-annotation-user: var(--d-success);
+  --d-annotation-error: var(--d-danger);
+  --d-annotation-warning: var(--d-warning);
+  --d-annotation-info: var(--d-info);
+  --d-annotation-question-background: #{color.mix($purple-40, $neutral-98, 8%)};
+  --d-annotation-user-background: #{color.mix($success-60, $neutral-98, 8%)};
+  --d-annotation-question-background-intense: #{color.mix($purple-40, $neutral-98, 20%)};
+  --d-annotation-user-background-intense: #{color.mix($success-60, $neutral-98, 20%)};
 }

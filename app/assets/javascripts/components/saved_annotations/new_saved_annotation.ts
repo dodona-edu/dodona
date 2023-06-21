@@ -78,7 +78,7 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
                 @change=${e => this.savedAnnotation = e.detail}
             ></d-saved-annotation-form>
         `, html`
-            <button class="btn btn-primary btn-text" @click=${() => this.createSavedAnnotation()}>
+            <button class="btn btn-text" @click=${() => this.createSavedAnnotation()}>
                 ${I18n.t("js.saved_annotation.new.save")}
             </button>
         `);

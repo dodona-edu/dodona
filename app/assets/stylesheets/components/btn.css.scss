@@ -43,11 +43,17 @@
     opacity: 0.38;
     pointer-events: none;
   }
+
+  // define the default button colors
+  // makes it easier to combine with other classes such as d-btn-danger, d-btn-success, etc.
+  --d-btn-color: var(--d-primary);
+  --d-btn-color-rgb: var(--d-primary-rgb);
+  --d-on-btn-color: var(--d-on-primary);
 }
 
 .btn.btn-filled {
-  background: var(--d-primary);
-  color: var(--d-on-primary);
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
 
   &:hover {
     @include shadow-z2;
@@ -55,8 +61,11 @@
 }
 
 .btn.btn-tonal {
-  background: var(--d-secondary-container);
-  color: var(--d-on-secondary-container);
+  --d-btn-color: var(--d-secondary-container);
+  --d-on-btn-color: var(--d-on-secondary-container);
+
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
 
   &:hover {
     @include shadow-z1;
@@ -74,13 +83,13 @@
 .btn.btn-text,
 .btn.btn-outline {
   background: none;
-  color: var(--d-primary);
+  color: var(--d-btn-color);
 
   &:hover,
   &:focus,
   &:active {
     opacity: 1;
-    background: rgba(var(--d-primary-rgb), 0.1);
+    background: rgba(var(--d-btn-color-rgb), 0.1);
   }
 }
 
@@ -116,7 +125,7 @@
   &:hover,
   &:focus,
   &:active {
-    border-color: var(--d-primary);
+    border-color: var(--d-btn-color);
   }
 
   &:disabled {
@@ -129,7 +138,7 @@
 .btn.btn-icon {
   width: 40px;
   padding: 0;
-  color: var(--d-primary);
+  color: var(--d-btn-color);
 
   // enable pointer events to enable tooltips to be shown on disabled buttons
   &.disabled-with-tooltip {
@@ -142,12 +151,12 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba(var(--d-primary-rgb), 0.1);
+      background: rgba(var(--d-btn-color-rgb), 0.1);
     }
   }
 
   &.btn-icon-inverted {
-    color: var(--d-on-primary);
+    color: var(--d-on-btn-color);
 
     &:hover,
     &:focus,
@@ -169,14 +178,37 @@
   }
 
   &.btn-icon-filled {
-    color: var(--d-on-primary);
+    color: var(--d-on-btn-color);
+    background: var(--d-btn-color);
 
     &:hover,
     &:focus,
     &:active {
-      opacity: 1;
-      filter: brightness(0.95);
+      @include shadow-z2;
     }
+  }
+}
+
+.btn.btn-fab,
+.btn.btn-fab-small,
+.btn.btn-fab-small-extended {
+  --d-btn-color: var(--d-secondary-container);
+  --d-on-btn-color: var(--d-on-secondary-container);
+
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
+
+  @include shadow-z2;
+
+  &:hover,
+  &:focus,
+  &:active,
+  &:disabled,
+  &.disabled {
+    opacity: 1;
+    filter: brightness(0.95);
+
+    @include shadow-z3;
   }
 }
 
@@ -184,71 +216,18 @@
   height: 56px;
   width: 56px;
   border-radius: 16px;
-  background: var(--d-secondary-container);
-  color: var(--d-on-secondary-container);
-
-  @include shadow-z2;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &:disabled,
-  &.disabled {
-    opacity: 1;
-    filter: brightness(0.95);
-
-    @include shadow-z3;
-  }
-
-  &.correct {
-    background-color: var(--d-success);
-  }
-
-  &.wrong {
-    background-color: var(--d-danger);
-  }
 }
 
 .btn.btn-fab-small {
   height: 40px;
   width: 40px;
   border-radius: 12px;
-  background: var(--d-secondary-container);
-  color: var(--d-on-secondary-container);
   padding: 6px;
-
-  @include shadow-z2;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &:disabled,
-  &.disabled {
-    opacity: 1;
-    filter: brightness(0.95);
-
-    @include shadow-z3;
-  }
 }
 
 .btn.btn-fab-small-extended {
   height: 40px;
   border-radius: 12px;
-  background: var(--d-secondary-container);
-  color: var(--d-on-secondary-container);
-
-  @include shadow-z2;
-
-  &:hover,
-  &:focus,
-  &:active,
-  &:disabled,
-  &.disabled {
-    opacity: 1;
-    filter: brightness(0.95);
-
-    @include shadow-z3;
-  }
 }
 
 .btn-group {
@@ -265,11 +244,11 @@
     &:hover,
     &:focus,
     &:active {
-      background: rgba(var(--d-primary-rgb), 0.1);
+      background: rgba(var(--d-btn-color-rgb), 0.1);
     }
 
     &.active {
-      background: rgba(var(--d-primary-rgb), 0.2);
+      background: rgba(var(--d-btn-color-rgb), 0.2);
     }
   }
 }
@@ -365,4 +344,16 @@
   background-color: rgba(var(--d-success-rgb), 0.6);
   color: unset;
   transition: background-color 0s;
+}
+
+.btn.d-btn-danger {
+  --d-btn-color: var(--d-danger);
+  --d-btn-color-rgb: var(--d-danger-rgb);
+  --d-on-btn-color: var(--d-on-danger);
+}
+
+.btn.d-btn-success {
+  --d-btn-color: var(--d-success);
+  --d-btn-color-rgb: var(--d-success-rgb);
+  --d-on-btn-color: var(--d-on-success);
 }

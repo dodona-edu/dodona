@@ -346,6 +346,7 @@
   transition: background-color 0s;
 }
 
+// use d-btn-danger instead of btn-danger to avoid conflicts with bootstrap
 .btn.d-btn-danger {
   --d-btn-color: var(--d-danger);
   --d-btn-color-rgb: var(--d-danger-rgb);

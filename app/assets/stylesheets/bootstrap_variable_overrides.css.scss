@@ -77,3 +77,9 @@ $utilities: (
     values: inline inline-block block grid table table-row table-cell flex inline-flex none table-column
   ),
 );
+
+// checkbox color does not have css variables yet
+$form-check-input-checked-bg-color: $secondary-40;
+$form-check-input-focus-box-shadow: none;
+$form-check-input-focus-border: $secondary-80;
+$form-switch-focus-color: $secondary-80;

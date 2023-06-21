@@ -25,6 +25,7 @@
   --bs-gray-800: $gray-80;
   --bs-gray-900: $gray-90;
   --bs-primary: var(--d-primary);
+  --bs-primary-rgb: var(--d-primary-rgb);
   --bs-secondary: var(--d-secondary);
   --bs-success: var(--d-success);
   --bs-info: var(--d-info);
@@ -107,4 +108,18 @@
   --bs-body-font-size: var(--d-font-size-base);
   --bs-body-font-weight: 400;
   --bs-body-line-height: 24px;
+
+  .table {
+    --bs-table-color: var(--d-on-surface);
+    --bs-table-bg: var(--d-surface);
+  }
+
+  .dropdown-menu {
+    --bs-dropdown-bg: var(--d-background);
+    --bs-dropdown-color: var(--d-on-background);
+    --bs-dropdown-link-color: var(--d-on-background);
+    --bs-dropdown-link-hover-bg: var(--d-secondary-container);
+    --bs-dropdown-link-hover-color: var(--d-on-secondary-container);
+    --bs-dropdown-link-active-bg: var(--d-secondary);
+  }
 }

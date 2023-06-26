@@ -54,7 +54,7 @@
     "@types/dragula": "^3.7.1",
     "@types/iframe-resizer": "^3.5.9",
     "@types/jest": "^27.5.0",
-    "@types/serviceworker": "^0.0.67",
+    "@types/serviceworker": "^0.0.68",
     "@typescript-eslint/eslint-plugin": "^5.59.11",
     "@typescript-eslint/parser": "^5.59.11",
     "babel-plugin-istanbul": "^6.1.1",

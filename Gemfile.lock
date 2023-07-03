@@ -468,7 +468,7 @@ GEM
       faraday-follow_redirects
     terser (1.1.16)
       execjs (>= 0.3.0, < 3)
-    test-prof (1.2.1)
+    test-prof (1.2.2)
     thor (1.2.2)
     tilt (2.0.11)
     timeout (0.3.2)
@@ -587,7 +587,7 @@ DEPENDENCIES
   sprockets-rails (~> 3.4.2)
   stackprof (~> 0.2.25)
   terser (>= 1.1.1)
-  test-prof (~> 1.2.1)
+  test-prof (~> 1.2.2)
   tzinfo-data
   web-console (~> 4.2.0)
   webmock

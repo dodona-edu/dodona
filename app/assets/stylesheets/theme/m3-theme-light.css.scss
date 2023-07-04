@@ -213,4 +213,9 @@
   --d-annotation-user-background: #{color.mix($success-60, $neutral-98, 8%)};
   --d-annotation-question-background-intense: #{color.mix($purple-40, $neutral-98, 20%)};
   --d-annotation-user-background-intense: #{color.mix($success-60, $neutral-98, 20%)};
+
+  .image-muted {
+    // $gray-10 converted to filter using https://codepen.io/sosuke/pen/Pjoqqp
+    filter: invert(8%) sepia(10%) saturate(679%) hue-rotate(201deg) brightness(93%) contrast(92%);
+  }
 }

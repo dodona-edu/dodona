@@ -281,13 +281,4 @@ module ApplicationHelper
     end
   end
   # rubocop:enable Metrics/ParameterLists
-
-  def svg(name)
-    file_path = Rails.root.join("app/assets/images/#{name}.svg")
-    if File.exist?(file_path)
-      File.read(file_path).html_safe
-    else
-      '(not found)'
-    end
-  end
 end

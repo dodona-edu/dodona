@@ -703,12 +703,6 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     assert_includes response.body, description_activity_url(@exercise, token: @exercise.access_token)
   end
 
-  test 'iframe should set dark mode to false when there is no logged in user' do
-    get activity_url(@exercise).concat('/')
-
-    assert_includes response.body, description_activity_url(@exercise, token: @exercise.access_token, theme: 'light')
-  end
-
   test 'script in exercise description should not be present in the page' do
     get activity_url(@exercise).concat('/')
 

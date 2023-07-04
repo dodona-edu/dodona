@@ -4,7 +4,7 @@
   top: 0;
   height: 380px;
   width: 100%;
-  background: $primary-30;
+  background: var(--d-banner);
   z-index: -1;
 }
 
@@ -14,7 +14,7 @@
 
 .home-header::before {
   content: "";
-  background: $primary-30;
+  background: var(--d-banner);
   position: absolute;
   width: 100vw;
   height: 380px;
@@ -29,7 +29,7 @@
 }
 
 .home-lead {
-  color: $primary-90;
+  color: var(--d-on-banner);
   margin-bottom: 20px;
 
   .btn,

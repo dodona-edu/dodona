@@ -12,6 +12,8 @@
   --d-on-primary: #{$primary-100};
   --d-on-primary-container: #{$primary-10};
   --d-primary-rgb: #{color.red($primary-40)}, #{color.green($primary-40)}, #{color.blue($primary-40)};
+  --d-banner: #{$primary-30};
+  --d-on-banner: #{$primary-90};
 
   // secondary
   --d-secondary: #{$secondary-40};

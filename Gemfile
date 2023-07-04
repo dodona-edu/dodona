@@ -141,7 +141,7 @@ gem 'ddtrace', '~> 1.12.1'
 gem 'after_commit_everywhere', '~> 1.3.1'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.2'
+gem 'counter_culture', '~> 3.3'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

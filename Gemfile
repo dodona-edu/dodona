@@ -138,7 +138,7 @@ gem 'stackprof', '~> 0.2.25'
 gem 'ddtrace', '~> 1.12.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.3.0'
+gem 'after_commit_everywhere', '~> 1.3.1'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.2'

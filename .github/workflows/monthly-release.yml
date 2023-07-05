@@ -1,0 +1,25 @@
+name: mothly-release
+on:
+  schedule:
+    - cron: "0 0 1 * *"
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    needs: create-tag
+    steps:
+      - name: Get tag name
+        id: tag_name
+        run: echo "{tag_name}={$(date +'%Y.%m')}" >> $GITHUB_STATE
+      - uses: octokit/request-action@v2.x
+        id: create_release
+        with:
+          route: POST /repos/{owner}/{repo}/releases
+          owner: dodona-edu
+          repo: dodona
+          tag_name: ${{ env.tag_name }}
+          name: ${{ env.tag_name }}
+          discussion_category_name: "Release notes"
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

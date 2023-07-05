@@ -34,7 +34,7 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
             <div class="feedback-table-options">
                 <d-hidden-annotations-dot .row=${0}></d-hidden-annotations-dot>
                 ${this.canCreateAnnotation ? html`
-                    <button class="btn btn-text" @click="${() => this.showForm = true}">
+                    <button class="btn btn-outline" @click="${() => this.showForm = true}">
                         ${this.addAnnotationTitle}
                     </button>
                 ` : html``}

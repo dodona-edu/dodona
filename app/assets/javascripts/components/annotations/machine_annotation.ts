@@ -30,9 +30,7 @@ export class MachineAnnotation extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return html`
-            <div class="annotation machine-annotation ${this.data.type}"
-                 @mouseenter="${() => annotationState.hoveredAnnotation = this.data}"
-                 @mouseleave="${() => annotationState.hoveredAnnotation = null}">
+            <div class="annotation machine-annotation ${this.data.type}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${I18n.t(`js.annotation.type.${this.data.type}`)}

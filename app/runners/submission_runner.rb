@@ -162,14 +162,17 @@ class SubmissionRunner
 
     timer = Thread.new do
       while Time.zone.now - before_time < time_limit
-        sleep 1
-        next if Rails.env.test?
-        # Check if container is still alive
-        next unless Docker::Container.all.select { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) }.any? && container.refresh!.info['State']['Running']
+        before_stats = Time.zone.now
+        # Check if container is still running
+        if !Rails.env.test? && (Docker::Container.all.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running'])
+          # If we don't pass these extra options gathering stats takes 1+ seconds (https://github.com/moby/moby/issues/23188#issuecomment-223211481)
+          stats = container.stats({ 'one-shot': true, stream: false })
+          memory = [stats['memory_stats']['usage'] / (1024.0 * 1024.0), memory].max if stats['memory_stats']&.fetch('usage', nil)
+        end
 
-        stats = container.stats
-        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
-        memory = stats['memory_stats']['max_usage'] / (1024.0 * 1024.0) if stats['memory_stats']&.fetch('max_usage', nil)
+        # Gathering stats still takes a long time, so if we spent enough time on
+        # that (aka, it didn't go wrong), skip sleeping
+        sleep 0.2 if (Time.zone.now - before_stats).in_milliseconds < 200
       end
       timeout_mutex.synchronize do
         container.stop

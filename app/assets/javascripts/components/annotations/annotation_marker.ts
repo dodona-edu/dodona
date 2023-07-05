@@ -31,11 +31,10 @@ export class AnnotationMarker extends LitElement {
 
     static getStyle(annotation: AnnotationData): string {
         if (["error", "warning", "info"].includes(annotation.type)) {
-            return `text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} ${annotationState.isHovered(annotation) ? 2 : 1}px;`;
+            return `text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;`;
         } else {
-            const colorKey = annotationState.isHovered(annotation) ? `${annotation.type}-intense` : annotation.type;
             return `
-                background: ${AnnotationMarker.colors[colorKey]};
+                background: ${AnnotationMarker.colors[annotation.type]};
                 padding-top: 2px;
                 padding-bottom: 2px;
                 margin-top: -2px;
@@ -96,20 +95,12 @@ export class AnnotationMarker extends LitElement {
     }
 
     get sortedAnnotations(): AnnotationData[] {
-        return this.annotations.sort( (a, b) => {
-            if (annotationState.isHovered(a)) {
-                return -1;
-            } else if (annotationState.isHovered(b)) {
-                return 1;
-            } else {
-                return compareAnnotationOrders(a, b);
-            }
-        });
+        return this.annotations.sort( compareAnnotationOrders );
     }
 
     get machineAnnotationMarkerSVG(): TemplateResult | undefined {
         const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a));
-        const size = annotationState.isHovered(firstMachineAnnotation) ? 20 : 14;
+        const size = 14;
         return firstMachineAnnotation && html`<svg style="position: absolute; top: ${16 - size/2}px; left: -${size/2}px" width="${size}" height="${size}" viewBox="0 0 24 24">
             <path fill="${AnnotationMarker.colors[firstMachineAnnotation.type]}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>
         </svg>`;

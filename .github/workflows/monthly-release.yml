@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Get tag name
         id: tag_name
-        run: echo "{tag_name}={$(date +'%Y.%m')}" >> $GITHUB_STATE
+        run: echo "tag_name=$(date +'%Y.%m')" >> "$GITHUB_ENV"
       - name: log tag name
         run: echo ${{ env.tag_name }}
       - uses: octokit/request-action@v2.x

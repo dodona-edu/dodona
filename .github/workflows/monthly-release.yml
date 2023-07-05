@@ -6,7 +6,6 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
-    needs: create-tag
     steps:
       - name: Get tag name
         id: tag_name

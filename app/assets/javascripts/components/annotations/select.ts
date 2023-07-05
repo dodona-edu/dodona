@@ -206,11 +206,6 @@ export function triggerSelectionStart(e: PointerEvent): void {
         return;
     }
 
-    if (userAnnotationState.showForm && !userAnnotationState.formHasContent && !(e.target as Element).closest("d-annotation-form")) {
-        // If the user has clicked outside the form, and the form is empty, close the form
-        userAnnotationState.showForm = false;
-    }
-
     if (!(e.target as Element).closest(".annotation") && !userAnnotationState.showForm) {
         addSelectionClasses();
         if (!(e.target as Element).closest("button")) {

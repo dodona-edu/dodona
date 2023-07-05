@@ -19,10 +19,8 @@ jobs:
           route: POST /repos/{owner}/{repo}/releases
           owner: dodona-edu
           repo: dodona
-          tag_name: |
-            ${{ env.tag_name }}
-          name: |
-            ${{ env.tag_name }}
+          tag_name: "'${{ env.tag_name }}'"
+          name: "'${{ env.tag_name }}'"
           discussion_category_name: "Release notes"
           generate_release_notes: true
         env:

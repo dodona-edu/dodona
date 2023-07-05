@@ -14,9 +14,10 @@ import { triggerSelectionEnd } from "components/annotations/select";
 const MARKING_CLASS = "marked";
 
 function closeForm(e: PointerEvent): void {
-    if (!(e.target as Element).closest("d-annotation-form")) {
+    if (!(e.target as Element).closest("d-annotation-form") && !(e.target as Element).closest(".annotation-button")) {
         userAnnotationState.showForm = false;
         userAnnotationState.selectedRange = undefined;
+        console.log("closeForm");
     }
 }
 

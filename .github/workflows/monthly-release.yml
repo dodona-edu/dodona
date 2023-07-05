@@ -2,7 +2,6 @@ name: Monthly release
 on:
   schedule:
     - cron: "0 0 1 * *"
-  push:
 
 jobs:
   create-release:
@@ -10,7 +9,7 @@ jobs:
     steps:
       - name: Get tag name
         id: tag_name
-        run: echo "tag_name=$(date +'%Y.%m')-test" >> "$GITHUB_ENV"
+        run: echo "tag_name=$(date +'%Y.%m')" >> "$GITHUB_ENV"
       - name: log tag name
         run: echo ${{ env.tag_name }}
       - uses: octokit/request-action@v2.x

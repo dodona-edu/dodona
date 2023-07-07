@@ -52,7 +52,7 @@ class PagesController < ApplicationController
 
   def set_theme
     authorize :pages
-    session[:theme] = params[:theme].nil? ? 'auto' : ActiveModel::Type::String.new.cast(params[:theme])
+    session[:theme] = params[:theme].present? && %w[light dark].include?(params[:theme].to_s) ? params[:theme].to_s : 'auto'
   end
 
   def contact

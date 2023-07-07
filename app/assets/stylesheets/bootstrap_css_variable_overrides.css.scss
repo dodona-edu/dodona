@@ -67,7 +67,7 @@
   --bs-body-color: var(--d-on-background);
   --bs-body-bg: var(--d-background);
   --bs-emphasis-color: var(--d-on-surface-variant);
-  --bs-secondary-color: var(--d-on-surface);
+  --bs-secondary-color: #{$gray-50};
   --bs-secondary-bg: var(--d-surface);
 
   // not overwritten

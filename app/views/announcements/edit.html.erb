@@ -11,7 +11,7 @@
       </div>
       <div class="card-actions card-border">
         <% if policy(@announcement).destroy? %>
-          <%= link_to @announcement, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-filled with-icon  d-btn-danger" do %>
+          <%= link_to @announcement, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-filled with-icon d-btn-danger" do %>
             <i class="mdi mdi-delete"></i>
             <%= t ".destroy" %>
           <% end %>

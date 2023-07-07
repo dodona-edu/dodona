@@ -179,7 +179,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         }
 
         @include media-breakpoint-up(lg) {
-          &:hover,
           &.expanded {
             .btn-fab-small-flex {
               max-width: 1000px;
@@ -189,7 +188,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           }
         }
 
-        &.expanded {
+        &.show {
           display: inline-flex;
         }
 
@@ -235,10 +234,10 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
         &.hide {
           display: none;
+        }
 
-          &.expanded {
-            display: inline-flex;
-          }
+        &.show {
+          display: inline-flex;
         }
       }
 

@@ -89,12 +89,14 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return html`
             <div style="position: relative">
                 <div class="drop-target-extension"></div>
-                <div class="annotation-button ${this.rangeExists ? "hide" : "" } ${this.isRangeEnd ? "expanded" : ""}"
+                <div class="annotation-button ${this.rangeExists ? this.isRangeEnd ? "show" : "hide" : "" } ${userAnnotationState.isCreateButtonExpanded ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"
                      @dragstart=${e => this.dragStart(e)}
                      @dragend=${() => this.dragEnd()}
                      @drag="${() => this.drag()}"
+                     @pointerover=${() => userAnnotationState.isCreateButtonExpanded = true}
+                     @pointerout=${() => userAnnotationState.isCreateButtonExpanded = false}
                 >
                     <button class="btn btn-fab-small-flex"
                             @pointerup=${() => this.openForm()}>

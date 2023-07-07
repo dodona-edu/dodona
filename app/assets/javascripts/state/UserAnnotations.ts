@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { createDelayer, fetch } from "util.js";
 import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";
@@ -73,11 +73,22 @@ class UserAnnotationState extends State {
     @stateProperty public dragStart: number | null = null;
     @stateProperty public showForm = false;
     @stateProperty public formHasContent = false;
+    @stateProperty private _createButtonExpanded = false;
+    private expansionDelayer = createDelayer();
+
+    public set isCreateButtonExpanded(value: boolean) {
+        this.expansionDelayer(() => this._createButtonExpanded = value, 250);
+    }
+
+    public get isCreateButtonExpanded(): boolean {
+        return this._createButtonExpanded;
+    }
 
     constructor() {
         super();
         // reset formHasContent when the form is shown or hidden
         this.subscribe(() => this.formHasContent = false, "showForm");
+        this.subscribe(() => this.isCreateButtonExpanded = this.selectedRange !== null && this.selectedRange !== undefined, "selectedRange");
     }
 
     get count(): number {

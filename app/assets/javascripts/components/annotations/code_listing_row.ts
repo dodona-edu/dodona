@@ -71,7 +71,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     get wrappedCode(): string {
-        const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
+        const annotationsToMark = this.partialLineAnnotations;
         const codeToMark = this.renderedCode;
         let annotationsMarked = wrapRangesInHtml(
             codeToMark,
@@ -79,11 +79,11 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             "d-annotation-marker",
             (node: AnnotationMarker, range) => {
                 // these nodes will be recompiled to html, so we need to store the data in a json string
-                const annotations = JSON.parse(node.getAttribute("annotations")) || [];
+                const annotations = JSON.parse(node.getAttribute("annotations")) || this.fullLineAnnotations;
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if ( userAnnotationState.showForm && this.shouldMarkSelection ) {
+        if ( userAnnotationState.showForm && this.shouldMarkSelection && !this.isFullLineAnnotation(userAnnotationState.selectedRange) ) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;
@@ -107,6 +107,23 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
+    get annotationsToMark(): AnnotationData[] {
+        return [...this.machineAnnotationsToMark, ...this.userAnnotationsToMark];
+    }
+
+    isFullLineAnnotation(annotation: AnnotationData | SelectedRange): boolean {
+        const range = this.getRangeFromAnnotation(annotation);
+        return range.length === Infinity && range.start === 0;
+    }
+
+    get fullLineAnnotations(): AnnotationData[] {
+        return this.annotationsToMark.filter(a => this.isFullLineAnnotation(a)).sort(compareAnnotationOrders);
+    }
+
+    get partialLineAnnotations(): AnnotationData[] {
+        return this.annotationsToMark.filter(a => !this.isFullLineAnnotation(a)).sort(compareAnnotationOrders);
+    }
+
     get shouldMarkSelection(): boolean {
         return userAnnotationState.selectedRange &&
             userAnnotationState.selectedRange.row <= this.row &&
@@ -123,14 +140,8 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         userAnnotationState.selectedRange = undefined;
     }
 
-    get fullLineAnnotations(): UserAnnotationData[] {
-        return this.userAnnotationsToMark
-            .filter(a => !a.column&& !a.columns)
-            .sort(compareAnnotationOrders);
-    }
-
     get hasFullLineSelection(): boolean {
-        return this.shouldMarkSelection && !userAnnotationState.selectedRange.column && !userAnnotationState.selectedRange.columns;
+        return this.shouldMarkSelection && this.isFullLineAnnotation(userAnnotationState.selectedRange);
     }
 
     get codeLineClass(): string {

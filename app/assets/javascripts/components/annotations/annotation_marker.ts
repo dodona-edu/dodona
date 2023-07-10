@@ -117,6 +117,11 @@ export class AnnotationMarker extends LitElement {
             :host {
                 position: relative;
                 ${this.annotationStyles}
+                text-decoration-skip-ink: none;
+            }
+            ::slotted(*) {
+                ${this.annotationStyles}
+                text-decoration-skip-ink: none;
             }
         </style><slot>${this.machineAnnotationMarkerSVG}</slot>`;
     }

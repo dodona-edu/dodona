@@ -79,6 +79,9 @@
                   </li>
                 <% end %>
               <% end %>
+              <% if policy(:pages).set_theme? %>
+                <d-theme-picker></d-theme-picker>
+              <% end %>
               <li role="separator" class="dropdown-divider"></li>
               <li>
                 <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete, class: "dropdown-item"  %>
@@ -98,9 +101,6 @@
             <li><%= link_to 'Nederlands', params.to_unsafe_h.merge(locale: "nl"), class: "dropdown-item"  %></li>
           </ul>
         </li>
-        <% if policy(:pages).set_theme? %>
-          <d-theme-picker></d-theme-picker>
-        <% end %>
       </ul>
       <button type="button" class="dodona-navbar-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="visually-hidden">Toggle navigation</span>

@@ -72,7 +72,7 @@
   width: 18px;
 }
 
-.dropdown-menu .mdi::before {
+.dropdown-menu .notification .mdi::before {
   position: relative;
   top: 2px;
   left: -8px;
@@ -89,6 +89,13 @@
     .mdi::before {
       vertical-align: text-bottom;
       line-height: 30px;
+    }
+
+    .dropdown-menu {
+      .mdi::before {
+        vertical-align: sub;
+        line-height: initial;
+      }
     }
   }
 }

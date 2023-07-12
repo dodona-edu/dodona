@@ -23,7 +23,7 @@
     margin-bottom: 9px;
   }
 
-  a {
+  a:not(.dropdown-item) {
     color: var(--d-on-primary);
     text-decoration: none;
   }
@@ -217,7 +217,6 @@
 
         a {
           padding-left: 0;
-          color: var(--d-on-surface);
 
           &.btn-icon {
             color: var(--d-on-surface-muted);
@@ -254,10 +253,6 @@
         li {
           display: block;
         }
-
-        a {
-          color: var(--d-on-surface);
-        }
       }
 
       @include media-breakpoint-up(lg) {
@@ -276,11 +271,6 @@
         }
 
         .dropdown-menu {
-          li,
-          a {
-            color: var(--d-on-surface);
-          }
-
           position: relative;
           left: unset;
           float: none;
@@ -289,7 +279,6 @@
           background-color: var(--d-background);
           border: 0;
           box-shadow: none;
-          color: var(--d-on-surface);
           width: 100%;
         }
       }

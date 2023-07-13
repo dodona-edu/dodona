@@ -9,6 +9,7 @@ export const THEME_OPTIONS: ThemeOption[] = ["light", "dark", "auto"];
 class ThemeState extends State {
     @stateProperty _selectedTheme: ThemeOption = "auto";
     @stateProperty _theme: Theme = "light";
+    @stateProperty computedStyle: CSSStyleDeclaration = getComputedStyle(document.documentElement);
 
     get selectedTheme(): ThemeOption {
         return this._selectedTheme;
@@ -41,6 +42,11 @@ class ThemeState extends State {
             }
         });
         this._theme = theme;
+        this.computedStyle = getComputedStyle(document.documentElement);
+    }
+
+    getCSSVariable(name: string): string {
+        return this.computedStyle.getPropertyValue(name);
     }
 
     constructor() {

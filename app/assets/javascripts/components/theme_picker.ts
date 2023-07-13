@@ -6,6 +6,10 @@ import { fetch } from "util.js";
 import { userState } from "state/Users";
 
 /**
+ * @element d-theme-picker
+ *
+ * this is a simple menu element
+ * It shows the current theme and allows the user to select a new theme
  */
 @customElement("d-theme-picker")
 export class ThemePicker extends ShadowlessLitElement {

@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Theme, THEME_OPTIONS, ThemeOption, themeState } from "state/Theme";
 import { fetch } from "util.js";
+import { userState } from "state/Users";
 
 /**
  */
@@ -16,11 +17,7 @@ export class ThemePicker extends ShadowlessLitElement {
 
     selectTheme(theme: ThemeOption): void {
         themeState.selectedTheme = theme;
-        fetch("/theme", {
-            method: "POST",
-            body: JSON.stringify({ theme }),
-            headers: { "Content-type": "application/json" },
-        });
+        userState.update({ theme });
     }
 
     protected render(): TemplateResult {

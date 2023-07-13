@@ -79,9 +79,10 @@
                   </li>
                 <% end %>
               <% end %>
-              <% if policy(:pages).set_theme? %>
-                <d-theme-picker></d-theme-picker>
-              <% end %>
+              <d-theme-picker></d-theme-picker>
+              <script>
+                dodona.ready.then(dodona.setUserId(<%= current_user.id %>))
+              </script>
               <li role="separator" class="dropdown-divider"></li>
               <li>
                 <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete, class: "dropdown-item"  %>

@@ -18,6 +18,7 @@
 #  seen_at              :datetime
 #  sign_in_at           :datetime
 #  open_questions_count :integer          default(0), not null
+#  theme                :integer          default(0), not null
 #
 
 require 'securerandom'
@@ -33,6 +34,7 @@ class User < ApplicationRecord
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
   enum permission: { student: 0, staff: 1, zeus: 2 }
+  enum theme: { auto: 0, light: 1, dark: 2 }
 
   belongs_to :institution, optional: true
 

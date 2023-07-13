@@ -40,6 +40,7 @@ import "components/saved_annotations/saved_annotation_list";
 import "components/saved_annotations/saved_annotations_sidecard";
 import "components/progress_bar";
 import "components/theme_picker";
+import { userState } from "../../assets/javascripts/state/Users";
 
 // Initialize clipboard.js
 initClipboard();
@@ -64,5 +65,6 @@ dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
 dodona.setTheme = theme => themeState.selectedTheme = theme;
+dodona.setUserId = userId => userState.id = userId;
 dodona.ready = ready;
 window.dodona = dodona;

@@ -50,11 +50,6 @@ class PagesController < ApplicationController
     session[:demo] = !Current.demo_mode
   end
 
-  def set_theme
-    authorize :pages
-    session[:theme] = params[:theme].present? && %w[light dark].include?(params[:theme].to_s) ? params[:theme].to_s : 'auto'
-  end
-
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t('pages.contact.title')

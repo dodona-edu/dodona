@@ -62,7 +62,7 @@ module ActivityHelper
   end
 
   def description_iframe(activity)
-    theme = session[:theme] || 'auto'
+    theme = current_user&.theme || 'auto'
     id = "activity-description-#{activity.id}"
     url = description_activity_url(activity,
                                    token: activity.access_token,

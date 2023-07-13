@@ -14,7 +14,7 @@
   <%= javascript_include_tag 'runtime' %>
   <%= stylesheet_link_tag "application" %>
   <script>
-    window.dodona.setTheme("<%= session[:theme] || "auto" %>");
+    window.dodona.setTheme("<%= current_user&.theme || "auto" %>");
   </script>
   <%= yield :javascripts %>
   <%= csrf_meta_tags %>

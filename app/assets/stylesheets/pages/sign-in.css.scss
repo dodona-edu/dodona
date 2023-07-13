@@ -85,3 +85,16 @@ d-sign-in-search-bar d-datalist-input {
     }
   }
 }
+
+.sign-in-dialog-wrapper .option-btn {
+  color: black;
+  background: white;
+
+  small {
+    color: gray;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+}

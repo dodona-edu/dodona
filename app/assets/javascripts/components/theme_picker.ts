@@ -1,9 +1,9 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import { Theme, THEME_OPTIONS, ThemeOption, themeState } from "state/Theme";
-import { fetch } from "util.js";
+import { THEME_OPTIONS, ThemeOption, themeState } from "state/Theme";
 import { userState } from "state/Users";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 /**
  * @element d-theme-picker
@@ -12,11 +12,11 @@ import { userState } from "state/Users";
  * It shows the current theme and allows the user to select a new theme
  */
 @customElement("d-theme-picker")
-export class ThemePicker extends ShadowlessLitElement {
+export class ThemePicker extends i18nMixin(ShadowlessLitElement) {
     static THEME_ICON_MAP: Record<ThemeOption, string> = {
         "light": "white-balance-sunny",
         "dark": "weather-night",
-        "auto": "theme-light-dark"
+        "system": "theme-light-dark"
     };
 
     selectTheme(theme: ThemeOption): void {

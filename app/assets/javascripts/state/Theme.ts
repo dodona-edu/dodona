@@ -5,11 +5,11 @@ import { getURLParameter, updateURLParameter } from "util.js";
 // The actual theme applied to the page
 export type Theme = "light" | "dark";
 // Options a user can select
-export type ThemeOption = Theme | "auto";
-export const THEME_OPTIONS: ThemeOption[] = ["light", "dark", "auto"];
+export type ThemeOption = Theme | "system";
+export const THEME_OPTIONS: ThemeOption[] = ["light", "dark", "system"];
 
 class ThemeState extends State {
-    @stateProperty _selectedTheme: ThemeOption = "auto";
+    @stateProperty _selectedTheme: ThemeOption = "system";
     @stateProperty _theme: Theme = "light";
     @stateProperty computedStyle: CSSStyleDeclaration = getComputedStyle(document.documentElement);
 
@@ -20,7 +20,7 @@ class ThemeState extends State {
 
     set selectedTheme(theme: ThemeOption) {
         this._selectedTheme = theme;
-        this.theme = theme === "auto" ? this.systemTheme : theme;
+        this.theme = theme === "system" ? this.systemTheme : theme;
     }
 
     // Get the theme that the system is currently using
@@ -58,7 +58,7 @@ class ThemeState extends State {
         super();
 
         window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
-            if (this.selectedTheme === "auto") {
+            if (this.selectedTheme === "system") {
                 this.theme = this.systemTheme;
             }
         });

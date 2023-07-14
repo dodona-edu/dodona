@@ -306,10 +306,10 @@ nl:
       options:
         add_global_annotation: Globale opmerking toevoegen
         add_global_question: "Stel een vraag over je code"
-        add_annotation: Voeg een opmerking toe aan deze regel
-        add_question: "Stel een vraag over deze regel"
-        add_annotation_for_selection: Voeg een opmerking toe
-        add_question_for_selection: "Stel een vraag"
+        add_annotation_drop: Laat los om een opmerking toe te voegen
+        add_question_drop: Laat los om een vraag te stellen
+        add_annotation: Voeg een opmerking toe
+        add_question: "Stel een vraag"
       toggles:
         title: Annotaties
         show_all: Toon alle annotaties

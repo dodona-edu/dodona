@@ -28,10 +28,11 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     get addAnnotationTitle(): string {
         const key = annotationState.isQuestionMode ? "question" : "annotation";
 
+        if (this.isDragStart) {
+            return I18n.t(`js.annotations.options.add_${key}_drop`);
+        }
 
-        return I18n.t(`js.annotations.options.add_${key}_for_selection`);
-
-        // return I18n.t(`js.annotations.options.add_${key}`);
+        return I18n.t(`js.annotations.options.add_${key}`);
     }
 
     openForm(): void {
@@ -51,9 +52,14 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     }
 
     get isRangeEnd(): boolean {
-        return this.rangeExists && !userAnnotationState.showForm &&
+        return !userAnnotationState.showForm &&
             !userAnnotationState.dragStart &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
+    }
+
+    get isDragStart(): boolean {
+        return !userAnnotationState.showForm &&
+            userAnnotationState.dragStart == this.row;
     }
 
     protected updated(_changedProperties: PropertyValues): void {
@@ -89,7 +95,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         return html`
             <div style="position: relative">
                 <div class="drop-target-extension"></div>
-                <div class="annotation-button ${this.rangeExists ? this.isRangeEnd ? "show" : "hide" : "" } ${userAnnotationState.isCreateButtonExpanded ? "expanded" : ""}"
+                <div class="annotation-button ${this.rangeExists ? this.isRangeEnd || this.isDragStart ? "show" : "hide" : "" } ${userAnnotationState.isCreateButtonExpanded ? "expanded" : ""}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"
                      @dragstart=${e => this.dragStart(e)}

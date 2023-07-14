@@ -70,7 +70,7 @@ class UserAnnotationState extends State {
     readonly byId = new StateMap<number, UserAnnotationData>();
 
     @stateProperty public selectedRange: SelectedRange | null = null;
-    @stateProperty public dragStart: number | null = null;
+    @stateProperty public dragStartRow: number | null = null;
     @stateProperty public showForm = false;
     @stateProperty private _createButtonExpanded = false;
     private expansionDelayer = createDelayer();

@@ -53,13 +53,13 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
 
     get isRangeEnd(): boolean {
         return !userAnnotationState.showForm &&
-            !userAnnotationState.dragStart &&
+            userAnnotationState.dragStartRow === null &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
     get isDragStart(): boolean {
         return !userAnnotationState.showForm &&
-            userAnnotationState.dragStart == this.row;
+            userAnnotationState.dragStartRow == this.row;
     }
 
     protected updated(_changedProperties: PropertyValues): void {
@@ -78,17 +78,12 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         };
 
         e.dataTransfer?.setDragImage(DRAG_IMAGE, 0, 0);
-    }
-
-    drag(): void {
-        // updating userAnnotationState.dragStart triggers a rerender that hides this button,
-        // doing this in dragStart would cause the button to disappear before the browser can make the pseudo image
-        userAnnotationState.dragStart = this.row;
+        userAnnotationState.dragStartRow = this.row;
     }
 
     dragEnd(): void {
         this.openForm();
-        userAnnotationState.dragStart = null;
+        userAnnotationState.dragStartRow = null;
     }
 
     get buttonClasses(): string {
@@ -119,7 +114,6 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                      draggable="${!this.rangeExists}"
                      @dragstart=${e => this.dragStart(e)}
                      @dragend=${() => this.dragEnd()}
-                     @drag="${() => this.drag()}"
                      @pointerover=${() => userAnnotationState.isCreateButtonExpanded = true}
                      @pointerout=${() => userAnnotationState.isCreateButtonExpanded = false}
                 >

@@ -138,12 +138,12 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     }
 
     dragEnter(e: DragEvent): void {
-        if (!userAnnotationState.dragStart) {
+        if (userAnnotationState.dragStartRow === null) {
             return;
         }
 
         e.preventDefault();
-        const origin = userAnnotationState.dragStart;
+        const origin = userAnnotationState.dragStartRow;
         const startRow = Math.min(origin, this.row);
         const endRow = Math.max(origin, this.row);
 

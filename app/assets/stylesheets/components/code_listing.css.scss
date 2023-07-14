@@ -164,7 +164,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           background: $secondary-container;
           color: $on-secondary-container;
           transition: max-width 0.4s ease-in-out, padding 0.4s ease-in-out;
-          transition-delay: 0.2s;
           justify-content: end;
           overflow: hidden;
           padding: 6px 8px;

@@ -68,6 +68,46 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         return Math.max(3, this._annotationText.split("\n").length + 1);
     }
 
+
+    /**
+     * Event callback for when the user clicks anywhere on the page.
+     * If the click is not on the annotation form or the annotation button, the annotation form is closed.
+     * @param e The click event
+     */
+    static closeForm(e: MouseEvent): void {
+        if (!(e.target as Element).closest("d-annotation-form") && !(e.target as Element).closest(".annotation-button")) {
+            userAnnotationState.showForm = false;
+            userAnnotationState.selectedRange = undefined;
+        }
+    }
+
+    isListeningForClose = false;
+    listenForClose(): void {
+        if (!this.isListeningForClose) {
+            document.addEventListener("click", AnnotationForm.closeForm);
+            this.isListeningForClose = true;
+        }
+    }
+
+    stopListeningForClose(): void {
+        if (this.isListeningForClose) {
+            document.removeEventListener("click", AnnotationForm.closeForm);
+            this.isListeningForClose = false;
+        }
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        if (!this.annotationText) {
+            this.listenForClose();
+        }
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.stopListeningForClose();
+    }
+
     handleSavedAnnotationInput(e: CustomEvent): void {
         if (e.detail.text) {
             this._annotationText = e.detail.text;
@@ -77,7 +117,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
     handleTextInput(): void {
         this._annotationText = this.inputRef.value.value;
-        userAnnotationState.formHasContent = this._annotationText.length > 0;
+        if (this._annotationText.length > 0) {
+            this.stopListeningForClose();
+        } else {
+            this.listenForClose();
+        }
     }
 
     handleCancel(): void {

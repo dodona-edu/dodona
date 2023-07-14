@@ -72,7 +72,6 @@ class UserAnnotationState extends State {
     @stateProperty public selectedRange: SelectedRange | null = null;
     @stateProperty public dragStart: number | null = null;
     @stateProperty public showForm = false;
-    @stateProperty public formHasContent = false;
     @stateProperty private _createButtonExpanded = false;
     private expansionDelayer = createDelayer();
 
@@ -86,8 +85,6 @@ class UserAnnotationState extends State {
 
     constructor() {
         super();
-        // reset formHasContent when the form is shown or hidden
-        this.subscribe(() => this.formHasContent = false, "showForm");
         this.subscribe(() => this.isCreateButtonExpanded = this.selectedRange !== null && this.selectedRange !== undefined, "selectedRange");
     }
 

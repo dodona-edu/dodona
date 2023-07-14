@@ -13,25 +13,6 @@ import { triggerSelectionEnd } from "components/annotations/select";
 
 const MARKING_CLASS = "marked";
 
-function closeForm(e: PointerEvent): void {
-    if (!(e.target as Element).closest("d-annotation-form") && !(e.target as Element).closest(".annotation-button")) {
-        userAnnotationState.showForm = false;
-        userAnnotationState.selectedRange = undefined;
-        console.log("closeForm");
-    }
-}
-
-export function registerCloseForm(): void {
-    userAnnotationState.subscribe(() => {
-        if (userAnnotationState.showForm && !userAnnotationState.formHasContent) {
-            // if the form is shown and has no content, close it when clicking outside
-            document.addEventListener("click", closeForm);
-        } else {
-            document.removeEventListener("click", closeForm);
-        }
-    }, new Set(["showForm", "formHasContent"]));
-}
-
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
     userAnnotationState.reset();
     submissionState.code = code;
@@ -62,8 +43,6 @@ function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
 
     document.addEventListener("pointerup", () => triggerSelectionEnd());
-
-    registerCloseForm();
 }
 
 function loadUserAnnotations(): void {

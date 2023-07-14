@@ -43,6 +43,10 @@ function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
 
     document.addEventListener("pointerup", () => triggerSelectionEnd());
+
+    // make the whole document a valid target for dropping the create annotation button
+    document.addEventListener("dragover", e => e.preventDefault());
+    document.addEventListener("drop", e => e.preventDefault());
 }
 
 function loadUserAnnotations(): void {

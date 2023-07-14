@@ -97,7 +97,7 @@ gem 'annotate', '~> 3.2.0'
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.1', group: :development
-gem 'capistrano-rails', '~> 1.6.2', group: :development
+gem 'capistrano-rails', '~> 1.6.3', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.2'
+gem 'nokogiri', '~> 1.15.3'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering

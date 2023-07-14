@@ -91,11 +91,30 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         userAnnotationState.dragStart = null;
     }
 
+    get buttonClasses(): string {
+        let classes = "";
+        if (this.rangeExists) {
+            // If the range exists, the button should only be shown on the last row of the range
+            // Or on the row where the drag started if the drag is still in progress
+            if (this.isRangeEnd || this.isDragStart) {
+                classes += "show";
+            } else {
+                classes += "hide";
+            }
+        }
+
+        if (userAnnotationState.isCreateButtonExpanded) {
+            classes += " expanded";
+        }
+
+        return classes;
+    }
+
     protected render(): TemplateResult {
         return html`
             <div style="position: relative">
                 <div class="drop-target-extension"></div>
-                <div class="annotation-button ${this.rangeExists ? this.isRangeEnd || this.isDragStart ? "show" : "hide" : "" } ${userAnnotationState.isCreateButtonExpanded ? "expanded" : ""}"
+                <div class="annotation-button ${this.buttonClasses}"
                      style="right: ${this.rowCharLength * 10 + 12}px;"
                      draggable="${!this.rangeExists}"
                      @dragstart=${e => this.dragStart(e)}

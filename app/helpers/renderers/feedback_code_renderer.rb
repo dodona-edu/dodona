@@ -23,7 +23,7 @@ class FeedbackCodeRenderer
       if @code.present?
         # Not possible to use clipboard_button_for here since the behaviour is different.
         @builder.button(class: 'btn btn-icon copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-          @builder.i(class: 'mdi mdi-clipboard-outline') {}
+          @builder.i(class: 'mdi mdi-content-copy') {}
         end
       end
       @builder.script(type: 'application/javascript') do

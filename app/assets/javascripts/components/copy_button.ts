@@ -64,7 +64,7 @@ export class CopyButton extends ShadowlessLitElement {
                             data-bs-placement="top"
                             data-bs-toggle="tooltip"
                             title="${this.tooltip}">
-                <i class="mdi mdi-clipboard-outline"></i>
+                <i class="mdi mdi-content-copy"></i>
             </button>`;
     }
 }

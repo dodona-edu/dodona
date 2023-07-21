@@ -128,7 +128,7 @@ module ApplicationHelper
                type: 'button',
                title: t('js.copy-to-clipboard'),
                data: { clipboard_target: selector } do
-      tag.i(class: 'mdi mdi-clipboard-outline')
+      tag.i(class: 'mdi mdi-content-copy')
     end
   end
 

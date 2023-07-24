@@ -85,7 +85,6 @@ class UserAnnotationState extends State {
 
     constructor() {
         super();
-        this.subscribe(() => this.isCreateButtonExpanded = this.selectedRange !== null && this.selectedRange !== undefined, "selectedRange");
     }
 
     get count(): number {

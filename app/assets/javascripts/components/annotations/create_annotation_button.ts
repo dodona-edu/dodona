@@ -25,7 +25,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
 
-    get addAnnotationTitle(): string {
+    get buttonText(): string {
         const key = annotationState.isQuestionMode ? "question" : "annotation";
 
         if (this.isDragStart) {
@@ -119,7 +119,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                 >
                     <button class="btn btn-fab-small-flex"
                             @pointerup=${() => this.openForm()}>
-                        <span class="text">${this.addAnnotationTitle}</span>
+                        <span class="text">${this.buttonText}</span>
                        <i class="mdi mdi-comment-plus-outline "></i>
                     </button>
                 </div>

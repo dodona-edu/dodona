@@ -306,9 +306,9 @@ nl:
       options:
         add_global_annotation: Globale opmerking toevoegen
         add_global_question: "Stel een vraag over je code"
-        add_annotation_drop: Laat los om een opmerking toe te voegen
-        add_question_drop: Laat los om een vraag te stellen
-        add_annotation: Voeg een opmerking toe
+        add_annotation_drop: Voeg opmerking toe
+        add_question_drop: Stel een vraag
+        add_annotation: Voeg opmerking toe
         add_question: "Stel een vraag"
       toggles:
         title: Annotaties

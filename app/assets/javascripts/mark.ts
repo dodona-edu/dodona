@@ -119,13 +119,15 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
 }
 
 /**
+ * Todo move to utils when it is changed to typescript
+ *
  * Returns a function that mimics the given function, but caches its results.
  * This is a generic memoization function that works with any number of arguments.
  * @param f The function to memoize.
  */
-function cached<Args extends any[], Return>(f: (...args: Args) => Return): (...args: Args) => Return {
-    const cache = new Map<string, Return>();
-    return (...args: Args) => {
+function cached<ArgumentsType extends any[], ReturnType>(f: (...args: ArgumentsType) => ReturnType): (...args: ArgumentsType) => ReturnType {
+    const cache = new Map<string, ReturnType>();
+    return (...args: ArgumentsType) => {
         const key = JSON.stringify(args);
         if (!cache.has(key)) {
             cache.set(key, f(...args));

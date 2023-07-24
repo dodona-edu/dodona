@@ -1,7 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, PropertyValues, TemplateResult, render } from "lit";
-import { annotationState } from "state/Annotations";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "util.js";
 
@@ -24,9 +23,11 @@ DRAG_IMAGE.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAA
 export class CreateAnnotationButton extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
+    @property({ type: Boolean, attribute: "is-question-mode" })
+    isQuestionMode: boolean;
 
     get buttonText(): string {
-        const key = annotationState.isQuestionMode ? "question" : "annotation";
+        const key = this.isQuestionMode ? "question" : "annotation";
 
         if (this.isDragStart) {
             return I18n.t(`js.annotations.options.add_${key}_drop`);

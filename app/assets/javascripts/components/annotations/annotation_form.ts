@@ -76,7 +76,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
      */
     static closeForm(e: MouseEvent): void {
         if (!(e.target as Element).closest("d-annotation-form") && !(e.target as Element).closest(".annotation-button")) {
-            userAnnotationState.showForm = false;
+            userAnnotationState.formShown = false;
             userAnnotationState.selectedRange = undefined;
         }
     }

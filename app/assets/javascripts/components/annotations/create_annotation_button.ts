@@ -37,7 +37,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     }
 
     openForm(): void {
-        userAnnotationState.showForm = true;
+        userAnnotationState.formShown = true;
         if (!this.rangeExists) {
             userAnnotationState.selectedRange = {
                 row: this.row,
@@ -53,13 +53,13 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
     }
 
     get isRangeEnd(): boolean {
-        return !userAnnotationState.showForm &&
+        return !userAnnotationState.formShown &&
             userAnnotationState.dragStartRow === null &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) - 1 == this.row;
     }
 
     get isDragStart(): boolean {
-        return !userAnnotationState.showForm &&
+        return !userAnnotationState.formShown &&
             userAnnotationState.dragStartRow == this.row;
     }
 

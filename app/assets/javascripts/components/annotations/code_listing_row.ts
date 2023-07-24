@@ -83,7 +83,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if ( userAnnotationState.showForm && this.shouldMarkSelection ) {
+        if ( userAnnotationState.formShown && this.shouldMarkSelection ) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;
@@ -113,13 +113,13 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
     }
 
-    get showForm(): boolean {
+    get formShown(): boolean {
         const range = userAnnotationState.selectedRange;
-        return userAnnotationState.showForm && range && range.row + range.rows - 1 === this.row;
+        return userAnnotationState.formShown && range && range.row + range.rows - 1 === this.row;
     }
 
     closeForm(): void {
-        userAnnotationState.showForm = false;
+        userAnnotationState.formShown = false;
         userAnnotationState.selectedRange = undefined;
     }
 
@@ -172,7 +172,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                         <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
                     `}
                     <d-annotations-cell .row=${this.row}
-                                        .showForm="${this.showForm}"
+                                        .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}
                     ></d-annotations-cell>
                 </td>

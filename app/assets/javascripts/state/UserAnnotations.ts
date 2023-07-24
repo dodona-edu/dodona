@@ -71,7 +71,7 @@ class UserAnnotationState extends State {
 
     @stateProperty public selectedRange: SelectedRange | null = null;
     @stateProperty public dragStartRow: number | null = null;
-    @stateProperty public showForm = false;
+    @stateProperty public formShown = false;
     @stateProperty private _createButtonExpanded = false;
     private expansionDelayer = createDelayer();
 
@@ -97,7 +97,7 @@ class UserAnnotationState extends State {
         this.rootIdsByLine.clear();
         this.rootIdsByMarkedLine.clear();
         this.selectedRange = null;
-        this.showForm = false;
+        this.formShown = false;
     }
 
     // public for testing purposes

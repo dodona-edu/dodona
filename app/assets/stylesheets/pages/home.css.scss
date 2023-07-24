@@ -147,7 +147,7 @@
   margin-top: 10px;
   margin-bottom: 15px;
 
-  @media (max-width: 480px) {
+  @media (width <= 480px) {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;

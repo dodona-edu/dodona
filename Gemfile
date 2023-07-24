@@ -86,7 +86,7 @@ gem 'mail_form', '~> 1.10.0'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.3.1'
 
 # impersonate users
 gem 'pretender', '~> 0.5.0'

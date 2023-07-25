@@ -8,10 +8,10 @@ $annotation-user: $success;
 $annotation-error: $danger;
 $annotation-warning: $warning;
 $annotation-info: $info;
-$annotation-question-background: color.mix($annotation-question, $background, 8%);
-$annotation-user-background: color.mix($annotation-user, $background, 8%);
-$annotation-question-background-intense: color.mix($annotation-question, $background, 20%);
-$annotation-user-background-intense: color.mix($annotation-user, $background, 20%);
+$annotation-question-background: rgba(color.red($annotation-question), color.green($annotation-question), color.blue($annotation-question), 0.08);
+$annotation-user-background: rgba(color.red($annotation-user), color.green($annotation-user), color.blue($annotation-user), 0.08);
+$annotation-question-background-intense: rgba(color.red($annotation-question), color.green($annotation-question), color.blue($annotation-question), 0.2);
+$annotation-user-background-intense: rgba(color.red($annotation-user), color.green($annotation-user), color.blue($annotation-user), 0.2);
 
 .code-table {
   &.selection-color-question {

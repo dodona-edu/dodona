@@ -33,7 +33,10 @@ export class AnnotationMarker extends LitElement {
 
     static getStyle(annotation: AnnotationData): string {
         if (["error", "warning", "info"].includes(annotation.type)) {
-            return `text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;`;
+            return `
+                text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
+                text-decoration-skip-ink: none;
+            `;
         } else {
             return `
                 background: ${AnnotationMarker.colors[annotation.type]};

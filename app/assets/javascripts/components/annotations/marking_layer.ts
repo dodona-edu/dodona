@@ -78,22 +78,39 @@ export class MarkingLayer extends ShadowlessLitElement {
     }
 
     mergeRanges(ranges: { start: number, length: number, index: number }[]): { start: number, length: number, indexes: number[] }[] {
-        console.log("merge_ranges", this.row, ranges);
         const annotationsByPosition: number[][] = new Array(this.codeLength).fill(null).map(() => []);
         for (const range of ranges) {
             for (let i = range.start; i < range.start + range.length; i++) {
                 annotationsByPosition[i].push(range.index);
             }
         }
+
+        const zeroLengthRanges = ranges.filter(range => range.length === 0);
+        const zeroLengthIndexesByPosition: number[][] = new Array(this.codeLength+1).fill(null).map(() => []);
+        for (const range of zeroLengthRanges) {
+            if (range.start >= this.codeLength) {
+                console.log(this.row);
+            }
+            zeroLengthIndexesByPosition[range.start].push(range.index);
+        }
+
         const rangesToReturn = [];
         let i = 0;
         while (i < this.codeLength) {
+            if (zeroLengthIndexesByPosition[i].length) {
+                rangesToReturn.push({ start: i, length: 0, indexes: zeroLengthIndexesByPosition[i] });
+            }
             let j = 1;
-            while (i + j < this.codeLength && numberArrayEquals(annotationsByPosition[i + j], annotationsByPosition[i])) {
+            while (i + j < this.codeLength && numberArrayEquals(annotationsByPosition[i + j], annotationsByPosition[i]) && !zeroLengthIndexesByPosition[i + j].length) {
                 j++;
             }
             rangesToReturn.push({ start: i, length: j, indexes: annotationsByPosition[i] });
             i += j;
+        }
+
+        // Add the zero length ranges at the end of the line
+        if (zeroLengthIndexesByPosition[this.codeLength].length) {
+            rangesToReturn.push({ start: this.codeLength, length: 0, indexes: zeroLengthIndexesByPosition[this.codeLength] });
         }
         return rangesToReturn;
     }
@@ -103,7 +120,6 @@ export class MarkingLayer extends ShadowlessLitElement {
         if (this.shouldMarkSelection) {
             toMark.push(userAnnotationState.selectedRange);
         }
-        console.log("to_mark", this.row, toMark);
         // We use indexes to simplify the equality check in mergeRanges
         const ranges = toMark.map((annotation, index) => this.getRangeFromAnnotation(annotation, index));
         const mergedRanges = this.mergeRanges(ranges);
@@ -114,7 +130,6 @@ export class MarkingLayer extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        console.log(this.row, this.ranges);
         return html`${this.ranges.map(range => range.annotations.length ?
             html`<d-annotation-marker .annotations=${range.annotations}>${this.code.substring(range.start, range.start + range.length)}</d-annotation-marker>` :
             html`${this.code.substring(range.start, range.start + range.length)}`)}`;

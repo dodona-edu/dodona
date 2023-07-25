@@ -27,7 +27,7 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
     rootId: number;
 
     @property({ state: true })
-    showForm = false;
+    formShown = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
@@ -56,7 +56,7 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
-            this.showForm = false;
+            this.formShown = false;
         } catch (err) {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
@@ -76,12 +76,12 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
     }
 
     addReply(): void {
-        this.showForm = true;
+        this.formShown = true;
         this.markAsInProgress();
     }
 
     cancelReply(): void {
-        this.showForm = false;
+        this.formShown = false;
         this.markAsUnanswered();
     }
 
@@ -92,7 +92,7 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
                 ${this.data.responses.map(response => html`
                     <d-user-annotation .data=${response}></d-user-annotation>
                 `)}
-                ${this.showForm ? html`
+                ${this.formShown ? html`
                     <div class="annotation ${annotationState.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            ${ref(this.annotationFormRef)}

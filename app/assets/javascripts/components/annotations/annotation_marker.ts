@@ -3,7 +3,9 @@ import { render, html, LitElement, TemplateResult } from "lit";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
 import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
 import { StateController } from "state/state_system/StateController";
+import { createDelayer } from "util.js";
 
+const setInstancesDelayer = createDelayer();
 /**
  * A marker that styles the slotted content and shows a tooltip with annotations.
  *
@@ -55,13 +57,16 @@ export class AnnotationMarker extends LitElement {
         moveTransition: "transform 0.001s ease-out",
         appendTo: () => document.querySelector(".code-table"),
     });
+    static updateSingletonInstances(): void {
+        setInstancesDelayer(() => this.tippySingleton.setInstances(this.tippyInstances), 100);
+    }
     static registerTippyInstance(instance: Tippy): void {
         this.tippyInstances.push(instance);
-        this.tippySingleton.setInstances(this.tippyInstances);
+        this.updateSingletonInstances();
     }
     static unregisterTippyInstance(instance: Tippy): void {
         this.tippyInstances = this.tippyInstances.filter(i => i !== instance);
-        this.tippySingleton.setInstances(this.tippyInstances);
+        this.updateSingletonInstances();
     }
 
     // Annotations that are displayed inline should show up as tooltips.
@@ -92,6 +97,15 @@ export class AnnotationMarker extends LitElement {
             content: tooltip,
         });
         AnnotationMarker.registerTippyInstance(this.tippyInstance);
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        if (this.tippyInstance) {
+            AnnotationMarker.unregisterTippyInstance(this.tippyInstance);
+            this.tippyInstance.destroy();
+            this.tippyInstance = undefined;
+        }
     }
 
     get sortedAnnotations(): AnnotationData[] {

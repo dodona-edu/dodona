@@ -17,7 +17,7 @@ import { annotationState } from "state/Annotations";
 @customElement("d-annotation-options")
 export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
-    showForm = false;
+    formShown = false;
 
     get canCreateAnnotation(): boolean {
         return userState.hasPermission("annotation.create");
@@ -34,7 +34,7 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
             <div class="feedback-table-options">
                 <d-hidden-annotations-dot .row=${0}></d-hidden-annotations-dot>
                 ${this.canCreateAnnotation ? html`
-                    <button class="btn btn-text" @click="${() => this.showForm = true}">
+                    <button class="btn btn-outline" @click="${() => this.formShown = true}">
                         ${this.addAnnotationTitle}
                     </button>
                 ` : html``}
@@ -43,8 +43,8 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
             </div>
             <div>
             <d-annotations-cell .row=${0}
-                                .showForm="${this.showForm}"
-                                @close-form=${() => this.showForm = false}
+                                .formShown="${this.formShown}"
+                                @close-form=${() => this.formShown = false}
                 ></d-annotations-cell>
             </div>
         `;

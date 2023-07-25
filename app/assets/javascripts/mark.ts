@@ -119,15 +119,36 @@ function wrapRanges(root: Node, ranges: range[], wrapper: string, callback: call
 }
 
 /**
+ * Todo move to utils when it is changed to typescript
+ *
+ * Returns a function that mimics the given function, but caches its results.
+ * This is a generic memoization function that works with any number of arguments.
+ * @param f The function to memoize.
+ */
+function cached<ArgumentsType extends any[], ReturnType>(f: (...args: ArgumentsType) => ReturnType): (...args: ArgumentsType) => ReturnType {
+    const cache = new Map<string, ReturnType>();
+    return (...args: ArgumentsType) => {
+        const key = JSON.stringify(args);
+        if (!cache.has(key)) {
+            cache.set(key, f(...args));
+        }
+        return cache.get(key);
+    };
+}
+
+/**
  * Wraps all elements in the given ranges of the given target string in the given wrapper node.
  * @param target a html string whose text nodes should be wrapped
  * @param ranges the ranges of the textcontent to wrap
  * @param wrapper the type of wrapper to create
  * @param callback the callback to call for each wrapper node
  */
+
 export function wrapRangesInHtml(target: string, ranges: range[], wrapper: string, callback: callback = () => undefined): string {
     const root = document.createElement("div");
     root.innerHTML = target;
     wrapRanges(root, ranges, wrapper, callback);
     return root.innerHTML;
 }
+
+export const wrapRangesInHtmlCached = cached(wrapRangesInHtml);

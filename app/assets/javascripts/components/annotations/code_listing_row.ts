@@ -11,7 +11,7 @@ import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { AnnotationData, annotationState, compareAnnotationOrders } from "state/Annotations";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { wrapRangesInHtml, range } from "mark";
+import { wrapRangesInHtml, range, wrapRangesInHtmlCached } from "mark";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationMarker } from "components/annotations/annotation_marker";
 import "components/annotations/selection_marker";
@@ -73,7 +73,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     get wrappedCode(): string {
         const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
         const codeToMark = this.renderedCode;
-        let annotationsMarked = wrapRangesInHtml(
+        let annotationsMarked = wrapRangesInHtmlCached(
             codeToMark,
             annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
             "d-annotation-marker",
@@ -83,7 +83,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 annotations.push(range.data);
                 node.setAttribute("annotations", JSON.stringify(annotations));
             });
-        if ( userAnnotationState.showForm && this.shouldMarkSelection ) {
+        if ( userAnnotationState.formShown && this.shouldMarkSelection ) {
             annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
         }
         return annotationsMarked;
@@ -113,13 +113,13 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
     }
 
-    get showForm(): boolean {
+    get formShown(): boolean {
         const range = userAnnotationState.selectedRange;
-        return userAnnotationState.showForm && range && range.row + range.rows - 1 === this.row;
+        return userAnnotationState.formShown && range && range.row + range.rows - 1 === this.row;
     }
 
     closeForm(): void {
-        userAnnotationState.showForm = false;
+        userAnnotationState.formShown = false;
         userAnnotationState.selectedRange = undefined;
     }
 
@@ -137,11 +137,29 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return this.hasFullLineSelection ? `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}` : "";
     }
 
+    dragEnter(e: DragEvent): void {
+        if (userAnnotationState.dragStartRow === null) {
+            return;
+        }
+
+        e.preventDefault();
+        const origin = userAnnotationState.dragStartRow;
+        const startRow = Math.min(origin, this.row);
+        const endRow = Math.max(origin, this.row);
+
+        userAnnotationState.selectedRange = {
+            row: startRow,
+            rows: endRow - startRow + 1
+        };
+    }
+
     render(): TemplateResult {
         return html`
-            <tr id="line-${this.row}" class="lineno">
+            <tr id="line-${this.row}" class="lineno"
+                @dragenter=${e => this.dragEnter(e)}
+            >
                 <td class="rouge-gutter gl">
-                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}"></d-create-annotation-button>` : html``}
+                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}" is-question-mode="${annotationState.isQuestionMode}" ></d-create-annotation-button>` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
@@ -154,7 +172,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                         <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
                     `}
                     <d-annotations-cell .row=${this.row}
-                                        .showForm="${this.showForm}"
+                                        .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}
                     ></d-annotations-cell>
                 </td>

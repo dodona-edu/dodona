@@ -88,9 +88,6 @@ export class MarkingLayer extends ShadowlessLitElement {
         const zeroLengthRanges = ranges.filter(range => range.length === 0);
         const zeroLengthIndexesByPosition: number[][] = new Array(this.codeLength+1).fill(null).map(() => []);
         for (const range of zeroLengthRanges) {
-            if (range.start >= this.codeLength) {
-                console.log(this.row);
-            }
             zeroLengthIndexesByPosition[range.start].push(range.index);
         }
 

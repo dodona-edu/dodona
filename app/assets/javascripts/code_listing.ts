@@ -9,10 +9,12 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
+import { triggerSelectionEnd } from "components/annotations/select";
 
 const MARKING_CLASS = "marked";
 
 function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
+    userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
@@ -28,8 +30,8 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
         const codeListingRow = new CodeListingRow();
         codeListingRow.row = i + 1;
         codeListingRow.renderedCode = code;
-        rows[i].innerHTML = "";
-        render(codeListingRow, rows[i]);
+        render(codeListingRow, rows[i].parentElement, { renderBefore: rows[i] });
+        rows[i].remove();
     }
 }
 
@@ -39,6 +41,12 @@ function addMachineAnnotations(data: MachineAnnotationData[]): void {
 
 function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
+
+    document.addEventListener("pointerup", () => triggerSelectionEnd());
+
+    // make the whole document a valid target for dropping the create annotation button
+    document.addEventListener("dragover", e => e.preventDefault());
+    document.addEventListener("drop", e => e.preventDefault());
 }
 
 function loadUserAnnotations(): void {

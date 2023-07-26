@@ -115,8 +115,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     protected updated(_changedProperties: PropertyValues): void {
         super.updated(_changedProperties);
 
-        // Ask MathJax to search for math in the annotations
-        window.MathJax.typeset();
+        try {
+            // Ask MathJax to search for math in the annotations
+            window.MathJax.typeset([this]);
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
         // Reinitialize tooltips
         initTooltips(this);
     }
@@ -178,7 +183,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     ${this.dropdownOptions.length > 0 ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">
                             <a class="btn btn-icon btn-icon-muted dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-dots-horizontal text-muted"></i>
+                                <i class="mdi mdi-dots-vertical text-muted"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 ${this.dropdownOptions}

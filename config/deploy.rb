@@ -4,8 +4,8 @@ lock '~> 3.9'
 set :application, 'dodona'
 set :repo_url, 'git@github.com:dodona-edu/dodona.git'
 
-# Default branch is :master
-# ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# Default branch is :main
+set :branch, ENV['GITHUB_SHA'] || 'main'
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, '/home/dodona/rails'
@@ -114,6 +114,18 @@ namespace :deploy do
       # within release_path do
       #   execute :rake, 'cache:clear'
       # end
+    end
+  end
+end
+
+version = Time.now.strftime("%y.%m.%d-%H:%M")
+
+namespace :deploy do
+  before :publishing, :set_version do
+    on roles :app do
+      within release_path do
+        execute :sed, "-i 's/VERSION = .*/VERSION = \"#{version}\".freeze/' config/initializers/00_version.rb"
+      end
     end
   end
 end

@@ -7,6 +7,7 @@ import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
+import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 declare type range = {
     start: number;
@@ -18,12 +19,12 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
     return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
-@customElement("d-marking-layer")
-export class MarkingLayer extends ShadowlessLitElement {
+@customElement("d-code-layers")
+export class CodeLayers extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
-    @property({ type: String })
-    type: "background" | "tooltip" = "background";
+    @property({ type: String, attribute: "rendered-code" })
+    renderedCode: string;
 
     get code(): string {
         return submissionState.codeByLine[this.row - 1];
@@ -136,28 +137,28 @@ export class MarkingLayer extends ShadowlessLitElement {
         });
     }
 
-    get codeLineClass(): string {
-        return this.type === "background" ? "code-line background-layer" : "code-line tooltip-layer";
-    }
-
     render(): TemplateResult {
-        const markedCode = this.ranges.map(range => {
+        const backgroundLayer = [];
+        const tooltipLayer = [];
+
+        for (const range of this.ranges) {
             const substring = this.code.substring(range.start, range.start + range.length);
             if (!range.annotations.length) {
-                return substring;
+                backgroundLayer.push(substring);
+                tooltipLayer.push(substring);
+            } else {
+                backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>`);
+                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`);
             }
-            return this.type === "background" ?
-                html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>` :
-                html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`;
-        });
-
-        if (this.type === "background") {
-            return html`
-                <d-annotation-marker type="$background" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
-                    <pre class="code-line background-layer">${markedCode}</pre>
-                </d-annotation-marker>`;
-        } else {
-            return html`<pre class="code-line tooltip-layer">${markedCode}</pre>`;
         }
+
+        return html`
+            <div class="code-layers">
+                <d-annotation-marker type="$background" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                    <pre class="code-line background-layer">${backgroundLayer}</pre>
+                </d-annotation-marker>
+                <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
+                <pre class="code-line tooltip-layer">${tooltipLayer}</pre>
+            </div>`;
     }
 }

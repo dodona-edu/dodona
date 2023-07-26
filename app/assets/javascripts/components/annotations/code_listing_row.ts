@@ -1,7 +1,6 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/annotations_cell";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
@@ -13,7 +12,7 @@ import { userAnnotationState } from "state/UserAnnotations";
 import "components/annotations/selection_marker";
 import "components/annotations/create_annotation_button";
 import { triggerSelectionStart } from "components/annotations/select";
-import "components/annotations/marking_layer";
+import "components/annotations/code_layers";
 
 /**
  * This component represents a row in the code listing.
@@ -79,11 +78,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <div class="code-layers">
-                        <d-marking-layer .row="${this.row}" type="background"></d-marking-layer>
-                        <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
-                        <d-marking-layer .row="${this.row}" type="tooltip"></d-marking-layer>
-                    </div>
+                    <d-code-layers .row=${this.row} .renderedCode=${this.renderedCode}></d-code-layers>
                     <d-annotations-cell .row=${this.row}
                                         .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}

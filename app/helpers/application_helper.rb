@@ -239,8 +239,8 @@ module ApplicationHelper
       tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
-    def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
+    def previous_or_next_page(page, text, classname, aria_label = nil)
+      tag :li, link(text, page || '#', class: 'page-link', 'aria-label': aria_label), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 
@@ -267,8 +267,8 @@ module ApplicationHelper
       tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
-    def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
+    def previous_or_next_page(page, text, classname, aria_label = nil)
+      tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link', 'aria-label': aria_label), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 

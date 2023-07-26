@@ -24,7 +24,7 @@ class MachineAnnotationState extends State {
         this.byMarkedLine.clear();
         for (const annotation of annotations) {
             const markedLength = annotation.rows ?? 1;
-            const line = annotation.row + markedLength ?? 0;
+            const line = annotation.row ? annotation.row + markedLength : 1;
             if (this.byLine.has(line)) {
                 this.byLine.get(line)?.push(annotation);
             } else {

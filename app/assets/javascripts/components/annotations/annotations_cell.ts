@@ -20,14 +20,14 @@ import { evaluationState } from "state/Evaluations";
  * @element d-annotations-cell
  *
  * @prop {Number} row - the line number
- * @prop {Boolean} showForm - if the form should be shown
+ * @prop {Boolean} formShown - if the form should be shown
  *
  * @fires close-form - if the form should be closed
  */
 @customElement("d-annotations-cell")
 export class AnnotationsCell extends ShadowlessLitElement {
     @property({ type: Boolean, attribute: "show-form" })
-    showForm: boolean;
+    formShown: boolean;
     @property({ type: Number })
     row: number;
 
@@ -50,6 +50,13 @@ export class AnnotationsCell extends ShadowlessLitElement {
             "saved_annotation_id": e.detail.savedAnnotationId || undefined,
         };
 
+        if (this.row > 0 && userAnnotationState.selectedRange) {
+            annotationData["line_nr"] = userAnnotationState.selectedRange.row;
+            annotationData["rows"] = userAnnotationState.selectedRange.rows;
+            annotationData["column"] = userAnnotationState.selectedRange.column;
+            annotationData["columns"] = userAnnotationState.selectedRange.columns;
+        }
+
         try {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
@@ -68,7 +75,7 @@ export class AnnotationsCell extends ShadowlessLitElement {
     protected render(): TemplateResult {
         return html`
             <div class="annotation-cell">
-                ${this.showForm ? html`
+                ${this.formShown ? html`
                     <div class="annotation ${annotationState.isQuestionMode ? "question" : "user" }">
                         <d-annotation-form @submit=${e => this.createAnnotation(e)}
                                            @cancel=${() => this.closeForm()}

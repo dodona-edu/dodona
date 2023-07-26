@@ -246,10 +246,10 @@ class Submission < ApplicationRecord
   end
 
   def not_rate_limited?
-    return if user.nil?
+    return false if user.nil?
 
     previous = user.submissions.most_recent.first
-    return if previous.blank?
+    return false if previous.blank?
 
     time_since_previous = Time.zone.now - previous.created_at
     errors.add(:submission, 'rate limited') if time_since_previous < SECONDS_BETWEEN_SUBMISSIONS.seconds

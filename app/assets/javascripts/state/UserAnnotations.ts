@@ -1,20 +1,19 @@
-import { fetch } from "util.js";
+import { createDelayer, fetch } from "util.js";
 import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
+import { stateProperty } from "state/state_system/StateProperty";
 
 export interface UserAnnotationFormData {
-    // eslint-disable-next-line camelcase
     annotation_text: string;
-    // eslint-disable-next-line camelcase
     line_nr?: number | null;
-    // eslint-disable-next-line camelcase
     evaluation_id?: number | undefined;
-    // eslint-disable-next-line camelcase
     saved_annotation_id?: number | null;
-    // eslint-disable-next-line camelcase
     thread_root_id?: number | null;
+    rows?: number;
+    column?: number;
+    columns?: number;
 }
 
 export type QuestionState = "unanswered" | "answered" | "in_progress";
@@ -33,56 +32,91 @@ export interface UserAnnotationPermissionData {
 }
 
 export interface UserAnnotationData {
-    // eslint-disable-next-line camelcase
     annotation_text: string;
-    // eslint-disable-next-line camelcase
     created_at: string;
     id: number;
-    // eslint-disable-next-line camelcase
     line_nr: number;
     permission: UserAnnotationPermissionData;
     released: boolean;
-    // eslint-disable-next-line camelcase
     rendered_markdown: string;
-    // eslint-disable-next-line camelcase
     evaluation_id?: number | null;
-    // eslint-disable-next-line camelcase
     saved_annotation_id?: number | null;
     url: string;
     user: UserAnnotationUserData;
     type: AnnotationType;
-    // eslint-disable-next-line camelcase
     last_updated_by: UserAnnotationUserData;
     // REMOVE AFTER CLOSED BETA
-    // eslint-disable-next-line camelcase
     course_id: number;
-    // eslint-disable-next-line camelcase
     question_state?: QuestionState;
-    // eslint-disable-next-line camelcase
     newer_submission_url?: string | null;
     responses: UserAnnotationData[];
-    // eslint-disable-next-line camelcase
     thread_root_id?: number | null;
+    row: number;
+    rows: number;
+    column?: number;
+    columns?: number;
+}
+
+export interface SelectedRange {
+    row: number;
+    rows: number;
+    column?: number;
+    columns?: number;
 }
 
 class UserAnnotationState extends State {
     readonly rootIdsByLine = new StateMap<number, number[]>();
+    readonly rootIdsByMarkedLine = new StateMap<number, number[]>();
     readonly byId = new StateMap<number, UserAnnotationData>();
+
+    @stateProperty public selectedRange: SelectedRange | null = null;
+    @stateProperty public dragStartRow: number | null = null;
+    @stateProperty public formShown = false;
+    @stateProperty private _createButtonExpanded = false;
+    private expansionDelayer = createDelayer();
+
+    public set isCreateButtonExpanded(value: boolean) {
+        this.expansionDelayer(() => this._createButtonExpanded = value, 250);
+    }
+
+    public get isCreateButtonExpanded(): boolean {
+        return this._createButtonExpanded;
+    }
+
+    constructor() {
+        super();
+    }
 
     get count(): number {
         return this.byId.size;
+    }
+
+    public reset(): void {
+        this.byId.clear();
+        this.rootIdsByLine.clear();
+        this.rootIdsByMarkedLine.clear();
+        this.selectedRange = null;
+        this.formShown = false;
     }
 
     // public for testing purposes
     public async addToMap(annotation: UserAnnotationData): Promise<void> {
         this.byId.set(annotation.id, annotation);
         if (!annotation.thread_root_id) {
-            const line = annotation.line_nr ?? 0;
+            const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
             if (this.rootIdsByLine.has(line)) {
                 const annotations = this.rootIdsByLine.get(line);
                 this.rootIdsByLine.set(line, [...annotations, annotation.id]);
             } else {
                 this.rootIdsByLine.set(line, [annotation.id]);
+            }
+            for (let markedLine = annotation.line_nr ?? 0; markedLine <= line; markedLine++) {
+                if (this.rootIdsByMarkedLine.has(markedLine)) {
+                    const annotations = this.rootIdsByMarkedLine.get(markedLine);
+                    this.rootIdsByMarkedLine.set(markedLine, [...annotations, annotation.id]);
+                } else {
+                    this.rootIdsByMarkedLine.set(markedLine, [annotation.id]);
+                }
             }
             annotation.responses.forEach(response => this.addToMap(response));
         } else {
@@ -100,10 +134,16 @@ class UserAnnotationState extends State {
     private async removeFromMap(annotation: UserAnnotationData): Promise<void> {
         this.byId.delete(annotation.id);
         if (!annotation.thread_root_id) {
-            const line = annotation.line_nr ?? 0;
+            const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
             if (this.rootIdsByLine.has(line)) {
                 const annotations = this.rootIdsByLine.get(line);
                 this.rootIdsByLine.set(line, annotations?.filter(id => id !== annotation.id));
+            }
+            for (let markedLine = annotation.line_nr ?? 0; markedLine <= line; markedLine++) {
+                if (this.rootIdsByMarkedLine.has(markedLine)) {
+                    const annotations = this.rootIdsByMarkedLine.get(markedLine);
+                    this.rootIdsByMarkedLine.set(markedLine, annotations?.filter(id => id !== annotation.id));
+                }
             }
         } else {
             await this.invalidate(annotation.thread_root_id);

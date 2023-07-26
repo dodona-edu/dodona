@@ -80,7 +80,11 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <pre class="code-line"><d-marking-layer .row="${this.row}"></d-marking-layer>${unsafeHTML(this.renderedCode)}</pre>
+                    <div class="code-layers">
+                        <d-marking-layer .row="${this.row}" type="background"></d-marking-layer>
+                        <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
+                        <d-marking-layer .row="${this.row}" type="tooltip"></d-marking-layer>
+                    </div>
                     <d-annotations-cell .row=${this.row}
                                         .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}

@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { AnnotationData } from "state/Annotations";
+import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 
 declare type range = {
@@ -20,6 +20,8 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
 export class MarkingLayer extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
+    @property({ type: String })
+    type: "background" | "tooltip" = "background";
 
     get code(): string {
         return submissionState.codeByLine[this.row - 1];
@@ -41,6 +43,12 @@ export class MarkingLayer extends ShadowlessLitElement {
         return userAnnotationState.selectedRange &&
             userAnnotationState.selectedRange.row <= this.row &&
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
+    }
+
+    get fullLineAnnotations(): UserAnnotationData[] {
+        return this.userAnnotationsToMark
+            .filter(a => !a.column && !a.columns)
+            .sort(compareAnnotationOrders);
     }
 
     /**
@@ -126,9 +134,17 @@ export class MarkingLayer extends ShadowlessLitElement {
         });
     }
 
+    get codeLineClass(): string {
+        return this.type === "background" ? "code-line background-layer" : "code-line tooltip-layer";
+    }
+
     render(): TemplateResult {
-        return html`${this.ranges.map(range => range.annotations.length ?
-            html`<d-annotation-marker .annotations=${range.annotations}>${this.code.substring(range.start, range.start + range.length)}</d-annotation-marker>` :
-            html`${this.code.substring(range.start, range.start + range.length)}`)}`;
+        return html`<d-annotation-marker type="${this.type}" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+            <pre class="${this.codeLineClass}">${
+    this.ranges.map(range => range.annotations.length ?
+        html`<d-annotation-marker type="${this.type}" .annotations=${range.annotations}>${this.code.substring(range.start, range.start + range.length)}</d-annotation-marker>` :
+        html`${this.code.substring(range.start, range.start + range.length)}`)
+}</pre>
+        </d-annotation-marker>`;
     }
 }

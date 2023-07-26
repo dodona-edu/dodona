@@ -111,7 +111,7 @@ class SeriesController < ApplicationController
     if @series.course.present?
       authorize @series.course, :add_series?
     else
-      @series.errors.add(:course, I18n.t('errors.messages.blank'))
+      @series.errors.add(:course_id, I18n.t('errors.messages.blank'))
     end
     respond_to do |format|
       if @series.course.present? && @series.save

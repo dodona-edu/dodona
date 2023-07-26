@@ -5,6 +5,8 @@ import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnno
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
+import "components/annotations/annotation_marker";
+import "components/annotations/annotation_tooltip";
 
 declare type range = {
     start: number;
@@ -139,12 +141,23 @@ export class MarkingLayer extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        return html`<d-annotation-marker type="${this.type}" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
-            <pre class="${this.codeLineClass}">${
-    this.ranges.map(range => range.annotations.length ?
-        html`<d-annotation-marker type="${this.type}" .annotations=${range.annotations}>${this.code.substring(range.start, range.start + range.length)}</d-annotation-marker>` :
-        html`${this.code.substring(range.start, range.start + range.length)}`)
-}</pre>
-        </d-annotation-marker>`;
+        const markedCode = this.ranges.map(range => {
+            const substring = this.code.substring(range.start, range.start + range.length);
+            if (!range.annotations.length) {
+                return substring;
+            }
+            return this.type === "background" ?
+                html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>` :
+                html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`;
+        });
+
+        if (this.type === "background") {
+            return html`
+                <d-annotation-marker type="$background" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                    <pre class="code-line background-layer">${markedCode}</pre>
+                </d-annotation-marker>`;
+        } else {
+            return html`<pre class="code-line tooltip-layer">${markedCode}</pre>`;
+        }
     }
 }

@@ -3,7 +3,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
 import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
+import { AnnotationData, compareAnnotationOrders, isAnnotationData } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
@@ -48,8 +48,12 @@ export class CodeLayers extends ShadowlessLitElement {
             userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
     }
 
-    get fullLineAnnotations(): UserAnnotationData[] {
-        return this.userAnnotationsToMark
+    get fullLineAnnotations(): (UserAnnotationData | SelectedRange)[] {
+        const annotations: (UserAnnotationData | SelectedRange)[] = this.userAnnotationsToMark;
+        if (this.shouldMarkSelection) {
+            annotations.push(userAnnotationState.selectedRange);
+        }
+        return annotations
             .filter(a => !a.column && !a.columns)
             .sort(compareAnnotationOrders);
     }
@@ -148,14 +152,14 @@ export class CodeLayers extends ShadowlessLitElement {
                 tooltipLayer.push(substring);
             } else {
                 backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>`);
-                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`);
+                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations.filter(a => isAnnotationData(a))}>${substring}</d-annotation-tooltip>`);
             }
         }
 
         return html`
             <div class="code-layers">
                 <d-annotation-marker type="$background" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
-                    <pre class="code-line background-layer">${backgroundLayer}</pre>
+                    <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
                 </d-annotation-marker>
                 <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
                 <pre class="code-line tooltip-layer">${tooltipLayer}</pre>

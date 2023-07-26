@@ -293,6 +293,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           width: 100%;
           height: 100%;
           color: transparent;
+          pointer-events: none;
         }
 
         .text-layer {
@@ -301,6 +302,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           height: 100%;
           top: 0;
           background: transparent;
+          pointer-events: none;
         }
 
         .tooltip-layer {
@@ -308,7 +310,8 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           width: 100%;
           height: 100%;
           top: 0;
-          opacity: 0;
+          color: transparent;
+          opacity: 0.2;
         }
       }
 

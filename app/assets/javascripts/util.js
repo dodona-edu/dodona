@@ -226,9 +226,6 @@ function getParentByClassName(element, classNames) {
     return null;
 }
 
-// insert `cached` function here after move to typescript
-// the function is currently in `app/assets/javascripts/mark.ts`
-
 export {
     createDelayer,
     delay,

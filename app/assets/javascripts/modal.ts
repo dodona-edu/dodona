@@ -3,7 +3,7 @@ import { Modal } from "bootstrap";
 function showInfoModal(title: string, content: string, options?: {allowFullscreen: boolean}): void {
     const button = document.querySelector("#info-modal .modal-header #fullscreen-button") as HTMLElement;
 
-    if (options.allowFullscreen) {
+    if (options && options.allowFullscreen) {
         button.style.display = "inline";
     } else {
         button.style.display = "none";

@@ -20,6 +20,14 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
     return a.length === b.length && a.every((v, i) => v === b[i]);
 }
 
+/**
+ * renders the code with formatting and tooltips split in separate layers
+ *
+ * @prop {number} row - the row of the code to render
+ * @prop {string} renderedCode - the syntax highlighted code to render
+ *
+ * @element d-code-layers
+ */
 @customElement("d-code-layers")
 export class CodeLayers extends ShadowlessLitElement {
     @property({ type: Number })

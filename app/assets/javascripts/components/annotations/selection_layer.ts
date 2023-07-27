@@ -44,10 +44,13 @@ class SelectionLayer extends ShadowlessLitElement {
         const start = userAnnotationState.selectedRange.column ?? 0;
         const end = userAnnotationState.selectedRange.columns ? start + userAnnotationState.selectedRange.columns : this.code.length;
 
-        return html`<pre class="code-line selection-layer"><span></span>${
-            this.code.substring(0, start)}${
-            html`<span class="${this.markingClass}">${this.code.substring(start, end)}</span>`}${
+        const selectionLayer: (TemplateResult | string)[] = [
+            html`<span></span>`, // this is a hack to force the height of the line to be correct even if no code is on this line
+            this.code.substring(0, start),
+            html`<span class="${this.markingClass}">${this.code.substring(start, end)}</span>`,
             this.code.substring(end)
-        }</pre>`;
+        ];
+
+        return html`<pre class="code-line selection-layer">${selectionLayer}</pre>`;
     }
 }

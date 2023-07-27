@@ -26,10 +26,10 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
  * @prop {number} row - the row of the code to render
  * @prop {string} renderedCode - the syntax highlighted code to render
  *
- * @element d-code-layers
+ * @element d-code-listing
  */
-@customElement("d-code-layers")
-export class CodeLayers extends ShadowlessLitElement {
+@customElement("d-code-listing")
+export class CodeListing extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
     @property({ type: String, attribute: "rendered-code" })

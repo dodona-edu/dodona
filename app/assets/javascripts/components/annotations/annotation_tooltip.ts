@@ -87,7 +87,8 @@ export class AnnotationTooltip extends LitElement {
 
     render(): TemplateResult {
         this.renderTooltip();
-        const size = 14;
+
+        // if slot is empty, render an empty svg to make sure the tooltip is positioned correctly
         return html`<slot><svg style="position: absolute; top: 9px; left: -7px" width="14" height="14" viewBox="0 0 24 24">
         </svg></slot>`;
     }

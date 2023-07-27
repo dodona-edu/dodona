@@ -150,8 +150,8 @@ export class CodeLayers extends ShadowlessLitElement {
                     <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
                 </d-annotation-marker>
                 <d-selection-layer .row=${this.row}></d-selection-layer>
-                <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
                 <pre class="code-line tooltip-layer">${tooltipLayer}</pre>
+                <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
             </div>`;
     }
 }

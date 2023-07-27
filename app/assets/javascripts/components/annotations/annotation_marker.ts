@@ -4,10 +4,8 @@ import {
     AnnotationData,
     annotationState,
     compareAnnotationOrders,
-    isAnnotationData,
     isUserAnnotation
 } from "state/Annotations";
-import { SelectedRange } from "state/UserAnnotations";
 import { MachineAnnotationData } from "state/MachineAnnotations";
 /**
  * A marker that styles the slotted content based on the relevant annotations.
@@ -19,7 +17,7 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 @customElement("d-annotation-marker")
 export class AnnotationMarker extends LitElement {
     @property({ type: Array })
-    annotations: (AnnotationData | SelectedRange)[];
+    annotations: AnnotationData[];
 
     static colors = {
         "error": "var(--error-color, red)",
@@ -31,10 +29,8 @@ export class AnnotationMarker extends LitElement {
         "question-intense": "var(--question-intense-color, orange)",
     };
 
-    static getStyle(annotation: AnnotationData | SelectedRange ): string {
-        if (!isAnnotationData(annotation)) {
-            return `background: ${AnnotationMarker.colors[annotationState.isQuestionMode ? "question-intense" : "annotation-intense"]};`;
-        } else if (["error", "warning", "info"].includes(annotation.type)) {
+    static getStyle(annotation: AnnotationData): string {
+        if (["error", "warning", "info"].includes(annotation.type)) {
             return `
                 text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
                 text-decoration-skip-ink: none;
@@ -46,12 +42,12 @@ export class AnnotationMarker extends LitElement {
         }
     }
 
-    get sortedAnnotations(): (AnnotationData | SelectedRange)[] {
+    get sortedAnnotations(): AnnotationData[] {
         return this.annotations.sort( compareAnnotationOrders );
     }
 
     get machineAnnotationMarkerSVG(): TemplateResult | undefined {
-        const firstMachineAnnotation = this.sortedAnnotations.find(a => isAnnotationData(a) && !isUserAnnotation(a)) as MachineAnnotationData | undefined;
+        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a)) as MachineAnnotationData | undefined;
         const size = 14;
         return firstMachineAnnotation && html`<svg style="position: absolute; top: ${16 - size/2}px; left: -${size/2}px" width="${size}" height="${size}" viewBox="0 0 24 24">
             <path fill="${AnnotationMarker.colors[firstMachineAnnotation.type]}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>

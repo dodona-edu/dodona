@@ -9,7 +9,6 @@ import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
-import "components/annotations/selection_marker";
 import "components/annotations/create_annotation_button";
 import { triggerSelectionStart } from "components/annotations/select";
 import "components/annotations/code_layers";

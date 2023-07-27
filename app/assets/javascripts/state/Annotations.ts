@@ -1,8 +1,7 @@
 import { MachineAnnotationData } from "state/MachineAnnotations";
-import { AnnotationType, SelectedRange, UserAnnotationData } from "state/UserAnnotations";
+import { AnnotationType, UserAnnotationData } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
-import { StateMap } from "state/state_system/StateMap";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
 export type AnnotationData = MachineAnnotationData | UserAnnotationData;
@@ -15,19 +14,7 @@ const annotationOrder: Record<AnnotationType, number> = {
     info: 4,
 };
 
-export function isAnnotationData(annotation: AnnotationData | SelectedRange): annotation is AnnotationData {
-    return "type" in annotation;
-}
-
-export function compareAnnotationOrders(a: AnnotationData | SelectedRange, b: AnnotationData | SelectedRange): number {
-    if (!isAnnotationData(a)) {
-        return -1;
-    }
-
-    if (!isAnnotationData(b)) {
-        return 1;
-    }
-
+export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): number {
     return annotationOrder[a.type] - annotationOrder[b.type];
 }
 

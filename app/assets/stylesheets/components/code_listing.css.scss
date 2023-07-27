@@ -264,6 +264,16 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           user-select: none;
         }
 
+        .selection-layer {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          color: transparent;
+          pointer-events: none;
+          user-select: none;
+        }
+
         .text-layer {
           position: absolute;
           width: 100%;
@@ -288,6 +298,14 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         overflow: visible;
         display: inline-block;
         padding-top: 1px;
+      }
+
+      .question-selection-marker {
+        background-color: $annotation-question-background-intense;
+      }
+
+      .annotation-selection-marker {
+        background-color: $annotation-user-background-intense;
       }
 
       // This is a hack to extend the drop target more to the left

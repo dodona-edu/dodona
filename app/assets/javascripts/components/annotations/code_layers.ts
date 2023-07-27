@@ -2,17 +2,18 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { AnnotationData, compareAnnotationOrders, isAnnotationData } from "state/Annotations";
+import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
+import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
+import "components/annotations/selection_layer";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 
 declare type range = {
     start: number;
     length: number;
-    annotations: (AnnotationData | SelectedRange)[];
+    annotations: AnnotationData[];
 };
 
 function numberArrayEquals(a: number[], b: number[]): boolean {
@@ -42,18 +43,8 @@ export class CodeLayers extends ShadowlessLitElement {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
-    get shouldMarkSelection(): boolean {
-        return userAnnotationState.selectedRange &&
-            userAnnotationState.selectedRange.row <= this.row &&
-            userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
-    }
-
-    get fullLineAnnotations(): (UserAnnotationData | SelectedRange)[] {
-        const annotations: (UserAnnotationData | SelectedRange)[] = this.userAnnotationsToMark;
-        if (this.shouldMarkSelection) {
-            annotations.push(userAnnotationState.selectedRange);
-        }
-        return annotations
+    get fullLineAnnotations(): UserAnnotationData[] {
+        return this.userAnnotationsToMark
             .filter(a => !a.column && !a.columns)
             .sort(compareAnnotationOrders);
     }
@@ -64,8 +55,8 @@ export class CodeLayers extends ShadowlessLitElement {
      * In that case, the range will be the part of the line that is covered by the annotation.
      * @param annotation The annotation to calculate the range for.
      */
-    getRangeFromAnnotation(annotation: AnnotationData | SelectedRange, index: number): { start: number, length: number, index: number } {
-        const isMachineAnnotation = ["error", "warning", "info"].includes((annotation as AnnotationData).type);
+    getRangeFromAnnotation(annotation: AnnotationData, index: number): { start: number, length: number, index: number } {
+        const isMachineAnnotation = ["error", "warning", "info"].includes(annotation.type);
         const rowsLength = annotation.rows ?? 1;
         let lastRow = annotation.row ? annotation.row + rowsLength : 0;
         let firstRow = annotation.row ? annotation.row + 1 : 0;
@@ -128,10 +119,7 @@ export class CodeLayers extends ShadowlessLitElement {
     }
 
     get ranges(): range[] {
-        const toMark: (AnnotationData | SelectedRange)[] = [...this.machineAnnotationsToMark, ...this.userAnnotationsToMark];
-        if (this.shouldMarkSelection) {
-            toMark.push(userAnnotationState.selectedRange);
-        }
+        const toMark: AnnotationData[] = [...this.machineAnnotationsToMark, ...this.userAnnotationsToMark];
         // We use indexes to simplify the equality check in mergeRanges
         const ranges = toMark.map((annotation, index) => this.getRangeFromAnnotation(annotation, index));
         const mergedRanges = this.mergeRanges(ranges);
@@ -152,15 +140,16 @@ export class CodeLayers extends ShadowlessLitElement {
                 tooltipLayer.push(substring);
             } else {
                 backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>`);
-                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations.filter(a => isAnnotationData(a))}>${substring}</d-annotation-tooltip>`);
+                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`);
             }
         }
 
         return html`
             <div class="code-layers">
-                <d-annotation-marker type="$background" style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
                     <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
                 </d-annotation-marker>
+                <d-selection-layer .row=${this.row}></d-selection-layer>
                 <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
                 <pre class="code-line tooltip-layer">${tooltipLayer}</pre>
             </div>`;

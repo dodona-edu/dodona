@@ -113,39 +113,6 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
         --question-color: #{$warning-container};
         --annotation-color: #{$warning-container};
-
-        pre {
-          background-color: inherit;
-
-          &.code-line-question {
-            background-color: $annotation-question-background-intense;
-          }
-
-          &.code-line-annotation {
-            background-color: $annotation-user-background-intense;
-          }
-        }
-      }
-
-      // Highlight fully selected lines, also force all annotations in the line to the selection color
-      .lineno .rouge-code pre {
-        &.code-line-question {
-          background-color: $annotation-question-background-intense;
-          width: 100%;
-
-          d-annotation-marker {
-            background-color: $annotation-question-background-intense;
-          }
-        }
-
-        &.code-line-annotation {
-          background-color: $annotation-user-background-intense;
-          width: 100%;
-
-          d-annotation-marker {
-            background-color: $annotation-user-background-intense;
-          }
-        }
       }
 
       .annotation-button {
@@ -294,6 +261,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           height: 100%;
           color: transparent;
           pointer-events: none;
+          user-select: none;
         }
 
         .text-layer {
@@ -303,6 +271,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           top: 0;
           background: transparent;
           pointer-events: none;
+          user-select: none;
         }
 
         .tooltip-layer {
@@ -311,7 +280,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
           height: 100%;
           top: 0;
           color: transparent;
-          opacity: 0.2;
+          opacity: 0.4;
         }
       }
 

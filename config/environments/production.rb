@@ -13,11 +13,11 @@ Rails.application.configure do
   config.eager_load = true
 
   # The main webapp
-  config.default_host = 'dodona.ugent.be'
-  config.action_mailer.default_url_options = { host: 'dodona.ugent.be' }
+  config.default_host = 'dodona.be'
+  config.action_mailer.default_url_options = { host: 'dodona.be' }
 
   # alternative host name
-  config.alt_host = 'dodona.be'
+  config.alt_host = 'dodona.ugent.be'
 
   config.web_hosts = [config.default_host, config.alt_host]
 
@@ -25,15 +25,15 @@ Rails.application.configure do
   config.sandbox_host = 'sandbox.dodona.be'
   config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
 
-  # Where we host our assets, can be / for current host or a domain
-  config.action_controller.asset_host = '/'
+  # Where we host our assets (a single domain, for caching)
+  config.action_controller.asset_host = 'dodona.be'
 
   # Allowed hostnames
   config.hosts << config.default_host << config.sandbox_host << config.alt_host
 
   # Where we host our assets (a single domain, for caching)
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = 'dodona.ugent.be'
+  config.asset_host = 'dodona.be'
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).

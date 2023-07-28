@@ -9,6 +9,7 @@ import {
 import { MachineAnnotationData } from "state/MachineAnnotations";
 /**
  * A marker that styles the slotted content based on the relevant annotations.
+ * It applies a background color to user annotations and a wavy underline to machine annotations.
  *
  * @prop {AnnotationData[]} annotations The annotations to use for styling.
  *

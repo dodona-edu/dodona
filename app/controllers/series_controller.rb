@@ -108,13 +108,9 @@ class SeriesController < ApplicationController
   # POST /series.json
   def create
     @series = Series.new(permitted_attributes(Series))
-    if @series.course.present?
-      authorize @series.course, :add_series?
-    else
-      @series.errors.add(:course_id, I18n.t('errors.messages.blank'))
-    end
+    authorize @series.course, :add_series?
     respond_to do |format|
-      if @series.course.present? && @series.save
+      if @series.save
         format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else

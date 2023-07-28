@@ -28,8 +28,8 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
  *
  * @element d-code-listing
  */
-@customElement("d-code-listing")
-export class CodeListing extends ShadowlessLitElement {
+@customElement("d-line-of-code")
+export class LineOfCode extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
     @property({ type: String, attribute: "rendered-code" })

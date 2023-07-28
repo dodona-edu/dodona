@@ -11,7 +11,7 @@ import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import "components/annotations/create_annotation_button";
 import { triggerSelectionStart } from "components/annotations/select";
-import "components/annotations/code_listing";
+import "components/annotations/line_of_code";
 
 /**
  * This component represents a row in the code listing.
@@ -77,7 +77,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <d-code-listing .row=${this.row} .renderedCode=${this.renderedCode}></d-code-listing>
+                    <d-line-of-code .row=${this.row} .renderedCode=${this.renderedCode}></d-code-listing>
                     <d-annotations-cell .row=${this.row}
                                         .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}

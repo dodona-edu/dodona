@@ -260,32 +260,27 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
         .selection-layer,
         .text-layer,
         .tooltip-layer {
+          position: absolute;
           width: 100%;
           height: 100%;
           top: 0;
-        }
-
-        .background-layer,
-        .selection-layer,
-        .text-layer {
           pointer-events: none;
           user-select: none;
-        }
-
-        .background-layer,
-        .selection-layer,
-        .tooltip-layer {
           color: transparent;
         }
 
-        .selection-layer,
-        .text-layer,
         .tooltip-layer {
-          position: absolute;
+          pointer-events: auto;
+          user-select: auto;
         }
 
         .text-layer {
+          color: inherit;
           background: transparent;
+        }
+
+        .background-layer {
+          position: initial;
         }
       }
 

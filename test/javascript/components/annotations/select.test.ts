@@ -1,5 +1,5 @@
 import { fixture } from "@open-wc/testing-helpers";
-import { getOffset, selectedRangeFromSelection } from "components/annotations/select";
+import { getOffset, selectedRangeFromSelection } from "components/annotations/selectionHelpers";
 import "components/annotations/code_listing_row";
 import { submissionState } from "state/Submissions";
 

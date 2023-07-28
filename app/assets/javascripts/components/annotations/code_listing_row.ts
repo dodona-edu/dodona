@@ -10,7 +10,7 @@ import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";
 import "components/annotations/create_annotation_button";
-import { triggerSelectionStart } from "components/annotations/select";
+import { triggerSelectionStart } from "components/annotations/selectionHelpers";
 import "components/annotations/line_of_code";
 
 /**

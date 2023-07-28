@@ -9,7 +9,7 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
-import { triggerSelectionEnd } from "components/annotations/select";
+import { triggerSelectionEnd } from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 

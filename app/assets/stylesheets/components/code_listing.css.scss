@@ -281,6 +281,7 @@ $annotation-user-background-intense: color.mix($annotation-user, $background, 20
 
         .background-layer {
           position: initial;
+          display: block;
         }
       }
 

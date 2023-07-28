@@ -21,7 +21,11 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
 }
 
 /**
- * renders the code with formatting and tooltips split in separate layers
+ * renders the code with formatting and tooltips split into four layers:
+ *  - the background layer renders the markup for annotations on the code (background color and underline)
+ *  - the selection layer renders the background color for the selection (split off because keeping selection logic separate from existing annotations makes it much faster)
+ *  - the tooltip layer handles all pointer events (text selection and tooltips)
+ *  - the text layer renders the code with syntax highlighting
  *
  * @prop {number} row - the row of the code to render
  * @prop {string} renderedCode - the syntax highlighted code to render
@@ -154,9 +158,12 @@ export class LineOfCode extends ShadowlessLitElement {
 
         return html`
             <div class="code-layers">
-                <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
-                    <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
-                </d-annotation-marker>
+                ${ this.fullLineAnnotations.length > 0 ? html`
+                    <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                        <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
+                    </d-annotation-marker>` : html`
+                    <pre class="code-line background-layer">${backgroundLayer}</pre>
+                `}
                 <d-selection-layer .row=${this.row}></d-selection-layer>
                 <pre class="code-line tooltip-layer">${tooltipLayer}</pre>
                 <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>

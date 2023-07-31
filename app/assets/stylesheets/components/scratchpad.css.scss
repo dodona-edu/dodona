@@ -1,10 +1,10 @@
 .offcanvas-show-btn {
   white-space: nowrap;
   font-size: 16px;
-  background-color: $content-bg;
+  background-color: var(--d-surface);
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
-  border-color: $divider;
+  border-color: var(--d-divider);
   border-bottom: 0;
   padding-top: 10px;
   padding-bottom: 10px;
@@ -16,9 +16,9 @@
 }
 
 .scratchpad-header {
-  color: $on-primary;
-  background-color: $primary;
-  height: $navbar-height;
+  color: var(--d-on-primary);
+  background-color: var(--d-primary);
+  height: var(--d-navbar-height);
   display: flex;
   position: absolute;
   top: 0;
@@ -35,15 +35,15 @@
 .scratchpad-info {
   padding-left: 20px;
   font-size: 14px;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 
   // Header has absolute position, simulate its height using margin-top
-  margin-top: $navbar-height + 5;
+  margin-top: var(--d-navbar-height) + 5;
 }
 
 #scratchpad-code-copy-btn {
   color: white;
-  background-color: $blue-gray;
+  background-color: var(--d-blue-gray);
   white-space: nowrap;
 }
 

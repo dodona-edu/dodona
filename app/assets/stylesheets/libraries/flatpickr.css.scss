@@ -3,7 +3,7 @@
 .flatpickr-day.selected,
 .flatpickr-day.selected:focus,
 .flatpickr-day.selected:hover {
-  background: $secondary;
-  color: $on-secondary;
-  border-color: $secondary;
+  background: var(--d-secondary);
+  color: var(--d-on-secondary);
+  border-color: var(--d-secondary);
 }

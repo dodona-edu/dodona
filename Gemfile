@@ -145,7 +145,7 @@ gem 'counter_culture', '~> 3.4'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.0.4'
+  gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 

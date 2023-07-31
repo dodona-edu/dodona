@@ -28,8 +28,8 @@ export class ThemePicker extends i18nMixin(ShadowlessLitElement) {
         return html`
             <li >
                 <a href="#" class="dropdown-item">
-                    <i class="mdi mdi-${ThemePicker.THEME_ICON_MAP[themeState.selectedTheme]}"></i>
-                    ${I18n.t(`js.theme.${themeState.selectedTheme}`)}
+                    <i class="mdi mdi-theme-light-dark"></i>
+                    ${I18n.t(`js.theme.theme`)}
                     <i class="mdi mdi-menu-right float-end"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-submenu dropdown-submenu-left">

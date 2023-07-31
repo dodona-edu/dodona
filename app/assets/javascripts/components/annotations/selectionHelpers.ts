@@ -133,15 +133,15 @@ export function selectedRangeFromSelection(selection: Selection): SelectedRange 
             const newRange = new Range();
             const startLine = document.querySelector(`#line-${range.row}`);
             const endLine = document.querySelector(`#line-${range.row + range.rows - 1}`);
-            newRange.setStart(startLine.querySelector(".code-line"), 0);
-            newRange.setEnd(endLine.querySelector(".code-line"), endLine.querySelector(".code-line").childNodes.length);
+            newRange.setStart(startLine.querySelector(".tooltip-layer"), 0);
+            newRange.setEnd(endLine.querySelector(".tooltip-layer"), endLine.querySelector(".tooltip-layer").childNodes.length);
             selection.addRange(newRange);
         } else {
             for (let i = range.row; i < range.row + range.rows; i++) {
                 const newRange = new Range();
                 const line = document.querySelector(`#line-${i}`);
-                newRange.setStart(line.querySelector(".code-line"), 0);
-                newRange.setEnd(line.querySelector(".code-line"), line.querySelector(".code-line").childNodes.length);
+                newRange.setStart(line.querySelector(".tooltip-layer"), 0);
+                newRange.setEnd(line.querySelector(".tooltip-layer"), line.querySelector(".tooltip-layer").childNodes.length);
                 selection.addRange(newRange);
             }
         }

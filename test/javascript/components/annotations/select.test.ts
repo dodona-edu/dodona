@@ -1,5 +1,5 @@
 import { fixture } from "@open-wc/testing-helpers";
-import { getOffset, selectedRangeFromSelection } from "components/annotations/select";
+import { getOffset, selectedRangeFromSelection } from "components/annotations/selectionHelpers";
 import "components/annotations/code_listing_row";
 import { submissionState } from "state/Submissions";
 
@@ -32,6 +32,7 @@ describe("getOffsetTest", () => {
 describe("selectedRangeFromSelectionTest", () => {
     let context;
     beforeEach(async () => {
+        submissionState.code = "hello world\n\nprint(world)";
         context = await fixture(`
             <div>
                 <span id="foo">bar</span>
@@ -40,7 +41,6 @@ describe("selectedRangeFromSelectionTest", () => {
                 <d-code-listing-row row="3" rendered-code="<span id='t4'>print</span>(<span id='t5'>w<span id='t6'>or</span>ld</span>)"></d-code-listing-row>
             </div>
         `);
-        submissionState.code = "hello world\n\nprint(world)";
         window.getSelection().removeAllRanges();
     });
 
@@ -69,10 +69,10 @@ describe("selectedRangeFromSelectionTest", () => {
         expect(selection.rangeCount).toBe(1);
         const newRange = selection.getRangeAt(0);
 
-        expect(newRange.startContainer).toBe(context.querySelector("#line-1 .code-line"));
-        expect(newRange.endContainer).toBe(context.querySelector("#line-3 .code-line"));
+        expect(newRange.startContainer).toBe(context.querySelector("#line-1 .tooltip-layer"));
+        expect(newRange.endContainer).toBe(context.querySelector("#line-3 .tooltip-layer"));
         expect(newRange.startOffset).toBe(0);
-        expect(newRange.endOffset).toBe(5);
+        expect(newRange.endOffset).toBe(4);
     });
 
     it("Should create multiple ranges if the selection contains multiple ranges", async () => {
@@ -126,10 +126,10 @@ describe("selectedRangeFromSelectionTest", () => {
         expect(selection.rangeCount).toBe(1);
         const newRange = selection.getRangeAt(0);
 
-        expect(newRange.startContainer).toBe(context.querySelector("#line-3 .code-line"));
-        expect(newRange.endContainer).toBe(context.querySelector("#line-3 .code-line"));
+        expect(newRange.startContainer).toBe(context.querySelector("#line-3 .tooltip-layer"));
+        expect(newRange.endContainer).toBe(context.querySelector("#line-3 .tooltip-layer"));
         expect(newRange.startOffset).toBe(0);
-        expect(newRange.endOffset).toBe(5);
+        expect(newRange.endOffset).toBe(4);
     });
 
     it("should remove ending empty lines from the selection", async () => {

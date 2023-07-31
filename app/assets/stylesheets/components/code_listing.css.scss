@@ -104,39 +104,6 @@
 
         --question-color: #{var(--d-warning-container)};
         --annotation-color: #{var(--d-warning-container)};
-
-        pre {
-          background-color: inherit;
-
-          &.code-line-question {
-            background-color: var(--d-annotation-question-background-intense);
-          }
-
-          &.code-line-annotation {
-            background-color: var(--d-annotation-user-background-intense);
-          }
-        }
-      }
-
-      // Highlight fully selected lines, also force all annotations in the line to the selection color
-      .lineno .rouge-code pre {
-        &.code-line-question {
-          background-color: var(--d-annotation-question-background-intense);
-          width: 100%;
-
-          d-annotation-marker {
-            background-color: var(--d-annotation-question-background-intense);
-          }
-        }
-
-        &.code-line-annotation {
-          background-color: var(--d-annotation-user-background-intense);
-          width: 100%;
-
-          d-annotation-marker {
-            background-color: var(--d-annotation-user-background-intense);
-          }
-        }
       }
 
       .annotation-button {
@@ -239,10 +206,6 @@
           white-space: pre-wrap;
           word-break: break-word;
           min-height: 20px;
-          margin-bottom: -3px;
-          padding-bottom: 3px;
-          margin-top: -2px;
-          padding-top: 2px;
         }
       }
 
@@ -279,10 +242,52 @@
     d-code-listing-row {
       display: contents;
 
+      .code-layers {
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        .background-layer,
+        .selection-layer,
+        .text-layer,
+        .tooltip-layer {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          pointer-events: none;
+          user-select: none;
+          color: transparent;
+        }
+
+        .tooltip-layer {
+          pointer-events: auto;
+          user-select: auto;
+        }
+
+        .text-layer {
+          color: inherit;
+          background: transparent;
+        }
+
+        .background-layer {
+          position: initial;
+          display: block;
+        }
+      }
+
       pre.code-line {
         overflow: visible;
         display: inline-block;
         padding-top: 1px;
+      }
+
+      .question-selection-marker {
+        background-color: var(--d-annotation-question-background-intense)
+      }
+
+      .annotation-selection-marker {
+        background-color: var(--d-annotation-user-background-intense)
       }
 
       // This is a hack to extend the drop target more to the left

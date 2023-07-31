@@ -2,7 +2,6 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 import { AnnotationType, UserAnnotationData } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
-import { StateMap } from "state/state_system/StateMap";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
 export type AnnotationData = MachineAnnotationData | UserAnnotationData;

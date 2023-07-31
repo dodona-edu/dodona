@@ -108,7 +108,7 @@ class SeriesController < ApplicationController
   # POST /series.json
   def create
     @series = Series.new(permitted_attributes(Series))
-    authorize @series, :create?
+    authorize @series
     respond_to do |format|
       if @series.save
         format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }

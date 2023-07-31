@@ -60,6 +60,11 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'create series with missing course_id should 422' do
+    post series_index_url, params: { series: { name: 'Test series' }, format: :json }
+    assert_response :unprocessable_entity
+  end
+
   test 'update series should redirect to course' do
     instance = update_request_expect(attr_hash: { series: { description: 'new description' } })
     assert_redirected_to course_url(instance.course, series: instance, anchor: instance.anchor)

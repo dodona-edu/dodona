@@ -5,13 +5,13 @@
   }
 
   td.popularity-icon {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
   }
 
   th.type-icon,
   td.type-icon {
     width: 18px;
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     padding-left: 0;
     padding-right: 0;
   }
@@ -114,7 +114,7 @@
   height: 16px;
   margin-left: 16px;
   display: block;
-  border-top: 1px solid $on-surface-muted;
+  border-top: 1px solid var(--d-on-surface-muted);
 }
 
 .footnotes {
@@ -140,7 +140,7 @@ center img {
 
 // white background for transparent images
 .strp-content-element {
-  background-color: $content-bg;
+  background-color: var(--d-surface);
 }
 
 .courses-using-exercise .course {
@@ -206,6 +206,6 @@ center img {
     position: absolute;
     right: 0;
     top: 0;
-    background-color: $code-bg;
+    background-color: var(--d-code-bg);
   }
 }

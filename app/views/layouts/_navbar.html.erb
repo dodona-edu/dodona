@@ -61,9 +61,7 @@
               <% if Export.where(user: current_user).any? %>
                 <li><%= link_to t("layout.menu.my_exports"), exports_path, class: "dropdown-item"  %></li>
               <% end %>
-              <% if policy(:pages).toggle_demo_mode? || policy(:pages).toggle_dark_mode? %>
-                <li role="separator" class="dropdown-divider"></li>
-              <% end %>
+              <li role="separator" class="dropdown-divider"></li>
               <% if policy(:pages).toggle_demo_mode? %>
                 <% if Current.demo_mode %>
                   <li>
@@ -79,21 +77,10 @@
                   </li>
                 <% end %>
               <% end %>
-              <% if policy(:pages).toggle_dark_mode? %>
-                <% if session[:dark] %>
-                  <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-toggle-switch text-primary dropdown-box"></i> <%= t(".dark_mode") %>
-                    <% end %>
-                  </li>
-                <% else %>
-                  <li>
-                    <%= link_to toggle_dark_mode_path, remote: true, method: "POST", id: "dark-mode-toggle", class: "dropdown-item"  do %>
-                      <i class="mdi mdi-toggle-switch-off dropdown-box"></i> <%= t(".dark_mode") %>
-                    <% end %>
-                  </li>
-                <% end %>
-              <% end %>
+              <d-theme-picker></d-theme-picker>
+              <script>
+                dodona.ready.then(dodona.setUserId(<%= current_user.id %>))
+              </script>
               <li role="separator" class="dropdown-divider"></li>
               <li>
                 <%= link_to t("layout.menu.log_out"), sign_out_path, :method => :delete, class: "dropdown-item"  %>

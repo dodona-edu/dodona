@@ -27,17 +27,17 @@
     }
   }
 
-  --clickable-card-color: #{$primary};
-  --on-clickable-card-color: #{$on-primary};
+  --clickable-card-color: var(--d-primary);
+  --on-clickable-card-color: var(--d-on-primary);
 
   &.colored-danger {
-    --clickable-card-color: #{$danger};
-    --on-clickable-card-color: #{$on-danger};
+    --clickable-card-color: var(--d-danger);
+    --on-clickable-card-color: var(--d-on-danger);
   }
 
   &.colored-success {
-    --clickable-card-color: #{$success};
-    --on-clickable-card-color: #{$on-success};
+    --clickable-card-color: var(--d-success);
+    --on-clickable-card-color: var(--d-on-success);
   }
 
   background: var(--clickable-card-color);

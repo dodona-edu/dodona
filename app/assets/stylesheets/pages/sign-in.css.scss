@@ -45,7 +45,7 @@
 }
 
 a.institution-sign-in {
-  color: $on-surface;
+  color: var(--d-on-surface);
 }
 
 a.institution-sign-in:link,
@@ -83,5 +83,18 @@ d-sign-in-search-bar d-datalist-input {
     a:hover {
       font-size: 1rem;
     }
+  }
+}
+
+.sign-in-dialog-wrapper .option-btn {
+  color: black;
+  background: white;
+
+  small {
+    color: gray;
+  }
+
+  &:hover {
+    opacity: 0.9;
   }
 }

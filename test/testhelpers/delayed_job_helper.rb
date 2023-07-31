@@ -11,6 +11,9 @@ module DelayedJobHelper
   end
 
   def run_delayed_jobs
-    Delayed::Job.find_each(batch_size: 100) { |d| Delayed::Worker.new.run(d) }
+    Delayed::Job.find_each(batch_size: 100) do |d|
+      Delayed::Worker.new.run(d)
+      assert_nil d.last_error
+    end
   end
 end

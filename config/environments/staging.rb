@@ -2,10 +2,10 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # The main webapp
-  config.default_host = 'naos.ugent.be'
+  config.default_host = 'naos.dodona.be'
 
   # alternative host name
-  config.alt_host = 'naos.dodona.be'
+  config.alt_host = 'naos.ugent.be'
 
   config.web_hosts = [config.default_host, config.alt_host]
 
@@ -16,8 +16,8 @@ Rails.application.configure do
   # Allowed hostnames
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
 
-  # Where we host our assets, can be / for current host or a domain
-  config.action_controller.asset_host = '/'
+  # Where we host our assets (a single domain, for caching)
+  config.action_controller.asset_host = 'naos.dodona.be'
 
   # In the development environment your application's code is reloaded on
   # every request. This slows down response time but is perfect for development

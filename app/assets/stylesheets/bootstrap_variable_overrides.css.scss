@@ -1,39 +1,7 @@
 // boostrap color overrides
 
-// primary, secondary, success, info, warning, danger and the variables for color names
-// are already overridden in m3-theme-light
-
-$body-bg: $background;
-$content-bg: $surface;
-$body-color: $on-background;
-$link-color: $primary;
-$text-secondary: $on-surface-muted;
-$text-disabled: $on-surface-muted;
-
-// dropdowns
-$dropdown-bg: $background;
-$dropdown-color: $on-background;
-$dropdown-link-color: $on-background;
-$dropdown-link-hover-bg: $secondary-container;
-$dropdown-link-hover-color: $on-secondary-container;
-$dropdown-link-active-bg: $secondary;
-
 // inputs
-$input-disabled-bg: $background;
-$input-border-color: $outline;
-$form-select-indicator-color: $on-background;
-
-// pagination
-$pagination-bg: $surface;
-$pagination-hover-bg: $surface;
-$pagination-disabled-bg: $background;
-
-$modal-content-bg: $surface;
-
-$form-check-input-checked-bg-color: $secondary;
-$form-check-input-border: 1px solid rgba($text-disabled, 0.25);
-
-$table-border-color: $divider;
+$input-border-color: var(--d-outline);
 
 // disable rfs
 $enable-rfs: false;
@@ -41,8 +9,7 @@ $enable-rfs: false;
 // disable carrets
 $enable-caret: false;
 
-// other values
-$border-radius-base: 12px;
+$link-decoration: none;
 
 // font stuff
 $font-family-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
@@ -50,8 +17,6 @@ $font-size-base: 0.875rem; // 14px;
 $baseLineHeight: 24px; /* stylelint-disable-line scss/dollar-variable-pattern */
 $line-height-base: 1.3846153846;
 $min-contrast-ratio: 3;
-
-$link-decoration: none;
 
 $paragraph-margin-bottom: 0.875rem;
 
@@ -80,3 +45,9 @@ $utilities: (
     values: inline inline-block block grid table table-row table-cell flex inline-flex none table-column
   ),
 );
+
+// checkbox color does not have css variables yet
+$form-check-input-checked-bg-color: var(--d-secondary);
+$form-check-input-focus-box-shadow: none;
+$form-check-input-focus-border: $neutral-70;
+$form-switch-focus-color: $neutral-70; // cannot use a variable in the image svg

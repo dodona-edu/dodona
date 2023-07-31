@@ -38,7 +38,6 @@ Rails.application.routes.draw do
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
     post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
-    post '/toggle_dark_mode' => 'pages#toggle_dark_mode'
 
     get '/status' => redirect("https://p.datadoghq.com/sb/sil3oh7xurb0ujwu-3dfa8d0b077b83f3afbee49f0641abfd"), :as => :status
 

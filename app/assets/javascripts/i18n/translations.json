@@ -408,6 +408,12 @@
       },
       "submissions": "submissions",
       "submissions_on": "submissions on",
+      "theme": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System",
+        "theme": "Theme"
+      },
       "timeseries_desc": "This graph shows on which moments the students submitted the most solutions.",
       "timeseries_title": "Submissions over time",
       "total": "total",
@@ -918,6 +924,12 @@
       },
       "submissions": "oplossingen",
       "submissions_on": "ingediende oplossingen op",
+      "theme": {
+        "dark": "Donker",
+        "light": "Licht",
+        "system": "Systeem",
+        "theme": "Stijl"
+      },
       "timeseries_desc": "Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.",
       "timeseries_title": "Ingediende oplossingen over tijd",
       "total": "totaal aantal",

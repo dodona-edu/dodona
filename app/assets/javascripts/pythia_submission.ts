@@ -1,6 +1,7 @@
 import fscreen from "fscreen";
 import { showInfoModal } from "./modal";
 import { fetch } from "./util.js";
+import { html } from "lit";
 
 function initPythiaSubmissionShow(submissionCode: string, activityPath: string): void {
     function init(): void {
@@ -69,15 +70,15 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
     }
 
     function showInlineFile(name: string, content: string): void {
-        showInfoModal(name, `<div class='code'>${content}</div>`);
+        showInfoModal(name, html`<div class='code'>${content}</div>`);
     }
 
     function showRealFile(name: string, activityPath: string, filePath: string): void {
         const path = activityPath + "/" + filePath;
         const random = Math.floor(Math.random() * 10000 + 1);
         showInfoModal(
-            `${name} <a href='${path}' title='Download' download><i class='mdi mdi-download'></i></a>`,
-            `<div class='code' id='file-${random}'>Loading...</div>`
+            html`${name} <a href='${path}' title='Download' download><i class='mdi mdi-download'></i></a>`,
+            html`<div class='code' id='file-${random}'>Loading...</div>`
         );
 
         fetch(path, {
@@ -193,7 +194,7 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
     function createTutor(codeTrace: string): void {
         showInfoModal(
             "Python Tutor",
-            `<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>`,
+            html`<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>`,
             { allowFullscreen: true }
         );
         const modal = document.querySelector("#tutor #info-modal");

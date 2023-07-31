@@ -144,9 +144,11 @@ export class LineOfCode extends ShadowlessLitElement {
     render(): TemplateResult {
         const backgroundLayer = [];
         const tooltipLayer = [];
+        // This is a hack to avoid these layers from showing up when searching the page (eg using ctrl+f)
+        const obfuscatedCode = this.code.replace(/[a-zA-Z0-9]/g, "Ω");
 
         for (const range of this.ranges) {
-            const substring = this.code.substring(range.start, range.start + range.length);
+            const substring = obfuscatedCode.substring(range.start, range.start + range.length);
             if (!range.annotations.length) {
                 backgroundLayer.push(substring);
                 tooltipLayer.push(substring);
@@ -164,7 +166,7 @@ export class LineOfCode extends ShadowlessLitElement {
                     </d-annotation-marker>` : html`
                     <pre class="code-line background-layer">${backgroundLayer}</pre>
                 `}
-                <d-selection-layer .row=${this.row}></d-selection-layer>
+                <d-selection-layer code="${obfuscatedCode}" .row=${this.row}></d-selection-layer>
                 <pre class="code-line tooltip-layer">${tooltipLayer}</pre>
                 <pre class="code-line text-layer">${unsafeHTML(this.renderedCode)}</pre>
             </div>`;

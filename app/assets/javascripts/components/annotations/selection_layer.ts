@@ -17,11 +17,8 @@ import { annotationState } from "state/Annotations";
 class SelectionLayer extends ShadowlessLitElement {
     @property({ type: Number })
     row: number;
-
-    get code(): string {
-        return submissionState.codeByLine[this.row - 1];
-    }
-
+    @property({ type: String })
+    code: string;
 
     get shouldMarkSelection(): boolean {
         return userAnnotationState.selectedRange &&

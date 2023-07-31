@@ -17,7 +17,7 @@
   <%= javascript_include_tag 'runtime' %>
   <%= stylesheet_link_tag "application" %>
   <script>
-    window.dodona.setTheme("<%= params[:theme] || "system" %>");
+    window.dodona.setTheme("<%= params[:theme] || "light" %>");
   </script>
   <%= yield :javascripts %>
 </head>

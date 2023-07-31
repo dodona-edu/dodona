@@ -77,7 +77,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    <d-line-of-code .row=${this.row} .renderedCode=${this.renderedCode}></d-code-listing>
+                    <d-line-of-code .row=${this.row} .renderedCode=${this.renderedCode}></d-line-of-code>
                     <d-annotations-cell .row=${this.row}
                                         .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}

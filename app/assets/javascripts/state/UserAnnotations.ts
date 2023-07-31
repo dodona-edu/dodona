@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { createDelayer, fetch } from "util.js";
 import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";
@@ -70,7 +70,22 @@ class UserAnnotationState extends State {
     readonly byId = new StateMap<number, UserAnnotationData>();
 
     @stateProperty public selectedRange: SelectedRange | null = null;
-    @stateProperty public showForm = false;
+    @stateProperty public dragStartRow: number | null = null;
+    @stateProperty public formShown = false;
+    @stateProperty private _createButtonExpanded = false;
+    private expansionDelayer = createDelayer();
+
+    public set isCreateButtonExpanded(value: boolean) {
+        this.expansionDelayer(() => this._createButtonExpanded = value, 250);
+    }
+
+    public get isCreateButtonExpanded(): boolean {
+        return this._createButtonExpanded;
+    }
+
+    constructor() {
+        super();
+    }
 
     get count(): number {
         return this.byId.size;
@@ -81,7 +96,7 @@ class UserAnnotationState extends State {
         this.rootIdsByLine.clear();
         this.rootIdsByMarkedLine.clear();
         this.selectedRange = null;
-        this.showForm = false;
+        this.formShown = false;
     }
 
     // public for testing purposes

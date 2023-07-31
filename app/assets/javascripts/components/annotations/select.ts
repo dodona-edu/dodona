@@ -177,7 +177,7 @@ function removeSelectionClasses(): void {
 }
 
 export async function triggerSelectionEnd(): Promise<void> {
-    if (userAnnotationState.showForm) {
+    if (userAnnotationState.formShown) {
         removeSelectionClasses();
         return;
     }
@@ -206,7 +206,7 @@ export function triggerSelectionStart(e: PointerEvent): void {
         return;
     }
 
-    if (!(e.target as Element).closest(".annotation") && !userAnnotationState.showForm) {
+    if (!(e.target as Element).closest(".annotation") && !userAnnotationState.formShown) {
         addSelectionClasses();
         if (!(e.target as Element).closest("button")) {
             userAnnotationState.selectedRange = undefined;

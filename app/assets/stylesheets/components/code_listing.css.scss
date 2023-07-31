@@ -154,39 +154,31 @@
           border-radius: 12px;
           background: var(--d-secondary-container);
           color: var(--d-on-secondary-container);
-          padding: 6px;
           transition: max-width 0.2s ease-in-out, padding 0.2s ease-in-out;
           justify-content: end;
           overflow: hidden;
+          padding: 6px 8px;
+          min-width: 40px;
 
           @include shadow-z2;
 
-          .text {
-            display: none;
+          .mdi {
+            padding: 0;
+            padding-left: 8px;
           }
         }
 
         @include media-breakpoint-up(lg) {
-          &:hover,
           &.expanded {
             .btn-fab-small-flex {
               max-width: 1000px;
               padding-left: 24px;
               padding-right: 16px;
-
-              .text {
-                display: inline;
-              }
-
-              .mdi {
-                padding: 0;
-                padding-left: 8px;
-              }
             }
           }
         }
 
-        &.expanded {
+        &.show {
           display: inline-flex;
         }
 
@@ -232,10 +224,10 @@
 
         &.hide {
           display: none;
+        }
 
-          &.expanded {
-            display: inline-flex;
-          }
+        &.show {
+          display: inline-flex;
         }
       }
 
@@ -291,6 +283,18 @@
         overflow: visible;
         display: inline-block;
         padding-top: 1px;
+      }
+
+      // This is a hack to extend the drop target more to the left
+      .drop-target-extension {
+        position: absolute;
+        width: 200px;
+        height: 20px;
+        top: 0;
+        right: -4px;
+        opacity: 0;
+        display: block;
+        left: -200px;
       }
     }
   }

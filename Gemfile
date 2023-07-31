@@ -86,7 +86,7 @@ gem 'mail_form', '~> 1.10.0'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.3.1'
 
 # impersonate users
 gem 'pretender', '~> 0.5.0'
@@ -141,7 +141,7 @@ gem 'ddtrace', '~> 1.12.1'
 gem 'after_commit_everywhere', '~> 1.3.1'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.3'
+gem 'counter_culture', '~> 3.4'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

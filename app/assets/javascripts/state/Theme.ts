@@ -1,6 +1,6 @@
 import { stateProperty } from "state/state_system/StateProperty";
 import { State } from "state/state_system/State";
-import { getURLParameter, updateURLParameter } from "util.js";
+import { getURLParameter, updateURLParameter } from "utilities";
 
 // The actual theme applied to the page
 export type Theme = "light" | "dark";

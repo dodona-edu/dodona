@@ -34,7 +34,7 @@
       </div>
       <% if policy(@course).destroy? %>
         <div class="card-actions card-border">
-          <%= link_to @course, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-filled bg-danger", title: t(".delete.button") do %>
+          <%= link_to @course, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-filled d-btn-danger", title: t(".delete.button") do %>
             <%= t('.delete.button') %>
           <% end %>
         </div>

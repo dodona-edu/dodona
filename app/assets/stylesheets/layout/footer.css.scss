@@ -1,5 +1,7 @@
-$footer-height: 80px;
-$footer-height-sm: 180px;
+:root {
+  --d-footer-height: 80px;
+  --d-footer-height-sm: 180px;
+}
 
 .footer {
   position: absolute;
@@ -14,7 +16,7 @@ $footer-height-sm: 180px;
   padding: 32px;
   color: $gray-80;
   background-color: $gray-20;
-  height: $footer-height;
+  height: var(--d-footer-height);
 }
 
 .footer::after {
@@ -51,7 +53,7 @@ $footer-height-sm: 180px;
 @include media-breakpoint-down(md) {
   .footer {
     flex-direction: column;
-    height: $footer-height-sm;
+    height: var(--d-footer-height-sm);
   }
 
   .footer-block {

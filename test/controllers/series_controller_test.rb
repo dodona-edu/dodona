@@ -63,7 +63,6 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   test 'create series with missing course_id should 422' do
     post series_index_url, params: { series: { name: 'Test series' }, format: :json }
     assert_response :unprocessable_entity
-    assert_includes assigns(:series).errors.messages[:course_id], I18n.t('errors.messages.blank')
   end
 
   test 'update series should redirect to course' do

@@ -1,22 +1,17 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import "components/annotations/annotations_cell";
-import "components/annotations/annotation_marker";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "utilities";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
-import { AnnotationData, annotationState, compareAnnotationOrders } from "state/Annotations";
-import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { wrapRangesInHtml, range, wrapRangesInHtmlCached } from "mark";
-import { SelectedRange, UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { AnnotationMarker } from "components/annotations/annotation_marker";
-import "components/annotations/selection_marker";
+import { annotationState } from "state/Annotations";
+import { userAnnotationState } from "state/UserAnnotations";
 import "components/annotations/create_annotation_button";
-import { triggerSelectionStart } from "components/annotations/select";
+import { triggerSelectionStart } from "components/annotations/selectionHelpers";
+import "components/annotations/line_of_code";
 
 /**
  * This component represents a row in the code listing.
@@ -35,60 +30,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: String, attribute: "rendered-code" })
     renderedCode: string;
 
-
-    /**
-     * Calculates the range of the code that is covered by the given annotation.
-     * If the annotation spans multiple lines, the range will be the whole line unless this is the first or last line.
-     * In that case, the range will be the part of the line that is covered by the annotation.
-     * @param annotation The annotation to calculate the range for.
-     */
-    getRangeFromAnnotation(annotation: AnnotationData | SelectedRange): range {
-        const isMachineAnnotation = ["error", "warning", "info"].includes((annotation as AnnotationData).type);
-        const rowsLength = annotation.rows ?? 1;
-        let lastRow = annotation.row ? annotation.row + rowsLength : 0;
-        let firstRow = annotation.row ? annotation.row + 1 : 0;
-
-        if (!isMachineAnnotation) {
-            // rows on user annotations are 1-based, so we need to subtract 1
-            firstRow -= 1;
-            lastRow -= 1;
-        }
-
-        let start = 0;
-        if (this.row === firstRow) {
-            start = annotation.column || 0;
-        }
-
-        let length = Infinity;
-        if (this.row === lastRow) {
-            if (annotation.column !== undefined && annotation.column !== null) {
-                const defaultLength = isMachineAnnotation ? 0 : Infinity;
-                length = annotation.columns || defaultLength;
-            }
-        }
-
-        return { start: start, length: length, data: annotation };
-    }
-
-    get wrappedCode(): string {
-        const annotationsToMark = [...this.userAnnotationsToMark, ...this.machineAnnotationsToMark].sort(compareAnnotationOrders);
-        const codeToMark = this.renderedCode;
-        let annotationsMarked = wrapRangesInHtmlCached(
-            codeToMark,
-            annotationsToMark.map(a => this.getRangeFromAnnotation(a)),
-            "d-annotation-marker",
-            (node: AnnotationMarker, range) => {
-                // these nodes will be recompiled to html, so we need to store the data in a json string
-                const annotations = JSON.parse(node.getAttribute("annotations")) || [];
-                annotations.push(range.data);
-                node.setAttribute("annotations", JSON.stringify(annotations));
-            });
-        if ( userAnnotationState.formShown && this.shouldMarkSelection ) {
-            annotationsMarked = wrapRangesInHtml(annotationsMarked, [this.getRangeFromAnnotation(userAnnotationState.selectedRange)], "d-selection-marker");
-        }
-        return annotationsMarked;
-    }
-
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         initTooltips(this);
@@ -99,20 +40,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
         return userState.hasPermission("annotation.create");
     }
 
-    get machineAnnotationsToMark(): MachineAnnotationData[] {
-        return machineAnnotationState.byMarkedLine.get(this.row) || [];
-    }
-
-    get userAnnotationsToMark(): UserAnnotationData[] {
-        return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
-    }
-
-    get shouldMarkSelection(): boolean {
-        return userAnnotationState.selectedRange &&
-            userAnnotationState.selectedRange.row <= this.row &&
-            userAnnotationState.selectedRange.row + (userAnnotationState.selectedRange.rows ?? 1) > this.row;
-    }
-
     get formShown(): boolean {
         const range = userAnnotationState.selectedRange;
         return userAnnotationState.formShown && range && range.row + range.rows - 1 === this.row;
@@ -121,20 +48,6 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     closeForm(): void {
         userAnnotationState.formShown = false;
         userAnnotationState.selectedRange = undefined;
-    }
-
-    get fullLineAnnotations(): UserAnnotationData[] {
-        return this.userAnnotationsToMark
-            .filter(a => !a.column&& !a.columns)
-            .sort(compareAnnotationOrders);
-    }
-
-    get hasFullLineSelection(): boolean {
-        return this.shouldMarkSelection && !userAnnotationState.selectedRange.column && !userAnnotationState.selectedRange.columns;
-    }
-
-    get codeLineClass(): string {
-        return this.hasFullLineSelection ? `code-line-${annotationState.isQuestionMode ? "question" : "annotation"}` : "";
     }
 
     dragEnter(e: DragEvent): void {
@@ -164,13 +77,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>
                 <td class="rouge-code">
-                    ${this.fullLineAnnotations.length > 0 ? html`
-                        <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
-                            <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
-                        </d-annotation-marker>
-                    ` : html`
-                        <pre class="code-line ${this.codeLineClass}">${unsafeHTML(this.wrappedCode)}</pre>
-                    `}
+                    <d-line-of-code .row=${this.row} .renderedCode=${this.renderedCode}></d-line-of-code>
                     <d-annotations-cell .row=${this.row}
                                         .formShown="${this.formShown}"
                                         @close-form=${() => this.closeForm()}

@@ -2,24 +2,24 @@
   shape-rendering: crispedges;
 
   .correct {
-    stroke: $success;
+    stroke: var(--d-success);
   }
 
   .info {
-    stroke: $info;
+    stroke: var(--d-info);
   }
 
   .wrong {
-    stroke: $danger;
+    stroke: var(--d-danger);
   }
 
   .not-started {
-    stroke: $divider;
+    stroke: var(--d-divider);
   }
 }
 
 .progress-chart.colored-muted {
-  --progress-chart-color: #{$text-muted};
+  --progress-chart-color: var(--d-text-muted);
 
   .correct {
     stroke: var(--progress-chart-color);

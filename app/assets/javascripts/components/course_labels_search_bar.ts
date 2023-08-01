@@ -104,7 +104,7 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
                         @input=${e => this.handleInput(e)}
                         placeholder="${I18n.t("js.course_labels_search_bar.placeholder")}"
                     ></d-datalist-input>
-                    <a type="button" class="btn btn-primary add-button" @click="${this.addLabel}">${I18n.t("js.course_labels_search_bar.add")}</a>
+                    <a type="button" class="btn btn-filled add-button" @click="${this.addLabel}">${I18n.t("js.course_labels_search_bar.add")}</a>
                 </div>
                 <span class="help-block">${I18n.t("js.course_labels_search_bar.edit_explanation")}</span>
             </div>

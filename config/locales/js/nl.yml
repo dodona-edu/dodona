@@ -315,5 +315,10 @@ nl:
         show_all: Toon alle annotaties
         hide_all: Verberg alle annotaties
         show_errors: Enkel errors en opmerkingen tonen
+    theme:
+      light: Licht
+      dark: Donker
+      system: Systeem
+      theme: Stijl
 
 

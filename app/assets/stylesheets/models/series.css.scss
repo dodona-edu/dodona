@@ -23,24 +23,24 @@
 .series-activity-list .status-icon,
 #activities-table-wrapper .status-icon {
   text-align: right;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .deadline-future {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .deadline-passed {
-  color: $danger;
+  color: var(--d-danger);
 }
 
 .deadline-ok {
-  color: $success;
+  color: var(--d-success);
 }
 
 .submission-status-button {
   a {
-    color: $primary;
+    color: var(--d-primary);
   }
 }
 
@@ -76,10 +76,10 @@
   padding: 0;
   overflow: visible;
 
-  --icon-color: #{$gray};
-  --icon-background-color: #{$content-bg};
-  --deadline-icon-background-color: #{$content-bg};
-  --deadline-icon-color: #{$success};
+  --icon-color: var(--d-gray);
+  --icon-background-color: var(--d-surface);
+  --deadline-icon-background-color: var(--d-surface);
+  --deadline-icon-color: var(--d-success);
 
   #rainbow {
     --red: #{$red-70};
@@ -91,16 +91,16 @@
   }
 
   &.deadline-missed {
-    --deadline-icon-color: #{$danger};
+    --deadline-icon-color: var(--d-danger);
   }
 
   &.wrong {
-    --icon-color: #{$danger};
+    --icon-color: var(--d-danger);
   }
 
   &.started,
   &.completed.deadline-missed {
-    --icon-color: #{$success};
+    --icon-color: var(--d-success);
   }
 
   &.completed:not(.deadline-missed) {
@@ -135,7 +135,7 @@
 
 .skeleton-table {
   .sk-p {
-    background-image: linear-gradient($skeleton-color 100%, transparent 0);
+    background-image: linear-gradient(var(--d-skeleton-color) 100%, transparent 0);
     width: 116px;
     background-size: 100px 12px;
     background-repeat: no-repeat;
@@ -144,7 +144,7 @@
   }
 
   .sk-s {
-    background-image: linear-gradient($skeleton-color 100%, transparent 0);
+    background-image: linear-gradient(var(--d-skeleton-color) 100%, transparent 0);
     width: 126px;
     background-size: 110px 12px;
     background-repeat: no-repeat;
@@ -153,7 +153,7 @@
   }
 
   .sk-i {
-    background-image: linear-gradient($skeleton-color 100%, transparent 0);
+    background-image: linear-gradient(var(--d-skeleton-color) 100%, transparent 0);
     display: block;
     background-size: 17px 12px;
     background-repeat: no-repeat;
@@ -183,7 +183,7 @@
 
 .graph-info {
   margin-left: 5px;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .svg-icon-btn {
@@ -197,6 +197,6 @@
 .d3-tooltip-label {
   font-size: 12px;
   paint-order: stroke;
-  stroke: $content-bg;
+  stroke: var(--d-surface);
   stroke-width: 2px;
 }

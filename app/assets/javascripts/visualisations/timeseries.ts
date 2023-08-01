@@ -3,6 +3,7 @@
 import * as d3 from "d3";
 import { RawData } from "./series_graph";
 import { SeriesExerciseGraph } from "./series_exercise_graph";
+import { themeState } from "state/Theme";
 
 export class TimeseriesGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/timeseries?series_id=";
@@ -46,9 +47,9 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
 
         super.draw(animation);
 
-        const emptyColor = this.darkMode ? "#303034" : "#fcfcff";
-        const lowColor = this.darkMode ? "#3e434d" : "#d0e4ff";
-        const highColor = this.darkMode ? "#9ccaff" : "#0061a6";
+        const emptyColor = themeState.getCSSVariable("--d-off-surface");
+        const highColor = themeState.getCSSVariable("--d-primary");
+        const lowColor = d3.interpolateRgb(emptyColor, highColor)(0.2);
 
         const end = new Date(this.maxDate);
         end.setHours(0, 0, 0, 0); // bin and domain seem to handle end differently

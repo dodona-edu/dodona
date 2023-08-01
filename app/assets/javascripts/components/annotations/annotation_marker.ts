@@ -34,6 +34,7 @@ export class AnnotationMarker extends LitElement {
         if (["error", "warning", "info"].includes(annotation.type)) {
             return `
                 text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
+                -webkit-text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
                 text-decoration-skip-ink: none;
             `;
         } else {

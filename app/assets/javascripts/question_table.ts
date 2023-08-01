@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 import { InactiveTimeout } from "auto_reload";
 
 const questionContainerId = "question-container";

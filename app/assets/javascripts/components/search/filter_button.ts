@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import { searchQueryState } from "state/SearchQuery";
 import { StateController } from "state/state_system/StateController";
 

@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 
 export function initInlineEditButton(tableElement: HTMLElement): void {
     tableElement.querySelectorAll(".edit-button").forEach(item => {

@@ -1,5 +1,5 @@
 import ClipboardJS from "clipboard";
-import { ready, tooltip } from "util.js";
+import { ready, tooltip } from "utilities";
 
 export async function initClipboard(): Promise<void> {
     await ready;

@@ -3,7 +3,7 @@ import { render, html, LitElement, TemplateResult } from "lit";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
 import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
 import { StateController } from "state/state_system/StateController";
-import { createDelayer } from "util.js";
+import { createDelayer } from "utilities";
 
 const setInstancesDelayer = createDelayer();
 /**

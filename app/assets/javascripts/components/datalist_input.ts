@@ -4,7 +4,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/meta/watch_mixin";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { htmlEncode } from "util.js";
+import { htmlEncode } from "utilities";
 
 export type Option = {label: string, value: string, extra?: string};
 

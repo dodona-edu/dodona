@@ -1,7 +1,7 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { initTooltips, ready } from "util.js";
+import { initTooltips, ready } from "utilities";
 
 /**
  * A button that copies the text content of a given element to the clipboard.

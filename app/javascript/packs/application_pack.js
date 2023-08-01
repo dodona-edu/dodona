@@ -32,7 +32,7 @@ window.bootstrap = bootstrap;
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
+import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "utilities.ts";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import "components/saved_annotations/saved_annotation_list";

@@ -5,7 +5,7 @@ import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnno
 import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import { annotationState, compareAnnotationOrders } from "state/Annotations";
 
 /**

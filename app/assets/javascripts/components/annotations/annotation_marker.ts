@@ -38,6 +38,7 @@ export class AnnotationMarker extends LitElement {
                 text-decoration-color: ${AnnotationMarker.colors[annotation.type]};
                 text-decoration-thickness: 1px;
                 text-decoration-skip-ink: none;
+                text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
             `;
         } else {
             return `

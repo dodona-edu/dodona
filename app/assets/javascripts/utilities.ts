@@ -64,7 +64,7 @@ function updateArrayURLParameter(_url: string, param: string, _paramVals: string
     return url.toString();
 }
 
-function getURLParameter(name: string, _url: string): string {
+function getURLParameter(name: string, _url?: string): string {
     const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.get(name);
 }

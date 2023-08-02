@@ -1,8 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { MachineAnnotationData } from "state/MachineAnnotations";
-import { annotationState } from "state/Annotations";
+import { MachineAnnotation } from "state/MachineAnnotations";
 
 
 /**
@@ -10,12 +9,12 @@ import { annotationState } from "state/Annotations";
  *
  * @element d-machine-annotation
  *
- * @prop {MachineAnnotationData} data - The machine annotation data.
+ * @prop {MachineAnnotation} data - The machine annotation data.
  */
 @customElement("d-machine-annotation")
-export class MachineAnnotation extends ShadowlessLitElement {
+export class MachineAnnotationComponent extends ShadowlessLitElement {
     @property({ type: Object })
-    data: MachineAnnotationData;
+    data: MachineAnnotation;
 
     protected get hasNotice(): boolean {
         return this.data.externalUrl !== null && this.data.externalUrl !== undefined;

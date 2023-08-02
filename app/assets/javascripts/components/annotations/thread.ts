@@ -1,8 +1,7 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import {
-
-    UserAnnotationData,
+    UserAnnotation,
     UserAnnotationFormData, userAnnotationState
 } from "state/UserAnnotations";
 import { html, TemplateResult } from "lit";
@@ -31,11 +30,11 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    get data(): UserAnnotationData {
+    get data(): UserAnnotation {
         return userAnnotationState.byId.get(this.rootId);
     }
 
-    get openQuestions(): UserAnnotationData[] | undefined {
+    get openQuestions(): UserAnnotation[] | undefined {
         return [this.data, ...this.data.responses]
             .filter(response => response.question_state !== undefined && response.question_state !== "answered");
     }

@@ -1,12 +1,11 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, LitElement, TemplateResult } from "lit";
 import {
-    AnnotationData,
-    annotationState,
+    Annotation,
     compareAnnotationOrders,
     isUserAnnotation
 } from "state/Annotations";
-import { MachineAnnotationData } from "state/MachineAnnotations";
+import { MachineAnnotation } from "state/MachineAnnotations";
 /**
  * A marker that styles the slotted content based on the relevant annotations.
  * It applies a background color to user annotations and a wavy underline to machine annotations.
@@ -18,7 +17,7 @@ import { MachineAnnotationData } from "state/MachineAnnotations";
 @customElement("d-annotation-marker")
 export class AnnotationMarker extends LitElement {
     @property({ type: Array })
-    annotations: AnnotationData[];
+    annotations: Annotation[];
 
     static colors = {
         "error": "var(--error-color, red)",
@@ -30,7 +29,7 @@ export class AnnotationMarker extends LitElement {
         "question-intense": "var(--question-intense-color, orange)",
     };
 
-    static getStyle(annotation: AnnotationData): string {
+    static getStyle(annotation: Annotation): string {
         if (["error", "warning", "info"].includes(annotation.type)) {
             // shorthand notation does not work in safari
             return `
@@ -47,12 +46,12 @@ export class AnnotationMarker extends LitElement {
         }
     }
 
-    get sortedAnnotations(): AnnotationData[] {
+    get sortedAnnotations(): Annotation[] {
         return this.annotations.sort( compareAnnotationOrders );
     }
 
     get machineAnnotationMarkerSVG(): TemplateResult | undefined {
-        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a)) as MachineAnnotationData | undefined;
+        const firstMachineAnnotation = this.sortedAnnotations.find(a => !isUserAnnotation(a)) as MachineAnnotation | undefined;
         const size = 14;
         return firstMachineAnnotation && html`<svg style="position: absolute; top: ${16 - size/2}px; left: -${size/2}px" width="${size}" height="${size}" viewBox="0 0 24 24">
             <path fill="${AnnotationMarker.colors[firstMachineAnnotation.type]}" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6l-6 6l1.41 1.41Z"/>

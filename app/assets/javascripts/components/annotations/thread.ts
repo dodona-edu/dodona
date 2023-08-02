@@ -86,7 +86,9 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return this.data ? html`
-            <div class="thread ${annotationState.isVisible(this.data) ? "" : "hidden"}">
+            <div class="thread ${annotationState.isVisible(this.data) ? "" : "hidden"}"
+                 @mouseenter="${() => this.data.isHovered = true}"
+                 @mouseleave="${() => this.data.isHovered = false}">
                 <d-user-annotation .data=${this.data}></d-user-annotation>
                 ${this.data.responses.map(response => html`
                     <d-user-annotation .data=${response}></d-user-annotation>

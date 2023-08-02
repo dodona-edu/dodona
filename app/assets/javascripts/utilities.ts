@@ -208,24 +208,6 @@ const ready = new Promise<void>(resolve => {
     }
 });
 
-// source https://github.com/janl/mustache.js/blob/master/mustache.js#L73
-const entityMap = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    "\"": "&quot;",
-    "'": "&#39;",
-    "/": "&#x2F;",
-    "`": "&#x60;",
-    "=": "&#x3D;"
-};
-
-function htmlEncode(str: string): string {
-    return String(str).replace(/[&<>"'`=/]/g, function (s) {
-        return entityMap[s];
-    });
-}
-
 /**
  * Returns the first parent of an element that has at least all of the given classes.
  * Returns null if no such parent exists.
@@ -262,6 +244,5 @@ export {
     setDocumentTitle,
     initDatePicker,
     ready,
-    htmlEncode,
     getParentByClassName,
 };

@@ -202,12 +202,6 @@ const entityMap = {
     "=": "&#x3D;"
 };
 
-function htmlEncode(str) {
-    return String(str).replace(/[&<>"'`=/]/g, function (s) {
-        return entityMap[s];
-    });
-}
-
 /**
  * Returns the first parent of an element that has at least all of the given classes.
  * Returns null if no such parent exists.
@@ -244,6 +238,5 @@ export {
     setDocumentTitle,
     initDatePicker,
     ready,
-    htmlEncode,
     getParentByClassName,
 };

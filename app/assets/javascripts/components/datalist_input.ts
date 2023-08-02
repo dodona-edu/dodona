@@ -3,8 +3,6 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { ref, Ref, createRef } from "lit/directives/ref.js";
 import { watchMixin } from "components/meta/watch_mixin";
-import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { htmlEncode } from "util.js";
 
 export type Option = {label: string, value: string, extra?: string};
 
@@ -171,10 +169,15 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
         this.getElementsByClassName("active")[0]?.scrollIntoView({ block: "nearest" });
     }
 
-    mark(s: string): TemplateResult {
-        return this.filter ?
-            html`${unsafeHTML(htmlEncode(s).replace(new RegExp(this.filter, "gi"), m => `<b>${m}</b>`))}` :
-            html`${s}`;
+    mark(s: string): (TemplateResult | string)[] | string {
+        if (!this.filter) {
+            return s;
+        }
+
+        // using group syntax () to preserve matches in the split string
+        const regex = new RegExp(`(${this.filter})`, "gi");
+        // split the string on the regex, and make the matches bold
+        return s.split(regex).map(p => regex.test(p) ? html`<b>${p}</b>` : p);
     }
 
     render(): TemplateResult {

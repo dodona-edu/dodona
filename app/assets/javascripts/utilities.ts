@@ -26,7 +26,7 @@ import flatpickr from "flatpickr";
  *
  *  @return {function(TimerHandler, number): void}
  */
-function createDelayer(): (callback: () => void, ms?: number) => void {
+function createDelayer(): (callback: () => void, ms: number) => void {
     let timer = 0;
     return (callback, ms) => {
         clearTimeout(timer);
@@ -69,7 +69,7 @@ function getURLParameter(name: string, _url?: string): string {
     return url.searchParams.get(name);
 }
 
-function getArrayURLParameter(name: string, _url: string): string[] {
+function getArrayURLParameter(name: string, _url?: string): string[] {
     const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.getAll(`${name}[]`);
 }
@@ -84,17 +84,6 @@ function checkIframe(): void {
     if (isInIframe()) {
         document.querySelector("#iframe-warning").classList.remove("hidden");
     }
-}
-
-// TODO: remove?
-// add CSRF token to each ajax-request
-async function initCSRF(): Promise<void> {
-    await ready;
-    $.ajaxSetup({
-        "headers": {
-            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
-        },
-    });
 }
 
 /**

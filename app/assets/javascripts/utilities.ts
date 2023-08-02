@@ -225,7 +225,6 @@ export {
     getArrayURLParameter,
     checkTimeZone,
     checkIframe,
-    initCSRF,
     tooltip,
     initTooltips,
     makeInvisible,

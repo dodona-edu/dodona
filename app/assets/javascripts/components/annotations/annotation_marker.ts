@@ -32,12 +32,12 @@ export class AnnotationMarker extends LitElement {
 
     static getStyle(annotation: AnnotationData): string {
         if (["error", "warning", "info"].includes(annotation.type)) {
+            // shorthand notation does not work in safari
             return `
-                text-decoration: wavy underline ${AnnotationMarker.colors[annotation.type]} 1px;
-                -webkit-text-decoration: underline;
-                -webkit-text-decoration-color: ${AnnotationMarker.colors[annotation.type]};
-                -webkit-text-decoration-thickness: 1px;
-                -webkit-text-decoration-style: wavy;
+                text-decoration-line: underline;
+                text-decoration-color: ${AnnotationMarker.colors[annotation.type]};
+                text-decoration-thickness: 1px;
+                text-decoration-style: wavy;
                 text-decoration-skip-ink: none;
             `;
         } else {

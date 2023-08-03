@@ -565,3 +565,9 @@ d-selection-marker {
     }
   }
 }
+
+.no-selection-inside-annotations {
+  d-code-listing-row td d-annotations-cell {
+    user-select: none;
+  }
+}

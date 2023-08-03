@@ -226,6 +226,23 @@ function getParentByClassName(element, classNames) {
     return null;
 }
 
+/**
+ * When setting innerHTML, code inside the <script> tag doesn't get executed.
+ * This function solves that problem.
+ */
+function setInnerHTML(el, html) {
+    el.innerHTML = html;
+    Array.from(el.querySelectorAll("script")).forEach( oldScriptEl => {
+        const newScriptEl = document.createElement("script");
+        Array.from(oldScriptEl.attributes).forEach( attr => {
+            newScriptEl.setAttribute(attr.name, attr.value);
+        });
+        const scriptText = document.createTextNode(oldScriptEl.innerHTML);
+        newScriptEl.appendChild(scriptText);
+        oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
+    });
+}
+
 // insert `cached` function here after move to typescript
 // the function is currently in `app/assets/javascripts/mark.ts`
 
@@ -249,4 +266,5 @@ export {
     ready,
     htmlEncode,
     getParentByClassName,
+    setInnerHTML,
 };

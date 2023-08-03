@@ -27,10 +27,10 @@ import flatpickr from "flatpickr";
  *  @return {function(TimerHandler, number): void}
  */
 function createDelayer(): (callback: () => void, ms: number) => void {
-    let timer = 0;
+    let timer;
     return (callback, ms) => {
         clearTimeout(timer);
-        timer = window.setTimeout(callback, ms);
+        timer = setTimeout(callback, ms);
     };
 }
 

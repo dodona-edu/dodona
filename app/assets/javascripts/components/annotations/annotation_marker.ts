@@ -50,6 +50,13 @@ export class AnnotationMarker extends LitElement {
         }
     }
 
+    /**
+     * Returns the annotations sorted in order of importance.
+     * Hovered annotations are prioritized over non-hovered annotations.
+     * Otherwise the default order is used, defined in `compareAnnotationOrders`.
+     *
+     * Goal is to always show the style of the most important annotation.
+     */
     get sortedAnnotations(): Annotation[] {
         return this.annotations.sort( (a, b) => {
             if (a.isHovered && !b.isHovered) {

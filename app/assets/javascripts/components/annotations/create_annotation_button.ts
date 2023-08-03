@@ -93,7 +93,7 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
             // If the range exists, the button should only be shown on the last row of the range
             // Or on the row where the drag started if the drag is still in progress
             if (this.isRangeEnd || this.isDragStart) {
-                classes += "show";
+                classes += "show expanded";
             } else {
                 classes += "hide";
             }

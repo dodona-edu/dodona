@@ -245,10 +245,10 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                         </div>
                     `}
                 </div>
-                ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
-                    <div class="row row-cols-md-auto g-3 align-items-center">
-                        <div class="col-12">
-                            <div class="field form-group">
+                <div class="row mb-1">
+                    <div class="col-md-6 align-items-center d-inline-flex">
+                        ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
+                            <div class="field form-group" style="margin-bottom: 0">
                                 <div class="form-check">
                                     <input class="form-check-input"
                                            type="checkbox"
@@ -257,29 +257,29 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                            .checked=${this.saveAnnotation || this._savedAnnotationId != ""}
                                            .disabled=${this._savedAnnotationId != ""}
                                     >
-                                    <label class="form-check-label" for="check-save-annotation">
+                                    <label class="form-check-label" for="check-save-annotation" style="line-height: 20px">
                                         ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        `}
                     </div>
-                `}
-                <div class="annotation-submission-button-container">
-                    <button class="btn btn-text annotation-control-button annotation-cancel-button"
-                            type="button"
-                            @click="${() => this.handleCancel()}"
-                            .disabled=${this.disabled}
-                    >
-                        ${I18n.t("js.user_annotation.cancel")}
-                    </button>
-                    <button class="btn btn-filled annotation-control-button annotation-submission-button"
-                            type="button"
-                            @click="${() => this.handleSubmit()}"
-                            .disabled=${this.disabled}
-                    >
-                        ${I18n.t(`js.${this.type}.${this.submitButtonText}`)}
-                    </button>
+                    <div class="col-md-6" style="text-align: right">
+                        <button class="btn btn-text"
+                                type="button"
+                                @click="${() => this.handleCancel()}"
+                                .disabled=${this.disabled}
+                        >
+                            ${I18n.t("js.user_annotation.cancel")}
+                        </button>
+                        <button class="btn btn-filled"
+                                type="button"
+                                @click="${() => this.handleSubmit()}"
+                                .disabled=${this.disabled}
+                        >
+                            ${I18n.t(`js.${this.type}.${this.submitButtonText}`)}
+                        </button>
+                    </div>
                 </div>
             </form>
         `;

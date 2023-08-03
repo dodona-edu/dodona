@@ -478,28 +478,6 @@
   .annotation-submission {
     padding: 5px;
 
-    .annotation-controls-block {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .annotation-submission-button-container {
-      margin-top: 12px;
-      margin-bottom: 12px;
-      text-align: right;
-
-      .annotation-control-button,
-      .question-control-button {
-        margin-left: 3px;
-      }
-
-      .annotation-submission-error-list {
-        margin-top: 3px;
-        margin-bottom: 3px;
-      }
-    }
-
     .annotation-submission-input {
       border-radius: 0;
       resize: vertical;

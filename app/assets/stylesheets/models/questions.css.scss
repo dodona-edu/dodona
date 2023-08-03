@@ -19,7 +19,7 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $table-hover-bg;
+      background-color: var(--d-table-hover-bg);
     }
   }
 

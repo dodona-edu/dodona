@@ -469,16 +469,20 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     }
     assert_response :forbidden
 
-    # In progress -> answered
-    question = create :question, submission: @submission, question_state: :in_progress
-    patch annotation_path(question), params: {
-      from: question.question_state,
-      question: {
-        question_state: :answered
-      },
-      format: :json
-    }
-    assert_response :ok
+    # without delayed jobs, in progress is automatically reset to unanswered
+    with_delayed_jobs do
+      # In progress -> answered
+      question = create :question, submission: @submission, question_state: :in_progress
+      patch annotation_path(question), params: {
+        from: question.question_state,
+        question: {
+          question_state: :answered
+        },
+        format: :json
+      }
+      assert_response :ok
+    end
+    run_delayed_jobs
   end
 
   test 'questions can transition from in_progress' do

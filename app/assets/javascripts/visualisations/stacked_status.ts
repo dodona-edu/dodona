@@ -3,6 +3,7 @@
 import * as d3 from "d3";
 import { RawData } from "./series_graph";
 import { SeriesExerciseGraph } from "./series_exercise_graph";
+import { themeState } from "state/Theme";
 
 export class StackedStatusGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/stacked_status?series_id=";
@@ -19,7 +20,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
     protected override draw(animation=true): void {
         super.draw(animation);
 
-        const emptyColor = this.darkMode ? "#37474F" : "white";
+        const emptyColor = themeState.getCSSVariable("--d-off-surface");
 
         // X scale
         const x = d3.scaleLinear()

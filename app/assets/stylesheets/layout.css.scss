@@ -5,7 +5,7 @@
 html,
 body {
   height: 100%;
-  font-family: $font-family-base;
+  font-family: var(--d-font-sans-serif);
 }
 
 // Set height of frame layout to fit-content to allow downsizing
@@ -14,7 +14,7 @@ html.dodona-frame > body,
 html.lti-frame,
 html.lti-frame > body {
   height: fit-content;
-  background: $content-bg;
+  background: var(--d-surface);
 }
 
 #page-wrapper {

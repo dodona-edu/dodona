@@ -133,15 +133,15 @@ export function selectedRangeFromSelection(selection: Selection): SelectedRange 
             const newRange = new Range();
             const startLine = document.querySelector(`#line-${range.row}`);
             const endLine = document.querySelector(`#line-${range.row + range.rows - 1}`);
-            newRange.setStart(startLine.querySelector(".code-line"), 0);
-            newRange.setEnd(endLine.querySelector(".code-line"), endLine.querySelector(".code-line").childNodes.length);
+            newRange.setStart(startLine.querySelector(".tooltip-layer"), 0);
+            newRange.setEnd(endLine.querySelector(".tooltip-layer"), endLine.querySelector(".tooltip-layer").childNodes.length);
             selection.addRange(newRange);
         } else {
             for (let i = range.row; i < range.row + range.rows; i++) {
                 const newRange = new Range();
                 const line = document.querySelector(`#line-${i}`);
-                newRange.setStart(line.querySelector(".code-line"), 0);
-                newRange.setEnd(line.querySelector(".code-line"), line.querySelector(".code-line").childNodes.length);
+                newRange.setStart(line.querySelector(".tooltip-layer"), 0);
+                newRange.setEnd(line.querySelector(".tooltip-layer"), line.querySelector(".tooltip-layer").childNodes.length);
                 selection.addRange(newRange);
             }
         }
@@ -169,15 +169,17 @@ function addSelectionClasses(): void {
     const selectionType = annotationState.isQuestionMode ? "question" : "annotation";
     document.querySelector(".code-table")?.classList.add(`selection-color-${selectionType}`);
     document.body.classList.add("no-selection-outside-code");
+    document.body.classList.add("no-selection-inside-annotations");
 }
 
 function removeSelectionClasses(): void {
     document.querySelector(".code-table")?.classList.remove("selection-color-annotation", "selection-color-question");
     document.body.classList.remove("no-selection-outside-code");
+    document.body.classList.remove("no-selection-inside-annotations");
 }
 
 export async function triggerSelectionEnd(): Promise<void> {
-    if (userAnnotationState.showForm) {
+    if (userAnnotationState.formShown) {
         removeSelectionClasses();
         return;
     }
@@ -188,9 +190,17 @@ export async function triggerSelectionEnd(): Promise<void> {
     if (!selection.isCollapsed && !anyRangeInAnnotation(selection)) {
         userAnnotationState.selectedRange = selectedRangeFromSelection(selection);
         if (userAnnotationState.selectedRange) {
-            const selectionType = annotationState.isQuestionMode ? "question" : "annotation";
-            document.querySelector(".code-table")?.classList.add(`selection-color-${selectionType}`);
+            // we might not have started with the selection inside the code
+            // But we ended with a code selection, so add the selection classes
+            addSelectionClasses();
+            // starting a new selection outside the code should be allowed
             document.body.classList.remove("no-selection-outside-code");
+
+            // Next time the selection is changed, remove the selection classes
+            const unsubscribe = userAnnotationState.subscribe( () => {
+                removeSelectionClasses();
+                unsubscribe();
+            }, "selectedRange");
         } else {
             removeSelectionClasses();
         }
@@ -206,7 +216,7 @@ export function triggerSelectionStart(e: PointerEvent): void {
         return;
     }
 
-    if (!(e.target as Element).closest(".annotation") && !userAnnotationState.showForm) {
+    if (!(e.target as Element).closest(".annotation") && !userAnnotationState.formShown) {
         addSelectionClasses();
         if (!(e.target as Element).closest("button")) {
             userAnnotationState.selectedRange = undefined;

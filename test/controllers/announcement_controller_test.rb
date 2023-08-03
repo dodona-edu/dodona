@@ -21,7 +21,7 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     sign_in user if user.present?
     get root_url
     sign_out user if user.present?
-    response.body.scan(/class="announcement/).size == 1
+    response.body.scan('class="announcement').size == 1
   end
 
   test 'Mark as read should work' do

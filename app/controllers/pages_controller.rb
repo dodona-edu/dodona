@@ -50,11 +50,6 @@ class PagesController < ApplicationController
     session[:demo] = !Current.demo_mode
   end
 
-  def toggle_dark_mode
-    authorize :pages
-    session[:dark] = params[:dark].nil? ? !session[:dark] : ActiveModel::Type::Boolean.new.cast(params[:dark])
-  end
-
   def contact
     @contact_form = ContactForm.new
     @title = I18n.t('pages.contact.title')

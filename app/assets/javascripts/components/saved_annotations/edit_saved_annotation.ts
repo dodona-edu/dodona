@@ -59,13 +59,13 @@ export class EditSavedAnnotation extends modalMixin(ShadowlessLitElement) {
             ></d-saved-annotation-form>
         `, html`
             <d-delete-saved-annotation .savedAnnotationId=${this.savedAnnotation.id}></d-delete-saved-annotation>
-            <button class="btn btn-danger btn-text" @click=${() => this.deleteSavedAnnotation()}>
+            <button class="btn d-btn-danger btn-text" @click=${() => this.deleteSavedAnnotation()}>
                 ${I18n.t("js.saved_annotation.edit.delete")}
             </button>
-            <button class="btn btn-primary btn-text" @click=${() => this.hideModal()}>
+            <button class="btn btn-text" @click=${() => this.hideModal()}>
                 ${I18n.t("js.saved_annotation.edit.cancel")}
             </button>
-            <button class="btn btn-primary" @click=${() => this.updateSavedAnnotation()}>
+            <button class="btn btn-filled" @click=${() => this.updateSavedAnnotation()}>
                 ${I18n.t("js.saved_annotation.edit.save")}
             </button>
         `);

@@ -33,8 +33,8 @@
       &.line-nr {
         text-align: right;
         white-space: pre-wrap;
-        background: $content-bg;
-        color: $on-surface-muted;
+        background: var(--d-surface);
+        color: var(--d-on-surface-muted);
         padding-left: 10px;
         padding-right: 10px;
         user-select: none;
@@ -47,7 +47,7 @@
         word-wrap: break-word;
         word-break: break-all;
         white-space: pre-wrap;
-        font-family: $font-family-monospace;
+        font-family: var(--d-font-monospace);
         width: 100%;
       }
     }
@@ -65,7 +65,7 @@
 }
 
 #tutorviz {
-  background-color: $content-bg;
+  background-color: var(--d-surface);
   min-height: 200px;
 }
 
@@ -93,7 +93,7 @@
 
 .tutor-strip {
   position: absolute;
-  color: $content-bg;
+  color: var(--d-surface);
   width: 20px;
   z-index: 4;
   top: 0;
@@ -126,9 +126,9 @@
 }
 
 .group.correct .tutor-strip {
-  background-color: $success;
+  background-color: var(--d-success);
 }
 
 .group.wrong .tutor-strip {
-  background-color: $danger;
+  background-color: var(--d-danger);
 }

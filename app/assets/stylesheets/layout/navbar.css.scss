@@ -1,12 +1,15 @@
 @use "sass:math";
 @use "sass:map";
-$navbar-height: 50px;
+
+:root {
+  --d-navbar-height: 50px;
+}
 
 .dodona-navbar {
   @include shadow-z3;
 
-  background: $primary;
-  height: $navbar-height;
+  background: var(--d-primary);
+  height: var(--d-navbar-height);
   display: flex;
   position: fixed;
   top: 0;
@@ -20,8 +23,8 @@ $navbar-height: 50px;
     margin-bottom: 9px;
   }
 
-  a {
-    color: $on-primary;
+  a:not(.dropdown-item) {
+    color: var(--d-on-primary);
     text-decoration: none;
   }
 
@@ -91,18 +94,18 @@ $navbar-height: 50px;
     // Drawer toggle & brand link
     .drawer-toggle {
       i {
-        line-height: $navbar-height;
+        line-height: var(--d-navbar-height);
         font-size: 24px;
       }
 
       border: none;
       outline: none;
       background: none;
-      color: $on-primary;
+      color: var(--d-on-primary);
     }
 
     .brand {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
       font-size: 18px;
       padding-left: 18px;
 
@@ -111,7 +114,7 @@ $navbar-height: 50px;
       }
 
       i {
-        line-height: $navbar-height;
+        line-height: var(--d-navbar-height);
 
         @include media-breakpoint-up(sm) {
           display: none;
@@ -167,7 +170,7 @@ $navbar-height: 50px;
 
           &.active {
             padding-bottom: 8px;
-            border-bottom: solid $on-primary 3px;
+            border-bottom: solid var(--d-on-primary) 3px;
           }
         }
       }
@@ -214,15 +217,14 @@ $navbar-height: 50px;
 
         a {
           padding-left: 0;
-          color: $on-surface;
 
           &.btn-icon {
-            color: $on-surface-muted;
+            color: var(--d-on-surface-muted);
           }
         }
 
         .notification-overflow a {
-          color: $link-color;
+          color: var(--d-link-color);
 
           &:hover {
             text-decoration: underline;
@@ -251,10 +253,6 @@ $navbar-height: 50px;
         li {
           display: block;
         }
-
-        a {
-          color: $on-surface;
-        }
       }
 
       @include media-breakpoint-up(lg) {
@@ -273,20 +271,14 @@ $navbar-height: 50px;
         }
 
         .dropdown-menu {
-          li,
-          a {
-            color: $on-surface;
-          }
-
           position: relative;
           left: unset;
           float: none;
           margin-top: 0;
           margin-left: 20px;
-          background-color: $background;
+          background-color: var(--d-background);
           border: 0;
           box-shadow: none;
-          color: $on-surface;
           width: 100%;
         }
       }
@@ -303,10 +295,10 @@ $navbar-height: 50px;
     right: 10px;
     border: none;
     background: none;
-    color: $on-primary;
+    color: var(--d-on-primary);
 
     i {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
     }
   }
 
@@ -325,11 +317,11 @@ $navbar-height: 50px;
       @include shadow-z3;
 
       position: absolute;
-      top: $navbar-height;
+      top: var(--d-navbar-height);
       right: 0;
       width: fit-content;
       height: fit-content;
-      background-color: $primary;
+      background-color: var(--d-primary);
 
       li {
         display: block;
@@ -364,6 +356,26 @@ $navbar-height: 50px;
 
     display: inline-block;
   }
+
+  .dropdown-menu li {
+    position: relative;
+  }
+
+  .dropdown-menu .dropdown-submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+  }
+
+  .dropdown-menu .dropdown-submenu-left {
+    right: 100%;
+    left: auto;
+  }
+
+  .dropdown-menu li:hover .dropdown-submenu {
+    display: block;
+  }
 }
 
 /* breadcrumbs */
@@ -374,7 +386,7 @@ $navbar-height: 50px;
   text-overflow: ellipsis;
   overflow: hidden;
   display: flex;
-  line-height: $navbar-height;
+  line-height: var(--d-navbar-height);
 
   .crumb {
     flex-shrink: 10;
@@ -392,7 +404,7 @@ $navbar-height: 50px;
     flex-shrink: 1;
 
     .mdi::before {
-      line-height: $navbar-height;
+      line-height: var(--d-navbar-height);
       margin-left: 4px;
       margin-right: 4px;
     }
@@ -401,7 +413,7 @@ $navbar-height: 50px;
   .crumb,
   .crumb a,
   .crumb-separator {
-    color: $on-primary;
+    color: var(--d-on-primary);
   }
 
   .crumb a:hover {
@@ -427,7 +439,7 @@ a.notification::before {
   border-radius: 50%;
   border: 1px solid white;
   display: inline-block;
-  background-color: $danger;
+  background-color: var(--d-danger);
   position: relative;
   margin-left: -15px;
   left: 30px;

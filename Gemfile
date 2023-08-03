@@ -4,17 +4,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.4'
+gem 'rails', '~> 7.0.6'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.2.2'
+gem 'puma', '~> 6.3.0'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.1.2'
+gem 'cssbundling-rails', '~> 1.2.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.1.1'
+gem 'jsbundling-rails', '~> 1.1.2'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.16.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 0.2.24'
+gem 'json_schemer', '~> 1.0.3'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'
@@ -46,12 +46,12 @@ gem 'delayed_job_active_record', '~> 4.1.7'
 gem 'delayed_job_web', '~>1.4.4'
 
 # pagination
-gem 'will_paginate', '~>3.3.1'
+gem 'will_paginate', '~>4.0.0'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.1.1'
+gem 'rouge', '4.1.3'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -76,7 +76,7 @@ gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
-gem 'jwt', '~> 2.7.0'
+gem 'jwt', '~> 2.7.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -86,10 +86,10 @@ gem 'mail_form', '~> 1.10.0'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.3.1'
 
 # impersonate users
-gem 'pretender', '~> 0.4.0'
+gem 'pretender', '~> 0.5.0'
 
 # db annotations
 gem 'annotate', '~> 3.2.0'
@@ -97,7 +97,7 @@ gem 'annotate', '~> 3.2.0'
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.1', group: :development
-gem 'capistrano-rails', '~> 1.6.2', group: :development
+gem 'capistrano-rails', '~> 1.6.3', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.1'
+gem 'nokogiri', '~> 1.15.3'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -124,7 +124,7 @@ gem 'has_scope', '~> 0.8.1'
 gem 'rubyzip', '~> 2.3.2'
 
 # memcache
-gem 'dalli', '~> 3.2.4'
+gem 'dalli', '~> 3.2.5'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 3.2.0'
@@ -132,20 +132,20 @@ gem 'faker', '~> 3.2.0'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.0.0'
+gem 'rack-mini-profiler', '~> 3.1.0'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.10.1'
+gem 'ddtrace', '~> 1.12.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.3.0'
+gem 'after_commit_everywhere', '~> 1.3.1'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.2'
+gem 'counter_culture', '~> 3.4'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.0.2'
+  gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.2.0'
 
@@ -156,8 +156,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.39.1'
-  gem 'selenium-webdriver', '~> 4.9.1'
+  gem 'capybara', '~> 3.39.2'
+  gem 'selenium-webdriver', '~> 4.10.0'
 end
 
 group :test do
@@ -165,7 +165,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.1'
+  gem 'test-prof', '~> 1.2.2'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -180,7 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-rails', '~> 2.19.1'
+  gem 'rubocop-rails', '~> 2.20.2'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

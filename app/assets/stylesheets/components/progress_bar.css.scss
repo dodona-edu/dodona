@@ -4,6 +4,6 @@ d-progress-bar {
   .bar {
     height: 8px;
     display: inline-block;
-    background-color: $success;
+    background-color: var(--d-success);
   }
 }

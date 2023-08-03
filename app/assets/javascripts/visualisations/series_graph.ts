@@ -2,6 +2,7 @@
 // @ts-nocheck
 import * as d3 from "d3";
 import { initDatePicker } from "util.js";
+import { themeState } from "state/Theme";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
@@ -28,7 +29,6 @@ export abstract class SeriesGraph {
     protected readonly baseUrl!: string;
     protected readonly margin = { top: 20, right: 155, bottom: 40, left: 125 };
     protected readonly fontSize = 12;
-    protected readonly darkMode: boolean;
     protected readonly width: number;
     protected height: number;
     protected innerWidth: number;
@@ -67,13 +67,18 @@ export abstract class SeriesGraph {
         this.container = d3.select(this.selector);
 
         this.width = (this.container.node() as Element).getBoundingClientRect().width;
-        this.darkMode = window.dodona.darkMode;
 
         d3.timeFormatDefaultLocale(this.d3Locale);
         if (data) {
             this.init(data);
             this.draw();
         }
+
+        // redraw on theme change
+        themeState.subscribe(() => {
+            (this.container.node() as Element).innerHTML = "";
+            this.draw(false);
+        }, "computedStyle");
     }
 
     // abstract functions
@@ -102,6 +107,7 @@ export abstract class SeriesGraph {
 
 
     protected draw(animation=true): void {
+        console.log("Drawing graph");
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;
 

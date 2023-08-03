@@ -57,7 +57,7 @@
             <% end %>
           <% end %>
           <% if policy(announcement).destroy? %>
-            <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled bg-danger" do %>
+            <%= link_to announcement, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled d-btn-danger" do %>
               <i class="mdi mdi-delete"></i>
             <% end %>
           <% end %>

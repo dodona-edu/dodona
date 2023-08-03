@@ -1,6 +1,7 @@
 import { Papyros } from "@dodona/papyros";
 import { InputMode } from "@dodona/papyros";
 import { ProgrammingLanguage } from "@dodona/papyros";
+import { themeState } from "state/Theme";
 
 /**
  * Custom interface to not have to add the ace package as dependency
@@ -78,7 +79,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                             maxHeight: "10vh"
                         }
                     },
-                    darkMode: window.dodona.darkMode
+                    darkMode: themeState.theme === "dark"
                 });
                 await papyros.launch();
             }

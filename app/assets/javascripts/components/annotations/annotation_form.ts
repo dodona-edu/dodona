@@ -219,15 +219,30 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                         </div>
                     </div>
                     ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
-                    <div class="col-md-4">
-                        <d-saved-annotation-input
-                            name="saved_annotation_id"
-                            class="saved-annotation-input"
-                            .value=${this._savedAnnotationId}
-                            annotation-text="${this._annotationText}"
-                            @input="${e => this.handleSavedAnnotationInput(e)}"
-                        ></d-saved-annotation-input>
-                    </div>
+                        <div class="col-md-4">
+                            ${this.saveAnnotation ? html`
+                                <label class="form-label" for="saved-annotation-title">
+                                    ${I18n.t("js.saved_annotation.title")}
+                                </label>
+                                <input required="required"
+                                       class="form-control"
+                                       type="text"
+                                       ${ref(this.titleRef)}
+                                       @keydown="${e => this.handleKeyDown(e)}"
+                                       @input=${() => this.handleUpdateTitle()}
+                                       value=${this.savedAnnotationTitle}
+                                       id="saved-annotation-title"
+                                >
+                            ` : html`
+                                <d-saved-annotation-input
+                                    name="saved_annotation_id"
+                                    class="saved-annotation-input"
+                                    .value=${this._savedAnnotationId}
+                                    annotation-text="${this._annotationText}"
+                                    @input="${e => this.handleSavedAnnotationInput(e)}"
+                                ></d-saved-annotation-input>
+                            `}
+                        </div>
                     `}
                 </div>
                 ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
@@ -248,26 +263,6 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                 </div>
                             </div>
                         </div>
-                        ${!this.saveAnnotation ? "" : html`
-                            <div class="col-12">
-                                <div class="row mb-3">
-                                    <label class="col-sm-2 col-form-label" for="saved-annotation-title">
-                                        ${I18n.t("js.saved_annotation.title")}
-                                    </label>
-                                    <div class="col-sm-10">
-                                        <input required="required"
-                                               class="form-control"
-                                               type="text"
-                                               ${ref(this.titleRef)}
-                                               @keydown="${e => this.handleKeyDown(e)}"
-                                               @input=${() => this.handleUpdateTitle()}
-                                               value=${this.savedAnnotationTitle}
-                                               id="saved-annotation-title"
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        `}
                     </div>
                 `}
                 <div class="annotation-submission-button-container">

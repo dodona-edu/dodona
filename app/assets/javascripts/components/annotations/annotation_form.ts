@@ -188,12 +188,16 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         this.saveAnnotation = !this.saveAnnotation;
     }
 
+    get canSaveAnnotation(): boolean {
+        return !annotationState.isQuestionMode && /* REMOVE AFTER CLOSED BETA */ isBetaCourse();
+    }
+
     render(): TemplateResult {
         console.log(this._savedAnnotationId);
         return html`
             <form class="annotation-submission form">
                 <div class="row">
-                    <div class="col-md-8">
+                    <div class="col-md-${this.canSaveAnnotation ? 8 : 12}">
                         <div class="field form-group">
                             <textarea id="annotation-text"
                                       autofocus
@@ -218,7 +222,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             </div>
                         </div>
                     </div>
-                    ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
+                    ${ !this.canSaveAnnotation ? "" : html`
                         <div class="col-md-4">
                             ${this.saveAnnotation ? html`
                                 <label class="form-label" for="saved-annotation-title">
@@ -247,7 +251,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                 </div>
                 <div class="row mb-1">
                     <div class="col-md-6 align-items-center d-inline-flex">
-                        ${annotationState.isQuestionMode || /* REMOVE AFTER CLOSED BETA */ !isBetaCourse() ? "" : html`
+                        ${ !this.canSaveAnnotation ? "" : html`
                             <div class="field form-group" style="margin-bottom: 0">
                                 <div class="form-check">
                                     <input class="form-check-input"

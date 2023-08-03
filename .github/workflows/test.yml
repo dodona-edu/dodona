@@ -114,6 +114,8 @@ jobs:
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: 'stable'
     - name: Install JS dependencies
       run: |
         yarn install

@@ -1,9 +1,9 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { AnnotationData, compareAnnotationOrders } from "state/Annotations";
+import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
+import { Annotation, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
 import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
@@ -13,7 +13,7 @@ import { unsafeHTML } from "lit/directives/unsafe-html.js";
 declare type range = {
     start: number;
     length: number;
-    annotations: AnnotationData[];
+    annotations: Annotation[];
 };
 
 function numberArrayEquals(a: number[], b: number[]): boolean {
@@ -47,15 +47,15 @@ export class LineOfCode extends ShadowlessLitElement {
         return this.code.length;
     }
 
-    get machineAnnotationsToMark(): MachineAnnotationData[] {
+    get machineAnnotationsToMark(): MachineAnnotation[] {
         return machineAnnotationState.byMarkedLine.get(this.row) || [];
     }
 
-    get userAnnotationsToMark(): UserAnnotationData[] {
+    get userAnnotationsToMark(): UserAnnotation[] {
         return userAnnotationState.rootIdsByMarkedLine.get(this.row)?.map(i => userAnnotationState.byId.get(i)) || [];
     }
 
-    get fullLineAnnotations(): UserAnnotationData[] {
+    get fullLineAnnotations(): UserAnnotation[] {
         return this.userAnnotationsToMark
             .filter(a => !a.column && !a.columns)
             .sort(compareAnnotationOrders);
@@ -67,7 +67,7 @@ export class LineOfCode extends ShadowlessLitElement {
      * In that case, the range will be the part of the line that is covered by the annotation.
      * @param annotation The annotation to calculate the range for.
      */
-    getRangeFromAnnotation(annotation: AnnotationData, index: number): { start: number, length: number, index: number } {
+    getRangeFromAnnotation(annotation: Annotation, index: number): { start: number, length: number, index: number } {
         const isMachineAnnotation = ["error", "warning", "info"].includes(annotation.type);
         const rowsLength = annotation.rows ?? 1;
         let lastRow = annotation.row ? annotation.row + rowsLength : 0;
@@ -131,7 +131,7 @@ export class LineOfCode extends ShadowlessLitElement {
     }
 
     get ranges(): range[] {
-        const toMark: AnnotationData[] = [...this.machineAnnotationsToMark, ...this.userAnnotationsToMark];
+        const toMark: Annotation[] = [...this.machineAnnotationsToMark, ...this.userAnnotationsToMark];
         // We use indexes to simplify the equality check in mergeRanges
         const ranges = toMark.map((annotation, index) => this.getRangeFromAnnotation(annotation, index));
         const mergedRanges = this.mergeRanges(ranges);

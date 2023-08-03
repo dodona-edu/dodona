@@ -4,6 +4,7 @@ import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
 import { stateProperty } from "state/state_system/StateProperty";
+import { createStateFromInterface } from "state/state_system/CreateStateFromInterface";
 
 export interface UserAnnotationFormData {
     annotation_text: string;
@@ -31,7 +32,8 @@ export interface UserAnnotationPermissionData {
     can_see_annotator?: boolean
 }
 
-export interface UserAnnotationData {
+// UserAnnotationData is the data that is returned from the server
+interface UserAnnotationData {
     annotation_text: string;
     created_at: string;
     id: number;
@@ -57,6 +59,19 @@ export interface UserAnnotationData {
     columns?: number;
 }
 
+/**
+ * UserAnnotation implements the UserAnnotationData interface and adds state properties and methods.
+ */
+export class UserAnnotation extends createStateFromInterface<UserAnnotationData>() {
+    @stateProperty public isHovered = false;
+    responses: UserAnnotation[];
+
+    constructor(data: UserAnnotationData) {
+        super(data);
+        this.responses = data.responses.map(response => new UserAnnotation(response));
+    }
+}
+
 export interface SelectedRange {
     row: number;
     rows: number;
@@ -67,7 +82,7 @@ export interface SelectedRange {
 class UserAnnotationState extends State {
     readonly rootIdsByLine = new StateMap<number, number[]>();
     readonly rootIdsByMarkedLine = new StateMap<number, number[]>();
-    readonly byId = new StateMap<number, UserAnnotationData>();
+    readonly byId = new StateMap<number, UserAnnotation>();
 
     @stateProperty public selectedRange: SelectedRange | null = null;
     @stateProperty public dragStartRow: number | null = null;
@@ -100,7 +115,7 @@ class UserAnnotationState extends State {
     }
 
     // public for testing purposes
-    public async addToMap(annotation: UserAnnotationData): Promise<void> {
+    public async addToMap(annotation: UserAnnotation): Promise<void> {
         this.byId.set(annotation.id, annotation);
         if (!annotation.thread_root_id) {
             const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
@@ -124,14 +139,14 @@ class UserAnnotationState extends State {
         }
     }
 
-    private async replaceInMap(annotation: UserAnnotationData): Promise<void> {
+    private async replaceInMap(annotation: UserAnnotation): Promise<void> {
         this.byId.set(annotation.id, annotation);
         if (annotation.thread_root_id) {
             await this.invalidate(annotation.thread_root_id);
         }
     }
 
-    private async removeFromMap(annotation: UserAnnotationData): Promise<void> {
+    private async removeFromMap(annotation: UserAnnotation): Promise<void> {
         this.byId.delete(annotation.id);
         if (!annotation.thread_root_id) {
             const line = annotation.line_nr && annotation.rows ? annotation.line_nr + annotation.rows - 1 : 0;
@@ -156,7 +171,8 @@ class UserAnnotationState extends State {
 
         this.rootIdsByLine.clear();
         this.byId.clear();
-        for (const annotation of json) {
+        for (const data of json) {
+            const annotation = new UserAnnotation(data);
             await this.addToMap(annotation);
         }
     }
@@ -165,10 +181,12 @@ class UserAnnotationState extends State {
         const response = await fetch(`/annotations/${annotationId}.json`);
         const json = await response.json();
 
-        await this.replaceInMap(json);
+        const annotation = new UserAnnotation(json);
+
+        await this.replaceInMap(annotation);
     }
 
-    async create(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotationData> {
+    async create(formData: UserAnnotationFormData, submissionId: number, mode = "annotation", saveAnnotation = false, savedAnnotationTitle: string = undefined): Promise<UserAnnotation> {
         const response = await fetch(`/submissions/${submissionId}/annotations.json`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -200,12 +218,14 @@ class UserAnnotationState extends State {
             savedAnnotationState.invalidate(data.saved_annotation_id);
         }
 
-        await this.addToMap(data);
+        const annotation = new UserAnnotation(data);
 
-        return data;
+        await this.addToMap(annotation);
+
+        return annotation;
     }
 
-    async delete(annotation: UserAnnotationData): Promise<void> {
+    async delete(annotation: UserAnnotation): Promise<void> {
         const response = await fetch(annotation.url, { method: "DELETE" });
         if (!response.ok) {
             throw new Error();
@@ -215,7 +235,7 @@ class UserAnnotationState extends State {
         await this.removeFromMap(annotation);
     }
 
-    async update(annotation: UserAnnotationData, formData: UserAnnotationFormData): Promise<void> {
+    async update(annotation: UserAnnotation, formData: UserAnnotationFormData): Promise<void> {
         const response = await fetch(annotation.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
@@ -236,7 +256,7 @@ class UserAnnotationState extends State {
         }
     }
 
-    async transition(annotation: UserAnnotationData, newState: QuestionState): Promise<void> {
+    async transition(annotation: UserAnnotation, newState: QuestionState): Promise<void> {
         const response = await fetch(annotation.url, {
             method: "PATCH",
             headers: {
@@ -267,7 +287,7 @@ class UserAnnotationState extends State {
         }
     }
 
-    async transitionAll(annotations: UserAnnotationData[], newState: QuestionState): Promise<void> {
+    async transitionAll(annotations: UserAnnotation[], newState: QuestionState): Promise<void> {
         for (const annotation of annotations) {
             // we wait for each transition to finish before starting the next one
             // this prevents inconsistent questionstates being shown

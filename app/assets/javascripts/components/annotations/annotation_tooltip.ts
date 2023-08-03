@@ -1,7 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { render, html, LitElement, TemplateResult, css } from "lit";
 import tippy, { Instance as Tippy, createSingleton } from "tippy.js";
-import { AnnotationData, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
+import { Annotation, annotationState, compareAnnotationOrders, isUserAnnotation } from "state/Annotations";
 import { StateController } from "state/state_system/StateController";
 import { createDelayer } from "util.js";
 
@@ -16,7 +16,7 @@ const setInstancesDelayer = createDelayer();
 @customElement("d-annotation-tooltip")
 export class AnnotationTooltip extends LitElement {
     @property({ type: Array })
-    annotations: AnnotationData[];
+    annotations: Annotation[];
 
     static styles = css`:host { position: relative; }`;
 
@@ -61,7 +61,7 @@ export class AnnotationTooltip extends LitElement {
     }
 
     // Annotations that are not displayed inline should show up as tooltips.
-    get hiddenAnnotations(): AnnotationData[] {
+    get hiddenAnnotations(): Annotation[] {
         return this.annotations.filter(a => !annotationState.isVisible(a)).sort(compareAnnotationOrders);
     }
 

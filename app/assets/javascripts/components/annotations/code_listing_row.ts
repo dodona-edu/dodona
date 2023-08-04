@@ -72,7 +72,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 @dragenter=${e => this.dragEnter(e)}
             >
                 <td class="rouge-gutter gl">
-                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}" is-question-mode="${annotationState.isQuestionMode}" ></d-create-annotation-button>` : html``}
+                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}" .isQuestionMode="${annotationState.isQuestionMode}" ></d-create-annotation-button>` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>

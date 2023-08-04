@@ -4,7 +4,7 @@ import { html, TemplateResult } from "lit";
 import { UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
 import { annotationState, compareAnnotationOrders } from "state/Annotations";
 import { submissionState } from "state/Submissions";
-import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
+import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
 import "components/annotations/machine_annotation";
 import "components/annotations/user_annotation";
 import "components/annotations/annotation_form";
@@ -33,7 +33,7 @@ export class AnnotationsCell extends ShadowlessLitElement {
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 
-    get machineAnnotations(): MachineAnnotationData[] {
+    get machineAnnotations(): MachineAnnotation[] {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 

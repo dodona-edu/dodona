@@ -315,4 +315,9 @@ en:
         show_all: Show all annotations
         hide_all: Hide all annotations
         show_errors: Only show errors
+    theme:
+      light: Light
+      dark: Dark
+      system: System
+      theme: Theme
 

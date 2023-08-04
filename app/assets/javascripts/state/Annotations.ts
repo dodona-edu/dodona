@@ -1,11 +1,10 @@
-import { MachineAnnotationData } from "state/MachineAnnotations";
-import { AnnotationType, UserAnnotationData } from "state/UserAnnotations";
+import { MachineAnnotation } from "state/MachineAnnotations";
+import { AnnotationType, UserAnnotation } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
-import { StateMap } from "state/state_system/StateMap";
 
 export type AnnotationVisibilityOptions = "all" | "important" | "none";
-export type AnnotationData = MachineAnnotationData | UserAnnotationData;
+export type Annotation = MachineAnnotation | UserAnnotation;
 
 const annotationOrder: Record<AnnotationType, number> = {
     annotation: 0,
@@ -15,11 +14,11 @@ const annotationOrder: Record<AnnotationType, number> = {
     info: 4,
 };
 
-export function compareAnnotationOrders(a: AnnotationData, b: AnnotationData): number {
+export function compareAnnotationOrders(a: Annotation, b: Annotation): number {
     return annotationOrder[a.type] - annotationOrder[b.type];
 }
 
-export function isUserAnnotation(annotation: AnnotationData): annotation is UserAnnotationData {
+export function isUserAnnotation(annotation: Annotation): annotation is UserAnnotation {
     return annotation.type === "annotation" || annotation.type === "question";
 }
 
@@ -27,7 +26,7 @@ class AnnotationState extends State {
     @stateProperty visibility: AnnotationVisibilityOptions = "all";
     @stateProperty isQuestionMode = false;
 
-    isVisible(annotation: AnnotationData): boolean {
+    isVisible(annotation: Annotation): boolean {
         if (this.visibility === "none") {
             return false;
         }

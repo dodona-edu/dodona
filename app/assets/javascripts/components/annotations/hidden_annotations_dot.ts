@@ -1,8 +1,8 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
+import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
 import { initTooltips } from "util.js";
@@ -20,15 +20,15 @@ export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
     row: number;
 
-    get machineAnnotations(): MachineAnnotationData[] {
+    get machineAnnotations(): MachineAnnotation[] {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 
-    get userAnnotations(): UserAnnotationData[] {
+    get userAnnotations(): UserAnnotation[] {
         return userAnnotationState.rootIdsByLine.get(this.row)?.map(id => userAnnotationState.byId.get(id)) || [];
     }
 
-    get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {
+    get hiddenAnnotations(): (MachineAnnotation | UserAnnotation)[] {
         return [...this.machineAnnotations, ...this.userAnnotations].filter(a => !annotationState.isVisible(a));
     }
 

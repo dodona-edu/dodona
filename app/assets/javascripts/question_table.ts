@@ -78,8 +78,6 @@ export class QuestionTable {
         fetch(this.getRefreshUrl(), {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin",
         })

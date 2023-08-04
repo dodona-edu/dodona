@@ -1,4 +1,4 @@
-import { fetch, createDelayer } from "util.js";
+import { fetch, createDelayer } from "utilities";
 import FeedbackActions from "feedback/actions";
 
 /**

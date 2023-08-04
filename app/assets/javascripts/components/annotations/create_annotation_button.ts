@@ -2,7 +2,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { userAnnotationState } from "state/UserAnnotations";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 
 // The image has to be created before the event is fired
 // otherwise safari will not create the drag image

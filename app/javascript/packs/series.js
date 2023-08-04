@@ -1,5 +1,5 @@
 import { initSeriesEdit, initSeriesShow } from "series.ts";
-import { initDatePicker } from "util.js";
+import { initDatePicker } from "utilities.ts";
 
 window.dodona.initDeadlinePicker = initDatePicker;
 window.dodona.initSeriesEdit = initSeriesEdit;

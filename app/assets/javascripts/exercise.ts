@@ -1,5 +1,5 @@
 /* globals ace */
-import { initTooltips, updateURLParameter, fetch } from "util.js";
+import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";

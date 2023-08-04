@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 // @ts-nocheck
 import * as d3 from "d3";
-import { initDatePicker } from "util.js";
+import { initDatePicker } from "utilities";
 import { themeState } from "state/Theme";
 
 export type RawData = {

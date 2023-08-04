@@ -1,7 +1,7 @@
 import {
     updateArrayURLParameter, updateURLParameter, getURLParameter, getArrayURLParameter,
     delay, createDelayer
-} from "../../app/assets/javascripts/util";
+} from "utilities.ts";
 
 jest.useFakeTimers();
 

@@ -4,7 +4,7 @@ import { html, TemplateResult } from "lit";
 import "components/annotations/annotations_cell";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";

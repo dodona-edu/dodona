@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Option } from "components/datalist_input";
-import { ready } from "util.js";
+import { ready } from "utilities";
 import "components/datalist_input";
 
 /**

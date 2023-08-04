@@ -1,5 +1,6 @@
 import { isInIframe } from "iframe";
 import { Dutch } from "flatpickr/dist/l10n/nl";
+import { CustomLocale } from "flatpickr/dist/types/locale";
 import flatpickr from "flatpickr";
 
 /**
@@ -25,9 +26,9 @@ import flatpickr from "flatpickr";
  *
  *  @return {function(TimerHandler, number): void}
  */
-function createDelayer() {
-    let timer = 0;
-    return function (callback, ms) {
+function createDelayer(): (callback: () => void, ms: number) => void {
+    let timer;
+    return (callback, ms) => {
         clearTimeout(timer);
         timer = setTimeout(callback, ms);
     };
@@ -42,7 +43,7 @@ function createDelayer() {
  */
 const delay = createDelayer();
 
-function updateURLParameter(_url, param, paramVal) {
+function updateURLParameter(_url: string, param: string, paramVal: string): string {
     const url = new URL(_url, window.location.origin);
     if (paramVal) {
         url.searchParams.set(param, paramVal);
@@ -52,7 +53,7 @@ function updateURLParameter(_url, param, paramVal) {
     return url.toString();
 }
 
-function updateArrayURLParameter(_url, param, _paramVals) {
+function updateArrayURLParameter(_url: string, param: string, _paramVals: string[]): string {
     const paramVals = new Set(_paramVals); // remove duplicate items
     // convert "%5B%5D" back to "[]"
     const url = new URL(_url.replace(/%5B%5D/g, "[]"), window.location.origin);
@@ -63,42 +64,32 @@ function updateArrayURLParameter(_url, param, _paramVals) {
     return url.toString();
 }
 
-function getURLParameter(name, _url) {
+function getURLParameter(name: string, _url?: string): string {
     const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.get(name);
 }
 
-function getArrayURLParameter(name, _url) {
+function getArrayURLParameter(name: string, _url?: string): string[] {
     const url = new URL(_url ?? window.location.href, window.location.origin);
     return url.searchParams.getAll(`${name}[]`);
 }
 
-function checkTimeZone(offset) {
+function checkTimeZone(offset: number): void {
     if (offset !== new Date().getTimezoneOffset()) {
-        $("#time-zone-warning").removeClass("hidden");
+        document.querySelector("#time-zone-warning").classList.remove("hidden");
     }
 }
 
-function checkIframe() {
+function checkIframe(): void {
     if (isInIframe()) {
-        $("#iframe-warning").removeClass("hidden");
+        document.querySelector("#iframe-warning").classList.remove("hidden");
     }
-}
-
-// add CSRF token to each ajax-request
-async function initCSRF() {
-    await ready;
-    $.ajaxSetup({
-        "headers": {
-            "X-CSRF-Token": $("meta[name='csrf-token']").attr("content"),
-        },
-    });
 }
 
 /**
  * @param {Document | Element} root
  */
-function initTooltips(root = document) {
+function initTooltips(root: Document | Element = document): void {
     // First remove dead tooltips
     const tooltips = root.querySelectorAll(".tooltip");
     for (const tooltip of tooltips) {
@@ -106,7 +97,7 @@ function initTooltips(root = document) {
     }
 
     // Then reinitialize tooltips
-    const elements = root.querySelectorAll("[data-bs-toggle=\"tooltip\"]");
+    const elements = root.querySelectorAll("[data-bs-toggle=\"tooltip\"]") as NodeListOf<HTMLElement>;
     for (const element of elements) {
         const tooltip = window.bootstrap.Tooltip.getOrCreateInstance(element);
         if (element.title) {
@@ -116,19 +107,26 @@ function initTooltips(root = document) {
     }
 }
 
-function tooltip(target, message, disappearAfter=1000) {
-    const $target = $(target);
-    const originalTitle = $target.attr("data-original-title");
-    $target.attr("data-original-title", message).tooltip("show");
-    $target.attr("title", message).tooltip("show");
-    setTimeout(() => {
-        $target.attr("title", originalTitle).attr("data-original-title", originalTitle).tooltip();
-    }, disappearAfter);
+function tooltip(target: Element | null, message: string, disappearAfter = 3000): void {
+    if (target) {
+        const originalTitle = target.getAttribute("data-original-title");
+        target.setAttribute("data-original-title", message);
+        target.setAttribute("title", message);
+        setTimeout(() => {
+            if (originalTitle) {
+                target.setAttribute("title", originalTitle);
+                target.setAttribute("data-original-title", originalTitle);
+            } else {
+                target.removeAttribute("title");
+                target.removeAttribute("data-original-title");
+            }
+        }, disappearAfter);
+    }
 }
 
-function fetch(url, options = {}) {
+function fetch(url: URL | RequestInfo, options: RequestInit = {}): Promise<Response> {
     const headers = options.headers || {};
-    headers["x-csrf-token"] = headers["x-csrf-token"] || document.querySelector("meta[name=\"csrf-token\"]").content;
+    headers["x-csrf-token"] = headers["x-csrf-token"] || (document.querySelector("meta[name=\"csrf-token\"]") as HTMLMetaElement).content;
     headers["x-requested-with"] = headers["x-requested-with"] || "XMLHttpRequest";
     options["headers"] = headers;
     return window.fetch(url, options);
@@ -139,7 +137,7 @@ function fetch(url, options = {}) {
  *
  * @param {HTMLElement} element The element to hide.
  */
-function makeInvisible(element) {
+function makeInvisible(element: HTMLElement): void {
     element.style.visibility = "hidden";
 }
 
@@ -148,7 +146,7 @@ function makeInvisible(element) {
  *
  * @param {HTMLElement} element The element to show.
  */
-function makeVisible(element) {
+function makeVisible(element: HTMLElement): void {
     element.style.visibility = "visible";
 }
 
@@ -157,9 +155,18 @@ function makeVisible(element) {
  *
  * @param {string} title The new title.
  */
-function setDocumentTitle(title) {
+function setDocumentTitle(title: string): void {
     document.title = title;
 }
+
+type DatePickerOptions = {
+    wrap?: boolean,
+    enableTime?: boolean,
+    dateFormat?: string,
+    altInput?: boolean,
+    altFormat?: string,
+    locale?: CustomLocale
+};
 
 /**
  * Initiates a datepicker using flatpicker
@@ -167,8 +174,8 @@ function setDocumentTitle(title) {
  * @param {object} options - optional, Options object as should be provided to the flatpicker creation method
  * @return {flatpickr} the created flatpicker
  */
-function initDatePicker(selector, options = {}) {
-    function init() {
+function initDatePicker(selector: string, options: DatePickerOptions = {}): object {
+    function init(): object {
         if (I18n.locale === "nl") {
             options.locale = Dutch;
         }
@@ -182,7 +189,7 @@ function initDatePicker(selector, options = {}) {
  * This promise will resolve when the dom content is fully loaded
  * This could mean immediately if the dom is already loaded
  */
-const ready = new Promise(resolve => {
+const ready = new Promise<void>(resolve => {
     if (document.readyState !== "loading") {
         resolve();
     } else {
@@ -197,7 +204,7 @@ const ready = new Promise(resolve => {
  * @param {string} classNames - The class names to search for, separated by white space
  * @return {?Element} The parent containing the classes
  */
-function getParentByClassName(element, classNames) {
+function getParentByClassName(element: Element, classNames: string): Element {
     let parent = element.parentElement;
     while (parent) {
         if (classNames.split(/\s+/).every(className => parent.classList.contains(className))) {
@@ -218,7 +225,6 @@ export {
     getArrayURLParameter,
     checkTimeZone,
     checkIframe,
-    initCSRF,
     tooltip,
     initTooltips,
     makeInvisible,

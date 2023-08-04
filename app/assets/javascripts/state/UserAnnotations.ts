@@ -1,4 +1,4 @@
-import { createDelayer, fetch } from "util.js";
+import { createDelayer, fetch } from "utilities";
 import { Notification } from "notification";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { State } from "state/state_system/State";

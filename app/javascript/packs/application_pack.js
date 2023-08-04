@@ -32,7 +32,7 @@ window.bootstrap = bootstrap;
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready } from "util.js";
+import { checkTimeZone, checkIframe, initTooltips, ready } from "utilities.ts";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import { themeState } from "state/Theme";
@@ -49,10 +49,6 @@ initClipboard();
 if (!window.dodona.hideDrawer) {
     ready.then(() => new Drawer());
 }
-
-
-// Adds the CSRF token to each ajax request
-initCSRF();
 
 ready.then(initTooltips);
 

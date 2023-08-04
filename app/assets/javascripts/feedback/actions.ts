@@ -1,4 +1,4 @@
-import { fetch, updateURLParameter } from "util.js";
+import { fetch, updateURLParameter } from "utilities";
 import ScoreForm from "feedback/score";
 
 interface ActionOptions {

@@ -1,4 +1,4 @@
-import { getParentByClassName } from "util.js";
+import { getParentByClassName } from "utilities";
 
 function initSubmissionShow(parentClass: string, mediaPath: string, token: string): void {
     function init(): void {

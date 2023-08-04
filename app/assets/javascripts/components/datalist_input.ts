@@ -17,6 +17,7 @@ export type Option = {label: string, value: string, extra?: string};
  *          The extra string is added in the options and also used to match the input
  * @prop {String} value - the initial value for this field
  * @prop {String} placeholder - placeholder text shown in input
+ * @prop {Boolean} disabled - whether the input is disabled
  *
  * @fires input - on value change, event details contain {label: string, value: string}
  */
@@ -30,6 +31,8 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     value: string;
     @property({ type: String })
     placeholder: string;
+    @property({ type: Boolean })
+    disabled = false;
 
     inputRef: Ref<HTMLInputElement> = createRef();
 
@@ -191,6 +194,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        placeholder="${this.placeholder}"
                        @keydown=${e => this.keydown(e)}
                        @focus=${() => this.requestUpdate()}
+                       .disabled="${this.disabled}"
                 >
                 <ul class="dropdown-menu ${this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
                     style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">

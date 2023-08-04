@@ -431,7 +431,7 @@
         "edit": "Edit comment",
         "fields": {
           "annotation_text": "Comment",
-          "saved_annotation_title": "Save comment for reuse"
+          "saved_annotation_title": "Save comment for reuse."
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
@@ -947,7 +947,7 @@
         "edit": "Opmerking bewerken",
         "fields": {
           "annotation_text": "Opmerking",
-          "saved_annotation_title": "Sla opmerking op om te hergebruiken"
+          "saved_annotation_title": "Sla opmerking op om te hergebruiken."
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",

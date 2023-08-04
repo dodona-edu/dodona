@@ -157,7 +157,7 @@ en:
       help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:
         annotation_text: 'Comment'
-        saved_annotation_title: 'Save comment for reuse'
+        saved_annotation_title: 'Save comment for reuse.'
       delete_confirm: 'Are you sure you want to delete this comment?'
       not_released: This comment is not yet visible for students
     user_question:

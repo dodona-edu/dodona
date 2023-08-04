@@ -17,6 +17,7 @@ import { exerciseState } from "state/Exercises";
  * @prop {String} name - name of the input field (used in form submit)
  * @prop {String} value - the initial saved annotation id
  * @prop {String} annotationText - the current text of the real annotation, used to detect if there are manual changes from the selected saved annotation
+ * @prop {Boolean} disabled - whether the input is disabled
  *
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
@@ -28,13 +29,11 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     value: string;
     @property( { type: String, attribute: "annotation-text" })
     annotationText: string;
+    @property({ type: Boolean })
+    disabled = false;
 
     @property({ state: true })
     __label: string;
-
-    get userId(): number {
-        return userState.id;
-    }
 
     get label(): string {
         return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;
@@ -44,17 +43,9 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
         return savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
-            ["user_id", this.userId.toString()],
+            ["user_id", userState.id.toString()],
             ["filter", this.__label]
         ]));
-    }
-
-    get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
-            ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
-            ["user_id", this.userId.toString()]
-        ])).length > 0;
     }
 
     get selectedAnnotation(): SavedAnnotation {
@@ -87,13 +78,14 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        return this.potentialSavedAnnotationsExist ? html`
+        return html`
             <div class="field form-group">
                 <div class="position-relative">
                     <d-datalist-input
                         name="${this.name}"
                         .options=${this.options}
                         .value=${this.value}
+                        .disabled=${this.disabled}
                         @input="${e => this.processInput(e)}"
                         placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
                     ></d-datalist-input>
@@ -109,6 +101,6 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
                     ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html"))}
                 </div>
             </div>
-        ` : html``;
+        `;
     }
 }

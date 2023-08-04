@@ -28,7 +28,6 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
 
     get buttonText(): string {
         const key = this.isQuestionMode ? "question" : "annotation";
-        console.log(key, this.isQuestionMode);
 
         if (this.isDragStart) {
             return I18n.t(`js.annotations.options.add_${key}_drop`);

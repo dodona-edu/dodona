@@ -197,7 +197,7 @@ export class DatalistInput extends watchMixin(ShadowlessLitElement) {
                        .disabled="${this.disabled}"
                 >
                 <ul class="dropdown-menu ${this.filtered_options.length > 0 ? "show-search-dropdown" : ""}"
-                    style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; max-width: ${this.dropdown_width}px; overflow-x: hidden;">
+                    style="position: fixed; top: ${this.dropdown_top}px; left: ${this.dropdown_left}px; width: ${this.dropdown_width}px; overflow-x: hidden;">
                     ${this.filtered_options.map(option => html`
                         <li><a class="dropdown-item ${this.isSoftSelected(option) ? "active" :""} " @click=${ e => this.select(option, e)} style="cursor: pointer;">
                             ${this.mark(option.label)}

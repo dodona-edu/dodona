@@ -314,7 +314,7 @@
         },
         "input": {
           "edited": "The current comment differs from the saved comment",
-          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
+          "help_html": "Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
@@ -830,7 +830,7 @@
         },
         "input": {
           "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
-          "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
+          "help_html": "Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
           "placeholder": "Zoek opgeslagen opmerking",
           "title": "Hergebruik een opgeslagen opmerking"
         },

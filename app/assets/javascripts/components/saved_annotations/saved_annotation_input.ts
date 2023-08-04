@@ -92,7 +92,7 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
                     ${ this.selectedAnnotation && this.selectedAnnotation.annotation_text !== this.annotationText ? html`
                         <i
                             class="mdi mdi-not-equal-variant colored-info position-absolute"
-                            style="left: 165px; top: 3px;"
+                            style="right: 5px; top: 3px;"
                             title="${I18n.t("js.saved_annotation.input.edited")}"
                         ></i>
                     ` : ""}

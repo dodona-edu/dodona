@@ -193,7 +193,6 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        console.log(this._savedAnnotationId);
         return html`
             <form class="annotation-submission form">
                 <div class="row">

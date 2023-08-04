@@ -249,15 +249,14 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                 </div>
                 <div class="row mb-1">
                     <div class="col-md-6 col-xxl-8 align-items-center d-inline-flex">
-                        ${ !this.canSaveAnnotation ? "" : html`
+                        ${ this.canSaveAnnotation && this._savedAnnotationId == "" ? html`
                             <div class="field form-group mb-0">
                                 <div class="form-check mb-0" style="min-height: 40px">
                                     <input class="form-check-input mt-2"
                                            type="checkbox"
                                            @click="${() => this.toggleSaveAnnotation()}"
                                            id="check-save-annotation"
-                                           .checked=${this.saveAnnotation || this._savedAnnotationId != ""}
-                                           .disabled=${this._savedAnnotationId != ""}
+                                           .checked=${this.saveAnnotation}
                                     >
                                     <label class="form-check-label mt-2" for="check-save-annotation">
                                         ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
@@ -277,7 +276,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                     `: ""}
                                 </div>
                             </div>
-                        `}
+                        ` : ""}
                     </div>
                     <div class="col-md-6 col-xxl-4 mt-2 mt-lg-0" style="text-align: right">
                         <button class="btn btn-text"

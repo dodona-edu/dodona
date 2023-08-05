@@ -1,4 +1,4 @@
-$("#token-table-placeholder").html("<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>");
-$("#new-token-form").html("<%= escape_javascript(render partial: 'form', locals: {user: @user}) %>");
-$("#fresh-token").html("<%= escape_javascript(render partial: 'show', locals: {token: new_token}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#token-table-placeholder"), "<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#new-token-form"), "<%= escape_javascript(render partial: 'form', locals: {user: @user}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#fresh-token"), "<%= escape_javascript(render partial: 'show', locals: {token: new_token}) %>");
 new dodona.Toast("<%= escape_javascript toast %>");

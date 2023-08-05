@@ -43,7 +43,7 @@ beforeEach(async () => {
             </table>
         </div>
     </div>`);
-    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n");
     annotationState.visibility = "all";
     userAnnotationState.reset();
     machineAnnotationState.setMachineAnnotations([]);

@@ -13,7 +13,7 @@ import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from 
 const bootstrap = { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip };
 window.bootstrap = bootstrap;
 
-import { initTooltips, ready } from "util.js";
+import { initTooltips, ready } from "utilities.ts";
 import { initClipboard } from "copy";
 import { themeState } from "state/Theme";
 

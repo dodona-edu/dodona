@@ -1,1 +1,1 @@
-dodona.setInnerHTML(document.querySelector("#activities-table-wrapper"),"<%= escape_javascript(render partial: 'activities_table', locals: {activities: @activities}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#activities-table-wrapper"),"<%= escape_javascript(render partial: 'activities_table', locals: {activities: @activities}) %>");

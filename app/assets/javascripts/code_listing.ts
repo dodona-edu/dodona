@@ -13,7 +13,7 @@ import { triggerSelectionEnd } from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, questionMode = false): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;

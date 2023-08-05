@@ -1,2 +1,2 @@
-dodona.setInnerHTML(document.querySelector("#activities-table-wrapper"), "<%= escape_javascript(render partial: 'series_activities_add_table', locals: {activities: @activities, series: @series}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#activities-table-wrapper"), "<%= escape_javascript(render partial: 'series_activities_add_table', locals: {activities: @activities, series: @series}) %>");
 dodona.seriesEditActivitiesLoaded();

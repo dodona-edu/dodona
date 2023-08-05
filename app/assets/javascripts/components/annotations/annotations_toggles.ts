@@ -3,7 +3,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult, PropertyValues } from "lit";
 import { annotationState } from "state/Annotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 
 /**
  * This component represents the toggles to show/hide annotations.

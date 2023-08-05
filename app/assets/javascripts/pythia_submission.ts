@@ -1,6 +1,6 @@
 import fscreen from "fscreen";
 import { showInfoModal } from "./modal";
-import { fetch } from "./util.js";
+import { fetch } from "utilities";
 import { html } from "lit";
 
 function initPythiaSubmissionShow(submissionCode: string, activityPath: string): void {

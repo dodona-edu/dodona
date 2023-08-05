@@ -7,7 +7,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import "components/saved_annotations/saved_annotation_icon";
 import { annotationState } from "state/Annotations";
 

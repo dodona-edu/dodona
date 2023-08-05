@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 
 function commonCheckboxInit(
     element: HTMLElement,

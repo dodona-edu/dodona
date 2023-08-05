@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
-import { fetch, ready } from "util.js";
+import { fetch, ready } from "utilities";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { searchQueryState } from "state/SearchQuery";
 

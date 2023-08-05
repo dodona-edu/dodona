@@ -1,6 +1,6 @@
 import { Toast } from "./toast";
 import { initDragAndDrop } from "./drag_and_drop";
-import { fetch } from "./util.js";
+import { fetch } from "utilities";
 
 import { ViolinGraph } from "visualisations/violin";
 import { StackedStatusGraph } from "visualisations/stacked_status";

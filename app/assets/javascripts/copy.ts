@@ -1,14 +1,13 @@
 import ClipboardJS from "clipboard";
-import { ready, tooltip } from "util.js";
+import { ready, tooltip } from "utilities";
 
 export async function initClipboard(): Promise<void> {
     await ready;
     const selector = ".btn";
-    const delay = 1000;
     const clip = new ClipboardJS(selector);
-    const targetOf = (e): any => $($(e.trigger).data("clipboard-target"));
-    clip.on("success", e => tooltip(targetOf(e), I18n.t("js.copy-success"), delay));
-    clip.on("error", e => tooltip(targetOf(e), I18n.t("js.copy-fail"), delay));
+    const targetOf = (e): Element => document.querySelector(e.trigger.dataset["clipboard-target"]);
+    clip.on("success", e => tooltip(targetOf(e), I18n.t("js.copy-success")));
+    clip.on("error", e => tooltip(targetOf(e), I18n.t("js.copy-fail")));
 }
 
 /**

@@ -1,6 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { createDelayer } from "util.js";
+import { createDelayer } from "utilities";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";

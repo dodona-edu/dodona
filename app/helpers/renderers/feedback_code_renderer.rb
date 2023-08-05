@@ -60,7 +60,7 @@ class FeedbackCodeRenderer
     @builder.script(type: 'application/javascript') do
       @builder << <<~HEREDOC
         window.dodona.ready.then(() => {
-          window.dodona.codeListing.initAnnotations(#{submission.id}, #{submission.course_id.to_json}, #{submission.exercise_id}, #{user.id}, #{@code.to_json}, #{@code.lines.length}, #{user_is_student});
+          window.dodona.codeListing.initAnnotations(#{submission.id}, #{submission.course_id.to_json}, #{submission.exercise_id}, #{user.id}, #{@code.to_json}, #{user_is_student});
           window.dodona.codeListing.addMachineAnnotations(#{messages.to_json});
           #{'window.dodona.codeListing.initAnnotateButtons();' if user_perm}
           #{'window.dodona.codeListing.loadUserAnnotations();' if submission.annotated? || (!user_is_student && submission.annotations.any?)}

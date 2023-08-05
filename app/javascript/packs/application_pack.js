@@ -32,7 +32,7 @@ window.bootstrap = bootstrap;
 import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
-import { checkTimeZone, checkIframe, initCSRF, initTooltips, ready, setInnerHTML } from "util.js";
+import { checkTimeZone, checkIframe, initTooltips, ready, setHTMLExecuteScripts } from "utilities.ts";
 import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import { themeState } from "state/Theme";
@@ -50,10 +50,6 @@ if (!window.dodona.hideDrawer) {
     ready.then(() => new Drawer());
 }
 
-
-// Adds the CSRF token to each ajax request
-initCSRF();
-
 ready.then(initTooltips);
 
 // Use a global dodona object to prevent polluting the global na
@@ -64,7 +60,7 @@ dodona.Toast = Toast;
 dodona.Notification = Notification;
 dodona.initTooltips = initTooltips;
 dodona.checkIframe = checkIframe;
-dodona.setInnerHTML = setInnerHTML;
+dodona.setHTMLExecuteScripts = setHTMLExecuteScripts;
 dodona.setTheme = theme => themeState.selectedTheme = theme;
 dodona.setUserId = userId => userState.id = userId;
 dodona.ready = ready;

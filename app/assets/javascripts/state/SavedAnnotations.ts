@@ -94,7 +94,7 @@ class SavedAnnotationState extends State {
                 this.fetchList(url);
             }
         }, 200);
-        return this.listByURL.get(url) || [];
+        return this.listByURL.get(url);
     }
 
     getPagination(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Pagination {

@@ -39,13 +39,20 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
         return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;
     }
 
+    lastSavedAnnotations: SavedAnnotation[] = [];
     get savedAnnotations(): SavedAnnotation[] {
-        return savedAnnotationState.getList(new Map([
+        const savedAnnotations = savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", userState.id.toString()],
             ["filter", this.__label]
         ]));
+        if (savedAnnotations === undefined) {
+            // return last saved annotations if the updated list is not yet available
+            return this.lastSavedAnnotations;
+        }
+        this.lastSavedAnnotations = savedAnnotations;
+        return savedAnnotations;
     }
 
     get selectedAnnotation(): SavedAnnotation {

@@ -197,11 +197,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
+        return (savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", userState.id.toString()]
-        ])).length > 0;
+        ])) || []).length > 0;
     }
 
 

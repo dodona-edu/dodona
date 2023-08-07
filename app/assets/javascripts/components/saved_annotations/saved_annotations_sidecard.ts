@@ -23,11 +23,11 @@ export class SavedAnnotationList extends ShadowlessLitElement {
     userId: number;
 
     get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
+        return (savedAnnotationState.getList(new Map([
             ["course_id", this.courseId.toString()],
             ["exercise_id", this.exerciseId.toString()],
             ["user_id", this.userId.toString()]
-        ])).length > 0;
+        ])) || []).length > 0;
     }
 
     render(): TemplateResult {

@@ -87,7 +87,7 @@ class SavedAnnotationState extends State {
         this.invalidate(id);
     }
 
-    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
+    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> | undefined {
         const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.listByURL.has(url)) {

@@ -49,7 +49,7 @@ export class SavedAnnotationList extends ShadowlessLitElement {
     }
 
     get savedAnnotations(): SavedAnnotation[] {
-        return savedAnnotationState.getList(this.queryParams, this.arrayQueryParams);
+        return savedAnnotationState.getList(this.queryParams, this.arrayQueryParams) || [];
     }
 
     get pagination(): Pagination {

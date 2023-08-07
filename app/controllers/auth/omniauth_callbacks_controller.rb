@@ -137,6 +137,14 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If we found an existing user, which already has an identity for this provider
       # This will require a manual intervention by the development team, notify the user and the team
       return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
+
+      if (user&.institution_id == 4) && user&.providers&.exists?(id: 210) && (provider.id == 166)
+        # HOGent SAML provider (id = 210) is broken
+        # We simplify the account linking process by not requiring verification
+        # We will just link the user to the new provider
+        identity = Identity.create(identifier: auth_uid, provider: 166, user: user)
+        return sign_in!(identity)
+      end
       # If we found an existing user with the same username or email within the same institution
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user

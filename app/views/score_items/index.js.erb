@@ -2,9 +2,9 @@
 modal = $(".modal-<%= evaluation_exercise.id %>");
 if (modal.is(":visible")) {
     modal.on("hidden.bs.modal", () => {
-        $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
+        dodona.setHTMLExecuteScripts(document.querySelector("#card-<%= evaluation_exercise.id %>"), "<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
     }).modal("hide");
 } else {
-    $("#card-<%= evaluation_exercise.id %>").html("<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
+    dodona.setHTMLExecuteScripts(document.querySelector("#card-<%= evaluation_exercise.id %>"), "<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
 }
-$(".summary-text").html("<%= t('score_items.new.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>");
+dodona.setHTMLExecuteScripts(document.querySelector(".summary-text"), "<%= t('score_items.new.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>");

@@ -1,1 +1,1 @@
-$("#requests-table-wrapper").html("<%= escape_javascript(render partial: 'requests_table', locals: { requests: @requests }) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#requests-table-wrapper"), "<%= escape_javascript(render partial: 'requests_table', locals: { requests: @requests }) %>");

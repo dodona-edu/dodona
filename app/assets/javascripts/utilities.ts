@@ -215,6 +215,23 @@ function getParentByClassName(element: Element, classNames: string): Element {
     return null;
 }
 
+/**
+ * When setting innerHTML, code inside the <script> tag doesn't get executed.
+ * This function solves that problem.
+ */
+function setHTMLExecuteScripts(el: Element, html: string): void {
+    el.innerHTML = html;
+    Array.from(el.querySelectorAll("script")).forEach(oldScriptEl => {
+        const newScriptEl = document.createElement("script");
+        Array.from(oldScriptEl.attributes).forEach(attr => {
+            newScriptEl.setAttribute(attr.name, attr.value);
+        });
+        const scriptText = document.createTextNode(oldScriptEl.innerHTML);
+        newScriptEl.appendChild(scriptText);
+        oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
+    });
+}
+
 export {
     createDelayer,
     delay,
@@ -233,4 +250,5 @@ export {
     initDatePicker,
     ready,
     getParentByClassName,
+    setHTMLExecuteScripts,
 };

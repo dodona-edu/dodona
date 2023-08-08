@@ -2,7 +2,7 @@ module OmniAuth
   module Strategies
     class SAML
       class Settings
-        ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS = %w(https://idp.hogent.be/idp https://idp.howest.be/idp/shibboleth)
+        ASSERTION_ERROR_INSTITUTIONS_ENTITY_IDS = %w(https://sts.windows.net/5cf7310e-091a-4bc5-acd7-26c721d4cccd/ https://idp.howest.be/idp/shibboleth)
 
         def self.base(host = Rails.configuration.default_host)
           # Load the certificate and private key if on staging/production.

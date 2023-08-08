@@ -1,1 +1,1 @@
-$("#submissions-table-wrapper").html("<%= escape_javascript(render partial: 'submissions_table', locals: { submissions: @submissions }) %>")
+dodona.setHTMLExecuteScripts(document.querySelector("#submissions-table-wrapper"), "<%= escape_javascript(render partial: 'submissions_table', locals: { submissions: @submissions }) %>")

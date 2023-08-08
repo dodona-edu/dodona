@@ -1,4 +1,4 @@
-$(".notification-dropdown").html("<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>");
+dodona.setHTMLExecuteScripts(document.querySelector(".notification-dropdown"), "<%= escape_javascript render(partial: 'notifications/small_notifications_table', locals: { notifications: @notifications }) %>");
 <% if @notifications.any? %>
     document.getElementById("navbar-notifications").classList.remove("hidden");
 <% end %>

@@ -1,4 +1,4 @@
-$("#info-panel .answer").text("<%= l @evaluation.deadline, format: :long %>");
+document.querySelector("#info-panel .answer").innerText = "<%= l @evaluation.deadline, format: :long %>";
 dodona.setHTMLExecuteScripts(document.querySelector("#users-step-wrapper"), "<%= raw escape_javascript(render partial: 'add_users') %>");
 window.dodona.initTooltips();
 window.dodona.toUsersStep();

@@ -1,11 +1,10 @@
-import * as jQuery from "jquery";
-
-declare let window: any;
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 declare let global: any;
-window.$ = window.jQuery = jQuery;
-global.$ = global.jQuery = jQuery;
 
 // Mocking the I18N calls. The key itself will be returned as value.
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 global.I18n = {
     t: t => t,
     formatNumber: n => n.toString(),

@@ -121,3 +121,8 @@ h6 .small,
   line-height: 1;
   color: var(--d-on-surface-muted);
 }
+
+blockquote {
+  border-left: var(--d-divider) 3px solid;
+  color: var(--d-on-surface-muted);
+}

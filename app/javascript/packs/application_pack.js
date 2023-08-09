@@ -14,13 +14,6 @@ import { start as startRails } from "@rails/ujs";
 
 startRails();
 
-import jQuery from "jquery";
-
-// jQuery aliases
-window.jQuery = jQuery;
-window.jquery = jQuery;
-window.$ = jQuery;
-
 import { I18n } from "i18n/i18n";
 window.I18n = new I18n();
 

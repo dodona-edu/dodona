@@ -93,7 +93,7 @@
       dodona.ready.then(function () {
         window.dodona.setEvaluationId(<%= @feedback.evaluation.id %>);
         window.dodona.setAnnotationVisibility("important");
-        $(".nav.nav-tabs li:last-child a").tab("show");
+        window.dodona.showLastTab();
       });
   </script>
 <% end %>

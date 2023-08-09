@@ -21,7 +21,7 @@
                 can't generically handle code tabs, except for selecting the last
                 tab. %>
             if (window.location.hash === "#code") {
-              $(".nav.nav-tabs li:last-child a").tab("show");
+              window.dodona.showLastTab();
             }
           });
         </script>

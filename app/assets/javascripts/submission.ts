@@ -120,4 +120,11 @@ function initSubmissionHistory(id: string): void {
     element.scrollIntoView({ block: "center", inline: "nearest" });
 }
 
-export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink };
+function showLastTab(): void {
+    const tab = document.querySelector(".nav.nav-tabs li:last-child a");
+    if (tab) {
+        new bootstrap.Tab(tab).show();
+    }
+}
+
+export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink, showLastTab };

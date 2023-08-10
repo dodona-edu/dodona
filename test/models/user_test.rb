@@ -18,7 +18,7 @@
 #  seen_at              :datetime
 #  sign_in_at           :datetime
 #  open_questions_count :integer          default(0), not null
-#  theme                :integer          default(0), not null
+#  theme                :integer          default("system"), not null
 #
 
 require 'test_helper'

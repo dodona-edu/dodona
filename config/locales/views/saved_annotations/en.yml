@@ -2,3 +2,5 @@ en:
   saved_annotations:
     index:
       title: Saved comments
+    show:
+      linked_annotations: Linked comments

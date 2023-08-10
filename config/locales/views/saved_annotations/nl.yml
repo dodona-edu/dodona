@@ -2,3 +2,5 @@ nl:
   saved_annotations:
     index:
       title: Opgeslagen opmerkingen
+    show:
+      linked_annotations: Gekoppelde opmerkingen

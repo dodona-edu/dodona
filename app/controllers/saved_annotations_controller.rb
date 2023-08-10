@@ -14,7 +14,14 @@ class SavedAnnotationsController < ApplicationController
                          .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
   end
 
-  def show; end
+  def show
+    authorize @saved_annotation
+    respond_to do |format|
+      format.html do
+        @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
+      end
+    end
+  end
 
   def create
     annotation = Annotation.find(params[:from])

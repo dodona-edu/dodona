@@ -23,6 +23,10 @@
           <strong><%= SavedAnnotation.human_attribute_name("annotations_count") %>:</strong> <%= @saved_annotation.annotations_count %>
         </p>
       </div>
+      <div class="card-supporting-text card-border">
+        <h4><%= t ".linked_annotations" %></h4>
+        <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @saved_annotation.exercise, course: @saved_annotation.course, user: nil} %>
+      </div>
     </div>
   </div>
 </div>

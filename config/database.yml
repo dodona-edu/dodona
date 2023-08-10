@@ -58,3 +58,4 @@ production:
   database: dodona
   username: <%= Rails.application.credentials[:db_user] %>
   password: <%= Rails.application.credentials[:db_password] %>
+  reconnect: true

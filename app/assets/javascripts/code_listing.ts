@@ -9,11 +9,11 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
-import { triggerSelectionEnd } from "components/annotations/select";
+import { triggerSelectionEnd } from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, questionMode = false): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
@@ -43,6 +43,10 @@ function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
 
     document.addEventListener("pointerup", () => triggerSelectionEnd());
+
+    // make the whole document a valid target for dropping the create annotation button
+    document.addEventListener("dragover", e => e.preventDefault());
+    document.addEventListener("drop", e => e.preventDefault());
 }
 
 function loadUserAnnotations(): void {

@@ -4,7 +4,7 @@
   top: 0;
   height: 380px;
   width: 100%;
-  background: $primary-30;
+  background: var(--d-banner);
   z-index: -1;
 }
 
@@ -14,7 +14,7 @@
 
 .home-header::before {
   content: "";
-  background: $primary-30;
+  background: var(--d-banner);
   position: absolute;
   width: 100vw;
   height: 380px;
@@ -29,14 +29,14 @@
 }
 
 .home-lead {
-  color: $primary-90;
+  color: var(--d-on-banner);
   margin-bottom: 20px;
 
   .btn,
   .btn:active {
     border-radius: 4px;
-    background-color: $content-bg;
-    color: $primary;
+    background-color: var(--d-surface);
+    color: var(--d-primary);
   }
 
   .lead {
@@ -47,7 +47,7 @@
 }
 
 .home-card .info-step img {
-  @if $theme == "dark" {
+  @include color-mode(dark) {
     filter: invert(1);
   }
 }
@@ -147,7 +147,7 @@
   margin-top: 10px;
   margin-bottom: 15px;
 
-  @media (max-width: 480px) {
+  @media (width <= 480px) {
     margin-top: 5px;
     margin-bottom: 5px;
     margin-right: 5px;

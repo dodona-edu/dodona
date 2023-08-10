@@ -1,4 +1,4 @@
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 
 export function initCheckboxes(): void {
     document.querySelectorAll<HTMLTableRowElement>(".evaluation-users-table .user-row")

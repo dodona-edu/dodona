@@ -22,8 +22,8 @@
         font-size: 12px;
         margin-right: 5px;
         vertical-align: text-bottom;
-        background-color: $primary;
-        color: $on-primary;
+        background-color: var(--d-primary);
+        color: var(--d-on-primary);
         letter-spacing: 0;
       }
 
@@ -37,12 +37,12 @@
 
           &.disabled {
             cursor: default;
-            color: $on-surface-muted;
+            color: var(--d-on-surface-muted);
           }
         }
 
         .answer {
-          color: $on-surface-muted;
+          color: var(--d-on-surface-muted);
         }
       }
     }
@@ -50,14 +50,14 @@
     .panel-heading + .panel-collapse > .panel-body {
       @include shadow-z2;
 
-      background-color: $content-bg;
+      background-color: var(--d-surface);
 
       @include media-breakpoint-up(sm) {
         margin-left: 45px;
       }
 
       border: none;
-      border-radius: $border-radius-base;
+      border-radius: var(--d-border-radius-base);
       padding: 0;
 
       &.panel-body-transparent {
@@ -75,7 +75,7 @@
       }
 
       .stepper-border {
-        border-top: 1px solid $divider;
+        border-top: 1px solid var(--d-divider);
       }
 
       .stepper-actions {

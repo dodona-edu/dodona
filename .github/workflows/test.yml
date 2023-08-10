@@ -3,15 +3,15 @@ name: Test
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
     tags:
       - '*'
   pull_request:
+  workflow_call:
 
 jobs:
   ruby:
-    name: Ruby
+    name: Test Ruby
     env:
       RAILS_ENV: "test"
       TEST_DATABASE_URL: "mysql2://root:dodona@127.0.0.1:3306/dodona_test"
@@ -22,10 +22,12 @@ jobs:
         env:
           MYSQL_DATABASE: "dodona_test"
           MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v3
     - name: Use ruby from .ruby-version
@@ -59,7 +61,7 @@ jobs:
         flags: rails
 
   javascript:
-    name: JavaScript
+    name: Test JavaScript
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -81,7 +83,7 @@ jobs:
         flags: javascript
 
   system:
-    name: System
+    name: Test System
     env:
       DISABLE_SPRING: "true"
       RAILS_ENV: "test"
@@ -93,10 +95,12 @@ jobs:
         env:
           MYSQL_DATABASE: "dodona_test"
           MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
     - uses: actions/checkout@v3
     - name: Use ruby from .ruby-version
@@ -110,6 +114,8 @@ jobs:
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master
+      with:
+        chromedriver-version: '115.0.5790.102'
     - name: Install JS dependencies
       run: |
         yarn install

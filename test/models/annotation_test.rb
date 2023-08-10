@@ -154,4 +154,19 @@ class AnnotationTest < ActiveSupport::TestCase
     run_delayed_jobs
     assert q.reload.answered?
   end
+
+  test 'delayed job should not crash if question is deleted before execution' do
+    q = create :question, submission: @submission, user: @student
+    assert q.unanswered?
+
+    with_delayed_jobs do
+      q.update(question_state: :in_progress)
+      assert q.reload.in_progress?
+      q.destroy
+    end
+
+    assert_nil Question.find_by(id: q.id)
+
+    run_delayed_jobs
+  end
 end

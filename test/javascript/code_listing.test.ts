@@ -7,7 +7,7 @@ import { machineAnnotationState } from "state/MachineAnnotations";
 import userEvent from "@testing-library/user-event";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { html } from "lit";
-import { userAnnotationState } from "state/UserAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
 window.bootstrap = bootstrap;
 
 beforeEach(async () => {
@@ -43,7 +43,7 @@ beforeEach(async () => {
             </table>
         </div>
     </div>`);
-    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n");
     annotationState.visibility = "all";
     userAnnotationState.reset();
     machineAnnotationState.setMachineAnnotations([]);
@@ -208,7 +208,7 @@ test("no double dots", async () => {
 });
 
 test("annotations should be transmitted into view", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -229,8 +229,8 @@ test("annotations should be transmitted into view", async () => {
         },
         "row": 1,
         "rows": 1,
-    });
-    await userAnnotationState.addToMap({
+    }));
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 2,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -251,14 +251,14 @@ test("annotations should be transmitted into view", async () => {
         },
         "row": 2,
         "rows": 1,
-    });
+    }));
     await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
 test("feedback table should support more than 1 annotation per row", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -279,9 +279,9 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
 
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -302,14 +302,14 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
     await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
 test("feedback table should be able to contain both machine annotations and user annotations", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -330,9 +330,9 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
 
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 2,
         "created_at": "2023-03-02T15:15:48.776+01:00",
@@ -353,7 +353,7 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "row": 2,
         "rows": 1,
-    });
+    }));
 
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },

@@ -2,14 +2,15 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import "components/saved_annotations/saved_annotation_icon";
 import { annotationState } from "state/Annotations";
+import { savedAnnotationState } from "state/SavedAnnotations";
 
 /**
  * This component represents a single user annotation.
@@ -18,12 +19,12 @@ import { annotationState } from "state/Annotations";
  *
  * @element d-user-annotation
  *
- * @prop {UserAnnotationData} data - the data of the annotation
+ * @prop {UserAnnotation} data - the annotation
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
+export class UserAnnotationComponent extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Object })
-    data: UserAnnotationData;
+    data: UserAnnotation;
 
     @property({ state: true })
     editing = false;
@@ -105,6 +106,15 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                 annotation_text: e.detail.text,
                 saved_annotation_id: e.detail.savedAnnotationId || undefined,
             });
+            if (e.detail.saveAnnotation) {
+                await savedAnnotationState.create( {
+                    from: this.data.id,
+                    saved_annotation: {
+                        title: e.detail.savedAnnotationTitle,
+                        annotation_text: e.detail.text,
+                    }
+                });
+            }
             this.editing = false;
         } catch (e) {
             this.annotationFormRef.value.hasErrors = true;
@@ -175,7 +185,9 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <div class="annotation ${this.data.type == "annotation" ? "user" : "question"}">
+            <div class="annotation ${this.data.type === "annotation" ? "user" : "question"}"
+                 @mouseenter="${() => this.data.isHovered = true}"
+                 @mouseleave="${() => this.data.isHovered = false}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${this.header}

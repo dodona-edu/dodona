@@ -1,5 +1,5 @@
 /* globals ace */
-import { initTooltips, updateURLParameter, fetch } from "util.js";
+import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
@@ -341,10 +341,10 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         const icon = fab.children[0];
         icon.classList.remove("mdi-pencil");
         if (status === "correct") {
-            fab.classList.add("correct");
+            fab.classList.add("d-btn-success");
             icon.classList.add(getPositiveEmoji());
         } else {
-            fab.classList.add("wrong");
+            fab.classList.add("d-btn-danger");
             icon.classList.add("mdi-emoticon-sad-outline");
         }
         setTimeout(resetFABStatus, 4000);
@@ -353,7 +353,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
     function resetFABStatus(): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
-        fab.classList.remove("correct", "wrong");
+        fab.classList.remove("d-btn-success", "d-btn-danger");
         icon.classList.remove(...icon.classList);
         icon.classList.add("mdi", "mdi-pencil");
     }

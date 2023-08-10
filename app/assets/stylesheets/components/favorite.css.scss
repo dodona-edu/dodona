@@ -1,10 +1,10 @@
 .favorite-button::before {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
   margin-top: 4px;
   margin-left: 6px;
   cursor: pointer;
 }
 
 .favorite-button.favorited::before {
-  color: $pink;
+  color: var(--d-pink);
 }

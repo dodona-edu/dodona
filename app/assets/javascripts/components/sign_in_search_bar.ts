@@ -2,7 +2,7 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Option } from "components/datalist_input";
-import { ready } from "util.js";
+import { ready } from "utilities";
 import "components/datalist_input";
 
 /**
@@ -62,7 +62,7 @@ export class SignInSearchBar extends ShadowlessLitElement {
                     @input=${e => this.handleInput(e)}
                     placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"
                 ></d-datalist-input>
-                <a class="btn btn-primary btn-lg login-button ${this.selected_provider == "" ? "disabled": ""}"
+                <a class="btn btn-filled btn-lg login-button ${this.selected_provider == "" ? "disabled": ""}"
                    href=${this.link}>
                     ${I18n.t("js.sign_in_search_bar.log_in")}
                 </a>

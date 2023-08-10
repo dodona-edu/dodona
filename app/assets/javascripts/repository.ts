@@ -1,4 +1,4 @@
-import { fetch } from "./util.js";
+import { fetch } from "utilities";
 import { Toast } from "./toast";
 
 function initAdminsEdit(): void {
@@ -74,7 +74,7 @@ function initAdminsEdit(): void {
         deleteButton.innerHTML = "<i class='mdi mdi-delete'></i>";
         deleteButton.classList.add("remove-admin");
         deleteButton.classList.add("btn-icon-filled");
-        deleteButton.classList.add("bg-danger");
+        deleteButton.classList.add("d-btn-danger");
         deleteButton.addEventListener("click", onRemoveClick);
         document.querySelector("#admin-table-wrapper table tbody").append(newRow);
         addButton.classList.add("invisible");
@@ -158,7 +158,7 @@ function initCoursesEdit(): void {
         deleteButton.innerHTML = "<i class='mdi mdi-delete'></i>";
         deleteButton.classList.add("remove-course");
         deleteButton.classList.add("btn-icon-filled");
-        deleteButton.classList.add("bg-danger");
+        deleteButton.classList.add("d-btn-danger");
         deleteButton.addEventListener("click", onRemoveClick);
         document.querySelector("#allowed-courses-table-wrapper table tbody").append(newRow);
         addButton.classList.add("invisible");

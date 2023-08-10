@@ -306,13 +306,18 @@ en:
       options:
         add_global_annotation: Add global comment
         add_global_question: "Ask a question about your code"
-        add_annotation: Add a comment to this line
-        add_question: "Ask a question about this line"
-        add_annotation_for_selection: Add a comment
-        add_question_for_selection: "Ask a question"
+        add_annotation_drop: Release to add comment
+        add_question_drop: "Release to ask question"
+        add_annotation: Add comment
+        add_question: "Ask question"
       toggles:
         title: Annotations
         show_all: Show all annotations
         hide_all: Hide all annotations
         show_errors: Only show errors
+    theme:
+      light: Light
+      dark: Dark
+      system: System
+      theme: Theme
 

@@ -7,6 +7,7 @@ import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { annotationState } from "state/Annotations";
+import { userAnnotationState } from "state/UserAnnotations";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -67,6 +68,46 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         return Math.max(3, this._annotationText.split("\n").length + 1);
     }
 
+
+    /**
+     * Event callback for when the user clicks anywhere on the page.
+     * If the click is not on the annotation form or the annotation button, the annotation form is closed.
+     * @param e The click event
+     */
+    static closeForm(e: MouseEvent): void {
+        if (!(e.target as Element).closest("d-annotation-form") && !(e.target as Element).closest(".annotation-button")) {
+            userAnnotationState.formShown = false;
+            userAnnotationState.selectedRange = undefined;
+        }
+    }
+
+    isListeningForClose = false;
+    listenForClose(): void {
+        if (!this.isListeningForClose) {
+            document.addEventListener("click", AnnotationForm.closeForm);
+            this.isListeningForClose = true;
+        }
+    }
+
+    stopListeningForClose(): void {
+        if (this.isListeningForClose) {
+            document.removeEventListener("click", AnnotationForm.closeForm);
+            this.isListeningForClose = false;
+        }
+    }
+
+    connectedCallback(): void {
+        super.connectedCallback();
+        if (!this.annotationText) {
+            this.listenForClose();
+        }
+    }
+
+    disconnectedCallback(): void {
+        super.disconnectedCallback();
+        this.stopListeningForClose();
+    }
+
     handleSavedAnnotationInput(e: CustomEvent): void {
         if (e.detail.text) {
             this._annotationText = e.detail.text;
@@ -76,6 +117,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
 
     handleTextInput(): void {
         this._annotationText = this.inputRef.value.value;
+        if (this._annotationText.length > 0) {
+            this.stopListeningForClose();
+        } else {
+            this.listenForClose();
+        }
     }
 
     handleCancel(): void {

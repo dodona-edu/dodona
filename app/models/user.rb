@@ -250,7 +250,7 @@ class User < ApplicationRecord
   def email
     return self[:email] unless Current.demo_mode && Current.user != self
 
-    "#{first_name}.#{last_name}@dodona.ugent.be"
+    "#{first_name}.#{last_name}@dodona.be"
   end
 
   def short_name

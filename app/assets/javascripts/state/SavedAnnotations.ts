@@ -65,29 +65,6 @@ class SavedAnnotationState extends State {
         return savedAnnotation.id;
     }
 
-    async update(id: number, data: { saved_annotation: SavedAnnotation }): Promise<void> {
-        const url = `${URL}/${id}`;
-        const response = await fetch(url, {
-            method: "put",
-            body: JSON.stringify(data),
-            headers: { "Content-type": "application/json" },
-        });
-        if (response.status === 422) {
-            const errors = await response.json();
-            throw errors;
-        }
-        const savedAnnotation: SavedAnnotation = await response.json();
-        this.invalidate(savedAnnotation.id, savedAnnotation);
-    }
-
-    async delete(id: number): Promise<void> {
-        const url = `${URL}/${id}`;
-        await fetch(url, {
-            method: "delete",
-        });
-        this.invalidate(id);
-    }
-
     getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
         const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {

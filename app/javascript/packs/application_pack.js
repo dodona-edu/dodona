@@ -37,7 +37,6 @@ import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import { themeState } from "state/Theme";
 import "components/saved_annotations/saved_annotation_list";
-import "components/saved_annotations/saved_annotations_sidecard";
 import "components/progress_bar";
 import "components/theme_picker";
 import { userState } from "../../assets/javascripts/state/Users";

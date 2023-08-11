@@ -3,7 +3,7 @@
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= @saved_annotation.title %></h2>
-        <% if false && policy(@saved_annotation).edit? %>
+        <% if policy(@saved_annotation).edit? %>
           <div class="card-title-fab">
             <%= render 'fab_link', url: edit_saved_annotation_path(@saved_annotation), icon: 'pencil' %>
           </div>

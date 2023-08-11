@@ -1,0 +1,36 @@
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @saved_annotation.title %></h2>
+        <div class="card-title-fab">
+          <%= render 'fab_button', form: "edit_saved_annotation_#{@saved_annotation.id}", icon: 'check' %>
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <div class="callout callout-warning"><%= t ".warning_no_annotations_changed" %></div>
+        <%= form_for(@saved_annotation, :html => {:class => 'form-horizontal'}) do |f| %>
+          <% if @saved_annotation.errors.any? %>
+            <div class="callout callout-danger" id="error_explanation">
+              <h4><%= t('errors.validation_errors', :count => @saved_annotation.errors.count) %></h4>
+              <ul>
+                <% @saved_annotation.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="field form-group row">
+            <%= f.label :title, :class => "col-sm-3 col-form-label" %>
+            <div class="col-sm-6"><%= f.text_field :title, class: "form-control" %></div>
+          </div>
+          <div class="field form-group row">
+            <%= f.label :annotation_text, :class => "col-sm-3 col-form-label" %>
+            <div class="col-sm-6"><%= f.text_area :annotation_text, class: "form-control" %></div>
+            <span class="help-block offset-sm-3 col-sm-6"><%= t ".markdown_html" %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

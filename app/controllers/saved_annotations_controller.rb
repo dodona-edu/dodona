@@ -1,6 +1,6 @@
 class SavedAnnotationsController < ApplicationController
   set_pagination_headers :saved_annotations, only: [:index]
-  before_action :set_saved_annotation, only: %i[show update destroy]
+  before_action :set_saved_annotation, only: %i[show update destroy edit]
 
   has_scope :by_user, as: 'user_id'
   has_scope :by_course, as: 'course_id'
@@ -15,13 +15,14 @@ class SavedAnnotationsController < ApplicationController
   end
 
   def show
-    authorize @saved_annotation
     respond_to do |format|
       format.html do
         @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
       end
     end
   end
+
+  def edit; end
 
   def create
     annotation = Annotation.find(params[:from])
@@ -42,8 +43,13 @@ class SavedAnnotationsController < ApplicationController
     respond_to do |format|
       if @saved_annotation.update(permitted_attributes(SavedAnnotation))
         format.json { render :show, status: :ok, location: @saved_annotation }
+        format.html do
+          @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
+          render :show
+        end
       else
         format.json { render json: @saved_annotation.errors.full_messages, status: :unprocessable_entity }
+        format.html { render :edit }
       end
     end
   end

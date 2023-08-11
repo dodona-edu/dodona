@@ -4,3 +4,6 @@ en:
       title: Saved comments
     show:
       linked_annotations: Linked comments
+    edit:
+      markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.
+      warning_no_annotations_changed: Existing comments will not be updated. These changes will only be applied to new comments.

@@ -74,7 +74,7 @@ export class SavedAnnotationList extends ShadowlessLitElement {
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
                                 <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}" title="${sa.title}">
-                                    ${sa.title}
+                                    <a href="${sa.url}" target="_blank">${sa.title}</a>
                                     <p class="small text-muted">${I18n.t("js.saved_annotation.list.annotations_count", { count: sa.annotations_count })}</p>
                                 </td>
                                 ${ this.small ? "" : html`

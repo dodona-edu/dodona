@@ -9,6 +9,7 @@ class SavedAnnotationsController < ApplicationController
 
   def index
     authorize SavedAnnotation
+    @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path]]
     @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
                          .includes(:course).includes(:user).includes(:exercise)
                          .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
@@ -17,13 +18,16 @@ class SavedAnnotationsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
+        @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)]]
         @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
       end
       format.json
     end
   end
 
-  def edit; end
+  def edit
+    @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)], [I18n.t('saved_annotations.edit.title'), '#']]
+  end
 
   def create
     annotation = Annotation.find(params[:from])
@@ -45,12 +49,14 @@ class SavedAnnotationsController < ApplicationController
       if @saved_annotation.update(permitted_attributes(SavedAnnotation))
         format.json { render :show, status: :ok, location: @saved_annotation }
         format.html do
-          @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
-          render :show
+          redirect_to saved_annotation_path(@saved_annotation)
         end
       else
         format.json { render json: @saved_annotation.errors.full_messages, status: :unprocessable_entity }
-        format.html { render :edit }
+        format.html do
+          @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)], [I18n.t('saved_annotations.edit.title'), '#']]
+          render :edit
+        end
       end
     end
   end

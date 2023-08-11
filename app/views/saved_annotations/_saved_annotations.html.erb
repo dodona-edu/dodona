@@ -1,0 +1,24 @@
+<div class="table-scroll-wrapper">
+  <table class="table table-index table-resource">
+    <thead>
+    <th><%= t ".title"%></th>
+    <th><%= t ".annotation_text"%></th>
+    <th><%= t ".course"%></th>
+    <th><%= t ".exercise"%></th>
+    </thead>
+    <tbody>
+    <% @saved_annotations.each do |sa| %>
+      <tr>
+        <td class="ellipsis-overflow" title="<%= sa.title%>">
+        <%= sa.title%>
+        <p class="small text-muted"><%= t "js.saved_annotation.list.annotations_count", count: sa.annotations_count %></p>
+        </td>
+        <td class="ellipsis-overflow" title="${sa.annotation_text%>"><%= sa.annotation_text%></td>
+        <td><d-filter-button param="course_id" value="<%= sa.course.id %>"><%= sa.course.name%></d-filter-button></td>
+        <td><d-filter-button param="exercise_id" value="<%= sa.exercise.id %>"><%= sa.exercise.name%></d-filter-button></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<center><%= page_navigation_links @saved_annotations, true, 'saved_annotations', params %></center>

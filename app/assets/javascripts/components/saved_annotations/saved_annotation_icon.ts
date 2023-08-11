@@ -26,9 +26,11 @@ export class SavedAnnotationIcon extends ShadowlessLitElement {
 
     render(): TemplateResult {
         return isBetaCourse() && this.isAlreadyLinked && this.savedAnnotation!= undefined ? html`
-            <i class="mdi mdi-link-variant mdi-18 annotation-meta-icon"
-               title="${I18n.t("js.saved_annotation.new.linked", { title: this.savedAnnotation.title })}"
-            ></i>
+            <a href="${this.savedAnnotation.url}" target="_blank">
+                <i class="mdi mdi-link-variant mdi-18 annotation-meta-icon"
+                   title="${I18n.t("js.saved_annotation.new.linked", { title: this.savedAnnotation.title })}"
+                ></i>
+            </a>
         ` : html``;
     }
 }

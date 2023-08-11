@@ -19,6 +19,7 @@ class SavedAnnotationsController < ApplicationController
       format.html do
         @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
       end
+      format.json
     end
   end
 

@@ -2,13 +2,10 @@
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><%= @saved_annotation.title %></h2>
-        <div class="card-title-fab">
-          <%= render 'fab_button', form: "edit_saved_annotation_#{@saved_annotation.id}", icon: 'check' %>
-        </div>
+        <h2 class="card-title-text"><%= t ".title" %></h2>
       </div>
       <div class="card-supporting-text">
-        <div class="callout callout-warning"><%= t ".warning_no_annotations_changed" %></div>
+        <div class="callout callout-warning mt-0"><%= t ".warning_no_annotations_changed" %></div>
         <%= form_for(@saved_annotation, :html => {:class => 'form-horizontal'}) do |f| %>
           <% if @saved_annotation.errors.any? %>
             <div class="callout callout-danger" id="error_explanation">
@@ -30,6 +27,18 @@
             <span class="help-block offset-sm-3 col-sm-6"><%= t ".markdown_html" %></span>
           </div>
         <% end %>
+      </div>
+      <div class="card-actions card-border">
+        <% if policy(@saved_annotation).destroy? %>
+          <%= link_to @saved_annotation, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-filled with-icon d-btn-danger" do %>
+            <i class="mdi mdi-delete"></i>
+            <%= t ".destroy" %>
+          <% end %>
+        <% end %>
+        <button type="submit" class="btn btn-filled with-icon" form="<%= "edit_saved_annotation_#{@saved_annotation.id}"%>">
+          <i class="mdi mdi-send"></i>
+          <%= t ".save" %>
+        </button>
       </div>
     </div>
   </div>

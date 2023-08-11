@@ -5,5 +5,8 @@ nl:
     show:
       linked_annotations: Gekoppelde opmerkingen
     edit:
+      title: Bewerk opgeslagen opmerking
       markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
       warning_no_annotations_changed: Bestaande opmerkingen zullen niet worden aangepast. Deze wijzigingen zullen enkel worden toegepast op nieuwe opmerkingen.
+      destroy: Verwijderen
+      save: Opslaan

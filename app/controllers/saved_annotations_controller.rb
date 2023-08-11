@@ -57,6 +57,7 @@ class SavedAnnotationsController < ApplicationController
 
   def destroy
     @saved_annotation.destroy
+    redirect_to saved_annotations_url
   end
 
   private

@@ -30,14 +30,8 @@ class ActivitiesController < ApplicationController
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[name popularity].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  include Sortable
+  order_by :popularity, :name
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }

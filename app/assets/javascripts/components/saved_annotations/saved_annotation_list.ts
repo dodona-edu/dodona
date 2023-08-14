@@ -34,9 +34,19 @@ export class SavedAnnotationList extends ShadowlessLitElement {
             <div class="table-scroll-wrapper">
                 <table class="table table-index table-resource">
                     <thead>
-                        <th title="${I18n.t("js.saved_annotation.annotations_count")}">#</th>
-                        <th>${I18n.t("js.saved_annotation.title")}</th>
-                        <th>${I18n.t("js.saved_annotation.annotation_text")}</th>
+                        <th title="${I18n.t("js.saved_annotation.annotations_count")}">
+                            <d-sort-button column="annotations_count" default="DESC">#</d-sort-button>
+                        </th>
+                        <th>
+                            <d-sort-button column="title">
+                                ${I18n.t("js.saved_annotation.title")}
+                            </d-sort-button>
+                        </th>
+                        <th>
+                            <d-sort-button column="annotation_text">
+                                ${I18n.t("js.saved_annotation.annotation_text")}
+                            </d-sort-button>
+                        </th>
                         <th>${I18n.t("js.saved_annotation.course")}</th>
                         <th>${I18n.t("js.saved_annotation.exercise")}</th>
                         <th></th>

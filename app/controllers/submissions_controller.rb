@@ -22,14 +22,8 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[user exercise created_at status].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  include Sortable
+  order_by :user, :exercise, :created_at, :status
 
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed tutor

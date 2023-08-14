@@ -5,14 +5,8 @@ class InstitutionsController < ApplicationController
     scope.by_name(value)
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[name short_name users courses most_similar].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  include Sortable
+  order_by :name, :short_name, :users, :courses, :most_similar
 
   def index
     authorize Institution

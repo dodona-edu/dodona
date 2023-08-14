@@ -7,11 +7,15 @@ class SavedAnnotationsController < ApplicationController
   has_scope :by_exercise, as: 'exercise_id'
   has_scope :by_filter, as: 'filter'
 
+  include Sortable
+  order_by :annotations_count, :title, :annotation_text
+
   def index
     authorize SavedAnnotation
-    @courses = Course.where(id: policy_scope(SavedAnnotation).pluck(:course_id).uniq)
-    @exercises = Activity.where(id: policy_scope(SavedAnnotation).pluck(:exercise_id).uniq)
-    @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
+    saved_annotations = policy_scope(SavedAnnotation.order_by_annotations_count(:DESC))
+    @courses = Course.where(id: saved_annotations.pluck(:course_id).uniq)
+    @exercises = Activity.where(id: saved_annotations.pluck(:exercise_id).uniq)
+    @saved_annotations = apply_scopes(saved_annotations)
                          .includes(:course).includes(:user).includes(:exercise)
                          .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
   end

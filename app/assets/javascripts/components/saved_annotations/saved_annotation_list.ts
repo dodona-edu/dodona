@@ -21,12 +21,26 @@ export class SavedAnnotationList extends ShadowlessLitElement {
         return searchQueryState.arrayQueryParams;
     }
 
+    lastSavedAnnotations: SavedAnnotation[] = [];
     get savedAnnotations(): SavedAnnotation[] {
-        return savedAnnotationState.getList(this.queryParams, this.arrayQueryParams);
+        const savedAnnotations = savedAnnotationState.getList(this.queryParams, this.arrayQueryParams);
+        if (savedAnnotations === undefined) {
+            // return last saved annotations if the updated list is not yet available
+            return this.lastSavedAnnotations;
+        }
+        this.lastSavedAnnotations = savedAnnotations;
+        return savedAnnotations;
     }
 
+    lastPagination: Pagination = { current_page: 1, total_pages: 1 };
     get pagination(): Pagination {
-        return savedAnnotationState.getPagination(this.queryParams, this.arrayQueryParams);
+        const pagination = savedAnnotationState.getPagination(this.queryParams, this.arrayQueryParams);
+        if (pagination === undefined) {
+            // return last pagination if the updated pagination is not yet available
+            return this.lastPagination;
+        }
+        this.lastPagination = pagination;
+        return pagination;
     }
 
     render(): TemplateResult {

@@ -256,6 +256,7 @@ nl:
         courses: Cursus
         question_states: Toestand
         popularity: Populariteit
+        exercises: Oefening
     saved_annotation:
       title: Titel
       annotation_text: Tekst

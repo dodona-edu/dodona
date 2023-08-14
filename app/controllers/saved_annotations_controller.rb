@@ -9,6 +9,8 @@ class SavedAnnotationsController < ApplicationController
 
   def index
     authorize SavedAnnotation
+    @courses = Course.where(id: policy_scope(SavedAnnotation).pluck(:course_id).uniq)
+    @exercises = Activity.where(id: policy_scope(SavedAnnotation).pluck(:exercise_id).uniq)
     @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
                          .includes(:course).includes(:user).includes(:exercise)
                          .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))

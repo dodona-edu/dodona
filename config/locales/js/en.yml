@@ -256,6 +256,7 @@ en:
         courses: Course
         question_states: Status
         popularity: Popularity
+        exercises: Exercise
     saved_annotation:
       title: Title
       annotation_text: Text

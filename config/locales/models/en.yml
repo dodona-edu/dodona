@@ -208,3 +208,10 @@ en:
         institution_id: Institution ID
         institution: Institution
         style: Bootstrap style
+      saved_annotation:
+        title: Title
+        annotation_text: Text
+        user: User
+        course: Course
+        exercise: Exercise
+        annotations_count: Number of usages

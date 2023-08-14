@@ -209,3 +209,10 @@ nl:
         institution_id: ID van onderwijsinstelling
         institution: Onderwijsinstelling
         style: Bootstrap-stijl
+      saved_annotation:
+        title: Titel
+        annotation_text: Tekst
+        user: Gebruiker
+        course: Cursus
+        exercise: Oefening
+        annotations_count: "Aantal keer gebruikt"

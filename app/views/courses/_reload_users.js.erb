@@ -3,5 +3,5 @@
   new dodona.Toast("<%= toast %>");
 <% end %>
 <% count = @course.pending_members.count %>
-$("#pending-count").text('<%= count if count.nonzero? %>');
+document.getElementById("pending-count").innerText = "<%= count if count.nonzero? %>";
 dodona.search.search();

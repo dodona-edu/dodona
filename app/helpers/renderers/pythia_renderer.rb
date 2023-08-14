@@ -102,7 +102,7 @@ class PythiaRenderer < FeedbackTableRenderer
     @builder.script do
       escaped = escape_javascript(@code.strip)
       @builder << 'dodona.ready.then(function() {'
-      @builder << "$('#tutor').appendTo('body');"
+      @builder << "document.body.append(document.getElementById('tutor'));"
       @builder << "var code = \"#{escaped}\";"
       @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
     end

@@ -1,6 +1,6 @@
 <%= render 'navbar_links' %>
-<div class="row justify-content-center">
-  <div class="col-lg-8 col-xxl-9 col-12">
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".submission_results" %></h2>
@@ -21,22 +21,13 @@
                 can't generically handle code tabs, except for selecting the last
                 tab. %>
             if (window.location.hash === "#code") {
-              $(".nav.nav-tabs li:last-child a").tab("show");
+              window.dodona.showLastTab();
             }
           });
         </script>
       </div>
     </div>
   </div>
-
-  <!-- REMOVE IF AFTER CLOSED BETA -->
-  <% if policy(SavedAnnotation).beta_course? @submission.course&.id %>
-    <d-saved-annotations-sidecard course-id="<%= @submission.course&.id %>"
-                                  exercise-id="<%= @submission.exercise&.id %>"
-                                  user-id="<%= current_user.id %>"
-                                  class="col-12 col-lg-4 col-xxl-3"
-    ></d-saved-annotations-sidecard>
-  <% end %>
 </div>
 <% if @submission.queued? || @submission.running? %>
   <script>setTimeout(function () {

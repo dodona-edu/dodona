@@ -221,15 +221,32 @@ function getParentByClassName(element: Element, classNames: string): Element {
  */
 function setHTMLExecuteScripts(el: Element, html: string): void {
     el.innerHTML = html;
-    Array.from(el.querySelectorAll("script")).forEach(oldScriptEl => {
-        const newScriptEl = document.createElement("script");
-        Array.from(oldScriptEl.attributes).forEach(attr => {
-            newScriptEl.setAttribute(attr.name, attr.value);
-        });
-        const scriptText = document.createTextNode(oldScriptEl.innerHTML);
-        newScriptEl.appendChild(scriptText);
-        oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
+    executeScripts(el as HTMLElement);
+}
+
+function replaceHTMLExecuteScripts(el: Element, html: string): void {
+    const nodes = Array.from(new DOMParser().parseFromString(html, "text/html").body.childNodes);
+    el.replaceWith(...nodes);
+    nodes.filter(a => a instanceof HTMLElement || a instanceof HTMLScriptElement)
+        .forEach(executeScripts);
+}
+
+function executeScripts(el: HTMLElement | HTMLScriptElement): void {
+    if (el instanceof HTMLScriptElement) {
+        executeScript(el);
+        return;
+    }
+    Array.from(el.querySelectorAll("script")).forEach(executeScript);
+}
+
+function executeScript(oldScriptEl: HTMLScriptElement): void {
+    const newScriptEl = document.createElement("script");
+    Array.from(oldScriptEl.attributes).forEach(attr => {
+        newScriptEl.setAttribute(attr.name, attr.value);
     });
+    const scriptText = document.createTextNode(oldScriptEl.innerHTML);
+    newScriptEl.appendChild(scriptText);
+    oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
 }
 
 export {
@@ -251,4 +268,5 @@ export {
     ready,
     getParentByClassName,
     setHTMLExecuteScripts,
+    replaceHTMLExecuteScripts,
 };

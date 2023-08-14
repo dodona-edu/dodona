@@ -1,4 +1,4 @@
-import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory } from "submission.ts";
+import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory, showLastTab } from "submission.ts";
 import { initMathJax } from "exercise.ts";
 import { attachClipboard } from "copy";
 import { evaluationState } from "state/Evaluations";
@@ -13,3 +13,4 @@ window.dodona.initCorrectSubmissionToNextLink = initCorrectSubmissionToNextLink;
 window.dodona.initSubmissionHistory = initSubmissionHistory;
 window.dodona.setEvaluationId = id => evaluationState.id = id;
 window.dodona.setAnnotationVisibility = visibility => annotationState.visibility = visibility;
+window.dodona.showLastTab = showLastTab;

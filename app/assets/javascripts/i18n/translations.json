@@ -295,6 +295,7 @@
       "repositories": "Repositories",
       "saved_annotation": {
         "annotation_text": "Text",
+        "annotations_count": "Number of usages",
         "course": "Course",
         "delete": {
           "confirm": "Are you sure you want to delete this saved comment?"
@@ -811,6 +812,7 @@
       "repositories": "Repository's",
       "saved_annotation": {
         "annotation_text": "Tekst",
+        "annotations_count": "Aantal keer gebruikt",
         "course": "Cursus",
         "delete": {
           "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"

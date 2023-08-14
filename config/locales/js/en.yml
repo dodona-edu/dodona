@@ -262,6 +262,7 @@ en:
       user: User
       course: Course
       exercise: Exercise
+      annotations_count: Number of usages
       list:
         annotations_count: "Used %{count} times"
       sidecard:

@@ -80,7 +80,7 @@
                            {
                                icon: 'palette-swatch',
                                text: t(".edit_all_labels"),
-                               js: '$("#labelsUploadModal").modal("show")',
+                               js: 'bootstrap.Modal.getOrCreateInstance(document.querySelector("#labelsUploadModal")).show()',
                                type: 'enrolled'
                            }
                        ],

@@ -42,4 +42,5 @@ json.responses annotation.responses do |response|
 end
 json.thread_root_id annotation.thread_root_id
 
+# Only include the saved annotation id if the user is allowed to see it
 json.saved_annotation_id annotation.saved_annotation_id if annotation.saved_annotation.present? && SavedAnnotationPolicy.new(current_user, annotation.saved_annotation).show?

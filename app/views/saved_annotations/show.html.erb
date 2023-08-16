@@ -21,7 +21,7 @@
         <%= t ".count_info_html", count: @saved_annotation.annotations_count %>
       </div>
       <div class="card-supporting-text card-border">
-        <h4><%= t ".linked_annotations" %></h4>
+        <h4><%= t ".linked_submissions" %></h4>
         <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @saved_annotation.exercise, course: @saved_annotation.course, user: nil} %>
       </div>
     </div>

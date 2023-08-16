@@ -3,7 +3,7 @@ en:
     index:
       title: Saved comments
     show:
-      linked_annotations: Linked comments
+      linked_submissions: Linked submissions
       usage_info_html: This comment can be reused on all submissions for the exercise <a href="%{exercise_path}">%{exercise_name}</a> in the course <a href="%{course_path}">%{course_name}</a>.
       count_info_html: This comment is used %{count} times.
     edit:

@@ -450,7 +450,7 @@ class Activity < ApplicationRecord
     begin
       ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
     rescue StandardError
-      # https://github.com/dodona-edu/dodona/issues/1877
+      # https://github.com/dodona-edu/dodona/pull/4903
       raise unless tries < 3
 
       tries += 1

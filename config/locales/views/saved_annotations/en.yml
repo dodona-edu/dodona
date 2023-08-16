@@ -2,3 +2,13 @@ en:
   saved_annotations:
     index:
       title: Saved comments
+    show:
+      linked_submissions: Linked submissions
+      usage_info_html: This comment can be reused on all submissions for the exercise <a href="%{exercise_path}">%{exercise_name}</a> in the course <a href="%{course_path}">%{course_name}</a>.
+      count_info_html: This comment is used %{count} times.
+    edit:
+      title: Edit saved comment
+      markdown_html: <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.
+      warning_no_annotations_changed: Existing comments will not be updated. These changes will only be applied to new comments.
+      destroy: Delete
+      save: Save

@@ -2,7 +2,6 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Pagination, SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
-import "./edit_saved_annotation";
 import "components/pagination";
 import { searchQueryState } from "state/SearchQuery";
 
@@ -67,14 +66,13 @@ export class SavedAnnotationList extends ShadowlessLitElement {
                             <th>${I18n.t("js.saved_annotation.user")}</th>
                             <th>${I18n.t("js.saved_annotation.course")}</th>
                             <th>${I18n.t("js.saved_annotation.exercise")}</th>
-                            <th></th>
                         </thead>
                     `}
                     <tbody>
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
                                 <td class="ellipsis-overflow" style="${this.small ? "max-width: 150px" : ""}" title="${sa.title}">
-                                    ${sa.title}
+                                    <a href="${sa.url}">${sa.title}</a>
                                     <p class="small text-muted">${I18n.t("js.saved_annotation.list.annotations_count", { count: sa.annotations_count })}</p>
                                 </td>
                                 ${ this.small ? "" : html`
@@ -83,9 +81,6 @@ export class SavedAnnotationList extends ShadowlessLitElement {
                                     <td><a href="${sa.course.url}">${sa.course.name}</a></td>
                                     <td><a href="${sa.exercise.url}">${sa.exercise.name}</a></td>
                                 `}
-                                <td class="actions">
-                                    <d-edit-saved-annotation .savedAnnotation=${sa}></d-edit-saved-annotation>
-                                </td>
                             </tr>
                         `)}
                     </tbody>

@@ -21,6 +21,7 @@ class SavedAnnotation < ApplicationRecord
   belongs_to :course
 
   has_many :annotations, dependent: :nullify
+  has_many :submissions, through: :annotations
 
   scope :by_user, ->(user_id) { where user_id: user_id }
   scope :by_course, ->(course_id) { where course_id: course_id }

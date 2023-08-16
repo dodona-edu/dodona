@@ -10,6 +10,7 @@ export type SavedAnnotation = {
     title: string,
     id: number,
     annotation_text: string,
+    url?: string,
     user?: { name: string, url: string },
     exercise?: { name: string, url: string },
     course?: { name: string, url: string }
@@ -62,29 +63,6 @@ class SavedAnnotationState extends State {
         this.invalidate(savedAnnotation.id, savedAnnotation);
         userAnnotationState.invalidate(data.from);
         return savedAnnotation.id;
-    }
-
-    async update(id: number, data: { saved_annotation: SavedAnnotation }): Promise<void> {
-        const url = `${URL}/${id}`;
-        const response = await fetch(url, {
-            method: "put",
-            body: JSON.stringify(data),
-            headers: { "Content-type": "application/json" },
-        });
-        if (response.status === 422) {
-            const errors = await response.json();
-            throw errors;
-        }
-        const savedAnnotation: SavedAnnotation = await response.json();
-        this.invalidate(savedAnnotation.id, savedAnnotation);
-    }
-
-    async delete(id: number): Promise<void> {
-        const url = `${URL}/${id}`;
-        await fetch(url, {
-            method: "delete",
-        });
-        this.invalidate(id);
     }
 
     getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> | undefined {

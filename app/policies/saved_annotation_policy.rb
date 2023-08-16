@@ -45,6 +45,10 @@ class SavedAnnotationPolicy < ApplicationPolicy
     user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
+  def edit?
+    update?
+  end
+
   def update?
     # EDIT AFTER CLOSED BETA
     user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id

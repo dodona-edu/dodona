@@ -51,7 +51,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     within '.annotation' do
       assert_text initial
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
     sign_out @staff
   end
@@ -103,7 +103,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     within '.annotation' do
       assert_text sa.annotation_text
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
     sign_out @staff
   end

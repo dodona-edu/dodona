@@ -3,8 +3,8 @@ nl:
     index:
       title: Opgeslagen opmerkingen
     show:
-      linked_submissions: Gekoppelde indieningen
-      usage_info_html: Deze opmerking kan worden hergebruikt op alle indieningen voor de oefening <a href="%{exercise_path}">%{exercise_name}</a> in de cursus <a href="%{course_path}">%{course_name}</a>.
+      linked_submissions: Gekoppelde oplossingen
+      usage_info_html: Deze opmerking kan worden hergebruikt op alle ingediende oplossingen voor de oefening <a href="%{exercise_path}">%{exercise_name}</a> in de cursus <a href="%{course_path}">%{course_name}</a>.
       count_info_html: Deze opmerking wordt <strong>%{count}</strong> keer gebruikt.
     edit:
       title: Bewerk opgeslagen opmerking

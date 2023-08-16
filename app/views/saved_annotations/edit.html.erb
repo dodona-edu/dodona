@@ -6,10 +6,10 @@
       </div>
       <div class="card-supporting-text">
         <div class="callout callout-warning mt-0"><%= t ".warning_no_annotations_changed" %></div>
-        <%= form_for(@saved_annotation, :html => {:class => 'form-horizontal'}) do |f| %>
+        <%= form_for(@saved_annotation, html: { class: 'form-horizontal' }) do |f| %>
           <% if @saved_annotation.errors.any? %>
             <div class="callout callout-danger" id="error_explanation">
-              <h4><%= t('errors.validation_errors', :count => @saved_annotation.errors.count) %></h4>
+              <h4><%= t('errors.validation_errors', count: @saved_annotation.errors.count) %></h4>
               <ul>
                 <% @saved_annotation.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
@@ -18,11 +18,11 @@
             </div>
           <% end %>
           <div class="field form-group row">
-            <%= f.label :title, :class => "col-sm-3 col-form-label" %>
+            <%= f.label :title, class: "col-sm-3 col-form-label" %>
             <div class="col-sm-6"><%= f.text_field :title, class: "form-control" %></div>
           </div>
           <div class="field form-group row">
-            <%= f.label :annotation_text, :class => "col-sm-3 col-form-label" %>
+            <%= f.label :annotation_text, class: "col-sm-3 col-form-label" %>
             <div class="col-sm-6"><%= f.text_area :annotation_text, class: "form-control" %></div>
             <span class="help-block offset-sm-3 col-sm-6"><%= t ".markdown_html" %></span>
           </div>

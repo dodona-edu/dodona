@@ -279,7 +279,6 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                                    @input=${() => this.handleUpdateTitle()}
                                                    value=${this.savedAnnotationTitle}
                                                    id="saved-annotation-title"
-                                                   style="width: 200px; display: inline-block;"
                                             >
                                             <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
                                         </div>

@@ -9,19 +9,16 @@
           </div>
         <% end %>
       </div>
-      <div class="card-supporting-text row">
-        <p>
-          <strong><%= SavedAnnotation.human_attribute_name("annotation_text") %>:</strong> <%= markdown @saved_annotation.annotation_text %>
-        </p>
-        <p>
-          <strong><%= SavedAnnotation.human_attribute_name("course") %>:</strong> <%= link_to @saved_annotation.course.name, course_path(@saved_annotation.course) %>
-        </p>
-        <p>
-          <strong><%= SavedAnnotation.human_attribute_name("exercise") %>:</strong> <%= link_to @saved_annotation.exercise.name, course_activity_path(@saved_annotation.course ,@saved_annotation.exercise) %>
-        </p>
-        <p>
-          <strong><%= SavedAnnotation.human_attribute_name("annotations_count") %>:</strong> <%= @saved_annotation.annotations_count %>
-        </p>
+      <div class="card-supporting-text">
+        <p><strong><%= SavedAnnotation.human_attribute_name("annotation_text") %>:</strong></p>
+        <blockquote><%= markdown @saved_annotation.annotation_text %></blockquote>
+        <%= t ".usage_info_html",
+          exercise_path: course_activity_path(@saved_annotation.course ,@saved_annotation.exercise),
+          exercise_name: @saved_annotation.exercise.name,
+          course_path: course_path(@saved_annotation.course),
+          course_name: @saved_annotation.course.name
+         %><br/>
+        <%= t ".count_info_html", count: @saved_annotation.annotations_count %>
       </div>
       <div class="card-supporting-text card-border">
         <h4><%= t ".linked_annotations" %></h4>

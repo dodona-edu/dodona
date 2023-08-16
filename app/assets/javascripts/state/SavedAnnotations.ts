@@ -43,7 +43,6 @@ class SavedAnnotationState extends State {
     private async fetch(id: number): Promise<SavedAnnotation> {
         const url = `${URL}/${id}.json`;
         const response = await fetch(url);
-
         this.byId.set(id, await response.json());
         return this.byId.get(id);
     }

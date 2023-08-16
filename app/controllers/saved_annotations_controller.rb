@@ -9,6 +9,7 @@ class SavedAnnotationsController < ApplicationController
 
   def index
     authorize SavedAnnotation
+    @title = I18n.t('saved_annotations.index.title')
     @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path]]
     @saved_annotations = apply_scopes(policy_scope(SavedAnnotation.all))
                          .includes(:course).includes(:user).includes(:exercise)
@@ -18,6 +19,7 @@ class SavedAnnotationsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
+        @title = @saved_annotation.title
         @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)]]
         @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
       end
@@ -26,6 +28,7 @@ class SavedAnnotationsController < ApplicationController
   end
 
   def edit
+    @title = I18n.t('saved_annotations.edit.title')
     @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)], [I18n.t('saved_annotations.edit.title'), '#']]
   end
 

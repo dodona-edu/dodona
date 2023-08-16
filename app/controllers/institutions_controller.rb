@@ -1,11 +1,11 @@
 class InstitutionsController < ApplicationController
+  include Sortable
   before_action :set_institution, only: %i[show edit update merge merge_changes do_merge]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_name(value)
   end
 
-  include Sortable
   order_by :name, :short_name, :users, :courses, :most_similar
 
   def index

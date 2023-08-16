@@ -2,6 +2,7 @@ class SubmissionsController < ApplicationController
   include SeriesHelper
   include TimeHelper
   include ActionView::Helpers::DateHelper
+  include Sortable
 
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge show]
@@ -22,7 +23,6 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  include Sortable
   order_by :user, :exercise, :created_at, :status
 
   content_security_policy only: %i[show] do |policy|

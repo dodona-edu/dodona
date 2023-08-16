@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
+  include Sortable
 
   INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
 
@@ -30,7 +31,6 @@ class ActivitiesController < ApplicationController
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
   end
 
-  include Sortable
   order_by :popularity, :name
 
   content_security_policy only: %i[show] do |policy|

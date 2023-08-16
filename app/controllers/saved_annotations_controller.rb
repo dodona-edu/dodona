@@ -1,4 +1,5 @@
 class SavedAnnotationsController < ApplicationController
+  include Sortable
   set_pagination_headers :saved_annotations, only: [:index]
   before_action :set_saved_annotation, only: %i[show update destroy]
 
@@ -7,7 +8,6 @@ class SavedAnnotationsController < ApplicationController
   has_scope :by_exercise, as: 'exercise_id'
   has_scope :by_filter, as: 'filter'
 
-  include Sortable
   order_by :annotations_count, :title, :annotation_text
 
   def index

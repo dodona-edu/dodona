@@ -2,7 +2,6 @@ import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Pagination, SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
-import "./edit_saved_annotation";
 import "components/pagination";
 import { searchQueryState } from "state/SearchQuery";
 
@@ -69,7 +68,9 @@ export class SavedAnnotationList extends ShadowlessLitElement {
                         ${this.savedAnnotations.map(sa => html`
                             <tr>
                                 <td>${sa.annotations_count}</td>
-                                <td class="ellipsis-overflow" title="${sa.title}">${sa.title}</td>
+                                <td class="ellipsis-overflow" title="${sa.title}">
+                                    <a href="${sa.url}">${sa.title}</a>
+                                </td>
                                 <td class="ellipsis-overflow" title="${sa.annotation_text}">${sa.annotation_text}</td>
                                 <td><d-filter-button param="course_id" value="${sa.course.id}">${sa.course.name}</td></td>
                                 <td><d-filter-button param="exercise_id" value="${sa.exercise.id}">${sa.exercise.name}</td></td>

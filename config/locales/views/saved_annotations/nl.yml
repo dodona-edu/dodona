@@ -2,3 +2,13 @@ nl:
   saved_annotations:
     index:
       title: Opgeslagen opmerkingen
+    show:
+      linked_submissions: Gekoppelde oplossingen
+      usage_info_html: Deze opmerking kan worden hergebruikt op alle ingediende oplossingen voor de oefening <a href="%{exercise_path}">%{exercise_name}</a> in de cursus <a href="%{course_path}">%{course_name}</a>.
+      count_info_html: Deze opmerking wordt <strong>%{count}</strong> keer gebruikt.
+    edit:
+      title: Bewerk opgeslagen opmerking
+      markdown_html: <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.
+      warning_no_annotations_changed: Bestaande opmerkingen zullen niet worden aangepast. Deze wijzigingen zullen enkel worden toegepast op nieuwe opmerkingen.
+      destroy: Verwijderen
+      save: Opslaan

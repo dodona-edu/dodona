@@ -157,7 +157,7 @@ nl:
       help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen."
       fields:
         annotation_text: 'Opmerking'
-        saved_annotation_title: 'Sla opmerking op om te hergebruiken'
+        saved_annotation_title: 'Sla opmerking op'
       delete_confirm: 'Ben je zeker dat je deze opmerking wil verwijderen?'
       not_released: Deze opmerking is nog niet zichtbaar voor studenten
     user_question:
@@ -290,7 +290,7 @@ nl:
       input:
         placeholder: Zoek opgeslagen opmerking
         title: 'Hergebruik een opgeslagen opmerking'
-        help_html: 'Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href="/saved_annotations" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
+        help_html: 'Klik <a  href="/saved_annotations" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
         edited: De huidige opmerking verschilt van de opgeslagen opmerking
     sign_in_search_bar:
       institution_search: "Typ om jouw school te vinden"

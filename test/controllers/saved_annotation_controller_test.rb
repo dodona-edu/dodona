@@ -3,7 +3,7 @@ require 'test_helper'
 class SavedAnnotationControllerTest < ActionDispatch::IntegrationTest
   extend CRUDTest
 
-  crud_helpers SavedAnnotation, attrs: %i[title annotation_text], format: :json
+  crud_helpers SavedAnnotation, attrs: %i[title annotation_text]
 
   def setup
     @course = create :course, id: 10 # COURSE ID CAN BE REMOVED AFTER CLOSED BETA
@@ -13,7 +13,7 @@ class SavedAnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in @user
   end
 
-  test_crud_actions only: %i[show destroy index update], except: %i[update_redirect destroy_redirect]
+  test_crud_actions only: %i[show destroy index update edit]
 
   test 'should be able to create from existing annotation' do
     annotation = create :annotation, submission:  create(:submission, course: @course), user: @user

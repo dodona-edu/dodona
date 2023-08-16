@@ -488,7 +488,6 @@
     }
 
     .saved-annotation-title {
-      margin-left: 5px;
       position: relative;
       display: inline-block;
 
@@ -511,6 +510,11 @@
         pointer-events: none;
         transform-origin: 0 0;
       }
+    }
+
+    .save-annotation-check {
+      display: inline-block;
+      margin-right: 5px;
     }
   }
 

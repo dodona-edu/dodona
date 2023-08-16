@@ -267,19 +267,21 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                     >
                                     <label class="form-check-label mt-2" for="check-save-annotation">
                                         ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
-                                        ${this.saveAnnotation ? I18n.t("js.saved_annotation.title") + ":" : ""}
                                     </label>
                                     ${this.saveAnnotation ? html`
-                                        <input required="required"
-                                               class="form-control"
-                                               type="text"
-                                               ${ref(this.titleRef)}
-                                               @keydown="${e => this.handleKeyDown(e)}"
-                                               @input=${() => this.handleUpdateTitle()}
-                                               value=${this.savedAnnotationTitle}
-                                               id="saved-annotation-title"
-                                               style="width: 200px; display: inline-block;"
-                                        >
+                                        <div class="saved-annotation-title">
+                                            <input required="required"
+                                                   class="form-control"
+                                                   type="text"
+                                                   ${ref(this.titleRef)}
+                                                   @keydown="${e => this.handleKeyDown(e)}"
+                                                   @input=${() => this.handleUpdateTitle()}
+                                                   value=${this.savedAnnotationTitle}
+                                                   id="saved-annotation-title"
+                                                   style="width: 200px; display: inline-block;"
+                                            >
+                                            <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
+                                        </div>
                                     `: ""}
                                 </div>
                             </div>

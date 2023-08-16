@@ -46,15 +46,15 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", this.userId.toString()],
             ["filter", this.__label]
-        ]));
+        ])) || [];
     }
 
     get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
+        return (savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
             ["user_id", this.userId.toString()]
-        ])).length > 0;
+        ])) || []).length > 0;
     }
 
     get selectedAnnotation(): SavedAnnotation {

@@ -7,9 +7,10 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import "components/saved_annotations/saved_annotation_icon";
 import { annotationState } from "state/Annotations";
+import { savedAnnotationState } from "state/SavedAnnotations";
 
 /**
  * This component represents a single user annotation.
@@ -105,6 +106,15 @@ export class UserAnnotationComponent extends i18nMixin(ShadowlessLitElement) {
                 annotation_text: e.detail.text,
                 saved_annotation_id: e.detail.savedAnnotationId || undefined,
             });
+            if (e.detail.saveAnnotation) {
+                await savedAnnotationState.create( {
+                    from: this.data.id,
+                    saved_annotation: {
+                        title: e.detail.savedAnnotationTitle,
+                        annotation_text: e.detail.text,
+                    }
+                });
+            }
             this.editing = false;
         } catch (e) {
             this.annotationFormRef.value.hasErrors = true;

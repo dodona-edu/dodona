@@ -1,4 +1,4 @@
-import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "util.js";
+import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "utilities";
 import { MapWithDefault } from "map_with_default";
 import { userAnnotationState } from "state/UserAnnotations";
 import { State } from "state/state_system/State";

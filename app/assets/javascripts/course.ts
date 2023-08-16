@@ -1,5 +1,5 @@
 import { initDragAndDrop } from "./drag_and_drop";
-import { fetch, getURLParameter } from "./util.js";
+import { fetch, getURLParameter } from "utilities";
 import { ScrollSpy } from "./scrollspy";
 import { html, render } from "lit";
 import { Modal } from "bootstrap";

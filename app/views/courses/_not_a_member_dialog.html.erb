@@ -27,6 +27,6 @@
 </div>
 <script type="text/javascript">
   dodona.ready.then(function(){
-        $('#ltiModal').modal('show');
+        bootstrap.Modal.getOrCreateInstance(document.querySelector('#ltiModal')).show();
     });
 </script>

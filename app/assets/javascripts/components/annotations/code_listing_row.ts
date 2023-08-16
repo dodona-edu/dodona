@@ -4,7 +4,7 @@ import { html, TemplateResult } from "lit";
 import "components/annotations/annotations_cell";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
@@ -72,7 +72,7 @@ export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
                 @dragenter=${e => this.dragEnter(e)}
             >
                 <td class="rouge-gutter gl">
-                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}" is-question-mode="${annotationState.isQuestionMode}" ></d-create-annotation-button>` : html``}
+                    ${this.canCreateAnnotation ? html`<d-create-annotation-button row="${this.row}" .isQuestionMode="${annotationState.isQuestionMode}" ></d-create-annotation-button>` : html``}
                     <d-hidden-annotations-dot .row=${this.row}></d-hidden-annotations-dot>
                     <pre style="user-select: none;">${this.row}</pre>
                 </td>

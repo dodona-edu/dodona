@@ -1,5 +1,5 @@
 import { Toast } from "./toast";
-import { fetch, getParentByClassName } from "util.js";
+import { fetch, getParentByClassName } from "utilities";
 
 function initFavoriteButtons(doc: Document | HTMLElement = document): void {
     function init(): void {

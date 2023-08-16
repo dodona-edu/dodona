@@ -1,7 +1,7 @@
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { ThemeOption } from "state/Theme";
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 
 export type Permission = "annotation.create"
 

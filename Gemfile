@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.6'
+gem 'rails', '~> 7.0.7'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
@@ -114,7 +114,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.3'
+gem 'nokogiri', '~> 1.15.4'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -127,15 +127,15 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.5'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.0'
+gem 'faker', '~> 3.2.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.1.0'
+gem 'rack-mini-profiler', '~> 3.1.1'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.12.1'
+gem 'ddtrace', '~> 1.13.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.10.0'
+  gem 'selenium-webdriver', '~> 4.11.0'
 end
 
 group :test do
@@ -193,4 +193,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'docker-api', '~> 2.2.0'
 
 # Used for syncing deadlines with an external calendar
-gem 'icalendar', '~> 2.8'
+gem 'icalendar', '~> 2.9'

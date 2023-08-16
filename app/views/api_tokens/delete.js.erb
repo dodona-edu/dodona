@@ -1,2 +1,2 @@
-$("#token-table-placeholder").html("<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#token-table-placeholder"), "<%= escape_javascript(render partial: 'table', locals: {user: @user}) %>");
 new dodona.Toast("<%= escape_javascript toast %>");

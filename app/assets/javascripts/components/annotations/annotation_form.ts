@@ -192,6 +192,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         // Focus the newly shown title input if the user wants to save the annotation.
         if (changedProperties.has("saveAnnotation") && this.saveAnnotation) {
             this.titleRef.value.focus();
+            this.titleRef.value.select();
         }
     }
 

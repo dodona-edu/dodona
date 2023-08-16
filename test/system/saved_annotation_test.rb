@@ -94,7 +94,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_css 'd-saved-annotation-input'
 
       find('d-saved-annotation-input input[type="text"]').fill_in with: sa.title
-      assert find_field('Comment', with: sa.annotation_text)
+      assert find_field('annotation-text', with: sa.annotation_text)
       assert_equal sa.annotation_text, find('textarea.annotation-submission-input').value
 
       click_button 'Comment'

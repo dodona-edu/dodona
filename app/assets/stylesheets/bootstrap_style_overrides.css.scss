@@ -236,3 +236,9 @@ blockquote {
 .list-group .list-group-item {
   background-color: var(--d-background);
 }
+
+.form-control:disabled {
+  border-color: var(--d-divider);
+  background: var(--d-background);
+  color: var(--d-on-surface-muted);
+}

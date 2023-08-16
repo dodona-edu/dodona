@@ -478,28 +478,6 @@
   .annotation-submission {
     padding: 5px;
 
-    .annotation-controls-block {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .annotation-submission-button-container {
-      margin-top: 12px;
-      margin-bottom: 12px;
-      text-align: right;
-
-      .annotation-control-button,
-      .question-control-button {
-        margin-left: 3px;
-      }
-
-      .annotation-submission-error-list {
-        margin-top: 3px;
-        margin-bottom: 3px;
-      }
-    }
-
     .annotation-submission-input {
       border-radius: 0;
       resize: vertical;
@@ -507,6 +485,37 @@
 
     .annotation-submission-input.validation-error {
       border-color: var(--d-danger);
+    }
+
+    .saved-annotation-title {
+      position: relative;
+      display: inline-block;
+
+      input {
+        padding-left: 40px;
+        width: 220px;
+      }
+
+      label {
+        color: rgba(var(--d-on-surface-rgb), 0.75);
+        transform: scale(0.85) translateY(-0.35rem);
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 2;
+        height: 100%;
+        padding: 1rem .75rem;
+        text-align: start;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        pointer-events: none;
+        transform-origin: 0 0;
+      }
+    }
+
+    .save-annotation-check {
+      display: inline-block;
+      margin-right: 5px;
     }
   }
 

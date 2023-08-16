@@ -65,14 +65,14 @@ class SavedAnnotationState extends State {
         return savedAnnotation.id;
     }
 
-    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
+    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> | undefined {
         const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.listByURL.has(url)) {
                 this.fetchList(url);
             }
         }, 200);
-        return this.listByURL.get(url) || [];
+        return this.listByURL.get(url);
     }
 
     getPagination(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Pagination {

@@ -27,4 +27,8 @@ class SavedAnnotation < ApplicationRecord
   scope :by_course, ->(course_id) { where course_id: course_id }
   scope :by_exercise, ->(exercise_id) { where exercise_id: exercise_id }
   scope :by_filter, ->(filter) { where 'title LIKE ? or annotation_text LIKE ?', "%#{filter}%", "%#{filter}%" }
+
+  scope :order_by_annotations_count, ->(direction) { reorder(annotations_count: direction) }
+  scope :order_by_title, ->(direction) { reorder(title: direction) }
+  scope :order_by_annotation_text, ->(direction) { reorder(annotation_text: direction) }
 end

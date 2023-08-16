@@ -11,9 +11,9 @@ export type SavedAnnotation = {
     id: number,
     annotation_text: string,
     url?: string,
-    user?: { name: string, url: string },
-    exercise?: { name: string, url: string },
-    course?: { name: string, url: string }
+    user?: { name: string, url: string, id: number },
+    exercise?: { name: string, url: string, id: number },
+    course?: { name: string, url: string, id: number }
 };
 export type Pagination = { total_pages: number, current_page: number };
 const URL = "/saved_annotations";

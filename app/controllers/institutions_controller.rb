@@ -1,18 +1,12 @@
 class InstitutionsController < ApplicationController
+  include Sortable
   before_action :set_institution, only: %i[show edit update merge merge_changes do_merge]
 
   has_scope :by_filter, as: 'filter' do |_controller, scope, value|
     scope.by_name(value)
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[name short_name users courses most_similar].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  order_by :name, :short_name, :users, :courses, :most_similar
 
   def index
     authorize Institution

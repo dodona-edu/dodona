@@ -215,6 +215,7 @@
           "courses": "Course",
           "description_languages": "Language",
           "event_types": "Event type",
+          "exercises": "Exercise",
           "institutions": "Institution",
           "judges": "Judge",
           "labels": "Label",
@@ -295,6 +296,7 @@
       "repositories": "Repositories",
       "saved_annotation": {
         "annotation_text": "Text",
+        "annotations_count": "Number of usages",
         "course": "Course",
         "delete": {
           "confirm": "Are you sure you want to delete this saved comment?"
@@ -731,6 +733,7 @@
           "courses": "Cursus",
           "description_languages": "Taal",
           "event_types": "Event type",
+          "exercises": "Oefening",
           "institutions": "Onderwijsinstelling",
           "judges": "Judge",
           "labels": "Label",
@@ -811,6 +814,7 @@
       "repositories": "Repository's",
       "saved_annotation": {
         "annotation_text": "Tekst",
+        "annotations_count": "Aantal keer gebruikt",
         "course": "Cursus",
         "delete": {
           "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"

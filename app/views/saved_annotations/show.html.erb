@@ -10,7 +10,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text">
-        <p><strong><%= SavedAnnotation.human_attribute_name("annotation_text") %>:</strong></p>
+        <p><strong><%= @saved_annotation.title %></strong></p>
         <blockquote><%= markdown @saved_annotation.annotation_text %></blockquote>
         <%= t ".usage_info_html",
           exercise_path: course_activity_path(@saved_annotation.course ,@saved_annotation.exercise),

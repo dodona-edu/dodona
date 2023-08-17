@@ -2,6 +2,7 @@ class SubmissionsController < ApplicationController
   include SeriesHelper
   include TimeHelper
   include ActionView::Helpers::DateHelper
+  include Sortable
 
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge show]
@@ -22,14 +23,7 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[user exercise created_at status].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  order_by :user, :exercise, :created_at, :status
 
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed tutor

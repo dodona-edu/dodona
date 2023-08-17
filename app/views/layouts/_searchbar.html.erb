@@ -167,6 +167,19 @@
             }
         };
         <% end %>
+        <% if local_assigns.fetch :exercises, false %>
+        filterCollections["exercises"] = {
+          param: "exercise_id",
+          paramVal: function(exercise) {
+            return exercise.id.toString();
+          },
+          multi: false,
+          data: <%= raw local_assigns.fetch(:exercises, []).map{|exercise| {id: exercise.id, name: exercise.name}}.to_json %>,
+          color: function () {
+            return "blue-gray";
+          }
+        };
+        <% end %>
         <% if local_assigns.fetch :popularity, false %>
             filterCollections["popularity"] = {
               param: "popularity",

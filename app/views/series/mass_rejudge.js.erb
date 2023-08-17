@@ -1,2 +1,2 @@
-$(".btn-group.open").removeClass("open");
+document.querySelector(".btn-group.open").classList.remove("open");
 new dodona.Toast("<%= I18n.t('submissions.index.reevaluating_submissions', count: @submissions.length) %>");

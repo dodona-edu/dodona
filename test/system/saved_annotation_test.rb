@@ -31,8 +31,6 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @first.id))
     click_link 'Code'
 
-    assert_no_css 'd-saved-annotations-sidecard'
-
     find('tr#line-1').hover
     find('.annotation-button button').click
 
@@ -53,12 +51,8 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     within '.annotation' do
       assert_text initial
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
-
-    # assert sidebar with saved annotations
-    assert_css 'd-saved-annotations-sidecard'
-    assert_css 'd-saved-annotations-sidecard td[title="The first five words of"]'
     sign_out @staff
   end
 
@@ -66,8 +60,6 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     sign_in @student
     visit(submission_path(id: @first.id))
     click_link 'Code'
-
-    assert_no_css 'd-saved-annotations-sidecard'
 
     find('tr#line-1').hover
     find('.annotation-button button').click
@@ -85,7 +77,6 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_no_css 'i.mdi-link-variant'
     end
 
-    assert_no_css 'd-saved-annotations-sidecard'
     sign_out @student
   end
 
@@ -95,8 +86,6 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @first.id))
 
     click_link 'Code'
-    assert_css 'd-saved-annotations-sidecard'
-    # assert_css `d-saved-annotations-sidecard td[title="#{sa.title}"]`
 
     find('tr#line-1').hover
     find('.annotation-button button').click
@@ -105,7 +94,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_css 'd-saved-annotation-input'
 
       find('d-saved-annotation-input input[type="text"]').fill_in with: sa.title
-      assert find_field('Comment', with: sa.annotation_text)
+      assert find_field('annotation-text', with: sa.annotation_text)
       assert_equal sa.annotation_text, find('textarea.annotation-submission-input').value
 
       click_button 'Comment'
@@ -114,7 +103,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     within '.annotation' do
       assert_text sa.annotation_text
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
     sign_out @staff
   end

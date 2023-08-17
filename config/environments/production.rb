@@ -128,7 +128,7 @@ Rails.application.configure do
                             channel: '#notifications',
                             username: 'Dodona-server',
                             additional_parameters: {
-                              icon_url: 'https://dodona.ugent.be/icon.png',
+                              icon_url: 'https://dodona.be/icon.png',
                               mrkdwn: true
                             }
                         }

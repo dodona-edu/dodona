@@ -2,7 +2,8 @@
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.3846153846;
-  $token-height: 32px;
+
+  --d-token-height: 32px;
 
   display: inline-flex;
   align-items: center;

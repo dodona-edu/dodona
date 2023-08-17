@@ -215,6 +215,7 @@
           "courses": "Course",
           "description_languages": "Language",
           "event_types": "Event type",
+          "exercises": "Exercise",
           "institutions": "Institution",
           "judges": "Judge",
           "labels": "Label",
@@ -295,6 +296,7 @@
       "repositories": "Repositories",
       "saved_annotation": {
         "annotation_text": "Text",
+        "annotations_count": "Number of usages",
         "course": "Course",
         "delete": {
           "confirm": "Are you sure you want to delete this saved comment?"
@@ -314,7 +316,7 @@
         },
         "input": {
           "edited": "The current comment differs from the saved comment",
-          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
+          "help_html": "Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
@@ -431,7 +433,7 @@
         "edit": "Edit comment",
         "fields": {
           "annotation_text": "Comment",
-          "saved_annotation_title": "Save comment for reuse"
+          "saved_annotation_title": "Save comment"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
@@ -731,6 +733,7 @@
           "courses": "Cursus",
           "description_languages": "Taal",
           "event_types": "Event type",
+          "exercises": "Oefening",
           "institutions": "Onderwijsinstelling",
           "judges": "Judge",
           "labels": "Label",
@@ -811,6 +814,7 @@
       "repositories": "Repository's",
       "saved_annotation": {
         "annotation_text": "Tekst",
+        "annotations_count": "Aantal keer gebruikt",
         "course": "Cursus",
         "delete": {
           "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"
@@ -830,7 +834,7 @@
         },
         "input": {
           "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
-          "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
+          "help_html": "Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
           "placeholder": "Zoek opgeslagen opmerking",
           "title": "Hergebruik een opgeslagen opmerking"
         },
@@ -947,7 +951,7 @@
         "edit": "Opmerking bewerken",
         "fields": {
           "annotation_text": "Opmerking",
-          "saved_annotation_title": "Sla opmerking op om te hergebruiken"
+          "saved_annotation_title": "Sla opmerking op"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",

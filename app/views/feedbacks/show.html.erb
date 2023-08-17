@@ -12,13 +12,6 @@
     <div class="card" id="feedback-actions-holder">
       <%= render partial: 'feedback_actions', locals: { evaluation: @feedback.evaluation, feedback: @feedback } %>
     </div>
-    <!-- REMOVE IF AFTER CLOSED BETA -->
-    <% if policy(SavedAnnotation).beta_course? @feedback.evaluation.series.course.id %>
-        <d-saved-annotations-sidecard course-id="<%= @feedback.evaluation.series.course.id %>"
-                                 exercise-id="<%= @feedback.exercise.id %>"
-                                 user-id="<%= current_user.id %>"
-        ></d-saved-annotations-sidecard>
-    <% end %>
   </div>
   <div class="col-12 order-lg-0 col-lg-8 col-xxl-9 feedback-submission">
     <div class="card feedback-show">
@@ -93,7 +86,7 @@
       dodona.ready.then(function () {
         window.dodona.setEvaluationId(<%= @feedback.evaluation.id %>);
         window.dodona.setAnnotationVisibility("important");
-        $(".nav.nav-tabs li:last-child a").tab("show");
+        window.dodona.showLastTab();
       });
   </script>
 <% end %>

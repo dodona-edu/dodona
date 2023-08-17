@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= @saved_annotation.title %></h2>
+        <% if policy(@saved_annotation).edit? %>
+          <div class="card-title-fab">
+            <%= render 'fab_link', url: edit_saved_annotation_path(@saved_annotation), icon: 'pencil' %>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-supporting-text">
+        <p><strong><%= @saved_annotation.title %></strong></p>
+        <blockquote><%= markdown @saved_annotation.annotation_text %></blockquote>
+        <%= t ".usage_info_html",
+          exercise_path: course_activity_path(@saved_annotation.course ,@saved_annotation.exercise),
+          exercise_name: @saved_annotation.exercise.name,
+          course_path: course_path(@saved_annotation.course),
+          course_name: @saved_annotation.course.name
+         %><br/>
+        <%= t ".count_info_html", count: @saved_annotation.annotations_count %>
+      </div>
+      <div class="card-supporting-text card-border">
+        <h4><%= t ".linked_submissions" %></h4>
+        <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @saved_annotation.exercise, course: @saved_annotation.course, user: nil} %>
+      </div>
+    </div>
+  </div>
+</div>

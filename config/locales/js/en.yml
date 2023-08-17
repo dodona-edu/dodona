@@ -153,6 +153,7 @@ en:
       delete: 'Delete'
       edit: 'Edit comment'
       save: 'Save comment'
+      title_taken: 'This title is already taken'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:

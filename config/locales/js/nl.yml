@@ -153,6 +153,7 @@ nl:
       delete: 'Verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
+      title_taken: 'Deze titel is al in gebruik'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
       help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen."
       fields:

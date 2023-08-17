@@ -442,6 +442,7 @@
         "reply": "Reply",
         "save": "Save comment",
         "send": "Comment",
+        "title_taken": "This title is already taken",
         "update": "Update"
       },
       "user_question": {
@@ -960,6 +961,7 @@
         "reply": "Reageer",
         "save": "Opmerking opslaan",
         "send": "Toevoegen",
+        "title_taken": "Deze titel is al in gebruik",
         "update": "Updaten"
       },
       "user_question": {

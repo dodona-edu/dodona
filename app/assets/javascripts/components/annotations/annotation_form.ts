@@ -212,6 +212,10 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         ])) || []).length > 0;
     }
 
+    get isTitleTaken(): boolean {
+        return savedAnnotationState.isTitleTaken(
+            this.savedAnnotationTitle, exerciseState.id, courseState.id, userState.id);
+    }
 
     render(): TemplateResult {
         return html`
@@ -271,19 +275,20 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                     </label>
                                 </div>
                                 ${this.saveAnnotation ? html`
-                                        <div class="saved-annotation-title">
-                                            <input required="required"
-                                                   class="form-control"
-                                                   type="text"
-                                                   ${ref(this.titleRef)}
-                                                   @keydown="${e => this.handleKeyDown(e)}"
-                                                   @input=${() => this.handleUpdateTitle()}
-                                                   value=${this.savedAnnotationTitle}
-                                                   id="saved-annotation-title"
-                                            >
-                                            <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
-                                        </div>
-                                    `: ""}
+                                    <div class="saved-annotation-title">
+                                        <input required="required"
+                                               class="form-control ${this.isTitleTaken ? "is-invalid" : ""}"
+                                               type="text"
+                                               ${ref(this.titleRef)}
+                                               @keydown="${e => this.handleKeyDown(e)}"
+                                               @input=${() => this.handleUpdateTitle()}
+                                               value=${this.savedAnnotationTitle}
+                                               id="saved-annotation-title"
+                                               title="${this.isTitleTaken ? I18n.t("js.user_annotation.title_taken") : ""}"
+                                        >
+                                        <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
+                                    </div>
+                                `: ""}
                             </div>
                         ` : ""}
                     </div>

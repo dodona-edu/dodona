@@ -152,6 +152,12 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                 return; // Something is wrong, abort.
             }
 
+            if (this.saveAnnotation && this.isTitleTaken &&
+                !confirm(I18n.t("js.user_annotation.confirm_title_taken"))) {
+                this.disabled = false;
+                return; // User cancelled.
+            }
+
             const event = new CustomEvent("submit", {
                 detail: {
                     text: this._annotationText,

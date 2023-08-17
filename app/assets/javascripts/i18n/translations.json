@@ -428,6 +428,7 @@
       "user_annotation": {
         "anonymous_message": "This comment is part of an evaluation",
         "cancel": "Cancel",
+        "confirm_title_taken": "This title is already taken. Are you sure you want to create another annotation with the same title?",
         "delete": "Delete",
         "delete_confirm": "Are you sure you want to delete this comment?",
         "edit": "Edit comment",
@@ -947,6 +948,7 @@
       "user_annotation": {
         "anonymous_message": "Deze opmerking maakt deel uit van een evaluatie",
         "cancel": "Annuleren",
+        "confirm_title_taken": "Deze titel is al in gebruik. Weet je zeker dat je nog een opmerking met dezelfde titel wil toevoegen?",
         "delete": "Verwijderen",
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",
         "edit": "Opmerking bewerken",

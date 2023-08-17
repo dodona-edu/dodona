@@ -5,6 +5,9 @@ import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 import { isBetaCourse } from "saved_annotation_beta";
+import { exerciseState } from "state/Exercises";
+import { courseState } from "state/Courses";
+import { userState } from "state/Users";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -47,7 +50,16 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
         };
     }
 
+    get isTitleTaken(): boolean {
+        return savedAnnotationState.isTitleTaken(
+            this.newSavedAnnotation.title, exerciseState.id, courseState.id, userState.id);
+    }
+
     async createSavedAnnotation(): Promise<void> {
+        if (this.isTitleTaken && !confirm(I18n.t("js.saved_annotation.confirm_title_taken"))) {
+            return;
+        }
+
         try {
             await savedAnnotationState.create({
                 from: this.fromAnnotationId,

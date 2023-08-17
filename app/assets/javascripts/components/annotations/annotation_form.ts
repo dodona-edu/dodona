@@ -153,7 +153,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
             }
 
             if (this.saveAnnotation && this.isTitleTaken &&
-                !confirm(I18n.t("js.user_annotation.confirm_title_taken"))) {
+                !confirm(I18n.t("js.saved_annotation.confirm_title_taken"))) {
                 this.disabled = false;
                 return; // User cancelled.
             }
@@ -290,7 +290,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                                @input=${() => this.handleUpdateTitle()}
                                                value=${this.savedAnnotationTitle}
                                                id="saved-annotation-title"
-                                               title="${this.isTitleTaken ? I18n.t("js.user_annotation.title_taken") : ""}"
+                                               title="${this.isTitleTaken ? I18n.t("js.saved_annotation.title_taken") : ""}"
                                         >
                                         <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
                                     </div>

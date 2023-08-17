@@ -3,6 +3,7 @@ import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { SavedAnnotation } from "state/SavedAnnotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import "components/saved_annotations/saved_annotation_title_input";
 
 /**
  * This component represents a form for creating or editing saved annotations
@@ -46,8 +47,10 @@ export class SavedAnnotationForm extends ShadowlessLitElement {
                     <label class="form-label">
                         ${I18n.t("js.saved_annotation.title")}
                     </label>
-                    <input required="required" class="form-control" type="text"
-                           .value=${this.savedAnnotation.title} @change=${e => this.updateTitle(e)}>
+                    <d-saved-annotation-title-input
+                        .value=${this.savedAnnotation.title}
+                        @change=${e => this.updateTitle(e)}>
+                    </d-saved-annotation-title-input>
                 </div>
                 <div class="field form-group">
                     <label class="form-label">

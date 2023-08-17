@@ -108,7 +108,7 @@ class SavedAnnotationState extends State {
         }
     }
 
-    isTitleTaken(title: string, exerciseId: number, courseId: number, userId: number): boolean {
+    isTitleTaken(title: string, exerciseId: number, courseId: number, userId: number, savedAnnotationId: number = undefined): boolean {
         const params = new Map([
             ["filter", title],
             ["exercise_id", exerciseId.toString()],
@@ -116,7 +116,7 @@ class SavedAnnotationState extends State {
             ["user_id", userId.toString()],
         ]);
         const list = this.getList(params);
-        return list?.find(annotation => annotation.title === title) !== undefined;
+        return list?.find(annotation => annotation.title === title && annotation.id != savedAnnotationId) !== undefined;
     }
 }
 

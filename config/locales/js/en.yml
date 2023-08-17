@@ -153,8 +153,6 @@ en:
       delete: 'Delete'
       edit: 'Edit comment'
       save: 'Save comment'
-      title_taken: 'This title is already taken'
-      confirm_title_taken: 'This title is already taken. Are you sure you want to create another annotation with the same title?'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
       help_student: "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions."
       fields:
@@ -266,6 +264,8 @@ en:
       course: Course
       exercise: Exercise
       annotations_count: Number of usages
+      title_taken: 'This title is already taken'
+      confirm_title_taken: 'This title is already taken. Are you sure you want to create another annotation with the same title?'
       list:
         annotations_count: "Used %{count} times"
       sidecard:

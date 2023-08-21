@@ -22,6 +22,17 @@ updates:
     prefix: ""
   labels:
     - "dependencies"
+  groups:
+    babel:
+      patterns:
+        - "@babel*"
+        - "babel*"
+    eslint:
+      patterns:
+        - "eslint*"
+    rails:
+      patterns:
+        - "@rails*"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

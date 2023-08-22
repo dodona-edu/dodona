@@ -2032,10 +2032,10 @@
   resolved "https://registry.yarnpkg.com/@types/semver/-/semver-7.3.12.tgz#920447fdd78d76b19de0438b7f60df3c4a80bf1c"
   integrity sha512-WwA1MW0++RfXmCr12xeYOOC5baSC9mSb0ZqCquFzKhcoF4TvHu5MKOuXsncgZcpVFhB1pXd5hZmM0ryAoCp12A==
 
-"@types/serviceworker@^0.0.72":
-  version "0.0.72"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.72.tgz#d4f9f02ab8bc03a9a8075b05ffe0671da1285991"
-  integrity sha512-RL8/s2CAx+DLmTp00xzzFMiSChkDZD0UgqTwcYYsGdbYWEc0zoBDpJ4lr7gq67S1F3N8QC8EajSzS/5sIkJAcQ==
+"@types/serviceworker@^0.0.73":
+  version "0.0.73"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.73.tgz#3da49bc09f02a207a38989c380b690824fe99dd9"
+  integrity sha512-LwiphGQ4OKMBjNNdVx0AXj+Pc9K/4kKlVupR4xbC9c+n5DYrumMhT/eo1QxQwkpniUupekKSGA46l/1K22/6Gw==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"

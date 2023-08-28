@@ -61,6 +61,10 @@ export class LineOfCode extends ShadowlessLitElement {
             .sort(compareAnnotationOrders);
     }
 
+    hasValidColumn(annotation: Annotation): boolean {
+        return annotation.column !== undefined && annotation.column !== null && annotation.column >= 0 && annotation.column < this.codeLength;
+    }
+
     /**
      * Calculates the range of the code that is covered by the given annotation.
      * If the annotation spans multiple lines, the range will be the whole line unless this is the first or last line.
@@ -82,7 +86,7 @@ export class LineOfCode extends ShadowlessLitElement {
         let start = 0;
         if (this.row === firstRow) {
             // In rare cases, machine annotations start past the end of the line, resulting in errors if we don't constrain them to be in the line
-            if (annotation.column !== undefined && annotation.column !== null && annotation.column >= 0 && annotation.column < this.codeLength) {
+            if (this.hasValidColumn(annotation)) {
                 start = annotation.column;
             } else {
                 start = 0;
@@ -91,7 +95,7 @@ export class LineOfCode extends ShadowlessLitElement {
 
         let length = this.codeLength - start;
         if (this.row === lastRow) {
-            if (annotation.column !== undefined && annotation.column !== null && annotation.column >= 0 && annotation.column < this.codeLength) {
+            if (this.hasValidColumn(annotation)) {
                 const defaultLength = isMachineAnnotation ? 0 : this.codeLength - start;
                 length = annotation.columns || defaultLength;
             }

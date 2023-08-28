@@ -81,12 +81,17 @@ export class LineOfCode extends ShadowlessLitElement {
 
         let start = 0;
         if (this.row === firstRow) {
-            start = annotation.column || 0;
+            // In rare cases, machine annotations start past the end of the line, resulting in errors if we don't constrain them to be in the line
+            if (annotation.column !== undefined && annotation.column !== null && annotation.column >= 0 && annotation.column < this.codeLength) {
+                start = annotation.column;
+            } else {
+                start = 0;
+            }
         }
 
         let length = this.codeLength - start;
         if (this.row === lastRow) {
-            if (annotation.column !== undefined && annotation.column !== null) {
+            if (annotation.column !== undefined && annotation.column !== null && annotation.column >= 0 && annotation.column < this.codeLength) {
                 const defaultLength = isMachineAnnotation ? 0 : this.codeLength - start;
                 length = annotation.columns || defaultLength;
             }

@@ -2,14 +2,8 @@ import { Papyros } from "@dodona/papyros";
 import { InputMode } from "@dodona/papyros";
 import { ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
-
-/**
- * Custom interface to not have to add the ace package as dependency
- */
-interface Editor {
-    setValue(v: string): void;
-    getValue(): string;
-}
+import { EditorView } from "@codemirror/view";
+import { setCode } from "editor";
 
 /** Identifiers used in HTML for relevant elements */
 const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
@@ -25,7 +19,7 @@ const SUBMIT_TAB_ID = "activity-handin-link";
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         let papyros: Papyros | undefined = undefined;
-        let editor: Editor | undefined = undefined;
+        let editor: EditorView | undefined = undefined;
         const closeButton = document.getElementById(CLOSE_BUTTON_ID);
         // To prevent horizontal scrollbar issues, we delay rendering the button
         // until after the page is loaded
@@ -46,14 +40,14 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     });
                 editor ||= window.dodona.editor;
                 if (editor) {
-                    // Shortcut to copy code to ACE editor
+                    // Shortcut to copy code to editor
                     papyros.addButton(
                         {
                             id: CODE_COPY_BUTTON_ID,
                             buttonText: I18n.t("js.coding_scratchpad.copy_code")
                         },
                         () => {
-                            editor.setValue(papyros.getCode());
+                            setCode(editor, papyros.getCode());
                             closeButton.click();
                             // Open submit panel if possible
                             document.getElementById(SUBMIT_TAB_ID)?.click();
@@ -88,7 +82,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
         document.getElementById(OFFCANVAS_ID).addEventListener("shown.bs.offcanvas", () => {
             editor ||= window.dodona.editor;
             if (editor) { // Start with code from the editor, if there is any
-                const editorCode = editor.getValue();
+                const editorCode = editor.state.doc.toString();
                 const currentCode = papyros.getCode();
                 if (!currentCode || // Papyros empty
                     // Neither code areas are empty, but they differ

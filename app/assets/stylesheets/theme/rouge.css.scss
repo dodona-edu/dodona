@@ -92,6 +92,12 @@
   text-decoration: underline;
 }
 
+/* Generic.Strikethrough */
+.highlighter-rouge .gst {
+  color: var(--d-on-background);
+  text-decoration: line-through;
+}
+
 /* Generic.Error */
 .highlighter-rouge .gr {
   color: var(--d-on-background);

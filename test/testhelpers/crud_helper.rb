@@ -53,32 +53,37 @@ module CRUDHelper
           Actual:   "#{actual}"
       MSG
     end
-    assert not_equal.empty?,
-           <<~MSG
-             The following attributtes are not equal:
-             #{not_equal.join "\n"}
-           MSG
+
+    assert_empty not_equal,
+                 <<~MSG
+                   The following attributtes are not equal:
+                   #{not_equal.join "\n"}
+                 MSG
   end
 
   # Read (show, index, new, edit)
 
   def should_show
     get polymorphic_url(@instance), params: { format: format }
+
     assert_response :success
   end
 
   def should_get_index
     get polymorphic_url(model), params: { format: format }
+
     assert_response :success
   end
 
   def should_get_new
     get new_polymorphic_url(model), params: { format: format }
+
     assert_response :success
   end
 
   def should_get_edit
     get edit_polymorphic_url(@instance), params: { format: format }
+
     assert_response :success
   end
 
@@ -109,6 +114,7 @@ module CRUDHelper
 
   def should_redirect_on_create
     create_request_expect
+
     assert_redirected_to polymorphic_url(last_created)
   end
 
@@ -132,6 +138,7 @@ module CRUDHelper
 
   def should_redirect_on_update
     update_request
+
     assert_redirected_to polymorphic_url(@instance)
   end
 
@@ -149,6 +156,7 @@ module CRUDHelper
 
   def should_redirect_on_destroy
     destroy_request
+
     assert_redirected_to polymorphic_url(model)
   end
 end

@@ -2,6 +2,7 @@ require:
   - rubocop-rails
   - rubocop-factory_bot
   - rubocop-capybara
+  - rubocop-minitest
 
 AllCops:
   Exclude:
@@ -89,3 +90,6 @@ Style/HashSyntax:
 
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
+
+Minitest/MultipleAssertions:
+  Enabled: false

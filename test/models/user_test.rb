@@ -31,31 +31,36 @@ class UserTest < ActiveSupport::TestCase
   test 'user with emoji in username' do
     name = '🕴'
     user = create :user, username: name
+
     assert_not_nil user
     assert_equal user.username, name
   end
 
   test 'user without username should have token' do
     user = create :user, institution: nil
+
     assert_not_nil user.token
   end
 
   test 'user with identity should not have a token' do
     user = create :user, :with_institution, identities: [create(:identity)]
+
     assert_nil user.token
   end
 
   test 'user timezone should be set' do
     user_brussels = create :user
-    assert_equal user_brussels.time_zone, 'Brussels'
+
+    assert_equal('Brussels', user_brussels.time_zone)
 
     user_korea = create :user, email: 'hupseflupse@ghent.ac.kr'
-    assert_equal user_korea.time_zone, 'Seoul'
+
+    assert_equal('Seoul', user_korea.time_zone)
   end
 
   test 'only zeus and staff should be admin' do
-    assert users(:zeus).admin?
-    assert users(:staff).admin?
+    assert_predicate users(:zeus), :admin?
+    assert_predicate users(:staff), :admin?
     assert_not users(:student).admin?
   end
 
@@ -86,37 +91,45 @@ class UserTest < ActiveSupport::TestCase
     staff.course_memberships.first.update(status: 'course_admin')
     zeus.course_memberships.first.update(status: 'course_admin')
 
-    assert user.administrating_courses.include?(course)
-    assert staff.administrating_courses.include?(course)
-    assert zeus.administrating_courses.include?(course)
+    assert_includes user.administrating_courses, course
+    assert_includes staff.administrating_courses, course
+    assert_includes zeus.administrating_courses, course
   end
 
   test 'full name should be n/a when blank' do
     user = build :user, first_name: nil, last_name: nil
+
     assert_equal 'n/a', user.full_name
 
     user.first_name = ' '
+
     assert_equal 'n/a', user.full_name
 
     user.last_name = "\t"
+
     assert_equal 'n/a', user.full_name
 
     user.first_name = 'herp'
     user.last_name = 'derp'
+
     assert_equal 'herp derp', user.full_name
   end
 
   test 'short name should not be nil' do
     user = build :user
+
     assert_equal user.username, user.short_name
 
     user.username = nil
+
     assert_equal user.first_name, user.short_name
 
     user.first_name = nil
+
     assert_equal " #{user.last_name}", user.short_name
 
     user.last_name = nil
+
     assert_equal 'n/a', user.short_name
   end
 
@@ -153,19 +166,24 @@ class UserTest < ActiveSupport::TestCase
     create :wrong_submission, user: user, exercise: exercise1
     create :wrong_submission, user: user, exercise: exercise1
     create :wrong_submission, user: user, exercise: exercise1
+
     assert_user_exercises user, 1, 0, 1
 
     create :correct_submission, user: user, exercise: exercise1
     create :correct_submission, user: user, exercise: exercise1
+
     assert_user_exercises user, 1, 1, 0
 
     create :correct_submission, user: user, exercise: exercise2
+
     assert_user_exercises user, 2, 2, 0
 
     create :wrong_submission, user: user, exercise: exercise3
+
     assert_user_exercises user, 3, 2, 1
 
     create :submission, user: user, exercise: exercise3
+
     assert_user_exercises user, 3, 2, 1
   end
 
@@ -175,7 +193,8 @@ class UserTest < ActiveSupport::TestCase
       provider = create provider_name
       user = build :user, institution: provider.institution
       user.email = nil
-      assert user.valid?
+
+      assert_predicate user, :valid?
     end
 
     # Validate that every other institution is invalid.
@@ -183,6 +202,7 @@ class UserTest < ActiveSupport::TestCase
       provider = create provider_name
       user = build :user, institution: provider.institution
       user.email = nil
+
       assert_not user.valid?
     end
   end
@@ -206,14 +226,16 @@ class UserTest < ActiveSupport::TestCase
 
     first = build :user, institution: smartschool.institution
     first.email = ''
+
     assert first.save
 
     second = build :user, institution: smartschool.institution
     second.email = ''
+
     assert second.save
 
-    assert first.update_from_provider(oauth_hash_for(first), smartschool).valid?
-    assert second.update_from_provider(oauth_hash_for(second), smartschool).valid?
+    assert_predicate first.update_from_provider(oauth_hash_for(first), smartschool), :valid?
+    assert_predicate second.update_from_provider(oauth_hash_for(second), smartschool), :valid?
   end
 
   test 'should transform empty username into nil' do
@@ -237,6 +259,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     full_name = user.full_name
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal full_name, user.full_name
   end
 
@@ -244,6 +267,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     first_name = user.first_name
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal first_name, user.first_name
   end
 
@@ -251,6 +275,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     last_name = user.last_name
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal last_name, user.last_name
   end
 
@@ -258,6 +283,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     email = user.email
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal email, user.email
   end
 
@@ -265,6 +291,7 @@ class UserTest < ActiveSupport::TestCase
     user = users(:student)
     username = user.username
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal username, user.username
   end
 
@@ -272,6 +299,7 @@ class UserTest < ActiveSupport::TestCase
     user = create :user, :with_institution
     institution_name = user.institution&.name
     Current.any_instance.stubs(:demo_mode).returns(true)
+
     assert_not_equal institution_name, user.institution&.name
   end
 
@@ -281,6 +309,7 @@ class UserTest < ActiveSupport::TestCase
     create :series, exercises: exercises
     exercises.each { |e| create :submission, user: user, exercise: e }
     exercises.take(3).each { |e| create :submission, user: user, exercise: e }
+
     assert_equal exercises.take(3).reverse, user.recent_exercises
   end
 
@@ -289,17 +318,20 @@ class UserTest < ActiveSupport::TestCase
     course = create :course, users: [user]
     create :series, course: course, activity_count: 2, deadline: 2.minutes.ago # Not pending series
     pending_series = create :series, course: course, activity_count: 2, deadline: 2.minutes.from_now
+
     assert_equal [pending_series], user.pending_series
   end
 
   test 'split_last_name should split the "De Achternaam"' do
     user = create :user, last_name: 'De Achternaam', first_name: ''
+
     assert_equal 'De', user.first_name
     assert_equal 'Achternaam', user.last_name
   end
 
   test 'split_last_name should not split the "Achternaam"' do
     user = create :user, last_name: 'Achternaam', first_name: 'Voornaam'
+
     assert_equal 'Voornaam', user.first_name
     assert_equal 'Achternaam', user.last_name
   end
@@ -514,9 +546,10 @@ class UserHasManyTest < ActiveSupport::TestCase
 
   test 'subscribed_courses should return the courses in which the user is a student or course admin' do
     subscribed_courses = @user.subscribed_courses.pluck(:id)
-    assert_equal true, subscribed_courses.include?(@enrolled_course.id)
-    assert_equal true, subscribed_courses.include?(@administrating_course.id)
-    assert_equal true, subscribed_courses.include?(@favorite_course.id)
+
+    assert_includes subscribed_courses, @enrolled_course.id
+    assert_includes subscribed_courses, @administrating_course.id
+    assert_includes subscribed_courses, @favorite_course.id
     assert_equal 3, subscribed_courses.count
   end
 
@@ -536,27 +569,32 @@ class UserHasManyTest < ActiveSupport::TestCase
 
   test 'enrolled_courses should return the courses in which the user is a student' do
     enrolled_courses = @user.enrolled_courses.pluck(:id)
-    assert_equal true, enrolled_courses.include?(@enrolled_course.id)
-    assert_equal true, enrolled_courses.include?(@favorite_course.id)
+
+    assert_includes enrolled_courses, @enrolled_course.id
+    assert_includes enrolled_courses, @favorite_course.id
     assert_equal 2, enrolled_courses.count
   end
 
   test 'drawer_courses should not return courses if not subscribed for any' do
     user = create :user
-    assert user.courses.empty?
-    assert user.drawer_courses.empty?
+
+    assert_empty user.courses
+    assert_empty user.drawer_courses
   end
 
   test 'drawer_courses should return favorite courses' do
     assert_equal [@favorite_course], @user.drawer_courses
 
     @membership_favorite.update(favorite: false)
+
     assert_not_equal [@favorite_course], @user.drawer_courses
 
     @user.courses.each { |c| c.update(year: '1') }
+
     assert_equal @user.subscribed_courses.length, @user.drawer_courses.length
 
     @user.subscribed_courses.first.update(year: '2')
+
     assert_equal [@user.subscribed_courses.first], @user.drawer_courses
   end
 
@@ -577,7 +615,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     result = u1.merge_into(u2)
 
     assert_not result
-    assert u1.persisted?
+    assert_predicate u1, :persisted?
   end
 
   test 'merge should succeed if only one institution is set' do
@@ -599,7 +637,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     result = u1.merge_into(u2)
 
     assert_not result
-    assert u1.persisted?
+    assert_predicate u1, :persisted?
   end
 
   test 'merge should take highest permission if force is used' do
@@ -772,9 +810,9 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 2, u2.attempted_exercises
     assert_equal 2, e1.users_correct
     assert_equal 2, e1.users_tried
-    assert_equal false, s1.completed?(user: u2)
-    assert_equal false, s2.started?(user: u2)
-    assert_equal false, s2.wrong?(user: u2)
+    assert_not s1.completed?(user: u2)
+    assert_not s2.started?(user: u2)
+    assert_not s2.wrong?(user: u2)
 
     result = u1.merge_into(u2)
 
@@ -786,9 +824,9 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 3, u2.attempted_exercises
     assert_equal 1, e1.users_correct
     assert_equal 1, e1.users_tried
-    assert_equal true, s1.completed?(user: u2)
-    assert_equal true, s2.started?(user: u2)
-    assert_equal true, s2.wrong?(user: u2)
+    assert s1.completed?(user: u2)
+    assert s2.started?(user: u2)
+    assert s2.wrong?(user: u2)
   end
 
   test 'merge should only transfer unique announcement views to the other user' do
@@ -967,27 +1005,34 @@ class UserHasManyTest < ActiveSupport::TestCase
     create :correct_submission, user: user, course: course, exercise: series.exercises.first
 
     course.series.second.update(visibility: :hidden)
+
     assert_empty user.jump_back_in
 
     course.series.second.update(visibility: :closed)
+
     assert_empty user.jump_back_in
 
     course.series.second.update(visibility: :open)
+
     assert_equal course.series.second, user.jump_back_in.first[:series]
 
     CourseMembership.create user: user, course: course, status: :course_admin
 
     # Refetch user to fix cached course_admin? method
     user = User.find(user.id)
+
     assert user.course_admin?(course)
 
     course.series.second.update(visibility: :hidden)
+
     assert_equal course.series.second, user.jump_back_in.first[:series]
 
     course.series.second.update(visibility: :closed)
+
     assert_equal course.series.second, user.jump_back_in.first[:series]
 
     course.series.second.update(visibility: :open)
+
     assert_equal course.series.second, user.jump_back_in.first[:series]
   end
 
@@ -1006,14 +1051,17 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal series, user.jump_back_in.first[:series]
 
     series.update(visibility: :hidden)
+
     assert_equal 1, user.jump_back_in.count
     assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :closed)
+
     assert_equal 1, user.jump_back_in.count
     assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :open)
+
     assert_equal 3, user.jump_back_in.count
     assert_equal a1, user.jump_back_in.first[:activity]
 
@@ -1021,17 +1069,21 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     # Refetch user to fix cached course_admin? method
     user = User.find(user.id)
+
     assert user.course_admin?(course)
 
     series.update(visibility: :hidden)
+
     assert_equal 1, user.jump_back_in.count
     assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :closed)
+
     assert_equal 1, user.jump_back_in.count
     assert_nil user.jump_back_in.first[:activity]
 
     series.update(visibility: :open)
+
     assert_equal 3, user.jump_back_in.count
     assert_equal a1, user.jump_back_in.first[:activity]
   end
@@ -1060,32 +1112,42 @@ class UserHasManyTest < ActiveSupport::TestCase
 
   test 'Open questions count gets updated when a new question is created' do
     user = create :user
+
     assert_equal 0, user.open_questions_count
     create :question, submission: create(:submission, user: user, course: create(:course))
+
     assert_equal 1, user.reload.open_questions_count
     s = create :submission, user: user, course: create(:course)
     create :question, submission: s
+
     assert_equal 2, user.reload.open_questions_count
     create :question, submission: s
+
     assert_equal 3, user.reload.open_questions_count
     create :question, submission: create(:submission, user: create(:user), course: create(:course))
+
     assert_equal 3, user.reload.open_questions_count
   end
 
   test 'Open questions count gets updated when a question is answered' do
     user = create :user
     question = create :question, submission: create(:submission, user: user, course: create(:course))
+
     assert_equal 1, user.reload.open_questions_count
     question.update(question_state: :answered)
+
     assert_equal 0, user.reload.open_questions_count
   end
 
   test 'has open questions is always correct' do
     user = create :user
-    assert_equal false, user.open_questions?
+
+    assert_not user.open_questions?
     question = create :question, submission: create(:submission, user: user, course: create(:course))
-    assert_equal true, user.reload.open_questions?
+
+    assert_predicate user.reload, :open_questions?
     question.update(question_state: :answered)
-    assert_equal false, user.reload.open_questions?
+
+    assert_not user.reload.open_questions?
   end
 end

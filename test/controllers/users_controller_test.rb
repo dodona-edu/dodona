@@ -35,6 +35,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     user_json = response.parsed_body
+
     assert user_json.key?('subscribed_courses')
 
     course_ids = user_json['subscribed_courses'].pluck('id')
@@ -42,7 +43,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     # check if each course in the result actually belongs to the user
     course_ids.each do |cid|
       c = Course.find(cid)
-      assert @instance.subscribed_courses.include?(c), "should not contain #{c}"
+
+      assert_includes @instance.subscribed_courses, c, "should not contain #{c}"
     end
 
     # this should catch the case where there are less courses returned
@@ -79,6 +81,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'user index with course_id should be ok' do
     course = create :course
     get users_url(course_id: course.id)
+
     assert_response :success
   end
 

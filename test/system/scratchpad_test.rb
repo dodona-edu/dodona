@@ -20,6 +20,7 @@ class ScratchpadTest < ApplicationSystemTestCase
 
     # Open Papyros ready for use
     visit(course_activity_path(course_id: @course.id, id: @exercise.id))
+
     assert_selector '#scratchpad-offcanvas-show-btn'
     find_by_id('scratchpad-offcanvas-show-btn').click
   end
@@ -76,6 +77,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     find_button('__papyros-stop-btn', disabled: false).click
 
     output_area.find('span', text: 'Start')
+
     assert output_area.has_no_xpath?('.//span', text: 'Stop')
   end
 end

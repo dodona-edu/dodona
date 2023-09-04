@@ -49,6 +49,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     Question.per_page = 1
     create_list :question, 2, submission: submission
     get questions_url, params: { everything: true }
+
     assert_select 'a[href=?]', questions_path(page: 2, everything: true)
   end
 
@@ -149,14 +150,17 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json)
+
     assert_equal 5, response.parsed_body.count
 
     sign_in course_admin
     get annotations_url(format: :json)
+
     assert_equal 3, response.parsed_body.count
 
     sign_in user
     get annotations_url(format: :json)
+
     assert_equal 3, response.parsed_body.count
   end
 
@@ -171,9 +175,11 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     create :annotation, user: other_user, submission: (create :submission, user: other_user, course: create(:course))
 
     get annotations_url(format: :json, user_id: user.id)
+
     assert_equal 3, response.parsed_body.count
 
     get annotations_url(format: :json, user_id: other_user.id)
+
     assert_equal 2, response.parsed_body.count
   end
 
@@ -182,6 +188,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in @submission.user
 
     get annotation_url(annotation, format: :json)
+
     assert_response :success
   end
 
@@ -190,6 +197,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
     sign_in create(:user)
 
     get annotation_url(annotation, format: :json)
+
     assert_response :forbidden
   end
 
@@ -202,6 +210,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :success
 
     patch annotation_url(annotation), params: {
@@ -210,12 +219,14 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :success
   end
 
   test 'can remove annotation' do
     annotation = create :annotation, submission: @submission, user: @zeus
     delete annotation_url(annotation)
+
     assert_response :no_content
   end
 
@@ -227,6 +238,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :unprocessable_entity
   end
 
@@ -263,6 +275,7 @@ class AnnotationControllerTest < ActionDispatch::IntegrationTest
         saved_annotation_id: sa.id
       }
     }
+
     assert_response :success
   end
 end
@@ -285,6 +298,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :unauthorized
   end
 
@@ -296,8 +310,9 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :created
-    assert @submission.questions.any?
+    assert_predicate @submission.questions, :any?
   end
 
   test 'student cannot create a question if disabled for course' do
@@ -312,9 +327,10 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
 
-    assert_equal submission.user.questions.count, 0, 'Student is not allowed to create questions'
+    assert_equal(0, submission.user.questions.count, 'Student is not allowed to create questions')
   end
 
   test 'student cannot create question if no course' do
@@ -328,9 +344,10 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
 
-    assert_equal submission.user.questions.count, 0, 'Student is not allowed to create questions without course'
+    assert_equal(0, submission.user.questions.count, 'Student is not allowed to create questions without course')
   end
 
   test 'random user cannot create question' do
@@ -342,6 +359,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
   end
 
@@ -354,6 +372,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :created
     assert_not @submission.questions.any?
   end
@@ -367,6 +386,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
   end
 
@@ -381,6 +401,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :created
     assert_not @submission.questions.any?
   end
@@ -394,6 +415,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
   end
 
@@ -418,6 +440,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response valid ? :ok : :forbidden
 
       # Unanswered -> answered
@@ -429,6 +452,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response valid ? :ok : :forbidden
 
       # Unanswered -> unanswered
@@ -440,6 +464,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response :forbidden
 
       sign_out user
@@ -456,6 +481,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :ok
 
     # Answered -> answered
@@ -467,6 +493,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
 
     # without delayed jobs, in progress is automatically reset to unanswered
@@ -480,6 +507,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response :ok
     end
     run_delayed_jobs
@@ -506,6 +534,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
           },
           format: :json
         }
+
         assert_response :forbidden
 
         # In progress -> answered
@@ -517,6 +546,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
           },
           format: :json
         }
+
         assert_response valid ? :ok : :forbidden
 
         # In progress -> unanswered
@@ -528,6 +558,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
           },
           format: :json
         }
+
         assert_response valid ? :ok : :forbidden
 
         sign_out user
@@ -545,6 +576,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :unauthorized
   end
 
@@ -559,6 +591,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
 
     patch annotation_path(question), params: {
@@ -567,6 +600,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :ok
 
     question = create :question, submission: @submission, question_state: :answered
@@ -577,6 +611,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :forbidden
 
     patch annotation_path(question), params: {
@@ -585,6 +620,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :ok
   end
 
@@ -608,6 +644,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response valid ? :ok : :forbidden
 
       # Answered -> answered
@@ -619,6 +656,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response :forbidden
 
       # Answered -> unanswered
@@ -630,6 +668,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
         },
         format: :json
       }
+
       assert_response valid ? :ok : :forbidden
 
       sign_out user
@@ -640,11 +679,13 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
     question = create :question, submission: @submission, question_state: :answered
 
     delete annotation_url(question)
+
     assert_not response.successful?
 
     question = create :question, submission: @submission, question_state: :unanswered
 
     delete annotation_url(question)
+
     assert_response :no_content
   end
 
@@ -657,6 +698,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :success
 
     question = create :question, submission: @submission, question_state: :unanswered
@@ -667,6 +709,7 @@ class QuestionAnnotationControllerTest < ActionDispatch::IntegrationTest
       },
       format: :json
     }
+
     assert_response :success
   end
 end

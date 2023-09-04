@@ -14,6 +14,7 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
 
   test 'create should redirect to index' do
     create_request_expect
+
     assert_redirected_to announcements_url
   end
 
@@ -26,9 +27,11 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
 
   test 'Mark as read should work' do
     student = create :student
+
     assert announcement? student
     sign_in student
     post mark_as_read_announcement_url @instance, format: :js
+
     assert_not announcement? student
   end
 
@@ -36,6 +39,7 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     @instance.update institution_id: 1
     a = create :student, institution_id: 1
     b = create :student, institution_id: (create :institution).id
+
     assert announcement? a
     assert_not announcement? b
   end
@@ -44,6 +48,7 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     @instance.update institution_id: 1
     a = create :staff, institution_id: 1
     b = create :staff, institution_id: (create :institution).id
+
     assert announcement? a
     assert_not announcement? b
   end
@@ -54,30 +59,35 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
     zeus = create :zeus
 
     @instance.update user_group: :everyone
+
     assert announcement? student
     assert announcement? staff
     assert announcement? zeus
-    assert announcement?
+    assert_predicate self, :announcement?
 
     @instance.update user_group: :all_users
+
     assert announcement? student
     assert announcement? staff
     assert announcement? zeus
     assert_not announcement?
 
     @instance.update user_group: :students
+
     assert announcement? student
     assert_not announcement? staff
     assert announcement? zeus
     assert_not announcement?
 
     @instance.update user_group: :staff
+
     assert_not announcement? student
     assert announcement? staff
     assert announcement? zeus
     assert_not announcement?
 
     @instance.update user_group: :zeus
+
     assert_not announcement? student
     assert_not announcement? staff
     assert announcement? zeus
@@ -87,25 +97,32 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
   test 'only active announcements should be shown' do
     student = create :student
     @instance.update start_delivering_at: 1.day.ago
+
     assert announcement? student
 
     @instance.update start_delivering_at: 1.day.from_now
+
     assert_not announcement? student
 
     @instance.update start_delivering_at: nil
     @instance.update stop_delivering_at: 1.day.from_now
+
     assert announcement? student
 
     @instance.update stop_delivering_at: 1.day.ago
+
     assert_not announcement? student
 
     @instance.update start_delivering_at: 1.day.ago, stop_delivering_at: 1.day.from_now
+
     assert announcement? student
 
     @instance.update start_delivering_at: 2.days.ago, stop_delivering_at: 1.day.ago
+
     assert_not announcement? student
 
     @instance.update start_delivering_at: 1.day.from_now, stop_delivering_at: 2.days.from_now
+
     assert_not announcement? student
   end
 
@@ -115,11 +132,14 @@ class AnnouncementControllerTest < ActionDispatch::IntegrationTest
       sign_in student
       post mark_as_read_announcement_url @instance, format: :js
     end
+
     assert_equal 5, @instance.announcement_views.count
     sign_in create :zeus
     put announcement_url @instance, announcement: { text_nl: 'a', text_en: 'b' }
+
     assert_equal 5, @instance.announcement_views.count
     put announcement_url @instance, announcement: { text_nl: 'a', text_en: 'b' }, reset_announcement_views: true
+
     assert_equal 0, @instance.announcement_views.count
   end
 end

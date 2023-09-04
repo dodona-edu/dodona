@@ -36,6 +36,7 @@ class SeriesTest < ActiveSupport::TestCase
     name = '✨ Introduction ✨'
     description = 'First steps 👣 in programming 💻 Python 🐍'
     series = create :series, name: name, description: description
+
     assert_not_nil series
     assert_equal series.name, name
     assert_equal series.description, description
@@ -43,24 +44,28 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'deadline? and pending? with deadlines in the future' do
     @series.deadline = 2.minutes.from_now
-    assert_equal true, @series.deadline?
-    assert_equal true, @series.pending?
+
+    assert_predicate @series, :deadline?
+    assert_predicate @series, :pending?
   end
 
   test 'deadline? and pending? with deadlines in the past' do
     @series.deadline = 2.minutes.ago
-    assert_equal true, @series.deadline?
-    assert_equal false, @series.pending?
+
+    assert_predicate @series, :deadline?
+    assert_not @series.pending?
   end
 
   test 'deadline? and pending? if there is no deadline' do
     @series.deadline = nil
-    assert_equal false, @series.deadline?
-    assert_equal false, @series.pending?
+
+    assert_not @series.deadline?
+    assert_not @series.pending?
   end
 
   test 'factory should create series with submissions' do
     series = create :series, :with_submissions
+
     assert_not_empty series.course.submissions
   end
 
@@ -208,6 +213,7 @@ class SeriesTest < ActiveSupport::TestCase
       series.exercises << exercise
 
       create :correct_submission, user: user, course: course, exercise: exercise
+
       assert series.completed_before_deadline?(user)
       travel 1.second
 
@@ -218,6 +224,7 @@ class SeriesTest < ActiveSupport::TestCase
       series.exercises << exercise
 
       series.reload
+
       assert_not series.completed_before_deadline?(user)
     end
   end
@@ -242,6 +249,7 @@ class SeriesTest < ActiveSupport::TestCase
 
       create :correct_submission, user: user, course: course, exercise: exercise, created_at: now + 2.days
       ActivityStatus.clear_status_store
+
       assert series.completed_before_deadline?(user)
       travel 1.second
 
@@ -255,6 +263,7 @@ class SeriesTest < ActiveSupport::TestCase
       series.update(deadline: now + 1.day)
 
       ActivityStatus.clear_status_store
+
       assert series.completed_before_deadline?(user)
       travel 1.second
 
@@ -271,16 +280,20 @@ class SeriesTest < ActiveSupport::TestCase
     @series.update(access_token: access)
 
     @series.generate_access_token
+
     assert_not_equal access, @series.access_token
   end
 
   test 'access_token should always be set' do
     @series.update(visibility: 'open')
-    assert @series.access_token.present?
+
+    assert_predicate @series.access_token, :present?
     @series.update(visibility: 'hidden')
-    assert @series.access_token.present?
+
+    assert_predicate @series.access_token, :present?
     @series.update(visibility: 'closed')
-    assert @series.access_token.present?
+
+    assert_predicate @series.access_token, :present?
   end
 
   test 'series scoresheet should be correct' do
@@ -387,8 +400,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline - 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission before deadline within a course' do
@@ -403,8 +416,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline - 2.minutes)
 
-    assert_equal true, series.completed?(user: user)
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed?(user: user)
+    assert series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission before deadline without course' do
@@ -418,8 +431,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline - 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with wrong submission after deadline' do
@@ -433,8 +446,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline + 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission after deadline within course' do
@@ -449,8 +462,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline + 2.minutes)
 
-    assert_equal true, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission after deadline without course' do
@@ -464,8 +477,8 @@ class SeriesTest < ActiveSupport::TestCase
            user: user,
            created_at: (deadline + 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission and unread content_page' do
@@ -480,8 +493,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline - 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with wrong submission and read content_page' do
@@ -504,8 +517,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline - 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with correct submission and read content_page' do
@@ -513,8 +526,8 @@ class SeriesTest < ActiveSupport::TestCase
     user = create :user
     deadline = series.deadline
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
 
     # Correct submission before deadline
     create :correct_submission,
@@ -523,8 +536,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline - 2.minutes)
 
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
 
     # Read before deadline
     create :activity_read_state,
@@ -533,8 +546,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline - 2.minutes)
 
-    assert_equal true, series.completed?(user: user)
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed?(user: user)
+    assert series.completed_before_deadline?(user)
   end
 
   test 'completed? with content_page read after deadline' do
@@ -543,8 +556,8 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
 
     # unread
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
 
     # read after deadline
     create :activity_read_state,
@@ -553,8 +566,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline + 2.minutes)
 
-    assert_equal true, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
   end
 
   test 'completed? with content_page read before deadline' do
@@ -563,8 +576,8 @@ class SeriesTest < ActiveSupport::TestCase
     deadline = series.deadline
 
     # unread
-    assert_equal false, series.completed?(user: user)
-    assert_equal false, series.completed_before_deadline?(user)
+    assert_not series.completed?(user: user)
+    assert_not series.completed_before_deadline?(user)
 
     # read before deadline
     create :activity_read_state,
@@ -573,8 +586,8 @@ class SeriesTest < ActiveSupport::TestCase
            course: series.course,
            created_at: (deadline - 2.minutes)
 
-    assert_equal true, series.completed?(user: user)
-    assert_equal true, series.completed_before_deadline?(user)
+    assert series.completed?(user: user)
+    assert series.completed_before_deadline?(user)
   end
 
   test 'next_activity should return the next activity in the series' do
@@ -606,6 +619,7 @@ class SeriesTest < ActiveSupport::TestCase
 
   test 'next should return next series in course' do
     course = create :course, series_count: 4
+
     assert_equal course.series.second, course.series.first.next
     assert_equal course.series.third, course.series.second.next
     assert_equal course.series.fourth, course.series.third.next
@@ -633,21 +647,27 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 0, series.completed_activity_count(user)
 
     create :activity_read_state, activity: series.content_pages.first, user: user, course: series.course
+
     assert_equal 1, series.completed_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.first, user: user, course: series.course
+
     assert_equal 2, series.completed_activity_count(user)
 
     create :activity_read_state, activity: series.content_pages.second, user: user, course: series.course
+
     assert_equal 3, series.completed_activity_count(user)
 
     create :wrong_submission, exercise: series.exercises.second, user: user, course: series.course
+
     assert_equal 3, series.completed_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+
     assert_equal 3, series.completed_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.second, user: user, course: series.course
+
     assert_equal 4, series.completed_activity_count(user)
   end
 
@@ -658,24 +678,31 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 0, series.started_activity_count(user)
 
     create :activity_read_state, activity: series.content_pages.first, user: user, course: series.course
+
     assert_equal 1, series.started_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.first, user: user, course: series.course
+
     assert_equal 2, series.started_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+
     assert_equal 2, series.started_activity_count(user)
 
     create :activity_read_state, activity: series.content_pages.second, user: user, course: series.course
+
     assert_equal 3, series.started_activity_count(user)
 
     create :wrong_submission, exercise: series.exercises.second, user: user, course: series.course
+
     assert_equal 4, series.started_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.second, user: (create :user), course: series.course
+
     assert_equal 4, series.started_activity_count(user)
 
     create :correct_submission, exercise: series.exercises.second, user: user, course: series.course
+
     assert_equal 4, series.started_activity_count(user)
   end
 
@@ -692,21 +719,27 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal 0, series.users_started
 
     create :activity_read_state, activity: series.content_pages.first, user: subscribed_member1, course: series.course
+
     assert_equal 1, series.users_started
 
     create :correct_submission, exercise: series.exercises.first, user: subscribed_member2, course: series.course
+
     assert_equal 2, series.users_started
 
     create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+
     assert_equal 2, series.users_started
 
     create :activity_read_state, activity: series.content_pages.second, user: subscribed_member2, course: series.course
+
     assert_equal 2, series.users_started
 
     create :wrong_submission, exercise: series.exercises.second, user: subscribed_member3, course: series.course
+
     assert_equal 3, series.users_started
 
     create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
+
     assert_equal 3, series.users_started
   end
 
@@ -726,35 +759,43 @@ class SeriesTest < ActiveSupport::TestCase
     create :correct_submission, exercise: series.exercises.first, user: subscribed_member2, course: series.course
     create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
     create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+
     assert_equal 0, series.users_completed # one exercise is not enough
 
     create :correct_submission, exercise: series.exercises.second, user: subscribed_member2, course: series.course
     create :activity_read_state, activity: series.content_pages.first, user: subscribed_member2, course: series.course
     create :correct_submission, exercise: series.exercises.second, user: subscribed_member2, course: series.course
+
     assert_equal 0, series.users_completed # subscribed_member2 has not completed the second content page
 
     create :activity_read_state, activity: series.content_pages.second, user: subscribed_member2, course: series.course
+
     assert_equal 1, series.users_completed # subscribed_member2 completed the series
 
     create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
     create :correct_submission, exercise: series.exercises.second, user: subscribed_member3, course: series.course
     create :activity_read_state, activity: series.content_pages.first, user: subscribed_member3, course: series.course
     create :activity_read_state, activity: series.content_pages.second, user: subscribed_member3, course: series.course
+
     assert_equal 1, series.users_completed # subscribed_member3 has not completed the first exercise (wrong submission)
 
     create :correct_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+
     assert_equal 2, series.users_completed # subscribed_member3 completed the series
 
     create :wrong_submission, exercise: series.exercises.first, user: subscribed_member3, course: series.course
+
     assert_equal 1, series.users_completed # subscribed_member3 has no longer completed the series (wrong submission)
 
     create :correct_submission, exercise: series.exercises.first, user: subscribed_member3
+
     assert_equal 1, series.users_completed # submission is not in the same course
 
     create :correct_submission, exercise: series.exercises.first, user: unsubscribed_member, course: series.course
     create :correct_submission, exercise: series.exercises.second, user: unsubscribed_member, course: series.course
     create :activity_read_state, activity: series.content_pages.first, user: unsubscribed_member, course: series.course
     create :activity_read_state, activity: series.content_pages.second, user: unsubscribed_member, course: series.course
+
     assert_equal 1, series.users_completed # unsubscribed_member has not subscribed to the course
   end
 
@@ -765,19 +806,23 @@ class SeriesTest < ActiveSupport::TestCase
     exercise = create :exercise
 
     create :correct_submission, exercise: exercise, user: user, course: series.course
+
     assert_equal 0, series.users_started
 
     series.exercises << exercise
+
     assert_equal 1, series.users_started
     assert_equal 1, series.users_completed
 
     content_page = create :content_page
     create :series, course: series.course, content_pages: [content_page]
     create :activity_read_state, activity: content_page, user: user, course: series.course
+
     assert_equal 1, series.users_started
     assert_equal 1, series.users_completed
 
     series.content_pages << content_page
+
     assert_equal 1, series.users_started
     assert_equal 1, series.users_completed
   end
@@ -793,16 +838,18 @@ class SeriesTest < ActiveSupport::TestCase
     create :activity_read_state, activity: content_page, user: user, course: series.course
 
     series.update!(deadline: 1.day.ago)
-    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
-    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
-    assert_equal false, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
-    assert_equal false, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
+
+    assert ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
+    assert ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
+    assert_not ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
+    assert_not ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
 
     series.update!(deadline: 1.day.from_now)
-    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
-    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
-    assert_equal true, ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
-    assert_equal true, ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
+
+    assert ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted
+    assert ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted
+    assert ActivityStatus.find_by(activity: exercise, user: user, series: series).accepted_before_deadline
+    assert ActivityStatus.find_by(activity: content_page, user: user, series: series).accepted_before_deadline
   end
 
   test 'users by number of completed activities should return a list with the number of user indexed by the number of completed activities' do
@@ -813,45 +860,59 @@ class SeriesTest < ActiveSupport::TestCase
     assert_equal [10, 0, 0, 0, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+
     assert_equal [9, 1, 0, 0, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.second, user: course.enrolled_members.first, course: course
+
     assert_equal [9, 0, 1, 0, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.first, course: course
+
     assert_equal [9, 0, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.second, course: course
+
     assert_equal [8, 1, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.third, user: course.enrolled_members.third, course: course
+
     assert_equal [7, 2, 0, 1, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :activity_read_state, activity: series.content_pages.first, user: course.enrolled_members.first, course: course
+
     assert_equal [7, 2, 0, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :activity_read_state, activity: series.content_pages.second, user: course.enrolled_members.fourth, course: course
+
     assert_equal [6, 3, 0, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :activity_read_state, activity: series.content_pages.first, user: course.enrolled_members.fourth, course: course
+
     assert_equal [6, 2, 1, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :activity_read_state, activity: series.content_pages.second, user: course.enrolled_members.fifth, course: course
+
     assert_equal [5, 3, 1, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :activity_read_state, activity: series.content_pages.third, user: course.enrolled_members.fifth, course: course
+
     assert_equal [5, 2, 2, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :wrong_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+
     assert_equal [5, 2, 2, 1, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :wrong_submission, exercise: series.exercises.first, user: course.enrolled_members.fifth, course: course
+
     assert_equal [5, 2, 2, 1, 0, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.first, course: course
+
     assert_equal [5, 2, 2, 0, 1, 0, 0], series.users_by_number_of_completed_activities
 
     create :correct_submission, exercise: series.exercises.first, user: course.enrolled_members.fifth, course: course
+
     assert_equal [5, 2, 1, 1, 1, 0, 0], series.users_by_number_of_completed_activities
   end
 end

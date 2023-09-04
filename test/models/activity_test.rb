@@ -29,6 +29,7 @@ require 'test_helper'
 class ActivityTest < ActiveSupport::TestCase
   test 'factory should create exercise' do
     exercise = create :exercise
+
     assert_not_nil exercise
   end
 
@@ -47,12 +48,14 @@ class ActivityTest < ActiveSupport::TestCase
 
     # Create activity read state for unscoped exercise.
     create :activity_read_state, user: user_c1, activity: e
+
     assert_equal 1, e.users_read
     assert_equal 0, e.users_read(course: course1)
     assert_equal 0, e.users_read(course: course2)
 
     # Create activity read state for course 1.
     create :activity_read_state, user: user_c1, course: course1, activity: e
+
     assert_equal 1, e.users_read
     assert_equal 1, e.users_read(course: course1)
     assert_equal 0, e.users_read(course: course2)
@@ -61,6 +64,7 @@ class ActivityTest < ActiveSupport::TestCase
   test 'converting an exercise to a content page and back should retain submissions' do
     exercise = create :exercise, submission_count: 2
     exercise_id = exercise.id
+
     assert_equal 2, exercise.submissions.count
 
     # Convert the Exercise to a ContentPage.
@@ -69,6 +73,7 @@ class ActivityTest < ActiveSupport::TestCase
 
     # Fetch the ContentPage from the database.
     content_page_activity = Activity.find(exercise_id)
+
     assert_instance_of ContentPage, content_page_activity
 
     # Convert the ContentPage back to an Exercise.
@@ -77,32 +82,40 @@ class ActivityTest < ActiveSupport::TestCase
 
     # Fetch the Exercise from the database.
     exercise_activity = Activity.find(exercise_id)
+
     assert_instance_of Exercise, exercise_activity
     assert_equal 2, exercise_activity.submissions.count
   end
 
   test 'numbered_name should work' do
     e = create :exercise, name_nl: 'foo', name_en: 'foo'
+
     assert_equal 'foo', e.numbered_name(nil)
     s = create :series
+
     assert_equal 'foo', e.numbered_name(s)
     s.update(activity_numbers_enabled: true)
+
     assert_equal 'foo', e.numbered_name(s)
     m1 = SeriesMembership.create series: s, activity: e
+
     assert_equal '1. foo', e.numbered_name(s)
     m2 = SeriesMembership.create series: s, activity: create(:exercise)
     c = create :content_page, name_nl: 'bar', name_en: 'bar'
     m3 = SeriesMembership.create series: s, activity: c
     m4 = SeriesMembership.create series: s, activity: create(:exercise)
+
     assert_equal '1. foo', e.numbered_name(s)
     assert_equal '3. bar', c.numbered_name(s)
     m2.update(order: 0)
     m3.update(order: 1)
     m4.update(order: 2)
     m1.update(order: 3)
+
     assert_equal '4. foo', e.numbered_name(s)
     assert_equal '2. bar', c.numbered_name(s)
     s.update(activity_numbers_enabled: false)
+
     assert_equal 'foo', e.numbered_name(s)
     assert_equal 'bar', c.numbered_name(s)
   end
@@ -152,12 +165,14 @@ class ActivityTest < ActiveSupport::TestCase
     create :series, course: c4, exercises: [e2, e3]
     # should count the same activity twice in the same course
     5.times { create :series, course: c4, exercises: [e3] }
+
     assert_equal [e3.id, e1.id, e2.id], Activity.order_by_popularity(:DESC).pluck(:id)
     assert_equal [e2.id, e1.id, e3.id], Activity.order_by_popularity(:ASC).pluck(:id)
   end
 
   test 'popularity should return the correct enum value' do
     e1 = create :exercise
+
     assert_equal :unpopular, e1.popularity
     rand(0..2).times do
       c1 = create :course
@@ -169,6 +184,7 @@ class ActivityTest < ActiveSupport::TestCase
       c3 = create :course
       create :series, course: c3, exercises: [e2]
     end
+
     assert_equal :neutral, e2.reload.popularity
 
     e3 = create :exercise
@@ -176,6 +192,7 @@ class ActivityTest < ActiveSupport::TestCase
       c4 = create :course
       create :series, course: c4, exercises: [e3]
     end
+
     assert_equal :popular, e3.reload.popularity
 
     e4 = create :exercise
@@ -183,6 +200,7 @@ class ActivityTest < ActiveSupport::TestCase
       c5 = create :course
       create :series, course: c5, exercises: [e4]
     end
+
     assert_equal :very_popular, e4.reload.popularity
   end
 
@@ -234,6 +252,7 @@ class ActivityTest < ActiveSupport::TestCase
     repository.admins << user
     exercise = create :exercise, repository: repository
     content_page = create :content_page, repository: repository
+
     assert_includes Activity.repository_scope(scope: :mine, user: user), exercise
     assert_includes Activity.repository_scope(scope: :mine, user: user), content_page
     assert_not_includes Activity.repository_scope(scope: :mine, user: create(:user)), exercise
@@ -244,6 +263,7 @@ class ActivityTest < ActiveSupport::TestCase
     exercise = create :exercise, repository: repository
     content_page = create :content_page, repository: repository
     repository.allowed_courses = [course]
+
     assert_includes Activity.repository_scope(scope: :mine, user: user, course: course), exercise
     assert_includes Activity.repository_scope(scope: :mine, user: user, course: course), content_page
     assert_not_includes Activity.repository_scope(scope: :mine, user: user, course: create(:course)), exercise
@@ -257,6 +277,7 @@ class ActivityTest < ActiveSupport::TestCase
     repository.admins << user
     exercise = create :exercise, repository: repository
     content_page = create :content_page, repository: repository
+
     assert_includes Activity.repository_scope(scope: :my_institution, user: user), exercise
     assert_includes Activity.repository_scope(scope: :my_institution, user: user), content_page
     assert_not_includes Activity.repository_scope(scope: :my_institution, user: create(:user)), exercise
@@ -268,9 +289,11 @@ class ActivityTest < ActiveSupport::TestCase
     exercise = create :exercise, repository: repository
     content_page = create :content_page, repository: repository
     repository.update(featured: true)
+
     assert_includes Activity.repository_scope(scope: :featured), exercise
     assert_includes Activity.repository_scope(scope: :featured), content_page
     repository.update(featured: false)
+
     assert_not_includes Activity.repository_scope(scope: :featured), exercise
     assert_not_includes Activity.repository_scope(scope: :featured), content_page
   end

@@ -12,6 +12,7 @@ class ActivityHelperTest < ActiveSupport::TestCase
   test 'previous activity at beginning of series should be nil' do
     current_exercise = @series.exercises[0]
     previous_ex_path, = previous_next_activity_path(@series, current_exercise)
+
     assert_nil previous_ex_path
   end
 
@@ -21,6 +22,7 @@ class ActivityHelperTest < ActiveSupport::TestCase
 
     previous_exercise_path = course_series_activity_path(I18n.locale, @series.course_id, @series, previous_exercise)
     previous_ex_path, = previous_next_activity_path(@series, current_exercise)
+
     assert_equal previous_exercise_path, previous_ex_path
   end
 
@@ -30,12 +32,14 @@ class ActivityHelperTest < ActiveSupport::TestCase
 
     next_exercise_path = course_series_activity_path(I18n.locale, @series.course_id, @series, next_exercise)
     _, next_ex_path = previous_next_activity_path(@series, current_exercise)
+
     assert_equal next_exercise_path, next_ex_path
   end
 
   test 'next activity at end of series should be nil' do
     current_exercise = @series.exercises[2]
     _, next_ex_path = previous_next_activity_path(@series, current_exercise)
+
     assert_nil next_ex_path
   end
 
@@ -59,10 +63,12 @@ class ActivityHelperTest < ActiveSupport::TestCase
   def check_footnotes(footnotes)
     footnote_a = footnotes.to_a
     index, content = footnote_a[0]
+
     assert_equal '1', index
     assert_equal 'https://google.com', content
 
     index, content = footnote_a[1]
+
     assert_equal '2', index
     assert_equal 'http://example.com/activities/123455/', content
   end
@@ -82,7 +88,7 @@ class ActivityHelperTest < ActiveSupport::TestCase
     exercise = create :exercise, description_html_stubbed: desc
 
     with_renderer_for exercise do |r|
-      assert r.footnote_urls.empty?
+      assert_empty r.footnote_urls
     end
   end
 
@@ -91,7 +97,7 @@ class ActivityHelperTest < ActiveSupport::TestCase
     exercise = create :exercise, description_html_stubbed: desc
 
     with_renderer_for exercise do |r|
-      assert r.footnote_urls.empty?
+      assert_empty r.footnote_urls
       assert_equal desc, r.description_html
     end
   end

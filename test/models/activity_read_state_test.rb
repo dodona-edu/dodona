@@ -23,7 +23,7 @@ class ActivityReadStateTest < ActiveSupport::TestCase
                         activity: series.content_pages.first
 
     assert_not_nil read_state
-    assert read_state.valid?
+    assert_predicate read_state, :valid?
 
     second_read_state = build :activity_read_state,
                               user: user,
@@ -34,7 +34,8 @@ class ActivityReadStateTest < ActiveSupport::TestCase
 
     # but we can make a new read state outside the course
     second_read_state.course = nil
-    assert second_read_state.valid?
+
+    assert_predicate second_read_state, :valid?
   end
 
   test 'accessibility should only be checked on create' do
@@ -49,13 +50,13 @@ class ActivityReadStateTest < ActiveSupport::TestCase
                        course: series.course,
                        activity: content_page
 
-    assert read_state.valid?
+    assert_predicate read_state, :valid?
     assert read_state.save
 
     series.update(visibility: :closed)
 
     assert_not content_page.accessible?(user, series.course)
-    assert read_state.valid?
+    assert_predicate read_state, :valid?
     assert read_state.update(updated_at: Time.current)
   end
 
@@ -76,7 +77,7 @@ class ActivityReadStateTest < ActiveSupport::TestCase
 
     series.update(visibility: :open)
 
-    assert read_state.valid?
+    assert_predicate read_state, :valid?
     assert read_state.save
   end
 end

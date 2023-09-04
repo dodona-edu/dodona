@@ -44,6 +44,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_css '#check-save-annotation'
       assert_no_css '#saved-annotation-title'
       find_by_id('check-save-annotation').check
+
       assert_equal 'The first five words of', find_by_id('saved-annotation-title').value
       click_button 'Comment'
     end
@@ -68,6 +69,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     within 'form.annotation-submission' do
       assert_no_css 'd-saved-annotation-input'
       find('textarea.annotation-submission-input').fill_in with: initial
+
       assert_no_css '#check-save-annotation'
       click_button 'Ask question'
     end
@@ -94,6 +96,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_css 'd-saved-annotation-input'
 
       find('d-saved-annotation-input input[type="text"]').fill_in with: sa.title
+
       assert find_field('annotation-text', with: sa.annotation_text)
       assert_equal sa.annotation_text, find('textarea.annotation-submission-input').value
 

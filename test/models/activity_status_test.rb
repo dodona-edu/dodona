@@ -29,6 +29,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     user = users(:student)
     as1 = create :activity_status, user: user, activity: activity, series: nil
     as2 = create :activity_status, user: user, activity: activity, series: series
+
     assert_not as1.started
     assert_not as2.started
 
@@ -36,6 +37,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
 
     as1.reload
     as2.reload
+
     assert as1.started
     assert as2.started
   end
@@ -45,6 +47,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     user = users(:student)
     ActivityStatus.create(user: user, activity: activity, series: nil)
     ActivityStatus.create(user: user, activity: activity, series: nil)
+
     assert_equal 1, ActivityStatus.count
   end
 
@@ -54,6 +57,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     series = create :series, course: course, exercise_count: 1
     activity = series.activities.first
     create :submission, exercise: activity, course: course, status: :correct, user: user
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: nil)
   end
@@ -64,6 +68,7 @@ class ActivityStatusTest < ActiveSupport::TestCase
     series = create :series, course: course, content_page_count: 1
     activity = series.activities.first
     create :activity_read_state, activity: activity, course: course, user: user
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: nil)
   end
@@ -74,9 +79,11 @@ class ActivityStatusTest < ActiveSupport::TestCase
     series = create :series, course: course, content_page_count: 1
     activity = series.activities.first
     create :activity_read_state, activity: activity, course: course, user: user
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: nil)
     SeriesMembership.find_by(series: series, activity: activity).destroy
+
     assert_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: nil)
   end
@@ -88,8 +95,10 @@ class ActivityStatusTest < ActiveSupport::TestCase
     series2 = create :series, course: course
     activity = series.activities.first
     create :activity_read_state, activity: activity, course: course, user: user
+
     assert_nil ActivityStatus.find_by(user: user, activity: activity, series: series2)
     SeriesMembership.create(series: series2, activity: activity)
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series2)
   end
 
@@ -99,10 +108,12 @@ class ActivityStatusTest < ActiveSupport::TestCase
     series = create :series, course: course, content_page_count: 1, deadline: 1.week.from_now
     activity = series.activities.first
     create :activity_read_state, activity: activity, course: course, user: user
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert ActivityStatus.find_by(user: user, activity: activity, series: series).accepted_before_deadline
     series.deadline = 1.week.ago
     series.save
+
     assert_not_nil ActivityStatus.find_by(user: user, activity: activity, series: series)
     assert_not ActivityStatus.find_by(user: user, activity: activity, series: series).accepted_before_deadline
   end

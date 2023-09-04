@@ -34,8 +34,9 @@ class EmptyRepositoryTest < ActiveSupport::TestCase
     remote = local_remote
     repository = create :repository, remote: remote.path
     remote.write_file('test') { 'test' }
+
     assert repository.reset.first
-    assert File.exist?("#{repository.full_path}/test")
+    assert_path_exists("#{repository.full_path}/test")
   end
 end
 
@@ -47,9 +48,10 @@ class ConfigInRootTest < ActiveSupport::TestCase
     remote.commit('Move config to root')
     repository = create :repository, remote: remote.path
 
-    assert File.exist?("#{repository.full_path}/config.json")
+    assert_path_exists("#{repository.full_path}/config.json")
 
     repository.process_activities
+
     assert repository.exercises.first
   end
 end
@@ -72,10 +74,8 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   test 'should clone on create' do
     assert_not @repository.path.nil?
-    assert File.exist?(@repository.full_path),
-           'path does not exist'
-    assert File.exist?(File.join(@repository.full_path, '.git')),
-           'is not a git repository'
+    assert_path_exists(@repository.full_path, 'path does not exist')
+    assert_path_exists(File.join(@repository.full_path, '.git'), 'is not a git repository')
   end
 
   test 'should process correctly' do
@@ -114,6 +114,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
     @repository.reset
     @repository.process_activities
+
     assert_equal Label.all, @echo.labels
     assert_equal 4, Label.count
   end
@@ -130,6 +131,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @remote.commit('remove exercise')
     @repository.reset
     @repository.process_activities
+
     assert_equal 'removed', @echo.reload.status
   end
 
@@ -140,6 +142,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
   end
@@ -153,6 +156,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'ok', @echo.status
   end
 
@@ -162,6 +166,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'ok', @echo.status
     assert_equal 'echo', @echo.path
   end
@@ -173,6 +178,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'ok', @echo.status
     assert_equal new_dir, @echo.path
   end
@@ -187,6 +193,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'removed', @echo.status
     assert_equal 1, Exercise.all.count - start
   end
@@ -199,6 +206,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
+
     assert_equal 'echo', @echo.path
     assert_equal 1, Exercise.all.count - start
   end
@@ -213,7 +221,8 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     @echo.reload
-    assert [new_dir1, new_dir2].include?(@echo.path)
+
+    assert_includes [new_dir1, new_dir2], @echo.path
     assert_equal 1, Exercise.all.count - start
   end
 
@@ -227,7 +236,8 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     echo2 = Exercise.find_by(path: new_dir)
-    assert_equal echo2.repository_token, 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'
+
+    assert_equal('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', echo2.repository_token)
   end
 
   test 'should write new token to config file of copied exercise' do
@@ -237,6 +247,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @repository.reset
     @repository.process_activities
     echo2 = Activity.find_by(path: new_dir)
+
     assert_not_equal @echo.repository_token, echo2.config['internals']['token']
   end
 
@@ -247,6 +258,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
     @repository.reset
     @repository.process_activities
+
     assert_equal 500_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
 
@@ -257,19 +269,21 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
     @repository.reset
     @repository.process_activities
+
     assert_equal 10_000_000, JSON.parse(File.read(File.join(@remote.path, @echo.path, 'config.json')))['evaluation']['memory_limit']
   end
 
   test 'should convert to content page' do
-    assert @echo.submissions.empty?
+    assert_empty @echo.submissions
     @remote.update_json("#{@echo.path}/config.json", 'convert to content page') do |json|
       json['type'] = 'content'
       json
     end
     @repository.reset
     @repository.process_activities
-    assert @repository.activities.first.content_page?
-    assert @repository.activities.first.ok?
+
+    assert_predicate @repository.activities.first, :content_page?
+    assert_predicate @repository.activities.first, :ok?
     assert_equal 1, @repository.activities.count
   end
 
@@ -282,16 +296,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     end
     @repository.reset
     @repository.process_activities
+
     assert_equal 2, @repository.activities.count
 
     original = @repository.activities.find { |a| a.id == @echo.id }
     other = @repository.activities.find { |a| a.id != @echo.id }
     submission.reload
 
-    assert original.content_page?
-    assert original.ok?
-    assert other.exercise?
-    assert other.removed?
+    assert_predicate original, :content_page?
+    assert_predicate original, :ok?
+    assert_predicate other, :exercise?
+    assert_predicate other, :removed?
     assert_equal other.id, submission.exercise_id
   end
 
@@ -304,6 +319,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.process_activities
     end
     @echo.reload
+
     assert_equal 'not_valid', @echo.status
   end
 
@@ -316,6 +332,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.process_activities
     end
     @echo.reload
+
     assert_equal 'not_valid', @echo.status
   end
 
@@ -328,6 +345,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       @repository.process_activities
     end
     @echo.reload
+
     assert_equal 'not_valid', @echo.status
   end
 
@@ -365,6 +383,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   test 'has allowed course should filter correctly' do
     @course = create :course
     @repository.allowed_courses = [@course]
+
     assert_includes Repository.has_allowed_course(@course), @repository
     assert_not_includes Repository.has_allowed_course(create(:course)), @repository
   end
@@ -372,6 +391,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   test 'has admin scope should filter correctly' do
     user = create :staff
     @repository.admins << user
+
     assert_includes Repository.has_admin(user), @repository
     assert_not_includes Repository.has_admin(create(:staff)), @repository
   end
@@ -382,6 +402,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
       user = create :staff, institution: institution
       @repository.admins << user
     end
+
     assert_equal 1, Repository.owned_by_institution(institution).count
   end
 
@@ -389,14 +410,17 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     institution = create :institution
     user = create :staff, institution: institution
     @repository.admins << user
+
     assert_includes Repository.owned_by_institution(institution), @repository
     assert_not_includes Repository.owned_by_institution(create(:institution)), @repository
   end
 
   test 'featured scope should filter correctly' do
     @repository.update(featured: true)
+
     assert_includes Repository.featured, @repository
     @repository.update(featured: false)
+
     assert_not_includes Repository.featured, @repository
   end
 end

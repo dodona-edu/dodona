@@ -5,6 +5,7 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get sign in page' do
     get sign_in_url
+
     assert_response :success
     assert_template 'auth/sign_in'
   end

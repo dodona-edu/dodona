@@ -46,9 +46,11 @@ class ExerciseTest < ActiveSupport::TestCase
       assert_equal @exercise.name_nl, @exercise.name
 
       @exercise.name_nl = nil
+
       assert_equal @exercise.name_en, @exercise.name
 
       @exercise.name_en = nil
+
       assert_equal @exercise.path.split('/').last, @exercise.name
     end
   end
@@ -56,17 +58,20 @@ class ExerciseTest < ActiveSupport::TestCase
   test 'accessible? should return false if user is course admin of course and exercise not in course' do
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
+
     assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
     course = create :course, users: [@user]
+
     assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return false if user is not course admin of course and series is not visible course' do
     course = create :course, users: [@user]
     create :series, course: course, visibility: 'closed', exercises: [@exercise]
+
     assert_not @exercise.accessible?(@user, course)
   end
 
@@ -75,18 +80,21 @@ class ExerciseTest < ActiveSupport::TestCase
     User.any_instance.stubs(:course_admin?).returns(true)
     User.any_instance.stubs(:repository_admin?).returns(true)
     create :series, course: course, exercises: [@exercise]
+
     assert @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is repository admin and series is visible' do
     User.any_instance.stubs(:repository_admin?).returns(true)
     create :series, course: @course, exercises: [@exercise]
+
     assert @exercise.accessible?(@user, @course)
   end
 
   test 'accessible? should return false if not allowed to use exercise' do
     exercise = create :exercise, access: 'private'
     create :series, course: @course, exercises: [exercise]
+
     assert_not exercise.accessible?(@user, @course)
   end
 
@@ -94,24 +102,28 @@ class ExerciseTest < ActiveSupport::TestCase
     exercise = create :exercise, access: :private
     create :series, course: @course, exercises: [exercise]
     exercise.repository.allowed_courses << @course
+
     assert exercise.accessible?(@user, @course)
   end
 
   test 'accessible? should return false if user is not a member of the course' do
     course = create :course, registration: 'closed'
     create :series, course: course, exercises: [@exercise]
+
     assert_not @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user is a member of the course' do
     course = create :course, users: [@user]
     create :series, course: course, exercises: [@exercise]
+
     assert @exercise.accessible?(@user, course)
   end
 
   test 'accessible? should return true if user repository admin of repository' do
     exercise = create :exercise, access: 'private'
     User.any_instance.stubs(:repository_admin?).returns(true)
+
     assert exercise.accessible?(@user, nil)
   end
 
@@ -121,6 +133,7 @@ class ExerciseTest < ActiveSupport::TestCase
 
   test 'accessible? should return false if exercise is private' do
     exercise = build :exercise, access: 'private'
+
     assert_not exercise.accessible?(@user, nil)
   end
 
@@ -129,6 +142,7 @@ class ExerciseTest < ActiveSupport::TestCase
     course = create :course, moderated: false, registration: :open_for_all
     exercise.repository.allowed_courses << course
     create :series, course: course, exercises: [exercise]
+
     assert exercise.accessible?(@user, course)
   end
 
@@ -137,11 +151,13 @@ class ExerciseTest < ActiveSupport::TestCase
     course = create :course, moderated: true, registration: :open_for_all
     exercise.repository.allowed_courses << course
     create :series, course: course, exercises: [exercise]
+
     assert_not exercise.accessible?(@user, course)
   end
 
   test 'exercise should not be accessible if included via hidden series and user is not a member' do
     create :series, course: @course, exercises: [@exercise], visibility: :hidden
+
     assert_not @exercise.accessible?(@user, @course)
   end
 
@@ -173,9 +189,11 @@ class ExerciseTest < ActiveSupport::TestCase
     exercise1 = @exercise
     create :submission, exercise: exercise1
     exercise2 = create :exercise
+
     assert_equal 1, exercise1.submissions.count
     assert_equal 0, exercise2.submissions.count
     Exercise.move_relations(exercise1, exercise2)
+
     assert_equal 0, exercise1.submissions.count
     assert_equal 1, exercise2.submissions.count
   end
@@ -216,6 +234,7 @@ class ExerciseTest < ActiveSupport::TestCase
     users_c1.each do |user|
       create :submission, user: user, course: course1, exercise: e, status: :wrong
     end
+
     assert_equal 5, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 1, e.users_tried(course: course2)
@@ -223,18 +242,21 @@ class ExerciseTest < ActiveSupport::TestCase
     users_c2.each do |user|
       create :submission, user: user, course: course2, exercise: e, status: :wrong
     end
+
     assert_equal 7, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e, status: :wrong
     end
+
     assert_equal 9, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 3, e.users_tried(course: course2)
     users_all.each do |user|
       create :submission, user: user, exercise: e, status: :running
     end
+
     assert_equal 9, e.users_tried
     assert_equal 3, e.users_tried(course: course1)
     assert_equal 3, e.users_tried(course: course2)
@@ -256,31 +278,37 @@ class ExerciseTest < ActiveSupport::TestCase
     assert_equal 0, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_c1, course: course1, exercise: e
+
     assert_equal 0, e.users_correct
     assert_equal 0, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
     create :correct_submission, user: user_c1, course: course1, exercise: e
+
     assert_equal 1, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_c2, course: course2, exercise: e
+
     assert_equal 1, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 0, e.users_correct(course: course2)
 
     create :correct_submission, user: user_c2, course: course2, exercise: e
+
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
 
     create :wrong_submission, user: user_all, exercise: e
+
     assert_equal 2, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
 
     create :correct_submission, user: user_all, exercise: e
+
     assert_equal 3, e.users_correct
     assert_equal 1, e.users_correct(course: course1)
     assert_equal 1, e.users_correct(course: course2)
@@ -291,13 +319,13 @@ class ExerciseTest < ActiveSupport::TestCase
            exercise: @exercise,
            user: @user
 
-    assert_equal false, @exercise.solved_for?(@user)
+    assert_not @exercise.solved_for?(@user)
 
     create :correct_submission,
            exercise: @exercise,
            user: @user
 
-    assert_equal true, @exercise.solved_for?(@user)
+    assert @exercise.solved_for?(@user)
   end
 
   test 'solved_for should retry finding ActivityStatus when it fails once' do
@@ -308,7 +336,8 @@ class ExerciseTest < ActiveSupport::TestCase
     ActivityStatus.stubs(:find_or_create_by)
                   .raises(StandardError.new('This is an error')).then
                   .returns(ActivityStatus.find_by(activity: @exercise, user: @user))
-    assert_equal false, @exercise.solved_for?(@user)
+
+    assert_not @exercise.solved_for?(@user)
   end
 
   test 'solved_for should not retry finding ActivityStatus when it fails twice' do
@@ -498,12 +527,14 @@ class ExerciseTest < ActiveSupport::TestCase
   test 'access token should change when access changes' do
     old_token = @exercise.access_token
     @exercise.update(access: :private)
+
     assert_not_equal @exercise.reload.access_token, old_token
   end
 
   test 'access token should not change when something else changes' do
     old_token = @exercise.access_token
     @exercise.update(name_en: 'Wubba Lubba dub-dub')
+
     assert_equal @exercise.reload.access_token, old_token
   end
 
@@ -513,10 +544,12 @@ class ExerciseTest < ActiveSupport::TestCase
 
     series.update(visibility: :hidden)
     hidden_token = @exercise.reload.access_token
+
     assert_not_equal hidden_token, old_token
 
     series.update(visibility: :closed)
     closed_token = @exercise.reload.access_token
+
     assert_not_equal closed_token, hidden_token
   end
 
@@ -525,14 +558,17 @@ class ExerciseTest < ActiveSupport::TestCase
 
     series = create :series, visibility: :open
     series.exercises << @exercise
+
     assert_equal old_token, @exercise.reload.access_token, 'access token should not change when added to series'
 
     series.exercises.destroy(@exercise)
+
     assert_not_equal old_token, @exercise.reload.access_token
   end
 
   test 'description language scope should be chainable' do
     @exercise.update description_nl_present: true, name_nl: 'Wingardium Leviosa', name_en: 'Wingardium Leviosa'
+
     assert_equal 1, Exercise.by_name('Wingardium Leviosa').by_description_languages(['nl']).count
   end
 end
@@ -546,6 +582,7 @@ class ExerciseUnstartedTest < ActiveSupport::TestCase
     create :submission, exercise: exercises.second, user: user2
 
     result = Exercise.where(id: exercises.map(&:id)).unstarted_by(User.all)
+
     assert_equal 1, result.count
     assert_equal exercises.third, result[0]
   end
@@ -575,24 +612,27 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'should update properties in config file' do
     @exercise.update access: 'private'
+
     assert_equal 'private', config['access']
 
     @exercise.update name_nl: 'Echo'
+
     assert_equal 'Echo', config['description']['names']['nl']
 
     @exercise.update name_en: 'Echo'
+
     assert_equal 'Echo', config['description']['names']['en']
   end
 
   test 'should have solutions' do
-    assert_equal @exercise.solutions,
-                 'solution.py' => "print(input())\n",
-                 'empty.py' => ''
+    assert_equal({ 'solution.py' => "print(input())\n",
+                   'empty.py' => '' }, @exercise.solutions)
   end
 
   test 'should use current user name and email when committing' do
     Current.user = @user
     @exercise.update access: 'private'
+
     assert_equal Current.user.full_name, @remote.git('log', '-1', '--pretty=format:%an')
     assert_equal Current.user.email, @remote.git('log', '-1', '--pretty=format:%ae')
   end
@@ -608,6 +648,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     config = JSON.parse(
       File.read(File.join(@remote.path, @exercise.path, 'config.json'))
     )
+
     assert_equal 'private', config['access']
   end
 
@@ -618,12 +659,14 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
   test 'safe_delete should not destroy exercise if status is not removed' do
     @exercise.safe_destroy
+
     assert_equal @repository.exercises.first, @exercise
   end
 
   test 'safe_delete should destroy exercise if status is removed' do
     @exercise.status = 2 # set status to removed
     @exercise.safe_destroy
+
     assert_not_equal @repository.exercises.first, @exercise
   end
 
@@ -633,6 +676,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     submission = create :submission, exercise: @exercise, user: user
     @exercise.submissions.concat(submission) # Add a submission
     @exercise.safe_destroy
+
     assert_equal @repository.exercises.first, @exercise
   end
 
@@ -643,12 +687,14 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     series.exercises.map { @exercise }
     @exercise.series.concat(series) # Add series membership
     @exercise.safe_destroy
+
     assert_equal @repository.exercises.first, @exercise
   end
 
   test 'config_file? should be true if exercise has a config file' do
-    assert @exercise.config_file?
+    assert_predicate @exercise, :config_file?
     @exercise.path = '/wrong_path'
+
     assert_not @exercise.config_file?
   end
 
@@ -663,6 +709,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
 
     # correct fallback
     FileUtils.rm @about_en_path
+
     I18n.with_locale :en do
       assert_equal @about_nl_path.read, @exercise.about
     end
@@ -673,6 +720,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     about_nl = @about_nl_path.read
     FileUtils.mv @about_en_path, @exercise.full_path.join('about.en.md')
     FileUtils.mv @about_nl_path, @exercise.full_path.join('about.nl.md')
+
     I18n.with_locale :en do
       assert_equal about_en, @exercise.about
     end
@@ -685,6 +733,7 @@ class ExerciseRemoteTest < ActiveSupport::TestCase
     about = File.read @about_en_path
     FileUtils.rm @about_nl_path
     FileUtils.mv @about_en_path, @exercise.full_path.join('README')
+
     assert_equal about, @exercise.about
   end
 end
@@ -709,6 +758,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal 'html', Exercise.determine_format(@exercise.full_path)
 
     Dir.stubs(:glob).returns([]) # The search to html descriptions should return no results because description is in md
+
     assert_equal 'md', Exercise.determine_format(@exercise.full_path)
   end
 
@@ -744,13 +794,16 @@ class LasagneConfigTest < ActiveSupport::TestCase
     assert_equal Pathname.new('./exercises/series/dirconfig.json'),
                  @exercise.merged_config_locations['access']
     @exercise.update_config
+
     assert_not @exercise.config.key? 'access'
   end
 
   test 'should add labels to config file when exercise is updated' do
     @exercise.update(labels: [])
-    assert_equal [], @exercise.config['labels']
+
+    assert_empty @exercise.config['labels']
     @exercise.update(labels: [Label.create(name: 'new label')])
+
     assert_equal ['new label'], @exercise.config['labels']
   end
 
@@ -763,14 +816,17 @@ class LasagneConfigTest < ActiveSupport::TestCase
                  @exercise.merged_config_locations['access']
 
     @exercise.update_config
+
     assert_not @exercise.config.key? 'access'
 
     @exercise.access = 'public'
     @exercise.update_config
+
     assert_not @exercise.config.key? 'access'
 
     @exercise.access = 'private'
     @exercise.update_config
+
     assert_equal 'private', @exercise.config['access']
     assert_equal 'private', @exercise.merged_config['access']
     assert_equal @exercise.config_file,
@@ -783,6 +839,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
                 './exercises/dirconfig.json',
                 './exercises/series/dirconfig.json',
                 @exercise.config_file].map { |p| Pathname.new p }
+
     assert_equal expected,
                  @exercise.merged_config_locations['labels']
   end
@@ -792,7 +849,7 @@ class LasagneConfigTest < ActiveSupport::TestCase
   end
 
   test 'should support directories without dirconfig' do
-    assert_equal @extra_exercise.merged_config['root_config'], 'set'
+    assert_equal('set', @extra_exercise.merged_config['root_config'])
   end
 end
 
@@ -803,7 +860,7 @@ class ExerciseStubTest < ActiveSupport::TestCase
   end
 
   test 'exercise should be valid and ok' do
-    assert @exercise.valid?, 'Exercise was not valid'
-    assert_equal @exercise.status, 'ok', 'Exercise was not ok'
+    assert_predicate @exercise, :valid?, 'Exercise was not valid'
+    assert_equal('ok', @exercise.status, 'Exercise was not ok')
   end
 end

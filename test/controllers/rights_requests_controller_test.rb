@@ -15,6 +15,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'ActionMailer::Base.deliveries.size', 1 do
       attrs = generate_attr_hash
       create_request(attr_hash: attrs)
+
       assert_redirected_to root_path
     end
   end
@@ -23,6 +24,7 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
     attrs = generate_attr_hash
     attrs.delete(:context)
     create_request(attr_hash: attrs)
+
     assert_response :unprocessable_entity
   end
 
@@ -30,12 +32,14 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
     create :rights_request
     sign_in users(:zeus)
     get rights_requests_url
+
     assert_response :success
   end
 
   test 'others should not be able to get index' do
     create :rights_request
     get rights_requests_url
+
     assert_redirected_to root_path
   end
 
@@ -46,12 +50,13 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
       post approve_rights_request_url(req, format: :js)
     end
     assert_response :success
-    assert req.user.reload.staff?
+    assert_predicate req.user.reload, :staff?
 
     req = create :rights_request
     post approve_rights_request_url(req)
+
     assert_redirected_to rights_requests_path
-    assert req.user.reload.staff?
+    assert_predicate req.user.reload, :staff?
   end
 
   test 'approval should update institution name' do
@@ -83,12 +88,14 @@ class RightsRequestsControllerTest < ActionDispatch::IntegrationTest
 
     req = create :rights_request
     post reject_rights_request_url(req)
+
     assert_redirected_to rights_requests_path
   end
 
   test 'others should not be able to reject' do
     req = create :rights_request
     post reject_rights_request_url(req)
+
     assert_redirected_to root_path
   end
 end

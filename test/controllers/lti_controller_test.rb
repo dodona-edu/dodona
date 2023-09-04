@@ -53,11 +53,13 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
     encoded = JSON.parse(@response.body)['payload']
     decoded = decode_jwt(encoded)
+
     assert_equal @provider.client_id, decoded['iss']
     assert_equal @provider.issuer, decoded['aud']
     assert_equal 'nonce', decoded['nonce']
     assert_not_empty decoded['https://purl.imsglobal.org/spec/lti-dl/claim/data']
     items = decoded['https://purl.imsglobal.org/spec/lti-dl/claim/content_items']
+
     assert_equal [{
       'type' => 'ltiResourceLink',
       'title' => series.exercises.first.name,
@@ -78,6 +80,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     end
 
     get course_path course, id_token: id_token, provider_id: @provider.id
+
     assert_response :ok
     assert_not_empty flash[:error]
 
@@ -118,9 +121,11 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     # Described by section 5.1.1.2 of the IMS Security Framework.
     assert_response :found
     location = URI.parse(@response.header['Location'])
+
     assert_equal @provider.authorization_uri, "#{location.scheme}://#{location.host}#{location.path}"
     params = URI.decode_www_form(location.query).to_h.symbolize_keys
-    assert params[:scope].include? 'openid'
+
+    assert_includes params[:scope], 'openid'
     assert_equal 'id_token', params[:response_type]
     assert_equal @provider.client_id, params[:client_id]
     assert_equal 'https://www.example.com/users/auth/lti/callback', params[:redirect_uri]
@@ -145,6 +150,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     assert_response :found
     target_uri = URI.parse(@response.header['Location'])
     params = URI.decode_www_form(target_uri.query).to_h.symbolize_keys
+
     assert_equal target, "#{target_uri.scheme}://#{target_uri.host}#{target_uri.path}"
     assert_equal @provider.id.to_s, params[:provider_id]
     assert_not_empty params[:id_token]
@@ -174,6 +180,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
     assert_response :redirect
     target_uri = URI.parse(@response.header['Location'])
     params = URI.decode_www_form(target_uri.query).to_h.symbolize_keys
+
     assert_equal content_selection_path, target_uri.path
     assert_equal @provider.id.to_s, params[:provider_id]
     assert_not_empty params[:id_token]

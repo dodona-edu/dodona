@@ -24,6 +24,7 @@ require 'test_helper'
 class CourseTest < ActiveSupport::TestCase
   test 'factory should create course' do
     course = create :course
+
     assert_not_nil course
     assert_not course.secret.blank?
   end
@@ -31,32 +32,40 @@ class CourseTest < ActiveSupport::TestCase
   test 'create course with emoji' do
     name = 'Programming 🧑‍💻'
     course = create :course, name: name
+
     assert_not_nil course
     assert_equal course.name, name
   end
 
   test 'course formatted year should not have spaces' do
     course = build :course, year: '2017 - 2018'
+
     assert_equal '2017–2018', course.formatted_year
   end
 
   test 'course formatted attribution should only have a dot with teacher and institution' do
     course = build :course, teacher: ''
+
     assert_equal '', course.formatted_attribution
 
     course = build :course, teacher: 'teach'
+
     assert_equal 'teach', course.formatted_attribution
 
     course = build :course, teacher: '', institution: (build :institution, short_name: 'sn', name: '')
+
     assert_equal '', course.formatted_attribution
 
     course = build :course, teacher: 'teach', institution: (build :institution, short_name: 'sn', name: '')
+
     assert_equal 'teach', course.formatted_attribution
 
     course = build :course, teacher: '', institution: (build :institution, short_name: 'sn', name: 'inst')
+
     assert_equal 'inst', course.formatted_attribution
 
     course = build :course, teacher: 'teach', institution: (build :institution, short_name: 'sn', name: 'inst')
+
     assert_equal 'teach · inst', course.formatted_attribution
   end
 
@@ -66,7 +75,7 @@ class CourseTest < ActiveSupport::TestCase
     user2 = build :user, institution: course.institution
     user3 = build :user, institution: (build :institution)
 
-    assert course.secret_required?
+    assert_predicate course, :secret_required?
     assert course.secret_required?(user1)
     assert course.secret_required?(user2)
     assert course.secret_required?(user3)
@@ -78,7 +87,7 @@ class CourseTest < ActiveSupport::TestCase
     user2 = build :user, institution: course.institution
     user3 = build :user, institution: (build :institution)
 
-    assert course.secret_required?
+    assert_predicate course, :secret_required?
     assert course.secret_required?(user1)
     assert_not course.secret_required?(user2)
     assert course.secret_required?(user3)
@@ -245,6 +254,7 @@ class CourseTest < ActiveSupport::TestCase
     course = create :course, series_count: 1, exercises_per_series: 1, submissions_per_exercise: 1
     submission = Submission.first
     code = submission.code
+
     assert course.destroy
     assert_equal code, submission.reload.code
   end
@@ -253,11 +263,14 @@ class CourseTest < ActiveSupport::TestCase
     course = create :course, series_count: 1, exercises_per_series: 0
     ex = create :exercise, access: :public
     course.series.first.exercises << ex
-    assert course.all_activities_accessible?
+
+    assert_predicate course, :all_activities_accessible?
     ex.update(access: :private)
+
     assert_not course.all_activities_accessible?
     course.usable_repositories << ex.repository
-    assert course.all_activities_accessible?
+
+    assert_predicate course, :all_activities_accessible?
   end
 
   test 'can_register scope should always contain own courses' do
@@ -270,6 +283,7 @@ class CourseTest < ActiveSupport::TestCase
           CourseMembership.create user: u, course: c, status: s[1]
         end
       end
+
       assert_equal u.subscribed_courses.count, u.subscribed_courses.can_register(u).count
     end
   end
@@ -281,6 +295,7 @@ class CourseTest < ActiveSupport::TestCase
     end
     [create(:institution), i, nil].each do |institution|
       u = create :user, institution: institution
+
       Course.all.each do |c|
         assert_equal c.open_for_user?(u), Course.can_register(u).exists?(c.id)
       end
@@ -290,16 +305,20 @@ class CourseTest < ActiveSupport::TestCase
   test 'Activity count returns number of activities in vissible series' do
     course = create :course, series_count: 2, exercises_per_series: 1, content_pages_per_series: 1
     course.series.first.update(visibility: :hidden)
+
     assert_equal 2, course.activity_count
 
     course.series.first.update(visibility: :closed)
+
     assert_equal 2, course.activity_count
 
     course.series.last.update(visibility: :hidden)
+
     assert_equal 0, course.activity_count
 
     course.series.first.update(visibility: :open)
     course.series.last.update(visibility: :open)
+
     assert_equal 4, course.activity_count
   end
 
@@ -310,28 +329,36 @@ class CourseTest < ActiveSupport::TestCase
 
     user = create :user
     CourseMembership.create user: user, course: course, status: :student
+
     assert_equal 0, course.completed_activity_count(user)
 
     # Don't count outside course
     create :correct_submission, user: user, exercise: course.series.first.exercises.first
+
     assert_equal 0, course.completed_activity_count(user)
     # Don't count wrong submission
     create :wrong_submission, user: user, exercise: course.series.first.exercises.first, course: course
+
     assert_equal 0, course.completed_activity_count(user)
     create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
+
     assert_equal 1, course.completed_activity_count(user)
     create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
+
     assert_equal 2, course.completed_activity_count(user)
 
     # dont count in non visible series
     create :activity_read_state, user: user, activity: course.series.last.content_pages.first, course: course
+
     assert_equal 2, course.completed_activity_count(user)
 
     course.series.last.update(visibility: :open)
+
     assert_equal 3, course.completed_activity_count(user)
 
     # dont count in closed series
     course.series.first.update(visibility: :closed)
+
     assert_equal 1, course.completed_activity_count(user)
   end
 
@@ -342,28 +369,36 @@ class CourseTest < ActiveSupport::TestCase
 
     user = create :user
     CourseMembership.create user: user, course: course, status: :student
+
     assert_equal 0, course.started_activity_count(user)
 
     # Don't count outside course
     create :correct_submission, user: user, exercise: course.series.first.exercises.first
+
     assert_equal 0, course.started_activity_count(user)
     # Count wrong submission
     create :wrong_submission, user: user, exercise: course.series.first.exercises.first, course: course
+
     assert_equal 1, course.started_activity_count(user)
     create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
+
     assert_equal 1, course.started_activity_count(user)
     create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
+
     assert_equal 2, course.started_activity_count(user)
 
     # dont count in non visible series
     create :activity_read_state, user: user, activity: course.series.last.content_pages.first, course: course
+
     assert_equal 2, course.started_activity_count(user)
 
     course.series.last.update(visibility: :open)
+
     assert_equal 3, course.started_activity_count(user)
 
     # dont count in closed series
     course.series.first.update(visibility: :closed)
+
     assert_equal 1, course.started_activity_count(user)
   end
 
@@ -377,6 +412,7 @@ class CourseTest < ActiveSupport::TestCase
 
     # Should start from first activity when no submissions
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.first.activities.first, result.first[:activity]
     assert_equal course.series.first, result.first[:series]
@@ -393,6 +429,7 @@ class CourseTest < ActiveSupport::TestCase
     # Should start from after last submission if submission was correct
     create :correct_submission, user: user, exercise: course.series.second.exercises.first, course: course
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.second.activities.second, result.first[:activity]
     assert_equal course.series.second, result.first[:series]
@@ -408,6 +445,7 @@ class CourseTest < ActiveSupport::TestCase
 
     # should only return limit number of activities
     result = course.homepage_activities(user, 1)
+
     assert_equal 1, result.count
     assert_equal course.series.second.activities.second, result.first[:activity]
     assert_equal course.series.second, result.first[:series]
@@ -416,6 +454,7 @@ class CourseTest < ActiveSupport::TestCase
     # should start from last submission if submission was wrong
     w1 = create :wrong_submission, user: user, exercise: course.series.third.exercises.first, course: course
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.third.activities.first, result.first[:activity]
     assert_equal course.series.third, result.first[:series]
@@ -434,6 +473,7 @@ class CourseTest < ActiveSupport::TestCase
     create :activity_read_state, user: user, activity: course.series.first.content_pages.first, course: course
     create :correct_submission, user: user, exercise: course.series.first.exercises.first, course: course
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.second.activities.second, result.first[:activity]
     assert_equal course.series.second, result.first[:series]
@@ -450,6 +490,7 @@ class CourseTest < ActiveSupport::TestCase
     # should skip activities in hidden series
     course.series.second.update(visibility: :hidden)
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.third.activities.first, result.first[:activity]
     assert_equal course.series.third, result.first[:series]
@@ -466,6 +507,7 @@ class CourseTest < ActiveSupport::TestCase
     # should start from first activity if end is reached
     w2 = create :wrong_submission, user: user, exercise: course.series.fourth.exercises.first, course: course
     result = course.homepage_activities(user, 3)
+
     assert_equal 3, result.count
     assert_equal course.series.fourth.activities.first, result.first[:activity]
     assert_equal course.series.fourth, result.first[:series]
@@ -482,6 +524,7 @@ class CourseTest < ActiveSupport::TestCase
     # should return less activities if limit can't be reached
     create :activity_read_state, user: user, activity: course.series.fourth.content_pages.first, course: course
     result = course.homepage_activities(user, 3)
+
     assert_equal 2, result.count
     assert_equal course.series.fourth.activities.first, result.first[:activity]
     assert_equal course.series.fourth, result.first[:series]
@@ -546,18 +589,24 @@ class CourseTest < ActiveSupport::TestCase
 
     assert_equal 0, course.homepage_series(user).count
     course.series.first.update(deadline: DateTime.now + 1.hour)
+
     assert_equal 1, course.homepage_series(user).count
     course.series.first.update(visibility: :hidden)
+
     assert_equal 0, course.homepage_series(user).count
     user = create :student
+
     assert_equal 0, course.homepage_series(user).count
     user = create :staff
+
     assert_equal 0, course.homepage_series(user).count
     user = create :zeus
+
     assert_equal 0, course.homepage_series(user).count
 
     user = create :staff
     CourseMembership.create(user: user, course: course, status: :course_admin)
+
     assert_equal 1, course.homepage_series(user).count
   end
 end

@@ -11,7 +11,7 @@
 #
 FactoryBot.define do
   factory :evaluation do
-    series { create :series, deadline: DateTime.now - 1.minute }
+    association :series, deadline: DateTime.now - 1.minute
     deadline { series.deadline || (DateTime.now - 1.minute) }
     released { false }
     exercises { series.exercises }

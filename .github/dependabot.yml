@@ -11,6 +11,10 @@ updates:
     prefix: ""
   labels:
     - "dependencies"
+  groups:
+    rubocop:
+      patterns:
+        - "rubocop*"
 - package-ecosystem: npm
   directory: "/"
   schedule:

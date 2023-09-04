@@ -36,6 +36,7 @@ class ProviderTest < ActiveSupport::TestCase
 
   test 'at least one preferred provider per institution' do
     redirect_prov = build :provider, institution: @institution, mode: :redirect
+
     assert_not redirect_prov.valid?
 
     create :provider, institution: @institution
@@ -45,6 +46,7 @@ class ProviderTest < ActiveSupport::TestCase
     create :provider, institution: @institution
 
     second = build :provider, institution: @institution
+
     assert_not second.valid?
   end
 
@@ -63,6 +65,7 @@ class ProviderTest < ActiveSupport::TestCase
       }
     }
     hash = OmniAuth::AuthHash.new(hash)
+
     assert_equal %w[example.com example.com], provider.extract_institution_name(hash)
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
@@ -71,6 +74,7 @@ class ProviderTest < ActiveSupport::TestCase
 
   test 'gsuite readable_name gives Google Workspace as name when account is NOT private' do
     provider = build :gsuite_provider, institution: @institution
+
     assert_equal Provider::GSuite.readable_name, provider.readable_name
   end
 
@@ -89,13 +93,16 @@ class ProviderTest < ActiveSupport::TestCase
       }
     }
     hash = OmniAuth::AuthHash.new(hash)
+
     assert_equal %w[test test], provider.extract_institution_name(hash)
 
     # Do tests to ensure it works for "invalid" input
     hash.info.institution = 'not-url'
+
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(hash)
 
     hash.info.institution = 'http://www.example.com'
+
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(hash)
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
@@ -117,9 +124,11 @@ class ProviderTest < ActiveSupport::TestCase
       }
     }
     hash = OmniAuth::AuthHash.new(hash)
+
     assert_equal %w[example.com example.com], provider.extract_institution_name(hash)
 
     hash.info.email = 'not an email anymore'
+
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(hash)
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))
@@ -140,9 +149,11 @@ class ProviderTest < ActiveSupport::TestCase
       }
     }
     hash = OmniAuth::AuthHash.new(hash)
+
     assert_equal %w[example example], provider.extract_institution_name(hash)
 
     hash.info.institution = 'test.org'
+
     assert_equal %w[test test], provider.extract_institution_name(hash)
 
     assert_equal DEFAULT_NAMES, provider.extract_institution_name(OmniAuth::AuthHash.new({}))

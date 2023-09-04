@@ -50,6 +50,7 @@ class SubmissionTest < ActiveSupport::TestCase
     user = users(:student)
     create :submission, user: user
     submission = build :submission, :rate_limited, user: user
+
     assert_not submission.valid?
 
     later = 10.seconds.from_now
@@ -57,7 +58,8 @@ class SubmissionTest < ActiveSupport::TestCase
     Time.stubs(:now).returns(later)
 
     later_submission = build :submission, :rate_limited, user: user
-    assert later_submission.valid?, 'should be able to create submission after waiting'
+
+    assert_predicate later_submission, :valid?, 'should be able to create submission after waiting'
   end
 
   test 'submissions should not be rate limited for different users' do
@@ -65,28 +67,33 @@ class SubmissionTest < ActiveSupport::TestCase
     other = users(:staff)
     create :submission, user: user
     submission = build :submission, :rate_limited, user: other
-    assert submission.valid?
+
+    assert_predicate submission, :valid?
   end
 
   test 'submissions that are too long should be rejected' do
     submission = build :submission, code: Random.new.alphanumeric(64.kilobytes)
+
     assert_not submission.valid?
   end
 
   test 'submissions that are short enough should not be rejected' do
     submission = build :submission, code: Random.new.alphanumeric(64.kilobytes - 1)
-    assert submission.valid?
+
+    assert_predicate submission, :valid?
   end
 
   test 'new submissions should have code on the filesystem' do
     code = Random.new.alphanumeric(100)
     submission = build :submission, code: code
+
     assert_equal code, File.read(File.join(submission.fs_path, Submission::CODE_FILENAME))
   end
 
   test 'new submissions should have result on the filesystem' do
     result = Random.new.alphanumeric(100)
     submission = build :submission, result: result
+
     assert_equal result, ActiveSupport::Gzip.decompress(File.read(File.join(submission.fs_path, Submission::RESULT_FILENAME)))
   end
 
@@ -95,6 +102,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: json, status: :correct
     user = users(:student)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+
     assert_equal 1, result[:groups].count
   end
 
@@ -103,6 +111,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: json, status: :correct
     user = users(:staff)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+
     assert_equal 2, result[:groups].count
   end
 
@@ -111,6 +120,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: json, status: :correct
     user = users(:zeus)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+
     assert_equal 3, result[:groups].count
   end
 
@@ -119,6 +129,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: json, status: :correct
     user = users(:student)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+
     assert_equal 2, result[:messages].count
     assert_equal 2, result[:groups][0][:messages].count
     assert_equal 2, result[:groups][0][:groups][0][:messages].count
@@ -131,6 +142,7 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = build :submission, result: json, status: :correct
     user = users(:staff)
     result = JSON.parse(submission.safe_result(user), symbolize_names: true)
+
     assert_equal 2, result[:groups].count
     assert_equal 3, result[:messages].count
     assert_equal 3, result[:groups][0][:messages].count
@@ -144,9 +156,10 @@ class SubmissionTest < ActiveSupport::TestCase
     path = submission.fs_path
     new_course = create :course
     submission.update(course: new_course)
+
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
-    assert File.exist?(submission.fs_path)
+    assert_path_exists(submission.fs_path)
     assert_not File.exist?(path)
   end
 
@@ -155,9 +168,10 @@ class SubmissionTest < ActiveSupport::TestCase
     path = submission.fs_path
     new_exercise = create :exercise
     submission.update(exercise: new_exercise)
+
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
-    assert File.exist?(submission.fs_path)
+    assert_path_exists(submission.fs_path)
     assert_not File.exist?(path)
   end
 
@@ -166,9 +180,10 @@ class SubmissionTest < ActiveSupport::TestCase
     path = submission.fs_path
     new_user = create :user
     submission.update(user: new_user)
+
     assert_equal 'result', submission.result
     assert_equal 'code', submission.code
-    assert File.exist?(submission.fs_path)
+    assert_path_exists(submission.fs_path)
     assert_not File.exist?(path)
   end
 
@@ -237,6 +252,7 @@ class SubmissionTest < ActiveSupport::TestCase
   test 'punchcard should use timezone given even when system is set to another' do
     Time.use_zone('Brussels') do
       create :submission, created_at: Time.zone.local(1996, 1, 29, 1, 1, 1)
+
       assert_equal 1, Submission.old_punchcard_matrix(timezone: ActiveSupport::TimeZone.new('Seoul'))[:value]['0, 9']
     end
   end
@@ -246,6 +262,7 @@ class SubmissionTest < ActiveSupport::TestCase
     to_update = Submission.old_punchcard_matrix(timezone: Time.zone)
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_punchcard_matrix({ timezone: Time.zone }, to_update)
+
     assert_equal updated, Submission.old_punchcard_matrix(timezone: Time.zone)
   end
 
@@ -254,6 +271,7 @@ class SubmissionTest < ActiveSupport::TestCase
     to_update = Submission.old_heatmap_matrix
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current) }
     updated = Submission.old_heatmap_matrix({}, to_update)
+
     assert_equal updated, Submission.old_heatmap_matrix
   end
 
@@ -262,6 +280,7 @@ class SubmissionTest < ActiveSupport::TestCase
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
     3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
+
     assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, user: user)[:value].values.sum
   end
 
@@ -270,6 +289,7 @@ class SubmissionTest < ActiveSupport::TestCase
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: temp }
     user = users(:staff)
     3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), user: user }
+
     assert_equal 3, Submission.old_heatmap_matrix(user: user)[:value].values.sum
   end
 
@@ -278,6 +298,7 @@ class SubmissionTest < ActiveSupport::TestCase
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
     3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
+
     assert_equal 3, Submission.old_punchcard_matrix(timezone: Time.zone, course: course)[:value].values.sum
   end
 
@@ -286,6 +307,7 @@ class SubmissionTest < ActiveSupport::TestCase
     2.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: temp }
     course = create :course
     3.times { create :submission, created_at: Faker::Time.between(from: 5.years.ago, to: Time.current), course: course }
+
     assert_equal 3, Submission.old_heatmap_matrix(course: course)[:value].values.sum
   end
 
@@ -297,8 +319,10 @@ class SubmissionTest < ActiveSupport::TestCase
 
   test 'file is removed when submission is destroyed' do
     submission = create :submission
-    assert File.exist?(submission.fs_path)
+
+    assert_path_exists(submission.fs_path)
     submission.destroy
+
     assert_not File.exist?(submission.fs_path)
   end
 
@@ -318,8 +342,10 @@ class SubmissionTest < ActiveSupport::TestCase
     create :submission, id: 11, created_at: Time.zone.local(2022, 11, 14, 8, 0, 0) # not included
 
     subs = Submission.all
+
     assert_equal 11, subs.length
     subs = subs.in_time_range(start, stop)
+
     assert_equal 5, subs.length
     subs.each do |sub|
       assert_includes 4..8, sub.id
@@ -380,6 +406,7 @@ class SubmissionTest < ActiveSupport::TestCase
     exercise = create :exercise
     series.exercises << exercise
     submission = create :submission, exercise: exercise, course: course
+
     assert_equal series, submission.series
   end
 
@@ -387,6 +414,7 @@ class SubmissionTest < ActiveSupport::TestCase
     course = create :course, series_count: 4
     exercise = create :exercise
     submission = create :submission, exercise: exercise, course: course
+
     assert_nil submission.series
   end
 
@@ -396,6 +424,7 @@ class SubmissionTest < ActiveSupport::TestCase
     exercise = create :exercise
     series.exercises << exercise
     submission = create :submission, exercise: exercise
+
     assert_nil submission.series
   end
 
@@ -405,6 +434,7 @@ class SubmissionTest < ActiveSupport::TestCase
     course.series.first.exercises << exercise
     course.series.second.exercises << exercise
     submission = create :submission, exercise: exercise, course: course
+
     assert_includes [course.series.first, course.series.second], submission.series
   end
 
@@ -416,24 +446,31 @@ class SubmissionTest < ActiveSupport::TestCase
     submission = create :submission, exercise: exercise, course: course
 
     course.series.first.update!(visibility: :hidden)
+
     assert_equal course.series.second, submission.series
 
     course.series.second.update!(visibility: :hidden)
+
     assert_nil submission.series
   end
 
   test 'Annotations should be counted once an evaluation is released' do
     submission = create :submission, status: :correct, course: courses(:course1)
+
     assert_not submission.reload.annotated?
     a = create :annotation, submission: submission
-    assert submission.reload.annotated?
+
+    assert_predicate submission.reload, :annotated?
     a.destroy
+
     assert_not submission.reload.annotated?
     evaluation = create :evaluation
     create :annotation, submission: submission, evaluation: evaluation
+
     assert_not submission.reload.annotated?
     evaluation.update!(released: true)
-    assert submission.reload.annotated?
+
+    assert_predicate submission.reload, :annotated?
   end
 
   class StatisticsTest < ActiveSupport::TestCase
@@ -456,23 +493,27 @@ class SubmissionTest < ActiveSupport::TestCase
     test 'visualisation computations correct' do
       # violin
       result = Submission.violin_matrix(course: @course, series: @series)[:value]
-      assert_equal result.length, 1 # one key: 1 exercise
-      assert_equal result.values[0], [5, 5, 5]
+
+      assert_equal(1, result.length) # one key: 1 exercise
+      assert_equal([5, 5, 5], result.values[0])
 
       # stacked
       result = Submission.stacked_status_matrix(course: @course, series: @series)[:value]
-      assert_equal result.length, 1 # one key: 1 exercise
-      assert_equal result.values[0], { 'wrong' => 9, 'correct' => 6 }
+
+      assert_equal(1, result.length) # one key: 1 exercise
+      assert_equal({ 'wrong' => 9, 'correct' => 6 }, result.values[0])
 
       # time series
       result = Submission.timeseries_matrix(course: @course, series: @series)[:value]
-      assert_equal result.length, 1 # one key: 1 exercise
-      assert_equal result.values[0].length, 2 # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
+
+      assert_equal(1, result.length) # one key: 1 exercise
+      assert_equal(2, result.values[0].length) # 2 entries: one entry for each unique date (1) and for each unique state (2) => 2*1 entries
       assert_equal result.values[0], [{ date: @date, status: 'correct', count: 6 }, { date: @date, status: 'wrong', count: 9 }]
 
       # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: @series)[:value]
-      assert_equal result.length, 1 # one key: 1 exercise
+
+      assert_equal(1, result.length) # one key: 1 exercise
       assert_equal result.values[0], [@date, @date, @date] # timestamp for each first correct submission (one for each user)
     end
 
@@ -482,19 +523,23 @@ class SubmissionTest < ActiveSupport::TestCase
 
       # violin
       result = Submission.violin_matrix(course: @course, series: series)[:value]
-      assert_equal result.length, 0
+
+      assert_equal(0, result.length)
 
       # stacked
       result = Submission.stacked_status_matrix(course: @course, series: series)[:value]
-      assert_equal result.length, 0
+
+      assert_equal(0, result.length)
 
       # time series
       result = Submission.timeseries_matrix(course: @course, series: series)[:value]
-      assert_equal result.length, 0
+
+      assert_equal(0, result.length)
 
       # ctimeseries
       result = Submission.cumulative_timeseries_matrix(course: @course, series: series)[:value]
-      assert_equal result.length, 0
+
+      assert_equal(0, result.length)
     end
 
     test 'submissions should be numbered by user, exercise and course' do
@@ -508,9 +553,11 @@ class SubmissionTest < ActiveSupport::TestCase
           courses.each do |c|
             s = create :submission, user: u, exercise: e, course: c
             s.reload
+
             assert_equal 1, s.number
             s = create :submission, user: u, exercise: e, course: c
             s.reload
+
             assert_equal 2, s.number
           end
         end

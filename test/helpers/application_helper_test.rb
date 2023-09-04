@@ -74,6 +74,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       <p>Hello
     HTML
     clean_html = sanitize dirty_html
+
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
     assert_match(/<p>Hello/, clean_html)
@@ -93,6 +94,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       </table>
     HTML
     clean_html = sanitize dirty_html
+
     assert_equal dirty_html, clean_html
   end
 
@@ -112,6 +114,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       </svg>
     HTML
     clean_html = sanitize dirty_html
+
     assert_equal dirty_html, clean_html
   end
 
@@ -120,21 +123,27 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       create :user
     end
     self.locale = 'nl-BE'
+
     assert_equal :nl, I18n.locale
 
     self.locale = 'nl'
+
     assert_equal :nl, I18n.locale
 
     self.locale = 'en'
+
     assert_equal :en, I18n.locale
 
     self.locale = 'en-UK'
+
     assert_equal :en, I18n.locale
 
     self.locale = :en
+
     assert_equal :en, I18n.locale
 
     self.locale = 'garbage-stuff-does-not_exist'
+
     assert_equal I18n.default_locale, I18n.locale
   end
 end

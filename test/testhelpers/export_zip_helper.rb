@@ -28,8 +28,9 @@ module SeriesZipHelper
   def check_csv(entry)
     csv = entry.get_input_stream.read
     header = csv.split("\n").first
+
     %w[filename status submission_id exercise_id name_nl name_en].each do |h|
-      assert header.include?("\"#{h}\""), "info.csv header did not include #{h}"
+      assert_includes header, "\"#{h}\"", "info.csv header did not include #{h}"
     end
   end
 
@@ -38,12 +39,16 @@ module SeriesZipHelper
     utf8_name = entry.name.force_encoding('utf-8')
     case options[:group_by]
     when 'user'
+
       assert data[:users].any? { |u| utf8_name.start_with? u.full_name }, "The submissions are not grouped by students but should be, example: #{utf8_name}."
     when 'exercise', nil
+
       assert data[:exercises].any? { |ex| utf8_name.start_with? ex.name.parameterize }, "The submissions are not grouped by exercise but should be, example: #{utf8_name}."
     when 'series'
+
       assert data[:course].series.any? { |series| utf8_name.start_with? series.name.parameterize }, "The submissions are not grouped by series but should be, example: #{utf8_name}."
     when 'course'
+
       assert data[:user].courses.any? { |course| utf8_name.start_with? course.name.parameterize }, "The submissions are not grouped by course but should be, example: #{utf8_name}."
     else
       raise ArgumentError, 'Unknown group_by option supplied'

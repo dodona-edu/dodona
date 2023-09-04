@@ -5,17 +5,20 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get homepage' do
     get root_url
+
     assert_response :success
   end
 
   test 'should get homepage as json' do
     get root_url(format: :json)
+
     assert_response :success
   end
 
   test 'should get signed in homepage' do
     sign_in(users(:student))
     get root_url
+
     assert_response :success
   end
 
@@ -29,11 +32,13 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
 
     sign_in(user)
     get root_url
+
     assert_response :success
   end
 
   test 'should get contact page' do
     get contact_url
+
     assert_response :success
   end
 
@@ -67,23 +72,27 @@ class PagesControllerTest < ActionDispatch::IntegrationTest
     user = users(:student)
     sign_in user
     get profile_url
+
     assert_response :redirect
     assert_redirected_to user_path(user)
   end
 
   test 'should not get profile when logged out' do
     get profile_url
+
     assert_response :redirect
     assert_redirected_to sign_in_url
   end
 
   test 'should get support us page' do
     get support_us_url
+
     assert_response :success
   end
 
   test 'should get about page' do
     get about_url
+
     assert_response :success
   end
 end

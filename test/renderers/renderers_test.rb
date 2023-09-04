@@ -25,6 +25,7 @@ class RenderersTest < ActiveSupport::TestCase
 
   test 'pythia\'s strip function should strip newlines' do
     renderer = PythiaRenderer.new(create(:submission), create(:user))
+
     assert_equal '3309..4264', renderer.strip_outer_html("<li class=\"ins\"><ins>3309..4264\n</ins></li>")
   end
 

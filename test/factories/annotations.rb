@@ -33,9 +33,7 @@ FactoryBot.define do
     end
 
     trait :with_evaluation do
-      evaluation do
-        create :evaluation
-      end
+      evaluation
     end
   end
 end

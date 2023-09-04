@@ -62,6 +62,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
+
     assert_equal BigDecimal('9.0'), @score.score
 
     # Add new score for second score_item
@@ -88,6 +89,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
+
     assert_equal BigDecimal('6'), @score.score
   end
 

@@ -180,6 +180,7 @@ group :development do
   gem 'web-console', '~> 4.2.0'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
+  gem 'rubocop-factory_bot', '~> 2.23'
   gem 'rubocop-rails', '~> 2.20.2'
 
   # for opening letters

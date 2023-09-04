@@ -1,4 +1,6 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
+  - rubocop-factory_bot
 
 AllCops:
   Exclude:
@@ -83,3 +85,7 @@ Style/OptionalBooleanParameter:
   Enabled: false
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
+
+FactoryBot/ConsistentParenthesesStyle:
+  Enabled: false
+#  EnforcedStyle: omit_parentheses

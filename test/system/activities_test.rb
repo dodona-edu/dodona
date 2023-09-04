@@ -27,20 +27,20 @@ class ActivitiesTest < ApplicationSystemTestCase
   end
 
   test 'show latest submission in code editor' do
-    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
+    create :submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")'
     visit exercise_path(id: @instance.id)
     assert_text 'print("hello")'
   end
 
   test 'should show message to clear editor if latest submission is shown' do
-    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
+    create :submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")'
     visit exercise_path(id: @instance.id)
     assert_text 'Clear editor'
   end
 
   test 'should show message to restore boilerplate if latest submission is shown' do
     Exercise.any_instance.stubs(:boilerplate).returns('boilerplate')
-    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")')
+    create :submission, exercise: @instance, user: @user, status: :correct, code: 'print("hello")'
     visit exercise_path(id: @instance.id)
     assert_text 'Restore the initial code.'
     find('a', text: 'Restore the initial code.').click
@@ -52,7 +52,7 @@ class ActivitiesTest < ApplicationSystemTestCase
     visit exercise_path(id: @instance.id)
     assert_text '`<script>alert("😀")</script>`'
 
-    create(:submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")')
+    create :submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")'
     visit exercise_path(id: @instance.id)
     assert_text 'print("😀")'
     assert_text 'Restore the initial code.'

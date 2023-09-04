@@ -26,10 +26,10 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'json representation should contain courses' do
     # create distractions
     other_user = users(:student)
-    create(:course, subscribed_members: [other_user])
+    create :course, subscribed_members: [other_user]
 
     # actual course to test against
-    create(:course, subscribed_members: [@instance, other_user])
+    create :course, subscribed_members: [@instance, other_user]
 
     get user_url(@instance, format: :json)
 
@@ -77,7 +77,7 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'user index with course_id should be ok' do
-    course = create(:course)
+    course = create :course
     get users_url(course_id: course.id)
     assert_response :success
   end

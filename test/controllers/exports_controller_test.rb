@@ -56,7 +56,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'all students should be present in the zip' do
-    @new_student = create(:student)
+    @new_student = create :student
     @course.enrolled_members.push(@new_student)
     @data[:users].push(@new_student)
     zip_submission_count = @data[:users].map do |u|

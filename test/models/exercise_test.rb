@@ -187,9 +187,9 @@ class ExerciseTest < ActiveSupport::TestCase
     course2 = create :course
     create :series, course: course2, exercises: [e]
 
-    users_c1 = create_list(:user, 3, courses: [course1])
-    users_c2 = create_list(:user, 3, courses: [course2])
-    users_all = create_list(:user, 3, courses: [course1, course2])
+    users_c1 = create_list :user, 3, courses: [course1]
+    users_c2 = create_list :user, 3, courses: [course2]
+    users_all = create_list :user, 3, courses: [course1, course2]
 
     assert_equal 0, e.users_tried
     assert_equal 0, e.users_tried(course: course1)
@@ -541,9 +541,9 @@ class ExerciseUnstartedTest < ActiveSupport::TestCase
   test 'unstarted_by should return a correct result' do
     user1 = users(:zeus)
     user2 = users(:staff)
-    exercises = create_list(:exercise, 3)
-    create(:submission, exercise: exercises.first, user: user1)
-    create(:submission, exercise: exercises.second, user: user2)
+    exercises = create_list :exercise, 3
+    create :submission, exercise: exercises.first, user: user1
+    create :submission, exercise: exercises.second, user: user2
 
     result = Exercise.where(id: exercises.map(&:id)).unstarted_by(User.all)
     assert_equal 1, result.count

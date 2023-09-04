@@ -87,5 +87,4 @@ Style/HashSyntax:
   EnforcedShorthandSyntax: never
 
 FactoryBot/ConsistentParenthesesStyle:
-  Enabled: false
-#  EnforcedStyle: omit_parentheses
+  EnforcedStyle: omit_parentheses

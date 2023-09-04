@@ -9,7 +9,7 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   setup do
-    @zeus = create(:zeus)
+    @zeus = create :zeus
     @c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     @c1.administrating_members.concat(@zeus)
 

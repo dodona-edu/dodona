@@ -14,11 +14,11 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     super
-    @provider = create(:lti_provider)
+    @provider = create :lti_provider
   end
 
   test 'content selection shows courses' do
-    courses = create_list(:course, 2)
+    courses = create_list :course, 2
     payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
     id_token = encode_jwt(payload)
 
@@ -96,7 +96,7 @@ class LtiFlowTest < ActionDispatch::IntegrationTest
 
   def setup
     super
-    @provider = create(:lti_provider)
+    @provider = create :lti_provider
     OmniAuth.config.test_mode = false
   end
 

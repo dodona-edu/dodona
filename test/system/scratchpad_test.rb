@@ -9,10 +9,10 @@ class ScratchpadTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   setup do
-    @zeus = create(:zeus)
+    @zeus = create :zeus
     @course = create :course
-    @programming_language = create(:programming_language, name: 'python')
-    @exercise = create(:exercise, programming_language_id: @programming_language.id)
+    @programming_language = create :programming_language, name: 'python'
+    @exercise = create :exercise, programming_language_id: @programming_language.id
     @course.series << create(:series)
     @course.series.first.activities << @exercise
 

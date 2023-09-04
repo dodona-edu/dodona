@@ -54,9 +54,9 @@ class InstitutionTest < ActiveSupport::TestCase
 
   test 'merge should update providers' do
     institution_to_merge = create :institution
-    provider = create(:provider, institution: institution_to_merge, mode: :prefer)
-    provider2 = create(:provider, institution: institution_to_merge, mode: :secondary)
-    provider3 = create(:provider, institution: institution_to_merge, mode: :redirect)
+    provider = create :provider, institution: institution_to_merge, mode: :prefer
+    provider2 = create :provider, institution: institution_to_merge, mode: :secondary
+    provider3 = create :provider, institution: institution_to_merge, mode: :redirect
     create :provider, institution: @institution, mode: :prefer
     assert institution_to_merge.merge_into(@institution)
     [provider, provider2, provider3].each do |p|
@@ -70,7 +70,7 @@ class InstitutionTest < ActiveSupport::TestCase
 
   test 'should merge if there are smartschool users with no email' do
     institution_to_merge = create :institution
-    provider = create(:smartschool_provider, institution: institution_to_merge, mode: :prefer)
+    provider = create :smartschool_provider, institution: institution_to_merge, mode: :prefer
     user = create :user, email: nil, institution: institution_to_merge
     create :identity, provider: provider, user: user
     institution = create :institution
@@ -92,8 +92,8 @@ class InstitutionTest < ActiveSupport::TestCase
 
   test 'should not merge if there are link providers' do
     institution_to_merge = create :institution
-    provider = create(:provider, institution: institution_to_merge, mode: :prefer)
-    provider2 = create(:provider, institution: institution_to_merge, mode: :link)
+    provider = create :provider, institution: institution_to_merge, mode: :prefer
+    provider2 = create :provider, institution: institution_to_merge, mode: :link
     create :provider, institution: @institution, mode: :prefer
     assert_not institution_to_merge.merge_into(@institution)
     [provider, provider2].each do |p|

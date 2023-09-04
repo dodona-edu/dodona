@@ -92,7 +92,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'full name should be n/a when blank' do
-    user = build(:user, first_name: nil, last_name: nil)
+    user = build :user, first_name: nil, last_name: nil
     assert_equal 'n/a', user.full_name
 
     user.first_name = ' '
@@ -107,7 +107,7 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'short name should not be nil' do
-    user = build(:user)
+    user = build :user
     assert_equal user.username, user.short_name
 
     user.username = nil
@@ -124,8 +124,8 @@ class UserTest < ActiveSupport::TestCase
     user1 = users(:student)
     user2 = users(:staff)
 
-    course1 = build(:course)
-    course2 = build(:course)
+    course1 = build :course
+    course2 = build :course
 
     user1.courses << course1
     user2.courses << course2

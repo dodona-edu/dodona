@@ -136,7 +136,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get media with token on sandbox_host' do
-    @instance = create(:exercise, :description_html)
+    @instance = create :exercise, :description_html
     sign_out :user
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     @instance.update access: :private
@@ -169,7 +169,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get activities with certain description languages available' do
-    @instance = create(:exercise, :description_html)
+    @instance = create :exercise, :description_html
     # @instance has a Dutch and Englisch description
     get activities_url(format: :json, description_languages: ['en'])
     assert_equal 1, response.parsed_body.count
@@ -359,7 +359,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get plaintext activity media with charset=utf-8' do
-    @instance = create(:exercise, :description_html)
+    @instance = create :exercise, :description_html
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
 
     get("#{activity_url(@instance)}/media/robots.txt")
@@ -369,7 +369,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should retrieve input serviceworker script' do
-    @instance = create(:exercise)
+    @instance = create :exercise
     get input_service_worker_activity_path(@instance)
     assert_response :success
     assert_equal response.content_type, 'text/javascript'
@@ -509,7 +509,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should get media of private activity in course' do
-    @instance = create(:exercise, :description_html, access: 'private')
+    @instance = create :exercise, :description_html, access: 'private'
     series = create :series, visibility: :hidden
     series.exercises << @instance
     series.course.enrolled_members << @user
@@ -546,7 +546,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not have access to activity media when user has no access to private activity' do
-    @instance = create(:exercise, :description_html, access: :private)
+    @instance = create :exercise, :description_html, access: :private
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     get("#{activity_url(@instance)}media/icon.png")
 
@@ -564,7 +564,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should access private exercise media on default host with token' do
     sign_out :user
-    @instance = create(:exercise, :description_html, access: :private)
+    @instance = create :exercise, :description_html, access: :private
     Exercise.any_instance.stubs(:media_path).returns(Pathname.new('public'))
     get(activity_url(@instance) + "media/icon.png?token=#{@instance.access_token}")
 

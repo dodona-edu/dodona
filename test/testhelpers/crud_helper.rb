@@ -27,7 +27,7 @@ module CRUDHelper
   # Generates a hash which maps attribute names on valid
   # attribute values using the model's factory.
   def generate_attr_hash
-    instance = build(model_sym)
+    instance = build model_sym
     allowed_attrs.index_with { |attr| instance.send(attr) }
   end
 

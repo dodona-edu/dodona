@@ -292,7 +292,7 @@ class SeriesTest < ActiveSupport::TestCase
     exercises = create_list :exercise, 2
     SeriesMembership.create(series: series, activity: exercises[0])
     SeriesMembership.create(series: series, activity: exercises[1])
-    users = create_list(:user, 6, courses: [course])
+    users = create_list :user, 6, courses: [course]
 
     expected_submissions = []
     expected_read_states = []

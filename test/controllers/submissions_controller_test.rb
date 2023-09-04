@@ -229,7 +229,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should enqeueue submissions delayed ' do
-    create(:series, :with_submissions)
+    create :series, :with_submissions
 
     # in test env, default and export queues are evaluated inline
     with_delayed_jobs do
@@ -241,14 +241,14 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge all submissions' do
-    create(:series, :with_submissions)
+    create :series, :with_submissions
     assert_jobs_enqueued(Submission.count) do
       rejudge_submissions
     end
   end
 
   test 'should rejudge user submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     user = User.in_course(series.course).sample
     assert_jobs_enqueued(user.submissions.count) do
       rejudge_submissions user_id: user.id
@@ -256,7 +256,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge course submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_course(series.course).count) do
       rejudge_submissions course_id: series.course.id
@@ -264,7 +264,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge series submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_series(series).count) do
       rejudge_submissions series_id: series.id

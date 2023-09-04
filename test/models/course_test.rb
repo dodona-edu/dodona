@@ -147,7 +147,7 @@ class CourseTest < ActiveSupport::TestCase
     content_pages = create_list :content_page, 2
     SeriesMembership.create(series: course.series.first, activity: content_pages.first)
     SeriesMembership.create(series: course.series.second, activity: content_pages.second)
-    users = create_list(:user, 6, courses: [course])
+    users = create_list :user, 6, courses: [course]
 
     expected_started = Hash.new 0
     expected_accepted = Hash.new 0

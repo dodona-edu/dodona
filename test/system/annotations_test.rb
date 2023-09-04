@@ -9,7 +9,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   setup do
-    @zeus = create(:zeus)
+    @zeus = create :zeus
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
     @instance = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)

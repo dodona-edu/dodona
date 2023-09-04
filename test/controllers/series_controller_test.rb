@@ -6,7 +6,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   crud_helpers Series, attrs: %i[name description course_id visibility order deadline]
 
   setup do
-    @instance = create(:series)
+    @instance = create :series
     sign_in users(:zeus)
   end
 
@@ -77,13 +77,13 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should generate scoresheet' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     get scoresheet_series_path(series)
     assert_response :success
   end
 
   test 'should mass rejudge' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     assert_jobs_enqueued(Submission.in_series(series).count) do
       post mass_rejudge_series_path(series), params: { format: 'application/javascript' }
       assert_response :success
@@ -103,7 +103,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should remove activity from series' do
-    activity = create(:exercise, series: [@instance])
+    activity = create :exercise, series: [@instance]
     post remove_activity_series_path(@instance),
          params: {
            format: 'application/javascript',
@@ -129,7 +129,7 @@ class SeriesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should reorder activities' do
-    activities = create_list(:exercise, 10, series: [@instance])
+    activities = create_list :exercise, 10, series: [@instance]
     activities.shuffle!
     ids = activities.map(&:id)
     post reorder_activities_series_path @instance, params: { format: 'application/javascript', order: ids.to_json }

@@ -21,7 +21,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Open Papyros ready for use
     visit(course_activity_path(course_id: @course.id, id: @exercise.id))
     assert_selector '#scratchpad-offcanvas-show-btn'
-    find('#scratchpad-offcanvas-show-btn').click
+    find_by_id('scratchpad-offcanvas-show-btn').click
   end
 
   def codemirror_send_keys(parent, code)
@@ -33,7 +33,7 @@ class ScratchpadTest < ApplicationSystemTestCase
 
   # Set code in the editor and run it
   def run_code(code)
-    codemirror_send_keys(find('#scratchpad-editor-wrapper'), code)
+    codemirror_send_keys(find_by_id('scratchpad-editor-wrapper'), code)
     find_button('__papyros-run-code-btn', disabled: false).click
   end
 
@@ -41,7 +41,7 @@ class ScratchpadTest < ApplicationSystemTestCase
     ## Hello World!
     code = "print(\"Hello World!\")\n"
     run_code code
-    output_area = find('#scratchpad-output-wrapper')
+    output_area = find_by_id('scratchpad-output-wrapper')
     # First run, so wait longer for output to appear
     output_area.find('span', text: 'Hello World!', wait: 20)
 
@@ -58,9 +58,9 @@ class ScratchpadTest < ApplicationSystemTestCase
     # Scratchpad can process user input in batch mode
     scratchpad_input = 'Batch'
     # Set the input before the run
-    find('#__papyros-switch-input-mode').click
+    find_by_id('__papyros-switch-input-mode').click
     # input area should be re-rendered
-    codemirror_send_keys(find('#scratchpad-input-wrapper'), "#{scratchpad_input}\n")
+    codemirror_send_keys(find_by_id('scratchpad-input-wrapper'), "#{scratchpad_input}\n")
     run_code ''
 
     output_area.find('span', text: scratchpad_input)

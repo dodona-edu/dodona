@@ -60,7 +60,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
     within '.code-listing' do
       @code_lines.each do |code_line|
         assert_text code_line
@@ -74,7 +74,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -94,7 +94,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -111,7 +111,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
     within 'form.annotation-submission' do
       click_button 'Cancel'
     end
@@ -261,7 +261,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
 
     initial = ''
     within 'form.annotation-submission' do
@@ -286,7 +286,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button').click_button
 
     initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do

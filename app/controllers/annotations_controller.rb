@@ -19,7 +19,7 @@ class AnnotationsController < ApplicationController
     authorize Question, :index?
     @user = User.find(params[:user_id]) if params[:user_id]
 
-    @questions = policy_scope(Question).merge(apply_scopes(Question).all)
+    @questions = policy_scope(Question).merge(apply_scopes(Question))
     @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
 
     @unfiltered = @user.nil? && params[:course_id].nil?
@@ -85,7 +85,7 @@ class AnnotationsController < ApplicationController
 
   def destroy
     @annotation.destroy
-    render json: {}, status: :no_content
+    render status: :no_content
   end
 
   private

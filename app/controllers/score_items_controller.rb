@@ -67,7 +67,7 @@ class ScoreItemsController < ApplicationController
     @score_item.destroy
     respond_to do |format|
       format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: preload_eval_exercise(@score_item) } }
-      format.json { render json: {}, status: :no_content }
+      format.json { render status: :no_content }
     end
   end
 

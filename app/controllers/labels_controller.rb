@@ -5,7 +5,7 @@ class LabelsController < ApplicationController
 
   def index
     authorize Label
-    @labels = policy_scope(Label.all).merge(apply_scopes(Label).all)
+    @labels = policy_scope(Label.all).merge(apply_scopes(Label))
     @title = I18n.t('labels.index.title')
     @crumbs = [[I18n.t('labels.index.title'), '#']]
   end

@@ -38,7 +38,7 @@ class ScoresController < ApplicationController
     set_common
     respond_to do |format|
       format.js { render 'feedbacks/show' }
-      format.json { render json: {}, status: :no_content }
+      format.json { render status: :no_content }
     end
   end
 

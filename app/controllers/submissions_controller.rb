@@ -157,7 +157,7 @@ class SubmissionsController < ApplicationController
   # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
   # changes made here are potentially applicable to both functions
   def set_submissions
-    @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
+    @submissions = policy_scope(Submission).merge(apply_scopes(Submission))
     if params[:user_id]
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)

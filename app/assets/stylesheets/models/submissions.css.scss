@@ -335,6 +335,16 @@
   }
 }
 
+#editor-text .ace-twilight {
+  background-color: $gray-10;
+}
+
+/* stylelint-disable-next-line selector-class-pattern */
+#editor-result .ace_content {
+  background-color: var(--d-code-bg);
+  cursor: default;
+}
+
 iframe.file {
   border: none;
 }

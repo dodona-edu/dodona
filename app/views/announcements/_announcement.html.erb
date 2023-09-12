@@ -4,7 +4,7 @@
       <%= markdown(announcement.text) %>
     </div>
     <% if current_user.present? %>
-      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, class: "btn btn-icon", title: t(".dismiss") do %>
+      <%= link_to mark_as_read_announcement_path(announcement), remote: true, method: :post, class:"btn btn-icon", title: t(".dismiss") do %>
         <i class="mdi mdi-close"></i>
       <% end %>
     <% end %>

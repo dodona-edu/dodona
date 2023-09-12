@@ -1,0 +1,115 @@
+/* stylelint-disable selector-class-pattern */
+.ace-tm {
+  background-color: var(--d-code-bg);
+  color: var(--d-on-background);
+
+  .ace_gutter {
+    background: var(--d-surface);
+    color: var(--d-on-surface-muted);
+  }
+
+  .ace_print-margin {
+    width: 1px;
+    background: var(--d-divider);
+  }
+
+  .ace_cursor {
+    color: var(--d-secondary);
+  }
+
+  .ace_marker-layer .ace_selection {
+    background: var(--d-surface-variant);
+  }
+
+  &.ace_multiselect .ace_selection.ace_start {
+    box-shadow: none;
+  }
+
+  .ace_marker-layer .ace_step {
+    background: var(--d-secondary-container);
+  }
+
+  .ace_marker-layer .ace_bracket {
+    background-color: var(--d-secondary-container);
+    border: none;
+  }
+
+  .ace_marker-layer .ace_active-line {
+    background: var(--d-background);
+  }
+
+  .ace_gutter-active-line {
+    background-color: var(--d-background);
+  }
+
+  .ace_marker-layer .ace_selected-word {
+    background-color: var(--d-secondary-container);
+    border: none;
+  }
+
+  .ace_invisible {
+    color: var(--d-on-surface-muted);
+  }
+
+  .ace_keyword,
+  .ace_keyword.ace_operator,
+  .ace_meta {
+    color: var(--d-primary);
+  }
+
+  .ace_constant,
+  .ace_constant.ace_character,
+  .ace_constant.ace_character.ace_escape,
+  .ace_constant.ace_other,
+  .ace_support.ace_constant,
+  .ace_constant.ace_numeric,
+  .ace_constant.ace_language {
+    color: var(--d-secondary);
+  }
+
+  .ace_storage.ace_type {
+    color: var(--d-secondary);
+  }
+
+  .ace_invalid {
+    color: var(--d-on-danger-container);
+    background-color: var(--d-danger-container);
+  }
+
+  .ace_fold {
+    background-color: var(--d-warning-container);
+    border-color: var(--d-warning-container);
+  }
+
+  .ace_entity.ace_name,
+  .ace_entity.ace_name.ace_function,
+  .ace_support.ace_function {
+    color: var(--d-tertiary);
+  }
+
+  .ace_variable.ace_parameter {
+    font-style: italic;
+  }
+
+  .ace_string {
+    color: var(--d-teal);
+  }
+
+  .ace_string.ace_regexp {
+    color: var(--d-teal);
+  }
+
+  .ace_comment {
+    font-style: italic;
+    color: var(--d-on-surface-muted);
+  }
+
+  .ace_meta.ace_tag {
+    color: var(--d-primary);
+  }
+
+  .ace_attribute-name.ace_xml {
+    color: var(--d-tertiary);
+  }
+}
+/* stylelint-enable selector-class-pattern */

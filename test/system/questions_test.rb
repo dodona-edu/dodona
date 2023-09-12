@@ -36,7 +36,7 @@ class QuestionsTest < ApplicationSystemTestCase
         line_element.hover
 
         within line_element do
-          button = find('.annotation-button button')
+          button = find('.annotation-button a')
           button.click
 
           assert_css 'form.annotation-submission'

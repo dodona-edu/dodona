@@ -32,7 +32,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button').click_button
+    find('.annotation-button a').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
@@ -63,7 +63,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button').click_button
+    find('.annotation-button a').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
@@ -90,7 +90,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button').click_button
+    find('.annotation-button a').click
 
     within 'form.annotation-submission' do
       assert_css 'd-saved-annotation-input'

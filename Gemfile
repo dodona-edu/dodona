@@ -59,9 +59,6 @@ gem 'builder', '~>3.2.4'
 # generate diffs
 gem 'diff-lcs', '~>1.5'
 
-# code editor
-gem 'ace-rails-ap', '~>4.5'
-
 # auto css prefixer
 gem 'autoprefixer-rails', '~>10.4.15'
 

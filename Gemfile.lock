@@ -257,7 +257,7 @@ GEM
     method_source (1.0.0)
     mini_magick (4.11.0)
     mini_mime (1.1.5)
-    minitest (5.19.0)
+    minitest (5.20.0)
     minitest-ci (3.4.0)
       minitest (>= 5.0.6)
     minitest-utils (0.4.8)
@@ -497,7 +497,7 @@ GEM
     version_gem (1.1.0)
     warden (1.2.9)
       rack (>= 2.0.9)
-    web-console (4.2.0)
+    web-console (4.2.1)
       actionview (>= 6.0.0)
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
@@ -602,7 +602,7 @@ DEPENDENCIES
   terser (>= 1.1.1)
   test-prof (~> 1.2.2)
   tzinfo-data
-  web-console (~> 4.2.0)
+  web-console (~> 4.2.1)
   webmock
   will_paginate (~> 4.0.0)
 

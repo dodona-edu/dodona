@@ -37,10 +37,6 @@ updates:
     rails:
       patterns:
         - "@rails*"
-    codemirror:
-      patterns:
-        - "*codemirror*"
-        - "@lezer*"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

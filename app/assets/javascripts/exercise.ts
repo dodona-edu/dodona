@@ -1,4 +1,4 @@
-import { configureEditor, setCode } from "editor";
+/* globals ace */
 import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
@@ -6,8 +6,6 @@ import { IFrameMessageData } from "iframe-resizer";
 import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
-import { EditorView } from "@codemirror/view";
-
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -138,14 +136,14 @@ function initExerciseDescription(): void {
     initCodeFragments();
 }
 
-async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): Promise<void> {
-    let editor: EditorView;
+function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): void {
+    let editor: AceAjax.Editor;
     let lastSubmission: string;
     let lastTimeout: number;
 
-    async function init(): Promise<void> {
+    function init(): void {
         if (editorShown) {
-            await initEditor();
+            initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
@@ -156,7 +154,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
         document.getElementById("editor-process-btn")?.addEventListener("click", () => {
             if (!loggedIn) return;
             // test submitted source code
-            const source = editor.state.doc.toString();
+            const source = editor.getValue();
             disableSubmitButton();
             submitSolution(source)
                 .then(async response => {
@@ -170,13 +168,14 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            setCode(editor, submissionState.code);
+            const codeString = submissionState.code;
+            editor.setValue(codeString, 1);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
         document.getElementById("activity-handin-link")?.addEventListener("shown.bs.tab", () => {
             // refresh editor after show
-            editor.requestMeasure();
+            editor.resize(true);
         });
 
         // secure external links
@@ -188,9 +187,19 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
-    async function initEditor(): Promise<void> {
-        editor = await configureEditor(document.getElementById("editor-text"), programmingLanguage, enableSubmitButton);
+    function initEditor(): void {
+        // init editor
+        editor = ace.edit("editor-text");
+        editor.getSession().setMode("ace/mode/" + programmingLanguage);
+        editor.setOptions({
+            showPrintMargin: false,
+            enableBasicAutocompletion: true,
+        });
+        editor.getSession().setUseWrapMode(true);
+        editor.$blockScrolling = Infinity; // disable warning
         editor.focus();
+        editor.on("focus", enableSubmitButton);
+        editor.commands.removeCommand("find"); // disable search box in ACE editor
         // Make editor available globally
         window.dodona.editor = editor;
     }
@@ -455,8 +464,10 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
             const wrapper = document.createElement("div");
             wrapper.innerHTML = boilerplate;
             const rawBoilerplate = wrapper.textContent || wrapper.innerText || "";
-            setCode(editor, rawBoilerplate);
+
+            editor.setValue(rawBoilerplate);
             editor.focus();
+            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

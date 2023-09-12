@@ -385,3 +385,30 @@ test("click on comment button", async () => {
     await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
 });
+
+test("empty form should close on click outside", async () => {
+    codeListing.initAnnotateButtons();
+    await nextFrame();
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
+    await userEvent.click(annotationButton);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+});
+
+test("form should not close when it has content", async () => {
+    codeListing.initAnnotateButtons();
+    await nextFrame();
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
+    await userEvent.click(annotationButton);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    const textarea: HTMLTextAreaElement = document.querySelector("d-annotation-form textarea");
+    await userEvent.type(textarea, "This is a test");
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    await userEvent.clear(textarea);
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+});

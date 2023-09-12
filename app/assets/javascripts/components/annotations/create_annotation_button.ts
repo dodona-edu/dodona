@@ -118,11 +118,11 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
                      @pointerover=${() => userAnnotationState.isCreateButtonExpanded = true}
                      @pointerout=${() => userAnnotationState.isCreateButtonExpanded = false}
                 >
-                    <button class="btn btn-fab-small-flex"
+                    <a class="btn btn-fab-small-flex"
                             @pointerup=${() => this.openForm()}>
                         <span class="text">${this.buttonText}</span>
                        <i class="mdi mdi-comment-plus-outline "></i>
-                    </button>
+                    </a>
                 </div>
             </div>`;
     }

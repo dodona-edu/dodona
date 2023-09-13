@@ -13,7 +13,7 @@
 #  annotations_count :integer          default(0)
 #
 class SavedAnnotation < ApplicationRecord
-  validates :title, presence: true, uniqueness: { scope: %i[user_id exercise_id course_id] }
+  validates :title, presence: true
   validates :annotation_text, presence: true
 
   belongs_to :user

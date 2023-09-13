@@ -107,6 +107,17 @@ class SavedAnnotationState extends State {
             this.byId.delete(id);
         }
     }
+
+    isTitleTaken(title: string, exerciseId: number, courseId: number, userId: number, savedAnnotationId: number = undefined): boolean {
+        const params = new Map([
+            ["filter", title],
+            ["exercise_id", exerciseId.toString()],
+            ["course_id", courseId.toString()],
+            ["user_id", userId.toString()],
+        ]);
+        const list = this.getList(params);
+        return list?.find(annotation => annotation.title === title && annotation.id != savedAnnotationId) !== undefined;
+    }
 }
 
 export const savedAnnotationState = new SavedAnnotationState();

@@ -1,3 +1,4 @@
+<%= javascript_include_tag "saved_annotation" %>
 <div class="row">
   <div class="col-md-10 offset-md-1 col-12">
     <div class="card">
@@ -17,14 +18,20 @@
               </ul>
             </div>
           <% end %>
-          <div class="field form-group row">
-            <%= f.label :title, class: "col-sm-3 col-form-label" %>
-            <div class="col-sm-6"><%= f.text_field :title, class: "form-control" %></div>
+          <div class="field form-group">
+            <%= f.label :title, class: "form-label" %>
+            <d-saved-annotation-title-input
+              value="<%= @saved_annotation.title %>"
+              course-id="<%= @saved_annotation.course_id %>"
+              exercise-id="<%= @saved_annotation.exercise_id %>"
+              user-id="<%= @saved_annotation.user_id %>"
+              saved-annotation-id="<%= @saved_annotation.id %>"
+            ></d-saved-annotation-title-input>
           </div>
-          <div class="field form-group row">
-            <%= f.label :annotation_text, class: "col-sm-3 col-form-label" %>
-            <div class="col-sm-6"><%= f.text_area :annotation_text, class: "form-control" %></div>
-            <span class="help-block offset-sm-3 col-sm-6"><%= t ".markdown_html" %></span>
+          <div class="field form-group">
+            <%= f.label :annotation_text, class: "form-label" %>
+            <%= f.text_area :annotation_text, class: "form-control" %>
+            <span class="help-block"><%= t ".markdown_html" %></span>
           </div>
         <% end %>
       </div>

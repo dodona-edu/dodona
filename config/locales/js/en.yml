@@ -264,6 +264,8 @@ en:
       course: Course
       exercise: Exercise
       annotations_count: Number of usages
+      title_taken: 'This title is already taken'
+      confirm_title_taken: 'This title is already taken. Are you sure you want to create another annotation with the same title?'
       list:
         annotations_count: "Used %{count} times"
       sidecard:

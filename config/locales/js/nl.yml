@@ -264,6 +264,8 @@ nl:
       course: Cursus
       exercise: Oefening
       annotations_count: "Aantal keer gebruikt"
+      title_taken: 'Deze titel is al in gebruik'
+      confirm_title_taken: 'Deze titel is al in gebruik. Weet je zeker dat je nog een opmerking met dezelfde titel wil toevoegen?'
       list:
         annotations_count: "%{count} keer gebruikt"
       sidecard:

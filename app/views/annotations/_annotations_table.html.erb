@@ -1,0 +1,50 @@
+<div class="table-scroll-wrapper">
+  <table class="table activity-table table-resource">
+    <thead>
+    <tr>
+      <th><%= t ".submission" %></th>
+      <th><d-sort-button column="annotation_text"><%= t ".annotation_text" %></d-sort-button></th>
+      <th><d-sort-button column="created_at"><%= t ".time" %></d-sort-button></th>
+    </tr>
+    </thead>
+    <tbody>
+    <% local_assigns[:annotations].each do |annotation| %>
+      <tr>
+        <td>
+          <span class="ellipsis-overflow" title="<%=  %>">
+            <%= link_to "##{annotation.submission.number}" ,submission_path(annotation.submission, anchor: 'code')%>
+            <%= t ".by" %>
+            <%= annotation.submission.user.full_name %>
+          </span>
+          <div class="text-muted ellipsis-overflow">
+            <small>
+              <d-filter-button param="course_id" value="<%= annotation.submission.course_id %>">
+                <%= annotation.submission.course.name %>
+              </d-filter-button>:
+              <d-filter-button param="exercise_id" value="<%= annotation.submission.exercise_id %>">
+                <%= annotation.submission.exercise.name %>
+              </d-filter-button>
+            </small>
+          </div>
+        </td>
+        <td>
+          <span class="ellipsis-overflow" title="<%= annotation.annotation_text %>">
+            <%= markdown annotation.annotation_text %>
+          </span>
+        </td>
+        <td>
+          <span class="ellipsis-overflow" title="<%= annotation.created_at %>">
+            <%= t "time.ago", time: time_ago_in_words(annotation.created_at) %>
+          </span>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</div>
+<% if local_assigns[:annotations].empty? %>
+  <p class="text-center text-muted lead table-placeholder">
+    <%= t ".empty" %>
+  </p>
+<% end %>
+<center><%= page_navigation_links annotations, true, "annotations" %></center>

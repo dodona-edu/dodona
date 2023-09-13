@@ -82,10 +82,12 @@ class EvaluationTest < ActiveSupport::TestCase
     end
 
     evaluation_user = EvaluationUser.find_by(user: user, evaluation: evaluation)
+
     assert_not_nil evaluation_user
 
     # We have a submission for the first exercise, so it should not be completed, with no scores set
     first_feedback = Feedback.find_by(evaluation_user: evaluation_user, evaluation_exercise: evaluation.evaluation_exercises.first)
+
     assert_not_nil first_feedback
     assert_not first_feedback.completed?
     assert_equal 2, first_feedback.score_items.count
@@ -93,8 +95,9 @@ class EvaluationTest < ActiveSupport::TestCase
 
     # We have no submission for the second exercise, so it should be completed, with all scores set to 0
     second_feedback = Feedback.find_by(evaluation_user: evaluation_user, evaluation_exercise: evaluation.evaluation_exercises.second)
+
     assert_not_nil second_feedback
-    assert second_feedback.completed?
+    assert_predicate second_feedback, :completed?
     assert_equal 2, second_feedback.score_items.count
     assert_equal 2, second_feedback.scores.count
     assert_equal 0, second_feedback.scores.first.score

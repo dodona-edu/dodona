@@ -50,6 +50,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     @property({ state: true })
     _savedAnnotationTitle: string;
     @property({ state: true })
+    _savedAnnotationSearchInput = "";
+    @property({ state: true })
     saveAnnotation = false;
 
     get savedAnnotationTitle(): string {
@@ -69,6 +71,15 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         },
         savedAnnotationId: () => {
             this._savedAnnotationId = this.savedAnnotationId || "";
+        },
+        saveAnnotation: () => {
+            this.listenForCloseIfEmpty();
+        },
+        _annotationText: () => {
+            this.listenForCloseIfEmpty();
+        },
+        _savedAnnotationSearchInput: () => {
+            this.listenForCloseIfEmpty();
         }
     };
 
@@ -108,11 +119,21 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
         }
     }
 
+    get isEmpty(): boolean {
+        return this._annotationText.length === 0 && !this.saveAnnotation && this._savedAnnotationSearchInput.length === 0;
+    }
+
+    listenForCloseIfEmpty(): void {
+        if (this.isEmpty) {
+            this.listenForClose();
+        } else {
+            this.stopListeningForClose();
+        }
+    }
+
     connectedCallback(): void {
         super.connectedCallback();
-        if (!this.annotationText) {
-            this.listenForClose();
-        }
+        this.listenForCloseIfEmpty();
     }
 
     disconnectedCallback(): void {
@@ -125,15 +146,11 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
             this._annotationText = e.detail.text;
         }
         this._savedAnnotationId = e.detail.id;
+        this._savedAnnotationSearchInput = e.detail.title;
     }
 
     handleTextInput(): void {
         this._annotationText = this.inputRef.value.value;
-        if (this._annotationText.length > 0) {
-            this.stopListeningForClose();
-        } else {
-            this.listenForClose();
-        }
     }
 
     handleCancel(): void {

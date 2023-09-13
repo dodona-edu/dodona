@@ -240,6 +240,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       user.reload
+
       assert_equal user, @controller.current_user
       assert_equal 'Flip', user.first_name
       assert_equal 'Flapstaart', user.last_name
@@ -268,9 +269,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       end
 
       user.reload
+
       assert_redirected_to root_path
       assert_nil @controller.current_user
       user.reload
+
       assert_not_equal other_user.email, user.email
 
       # Cleanup.
@@ -462,7 +465,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -498,7 +502,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_not_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -523,7 +528,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -545,7 +551,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -567,7 +574,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -603,7 +611,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_not_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -626,7 +635,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -650,7 +660,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -701,6 +712,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Test "inside iframe"
     post omniauth_url(provider)
     follow_redirect!
+
     assert_redirected_to lti_redirect_path(provider: main_provider.id, sym: main_provider.class.sym)
 
     # Test outside iframe
@@ -708,6 +720,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!(headers: {
       'Sec-Fetch-Dest' => 'document'
     })
+
     assert_redirected_to omniauth_url(main_provider)
   end
 

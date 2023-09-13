@@ -14,7 +14,7 @@ jobs:
     name: Lint Ruby
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use ruby from .ruby-version
       uses: ruby/setup-ruby@v1
       with:
@@ -29,7 +29,7 @@ jobs:
     name: Lint JavaScript
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Node
       uses: actions/setup-node@v3
       with:
@@ -49,7 +49,7 @@ jobs:
     name: Lint CSS
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Node
         uses: actions/setup-node@v3
         with:

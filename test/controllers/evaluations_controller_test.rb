@@ -40,6 +40,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
         deadline: DateTime.now + 5.minutes
       }
     }
+
     assert_response :success
     assert_nil @series.evaluation
   end
@@ -52,6 +53,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       }
     }
     get evaluation_path(@series.evaluation)
+
     assert_redirected_to edit_evaluation_path(@series.evaluation)
   end
 
@@ -67,6 +69,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @users.count * @exercises.count, @series.evaluation.feedbacks.count
 
     post remove_user_evaluation_path(@series.evaluation, user_id: @users.first.id, format: :js)
+
     assert_equal (@users.count - 1) * @exercises.count, @series.evaluation.feedbacks.count
   end
 
@@ -85,6 +88,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     user.enrolled_courses << @series.course
 
     post add_user_evaluation_path(@series.evaluation, user_id: user.id, format: :js)
+
     assert_equal (@users.count + 1) * @exercises.count, @series.evaluation.feedbacks.count
   end
 
@@ -98,22 +102,26 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     @series.evaluation.update(users: @series.course.enrolled_members)
 
     random_feedback = @series.evaluation.feedbacks.sample
+
     assert_not_nil random_feedback
 
     patch evaluation_feedback_path(@series.evaluation, random_feedback), params: { feedback: { completed: true } }
 
     random_feedback.reload
-    assert_equal true, random_feedback.completed, 'completed should have been set to true'
+
+    assert random_feedback.completed, 'completed should have been set to true'
 
     patch evaluation_feedback_path(@series.evaluation, random_feedback), params: { feedback: { completed: true } }
 
     random_feedback.reload
-    assert_equal true, random_feedback.completed, 'marking complete should be idempotent'
+
+    assert random_feedback.completed, 'marking complete should be idempotent'
 
     patch evaluation_feedback_path(@series.evaluation, random_feedback), params: { feedback: { completed: false } }
 
     random_feedback.reload
-    assert_equal false, random_feedback.completed, 'completed should have been set to false'
+
+    assert_not random_feedback.completed, 'completed should have been set to false'
   end
 
   test 'Notifications should be made when a feedback is released' do
@@ -138,11 +146,13 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       Annotation.create(submission: feedback.submission, annotation_text: Faker::Lorem.sentences(number: 2), line_nr: 0, user: @course_admin)
       normal_annotations += 1
     end
+
     assert_equal normal_annotations, Notification.all.count, 'only notifications for the annotations without a feedback session'
 
     evaluation.feedbacks.each do |feedback|
       feedback.update(completed: true)
     end
+
     assert_equal normal_annotations, Notification.all.count, 'no new notification should be made upon completing a feedback'
 
     evaluation.update(released: true)
@@ -171,11 +181,13 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     end
 
     student = @submitted_users.sample
+
     assert_not_nil student
     picked_submission = evaluation.feedbacks.joins(:evaluation_user).where(evaluation_users: { user: student }).decided.sample.submission
 
     get submission_annotations_path(picked_submission, format: :json)
     json_response = JSON.parse(@response.body)
+
     assert_equal 2, json_response.size, 'Course admin should be able to see unreleased submissions'
 
     sign_in student
@@ -184,6 +196,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
+
     assert_equal 1, json_response.size, 'Only one annotation is visible here, since the feedback session is unreleased'
 
     evaluation.update(released: true)
@@ -191,6 +204,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
+
     assert_equal 2, json_response.size, 'Both annotations are visible, as the feedback session is released'
 
     random_unauthorized_student = create :student
@@ -199,6 +213,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
+
     assert_equal 0, json_response.size, 'Non authorized users can not query for annotations on a submission that is not their own'
 
     sign_out random_unauthorized_student
@@ -206,6 +221,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     get submission_annotations_path(picked_submission, format: :json)
 
     json_response = JSON.parse(@response.body)
+
     assert_equal 0, json_response.size, 'Non logged in users may not query the annotations of a submission'
   end
 
@@ -228,13 +244,16 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     # No log in
     get evaluation_feedback_path(evaluation, random_feedback)
+
     assert_response :redirect # Redirect to sign in page
 
     random_user = @users.sample
+
     assert_not random_user.admin_of?(@series.course)
 
     sign_in random_user
     get evaluation_feedback_path(evaluation, random_feedback)
+
     assert_response :redirect # Redirect to sign in page
   end
 
@@ -248,9 +267,11 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation = @series.evaluation
     evaluation.update(users: @series.course.enrolled_members)
     feedback = evaluation.feedbacks.where(submission_id: nil).sample
+
     assert_not_nil feedback, 'should have feedback without submission'
 
     get evaluation_feedback_path(evaluation, feedback)
+
     assert_response :success
   end
 
@@ -263,9 +284,11 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation_count = Evaluation.where(series: @series).count
 
     evaluation = @series.evaluation
+
     assert_not_nil evaluation
 
     get new_evaluation_path(series_id: @series.id)
+
     assert_response :redirect
 
     post evaluations_path, params: {
@@ -274,21 +297,25 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
                     users: @users.map(&:id),
                     exercises: @exercises.map(&:id) }
     }
+
     assert_response :redirect
 
     assert_equal evaluation_count, Evaluation.where(series: @series).count, 'No new feedback sessions should be made for this series'
 
     sign_out @course_admin
     get new_evaluation_path(series_id: @series.id)
+
     assert_response :redirect
   end
 
   test 'When there is no previous feedback session for this series, we can query the wizard' do
     get new_evaluation_path(series_id: @series.id)
+
     assert_response :success
 
     sign_out @course_admin
     get new_evaluation_path(series_id: @series.id)
+
     assert_response :redirect
   end
 
@@ -305,20 +332,24 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     @series.course.administrating_members << staff_member
 
     get edit_evaluation_path(evaluation)
+
     assert_response :success
 
     sign_out @course_admin
     get edit_evaluation_path(evaluation)
+
     assert_response :redirect
 
     sign_in random_student
     get edit_evaluation_path(evaluation)
+
     assert_response :redirect
     sign_out random_student
 
     assert_not_nil staff_member
     sign_in staff_member
     get edit_evaluation_path(evaluation)
+
     assert_response :success
   end
 
@@ -332,6 +363,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     random_student = create :student
     student_from_evaluation = @users.sample
+
     assert_not student_from_evaluation.admin_of?(@series.course)
     evaluation = @series.evaluation
     staff_member = create :staff
@@ -339,6 +371,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     evaluation.feedbacks.decided.each do |feedback|
       get evaluation_feedback_path(evaluation, feedback)
+
       assert_response :success
     end
     sign_out @course_admin
@@ -346,6 +379,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     sign_in staff_member
     evaluation.feedbacks.decided.each do |feedback|
       get evaluation_feedback_path(evaluation, feedback)
+
       assert_response :success
     end
     sign_out staff_member
@@ -353,6 +387,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     sign_in random_student
     evaluation.feedbacks.decided.each do |feedback|
       get evaluation_feedback_path(evaluation, feedback)
+
       assert_response :redirect
     end
     sign_out random_student
@@ -360,12 +395,14 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     sign_in student_from_evaluation
     evaluation.feedbacks.decided.each do |feedback|
       get evaluation_feedback_path(evaluation, feedback)
+
       assert_response :redirect
     end
     sign_out student_from_evaluation
 
     evaluation.feedbacks.decided.each do |feedback|
       get evaluation_feedback_path(evaluation, feedback)
+
       assert_response :redirect
     end
   end
@@ -382,6 +419,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     evaluation.update(users: @users)
     random_student = create :student
     student_from_evaluation = @users.sample
+
     assert_not student_from_evaluation.admin_of?(@series.course)
     staff_member = create :staff
     @series.course.administrating_members << staff_member
@@ -389,6 +427,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     [@course_admin, staff_member].each do |person|
       sign_in person
       get evaluation_path(evaluation)
+
       assert_response :success, 'Should get access since the user is not a student'
       sign_out person
     end
@@ -396,6 +435,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     [student_from_evaluation, random_student].each do |person|
       sign_in person
       get evaluation_path(evaluation)
+
       assert_response :redirect, 'Should not get access since the user is a student'
       sign_out person
     end
@@ -418,14 +458,17 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     score = create :score, score_item: score_item, feedback: feedback
 
     get export_grades_evaluation_path evaluation, format: :csv
+
     assert_response :success
     assert_equal 'text/csv', response.content_type
 
     # Check the contents of the csv file.
     csv = CSV.parse response.body
+
     assert_equal 1 + evaluation.evaluation_users.length, csv.size
 
     header = csv.shift
+
     assert_equal 9 + (evaluation.evaluation_exercises.length * 2), header.length
 
     # Get which users will have a score
@@ -443,12 +486,15 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       # Only one exercise has a score.
       if users.key?(line[5])
         exported_score = BigDecimal(line.delete_at(score_item_exercise_position))
+
         assert_equal users[line[5]], exported_score
       else
         exported_score = line.delete_at(score_item_exercise_position)
+
         assert_equal '', exported_score
       end
       exported_max = BigDecimal(line.delete_at(score_item_exercise_position))
+
       assert_equal score_item.maximum, exported_max
 
       # All other scores should be nil.
@@ -459,13 +505,16 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     # No log in
     get export_grades_evaluation_path evaluation, format: :csv
+
     assert_response :redirect # Redirect to sign in page
 
     random_user = @users.sample
+
     assert_not random_user.admin_of?(@series.course)
 
     sign_in random_user
     get export_grades_evaluation_path evaluation, format: :csv
+
     assert_response :redirect # Redirect to sign in page
   end
 
@@ -492,6 +541,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     create :score, score_item: score_item2, feedback: feedback2, score: 7.5
 
     get export_grades_evaluation_path evaluation, format: :csv
+
     assert_response :success
     assert_equal 'text/csv', response.content_type
 
@@ -505,7 +555,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       total_maximum = 0
       if line[7] == ''
         (9...line.length - 1).step(2).each do |index|
-          assert_equal line[index], ''
+          assert_equal('', line[index])
           total_maximum += BigDecimal(line[index + 1]) unless line[index + 1] == ''
         end
       else
@@ -518,6 +568,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
         assert_equal BigDecimal(line[7]), total_score
 
       end
+
       assert_equal BigDecimal(line[8]), total_maximum
     end
   end
@@ -552,9 +603,9 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       s2.reload
 
       if expected == :redirect
-        assert from.visible_score?
-        assert s1.visible?
-        assert s2.visible?
+        assert_predicate from, :visible_score?
+        assert_predicate s1, :visible?
+        assert_predicate s2, :visible?
       else
         assert_not from.visible_score?
         assert_not s1.visible?
@@ -573,10 +624,12 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     assert_not evaluation.released
     sign_in submission.user
     get overview_evaluation_path(evaluation)
+
     assert_response :redirect # Redirect to sign in page
 
     evaluation.update!(released: true)
     get overview_evaluation_path(evaluation)
+
     assert_response :ok
   end
 
@@ -602,6 +655,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
 
     # Visible scores are visible
     get overview_evaluation_path(evaluation)
+
     assert_match visible_score_item.description, response.body
     assert_no_match hidden_score_item.description, response.body
     assert_match expected_score_string(s1), response.body
@@ -611,6 +665,7 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
     # Hidden total is not shown
     evaluation_exercise.update!(visible_score: false)
     get overview_evaluation_path(evaluation)
+
     assert_match visible_score_item.description, response.body
     assert_no_match hidden_score_item.description, response.body
     assert_match expected_score_string(s1), response.body

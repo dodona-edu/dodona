@@ -17,6 +17,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     @instance.series << create(:series)
     @instance.series.first.activities << create(:exercise, access: :private)
     get course_url(@instance)
+
     assert_response :success
   end
 
@@ -25,6 +26,7 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     @instance.series.first.activities << create(:exercise, access: :private)
     sign_out :user
     get course_url(@instance)
+
     assert_response :success
   end
 
@@ -35,12 +37,14 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     @instance.administrating_members << user
     sign_in user
     get manage_series_course_url(@instance)
+
     assert_response :success
   end
 
   test 'should reset token' do
     old_secret = @instance.secret
     post reset_token_course_url(@instance)
+
     assert_not_equal old_secret, @instance.reload.secret
   end
 end
@@ -143,7 +147,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, format: :json)
-      assert @course.subscribed_members.include?(user), "#{who} should be able to subscribe"
+
+      assert_includes @course.subscribed_members, user, "#{who} should be able to subscribe"
     end
   end
 
@@ -151,6 +156,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who|
       post subscribe_course_url(@course)
+
       assert_redirected_to @course, "#{who} should be redirected"
     end
   end
@@ -161,6 +167,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       %w[visible_for_all visible_for_institution hidden].product(%w[open_for_all open_for_institutional_users open_for_institution closed], [true, false]).each do |v, r, m|
         @course.update(visibility: v, registration: r, moderated: m)
         get course_url(@course, secret: @course.secret, format: :json)
+
         assert_response :success, "#{who} should get registration page"
         # GET should not subscribe
         assert_not user.member_of?(@course), "#{who} should not be registered"
@@ -170,6 +177,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'should not subscribe when already subscribed' do
     full_setup
+
     with_users_signed_in @course.users do |who|
       assert_difference('CourseMembership.count', 0, "#{who} should not be able to create a second membership") do
         post subscribe_course_url(@course, format: :json)
@@ -182,7 +190,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @unsubscribed do |who, user|
       assert_not user.member_of?(@course), "#{who} was already a member"
       post subscribe_course_url(@course, format: :json)
-      assert user.courses.include?(@course), "#{who} should be a member"
+
+      assert_includes user.courses, @course, "#{who} should be a member"
     end
   end
 
@@ -190,12 +199,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_admins
     sign_in @course_admins.first
     get scoresheet_course_url(@course)
+
     assert_response :success, 'course_admin should be able to get course scoresheet'
 
     get scoresheet_course_url(@course, format: :csv)
+
     assert_response :success, 'course_admin should be able to get course scoresheet'
 
     get scoresheet_course_url(@course, format: :json)
+
     assert_response :success, 'course_admin should be able to get course scoresheet'
   end
 
@@ -203,6 +215,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_students
     sign_in @students.first
     get scoresheet_course_url(@course)
+
     assert_response :redirect, 'student should not be able to get course scoresheet'
   end
 
@@ -211,6 +224,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_subscribed
     with_users_signed_in @subscribed do |who|
       get registration_course_url(@course, @course.secret, format: :json)
+
       assert_redirected_to @course, "#{who} should be redirected"
     end
   end
@@ -223,6 +237,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in zeus
 
     get registration_course_url(@course, @course.secret)
+
     assert_redirected_to @course, 'zeus should be redirected'
   end
 
@@ -231,12 +246,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, secret: 'the cake is a lie')
+
       assert_not user.member_of?(@course), "#{who} with invalid secret"
 
       post subscribe_course_url(@course, secret: '')
+
       assert_not user.member_of?(@course), "#{who} with empty secret"
 
       post subscribe_course_url(@course)
+
       assert_not user.member_of?(@course), "#{who} without secret"
     end
   end
@@ -247,10 +265,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_subscribed.compact do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
+
       assert_not user.member_of?(@course), "#{who} should not be subscribed"
 
       @course.update(visibility: 'hidden')
       post subscribe_course_url(@course, secret: @course.secret)
+
       assert_not user.member_of?(@course), "#{who} should not be subscribed"
     end
   end
@@ -261,10 +281,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @externals do |who, user|
       @course.update(visibility: 'visible_for_all')
       post subscribe_course_url(@course)
+
       assert_not @course.users.include?(user), "#{who} should not have a membership"
 
       @course.update(visibility: 'hidden')
       post subscribe_course_url(@course, secret: @course.secret)
+
       assert_not @course.users.include?(user), "#{who} should not have a membership"
     end
   end
@@ -274,7 +296,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, format: :json)
-      assert @course.pending_members.include?(user), "#{who} should be pending"
+
+      assert_includes @course.pending_members, user, "#{who} should be pending"
     end
   end
 
@@ -283,6 +306,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_pending
     with_users_signed_in @pending do |who, user|
       post unsubscribe_course_url(@course, format: :json)
+
       assert_not @course.pending_members.include?(user), "#{who} should not be pending anymore"
     end
   end
@@ -292,7 +316,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_subscribed
     with_users_signed_in @not_subscribed.compact do |who, user|
       post subscribe_course_url(@course, secret: @course.secret, format: :json)
-      assert @course.pending_members.include?(user), "#{who} should be pending"
+
+      assert_includes @course.pending_members, user, "#{who} should be pending"
     end
   end
 
@@ -300,6 +325,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_externals
     with_users_signed_in(@externals + [nil]) do |who|
       get course_url(@course)
+
       assert_response :success, "#{who} should be able to see course"
     end
   end
@@ -327,9 +353,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.pending_members << acceptme << declineme
 
       post update_membership_course_url(@course, user: acceptme, status: 'student')
-      assert @course.enrolled_members.include?(acceptme), "#{who} student not enrolled"
+
+      assert_includes @course.enrolled_members, acceptme, "#{who} student not enrolled"
 
       post update_membership_course_url(@course, user: declineme, status: 'unsubscribed')
+
       assert_not @course.enrolled_members.include?(declineme), "#{who} student not unsubscribed"
     end
   end
@@ -341,10 +369,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       students = create_list :student, 2
       @course.pending_members = students
       post mass_accept_pending_course_url(@course), params: { format: :json }
+
       assert_response 200
 
       @course.reload
-      assert @course.pending_members.empty?, "#{who} should be able to accept pending"
+
+      assert_empty @course.pending_members, "#{who} should be able to accept pending"
       assert (students - @course.enrolled_members), "students should be enrolled for #{who}"
     end
   end
@@ -360,13 +390,15 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.pending_members << submission.user
 
       post mass_decline_pending_course_url(@course), params: { format: :json }
+
       assert_response 200
 
       @course.reload
-      assert @course.pending_members.empty?, "#{who} should be able to decline pending"
-      assert CourseMembership.where(course: @course, user: students).empty?, "memberships should be deleted for #{who}"
 
-      assert @course.unsubscribed_members.include?(submission.user)
+      assert_empty @course.pending_members, "#{who} should be able to decline pending"
+      assert_empty CourseMembership.where(course: @course, user: students), "memberships should be deleted for #{who}"
+
+      assert_includes @course.unsubscribed_members, submission.user
     end
   end
 
@@ -379,9 +411,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.pending_members << acceptme << declineme
 
       post update_membership_course_url(@course, user: acceptme, status: 'student')
+
       assert_not @course.enrolled_members.include?(acceptme), "#{who} student should not be enrolled"
 
       post update_membership_course_url(@course, user: acceptme, status: 'unsubscribed')
+
       assert_not @course.unsubscribed_members.include?(acceptme), "#{who} student should not be unsubscribed"
     end
   end
@@ -395,10 +429,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.enrolled_members.concat members
       members.each do |u|
         post update_membership_course_url(@course, user: u, status: 'course_admin')
-        assert @course.reload.administrating_members.include?(u), "#{who} should be able to promote members"
+
+        assert_includes @course.reload.administrating_members, u, "#{who} should be able to promote members"
 
         post update_membership_course_url(@course, user: u, status: 'student')
-        assert @course.reload.enrolled_members.include?(u), "#{who} should be able to demote members"
+
+        assert_includes @course.reload.enrolled_members, u, "#{who} should be able to demote members"
       end
     end
   end
@@ -413,11 +449,13 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.administrating_members.concat members_admin
       members_student.each do |u|
         post update_membership_course_url(@course, user: u, status: 'course_admin')
-        assert @course.reload.administrating_members.include?(u), "#{who} should be able to promote members"
+
+        assert_includes @course.reload.administrating_members, u, "#{who} should be able to promote members"
       end
       members_admin.each do |u|
         post update_membership_course_url(@course, user: u, status: 'student')
-        assert @course.reload.enrolled_members.include?(u), "#{who} should be able to demote members"
+
+        assert_includes @course.reload.enrolled_members, u, "#{who} should be able to demote members"
       end
     end
     with_users_signed_in @not_admins do |who|
@@ -427,10 +465,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.administrating_members.concat members_admin
       members_student.each do |u|
         post update_membership_course_url(@course, user: u, status: 'course_admin')
+
         assert_not @course.reload.administrating_members.include?(u), "#{who} should not be able to promote members"
       end
       members_admin.each do |u|
         post update_membership_course_url(@course, user: u, status: 'student')
+
         assert_not @course.reload.enrolled_members.include?(u), "#{who} should not be able to demote members"
       end
     end
@@ -444,11 +484,12 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post unsubscribe_course_url(@course)
 
-    assert @course.administrating_members.include?(admin)
+    assert_includes @course.administrating_members, admin
 
     %w[student pending unsubscribed].each do |s|
       post update_membership_course_url(@course, user: admin, status: s)
-      assert @course.administrating_members.include?(admin)
+
+      assert_includes @course.administrating_members, admin
     end
   end
 
@@ -473,7 +514,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
            course: @course
 
     post unsubscribe_course_url(@course)
-    assert @course.unsubscribed_members.include?(user)
+
+    assert_includes @course.unsubscribed_members, user
   end
 
   test 'unsubscribing user without solutions for course should delete membership' do
@@ -482,6 +524,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
 
     post unsubscribe_course_url(@course)
+
     assert_not @course.users.include?(user)
   end
 
@@ -489,6 +532,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_admins
     with_users_signed_in @admins do |who|
       get course_members_url(@course), xhr: true
+
       assert_response :success, "#{who} should be able to list members"
     end
   end
@@ -497,6 +541,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_admins
     with_users_signed_in @not_admins do |who|
       get course_members_url(@course), xhr: true
+
       assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to list members"
     end
   end
@@ -507,6 +552,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @admins do |who|
       @students.each do |view|
         get course_member_url(@course, view), xhr: true
+
         assert_response :success, "#{who} should be able to view #{view.permission}:#{view.membership_status_for(@course)}"
       end
     end
@@ -517,6 +563,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_admins do |who, signed_in|
       @course.users.reject { |u| u == signed_in }.each do |view|
         get course_member_url(@course, view), xhr: true
+
         assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to view #{view}"
       end
     end
@@ -528,6 +575,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @admins do |who|
       get courses_url, params: { format: :json }
       courses = response.parsed_body
+
       assert courses.any? { |c| c['id'] == @course.id }, "#{who} should be able to see a hidden course of which he is course administrator"
     end
   end
@@ -539,6 +587,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       get courses_url, params: { format: :json }
       if response.successful?
         courses = response.parsed_body
+
         assert_not courses.any? { |c| c['id'] == @course.id }, "#{who} should not be able to see a hidden course"
       else
         assert response.forbidden? || response.unauthorized?
@@ -548,6 +597,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
   test 'signed out users should be able to see the courses listing' do
     get courses_url
+
     assert_response :success
     # we only expect the "all courses" and "featured courses" tabs to show for signed out users
     assert_select 'd-filter-tabs[labels*="featured"]', 1
@@ -570,54 +620,74 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     # all courses
     get courses_url, params: { format: :json }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 3, courses.length
     # my courses
     get courses_url, params: { format: :json, tab: 'my' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 1, courses.length
     # institution courses
     get courses_url, params: { format: :json, tab: 'institution' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 2, courses.length
     # copy courses
     get courses_url, params: { format: :json, copy_courses: true }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 3, courses.length
     # copy courses filtered
     get courses_url, params: { format: :json, copy_courses: true, filter: 'course' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 2, courses.length
     # All courses filtered
     get courses_url, params: { format: :json, filter: 'greatest' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 1, courses.length
     # Institution courses filtered
     get courses_url, params: { format: :json, filter: 'worst' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 1, courses.length
   end
 
   test 'featured courses should only show featured courses' do
     get courses_url, params: { format: :json }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal Course.count, courses.length
     get courses_url, params: { format: :json, tab: 'featured' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 0, courses.length
     @course.update(featured: true)
     get courses_url, params: { format: :json, tab: 'featured' }
+
     assert_response :success
     courses = response.parsed_body
+
     assert_equal 1, courses.length
   end
 
@@ -627,6 +697,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
 
     post favorite_course_url(@course)
+
     assert CourseMembership.find_by(user: user, course: @course).favorite
   end
 
@@ -637,6 +708,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post favorite_course_url(@course)
     post unfavorite_course_url(@course)
+
     assert_not CourseMembership.find_by(user: user, course: @course).favorite
   end
 
@@ -647,6 +719,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post unsubscribe_course_url(@course)
     post favorite_course_url(@course)
+
     assert_not response.successful?
   end
 
@@ -657,6 +730,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     post unsubscribe_course_url(@course)
     post unfavorite_course_url(@course)
+
     assert_not response.successful?
   end
 
@@ -668,8 +742,9 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     sign_in user
     post subscribe_course_url(course)
+
     assert_redirected_to course
-    assert course.subscribed_members.include?(user)
+    assert_includes course.subscribed_members, user
   end
 
   test 'a course copied by a regular student should not include hidden/closed series' do
@@ -682,6 +757,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     new_course = build :course
     post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
+
     assert_equal 0, Course.find(response.parsed_body['id']).series.count
   end
 
@@ -691,7 +767,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user = @externals.first
     sign_in user
     get course_url(@course, secret: @course.secret)
-    assert response.body.include?(subscribe_course_path(@course, secret: @course.secret))
+
+    assert_includes response.body, subscribe_course_path(@course, secret: @course.secret)
   end
 
   test 'visible_for_institution course page shown to unsubscribed student of different institution should include registration url with secret' do
@@ -701,7 +778,8 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user.update(institution: (create :institution))
     sign_in user
     get course_url(@course, secret: @course.secret)
-    assert response.body.include?(subscribe_course_path(@course, secret: @course.secret))
+
+    assert_includes response.body, subscribe_course_path(@course, secret: @course.secret)
   end
 
   test 'visible_for_institution course page shown to unsubscribed student of same institution should not include registration url with secret' do
@@ -712,6 +790,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user.update(institution: @course.institution)
     sign_in user
     get course_url(@course, secret: @course.secret)
+
     assert_not response.body.include?(subscribe_course_path(@course, secret: @course.secret))
   end
 
@@ -722,8 +801,10 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user.update(institution: nil)
     sign_in user
     post subscribe_course_url(@course)
+
     assert_not @course.subscribed_members.include?(user)
     post subscribe_course_url(@course, secret: @course.secret)
+
     assert_not @course.subscribed_members.include?(user)
   end
 
@@ -734,15 +815,18 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     user.update(institution: (create :institution))
     sign_in user
     post subscribe_course_url(@course)
-    assert @course.subscribed_members.include?(user)
+
+    assert_includes @course.subscribed_members, user
     post subscribe_course_url(@course, secret: @course.secret)
-    assert @course.subscribed_members.include?(user)
+
+    assert_includes @course.subscribed_members, user
   end
 
   test 'should not destroy course as student' do
     add_students
     sign_in @students.first
     delete course_url(@course)
+
     assert_not response.successful?
   end
 
@@ -752,7 +836,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
     end
-    assert response.body.include?(courses_url)
+    assert_includes response.body, courses_url
   end
 
   test 'should not destroy course as course admin if too many submissions' do
@@ -763,6 +847,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     # Assert there are actually too many submissions
     assert_operator @course.submissions.count, :>, CoursePolicy::MAX_SUBMISSIONS_FOR_DESTROY
     delete course_url(@course)
+
     assert_not response.successful?
   end
 
@@ -775,7 +860,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
     end
-    assert response.body.include?(courses_url)
+    assert_includes response.body, courses_url
   end
 
   test 'super admins are able to view questions' do
@@ -788,6 +873,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       create :question, question_state: :unanswered, submission: submission
       create :question, question_state: :in_progress, submission: submission
       get questions_course_path(@course)
+
       assert :ok, "#{who} should be able to view questions"
     end
   end
@@ -796,6 +882,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_not_admins
     with_users_signed_in @not_admins do |who|
       get questions_course_path(@course)
+
       assert :ok, "#{who} should not be able to view questions"
     end
   end
@@ -805,6 +892,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       add_admins
       sign_in @admins.first
       get questions_course_path(@course)
+
       assert_select 'title', /^([^0-9]*)$/
 
       submission = create :submission, course: @course
@@ -812,6 +900,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       create :question, question_state: :unanswered, submission: submission
       create :question, question_state: :in_progress, submission: submission
       get questions_course_path(@course)
+
       assert_select 'title', /\(1\)/
     end
   end
@@ -828,24 +917,29 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     # Check content of the ics file
     get ical_course_url @course, format: :ics
+
     assert_response :success
     assert_equal 'text/plain; charset=utf-8', response.content_type
 
     strict_parser = Icalendar::Parser.new(response.body, true)
     cals = strict_parser.parse
     cal = cals.first
+
     assert_equal "Dodona: #{@course.name}", cal.x_wr_calname.first
 
     # Last created serie will be listed first
     event1 = cal.events.first
+
     assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
     assert_equal Icalendar::Values::DateTime.new("#{time2.utc.strftime('%Y%m%dT%H%M%S')}Z"), event1.dtstart
     assert_equal 'open serie2 + deadline', event1.summary
     expected = I18n.t('courses.ical.serie_deadline', serie_name: serie2.name, course_name: @course.name, serie_url: series_url(serie2))
+
     assert_equal expected, event1.description
     assert_equal series_url(serie2), event1.url.to_s
 
     event2 = cal.events.second
+
     assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
     assert_equal Icalendar::Values::DateTime.new("#{time1.utc.strftime('%Y%m%dT%H%M%S')}Z"), event2.dtstart
     assert_equal 'open serie1 + deadline', event2.summary
@@ -854,6 +948,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     # Series that are hidden, closed or don't have a deadline should not be present in the ics file
     event3 = cal.events.third
+
     assert_nil event3
   end
 end

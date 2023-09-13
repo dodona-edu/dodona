@@ -10,16 +10,19 @@ class AnnotationPolicyTest < ActiveSupport::TestCase
 
   test 'anonymous is true when evaluation exists and student views annotation from teacher' do
     annotation = create :annotation, :with_evaluation, submission: @submission, user: @annotating_user
-    assert Pundit.policy(@user, annotation).anonymous?
+
+    assert_predicate Pundit.policy(@user, annotation), :anonymous?
   end
 
   test 'anonymous is false when evaluation exists and person views own annotation' do
     annotation = create :annotation, :with_evaluation, submission: @submission, user: @user
+
     assert_not Pundit.policy(@user, annotation).anonymous?
   end
 
   test 'anonymous is false when evaluation does not exist' do
     annotation = create :annotation, submission: @submission, user: @annotating_user
+
     assert_not Pundit.policy(@user, annotation).anonymous?
   end
 end

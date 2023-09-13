@@ -8,6 +8,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test 'should store last location' do
     location = root_path params: { foo: 'bar' }
     get location
+
     assert_response :success
     assert_equal session[:user_return_to], location
   end
@@ -15,6 +16,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
   test 'should not store last location if too big' do
     location = root_path params: { foo: "b#{'a' * 1024}r" }
     get location
+
     assert_response :success
     assert_not_equal session[:user_return_to], location
     assert session[:user_return_to].length < 100
@@ -22,18 +24,21 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get unauthorized status when not logged in' do
     get course_url(@course, format: :json)
+
     assert_response :unauthorized
   end
 
   test 'should get forbidden status when logged in but not authorized' do
     sign_in @user
     get course_url(@course, format: :json)
+
     assert_response :forbidden
   end
 
   test 'page zero should return page one' do
     sign_in @user
     get courses_path(page: 0)
+
     assert_response :ok
   end
 end

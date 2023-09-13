@@ -105,6 +105,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'submission http caching works' do
     get submissions_path
+
     assert_response :ok
     assert_not_empty @response.headers['ETag']
     assert_not_empty @response.headers['Last-Modified']
@@ -112,6 +113,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       'If-None-Match' => @response.headers['ETag'],
       'If-Modified-Since' => @response.headers['Last-Modified']
     }
+
     assert_response :not_modified
   end
 
@@ -120,11 +122,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_jobs_enqueued(1) do
       submission = create_request_expect
     end
-    assert submission.queued?
+    assert_predicate submission, :queued?
   end
 
   test 'create submission should respond with ok' do
     create_request_expect
+
     assert_response :success
   end
 
@@ -132,6 +135,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     attrs = generate_attr_hash
     attrs[:exercise_id] = create(:content_page).id
     create_request(attr_hash: attrs)
+
     assert_response :unprocessable_entity
   end
 
@@ -139,11 +143,13 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     attrs = generate_attr_hash
     attrs.delete(:exercise_id)
     create_request(attr_hash: attrs)
+
     assert_response :unprocessable_entity
   end
 
   test 'create submission should respond bad_request without a hash' do
     post submissions_url
+
     assert_response :bad_request
   end
 
@@ -194,6 +200,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get submission edit page' do
     get edit_submission_path(@instance)
+
     assert_redirected_to activity_url(
       @instance.exercise,
       anchor: 'submission-card',
@@ -203,33 +210,38 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should download submission code' do
     get download_submission_path(@instance)
+
     assert_response :success
   end
 
   test 'should evaluate submission' do
     assert_difference('Delayed::Job.count', +1) do
       get evaluate_submission_path(@instance)
+
       assert_redirected_to @instance
     end
   end
 
   test 'submission media should redirect to exercise media' do
     get media_submission_path(@instance, 'dank_meme.jpg')
+
     assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg')
   end
 
   test 'submission media should redirect to exercise media and keep token' do
     get media_submission_path(@instance, 'dank_meme.jpg', token: @instance.exercise.access_token)
+
     assert_redirected_to media_activity_path(@instance.exercise, 'dank_meme.jpg', token: @instance.exercise.access_token)
   end
 
   def rejudge_submissions(**params)
     post mass_rejudge_submissions_path, params: params
+
     assert_response :success
   end
 
   test 'should enqeueue submissions delayed ' do
-    create(:series, :with_submissions)
+    create :series, :with_submissions
 
     # in test env, default and export queues are evaluated inline
     with_delayed_jobs do
@@ -241,14 +253,14 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge all submissions' do
-    create(:series, :with_submissions)
+    create :series, :with_submissions
     assert_jobs_enqueued(Submission.count) do
       rejudge_submissions
     end
   end
 
   test 'should rejudge user submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     user = User.in_course(series.course).sample
     assert_jobs_enqueued(user.submissions.count) do
       rejudge_submissions user_id: user.id
@@ -256,7 +268,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge course submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_course(series.course).count) do
       rejudge_submissions course_id: series.course.id
@@ -264,7 +276,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should rejudge series submissions' do
-    series = create(:series, :with_submissions)
+    series = create :series, :with_submissions
     series.course.subscribed_members << @zeus
     assert_jobs_enqueued(Submission.in_series(series).count) do
       rejudge_submissions series_id: series.id
@@ -300,6 +312,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     sign_in submission.user
 
     get submission_url(id: submission.id)
+
     assert_match visible_score_item.description, response.body
     assert_no_match hidden_score_item.description, response.body
     assert_match expected_score_string(s1), response.body
@@ -309,6 +322,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # Hidden total is not shown
     evaluation_exercise.update!(visible_score: false)
     get submission_url(id: submission.id)
+
     assert_match visible_score_item.description, response.body
     assert_no_match hidden_score_item.description, response.body
     assert_match expected_score_string(s1), response.body
@@ -318,6 +332,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     # The evaluation is no longer released
     evaluation.update!(released: false)
     get submission_url(id: submission.id)
+
     assert_no_match visible_score_item.description, response.body
     assert_no_match hidden_score_item.description, response.body
     assert_no_match expected_score_string(s1), response.body
@@ -341,6 +356,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       sign_in user
 
       get submission_url(id: submission.id)
+
       assert_match visible_score_item.description, response.body
       assert_match hidden_score_item.description, response.body
       assert_match expected_score_string(s1), response.body
@@ -350,6 +366,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       # Hidden total is not shown
       evaluation_exercise.update!(visible_score: false)
       get submission_url(id: submission.id)
+
       assert_match visible_score_item.description, response.body
       assert_match hidden_score_item.description, response.body
       assert_match expected_score_string(s1), response.body
@@ -359,6 +376,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       # The evaluation is no longer released
       evaluation.update!(released: false)
       get submission_url(id: submission.id)
+
       assert_match visible_score_item.description, response.body
       assert_match hidden_score_item.description, response.body
       assert_match expected_score_string(s1), response.body

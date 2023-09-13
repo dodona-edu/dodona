@@ -9,7 +9,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   setup do
-    @zeus = create(:zeus)
+    @zeus = create :zeus
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
     @instance = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
@@ -19,6 +19,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
+
     within '.card-title' do
       assert_text 'Submission results'
     end
@@ -50,7 +51,8 @@ class AnnotationsTest < ApplicationSystemTestCase
       (1..@code_lines.length).each do |index|
         line = "tr#line-#{index}"
         find(line).hover
-        assert_css '.annotation-button button'
+
+        assert_css '.annotation-button a'
       end
     end
   end
@@ -60,12 +62,13 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
     within '.code-listing' do
       @code_lines.each do |code_line|
         assert_text code_line
       end
     end
+
     assert_css 'd-annotation-form'
   end
 
@@ -74,7 +77,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -94,7 +97,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
 
     initial = 'This is a single line comment'
     within 'form.annotation-submission' do
@@ -111,7 +114,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
     within 'form.annotation-submission' do
       click_button 'Cancel'
     end
@@ -125,6 +128,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     within '.annotation' do
       assert_text annot.annotation_text
     end
@@ -194,6 +198,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     assert_selector '.annotation', count: 1
     within '.annotation' do
       assert_text annot.annotation_text
@@ -204,6 +209,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     dropdown.find('i.mdi.mdi-pencil').click
 
     replacement = Faker::Lorem.characters number: 10_010
+
     assert_selector 'form.annotation-submission', count: 1
     # Attempt to type more than 10.000 characters.
     within 'form.annotation-submission' do
@@ -248,6 +254,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     # After reload, make sure no replacing has taken place
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     assert_selector '.annotation', count: 1
     within '.annotation' do
       assert_text annot.annotation_text
@@ -261,7 +268,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
 
     initial = ''
     within 'form.annotation-submission' do
@@ -273,11 +280,13 @@ class AnnotationsTest < ApplicationSystemTestCase
 
       click_button 'Cancel'
     end
+
     assert_selector '.annotation', count: 0
 
     # After reload, make sure no creation has taken place
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     assert_selector '.annotation', count: 0
   end
 
@@ -286,7 +295,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_link 'Code'
 
     find('tr#line-1').hover
-    find('.annotation-button button').click
+    find('.annotation-button a').click
 
     initial = Faker::Lorem.characters(number: 10_010)
     within 'form.annotation-submission' do
@@ -320,6 +329,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     # After reload, make sure creation has taken place
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     assert_selector '.annotation', count: 1
     within '.annotation' do
       assert_text initial
@@ -354,6 +364,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     # After reload, make sure creation has taken place
     visit(submission_path(id: @instance.id))
     click_link 'Code'
+
     assert_selector '.annotation', count: 1
     within '.annotation' do
       assert_text replacement
@@ -395,6 +406,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       root = first('.annotation')
       dropdown = root.find('.dropdown')
       dropdown.click
+
       assert_no_selector 'i.mdi.mdi-delete'
     end
   end
@@ -418,6 +430,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       root = first('.annotation')
       dropdown = root.find('.dropdown')
       dropdown.click
+
       assert_selector 'i.mdi.mdi-delete'
     end
   end

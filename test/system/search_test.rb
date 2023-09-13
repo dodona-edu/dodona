@@ -22,24 +22,34 @@ class SearchTest < ApplicationSystemTestCase
     sign_in create(:zeus)
     visit root_path
     visit activities_path
+
     assert_path_with_query activities_path
     find('d-search-field input').send_keys 'test'
+
     assert_path_with_query activities_path, filter: 'test'
     find('.next_page').click
+
     assert_path_with_query activities_path, filter: 'test', page: 2
     page.go_back
+
     assert_path_with_query activities_path, filter: 'test'
     page.go_back
+
     page.assert_current_path root_path
     page.go_forward
+
     assert_path_with_query activities_path, filter: 'test'
     page.go_forward
+
     assert_path_with_query activities_path, filter: 'test', page: 2
     find('d-search-field input').send_keys 's'
+
     assert_path_with_query activities_path, filter: 'tests'
     page.go_back
+
     assert_path_with_query activities_path, filter: 'test', page: 2
     page.go_forward
+
     assert_path_with_query activities_path, filter: 'tests'
   end
 
@@ -48,8 +58,10 @@ class SearchTest < ApplicationSystemTestCase
     visit root_path
     click_on 'Toggle drawer'
     click_on 'Exercises'
+
     page.assert_current_path activities_path
     page.go_back
+
     page.assert_current_path root_path
   end
 end

@@ -11,11 +11,10 @@ updates:
     prefix: ""
   labels:
     - "dependencies"
-  ignore:
-  - dependency-name: sprockets
-    versions:
-    - ">= 4.a"
-    - "< 5"
+  groups:
+    rubocop:
+      patterns:
+        - "rubocop*"
 - package-ecosystem: npm
   directory: "/"
   schedule:
@@ -27,11 +26,17 @@ updates:
     prefix: ""
   labels:
     - "dependencies"
-  ignore:
-  - dependency-name: webpack-cli
-    versions:
-    - ">= 4.a"
-    - "< 5"
+  groups:
+    babel:
+      patterns:
+        - "@babel*"
+        - "babel*"
+    eslint:
+      patterns:
+        - "eslint*"
+    rails:
+      patterns:
+        - "@rails*"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

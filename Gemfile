@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.7'
+gem 'rails', '~> 7.0.8'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.3.0'
+gem 'puma', '~> 6.3.1'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.2.0'
@@ -63,7 +63,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'ace-rails-ap', '~>4.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.13'
+gem 'autoprefixer-rails', '~>10.4.15'
 
 # saml authentication
 gem 'devise', '~>4.9.2'
@@ -106,7 +106,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 4.2.3'
-gem 'rails-i18n', '~> 7.0.7'
+gem 'rails-i18n', '~> 7.0.8'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -135,13 +135,13 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.1.1'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.13.0'
+gem 'ddtrace', '~> 1.14.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.4'
+gem 'counter_culture', '~> 3.5'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.11.0'
+  gem 'selenium-webdriver', '~> 4.12.0'
 end
 
 group :test do
@@ -165,7 +165,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.2'
+  gem 'test-prof', '~> 1.2.3'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -177,9 +177,12 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'listen', '~> 3.8.0'
-  gem 'web-console', '~> 4.2.0'
+  gem 'web-console', '~> 4.2.1'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
+  gem 'rubocop-capybara', '~> 2.18.0'
+  gem 'rubocop-factory_bot', '~> 2.23'
+  gem 'rubocop-minitest', '~> 0.31.1'
   gem 'rubocop-rails', '~> 2.20.2'
 
   # for opening letters

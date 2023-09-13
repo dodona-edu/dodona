@@ -1,4 +1,8 @@
-require: rubocop-rails
+require:
+  - rubocop-rails
+  - rubocop-factory_bot
+  - rubocop-capybara
+  - rubocop-minitest
 
 AllCops:
   Exclude:
@@ -83,3 +87,9 @@ Style/OptionalBooleanParameter:
   Enabled: false
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
+
+FactoryBot/ConsistentParenthesesStyle:
+  EnforcedStyle: omit_parentheses
+
+Minitest/MultipleAssertions:
+  Enabled: false

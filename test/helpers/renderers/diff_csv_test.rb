@@ -10,6 +10,7 @@ class CsvDifferTest < ActiveSupport::TestCase
   def should_match_html(exp, act)
     dom1 = Nokogiri::XML(exp, &:noblanks)
     dom2 = Nokogiri::XML(act, &:noblanks)
+
     assert_equal dom1.to_s, dom2.to_s
   end
 

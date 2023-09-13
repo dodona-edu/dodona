@@ -39,8 +39,8 @@ class ScoreItemTest < ActiveSupport::TestCase
     create :score_item, evaluation_exercise: eval_exercise
 
     eval_exercise.feedbacks.each do |f|
-      assert f.completed?
-      assert f.scores.count == 1
+      assert_predicate f, :completed?
+      assert_equal(1, f.scores.count)
     end
   end
 
@@ -64,7 +64,7 @@ class ScoreItemTest < ActiveSupport::TestCase
     score_item.update(description: 'Hallo')
 
     eval_exercise.feedbacks.each do |f|
-      assert f.completed?
+      assert_predicate f, :completed?
     end
   end
 
@@ -76,7 +76,7 @@ class ScoreItemTest < ActiveSupport::TestCase
     score_item.update(maximum: '20.0')
 
     eval_exercise.feedbacks.each do |f|
-      assert f.completed?
+      assert_predicate f, :completed?
     end
   end
 end

@@ -109,6 +109,7 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert User.exists?(u1.id)
     assert User.exists?(u2.id)
     u1.reload
+
     assert_equal i2, u1.institution
   end
 
@@ -130,8 +131,10 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     (overlapping_users_i2 + unique_users_i1 + unique_users_i2).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i2, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
   end
@@ -153,15 +156,19 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     (overlapping_users_i1 + unique_users_i1).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i1, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
     (overlapping_users_i2 + unique_users_i2).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i2, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
   end
@@ -181,15 +188,19 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     (overlapping_users_i1 + unique_users_i1).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i1, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
     (overlapping_users_i2 + unique_users_i2).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i2, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
   end
@@ -207,6 +218,7 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert User.exists?(u1.id)
     assert_not User.exists?(u2.id)
     u1.reload
+
     assert_equal i2, u1.institution
   end
 
@@ -227,15 +239,19 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     (overlapping_users_i1 + unique_users_i1).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i1, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
     (overlapping_users_i2 + unique_users_i2).each do |u|
       assert User.exists?(u.id)
       u.reload
+
       assert_equal i2, u.institution
       u.max_one_institution
+
       assert_equal 0, u.errors.count
     end
   end
@@ -249,13 +265,14 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     create :user, username: 'test1', institution: i2
 
     s = create :correct_submission, user: u1, code: "print(input())\n", result: FILE_LOCATION.read
-    assert s.on_filesystem?
+
+    assert_predicate s, :on_filesystem?
 
     merge_institutions_interactive i1.id, i2.id, 'y', 'y', 'y', 'n'
 
     assert Institution.exists?(i1.id)
     assert Institution.exists?(i2.id)
-    assert s.on_filesystem?
+    assert_predicate s, :on_filesystem?
   end
 
   test 'The script should also merge case insensitive equal usernames' do
@@ -271,6 +288,7 @@ class MergeInstitutionsTest < ActiveSupport::TestCase
     assert_not User.exists?(u1.id)
     assert User.exists?(u2.id)
     u2.reload
+
     assert_equal i2, u2.institution
   end
 end

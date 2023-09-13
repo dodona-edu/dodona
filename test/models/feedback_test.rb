@@ -45,6 +45,7 @@ class FeedbackTest < ActiveSupport::TestCase
       users: @users - [user_to_remove]
     }
     @evaluation.update(params)
+
     assert_equal (@user_count - 1) * (@exercise_count - 1), @evaluation.feedbacks.count
   end
 
@@ -57,6 +58,7 @@ class FeedbackTest < ActiveSupport::TestCase
     feedback.submission.annotations.create(evaluation_id: @evaluation.id, annotation_text: 'blah', line_nr: 0, user: @zeus)
 
     feedback.update(submission_id: submission.id)
+
     assert_equal 0, submission.annotations.count
   end
 
@@ -68,6 +70,7 @@ class FeedbackTest < ActiveSupport::TestCase
 
     feedback.update(completed: true)
     feedback.update(submission_id: submission.id)
+
     assert_not feedback.completed
   end
 
@@ -78,12 +81,14 @@ class FeedbackTest < ActiveSupport::TestCase
     submission = create :submission, user: user, exercise: exercise, course: @evaluation.series.course
 
     feedback.update(submission_id: submission.id)
+
     assert_empty feedback.errors
 
     course = create :course
     submission = create :submission, user: user, exercise: exercise, course: course
 
     feedback.update(submission_id: submission.id)
+
     assert_not_empty feedback.errors
   end
 
@@ -94,7 +99,7 @@ class FeedbackTest < ActiveSupport::TestCase
     s1 = create :score, feedback: feedback, score: '5.0', score_item: si1
     s2 = create :score, feedback: feedback, score: '6.0', score_item: si2
 
-    assert feedback.score == s1.score + s2.score
-    assert feedback.maximum_score == s1.score_item.maximum + s2.score_item.maximum
+    assert_equal feedback.score, s1.score + s2.score
+    assert_equal feedback.maximum_score, s1.score_item.maximum + s2.score_item.maximum
   end
 end

@@ -9,7 +9,7 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
   include Capybara::Minitest::Assertions
 
   setup do
-    @zeus = create(:zeus)
+    @zeus = create :zeus
     @c1 = create :course, series_count: 1, activities_per_series: 1, submissions_per_exercise: 1
     @c1.administrating_members.concat(@zeus)
 
@@ -30,6 +30,7 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
     end
 
     find('.btn.graph-toggle .stacked-bar-chart').click
+
     assert_selector '.btn.graph-toggle.active .stacked-bar-chart'
     within title do
       assert_text 'Distribution of submission statuses'
@@ -42,12 +43,14 @@ class SeriesVisualisationsTest < ApplicationSystemTestCase
     # end
 
     find('.btn.graph-toggle .stacked-line-chart').click
+
     assert_selector '.btn.graph-toggle.active .stacked-line-chart'
     within title do
       assert_text 'Users with at least one correct submission'
     end
 
     find('.btn.graph-toggle .violin').click
+
     assert_selector '.btn.graph-toggle.active .violin'
     within title do
       assert_text 'Number of submissions per user'

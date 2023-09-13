@@ -144,8 +144,12 @@ module ApplicationHelper
   end
 
   def sanitize(html)
-    @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
-    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-bs-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
+    @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a +
+              %w[table thead tbody tr td th colgroup col style summary details] +
+              %w[svg g style circle line rect path polygon text]
+    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a +
+                    %w[style target data-bs-toggle data-parent data-tab data-line data-element id] +
+                    %w[viewbox width height version style class transform id x y rx ry x1 y1 x2 y2 d points fill stroke stroke-width cx cy r font-size font-family font-weight font-variant]
 
     # Filters allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,

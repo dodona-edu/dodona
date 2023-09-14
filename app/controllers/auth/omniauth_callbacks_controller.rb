@@ -270,7 +270,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
 
   def find_user_in_institution
     # Attempt to find user by its username and institution id
-    user = User.from_username_and_institution(auth_uid, provider.institution_id)
+    user = User.from_username_and_institution(auth_username || auth_uid, provider.institution_id)
     # Try to find the user using the email address and institution id.
     user = User.from_email_and_institution(auth_email, provider.institution_id) if user.blank?
     user

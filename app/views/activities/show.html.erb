@@ -1,7 +1,4 @@
 <% content_for :javascripts do %>
-  <% if @activity.exercise? %>
-    <%= javascript_include_tag 'ace_editor' %>
-  <% end %>
   <%= javascript_include_tag 'exercise' %>
   <% if @activity.exercise? %>
     <%= javascript_include_tag 'submission' %>
@@ -123,7 +120,7 @@ end %>
                 </div>
               <% end %>
               <div id="editor-window" class='tex2jax_ignore'>
-                <div id="editor-text"><%= @code %></div>
+                <div class="highlighter-rouge" id="editor-text"><%= @code %></div>
               </div>
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
@@ -173,8 +170,8 @@ end %>
   <%= render partial: 'coding_scratchpad', locals: {activity: @activity} %>
 <% end %>
 <script type="text/javascript">
-    dodona.ready.then(function () {
-        dodona.initExerciseShow(
+    dodona.ready.then(async function() {
+        await dodona.initExerciseShow(
             <%= @activity.id %>,
             "<%= @activity.programming_language&.editor_name || "text" %>",
             <%= user_signed_in? %>,

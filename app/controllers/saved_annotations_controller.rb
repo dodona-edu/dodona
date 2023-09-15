@@ -8,6 +8,9 @@ class SavedAnnotationsController < ApplicationController
   has_scope :by_exercise, as: 'exercise_id'
   has_scope :by_filter, as: 'filter'
 
+  has_scope :by_exercise, as: :exercise_id, only: :new
+  has_scope :by_course, as: :course_id, only: :new
+
   order_by :annotations_count, :title, :annotation_text
 
   def index
@@ -31,6 +34,19 @@ class SavedAnnotationsController < ApplicationController
       end
       format.json
     end
+  end
+
+  def new
+    authorize SavedAnnotation
+    @annotations = AnnotationPolicy::Scope.new(current_user, Annotation.all).resolve
+    @courses = Course.where(id: @annotations.joins(:submission).pluck("submissions.course_id").uniq)
+    @exercises = Activity.where(id: @annotations.joins(:submission).pluck("submissions.exercise_id").uniq)
+    @annotations = apply_scopes(@annotations)
+                   .includes(:course).includes(:user).includes(:submission)
+                   .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
+
+    @title = I18n.t('saved_annotations.new.title')
+    @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [I18n.t('saved_annotations.new.title'), '#']]
   end
 
   def edit

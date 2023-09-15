@@ -17,7 +17,7 @@ class AnnotationsController < ApplicationController
     respond_to do |format|
       format.html do
         @title = I18n.t('annotations.index.title')
-        @crumbs = [[I18n.t('annotations.index.title'), saved_annotations_path]]
+        @crumbs = [[I18n.t('annotations.index.title'), annotations_path]]
         @courses = Course.where(id: @annotations.joins(:submission).pluck("submissions.course_id").uniq)
         @exercises = Activity.where(id: @annotations.joins(:submission).pluck("submissions.exercise_id").uniq)
         @annotations = apply_scopes(@annotations)

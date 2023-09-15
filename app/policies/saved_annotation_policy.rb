@@ -45,6 +45,10 @@ class SavedAnnotationPolicy < ApplicationPolicy
     user_admin_of_beta_course? && record_in_beta_course? && record&.user_id == user.id
   end
 
+  def new?
+    user&.a_course_admin?
+  end
+
   def edit?
     update?
   end

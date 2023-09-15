@@ -57,6 +57,7 @@ class Annotation < ApplicationRecord
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
+  scope :by_exercise, ->(exercise_id) { where(submission: { exercise_id: exercise_id }) }
 
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create

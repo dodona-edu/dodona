@@ -27,7 +27,7 @@ class SavedAnnotationsController < ApplicationController
       format.html do
         @title = @saved_annotation.title
         @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)]]
-        @submissions = @saved_annotation.submissions.paginate(page: parse_pagination_param(params[:page]))
+        @annotations = @saved_annotation.annotations.paginate(page: parse_pagination_param(params[:page]))
       end
       format.json
     end

@@ -18,6 +18,10 @@ import "components/saved_annotations/saved_annotation_title_input";
 export class SavedAnnotationForm extends ShadowlessLitElement {
     @property({ type: Object })
     savedAnnotation: SavedAnnotation;
+    @property({ type: Number, attribute: "exercise-id" })
+    exerciseId: number;
+    @property({ type: Number, attribute: "course-id" })
+    courseId: number;
 
     savedAnnotationChanged(): void {
         const event = new CustomEvent("change", {
@@ -49,7 +53,9 @@ export class SavedAnnotationForm extends ShadowlessLitElement {
                     </label>
                     <d-saved-annotation-title-input
                         .value=${this.savedAnnotation.title}
-                        @change=${e => this.updateTitle(e)}>
+                        @change=${e => this.updateTitle(e)}
+                        .courseId=${this.courseId}
+                        .exerciseId=${this.exerciseId}>
                     </d-saved-annotation-title-input>
                 </div>
                 <div class="field form-group">

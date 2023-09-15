@@ -4,7 +4,6 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import "components/datalist_input";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { userState } from "state/Users";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
 
@@ -44,7 +43,6 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
         const savedAnnotations = savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
-            ["user_id", userState.id.toString()],
             ["filter", this.__label]
         ]));
         if (savedAnnotations === undefined) {

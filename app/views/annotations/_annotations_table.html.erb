@@ -1,3 +1,4 @@
+<%= javascript_include_tag "saved_annotation" %>
 <div class="table-scroll-wrapper">
   <table class="table activity-table table-resource">
     <thead>
@@ -5,6 +6,7 @@
       <th><%= t ".submission" %></th>
       <th><d-sort-button column="annotation_text"><%= t ".annotation_text" %></d-sort-button></th>
       <th><d-sort-button column="created_at"><%= t ".time" %></d-sort-button></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -36,6 +38,15 @@
           <span class="ellipsis-overflow" title="<%= annotation.created_at %>">
             <%= t "time.ago", time: time_ago_in_words(annotation.created_at) %>
           </span>
+        </td>
+        <td>
+          <d-new-saved-annotation
+            class="btn with-icon btn-filled"
+            from-annotation-id="<%= annotation.id %>"
+            annotation-text="<%= annotation.annotation_text %>"
+            exercise-id="<%= annotation.submission.exercise_id %>"
+            course-id="<%= annotation.submission.course_id %>">
+          </d-new-saved-annotation>
         </td>
       </tr>
     <% end %>

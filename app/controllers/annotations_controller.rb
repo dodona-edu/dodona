@@ -85,7 +85,7 @@ class AnnotationsController < ApplicationController
 
   def destroy
     @annotation.destroy
-    render json: {}, status: :no_content
+    render status: :no_content
   end
 
   private

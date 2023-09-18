@@ -791,7 +791,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     CourseMembership.create user: u1, course: c, status: 'student'
     CourseMembership.create user: u2, course: c, status: 'student'
     s1 = create :series, course: c, exercise_count: 0
-    s2 = create :series, course: c2,  exercise_count: 0
+    s2 = create :series, course: c2, exercise_count: 0
     e1 = create :exercise
     e2 = create :exercise
     e3 = create :exercise

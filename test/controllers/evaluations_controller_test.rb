@@ -147,17 +147,17 @@ class EvaluationsControllerTest < ActionDispatch::IntegrationTest
       normal_annotations += 1
     end
 
-    assert_equal normal_annotations, Notification.all.count, 'only notifications for the annotations without a feedback session'
+    assert_equal normal_annotations, Notification.count, 'only notifications for the annotations without a feedback session'
 
     evaluation.feedbacks.each do |feedback|
       feedback.update(completed: true)
     end
 
-    assert_equal normal_annotations, Notification.all.count, 'no new notification should be made upon completing a feedback'
+    assert_equal normal_annotations, Notification.count, 'no new notification should be made upon completing a feedback'
 
     evaluation.update(released: true)
 
-    assert_equal normal_annotations + @users.count, Notification.all.count, 'A new notification per user should be made upon releasing a feedback session, along with keeping the notifications made for annotations without a feedback session'
+    assert_equal normal_annotations + @users.count, Notification.count, 'A new notification per user should be made upon releasing a feedback session, along with keeping the notifications made for annotations without a feedback session'
   end
 
   test 'non released annotations are not queryable' do

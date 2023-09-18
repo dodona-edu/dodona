@@ -23,7 +23,7 @@ FactoryBot.define do
     judge { Judge.find(1) } # load python judge fixture
 
     trait :generated_judge do
-      association :judge, factory: %i[judge git_stubbed]
+      judge factory: %i[judge git_stubbed]
     end
 
     trait :git_stubbed do

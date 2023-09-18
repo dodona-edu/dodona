@@ -58,7 +58,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     post series_exports_path(@series), params: { all: true }
 
     assert_redirected_to exports_path
-    assert_zip ActiveStorage::Blob.last.download, solution_count: Submission.all.count, data: @data
+    assert_zip ActiveStorage::Blob.last.download, solution_count: Submission.count, data: @data
   end
 
   test 'all students should be present in the zip' do

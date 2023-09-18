@@ -296,7 +296,7 @@ class CourseTest < ActiveSupport::TestCase
     [create(:institution), i, nil].each do |institution|
       u = create :user, institution: institution
 
-      Course.all.each do |c|
+      Course.find_each do |c|
         assert_equal c.open_for_user?(u), Course.can_register(u).exists?(c.id)
       end
     end

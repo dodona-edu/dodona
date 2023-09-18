@@ -26,7 +26,7 @@ FactoryBot.define do
     course { Course.find(1) } # load course 1 fixture
 
     trait :generated_course do
-      association :course
+      course
     end
 
     trait :hidden do

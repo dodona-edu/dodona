@@ -30,7 +30,7 @@ FactoryBot.define do
     permission { :student }
 
     trait :with_institution do
-      association :institution
+      institution
     end
   end
 

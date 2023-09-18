@@ -221,7 +221,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Activity.where(judge: judge).count, response.parsed_body.count
     assert_equal @instance.id, response.parsed_body[0]['id']
 
-    get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
+    get activities_url(format: :json, judge_id: Judge.last.id + 1)
 
     assert_equal 0, response.parsed_body.count
   end

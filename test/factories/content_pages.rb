@@ -37,7 +37,7 @@ FactoryBot.define do
     repository { Repository.find(1) } # load python repo fixture
 
     trait :generated_repo do
-      association :repository, factory: %i[repository git_stubbed]
+      repository factory: %i[repository git_stubbed]
     end
 
     transient do

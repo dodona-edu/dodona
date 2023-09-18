@@ -481,12 +481,8 @@ class SubmissionTest < ActiveSupport::TestCase
       @series = create :series, exercises: [@exercise], course: @course
       3.times do
         user = create :student, subscribed_courses: [@course]
-        2.times do
-          create :submission, user: user, exercise: @exercise, status: :correct, course: @course, created_at: @date
-        end
-        3.times do
-          create :submission, user: user, exercise: @exercise, status: :wrong, course: @course, created_at: @date
-        end
+        create_list :submission, 2, user: user, exercise: @exercise, status: :correct, course: @course, created_at: @date
+        create_list :submission, 3, user: user, exercise: @exercise, status: :wrong, course: @course, created_at: @date
       end
     end
 

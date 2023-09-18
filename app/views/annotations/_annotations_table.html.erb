@@ -59,3 +59,6 @@
   </p>
 <% end %>
 <center><%= page_navigation_links annotations, true, "annotations" %></center>
+<script>
+  dodona.ready.then(() => dodona.initNewSavedAnnotationButtons("<%= saved_annotations_path %>"));
+</script>

@@ -7,6 +7,7 @@ import { modalMixin } from "components/modal_mixin";
 import { isBetaCourse } from "saved_annotation_beta";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
+import { search } from "search";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -70,6 +71,8 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
             });
             this.errors = undefined;
             this.hideModal();
+            const event = new CustomEvent("annotation-saved", { bubbles: true, composed: true });
+            this.dispatchEvent(event);
         } catch (errors) {
             this.errors = errors;
         }
@@ -109,4 +112,14 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
             </a>
         ` : html``;
     }
+}
+
+export function initNewSavedAnnotationButtons(path: string): void {
+    const newSavedAnnotationElements = document.querySelectorAll("d-new-saved-annotation");
+    newSavedAnnotationElements.forEach((element: NewSavedAnnotation) => {
+        element.addEventListener("annotation-saved", () => {
+            // redirect to the saved annotation list
+            window.location.href = path;
+        });
+    });
 }

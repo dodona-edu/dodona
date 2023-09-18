@@ -39,6 +39,7 @@ class SavedAnnotationsController < ApplicationController
   def new
     authorize SavedAnnotation
     @annotations = AnnotationPolicy::Scope.new(current_user, Annotation.all).resolve
+    @annotations = @annotations.where(saved_annotation_id: nil)
     @courses = Course.where(id: @annotations.joins(:submission).pluck("submissions.course_id").uniq)
     @exercises = Activity.where(id: @annotations.joins(:submission).pluck("submissions.exercise_id").uniq)
     @annotations = apply_scopes(@annotations)

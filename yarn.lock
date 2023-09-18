@@ -3791,10 +3791,10 @@ eslint-config-google@^0.14.0:
   resolved "https://registry.yarnpkg.com/eslint-config-google/-/eslint-config-google-0.14.0.tgz#4f5f8759ba6e11b424294a219dbfa18c508bcc1a"
   integrity sha512-WsbX4WbjuMvTdeVL6+J3rK1RGhCTqjsFjX7UMSMgZiyxxaNLkoJENbrGExzERFeoTpGw3F3FypTiWAP9ZXzkEw==
 
-eslint-plugin-jest@^27.2.3:
-  version "27.2.3"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-27.2.3.tgz#6f8a4bb2ca82c0c5d481d1b3be256ab001f5a3ec"
-  integrity sha512-sRLlSCpICzWuje66Gl9zvdF6mwD5X86I4u55hJyFBsxYOsBCmT5+kSUjf+fkFWVMMgpzNEupjW8WzUqi83hJAQ==
+eslint-plugin-jest@^27.4.0:
+  version "27.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-27.4.0.tgz#3926cca723c40c3d7a3fe0e1fd911eff5e681f50"
+  integrity sha512-ukVeKmMPAUA5SWjHenvyyXnirKfHKMdOsTZdn5tZx5EW05HGVQwBohigjFZGGj3zuv1cV6hc82FvWv6LdIbkgg==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
@@ -3812,10 +3812,10 @@ eslint-plugin-no-jquery@^2.7.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-no-jquery/-/eslint-plugin-no-jquery-2.7.0.tgz#855f5631cf5b8e25b930cf6f06e02dd81f132e72"
   integrity sha512-Aeg7dA6GTH1AcWLlBtWNzOU9efK5KpNi7b0EhBO0o0M+awyzguUUo8gF6hXGjQ9n5h8/uRtYv9zOqQkeC5CG0w==
 
-eslint-plugin-wc@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-wc/-/eslint-plugin-wc-1.5.0.tgz#7b8b1f126947c2a2cfd3188c593dde1f468affe9"
-  integrity sha512-KFSfiHDol/LeV7U6IX8GdgpGf/s3wG8FTG120Rml/hGNB/DkCuGYQhlf0VgdBdf7gweem8Nlsh5o64HNdj+qPA==
+eslint-plugin-wc@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-wc/-/eslint-plugin-wc-2.0.0.tgz#63c7c509125a33291dda2420d4f9a512b6aa0e9b"
+  integrity sha512-7fS5IF/2mZZnyEhO6NKblLKTLzlRuC/hl+HxjwhG9dHYsY1BmFRG+J1+GqDynV7Fkb4Hsjbvqll/vvEs2J+hgw==
   dependencies:
     is-valid-element-name "^1.0.0"
     js-levenshtein-esm "^1.2.0"

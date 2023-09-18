@@ -11,7 +11,7 @@ class SavedAnnotationsController < ApplicationController
   has_scope :by_exercise, as: :exercise_id, only: :new
   has_scope :by_course, as: :course_id, only: :new
 
-  order_by :annotations_count, :title, :annotation_text
+  order_by :annotations_count, :title, :annotation_text, :created_at
 
   def index
     authorize SavedAnnotation
@@ -30,9 +30,14 @@ class SavedAnnotationsController < ApplicationController
       format.html do
         @title = @saved_annotation.title
         @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)]]
-        @annotations = @saved_annotation.annotations.paginate(page: parse_pagination_param(params[:page]))
+        @annotations = apply_scopes(@saved_annotation.annotations.order_by_created_at(:DESC))
+                       .paginate(page: parse_pagination_param(params[:page]))
       end
       format.json
+      format.js do
+        @annotations = apply_scopes(@saved_annotation.annotations.order_by_created_at(:DESC))
+                       .paginate(page: parse_pagination_param(params[:page]))
+      end
     end
   end
 
@@ -42,7 +47,7 @@ class SavedAnnotationsController < ApplicationController
     @annotations = @annotations.where(saved_annotation_id: nil).where(user_id: current_user.id)
     @courses = Course.where(id: @annotations.joins(:submission).pluck("submissions.course_id").uniq)
     @exercises = Activity.where(id: @annotations.joins(:submission).pluck("submissions.exercise_id").uniq)
-    @annotations = apply_scopes(@annotations)
+    @annotations = apply_scopes(@annotations.order_by_created_at(:DESC))
                    .includes(:course).includes(:user).includes(:submission)
                    .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
 

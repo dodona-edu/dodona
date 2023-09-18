@@ -6,7 +6,7 @@
     <tr>
       <th><%= t ".submission" %></th>
       <th><d-sort-button column="annotation_text"><%= t ".annotation_text" %></d-sort-button></th>
-      <th><d-sort-button column="created_at"><%= t ".time" %></d-sort-button></th>
+      <th><d-sort-button column="created_at" default="DESC"><%= t ".time" %></d-sort-button></th>
       <% if allow_save %>
         <th></th>
       <% end %>
@@ -34,7 +34,7 @@
         </td>
         <td>
           <span class="ellipsis-overflow" title="<%= annotation.annotation_text %>">
-            <%= markdown annotation.annotation_text %>
+            <%= annotation.annotation_text %>
           </span>
         </td>
         <td>
@@ -69,3 +69,6 @@
     dodona.ready.then(() => dodona.initNewSavedAnnotationButtons("<%= saved_annotations_path %>"));
   </script>
 <% end %>
+<script>
+  dodona.ready.then(() => dodona.initSortButtons());
+</script>

@@ -22,7 +22,9 @@
       </div>
       <div class="card-supporting-text card-border">
         <h4><%= t ".linked_submissions" %></h4>
-        <%= render partial: 'annotations/annotations_table', locals: { annotations: @annotations } %>
+        <div id="questions-table-wrapper">
+          <%= render partial: 'annotations/annotations_table', locals: { annotations: @annotations } %>
+        </div>
       </div>
     </div>
   </div>

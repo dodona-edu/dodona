@@ -59,6 +59,9 @@ class Annotation < ApplicationRecord
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
   scope :by_exercise, ->(exercise_id) { where(submission: { exercise_id: exercise_id }) }
 
+  scope :order_by_annotation_text, ->(direction) { reorder(annotation_text: direction) }
+  scope :order_by_created_at, ->(direction) { reorder(created_at: direction) }
+
   before_validation :set_last_updated_by, on: :create
   before_validation :set_course_id, on: :create
   after_create :annotate_submission

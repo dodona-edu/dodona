@@ -7,7 +7,7 @@
       <div class="card-supporting-text" id="annotation-container">
         <%= render partial: 'layouts/searchbar', locals: { refresh_element: "#annotation-container", courses: @courses, exercises: @exercises } %>
         <div id="questions-table-wrapper">
-          <%= render partial: 'annotations/annotations_table', locals: { annotations: @annotations } %>
+          <%= render partial: 'annotations/annotations_table', locals: { annotations: @annotations, allow_save: true } %>
         </div>
       </div>
     </div>

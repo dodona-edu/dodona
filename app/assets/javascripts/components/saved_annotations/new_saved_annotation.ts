@@ -4,10 +4,8 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
-import { isBetaCourse } from "saved_annotation_beta";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
-import { search } from "search";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -17,7 +15,6 @@ import { search } from "search";
  *
  * @prop {Number} fromAnnotationId - the id of the annotation which will be saved
  * @prop {String} annotationText - the original text of the annotation which wil be saved
- * @prop {Number} savedAnnotationId - the id of the saved annotation
  */
 @customElement("d-new-saved-annotation")
 export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
@@ -25,8 +22,6 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
-    @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number;
     @property({ type: Number, attribute: "exercise-id" })
     exerciseId: number = exerciseState.id;
     @property({ type: Number, attribute: "course-id" })
@@ -36,14 +31,6 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     errors: string[];
 
     savedAnnotation: SavedAnnotation;
-
-    get isAlreadyLinked(): boolean {
-        return this.savedAnnotationId != undefined;
-    }
-
-    get linkedSavedAnnotation(): SavedAnnotation {
-        return savedAnnotationState.get(this.savedAnnotationId);
-    }
 
     get newSavedAnnotation(): SavedAnnotation {
         return {
@@ -105,12 +92,12 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
+        return html`
             <a @click="${() => this.showModal()}">
                 <i class="mdi mdi-content-save mdi-18"></i>
                 ${I18n.t("js.saved_annotation.new.button_title")}
             </a>
-        ` : html``;
+        `;
     }
 }
 

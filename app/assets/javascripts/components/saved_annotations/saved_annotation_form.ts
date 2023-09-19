@@ -11,6 +11,8 @@ import "components/saved_annotations/saved_annotation_title_input";
  * @element d-saved-annotation-form
  *
  * @prop {SavedAnnotation} savedAnnotation - the saved annotation to be edited in this form
+ * @prop {Number} exerciseId - the id of the exercise to which the annotation belongs
+ * @prop {Number} courseId - the id of the course to which the annotation belongs
  *
  * @fires change - on user changes in the form, event.detail has the new state of the SavedAnnotation
  */

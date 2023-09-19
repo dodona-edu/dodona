@@ -15,6 +15,8 @@ import { courseState } from "state/Courses";
  *
  * @prop {Number} fromAnnotationId - the id of the annotation which will be saved
  * @prop {String} annotationText - the original text of the annotation which wil be saved
+ * @prop {Number} exerciseId - the id of the exercise to which the annotation belongs
+ * @prop {Number} courseId - the id of the course to which the annotation belongs
  */
 @customElement("d-new-saved-annotation")
 export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {

@@ -1,3 +1,4 @@
+<%= javascript_include_tag "saved_annotation" %>
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -5,7 +6,7 @@
         <h2 class="card-title-text"><%= t ".title" %></h2>
         <% if policy(SavedAnnotation).new? %>
           <div class="card-title-fab">
-            <%= render 'fab_link', url: new_saved_annotation_path, icon: 'plus' %>
+            <d-new-saved-annotation-link></d-new-saved-annotation-link>
           </div>
         <% end %>
       </div>

@@ -44,8 +44,9 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     }
 
     get isTitleTaken(): boolean {
+        const annotation = this.savedAnnotation || this.newSavedAnnotation;
         return savedAnnotationState.isTitleTaken(
-            this.newSavedAnnotation.title, this.exerciseId, this.courseId);
+            annotation.title, this.exerciseId, this.courseId);
     }
 
     async createSavedAnnotation(): Promise<void> {

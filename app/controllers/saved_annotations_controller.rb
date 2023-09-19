@@ -8,9 +8,6 @@ class SavedAnnotationsController < ApplicationController
   has_scope :by_exercise, as: 'exercise_id'
   has_scope :by_filter, as: 'filter'
 
-  has_scope :by_exercise, as: :exercise_id, only: :new
-  has_scope :by_course, as: :course_id, only: :new
-
   order_by :annotations_count, :title, :annotation_text, :created_at
 
   def index

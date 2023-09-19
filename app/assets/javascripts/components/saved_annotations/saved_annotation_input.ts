@@ -61,6 +61,10 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
         return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString(), extra: sa.annotation_text }));
     }
 
+    get savedAnnotationsPath(): string {
+        return `/saved_annotations?course_id=${courseState.id}&exercise_id=${exerciseState.id}`;
+    }
+
     get icon(): string {
         if (this.selectedAnnotation == undefined) {
             return "";
@@ -103,7 +107,7 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
                     ` : ""}
                 </div>
                 <div class="help-block">
-                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html"))}
+                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html", { path: this.savedAnnotationsPath }))}
                 </div>
             </div>
         `;

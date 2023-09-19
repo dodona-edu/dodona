@@ -12,27 +12,7 @@ class AnnotationsController < ApplicationController
 
   def index
     authorize Annotation
-    @annotations = policy_scope(Annotation.all)
-
-    respond_to do |format|
-      format.html do
-        @title = I18n.t('annotations.index.title')
-        @crumbs = [[I18n.t('annotations.index.title'), annotations_path]]
-        @courses = Course.where(id: @annotations.joins(:submission).pluck("submissions.course_id").uniq)
-        @exercises = Activity.where(id: @annotations.joins(:submission).pluck("submissions.exercise_id").uniq)
-        @annotations = apply_scopes(@annotations)
-                       .includes(:course).includes(:user).includes(:submission)
-                       .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
-      end
-      format.json do
-        @annotations = apply_scopes(@annotations).where(thread_root_id: nil)
-      end
-      format.js do
-        @annotations = apply_scopes(@annotations)
-                       .includes(:course).includes(:user).includes(:submission)
-                       .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
-      end
-    end
+    @annotations = apply_scopes(policy_scope(Annotation.all)).where(thread_root_id: nil)
   end
 
   def question_index

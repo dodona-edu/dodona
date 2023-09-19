@@ -6,6 +6,8 @@ import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
+import { searchQueryState } from "state/SearchQuery";
+import { updateURLParameter } from "utilities";
 
 /**
  * This component represents an creation button for a saved annotation

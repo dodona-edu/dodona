@@ -164,7 +164,7 @@ class SubmissionRunner
       while Time.zone.now - before_time < time_limit
         before_stats = Time.zone.now
         # Check if container is still running
-        if !Rails.env.test? && (Docker::Container.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running'])
+        if !Rails.env.test? && (Docker::Container.all.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running']) # rubocop:disable Rails/RedundantActiveRecordAllMethod
           # If we don't pass these extra options gathering stats takes 1+ seconds (https://github.com/moby/moby/issues/23188#issuecomment-223211481)
           stats = container.stats({ 'one-shot': true, stream: false })
           memory = [stats['memory_stats']['usage'] / (1024.0 * 1024.0), memory].max if stats['memory_stats']&.fetch('usage', nil)

@@ -19,6 +19,8 @@ import { StateController } from "state/state_system/StateController";
 export class AnnotationMarker extends LitElement {
     @property({ type: Array })
     annotations: Annotation[];
+    @property({ type: Boolean, attribute: "full-width" })
+    fullWidth = false;
 
     state = new StateController(this);
 
@@ -43,6 +45,12 @@ export class AnnotationMarker extends LitElement {
                 .${x} { background-color: var(--${x}-color)}
                 .${x}-intense {background-color: var(--${x}-intense-color)}
             `),
+            css`
+                .full-width {
+                    display: block;
+                    width: 100%;
+                }
+            `
         ];
     }
 
@@ -94,6 +102,6 @@ export class AnnotationMarker extends LitElement {
     }
 
     render(): TemplateResult {
-        return html`<span class="${this.annotationClasses}"><slot>${this.machineAnnotationMarkerSVG}</slot></span>`;
+        return html`<span class="${this.annotationClasses} ${this.fullWidth ? "full-width" : ""}"><slot>${this.machineAnnotationMarkerSVG}</slot></span>`;
     }
 }

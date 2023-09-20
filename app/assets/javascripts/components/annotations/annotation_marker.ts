@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { css, html, LitElement, TemplateResult, CSSResultGroup, unsafeCSS } from "lit";
+import { css, html, LitElement, TemplateResult, CSSResultGroup } from "lit";
 import {
     Annotation,
     compareAnnotationOrders,
@@ -26,32 +26,23 @@ export class AnnotationMarker extends LitElement {
 
     static get styles(): CSSResultGroup {
         // order matters here, the last defined class determines the color if multiple apply
-        const machineClasses = [unsafeCSS`info`, unsafeCSS`warning`, unsafeCSS`error`];
-        const userClasses = [unsafeCSS`annotation`, unsafeCSS`question`];
-        return [
-            ...machineClasses.map(x => css`
-                .${x} {
-                    background-image: var(--d-annotation-${x}-background);
-                    background-position: left bottom;
-                    background-repeat: repeat-x;
-                }
-                .${x}-intense {
-                    background-image: var(--d-annotation-${x}-background-intense);
-                    background-position: left bottom;
-                    background-repeat: repeat-x;
-                }
-            `),
-            ...userClasses.map(x => css`
-                .${x} { background-color: var(--${x}-color)}
-                .${x}-intense {background-color: var(--${x}-intense-color)}
-            `),
-            css`
-                .full-width {
-                    display: block;
-                    width: 100%;
-                }
-            `
-        ];
+        return css`
+            .info, .warning, .error,
+            .info-intense, .warning-intense, .error-intense {
+                background-position: left bottom;
+                background-repeat: repeat-x;
+            }
+            .info { background-image: var(--d-annotation-info-background) }
+            .warning { background-image: var(--d-annotation-warning-background) }
+            .error { background-image: var(--d-annotation-error-background) }
+            .info-intense { background-image: var(--d-annotation-info-background-intense) }
+            .warning-intense { background-image: var(--d-annotation-warning-background-intense) }
+            .error-intense { background-image: var(--d-annotation-error-background-intense) }
+            .annotation { background-color: var(--annotation-color) }
+            .question { background-color: var(--question-color) }
+            .annotation-intense { background-color: var(--annotation-intense-color) }
+            .question-intense { background-color: var(--question-intense-color) }
+            `;
     }
 
     static getClass(annotation: Annotation): string {

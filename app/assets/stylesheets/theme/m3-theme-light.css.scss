@@ -3,6 +3,7 @@
 
 @use "sass:color";
 @import "theme/m3-theme.css.scss";
+@import "mixins.css.scss";
 
 :root,
 [data-bs-theme="light"] {
@@ -216,6 +217,13 @@
   --d-annotation-user-background: #{color.mix($success-60, $neutral-98, 8%)};
   --d-annotation-question-background-intense: #{color.mix($purple-40, $neutral-98, 20%)};
   --d-annotation-user-background-intense: #{color.mix($success-60, $neutral-98, 20%)};
+
+  @include wavy-underline(--d-annotation-warning-background, $warning-70, 0.7);
+  @include wavy-underline(--d-annotation-warning-background-intense, $warning-70, 1.7);
+  @include wavy-underline(--d-annotation-error-background, $danger-60, 0.7);
+  @include wavy-underline(--d-annotation-error-background-intense, $danger-60, 1.7);
+  @include wavy-underline(--d-annotation-info-background, $info-40, 0.7);
+  @include wavy-underline(--d-annotation-info-background-intense, $info-40, 1.7);
 
   .image-bright {
     // $gray-10 converted to filter using https://codepen.io/sosuke/pen/Pjoqqp

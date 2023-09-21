@@ -11,7 +11,6 @@ import { userAnnotationState } from "state/UserAnnotations";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
-import { userState } from "state/Users";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -230,14 +229,13 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     get potentialSavedAnnotationsExist(): boolean {
         return (savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
-            ["user_id", userState.id.toString()]
+            ["exercise_id", exerciseState.id.toString()]
         ])) || []).length > 0;
     }
 
     get isTitleTaken(): boolean {
         return savedAnnotationState.isTitleTaken(
-            this.savedAnnotationTitle, exerciseState.id, courseState.id, userState.id);
+            this.savedAnnotationTitle, exerciseState.id, courseState.id);
     }
 
     render(): TemplateResult {

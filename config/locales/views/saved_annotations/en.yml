@@ -12,3 +12,5 @@ en:
       warning_no_annotations_changed: Existing comments will not be updated. These changes will only be applied to new comments.
       destroy: Delete
       save: Save
+    new:
+      title: Save comment

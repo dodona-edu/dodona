@@ -1,12 +1,14 @@
+<%= javascript_include_tag "saved_annotation" %>
 <div class="row">
   <div class="col-12">
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text">
-          <span>
-            <%= t ".title" %>
-          </span>
-        </h2>
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+        <% if policy(SavedAnnotation).new? %>
+          <div class="card-title-fab">
+            <d-new-saved-annotation-link></d-new-saved-annotation-link>
+          </div>
+        <% end %>
       </div>
       <div class="card-supporting-text" id="refresh-element">
         <%= render partial: 'layouts/searchbar', locals: { courses: @courses, exercises: @exercises, autoSearch: false } %>

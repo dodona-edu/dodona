@@ -292,7 +292,7 @@ en:
       input:
         placeholder: Search saved comment
         title: 'Reuse a saved comment'
-        help_html: 'Click <a  href="/saved_annotations" target="_blank" >here</a> to manage all saved comments.'
+        help_html: 'Click <a  href="%{path}" target="_blank" >here</a> to manage all saved comments.'
         edited: The current comment differs from the saved comment
     sign_in_search_bar:
       institution_search: "Type to search for your institution"

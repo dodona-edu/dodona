@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, LitElement, TemplateResult } from "lit";
+import { css, html, LitElement, TemplateResult, CSSResultGroup } from "lit";
 import {
     Annotation,
     compareAnnotationOrders,
@@ -19,36 +19,45 @@ import { StateController } from "state/state_system/StateController";
 export class AnnotationMarker extends LitElement {
     @property({ type: Array })
     annotations: Annotation[];
+    @property({ type: Boolean, attribute: "full-width" })
+    fullWidth = false;
 
     state = new StateController(this);
 
+    static get styles(): CSSResultGroup {
+        // order matters here, the last defined class determines the color if multiple apply
+        return css`
+            .info, .warning, .error,
+            .info-intense, .warning-intense, .error-intense {
+                background-position: left bottom;
+                background-repeat: repeat-x;
+            }
+            .info { background-image: var(--d-annotation-info-background) }
+            .warning { background-image: var(--d-annotation-warning-background) }
+            .error { background-image: var(--d-annotation-error-background) }
+            .info-intense { background-image: var(--d-annotation-info-background-intense) }
+            .warning-intense { background-image: var(--d-annotation-warning-background-intense) }
+            .error-intense { background-image: var(--d-annotation-error-background-intense) }
+            .annotation { background-color: var(--annotation-color) }
+            .question { background-color: var(--question-color) }
+            .annotation-intense { background-color: var(--annotation-intense-color) }
+            .question-intense { background-color: var(--question-intense-color) }
+            `;
+    }
+
+    static getClass(annotation: Annotation): string {
+        return annotation.isHovered ? `${annotation.type}-intense` : annotation.type;
+    }
+
     static colors = {
-        "error": "var(--error-color, red)",
-        "warning": "var(--warning-color, yellow)",
-        "info": "var(--info-color, blue)",
+        "error": "var(--d-annotation-error, red)",
+        "warning": "var(--d-annotation-warning, yellow)",
+        "info": "var(--d-annotation-info, blue)",
         "annotation": "var(--annotation-color, green)",
         "question": "var(--question-color, orange)",
         "annotation-intense": "var(--annotation-intense-color, green)",
         "question-intense": "var(--question-intense-color, orange)",
     };
-
-    static getStyle(annotation: Annotation): string {
-        if (["error", "warning", "info"].includes(annotation.type)) {
-            // shorthand notation does not work in safari
-            return `
-                text-decoration-line: underline;
-                text-decoration-color: ${AnnotationMarker.colors[annotation.type]};
-                text-decoration-thickness: ${annotation.isHovered ? 2 : 1}px;
-                text-decoration-style: wavy;
-                text-decoration-skip-ink: none;
-            `;
-        } else {
-            const key = annotation.isHovered ? `${annotation.type}-intense` : annotation.type;
-            return `
-                background: ${AnnotationMarker.colors[key]};
-            `;
-        }
-    }
 
     /**
      * Returns the annotations sorted in order of importance.
@@ -79,16 +88,11 @@ export class AnnotationMarker extends LitElement {
         </svg>`;
     }
 
-    get annotationStyles(): string {
-        return this.sortedAnnotations.reverse().map(a => AnnotationMarker.getStyle(a)).join(" ");
+    get annotationClasses(): string {
+        return this.annotations.map(a => AnnotationMarker.getClass(a)).join(" ");
     }
 
     render(): TemplateResult {
-        return html`<style>
-                :host {
-                    position: relative;
-                    ${this.annotationStyles}
-                }
-            </style><slot>${this.machineAnnotationMarkerSVG}</slot>`;
+        return html`<span class="${this.annotationClasses} ${this.fullWidth ? "full-width" : ""}"><slot>${this.machineAnnotationMarkerSVG}</slot></span>`;
     }
 }

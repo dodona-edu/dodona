@@ -218,7 +218,8 @@ export function triggerSelectionStart(e: PointerEvent): void {
 
     if (!(e.target as Element).closest(".annotation") && !userAnnotationState.formShown) {
         addSelectionClasses();
-        if (!(e.target as Element).closest("button")) {
+        // reset the selection, unless we are clicking on a button or link (eg. the create annotation button)
+        if (!(e.target as Element).closest("button,a")) {
             userAnnotationState.selectedRange = undefined;
         }
     }

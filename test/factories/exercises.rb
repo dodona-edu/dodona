@@ -43,7 +43,7 @@ FactoryBot.define do
     judge { repository.judge }
 
     trait :generated_repo do
-      association :repository, factory: %i[repository git_stubbed]
+      repository factory: %i[repository git_stubbed]
       judge { repository.judge }
     end
 
@@ -81,7 +81,7 @@ FactoryBot.define do
     end
 
     trait :with_programming_language do
-      association :programming_language
+      programming_language
     end
 
     trait :nameless do

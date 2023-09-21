@@ -184,7 +184,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
   end
 
   test 'should create new exercise when config without token is placed in path of removed exercise' do
-    start = Exercise.all.count
+    start = Exercise.count
     @remote.remove_dir(@echo.path)
     @remote.commit('remove exercise')
     @repository.reset
@@ -195,11 +195,11 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
 
     assert_equal 'removed', @echo.status
-    assert_equal 1, Exercise.all.count - start
+    assert_equal 1, Exercise.count - start
   end
 
   test 'should create new exercise when exercise is copied' do
-    start = Exercise.all.count
+    start = Exercise.count
     new_dir = 'echo2'
     @remote.copy_dir(@echo.path, new_dir)
     @remote.commit('copy exercise')
@@ -208,11 +208,11 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
 
     assert_equal 'echo', @echo.path
-    assert_equal 1, Exercise.all.count - start
+    assert_equal 1, Exercise.count - start
   end
 
   test 'should create only 1 new exercise on copy + rename' do
-    start = Exercise.all.count
+    start = Exercise.count
     new_dir1 = 'echo2'
     new_dir2 = 'echo3'
     @remote.copy_dir(@echo.path, new_dir1)
@@ -223,7 +223,7 @@ class EchoRepositoryTest < ActiveSupport::TestCase
     @echo.reload
 
     assert_includes [new_dir1, new_dir2], @echo.path
-    assert_equal 1, Exercise.all.count - start
+    assert_equal 1, Exercise.count - start
   end
 
   test 'should copy valid token for new exercise' do

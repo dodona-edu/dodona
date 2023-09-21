@@ -235,7 +235,7 @@ module ExportHelper
     end
 
     def get_submissions_for_series(series, selected_exercises, users)
-      submissions = policy_scope(Submission).all.where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id), course: series.course_id).includes(:user, :exercise)
+      submissions = policy_scope(Submission).where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id), course: series.course_id).includes(:user, :exercise)
       submissions = submissions.before_deadline(@options[:deadline]) if deadline?
       submissions = submissions.group(:user_id, :exercise_id).most_recent if only_last_submission?
       submissions.sort_by { |s| [selected_exercises.map(&:id).index(s.exercise_id), users.map(&:id).index(s.user_id), s.id] }

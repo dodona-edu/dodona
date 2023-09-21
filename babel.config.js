@@ -53,7 +53,8 @@ module.exports = function (api) {
                 regenerator: true,
                 corejs: false
             }],
-            ["@babel/plugin-transform-regenerator", { async: false }]
+            ["@babel/plugin-transform-regenerator", { async: false }],
+            "@babel/plugin-transform-class-properties"
         ].filter(Boolean)
     };
 };

@@ -11,10 +11,10 @@ gem 'mysql2', '~> 0.5.5'
 gem 'puma', '~> 6.3.1'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.2.0'
+gem 'cssbundling-rails', '~> 1.3.2'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.1.2'
+gem 'jsbundling-rails', '~> 1.2.1'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.16.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 1.0.3'
+gem 'json_schemer', '~> 2.0.0'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.7'
@@ -181,9 +181,9 @@ group :development do
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.18.0'
-  gem 'rubocop-factory_bot', '~> 2.23'
+  gem 'rubocop-factory_bot', '~> 2.24'
   gem 'rubocop-minitest', '~> 0.31.1'
-  gem 'rubocop-rails', '~> 2.20.2'
+  gem 'rubocop-rails', '~> 2.21.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

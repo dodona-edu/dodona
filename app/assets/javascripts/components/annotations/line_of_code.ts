@@ -168,7 +168,7 @@ export class LineOfCode extends ShadowlessLitElement {
         return html`
             <div class="code-layers">
                 ${ this.fullLineAnnotations.length > 0 ? html`
-                    <d-annotation-marker style="width: 100%; display: block" .annotations=${this.fullLineAnnotations}>
+                    <d-annotation-marker full-width="true" .annotations=${this.fullLineAnnotations}>
                         <pre class="code-line background-layer"><span></span>${backgroundLayer}</pre>
                     </d-annotation-marker>` : html`
                     <pre class="code-line background-layer">${backgroundLayer}</pre>

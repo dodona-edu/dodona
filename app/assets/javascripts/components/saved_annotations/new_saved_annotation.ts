@@ -6,8 +6,7 @@ import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
-import { searchQueryState } from "state/SearchQuery";
-import { updateURLParameter } from "utilities";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -21,7 +20,7 @@ import { updateURLParameter } from "utilities";
  * @prop {Number} courseId - the id of the course to which the annotation belongs
  */
 @customElement("d-new-saved-annotation")
-export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
+export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElement)) {
     @property({ type: Number, attribute: "from-annotation-id" })
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })

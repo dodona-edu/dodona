@@ -2,10 +2,10 @@
 @import "../../../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
+@import "mixins.css.scss";
 @import "theme/m3-theme-light.css.scss";
 @import "theme/m3-theme-dark.css.scss";
 @import "bootstrap_variable_overrides.css.scss";
-@import "mixins.css.scss";
 @import "theme/rouge.css.scss";
 @import "theme/ace.css.scss";
 

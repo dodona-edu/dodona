@@ -11,7 +11,6 @@ import { initTooltips } from "utilities";
 import "components/saved_annotations/saved_annotation_icon";
 import { annotationState } from "state/Annotations";
 import { savedAnnotationState } from "state/SavedAnnotations";
-import { isBetaCourse } from "saved_annotation_beta";
 
 /**
  * This component represents a single user annotation.
@@ -153,7 +152,7 @@ export class UserAnnotationComponent extends i18nMixin(ShadowlessLitElement) {
                 </li>
             `);
         }
-        if (this.data.permission.save && isBetaCourse() && !this.data.saved_annotation_id) {
+        if (this.data.permission.save && !this.data.saved_annotation_id) {
             options.push(html`
                 <li>
                     <d-new-saved-annotation

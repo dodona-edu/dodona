@@ -1,7 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { isBetaCourse } from "saved_annotation_beta";
 import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
@@ -223,7 +222,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     get canSaveAnnotation(): boolean {
-        return !annotationState.isQuestionMode && /* REMOVE AFTER CLOSED BETA */ isBetaCourse();
+        return !annotationState.isQuestionMode;
     }
 
     get potentialSavedAnnotationsExist(): boolean {

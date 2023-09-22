@@ -518,7 +518,7 @@ class Submission < ApplicationRecord
   end
 
   def report_if_internal_error
-    return if draft?
+    return if exercise&.draft?
     return unless status_changed? && send(:'internal error?')
 
     ExceptionNotifier.notify_exception(

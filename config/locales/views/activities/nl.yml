@@ -27,6 +27,10 @@ nl:
       labels: Nieuw label
       info: Informatie
       info_description: Ga naar de informatiepagina van deze leeractiviteit
+      draft:
+        title: "Ontwerp"
+        toggle-label: "Activeer de ontwerpmodus."
+        help: "Ontwerpmodus zorgt voor betere foutmeldingen voor leerkrachten en verbergt de activiteit voor studenten."
     index:
       title: Oefeningen
       exercise: Oefening

@@ -27,6 +27,10 @@ en:
       labels: New label
       info: Information
       info_description: Go to the information page of this learning activity
+      draft:
+        title: "Draft"
+        toggle-label: "Put activity in draft mode."
+        help: "Draft mode provides better error logging for teachers and hides the activity from students. Draft mode is activated by default for new activities."
     index:
       title: Exercises
       exercise: Exercise

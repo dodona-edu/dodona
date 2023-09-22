@@ -1,2 +1,4 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#evaluation-table-wrapper"), "<%= escape_javascript(render 'evaluation_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")
-dodona.setHTMLExecuteScripts(document.querySelector("#evaluation-grade-table-wrapper"), "<%= escape_javascript(render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")
+if(document.querySelector("#evaluation-grade-table-wrapper")) {
+    dodona.setHTMLExecuteScripts(document.querySelector("#evaluation-grade-table-wrapper"), "<%= escape_javascript(render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")
+}

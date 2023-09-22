@@ -115,3 +115,7 @@ figcaption {
   justify-content: space-between;
   flex-direction: row;
 }
+
+a:focus-visible {
+  outline: none;
+}

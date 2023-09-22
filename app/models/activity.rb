@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(FALSE)
 #
 
 require 'pathname'
@@ -66,6 +67,7 @@ class Activity < ApplicationRecord
   before_create :generate_repository_token,
                 if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
+  before_create :activate_draft_mode
   before_update :update_config
 
   scope :content_pages, -> { where(type: ContentPage.name) }
@@ -298,6 +300,7 @@ class Activity < ApplicationRecord
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
+    c['draft'] = draft if defined?(draft)
     c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
     c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}
@@ -505,5 +508,9 @@ class Activity < ApplicationRecord
 
     hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
+  end
+
+  def activate_draft_mode
+    self.draft = true
   end
 end

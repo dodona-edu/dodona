@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(FALSE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

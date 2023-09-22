@@ -242,3 +242,7 @@ blockquote {
   background: var(--d-background);
   color: var(--d-on-surface-muted);
 }
+
+.nav.nav-tabs a:focus-visible {
+  outline: none;
+}

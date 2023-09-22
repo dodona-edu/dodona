@@ -75,7 +75,7 @@ class ActivityPolicy < ApplicationPolicy
 
   def permitted_attributes
     if update?
-      %i[access name_nl name_en]
+      %i[access name_nl name_en draft]
     else
       []
     end

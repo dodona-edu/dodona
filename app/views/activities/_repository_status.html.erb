@@ -6,3 +6,6 @@
 <% elsif activity.not_valid? %>
   <i class="mdi mdi-alert-circle mdi-18" title="<%= t('activities.index.invalid') %>"></i>
 <% end %>
+<% if activity.draft? %>
+  <i class="mdi mdi-file-document-edit-outline mdi-18 colored-warning" title="<%= t('activities.index.draft-notice') %>"></i>
+<% end %>

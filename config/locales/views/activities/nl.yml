@@ -71,6 +71,7 @@ nl:
         mine: "Mijn activiteiten"
         featured: "Uitgelichte activiteiten"
         all: "Alle activiteiten"
+      draft-notice: "Deze activiteit is in ontwerpmodus. Ze is niet zichtbaar voor studenten."
     show:
       code: Code
       handin: Indienen

@@ -71,6 +71,7 @@ en:
         mine: "My activities"
         featured: "Featured activities"
         all: "All activities"
+      draft-notice: "This activity is in draft mode. It is not visible for students."
     show:
       code: Code
       handin: Hand in

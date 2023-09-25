@@ -4,7 +4,7 @@ class ActivityPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       else
-        scope.where(access: :public, status: :ok).or(scope.where(repository: user&.repositories))
+        scope.where(access: :public, status: :ok, draft: false).or(scope.where(repository: user&.repositories))
       end
     end
   end

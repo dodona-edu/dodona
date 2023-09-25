@@ -101,6 +101,8 @@ en:
       submissions: Submissions
       correct-exercises: Correct exercises
       recent-exercises: Recent exercises
+      draft-exercises: Draft exercises
+      all-draft-exercises: All draft exercises
     getting_started_card:
       title: Hi there,
       text: It looks like you're new here. To get started, register for a course.

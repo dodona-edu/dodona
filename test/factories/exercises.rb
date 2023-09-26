@@ -76,7 +76,7 @@ FactoryBot.define do
         exercise.stubs(:description_localized).returns(e.description_md_stubbed)
       end
       # Draft is set to true by default, but we want to test non-draft exercises
-      exercise.update_column(:draft, false)
+      exercise.update_column(:draft, false) # rubocop:disable Rails/SkipsModelValidations
     end
 
     after :build do |exercise|

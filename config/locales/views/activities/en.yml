@@ -102,6 +102,8 @@ en:
       preloaded_info: "We have preloaded your latest submission into the editor."
       preloaded_clear: Clear editor.
       preloaded_restore: Restore the initial code.
+      alert_draft: This activity is in draft mode. It is not visible for students.
+      alert_draft_edit: Disable draft mode.
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

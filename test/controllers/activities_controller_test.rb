@@ -698,11 +698,105 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_not resp['has_read']
   end
 
-  test 'should be able to acess index when not signed in' do
+  test 'should be able to access index when not signed in' do
     sign_out @user
     get activities_url
 
     assert_response :success
+  end
+
+  test 'repo admin should be able to access own draft activities' do
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, :config_stubbed, repository: repo
+    exercise.update(draft: true)
+    get activity_url(exercise)
+
+    assert_response :success
+  end
+
+  test 'repo admin should not be able to access other draft activities' do
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    repo2 = create :repository, :git_stubbed
+    exercise = create :exercise, :config_stubbed, repository: repo2
+    exercise.update(draft: true)
+    get activity_url(exercise)
+
+    assert_redirected_to root_url
+  end
+
+  test 'course admin should be able to access draft activities in course' do
+    sign_out @user
+    staff = users(:staff)
+    course_admin = users(:student)
+    course = create :course, series_count: 1
+    course.administrating_members << staff
+    course.administrating_members << course_admin
+
+    exercise = create :exercise, :config_stubbed
+    exercise.update(draft: true)
+    course.series.first.exercises << exercise
+
+    sign_in staff
+    get course_activity_url(course, exercise)
+
+    assert_response :success
+    sign_out staff
+
+    sign_in course_admin
+    get course_activity_url(course, exercise)
+
+    assert_response :success
+  end
+
+  test 'course admin should not be able to access draft activities in other courses' do
+    sign_out @user
+    staff = users(:staff)
+    course_admin = users(:student)
+    course = create :course, series_count: 1
+    course.administrating_members << staff
+    course.administrating_members << course_admin
+
+    course2 = create :course, series_count: 1
+
+    exercise = create :exercise, :config_stubbed
+    exercise.update(draft: true)
+    course.series.first.exercises << exercise
+    course2.series.first.exercises << exercise
+
+    sign_in staff
+    get course_activity_url(course2, exercise)
+
+    assert_redirected_to root_url
+    sign_out staff
+
+    sign_in course_admin
+    get course_activity_url(course2, exercise)
+
+    assert_redirected_to root_url
+  end
+
+  test 'student should not be able to access draft activities in course' do
+    sign_out @user
+    student = users(:student)
+    course = create :course, series_count: 1
+    course.enrolled_members << student
+
+    exercise = create :exercise, :config_stubbed
+    exercise.update(draft: true)
+    course.series.first.exercises << exercise
+
+    sign_in student
+    get course_activity_url(course, exercise)
+
+    assert_redirected_to root_url
   end
 end
 

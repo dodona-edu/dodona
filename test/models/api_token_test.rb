@@ -20,7 +20,7 @@ class ApiTokenTest < ActiveSupport::TestCase
 
   test 'api token creation' do
     assert_not_nil @api_token
-    assert @api_token.token.length > 30
+    assert_operator @api_token.token.length, :>, 30
     assert_not_nil @api_token.token_digest
     assert_equal ApiToken.digest(@token), @api_token.token_digest
   end

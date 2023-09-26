@@ -96,7 +96,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
     assert_equal 100, config['memory_limit']
     assert_equal 42, config['time_limit']
-    assert config['network_enabled'] # overidden
+    assert_operator config, :[], 'network_enabled' # overidden
     assert_equal @exercise.programming_language.name, config['programming_language']
     assert_equal @user.lang, config['natural_language']
     %w[resources source judge workdir].each do |key|

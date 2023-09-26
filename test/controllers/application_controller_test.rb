@@ -19,7 +19,7 @@ class ApplicationControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_not_equal session[:user_return_to], location
-    assert session[:user_return_to].length < 100
+    assert_operator session[:user_return_to].length, :<, 100
   end
 
   test 'should get unauthorized status when not logged in' do

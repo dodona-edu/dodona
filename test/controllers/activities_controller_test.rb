@@ -658,19 +658,19 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     get activity_url(ex, format: :json)
     resp = response.parsed_body
 
-    assert resp['last_solution_is_best']
-    assert resp['has_solution']
-    assert resp['has_correct_solution']
+    assert_operator resp, :[], 'last_solution_is_best'
+    assert_operator resp, :[], 'has_solution'
+    assert_operator resp, :[], 'has_correct_solution'
     get course_series_activity_url(s1.course, s1, ex, format: :json)
     resp = response.parsed_body
 
-    assert resp['last_solution_is_best']
-    assert resp['has_solution']
-    assert resp['has_correct_solution']
+    assert_operator resp, :[], 'last_solution_is_best'
+    assert_operator resp, :[], 'has_solution'
+    assert_operator resp, :[], 'has_correct_solution'
     get course_series_activity_url(s2.course, s2, ex, format: :json)
     resp = response.parsed_body
 
-    assert resp['last_solution_is_best']
+    assert_operator resp, :[], 'last_solution_is_best'
     assert_not resp['has_solution']
     assert_not resp['has_correct_solution']
   end
@@ -687,11 +687,11 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     get activity_url(ra, format: :json)
     resp = response.parsed_body
 
-    assert resp['has_read']
+    assert_operator resp, :[], 'has_read'
     get course_series_activity_url(s1.course, s1, ra, format: :json)
     resp = response.parsed_body
 
-    assert resp['has_read']
+    assert_operator resp, :[], 'has_read'
     get course_series_activity_url(s2.course, s2, ra, format: :json)
     resp = response.parsed_body
 

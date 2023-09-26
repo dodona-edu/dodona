@@ -32,6 +32,7 @@ FactoryBot.define do
   factory :content_page do
     access { 'public' }
     status { 'ok' }
+    draft { false }
 
     sequence(:path) { |n| "content_page#{n}" }
 
@@ -57,6 +58,8 @@ FactoryBot.define do
         stub_status(content, 'ok')
         content.stubs(:description_localized).returns(c.description_md_stubbed)
       end
+      # Draft is set to true by default, but we want to test non-draft activities
+      content.update(draft: false)
     end
 
     trait :config_stubbed do

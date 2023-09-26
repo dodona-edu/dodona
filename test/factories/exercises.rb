@@ -75,6 +75,8 @@ FactoryBot.define do
         stub_status(exercise, 'ok')
         exercise.stubs(:description_localized).returns(e.description_md_stubbed)
       end
+      # Draft is set to true by default, but we want to test non-draft exercises
+      exercise.update_column(:draft, false)
     end
 
     after :build do |exercise|

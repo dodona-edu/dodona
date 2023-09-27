@@ -48,7 +48,7 @@ function initAnnotateButtons(): void {
     document.addEventListener("dragover", e => e.preventDefault());
     document.addEventListener("drop", e => e.preventDefault());
 
-    // copy only the selected code, this avoids copying the line numbers or extra whitespace form the complex html
+    // copy only the selected code, this avoids copying the line numbers or extra whitespace from the complex html
     document.addEventListener("copy", event => {
         const selection = userAnnotationState.selectedRange;
         if (!selection) {

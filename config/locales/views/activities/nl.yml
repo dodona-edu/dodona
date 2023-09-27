@@ -103,7 +103,7 @@ nl:
       preloaded_clear: Maak de editor leeg.
       preloaded_restore: Zet de voorbeeldcode terug.
       alert_draft: Deze activiteit is in ontwerpmodus. Ze is niet zichtbaar voor studenten.
-      alert_draft_edit: Ze de ontwerpmodus uit.
+      alert_draft_edit: Zet de ontwerpmodus uit.
     series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

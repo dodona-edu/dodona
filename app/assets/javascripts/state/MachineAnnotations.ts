@@ -3,6 +3,7 @@ import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
 import { createStateFromInterface } from "state/state_system/CreateStateFromInterface";
+import { submissionState } from "state/Submissions";
 
 export interface MachineAnnotationData {
     type: AnnotationType;
@@ -30,7 +31,13 @@ class MachineAnnotationState extends State {
         for (const data of annotations) {
             const annotation = new MachineAnnotation(data);
             const markedLength = annotation.rows ?? 1;
-            const line = annotation.row ? annotation.row + markedLength : 1;
+            let line = annotation.row ? annotation.row + markedLength : 1;
+
+            // show annotation on the last line if it is out of range
+            if (line > submissionState.codeByLine.length) {
+                line = submissionState.codeByLine.length;
+            }
+
             if (this.byLine.has(line)) {
                 this.byLine.get(line)?.push(annotation);
             } else {

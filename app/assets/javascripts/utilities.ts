@@ -126,7 +126,7 @@ function tooltip(target: Element | null, message: string, disappearAfter = 3000)
 
 function fetch(url: URL | RequestInfo, options: RequestInit = {}): Promise<Response> {
     const headers = options.headers || {};
-    headers["x-csrf-token"] = headers["x-csrf-token"] || (document.querySelector("meta[name=\"csrf-token\"]") as HTMLMetaElement).content;
+    headers["x-csrf-token"] = headers["x-csrf-token"] || (document.querySelector("meta[name=\"csrf-token\"]") as HTMLMetaElement)?.content;
     headers["x-requested-with"] = headers["x-requested-with"] || "XMLHttpRequest";
     options["headers"] = headers;
     return window.fetch(url, options);

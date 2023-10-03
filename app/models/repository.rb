@@ -2,15 +2,17 @@
 #
 # Table name: repositories
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  remote       :string(255)
-#  path         :string(255)
-#  judge_id     :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  clone_status :integer          default("queued"), not null
-#  featured     :boolean          default(FALSE)
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  remote            :string(255)
+#  path              :string(255)
+#  judge_id          :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  clone_status      :integer          default("queued"), not null
+#  featured          :boolean          default(FALSE)
+#  reprocess_queued  :boolean          default(FALSE)
+#  reprocess_running :boolean          default(FALSE)
 #
 require 'open3'
 require 'pathname'
@@ -113,18 +115,35 @@ class Repository < ApplicationRecord
   end
 
   def process_activities_email_errors_delayed(kwargs = {})
-    delay(queue: 'git').process_activities_email_errors(kwargs)
+    return if reprocess_queued?
+
+    update(reprocess_queued: true)
+    if reprocess_running?
+      delay(queue: 'git', run_at: 1.minute.from_now).process_activities_email_errors(kwargs)
+    else
+      delay(queue: 'git').process_activities_email_errors(kwargs)
+    end
   end
 
   def process_activities_email_errors(kwargs = {})
-    kwargs[:user] = admins.first if kwargs.empty? && admins.any?
-    kwargs[:email] = Rails.application.config.dodona_email if kwargs.empty?
+    if reprocess_running?
+      delay(queue: 'git', run_at: 1.minute.from_now).process_activities_email_errors(kwargs)
+      return
+    end
 
-    process_activities
-  rescue AggregatedConfigErrors => e
-    ErrorMailer.json_error(e, **kwargs).deliver
-  rescue DodonaGitError => e
-    ErrorMailer.git_error(e, **kwargs).deliver
+    update(reprocess_queued: false, reprocess_running: true)
+    begin
+      kwargs[:user] = admins.first if kwargs.empty? && admins.any?
+      kwargs[:email] = Rails.application.config.dodona_email if kwargs.empty?
+
+      process_activities
+    rescue AggregatedConfigErrors => e
+      ErrorMailer.json_error(e, **kwargs).deliver
+    rescue DodonaGitError => e
+      ErrorMailer.git_error(e, **kwargs).deliver
+    ensure
+      update(reprocess_running: false)
+    end
   end
 
   def process_activities

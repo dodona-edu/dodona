@@ -465,7 +465,7 @@ class Activity < ApplicationRecord
 
   def read_config_locations(location)
     repository.read_config_file(location)
-        &.deep_transform_values! { location }
+              &.deep_transform_values! { location }
   end
 
   def config_locations

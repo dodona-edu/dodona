@@ -384,4 +384,56 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       assert_match expected_score_string(feedback.score, feedback.maximum_score), response.body
     end
   end
+
+  test 'should be able to order most recent submissions by user' do
+    u = create :user, first_name: 'abcd'
+    u2 = create :user, first_name: 'efgh'
+    course = create :course, series_count: 1, activities_per_series: 1
+    e = course.series.first.exercises.first
+    create :submission, exercise: e, user: u, course: course, created_at: 2.minutes.ago, status: :correct
+    least_recent = create :submission, exercise: e, user: u2, course: course, created_at: 1.minute.ago, status: :wrong
+    most_recent = create :submission, exercise: e, user: u, course: course, status: :running
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal most_recent.id, response.parsed_body.first['id']
+    assert_equal least_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'created_at', direction: 'ASC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal least_recent.id, response.parsed_body.first['id']
+    assert_equal most_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'created_at', direction: 'DESC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal most_recent.id, response.parsed_body.first['id']
+    assert_equal least_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'user', direction: 'DESC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal least_recent.id, response.parsed_body.first['id']
+    assert_equal most_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'user', direction: 'ASC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal most_recent.id, response.parsed_body.first['id']
+    assert_equal least_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'status', direction: 'DESC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal most_recent.id, response.parsed_body.first['id']
+    assert_equal least_recent.id, response.parsed_body.second['id']
+
+    get course_series_activity_submissions_path(course, course.series.first, e), params: { most_recent_per_user: true, order_by: { column: 'status', direction: 'ASC' }, format: :json }
+
+    assert_equal 2, response.parsed_body.count
+    assert_equal least_recent.id, response.parsed_body.first['id']
+    assert_equal most_recent.id, response.parsed_body.second['id']
+  end
 end

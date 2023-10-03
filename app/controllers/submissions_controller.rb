@@ -194,11 +194,14 @@ class SubmissionsController < ApplicationController
     # to be applied before this one
     @submissions = @submissions.most_recent_per_user
 
-    return if params[:order_by].blank?
-
-    # reapplies the order_by scope if present in the params
-    # this is needed because the previous line creates a group by query, which breaks the order_by scope
-    @submissions = Submission.where(id: @submissions.pluck(:id)) # otherwise the group_by breaks order_by scopes that use joins
-    @submissions = apply_scopes(@submissions, { order_by: params[:order_by] })
+    if params[:order_by].present?
+      # reapplies the order_by scope if present in the params
+      # this is needed because the previous line creates a group by query, which breaks the order_by scope
+      @submissions = Submission.where(id: @submissions) # otherwise the group_by breaks order_by scopes that use joins
+      @submissions = apply_scopes(@submissions, { order_by: params[:order_by] })
+    else
+      # reapply the default order scope, as most_recent_per_user breaks it
+      @submissions = @submissions.reorder(id: :desc)
+    end
   end
 end

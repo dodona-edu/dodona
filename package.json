@@ -57,7 +57,7 @@
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
     "babel-plugin-istanbul": "^6.1.1",
-    "eslint": "^8.50.0",
+    "eslint": "^8.51.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^27.4.2",
     "eslint-plugin-lit": "^1.9.1",

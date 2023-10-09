@@ -18,7 +18,7 @@ class ApiTokensController < ApplicationController
         f.js { render 'create', locals: { toast: message, new_token: @token } }
       else
         errors = @token.errors.full_messages
-        errors << I18n.t('errors.models.api_token.attributes.not_permitted') unless can_create
+        errors << I18n.t('activerecord.errors.models.api_token.not_permitted') unless can_create
         message = errors.join(', ')
         f.html do
           redirect_back fallback_location: root_path,

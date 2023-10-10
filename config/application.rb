@@ -9,7 +9,29 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
+
+    # ** Please read carefully, this must be configured in config/application.rb **
+    # Change the format of the cache entry.
+    # Changing this default means that all new cache entries added to the cache
+    # will have a different format that is not supported by Rails 7.0
+    # applications.
+    # Only change this value after your application is fully deployed to Rails 7.1
+    # and you have no plans to rollback.
+    # When you're ready to change format, add this to `config/application.rb` (NOT
+    # this file):
+    config.active_support.cache_format_version = 7.0
+
+    # Configure Action View to use HTML5 standards-compliant sanitizers when they are supported on your
+    # platform.
+    #
+    # `Rails::HTML::Sanitizer.best_supported_vendor` will cause Action View to use HTML5-compliant
+    # sanitizers if they are supported, else fall back to HTML4 sanitizers.
+    #
+    # In previous versions of Rails, Action View always used `Rails::HTML4::Sanitizer` as its vendor.
+
+    # we stick to HTML4 until https://github.com/rails/rails-html-sanitizer/issues/169 is fixed
+    Rails.application.config.action_view.sanitizer_vendor = Rails::HTML4::Sanitizer
 
     config.dodona_email = 'dodona@ugent.be'
     # Configuration for the application, engines, and railties goes here.

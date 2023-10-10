@@ -84,7 +84,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <table style="background:black;">
         <thead>
-          <td>Head</td>
+          <tr>
+            <td>Head</td>
+          </tr>
         </thead>
         <tbody>
           <tr>

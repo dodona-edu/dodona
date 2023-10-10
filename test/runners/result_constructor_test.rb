@@ -1,6 +1,6 @@
 require 'json'
 require 'test_helper'
-require 'result_constructor'
+require_relative '../../app/runners/result_constructor'
 
 class ResultConstructorTest < ActiveSupport::TestCase
   MINIMAL_FULL_S =

@@ -38,7 +38,7 @@ Rails.application.configure do
   config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = :rescuable
+  config.action_dispatch.show_exceptions = :none
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
@@ -69,7 +69,8 @@ Rails.application.configure do
   # config.action_view.annotate_rendered_view_with_filenames = true
 
   # Raise error when a before_action's only/except options reference missing actions
-  config.action_controller.raise_on_missing_callback_actions = true
+  # Disable because application_controller.rb mentions a lot of actions that are only defined in some subclasses
+  config.action_controller.raise_on_missing_callback_actions = false
 
   Delayed::Worker.delay_jobs = ->(job) { !%w[default exports git statistics].include?(job.queue) }
 

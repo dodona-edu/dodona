@@ -30,7 +30,7 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
     assert_difference('ApiToken.count', 0) do
       post user_api_tokens_url(:nl, @other_user), params: model_params(generate_attr_hash)
     end
-    assert_equal flash[:alert], I18n.t('errors.models.api_token.attributes.not_permitted')
+    assert_equal flash[:alert], I18n.t('activerecord.errors.models.api_token.not_permitted')
   end
 
   test 'should not be able to delete token from other user' do

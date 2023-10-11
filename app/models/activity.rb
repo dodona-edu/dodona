@@ -103,7 +103,6 @@ class Activity < ApplicationRecord
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
 
-  enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
   POPULARITY_THRESHOLDS = {
     unpopular: { min: 0, max: 2 },
     neutral: { min: 3, max: 10 },

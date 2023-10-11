@@ -301,7 +301,7 @@ class Activity < ApplicationRecord
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
-    c['draft'] = draft if defined?(draft)
+    c['draft'] = draft if defined?(draft) && draft != merged_config['draft']
     c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
     c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}

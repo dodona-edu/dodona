@@ -212,7 +212,6 @@ class Repository < ApplicationRecord
 
     new_activities.each do |act|
       c = act.config
-      act.update(draft: true)
       c['internals'] = {}
       c['internals']['token'] = act.repository_token
       c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'

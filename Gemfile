@@ -80,7 +80,7 @@ gem 'jwt', '~> 2.7.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
-gem 'mail_form', '~> 1.10.0'
+gem 'mail_form', '~> 1.10.1'
 
 # set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
 gem 'mail', '~> 2.8.1'

@@ -8,6 +8,7 @@ import userEvent from "@testing-library/user-event";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { html } from "lit";
 import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
+import * as util from "utilities";
 window.bootstrap = bootstrap;
 
 beforeEach(async () => {
@@ -15,6 +16,10 @@ beforeEach(async () => {
     window.MathJax = {} as MathJaxObject;
     // Mock typeset function of MathJax
     window.MathJax.typeset = () => "";
+
+    jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve({}),
+    } as Response ));
 
     // Bootstrap incorrectly detects jquery, so we need to disable it
     document.body.setAttribute("data-bs-no-jquery", "true");

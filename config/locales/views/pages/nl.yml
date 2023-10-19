@@ -101,8 +101,8 @@ nl:
       submissions: Ingediende oplossingen
       correct-exercises: Correcte oefeningen
       recent-exercises: Recente oefeningen
-      draft-exercises: Concept oefeningen
-      all-draft-exercises: Alle concept oefeningen
+      draft-exercises: Ongepubliceerde oefeningen
+      all-draft-exercises: Alle ongepubliceerde oefeningen
     getting_started_card:
       title: Hallo,
       text: Welkom op Dodona! Registreer je voor een cursus om van start te gaan.

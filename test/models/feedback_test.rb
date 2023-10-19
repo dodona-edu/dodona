@@ -24,8 +24,8 @@ class FeedbackTest < ActiveSupport::TestCase
   end
 
   test 'Appropriate amount of feedbacks are created when making a session and when updating' do
-    assert @user_count > 1
-    assert @exercise_count > 1
+    assert_operator @user_count, :>, 1
+    assert_operator @exercise_count, :>, 1
     assert_equal @user_count * @exercise_count, @evaluation.feedbacks.count
 
     user_to_remove = @users.sample

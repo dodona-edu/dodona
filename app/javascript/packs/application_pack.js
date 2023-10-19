@@ -10,9 +10,9 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
 
-import { start as startRails } from "@rails/ujs";
+import Rails from "@rails/ujs";
 
-startRails();
+Rails.start();
 
 import { I18n } from "i18n/i18n";
 window.I18n = new I18n();

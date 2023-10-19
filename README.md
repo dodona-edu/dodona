@@ -3,8 +3,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dodona-edu/dodona)
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dodona-edu/dodona/test.yml?branch=main)
 ![Codecov](https://img.shields.io/codecov/c/github/dodona-edu/dodona)
-[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me)
-[![General chat](https://img.shields.io/static/v1?label=general%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be)
+[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20slack&color=informational)](https://join.slack.com/t/dodona-edu/shared_invite/zt-24o2an3bp-fFR_TTM0fB_kmlCvkS2ckA)
 
 > Dodona is an online exercise platform for **learning to code**. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an **online co-teacher**, designed to give every student access to high quality education. The focus is on automatic corrections and giving **meaningful feedback** on the submitted solutions from students.
 

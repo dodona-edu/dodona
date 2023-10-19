@@ -53,10 +53,10 @@ class FeedbackTableRenderer
 
   def show_diff_type_switch(tab)
     tab[:groups]&.compact # Groups
-      &.flat_map { |t| t[:groups] }&.compact # Testcases
-      &.flat_map { |t| t[:tests] }&.compact # Tests
-      &.reject { |t| t[:accepted] }
-      &.any?
+                &.flat_map { |t| t[:groups] }&.compact # Testcases
+                &.flat_map { |t| t[:tests] }&.compact # Tests
+                &.reject { |t| t[:accepted] }
+                &.any?
   end
 
   def show_hide_correct_switch(tab)

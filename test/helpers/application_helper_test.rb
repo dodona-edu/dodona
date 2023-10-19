@@ -84,7 +84,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <table style="background:black;">
         <thead>
-          <td>Head</td>
+          <tr>
+            <td>Head</td>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -100,7 +102,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
   test 'sanitize helper should allow a selection of svg tags' do
     dirty_html = <<~HTML
-      <svg viewbox="0 0 100 100" width="300" height="100" version="1.1">
+      <svg viewBox="0 0 100 100" width="300" height="100" version="1.1">
         <style>line,circle{stroke-width:3px;stroke:black;stroke-linecap:round}</style>
         <style>test{stroke-width:3px;stroke:black;stroke-linecap:round}</style>
         <g id="group1" transform="translate(50,50)">

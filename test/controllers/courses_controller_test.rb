@@ -836,7 +836,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
     end
-    assert_includes response.body, courses_url
+    assert_redirected_to courses_url
   end
 
   test 'should not destroy course as course admin if too many submissions' do
@@ -860,7 +860,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_difference 'Course.count', -1 do
       delete course_url(@course)
     end
-    assert_includes response.body, courses_url
+    assert_redirected_to courses_url
   end
 
   test 'super admins are able to view questions' do

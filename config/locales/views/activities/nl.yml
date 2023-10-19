@@ -30,7 +30,7 @@ nl:
       draft:
         title: "Concept"
         toggle-label: "Markeer als concept"
-        help: "Wanneer een oefening in concept modus staat, is ze onzichtbaar voor studenten en krijgen leerkrachten betere foutmeldingen."
+        help: "Markeer een oefening als concept zolang je ze nog aan het opstellen bent."
     index:
       title: Oefeningen
       exercise: Oefening
@@ -71,7 +71,7 @@ nl:
         mine: "Mijn activiteiten"
         featured: "Uitgelichte activiteiten"
         all: "Alle activiteiten"
-      draft-notice: "Deze activiteit is een concept. Ze is niet zichtbaar voor studenten."
+      draft-notice: "Deze activiteit is nog een concept. Ze is niet zichtbaar voor studenten."
     show:
       code: Code
       handin: Indienen
@@ -102,8 +102,8 @@ nl:
       preloaded_info: We hebben jouw laatste oplossing ingeladen in de editor.
       preloaded_clear: Maak de editor leeg.
       preloaded_restore: Zet de voorbeeldcode terug.
-      alert_draft: Deze oefening is een concept. Ze is niet zichtbaar voor studenten.
-      alert_draft_edit: Markeer deze oefening als af.
+      alert_draft: Deze oefening is nog een concept. Ze is niet zichtbaar voor studenten.
+      alert_draft_edit: Deze oefening publiceren.
     series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

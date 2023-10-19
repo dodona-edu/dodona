@@ -29,8 +29,8 @@ en:
       info_description: Go to the information page of this learning activity
       draft:
         title: "Draft"
-        toggle-label: "Put activity in draft mode."
-        help: "Draft mode provides better error logging for teachers and hides the activity from students. Draft mode is activated by default for new activities."
+        toggle-label: "Mark activity as draft."
+        help: "Mark activities as draft while you are still working on them."
     index:
       title: Exercises
       exercise: Exercise
@@ -71,7 +71,7 @@ en:
         mine: "My activities"
         featured: "Featured activities"
         all: "All activities"
-      draft-notice: "This activity is in draft mode. It is not visible for students."
+      draft-notice: "This activity is a draft and thus not visible for students."
     show:
       code: Code
       handin: Hand in
@@ -102,8 +102,8 @@ en:
       preloaded_info: "We have preloaded your latest submission into the editor."
       preloaded_clear: Clear editor.
       preloaded_restore: Restore the initial code.
-      alert_draft: This activity is in draft mode. It is not visible for students.
-      alert_draft_edit: Disable draft mode.
+      alert_draft: This activity is a draft and thus not visible for students.
+      alert_draft_edit: Publish activity.
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

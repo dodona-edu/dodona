@@ -1,7 +1,7 @@
 import fscreen from "fscreen";
 import { fetch } from "utilities";
 import { showInfoModal } from "modal";
-import { html } from "lit/development";
+import { html } from "lit";
 
 export function initTutor(submissionCode: string): void {
     function init(): void {

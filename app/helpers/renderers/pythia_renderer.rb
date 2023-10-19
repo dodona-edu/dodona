@@ -59,29 +59,6 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
-  def group(g)
-    if g.key?(:data)
-      @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}",
-                   'data-statements': (g[:data][:statements]).to_s,
-                   'data-stdin': (g[:data][:stdin]).to_s) do
-        @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
-          @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('', class: 'mdi mdi-launch mdi-18')
-          end
-        end
-        if g[:description]
-          @builder.div(class: 'col-12 description') do
-            message(g[:description])
-          end
-        end
-        messages(g[:messages])
-        g[:groups]&.each { |tc| testcase(tc) }
-      end
-    else
-      super(g)
-    end
-  end
-
   def testcase(tc)
     return super(tc) unless tc[:data] && tc[:data][:files]
 

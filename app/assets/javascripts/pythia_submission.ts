@@ -19,21 +19,22 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
 
     function initTutorLinks(): void {
         document.querySelectorAll(".tutorlink").forEach(l => {
-            const group = l.closest(".group") as HTMLElement;
-            if (!(group.dataset.statements || group.dataset.stdin)) {
+            const tutorLink = l as HTMLLinkElement;
+            if (!(tutorLink.dataset.statements || tutorLink.dataset.stdin)) {
                 l.remove();
             }
         });
 
         document.querySelectorAll(".tutorlink").forEach(l => l.addEventListener("click", e => {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
-            const group = e.currentTarget.closest(".group");
-            const stdin = group.dataset.stdin.slice(0, -1);
-            const statements = group.dataset.statements;
+            const tutorLink = e.currentTarget as HTMLLinkElement;
+            const group = tutorLink.closest(".group");
+            const stdin = tutorLink.dataset.stdin.slice(0, -1);
+            const statements = tutorLink.dataset.statements;
             const files = { inline: {}, href: {} };
 
             group.querySelectorAll(".contains-file").forEach(g => {
-                const content = JSON.parse(g.dataset.files);
+                const content = JSON.parse((g as HTMLElement).dataset.files);
 
                 Object.values(content).forEach(value => {
                     files[value["location"]][value["name"]] = value["content"];

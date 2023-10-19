@@ -4,6 +4,7 @@ import { attachClipboard } from "copy";
 import { evaluationState } from "state/Evaluations";
 import codeListing from "code_listing";
 import { annotationState } from "state/Annotations";
+import { initTutor } from "tutor";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
 window.dodona.codeListing = codeListing;
@@ -14,3 +15,7 @@ window.dodona.initSubmissionHistory = initSubmissionHistory;
 window.dodona.setEvaluationId = id => evaluationState.id = id;
 window.dodona.setAnnotationVisibility = visibility => annotationState.visibility = visibility;
 window.dodona.showLastTab = showLastTab;
+window.dodona.initTutor = initTutor;
+
+// will automatically bind to window.iFrameResize()
+require("iframe-resizer"); // eslint-disable-line no-undef

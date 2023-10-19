@@ -2,7 +2,7 @@ class PythiaRenderer < FeedbackTableRenderer
   include ActionView::Helpers::JavaScriptHelper
 
   def parse
-    tutor_init
+    file_viewer_init
     super
   end
 
@@ -74,36 +74,11 @@ class PythiaRenderer < FeedbackTableRenderer
 
   ## custom methods
 
-  def tutor_init
-    # Initialize tutor javascript
+  def file_viewer_init
+    # Initialize file viewers
     @builder.script do
-      escaped = escape_javascript(@code.strip)
       @builder << 'dodona.ready.then(function() {'
-      @builder << "document.body.append(document.getElementById('tutor'));"
-      @builder << "var code = \"#{escaped}\";"
-      @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
-    end
-
-    # Tutor HTML
-    @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
-        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
-          @builder.div(class: 'modal-content') do
-            @builder.div(class: 'modal-header') do
-              @builder.h4(class: 'modal-title') {}
-              @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
-                  @builder.i('', class: 'mdi mdi-fullscreen')
-                end
-                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close')
-                end
-              end
-            end
-            @builder.div(class: 'modal-body') {}
-          end
-        end
-      end
+      @builder << "dodona.initFileViewers('#{activity_path(nil, @exercise)}');});"
     end
   end
 

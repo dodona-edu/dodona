@@ -1,6 +1,4 @@
 class PythiaRenderer < FeedbackTableRenderer
-  include ActionView::Helpers::JavaScriptHelper
-
   def parse
     file_viewer_init
     super

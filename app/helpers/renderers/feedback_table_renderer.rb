@@ -1,4 +1,5 @@
 class FeedbackTableRenderer
+  include ActionView::Helpers::JavaScriptHelper
   include Rails.application.routes.url_helpers
   include ApplicationHelper
 

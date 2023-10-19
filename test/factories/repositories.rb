@@ -2,15 +2,17 @@
 #
 # Table name: repositories
 #
-#  id           :integer          not null, primary key
-#  name         :string(255)
-#  remote       :string(255)
-#  path         :string(255)
-#  judge_id     :integer
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  clone_status :integer          default("queued"), not null
-#  featured     :boolean          default(FALSE)
+#  id                :integer          not null, primary key
+#  name              :string(255)
+#  remote            :string(255)
+#  path              :string(255)
+#  judge_id          :integer
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  clone_status      :integer          default("queued"), not null
+#  featured          :boolean          default(FALSE)
+#  reprocess_queued  :boolean          default(FALSE)
+#  reprocess_running :boolean          default(FALSE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

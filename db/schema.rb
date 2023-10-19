@@ -393,8 +393,6 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_03_115520) do
     t.datetime "updated_at", precision: nil, null: false
     t.integer "clone_status", default: 1, null: false
     t.boolean "featured", default: false
-    t.boolean "reprocess_queued", default: false
-    t.boolean "reprocess_running", default: false
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true

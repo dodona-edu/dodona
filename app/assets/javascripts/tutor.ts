@@ -1,19 +1,23 @@
 import fscreen from "fscreen";
-import { fetch } from "utilities";
 import { showInfoModal } from "modal";
 import { html } from "lit";
+import { TraceGenerator } from "pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
+    const generator = new TraceGenerator();
     function init(): void {
-        initTutorLinks();
-        if (document.querySelectorAll(".tutormodal").length == 1) {
-            initFullScreen();
-        } else {
-            const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
-            if (tutorModal) {
-                tutorModal.remove();
+        // only init links when the trace generator is ready
+        generator.setup().then(() => {
+            initTutorLinks();
+            if (document.querySelectorAll(".tutormodal").length == 1) {
+                initFullScreen();
+            } else {
+                const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
+                if (tutorModal) {
+                    tutorModal.remove();
+                }
             }
-        }
+        });
     }
 
     function initTutorLinks(): void {
@@ -107,21 +111,7 @@ export function initTutor(submissionCode: string): void {
         formData.append("inlineFiles", JSON.stringify(inlineFiles));
         formData.append("hrefFiles", JSON.stringify(hrefFiles));
 
-        fetch(window.dodona.tutorUrl, {
-            method: "POST",
-            body: formData,
-        })
-            .then( response => {
-                if (response.ok) {
-                    response.json().then(data => createTutor(data));
-                } else {
-                    const error = document.createElement("div");
-                    error.classList.add("alert", "alert-danger", "alert-dismissible", "show", "tutor-error");
-                    error.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${I18n.t("js.tutor-failed")}`;
-                    document.querySelector(".feedback-table").before(error);
-                    window.scrollTo(0, 0); // scroll to top of page to see error
-                }
-            });
+        generator.generateTrace(sourceCode, true).then((result: string) => createTutor(result));
     }
 
     function createTutor(codeTrace: string): void {
@@ -137,7 +127,7 @@ export function initTutor(submissionCode: string): void {
             if (content) {
                 content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
                 document.querySelector("#tutorviz").addEventListener("load", () => {
-                    window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace), scrolling: "omit" }, "#tutorviz");
+                    window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
                 });
             }
         });

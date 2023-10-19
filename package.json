@@ -38,6 +38,7 @@
     "iframe-resizer": "^4.3.7",
     "lit": "2.8.0",
     "node-polyglot": "^2.5.0",
+    "pyodide-trace-library": "^1.5.1",
     "sass": "^1.69.3",
     "tippy.js": "^6.3.7",
     "typescript": "^4.9.5",

@@ -20,7 +20,7 @@
     "@babel/preset-env": "^7.23.2",
     "@babel/preset-typescript": "^7.23.2",
     "@dodona/papyros": "^1.0.1",
-    "@dodona/pyodide-trace-library": "^2.0.4",
+    "@dodona/pyodide-trace-library": "^2.0.5",
     "@popperjs/core": "^2.11.8",
     "@rails/activestorage": "^7.1.1",
     "@rails/ujs": "^7.1.1",

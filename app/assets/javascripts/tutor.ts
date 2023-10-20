@@ -1,7 +1,7 @@
 import fscreen from "fscreen";
 import { showInfoModal } from "modal";
 import { html } from "lit";
-import { TraceGenerator } from "pyodide-trace-library";
+import { TraceGenerator } from "@dodona/pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
     const generator = new TraceGenerator();
@@ -83,7 +83,7 @@ export function initTutor(submissionCode: string): void {
         }
     }
 
-    function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: any, hrefFiles: any): void {
+    function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): void {
         const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;
@@ -104,14 +104,13 @@ export function initTutor(submissionCode: string): void {
         sourceArray.push(statements);
         const sourceCode = sourceArray.join("\n");
 
-        const formData = new FormData();
-        formData.append("exercise_id", exerciseId);
-        formData.append("code", sourceCode);
-        formData.append("input", JSON.stringify(stdin.split("\n")));
-        formData.append("inlineFiles", JSON.stringify(inlineFiles));
-        formData.append("hrefFiles", JSON.stringify(hrefFiles));
+        // make full url from path
+        const hrefFilesFull = Object.keys(hrefFiles).reduce((result, key) => {
+            result[key] = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ""}/nl/exercises/${exerciseId}/${hrefFiles[key]}`;
+            return result;
+        }, {});
 
-        generator.generateTrace(sourceCode, true).then((result: string) => createTutor(result));
+        generator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
     }
 
     function createTutor(codeTrace: string): void {

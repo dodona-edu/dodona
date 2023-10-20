@@ -1231,6 +1231,19 @@
     pyodide-worker-runner "^0.0.10"
     sync-message "^0.0.10"
 
+"@dodona/pyodide-trace-library@file:../pyodide-trace-library":
+  version "2.0.1"
+  dependencies:
+    "@types/node" "^18.11.15"
+    comlink "^4.3.1"
+    comsync "^0.0.8"
+    file-loader "^6.2.0"
+    fs "^0.0.1-security"
+    pyodide "^0.22.0"
+    pyodide-worker-runner "^1.3.1"
+    sync-message "^0.0.10"
+    typescript "^4.9.4"
+
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@eslint-community/eslint-utils/-/eslint-utils-4.2.0.tgz#a831e6e468b4b2b5ae42bf658bea015bf10bc518"
@@ -6636,21 +6649,6 @@ punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
-
-pyodide-trace-library@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/pyodide-trace-library/-/pyodide-trace-library-1.5.1.tgz#1b663da142d903ac3078802a378591dc3539efae"
-  integrity sha512-JcRKlgNdj7DaCH4cKXDXN68JFYHzZS+QeRPWe1XQhLSRysGA3vk+TneOTNfyScb3yu/janfoOSCBQYOUOJ0fIQ==
-  dependencies:
-    "@types/node" "^18.11.15"
-    comlink "^4.3.1"
-    comsync "^0.0.8"
-    file-loader "^6.2.0"
-    fs "^0.0.1-security"
-    pyodide "^0.22.0"
-    pyodide-worker-runner "^1.3.1"
-    sync-message "^0.0.10"
-    typescript "^4.9.4"
 
 pyodide-worker-runner@^0.0.10:
   version "0.0.10"

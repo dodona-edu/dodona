@@ -1231,10 +1231,10 @@
     pyodide-worker-runner "^0.0.10"
     sync-message "^0.0.10"
 
-"@dodona/pyodide-trace-library@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@dodona/pyodide-trace-library/-/pyodide-trace-library-2.0.1.tgz#c9e5ad7ecd31a516366fa7c0a17e19bb143e2600"
-  integrity sha512-/nmsXWrlxfOjVTcBciR6eDWl1WpqJaZd7zM9H9UTJ1zGxaUxprRn5eWiWVB/Sspx2VkqjQlMZf5ZYeJ7MDwnOg==
+"@dodona/pyodide-trace-library@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@dodona/pyodide-trace-library/-/pyodide-trace-library-2.0.2.tgz#63456bcd0b51e465a133d0b93c5d1a913429b169"
+  integrity sha512-aN/IvphbXh5t/uY8tqdPiwylE5ts1/qQpMy2+oTttsSaAmSkQAtTz177B+JltmvXIOF1gCGLsrlJHbggBj953Q==
   dependencies:
     "@types/node" "^18.11.15"
     comlink "^4.3.1"

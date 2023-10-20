@@ -12,12 +12,12 @@ Rails.application.configure do
 
     if Rails.env.development?
       # Allow webpack-dev-server
-      policy.connect_src :self, Rails.configuration.tutor_url.to_s,
+      policy.connect_src :self,
                          'https://cdn.jsdelivr.net/pyodide/',
                          'https://*.googleapis.com',
                          'http://localhost:3035', 'ws://localhost:3035'
     else
-      policy.connect_src :self, Rails.configuration.tutor_url.to_s,
+      policy.connect_src :self,
                          'https://cdn.jsdelivr.net/pyodide/',
                          'https://cdn.jsdelivr.net/npm/mathjax@3/'
     end

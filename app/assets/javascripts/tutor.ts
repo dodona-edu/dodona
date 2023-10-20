@@ -5,19 +5,17 @@ import { TraceGenerator } from "@dodona/pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
     const generator = new TraceGenerator();
+    const generatorReady = generator.setup();
     function init(): void {
-        // only init links when the trace generator is ready
-        generator.setup().then(() => {
-            initTutorLinks();
-            if (document.querySelectorAll(".tutormodal").length == 1) {
-                initFullScreen();
-            } else {
-                const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
-                if (tutorModal) {
-                    tutorModal.remove();
-                }
+        initTutorLinks();
+        if (document.querySelectorAll(".tutormodal").length == 1) {
+            initFullScreen();
+        } else {
+            const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
+            if (tutorModal) {
+                tutorModal.remove();
             }
-        });
+        }
     }
 
     function initTutorLinks(): void {
@@ -110,26 +108,31 @@ export function initTutor(submissionCode: string): void {
             return result;
         }, {});
 
-        generator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
+        showInfoModal(
+            "Python Tutor",
+            html`<div id="tutorcontent"><div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
+                <div class="progressbar bar bar1" style="width: 0%;"></div>
+                <div class="bufferbar bar bar2" style="width: 100%;"></div>
+                <div class="auxbar bar bar3" style="width: 0%;"></div>
+            </div></div>`,
+            { allowFullscreen: true }
+        );
+
+        generatorReady.then(() => {
+            generator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
+        });
     }
 
     function createTutor(codeTrace: string): void {
-        showInfoModal(
-            "Python Tutor",
-            html`<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>`,
-            { allowFullscreen: true }
-        );
         const modal = document.querySelector("#tutor #info-modal");
 
-        modal.addEventListener("shown.bs.modal", () => {
-            const content = document.querySelector("#tutorcontent");
-            if (content) {
-                content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
-                document.querySelector("#tutorviz").addEventListener("load", () => {
-                    window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
-                });
-            }
-        });
+        const content = document.querySelector("#tutorcontent");
+        if (content) {
+            content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
+            document.querySelector("#tutorviz").addEventListener("load", () => {
+                window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
+            });
+        }
 
         modal.addEventListener("hidden.bs.modal", () => {
             if (fscreen.fullscreenElement) {

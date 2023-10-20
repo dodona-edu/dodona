@@ -40,7 +40,8 @@
         "accepted":    { "$ref": "#/definitions/accepted" },
         "description": { "$ref": "#/definitions/message" },
         "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
-        "groups":      { "type": "array", "items": { "$ref": "#/definitions/testcase" } }
+        "groups":      { "type": "array", "items": { "$ref": "#/definitions/testcase" } },
+        "data":        { "$ref": "#/definitions/data" }
       }
     },
     "testcase": {
@@ -51,8 +52,7 @@
         "accepted":    { "$ref": "#/definitions/accepted" },
         "description": { "$ref": "#/definitions/message" },
         "tests":       { "type": "array", "items": { "$ref": "#/definitions/test" } },
-        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } },
-        "data":        { "$ref": "#/definitions/debug-data" }
+        "messages":    { "type": "array", "items": { "$ref": "#/definitions/message" } }
       }
     },
     "test": {
@@ -146,12 +146,12 @@
       "type": "string",
       "enum": ["error", "warning", "info"]
     },
-    "debug-data": {
+    "data": {
         "type": "object",
         "description": "Debug data that can be used to debug the test case with the python tutor.",
         "properties": {
           "statements": { "type": "string", "description": "The statements that should be executed to mimic this testcase." },
-          "input": { "type": "string", "description": "The input that should be used to mimic this testcase." }
+          "stdin": { "type": "string", "description": "The input that should be used to mimic this testcase." }
         }
     }
   }

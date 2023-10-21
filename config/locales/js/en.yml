@@ -150,7 +150,7 @@ en:
       reply: 'Reply'
       update: 'Update'
       cancel: 'Cancel'
-      delete: 'Delete'
+      delete: 'Delete comment'
       edit: 'Edit comment'
       save: 'Save comment'
       help: 'Press Shift + Enter to send. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> is supported.'
@@ -324,4 +324,3 @@ en:
       dark: Dark
       system: System
       theme: Theme
-

@@ -156,6 +156,10 @@ a.card-title-link:hover {
   margin: 0;
   font-weight: normal;
   line-height: 1.1;
+
+  a {
+    color: var(--d-on-primary);
+  }
 }
 
 .card-title.card-subtitle {

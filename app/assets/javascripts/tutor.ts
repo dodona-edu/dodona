@@ -4,8 +4,8 @@ import { html } from "lit";
 import { TraceGenerator } from "@dodona/pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
-    let generator;
-    let generatorReady;
+    let traceGenerator: TraceGenerator;
+    let traceGeneratorReady: Promise<void>;
     function init(): void {
         initTutorLinks();
         if (document.querySelectorAll(".tutormodal").length == 1) {
@@ -21,9 +21,9 @@ export function initTutor(submissionCode: string): void {
     function initTutorLinks(): void {
         const links = document.querySelectorAll(".tutorlink");
         if (links.length > 0) {
-            // only setup the generator if there are links, as it is a heavy operation
-            generator = new TraceGenerator();
-            generatorReady = generator.setup();
+            // only setup the traceGenerator if there are links, as it is a heavy operation
+            traceGenerator = new TraceGenerator();
+            traceGeneratorReady = traceGenerator.setup();
         }
 
         links.forEach(l => {
@@ -126,8 +126,8 @@ export function initTutor(submissionCode: string): void {
         </div>`;
         }
 
-        generatorReady.then(() => {
-            generator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
+        traceGeneratorReady.then(() => {
+            traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
         });
     }
 

@@ -195,6 +195,10 @@
   --d-btn-color: var(--d-secondary-container);
   --d-on-btn-color: var(--d-on-secondary-container);
 
+  // boostrap applies these variables, but they aren't set.
+  --bs-btn-active-bg: var(--d-btn-color);
+  --bs-btn-active-color: var(--d-on-btn-color);
+
   background: var(--d-btn-color);
   color: var(--d-on-btn-color);
 

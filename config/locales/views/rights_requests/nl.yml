@@ -12,10 +12,11 @@ nl:
       context_explanation: Schrijf hier wat info over waarom je deze rechten nodig hebt...
     index:
       title: Aanvragen voor lesgeversrechten
-    requests_table:
       approve: Goedkeuren
       reject: Afkeuren
       no_institution_provided: Niet opgegeven
+      approved: Goedgekeurd
+      rejected: Afgekeurd
     create:
       created: Je aanvraag voor lesgeversrechten werd successvol verzonden.
     approve:

@@ -1,1 +1,1 @@
-dodona.setHTMLExecuteScripts(document.querySelector("#requests-table-wrapper"), "<%= escape_javascript(render partial: 'requests_table', locals: { requests: @requests }) %>");
+document.querySelector("#request_<%= @rights_request.id %> .card-actions").innerHTML = '<button class="btn btn-filled d-btn-success" disabled><%= t("rights_requests.index.approved") %></button>'

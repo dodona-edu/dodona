@@ -67,7 +67,7 @@ gem 'autoprefixer-rails', '~>10.4.15'
 
 # saml authentication
 gem 'devise', '~>4.9.3'
-gem 'ruby-saml', '~> 1.15.0'
+gem 'ruby-saml', '~> 1.16.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
@@ -157,7 +157,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.13.1'
+  gem 'selenium-webdriver', '~> 4.14.0'
 end
 
 group :test do

@@ -20,7 +20,7 @@ pre {
   font-size: 13px;
   line-height: 1.38461538;
   word-break: break-all;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   background-color: var(--d-code-bg);
   border: 1px solid var(--d-outline);
   border-radius: var(--d-border-radius-base);

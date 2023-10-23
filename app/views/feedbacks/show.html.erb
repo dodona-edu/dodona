@@ -4,7 +4,6 @@
     window.dodona.initMathJax();
   </script>
   <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-  <%= javascript_include_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row" id="feedback-page">
@@ -26,57 +25,58 @@
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">
-        <% if @feedback.total_attempts > 0 %>
-          <div class="col-sm-6 order-sm-1">
-            <div class="feedback-metadata-submission">
-              <p>
-              <% if @feedback.submission.present? %>
-                <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
-                <% if @feedback.later_attempts > 0 %>
-                  <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
-                <% end %>
-                <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+          <% if @feedback.total_attempts > 0 %>
+            <div class="col-sm-6 order-sm-1">
+              <div class="feedback-metadata-submission">
+                <p>
+                <% if @feedback.submission.present? %>
+                  <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
+                  <% if @feedback.later_attempts > 0 %>
+                    <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
+                  <% end %>
+                  <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+                    <%= link_to edit_feedback_path(@feedback) do %>
+                      <%= t("feedbacks.edit.select_another_submission") %>
+                    <% end %>
+                  <% end %>
+                <% elsif @feedback.total_attempts > 0 %>
+                  <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
                   <%= link_to edit_feedback_path(@feedback) do %>
-                    <%= t("feedbacks.edit.short_title") %>
+                    <%= t("feedbacks.edit.select_a_submission") %>
                   <% end %>
                 <% end %>
-              <% elsif @feedback.total_attempts > 0 %>
-                <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
-                <%= link_to edit_feedback_path(@feedback) do %>
-                  <%= t("feedbacks.edit.short_title") %>
-                <% end %>
+                </p>
+              </div>
+            </div>
+            <div class="col-sm-6 order-sm-0">
+            <% else %>
+            <div class="col-sm-12">
+            <% end %>
+              <% if @feedback.submission.present? %>
+                <% submission = @feedback.submission %>
+                <div class="submission-summary clearfix">
+                  <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
+                  <span class="status-line">
+                    <%= Submission.human_enum_name(:status, submission.status) %>
+                    <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
+                      &middot; <span class='text-muted'><%= submission.summary %></span>
+                    <% end %>
+                  </span>
+                  <span class="by-line">
+                    <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
+                  </span>
+                </div>
+              <% else %>
+                <%= t('.no_linked_submission') %>
               <% end %>
-              </p>
             </div>
           </div>
-          <div class="col-sm-6 order-sm-0">
-          <% else %>
-          <div class="col-sm-12">
+          <% if @feedback.submission.present? %>
+            <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
+              <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
+            </div>
           <% end %>
-            <% if @feedback.submission.present? %>
-              <% submission = @feedback.submission %>
-              <div class="submission-summary clearfix">
-                <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
-                <span class="status-line">
-                  <%= Submission.human_enum_name(:status, submission.status) %>
-                  <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
-                    &middot; <span class='text-muted'><%= submission.summary %></span>
-                  <% end %>
-                </span>
-                <span class="by-line">
-                  <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
-                </span>
-              </div>
-            <% else %>
-              <%= t('.no_linked_submission') %>
-            <% end %>
-          </div>
         </div>
-        <% if @feedback.submission.present? %>
-          <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
-            <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
-          </div>
-        <% end %>
       </div>
     </div>
   </div>

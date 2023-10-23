@@ -37,13 +37,13 @@
                 <% end %>
                 <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
                   <%= link_to edit_feedback_path(@feedback) do %>
-                    <%= t("feedbacks.edit.short_title") %>
+                    <%= t("feedbacks.edit.select_another_submission") %>
                   <% end %>
                 <% end %>
               <% elsif @feedback.total_attempts > 0 %>
                 <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
                 <%= link_to edit_feedback_path(@feedback) do %>
-                  <%= t("feedbacks.edit.short_title") %>
+                  <%= t("feedbacks.edit.select_a_submission") %>
                 <% end %>
               <% end %>
               </p>

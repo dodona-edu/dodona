@@ -1940,10 +1940,10 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
-"@types/dragula@^3.7.2":
-  version "3.7.2"
-  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.2.tgz#653d2b5102ca0bd8c4df1ff741656e4834a28bae"
-  integrity sha512-nNiIdoT/Scrlp6fU589K5uGuUF4de7IIJG8jDYWWAd0oeoEfJ/FPhBHjNrTYEbWieehn4sdmz/paiK3zwBQPgA==
+"@types/dragula@^3.7.3":
+  version "3.7.3"
+  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.3.tgz#495b9ab270a04369f9d93f5bcb7047bb8b5e0e69"
+  integrity sha512-2A8ON6aEG5pC3SLqwVltge/PkF8l6NZMBKVbIFjAgCnwLlxtxmXQ0QX8267JGXaXy1jLXOwLmcqjdR7BFyZ9WQ==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.3"

@@ -51,7 +51,7 @@
     "@types/ace": "^0.0.50",
     "@types/bootstrap": "^5.2.7",
     "@types/dragula": "^3.7.3",
-    "@types/iframe-resizer": "^3.5.10",
+    "@types/iframe-resizer": "^3.5.11",
     "@types/jest": "^27.5.0",
     "@types/serviceworker": "^0.0.76",
     "@typescript-eslint/eslint-plugin": "^5.62.0",

@@ -15,14 +15,14 @@ import { initTooltips, ready } from "utilities";
 @customElement("d-copy-button")
 export class CopyButton extends ShadowlessLitElement {
     @property({ type: Object })
-    codeElement: HTMLElement;
+    accessor codeElement: HTMLElement;
 
     get code(): string {
         return this.codeElement.textContent;
     }
 
     @property({ state: true })
-    status: "idle" | "success" | "error" = "idle";
+    accessor status: "idle" | "success" | "error" = "idle";
 
     async copyCode(): Promise<void> {
         try {

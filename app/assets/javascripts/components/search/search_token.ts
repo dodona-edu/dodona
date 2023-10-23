@@ -18,7 +18,7 @@ import { FilterCollection, FilterCollectionElement, Label } from "components/sea
 @customElement("d-search-token")
 export class SearchToken extends FilterCollectionElement {
     @property()
-    color: (l: Label) => string;
+    accessor color: (l: Label) => string;
 
     processClick(e: Event, label: Label): void {
         this.unSelect(label);
@@ -47,7 +47,7 @@ export class SearchToken extends FilterCollectionElement {
 @customElement("d-search-tokens")
 export class SearchTokens extends ShadowlessLitElement {
     @property( { type: Array })
-    filterCollections: Record<string, FilterCollection>;
+    accessor filterCollections: Record<string, FilterCollection>;
 
     render(): TemplateResult {
         if (!this.filterCollections) {

@@ -24,11 +24,11 @@ import { search } from "search";
 @customElement("d-search-field-suggestion")
 export class SearchFieldSuggestion extends FilterCollectionElement {
     @property()
-    type: string;
+    accessor type: string;
     @property()
-    filter: string;
+    accessor filter: string;
     @property({ type: Number })
-    index: number;
+    accessor index: number;
 
     getFilterRegExp(): RegExp {
         return new RegExp(this.filter, "gi");
@@ -78,18 +78,18 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
 @customElement("d-search-field")
 export class SearchField extends ShadowlessLitElement {
     @property({ type: String })
-    placeholder: string;
+    accessor placeholder: string;
     @property({ type: Boolean })
-    eager: boolean;
+    accessor eager: boolean;
     @property( { type: Array })
-    filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
+    accessor filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
 
     @property({ state: true })
-    filter?: string = "";
+    accessor filter?: string = "";
     @property({ state: true })
-    suggestionFields: SearchFieldSuggestion[] = [];
+    accessor suggestionFields: SearchFieldSuggestion[] = [];
     @property({ state: true })
-    hasSuggestions: boolean;
+    accessor hasSuggestions: boolean;
 
     delay: (f: () => void, s: number) => void;
 

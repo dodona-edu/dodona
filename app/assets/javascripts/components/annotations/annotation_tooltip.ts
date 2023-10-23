@@ -16,7 +16,7 @@ const setInstancesDelayer = createDelayer();
 @customElement("d-annotation-tooltip")
 export class AnnotationTooltip extends LitElement {
     @property({ type: Array })
-    annotations: Annotation[];
+    accessor annotations: Annotation[];
 
     static styles = css`:host { position: relative; }`;
 

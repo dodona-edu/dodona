@@ -35,9 +35,9 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
 @customElement("d-line-of-code")
 export class LineOfCode extends ShadowlessLitElement {
     @property({ type: Number })
-    row: number;
+    accessor row: number;
     @property({ type: String, attribute: "rendered-code" })
-    renderedCode: string;
+    accessor renderedCode: string;
 
     get code(): string {
         return submissionState.codeByLine[this.row - 1];

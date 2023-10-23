@@ -23,16 +23,16 @@ import { exerciseState } from "state/Exercises";
 @customElement("d-saved-annotation-input")
 export class SavedAnnotationInput extends ShadowlessLitElement {
     @property({ type: String })
-    name = "";
+    accessor name = "";
     @property({ type: String })
-    value: string;
+    accessor value: string;
     @property( { type: String, attribute: "annotation-text" })
-    annotationText: string;
+    accessor annotationText: string;
     @property({ type: Boolean })
-    disabled = false;
+    accessor disabled = false;
 
     @property({ state: true })
-    __label: string;
+    accessor __label: string;
 
     get label(): string {
         return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;

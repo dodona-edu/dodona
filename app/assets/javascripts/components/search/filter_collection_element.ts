@@ -23,13 +23,13 @@ export type FilterCollection = {
  */
 export class FilterCollectionElement extends ShadowlessLitElement {
     @property()
-    param: string;
+    accessor param: string;
     @property({ type: Boolean })
-    multi: boolean;
+    accessor multi: boolean;
     @property()
-    paramVal: (l: Label) => string;
+    accessor paramVal: (l: Label) => string;
     @property({ type: Array })
-    labels: Array<Label> = [];
+    accessor labels: Array<Label> = [];
 
     update(changedProperties: Map<string, unknown>): void {
         if ((changedProperties.has("param") || changedProperties.has("multi")) &&

@@ -17,7 +17,7 @@ import { annotationState } from "state/Annotations";
 @customElement("d-annotation-options")
 export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
     @property({ state: true })
-    formShown = false;
+    accessor formShown = false;
 
     get canCreateAnnotation(): boolean {
         return userState.hasPermission("annotation.create");

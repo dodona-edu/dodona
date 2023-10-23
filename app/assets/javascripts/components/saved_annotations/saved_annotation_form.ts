@@ -19,11 +19,11 @@ import "components/saved_annotations/saved_annotation_title_input";
 @customElement("d-saved-annotation-form")
 export class SavedAnnotationForm extends ShadowlessLitElement {
     @property({ type: Object })
-    savedAnnotation: SavedAnnotation;
+    accessor savedAnnotation: SavedAnnotation;
     @property({ type: Number, attribute: "exercise-id" })
-    exerciseId: number;
+    accessor exerciseId: number;
     @property({ type: Number, attribute: "course-id" })
-    courseId: number;
+    accessor courseId: number;
 
     savedAnnotationChanged(): void {
         const event = new CustomEvent("change", {

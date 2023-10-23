@@ -27,9 +27,9 @@ import { evaluationState } from "state/Evaluations";
 @customElement("d-annotations-cell")
 export class AnnotationsCell extends ShadowlessLitElement {
     @property({ type: Boolean, attribute: "show-form" })
-    formShown: boolean;
+    accessor formShown: boolean;
     @property({ type: Number })
-    row: number;
+    accessor row: number;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 

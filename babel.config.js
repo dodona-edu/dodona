@@ -46,7 +46,7 @@ module.exports = function (api) {
             isTestEnv && "babel-plugin-dynamic-import-node",
             isDevelopmentEnv && ["istanbul", { include: ["app/assets/javascripts/**/*.{js,ts}"], coverageGlobalScopeFunc: false, coverageGlobalScope: "window" }],
             "@babel/plugin-transform-destructuring",
-            ["@babel/plugin-proposal-decorators", { decoratorsBeforeExport: true }],
+            ["@babel/plugin-proposal-decorators", { decoratorsBeforeExport: true, version: "2023-05" }],
             ["@babel/plugin-proposal-object-rest-spread", { useBuiltIns: true }],
             ["@babel/plugin-transform-runtime", {
                 helpers: false,

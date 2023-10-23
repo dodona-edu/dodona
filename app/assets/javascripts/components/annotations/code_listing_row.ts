@@ -26,9 +26,9 @@ import "components/annotations/line_of_code";
 @customElement("d-code-listing-row")
 export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
-    row: number;
+    accessor row: number;
     @property({ type: String, attribute: "rendered-code" })
-    renderedCode: string;
+    accessor renderedCode: string;
 
     firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);

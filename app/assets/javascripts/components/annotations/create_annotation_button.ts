@@ -22,9 +22,9 @@ DRAG_IMAGE.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAA
 @customElement("d-create-annotation-button")
 export class CreateAnnotationButton extends ShadowlessLitElement {
     @property({ type: Number })
-    row: number;
+    accessor row: number;
     @property({ type: Boolean, attribute: "is-question-mode" })
-    isQuestionMode: boolean;
+    accessor isQuestionMode: boolean;
 
     get buttonText(): string {
         const key = this.isQuestionMode ? "question" : "annotation";

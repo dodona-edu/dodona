@@ -23,10 +23,10 @@ import { evaluationState } from "state/Evaluations";
 @customElement("d-thread")
 export class Thread extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number, attribute: "root-id" })
-    rootId: number;
+    accessor rootId: number;
 
     @property({ state: true })
-    formShown = false;
+    accessor formShown = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 

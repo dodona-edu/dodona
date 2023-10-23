@@ -24,10 +24,10 @@ import { savedAnnotationState } from "state/SavedAnnotations";
 @customElement("d-user-annotation")
 export class UserAnnotationComponent extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Object })
-    data: UserAnnotation;
+    accessor data: UserAnnotation;
 
     @property({ state: true })
-    editing = false;
+    accessor editing = false;
 
     annotationFormRef: Ref<AnnotationForm> = createRef();
 

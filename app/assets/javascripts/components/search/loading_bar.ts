@@ -12,7 +12,7 @@ import { search } from "search";
 @customElement("d-loading-bar")
 export class LoadingBar extends ShadowlessLitElement {
     @property({ type: Boolean, state: true })
-    loading = false;
+    accessor loading = false;
 
     constructor() {
         super();

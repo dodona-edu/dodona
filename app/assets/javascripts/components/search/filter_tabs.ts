@@ -14,13 +14,13 @@ import { watchMixin } from "components/meta/watch_mixin";
 @customElement("d-filter-tabs")
 export class FilterTabs extends watchMixin(FilterCollectionElement) {
     @property()
-    multi = false;
+    accessor multi = false;
     @property()
-    param = "tab";
+    accessor param = "tab";
     @property()
-    paramVal = (label: Label): string => label.id.toString();
+    accessor paramVal = (label: Label): string => label.id.toString();
     @property({ type: Array })
-    labels: {id: string, name: string, title: string}[];
+    accessor labels: {id: string, name: string, title: string}[];
 
     processClick(e: Event, label: Label): void {
         if (!this.isSelected(label)) {

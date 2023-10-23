@@ -16,7 +16,7 @@ import { annotationState } from "state/Annotations";
 @customElement("d-selection-layer")
 class SelectionLayer extends ShadowlessLitElement {
     @property({ type: Number })
-    row: number;
+    accessor row: number;
 
     get code(): string {
         return submissionState.codeByLine[this.row - 1];

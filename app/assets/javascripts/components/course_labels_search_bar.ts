@@ -13,7 +13,7 @@ import "components/datalist_input";
 @customElement("d-course-labels")
 export class CourseLabelTokens extends ShadowlessLitElement {
     @property({ type: Array })
-    labels: string[];
+    accessor labels: string[];
 
     processClick(e: Event, label: string): void {
         this.labels.splice(this.labels.indexOf(label), 1);
@@ -50,16 +50,16 @@ export class CourseLabelTokens extends ShadowlessLitElement {
 @customElement("d-course-labels-search-bar")
 export class CourseLabelsSearchBar extends ShadowlessLitElement {
     @property({ type: Array })
-    labels: {id: number, name: string}[];
+    accessor labels: {id: number, name: string}[];
 
     @property({ type: Array })
-    selected_labels: string[];
+    accessor selected_labels: string[];
 
     @property({ state: true })
-    selected_label: string;
+    accessor selected_label: string;
 
     @property({ state: true })
-    filter: string;
+    accessor filter: string;
 
     get options(): Option[] {
         return this.labels.map(i => ({ label: i.name, value: i.id.toString() }));

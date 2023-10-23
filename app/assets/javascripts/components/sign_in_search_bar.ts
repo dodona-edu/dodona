@@ -14,14 +14,14 @@ import "components/datalist_input";
 @customElement("d-sign-in-search-bar")
 export class SignInSearchBar extends ShadowlessLitElement {
     @property({ type: Array })
-    institutions: {name: string, provider: string}[];
+    accessor institutions: {name: string, provider: string}[];
     @property({ type: Object })
-    providers: Record<string, {name: string, link: string}>;
+    accessor providers: Record<string, {name: string, link: string}>;
 
     @property({ state: true })
-    selected_provider: string;
+    accessor selected_provider: string;
     @property({ state: true })
-    filter: string;
+    accessor filter: string;
 
     get link(): string {
         return this.providers[this.selected_provider]?.link || "";

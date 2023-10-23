@@ -31,26 +31,26 @@ const maxLength = 10_000;
 @customElement("d-annotation-form")
 export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     @property({ type: String, attribute: "annotation-text" })
-    annotationText: string;
+    accessor annotationText: string;
     @property({ type: String, attribute: "saved-annotation-id" })
-    savedAnnotationId: string;
+    accessor savedAnnotationId: string;
     @property({ type: Boolean })
-    disabled = false;
+    accessor disabled = false;
     @property({ type: Boolean, attribute: "has-errors" })
-    hasErrors = false;
+    accessor hasErrors = false;
     @property({ type: String, attribute: "submit-button-text" })
-    submitButtonText: string;
+    accessor submitButtonText: string;
 
     @property({ state: true })
-    _annotationText = "";
+    accessor _annotationText = "";
     @property({ state: true })
-    _savedAnnotationId = "";
+    accessor _savedAnnotationId = "";
     @property({ state: true })
-    _savedAnnotationTitle: string;
+    accessor _savedAnnotationTitle: string;
     @property({ state: true })
-    _savedAnnotationSearchInput = "";
+    accessor _savedAnnotationSearchInput = "";
     @property({ state: true })
-    saveAnnotation = false;
+    accessor saveAnnotation = false;
 
     get savedAnnotationTitle(): string {
         return this._savedAnnotationTitle || this._annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40);

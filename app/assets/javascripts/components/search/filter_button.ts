@@ -20,11 +20,11 @@ import { StateController } from "state/state_system/StateController";
 @customElement("d-filter-button")
 export class FilterButton extends LitElement {
     @property({ type: String })
-    param: string;
+    accessor param: string;
     @property({ type: String })
-    value: string;
+    accessor value: string;
     @property({ type: Boolean })
-    multi = false;
+    accessor multi = false;
 
     state = new StateController(this);
 
@@ -63,9 +63,9 @@ export class FilterButton extends LitElement {
 @customElement("d-filter-icon")
 export class FilterIcon extends ShadowlessLitElement {
     @property({ type: String })
-    value: string;
+    accessor value: string;
     @property({ type: String, attribute: "icon-title" })
-    iconTitle: string;
+    accessor iconTitle: string;
 
     protected update(changedProperties: PropertyValues): void {
         super.update(changedProperties);

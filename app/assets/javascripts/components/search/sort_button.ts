@@ -17,11 +17,11 @@ import { StateController } from "state/state_system/StateController";
 @customElement("d-sort-button")
 export class SortButton extends LitElement {
     @property({ type: String })
-    column: string;
+    accessor column: string;
     @property({ type: String })
-    default: string;
+    accessor default: string;
     @property({ type: Boolean })
-    disabled = false;
+    accessor disabled = false;
 
     state = new StateController(this);
 

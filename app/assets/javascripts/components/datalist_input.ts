@@ -24,44 +24,43 @@ export type Option = {label: string, value: string, extra?: string};
 @customElement("d-datalist-input")
 export class DatalistInput extends watchMixin(ShadowlessLitElement) {
     @property({ type: String })
-    name: string;
+    accessor name: string;
     @property({ type: Array })
-    options: Option[] = [];
+    accessor options: Option[] = [];
     @property({ type: String })
-    value: string;
+    accessor value: string;
     @property({ type: String })
-    placeholder: string;
+    accessor placeholder: string;
     @property({ type: Boolean })
-    disabled = false;
+    accessor disabled = false;
 
     inputRef: Ref<HTMLInputElement> = createRef();
 
     @property({ state: true })
-    _filter= this.label;
+    accessor _filter= this.label;
     @property({ state: true })
-    _softSelectedOption: Option;
+    accessor _softSelectedOption: Option;
 
     @property({ type: String })
-    get filter(): string {
-        return this._filter;
-    }
-
     set filter(value: string) {
         this._filter = value;
         this.value = this.options?.find(o => this.filter === o.label)?.value || "";
         this.fireEvent();
     }
+    get filter(): string {
+        return this._filter;
+    }
 
     @property({ state: true })
+    set softSelectedOption(value: Option) {
+        this._softSelectedOption = value;
+    }
+
     get softSelectedOption(): Option {
         return this._softSelectedOption ||
             this.filtered_options.find(o => o.value === this.value) ||
             this.filtered_options[0] ||
             undefined;
-    }
-
-    set softSelectedOption(value: Option) {
-        this._softSelectedOption = value;
     }
 
     watch = {

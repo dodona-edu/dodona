@@ -17,11 +17,11 @@ import { searchQueryState } from "state/SearchQuery";
 @customElement("d-pagination")
 export class Pagination extends ShadowlessLitElement {
     @property({ type: Number })
-    total: number;
+    accessor total: number;
     @property({ type: Number })
-    current: number;
+    accessor current: number;
     @property({ type: Boolean })
-    small = false;
+    accessor small = false;
 
     get width(): number {
         return this.small ? 1 : 2;

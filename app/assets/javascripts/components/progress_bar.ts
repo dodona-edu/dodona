@@ -16,10 +16,10 @@ import { initTooltips, ready } from "../utilities";
 @customElement("d-progress-bar")
 export class ProgressBar extends ShadowlessLitElement {
     @property({ type: Array })
-    values: Array<number>;
+    accessor values: Array<number>;
 
     @property({ type: String, attribute: "title-key" })
-    titleKey: string;
+    accessor titleKey: string;
 
     get valuesSum(): number {
         return Object.values(this.values).reduce((a, b) => a + b, 0);

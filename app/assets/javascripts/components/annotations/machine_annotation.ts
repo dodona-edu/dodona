@@ -14,7 +14,7 @@ import { MachineAnnotation } from "state/MachineAnnotations";
 @customElement("d-machine-annotation")
 export class MachineAnnotationComponent extends ShadowlessLitElement {
     @property({ type: Object })
-    data: MachineAnnotation;
+    accessor data: MachineAnnotation;
 
     protected get hasNotice(): boolean {
         return this.data.externalUrl !== null && this.data.externalUrl !== undefined;

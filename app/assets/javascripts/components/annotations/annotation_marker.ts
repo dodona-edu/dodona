@@ -18,9 +18,9 @@ import { StateController } from "state/state_system/StateController";
 @customElement("d-annotation-marker")
 export class AnnotationMarker extends LitElement {
     @property({ type: Array })
-    annotations: Annotation[];
+    accessor annotations: Annotation[];
     @property({ type: Boolean, attribute: "full-width" })
-    fullWidth = false;
+    accessor fullWidth = false;
 
     state = new StateController(this);
 

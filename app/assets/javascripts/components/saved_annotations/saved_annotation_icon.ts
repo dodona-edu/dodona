@@ -13,7 +13,7 @@ import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 @customElement("d-saved-annotation-icon")
 export class SavedAnnotationIcon extends ShadowlessLitElement {
     @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number | null;
+    accessor savedAnnotationId: number | null;
 
     get isAlreadyLinked(): boolean {
         return this.savedAnnotationId != undefined;

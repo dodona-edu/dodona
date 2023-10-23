@@ -8,16 +8,16 @@ import { courseState } from "state/Courses";
 @customElement("d-saved-annotation-title-input")
 export class SavedAnnotationTitleInput extends ShadowlessLitElement {
     @property({ type: String })
-    value: string;
+    accessor value: string;
     @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number;
+    accessor savedAnnotationId: number;
     @property({ type: Number, attribute: "exercise-id" })
-    exerciseId: number = exerciseState.id;
+    accessor exerciseId: number = exerciseState.id;
     @property({ type: Number, attribute: "course-id" })
-    courseId: number = courseState.id;
+    accessor courseId: number = courseState.id;
 
     @property({ state: true })
-    _value: string;
+    accessor _value: string;
 
     get isTitleTaken(): boolean {
         return savedAnnotationState.isTitleTaken(

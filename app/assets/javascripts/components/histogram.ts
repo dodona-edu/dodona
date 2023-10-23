@@ -15,7 +15,7 @@ import { customElement, property } from "lit/decorators.js";
 @customElement("d-histogram")
 export class Histogram extends LitElement {
     @property({ type: Array })
-    values: number[];
+    accessor values: number[];
 
     static styles = css`
         :host {

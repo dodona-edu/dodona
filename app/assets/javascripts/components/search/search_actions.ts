@@ -31,9 +31,9 @@ const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !=
 @customElement("d-search-option")
 export class SearchOptionElement extends ShadowlessLitElement {
     @property({ type: Object })
-    searchOption: SearchOption;
+    accessor searchOption: SearchOption;
     @property( { type: Number })
-    key: number;
+    accessor key: number;
 
     get active(): boolean {
         return Object.entries(this.searchOption.search).every(([key, value]) => {
@@ -83,7 +83,7 @@ export class SearchOptionElement extends ShadowlessLitElement {
 @customElement("d-search-actions")
 export class SearchActions extends ShadowlessLitElement {
     @property({ type: Array })
-    actions: (SearchOption|SearchAction)[] = [];
+    accessor actions: (SearchOption|SearchAction)[] = [];
 
     getSearchOptions(): Array<SearchOption> {
         return this.actions.filter(isSearchOption);

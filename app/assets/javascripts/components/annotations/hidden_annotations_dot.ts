@@ -18,7 +18,7 @@ import { annotationState, compareAnnotationOrders } from "state/Annotations";
 @customElement("d-hidden-annotations-dot")
 export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Number })
-    row: number;
+    accessor row: number;
 
     get machineAnnotations(): MachineAnnotation[] {
         return machineAnnotationState.byLine.get(this.row) || [];

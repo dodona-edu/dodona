@@ -22,16 +22,16 @@ import { i18nMixin } from "components/meta/i18n_mixin";
 @customElement("d-new-saved-annotation")
 export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElement)) {
     @property({ type: Number, attribute: "from-annotation-id" })
-    fromAnnotationId: number;
+    accessor fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
-    annotationText: string;
+    accessor annotationText: string;
     @property({ type: Number, attribute: "exercise-id" })
-    exerciseId: number = exerciseState.id;
+    accessor exerciseId: number = exerciseState.id;
     @property({ type: Number, attribute: "course-id" })
-    courseId: number = courseState.id;
+    accessor courseId: number = courseState.id;
 
     @property({ state: true })
-    errors: string[];
+    accessor errors: string[];
 
     savedAnnotation: SavedAnnotation;
 

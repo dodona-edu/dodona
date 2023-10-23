@@ -19,12 +19,12 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 @customElement("d-dropdown-filter")
 export class DropdownFilter extends FilterCollectionElement {
     @property()
-    color: (s: Label) => string;
+    accessor color: (s: Label) => string;
     @property()
-    type: string;
+    accessor type: string;
 
     @property({ state: true })
-    filter = "";
+    accessor filter = "";
 
     get showFilter(): boolean {
         return this.labels.length > 15;
@@ -79,7 +79,7 @@ export class DropdownFilter extends FilterCollectionElement {
 @customElement("d-dropdown-filters")
 export class DropdownFilters extends ShadowlessLitElement {
     @property( { type: Array })
-    filterCollections: [string, FilterCollection][];
+    accessor filterCollections: [string, FilterCollection][];
 
     render(): TemplateResult {
         if (!this.filterCollections) {

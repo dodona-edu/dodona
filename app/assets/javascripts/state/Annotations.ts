@@ -23,8 +23,8 @@ export function isUserAnnotation(annotation: Annotation): annotation is UserAnno
 }
 
 class AnnotationState extends State {
-    @stateProperty visibility: AnnotationVisibilityOptions = "all";
-    @stateProperty isQuestionMode = false;
+    @stateProperty accessor visibility: AnnotationVisibilityOptions = "all";
+    @stateProperty accessor isQuestionMode = false;
 
     isVisible(annotation: Annotation): boolean {
         if (this.visibility === "none") {

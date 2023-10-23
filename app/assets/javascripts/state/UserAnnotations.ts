@@ -61,7 +61,7 @@ interface UserAnnotationData {
  * UserAnnotation implements the UserAnnotationData interface and adds state properties and methods.
  */
 export class UserAnnotation extends createStateFromInterface<UserAnnotationData>() {
-    @stateProperty public isHovered = false;
+    @stateProperty public accessor isHovered = false;
     responses: UserAnnotation[];
 
     constructor(data: UserAnnotationData) {
@@ -82,10 +82,10 @@ class UserAnnotationState extends State {
     readonly rootIdsByMarkedLine = new StateMap<number, number[]>();
     readonly byId = new StateMap<number, UserAnnotation>();
 
-    @stateProperty public selectedRange: SelectedRange | null = null;
-    @stateProperty public dragStartRow: number | null = null;
-    @stateProperty public formShown = false;
-    @stateProperty private _createButtonExpanded = false;
+    @stateProperty public accessor selectedRange: SelectedRange | null = null;
+    @stateProperty public accessor dragStartRow: number | null = null;
+    @stateProperty public accessor formShown = false;
+    @stateProperty private accessor _createButtonExpanded = false;
     private expansionDelayer = createDelayer();
 
     public set isCreateButtonExpanded(value: boolean) {

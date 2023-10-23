@@ -3,8 +3,8 @@ import { stateProperty } from "state/state_system/StateProperty";
 import { stateRecorder } from "state/state_system/StateRecorder";
 
 class ExampleState extends State {
-    @stateProperty foo = "bar";
-    @stateProperty fool = "bars";
+    @stateProperty accessor foo = "bar";
+    @stateProperty accessor fool = "bars";
 }
 
 test("a subscriber to a state should get notified anytime a stateProperty changes", () => {

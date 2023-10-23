@@ -7,8 +7,8 @@ import { fixture } from "@open-wc/testing-helpers";
 import spyOn = jest.spyOn;
 
 class ExampleState extends State {
-    @stateProperty foo = "bar";
-    @stateProperty fool = "bars";
+    @stateProperty accessor foo = "bar";
+    @stateProperty accessor fool = "bars";
 }
 const state = new ExampleState();
 

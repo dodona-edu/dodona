@@ -6,8 +6,8 @@ import { fetch } from "utilities";
 export type Permission = "annotation.create"
 
 class UserState extends State {
-    @stateProperty id: number;
-    @stateProperty private permissions: Set<Permission> = new Set<Permission>();
+    @stateProperty accessor id: number;
+    @stateProperty private accessor permissions: Set<Permission> = new Set<Permission>();
 
     addPermission(permission: Permission): void {
         // reassigning the set is necessary to trigger a state change

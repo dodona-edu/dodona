@@ -16,13 +16,13 @@ export interface MachineAnnotationData {
 }
 
 export class MachineAnnotation extends createStateFromInterface<MachineAnnotationData>() {
-    @stateProperty public isHovered = false;
+    @stateProperty public accessor isHovered = false;
 }
 
 class MachineAnnotationState extends State {
-    @stateProperty public byLine = new StateMap<number, MachineAnnotation[]>();
-    @stateProperty public byMarkedLine = new StateMap<number, MachineAnnotation[]>();
-    @stateProperty public count = 0;
+    @stateProperty public accessor byLine = new StateMap<number, MachineAnnotation[]>();
+    @stateProperty public accessor byMarkedLine = new StateMap<number, MachineAnnotation[]>();
+    @stateProperty public accessor count = 0;
 
     public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
         this.count = annotations.length;

@@ -9,9 +9,9 @@ export type ThemeOption = Theme | "system";
 export const THEME_OPTIONS: ThemeOption[] = ["light", "dark", "system"];
 
 class ThemeState extends State {
-    @stateProperty _selectedTheme: ThemeOption = "system";
-    @stateProperty _theme: Theme = "light";
-    @stateProperty computedStyle: CSSStyleDeclaration = getComputedStyle(document.documentElement);
+    @stateProperty accessor _selectedTheme: ThemeOption = "system";
+    @stateProperty accessor _theme: Theme = "light";
+    @stateProperty accessor computedStyle: CSSStyleDeclaration = getComputedStyle(document.documentElement);
 
     // the theme option selected by the user
     get selectedTheme(): ThemeOption {

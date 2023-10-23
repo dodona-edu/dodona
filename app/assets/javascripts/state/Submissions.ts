@@ -2,9 +2,9 @@ import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 
 class SubmissionState extends State {
-    @stateProperty id: number;
-    @stateProperty _code: string;
-    @stateProperty codeByLine: string[];
+    @stateProperty accessor id: number;
+    @stateProperty accessor _code: string;
+    @stateProperty accessor codeByLine: string[];
 
     set code(code: string) {
         this._code = code;

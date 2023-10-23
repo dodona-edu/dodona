@@ -30,9 +30,9 @@ function addParametersToUrl(url: string, params?: Map<string, string>, arrayPara
 }
 
 class SavedAnnotationState extends State {
-    @stateProperty private listByURL = new StateMap<string, SavedAnnotation[]>();
-    @stateProperty private paginationByURL = new StateMap<string, Pagination>();
-    @stateProperty private byId = new StateMap<number, SavedAnnotation>();
+    @stateProperty private accessor listByURL = new StateMap<string, SavedAnnotation[]>();
+    @stateProperty private accessor paginationByURL = new StateMap<string, Pagination>();
+    @stateProperty private accessor byId = new StateMap<number, SavedAnnotation>();
 
     private async fetchList(url: string): Promise<Array<SavedAnnotation>> {
         const response = await fetch(url);

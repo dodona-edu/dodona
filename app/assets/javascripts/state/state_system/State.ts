@@ -36,11 +36,11 @@ export class State extends EventTarget {
         return () => this.removeEventListener(StateEvent.eventName, cb);
     }
 
-    protected recordRead(key?: string): void {
+    public recordRead(key?: string): void {
         stateRecorder.recordRead(this, key);
     }
 
-    protected dispatchStateEvent(key?: string): void {
+    public dispatchStateEvent(key?: string): void {
         this.dispatchEvent(new StateEvent(this, key));
     }
 }

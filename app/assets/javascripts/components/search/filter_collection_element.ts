@@ -26,10 +26,27 @@ export class FilterCollectionElement extends ShadowlessLitElement {
     accessor param: string;
     @property({ type: Boolean })
     accessor multi: boolean;
+
+    _paramVal: (l: Label) => string;
+    _labels: Label[];
+
     @property()
-    accessor paramVal: (l: Label) => string;
+    set paramVal(val: (l: Label) => string) {
+        this._paramVal = val;
+    }
+
+    get paramVal(): (l: Label) => string {
+        return this._paramVal;
+    }
+
     @property({ type: Array })
-    accessor labels: Array<Label> = [];
+    set labels(val: Label[]) {
+        this._labels = val;
+    }
+
+    get labels(): Label[] {
+        return this._labels;
+    }
 
     update(changedProperties: Map<string, unknown>): void {
         if ((changedProperties.has("param") || changedProperties.has("multi")) &&

@@ -81,7 +81,7 @@ export class SearchField extends ShadowlessLitElement {
     accessor placeholder: string;
     @property({ type: Boolean })
     accessor eager: boolean;
-    @property( { type: Array })
+    @property( { type: Object })
     accessor filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
 
     @property({ state: true })

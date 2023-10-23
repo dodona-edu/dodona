@@ -182,7 +182,7 @@ GEM
       actionmailer (>= 5.2, < 8)
       activesupport (>= 5.2, < 8)
     excon (0.100.0)
-    execjs (2.8.1)
+    execjs (2.9.1)
     factory_bot (6.2.1)
       activesupport (>= 5.0.0)
     factory_bot_rails (6.2.0)
@@ -510,7 +510,7 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
-    terser (1.1.18)
+    terser (1.1.19)
       execjs (>= 0.3.0, < 3)
     test-prof (1.2.3)
     thor (1.2.2)

@@ -4,8 +4,8 @@ import { html } from "lit";
 import { TraceGenerator } from "@dodona/pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
-    const generator = new TraceGenerator();
-    const generatorReady = generator.setup();
+    let generator;
+    let generatorReady;
     function init(): void {
         initTutorLinks();
         if (document.querySelectorAll(".tutormodal").length == 1) {
@@ -19,14 +19,21 @@ export function initTutor(submissionCode: string): void {
     }
 
     function initTutorLinks(): void {
-        document.querySelectorAll(".tutorlink").forEach(l => {
+        const links = document.querySelectorAll(".tutorlink");
+        if (links.length > 0) {
+            // only setup the generator if there are links, as it is a heavy operation
+            generator = new TraceGenerator();
+            generatorReady = generator.setup();
+        }
+
+        links.forEach(l => {
             const tutorLink = l as HTMLLinkElement;
             if (!(tutorLink.dataset.statements || tutorLink.dataset.stdin)) {
                 l.remove();
             }
         });
 
-        document.querySelectorAll(".tutorlink").forEach(l => l.addEventListener("click", e => {
+        links.forEach(l => l.addEventListener("click", e => {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
             const tutorLink = e.currentTarget as HTMLLinkElement;
             const group = tutorLink.closest(".group");

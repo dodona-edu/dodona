@@ -20,7 +20,7 @@ class SavedAnnotationPolicy < ApplicationPolicy
   end
 
   def show?
-    record&.user_id == user.id
+    user && record&.user_id == user.id
   end
 
   def new?
@@ -32,11 +32,11 @@ class SavedAnnotationPolicy < ApplicationPolicy
   end
 
   def update?
-    record&.user_id == user.id
+    user && record&.user_id == user.id
   end
 
   def destroy?
-    record&.user_id == user.id
+    user && record&.user_id == user.id
   end
 
   def permitted_attributes

@@ -19,7 +19,7 @@ beforeEach(async () => {
 
     jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
         json: () => Promise.resolve({}),
-        headers: { get: h => h == "X-Pagination" ? "{ total_pages: 1, current_page: 1 }" : "" },
+        headers: { get: h => h == "X-Pagination" ? JSON.stringify({ total_pages: 1, current_page: 1 }) : "" },
     } as Response ));
 
     // Bootstrap incorrectly detects jquery, so we need to disable it

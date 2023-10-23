@@ -108,15 +108,16 @@ export function initTutor(submissionCode: string): void {
             return result;
         }, {});
 
-        showInfoModal(
-            "Python Tutor",
-            html`<div id="tutorcontent"><div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
-                <div class="progressbar bar bar1" style="width: 0%;"></div>
-                <div class="bufferbar bar bar2" style="width: 100%;"></div>
-                <div class="auxbar bar bar3" style="width: 0%;"></div>
-            </div></div>`,
-            { allowFullscreen: true }
-        );
+        showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
+
+        const content = document.querySelector("#tutorcontent");
+        if (content) {
+            content.innerHTML = `<div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
+            <div class="progressbar bar bar1" style="width: 0%;"></div>
+            <div class="bufferbar bar bar2" style="width: 100%;"></div>
+            <div class="auxbar bar bar3" style="width: 0%;"></div>
+        </div>`;
+        }
 
         generatorReady.then(() => {
             generator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));

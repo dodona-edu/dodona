@@ -85,7 +85,7 @@ export class SearchField extends ShadowlessLitElement {
     accessor filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
 
     @property({ state: true })
-    accessor filter?: string = "";
+    accessor filter: string = "";
     @property({ state: true })
     accessor suggestionFields: SearchFieldSuggestion[] = [];
     @property({ state: true })

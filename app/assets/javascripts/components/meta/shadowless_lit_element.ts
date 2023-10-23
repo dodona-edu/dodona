@@ -19,7 +19,7 @@ export class ShadowlessLitElement extends LitElement {
     }
 
     // don't use shadow dom
-    createRenderRoot(): Element {
+    createRenderRoot(): HTMLElement | DocumentFragment {
         return this;
     }
 }

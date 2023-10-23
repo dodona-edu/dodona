@@ -1,12 +1,11 @@
 import fscreen from "fscreen";
-import { showInfoModal } from "./modal";
 import { fetch } from "utilities";
+import { showInfoModal } from "modal";
 import { html } from "lit";
 
-function initPythiaSubmissionShow(submissionCode: string, activityPath: string): void {
+export function initTutor(submissionCode: string): void {
     function init(): void {
         initTutorLinks();
-        initFileViewers(activityPath);
         if (document.querySelectorAll(".tutormodal").length == 1) {
             initFullScreen();
         } else {
@@ -19,21 +18,22 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
 
     function initTutorLinks(): void {
         document.querySelectorAll(".tutorlink").forEach(l => {
-            const group = l.closest(".group") as HTMLElement;
-            if (!(group.dataset.statements || group.dataset.stdin)) {
+            const tutorLink = l as HTMLLinkElement;
+            if (!(tutorLink.dataset.statements || tutorLink.dataset.stdin)) {
                 l.remove();
             }
         });
 
         document.querySelectorAll(".tutorlink").forEach(l => l.addEventListener("click", e => {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
-            const group = e.currentTarget.closest(".group");
-            const stdin = group.dataset.stdin.slice(0, -1);
-            const statements = group.dataset.statements;
+            const tutorLink = e.currentTarget as HTMLLinkElement;
+            const group = tutorLink.closest(".group");
+            const stdin = tutorLink.dataset.stdin.slice(0, -1);
+            const statements = tutorLink.dataset.statements;
             const files = { inline: {}, href: {} };
 
             group.querySelectorAll(".contains-file").forEach(g => {
-                const content = JSON.parse(g.dataset.files);
+                const content = JSON.parse((g as HTMLElement).dataset.files);
 
                 Object.values(content).forEach(value => {
                     files[value["location"]][value["name"]] = value["content"];
@@ -49,73 +49,6 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
                 files.href
             );
         }));
-    }
-
-    function initFileViewers(activityPath: string): void {
-        document.querySelectorAll("a.file-link").forEach(l => l.addEventListener("click", e => {
-            const link = e.currentTarget as HTMLLinkElement;
-            const fileName = link.innerText;
-            const tc = link.closest(".testcase.contains-file") as HTMLDivElement;
-            if (tc === null) {
-                return;
-            }
-            const files = JSON.parse(tc.dataset.files);
-            const file = files[fileName];
-            if (file.location === "inline") {
-                showInlineFile(fileName, file.content);
-            } else if (file.location === "href") {
-                showRealFile(fileName, activityPath, file.content);
-            }
-        }));
-    }
-
-    function showInlineFile(name: string, content: string): void {
-        showInfoModal(name, html`<div class='code'>${content}</div>`);
-    }
-
-    function showRealFile(name: string, activityPath: string, filePath: string): void {
-        const path = activityPath + "/" + filePath;
-        const random = Math.floor(Math.random() * 10000 + 1);
-        showInfoModal(
-            html`${name} <a href='${path}' title='Download' download><i class='mdi mdi-download'></i></a>`,
-            html`<div class='code' id='file-${random}'>Loading...</div>`
-        );
-
-        fetch(path, {
-            method: "GET"
-        }).then(response => {
-            if (response.ok) {
-                response.text().then(data => {
-                    let lines = data.split("\n");
-                    const maxLines = 99;
-                    if (lines.length > maxLines) {
-                        lines = lines.slice(0, maxLines);
-                        lines.push("...");
-                    }
-
-                    const table = document.createElement("table");
-                    table.className = "external-file";
-                    for (let i = 0; i < lines.length; i++) {
-                        const tr = document.createElement("tr");
-
-                        const number = document.createElement("td");
-                        number.className = "line-nr";
-                        number.textContent = (i === maxLines) ? "" : (i + 1).toString();
-                        tr.appendChild(number);
-
-                        const line = document.createElement("td");
-                        line.className = "line";
-                        // textContent is safe, html is not executed
-                        line.textContent = lines[i];
-                        tr.appendChild(line);
-                        table.appendChild(tr);
-                    }
-                    const fileView = document.getElementById(`file-${random}`);
-                    fileView.innerHTML = "";
-                    fileView.appendChild(table);
-                });
-            }
-        });
     }
 
     function initFullScreen(): void {
@@ -219,5 +152,3 @@ function initPythiaSubmissionShow(submissionCode: string, activityPath: string):
 
     init();
 }
-
-export { initPythiaSubmissionShow };

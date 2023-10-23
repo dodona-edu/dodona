@@ -1,4 +1,5 @@
 class FeedbackTableRenderer
+  include ActionView::Helpers::JavaScriptHelper
   include Rails.application.routes.url_helpers
   include ApplicationHelper
 
@@ -29,6 +30,7 @@ class FeedbackTableRenderer
 
   def parse
     if @result.present?
+      tutor_init
       @builder.div(class: 'feedback-table', 'data-exercise_id': @exercise.id) do
         if @result[:messages].present?
           @builder.div(class: 'feedback-table-messages') do
@@ -186,6 +188,18 @@ class FeedbackTableRenderer
 
   def group(g)
     @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
+      # Add a link to the debugger if there is data
+      if g[:data] && (g[:data][:statements] || g[:data][:stdin])
+        @builder.div(class: 'tutor-strip tutorlink',
+                     title: 'Start debugger',
+                     'data-statements': (g[:data][:statements]).to_s,
+                     'data-stdin': (g[:data][:stdin]).to_s) do
+          @builder.div(class: 'tutor-strip-icon') do
+            @builder.i('', class: 'mdi mdi-launch mdi-18')
+          end
+        end
+      end
+
       if g[:description]
         @builder.div(class: 'row') do
           @builder.div(class: 'col-12 description') do
@@ -393,6 +407,38 @@ class FeedbackTableRenderer
       html
     else
       sanitize html
+    end
+  end
+
+  def tutor_init
+    # Initialize tutor javascript
+    @builder.script do
+      escaped = escape_javascript(@code.strip)
+      @builder << 'dodona.ready.then(function() {'
+      @builder << "document.body.append(document.getElementById('tutor'));"
+      @builder << "dodona.initTutor(\"#{escaped}\");});"
+    end
+
+    # Tutor HTML
+    @builder.div(id: 'tutor', class: 'tutormodal') do
+      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
+        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
+          @builder.div(class: 'modal-content') do
+            @builder.div(class: 'modal-header') do
+              @builder.h4(class: 'modal-title') {}
+              @builder.div(class: 'icons') do
+                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
+                  @builder.i('', class: 'mdi mdi-fullscreen')
+                end
+                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
+                  @builder.i('', class: 'mdi mdi-close')
+                end
+              end
+            end
+            @builder.div(class: 'modal-body') {}
+          end
+        end
+      end
     end
   end
 end

@@ -9,7 +9,6 @@
       window.dodona.initMathJax();
     </script>
     <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-    <%= javascript_include_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
 <% end %>
 <%= render 'navbar_links' %>

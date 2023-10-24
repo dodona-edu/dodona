@@ -83,7 +83,7 @@ export function initTutor(submissionCode: string): void {
         }
     }
 
-    async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): void {
+    async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): Promise<void> {
         if (!traceGenerator) {
             // only setup the traceGenerator upon first use, as it is a heavy operation
             traceGenerator = new TraceGenerator();

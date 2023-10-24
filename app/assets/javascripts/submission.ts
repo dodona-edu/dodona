@@ -104,7 +104,7 @@ function initCorrectSubmissionToNextLink(status: string): void {
         return;
     }
     const message = document.getElementById("submission-motivational-message");
-    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
+    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 65)}`;
     message.innerHTML = `
         <div class="callout callout-success mt-0" role="alert">
             <span>${I18n.t(congrats)}</span>

@@ -36,8 +36,7 @@ aside.drawer {
     flex-direction: column;
     border-left: 0;
     border-right: 1px solid var(--d-drawer-border);
-    overflow-y: auto;
-    overflow-x: hidden;
+    overflow: hidden auto;
     background: var(--d-surface);
 
     @include shadow-z5;

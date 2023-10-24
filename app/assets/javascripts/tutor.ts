@@ -88,7 +88,7 @@ export function initTutor(submissionCode: string): void {
         }
     }
 
-    function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): void {
+    async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): void {
         const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;
@@ -116,6 +116,10 @@ export function initTutor(submissionCode: string): void {
         }, {});
 
         showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
+        const modalShown = new Promise<void>(resolve => {
+            const modal = document.querySelector("#tutor #info-modal");
+            modal.addEventListener("shown.bs.modal", () => resolve());
+        });
 
         const content = document.querySelector("#tutorcontent");
         console.log(content);
@@ -127,9 +131,10 @@ export function initTutor(submissionCode: string): void {
         </div>`;
         }
 
-        traceGeneratorReady.then(() => {
-            traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull).then((result: string) => createTutor(result));
-        });
+        await traceGeneratorReady;
+        const result = await traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull);
+        await modalShown;
+        createTutor(result);
     }
 
     function createTutor(codeTrace: string): void {

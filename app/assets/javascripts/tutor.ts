@@ -20,11 +20,6 @@ export function initTutor(submissionCode: string): void {
 
     function initTutorLinks(): void {
         const links = document.querySelectorAll(".tutorlink");
-        if (links.length > 0) {
-            // only setup the traceGenerator if there are links, as it is a heavy operation
-            traceGenerator = new TraceGenerator();
-            traceGeneratorReady = traceGenerator.setup();
-        }
 
         links.forEach(l => {
             const tutorLink = l as HTMLLinkElement;
@@ -89,6 +84,12 @@ export function initTutor(submissionCode: string): void {
     }
 
     async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): void {
+        if (!traceGenerator) {
+            // only setup the traceGenerator upon first use, as it is a heavy operation
+            traceGenerator = new TraceGenerator();
+            traceGeneratorReady = traceGenerator.setup();
+        }
+
         const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;

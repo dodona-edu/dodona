@@ -48,35 +48,32 @@
                 </p>
               </div>
             </div>
-            <div class="col-sm-6 order-sm-0">
-            <% else %>
-            <div class="col-sm-12">
-            <% end %>
-              <% if @feedback.submission.present? %>
-                <% submission = @feedback.submission %>
-                <div class="submission-summary clearfix">
-                  <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
-                  <span class="status-line">
-                    <%= Submission.human_enum_name(:status, submission.status) %>
-                    <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
-                      &middot; <span class='text-muted'><%= submission.summary %></span>
-                    <% end %>
-                  </span>
-                  <span class="by-line">
-                    <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
-                  </span>
-                </div>
-              <% else %>
-                <%= t('.no_linked_submission') %>
-              <% end %>
-            </div>
-          </div>
-          <% if @feedback.submission.present? %>
-            <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
-              <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
-            </div>
           <% end %>
+          <div class="<%=@feedback.total_attempts > 0 ? "col-sm-6 order-sm-0" : "col-sm-12" %>">
+            <% if @feedback.submission.present? %>
+              <% submission = @feedback.submission %>
+              <div class="submission-summary clearfix">
+                <span class='status-icon float-start'><%= submission_status_icon(submission, 36) %></span>
+                <span class="status-line">
+                  <%= Submission.human_enum_name(:status, submission.status) %>
+                  <% if submission.summary.present? and submission.summary.downcase != Submission.human_enum_name(:status, submission.status).downcase %>
+                    &middot; <span class='text-muted'><%= submission.summary %></span>
+                  <% end %>
+                </span>
+                <span class="by-line">
+                  <span class="text-muted small"><%= l submission.created_at, format: :submission %></span>
+                </span>
+              </div>
+            <% else %>
+              <%= t('.no_linked_submission') %>
+            <% end %>
+          </div>
         </div>
+        <% if @feedback.submission.present? %>
+          <div class="code-table" data-submission-id="<%= @feedback.submission.id %>">
+            <%= @feedback.submission.judge.renderer.new(@feedback.submission, current_user).parse %>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>

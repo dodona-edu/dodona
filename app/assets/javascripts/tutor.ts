@@ -118,6 +118,7 @@ export function initTutor(submissionCode: string): void {
         showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
 
         const content = document.querySelector("#tutorcontent");
+        console.log(content);
         if (content) {
             content.innerHTML = `<div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
             <div class="progressbar bar bar1" style="width: 0%;"></div>
@@ -135,6 +136,7 @@ export function initTutor(submissionCode: string): void {
         const modal = document.querySelector("#tutor #info-modal");
 
         const content = document.querySelector("#tutorcontent");
+        console.log("create_tutor", content, codeTrace);
         if (content) {
             content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
             document.querySelector("#tutorviz").addEventListener("load", () => {

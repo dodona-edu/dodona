@@ -14,12 +14,12 @@ const config = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
+                exclude: process.env.NODE_ENV === "test" ? /node_modules/ : /(node_modules|test\/).*/,
                 use: ["babel-loader"],
             },
             {
                 test: /\.(ts|tsx)$/,
-                exclude: /node_modules/,
+                exclude: process.env.NODE_ENV === "test" ? /node_modules/ : /(node_modules|test\/).*/,
                 use: ["babel-loader", "ts-loader"],
             },
         ],

@@ -18,7 +18,6 @@ export const stateProperty = (proto: State, name?: PropertyKey): void => {
             this[key] = value;
             this.dispatchStateEvent(name);
         },
-        writable: true,
         configurable: true,
         enumerable: true,
     });

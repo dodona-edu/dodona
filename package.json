@@ -44,6 +44,11 @@
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
   },
+  "resolutions": {
+    "@lit/reactive-element": "^2.0.0",
+    "lit-html": "^3.0.0",
+    "lit": "^3.0.0"
+  },
   "devDependencies": {
     "@open-wc/testing-helpers": "^2.3.0",
     "@testing-library/dom": "^9.3.3",

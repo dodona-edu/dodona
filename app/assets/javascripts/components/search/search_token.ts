@@ -17,8 +17,7 @@ import { FilterCollection, FilterCollectionElement, Label } from "components/sea
  */
 @customElement("d-search-token")
 export class SearchToken extends FilterCollectionElement {
-    @property()
-    accessor color: (l: Label) => string;
+    color: (l: Label) => string;
 
     processClick(e: Event, label: Label): void {
         this.unSelect(label);

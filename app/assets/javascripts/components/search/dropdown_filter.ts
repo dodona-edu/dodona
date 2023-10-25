@@ -1,5 +1,5 @@
 import { html, TemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import { FilterCollection, Label, FilterCollectionElement } from "components/search/filter_collection_element";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 
@@ -18,8 +18,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
  */
 @customElement("d-dropdown-filter")
 export class DropdownFilter extends FilterCollectionElement {
-    @property()
-    accessor color: (s: Label) => string;
+    color: (s: Label) => string;
     @property()
     accessor type: string;
 
@@ -31,10 +30,17 @@ export class DropdownFilter extends FilterCollectionElement {
     }
 
     get filteredLabels(): Label[] {
+        console.log(this.filter);
         return this.showFilter ? this.labels.filter(s => s.name.toLowerCase().includes(this.filter.toLowerCase())) : this.labels;
     }
 
+    constructor() {
+        super();
+        console.log("constructor", this.filter);
+    }
+
     render(): TemplateResult {
+        console.log("render", this.filter);
         if (this.labels.length === 0) {
             return html``;
         }

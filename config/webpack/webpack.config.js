@@ -14,12 +14,14 @@ const config = {
         rules: [
             {
                 test: /\.(js|jsx)$/,
-                exclude: process.env.NODE_ENV === "test" ? /node_modules/ : /(node_modules|test\/).*/,
+                exclude: /node_modules/,
                 use: ["babel-loader"],
             },
             {
-                test: /\.(ts|tsx)$/,
-                exclude: process.env.NODE_ENV === "test" ? /node_modules/ : /(node_modules|test\/).*/,
+                test: function (modulePath) {
+                    return modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
+                },
+                exclude: /node_modules/,
                 use: ["babel-loader", "ts-loader"],
             },
         ],

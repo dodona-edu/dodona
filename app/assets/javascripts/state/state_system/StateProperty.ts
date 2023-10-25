@@ -1,15 +1,12 @@
 import { State } from "./State";
 
 /**
- * Function for decorating a property that is compatible with both TypeScript and Babel decorators.
- * It will apply the `finisher` function to the property.
+ * Function for decorating a property that is compatible with both TypeScript decorators.
+ * It will keep track of readers and dispatch events when the property is changed.
  *
  * @returns {void}
  */
-export const stateProperty = (
-    proto: State ,
-    name?: PropertyKey
-): void  => {
+export const stateProperty = (proto: State, name?: PropertyKey): void => {
     const key = typeof name === "symbol" ? Symbol() : `__${name}`;
     const currentVal = proto[name];
     Object.defineProperty(proto, name, {

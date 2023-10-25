@@ -33,27 +33,17 @@ module.exports = function (api) {
                     exclude: ["transform-typeof-symbol"]
                 }
             ],
-            ["@babel/preset-typescript", {
-                allExtensions: true,
-                isTSX: true
-            }]
         ].filter(Boolean),
         ignore: [],
         plugins: [
             "babel-plugin-macros",
-            "@babel/plugin-syntax-dynamic-import",
-            "@babel/plugin-transform-for-of",
             isTestEnv && "babel-plugin-dynamic-import-node",
             isDevelopmentEnv && ["istanbul", { include: ["app/assets/javascripts/**/*.{js,ts}"], coverageGlobalScopeFunc: false, coverageGlobalScope: "window" }],
-            "@babel/plugin-transform-destructuring",
-            ["@babel/plugin-proposal-object-rest-spread", { useBuiltIns: true }],
             ["@babel/plugin-transform-runtime", {
                 helpers: false,
                 regenerator: true,
                 corejs: false
             }],
-            ["@babel/plugin-transform-regenerator", { async: false }],
-            "@babel/plugin-transform-class-properties"
         ].filter(Boolean)
     };
 };

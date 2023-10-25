@@ -1,9 +1,11 @@
 import fscreen from "fscreen";
-import { fetch } from "utilities";
 import { showInfoModal } from "modal";
 import { html } from "lit";
+import { TraceGenerator } from "@dodona/pyodide-trace-library";
 
 export function initTutor(submissionCode: string): void {
+    let traceGenerator: TraceGenerator;
+    let traceGeneratorReady: Promise<void>;
     function init(): void {
         initTutorLinks();
         if (document.querySelectorAll(".tutormodal").length == 1) {
@@ -17,14 +19,16 @@ export function initTutor(submissionCode: string): void {
     }
 
     function initTutorLinks(): void {
-        document.querySelectorAll(".tutorlink").forEach(l => {
+        const links = document.querySelectorAll(".tutorlink");
+
+        links.forEach(l => {
             const tutorLink = l as HTMLLinkElement;
             if (!(tutorLink.dataset.statements || tutorLink.dataset.stdin)) {
                 l.remove();
             }
         });
 
-        document.querySelectorAll(".tutorlink").forEach(l => l.addEventListener("click", e => {
+        links.forEach(l => l.addEventListener("click", e => {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
             const tutorLink = e.currentTarget as HTMLLinkElement;
             const group = tutorLink.closest(".group");
@@ -79,7 +83,13 @@ export function initTutor(submissionCode: string): void {
         }
     }
 
-    function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: any, hrefFiles: any): void {
+    async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): Promise<void> {
+        if (!traceGenerator) {
+            // only setup the traceGenerator upon first use, as it is a heavy operation
+            traceGenerator = new TraceGenerator();
+            traceGeneratorReady = traceGenerator.setup();
+        }
+
         const lines = studentCode.split("\n");
         // find and remove main
         let i = 0;
@@ -100,47 +110,43 @@ export function initTutor(submissionCode: string): void {
         sourceArray.push(statements);
         const sourceCode = sourceArray.join("\n");
 
-        const formData = new FormData();
-        formData.append("exercise_id", exerciseId);
-        formData.append("code", sourceCode);
-        formData.append("input", JSON.stringify(stdin.split("\n")));
-        formData.append("inlineFiles", JSON.stringify(inlineFiles));
-        formData.append("hrefFiles", JSON.stringify(hrefFiles));
+        // make full url from path
+        const hrefFilesFull = Object.keys(hrefFiles).reduce((result, key) => {
+            result[key] = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ""}/nl/exercises/${exerciseId}/${hrefFiles[key]}`;
+            return result;
+        }, {});
 
-        fetch(window.dodona.tutorUrl, {
-            method: "POST",
-            body: formData,
-        })
-            .then( response => {
-                if (response.ok) {
-                    response.json().then(data => createTutor(data));
-                } else {
-                    const error = document.createElement("div");
-                    error.classList.add("alert", "alert-danger", "alert-dismissible", "show", "tutor-error");
-                    error.innerHTML = `<button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>${I18n.t("js.tutor-failed")}`;
-                    document.querySelector(".feedback-table").before(error);
-                    window.scrollTo(0, 0); // scroll to top of page to see error
-                }
-            });
+        showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
+        const modalShown = new Promise<void>(resolve => {
+            const modal = document.querySelector("#tutor #info-modal");
+            modal.addEventListener("shown.bs.modal", () => resolve());
+        });
+
+        const content = document.querySelector("#tutorcontent");
+        if (content) {
+            content.innerHTML = `<div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
+            <div class="progressbar bar bar1" style="width: 0%;"></div>
+            <div class="bufferbar bar bar2" style="width: 100%;"></div>
+            <div class="auxbar bar bar3" style="width: 0%;"></div>
+        </div>`;
+        }
+
+        await traceGeneratorReady;
+        const result = await traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull);
+        await modalShown;
+        createTutor(result);
     }
 
     function createTutor(codeTrace: string): void {
-        showInfoModal(
-            "Python Tutor",
-            html`<div id="tutorcontent"><div class="progress"><div class="progress-bar progress-bar-striped progress-bar-info active" role="progressbar" style="width: 100%">Loading</div></div></div>`,
-            { allowFullscreen: true }
-        );
         const modal = document.querySelector("#tutor #info-modal");
 
-        modal.addEventListener("shown.bs.modal", () => {
-            const content = document.querySelector("#tutorcontent");
-            if (content) {
-                content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
-                document.querySelector("#tutorviz").addEventListener("load", () => {
-                    window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(codeTrace), scrolling: "omit" }, "#tutorviz");
-                });
-            }
-        });
+        const content = document.querySelector("#tutorcontent");
+        if (content) {
+            content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
+            document.querySelector("#tutorviz").addEventListener("load", () => {
+                window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
+            });
+        }
 
         modal.addEventListener("hidden.bs.modal", () => {
             if (fscreen.fullscreenElement) {

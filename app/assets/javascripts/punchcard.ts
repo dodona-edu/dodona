@@ -51,7 +51,7 @@ function initPunchcard(url: string): void {
     const xAxis = d3.axisBottom(x)
         .ticks(24)
         .tickSize(0)
-        .tickFormat(hour => `${hour < 10 ? "0" : ""}${hour}:00`)
+        .tickFormat(hour => `${(hour as number) < 10 ? "0" : ""}${hour}:00`)
         .tickPadding(10);
     const yAxis = d3.axisLeft(y)
         .ticks(7)

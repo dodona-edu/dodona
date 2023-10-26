@@ -25,8 +25,8 @@
             <i class="mdi mdi-chevron-right"></i>
           <% end %>
           <span class='float-start'><%= activity_icon exercise %></span>
-          <%= link_to exercise.name, activity_path(exercise), class: "course-link", title: exercise.name %>
-          <%= link_to exercise.repository.name, repository_path(exercise.repository), class: "small text-muted course-link", title: exercise.repository.name %>
+          <%= link_to exercise.name, activity_path(exercise), class: "course-link #{'blur' if Current.demo_mode }", title: exercise.name %>
+          <%= link_to exercise.repository.name, repository_path(exercise.repository), class: "small text-muted course-link #{'blur' if Current.demo_mode }", title: exercise.repository.name %>
         </p>
       <% end %>
       <% if @draft_exercises.count > 5 %>

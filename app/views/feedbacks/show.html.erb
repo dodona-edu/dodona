@@ -4,7 +4,6 @@
     window.dodona.initMathJax();
   </script>
   <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-  <%= javascript_include_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row" id="feedback-page">
@@ -26,33 +25,31 @@
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">
-        <% if @feedback.total_attempts > 0 %>
-          <div class="col-sm-6 order-sm-1">
-            <div class="feedback-metadata-submission">
-              <p>
-              <% if @feedback.submission.present? %>
-                <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
-                <% if @feedback.later_attempts > 0 %>
-                  <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
-                <% end %>
-                <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+          <% if @feedback.total_attempts > 0 %>
+            <div class="col-sm-6 order-sm-1">
+              <div class="feedback-metadata-submission">
+                <p>
+                <% if @feedback.submission.present? %>
+                  <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
+                  <% if @feedback.later_attempts > 0 %>
+                    <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
+                  <% end %>
+                  <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+                    <%= link_to edit_feedback_path(@feedback) do %>
+                      <%= t("feedbacks.edit.select_another_submission") %>
+                    <% end %>
+                  <% end %>
+                <% elsif @feedback.total_attempts > 0 %>
+                  <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
                   <%= link_to edit_feedback_path(@feedback) do %>
-                    <%= t("feedbacks.edit.short_title") %>
+                    <%= t("feedbacks.edit.select_a_submission") %>
                   <% end %>
                 <% end %>
-              <% elsif @feedback.total_attempts > 0 %>
-                <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
-                <%= link_to edit_feedback_path(@feedback) do %>
-                  <%= t("feedbacks.edit.short_title") %>
-                <% end %>
-              <% end %>
-              </p>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="col-sm-6 order-sm-0">
-          <% else %>
-          <div class="col-sm-12">
           <% end %>
+          <div class="<%=@feedback.total_attempts > 0 ? "col-sm-6 order-sm-0" : "col-sm-12" %>">
             <% if @feedback.submission.present? %>
               <% submission = @feedback.submission %>
               <div class="submission-summary clearfix">

@@ -28,7 +28,6 @@
     window.dodona = window.dodona || {};
     window.dodona.dotCount = <%= @dot_icon&.to_json&.html_safe || "[]" %>;
     window.dodona.sandboxUrl = "<%= sandbox_url %>";
-    window.dodona.tutorUrl = "<%= Rails.configuration.tutor_url.to_s %>";
   </script>
 
   <%= javascript_include_tag 'application_pack' %>

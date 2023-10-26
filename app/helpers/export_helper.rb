@@ -22,6 +22,7 @@ module ExportHelper
       @list = kwargs[:list]
       @users = kwargs[:users]
       @for_user = kwargs[:for_user]
+      I18n.locale = @for_user&.lang # set locale to use correct exercise names
       case @item
       when Series
         @list = @item.exercises if all?

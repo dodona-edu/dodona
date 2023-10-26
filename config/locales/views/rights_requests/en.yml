@@ -12,10 +12,11 @@ en:
       context_explanation: Some information about why you need these rights should go here...
     index:
       title: Teacher rights requests
-    requests_table:
       approve: Approve
       reject: Reject
       no_institution_provided: Not provided
+      approved: Approved
+      rejected: Rejected
     create:
       created: Request for teacher rights successfully sent.
     approve:

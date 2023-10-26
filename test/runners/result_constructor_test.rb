@@ -46,6 +46,64 @@ class ResultConstructorTest < ActiveSupport::TestCase
     end
   end
 
+  test 'metadata should be accepted' do
+    assert_equal({
+      accepted: true,
+      status: 'correct',
+      description: 'Correct',
+      groups: [{
+        description: 'Tab One',
+        badgeCount: 0,
+        groups: [{
+          accepted: true,
+          groups: [{
+            description: 'case 1',
+            accepted: true
+          }],
+          data: {
+            statements: 'case 1',
+            stdin: '123'
+          }
+        }, {
+          accepted: true,
+          groups: [{
+            description: 'case 2',
+            accepted: true
+          }],
+          data: {
+            statements: 'case 2'
+          }
+        }, {
+          accepted: true,
+          groups: [{
+            description: 'case 3',
+            accepted: true
+          }],
+          data: {
+            stdin: '3'
+          }
+        }]
+      }]
+    }, construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "statements": "case 1", "stdin": "123" } }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 2" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "statements": "case 2" } }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 3" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "stdin": "3" } }',
+      '{ "command": "close-tab" }',
+      '{ "command": "close-judgement" }'
+    ]))
+  end
+
   test 'partial output should accumulated status' do
     assert_equal({
       accepted: false,

@@ -160,9 +160,10 @@ class ResultConstructor
     @level = :context
   end
 
-  def close_context(accepted: nil)
+  def close_context(accepted: nil, data: nil)
     check_level(:context, 'context closed')
     @context[:accepted] = accepted unless accepted.nil?
+    @context[:data] = data unless data.nil?
     @judgement[:accepted] &&= @context[:accepted]
     @hiddentab &&= @context[:accepted]
     (@tab[:groups] ||= []) << @context

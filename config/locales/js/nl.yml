@@ -150,7 +150,7 @@ nl:
       reply: 'Reageer'
       update: 'Updaten'
       cancel: 'Annuleren'
-      delete: 'Verwijderen'
+      delete: 'Opmerking verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
@@ -324,5 +324,3 @@ nl:
       dark: Donker
       system: Systeem
       theme: Stijl
-
-

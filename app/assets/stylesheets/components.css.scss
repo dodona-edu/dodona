@@ -126,3 +126,11 @@ blockquote {
   border-left: var(--d-divider) 3px solid;
   color: var(--d-on-surface-muted);
 }
+
+.blur {
+  filter: blur(5px);
+
+  &:hover {
+    filter: none;
+  }
+}

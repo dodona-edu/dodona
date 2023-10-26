@@ -37,3 +37,4 @@ python_exercise:
   type: "Exercise"
   access_token: "12345"
   repository_token: "67890"
+  draft: false

@@ -9,7 +9,9 @@
   <table class="table activity-table table-resource">
     <thead>
     <tr>
-      <th class='status-icon'></th>
+      <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
+        <th class='status-icon'></th>
+      <% end %>
       <th class='type-icon'></th>
       <th><d-sort-button column="name"><%= t "activities.index.activity_title" %></d-sort-button></th>
       <th><%= t "activities.index.languages" %></th>
@@ -24,21 +26,21 @@
     <tbody>
     <% local_assigns[:activities].each do |activity| %>
       <tr>
-        <td class='status-icon'>
-          <% if user_signed_in? %>
-            <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
-              <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
-            <% end %>
-            <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
-          <% end %>
-        </td>
+        <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
+          <td class='status-icon'>
+            <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
+          </td>
+        <% end %>
 
         <td class='type-icon'>
           <%= activity_icon(activity) %>
         </td>
 
         <td class="link">
-          <span class="ellipsis-overflow" title="<%= activity.name %>">
+          <span class="ellipsis-overflow activity-title" title="<%= activity.name %>">
+            <% if user_signed_in? %>
+              <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+            <% end %>
             <% if activity.accessible?(current_user, @course) %>
               <%= link_to activity.name, get_activity_path.call(activity) %>
             <% elsif activity.access_public? %>

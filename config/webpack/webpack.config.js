@@ -13,9 +13,16 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.(js|jsx|ts|tsx|)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
+            },
+            {
+                test: function (modulePath) {
+                    return modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
+                },
+                exclude: /node_modules/,
+                use: ["babel-loader", "ts-loader"],
             },
         ],
     },

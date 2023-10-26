@@ -221,7 +221,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
     assert_equal Activity.where(judge: judge).count, response.parsed_body.count
     assert_equal @instance.id, response.parsed_body[0]['id']
 
-    get activities_url(format: :json, judge_id: Judge.all.last.id + 1)
+    get activities_url(format: :json, judge_id: Judge.last.id + 1)
 
     assert_equal 0, response.parsed_body.count
   end
@@ -698,11 +698,143 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_not resp['has_read']
   end
 
-  test 'should be able to acess index when not signed in' do
+  test 'should be able to access index when not signed in' do
     sign_out @user
     get activities_url
 
     assert_response :success
+  end
+
+  test 'repo admin should be able to access own draft activities' do
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, :config_stubbed, repository: repo, draft: true
+    get activity_url(exercise)
+
+    assert_response :success
+  end
+
+  test 'repo admin should not be able to access other draft activities' do
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    repo2 = create :repository, :git_stubbed
+    exercise = create :exercise, :config_stubbed, repository: repo2, draft: true
+    get activity_url(exercise)
+
+    assert_redirected_to root_url
+  end
+
+  test 'course admin should be able to access draft activities in course' do
+    sign_out @user
+    staff = users(:staff)
+    course_admin = users(:student)
+    course = create :course, series_count: 1
+    course.administrating_members << staff
+    course.administrating_members << course_admin
+
+    exercise = create :exercise, :config_stubbed, draft: true
+    course.series.first.exercises << exercise
+
+    sign_in staff
+    get course_activity_url(course, exercise)
+
+    assert_response :success
+    sign_out staff
+
+    sign_in course_admin
+    get course_activity_url(course, exercise)
+
+    assert_response :success
+  end
+
+  test 'course admin should not be able to access draft activities in other courses' do
+    sign_out @user
+    staff = users(:staff)
+    course_admin = users(:student)
+    course = create :course, series_count: 1
+    course.administrating_members << staff
+    course.administrating_members << course_admin
+
+    course2 = create :course, series_count: 1
+
+    exercise = create :exercise, :config_stubbed, draft: true
+    course.series.first.exercises << exercise
+    course2.series.first.exercises << exercise
+
+    sign_in staff
+    get course_activity_url(course2, exercise)
+
+    assert_redirected_to root_url
+    sign_out staff
+
+    sign_in course_admin
+    get course_activity_url(course2, exercise)
+
+    assert_redirected_to root_url
+  end
+
+  test 'student should not be able to access draft activities in course' do
+    sign_out @user
+    student = users(:student)
+    course = create :course, series_count: 1
+    course.enrolled_members << student
+
+    exercise = create :exercise, :config_stubbed, draft: true
+    course.series.first.exercises << exercise
+
+    sign_in student
+    get course_activity_url(course, exercise)
+
+    assert_redirected_to root_url
+  end
+
+  test 'repository admin should be able to publish draft activities' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: true
+
+    put activity_url(exercise), params: { activity: { draft: false } }
+
+    assert_not exercise.reload.draft
+  end
+
+  test 'repository admin should not be able to reset an activity to draft' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: false
+
+    put activity_url(exercise), params: { activity: { draft: true } }
+
+    assert_not exercise.reload.draft
+  end
+
+  test 'repository admin can update draft activity' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: true, name_en: 'old name'
+
+    put activity_url(exercise), params: { activity: { draft: true, name_en: 'new name' } }
+
+    assert exercise.reload.draft
+    assert_equal 'new name', exercise.name_en
   end
 end
 

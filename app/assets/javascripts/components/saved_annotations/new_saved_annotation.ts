@@ -4,10 +4,9 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
-import { isBetaCourse } from "saved_annotation_beta";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
-import { userState } from "state/Users";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -17,42 +16,38 @@ import { userState } from "state/Users";
  *
  * @prop {Number} fromAnnotationId - the id of the annotation which will be saved
  * @prop {String} annotationText - the original text of the annotation which wil be saved
- * @prop {Number} savedAnnotationId - the id of the saved annotation
+ * @prop {Number} exerciseId - the id of the exercise to which the annotation belongs
+ * @prop {Number} courseId - the id of the course to which the annotation belongs
  */
 @customElement("d-new-saved-annotation")
-export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
+export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElement)) {
     @property({ type: Number, attribute: "from-annotation-id" })
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
-    @property({ type: Number, attribute: "saved-annotation-id" })
-    savedAnnotationId: number;
+    @property({ type: Number, attribute: "exercise-id" })
+    exerciseId: number = exerciseState.id;
+    @property({ type: Number, attribute: "course-id" })
+    courseId: number = courseState.id;
 
     @property({ state: true })
     errors: string[];
 
     savedAnnotation: SavedAnnotation;
 
-    get isAlreadyLinked(): boolean {
-        return this.savedAnnotationId != undefined;
-    }
-
-    get linkedSavedAnnotation(): SavedAnnotation {
-        return savedAnnotationState.get(this.savedAnnotationId);
-    }
-
     get newSavedAnnotation(): SavedAnnotation {
         return {
             id: undefined,
             // Take the first five words, with a max of 40 chars as default title
             title: this.annotationText.split(/\s+/).slice(0, 5).join(" ").slice(0, 40),
-            annotation_text: this.annotationText
+            annotation_text: this.annotationText,
         };
     }
 
     get isTitleTaken(): boolean {
+        const annotation = this.savedAnnotation || this.newSavedAnnotation;
         return savedAnnotationState.isTitleTaken(
-            this.newSavedAnnotation.title, exerciseState.id, courseState.id, userState.id);
+            annotation.title, this.exerciseId, this.courseId);
     }
 
     async createSavedAnnotation(): Promise<void> {
@@ -67,6 +62,8 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
             });
             this.errors = undefined;
             this.hideModal();
+            const event = new CustomEvent("annotation-saved", { bubbles: true, composed: true });
+            this.dispatchEvent(event);
         } catch (errors) {
             this.errors = errors;
         }
@@ -88,6 +85,8 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
             <d-saved-annotation-form
                 .savedAnnotation=${this.newSavedAnnotation}
                 @change=${e => this.savedAnnotation = e.detail}
+                .courseId=${this.courseId}
+                .exerciseId=${this.exerciseId}
             ></d-saved-annotation-form>
         `, html`
             <button class="btn btn-text" @click=${() => this.createSavedAnnotation()}>
@@ -97,13 +96,21 @@ export class NewSavedAnnotation extends modalMixin(ShadowlessLitElement) {
     }
 
     render(): TemplateResult {
-        return isBetaCourse() && !(this.isAlreadyLinked && this.linkedSavedAnnotation) ? html`
-            <li>
-                <a class="dropdown-item" @click="${() => this.showModal()}">
-                    <i class="mdi mdi-content-save mdi-18"></i>
-                    ${I18n.t("js.saved_annotation.new.button_title")}
-                </a>
-            </li>
-        ` : html``;
+        return html`
+            <a @click="${() => this.showModal()}">
+                <i class="mdi mdi-content-save mdi-18"></i>
+                ${I18n.t("js.saved_annotation.new.button_title")}
+            </a>
+        `;
     }
+}
+
+export function initNewSavedAnnotationButtons(path: string): void {
+    const newSavedAnnotationElements = document.querySelectorAll("d-new-saved-annotation");
+    newSavedAnnotationElements.forEach((element: NewSavedAnnotation) => {
+        element.addEventListener("annotation-saved", () => {
+            // redirect to the saved annotation list
+            window.location.href = path;
+        });
+    });
 }

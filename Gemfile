@@ -4,17 +4,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.0.8'
+gem 'rails', '~> 7.1.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.3.1'
+gem 'puma', '~> 6.4.0'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.2.0'
+gem 'cssbundling-rails', '~> 1.3.3'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.1.2'
+gem 'jsbundling-rails', '~> 1.2.1'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -40,7 +40,7 @@ gem 'bootsnap', '~> 1.16.0', require: false
 gem 'json_schemer', '~> 2.0.0'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.7'
+gem 'delayed_job_active_record', '~> 4.1.8'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
@@ -63,8 +63,8 @@ gem 'diff-lcs', '~>1.5'
 gem 'autoprefixer-rails', '~>10.4.15'
 
 # saml authentication
-gem 'devise', '~>4.9.2'
-gem 'ruby-saml', '~> 1.15.0'
+gem 'devise', '~>4.9.3'
+gem 'ruby-saml', '~> 1.16.0'
 
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.1'
@@ -77,7 +77,7 @@ gem 'jwt', '~> 2.7.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
-gem 'mail_form', '~> 1.10.0'
+gem 'mail_form', '~> 1.10.1'
 
 # set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
 gem 'mail', '~> 2.8.1'
@@ -115,13 +115,13 @@ gem 'nokogiri', '~> 1.15.4'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
-gem 'has_scope', '~> 0.8.1'
+gem 'has_scope', '~> 0.8.2'
 
 # generating zip files
 gem 'rubyzip', '~> 2.3.2'
 
 # memcache
-gem 'dalli', '~> 3.2.5'
+gem 'dalli', '~> 3.2.6'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 3.2.1'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.1.1'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.14.0'
+gem 'ddtrace', '~> 1.15.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.12.0'
+  gem 'selenium-webdriver', '~> 4.14.0'
 end
 
 group :test do
@@ -177,10 +177,10 @@ group :development do
   gem 'web-console', '~> 4.2.1'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-capybara', '~> 2.18.0'
-  gem 'rubocop-factory_bot', '~> 2.23'
-  gem 'rubocop-minitest', '~> 0.31.1'
-  gem 'rubocop-rails', '~> 2.20.2'
+  gem 'rubocop-capybara', '~> 2.19.0'
+  gem 'rubocop-factory_bot', '~> 2.24'
+  gem 'rubocop-minitest', '~> 0.33.0'
+  gem 'rubocop-rails', '~> 2.21.2'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 require 'test_helper'
@@ -164,7 +165,7 @@ class ActivityTest < ActiveSupport::TestCase
     create :series, course: c3, exercises: [e1, e2]
     create :series, course: c4, exercises: [e2, e3]
     # should count the same activity twice in the same course
-    5.times { create :series, course: c4, exercises: [e3] }
+    create_list :series, 5, course: c4, exercises: [e3]
 
     assert_equal [e3.id, e1.id, e2.id], Activity.order_by_popularity(:DESC).pluck(:id)
     assert_equal [e2.id, e1.id, e3.id], Activity.order_by_popularity(:ASC).pluck(:id)

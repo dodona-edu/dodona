@@ -4,7 +4,6 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import "components/datalist_input";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { userState } from "state/Users";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
 
@@ -44,7 +43,6 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
         const savedAnnotations = savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
-            ["user_id", userState.id.toString()],
             ["filter", this.__label]
         ]));
         if (savedAnnotations === undefined) {
@@ -61,6 +59,10 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
 
     get options(): {label: string, value: string}[] {
         return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString(), extra: sa.annotation_text }));
+    }
+
+    get savedAnnotationsPath(): string {
+        return `/saved_annotations?course_id=${courseState.id}&exercise_id=${exerciseState.id}`;
     }
 
     get icon(): string {
@@ -105,7 +107,7 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
                     ` : ""}
                 </div>
                 <div class="help-block">
-                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html"))}
+                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html", { path: this.savedAnnotationsPath }))}
                 </div>
             </div>
         `;

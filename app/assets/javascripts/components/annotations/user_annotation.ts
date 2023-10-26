@@ -152,13 +152,15 @@ export class UserAnnotationComponent extends i18nMixin(ShadowlessLitElement) {
                 </li>
             `);
         }
-        if (this.data.permission.save) {
+        if (this.data.permission.save && !this.data.saved_annotation_id) {
             options.push(html`
-                <d-new-saved-annotation
-                    from-annotation-id="${this.data.id}"
-                    annotation-text="${this.data.annotation_text}"
-                    .savedAnnotationId="${this.data.saved_annotation_id}">
-                </d-new-saved-annotation>
+                <li>
+                    <d-new-saved-annotation
+                        class="dropdown-item"
+                        from-annotation-id="${this.data.id}"
+                        annotation-text="${this.data.annotation_text}">
+                    </d-new-saved-annotation>
+                </li>
             `);
         }
         if (this.data.permission.destroy) {

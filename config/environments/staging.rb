@@ -11,7 +11,6 @@ Rails.application.configure do
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'naos-sandbox.dodona.be'
-  config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
 
   # Allowed hostnames
   config.hosts << config.default_host << config.alt_host << config.sandbox_host
@@ -64,6 +63,9 @@ Rails.application.configure do
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :terser
+
+  # Do not fallback to assets pipeline if a precompiled asset is missed.
+  config.assets.compile = false
 
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.

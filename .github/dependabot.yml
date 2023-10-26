@@ -41,6 +41,9 @@ updates:
       patterns:
         - "*codemirror*"
         - "@lezer*"
+    testing-library:
+      patterns:
+        - "@testing-library*"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

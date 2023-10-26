@@ -67,6 +67,7 @@ en:
         mine: "My activities"
         featured: "Featured activities"
         all: "All activities"
+      draft-notice: "This activity is a draft and thus not visible for students."
     show:
       code: Code
       handin: Hand in
@@ -97,6 +98,8 @@ en:
       preloaded_info: "We have preloaded your latest submission into the editor."
       preloaded_clear: Clear editor.
       preloaded_restore: Restore the initial code.
+      alert_draft_html: This activity is a <a href="https://docs.dodona.be/en/faq/activities/#what-is-a-draft-activity" target="_blank">draft</a> and thus not visible for students.
+      alert_draft_edit: Publish activity.
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

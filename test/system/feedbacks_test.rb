@@ -17,7 +17,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     @staff_member = create :staff
     series = create :series, exercise_count: 2
     series.course.administrating_members << @staff_member
-    @users = [create(:user), create(:user)]
+    @users = create_list :user, 2
     @exercises = series.exercises
     @users.each do |u|
       series.course.enrolled_members << u

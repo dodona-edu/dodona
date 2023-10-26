@@ -203,6 +203,13 @@
   --d-annotation-question-background-intense: #{color.mix($purple-80, $neutral-25, 20%)};
   --d-annotation-user-background-intense: #{color.mix($success-70, $neutral-25, 20%)};
 
+  @include wavy-underline(--d-annotation-warning-background, $warning-80, 0.7);
+  @include wavy-underline(--d-annotation-warning-background-intense, $warning-80, 1.7);
+  @include wavy-underline(--d-annotation-error-background, $danger-70, 0.7);
+  @include wavy-underline(--d-annotation-error-background-intense, $danger-70, 1.7);
+  @include wavy-underline(--d-annotation-info-background, $info-80, 0.7);
+  @include wavy-underline(--d-annotation-info-background-intense, $info-80, 1.7);
+
   .image-bright {
     // $gray-90 converted to filter using https://codepen.io/sosuke/pen/Pjoqqp
     filter: invert(86%) sepia(3%) saturate(218%) hue-rotate(242deg) brightness(107%) contrast(90%);

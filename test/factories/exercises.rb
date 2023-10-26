@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
@@ -36,6 +37,7 @@ FactoryBot.define do
     description_en_present { false }
     access { 'public' }
     status { 'ok' }
+    draft { false }
 
     sequence(:path) { |n| "exercise#{n}" }
 
@@ -43,7 +45,7 @@ FactoryBot.define do
     judge { repository.judge }
 
     trait :generated_repo do
-      association :repository, factory: %i[repository git_stubbed]
+      repository factory: %i[repository git_stubbed]
       judge { repository.judge }
     end
 
@@ -81,7 +83,7 @@ FactoryBot.define do
     end
 
     trait :with_programming_language do
-      association :programming_language
+      programming_language
     end
 
     trait :nameless do

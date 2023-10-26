@@ -56,8 +56,8 @@ class SearchTest < ApplicationSystemTestCase
   test 'Going to a page with search does not create an extra history entry' do
     sign_in create(:zeus)
     visit root_path
-    click_on 'Toggle drawer'
-    click_on 'Exercises'
+    click_button 'Toggle drawer'
+    click_link 'Exercises'
 
     page.assert_current_path activities_path
     page.go_back

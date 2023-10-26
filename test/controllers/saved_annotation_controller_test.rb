@@ -6,7 +6,7 @@ class SavedAnnotationControllerTest < ActionDispatch::IntegrationTest
   crud_helpers SavedAnnotation, attrs: %i[title annotation_text]
 
   def setup
-    @course = create :course, id: 10 # COURSE ID CAN BE REMOVED AFTER CLOSED BETA
+    @course = create :course
     @user = users(:staff)
     CourseMembership.create(course: @course, user: @user, status: :course_admin)
     @instance = create :saved_annotation, user: @user, course: @course

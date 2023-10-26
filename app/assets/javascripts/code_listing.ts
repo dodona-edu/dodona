@@ -47,6 +47,22 @@ function initAnnotateButtons(): void {
     // make the whole document a valid target for dropping the create annotation button
     document.addEventListener("dragover", e => e.preventDefault());
     document.addEventListener("drop", e => e.preventDefault());
+
+    // copy only the selected code, this avoids copying the line numbers or extra whitespace from the complex html
+    document.addEventListener("copy", event => {
+        const selection = userAnnotationState.selectedRange;
+        if (!selection) {
+            return; // if there is no code selection, let the browser handle the copy event
+        }
+
+        const selectedCode = submissionState.code.split("\n").slice(selection.row - 1, selection.row + selection.rows - 1);
+        // on the first and last line, selection might only cover part of the line
+        // only copy the selected columns/characters
+        selectedCode[0] = selectedCode[0].slice(selection.column);
+        selectedCode[selectedCode.length - 1] = selectedCode[selectedCode.length - 1].slice(0, selection.columns);
+        event.clipboardData.setData("text/plain", selectedCode.join("\n"));
+        event.preventDefault();
+    });
 }
 
 function loadUserAnnotations(): void {

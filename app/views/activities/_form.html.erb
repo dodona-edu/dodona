@@ -1,7 +1,3 @@
-<% content_for :javascripts do %>
-  <% # TODO rename pack to activity %>
-  <% javascript_include_tag 'exercise' %>
-<% end %>
 <%= form_for(activity.becomes(Activity), :url => activity_scoped_path(activity: activity, course: @course, series: @series), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if activity.errors.any? %>
    <div class="callout callout-danger" id="error_explanation">
@@ -32,13 +28,10 @@
   </div>
   <div class="field form-group row">
     <label class="col-sm-3 col-12 col-form-label"><%= t ".edit_activity" %></label>
-    <div class="col-sm-6 col-12 form-control-static"><%= link_to t(".open_on_github"), activity.github_url, target: '_blank', rel: 'noopener' %></div>
+    <div class="col-sm-6 col-12 form-control-static pt-2"><%= link_to t(".open_on_github"), activity.github_url, target: '_blank', rel: 'noopener' %></div>
   </div>
   <div class="field form-group row">
     <label class="col-sm-3 col-12 col-form-label"><%= t ".info" %></label>
-    <div class="col-sm-6 col-12 form-control-static"><%= link_to t(".info_description"), info_activity_scoped_path(activity: @activity, course: @course, series: @series), rel: 'noopener' %></div>
+    <div class="col-sm-6 col-12 form-control-static pt-2"><%= link_to t(".info_description"), info_activity_scoped_path(activity: @activity, course: @course, series: @series), rel: 'noopener' %></div>
   </div>
 <% end %>
-<script>
-    dodona.initLabelsEdit(<%= raw render template: 'labels/index', formats: :json %>, <%= raw (activity.merged_dirconfig['labels'] || []).to_json %>);
-</script>

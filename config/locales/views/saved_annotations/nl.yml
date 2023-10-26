@@ -12,3 +12,5 @@ nl:
       warning_no_annotations_changed: Bestaande opmerkingen zullen niet worden aangepast. Deze wijzigingen zullen enkel worden toegepast op nieuwe opmerkingen.
       destroy: Verwijderen
       save: Opslaan
+    new:
+      title: Opmerking opslaan

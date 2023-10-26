@@ -126,7 +126,8 @@
         "required": ["command"],
         "properties": {
             "command":  { "enum": ["close-context"] },
-            "accepted": { "type": "boolean" }
+            "accepted": { "type": "boolean" },
+            "data":     { "$ref": "#/definitions/data" }
         }
     },
     "close-tab": {
@@ -218,6 +219,20 @@
     "severity": {
       "type": "string",
       "enum": ["error", "warning", "info"]
+    },
+    "data": {
+      "type": "object",
+      "description": "Metadata, currently used to enable the Python Tutor (only works for Python).",
+      "properties": {
+        "statements": {
+          "type": "string",
+          "description": "Block of code which is pasted below the submission to run a context."
+        },
+        "stdin": {
+          "type": "string",
+          "description": "The stdin for this context, which will be provided to the Python Tutor."
+        }
+      }
     }
   }
 }

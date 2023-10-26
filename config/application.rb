@@ -9,7 +9,18 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
+
+    # ** Please read carefully, this must be configured in config/application.rb **
+    # Change the format of the cache entry.
+    # Changing this default means that all new cache entries added to the cache
+    # will have a different format that is not supported by Rails 7.0
+    # applications.
+    # Only change this value after your application is fully deployed to Rails 7.1
+    # and you have no plans to rollback.
+    # When you're ready to change format, add this to `config/application.rb` (NOT
+    # this file):
+    config.active_support.cache_format_version = 7.0
 
     config.dodona_email = 'dodona@ugent.be'
     # Configuration for the application, engines, and railties goes here.
@@ -26,7 +37,6 @@ module Dodona
 
     # The sandboxed host with user provided content, without authentication
     config.sandbox_host = 'sandbox.localhost'
-    config.tutor_url = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: "/cgi-bin/build_trace.py")
 
     # Where we host our assets (a single domain, for caching)
     # Port is needed somehow...

@@ -2,6 +2,13 @@ nl:
   annotations:
     index:
       new_annotation: "Er is een nieuwe opmerking op je code"
+      title: Opmerkingen
+    annotations_table:
+      submission: Oplossing
+      annotation_text: Opmerking
+      time: Tijd
+      by: "door"
+      empty: "Geen opmerkingen gevonden"
   questions:
     index:
       title: Alle vragen

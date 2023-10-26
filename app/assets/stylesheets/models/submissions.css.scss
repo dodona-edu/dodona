@@ -125,7 +125,7 @@
       text-decoration: none;
       padding-left: 5px;
       padding-right: 5px;
-      word-wrap: break-word;
+      overflow-wrap: anywhere;
       word-break: break-all;
       white-space: pre-wrap;
       font-family: var(--d-font-monospace);

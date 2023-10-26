@@ -2,6 +2,13 @@ en:
   annotations:
     index:
       new_annotation: "There is a new comment on your code"
+      title: Comments
+    annotations_table:
+      submission: Submission
+      annotation_text: Comment
+      time: Time
+      by: "by"
+      empty: "No comments found"
   questions:
     index:
       title: All questions

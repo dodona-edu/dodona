@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 require 'pathname'
@@ -80,6 +81,7 @@ class Activity < ApplicationRecord
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
   scope :by_judge, ->(judge) { where(judge_id: judge) }
+  scope :is_draft, -> { where(draft: true) }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'
@@ -103,7 +105,6 @@ class Activity < ApplicationRecord
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
 
-  enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
   POPULARITY_THRESHOLDS = {
     unpopular: { min: 0, max: 2 },
     neutral: { min: 3, max: 10 },
@@ -323,12 +324,15 @@ class Activity < ApplicationRecord
       return true if user&.zeus?
       return false unless access_public? \
           || repository.allowed_courses.pluck(:id).include?(course&.id)
-      return true if user&.member_of? course
+      return true if user&.course_admin? course
+      return false if draft?
+      return true if user&.member_of?(course)
       return false if course.moderated && access_private?
 
       course.open_for_user?(user)
     else
       return true if user&.repository_admin? repository
+      return false if draft?
 
       access_public?
     end
@@ -465,7 +469,7 @@ class Activity < ApplicationRecord
 
   def read_config_locations(location)
     repository.read_config_file(location)
-        &.deep_transform_values! { location }
+              &.deep_transform_values! { location }
   end
 
   def config_locations

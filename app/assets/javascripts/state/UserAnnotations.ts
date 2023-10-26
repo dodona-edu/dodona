@@ -47,8 +47,6 @@ interface UserAnnotationData {
     user: UserAnnotationUserData;
     type: AnnotationType;
     last_updated_by: UserAnnotationUserData;
-    // REMOVE AFTER CLOSED BETA
-    course_id: number;
     question_state?: QuestionState;
     newer_submission_url?: string | null;
     responses: UserAnnotationData[];

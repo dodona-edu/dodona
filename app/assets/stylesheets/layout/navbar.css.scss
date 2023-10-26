@@ -193,8 +193,13 @@
         .notification {
           cursor: pointer;
 
+          .notification-link {
+            color: var(--d-link-color);
+          }
+
           &.unread {
             .notification-link {
+              color: var(--d-primary);
               font-weight: 500;
             }
           }

@@ -4,7 +4,7 @@ class ActivityPolicy < ApplicationPolicy
       if user&.zeus?
         scope.all
       else
-        scope.where(access: :public, status: :ok).or(scope.where(repository: user&.repositories))
+        scope.where(access: :public, status: :ok, draft: false).or(scope.where(repository: user&.repositories))
       end
     end
   end
@@ -75,7 +75,9 @@ class ActivityPolicy < ApplicationPolicy
 
   def permitted_attributes
     if update?
-      %i[access name_nl name_en]
+      permitted_attributes = %i[access name_nl name_en]
+      permitted_attributes << :draft if record.draft?
+      permitted_attributes
     else
       []
     end

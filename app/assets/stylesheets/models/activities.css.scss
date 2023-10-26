@@ -8,6 +8,10 @@
     color: var(--d-on-surface-muted);
   }
 
+  .activity-title .mdi::before {
+    vertical-align: bottom;
+  }
+
   th.type-icon,
   td.type-icon {
     width: 18px;

@@ -150,7 +150,7 @@ nl:
       reply: 'Reageer'
       update: 'Updaten'
       cancel: 'Annuleren'
-      delete: 'Verwijderen'
+      delete: 'Opmerking verwijderen'
       edit: 'Opmerking bewerken'
       save: 'Opmerking opslaan'
       help: 'Druk Shift + Enter om te verzenden. <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> wordt ondersteund.'
@@ -292,7 +292,7 @@ nl:
       input:
         placeholder: Zoek opgeslagen opmerking
         title: 'Hergebruik een opgeslagen opmerking'
-        help_html: 'Klik <a  href="/saved_annotations" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
+        help_html: 'Klik <a  href="%{path}" target="_blank" >hier</a> om alle opgeslagen opmerkingen te beheren.'
         edited: De huidige opmerking verschilt van de opgeslagen opmerking
     sign_in_search_bar:
       institution_search: "Typ om jouw school te vinden"
@@ -324,5 +324,3 @@ nl:
       dark: Donker
       system: Systeem
       theme: Stijl
-
-

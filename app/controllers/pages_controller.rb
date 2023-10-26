@@ -22,6 +22,8 @@ class PagesController < ApplicationController
       @homepage_series = courses.map { |c| c.homepage_series(current_user, 0) }.flatten.sort_by(&:deadline)
 
       @jump_back_in = current_user.jump_back_in
+
+      @draft_exercises = current_user.draft_exercises.reorder(updated_at: :desc) if current_user.a_repository_admin?
     else
       set_metrics
       respond_to do |format|

@@ -54,6 +54,8 @@ en:
     edit:
       title: "Change submission of %{user} for %{exercise}"
       short_title: "Select another submission."
+      select_a_submission: "Do select a submission."
+      select_another_submission: "Select another submission."
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All comments on the previous submission will be deleted."

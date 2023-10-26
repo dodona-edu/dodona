@@ -1,11 +1,10 @@
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { html, TemplateResult, PropertyValues } from "lit";
 import "components/annotations/annotations_cell";
 import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "utilities";
-import { PropertyValues } from "@lit/reactive-element";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { userAnnotationState } from "state/UserAnnotations";

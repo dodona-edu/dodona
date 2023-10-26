@@ -8,6 +8,7 @@ import userEvent from "@testing-library/user-event";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { html } from "lit";
 import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
+import * as util from "utilities";
 window.bootstrap = bootstrap;
 
 beforeEach(async () => {
@@ -15,6 +16,11 @@ beforeEach(async () => {
     window.MathJax = {} as MathJaxObject;
     // Mock typeset function of MathJax
     window.MathJax.typeset = () => "";
+
+    jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve({}),
+        headers: { get: h => h == "X-Pagination" ? JSON.stringify({ total_pages: 1, current_page: 1 }) : "" },
+    } as Response ));
 
     // Bootstrap incorrectly detects jquery, so we need to disable it
     document.body.setAttribute("data-bs-no-jquery", "true");
@@ -214,7 +220,6 @@ test("annotations should be transmitted into view", async () => {
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -236,7 +241,6 @@ test("annotations should be transmitted into view", async () => {
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",
@@ -264,7 +268,6 @@ test("feedback table should support more than 1 annotation per row", async () =>
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -287,7 +290,6 @@ test("feedback table should support more than 1 annotation per row", async () =>
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",
@@ -315,7 +317,6 @@ test("feedback table should be able to contain both machine annotations and user
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -338,7 +339,6 @@ test("feedback table should be able to contain both machine annotations and user
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",

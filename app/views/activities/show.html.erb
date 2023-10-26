@@ -6,7 +6,6 @@
       window.dodona.initMathJax();
     </script>
     <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-    <%= javascript_include_tag 'pythia_submission' if @activity.judge.renderer == PythiaRenderer %>
   <% end %>
 <% end %>
 <%= render 'navbar_links' %>
@@ -23,6 +22,8 @@
   next_tooltip = next_activity ? t('.navigation.next') : t('.navigation.back_to_course')
   next_tooltip_actionable = next_activity ? t('.navigation.next_actionable') : t('.navigation.back_to_course_actionable')
 end %>
+
+<%= render partial: 'draft_notice' %>
 
 <div class="row">
   <% if @activity.exercise? %>

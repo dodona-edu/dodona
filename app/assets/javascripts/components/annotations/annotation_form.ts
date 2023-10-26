@@ -1,7 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { isBetaCourse } from "saved_annotation_beta";
 import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
@@ -11,7 +10,6 @@ import { userAnnotationState } from "state/UserAnnotations";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
-import { userState } from "state/Users";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -224,20 +222,19 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     get canSaveAnnotation(): boolean {
-        return !annotationState.isQuestionMode && /* REMOVE AFTER CLOSED BETA */ isBetaCourse();
+        return !annotationState.isQuestionMode;
     }
 
     get potentialSavedAnnotationsExist(): boolean {
         return (savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
-            ["user_id", userState.id.toString()]
+            ["exercise_id", exerciseState.id.toString()]
         ])) || []).length > 0;
     }
 
     get isTitleTaken(): boolean {
         return savedAnnotationState.isTitleTaken(
-            this.savedAnnotationTitle, exerciseState.id, courseState.id, userState.id);
+            this.savedAnnotationTitle, exerciseState.id, courseState.id);
     }
 
     render(): TemplateResult {

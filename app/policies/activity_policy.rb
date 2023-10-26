@@ -75,7 +75,9 @@ class ActivityPolicy < ApplicationPolicy
 
   def permitted_attributes
     if update?
-      %i[access name_nl name_en draft]
+      permitted_attributes = %i[access name_nl name_en]
+      permitted_attributes << :draft if record.draft?
+      permitted_attributes
     else
       []
     end

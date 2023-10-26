@@ -27,6 +27,6 @@ class ExercisePolicyTest < ActiveSupport::TestCase
     policy = ExercisePolicy.new(create(:temporary_user), create(:exercise, :valid))
     User.any_instance.stubs(:repository_admin?).returns(true)
 
-    assert_equal %i[access name_nl name_en draft], policy.permitted_attributes
+    assert_equal %i[access name_nl name_en], policy.permitted_attributes
   end
 end

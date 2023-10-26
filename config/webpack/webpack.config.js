@@ -42,7 +42,7 @@ const config = {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map",
         path: path.resolve(__dirname, "..", "..", "app/assets/builds"),
-        chunkFilename: "[name].[chunkhash].js",
+        chunkFilename: "[name].[chunkhash].nodigest.js",
     },
     resolve: {
         modules: ["node_modules", "app/assets/javascripts"],

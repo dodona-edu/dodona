@@ -26,6 +26,8 @@
   next_tooltip_actionable = next_activity ? t('.navigation.next_actionable') : t('.navigation.back_to_course_actionable')
 end %>
 
+<%= render partial: 'draft_notice' %>
+
 <div class="row">
   <% if @activity.exercise? %>
     <div class="col-md-1 p-0">

@@ -107,6 +107,13 @@ class User < ApplicationRecord
   has_many :repositories,
            through: :repository_admins,
            source: :repository
+  has_many :draft_exercises,
+           lambda {
+             where activities:
+                        { draft: true }
+           },
+           through: :repositories,
+           source: :exercises
 
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error

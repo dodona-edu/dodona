@@ -1,0 +1,14 @@
+<% if @activity.draft? %>
+  <div class="alert alert-warning">
+    <i class="mdi mdi-file-document-edit-outline"></i>
+    <%= t "activities.show.alert_draft_html" %>
+    <% if policy(@activity).edit? %>
+      <% edit_path = @series.present? ?
+                       course_series_activity_path(@series&.course, @series, @activity, {activity: {draft: false}}) :
+                       activity_path(@activity, {activity: {draft: false}})
+      %>
+      <%= link_to t("activities.show.alert_draft_edit"), edit_path, method: :put %>
+
+    <% end %>
+  </div>
+<% end %>

@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
@@ -31,6 +32,7 @@ FactoryBot.define do
   factory :content_page do
     access { 'public' }
     status { 'ok' }
+    draft { false }
 
     sequence(:path) { |n| "content_page#{n}" }
 

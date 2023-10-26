@@ -293,8 +293,11 @@ if Rails.env.development?
   RepositoryAdmin.create(repository: activity_repo, user: zeus)
   RepositoryAdmin.create(repository: big_activity_repo, user: zeus)
 
-  contents_list = ContentPage.all.to_a
-  exercises_list = Exercise.all.to_a
+  # remove draft status from all activities except the first 5
+  Activity.where.not(id: Activity.first(5)).update_all(draft: false)
+
+  contents_list = ContentPage.where(draft: false).to_a
+  exercises_list = Exercise.where(draft: false).all.to_a
 
   puts "Add series, content pages, exercises, read states and submissions to courses (#{Time.now - start})"
 

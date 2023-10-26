@@ -9,9 +9,7 @@
   <table class="table activity-table table-resource">
     <thead>
     <tr>
-      <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
-        <th class='status-icon'></th>
-      <% end %>
+      <th class='status-icon'></th>
       <th class='type-icon'></th>
       <th><d-sort-button column="name"><%= t "activities.index.activity_title" %></d-sort-button></th>
       <th><%= t "activities.index.languages" %></th>
@@ -26,11 +24,11 @@
     <tbody>
     <% local_assigns[:activities].each do |activity| %>
       <tr>
-        <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
-          <td class='status-icon'>
+        <td class='status-icon'>
+          <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
             <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
-          </td>
-        <% end %>
+          <% end %>
+        </td>
 
         <td class='type-icon'>
           <%= activity_icon(activity) %>

@@ -27,10 +27,6 @@ nl:
       labels: Nieuw label
       info: Informatie
       info_description: Ga naar de informatiepagina van deze leeractiviteit
-      draft:
-        title: "Concept"
-        toggle-label: "Markeer als concept"
-        help_html: Markeer een oefening als <a href="https://docs.dodona.be/nl/faq/activities/#wat-is-een-conceptactiviteit" target="_blank">concept</a> zolang je ze nog aan het opstellen bent.
     index:
       title: Oefeningen
       exercise: Oefening

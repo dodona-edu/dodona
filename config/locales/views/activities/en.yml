@@ -27,10 +27,6 @@ en:
       labels: New label
       info: Information
       info_description: Go to the information page of this learning activity
-      draft:
-        title: "Draft"
-        toggle-label: "Mark activity as draft."
-        help_html: Mark activities as <a href="https://docs.dodona.be/en/faq/activities/#what-is-a-draft-activity" target="_blank">draft</a> while you are still working on them.
     index:
       title: Exercises
       exercise: Exercise

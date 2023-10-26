@@ -22,7 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
-#  draft                   :boolean          default(FALSE)
+#  draft                   :boolean          default(TRUE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
@@ -37,6 +37,7 @@ FactoryBot.define do
     description_en_present { false }
     access { 'public' }
     status { 'ok' }
+    draft { false }
 
     sequence(:path) { |n| "exercise#{n}" }
 
@@ -75,8 +76,6 @@ FactoryBot.define do
         stub_status(exercise, 'ok')
         exercise.stubs(:description_localized).returns(e.description_md_stubbed)
       end
-      # Draft is set to true by default, but we want to test non-draft exercises
-      exercise.update_column(:draft, false) # rubocop:disable Rails/SkipsModelValidations
     end
 
     after :build do |exercise|

@@ -711,8 +711,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     sign_in user
     repo = create :repository, :git_stubbed
     repo.admins << user
-    exercise = create :exercise, :config_stubbed, repository: repo
-    exercise.update(draft: true)
+    exercise = create :exercise, :config_stubbed, repository: repo, draft: true
     get activity_url(exercise)
 
     assert_response :success
@@ -725,8 +724,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     repo = create :repository, :git_stubbed
     repo.admins << user
     repo2 = create :repository, :git_stubbed
-    exercise = create :exercise, :config_stubbed, repository: repo2
-    exercise.update(draft: true)
+    exercise = create :exercise, :config_stubbed, repository: repo2, draft: true
     get activity_url(exercise)
 
     assert_redirected_to root_url
@@ -740,8 +738,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     course.administrating_members << staff
     course.administrating_members << course_admin
 
-    exercise = create :exercise, :config_stubbed
-    exercise.update(draft: true)
+    exercise = create :exercise, :config_stubbed, draft: true
     course.series.first.exercises << exercise
 
     sign_in staff
@@ -766,8 +763,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     course2 = create :course, series_count: 1
 
-    exercise = create :exercise, :config_stubbed
-    exercise.update(draft: true)
+    exercise = create :exercise, :config_stubbed, draft: true
     course.series.first.exercises << exercise
     course2.series.first.exercises << exercise
 
@@ -789,8 +785,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     course = create :course, series_count: 1
     course.enrolled_members << student
 
-    exercise = create :exercise, :config_stubbed
-    exercise.update(draft: true)
+    exercise = create :exercise, :config_stubbed, draft: true
     course.series.first.exercises << exercise
 
     sign_in student

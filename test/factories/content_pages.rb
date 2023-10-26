@@ -22,7 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
-#  draft                   :boolean          default(FALSE)
+#  draft                   :boolean          default(TRUE)
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
@@ -58,8 +58,6 @@ FactoryBot.define do
         stub_status(content, 'ok')
         content.stubs(:description_localized).returns(c.description_md_stubbed)
       end
-      # Draft is set to true by default, but we want to test non-draft activities
-      content.update(draft: false)
     end
 
     trait :config_stubbed do

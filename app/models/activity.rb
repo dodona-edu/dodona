@@ -22,7 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
-#  draft                   :boolean          default(FALSE)
+#  draft                   :boolean          default(TRUE)
 #
 
 require 'pathname'
@@ -67,7 +67,6 @@ class Activity < ApplicationRecord
   before_create :generate_repository_token,
                 if: ->(ex) { ex.repository_token.nil? }
   before_create :generate_access_token
-  before_create :activate_draft_mode
   before_update :update_config
 
   scope :content_pages, -> { where(type: ContentPage.name) }
@@ -300,7 +299,6 @@ class Activity < ApplicationRecord
     c = config
     c.delete('visibility')
     c['access'] = access if defined?(access) && access != merged_config['access']
-    c['draft'] = draft if defined?(draft) && draft != merged_config['draft']
     c['description']['names']['nl'] = name_nl if name_nl.present? || c['description']['names']['nl'].present?
     c['description']['names']['en'] = name_en if name_en.present? || c['description']['names']['en'].present?
     c['internals'] = {}
@@ -319,8 +317,8 @@ class Activity < ApplicationRecord
       if user&.course_admin? course
         return false unless course.activities.pluck(:id).include? id
       elsif user&.member_of? course
-        return false if course.accessible_activities.pluck(:id).exclude?(id) || draft?
-      elsif course.visible_activities.pluck(:id).exclude?(id) || draft?
+        return false if course.accessible_activities.pluck(:id).exclude?(id)
+      elsif course.visible_activities.pluck(:id).exclude?(id)
         return false
       end
       return true if user&.zeus?
@@ -511,9 +509,5 @@ class Activity < ApplicationRecord
 
     hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
-  end
-
-  def activate_draft_mode
-    self.draft = true
   end
 end

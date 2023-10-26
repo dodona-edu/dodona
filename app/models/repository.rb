@@ -212,7 +212,6 @@ class Repository < ApplicationRecord
 
     new_activities.each do |act|
       c = act.config
-      c['draft'] = act.draft # should be true as it is set in before_create
       c['internals'] = {}
       c['internals']['token'] = act.repository_token
       c['internals']['_info'] = 'These fields are used for internal bookkeeping in Dodona, please do not change them.'

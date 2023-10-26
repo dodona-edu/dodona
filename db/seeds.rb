@@ -296,6 +296,9 @@ if Rails.env.development?
   contents_list = ContentPage.all.to_a
   exercises_list = Exercise.all.to_a
 
+  # remove draft status from all activities
+  Activity.update_all(draft: false)
+
   puts "Add series, content pages, exercises, read states and submissions to courses (#{Time.now - start})"
 
   # These callback take a good amount of time and aren't necessary

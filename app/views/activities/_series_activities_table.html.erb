@@ -52,7 +52,7 @@
         <td>
           <%= "#{index + 1}." if local_assigns[:series]&.activity_numbers_enabled? %>
           <% if activity.accessible?(current_user, @course) %>
-            <%= link_to activity.name, get_activity_path.call(activity) %>
+            <%= link_to activity.name, get_activity_path.call(activity), class: ('blur' if (local_assigns[:series].hidden? || local_assigns[:series].closed?) && Current.demo_mode) %>
           <% else %>
             <%= activity.name %>
             <% if current_user&.course_admin?(@course) && current_user&.repository_admin?(activity.repository) %>

@@ -793,6 +793,49 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to root_url
   end
+
+  test 'repository admin should be able to publish draft activities' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: true
+
+    put activity_url(exercise), params: { activity: { draft: false } }
+
+    assert_not exercise.reload.draft
+  end
+
+  test 'repository admin should not be able to reset an activity to draft' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: false
+
+    put activity_url(exercise), params: { activity: { draft: true } }
+
+    assert_not exercise.reload.draft
+  end
+
+  test 'repository admin can update draft activity' do
+    stub_all_activities!
+    sign_out @user
+    user = users(:staff)
+    sign_in user
+    repo = create :repository, :git_stubbed
+    repo.admins << user
+    exercise = create :exercise, repository: repo, draft: true, name_en: 'old name'
+
+    put activity_url(exercise), params: { activity: { draft: true, name_en: 'new name' } }
+
+    assert exercise.reload.draft
+    assert_equal 'new name', exercise.name_en
+  end
 end
 
 class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest

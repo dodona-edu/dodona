@@ -318,9 +318,9 @@ class Activity < ApplicationRecord
       if user&.course_admin? course
         return false unless course.activities.pluck(:id).include? id
       elsif user&.member_of? course
-        return false if course.accessible_activities.pluck(:id).exclude?(id)
-      elsif course.visible_activities.pluck(:id).exclude?(id)
-        return false
+        return false unless course.accessible_activities.pluck(:id).include? id
+      else
+        return false unless course.visible_activities.pluck(:id).include? id
       end
       return true if user&.zeus?
       return false unless access_public? \

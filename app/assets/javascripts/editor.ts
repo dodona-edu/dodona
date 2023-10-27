@@ -150,7 +150,7 @@ const additionalLanguages = [
     }),
     LanguageDescription.of({
         name: "Prolog",
-        alias: ["rlang"],
+        alias: ["prolog"],
         extensions: ["pl", "pro", "p"],
         load() {
             return import("codemirror-lang-prolog").then(m => m.prolog());

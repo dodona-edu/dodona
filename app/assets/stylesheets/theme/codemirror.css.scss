@@ -14,11 +14,7 @@
 
   /* stylelint-disable selector-class-pattern */
   .cm-activeLine, .cm-activeLineGutter {
-    background-color: var(--d-surface);
-
-    &::selection, ::selection {
-      background-color: var(--d-surface-variant) !important;
-    }
+    background-color: rgba(var(--d-surface-variant-rgb), 0.3);
   }
 
   &.cm-focused {

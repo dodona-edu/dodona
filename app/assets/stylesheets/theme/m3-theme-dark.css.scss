@@ -30,6 +30,7 @@
   // neutral
   --d-surface: #{$neutral-20};
   --d-surface-variant: #{$neutral-variant-30};
+  --d-surface-variant-rgb: #{color.red($neutral-variant-30)}, #{color.green($neutral-variant-30)}, #{color.blue($neutral-variant-30)};
   --d-background: #{$neutral-25};
   --d-on-surface: #{$neutral-90};
   --d-on-surface-variant: #{$neutral-variant-80};

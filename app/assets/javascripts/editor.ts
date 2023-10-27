@@ -197,7 +197,6 @@ export async function configureEditor(parent: Element, programmingLanguage: stri
     const languageSupport = await loadProgrammingLanguage(programmingLanguage);
     const languageExtensions = [];
     if (languageSupport !== undefined) {
-        console.log(languageSupport);
         languageExtensions.push(languageSupport);
     }
     return new EditorView({

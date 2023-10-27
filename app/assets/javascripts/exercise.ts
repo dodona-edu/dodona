@@ -145,10 +145,11 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
 
     async function init(): Promise<void> {
         if (editorShown) {
-            await initEditor();
+            const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
+            await editorReady;
             initRestoreBoilerplateButton(boilerplate);
         }
 

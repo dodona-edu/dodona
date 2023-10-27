@@ -14,9 +14,11 @@
 
   /* stylelint-disable selector-class-pattern */
   .cm-activeLine, .cm-activeLineGutter {
-    // Make the active line indicate transparant, as GitHub does.
-    // Otherwise, this interferes with the text selection highlight.
-    background: transparent;
+    background-color: var(--d-surface);
+
+    &::selection, ::selection {
+      background-color: var(--d-surface-variant) !important;
+    }
   }
 
   &.cm-focused {
@@ -43,4 +45,5 @@
       color: var(--d-on-secondary) !important;
     }
   }
+  /* stylelint-enable selector-class-pattern */
 }

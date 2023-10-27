@@ -5,7 +5,9 @@ import {
     foldGutter,
     foldKeymap,
     HighlightStyle,
-    indentOnInput, LanguageDescription,
+    indentOnInput,
+    indentUnit,
+    LanguageDescription,
     syntaxHighlighting
 } from "@codemirror/language";
 import { languages } from "@codemirror/language-data";
@@ -120,6 +122,7 @@ const editorSetup = (() => [
     foldGutter(),
     drawSelection(),
     dropCursor(),
+    indentUnit.of("    "),
     indentOnInput(),
     bracketMatching(),
     closeBrackets(),
@@ -194,6 +197,7 @@ export async function configureEditor(parent: Element, programmingLanguage: stri
     const languageSupport = await loadProgrammingLanguage(programmingLanguage);
     const languageExtensions = [];
     if (languageSupport !== undefined) {
+        console.log(languageSupport);
         languageExtensions.push(languageSupport);
     }
     return new EditorView({

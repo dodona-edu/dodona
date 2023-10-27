@@ -30,4 +30,15 @@
     // Sets the color of the cursor.
     border-left: 1.2px solid var(--d-secondary);
   }
+
+  .cm-tooltip {
+    background: var(--d-surface) !important;
+    border: none;
+    @include shadow-z2;
+
+    li[aria-selected] {
+      background: var(--d-secondary) !important;
+      color: var(--d-on-secondary) !important;
+    }
+  }
 }

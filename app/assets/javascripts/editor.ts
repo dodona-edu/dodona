@@ -1,4 +1,4 @@
-import { closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
+import { closeBrackets, closeBracketsKeymap, autocompletion } from "@codemirror/autocomplete";
 import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
 import {
     bracketMatching,
@@ -132,7 +132,8 @@ const editorSetup = (() => [
     ]),
     syntaxHighlighting(rougeStyle, {
         fallback: true
-    })
+    }),
+    autocompletion()
 ])();
 
 

@@ -6049,10 +6049,10 @@ lit@^2.0.0:
     lit-element "^3.3.0"
     lit-html "^2.8.0"
 
-lit@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.0.tgz#204bd65935892a73670471e893ee8ca55d2f9a3b"
-  integrity sha512-nQ0teRzU1Kdj++VdmttS2WvIen8M79wChJ6guRKIIym2M3Ansg3Adj9O6yuQh2IpjxiUXlNuS81WKlQ4iL3BmA==
+lit@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.1.tgz#bc9136cf9303ae8c23d0adcf7847c971cc94aee9"
+  integrity sha512-CYFv7/gwrs6bfPm299O9LD/HB4dgHvsEf/yqUOI//fi469i2OrT4xaptUcmhr05DNQEgsBFecFH8EJnN5So8oQ==
   dependencies:
     "@lit/reactive-element" "^2.0.0"
     lit-element "^4.0.0"

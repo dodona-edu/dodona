@@ -39,7 +39,7 @@
     "fscreen": "^1.2.0",
     "glightbox": "^3.2.0",
     "iframe-resizer": "^4.3.7",
-    "lit": "^3.0.0",
+    "lit": "^3.0.1",
     "node-polyglot": "^2.5.0",
     "sass": "^1.69.5",
     "tippy.js": "^6.3.7",

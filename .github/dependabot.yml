@@ -37,6 +37,10 @@ updates:
     rails:
       patterns:
         - "@rails*"
+    codemirror:
+      patterns:
+        - "*codemirror*"
+        - "@lezer*"
     testing-library:
       patterns:
         - "@testing-library*"

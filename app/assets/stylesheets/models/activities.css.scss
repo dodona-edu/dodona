@@ -133,12 +133,7 @@ center img {
 }
 
 // editor
-#editor-window {
-  padding: 0;
-}
-
-#editor-text {
-  position: relative;
+#editor-text .cm-editor {
   height: 300px;
 }
 

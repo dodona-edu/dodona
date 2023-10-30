@@ -1,4 +1,4 @@
-/* globals ace */
+import { configureEditor, setCode } from "editor";
 import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
@@ -6,6 +6,8 @@ import { IFrameMessageData } from "iframe-resizer";
 import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
+import { EditorView } from "@codemirror/view";
+
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
@@ -136,17 +138,18 @@ function initExerciseDescription(): void {
     initCodeFragments();
 }
 
-function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): void {
-    let editor: AceAjax.Editor;
+async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): Promise<void> {
+    let editor: EditorView;
     let lastSubmission: string;
     let lastTimeout: number;
 
-    function init(): void {
+    async function init(): Promise<void> {
         if (editorShown) {
-            initEditor();
+            const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
+            await editorReady;
             initRestoreBoilerplateButton(boilerplate);
         }
 
@@ -154,7 +157,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         document.getElementById("editor-process-btn")?.addEventListener("click", () => {
             if (!loggedIn) return;
             // test submitted source code
-            const source = editor.getValue();
+            const source = editor.state.doc.toString();
             disableSubmitButton();
             submitSolution(source)
                 .then(async response => {
@@ -168,14 +171,13 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            const codeString = submissionState.code;
-            editor.setValue(codeString, 1);
+            setCode(editor, submissionState.code);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
         document.getElementById("activity-handin-link")?.addEventListener("shown.bs.tab", () => {
             // refresh editor after show
-            editor.resize(true);
+            editor.requestMeasure();
         });
 
         // secure external links
@@ -187,19 +189,9 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
-    function initEditor(): void {
-        // init editor
-        editor = ace.edit("editor-text");
-        editor.getSession().setMode("ace/mode/" + programmingLanguage);
-        editor.setOptions({
-            showPrintMargin: false,
-            enableBasicAutocompletion: true,
-        });
-        editor.getSession().setUseWrapMode(true);
-        editor.$blockScrolling = Infinity; // disable warning
+    async function initEditor(): Promise<void> {
+        editor = await configureEditor(document.getElementById("editor-text"), programmingLanguage, enableSubmitButton);
         editor.focus();
-        editor.on("focus", enableSubmitButton);
-        editor.commands.removeCommand("find"); // disable search box in ACE editor
         // Make editor available globally
         window.dodona.editor = editor;
     }
@@ -464,10 +456,8 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
             const wrapper = document.createElement("div");
             wrapper.innerHTML = boilerplate;
             const rawBoilerplate = wrapper.textContent || wrapper.innerText || "";
-
-            editor.setValue(rawBoilerplate);
+            setCode(editor, rawBoilerplate);
             editor.focus();
-            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

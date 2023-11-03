@@ -182,33 +182,43 @@ class FeedbackTableRenderer
     end
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each { |g| group(g) }
+      t[:groups]&.each_with_index { |g, i| group(g, i) }
     end
   end
 
-  def group(g)
-    @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
+  def group(g, i)
+    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'}", id: 'group-' + (i + 1).to_s) do
       # Add a link to the debugger if there is data
-      if g[:data] && (g[:data][:statements] || g[:data][:stdin])
-        @builder.div(class: 'tutor-strip tutorlink',
-                     title: 'Start debugger',
-                     'data-statements': (g[:data][:statements]).to_s,
-                     'data-stdin': (g[:data][:stdin]).to_s) do
-          @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('', class: 'mdi mdi-launch mdi-18')
-          end
+      # if g[:data] && (g[:data][:statements] || g[:data][:stdin])
+      #   @builder.div(class: 'tutor-strip tutorlink',
+      #                title: 'Start debugger',
+      #                'data-statements': (g[:data][:statements]).to_s,
+      #                'data-stdin': (g[:data][:stdin]).to_s) do
+      #     @builder.div(class: 'tutor-strip-icon') do
+      #       @builder.i('', class: 'mdi mdi-launch mdi-18')
+      #     end
+      #   end
+      # end
+
+      @builder.div(class: 'card-title card-title-colored-container') do
+        @builder.a(href: '#group-' + (i + 1).to_s) do
+          @builder.text('#' + (i + 1).to_s)
         end
+        @builder.text(" · ")
+        @builder.text(g[:accepted] ? 'correct' : 'wrong')
       end
 
-      if g[:description]
-        @builder.div(class: 'row') do
-          @builder.div(class: 'col-12 description') do
-            message(g[:description])
+      @builder.div(class: 'card-supporting-text') do
+        if g[:description]
+          @builder.div(class: 'row') do
+            @builder.div(class: 'col-12 description') do
+              message(g[:description])
+            end
           end
         end
+        messages(g[:messages])
+        g[:groups]&.each { |tc| testcase(tc) }
       end
-      messages(g[:messages])
-      g[:groups]&.each { |tc| testcase(tc) }
     end
   end
 

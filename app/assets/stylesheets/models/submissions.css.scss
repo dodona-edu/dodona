@@ -11,7 +11,7 @@
 
 .feedback-table {
   .groups {
-    margin: 0 15px 0 0;
+    //margin: 0 15px 0 0;
 
     .badge {
       display: block;
@@ -42,19 +42,34 @@
   }
 
   .group {
-    background-color: var(--d-surface);
-    margin-bottom: 12px;
-    border-left: 4px solid gray;
-    position: relative;
-    padding-left: 12px;
+    &.card {
+      box-shadow: none;
+      border: 1px solid var(--d-divider);
+      scroll-margin-top: calc(var(--d-navbar-height) + 12px);
+      overflow: clip; // must be clip, hidden doesn't work with scroll-margin-top
 
-    &.correct {
-      border-left-color: var(--d-success);
+      .card-title.card-title-colored-container {
+        border-radius: 0;
+      }
     }
 
-    &.wrong {
-      border-left-color: var(--d-danger);
+    &:target {
+      border-color: var(--d-primary);
     }
+
+    //background-color: var(--d-surface);
+    //margin-bottom: 12px;
+    //border-left: 4px solid gray;
+    //position: relative;
+    //padding-left: 12px;
+
+    //&.correct {
+    //  border-left-color: var(--d-success);
+    //}
+
+    //&.wrong {
+    //  border-left-color: var(--d-danger);
+    //}
   }
 
   .testcase {
@@ -69,7 +84,7 @@
       }
     }
 
-    & > div {
+    &>div {
       margin-bottom: 3px;
     }
 
@@ -187,6 +202,7 @@
   }
 
   table.diff.csv-diff {
+
     td,
     .del,
     .ins,
@@ -283,7 +299,7 @@
     margin-bottom: 9.5px;
   }
 
-  .row > .messages {
+  .row>.messages {
     margin-left: 1em;
     margin-right: 1em;
   }
@@ -325,8 +341,8 @@
     content: "\F0474";
   }
 
-  .message-zeus + .message-zeus::before,
-  .message-staff + .message-staff::before {
+  .message-zeus+.message-zeus::before,
+  .message-staff+.message-staff::before {
     content: "";
   }
 

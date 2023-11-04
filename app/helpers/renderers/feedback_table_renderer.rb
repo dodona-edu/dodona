@@ -188,17 +188,7 @@ class FeedbackTableRenderer
 
   def group(g, i)
     @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'}", id: 'group-' + (i + 1).to_s) do
-      # Add a link to the debugger if there is data
-      # if g[:data] && (g[:data][:statements] || g[:data][:stdin])
-      #   @builder.div(class: 'tutor-strip tutorlink',
-      #                title: 'Start debugger',
-      #                'data-statements': (g[:data][:statements]).to_s,
-      #                'data-stdin': (g[:data][:stdin]).to_s) do
-      #     @builder.div(class: 'tutor-strip-icon') do
-      #       @builder.i('', class: 'mdi mdi-launch mdi-18')
-      #     end
-      #   end
-      # end
+
 
       @builder.div(class: 'card-title card-title-colored-container') do
         @builder.a(href: '#group-' + (i + 1).to_s) do
@@ -207,6 +197,17 @@ class FeedbackTableRenderer
         @builder.span("·", class: "ms-2 me-2")
         @builder.span(g[:accepted] ? 'correct' : 'wrong')
         @builder.div(class: 'flex-spacer') {}
+
+        # Add a link to the debugger if there is data
+        if g[:data] && (g[:data][:statements] || g[:data][:stdin])
+          @builder.a(class: 'btn btn-text tutorlink',
+                       title: 'Start debugger',
+                       'data-statements': (g[:data][:statements]).to_s,
+                       'data-stdin': (g[:data][:stdin]).to_s) do
+            @builder.i(class: 'mdi mdi-bug-outline me-1') {}
+            @builder.text!('Debug')
+          end
+        end
         @builder.a(class: 'btn btn-icon') do
           @builder.i(class: 'mdi mdi-chevron-down') {}
         end

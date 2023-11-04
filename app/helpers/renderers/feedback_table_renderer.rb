@@ -210,7 +210,7 @@ class FeedbackTableRenderer
         end
 
         # Expand/collapse button
-        @builder.a(class: 'btn btn-icon') do
+        @builder.a(class: 'btn btn-icon btn-collapse') do
           @builder.i(class: 'mdi mdi-chevron-down') {}
         end
       end

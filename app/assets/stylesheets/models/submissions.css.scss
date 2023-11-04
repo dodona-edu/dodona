@@ -58,6 +58,25 @@
           margin-top: -12px;
           margin-bottom: -12px;
         }
+
+        .btn-collapse {
+          transition: transform 0.2s ease-in-out;
+        }
+      }
+
+      &:target .btn-collapse {
+        pointer-events: none;
+      }
+
+      // if a group is the target, never collapse
+      &.collapsed:not(:target) {
+        .card-supporting-text {
+          display: none;
+        }
+
+        .btn-collapse {
+          transform: rotate(90deg);
+        }
       }
     }
 

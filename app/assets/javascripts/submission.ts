@@ -4,6 +4,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
     function init(): void {
         initDiffSwitchButtons();
         initTabLinks();
+        initCollapseButtons();
         initHideCorrect();
         contextualizeMediaPaths(parentClass, mediaPath, token);
     }
@@ -22,6 +23,16 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                     d.classList.remove("show-unified");
                     d.classList.add(button.dataset.show_class);
                 });
+            });
+        });
+    }
+
+    function initCollapseButtons(): void {
+        document.querySelectorAll(".group .btn-collapse").forEach(b => {
+            b.addEventListener("click", e => {
+                const button = e.currentTarget;
+                const group = getParentByClassName(button, "group");
+                group.classList.toggle("collapsed");
             });
         });
     }

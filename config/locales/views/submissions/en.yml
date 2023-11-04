@@ -49,6 +49,9 @@ en:
       submission_for: "Submission for"
       output: Output
       correct_tests: Correct tests
+      debug: Debug
+      correct: Correct
+      wrong: Wrong
       diff:
         split: Show output side-by-side
         unified: Show unified output

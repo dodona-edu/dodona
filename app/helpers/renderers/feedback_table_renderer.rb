@@ -195,7 +195,7 @@ class FeedbackTableRenderer
           @builder.text!('#' + (i + 1).to_s)
         end
         @builder.span("·", class: "ms-2 me-2")
-        @builder.span(g[:accepted] ? 'correct' : 'wrong')
+        @builder.span(g[:accepted] ? I18n.t('submissions.show.correct') : I18n.t('submissions.show.wrong'))
         @builder.div(class: 'flex-spacer') {}
 
         # Add a link to the debugger if there is data
@@ -205,9 +205,11 @@ class FeedbackTableRenderer
                        'data-statements': (g[:data][:statements]).to_s,
                        'data-stdin': (g[:data][:stdin]).to_s) do
             @builder.i(class: 'mdi mdi-bug-outline me-1') {}
-            @builder.text!('Debug')
+            @builder.text!(I18n.t('submissions.show.debug'))
           end
         end
+
+        # Expand/collapse button
         @builder.a(class: 'btn btn-icon') do
           @builder.i(class: 'mdi mdi-chevron-down') {}
         end

@@ -202,10 +202,14 @@ class FeedbackTableRenderer
 
       @builder.div(class: 'card-title card-title-colored-container') do
         @builder.a(href: '#group-' + (i + 1).to_s) do
-          @builder.text('#' + (i + 1).to_s)
+          @builder.text!('#' + (i + 1).to_s)
         end
-        @builder.text(" · ")
-        @builder.text(g[:accepted] ? 'correct' : 'wrong')
+        @builder.span("·", class: "ms-2 me-2")
+        @builder.span(g[:accepted] ? 'correct' : 'wrong')
+        @builder.div(class: 'flex-spacer') {}
+        @builder.a(class: 'btn btn-icon') do
+          @builder.i(class: 'mdi mdi-chevron-down') {}
+        end
       end
 
       @builder.div(class: 'card-supporting-text') do

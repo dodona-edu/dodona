@@ -187,7 +187,7 @@ class FeedbackTableRenderer
   end
 
   def group(g, i)
-    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'}", id: 'group-' + (i + 1).to_s) do
+    @builder.div(class: "group card #{g[:accepted] ? 'correct collapsed' : 'wrong'}", id: 'group-' + (i + 1).to_s) do
 
 
       @builder.div(class: 'card-title card-title-colored-container') do

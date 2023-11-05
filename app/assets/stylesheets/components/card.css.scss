@@ -301,6 +301,13 @@ a.card-title-link:hover {
   height: 50px;
 }
 
+.nav-tabs.sticky {
+  position: sticky;
+  top: var(--d-navbar-height);
+  z-index: 9;
+  background-color: var(--d-surface);
+}
+
 .card-nav .card-title .btn-icon:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }

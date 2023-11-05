@@ -68,7 +68,7 @@ class FeedbackTableRenderer
 
   def tabs(submission)
     @builder.div(class: 'card-tab') do
-      @builder.ul(class: 'nav nav-tabs') do
+      @builder.ul(class: 'nav nav-tabs sticky') do
         submission[:groups]&.each_with_index do |t, i|
           permission = t[:permission] || 'student'
           tooltip = case permission
@@ -146,7 +146,7 @@ class FeedbackTableRenderer
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
     if show_hide_correct || show_diff_type
-      @builder.div(class: 'feedback-table-options') do
+      @builder.div(class: 'feedback-table-options sticky') do
         @builder.span(class: 'flex-spacer') {}
         if show_hide_correct
           @builder.span(class: 'correct-switch-buttons switch-buttons') do

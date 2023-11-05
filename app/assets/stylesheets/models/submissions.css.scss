@@ -54,6 +54,10 @@
         flex-direction: row;
         align-items: center;
 
+        .group-status {
+          display: flex;
+        }
+
         .btn {
           margin-top: -12px;
           margin-bottom: -12px;
@@ -78,10 +82,26 @@
           transform: rotate(90deg);
         }
       }
+
+      &.correct {
+        border-color: var(--d-success);
+
+        .group-status {
+          color: var(--d-success);
+        }
+      }
+
+      &.wrong {
+        border-color: var(--d-danger);
+
+        .group-status {
+          color: var(--d-danger);
+        }
+      }
     }
 
     &:target {
-      border-color: var(--d-primary);
+      border-width: 2px;
     }
 
     //background-color: var(--d-surface);

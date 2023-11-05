@@ -195,7 +195,16 @@ class FeedbackTableRenderer
           @builder.text!('#' + (i + 1).to_s)
         end
         @builder.span("·", class: "ms-2 me-2")
-        @builder.span(g[:accepted] ? I18n.t('submissions.show.correct') : I18n.t('submissions.show.wrong'))
+        @builder.span(class: 'group-status') do
+          if g[:accepted]
+            icon_correct
+            @builder.span(I18n.t('submissions.show.correct'), class: "ms-1")
+          else
+            icon_wrong
+            @builder.span(I18n.t('submissions.show.wrong'), class: "ms-1")
+          end
+        end
+
         @builder.div(class: 'flex-spacer') {}
 
         # Add a link to the debugger if there is data

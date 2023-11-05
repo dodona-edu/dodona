@@ -10,7 +10,7 @@ class PythiaRenderer < FeedbackTableRenderer
     @result[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
-  def tab_content(t)
+  def tab_content(t, i)
     if t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)
     else

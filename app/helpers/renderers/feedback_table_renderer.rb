@@ -131,7 +131,7 @@ class FeedbackTableRenderer
 
   def tab(t, i)
     @builder.div(class: "tab-pane feedback-tab-pane #{'active' if i.zero?}", id: tab_id(t, i)) do
-      tab_content(t)
+      tab_content(t, i)
     end
   end
 
@@ -141,7 +141,7 @@ class FeedbackTableRenderer
     "tab-#{prefix}-#{i}"
   end
 
-  def tab_content(t)
+  def tab_content(t, tab_i)
     @diff_type = determine_tab_diff_type(t)
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
@@ -182,16 +182,16 @@ class FeedbackTableRenderer
     end
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each_with_index { |g, i| group(g, i) }
+      t[:groups]&.each_with_index { |g, i| group(g, i, tab_i) }
     end
   end
 
-  def group(g, i)
-    @builder.div(class: "group card #{g[:accepted] ? 'correct collapsed' : 'wrong'}", id: 'group-' + (i + 1).to_s) do
+  def group(g, i, tab_i)
+    @builder.div(class: "group card #{g[:accepted] ? 'correct collapsed' : 'wrong'}", id: 'tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
 
 
       @builder.div(class: 'card-title card-title-colored-container') do
-        @builder.a(href: '#group-' + (i + 1).to_s) do
+        @builder.a(href: '#tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
           @builder.text!('#' + (i + 1).to_s)
         end
         @builder.span("·", class: "ms-2 me-2")

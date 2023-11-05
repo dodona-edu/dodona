@@ -46,12 +46,12 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");
                 if (button.dataset.show === "true") {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "block";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.remove("collapsed");
                     });
                 } else {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "none";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.add("collapsed");
                     });
                 }
             });

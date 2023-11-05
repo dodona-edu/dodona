@@ -154,10 +154,10 @@ class FeedbackTableRenderer
               @builder << I18n.t('submissions.show.correct_tests')
             end
             @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.button(class: 'btn', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye')
               end
-              @builder.button(class: 'btn', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.button(class: 'btn active', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
                 @builder.i('', class: 'mdi mdi-eye-off')
               end
             end

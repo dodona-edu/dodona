@@ -198,10 +198,10 @@ class FeedbackTableRenderer
         @builder.span(class: 'group-status') do
           if g[:accepted]
             icon_correct
-            @builder.span(I18n.t('submissions.show.correct'), class: "ms-1")
+            @builder.span(I18n.t('submissions.show.correct_group'), class: "ms-1")
           else
             icon_wrong
-            @builder.span(I18n.t('submissions.show.wrong'), class: "ms-1")
+            @builder.span(I18n.t('submissions.show.wrong_group'), class: "ms-1")
           end
         end
 

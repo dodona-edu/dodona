@@ -145,12 +145,15 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
-    @builder.div(class: 'feedback-table-options sticky') do
+    groups_correct = t[:groups].count { |g| g[:accepted] }
+    groups_total = t[:groups].count
+    expand_all = groups_correct == groups_total
 
+    @builder.div(class: 'feedback-table-options sticky') do
       # summary of tests
       @builder.div(class: 'tab-summary') do
         @builder.span(class: 'tab-summary-text') do
-          @builder.text! "#{t[:groups].count { |g| g[:accepted] }.to_s}/#{t[:groups].count.to_s} #{I18n.t('submissions.show.correct_group').downcase}:"
+          @builder.text! "#{groups_correct.to_s}/#{groups_total.to_s} #{I18n.t('submissions.show.correct_group').downcase}:"
         end
         @builder.div(class: 'tab-summary-icons') do
           t[:groups]&.each_with_index do |g, i|
@@ -169,10 +172,10 @@ class FeedbackTableRenderer
             @builder << I18n.t('submissions.show.correct_tests')
           end
           @builder.div(class: 'btn-group btn-toggle') do
-            @builder.button(class: 'btn', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.button(class: "btn #{"active" if expand_all}", 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
               @builder.i('', class: 'mdi mdi-eye')
             end
-            @builder.button(class: 'btn active', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.button(class: "btn #{"active" unless expand_all}", 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
               @builder.i('', class: 'mdi mdi-eye-off')
             end
           end
@@ -196,12 +199,12 @@ class FeedbackTableRenderer
     end
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each_with_index { |g, i| group(g, i, tab_i) }
+      t[:groups]&.each_with_index { |g, i| group(g, i, tab_i, expand_all) }
     end
   end
 
-  def group(g, i, tab_i)
-    @builder.div(class: "group card #{g[:accepted] ? 'correct collapsed' : 'wrong'}", id: 'tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
+  def group(g, i, tab_i, expand_all = false)
+    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'} #{'collapsed' if g[:accepted] && !expand_all}", id: 'tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
 
 
       @builder.div(class: 'card-title card-title-colored-container') do

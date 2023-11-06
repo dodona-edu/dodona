@@ -269,9 +269,8 @@ class FeedbackTableRenderer
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each { |t| test(t) }
-    @builder.div(class: 'col-12') do
-      messages(tc[:messages])
-    end
+
+    @builder.div(class: 'col-12') { messages(tc[:messages]) } if tc[:messages]
   end
 
   def test(t)

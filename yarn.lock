@@ -1764,22 +1764,17 @@
     "@lezer/highlight" "^1.0.0"
     "@lezer/lr" "^1.0.0"
 
-"@lit-labs/ssr-dom-shim@^1.0.0", "@lit-labs/ssr-dom-shim@^1.1.0":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@lit-labs/ssr-dom-shim/-/ssr-dom-shim-1.1.1.tgz#64df34e2f12e68e78ac57e571d25ec07fa460ca9"
-  integrity sha512-kXOeFbfCm4fFf2A3WwVEeQj55tMZa8c8/f9AKHMobQMkzNUfUj+antR3fRPaZJawsa1aZiP/Da3ndpZrwEe4rQ==
-
-"@lit-labs/ssr-dom-shim@^1.1.2-pre.0":
+"@lit-labs/ssr-dom-shim@^1.1.2", "@lit-labs/ssr-dom-shim@^1.1.2-pre.0":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@lit-labs/ssr-dom-shim/-/ssr-dom-shim-1.1.2.tgz#d693d972974a354034454ec1317eb6afd0b00312"
   integrity sha512-jnOD+/+dSrfTWYfSXBXlo5l5f0q1UuJo3tkbMDCYA2lKUYq79jaxqtGEvnRoh049nt1vdo1+45RinipU6FGY2g==
 
-"@lit/reactive-element@^1.0.0", "@lit/reactive-element@^1.3.0", "@lit/reactive-element@^1.6.0":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@lit/reactive-element/-/reactive-element-1.6.3.tgz#25b4eece2592132845d303e091bad9b04cdcfe03"
-  integrity sha512-QuTgnG52Poic7uM1AN5yJ09QMe0O28e10XzSvWDz02TJiiKee4stsiownEIadWm8nYzyDAyT+gKzUoZmiWQtsQ==
+"@lit/reactive-element@^1.0.0 || ^2.0.0":
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@lit/reactive-element/-/reactive-element-2.0.1.tgz#b17d8818d9c72ccc489f44e35d87cfa18a9c8c93"
+  integrity sha512-eu50SQXHRthFwWJMp0oAFg95Rvm6MTPjxSXWuvAu7It90WVFLFpNBoIno7XOXSDvVgTrtKnUV4OLJqys2Svn4g==
   dependencies:
-    "@lit-labs/ssr-dom-shim" "^1.0.0"
+    "@lit-labs/ssr-dom-shim" "^1.1.2"
 
 "@lit/reactive-element@^2.0.0":
   version "2.0.0"
@@ -1814,22 +1809,22 @@
   resolved "https://registry.yarnpkg.com/@open-wc/dedupe-mixin/-/dedupe-mixin-1.4.0.tgz#b3c58f8699b197bb5e923d624c720e67c9f324d6"
   integrity sha512-Sj7gKl1TLcDbF7B6KUhtvr+1UCxdhMbNY5KxdU5IfMFWqL8oy1ZeAcCANjoB1TL0AJTcPmcCFsCbHf8X2jGDUA==
 
-"@open-wc/scoped-elements@^2.2.0":
-  version "2.2.0"
-  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-2.2.0.tgz#4d65d7ba796c2bb76ef7934068532ca1795ea7b6"
-  integrity sha512-Qe+vWsuVHFzUkdChwlmJGuQf9cA3I+QOsSHULV/6qf6wsqLM2/32svNRH+rbBIMwiPEwzZprZlkvkqQRucYnVA==
+"@open-wc/scoped-elements@^2.2.4":
+  version "2.2.4"
+  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-2.2.4.tgz#081559b62d885ac0ec043546f17f1f680294d500"
+  integrity sha512-12X4F4QGPWcvPbxAiJ4v8wQFCOu+laZHRGfTrkoj+3JzACCtuxHG49YbuqVzQ135QPKCuhP9wA0kpGGEfUegyg==
   dependencies:
-    "@lit/reactive-element" "^1.0.0"
+    "@lit/reactive-element" "^1.0.0 || ^2.0.0"
     "@open-wc/dedupe-mixin" "^1.4.0"
 
-"@open-wc/testing-helpers@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.3.0.tgz#6ee88baaf316a6217c43e7ba536cb187d15cb6f4"
-  integrity sha512-wkDipkia/OMWq5Z1KkAgvqNLfIOCiPGrrtfoCKuQje8u7F0Bz9Un44EwBtWcCdYtLc40quWP7XFpFsW8poIfUA==
+"@open-wc/testing-helpers@^2.3.2":
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.3.2.tgz#c2bfa82cedd833608effa2d2367fe9524ddf4434"
+  integrity sha512-uZMGC/C1m5EiwQsff6KMmCW25TYMQlJt4ilAWIjnelWGFg9HPUiLnlFvAas3ESUP+4OXLO8Oft7p4mHvbYvAEQ==
   dependencies:
-    "@open-wc/scoped-elements" "^2.2.0"
-    lit "^2.0.0"
-    lit-html "^2.0.0"
+    "@open-wc/scoped-elements" "^2.2.4"
+    lit "^2.0.0 || ^3.0.0"
+    lit-html "^2.0.0 || ^3.0.0"
 
 "@polka/url@^1.0.0-next.20":
   version "1.0.0-next.23"
@@ -6008,15 +6003,6 @@ lines-and-columns@^1.1.6:
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
-lit-element@^3.3.0:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-3.3.3.tgz#10bc19702b96ef5416cf7a70177255bfb17b3209"
-  integrity sha512-XbeRxmTHubXENkV4h8RIPyr8lXc+Ff28rkcQzw3G6up2xg5E8Zu1IgOWIwBLEQsu3cOVFqdYwiVi0hv0SlpqUA==
-  dependencies:
-    "@lit-labs/ssr-dom-shim" "^1.1.0"
-    "@lit/reactive-element" "^1.3.0"
-    lit-html "^2.8.0"
-
 lit-element@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-4.0.0.tgz#8343891bc9159a5fcb7f534914b37f2c0161e036"
@@ -6026,33 +6012,17 @@ lit-element@^4.0.0:
     "@lit/reactive-element" "^2.0.0"
     lit-html "^3.0.0"
 
-lit-html@^2.0.0, lit-html@^2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-2.8.0.tgz#96456a4bb4ee717b9a7d2f94562a16509d39bffa"
-  integrity sha512-o9t+MQM3P4y7M7yNzqAyjp7z+mQGa4NS4CxiyLqFPyFWyc4O+nodLrkrxSaCTrla6M5YOLaT3RpbbqjszB5g3Q==
+"lit-html@^2.0.0 || ^3.0.0", lit-html@^3.0.0:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-3.0.2.tgz#25d2718b1e095a148a54c63bcd780c7550bb82f8"
+  integrity sha512-Q1A5lHza3bnmxoWJn6yS6vQZQdExl4fghk8W1G+jnAEdoFNYo5oeBBb/Ol7zSEdKd3TR7+r0zsJQyuWEVguiyQ==
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-lit-html@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-3.0.0.tgz#77d6776ee488642c74c5575315ef81aa09d24ea9"
-  integrity sha512-DNJIE8dNY0dQF2Gs0sdMNUppMQT2/CvV4OVnSdg7BXAsGqkVwsE5bqQ04POfkYH5dBIuGnJYdFz5fYYyNnOxiA==
-  dependencies:
-    "@types/trusted-types" "^2.0.2"
-
-lit@^2.0.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/lit/-/lit-2.8.0.tgz#4d838ae03059bf9cafa06e5c61d8acc0081e974e"
-  integrity sha512-4Sc3OFX9QHOJaHbmTMk28SYgVxLN3ePDjg7hofEft2zWlehFL3LiAuapWc4U/kYwMYJSh2hTCPZ6/LIC7ii0MA==
-  dependencies:
-    "@lit/reactive-element" "^1.6.0"
-    lit-element "^3.3.0"
-    lit-html "^2.8.0"
-
-lit@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.1.tgz#bc9136cf9303ae8c23d0adcf7847c971cc94aee9"
-  integrity sha512-CYFv7/gwrs6bfPm299O9LD/HB4dgHvsEf/yqUOI//fi469i2OrT4xaptUcmhr05DNQEgsBFecFH8EJnN5So8oQ==
+"lit@^2.0.0 || ^3.0.0", lit@^3.0.1:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.2.tgz#e22e90c2cbcc3f37bf3c2558df66f3af4331c9cf"
+  integrity sha512-ZoVUPGgXOQocP4OvxehEOBmC4rWB4cRYDPaz7aFmH8DFytsCi/NeACbr4C6vNPGDEC07BrhUos7uVNayDKLQ2Q==
   dependencies:
     "@lit/reactive-element" "^2.0.0"
     lit-element "^4.0.0"

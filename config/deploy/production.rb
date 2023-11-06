@@ -13,7 +13,7 @@ server 'tityos.ugent.be',   user: 'dodona', port: '4840', roles: %w[app worker]
 set :delayed_job_pools_per_server,
     'dodona' => {
       'default,statistics,exports,cleaning' => 2,
-      'git' => 1,
+      'git,cron' => 1,
     },
     'sisyphus' => {
       'submissions,low_priority_submissions,high_priority_submissions' => 6

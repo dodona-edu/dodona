@@ -158,7 +158,7 @@ class FeedbackTableRenderer
         @builder.div(class: 'tab-summary-icons') do
           t[:groups]&.each_with_index do |g, i|
             @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
-              @builder.a(href: '#tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
+              @builder.a(href: '#tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s, title: '#' + (i+1).to_s) do
                 @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
               end
             end

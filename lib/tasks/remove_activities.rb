@@ -1,10 +1,14 @@
 task :destroy_removed_activities => :environment do
-  # permanently remove activities that match the following criteria:
+  # permanently remove activities that match all of the following criteria:
   # - status is 'removed'
   # - updated_at is more than 1 month ago
   # - one of the following is true:
   #   - draft is true (never published)
   #   - series_memberships is empty and less then 25 submissions and latest submission is more than 1 month ago
+  #
+  # Destroy is called on each activity individually to ensure that callbacks are run
+  # This means the activity will be removed from any series, evaluations it is a member of
+  # and any submissions will be removed
 
   ContentPage.where(status: 'removed').where('updated_at < ?', 1.month.ago).find_each do |activity|
     if activity.draft? || activity.series_memberships.empty?

@@ -500,7 +500,7 @@ class Activity < ApplicationRecord
   def lowercase_labels(hash)
     return unless hash
 
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash['labels'] = hash['labels'].map(&:to_s).map(&:downcase).uniq if hash.key? 'labels'
     hash
   end
 

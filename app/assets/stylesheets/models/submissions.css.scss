@@ -33,8 +33,11 @@
         width: 15px;
         height: 15px;
         border-radius: 50%;
-        color: var(--d-on-primary);
         margin-right: 4px;
+
+        a {
+          color: var(--d-on-primary);
+        }
 
         &.correct {
           background-color: var(--d-success);
@@ -82,7 +85,7 @@
     &.card {
       box-shadow: none;
       border: 1px solid var(--d-divider);
-      scroll-margin-top: calc(var(--d-navbar-height) + 12px);
+      scroll-margin-top: calc(var(--d-navbar-height) + 50px + 64px + 5px);
       overflow: clip; // must be clip, hidden doesn't work with scroll-margin-top
 
       .card-title.card-title-colored-container {

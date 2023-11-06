@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class RemoveActivitiesJobTest < ActiveJob::TestCase
-
   test 'should remove "removed" draft activities' do
     c = create :content_page
     create :activity_read_state, activity: c

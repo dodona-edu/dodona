@@ -1,5 +1,5 @@
 import { closeBrackets, closeBracketsKeymap, autocompletion } from "@codemirror/autocomplete";
-import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import {
     bracketMatching,
     foldGutter,
@@ -132,6 +132,7 @@ const editorSetup = (() => [
         ...defaultKeymap,
         ...historyKeymap,
         ...foldKeymap,
+        indentWithTab
     ]),
     syntaxHighlighting(rougeStyle, {
         fallback: true

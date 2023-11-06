@@ -10,6 +10,43 @@
 }
 
 .feedback-table {
+  .tab-summary {
+    flex-grow: 1;
+    display: flex;
+    align-self: center;
+
+    .tab-summary-text {
+      white-space: nowrap;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+
+    .tab-summary-icons {
+      flex-grow: 1;
+      max-height: 40px;
+      overflow: scroll;
+
+      div {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        color: var(--d-on-primary);
+        margin-right: 4px;
+
+        &.correct {
+          background-color: var(--d-success);
+        }
+
+        &.wrong {
+          background-color: var(--d-danger);
+        }
+      }
+    }
+  }
+
   .groups {
     //margin: 0 15px 0 0;
 
@@ -306,6 +343,7 @@
 
     .switch-buttons {
       margin-left: 1em;
+      white-space: nowrap;
 
       span {
         margin-right: 0.5em;

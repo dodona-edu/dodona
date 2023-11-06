@@ -145,36 +145,48 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
-    if show_hide_correct || show_diff_type
-      @builder.div(class: 'feedback-table-options sticky') do
-        @builder.span(class: 'flex-spacer') {}
-        if show_hide_correct
-          @builder.span(class: 'correct-switch-buttons switch-buttons') do
-            @builder.span do
-              @builder << I18n.t('submissions.show.correct_tests')
-            end
-            @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye')
-              end
-              @builder.button(class: 'btn active', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye-off')
-              end
+    @builder.div(class: 'feedback-table-options sticky') do
+
+      # summary of tests
+      @builder.div(class: 'tab-summary') do
+        @builder.span(class: 'tab-summary-text') do
+          @builder.text! "#{t[:groups].count { |g| g[:accepted] }.to_s}/#{t[:groups].count.to_s} #{I18n.t('submissions.show.correct_group').downcase}:"
+        end
+        @builder.div(class: 'tab-summary-icons') do
+          t[:groups]&.each_with_index do |g, i|
+            @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
+              @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
             end
           end
         end
-        if show_diff_type
-          @builder.span(class: 'diff-switch-buttons switch-buttons') do
-            @builder.span do
-              @builder << I18n.t('submissions.show.output')
+      end
+
+      if show_hide_correct
+        @builder.span(class: 'correct-switch-buttons switch-buttons') do
+          @builder.span do
+            @builder << I18n.t('submissions.show.correct_tests')
+          end
+          @builder.div(class: 'btn-group btn-toggle') do
+            @builder.button(class: 'btn', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i('', class: 'mdi mdi-eye')
             end
-            @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
-              end
-              @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
-              end
+            @builder.button(class: 'btn active', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i('', class: 'mdi mdi-eye-off')
+            end
+          end
+        end
+      end
+      if show_diff_type
+        @builder.span(class: 'diff-switch-buttons switch-buttons') do
+          @builder.span do
+            @builder << I18n.t('submissions.show.output')
+          end
+          @builder.div(class: 'btn-group btn-toggle') do
+            @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
+            end
+            @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
             end
           end
         end

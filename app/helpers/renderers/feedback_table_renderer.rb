@@ -63,7 +63,7 @@ class FeedbackTableRenderer
 
   def show_hide_correct_switch(tab)
     tests = tab[:groups]&.compact
-    tests&.reject { |t| t[:accepted] }&.any? && tests&.any? { |t| t[:accepted] }
+    tests&.any? { |t| t[:accepted] }
   end
 
   def tabs(submission)

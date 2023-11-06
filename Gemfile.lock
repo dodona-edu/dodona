@@ -217,7 +217,7 @@ GEM
     i18n-js (4.2.3)
       glob (>= 0.4.0)
       i18n
-    icalendar (2.9.0)
+    icalendar (2.10.0)
       ice_cube (~> 0.16)
     ice_cube (0.16.4)
     image_processing (1.12.2)
@@ -587,7 +587,7 @@ DEPENDENCIES
   hcaptcha (~> 7.1.0)
   httparty (~> 0.21.0)
   i18n-js (~> 4.2.3)
-  icalendar (~> 2.9)
+  icalendar (~> 2.10)
   image_processing (~> 1.12.2)
   jbuilder (~> 2.11.5)
   jsbundling-rails (~> 1.2.1)

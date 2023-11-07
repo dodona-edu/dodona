@@ -22,18 +22,19 @@ class RemoveActivitiesJob < ApplicationJob
     end
 
     Exercise.where(status: 'removed').where('updated_at < ?', 1.month.ago).find_each do |activity|
-      if activity.draft? ||
-         (activity.series_memberships.empty? &&
-           (activity.submissions.empty? ||
-             (activity.submissions.count < 25 && activity.submissions.reorder(:created_at).last.created_at < 1.month.ago)))
-        # destroy submissions first explicitly, as they are dependent: :restrict_with_error
-        activity.submissions.destroy_all
-
-        # destroy series memberships first explicitly, as they are dependent: :restrict_with_error
-        activity.series_memberships.destroy_all
-
-        activity.destroy
+      unless activity.draft?
+        next if activity.series_memberships.present?
+        next if activity.submissions.count >= 25
+        next if activity.submissions.present? && activity.submissions.reorder(:created_at).last.created_at > 1.month.ago
       end
+
+      # destroy submissions first explicitly, as they are dependent: :restrict_with_error
+      activity.submissions.destroy_all
+
+      # destroy series memberships first explicitly, as they are dependent: :restrict_with_error
+      activity.series_memberships.destroy_all
+
+      activity.destroy
     end
 
     # rerun this job in 1 month

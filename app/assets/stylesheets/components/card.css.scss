@@ -128,7 +128,7 @@ a.card-title-link:hover {
   margin: 0;
 }
 
-.card-title-text + .card-subtitle-text {
+.card-title-text+.card-subtitle-text {
   margin-top: 0.4em;
 }
 
@@ -191,7 +191,7 @@ a.card-title-link:hover {
   border-top: 1px solid var(--d-divider);
 }
 
-.card-title + .card-border {
+.card-title+.card-border {
   border-top: 0;
 }
 
@@ -230,7 +230,7 @@ a.card-title-link:hover {
   overflow: visible;
 }
 
-.card-nav > .card-title {
+.card-nav>.card-title {
   padding-bottom: 0;
   padding-top: 11px;
 }
@@ -304,7 +304,7 @@ a.card-title-link:hover {
 .nav-tabs.sticky {
   position: sticky;
   top: var(--d-navbar-height);
-  z-index: 9;
+  z-index: 4;
   background-color: var(--d-surface);
 }
 
@@ -371,7 +371,7 @@ a.card-title-link:hover {
   }
 }
 
-.card-supporting-text .course-item + .course-item {
+.card-supporting-text .course-item+.course-item {
   margin-top: 16px;
 }
 

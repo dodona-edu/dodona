@@ -279,6 +279,7 @@
   }
 
   table.diff.csv-diff {
+
     td,
     .del,
     .ins,
@@ -329,7 +330,7 @@
       padding-top: 12px;
       position: sticky;
       top: 101px;
-      z-index: 9;
+      z-index: 4;
       background-color: var(--d-surface);
     }
 

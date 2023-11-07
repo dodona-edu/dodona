@@ -153,12 +153,12 @@ class FeedbackTableRenderer
       # summary of tests
       @builder.div(class: 'tab-summary') do
         @builder.span(class: 'tab-summary-text') do
-          @builder.text! "#{groups_correct.to_s}/#{groups_total.to_s} #{I18n.t('submissions.show.correct_group').downcase}:"
+          @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
         end
         @builder.div(class: 'tab-summary-icons') do
           t[:groups]&.each_with_index do |g, i|
             @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
-              @builder.a(href: '#tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s, title: '#' + (i+1).to_s) do
+              @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do
                 @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
               end
             end
@@ -172,10 +172,10 @@ class FeedbackTableRenderer
             @builder << I18n.t('submissions.show.correct_tests')
           end
           @builder.div(class: 'btn-group btn-toggle') do
-            @builder.button(class: "btn #{"active" if expand_all}", 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.button(class: "btn #{'active' if expand_all}", 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
               @builder.i('', class: 'mdi mdi-eye')
             end
-            @builder.button(class: "btn #{"active" unless expand_all}", 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+            @builder.button(class: "btn #{'active' unless expand_all}", 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
               @builder.i('', class: 'mdi mdi-eye-off')
             end
           end
@@ -204,21 +204,19 @@ class FeedbackTableRenderer
   end
 
   def group(g, i, tab_i, expand_all = false)
-    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'} #{'collapsed' if g[:accepted] && !expand_all}", id: 'tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
-
-
+    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'} #{'collapsed' if g[:accepted] && !expand_all}", id: "tab-#{tab_i + 1}-group-#{i + 1}") do
       @builder.div(class: 'card-title card-title-colored-container') do
-        @builder.a(href: '#tab-' + (tab_i + 1).to_s + '-group-' + (i + 1).to_s) do
-          @builder.text!('#' + (i + 1).to_s)
+        @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}") do
+          @builder.text!("##{i + 1}")
         end
-        @builder.span("·", class: "ms-2 me-2")
+        @builder.span('·', class: 'ms-2 me-2')
         @builder.span(class: 'group-status') do
           if g[:accepted]
             icon_correct
-            @builder.span(I18n.t('submissions.show.correct_group'), class: "ms-1")
+            @builder.span(I18n.t('submissions.show.correct_group'), class: 'ms-1')
           else
             icon_wrong
-            @builder.span(I18n.t('submissions.show.wrong_group'), class: "ms-1")
+            @builder.span(I18n.t('submissions.show.wrong_group'), class: 'ms-1')
           end
         end
 
@@ -227,9 +225,9 @@ class FeedbackTableRenderer
         # Add a link to the debugger if there is data
         if g[:data] && (g[:data][:statements] || g[:data][:stdin])
           @builder.a(class: 'btn btn-text tutorlink',
-                       title: 'Start debugger',
-                       'data-statements': (g[:data][:statements]).to_s,
-                       'data-stdin': (g[:data][:stdin]).to_s) do
+                     title: 'Start debugger',
+                     'data-statements': (g[:data][:statements]).to_s,
+                     'data-stdin': (g[:data][:stdin]).to_s) do
             @builder.i(class: 'mdi mdi-bug-outline me-1') {}
             @builder.text!(I18n.t('submissions.show.debug'))
           end

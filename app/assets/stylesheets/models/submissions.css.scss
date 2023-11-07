@@ -51,7 +51,6 @@
   }
 
   .groups {
-    //margin: 0 15px 0 0;
 
     .badge {
       display: block;
@@ -144,20 +143,6 @@
     &:target {
       border-width: 2px;
     }
-
-    //background-color: var(--d-surface);
-    //margin-bottom: 12px;
-    //border-left: 4px solid gray;
-    //position: relative;
-    //padding-left: 12px;
-
-    //&.correct {
-    //  border-left-color: var(--d-success);
-    //}
-
-    //&.wrong {
-    //  border-left-color: var(--d-danger);
-    //}
   }
 
   .testcase {

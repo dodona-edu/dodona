@@ -9,7 +9,7 @@ class RemoveActivitiesJob < ApplicationJob
   # Destroy is called on each activity individually to ensure that callbacks are run
   # This means the activity will be removed from any series, evaluations it is a member of
   # and any submissions will be removed
-  queue_as :cron
+  queue_as :cleaning
 
   def perform
     ContentPage.where(status: 'removed').where('updated_at < ?', 1.month.ago).find_each do |activity|

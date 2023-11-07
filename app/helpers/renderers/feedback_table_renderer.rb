@@ -256,13 +256,13 @@ class FeedbackTableRenderer
   end
 
   def testcase(tc)
-    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
     end
   end
 
   def testcase_content(tc)
-    @builder.div(class: 'col-12 description') do
+    @builder.div(class: 'description') do
       @builder.div(class: 'indicator') do
         tc[:accepted] ? icon_correct : icon_wrong
       end
@@ -270,11 +270,11 @@ class FeedbackTableRenderer
     end
     tc[:tests]&.each { |t| test(t) }
 
-    @builder.div(class: 'col-12') { messages(tc[:messages]) } if tc[:messages]
+    @builder.div(class: 'messages') { messages(tc[:messages]) } if tc[:messages]
   end
 
   def test(t)
-    @builder.div(class: 'col-12 test') do
+    @builder.div(class: 'test') do
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])

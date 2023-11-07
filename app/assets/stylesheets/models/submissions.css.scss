@@ -161,11 +161,15 @@
   }
 
   .testcase {
+    >.description {
+      margin-left: -11px;
+    }
+
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 0 -12px 3px 3px;
-      float: right;
+      margin: 0 6px 3px 1px;
+      float: left;
 
       span {
         margin: auto;
@@ -174,6 +178,7 @@
 
     &>div {
       margin-bottom: 3px;
+      margin-left: 12px;
     }
 
     &.correct {

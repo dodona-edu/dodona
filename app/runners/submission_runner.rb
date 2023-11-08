@@ -163,11 +163,18 @@ class SubmissionRunner
     timer = Thread.new do
       while Time.zone.now - before_time < time_limit
         before_stats = Time.zone.now
-        # Check if container is still running
-        if !Rails.env.test? && (Docker::Container.all.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running'])
-          # If we don't pass these extra options gathering stats takes 1+ seconds (https://github.com/moby/moby/issues/23188#issuecomment-223211481)
-          stats = container.stats({ 'one-shot': true, stream: false })
-          memory = [stats['memory_stats']['usage'] / (1024.0 * 1024.0), memory].max if stats['memory_stats']&.fetch('usage', nil)
+
+        begin
+          # Check if container is still running
+          if !Rails.env.test? && (Docker::Container.all.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running'])
+            # If we don't pass these extra options gathering stats takes 1+ seconds (https://github.com/moby/moby/issues/23188#issuecomment-223211481)
+            stats = container.stats({ 'one-shot': true, stream: false })
+            memory = [stats['memory_stats']['usage'] / (1024.0 * 1024.0), memory].max if stats['memory_stats']&.fetch('usage', nil)
+          end
+        rescue Docker::Error::TimeoutError, Docker::Error::ServerError
+          # The docker container might be in a bad state
+          # We just ignore this and try again later
+          # The timeout will clean up the container if this lasts too long
         end
 
         # Gathering stats still takes a long time, so if we spent enough time on

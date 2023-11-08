@@ -109,9 +109,6 @@ jobs:
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master
-    - name: Install JS dependencies
-      run: |
-        yarn install
     - name: Show installed chrome version
       run: |
         google-chrome --version

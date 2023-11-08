@@ -23,7 +23,7 @@ class Repository < ApplicationRecord
   MEDIA_DIR = 'media'.freeze
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
-  validates :remote, presence: true, uniqueness: { case_sensitive: false }
+  validates :remote, presence: true
 
   validate :repo_is_accessible, on: :create
 

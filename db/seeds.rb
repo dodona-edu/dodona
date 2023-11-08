@@ -276,9 +276,6 @@ if Rails.env.development?
   puts activity_repo.errors.full_messages unless activity_repo.valid?
   activity_repo.process_activities
 
-  # remote must be unique for the repository, and we want to clone it again
-  activity_repo.update!(remote: '-')
-
   big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
   Delayed::Worker.delay_jobs = true
   Dir.glob("#{big_activity_repo.full_path}/*")

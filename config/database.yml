@@ -19,7 +19,7 @@ default: &default
 
 development:
   <<: *default
-  database: dodona
+  database: dodona_backup
 
 staging:
   <<: *default

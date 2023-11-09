@@ -105,8 +105,8 @@ ActiveRecord::Schema[7.1].define(version: 2023_10_26_075353) do
     t.integer "series_id_non_nil", null: false
     t.index ["accepted", "user_id", "series_id"], name: "index_activity_statuses_on_accepted_and_user_id_and_series_id"
     t.index ["activity_id"], name: "index_activity_statuses_on_activity_id"
-    t.index ["series_id", "started", "user_id", "last_submission_id"], name: "index_as_on_series_and_started_and_user_and_last_submission"
     t.index ["series_id"], name: "fk_rails_1bc42c2178"
+    t.index ["started", "user_id", "last_submission_id"], name: "index_as_on_started_and_user_and_last_submission"
     t.index ["started", "user_id", "series_id"], name: "index_activity_statuses_on_started_and_user_id_and_series_id"
     t.index ["user_id", "series_id", "last_submission_id"], name: "index_as_on_user_and_series_and_last_submission"
     t.index ["user_id", "series_id_non_nil", "activity_id"], name: "index_on_user_id_series_id_non_nil_activity_id", unique: true

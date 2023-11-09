@@ -145,12 +145,13 @@
   .testcase {
     >.description {
       margin-left: -11px;
+      padding-left: 22px;
     }
 
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 0 6px 3px 1px;
+      margin: 0 6px 3px -21px;
       float: left;
 
       span {

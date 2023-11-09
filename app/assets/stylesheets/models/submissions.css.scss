@@ -24,7 +24,13 @@
     .tab-summary-icons {
       flex-grow: 1;
       max-height: 40px;
-      overflow: scroll;
+      overflow-y: scroll;
+      scrollbar-width: none;
+
+      // this needs to be here until chrome supports setting scrollbar-width
+      &::-webkit-scrollbar {
+        display: none;
+      }
 
       div {
         display: inline-flex;

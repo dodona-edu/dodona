@@ -36,14 +36,19 @@ class LtiController < ApplicationController
   end
 
   def content_selection
+    return head :unauthorized unless current_user&.a_course_admin?
+
     @supported = @lti_message.accept_types.include?(LTI::Messages::Types::DeepLinkingResponse::LtiResourceLink::TYPE)
-    @grouped_courses = policy_scope(Course.all).group_by(&:year)
+    @grouped_courses = current_user.administrating_courses.group_by(&:year)
     @multiple = @lti_message.accept_multiple
   end
 
   def series_and_activities
     # Eager load the activities
     @course = Course.includes(series: [:activities]).find_by(id: params[:id])
+
+    return head :unauthorized unless current_user&.admin_of?(@course)
+
     @series = policy_scope(@course.series)
     @multiple = ActiveModel::Type::Boolean.new.cast(params[:multiple])
   end

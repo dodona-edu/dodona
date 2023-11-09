@@ -58,7 +58,7 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
 
   test 'content selection should return unauthorized if the user is not administrating any courses' do
     user = create :student
-    courses = create_list :course, 2
+    create_list :course, 2
     payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
     id_token = encode_jwt(payload)
 

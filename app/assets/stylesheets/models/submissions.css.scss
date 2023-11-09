@@ -128,25 +128,17 @@
         }
       }
 
-      &.correct {
-        border-color: var(--d-success);
-
-        .group-status {
-          color: var(--d-green);
-        }
+      &.correct .group-status {
+        color: var(--d-green);
       }
 
-      &.wrong {
-        border-color: var(--d-danger);
-
-        .group-status {
-          color: var(--d-red);
-        }
+      &.wrong .group-status {
+        color: var(--d-red);
       }
     }
 
     &:target {
-      border-width: 2px;
+      border-color: var(--d-primary);
     }
   }
 

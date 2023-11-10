@@ -117,10 +117,13 @@ class Repository < ApplicationRecord
   end
 
   def process_activities_email_errors(kwargs = {})
-    has_valid_recipient = -> { kwargs[:user] || kwargs[:email]&.exclude?('@users.noreply.github.com') }
+    recipient_is_invalid = kwargs.empty? || kwargs[:email]&.end_with?('@users.noreply.github.com')
 
-    kwargs[:user] = admins.first if !has_valid_recipient.call && admins.any?
-    kwargs[:email] = Rails.application.config.dodona_email unless has_valid_recipient.call
+    if recipient_is_invalid && admins.any?
+      kwargs[:user] = admins.first
+    elsif recipient_is_invalid
+      kwargs[:email] = Rails.application.config.dodona_email
+    end
 
     process_activities
   rescue AggregatedConfigErrors => e

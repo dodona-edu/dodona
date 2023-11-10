@@ -39,9 +39,6 @@ jobs:
       with:
         node-version: 16.x
         cache: yarn
-    - name: Install JS dependencies
-      run: |
-        yarn install
     - name: Run tests
       env:
         CI: true
@@ -51,8 +48,6 @@ jobs:
         git config --global user.name "Dodona"
         sudo sysctl fs.inotify.max_user_watches=524288
         sudo sysctl -p
-        bin/rake css:build
-        yarn build:js
         bundle exec rails test
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
@@ -114,9 +109,6 @@ jobs:
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master
-    - name: Install JS dependencies
-      run: |
-        yarn install
     - name: Show installed chrome version
       run: |
         google-chrome --version

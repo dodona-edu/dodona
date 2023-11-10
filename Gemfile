@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.6'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.1'
+gem 'faker', '~> 3.2.2'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.1.1'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.15.0'
+gem 'ddtrace', '~> 1.16.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.14.0'
+  gem 'selenium-webdriver', '~> 4.15.0'
 end
 
 group :test do
@@ -193,4 +193,4 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'docker-api', '~> 2.2.0'
 
 # Used for syncing deadlines with an external calendar
-gem 'icalendar', '~> 2.9'
+gem 'icalendar', '~> 2.10'

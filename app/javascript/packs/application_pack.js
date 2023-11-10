@@ -37,10 +37,8 @@ import { userState } from "state/Users";
 // Initialize clipboard.js
 initClipboard();
 
-// Don't show drawer if we don't want a drawer.
-if (!window.dodona.hideDrawer) {
-    ready.then(() => new Drawer());
-}
+// Init drawer
+ready.then(() => new Drawer());
 
 ready.then(initTooltips);
 

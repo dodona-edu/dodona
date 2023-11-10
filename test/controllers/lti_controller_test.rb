@@ -18,9 +18,13 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'content selection shows courses' do
+    user = create :staff
     courses = create_list :course, 2
+    user.administrating_courses << courses
     payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
     id_token = encode_jwt(payload)
+
+    sign_in user
 
     get content_selection_path, params: {
       id_token: id_token,
@@ -31,6 +35,41 @@ class LtiControllerTest < ActionDispatch::IntegrationTest
     courses.each do |course|
       assert_select 'option', course.name
     end
+  end
+
+  test 'content selection should not show courses that are not administrated by the user' do
+    user = create :staff
+    courses = create_list :course, 2
+    payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
+    id_token = encode_jwt(payload)
+
+    sign_in user
+
+    get content_selection_path, params: {
+      id_token: id_token,
+      provider_id: @provider.id
+    }
+
+    assert_response :ok
+    courses.each do |course|
+      assert_select 'option', { text: course.name, count: 0 }
+    end
+  end
+
+  test 'content selection should return unauthorized if the user is not administrating any courses' do
+    user = create :student
+    create_list :course, 2
+    payload = lti_payload('nonce', 'target', 'LtiDeepLinkingRequest')
+    id_token = encode_jwt(payload)
+
+    sign_in user
+
+    get content_selection_path, params: {
+      id_token: id_token,
+      provider_id: @provider.id
+    }
+
+    assert_response :unauthorized
   end
 
   test 'content selection payload is correct' do

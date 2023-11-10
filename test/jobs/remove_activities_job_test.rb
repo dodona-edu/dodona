@@ -102,4 +102,13 @@ class RemoveActivitiesJobTest < ActiveJob::TestCase
       RemoveActivitiesJob.perform_now
     end
   end
+
+  test 'should not remove activities that are part of an evaluation' do
+    e = create :exercise, status: :removed, draft: false, updated_at: 2.months.ago
+    create :evaluation_exercise, exercise: e
+
+    assert_no_difference 'Exercise.count' do
+      RemoveActivitiesJob.perform_now
+    end
+  end
 end

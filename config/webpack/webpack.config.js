@@ -22,7 +22,15 @@ const config = {
                     return modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
                 },
                 exclude: /node_modules/,
-                use: ["babel-loader", "ts-loader"],
+                use: [
+                    "babel-loader",
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            transpileOnly: true,
+                        },
+                    }
+                ],
             },
         ],
     },
@@ -62,7 +70,7 @@ if (process.env.NODE_ENV === "development") {
     config.devtool = "inline-source-map";
 }
 
-// disable terser minimization when running tests
+// disable terser minimization when running
 if (process.env.RAILS_ENV === "test") {
     config.optimization.minimize = false;
 }

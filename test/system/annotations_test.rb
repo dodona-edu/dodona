@@ -20,7 +20,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   test 'Can view submission page' do
     visit(submission_path(id: @instance.id))
 
-    within '.card-title' do
+    within '.card-title.card-title-colored' do
       assert_text 'Submission results'
     end
     within '.status-line' do

@@ -10,14 +10,59 @@
 }
 
 .feedback-table {
-  .groups {
-    margin: 0 15px 0 0;
+  .tab-summary {
+    flex-grow: 1;
+    display: flex;
+    align-self: center;
 
+    .tab-summary-text {
+      white-space: nowrap;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+
+    .tab-summary-icons {
+      flex-grow: 1;
+      max-height: 40px;
+      overflow-y: scroll;
+      scrollbar-width: none;
+
+      // this needs to be here until chrome supports setting scrollbar-width
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      div {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 4px;
+
+        a {
+          color: var(--d-on-primary);
+        }
+
+        &.correct {
+          background-color: var(--d-success);
+        }
+
+        &.wrong {
+          background-color: var(--d-danger);
+        }
+      }
+    }
+  }
+
+  .groups {
     .badge {
       display: block;
       text-align: left;
       border-left: 3px solid;
       border-radius: 0;
+      margin-left: 0;
     }
 
     .badge.bg-danger {
@@ -42,35 +87,81 @@
   }
 
   .group {
-    background-color: var(--d-surface);
-    margin-bottom: 12px;
-    border-left: 4px solid gray;
-    position: relative;
-    padding-left: 12px;
+    &.card {
+      box-shadow: none;
+      border: 1px solid var(--d-divider);
+      scroll-margin-top: calc(var(--d-navbar-height) + 50px + 64px + 5px);
+      overflow: clip; // must be clip, hidden doesn't work with scroll-margin-top
 
-    &.correct {
-      border-left-color: var(--d-success);
+      .card-title.card-title-colored-container {
+        border-radius: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .group-status {
+          display: flex;
+        }
+
+        .btn {
+          margin-top: -12px;
+          margin-bottom: -12px;
+        }
+
+        .btn-collapse {
+          transition: transform 0.2s ease-in-out;
+        }
+      }
+
+      &:target .btn-collapse {
+        pointer-events: none;
+      }
+
+      // if a group is the target, never collapse
+      &.collapsed:not(:target) {
+        .card-supporting-text {
+          display: none;
+        }
+
+        .btn-collapse {
+          transform: rotate(90deg);
+        }
+      }
+
+      &.correct .group-status {
+        color: var(--d-green);
+      }
+
+      &.wrong .group-status {
+        color: var(--d-red);
+      }
     }
 
-    &.wrong {
-      border-left-color: var(--d-danger);
+    &:target {
+      border-color: var(--d-primary);
     }
   }
 
   .testcase {
+    >.description {
+      margin-left: -11px;
+      padding-left: 22px;
+    }
+
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 0 -12px 3px 3px;
-      float: right;
+      margin: 0 6px 3px -21px;
+      float: left;
 
       span {
         margin: auto;
       }
     }
 
-    & > div {
+    &>div {
       margin-bottom: 3px;
+      margin-left: 12px;
     }
 
     &.correct {
@@ -230,8 +321,20 @@
     width: 100%;
     display: flex;
 
+    &.sticky {
+      margin-bottom: 0;
+      margin-top: -16px;
+      padding-bottom: 12px;
+      padding-top: 12px;
+      position: sticky;
+      top: 101px;
+      z-index: 4;
+      background-color: var(--d-surface);
+    }
+
     .switch-buttons {
       margin-left: 1em;
+      white-space: nowrap;
 
       span {
         margin-right: 0.5em;
@@ -283,7 +386,7 @@
     margin-bottom: 9.5px;
   }
 
-  .row > .messages {
+  .row>.messages {
     margin-left: 1em;
     margin-right: 1em;
   }
@@ -325,8 +428,8 @@
     content: "\F0474";
   }
 
-  .message-zeus + .message-zeus::before,
-  .message-staff + .message-staff::before {
+  .message-zeus+.message-zeus::before,
+  .message-staff+.message-staff::before {
     content: "";
   }
 

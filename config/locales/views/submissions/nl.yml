@@ -48,6 +48,9 @@ nl:
       by: "door"
       submission_for: "Oplossing voor"
       output: Uitvoer
+      debug: Debuggen
+      correct_group: Correct
+      wrong_group: Fout
       correct_tests: Correcte testen
       diff:
         split: Toon uitvoer naast elkaar

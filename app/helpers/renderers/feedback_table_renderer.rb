@@ -145,21 +145,23 @@ class FeedbackTableRenderer
     @diff_type = determine_tab_diff_type(t)
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
-    groups_correct = t[:groups].count { |g| g[:accepted] }
-    groups_total = t[:groups].count
+    groups_correct = t[:groups]&.count { |g| g[:accepted] } || 0
+    groups_total = t[:groups]&.count || 0
     expand_all = groups_correct == groups_total
 
     @builder.div(class: 'feedback-table-options sticky') do
       # summary of tests
       @builder.div(class: 'tab-summary') do
-        @builder.span(class: 'tab-summary-text') do
-          @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
-        end
-        @builder.div(class: 'tab-summary-icons') do
-          t[:groups]&.each_with_index do |g, i|
-            @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
-              @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do
-                @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
+        if groups_total > 0
+          @builder.span(class: 'tab-summary-text') do
+            @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
+          end
+          @builder.div(class: 'tab-summary-icons') do
+            t[:groups]&.each_with_index do |g, i|
+              @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
+                @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do
+                  @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
+                end
               end
             end
           end

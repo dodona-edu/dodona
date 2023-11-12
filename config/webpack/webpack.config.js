@@ -62,6 +62,11 @@ if (process.env.NODE_ENV === "development") {
     config.devtool = "inline-source-map";
 }
 
+// disable terser minimization when running tests
+if (process.env.RAILS_ENV === "test") {
+    config.optimization.minimize = false;
+}
+
 // Test, Staging and Production use default config
 
 module.exports = config;

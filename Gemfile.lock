@@ -253,7 +253,10 @@ GEM
       addressable (~> 2.7)
     letter_opener (1.8.1)
       launchy (>= 2.2, < 3)
+    libdatadog (5.0.0.1.0)
     libdatadog (5.0.0.1.0-x86_64-linux)
+    libddwaf (1.14.0.0.0-arm64-darwin)
+      ffi (~> 1.0)
     libddwaf (1.14.0.0.0-x86_64-linux)
       ffi (~> 1.0)
     listen (3.8.0)
@@ -302,6 +305,8 @@ GEM
       net-protocol
     net-ssh (7.1.0)
     nio4r (2.5.9)
+    nokogiri (1.15.4-arm64-darwin)
+      racc (~> 1.4)
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.8)
@@ -508,8 +513,6 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
-    terser (1.1.19)
-      execjs (>= 0.3.0, < 3)
     test-prof (1.2.3)
     thor (1.2.2)
     tilt (2.0.11)
@@ -553,6 +556,7 @@ GEM
     zeitwerk (2.6.12)
 
 PLATFORMS
+  arm64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
@@ -631,7 +635,6 @@ DEPENDENCIES
   slack-notifier (~> 2.4.0)
   sprockets-rails (~> 3.4.2)
   stackprof (~> 0.2.25)
-  terser (>= 1.1.1)
   test-prof (~> 1.2.3)
   tzinfo-data
   web-console (~> 4.2.1)

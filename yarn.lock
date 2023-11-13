@@ -1764,17 +1764,10 @@
     "@lezer/highlight" "^1.0.0"
     "@lezer/lr" "^1.0.0"
 
-"@lit-labs/ssr-dom-shim@^1.1.2", "@lit-labs/ssr-dom-shim@^1.1.2-pre.0":
+"@lit-labs/ssr-dom-shim@^1.1.2-pre.0":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@lit-labs/ssr-dom-shim/-/ssr-dom-shim-1.1.2.tgz#d693d972974a354034454ec1317eb6afd0b00312"
   integrity sha512-jnOD+/+dSrfTWYfSXBXlo5l5f0q1UuJo3tkbMDCYA2lKUYq79jaxqtGEvnRoh049nt1vdo1+45RinipU6FGY2g==
-
-"@lit/reactive-element@^1.0.0 || ^2.0.0":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@lit/reactive-element/-/reactive-element-2.0.1.tgz#b17d8818d9c72ccc489f44e35d87cfa18a9c8c93"
-  integrity sha512-eu50SQXHRthFwWJMp0oAFg95Rvm6MTPjxSXWuvAu7It90WVFLFpNBoIno7XOXSDvVgTrtKnUV4OLJqys2Svn4g==
-  dependencies:
-    "@lit-labs/ssr-dom-shim" "^1.1.2"
 
 "@lit/reactive-element@^2.0.0":
   version "2.0.0"
@@ -1809,20 +1802,20 @@
   resolved "https://registry.yarnpkg.com/@open-wc/dedupe-mixin/-/dedupe-mixin-1.4.0.tgz#b3c58f8699b197bb5e923d624c720e67c9f324d6"
   integrity sha512-Sj7gKl1TLcDbF7B6KUhtvr+1UCxdhMbNY5KxdU5IfMFWqL8oy1ZeAcCANjoB1TL0AJTcPmcCFsCbHf8X2jGDUA==
 
-"@open-wc/scoped-elements@^2.2.4":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-2.2.4.tgz#081559b62d885ac0ec043546f17f1f680294d500"
-  integrity sha512-12X4F4QGPWcvPbxAiJ4v8wQFCOu+laZHRGfTrkoj+3JzACCtuxHG49YbuqVzQ135QPKCuhP9wA0kpGGEfUegyg==
+"@open-wc/scoped-elements@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@open-wc/scoped-elements/-/scoped-elements-3.0.2.tgz#0295b15cb8d6e872b87d015020f1432a1662dd0a"
+  integrity sha512-TZ9NjcAGjrfoZ8GjbMYDTuztFL1YPHtvFgqlcTrYy6C7jHSgCv67Rv9Cgf55VDNZgzRu+yBi5IjcyLzWNZ17eg==
   dependencies:
-    "@lit/reactive-element" "^1.0.0 || ^2.0.0"
     "@open-wc/dedupe-mixin" "^1.4.0"
+    lit "^3.0.0"
 
-"@open-wc/testing-helpers@^2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-2.3.2.tgz#c2bfa82cedd833608effa2d2367fe9524ddf4434"
-  integrity sha512-uZMGC/C1m5EiwQsff6KMmCW25TYMQlJt4ilAWIjnelWGFg9HPUiLnlFvAas3ESUP+4OXLO8Oft7p4mHvbYvAEQ==
+"@open-wc/testing-helpers@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-3.0.0.tgz#cb9b142838347f7d916718da332effa0dc32ba93"
+  integrity sha512-zkR39b7ljH/TqZgzBB9ekHKg1OLvR/JQYCEaW76V0RuASfV/vkgx2xfUQNe8DlEOLOetRZ3agFqssEREF45ClA==
   dependencies:
-    "@open-wc/scoped-elements" "^2.2.4"
+    "@open-wc/scoped-elements" "^3.0.2"
     lit "^2.0.0 || ^3.0.0"
     lit-html "^2.0.0 || ^3.0.0"
 
@@ -6024,7 +6017,7 @@ lit-element@^4.0.0:
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
-"lit@^2.0.0 || ^3.0.0", lit@^3.0.1:
+"lit@^2.0.0 || ^3.0.0", lit@^3.0.0, lit@^3.0.1:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/lit/-/lit-3.0.2.tgz#e22e90c2cbcc3f37bf3c2558df66f3af4331c9cf"
   integrity sha512-ZoVUPGgXOQocP4OvxehEOBmC4rWB4cRYDPaz7aFmH8DFytsCi/NeACbr4C6vNPGDEC07BrhUos7uVNayDKLQ2Q==

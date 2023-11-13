@@ -2120,10 +2120,10 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
-"@types/dragula@^3.7.3":
-  version "3.7.3"
-  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.3.tgz#495b9ab270a04369f9d93f5bcb7047bb8b5e0e69"
-  integrity sha512-2A8ON6aEG5pC3SLqwVltge/PkF8l6NZMBKVbIFjAgCnwLlxtxmXQ0QX8267JGXaXy1jLXOwLmcqjdR7BFyZ9WQ==
+"@types/dragula@^3.7.4":
+  version "3.7.4"
+  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.4.tgz#b374f6a2a4fcf4b885581a783cfd9a010510fd67"
+  integrity sha512-cjg5MNq8CnXyJTScWM2t9fc0FC77rrBxYBs6/R3FiwW9NOTdHPB2nJq52I0tfxiBnhFb451S2j5ok4wW7sKmvA==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"

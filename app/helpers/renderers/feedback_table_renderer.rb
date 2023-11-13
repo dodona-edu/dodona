@@ -63,12 +63,12 @@ class FeedbackTableRenderer
 
   def show_hide_correct_switch(tab)
     tests = tab[:groups]&.compact
-    tests&.reject { |t| t[:accepted] }&.any? && tests&.any? { |t| t[:accepted] }
+    tests&.any? { |t| t[:accepted] }
   end
 
   def tabs(submission)
     @builder.div(class: 'card-tab') do
-      @builder.ul(class: 'nav nav-tabs') do
+      @builder.ul(class: 'nav nav-tabs sticky') do
         submission[:groups]&.each_with_index do |t, i|
           permission = t[:permission] || 'student'
           tooltip = case permission
@@ -131,7 +131,7 @@ class FeedbackTableRenderer
 
   def tab(t, i)
     @builder.div(class: "tab-pane feedback-tab-pane #{'active' if i.zero?}", id: tab_id(t, i)) do
-      tab_content(t)
+      tab_content(t, i)
     end
   end
 
@@ -141,40 +141,59 @@ class FeedbackTableRenderer
     "tab-#{prefix}-#{i}"
   end
 
-  def tab_content(t)
+  def tab_content(t, tab_i)
     @diff_type = determine_tab_diff_type(t)
     show_hide_correct = show_hide_correct_switch t
     show_diff_type = show_diff_type_switch t
-    if show_hide_correct || show_diff_type
-      @builder.div(class: 'feedback-table-options') do
-        @builder.span(class: 'flex-spacer') {}
-        if show_hide_correct
-          @builder.span(class: 'correct-switch-buttons switch-buttons') do
-            @builder.span do
-              @builder << I18n.t('submissions.show.correct_tests')
-            end
-            @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: 'btn active', 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye')
-              end
-              @builder.button(class: 'btn', 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i('', class: 'mdi mdi-eye-off')
+    groups_correct = t[:groups]&.count { |g| g[:accepted] } || 0
+    groups_total = t[:groups]&.count || 0
+    expand_all = groups_correct == groups_total
+
+    @builder.div(class: 'feedback-table-options sticky') do
+      # summary of tests
+      @builder.div(class: 'tab-summary') do
+        if groups_total > 0
+          @builder.span(class: 'tab-summary-text') do
+            @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
+          end
+          @builder.div(class: 'tab-summary-icons') do
+            t[:groups]&.each_with_index do |g, i|
+              @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
+                @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do
+                  @builder.i(class: "mdi mdi-12 #{g[:accepted] ? 'mdi-check' : 'mdi-close'}") {}
+                end
               end
             end
           end
         end
-        if show_diff_type
-          @builder.span(class: 'diff-switch-buttons switch-buttons') do
-            @builder.span do
-              @builder << I18n.t('submissions.show.output')
+      end
+
+      if show_hide_correct
+        @builder.span(class: 'correct-switch-buttons switch-buttons') do
+          @builder.span do
+            @builder << I18n.t('submissions.show.correct_tests')
+          end
+          @builder.div(class: 'btn-group btn-toggle') do
+            @builder.button(class: "btn #{'active' if expand_all}", 'data-show': 'true', title: I18n.t('submissions.show.correct.shown'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i('', class: 'mdi mdi-eye')
             end
-            @builder.div(class: 'btn-group btn-toggle') do
-              @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
-              end
-              @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-                @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
-              end
+            @builder.button(class: "btn #{'active' unless expand_all}", 'data-show': 'false', title: I18n.t('submissions.show.correct.hidden'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i('', class: 'mdi mdi-eye-off')
+            end
+          end
+        end
+      end
+      if show_diff_type
+        @builder.span(class: 'diff-switch-buttons switch-buttons') do
+          @builder.span do
+            @builder << I18n.t('submissions.show.output')
+          end
+          @builder.div(class: 'btn-group btn-toggle') do
+            @builder.button(class: "btn #{@diff_type == 'split' ? 'active' : ''}", 'data-show_class': 'show-split', title: I18n.t('submissions.show.diff.split'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i(class: 'mdi mdi-arrow-split-vertical') {}
+            end
+            @builder.button(class: "btn #{@diff_type == 'unified' ? 'active' : ''}", 'data-show_class': 'show-unified', title: I18n.t('submissions.show.diff.unified'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
+              @builder.i(class: 'mdi mdi-arrow-split-horizontal') {}
             end
           end
         end
@@ -182,57 +201,83 @@ class FeedbackTableRenderer
     end
     messages(t[:messages])
     @builder.div(class: 'groups') do
-      t[:groups]&.each { |g| group(g) }
+      t[:groups]&.each_with_index { |g, i| group(g, i, tab_i, expand_all) }
     end
   end
 
-  def group(g)
-    @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}") do
-      # Add a link to the debugger if there is data
-      if g[:data] && (g[:data][:statements] || g[:data][:stdin])
-        @builder.div(class: 'tutor-strip tutorlink',
+  def group(g, i, tab_i, expand_all = false)
+    @builder.div(class: "group card #{g[:accepted] ? 'correct' : 'wrong'} #{'collapsed' if g[:accepted] && !expand_all}", id: "tab-#{tab_i + 1}-group-#{i + 1}") do
+      @builder.div(class: 'card-title card-title-colored-container') do
+        @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}") do
+          @builder.text!("##{i + 1}")
+        end
+        @builder.span('·', class: 'ms-2 me-2')
+        @builder.span(class: 'group-status') do
+          if g[:accepted]
+            icon_correct
+            @builder.span(I18n.t('submissions.show.correct_group'), class: 'ms-1')
+          else
+            icon_wrong
+            @builder.span(I18n.t('submissions.show.wrong_group'), class: 'ms-1')
+          end
+        end
+
+        @builder.div(class: 'flex-spacer') {}
+
+        # Add a link to the debugger if there is data
+        if g[:data] && (g[:data][:statements] || g[:data][:stdin])
+          @builder.a(class: 'btn btn-text tutorlink',
                      title: 'Start debugger',
                      'data-statements': (g[:data][:statements]).to_s,
                      'data-stdin': (g[:data][:stdin]).to_s) do
-          @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('', class: 'mdi mdi-launch mdi-18')
+            # this is the bug-play-outline icon from https://pictogrammers.com/library/mdi/icon/bug-play-outline/
+            @builder.i(class: 'mdi me-1 custom-material-icons') do
+              @builder << '<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M19 7H16.19C15.74 6.2 15.12 5.5 14.37 5L16 3.41L14.59 2L12.42 4.17C11.96 4.06 11.5 4 11 4S10.05 4.06 9.59 4.17L7.41 2L6 3.41L7.62 5C6.87 5.5 6.26 6.21 5.81 7H3V9H5.09C5.03 9.33 5 9.66 5 10V11H3V13H5V14C5 14.34 5.03 14.67 5.09 15H3V17H5.81C7.26 19.5 10.28 20.61 13 19.65V19C13 18.43 13.09 17.86 13.25 17.31C12.59 17.76 11.8 18 11 18C8.79 18 7 16.21 7 14V10C7 7.79 8.79 6 11 6S15 7.79 15 10V14C15 14.19 15 14.39 14.95 14.58C15.54 14.04 16.24 13.62 17 13.35V13H19V11H17V10C17 9.66 16.97 9.33 16.91 9H19V7M13 9V11H9V9H13M13 13V15H9V13H13M17 16V22L22 19L17 16Z" /></svg>'
+            end
+            @builder.text!(I18n.t('submissions.show.debug'))
           end
+        end
+
+        # Expand/collapse button
+        @builder.a(class: 'btn btn-icon btn-collapse') do
+          @builder.i(class: 'mdi mdi-chevron-down') {}
         end
       end
 
-      if g[:description]
-        @builder.div(class: 'row') do
-          @builder.div(class: 'col-12 description') do
-            message(g[:description])
+      @builder.div(class: 'card-supporting-text') do
+        if g[:description]
+          @builder.div(class: 'row') do
+            @builder.div(class: 'col-12 description') do
+              message(g[:description])
+            end
           end
         end
+        messages(g[:messages])
+        g[:groups]&.each { |tc| testcase(tc) }
       end
-      messages(g[:messages])
-      g[:groups]&.each { |tc| testcase(tc) }
     end
   end
 
   def testcase(tc)
-    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'}") do
       testcase_content(tc)
     end
   end
 
   def testcase_content(tc)
-    @builder.div(class: 'col-12 description') do
+    @builder.div(class: 'description') do
       @builder.div(class: 'indicator') do
         tc[:accepted] ? icon_correct : icon_wrong
       end
       message(tc[:description]) if tc[:description]
     end
     tc[:tests]&.each { |t| test(t) }
-    @builder.div(class: 'col-12') do
-      messages(tc[:messages])
-    end
+
+    @builder.div(class: 'messages') { messages(tc[:messages]) } if tc[:messages]
   end
 
   def test(t)
-    @builder.div(class: 'col-12 test') do
+    @builder.div(class: 'test') do
       if t[:description]
         @builder.div(class: 'description') do
           message(t[:description])

@@ -7,7 +7,7 @@ en:
     submission-too-long: "Oops, something went wrong while saving your solution. Your solution is too long. Try to make it shorter and try again."
     submission-network: "Oops, we're unable to connect to the server. Please check your internet connection."
     submission-not-allowed: "Oops, you are not allowed to submit a solution to this exercise."
-    submission-processed: Evaluation finished
+    submission-processed: Testing finished
     unknown-error-loading-feedback: An unknown error occurred while loading the feedback for your submission
     activity-added-success: Activity added
     activity-added-failed: Adding activity failed

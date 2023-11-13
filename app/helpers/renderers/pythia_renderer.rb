@@ -10,7 +10,7 @@ class PythiaRenderer < FeedbackTableRenderer
     @result[:groups].none? { |t| t[:data][:source_annotations] }
   end
 
-  def tab_content(t)
+  def tab_content(t, i)
     if t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)
     else
@@ -65,7 +65,7 @@ class PythiaRenderer < FeedbackTableRenderer
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
     end.to_json
-    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
       testcase_content(tc)
     end
   end

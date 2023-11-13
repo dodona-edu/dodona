@@ -4,6 +4,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
     function init(): void {
         initDiffSwitchButtons();
         initTabLinks();
+        initCollapseButtons();
         initHideCorrect();
         contextualizeMediaPaths(parentClass, mediaPath, token);
     }
@@ -26,6 +27,16 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         });
     }
 
+    function initCollapseButtons(): void {
+        document.querySelectorAll(".group .btn-collapse").forEach(b => {
+            b.addEventListener("click", e => {
+                const button = e.currentTarget;
+                const group = getParentByClassName(button, "group");
+                group.classList.toggle("collapsed");
+            });
+        });
+    }
+
     function initHideCorrect(): void {
         document.querySelectorAll(".correct-switch-buttons .btn").forEach( b => {
             b.addEventListener("click", e => {
@@ -35,12 +46,12 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");
                 if (button.dataset.show === "true") {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "block";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.remove("collapsed");
                     });
                 } else {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "none";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.add("collapsed");
                     });
                 }
             });

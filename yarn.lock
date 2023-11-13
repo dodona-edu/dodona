@@ -1891,11 +1891,6 @@
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
-"@types/ace@^0.0.50":
-  version "0.0.50"
-  resolved "https://registry.yarnpkg.com/@types/ace/-/ace-0.0.50.tgz#1da0e515648965624f23bc2537204c9f991206c2"
-  integrity sha512-kg6VGO7BX5tDnTK3Vhs4SZx7ILT8xG1i439GA/QSl5PQ4UKa7Jy1GW2dsRe0R3q8mH5/3LASGZ5fwaNuOAqutA==
-
 "@types/aria-query@^5.0.1":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/aria-query/-/aria-query-5.0.1.tgz#3286741fb8f1e1580ac28784add4c7a1d49bdfbc"

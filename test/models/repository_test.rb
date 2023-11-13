@@ -376,8 +376,45 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
     @repository.reset
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      @repository.process_activities_email_errors(email: 'test@foo.bar')
+    end
+
+    assert_equal 'test@foo.bar', ActionMailer::Base.deliveries.last.to[0]
+  end
+
+  test 'should not send a mail to github noreply' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+
+    @repository.reset
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
+      @repository.process_activities_email_errors(email: 'dodona@users.noreply.github.com')
+    end
+
+    assert_equal 'dodona@ugent.be', ActionMailer::Base.deliveries.last.to[0]
+  end
+
+  test 'should email first admin if present' do
+    # make sure commit fails
+    @repository.stubs(:commit).returns([false, ['commit fail']])
+    @repository.admins << create(:staff, email: 'staff@foo.bar')
+
+    # add an activity to make sure that commit will be executed inside @repository.process_activities
+    new_dir = 'echo2'
+    @remote.copy_dir(@echo.path, new_dir)
+    @remote.commit('copy exercise')
+
+    @repository.reset
+    assert_difference 'ActionMailer::Base.deliveries.size', +1 do
       @repository.process_activities_email_errors
     end
+
+    assert_equal 'staff@foo.bar', ActionMailer::Base.deliveries.last.to[0]
   end
 
   test 'has allowed course should filter correctly' do

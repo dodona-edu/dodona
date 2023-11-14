@@ -1,2 +1,2 @@
-class SlowRequestException < Exception
+class SlowRequestException < StandardError
 end

@@ -1,2 +1,2 @@
-class InternalErrorException < Exception
+class InternalErrorException < StandardError
 end

@@ -186,6 +186,9 @@ class SubmissionRunner
         timeout = true if timeout.nil?
       end
     end
+    # errors raised in the thread should also be raised in the main thread
+    # This ensures they are reported and handled correctly
+    timer.abort_on_exception = true
 
     begin
       outlines, errlines = container.tap(&:start).attach(

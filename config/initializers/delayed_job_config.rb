@@ -67,7 +67,7 @@ end
 module NotifyOnFailedJob
   def handle_failed_job(job, error)
     super
-    ExceptionNotifier.notify_exception(error, data: {job: job})
+    ExceptionNotifier.notify_exception(error, data: { worker: `hostname`, queue: job.queue, payload: job.payload_object, last_error: job.last_error })
   end
 end
 

@@ -27,7 +27,7 @@ jobs:
         echo "deploy naos $GITHUB_SHA" | ssh -p 4840 dodona@mestra.ugent.be
     - name: Remove deploy label
       if: github.event.action == 'labeled'
-      uses: buildsville/add-remove-label@v1
+      uses: buildsville/add-remove-label@v2
       with:
         token: ${{secrets.GITHUB_TOKEN}}
         label: deploy naos

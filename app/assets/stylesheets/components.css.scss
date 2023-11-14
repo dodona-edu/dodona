@@ -127,10 +127,10 @@ blockquote {
   color: var(--d-on-surface-muted);
 }
 
-.blur {
+.blur:not(:hover) {
   filter: blur(5px);
 
-  &:hover {
-    filter: none;
+  .progress-chart line {
+    stroke: var(--d-divider);
   }
 }

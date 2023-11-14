@@ -175,6 +175,7 @@ class SubmissionRunner
           # The docker container might be in a bad state
           # We just ignore this and try again later
           # The timeout will clean up the container if this lasts too long
+          Rails.logger.warn "Failed to get stats from docker container #{container.id} for submission #{@submission.id}"
         end
 
         # Gathering stats still takes a long time, so if we spent enough time on

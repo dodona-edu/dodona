@@ -85,6 +85,12 @@ Rails.application.configure do
 
   config.middleware.use ExceptionNotification::Rack,
                         ignore_if: ->(env, _exception) {env['HTTP_HOST'] == 'localhost:3000'},
+                        ignore_notifier_if: {
+                          email: lambda { |env, exception|
+                            exception.is_a?(InternalErrorException) ||
+                              exception.is_a?(SlowRequestException)
+                          }
+                        },
                         email: {
                             email_prefix: '[Dodona-dev] ',
                             sender_address: %("Dodona" <dodona@ugent.be>),

@@ -21,7 +21,7 @@ gem 'jsbundling-rails', '~> 1.2.1'
 gem 'sprockets-rails', '~> 3.4.2'
 
 # Use Terser as compressor for JavaScript assets
-gem 'terser', '>= 1.1.1'
+# gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.11.5'

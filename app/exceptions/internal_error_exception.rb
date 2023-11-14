@@ -1,0 +1,2 @@
+class InternalErrorException < Exception
+end

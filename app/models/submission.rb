@@ -522,7 +522,7 @@ class Submission < ApplicationRecord
     return unless status_changed? && send(:'internal error?')
 
     ExceptionNotifier.notify_exception(
-      Exception.new("Submission(#{id}) status was changed to internal error"),
+      InternalErrorException.new("Submission(#{id}) status was changed to internal error"),
       data: {
         host: `hostname`,
         judge: judge.name,

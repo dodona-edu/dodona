@@ -10,7 +10,7 @@ ActiveSupport::Notifications.subscribe 'process_action.action_controller' do |_n
 
   headers = payload.delete :headers
   ExceptionNotifier.notify_exception(
-    Exception.new("A request took #{finish - start} seconds"),
+    SlowRequestException.new("A request took #{finish - start} seconds"),
     env: headers.env,
     data: payload
   )

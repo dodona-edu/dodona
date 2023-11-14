@@ -135,6 +135,12 @@ Rails.application.configure do
                             env['action_controller.instance'].action_name == 'create_contact' &&
                             exception.is_a?(ActionController::InvalidAuthenticityToken)
                         },
+                        ignore_notifier_if: {
+                          email: lambda { |env, exception|
+                            exception.is_a?(InternalErrorException) ||
+                              exception.is_a?(SlowRequestException)
+                          }
+                        },
                         email: {
                             email_prefix: '[Dodona] ',
                             sender_address: %("Dodona" <dodona@ugent.be>),

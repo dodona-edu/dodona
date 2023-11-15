@@ -55,6 +55,10 @@ function initAnnotateButtons(): void {
             return; // if there is no code selection, let the browser handle the copy event
         }
 
+        if (userAnnotationState.formShown) {
+            return; // if the annotation form is shown, let the browser handle the copy event
+        }
+
         const selectedCode = submissionState.code.split("\n").slice(selection.row - 1, selection.row + selection.rows - 1);
         // on the first and last line, selection might only cover part of the line
         // only copy the selected columns/characters

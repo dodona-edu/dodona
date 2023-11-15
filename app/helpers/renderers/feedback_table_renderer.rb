@@ -153,10 +153,10 @@ class FeedbackTableRenderer
       # summary of tests
       @builder.div(class: 'tab-summary') do
         if groups_total > 0
-          @builder.span(class: 'tab-summary-text') do
+          @builder.span(class: 'tab-summary-text d-none d-md-block') do
             @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
           end
-          @builder.div(class: 'tab-summary-icons') do
+          @builder.div(class: 'tab-summary-icons d-none d-md-block') do
             t[:groups]&.each_with_index do |g, i|
               @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
                 @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do

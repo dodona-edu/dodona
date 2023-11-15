@@ -523,6 +523,7 @@ class Submission < ApplicationRecord
 
     ExceptionNotifier.notify_exception(
       InternalErrorException.new("Submission(#{id}) status was changed to internal error"),
+      env: self,
       data: {
         host: `hostname`,
         judge: judge.name,

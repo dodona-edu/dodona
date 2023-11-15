@@ -523,7 +523,7 @@ class Submission < ApplicationRecord
 
     ExceptionNotifier.notify_exception(
       InternalErrorException.new("Submission(#{id}) status was changed to internal error"),
-      env: self,
+      env: self, # this is a hack to get callbacks to run, see https://github.com/smartinez87/exception_notification/issues/518
       data: {
         host: `hostname`,
         judge: judge.name,

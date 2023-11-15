@@ -188,8 +188,8 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
     }
 
     handleKeyDown(e: KeyboardEvent): boolean {
-        if (e.code === "Enter" && e.shiftKey) {
-            // Send using Shift-Enter.
+        if (e.code === "Enter" && (e.shiftKey || e.ctrlKey)) {
+            // Send using Shift-Enter or Ctrl-Enter.
             e.preventDefault();
             this.handleSubmit();
             return false;

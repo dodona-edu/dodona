@@ -12,6 +12,8 @@ en:
       get-feedback-text: Your code is automatically tested. Get your results in seconds!
       we: Faculty of Sciences
       elixir: ELIXIR Belgium
+    publications:
+      title: Publications
     home:
       more-courses: More courses
       favorites: "Favorites"

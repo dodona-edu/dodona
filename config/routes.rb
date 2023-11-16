@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
     get '/profile' => 'pages#profile', as: 'profile'
+    get '/publications' => 'pages#publications'
     get '/support-us' => 'pages#support'
 
     get '/contact' => 'pages#contact'

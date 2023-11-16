@@ -69,6 +69,11 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
         }
     }
 
+    handleSubmit(e: Event): void {
+        e.preventDefault();
+        this.createSavedAnnotation();
+    }
+
     get filledModalTemplate(): TemplateResult {
         return this.modalTemplate(html`
             ${I18n.t("js.saved_annotation.new.title")}
@@ -85,6 +90,7 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
             <d-saved-annotation-form
                 .savedAnnotation=${this.newSavedAnnotation}
                 @change=${e => this.savedAnnotation = e.detail}
+                @submit=${e => this.handleSubmit(e)}
                 .courseId=${this.courseId}
                 .exerciseId=${this.exerciseId}
             ></d-saved-annotation-form>

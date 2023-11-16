@@ -39,6 +39,8 @@ class PagesController < ApplicationController
     set_metrics
   end
 
+  def publications; end
+
   def data; end
 
   def privacy; end

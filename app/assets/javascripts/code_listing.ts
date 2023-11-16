@@ -9,7 +9,11 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
-import { triggerSelectionEnd } from "components/annotations/selectionHelpers";
+import {
+    anyRangeInAnnotation,
+    selectedRangeFromSelection,
+    triggerSelectionEnd
+} from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 
@@ -50,7 +54,12 @@ function initAnnotateButtons(): void {
 
     // copy only the selected code, this avoids copying the line numbers or extra whitespace from the complex html
     document.addEventListener("copy", event => {
-        const selection = userAnnotationState.selectedRange;
+        const browserSelection = window.getSelection();
+        if (browserSelection.isCollapsed || anyRangeInAnnotation(browserSelection)) {
+            return; // selection is collapsed or contains an annotation, let the browser handle the copy event
+        }
+
+        const selection = selectedRangeFromSelection(browserSelection, true);
         if (!selection) {
             return; // if there is no code selection, let the browser handle the copy event
         }

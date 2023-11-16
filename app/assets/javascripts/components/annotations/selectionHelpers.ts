@@ -35,7 +35,8 @@ export function getOffset(node: Node, childIndex: number): number | undefined {
     }
     const indexInParent = Array.from(parent.childNodes).indexOf(node as ChildNode);
 
-    return getOffset(parent, indexInParent) + offset;
+    const offsetInParent = getOffset(parent, indexInParent);
+    return offsetInParent !== undefined ? offsetInParent + offset: undefined;
 }
 
 /**

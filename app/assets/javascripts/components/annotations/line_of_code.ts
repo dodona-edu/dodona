@@ -156,12 +156,14 @@ export class LineOfCode extends ShadowlessLitElement {
 
         for (const range of this.ranges) {
             const substring = this.code.substring(range.start, range.start + range.length);
+            // replace every non-whitespace character with a non-breaking space
+            const nonSearchableSubstring = substring.replace(/\S/g, "\u00a0");
             if (!range.annotations.length) {
-                backgroundLayer.push(substring);
-                tooltipLayer.push(substring);
+                backgroundLayer.push(nonSearchableSubstring);
+                tooltipLayer.push(nonSearchableSubstring);
             } else {
-                backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>`);
-                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`);
+                backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${nonSearchableSubstring}</d-annotation-marker>`);
+                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${nonSearchableSubstring}</d-annotation-tooltip>`);
             }
         }
 

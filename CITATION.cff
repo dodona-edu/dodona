@@ -2,23 +2,21 @@ cff-version: 1.2.0
 message: "If you use this software in your research, please cite it as below."
 preferred-citation:
   type: article
-  doi: "10.1177/07356331221085595"
-  title: "Pass/Fail Prediction in Programming Courses"
-  journal: "Journal of Educational Computing Research"
-  year: 2022
+  doi: "10.1016/j.softx.2023.1015785"
+  title: "Dodona: Learn to code with a virtual co-teacher that supports active learning"
+  journal: "SoftwareX"
+  year: 2023
   authors:
     - family-names: "Van Petegem"
       given-names: "Charlotte"
-    - family-names: "Deconinck"
-      given-names: "Louise"
-    - family-names: "Mourisse"
-      given-names: "Dieter"
     - family-names: "Maertens"
       given-names: "Rien"
     - family-names: "Strijbol"
       given-names: "Niko"
-    - family-names: "Dhoedt"
-      given-names: "Bart"
+    - family-names: "Van Renterghem"
+      given-names: "Jorg"
+    - family-names: "Van der Jeugt"
+      given-names: "Felix"
     - family-names: "De Wever"
       given-names: "Bram"
     - family-names: "Dawyndt"

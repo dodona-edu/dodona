@@ -12,6 +12,8 @@ nl:
       get-feedback-text: Je code wordt automatisch getest en na enkele seconden krijg je het resultaat te zien.
       we: Faculteit Wetenschappen
       elixir: ELIXIR Belgium
+    publications:
+      title: Publicaties
     home:
       more-courses: Meer cursussen
       favorites: "Favorieten"

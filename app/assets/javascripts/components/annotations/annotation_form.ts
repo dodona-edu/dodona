@@ -280,7 +280,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                     ` : ""}
                 </div>
                 <div class="row mb-1">
-                    <div class="col-lg-7 col-xxl-8 align-items-center d-inline-flex">
+                    <div class="col-xxl-8 align-items-center d-inline-flex">
                         ${ this.canSaveAnnotation && this._savedAnnotationId == "" ? html`
                             <div class="field form-group mb-0">
                                 <div class="form-check save-annotation-check">
@@ -312,7 +312,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                             </div>
                         ` : ""}
                     </div>
-                    <div class="col-lg-5 col-xxl-4 mt-2 mt-lg-0" style="text-align: right">
+                    <div class="col-xxl-4 mt-2 mt-xxl-0" style="text-align: right">
                         <button class="btn btn-text"
                                 type="button"
                                 @click="${() => this.handleCancel()}"

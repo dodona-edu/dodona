@@ -47,6 +47,6 @@ class SamlControllerTest < ActionDispatch::IntegrationTest
 
     # check if the xml contains the correct elements
     assert_not_nil doc.at_xpath('//md:EntityDescriptor', 'md' => 'urn:oasis:names:tc:SAML:2.0:metadata')
-    assert_not_nil doc.at_xpath('//md:EntityDescriptor', 'md' => 'urn:oasis:names:tc:SAML:2.0:metadata', 'ds' => 'http://www.w3.org/2000/09/xmldsig#' )
+    assert_not_nil doc.at_xpath('//md:EntityDescriptor', 'md' => 'urn:oasis:names:tc:SAML:2.0:metadata', 'ds' => 'http://www.w3.org/2000/09/xmldsig#')
   end
 end

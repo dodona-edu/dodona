@@ -31,4 +31,22 @@ class SavedAnnotationControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
   end
+
+  test 'zeus should not have access to saved annotations of other users' do
+    sign_in users(:staff)
+    get saved_annotations_url, params: { format: :json }
+
+    assert_response :success
+    assert_equal 1, response.parsed_body.length
+
+    sign_in users(:zeus)
+    get saved_annotations_url, params: { format: :json }
+
+    assert_response :success
+    assert_equal 0, response.parsed_body.length
+
+    get saved_annotation_url(@instance), params: { format: :json }
+
+    assert_response :forbidden
+  end
 end

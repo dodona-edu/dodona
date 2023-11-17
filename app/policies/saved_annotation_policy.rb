@@ -1,9 +1,7 @@
 class SavedAnnotationPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      if user&.zeus?
-        scope.all
-      elsif user&.a_course_admin?
+      if user&.zeus? || user&.a_course_admin?
         scope.where(user_id: user.id)
       else
         scope.none

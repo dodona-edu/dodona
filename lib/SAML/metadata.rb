@@ -11,7 +11,7 @@ module OmniAuth
       #
       class Metadata < OneLogin::RubySaml::Metadata
         # Overwritten to add belnet specific namespaces
-        def self.add_root_element(meta_doc, settings, valid_until, cache_duration)
+        def add_root_element(meta_doc, settings, valid_until, cache_duration)
           namespaces = {
             "xmlns:md" => "urn:oasis:names:tc:SAML:2.0:metadata"
           }

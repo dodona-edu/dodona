@@ -1,0 +1,401 @@
+@import "theme/m3-theme.css.scss";
+
+.highlighter-rouge .hll {
+  background-color: #f1fa8c;
+}
+
+.highlighter-rouge {
+  color: $neutral-98;
+}
+
+/* Comment */
+.highlighter-rouge .c {
+  color: $neutral-30;
+}
+
+/* Error */
+.highlighter-rouge .err {
+  color: $neutral-98;
+}
+
+/* Generic */
+.highlighter-rouge .g {
+  color: $neutral-98;
+}
+
+/* Keyword */
+.highlighter-rouge .k {
+  color: $primary-40;
+}
+
+/* Literal */
+.highlighter-rouge .l {
+  color: $neutral-98;
+}
+
+/* Name */
+.highlighter-rouge .n {
+  color: $neutral-98;
+}
+
+/* Operator */
+.highlighter-rouge .o {
+  color: $primary-40;
+}
+
+/* Other */
+.highlighter-rouge .x {
+  color: $neutral-98;
+}
+
+/* Punctuation */
+.highlighter-rouge .p {
+  color: $neutral-98;
+}
+
+/* Comment.Hashbang */
+.highlighter-rouge .ch {
+  color: $neutral-30;
+}
+
+/* Comment.Multiline */
+.highlighter-rouge .cm {
+  color: $neutral-30;
+}
+
+/* Comment.Preproc */
+.highlighter-rouge .cp {
+  color: $neutral-30;
+}
+
+/* Comment.PreprocFile */
+.highlighter-rouge .cpf {
+  color: $neutral-30;
+}
+
+/* Comment.Single */
+.highlighter-rouge .c1 {
+  color: $neutral-30;
+}
+
+/* Comment.Special */
+.highlighter-rouge .cs {
+  color: $neutral-30;
+}
+
+/* Generic.Deleted */
+.highlighter-rouge .gd {
+  color: $danger-60;
+}
+
+/* Generic.Emph */
+.highlighter-rouge .ge {
+  color: $neutral-98;
+  text-decoration: underline;
+}
+
+/* Generic.Strikethrough */
+.highlighter-rouge .gst {
+  color: $neutral-98;
+  text-decoration: line-through;
+}
+
+/* Generic.Error */
+.highlighter-rouge .gr {
+  color: $neutral-98;
+}
+
+/* Generic.Heading */
+.highlighter-rouge .gh {
+  color: $neutral-98;
+  font-weight: bold;
+}
+
+/* Generic.Inserted */
+.highlighter-rouge .gi {
+  color: $neutral-98;
+  font-weight: bold;
+}
+
+/* Generic.Output */
+.highlighter-rouge .go {
+  color: $neutral-30;
+}
+
+/* Generic.Prompt */
+.highlighter-rouge .gp {
+  color: $primary-40;
+}
+
+/* Generic.Strong */
+.highlighter-rouge .gs {
+  color: $neutral-98;
+}
+
+/* Generic.Subheading */
+.highlighter-rouge .gu {
+  color: $neutral-98;
+  font-weight: bold;
+}
+
+/* Generic.Traceback */
+.highlighter-rouge .gt {
+  color: $neutral-98;
+}
+
+/* Keyword.Constant */
+.highlighter-rouge .kc {
+  color: $secondary-40;
+}
+
+/* Keyword.Declaration */
+.highlighter-rouge .kd {
+  color: $primary-40;
+  font-style: italic;
+}
+
+/* Keyword.Namespace */
+.highlighter-rouge .kn {
+  color: $primary-40;
+}
+
+/* Keyword.Pseudo */
+.highlighter-rouge .kp {
+  color: $secondary-40;
+}
+
+/* Keyword.Reserved */
+.highlighter-rouge .kr {
+  color: $secondary-40;
+}
+
+/* Keyword.Type */
+.highlighter-rouge .kt {
+  color: $primary-40;
+}
+
+/* Literal.Date */
+.highlighter-rouge .ld {
+  color: $neutral-98;
+}
+
+/* Literal.Number */
+.highlighter-rouge .m {
+  color: $secondary-40;
+}
+
+/* Literal.String */
+.highlighter-rouge .s {
+  color: $teal-40;
+}
+
+/* Name.Attribute */
+.highlighter-rouge .na {
+  color: $tertiary-40;
+}
+
+/* Name.Builtin */
+.highlighter-rouge .nb {
+  color: $tertiary-40;
+  font-style: italic;
+}
+
+/* Name.Class */
+.highlighter-rouge .nc {
+  color: $neutral-98;
+}
+
+/* Name.Constant */
+.highlighter-rouge .no {
+  color: $neutral-98;
+}
+
+/* Name.Decorator */
+.highlighter-rouge .nd {
+  color: $neutral-98;
+}
+
+/* Name.Entity */
+.highlighter-rouge .ni {
+  color: $neutral-98;
+}
+
+/* Name.Exception */
+.highlighter-rouge .ne {
+  color: $neutral-98;
+}
+
+/* Name.Function */
+.highlighter-rouge .nf {
+  color: $tertiary-40;
+}
+
+/* Name.Label */
+.highlighter-rouge .nl {
+  color: $primary-40;
+  font-style: italic;
+}
+
+/* Name.Namespace */
+.highlighter-rouge .nn {
+  color: $neutral-98;
+}
+
+/* Name.Other */
+.highlighter-rouge .nx {
+  color: $neutral-98;
+}
+
+/* Name.Property */
+.highlighter-rouge .py {
+  color: $neutral-98;
+}
+
+/* Name.Tag */
+.highlighter-rouge .nt {
+  color: $primary-40;
+}
+
+/* Name.Variable */
+.highlighter-rouge .nv {
+  color: $neutral-98;
+}
+
+/* Operator.Word */
+.highlighter-rouge .ow {
+  color: $primary-40;
+}
+
+/* Text.Whitespace */
+.highlighter-rouge .w {
+  color: $neutral-98;
+}
+
+/* Literal.Number.Bin */
+.highlighter-rouge .mb {
+  color: $secondary-40;
+}
+
+/* Literal.Number.Float */
+.highlighter-rouge .mf {
+  color: $secondary-40;
+}
+
+/* Literal.Number.Hex */
+.highlighter-rouge .mh {
+  color: $secondary-40;
+}
+
+/* Literal.Number.Integer */
+.highlighter-rouge .mi {
+  color: $secondary-40;
+}
+
+/* Literal.Number.Oct */
+.highlighter-rouge .mo {
+  color: $secondary-40;
+}
+
+/* Literal.String.Affix */
+.highlighter-rouge .sa {
+  color: $teal-40;
+}
+
+/* Literal.String.Backtick */
+.highlighter-rouge .sb {
+  color: $teal-40;
+}
+
+/* Literal.String.Char */
+.highlighter-rouge .sc {
+  color: $teal-40;
+}
+
+/* Literal.String.Delimiter */
+.highlighter-rouge .dl {
+  color: $teal-40;
+}
+
+/* Literal.String.Doc */
+.highlighter-rouge .sd {
+  color: $teal-40;
+}
+
+/* Literal.String.Double */
+.highlighter-rouge .s2 {
+  color: $teal-40;
+}
+
+/* Literal.String.Escape */
+.highlighter-rouge .se {
+  color: $teal-40;
+}
+
+/* Literal.String.Heredoc */
+.highlighter-rouge .sh {
+  color: $teal-40;
+}
+
+/* Literal.String.Interpol */
+.highlighter-rouge .si {
+  color: $teal-40;
+}
+
+/* Literal.String.Other */
+.highlighter-rouge .sx {
+  color: $teal-40;
+}
+
+/* Literal.String.Regex */
+.highlighter-rouge .sr {
+  color: $teal-40;
+}
+
+/* Literal.String.Single */
+.highlighter-rouge .s1 {
+  color: $teal-40;
+}
+
+/* Literal.String.Symbol */
+.highlighter-rouge .ss {
+  color: $teal-40;
+}
+
+/* Name.Builtin.Pseudo */
+.highlighter-rouge .bp {
+  color: $secondary-40;
+}
+
+/* Name.Function.Magic */
+.highlighter-rouge .fm {
+  color: $neutral-98;
+}
+
+/* Name.Variable.Class */
+.highlighter-rouge .vc {
+  color: $tertiary-40;
+  font-style: italic;
+}
+
+/* Name.Variable.Global */
+.highlighter-rouge .vg {
+  color: $tertiary-40;
+  font-style: italic;
+}
+
+/* Name.Variable.Instance */
+.highlighter-rouge .vi {
+  color: $tertiary-40;
+  font-style: italic;
+}
+
+/* Name.Variable.Magic */
+.highlighter-rouge .vm {
+  color: $tertiary-40;
+  font-style: italic;
+}
+
+/* Literal.Number.Integer.Long */
+.highlighter-rouge .il {
+  color: $secondary-40;
+}

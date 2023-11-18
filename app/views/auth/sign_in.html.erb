@@ -2,6 +2,16 @@
   <%= javascript_include_tag 'sign_in' %>
 <% end %>
 
+
+<div class="announcement alert alert-warning" role="alert" >
+  <div class="flex-placement-container">
+    <div>
+      <%= I18n.locale == :en ? "Signing in with Associatie KU Leuven is currently unavailable. We probably won't be able te fix the problem before Monday." :
+            "Er zijn problemen met inloggen voor gebruikers van de Associatie KU Leuven. We zijn op de hoogte, maar kunnen het probleem voorlopig niet verhelpen zonder tussenkomst van ICTS." %>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="sign-in-dialog-wrapper">
     <div class="sign-in-divider row">

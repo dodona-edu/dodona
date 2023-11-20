@@ -2158,10 +2158,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/iframe-resizer@^3.5.11":
-  version "3.5.11"
-  resolved "https://registry.yarnpkg.com/@types/iframe-resizer/-/iframe-resizer-3.5.11.tgz#a6097f369473a45b21e64c48c6569570c2764a74"
-  integrity sha512-qbOlOOjdNIzHHJvuDV1doiKDV9Af303ArRLEqGtzPX2FYGC+xPovHKbJpwO0K12vnBCHoy9pHRv5FYM2CzhKzQ==
+"@types/iframe-resizer@^3.5.12":
+  version "3.5.12"
+  resolved "https://registry.yarnpkg.com/@types/iframe-resizer/-/iframe-resizer-3.5.12.tgz#9726d734be5ef0a81d31e87e636445e4e6b40d8d"
+  integrity sha512-P1nzx1uRTshwGsXB+x5ubveTrfuZkMk5EOmOrt10zp5gXGvb7V8z7Ec0HPMCwrtvnsW4KOXytPEmwu1vLmHxiA==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.4"

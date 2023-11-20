@@ -13,4 +13,4 @@ Rails.application.config.action_controller.per_form_csrf_tokens = false
 Rails.application.config.action_controller.forgery_protection_origin_check = false
 
 # Require `belongs_to` associations by default. Previous versions had false.
-Rails.application.config.active_record.belongs_to_required_by_default = false
+Rails.application.config.active_record.belongs_to_required_by_default = true

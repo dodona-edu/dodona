@@ -31,6 +31,34 @@ module OmniAuth
           root
         end
 
+
+        # Overwritten because KULeuven can't handle `{ "use" => "signing" }` being specified
+        def add_sp_certificates(sp_sso, settings)
+          cert = settings.get_sp_cert
+          cert_new = settings.get_sp_cert_new
+
+          for sp_cert in [cert, cert_new]
+            if sp_cert
+              cert_text = Base64.encode64(sp_cert.to_der).gsub("\n", '')
+              kd = sp_sso.add_element "md:KeyDescriptor" # this is the only line that is different
+              ki = kd.add_element "ds:KeyInfo", {"xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#"}
+              xd = ki.add_element "ds:X509Data"
+              xc = xd.add_element "ds:X509Certificate"
+              xc.text = cert_text
+
+              if settings.security[:want_assertions_encrypted]
+                kd2 = sp_sso.add_element "md:KeyDescriptor", { "use" => "encryption" }
+                ki2 = kd2.add_element "ds:KeyInfo", {"xmlns:ds" => "http://www.w3.org/2000/09/xmldsig#"}
+                xd2 = ki2.add_element "ds:X509Data"
+                xc2 = xd2.add_element "ds:X509Certificate"
+                xc2.text = cert_text
+              end
+            end
+          end
+
+          sp_sso
+        end
+
         # Overwritten to provide belnet specific metadata
         def add_extras(root, _settings)
           org = root.add_element 'md:Organization'

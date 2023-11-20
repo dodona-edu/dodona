@@ -49,4 +49,20 @@ class SamlControllerTest < ActionDispatch::IntegrationTest
     assert_not_nil doc.at_xpath('//md:EntityDescriptor', 'md' => 'urn:oasis:names:tc:SAML:2.0:metadata')
     assert_not_nil doc.at_xpath('//md:EntityDescriptor', 'md' => 'urn:oasis:names:tc:SAML:2.0:metadata', 'ds' => 'http://www.w3.org/2000/09/xmldsig#')
   end
+
+  test 'SAML metadata should exactly match the metadata expected by KULeuven' do
+
+    cert = mock
+    cert.stubs(:to_der).returns('cert')
+    OneLogin::RubySaml::Settings.any_instance.stubs(:get_sp_cert).returns(cert)
+
+    get users_saml_metadata_path
+
+    assert_response :success
+
+    response_without_id = response.body.gsub(/ID='[^']*'/, "ID='ID'")
+    expected = Rails.root.join('test/controllers/auth/ku_leuven_metadata.xml').read.gsub(/ID='[^']*'/, "ID='ID'")
+
+    assert_equal expected, response_without_id
+  end
 end

@@ -51,7 +51,6 @@ class SamlControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'SAML metadata should exactly match the metadata expected by KULeuven' do
-
     cert = mock
     cert.stubs(:to_der).returns('cert')
     OneLogin::RubySaml::Settings.any_instance.stubs(:get_sp_cert).returns(cert)

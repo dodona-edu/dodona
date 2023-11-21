@@ -161,7 +161,7 @@
                 return course.id.toString();
             },
             multi: false,
-            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: course.name}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
             color: function () {
                 return "orange";
             }

@@ -6,7 +6,6 @@ nl:
       submission_for: "Oplossing voor"
       by: "door"
       submission:
-        edit: "Oplossing bewerken"
         time_html: "Deze oplossing werd om <b>%{time}</b> gemaakt."
         previous_attempts_html:
           zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."

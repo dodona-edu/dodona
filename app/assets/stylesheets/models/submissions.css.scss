@@ -321,6 +321,14 @@
     width: 100%;
     display: flex;
 
+    @include media-breakpoint-down(xl) {
+      flex-direction: column;
+
+      .btn {
+        width: fit-content;
+      }
+    }
+
     &.sticky {
       margin-bottom: 0;
       margin-top: -16px;

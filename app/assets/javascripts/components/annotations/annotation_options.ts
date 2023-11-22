@@ -6,6 +6,10 @@ import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
+import { evaluationState } from "state/Evaluations";
+import { courseState } from "state/Courses";
+import { exerciseState } from "state/Exercises";
+import { submissionState } from "state/Submissions";
 
 
 /**
@@ -23,6 +27,14 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
         return userState.hasPermission("annotation.create");
     }
 
+    get canResubmitSubmission(): boolean {
+        return evaluationState.id !== null && evaluationState.id !== undefined;
+    }
+
+    get resubmitPath(): string {
+        return `/courses/${courseState.id}/exercises/${exerciseState.id}/?edit_submission=${submissionState.id}`;
+    }
+
     get addAnnotationTitle(): string {
         return annotationState.isQuestionMode ?
             I18n.t("js.annotations.options.add_global_question") :
@@ -37,6 +49,11 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
                     <button class="btn btn-outline" @click="${() => this.formShown = true}">
                         ${this.addAnnotationTitle}
                     </button>
+                ` : html``}
+                ${this.canResubmitSubmission ? html`
+                    <a class="btn btn-text" href="${this.resubmitPath}" target="_blank">
+                        ${I18n.t("js.feedbacks.submission.submit")}
+                    </a>
                 ` : html``}
                 <span class="flex-spacer"></span>
                 <d-annotations-toggles></d-annotations-toggles>

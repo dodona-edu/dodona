@@ -14,14 +14,29 @@
   </div>
   <div class="col-12 order-lg-0 col-lg-8 col-xxl-9 feedback-submission">
     <div class="card feedback-show">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><span>
-          <%= t '.submission_for' %>
-          <%= link_to(@feedback.exercise.name, course_series_activity_path(@feedback.evaluation.series.course, @feedback.evaluation.series, @feedback.exercise)) %>
-          <%= t '.by' %>
-          <%= link_to(@feedback.user.full_name, course_member_path(@feedback.evaluation.series.course, @feedback.user)) %>
-        </span></h2>
-        <%=  %>
+      <div class="card-title card-title-colored card-title-flex">
+        <h2 class="card-title-text">
+          <span>
+            <%= t '.submission_for' %>
+            <%= link_to(@feedback.exercise.name, course_series_activity_path(@feedback.evaluation.series.course, @feedback.evaluation.series, @feedback.exercise)) %>
+            <%= t '.by' %>
+            <%= link_to(@feedback.user.full_name, course_member_path(@feedback.evaluation.series.course, @feedback.user)) %>
+          </span>
+        </h2>
+        <% if @feedback.submission.present? %>
+          <div class="dropdown">
+            <a class="btn btn-icon btn-icon-inverted dropdown-toggle" data-bs-toggle="dropdown">
+              <i class="mdi mdi-dots-vertical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li>
+                <%= link_to activity_scoped_path(activity: @feedback.submission.exercise, course: @feedback.submission.course, series: @feedback.evaluation.series, options: {edit_submission: @feedback.submission}), target: "_BLANK", class: "dropdown-item" do %>
+                  <%= t('.submission.edit') %>
+                <% end %>
+              </li>
+            </ul>
+          </div>
+        <% end %>
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">

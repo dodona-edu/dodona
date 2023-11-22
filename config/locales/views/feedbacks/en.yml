@@ -6,6 +6,7 @@ en:
       submission_for: "Submission for"
       by: "by"
       submission:
+        edit: "Edit submission"
         time_html: "This submission was made at <b>%{time}</b>"
         previous_attempts_html:
           zero: "The user made <b>no attempts</b> before this submission."

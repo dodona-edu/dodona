@@ -3,7 +3,7 @@ import { stateProperty } from "state/state_system/StateProperty";
 import { ThemeOption } from "state/Theme";
 import { fetch } from "utilities";
 
-export type Permission = "annotation.create"
+export type Permission = "annotation.create" | "submission.submit_as_own";
 
 class UserState extends State {
     @stateProperty id: number;

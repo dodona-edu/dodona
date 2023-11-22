@@ -6,7 +6,6 @@ import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
-import { evaluationState } from "state/Evaluations";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
 import { submissionState } from "state/Submissions";
@@ -28,7 +27,7 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
     }
 
     get canResubmitSubmission(): boolean {
-        return evaluationState.id !== null && evaluationState.id !== undefined;
+        return userState.hasPermission("submission.submit_as_own");
     }
 
     get resubmitPath(): string {

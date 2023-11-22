@@ -17,7 +17,7 @@ import {
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, userIsStudent: boolean, userIsOwner: boolean): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, userIsStudent: boolean, canSubmitAsOwn: boolean): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
@@ -26,7 +26,7 @@ function initAnnotations(submissionId: number, courseId: number, exerciseId: num
     submissionState.id = submissionId;
     annotationState.isQuestionMode = userIsStudent;
 
-    if (!userIsOwner) {
+    if (canSubmitAsOwn) {
         userState.addPermission("submission.submit_as_own");
     }
 

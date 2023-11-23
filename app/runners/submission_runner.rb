@@ -110,7 +110,7 @@ class SubmissionRunner
         Memory: memory_limit,
         MemorySwap: memory_limit, # memory including swap
         # WARNING: this will cause the container to hang if /dev/sda does not exist
-        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter { Rails.env.production? || Rails.env.staging? },
+        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 * 10 }].filter { Rails.env.production? || Rails.env.staging? },
         PidsLimit: 256,
         Binds: ["#{@mountsrc}:#{@mountdst}",
                 "#{@mountsrc.join('workdir')}:#{@config['workdir']}"]

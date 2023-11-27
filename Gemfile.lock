@@ -510,7 +510,7 @@ GEM
       attr_required (>= 0.0.5)
       faraday (~> 2.0)
       faraday-follow_redirects
-    test-prof (1.2.3)
+    test-prof (1.3.0)
     thor (1.3.0)
     tilt (2.0.11)
     timeout (0.4.1)
@@ -631,7 +631,7 @@ DEPENDENCIES
   slack-notifier (~> 2.4.0)
   sprockets-rails (~> 3.4.2)
   stackprof (~> 0.2.25)
-  test-prof (~> 1.2.3)
+  test-prof (~> 1.3.0)
   tzinfo-data
   web-console (~> 4.2.1)
   webmock

@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.3'
+  gem 'test-prof', '~> 1.3.0'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

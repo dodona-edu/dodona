@@ -19,13 +19,13 @@ const config = {
             },
             {
                 test: function (modulePath) {
-                    return modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
+                    return modulePath.endsWith(".ts") && !modulePath.endsWith("test.ts");
                 },
                 exclude: /node_modules/,
                 use: [
                     "babel-loader",
                     {
-                        loader: 'ts-loader',
+                        loader: "ts-loader",
                         options: {
                             transpileOnly: true,
                         },
@@ -43,13 +43,6 @@ const config = {
             name: entrypoint => entrypoint.name === "inputServiceWorker" ? false : "runtime"
         },
         splitChunks: {
-            cacheGroups: {
-                commons: {
-                    name: "commons",
-                    chunks: "initial",
-                    minChunks: 2,
-                },
-            },
         },
     },
     entry: sourceFiles,

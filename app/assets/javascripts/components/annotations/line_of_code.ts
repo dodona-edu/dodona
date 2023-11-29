@@ -107,7 +107,7 @@ export class LineOfCode extends ShadowlessLitElement {
     mergeRanges(ranges: { start: number, length: number, index: number }[]): { start: number, length: number, indexes: number[] }[] {
         const annotationsByPosition: number[][] = new Array(this.codeLength).fill(null).map(() => []);
         for (const range of ranges) {
-            for (let i = range.start; i < range.start + range.length; i++) {
+            for (let i = range.start; i < range.start + range.length && i < this.codeLength; i++) {
                 annotationsByPosition[i].push(range.index);
             }
         }

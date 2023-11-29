@@ -43,6 +43,16 @@ const config = {
             name: entrypoint => entrypoint.name === "inputServiceWorker" ? false : "runtime"
         },
         splitChunks: {
+            cacheGroups: {
+                commons: {
+                    name: "commons",
+                    chunks(chunk) {
+                        // exclude "inputServiceWorker" from commons chunk
+                        return chunk.name !== "inputServiceWorker";
+                    },
+                    minChunks: 2,
+                },
+            },
         },
     },
     entry: sourceFiles,

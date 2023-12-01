@@ -257,7 +257,7 @@ en:
         question_states: Status
         popularity: Popularity
         exercises: Exercise
-        draft: "Draft/Published"
+        draft: "Draft"
     saved_annotation:
       title: Title
       annotation_text: Text

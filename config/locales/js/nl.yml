@@ -257,7 +257,7 @@ nl:
         question_states: Toestand
         popularity: Populariteit
         exercises: Oefening
-        draft: "Concept/Gepubliceerd"
+        draft: "Concept"
     saved_annotation:
       title: Titel
       annotation_text: Tekst

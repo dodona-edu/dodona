@@ -193,6 +193,22 @@
               },
             };
         <% end %>
+      <% if local_assigns.fetch :draft, false %>
+        filterCollections["draft"] = {
+          param: "draft",
+          paramVal: function (s) {
+            return s.id.toString();
+          },
+          multi: false,
+          data: [
+            {id: true, name: "<%= I18n.t("activities.index.filters.draft") %>"},
+            {id: false, name: "<%= I18n.t("activities.index.filters.not_draft") %>"}
+          ],
+          color: function () {
+            return "brown";
+          },
+        };
+      <% end %>
 
         dodona.search.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 

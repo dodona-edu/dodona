@@ -81,7 +81,7 @@ class Activity < ApplicationRecord
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
   scope :by_judge, ->(judge) { where(judge_id: judge) }
-  scope :is_draft, -> { where(draft: true) }
+  scope :is_draft, ->(value = true) { where(draft: value) }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'

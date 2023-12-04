@@ -109,11 +109,10 @@ function initCourseMembers(): void {
     init();
 }
 
-const TABLE_WRAPPER_SELECTOR = ".series-activities-table-wrapper";
-const SKELETON_TABLE_SELECTOR = ".skeleton-table";
+const ICON_SELECTOR = ".series-icon";
 
 class Series {
-    private readonly id: number;
+    public readonly id: number;
     private url: string;
     private loaded: boolean;
     private loading: boolean;
@@ -141,10 +140,9 @@ class Series {
 
     reselect(card: HTMLElement): void {
         this.url = card.dataset.seriesUrl;
-        const tableWrapper: HTMLElement | null = card.querySelector(TABLE_WRAPPER_SELECTOR);
-        const skeleton = tableWrapper?.querySelector(SKELETON_TABLE_SELECTOR);
-        // if tableWrapper is null the series is empty (no activities) => series is always loaded
-        this.loaded = skeleton === null || tableWrapper === null;
+        const seriesIcon: HTMLElement | null = card.querySelector(ICON_SELECTOR);
+        // if the icon is not found, the series is not loaded
+        this.loaded = seriesIcon !== null;
         this.loading = false;
         this._top = card.getBoundingClientRect().top + window.scrollY;
         this._bottom = this.top + card.getBoundingClientRect().height;

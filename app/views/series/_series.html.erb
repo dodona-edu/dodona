@@ -11,7 +11,8 @@
 
 <div class="card card-supporting-text series"
      id="series-card-<%= series.id %>"
-     data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>">
+     data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>"
+     data-loaded="<%= loaded %>">
   <div class="card-subtitle">
     <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
     <div class="hidden-print">

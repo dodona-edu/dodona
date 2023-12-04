@@ -140,9 +140,8 @@ class Series {
 
     reselect(card: HTMLElement): void {
         this.url = card.dataset.seriesUrl;
-        const seriesIcon: HTMLElement | null = card.querySelector(ICON_SELECTOR);
         // if the icon is not found, the series is not loaded
-        this.loaded = seriesIcon !== null;
+        this.loaded = card.dataset.loaded === "true";
         this.loading = false;
         this._top = card.getBoundingClientRect().top + window.scrollY;
         this._bottom = this.top + card.getBoundingClientRect().height;

@@ -47,8 +47,9 @@ const config = {
                 commons: {
                     name: "commons",
                     chunks(chunk) {
+                        // the chunk should be from a main entrypoint
                         // exclude "inputServiceWorker" from commons chunk
-                        return chunk.name !== "inputServiceWorker";
+                        return chunk.name !== "inputServiceWorker" && Object.keys(sourceFiles).includes(chunk.name);
                     },
                     minChunks: 2,
                 },

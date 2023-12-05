@@ -5,6 +5,7 @@ import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
 import { stateProperty } from "state/state_system/StateProperty";
 import { createStateFromInterface } from "state/state_system/CreateStateFromInterface";
+import { annotationState } from "state/Annotations";
 
 export interface UserAnnotationFormData {
     annotation_text: string;
@@ -234,11 +235,12 @@ class UserAnnotationState extends State {
     }
 
     async update(annotation: UserAnnotation, formData: UserAnnotationFormData): Promise<void> {
+        const key = annotationState.isQuestionMode ? "question" : "annotation";
         const response = await fetch(annotation.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
             body: JSON.stringify({
-                annotation: formData
+                [key]: formData
             })
         });
         const data = await response.json();

@@ -256,6 +256,7 @@ class SubmissionRunner
       else
         messages = [build_message(e.title, 'staff', 'plain')]
         messages << build_message(e.description, 'staff') unless e.description.nil?
+        messages << build_message(stdout.force_encoding('utf-8'), 'staff', 'plain')
         build_error 'internal error', 'internal error', messages
       end
     end

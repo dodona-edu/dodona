@@ -68,6 +68,9 @@ en:
         featured: "Featured activities"
         all: "All activities"
       draft-notice: "This activity is a draft and thus not visible for students."
+      filters:
+        draft: "Draft activities"
+        not_draft: "Published activities"
     show:
       code: Code
       handin: Hand in

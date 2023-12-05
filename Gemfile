@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.17.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.1.0'
+gem 'json_schemer', '~> 2.1.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -60,7 +60,7 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.15'
+gem 'autoprefixer-rails', '~>10.4.16'
 
 # saml authentication
 gem 'devise', '~>4.9.3'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.1.1'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.16.2'
+gem 'ddtrace', '~> 1.17.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
@@ -144,7 +144,7 @@ group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.2.0'
+  gem 'factory_bot_rails', '~> 6.4.2'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.3'
+  gem 'test-prof', '~> 1.3.0'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

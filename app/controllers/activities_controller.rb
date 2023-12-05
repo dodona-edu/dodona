@@ -25,7 +25,7 @@ class ActivitiesController < ApplicationController
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
   has_scope :by_popularities, as: 'popularity', type: :array
-  has_scope :is_draft, as: 'draft', type: :boolean
+  has_scope :is_draft, as: 'draft'
 
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Series.find(controller.params[:id]).course if controller.params[:id]

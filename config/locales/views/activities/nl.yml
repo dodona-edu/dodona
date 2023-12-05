@@ -68,6 +68,9 @@ nl:
         featured: "Uitgelichte activiteiten"
         all: "Alle activiteiten"
       draft-notice: "Deze activiteit is nog een concept. Ze is niet zichtbaar voor studenten."
+      filters:
+        draft: "Conceptactivititeiten"
+        not_draft: "Gepubliceerde activiteiten"
     show:
       code: Code
       handin: Indienen

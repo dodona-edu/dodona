@@ -50,7 +50,7 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
                     </button>
                 ` : html``}
                 ${this.canResubmitSubmission ? html`
-                    <a class="btn btn-text" href="${this.resubmitPath}" target="_blank">
+                    <a class="btn btn-text resubmit-btn" href="${this.resubmitPath}" target="_blank">
                         ${I18n.t("js.feedbacks.submission.submit")}
                     </a>
                 ` : html``}

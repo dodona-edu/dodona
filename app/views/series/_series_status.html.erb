@@ -11,9 +11,7 @@
     progress-icon="<%= progress_icon %>"
     deadline-class="<%= deadline_class %>"
     deadline-icon="<%= deadline_icon %>"
-    title="<%= series_status(series, user) %>"
-    data-bs-toggle="tooltip"
-    data-bs-placement="top"
+    status="<%= series_status(series, user) %>"
   ></d-series-icon>
 <% else %>
   <d-series-icon size="<%= size %>"></d-series-icon>

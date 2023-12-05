@@ -18,6 +18,7 @@ import { customElement, property } from "lit/decorators.js";
  * @attr {string} progress-class - a css class to apply that is related to the progress
  * @attr {string} progress-icon - the icon to show that indicates the progress, defaults to mdi-school
  * @attr {number} size - the size of the icon in pixels
+ * @attr {string} status - the status of the series, displayed as a tooltip
  */
 @customElement("d-series-icon")
 export class SeriesIcon extends ShadowlessLitElement {
@@ -33,11 +34,17 @@ export class SeriesIcon extends ShadowlessLitElement {
     progress_icon = "mdi-school";
     @property({ type: Number })
     size = 40;
+    @property({ type: String })
+    status = "";
+
     protected render(): TemplateResult {
         return html`
             <svg viewBox="0 0 40 40"
                  style="width: ${this.size}px; height: ${this.size}px; "
                  class="series-icon ${this.overlay_class}  ${this.progress_class}  ${this.deadline_class}"
+                 title="${this.status}"
+                 data-bs-toggle="tooltip"
+                 data-bs-placement="top"
             >
                 <defs>
                     <linearGradient id="rainbow" gradientTransform="rotate(135, 0.5, 0.5)" >

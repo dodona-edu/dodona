@@ -33,7 +33,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                 // So we need to unregister old serviceworkers manually as these won't get overwritten
                 navigator.serviceWorker.getRegistrations().then(function (registrations) {
                     for (const registration of registrations) {
-                        registration.unregister();
+                        if (registration.scope !== document.location.origin + "/") {
+                            registration.unregister();
+                        }
                     }
                 });
 

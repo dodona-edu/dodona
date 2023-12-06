@@ -28,6 +28,15 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
         showButton.classList.remove("hidden");
         showButton.addEventListener("click", async function () {
             if (!papyros) { // Only create Papyros once per session, but only when required
+                // Papyros registers a service worker on a specific path
+                // We used to do this on a different path
+                // So we need to unregister old serviceworkers manually as these won't get overwritten
+                navigator.serviceWorker.getRegistrations().then(function (registrations) {
+                    for (const registration of registrations) {
+                        registration.unregister();
+                    }
+                });
+
                 papyros = new Papyros(
                     {
                         programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),

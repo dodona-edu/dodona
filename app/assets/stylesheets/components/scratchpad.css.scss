@@ -38,7 +38,7 @@
   color: var(--d-on-surface-muted);
 
   // Header has absolute position, simulate its height using margin-top
-  margin-top: var(--d-navbar-height) + 5;
+  margin-top: calc(var(--d-navbar-height) + 5px);
 }
 
 #scratchpad-code-copy-btn {

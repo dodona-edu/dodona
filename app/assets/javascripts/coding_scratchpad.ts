@@ -1,9 +1,8 @@
-import { Papyros } from "@dodona/papyros";
-import { InputMode } from "@dodona/papyros";
-import { ProgrammingLanguage } from "@dodona/papyros";
+import { CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
-import { setCode } from "editor";
+import { rougeStyle, setCode } from "editor";
+import { syntaxHighlighting } from "@codemirror/language";
 
 /** Identifiers used in HTML for relevant elements */
 const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
@@ -76,6 +75,10 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     darkMode: themeState.theme === "dark"
                 });
                 await papyros.launch();
+
+                papyros.codeRunner.editor.reconfigure([CodeEditor.STYLE, syntaxHighlighting(rougeStyle, {
+                    fallback: true
+                })]);
             }
         });
         // Ask user to choose after offcanvas is shown

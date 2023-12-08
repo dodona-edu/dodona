@@ -4,7 +4,7 @@ module SeasonalHelper
   end
 
   def december(current_time)
-    current_time.month == 12 && current_time.day > 6 && !christmas(current_time)
+    current_time.month == 12 && current_time.day > 6
   end
 
   def valentine(current_time)

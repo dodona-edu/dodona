@@ -15,7 +15,7 @@
     left: -17px;
   }
 
-  &.completed{
+  &.completed:not(.deadline-missed){
     .overlay div {
       content: url("seasonal/series_status_overlays/christmas.svg");
     }

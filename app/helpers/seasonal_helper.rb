@@ -1,10 +1,10 @@
 module SeasonalHelper
   def christmas(current_time)
-    current_time.month == 12 && current_time.day >= 24 && current_time.day <= 26
+    current_time.month == 12 && current_time.day.between?(24, 26)
   end
 
   def december(current_time)
-    current_time.month == 12 && ((current_time.day > 6 && current_time.day < 24) || current_time.day > 26)
+    current_time.month == 12 && current_time.day > 6 && !christmas(current_time)
   end
 
   def valentine(current_time)

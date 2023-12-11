@@ -42,7 +42,7 @@
     "clipboard": "^2.0.11",
     "codemirror-lang-prolog": "^0.1.0",
     "codemirror-lang-r": "^0.1.0-2",
-    "core-js": "^3.33.3",
+    "core-js": "^3.34.0",
     "d3": "^7.8.5",
     "dayjs": "^1.11.10",
     "dragula": "^3.7.3",

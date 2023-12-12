@@ -367,7 +367,7 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.7.3)
     rack (2.2.8)
-    rack-mini-profiler (3.1.1)
+    rack-mini-profiler (3.3.0)
       rack (>= 1.2.0)
     rack-oauth2 (2.2.0)
       activesupport
@@ -613,7 +613,7 @@ DEPENDENCIES
   pretender (~> 0.5.0)
   puma (~> 6.4.0)
   pundit (~> 2.3.1)
-  rack-mini-profiler (~> 3.1.1)
+  rack-mini-profiler (~> 3.3.0)
   rails (~> 7.1.2)
   rails-controller-testing (~> 1.0.5)
   rails-i18n (~> 7.0.8)

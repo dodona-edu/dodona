@@ -7,11 +7,11 @@ class PythiaRenderer < FeedbackTableRenderer
   def show_code_tab
     return true unless @result[:groups]
 
-    @result[:groups].none? { |t| t[:data][:source_annotations] }
+    @result[:groups].none? { |t| t[:data] && t[:data][:source_annotations] }
   end
 
   def tab_content(t, i)
-    if t[:data][:source_annotations]
+    if t[:data] && t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)
     else
       super
@@ -19,7 +19,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def diff(t)
-    if t[:data][:diff]
+    if t[:data] && t[:data][:diff]
       pythia_diff(t[:data][:diff])
     else
       super
@@ -27,7 +27,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def test_accepted(t)
-    if t[:data][:diff]
+    if t[:data] && t[:data][:diff]
       @builder.div(class: 'test-accepted') do
         @builder.span(class: 'output') do
           html = t[:data][:diff].map do |l|
@@ -227,7 +227,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
-    if test[:data][:diff]
+    if test[:data] && test[:data][:diff]
       test[:data][:diff].each do |diff_line|
         # Not perfect, since there might be html in the diff_line items
         return 'unified' if !diff_line[2].nil? && strip_outer_html(diff_line[2]).length >= 55

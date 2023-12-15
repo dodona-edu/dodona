@@ -14,6 +14,7 @@ const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
 const SUBMIT_TAB_ID = "activity-handin-link";
+const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
@@ -82,6 +83,9 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                             // Allows 4 lines of input
                             maxHeight: "10vh"
                         }
+                    },
+                    traceOptions: {
+                        parentElementId: CODE_TRACE_PARENT_ID
                     },
                     darkMode: themeState.theme === "dark"
                 });

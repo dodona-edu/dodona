@@ -114,6 +114,10 @@
   --bs-body-font-size: var(--d-font-size-base);
   --bs-body-font-weight: 400;
 
+  .offcanvas {
+    --bs-offcanvas-width: 98%;
+  }
+
   .pagination {
     --bs-pagination-active-bg: var(--d-primary);
     --bs-pagination-active-border-color: var(--d-primary);

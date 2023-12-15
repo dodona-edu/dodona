@@ -32,14 +32,40 @@
   align-items: center;
 }
 
+.scratchpad-margin {
+  // Header has absolute position, simulate its height using margin-top
+  margin-top: calc(var(--d-navbar-height));
+}
+
+.offcanvas-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: calc(100% - var(--d-navbar-height));
+  display: flex;
+  flex-flow: column;
+}
+
 .scratchpad-info {
-  padding-left: 20px;
+  margin: var(--d-card-supporting-text-padding);
   font-size: 14px;
   color: var(--d-on-surface-muted);
-
-  // Header has absolute position, simulate its height using margin-top
-  margin-top: calc(var(--d-navbar-height) + 5px);
+  flex: 0 1 auto;
 }
+
+.scratchpad-body {
+  flex: 1 1 auto;
+}
+
+.scratchpad-panel {
+  overflow: scroll;
+  height: 100%;
+  padding: var(--d-card-supporting-text-padding);
+}
+
+.scratchpad-panel + .scratchpad-panel {
+  border-left: 1px solid var(--d-divider);
+}
+
 
 #scratchpad-code-copy-btn {
   color: white;

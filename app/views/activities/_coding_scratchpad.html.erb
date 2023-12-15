@@ -20,19 +20,21 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
     <div class="row scratchpad-body">
       <div class="col-md-6 scratchpad-panel">
         <div class="card-tab">
-          <ul class="nav nav-tabs">
+          <ul class="nav nav-tabs" id="scratchpadTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" href="#scratchpad-description" data-bs-toggle="tab">Description</a>
+              <a class="nav-link active" data-bs-target="#scratchpad-description" data-bs-toggle="tab">Description</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#scratchpad-trace-wrapper" data-bs-toggle="tab">Trace</a>
+              <a class="nav-link" data-bs-target="#scratchpad-trace-wrapper" data-bs-toggle="tab">Trace</a>
             </li>
           </ul>
         </div>
-        <div  id="scratchpad-description" >
-          <%= description_iframe @activity %>
+        <div class="tab-content" id="scratchpadTabContent">
+          <div  id="scratchpad-description" role="tabpanel" class="tab-pane fade show active">
+            <%= description_iframe @activity %>
+          </div>
+          <div id="scratchpad-trace-wrapper" role="tabpanel" class="tab-pane fade"></div>
         </div>
-        <div id="scratchpad-trace-wrapper"></div>
       </div>
       <div class="col-md-6 scratchpad-panel">
         <div class="scratchpad-info">

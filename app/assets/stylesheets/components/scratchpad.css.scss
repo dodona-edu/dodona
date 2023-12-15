@@ -58,7 +58,7 @@
 
 .scratchpad-panel {
   overflow: scroll;
-  height: 100%;
+  height: calc(100vh - var(--d-navbar-height));
   padding: var(--d-card-supporting-text-padding);
 }
 

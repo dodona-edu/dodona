@@ -1,8 +1,10 @@
-import { CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
+import { BackendManager, CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
 import { rougeStyle, setCode } from "editor";
 import { syntaxHighlighting } from "@codemirror/language";
+import { BackendEventType } from "@dodona/papyros/dist/BackendEvent";
+import { Tab } from "bootstrap";
 
 /** Identifiers used in HTML for relevant elements */
 const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
@@ -15,6 +17,7 @@ const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
 const SUBMIT_TAB_ID = "activity-handin-link";
 const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
+const TRACE_TAB_ID = "scratchpad-trace-tab";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
@@ -109,6 +112,16 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         confirm(I18n.t("js.coding_scratchpad.overwrite_code")))) {
                     papyros.setCode(editorCode);
                 }
+            }
+        });
+
+        // Show Trace tab
+        BackendManager.subscribe(BackendEventType.FrameChange, () => {
+            const traceTab = document.getElementById(TRACE_TAB_ID);
+            if (traceTab) {
+                traceTab.classList.remove("hidden");
+                const tabTrigger = new Tab(traceTab.querySelector("a"));
+                tabTrigger.show();
             }
         });
     }

@@ -43,6 +43,9 @@
   height: calc(100% - var(--d-navbar-height));
   display: flex;
   flex-flow: column;
+
+  // estimate of height of margins, paddings, etc...
+  --d-sp-lost-height: calc(var(--d-navbar-height) + 150px);
 }
 
 .scratchpad-info {
@@ -98,6 +101,11 @@
   overflow-y: auto;
 }
 
+#scratchpad-editor-wrapper .cm-editor {
+  max-height: calc(60vh - 0.6 * var(--d-sp-lost-height));
+  min-height: 250px;
+}
+
 #scrathcpad-output-wrapper {
   margin-bottom: 10px;
   flex: 0 1 auto;
@@ -105,12 +113,18 @@
 
 // First child is the output area, limit its size
 #scratchpad-output-wrapper > div:first-child {
-  max-height: 20vh !important;
+  max-height: calc(20vh - 0.2 * var(--d-sp-lost-height)) !important;
+  min-height: 100px;
   flex: 0 1 auto;
 }
 
 #scratchpad-input-wrapper {
   flex: 0 1 auto;
+
+  .cm-editor {
+    max-height: calc(10vh - 0.1 * var(--d-sp-lost-height)) !important;
+    min-height: 50px;
+  }
 }
 
 #scratchpad-offcanvas.show {

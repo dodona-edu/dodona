@@ -61,9 +61,9 @@ module ActivityHelper
     [renderer.description_html, renderer.footnote_urls, renderer.first_image]
   end
 
-  def description_iframe(activity)
+  def description_iframe(activity, unique_id = 1)
     theme = current_user&.theme || 'auto'
-    id = "activity-description-#{activity.id}"
+    id = "activity-description-#{activity.id}-#{unique_id}"
     url = description_activity_url(activity,
                                    token: activity.access_token,
                                    theme: theme).html_safe

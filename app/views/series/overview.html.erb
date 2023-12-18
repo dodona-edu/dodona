@@ -23,7 +23,7 @@
           <%= link_to exercise.name, activity_path(exercise) %>
         </h2>
       </div>
-      <%= description_iframe exercise %>
+      <%= description_iframe exercise, 3 %>
       <div class="card-actions card-border hidden-print">
         <% if user && (exercise.started_for?(user, @series) || @series.deadline&.past?) %>
           <div class="btn btn-text submission-status-button">

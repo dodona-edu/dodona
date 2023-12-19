@@ -325,3 +325,6 @@ en:
       dark: Dark
       system: System
       theme: Theme
+    feedbacks:
+      submission:
+        submit: Submit this solution

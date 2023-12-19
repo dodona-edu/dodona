@@ -232,6 +232,11 @@
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
+      "feedbacks": {
+        "submission": {
+          "submit": "Submit this solution"
+        }
+      },
       "institutions": "Institutions",
       "judges": "Judges",
       "label-undeletable": "This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.",
@@ -753,6 +758,11 @@
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",
+      "feedbacks": {
+        "submission": {
+          "submit": "Deze oplossing indienen"
+        }
+      },
       "institutions": "Onderwijsinstellingen",
       "judges": "Judges",
       "label-undeletable": "Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.",

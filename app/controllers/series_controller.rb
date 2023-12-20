@@ -283,9 +283,7 @@ class SeriesController < ApplicationController
   end
 
   def check_token
-    raise Pundit::NotAuthorizedError if @series.hidden? &&
-                                        !current_user&.course_admin?(@series.course) &&
-                                        @series.access_token != params[:token]
+    raise Pundit::NotAuthorizedError unless policy(@series).valid_token?(params[:token])
   end
 
   def send_zip(zip)

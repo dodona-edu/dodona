@@ -104,7 +104,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <svg viewBox="0 0 100 100" width="300" height="100" version="1.1">
         <style>line,circle{stroke-width:3px;stroke:black;stroke-linecap:round}</style>
-        <style>test{stroke-width:3px;stroke:black;stroke-linecap:round}</style>
+        <style>test{stroke-width:3px;stroke:black;stroke-dasharray:1;stroke-linecap:round}</style>
+        <style>text.vertical{writing-mode:tb;glyph-orientation-vertical:0;fill:grey;}</style>
+        <style>text.vertical{writing-mode:vertical-rl;text-orientation:upright;}</style>
         <g id="group1" transform="translate(50,50)">
           <circle cx="0" cy="0" r="40" fill="none"></circle>
           <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>
@@ -113,6 +115,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
         <polygon points="0,0 100,0 100,100 0,100"></polygon>
         <path d="M0,0 L100,0 L100,100 L0,100 Z"></path>
         <text x="0" y="0" font-size="14px" font-weight="bold" font-variant="normal" font-family="serif">Hello</text>
+        <text x="0" y="0" textLength="10">abcdefgh</text>
       </svg>
     HTML
     clean_html = sanitize dirty_html

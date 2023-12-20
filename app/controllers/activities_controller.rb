@@ -61,7 +61,7 @@ class ActivitiesController < ApplicationController
     @activities = if params[:series_id]
                     @series = Series.find(params[:series_id])
                     authorize @series, :show?
-                    raise Pundit::NotAuthorizedError unless SeriesPolicy.new(current_user, @series).valid_token?(params[:token])
+                    raise Pundit::NotAuthorizedError unless policy(@series).valid_token?(params[:token])
 
                     policy(@series).overview? ? @series.activities : []
                   else

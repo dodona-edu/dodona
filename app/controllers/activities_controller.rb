@@ -62,6 +62,7 @@ class ActivitiesController < ApplicationController
                     @series = Series.find(params[:series_id])
                     authorize @series, :show?
                     raise Pundit::NotAuthorizedError unless SeriesPolicy.new(current_user, @series).valid_token?(params[:token])
+
                     policy(@series).overview? ? @series.activities : []
                   else
                     policy_scope(Activity).order_by_popularity(:DESC)

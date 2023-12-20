@@ -18,14 +18,28 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
   </div>
   <div class="offcanvas-body scratchpad-margin">
     <div class="row scratchpad-body">
-      <div class="col-md-6 scratchpad-panel">
+      <div class="col-lg-6 scratchpad-panel">
+        <div class="scratchpad-info">
+          <i class="mdi mdi-information mdi-18"></i>
+          <%= t ".experimental_feature_html", :url => contact_path %>
+        </div>
+        <div id="scratchpad-editor-wrapper" class="highlighter-rouge"></div>
+        <div id="scratchpad-panel-wrapper"></div>
+        <div id="scratchpad-output-wrapper"></div>
+        <div id="scratchpad-input-wrapper"></div>
+      </div>
+      <div class="col-lg-6 scratchpad-panel">
         <div class="card-tab">
           <ul class="nav nav-tabs" id="scratchpadTab" role="tablist">
             <li class="nav-item">
-              <a class="nav-link active" data-bs-target="#scratchpad-description" data-bs-toggle="tab">Description</a>
+              <a class="nav-link active" data-bs-target="#scratchpad-description" data-bs-toggle="tab">
+                <%= I18n.t "activities.coding_scratchpad.description" %>
+              </a>
             </li>
             <li class="nav-item hidden" id="scratchpad-trace-tab">
-              <a class="nav-link" data-bs-target="#scratchpad-trace-wrapper" data-bs-toggle="tab">Trace</a>
+              <a class="nav-link" data-bs-target="#scratchpad-trace-wrapper" data-bs-toggle="tab">
+                <%= I18n.t "activities.coding_scratchpad.debugger" %>
+              </a>
             </li>
           </ul>
         </div>
@@ -35,16 +49,6 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
           </div>
           <div id="scratchpad-trace-wrapper" role="tabpanel" class="tab-pane fade"></div>
         </div>
-      </div>
-      <div class="col-md-6 scratchpad-panel">
-        <div class="scratchpad-info">
-          <i class="mdi mdi-information mdi-18"></i>
-          <%= t ".experimental_feature_html", :url => contact_path %>
-        </div>
-        <div id="scratchpad-editor-wrapper" class="highlighter-rouge"></div>
-        <div id="scratchpad-panel-wrapper"></div>
-        <div id="scratchpad-output-wrapper"></div>
-        <div id="scratchpad-input-wrapper"></div>
       </div>
     </div>
   </div>

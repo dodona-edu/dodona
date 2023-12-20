@@ -63,6 +63,10 @@
   overflow: scroll;
   height: calc(100vh - var(--d-navbar-height));
   padding: var(--d-card-supporting-text-padding);
+
+  .nav-link {
+    cursor: pointer;
+  }
 }
 
 .scratchpad-panel + .scratchpad-panel {

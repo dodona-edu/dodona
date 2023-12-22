@@ -18,6 +18,7 @@ const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
 const SUBMIT_TAB_ID = "activity-handin-link";
 const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
 const TRACE_TAB_ID = "scratchpad-trace-tab";
+const DESCRIPTION_TAB_ID = "scratchpad-description-tab";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
@@ -116,8 +117,21 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
             }
         });
 
-        // Show Trace tab
-        BackendManager.subscribe(BackendEventType.FrameChange, () => {
+        // Hide Trace tab when a new run is started
+        BackendManager.subscribe(BackendEventType.Start, () => {
+            const traceTab = document.getElementById(TRACE_TAB_ID);
+            if (traceTab) {
+                traceTab.classList.add("hidden");
+                const descriptionTab = document.getElementById(DESCRIPTION_TAB_ID);
+                if (descriptionTab) {
+                    const tabTrigger = new Tab(descriptionTab.querySelector("a"));
+                    tabTrigger.show();
+                }
+            }
+        });
+
+        // Show Trace tab when a new frame is added
+        BackendManager.subscribe(BackendEventType.Frame, () => {
             const traceTab = document.getElementById(TRACE_TAB_ID);
             if (traceTab) {
                 traceTab.classList.remove("hidden");

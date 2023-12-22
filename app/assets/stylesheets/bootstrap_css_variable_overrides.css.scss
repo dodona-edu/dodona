@@ -115,7 +115,7 @@
   --bs-body-font-weight: 400;
 
   .offcanvas {
-    --bs-offcanvas-width: 98%;
+    --bs-offcanvas-width: calc(100% - 56px);
   }
 
   .pagination {

@@ -58,7 +58,8 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     papyros.addButton(
                         {
                             id: CODE_COPY_BUTTON_ID,
-                            buttonText: I18n.t("js.coding_scratchpad.copy_code")
+                            buttonText: I18n.t("js.coding_scratchpad.copy_code"),
+                            classNames: "btn-tonal",
                         },
                         () => {
                             setCode(editor, papyros.getCode());

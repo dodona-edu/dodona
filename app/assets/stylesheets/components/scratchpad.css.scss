@@ -73,13 +73,6 @@
   border-left: 1px solid var(--d-divider);
 }
 
-
-#scratchpad-code-copy-btn {
-  color: white;
-  background-color: var(--d-blue-gray);
-  white-space: nowrap;
-}
-
 .scratchpad-content {
   // Allow children to fill up remaining content
   display: flex;
@@ -159,4 +152,18 @@
 
 #scratchpad-panel-wrapper {
   border-bottom: 0 !important;
+}
+
+#scratchpad-offcanvas {
+  .papyros-button {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 24px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    border-radius: 20px;
+  }
 }

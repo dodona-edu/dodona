@@ -12,9 +12,9 @@
     "test:system:coverage:merge": "nyc merge ./coverage/system-js  ./coverage/coverage.json"
   },
   "dependencies": {
-    "@babel/core": "^7.23.6",
-    "@babel/plugin-transform-runtime": "^7.23.6",
-    "@babel/preset-env": "^7.23.6",
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-transform-runtime": "^7.23.7",
+    "@babel/preset-env": "^7.23.7",
     "@codemirror/autocomplete": "^6.11.1",
     "@codemirror/commands": "^6.3.2",
     "@codemirror/language": "^6.9.3",

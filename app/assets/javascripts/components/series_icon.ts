@@ -2,6 +2,10 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, svg, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 
+export type SeriesProgressStatus = "not-yet-begun" | "started" | "completed" | "wrong";
+export type SeriesDeadlineStatus = "met" | "missed" | null;
+export type SeasonTheme = "christmas" | "december" | "valentine" | "mario-day" | "pi-day" | null;
+
 /**
  * @element d-series-icon
  *
@@ -12,50 +16,70 @@ import { customElement, property } from "lit/decorators.js";
  * @cssprop --deadline-icon-color - the color of the deadline icon
  * @cssprop --deadline-icon-background-color - the background color of the deadline icon
  *
- * @attr {string} deadline-class - a css class to apply related to the deadline if any
- * @attr {string} deadline-icon - the icon to show for the deadline if any
- * @attr {string} overlay-class - a css class to apply to the overlay if any
- * @attr {string} progress-class - a css class to apply that is related to the progress
- * @attr {string} progress-icon - the icon to show that indicates the progress, defaults to mdi-school
+ * @attr {string} deadline - The status of the deadline, if any
+ * @attr {string} season - The season theme to apply, if any
+ * @attr {string} progress - the progress of the user in the series
  * @attr {number} size - the size of the icon in pixels
  * @attr {string} status - the status of the series, displayed as a tooltip
  */
 @customElement("d-series-icon")
 export class SeriesIcon extends ShadowlessLitElement {
-    @property({ type: String, attribute: "deadline-class" })
-    deadline_class = "";
-    @property({ type: String, attribute: "deadline-icon" })
-    deadline_icon = "";
-    @property({ type: String, attribute: "overlay-class" })
-    overlay_class = "";
-    @property({ type: String, attribute: "progress-class" })
-    progress_class = "";
-    @property({ type: String, attribute: "progress-icon" })
-    progress_icon = "mdi-school";
+    @property({ type: String })
+    progress: SeriesProgressStatus = "not-yet-begun";
+    @property({ type: String })
+    deadline: SeriesDeadlineStatus = null;
+    @property({ type: String })
+    season: SeasonTheme = null;
     @property({ type: Number })
     size = 40;
     @property({ type: String })
     status = "";
 
+    static PROGRESS_ICONS: Record<SeriesProgressStatus, string> = {
+        "not-yet-begun": "mdi-school",
+        "started": "mdi-thumb-up",
+        "completed": "mdi-check-bold",
+        "wrong": "mdi-close",
+    };
+
+    static DEADLINE_ICONS: Record<SeriesDeadlineStatus, string> = {
+        "met": "mdi-alarm-check",
+        "missed": "mdi-alarm-off",
+    };
+
+    get progress_icon(): string {
+        return SeriesIcon.PROGRESS_ICONS[this.progress];
+    }
+
+    get deadline_icon(): string {
+        return SeriesIcon.DEADLINE_ICONS[this.deadline];
+    }
+
+    get deadline_class(): string {
+        return this.deadline ? `deadline-${this.deadline}` : "";
+    }
+
     protected render(): TemplateResult {
         return html`
             <svg viewBox="0 0 40 40"
                  style="width: ${this.size}px; height: ${this.size}px; "
-                 class="series-icon ${this.overlay_class}  ${this.progress_class}  ${this.deadline_class}"
+                 class="series-icon ${this.season}  ${this.progress}  ${this.deadline_class}"
                  title="${this.status}"
                  data-bs-toggle="tooltip"
                  data-bs-placement="top"
             >
-                <defs>
-                    <linearGradient id="rainbow" gradientTransform="rotate(135, 0.5, 0.5)" >
-                        <stop stop-color="var(--red)" offset="1%" />
-                        <stop stop-color="var(--orange)" offset="25%" />
-                        <stop stop-color="var(--yellow)" offset="40%" />
-                        <stop stop-color="var(--green)" offset="60%" />
-                        <stop stop-color="var(--blue)" offset="75%" />
-                        <stop stop-color="var(--purple)" offset="99%" />
-                    </linearGradient>
-                </defs>
+                ${ this.progress === "completed" && this.deadline !== "missed" ? svg`
+                    <defs>
+                        <linearGradient id="rainbow" gradientTransform="rotate(135, 0.5, 0.5)" >
+                            <stop stop-color="var(--red)" offset="1%" />
+                            <stop stop-color="var(--orange)" offset="25%" />
+                            <stop stop-color="var(--yellow)" offset="40%" />
+                            <stop stop-color="var(--green)" offset="60%" />
+                            <stop stop-color="var(--blue)" offset="75%" />
+                            <stop stop-color="var(--purple)" offset="99%" />
+                        </linearGradient>
+                    </defs>
+                ` : ""}
 
                 <g class="icon-base" >
                     <circle cx="50%" cy="50%" r= "50%" fill="var(--icon-color)" class="outer-circle"></circle>
@@ -72,7 +96,7 @@ export class SeriesIcon extends ShadowlessLitElement {
                     ` : ""}
                 </g>
 
-                ${this.overlay_class ? svg`
+                ${this.season ? svg`
                     <foreignObject width="100%" height="100%" class="overlay">
                         <div></div>
                     </foreignObject>

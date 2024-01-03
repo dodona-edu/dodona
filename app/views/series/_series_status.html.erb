@@ -1,16 +1,11 @@
 <% # arguments: loaded (bool), series (Series), user (User) %>
 <% size ||= 40 %>
 <% if defined?(loaded) && loaded && user.present? %>
-  <% deadline_class, deadline_icon = series_status_deadline(series, user) %>
-  <% progress_class, progress_icon = series_status_progress(series, user) %>
-  <% overlay_class = series_status_overlay %>
   <d-series-icon
     size="<%= size %>"
-    overlay-class="<%= overlay_class %>"
-    progress-class="<%= progress_class %>"
-    progress-icon="<%= progress_icon %>"
-    deadline-class="<%= deadline_class %>"
-    deadline-icon="<%= deadline_icon %>"
+    season="<%= series_status_overlay %>"
+    progress="<%= series_status_progress(series, user) %>"
+    deadline="<%= series_status_deadline(series, user) %>"
     status="<%= series_status(series, user) %>"
   ></d-series-icon>
 <% else %>

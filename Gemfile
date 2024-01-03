@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.17.0', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.1.0'
+gem 'json_schemer', '~> 2.1.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -129,10 +129,10 @@ gem 'faker', '~> 3.2.2'
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.1.1'
+gem 'rack-mini-profiler', '~> 3.3.0'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.17.0'
+gem 'ddtrace', '~> 1.18.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.15.0'
+  gem 'selenium-webdriver', '~> 4.16.0'
 end
 
 group :test do
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.3.0'
+  gem 'test-prof', '~> 1.3.1'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

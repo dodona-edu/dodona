@@ -38,7 +38,7 @@
   color: var(--d-on-surface-muted);
 
   // Header has absolute position, simulate its height using margin-top
-  margin-top: var(--d-navbar-height) + 5;
+  margin-top: calc(var(--d-navbar-height) + 5px);
 }
 
 #scratchpad-code-copy-btn {
@@ -57,6 +57,10 @@
 // Wrapper around editor provides margin
 #scratchpad-editor-wrapper {
   margin-bottom: 20px;
+
+  :focus-visible {
+    outline: none;
+  }
 }
 
 // Wrapper and its child should take up as much space as possible
@@ -85,4 +89,30 @@
 
 #scratchpad-offcanvas.show {
   @include shadow-z3;
+}
+
+/* stylelint-disable selector-class-pattern */
+.tailwind ._tw-border-gray-200 {
+  border-color: var(--d-divider) !important;
+}
+
+.tailwind :is(._tw-dark .dark\:_tw-border-dark-mode-content) {
+  border-color: var(--d-divider) !important;
+}
+
+.tailwind * {
+  border-color: var(--d-divider) !important;
+}
+/* stylelint-enable selector-class-pattern */
+
+/* stylelint-disable selector-id-pattern */
+#__papyros-code-input-area {
+  background-color: var(--d-code-bg) !important;
+  color: var(--d-on-background);
+  caret-color: var(--d-secondary);
+}
+/* stylelint-enable selector-id-pattern */
+
+#scratchpad-panel-wrapper {
+  border-bottom: 0 !important;
 }

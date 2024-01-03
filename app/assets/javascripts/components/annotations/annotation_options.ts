@@ -6,6 +6,7 @@ import "components/annotations/hidden_annotations_dot";
 import { i18nMixin } from "components/meta/i18n_mixin";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
+import { submissionState } from "state/Submissions";
 
 
 /**
@@ -37,6 +38,11 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
                     <button class="btn btn-outline" @click="${() => this.formShown = true}">
                         ${this.addAnnotationTitle}
                     </button>
+                ` : html``}
+                ${submissionState.canResubmitSubmission ? html`
+                    <a class="btn btn-text resubmit-btn" href="${submissionState.resubmitPath}" target="_blank">
+                        ${I18n.t("js.feedbacks.submission.submit")}
+                    </a>
                 ` : html``}
                 <span class="flex-spacer"></span>
                 <d-annotations-toggles></d-annotations-toggles>

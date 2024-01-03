@@ -5,7 +5,7 @@
       <div class="card-title card-title-colored">
         <h2 class="card-title-text"><%= t ".submission_results" %></h2>
         <div class="card-title-fab">
-          <% if policy(@submission).create? %>
+          <% if policy(@submission).create? && @submission.user == current_user %>
             <%= link_to edit_submission_path(@submission), class: 'btn btn-fab', title: t('.edit') do %>
               <i class="mdi mdi-square-edit-outline"></i>
             <% end %>

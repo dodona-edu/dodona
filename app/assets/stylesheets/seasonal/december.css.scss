@@ -1,0 +1,29 @@
+.series-icon.december {
+  .overlay {
+    overflow: visible;
+  }
+
+  .overlay div {
+    content: "";
+    position: absolute;
+    width: 75px;
+    height: 75px;
+    margin-left: -5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    top: -17px;
+    left: -17px;
+  }
+
+  &.completed:not(.deadline-missed){
+    .overlay div {
+      content: url("seasonal/series_status_overlays/christmas.svg");
+    }
+
+    &:hover {
+      .overlay div {
+        content: url("seasonal/series_status_overlays/christmas-hover.svg");
+      }
+    }
+  }
+}

@@ -232,6 +232,7 @@ class ActivitiesController < ApplicationController
                    Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
                  )
                end
+    headers['Service-Worker-Allowed'] = '/'
     # :nocov:
     send_file(filename,
               filename: INPUT_SERVICE_WORKER,

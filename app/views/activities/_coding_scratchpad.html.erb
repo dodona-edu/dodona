@@ -11,7 +11,6 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
         <h4>
             <%= activity_icon(@activity, 24) %>
             &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
-            <sup><%= t '.beta' %></sup>
         </h4>
         <div class="flex-spacer"></div>
         <button class="btn-close btn-close-white" id="scratchpad-offcanvas-close-btn"
@@ -22,7 +21,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
         <%= t ".experimental_feature_html", :url => contact_path %>
     </div>
     <div class="offcanvas-body scratchpad-content">
-        <div id="scratchpad-editor-wrapper"></div>
+        <div id="scratchpad-editor-wrapper" class="highlighter-rouge"></div>
         <div id="scratchpad-panel-wrapper"></div>
         <div id="scratchpad-output-wrapper"></div>
         <div id="scratchpad-input-wrapper"></div>

@@ -436,4 +436,28 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal least_recent.id, response.parsed_body.first['id']
     assert_equal most_recent.id, response.parsed_body.second['id']
   end
+
+  test 'rendering pythia submission should not crash' do
+    stub_git(Judge.any_instance)
+    judge = create :judge, name: 'pythia', renderer: PythiaRenderer
+    exercise = create :exercise, judge: judge
+    submission = create :submission, :wrong, exercise: exercise
+    submission.result = '{
+      "accepted": false,
+      "status": "wrong",
+      "description": "Onverwachte uitvoer",
+      "annotations": [],
+      "groups": [
+        {
+          "description": "maximum",
+          "badgeCount": 6,
+          "groups": []
+        }
+      ],
+      "messages": []
+    }'
+    get submission_path(submission)
+
+    assert_response :ok
+  end
 end

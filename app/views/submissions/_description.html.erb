@@ -70,16 +70,16 @@
           <% end %>
         </div>
       </div>
-      <div class="col-md-12 mb-2">
-        <% @feedbacks.each do |feedback| %>
+    <% @feedbacks.each do |feedback| %>
+        <div class="col-md-12 mb-2">
           <span class="score">
             <%= render 'feedbacks/score_link', feedback: feedback %>
           </span>
           <div class="collapse score-details show" id="<%= "score-details-#{feedback.id}" %>">
             <%= render 'feedbacks/score_table', feedback: feedback %>
           </div>
-        <% end %>
-      </div>
+        </div>
+    <% end %>
   </div>
 </div>
 

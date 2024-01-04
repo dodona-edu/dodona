@@ -10,7 +10,7 @@
             <i class="mdi mdi-school mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
           <% end %>
         </td>
-        <td><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
+        <td class="text-end"><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
       </tr>
     <% end %>
     <% scores.each do |score| %>
@@ -23,7 +23,7 @@
           <br>
           <span class="text-muted small"><%= score.score_item.description %></span>
         </td>
-        <td><%= format_score score.score %> / <%= format_score score.score_item.maximum %></td>
+        <td class="text-end"><%= format_score score.score %> / <%= format_score score.score_item.maximum %></td>
       </tr>
     <% end %>
   </table>

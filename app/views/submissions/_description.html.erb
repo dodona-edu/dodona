@@ -47,7 +47,6 @@
         <span class="text-muted small" title="<%= l submission.created_at, format: :submission %>"><%= time_ago_in_words submission.created_at %> <%= t "submissions.show.ago" %></span>
       </span>
     </div>
-    <% if @feedbacks.blank? %>
       <div class="col-md-6 submission-history">
         <div class="timestamp-col">
           <% @submissions_time_stamps.each do |t| %>
@@ -71,22 +70,18 @@
           <% end %>
         </div>
       </div>
-    <% else %>
-      <div class="col-md-6">
+      <div class="col-md-12 mb-2">
         <% @feedbacks.each do |feedback| %>
           <span class="score">
             <%= render 'feedbacks/score_link', feedback: feedback %>
           </span>
+          <div class="collapse score-details show" id="<%= "score-details-#{feedback.id}" %>">
+            <%= render 'feedbacks/score_table', feedback: feedback %>
+          </div>
         <% end %>
       </div>
-    <% end %>
   </div>
 </div>
-<% @feedbacks.each do |feedback | %>
-  <div class="collapse score-details" id="<%= "score-details-#{feedback.id}" %>">
-    <%= render 'feedbacks/score_table', feedback: feedback %>
-  </div>
-<% end %>
 
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>

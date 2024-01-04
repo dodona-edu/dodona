@@ -71,14 +71,16 @@
       </div>
     </div>
     <% @feedbacks.each do |feedback| %>
-        <div class="col-md-12 mb-2">
-          <span class="score">
+      <div class="col-md-12">
+        <div class="card-outlined card scores">
+          <div class="card-title card-title-colored-container">
             <%= render 'feedbacks/score_link', feedback: feedback %>
-          </span>
-          <div class="collapse score-details show" id="<%= "score-details-#{feedback.id}" %>">
+          </div>
+          <div class="card-supporting-text" id="<%= "score-details-#{feedback.id}" %>">
             <%= render 'feedbacks/score_table', feedback: feedback %>
           </div>
         </div>
+      </div>
     <% end %>
   </div>
 </div>

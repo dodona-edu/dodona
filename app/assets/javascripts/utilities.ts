@@ -249,6 +249,22 @@ function executeScript(oldScriptEl: HTMLScriptElement): void {
     oldScriptEl.parentNode.replaceChild(newScriptEl, oldScriptEl);
 }
 
+/**
+ * A class that keeps track of the state of the CTRL key.
+ */
+class CTRLKeyState {
+    public isPressed = false;
+
+    constructor() {
+        window.addEventListener("keydown", event => {
+            this.isPressed = event.ctrlKey;
+        });
+        window.addEventListener("keyup", event => {
+            this.isPressed = event.ctrlKey;
+        });
+    }
+}
+
 export {
     createDelayer,
     delay,
@@ -269,4 +285,5 @@ export {
     getParentByClassName,
     setHTMLExecuteScripts,
     replaceHTMLExecuteScripts,
+    CTRLKeyState
 };

@@ -1,5 +1,5 @@
 import { FaviconManager } from "favicon";
-import { fetch } from "utilities";
+import { CTRLKeyState, fetch } from "utilities";
 import { InactiveTimeout } from "auto_reload";
 
 /**
@@ -20,6 +20,7 @@ export class Notification {
     private readonly notifiableUrl: string;
     private readonly faviconManager: FaviconManager;
     private read: boolean;
+    private ctrlKeyState = new CTRLKeyState();
 
     constructor(id: number, url: string, read: boolean, notifiableUrl: string, installClickHandler: boolean, manager: FaviconManager) {
         this.element = document.querySelector(`.notification[data-id="${id}"]`);
@@ -42,6 +43,9 @@ export class Notification {
         // We only want to install the click handler for the full element on the small notification view.
         if (installClickHandler) {
             this.element.addEventListener("click", event => {
+                // The link will already be opened if the user clicked on the link itself.
+                if (event.target instanceof HTMLAnchorElement) return;
+
                 this.visit();
                 event.stopPropagation();
             });
@@ -81,7 +85,11 @@ export class Notification {
     }
 
     visit(): void {
-        window.location.href = this.notifiableUrl;
+        if (this.ctrlKeyState.isPressed) {
+            window.open(this.notifiableUrl, "_blank");
+        } else {
+            window.location.href = this.notifiableUrl;
+        }
     }
 
     static async checkNotifications(): Promise<void> {

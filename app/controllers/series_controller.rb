@@ -71,7 +71,9 @@ class SeriesController < ApplicationController
   def overview
     @title = "#{@series.course.name} #{@series.name}"
     @course = @series.course
-    @crumbs = [[@course.name, course_path(@course)], [@series.name, course_path(@series.course, anchor: @series.anchor)], [I18n.t('crumbs.overview'), '#']]
+    # redirect to series detail page if a token is provided, as the course page wont contain the hidden series even with a valid token
+    series_link = params[:token].present? ? series_path(@series, token: params[:token]) : course_path(@series.course, anchor: @series.anchor)
+    @crumbs = [[@course.name, course_path(@course)], [@series.name, series_link], [I18n.t('crumbs.overview'), '#']]
     @user = User.find(params[:user_id]) if params[:user_id] && current_user&.course_admin?(@course)
   end
 

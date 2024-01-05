@@ -75,15 +75,7 @@ class FeedbacksController < ApplicationController
       if updated
         format.html { redirect_to evaluation_feedback_path(@feedback.evaluation, @feedback) }
         format.json { render :show, status: :ok, location: @feedback }
-        format.js do
-          @user_labels = @feedback.evaluation
-                                  .series
-                                  .course
-                                  .course_memberships
-                                  .find_by(user_id: @feedback.user)
-                                  .course_labels
-          render :show
-        end
+        format.js { render :show }
       else
         format.json { render json: @feedback.errors, status: :unprocessable_entity }
         format.js { render :show, status: :unprocessable_entity }

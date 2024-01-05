@@ -42,6 +42,9 @@ export class Notification {
         // We only want to install the click handler for the full element on the small notification view.
         if (installClickHandler) {
             this.element.addEventListener("click", event => {
+                // Use default browse behavior if the user clicked on the link itself.
+                if (event.target instanceof HTMLAnchorElement) return;
+
                 this.visit();
                 event.stopPropagation();
             });

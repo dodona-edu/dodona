@@ -6,5 +6,11 @@ else
   json.user user_url(submission.user.id, format: :json)
 end
 json.has_annotations submission.annotated?
-json.exercise activity_url(submission.exercise, format: :json)
+
+if submission.course.nil?
+  json.exercise activity_url(submission.exercise, format: :json)
+else
+  json.exercise course_activity_path(submission.course, submission.exercise, format: :json)
+end
+
 json.course course_url(submission.course, format: :json) if submission.course

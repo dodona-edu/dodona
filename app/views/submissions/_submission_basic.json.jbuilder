@@ -13,4 +13,7 @@ else
   json.exercise course_activity_url(submission.course, submission.exercise, format: :json)
 end
 
+json.exercise_name submission.exercise.name
+
+
 json.course course_url(submission.course, format: :json) if submission.course

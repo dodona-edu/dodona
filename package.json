@@ -52,7 +52,7 @@
     "iframe-resizer": "^4.3.9",
     "lit": "^3.1.0",
     "node-polyglot": "^2.5.0",
-    "sass": "^1.69.5",
+    "sass": "^1.69.6",
     "tippy.js": "^6.3.7",
     "ts-loader": "^9.5.1",
     "typescript": "^5.3.3",

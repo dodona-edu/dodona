@@ -18,18 +18,18 @@ module Cacheable
         end[1]
       end
 
-      define_method("invalidate_#{name}".to_sym) do |options = {}|
+      define_method(:"invalidate_#{name}") do |options = {}|
         lookup_string = cache_string.call(self, options)
         Rails.cache.delete(lookup_string)
       end
 
-      define_method("invalidate_delayed_#{name}".to_sym) do |options = {}|
+      define_method(:"invalidate_delayed_#{name}") do |options = {}|
         lookup_string = cache_string.call(self, options)
         value = Rails.cache.read(lookup_string)
         Rails.cache.write(lookup_string, [true, value[1]], expires_in: CACHE_EXPIRY_TIME) if value.present? && !value[0]
       end
 
-      define_method("old_#{name}".to_sym, calculator)
+      define_method(:"old_#{name}", calculator)
     end
 
     def updateable_class_cacheable(name, cache_string)
@@ -38,7 +38,7 @@ module Cacheable
         Rails.cache.fetch(cache_string.call(options))
       end
 
-      define_singleton_method("update_#{name}".to_sym) do |options = {}|
+      define_singleton_method(:"update_#{name}") do |options = {}|
         old = Rails.cache.fetch(cache_string.call(options))
         updated = if old.present?
                     updater.call(options, old)
@@ -48,7 +48,7 @@ module Cacheable
         Rails.cache.write(cache_string.call(options), updated)
       end
 
-      define_singleton_method("old_#{name}".to_sym, updater)
+      define_singleton_method(:"old_#{name}", updater)
     end
   end
 end

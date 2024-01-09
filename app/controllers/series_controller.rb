@@ -71,7 +71,7 @@ class SeriesController < ApplicationController
   def overview
     @title = "#{@series.course.name} #{@series.name}"
     @course = @series.course
-    # If a token is provided, this is a hidden series that isn't shown on the course page. 
+    # If a token is provided, this is a hidden series that isn't shown on the course page.
     # Therefore, link to the series page instead of the course page from the breadcrumbs.
     series_link = params[:token].present? ? series_path(@series, token: params[:token]) : course_path(@series.course, anchor: @series.anchor)
     @crumbs = [[@course.name, course_path(@course)], [@series.name, series_link], [I18n.t('crumbs.overview'), '#']]

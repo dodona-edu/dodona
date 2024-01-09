@@ -34,6 +34,10 @@ class SavedAnnotationState extends State {
     @stateProperty private paginationByURL = new StateMap<string, Pagination>();
     @stateProperty private byId = new StateMap<number, SavedAnnotation>();
 
+    private get url(): string {
+        return `/${I18n.locale}${URL}`;
+    }
+
     private async fetchList(url: string): Promise<Array<SavedAnnotation>> {
         const response = await fetch(url);
         this.listByURL.set(url, await response.json());
@@ -42,14 +46,14 @@ class SavedAnnotationState extends State {
     }
 
     private async fetch(id: number): Promise<SavedAnnotation> {
-        const url = `${URL}/${id}.json`;
+        const url = `${this.url}/${id}.json`;
         const response = await fetch(url);
         this.byId.set(id, await response.json());
         return this.byId.get(id);
     }
 
     async create(data: { from: number, saved_annotation: { title: string, annotation_text: string } }): Promise<number> {
-        const url = `${URL}.json`;
+        const url = `${this.url}.json`;
         const response = await fetch(url, {
             method: "post",
             body: JSON.stringify(data),
@@ -66,7 +70,7 @@ class SavedAnnotationState extends State {
     }
 
     getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> | undefined {
-        const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
+        const url = addParametersToUrl(`${this.url}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.listByURL.has(url)) {
                 this.fetchList(url);
@@ -76,7 +80,7 @@ class SavedAnnotationState extends State {
     }
 
     getPagination(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Pagination {
-        const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
+        const url = addParametersToUrl(`${this.url}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.paginationByURL.has(url)) {
                 this.fetchList(url);

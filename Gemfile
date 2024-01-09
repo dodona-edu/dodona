@@ -8,13 +8,13 @@ gem 'rails', '~> 7.1.2'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
-gem 'puma', '~> 6.4.0'
+gem 'puma', '~> 6.4.2'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.3.3'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.2.1'
+gem 'jsbundling-rails', '~> 1.2.2'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -144,7 +144,7 @@ group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.4.2'
+  gem 'factory_bot_rails', '~> 6.4.3'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
@@ -177,9 +177,9 @@ group :development do
   gem 'web-console', '~> 4.2.1'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-capybara', '~> 2.19.0'
-  gem 'rubocop-factory_bot', '~> 2.24'
-  gem 'rubocop-minitest', '~> 0.34.3'
+  gem 'rubocop-capybara', '~> 2.20.0'
+  gem 'rubocop-factory_bot', '~> 2.25'
+  gem 'rubocop-minitest', '~> 0.34.4'
   gem 'rubocop-rails', '~> 2.23.1'
 
   # for opening letters

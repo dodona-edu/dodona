@@ -180,7 +180,7 @@ end %>
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
             "<%= submissions_url %>",
-            `<%= (@activity.exercise? && @activity.boilerplate&.gsub('`', '\\\\`'))|| "" %>`,
+            `<%= escape_javascript (@activity.exercise? && @activity.boilerplate)|| "" %>`,
         );
     });
 </script>

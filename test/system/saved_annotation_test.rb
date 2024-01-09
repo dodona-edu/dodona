@@ -110,4 +110,38 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     end
     sign_out @staff
   end
+
+  test 'searching saved annotations shows activity names in correct language' do
+    sign_in @staff
+    exercise = create :exercise, name_en: 'Fools', name_nl: 'Bars'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'Tetris', annotation_text: 'text'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'TEST', annotation_text: 'text'
+    visit(saved_annotations_path)
+
+    assert_text 'Tetris'
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    visit(saved_annotations_path('nl'))
+
+    assert_text 'Tetris'
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
+  end
 end

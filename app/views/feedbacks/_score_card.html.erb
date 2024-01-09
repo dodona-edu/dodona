@@ -1,0 +1,58 @@
+<%#
+    If the total is visible, show that.
+    If there are other visible scores, display that.
+    Else display nothing.
+%>
+<% total = policy(feedback.evaluation_exercise).show_total? %>
+<% scores = policy_scope(feedback.scores) %>
+
+<div class="card-outlined card scores">
+  <div class="card-title card-title-colored-container">
+    <% if (total && feedback.score_items.present?) || scores.present? %>
+      <span title="<%=t(".view_breakdown")%>">
+        <% if total && feedback.score_items.present? %>
+          <%= t(".score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)) %>
+        <% else %>
+          <%= t(".present", count: scores.length) %>
+        <% end %>
+      </span>
+    <% end %>
+    <%# Link to edit screen if needed %>
+    <% if policy(feedback).show? && scores.present? %>
+      <%= link_to feedback_path(feedback), class: "edit-score btn btn-text with-icon float-end", title: t(".view_feedback") do %>
+        <i class="mdi mdi-pencil"></i>
+        <%= t "score_items.table.edit" %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class="card-supporting-text" id="<%= "score-details-#{feedback.id}" %>">
+    <% if total || feedback.score_items.present? %>
+      <table class="table table-sm">
+        <% if total %>
+          <tr class="text-muted">
+            <td>
+              <%= t ".total_score" %>
+              <% unless feedback.evaluation_exercise.visible_score? %>
+                <i class="mdi mdi-school mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
+              <% end %>
+            </td>
+            <td class="text-end"><%= format_score feedback.score %> / <%= format_score feedback.maximum_score %></td>
+          </tr>
+        <% end %>
+        <% scores.each do |score| %>
+          <tr>
+            <td>
+              <%= score.score_item.name %>
+              <% unless score.score_item.visible %>
+                <i class="mdi mdi-school mdi-18 colored-secondary" title="<%= t "score_items.table.visible-no" %>"></i>
+              <% end %>
+              <br>
+              <span class="text-muted small"><%= score.score_item.description %></span>
+            </td>
+            <td class="text-end"><%= format_score score.score %> / <%= format_score score.score_item.maximum %></td>
+          </tr>
+        <% end %>
+      </table>
+    <% end %>
+  </div>
+</div>

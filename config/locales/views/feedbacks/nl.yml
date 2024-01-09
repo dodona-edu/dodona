@@ -59,10 +59,9 @@ nl:
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
       confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
-    score_table:
+    score_card:
       total_score: Totaalscore
       score_breakdown: Puntenverdeling
-    score_link:
       score: "Score: %{score} / %{max}"
       score_short: "%{score} / %{max}"
       present: "Er zijn %{count} scoreonderdelen"

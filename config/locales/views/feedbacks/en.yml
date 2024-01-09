@@ -59,10 +59,9 @@ en:
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All comments on the previous submission will be deleted."
-    score_table:
+    score_card:
       total_score: Total grade
       score_breakdown: Grade breakdown
-    score_link:
       score: "Grade: %{score} / %{max}"
       score_short: "%{score} / %{max}"
       present: "There are %{count} score items"

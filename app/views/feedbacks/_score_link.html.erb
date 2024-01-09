@@ -16,7 +16,8 @@
 <% end %>
 <%# Link to edit screen if needed %>
 <% if policy(feedback).show? && scores.present? %>
-  <%= link_to feedback_path(feedback), class: "edit-score btn btn-icon float-end", title: t("feedbacks.score_link.view_feedback") do %>
+  <%= link_to feedback_path(feedback), class: "edit-score btn btn-text with-icon float-end", title: t("feedbacks.score_link.view_feedback") do %>
     <i class="mdi mdi-pencil"></i>
+    <%= t "score_items.table.edit" %>
   <% end %>
 <% end %>

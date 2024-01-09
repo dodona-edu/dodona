@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.5'
+gem 'nokogiri', '~> 1.16.0'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -144,7 +144,7 @@ group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.4.2'
+  gem 'factory_bot_rails', '~> 6.4.3'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
@@ -179,8 +179,8 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.19.0'
   gem 'rubocop-factory_bot', '~> 2.24'
-  gem 'rubocop-minitest', '~> 0.33.0'
-  gem 'rubocop-rails', '~> 2.22.2'
+  gem 'rubocop-minitest', '~> 0.34.3'
+  gem 'rubocop-rails', '~> 2.23.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.8.1'

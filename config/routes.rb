@@ -35,6 +35,7 @@ Rails.application.routes.draw do
     get '/profile' => 'pages#profile', as: 'profile'
     get '/publications' => 'pages#publications'
     get '/support-us' => 'pages#support'
+    get '/dodona_down' => 'pages#dodona_down'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'

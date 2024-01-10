@@ -35,7 +35,13 @@ class ApplicationController < ActionController::Base
   before_action :set_notifications, if: :user_signed_in?
   before_action :set_unread_announcement, unless: :remote_request?
 
+  before_action :redirect_to_down, except: %i[dodona_down]
+
   impersonates :user
+
+  def redirect_to_down
+    redirect_to dodona_down_path
+  end
 
   # Set pagination info for named resource in the http headers.
   # This is useful for frontend pagination

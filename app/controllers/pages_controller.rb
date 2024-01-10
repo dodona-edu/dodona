@@ -35,6 +35,8 @@ class PagesController < ApplicationController
 
   def institution_not_supported; end
 
+  def dodona_down; end
+
   def about
     set_metrics
   end

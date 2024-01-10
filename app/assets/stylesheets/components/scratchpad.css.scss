@@ -167,3 +167,9 @@
     border-radius: 20px;
   }
 }
+
+#scratchpad-tab-content {
+  // 50px tab bar height + 16 px margin + 32px container padding + 1px to always avoid outer scrollbar
+  height: calc(100vh - var(--d-navbar-height) - 50px - 16px - 32px - 1px);
+  overflow: scroll;
+}

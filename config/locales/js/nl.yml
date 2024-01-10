@@ -325,3 +325,6 @@ nl:
       dark: Donker
       system: Systeem
       theme: Stijl
+    feedbacks:
+      submission:
+        submit: Deze oplossing indienen

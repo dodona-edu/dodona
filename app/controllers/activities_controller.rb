@@ -61,6 +61,8 @@ class ActivitiesController < ApplicationController
     @activities = if params[:series_id]
                     @series = Series.find(params[:series_id])
                     authorize @series, :show?
+                    raise Pundit::NotAuthorizedError unless policy(@series).valid_token?(params[:token])
+
                     policy(@series).overview? ? @series.activities : []
                   else
                     policy_scope(Activity).order_by_popularity(:DESC)
@@ -107,7 +109,7 @@ class ActivitiesController < ApplicationController
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
 
     # Double check if activity still exists within this course (And throw a 404 when it does not)
-    @course&.activities&.find_by!(id: @activity.id) if current_user&.course_admin?(@course)
+    @course&.activities&.find(@activity.id) if current_user&.course_admin?(@course)
     # We still need to check access because an unauthenticated user should be able to see public activities
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 

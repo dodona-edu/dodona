@@ -9,20 +9,20 @@ module SeriesHelper
 
   # returns [class, icon]
   def series_status_progress(series, user)
-    return %w[not-yet-begun mdi-school] unless series.started?(user: user)
-    return %w[completed mdi-check-bold] if series.completed?(user: user)
-    return %w[wrong mdi-close] if series.wrong?(user: user)
+    return 'not-yet-begun' unless series.started?(user: user)
+    return 'completed' if series.completed?(user: user)
+    return 'wrong' if series.wrong?(user: user)
 
-    %w[started mdi-thumb-up]
+    'started'
   end
 
   # returns [class, icon]
   def series_status_deadline(series, user)
-    return [nil, nil] unless series.deadline?
-    return %w[deadline-missed mdi-alarm-off] if series.missed_deadline?(user)
-    return %w[deadline-met mdi-alarm-check] if series.completed_before_deadline?(user) && !series.completed?(user: user)
+    return nil unless series.deadline?
+    return 'missed' if series.missed_deadline?(user)
+    return 'met' if series.completed_before_deadline?(user) && !series.completed?(user: user)
 
-    [nil, nil]
+    nil
   end
 
   def series_status(series, user)

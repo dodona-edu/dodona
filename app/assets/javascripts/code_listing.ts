@@ -17,14 +17,18 @@ import {
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, questionMode = false): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, userIsStudent: boolean, canSubmitAsOwn: boolean): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
     userState.id = userId;
     submissionState.id = submissionId;
-    annotationState.isQuestionMode = questionMode;
+    annotationState.isQuestionMode = userIsStudent;
+
+    if (canSubmitAsOwn) {
+        userState.addPermission("submission.submit_as_own");
+    }
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
     const rows = table.querySelectorAll("tr");

@@ -988,4 +988,46 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
     assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
   end
+
+  test 'activities for hidden series should only be shown with token' do
+    course = courses(:course1)
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden
+
+    sign_in users(:student)
+
+    get series_activities_url(series, format: :json)
+
+    # should return 403
+    assert_response :forbidden
+
+    get series_activities_url(series, format: :json, token: series.access_token)
+
+    assert_response :success
+    activities_json = response.parsed_body
+
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
+  end
+
+  test 'admin should be able to see hidden series' do
+    course = courses(:course1)
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden
+
+    sign_in users(:staff)
+
+    get series_activities_url(series, format: :json)
+
+    assert_response :forbidden
+
+    course.administrating_members << users(:staff)
+    get series_activities_url(series, format: :json)
+
+    assert_response :success
+    activities_json = response.parsed_body
+
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
+  end
 end

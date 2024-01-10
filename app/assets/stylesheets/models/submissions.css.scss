@@ -199,6 +199,7 @@
     td.line-nr {
       text-align: right;
       white-space: pre-wrap;
+      user-select: none;
     }
 
     th {
@@ -321,6 +322,23 @@
     width: 100%;
     display: flex;
 
+    .resubmit-btn {
+      margin-left: 0.5em;
+    }
+
+    @include media-breakpoint-down(lg) {
+      flex-direction: column;
+
+      .btn {
+        width: fit-content;
+        margin-bottom: 0.5em;
+      }
+
+      .resubmit-btn {
+        margin-left: 0;
+      }
+    }
+
     &.sticky {
       margin-bottom: 0;
       margin-top: -16px;
@@ -338,6 +356,14 @@
 
       span {
         margin-right: 0.5em;
+      }
+
+      @include media-breakpoint-down(xl) {
+        margin-left: 0;
+
+        span {
+          display: none;
+        }
       }
     }
 

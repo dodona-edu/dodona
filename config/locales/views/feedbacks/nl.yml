@@ -63,4 +63,4 @@ nl:
       total_score: Totaalscore
       score: "Punten"
       view_feedback: Ga naar de feedback
-      info_html: "Deze oplossing werd nagekeken door een lesgever. Deze gaf onderstaande beoordeling. <a href=\"%{url}\">Bekijk de andere beoordelingen</a>."
+      info_html: "Deze oplossing werd manueel nagekeken door een lesgever als deel van <a href=\"%{url}\">een evaluatie</a>. Hieronder vind je jouw feedback."

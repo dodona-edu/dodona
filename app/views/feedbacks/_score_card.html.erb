@@ -5,7 +5,7 @@
 <% if total || feedback.score_items.present? %>
   <div class="card-outlined card scores">
     <div class="card-title card-title-colored-container">
-      <span><%= t(".score")%></span>
+      <span><%= t(".evaluation")%></span>
       <%# Link to edit screen if needed %>
       <% if policy(feedback).show? %>
         <%= link_to feedback_path(feedback), class: "edit-score btn btn-text with-icon float-end", title: t(".view_feedback") do %>

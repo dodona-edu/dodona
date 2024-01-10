@@ -61,6 +61,6 @@ en:
       confirm: "Are you sure? All comments on the previous submission will be deleted."
     score_card:
       total_score: Total grade
-      score: "Grade"
+      evaluation: Evaluation
       view_feedback: Go to the feedback
-      info_html: "This solution has been manually evaluated by a teacher as part of <a> an evaluation</a>. Below, you can find your feedback."
+      info_html: "This solution has been manually evaluated by a teacher as part of <a href=\"%{url}\"> an evaluation</a>. Below, you can find your feedback."

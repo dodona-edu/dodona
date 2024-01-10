@@ -61,6 +61,6 @@ nl:
       confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
     score_card:
       total_score: Totaalscore
-      score: "Punten"
+      evaluation: Evaluatie
       view_feedback: Ga naar de feedback
       info_html: "Deze oplossing werd manueel nagekeken door een lesgever als deel van <a href=\"%{url}\">een evaluatie</a>. Hieronder vind je jouw feedback."

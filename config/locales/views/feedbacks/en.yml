@@ -63,4 +63,4 @@ en:
       total_score: Total grade
       score: "Grade"
       view_feedback: Go to the feedback
-      info_html: "This solution has been evaluated by a teacher. They provided the following feedback. <a>See all evaluated solutions</a>."
+      info_html: "This solution has been manually evaluated by a teacher as part of <a> an evaluation</a>. Below, you can find your feedback."

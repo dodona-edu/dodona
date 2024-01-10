@@ -61,9 +61,6 @@ nl:
       confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
     score_card:
       total_score: Totaalscore
-      score_breakdown: Puntenverdeling
-      score: "Score: %{score} / %{max}"
-      score_short: "%{score} / %{max}"
-      present: "Er zijn %{count} scoreonderdelen"
-      view_breakdown: Puntenverdeling bekijken
+      score: "Punten"
       view_feedback: Ga naar de feedback
+      info_html: "Deze oplossing werd nagekeken door een lesgever. Deze gaf onderstaande beoordeling. <a href=\"%{url}\">Bekijk de andere beoordelingen</a>."

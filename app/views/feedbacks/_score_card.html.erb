@@ -1,32 +1,23 @@
-<%#
-    If the total is visible, show that.
-    If there are other visible scores, display that.
-    Else display nothing.
-%>
 <% total = policy(feedback.evaluation_exercise).show_total? %>
 <% scores = policy_scope(feedback.scores) %>
 
-<div class="card-outlined card scores">
-  <div class="card-title card-title-colored-container">
-    <% if (total && feedback.score_items.present?) || scores.present? %>
-      <span title="<%=t(".view_breakdown")%>">
-        <% if total && feedback.score_items.present? %>
-          <%= t(".score", score: format_score(feedback.score), max: format_score(feedback.maximum_score)) %>
-        <% else %>
-          <%= t(".present", count: scores.length) %>
+
+<% if total || feedback.score_items.present? %>
+  <div class="card-outlined card scores">
+    <div class="card-title card-title-colored-container">
+      <span><%= t(".score")%></span>
+      <%# Link to edit screen if needed %>
+      <% if policy(feedback).show? %>
+        <%= link_to feedback_path(feedback), class: "edit-score btn btn-text with-icon float-end", title: t(".view_feedback") do %>
+          <i class="mdi mdi-pencil"></i>
+          <%= t "score_items.table.edit" %>
         <% end %>
-      </span>
-    <% end %>
-    <%# Link to edit screen if needed %>
-    <% if policy(feedback).show? && scores.present? %>
-      <%= link_to feedback_path(feedback), class: "edit-score btn btn-text with-icon float-end", title: t(".view_feedback") do %>
-        <i class="mdi mdi-pencil"></i>
-        <%= t "score_items.table.edit" %>
       <% end %>
-    <% end %>
-  </div>
-  <div class="card-supporting-text" id="<%= "score-details-#{feedback.id}" %>">
-    <% if total || feedback.score_items.present? %>
+    </div>
+    <div class="card-supporting-text" id="<%= "score-details-#{feedback.id}" %>">
+      <div class="mb-2">
+        <%= t ".info_html", url: overview_evaluation_path(feedback.evaluation_exercise.evaluation) %>
+      </div>
       <table class="table table-sm">
         <% if total %>
           <tr class="text-muted">
@@ -53,6 +44,6 @@
           </tr>
         <% end %>
       </table>
-    <% end %>
+    </div>
   </div>
-</div>
+<% end %>

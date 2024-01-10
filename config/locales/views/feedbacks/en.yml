@@ -61,9 +61,6 @@ en:
       confirm: "Are you sure? All comments on the previous submission will be deleted."
     score_card:
       total_score: Total grade
-      score_breakdown: Grade breakdown
-      score: "Grade: %{score} / %{max}"
-      score_short: "%{score} / %{max}"
-      present: "There are %{count} score items"
-      view_breakdown: View grade breakdown
+      score: "Grade"
       view_feedback: Go to the feedback
+      info_html: "This solution has been evaluated by a teacher. They provided the following feedback. <a>See all evaluated solutions</a>."

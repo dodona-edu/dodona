@@ -140,6 +140,10 @@
 .tailwind * {
   border-color: var(--d-divider) !important;
 }
+
+.tailwind ._tw-border-b-red-500 {
+  border-bottom-color: var(--d-danger) !important;
+}
 /* stylelint-enable selector-class-pattern */
 
 /* stylelint-disable selector-id-pattern */

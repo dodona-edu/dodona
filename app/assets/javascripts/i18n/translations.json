@@ -169,8 +169,8 @@
         "copy-to-clipboard": "Copy code to clipboard"
       },
       "coding_scratchpad": {
-        "copy_code": "Copy to Dodona",
-        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
+        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?",
+        "submit": "Submit"
       },
       "configured-institution": "the configured institution",
       "copy-fail": "Press Ctrl-C to copy",
@@ -695,8 +695,8 @@
         "copy-to-clipboard": "Kopieer code naar klembord"
       },
       "coding_scratchpad": {
-        "copy_code": "Kopieer naar Dodona",
-        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?"
+        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?",
+        "submit": "Dien in"
       },
       "configured-institution": "de ingestelde onderwijsinstelling",
       "copy-fail": "Druk Ctrl-C om te kopiëren",

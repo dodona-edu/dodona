@@ -22,9 +22,13 @@
       <div class="card-supporting-text card-border">
         <h3><%= t ".how_to_support" %></h3>
         <p><%= t ".support_p1_html" %></p>
-        <div class="callout callout-info">
-          <%= t ".support_p2_html" %>
+        <% link_lang = I18n.locale == :en ? "en-GB" : "nl-NL" %>
+        <div class="d-flex mb-4">
+          <a href="https://actieplatform.ugent.be/<%= link_lang%>/p/dodona/step-1" class="btn btn-filled m-auto" target="_blank">
+            <%= t ".support_button" %>
+          </a>
         </div>
+        <p><%= t ".support_p2_html" %></p>
         <p><%= t ".support_p3_html" %></p>
       </div>
     </div>

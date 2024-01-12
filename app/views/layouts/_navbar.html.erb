@@ -8,7 +8,7 @@
         </button>
       <% end %>
       <%= link_to root_path, class: "brand" do %>
-        <span class="d-sm-inline d-none">Dodona</span>
+        <span class="d-md-inline d-none">Dodona</span>
         <i class="visible-xs mdi mdi-home"></i>
       <% end %>
     </div>
@@ -25,6 +25,7 @@
     <div class="content">
       <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>
+        <li class="support"><%= link_to t("layout.menu.support_us"), support_us_path, class: "btn btn-outline"  %></li>
         <% if user_signed_in? %>
           <% if current_page?(notifications_path).! %>
             <li id="navbar-notifications" class="dropdown <%= "hidden" unless @last_notifications.any? %>">

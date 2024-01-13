@@ -1,15 +1,22 @@
 <div class="table-scroll-wrapper">
   <table class="table table-index table-resource">
     <colgroup>
-      <col class="col-8"/>
-      <col class="col-3"/>
-      <col class="col-1"/>
+      <% if policy(Label).edit? %>
+        <col class="col-8"/>
+        <col class="col-3"/>
+        <col class="col-1"/>
+      <% else %>
+        <col class="col-10"/>
+        <col class="col-3"/>
+      <% end %>
     </colgroup>
     <thead>
     <tr>
       <th><%= t "labels.index.name" %></th>
       <th><%= t "labels.index.exercises" %></th>
-      <th><%= t "labels.index.actions" %></th>
+      <% if policy(Label).edit? %>
+        <th><%= t "labels.index.actions" %></th>
+      <% end %>
     </tr>
     </thead>
     <tbody>

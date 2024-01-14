@@ -2,9 +2,9 @@
   <table class="table table-index table-resource">
     <colgroup>
       <% if policy(Label).edit? %>
-        <col class="col-8"/>
+        <col class="col-6"/>
         <col class="col-3"/>
-        <col class="col-1"/>
+        <col class="col-3"/>
       <% else %>
         <col class="col-10"/>
         <col class="col-2"/>
@@ -13,9 +13,9 @@
     <thead>
     <tr>
       <th><%= t "labels.index.name" %></th>
-      <th><%= t "labels.index.exercises" %></th>
+      <th class="text-end"><%= t "labels.index.exercises" %></th>
       <% if policy(Label).edit? %>
-        <th><%= t "labels.index.actions" %></th>
+        <th class="text-end"><%= t "labels.index.actions" %></th>
       <% end %>
     </tr>
     </thead>
@@ -23,8 +23,8 @@
     <% labels.each do |label| %>
       <tr>
         <td><%= link_to label.name, label_path(label) %></td>
-        <td><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
-        <td>
+        <td class="text-end"><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
+        <td class="text-end">
           <% if policy(Label).edit? %>
             <%= link_to edit_label_path(label), class: "btn btn-icon" do %>
               <i class="mdi mdi-pencil"></i>

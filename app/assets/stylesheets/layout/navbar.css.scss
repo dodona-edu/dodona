@@ -184,11 +184,13 @@
   .right .content {
     flex-shrink: 0;
     align-self: flex-end;
+    margin-bottom: auto;
+    margin-top: auto;
 
     .dropdown-nav {
       padding-right: 20px;
       padding-left: 20px;
-      margin-bottom: 5px;
+      margin-bottom: 0;
 
       .notification-dropdown {
         .table > tbody > tr:first-of-type > td {

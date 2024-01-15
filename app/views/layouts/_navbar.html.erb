@@ -23,9 +23,8 @@
   </div>
   <div class="right flex">
     <div class="content">
-      <ul id="navbar" class="dropdown-nav collapse">
+      <ul id="navbar <%= "has_button" unless user_signed_in?  %>" class="dropdown-nav collapse">
         <%= content_for :navbar %>
-        <li class="support"><%= link_to t("layout.menu.support_us"), support_us_path, class: "btn btn-outline"  %></li>
         <% if user_signed_in? %>
           <% if current_page?(notifications_path).! %>
             <li id="navbar-notifications" class="dropdown <%= "hidden" unless @last_notifications.any? %>">
@@ -89,6 +88,7 @@
             </ul>
           </li>
         <% else %>
+          <li class="support"><%= link_to t("layout.menu.support_us"), support_us_path, class: "btn btn-outline"  %></li>
           <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path, class: "dropdown-toggle"  %></li>
         <% end %>
         <li class="dropdown">

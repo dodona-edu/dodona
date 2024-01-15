@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.6'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.2'
+gem 'faker', '~> 3.2.3'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'

@@ -6,7 +6,7 @@
         <i class="mdi mdi-48 <%= notifiable_icon(n) %>" ></i>
       </td>
       <td>
-        <a class="notification-link" href="<%= notifiable_url n %>"><%= t n.message %></a>
+        <a class="notification-link" href="<%= notifiable_path n %>"><%= t n.message %></a>
         <div class="text-muted">
           <small>
             <span><%= t 'notifications.index.created', when: time_ago_in_words(n.created_at) %></span>
@@ -30,7 +30,7 @@
   <script>
     dodona.ready.then(() => {
       <% notifications.each do |n| %>
-        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_url(n) %>", true, dodona.dotManager);
+        new dodona.Notification(<%= n.id %>, "<%= notification_path(n, format: :json) %>", <%= n.read %>, "<%= notifiable_path(n) %>", true, dodona.dotManager);
       <% end %>
     })
   </script>

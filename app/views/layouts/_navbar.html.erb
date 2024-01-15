@@ -23,7 +23,7 @@
   </div>
   <div class="right flex">
     <div class="content">
-      <ul id="navbar <%= "has_button" unless user_signed_in?  %>" class="dropdown-nav collapse">
+      <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>
         <% if user_signed_in? %>
           <% if current_page?(notifications_path).! %>

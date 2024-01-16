@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.17.0', require: false
+gem 'bootsnap', '~> 1.17.1', require: false
 
 # used to validate container responses
 gem 'json_schemer', '~> 2.1.1'
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.6'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.2'
+gem 'faker', '~> 3.2.3'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.0'
 gem 'stackprof', '~> 0.2.25'
 
-gem 'ddtrace', '~> 1.18.0'
+gem 'ddtrace', '~> 1.19.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.3.1'

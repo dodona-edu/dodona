@@ -510,10 +510,6 @@ iframe.file {
   }
 }
 
-.score-details {
-  padding-bottom: 10px;
-}
-
 .submission-history {
   display: flex;
   max-height: 75px;
@@ -538,4 +534,9 @@ iframe.file {
     display: inline-block;
     margin-right: 6px;
   }
+}
+
+.scores.card .card-title.card-title-colored-container .btn {
+  margin-top: -12px;
+  margin-bottom: -12px;
 }

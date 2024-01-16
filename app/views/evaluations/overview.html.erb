@@ -14,7 +14,7 @@
           <thead>
             <tr>
               <th><%= t '.exercise' %></th>
-              <th><%= t '.feedback' %></th>
+              <th></th>
               <th><%= t '.grade' if graded %></th>
               <th class="actions"></th>
             </tr>
@@ -33,7 +33,7 @@
                   <% if graded %>
                     <strong>
                       <% if fb.maximum_score %>
-                        <%= t "feedbacks.score_table.total_score" %>
+                        <%= t "feedbacks.score_card.total_score" %>
                       <% else %>
                         <%= t ".no_grading" %>
                       <% end %>

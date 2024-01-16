@@ -40,6 +40,18 @@
       text-decoration: none;
     }
   }
+
+  .support.btn.btn-outline {
+    color: $gray-80;
+    border-color: $gray-80;
+
+    &:hover {
+      opacity: 0.8;
+      color: $gray-80;
+      border-color: $gray-80;
+      background: none;
+    }
+  }
 }
 
 .footer-block > * {

@@ -14,7 +14,7 @@
   "dependencies": {
     "@babel/core": "^7.23.7",
     "@babel/plugin-transform-runtime": "^7.23.7",
-    "@babel/preset-env": "^7.23.7",
+    "@babel/preset-env": "^7.23.8",
     "@codemirror/autocomplete": "^6.11.1",
     "@codemirror/commands": "^6.3.3",
     "@codemirror/language": "^6.10.0",

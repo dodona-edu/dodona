@@ -10,14 +10,14 @@
     <a href="https://facebook.com/DodonaEdu" target="_blank" rel="noopener">
       <i class="mdi mdi-facebook"></i>
     </a>
-    <%= link_to t("layout.footer.support_dodona"), support_us_path %>
+    <%= link_to t("layout.footer.support_dodona"), support_us_path, class: "btn btn-outline support" %>
     <%= link_to 'Contact', contact_path %>
-    <%= link_to 'Status', status_path, target: "_blank", rel: "noopener" %>
+    <%= link_to 'Status', status_path, target: "_blank", rel: "noopener", class: "d-none d-lg-inline" %>
     <%= link_to t("layout.footer.privacy_statement"), privacy_path %>
     <%= link_to t("layout.footer.your_data"), data_path %>
-    <%= link_to t("layout.footer.publications"), publications_path %>
+    <%= link_to t("layout.footer.publications"), publications_path, class: "d-none d-lg-inline" %>
     <% version_info = "Dodona #{Dodona::Application::VERSION}" %>
     <% version_info += " (ruby #{RUBY_VERSION} #{`which ruby`})" if Rails.env.development? || Rails.env.staging? %>
-    <%= link_to version_info, "https://github.com/orgs/dodona-edu/discussions/categories/release-notes" %>
+    <%= link_to version_info, "https://github.com/orgs/dodona-edu/discussions/categories/release-notes", class: "d-none d-lg-inline" %>
   </div>
 </footer>

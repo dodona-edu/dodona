@@ -1,3 +1,4 @@
+<% link_lang = I18n.locale == :en ? "en-GB" : "nl-NL" %>
 <div class="home-cover-img">&nbsp;</div>
 <div class="row">
   <div class="col-xl-8 offset-xl-2 col-lg-10 offset-lg-1 col-12">
@@ -5,6 +6,9 @@
       <div class="col-12 col-sm-6 col-md-7 col-lg-7 col-xl-7 col-xxl-8 home-lead">
         <h1><%= t ".support_dodona" %></h1>
         <p class='lead'><%= t ".title_l1" %><br><%= t ".title_l2" %></p>
+        <a href="https://actieplatform.ugent.be/<%= link_lang%>/p/dodona/step-1" class="btn btn-lg" target="_blank">
+          <%= t ".support_button" %>
+        </a>
       </div>
       <div class="d-none d-sm-block col-sm-6 col-md-5 col-lg-5 col-xl-5 col-xxl-4">
         <%= image_tag("home.png", class: 'img-fluid') %>
@@ -22,7 +26,6 @@
       <div class="card-supporting-text card-border">
         <h3><%= t ".how_to_support" %></h3>
         <p><%= t ".support_p1_html" %></p>
-        <% link_lang = I18n.locale == :en ? "en-GB" : "nl-NL" %>
         <div class="d-flex mb-4">
           <a href="https://actieplatform.ugent.be/<%= link_lang%>/p/dodona/step-1" class="btn btn-filled m-auto" target="_blank">
             <%= t ".support_button" %>

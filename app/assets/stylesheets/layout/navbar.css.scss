@@ -244,10 +244,12 @@
         }
       }
 
-      li {
-        margin-top: auto;
-        margin-bottom: auto;
-        margin-right: 2px;
+      @include media-breakpoint-up(md) {
+        li {
+          margin-top: auto;
+          margin-bottom: auto;
+          margin-right: 2px;
+        }
       }
 
       li a {

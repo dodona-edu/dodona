@@ -7,5 +7,4 @@ else
 end
 json.has_annotations submission.annotated?
 json.exercise activity_scoped_url(activity: submission.exercise, course: submission.course, options: { format: :json })
-json.exercise_name submission.exercise.name
 json.course course_url(submission.course, format: :json) if submission.course

@@ -1,7 +1,7 @@
 <div class="table-scroll-wrapper">
   <table class="table table-index table-resource">
     <colgroup>
-      <% if policy(Label).edit? %>
+      <% if policy(Label).edit? or policy(Label).destroy? %>
         <col class="col-6"/>
         <col class="col-3"/>
         <col class="col-3"/>
@@ -14,8 +14,8 @@
     <tr>
       <th><%= t "labels.index.name" %></th>
       <th class="text-end"><%= t "labels.index.exercises" %></th>
-      <% if policy(Label).edit? %>
-        <th class="text-end"><%= t "labels.index.actions" %></th>
+      <% if policy(Label).edit? or policy(Label).destroy? %>
+        <th class="text-end"></th>
       <% end %>
     </tr>
     </thead>
@@ -23,19 +23,21 @@
     <% labels.each do |label| %>
       <tr>
         <td><%= link_to label.name, label_path(label) %></td>
-        <td class="text-end"><%= link_to label.activities.count, activities_path({"labels[]" => label.name}) %></td>
-        <td class="text-end">
-          <% if policy(Label).edit? %>
-            <%= link_to edit_label_path(label), class: "btn btn-icon" do %>
-              <i class="mdi mdi-pencil"></i>
+        <td class="text-end"><%= link_to label.activities.count, activities_path({ "labels[]" => label.name }) %></td>
+        <% if policy(Label).edit? or policy(Label).destroy? %>
+          <td class="text-end">
+            <% if policy(Label).edit? %>
+              <%= link_to edit_label_path(label), class: "btn btn-icon" do %>
+                <i class="mdi mdi-pencil"></i>
+              <% end %>
             <% end %>
-          <% end %>
-          <% if policy(Label).destroy? %>
-            <%= link_to label, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled d-btn-danger" do %>
-              <i class="mdi mdi-delete"></i>
+            <% if policy(Label).destroy? %>
+              <%= link_to label, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-icon btn-icon-filled d-btn-danger" do %>
+                <i class="mdi mdi-delete"></i>
+              <% end %>
             <% end %>
-          <% end %>
-        </td>
+          </td>
+        <% end %>
       </tr>
     <% end %>
     </tbody>

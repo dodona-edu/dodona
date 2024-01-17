@@ -107,6 +107,13 @@ class ApplicationHelperTest < ActiveSupport::TestCase
         <style>test{stroke-width:3px;stroke:black;stroke-dasharray:1;stroke-linecap:round}</style>
         <style>text.vertical{writing-mode:tb;glyph-orientation-vertical:0;fill:grey;}</style>
         <style>text.vertical{writing-mode:vertical-rl;text-orientation:upright;}</style>
+        <defs>
+          <g id="diamond">
+            <polygon points="0,-1 -0.5773,0 0.5773,0 0,-1"></polygon>
+            <polygon points="0,1 -0.5773,0 0.5773,0 0,1" fill="currentColor"></polygon>
+            <polygon class="border" points="0,1 -0.5773,0 0,-1 0.5773,0 0,1" fill="none"></polygon>
+          </g>
+        </defs>
         <g id="group1" transform="translate(50,50)">
           <circle cx="0" cy="0" r="40" fill="none"></circle>
           <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>
@@ -116,6 +123,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
         <path d="M0,0 L100,0 L100,100 L0,100 Z"></path>
         <text x="0" y="0" font-size="14px" font-weight="bold" font-variant="normal" font-family="serif">Hello</text>
         <text x="0" y="0" textLength="10">abcdefgh</text>
+        <use xlink:href="#diamond" x="0.5" y="0.866" fill="blue" color="cyan" transform="rotate(90,0.5,0.866)"></use>
       </svg>
     HTML
     clean_html = sanitize dirty_html

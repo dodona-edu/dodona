@@ -1,4 +1,5 @@
 import * as d3 from "d3";
+import { i18n } from "i18n/i18n";
 
 const containerSelector = "#punchcard-container";
 const margin = { top: 10, right: 10, bottom: 20, left: 70 };
@@ -7,7 +8,7 @@ type chartType = d3.Selection<SVGGElement, unknown, HTMLElement, any>;
 
 function initPunchcard(url: string): void {
     // If this is defined outside of a function, the locale always defaults to "en".
-    const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => I18n.t(`js.weekdays.long.${k}`));
+    const labelsY = ["mon", "tue", "wed", "thu", "fri", "sat", "sun"].map(k => i18n.t(`js.weekdays.long.${k}`));
 
     const container = d3.select(containerSelector);
     const width = (container.node() as Element).getBoundingClientRect().width;
@@ -33,7 +34,7 @@ function initPunchcard(url: string): void {
 
     chart.append("text")
         .attr("class", "loading-text")
-        .text(I18n.t("js.loading"))
+        .text(i18n.t("js.loading"))
         .attr("x", innerWidth / 2)
         .attr("y", innerHeight / 2)
         .style("text-anchor", "middle");

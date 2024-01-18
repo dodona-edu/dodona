@@ -1,3 +1,5 @@
+import { i18n } from "i18n/i18n";
+
 function initSelection(): void {
     const selectAll = document.querySelector("#check-all") as HTMLInputElement;
     const checkboxes = document.querySelectorAll(".selection-checkbox");
@@ -74,7 +76,7 @@ function initSelection(): void {
                 chooseCollapse.show();
                 chooseOptionsCollapse.hide();
                 errorWrapper.classList.remove("hidden");
-                document.querySelector("#warning-message-wrapper").innerHTML = I18n.t("js.no_selection");
+                document.querySelector("#warning-message-wrapper").innerHTML = i18n.t("js.no_selection");
             }
         }));
     }

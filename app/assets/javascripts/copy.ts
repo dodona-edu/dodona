@@ -1,13 +1,14 @@
 import ClipboardJS from "clipboard";
 import { ready, tooltip } from "utilities";
+import { i18n } from "i18n/i18n";
 
 export async function initClipboard(): Promise<void> {
     await ready;
     const selector = ".btn";
     const clip = new ClipboardJS(selector);
     const targetOf = (e): Element => document.querySelector(e.trigger.dataset["clipboard-target"]);
-    clip.on("success", e => tooltip(targetOf(e), I18n.t("js.copy-success")));
-    clip.on("error", e => tooltip(targetOf(e), I18n.t("js.copy-fail")));
+    clip.on("success", e => tooltip(targetOf(e), i18n.t("js.copy-success")));
+    clip.on("error", e => tooltip(targetOf(e), i18n.t("js.copy-fail")));
 }
 
 /**
@@ -23,9 +24,9 @@ export function attachClipboard(identifier: string, code: string): void {
     const clipboardBtn = document.querySelector<HTMLButtonElement>(identifier);
     const clipboard = new ClipboardJS(clipboardBtn, { text: () => code });
     clipboard.on("success", () => {
-        tooltip(clipboardBtn, I18n.t("js.copy-success"));
+        tooltip(clipboardBtn, i18n.t("js.copy-success"));
     });
     clipboard.on("error", () => {
-        tooltip(clipboardBtn, I18n.t("js.copy-fail"));
+        tooltip(clipboardBtn, i18n.t("js.copy-fail"));
     });
 }

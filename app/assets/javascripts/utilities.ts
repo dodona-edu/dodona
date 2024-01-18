@@ -2,6 +2,7 @@ import { isInIframe } from "iframe";
 import { Dutch } from "flatpickr/dist/l10n/nl";
 import { CustomLocale } from "flatpickr/dist/types/locale";
 import flatpickr from "flatpickr";
+import { i18n } from "i18n/i18n";
 
 /**
  * Create a function that will delay all subsequent calls on the same timer.
@@ -176,7 +177,7 @@ type DatePickerOptions = {
  */
 function initDatePicker(selector: string, options: DatePickerOptions = {}): object {
     function init(): object {
-        if (I18n.locale === "nl") {
+        if (i18n.loc === "nl") {
             options.locale = Dutch;
         }
         return flatpickr(selector, options);

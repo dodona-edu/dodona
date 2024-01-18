@@ -1,5 +1,6 @@
 import { Toast } from "./toast";
 import { fetch, getParentByClassName } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function initFavoriteButtons(doc: Document | HTMLElement = document): void {
     function init(): void {
@@ -21,13 +22,13 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
             "method": "POST"
         }).then(response => {
             if (response.ok) {
-                new Toast(I18n.t("js.favorite-course-succeeded"));
+                new Toast(i18n.t("js.favorite-course-succeeded"));
                 element.classList.remove("mdi-heart-outline");
                 element.classList.add("favorited", "mdi-heart");
 
                 // update tooltip
                 const tooltip = bootstrap.Tooltip.getInstance(element);
-                tooltip.setContent({ ".tooltip-inner": I18n.t("js.unfavorite-course-do") });
+                tooltip.setContent({ ".tooltip-inner": i18n.t("js.unfavorite-course-do") });
                 tooltip.hide();
 
                 const card = getParentByClassName(element, "course card").parentElement;
@@ -40,13 +41,13 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
                 favoritesRow.appendChild(clone);
                 // activate button in new card in the favoritesRow
                 const cloneFavButton = clone.querySelector<HTMLButtonElement>(".favorite-button");
-                cloneFavButton.setAttribute("title", I18n.t("js.unfavorite-course-do"));
+                cloneFavButton.setAttribute("title", i18n.t("js.unfavorite-course-do"));
                 new bootstrap.Tooltip(cloneFavButton); // is enabled by default
                 cloneFavButton.addEventListener("click", toggleFavorite);
             } else {
-                new Toast(I18n.t("js.favorite-course-failed"));
+                new Toast(i18n.t("js.favorite-course-failed"));
             }
-        }).catch(() => new Toast(I18n.t("js.favorite-course-failed")));
+        }).catch(() => new Toast(i18n.t("js.favorite-course-failed")));
     }
 
     function unfavoriteCourse(element: HTMLElement): void {
@@ -55,14 +56,14 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
             "method": "POST"
         }).then(response => {
             if (response.ok) {
-                new Toast(I18n.t("js.unfavorite-course-succeeded"));
+                new Toast(i18n.t("js.unfavorite-course-succeeded"));
                 // update all the heart button and tooltip in the card that is in the favoritesRow and the card later on the page
                 const elements = document.querySelectorAll<HTMLElement>(`[data-course_id="${courseId}"]`);
                 elements.forEach(el => {
                     el.classList.remove("favorited", "mdi-heart");
                     el.classList.add("mdi-heart-outline");
                     const tooltip = bootstrap.Tooltip.getInstance(el);
-                    tooltip.setContent({ ".tooltip-inner": I18n.t("js.favorite-course-do") }); // update tooltip
+                    tooltip.setContent({ ".tooltip-inner": i18n.t("js.favorite-course-do") }); // update tooltip
                     tooltip.hide();
                 });
                 // search the card in the favorites row and remove it
@@ -74,9 +75,9 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
                     favoritesRow.querySelector(".page-subtitle").classList.add("hidden");
                 }
             } else {
-                new Toast(I18n.t("js.unfavorite-course-failed"));
+                new Toast(i18n.t("js.unfavorite-course-failed"));
             }
-        }).catch(() => new Toast(I18n.t("js.unfavorite-course-failed")));
+        }).catch(() => new Toast(i18n.t("js.unfavorite-course-failed")));
     }
 
     init();

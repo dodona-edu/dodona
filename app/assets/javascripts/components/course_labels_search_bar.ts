@@ -4,6 +4,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Option } from "components/datalist_input";
 import { ready } from "utilities";
 import "components/datalist_input";
+import { i18n } from "i18n/i18n";
 /**
  * This component represents a list of the selected course labels
  *
@@ -67,7 +68,7 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
 
     constructor() {
         super();
-        // Reload when I18n is available
+        // Reload when i18n is available
         ready.then(() => this.requestUpdate());
     }
 
@@ -102,11 +103,11 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
                         .filter="${this.filter}"
                         .options=${this.options}
                         @input=${e => this.handleInput(e)}
-                        placeholder="${I18n.t("js.course_labels_search_bar.placeholder")}"
+                        placeholder="${i18n.t("js.course_labels_search_bar.placeholder")}"
                     ></d-datalist-input>
-                    <a type="button" class="btn btn-filled add-button" @click="${this.addLabel}">${I18n.t("js.course_labels_search_bar.add")}</a>
+                    <a type="button" class="btn btn-filled add-button" @click="${this.addLabel}">${i18n.t("js.course_labels_search_bar.add")}</a>
                 </div>
-                <span class="help-block">${I18n.t("js.course_labels_search_bar.edit_explanation")}</span>
+                <span class="help-block">${i18n.t("js.course_labels_search_bar.edit_explanation")}</span>
             </div>
         `;
     }

@@ -2,6 +2,7 @@ import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { initTooltips, ready } from "utilities";
+import { i18n } from "i18n/i18n";
 
 /**
  * A button that copies the text content of a given element to the clipboard.
@@ -37,11 +38,11 @@ export class CopyButton extends ShadowlessLitElement {
     get tooltip(): string {
         switch (this.status) {
         case "success":
-            return I18n.t("js.copy-success");
+            return i18n.t("js.copy-success");
         case "error":
-            return I18n.t("js.copy-fail");
+            return i18n.t("js.copy-fail");
         default:
-            return I18n.t("js.code.copy-to-clipboard");
+            return i18n.t("js.code.copy-to-clipboard");
         }
     }
 
@@ -53,7 +54,7 @@ export class CopyButton extends ShadowlessLitElement {
     constructor() {
         super();
 
-        // Reload when I18n is loaded
+        // Reload when i18n is loaded
         ready.then(() => this.requestUpdate());
     }
 

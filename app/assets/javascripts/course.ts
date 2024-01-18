@@ -4,6 +4,7 @@ import { ScrollSpy } from "./scrollspy";
 import { html, render } from "lit";
 import { Modal } from "bootstrap";
 import { searchQueryState } from "state/SearchQuery";
+import { i18n } from "i18n/i18n";
 
 function loadUsers(_status = undefined): void {
     const status = _status || getURLParameter("status");
@@ -223,7 +224,7 @@ function initCourseForm(): void {
                 registrationForInstitution.disabled = true;
                 document.querySelectorAll(".fill-institution")
                     .forEach(el => {
-                        el.innerHTML = I18n.t("js.configured-institution");
+                        el.innerHTML = i18n.t("js.configured-institution");
                     });
             } else {
                 visibleForInstitution.removeAttribute("disabled");

@@ -2,6 +2,8 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { initTooltips, ready } from "../utilities";
+import { i18n } from "i18n/i18n";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 /**
  * This component displays a progress bar consisting of consecutive divs
@@ -14,7 +16,7 @@ import { initTooltips, ready } from "../utilities";
  * @prop {string} titleKey - The key of the title to be displayed in the tooltip.
  */
 @customElement("d-progress-bar")
-export class ProgressBar extends ShadowlessLitElement {
+export class ProgressBar extends i18nMixin(ShadowlessLitElement) {
     @property({ type: Array })
     values: Array<number>;
 
@@ -34,18 +36,12 @@ export class ProgressBar extends ShadowlessLitElement {
     }
 
     private getTitle(value: number, index: number): string {
-        return I18n.t(this.titleKey + I18n.t(this.titleKey + ".key", index), { index: index, smart_count: value });
+        return i18n.t(this.titleKey + i18n.t(this.titleKey + ".key", index), { index: index, smart_count: value });
     }
 
     updated(changedProperties: Map<string, any>): void {
         initTooltips(this);
         super.updated(changedProperties);
-    }
-
-    constructor() {
-        super();
-        // Reload when I18n is available
-        ready.then(() => this.requestUpdate());
     }
 
     private renderBar(value: number, index: number): TemplateResult {

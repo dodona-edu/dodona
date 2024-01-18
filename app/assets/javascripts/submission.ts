@@ -1,4 +1,5 @@
 import { getParentByClassName } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function initSubmissionShow(parentClass: string, mediaPath: string, token: string): void {
     function init(): void {
@@ -118,7 +119,7 @@ function initCorrectSubmissionToNextLink(status: string): void {
     const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
     message.innerHTML = `
         <div class="callout callout-success mt-0" role="alert">
-            <span>${I18n.t(congrats)}</span>
+            <span>${i18n.t(congrats)}</span>
             <a href="${link.href}" class="m-1">
                 ${link.dataset.title}
             </a>

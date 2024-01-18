@@ -1,5 +1,6 @@
 import { fetch, updateURLParameter } from "utilities";
 import ScoreForm from "feedback/score";
+import { i18n } from "i18n/i18n";
 
 interface ActionOptions {
     currentURL: string;
@@ -116,10 +117,10 @@ export default class FeedbackActions {
             if (response.ok) {
                 eval(await response.text());
             } else if ([403, 404, 422].includes(response.status)) {
-                new dodona.Toast(I18n.t("js.score.conflict"));
+                new dodona.Toast(i18n.t("js.score.conflict"));
                 await this.refresh();
             } else {
-                new dodona.Toast(I18n.t("js.score.unknown"));
+                new dodona.Toast(i18n.t("js.score.unknown"));
                 await this.refresh();
             }
         });
@@ -271,7 +272,7 @@ export default class FeedbackActions {
         });
         this.deleteAllButton?.addEventListener("click", async e => {
             e.preventDefault();
-            if (window.confirm(I18n.t("js.score.confirm"))) {
+            if (window.confirm(i18n.t("js.score.confirm"))) {
                 this.disableInputs();
                 this.scoreForms.forEach(f => {
                     f.markBusy();

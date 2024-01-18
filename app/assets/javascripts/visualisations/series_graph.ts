@@ -3,6 +3,7 @@
 import * as d3 from "d3";
 import { initDatePicker } from "utilities";
 import { themeState } from "state/Theme";
+import { i18n } from "i18n/i18n";
 
 export type RawData = {
     // eslint-disable-next-line camelcase
@@ -15,14 +16,14 @@ export type RawData = {
 export abstract class SeriesGraph {
     // must be defined inside a class for I18n to work
     private d3Locale = {
-        "dateTime": I18n.t("time.formats.default"),
-        "date": I18n.t("date.formats.short"),
-        "time": I18n.t("time.formats.short"),
-        "periods": [I18n.t("time.am"), I18n.t("time.pm")],
-        "days": I18n.t_a("date.day_names"),
-        "shortDays": I18n.t_a("date.abbr_day_names"),
-        "months": I18n.t_a("date.month_names").slice(1),
-        "shortMonths": I18n.t_a("date.abbr_month_names").slice(1)
+        "dateTime": i18n.t("time.formats.default"),
+        "date": i18n.t("date.formats.short"),
+        "time": i18n.t("time.formats.short"),
+        "periods": [i18n.t("time.am"), i18n.t("time.pm")],
+        "days": i18n.t_a("date.day_names"),
+        "shortDays": i18n.t_a("date.abbr_day_names"),
+        "months": i18n.t_a("date.month_names").slice(1),
+        "shortMonths": i18n.t_a("date.abbr_month_names").slice(1)
     };
 
     // settings
@@ -45,7 +46,7 @@ export abstract class SeriesGraph {
     protected exOrder: string[] = []; // array of exId's (in correct order)
     protected exMap: Record<string, string> = {}; // map from exId -> exName
 
-    protected readonly longDateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+    protected readonly longDateFormat = d3.timeFormat(i18n.t("date.formats.weekday_long"));
 
     // scope stuff
     private fpStart: Instance | Instance[];
@@ -102,7 +103,7 @@ export abstract class SeriesGraph {
     }
 
     private getUrl(): string {
-        return `/${I18n.locale}${this.baseUrl}${this.seriesId}`;
+        return `/${i18n.loc}${this.baseUrl}${this.seriesId}`;
     }
 
 
@@ -297,7 +298,7 @@ export abstract class SeriesGraph {
             .append("div")
             .style("height", "50px")
             .style("margin-top", "10px")
-            .text(I18n.t("js.no_data"))
+            .text(i18n.t("js.no_data"))
             .attr("class", "graph_placeholder");
     }
 
@@ -329,7 +330,7 @@ export abstract class SeriesGraph {
         this.container.html("");
         this.container
             .append("div")
-            .text(I18n.t("js.loading"))
+            .text(i18n.t("js.loading"))
             .attr("class", "graph_placeholder")
             .style("height", `${tempHeight}px`)
             .style("min-height", "100px")
@@ -360,9 +361,9 @@ export abstract class SeriesGraph {
         const options = {
             wrap: true,
             enableTime: true,
-            dateFormat: I18n.t("time.formats.flatpickr_short"),
+            dateFormat: i18n.t("time.formats.flatpickr_short"),
             altInput: true,
-            altFormat: I18n.t("time.formats.flatpickr_long"),
+            altFormat: i18n.t("time.formats.flatpickr_long"),
         };
         this.fpStart = initDatePicker(`#scope-start-${this.seriesId}`, options);
         this.fpEnd = initDatePicker(`#scope-end-${this.seriesId}`, options);

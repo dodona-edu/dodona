@@ -4,6 +4,7 @@ import { userAnnotationState } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
+import { i18n } from "i18n/i18n";
 
 export type SavedAnnotation = {
     annotations_count?: number;
@@ -35,7 +36,7 @@ class SavedAnnotationState extends State {
     @stateProperty private byId = new StateMap<number, SavedAnnotation>();
 
     private get url(): string {
-        return `/${I18n.locale}${URL}`;
+        return `/${i18n.loc}${URL}`;
     }
 
     private async fetchList(url: string): Promise<Array<SavedAnnotation>> {

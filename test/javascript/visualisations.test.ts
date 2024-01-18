@@ -11,6 +11,7 @@ Object.defineProperty(window, "matchMedia", {
     })),
 });
 
+import { i18n } from "i18n/i18n";
 import { ViolinGraph } from "visualisations/violin";
 import { StackedStatusGraph } from "visualisations/stacked_status";
 import { CTimeseriesGraph } from "visualisations/cumulative_timeseries";
@@ -19,7 +20,7 @@ import { SeriesGraph } from "visualisations/series_graph";
 
 beforeAll(() => {
     jest
-        .spyOn(I18n, "t")
+        .spyOn(i18n, "t")
         .mockImplementation(arg => ({
             "time.formats.default": "%d-%m-%Y",
             "date.formats.short": "%e %b",
@@ -30,7 +31,7 @@ beforeAll(() => {
             "js.no_data": "Er is niet genoeg data om een grafiek te maken."
         }[arg]) as string);
     jest
-        .spyOn(I18n, "t_a")
+        .spyOn(i18n, "t_a")
         .mockImplementation(arg => ({
             "date.day_names": [
                 "Zondag", "Maandag", "Dinsdag", "Woensdag", "Donderdag", " Vrijdag", "Zaterdag"
@@ -44,7 +45,7 @@ beforeAll(() => {
                 null, "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun",
                 "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
         }[arg]) as string[]);
-    I18n.locale = "nl";
+    i18n.loc = "nl";
 
 
     document.body.innerHTML = "" +

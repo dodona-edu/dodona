@@ -14,8 +14,7 @@ import Rails from "@rails/ujs";
 
 Rails.start();
 
-import { I18n } from "i18n/i18n";
-window.I18n = new I18n();
+import { i18n } from "i18n/i18n";
 
 // bootstrap
 import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from "bootstrap";
@@ -56,4 +55,5 @@ dodona.replaceHTMLExecuteScripts = replaceHTMLExecuteScripts;
 dodona.setTheme = theme => themeState.selectedTheme = theme;
 dodona.setUserId = userId => userState.id = userId;
 dodona.ready = ready;
+dodona.i18n = i18n;
 window.dodona = dodona;

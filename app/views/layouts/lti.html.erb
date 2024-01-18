@@ -24,8 +24,8 @@
 <%= render 'layouts/main_container' %>
 <section class="toasts"></section>
 <script>
-    I18n = I18n || {};
-    I18n.locale = "<%= I18n.locale %>";
+    i18n = dodona.i18n || {};
+    i18n.loc = "<%= I18n.locale %>";
     dodona.checkTimeZone(<%= @time_zone_offset %>);
 </script>
 </body>

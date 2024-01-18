@@ -2,8 +2,9 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
 import { fetch, ready } from "utilities";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { searchQueryState } from "state/SearchQuery";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 export type SearchOption = {search: Record<string, string>, type?: string, text: string};
 export type SearchAction = {
@@ -29,7 +30,7 @@ const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !=
  * @prop {number} key - unique identifier used to differentiate from other search options
  */
 @customElement("d-search-option")
-export class SearchOptionElement extends ShadowlessLitElement {
+export class SearchOptionElement extends DodonaElement {
     @property({ type: Object })
     searchOption: SearchOption;
     @property( { type: Number })
@@ -81,7 +82,7 @@ export class SearchOptionElement extends ShadowlessLitElement {
  * @prop {(SearchOption|SearchAction)[]} actions - the array of SearchOptions/Actions to be displayed in the dropdown
  */
 @customElement("d-search-actions")
-export class SearchActions extends ShadowlessLitElement {
+export class SearchActions extends DodonaElement {
     @property({ type: Array })
     actions: (SearchOption|SearchAction)[] = [];
 
@@ -126,7 +127,7 @@ export class SearchActions extends ShadowlessLitElement {
     constructor() {
         super();
 
-        // Reload when I18n is loaded
+        // Reload when i18n is loaded
         ready.then(() => this.requestUpdate());
     }
 
@@ -139,7 +140,7 @@ export class SearchActions extends ShadowlessLitElement {
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     ${this.getSearchOptions().length > 0 ? html`
-                        <li><h6 class='dropdown-header'>${I18n.t("js.options")}</h6></li>
+                        <li><h6 class='dropdown-header'>${i18n.t("js.options")}</h6></li>
                     ` : html``}
                     ${this.getSearchOptions().map((opt, id) => html`
                         <d-search-option .searchOption=${opt}
@@ -148,7 +149,7 @@ export class SearchActions extends ShadowlessLitElement {
                     `)}
 
                     ${this.getSearchActions().length > 0 ? html`
-                        <li><h6 class='dropdown-header'>${I18n.t("js.actions")}</h6></li>
+                        <li><h6 class='dropdown-header'>${i18n.t("js.actions")}</h6></li>
                     ` : html``}
                     ${this.getSearchActions().map(action => html`
                         <li>

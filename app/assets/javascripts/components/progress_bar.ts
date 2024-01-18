@@ -1,9 +1,8 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { initTooltips, ready } from "../utilities";
 import { i18n } from "i18n/i18n";
-import { i18nMixin } from "components/meta/i18n_mixin";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component displays a progress bar consisting of consecutive divs
@@ -16,7 +15,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
  * @prop {string} titleKey - The key of the title to be displayed in the tooltip.
  */
 @customElement("d-progress-bar")
-export class ProgressBar extends i18nMixin(ShadowlessLitElement) {
+export class ProgressBar extends DodonaElement {
     @property({ type: Array })
     values: Array<number>;
 

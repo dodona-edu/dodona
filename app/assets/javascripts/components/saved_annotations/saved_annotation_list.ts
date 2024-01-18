@@ -1,9 +1,10 @@
-import { customElement, property } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Pagination, SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "components/pagination";
 import { searchQueryState } from "state/SearchQuery";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents a list of saved annotations
@@ -11,7 +12,7 @@ import { searchQueryState } from "state/SearchQuery";
  * @element d-saved-annotation-list
  */
 @customElement("d-saved-annotation-list")
-export class SavedAnnotationList extends ShadowlessLitElement {
+export class SavedAnnotationList extends DodonaElement {
     get queryParams(): Map<string, string> {
         return searchQueryState.queryParams;
     }
@@ -47,21 +48,21 @@ export class SavedAnnotationList extends ShadowlessLitElement {
             <div class="table-scroll-wrapper">
                 <table class="table table-index table-resource">
                     <thead>
-                        <th title="${I18n.t("js.saved_annotation.annotations_count")}">
+                        <th title="${i18n.t("js.saved_annotation.annotations_count")}">
                             <d-sort-button column="annotations_count" default="DESC">#</d-sort-button>
                         </th>
                         <th>
                             <d-sort-button column="title">
-                                ${I18n.t("js.saved_annotation.title")}
+                                ${i18n.t("js.saved_annotation.title")}
                             </d-sort-button>
                         </th>
                         <th>
                             <d-sort-button column="annotation_text">
-                                ${I18n.t("js.saved_annotation.annotation_text")}
+                                ${i18n.t("js.saved_annotation.annotation_text")}
                             </d-sort-button>
                         </th>
-                        <th>${I18n.t("js.saved_annotation.course")}</th>
-                        <th>${I18n.t("js.saved_annotation.exercise")}</th>
+                        <th>${i18n.t("js.saved_annotation.course")}</th>
+                        <th>${i18n.t("js.saved_annotation.exercise")}</th>
                         <th></th>
                     </thead>
                     <tbody>

@@ -1,5 +1,5 @@
 import { LitElement } from "lit";
-import { StateController } from "state/state_system/StateController";
+import { i18nMixin } from "components/meta/i18n_mixin";
 
 /**
  * This class removes the shadow dom functionality from lit elements
@@ -12,12 +12,7 @@ import { StateController } from "state/state_system/StateController";
  * This class is often used to avoid style scoping. (To be able to use the style as defined in our general css)
  * When shadow dom is required just use a normal LitElement
  */
-export class ShadowlessLitElement extends LitElement {
-    constructor() {
-        super();
-        new StateController(this);
-    }
-
+export class ShadowlessLitElement extends i18nMixin(LitElement) {
     // don't use shadow dom
     createRenderRoot(): HTMLElement {
         return this;

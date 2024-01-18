@@ -1,8 +1,9 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { userAnnotationState } from "state/UserAnnotations";
 import { initTooltips } from "utilities";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 // The image has to be created before the event is fired
 // otherwise safari will not create the drag image
@@ -20,7 +21,7 @@ DRAG_IMAGE.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAA
  * @element d-create-annotation-button
  */
 @customElement("d-create-annotation-button")
-export class CreateAnnotationButton extends ShadowlessLitElement {
+export class CreateAnnotationButton extends DodonaElement {
     @property({ type: Number })
     row: number;
     @property({ type: Boolean, attribute: "is-question-mode" })
@@ -30,10 +31,10 @@ export class CreateAnnotationButton extends ShadowlessLitElement {
         const key = this.isQuestionMode ? "question" : "annotation";
 
         if (this.isDragStart) {
-            return I18n.t(`js.annotations.options.add_${key}_drop`);
+            return i18n.t(`js.annotations.options.add_${key}_drop`);
         }
 
-        return I18n.t(`js.annotations.options.add_${key}`);
+        return i18n.t(`js.annotations.options.add_${key}`);
     }
 
     openForm(): void {

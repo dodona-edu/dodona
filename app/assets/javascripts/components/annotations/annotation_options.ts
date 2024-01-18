@@ -1,12 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
-import { i18nMixin } from "components/meta/i18n_mixin";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
 import { submissionState } from "state/Submissions";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 
 /**
@@ -16,7 +16,7 @@ import { submissionState } from "state/Submissions";
  * @element d-annotation-options
  */
 @customElement("d-annotation-options")
-export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
+export class AnnotationOptions extends DodonaElement {
     @property({ state: true })
     formShown = false;
 
@@ -26,8 +26,8 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
 
     get addAnnotationTitle(): string {
         return annotationState.isQuestionMode ?
-            I18n.t("js.annotations.options.add_global_question") :
-            I18n.t("js.annotations.options.add_global_annotation");
+            i18n.t("js.annotations.options.add_global_question") :
+            i18n.t("js.annotations.options.add_global_annotation");
     }
 
     protected render(): TemplateResult {
@@ -41,7 +41,7 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
                 ` : html``}
                 ${submissionState.canResubmitSubmission ? html`
                     <a class="btn btn-text resubmit-btn" href="${submissionState.resubmitPath}" target="_blank">
-                        ${I18n.t("js.feedbacks.submission.submit")}
+                        ${i18n.t("js.feedbacks.submission.submit")}
                     </a>
                 ` : html``}
                 <span class="flex-spacer"></span>

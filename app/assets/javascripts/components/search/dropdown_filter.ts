@@ -1,7 +1,8 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { FilterCollection, Label, FilterCollectionElement } from "components/search/filter_collection_element";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { i18n } from "i18n/i18n";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -43,14 +44,14 @@ export class DropdownFilter extends FilterCollectionElement {
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)} left-icon"></i>`)}
-                    ${I18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
+                    ${i18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     ${this.showFilter ? html`
                         <li><span class="dropdown-item-text ">
-                            <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${I18n.t("js.dropdown.search")}">
+                            <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${i18n.t("js.dropdown.search")}">
                         </span></li>
                     ` : ""}
                     ${this.filteredLabels.map(s => html`
@@ -77,7 +78,7 @@ export class DropdownFilter extends FilterCollectionElement {
  * @prop {[string, FilterCollection][]} filterCollections - the list of filterCollections for which a dropdown should be displayed
  */
 @customElement("d-dropdown-filters")
-export class DropdownFilters extends ShadowlessLitElement {
+export class DropdownFilters extends DodonaElement {
     @property( { type: Array })
     filterCollections: [string, FilterCollection][];
 

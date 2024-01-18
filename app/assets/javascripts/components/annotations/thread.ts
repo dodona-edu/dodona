@@ -1,4 +1,3 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import {
     UserAnnotation,
@@ -8,9 +7,10 @@ import { html, TemplateResult } from "lit";
 import { submissionState } from "state/Submissions";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
-import { i18nMixin } from "components/meta/i18n_mixin";
 import { annotationState } from "state/Annotations";
 import { evaluationState } from "state/Evaluations";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents a thread of annotations.
@@ -21,7 +21,7 @@ import { evaluationState } from "state/Evaluations";
  * @prop {number} rootId - the id of the root annotation for this thread
  */
 @customElement("d-thread")
-export class Thread extends i18nMixin(ShadowlessLitElement) {
+export class Thread extends DodonaElement {
     @property({ type: Number, attribute: "root-id" })
     rootId: number;
 
@@ -104,12 +104,12 @@ export class Thread extends i18nMixin(ShadowlessLitElement) {
                 ` : html`
                     <div class="fake-input">
                         <input type="text" class="form-control"
-                               placeholder="${I18n.t("js.user_annotation.reply")}..."
+                               placeholder="${i18n.t("js.user_annotation.reply")}..."
                                @click="${() => this.addReply()}" />
                         ${this.isUnanswered ? html`
-                            <span>${I18n.t("js.user_question.or")}</span>
+                            <span>${i18n.t("js.user_question.or")}</span>
                             <a class="btn btn-text" @click="${() => this.markAsResolved()}">
-                                ${I18n.t("js.user_question.resolve")}
+                                ${i18n.t("js.user_question.resolve")}
                             </a>
                         ` : html``}
                     </div>

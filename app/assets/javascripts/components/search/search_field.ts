@@ -3,10 +3,11 @@ import { html, TemplateResult } from "lit";
 import { createDelayer } from "utilities";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
 import { searchQueryState } from "state/SearchQuery";
 import { search } from "search";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 /**
  * This component inherits from FilterCollectionElement.
  * It represents a list of filters to be used in a dropdown as typeahead suggestions
@@ -53,7 +54,7 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     render(): TemplateResult {
         return this.getFilteredLabels().length == 0 ? html`` : html`
             <li>
-                <h6 class='dropdown-header'>${I18n.t(`js.${this.type}`)}</h6>
+                <h6 class='dropdown-header'>${i18n.t(`js.${this.type}`)}</h6>
             </li>
             ${ this.getFilteredLabels().map( label => html`
                 <li><a class="dropdown-item" href="#" @click=${e => this.handleClick(e, label)}>
@@ -76,7 +77,7 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
  *  - The list of filter lists to be used as search suggestions
  */
 @customElement("d-search-field")
-export class SearchField extends ShadowlessLitElement {
+export class SearchField extends DodonaElement {
     @property({ type: String })
     placeholder: string;
     @property({ type: Boolean })

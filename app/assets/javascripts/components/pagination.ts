@@ -1,8 +1,7 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { search } from "search";
 import { searchQueryState } from "state/SearchQuery";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component represents a pagination component as commonly found at the bottom of a paginated list page
@@ -15,7 +14,7 @@ import { searchQueryState } from "state/SearchQuery";
  * @prop {Boolean} small - render less pages to minimize width
  */
 @customElement("d-pagination")
-export class Pagination extends ShadowlessLitElement {
+export class Pagination extends DodonaElement {
     @property({ type: Number })
     total: number;
     @property({ type: Number })

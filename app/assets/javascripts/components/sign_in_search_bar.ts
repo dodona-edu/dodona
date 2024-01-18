@@ -1,9 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Option } from "components/datalist_input";
 import { ready } from "utilities";
 import "components/datalist_input";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * @element d-sign-in-search-bar
@@ -12,7 +13,7 @@ import "components/datalist_input";
  * @prop {Record<string, {name: string, link: string}>} Providers
  */
 @customElement("d-sign-in-search-bar")
-export class SignInSearchBar extends ShadowlessLitElement {
+export class SignInSearchBar extends DodonaElement {
     @property({ type: Array })
     institutions: {name: string, provider: string}[];
     @property({ type: Object })
@@ -33,7 +34,7 @@ export class SignInSearchBar extends ShadowlessLitElement {
 
     constructor() {
         super();
-        // Reload when I18n is available
+        // Reload when i18n is available
         ready.then(() => this.requestUpdate());
 
         const localStorageInstitution = localStorage.getItem("institution");
@@ -60,11 +61,11 @@ export class SignInSearchBar extends ShadowlessLitElement {
                     filter="${this.filter}"
                     .options=${this.options}
                     @input=${e => this.handleInput(e)}
-                    placeholder="${I18n.t("js.sign_in_search_bar.institution_search")}"
+                    placeholder="${i18n.t("js.sign_in_search_bar.institution_search")}"
                 ></d-datalist-input>
                 <a class="btn btn-filled btn-lg login-button ${this.selected_provider == "" ? "disabled": ""}"
                    href=${this.link}>
-                    ${I18n.t("js.sign_in_search_bar.log_in")}
+                    ${i18n.t("js.sign_in_search_bar.log_in")}
                 </a>
             </div>
 

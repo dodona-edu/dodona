@@ -1,7 +1,7 @@
 import { html, TemplateResult, render } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { Modal as Modal } from "bootstrap";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This mixin adds support for rendering bootstrap modals within a webcomponent.
@@ -22,7 +22,7 @@ export declare abstract class ModalMixinInterface {
 
 type Constructor<T> = abstract new (...args: any[]) => T;
 
-export function modalMixin<T extends Constructor<ShadowlessLitElement>>(superClass: T): Constructor<ModalMixinInterface> & T {
+export function modalMixin<T extends Constructor<DodonaElement>>(superClass: T): Constructor<ModalMixinInterface> & T {
     abstract class ModalMixinClass extends superClass implements ModalMixinInterface {
         modal: Modal;
 

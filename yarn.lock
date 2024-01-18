@@ -2198,6 +2198,11 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.2.tgz#ee771e2ba4b3dc5b372935d549fd9617bf345b8c"
   integrity sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==
 
+"@types/node-polyglot@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@types/node-polyglot/-/node-polyglot-2.5.0.tgz#5bb545c2c4b6ff9ebed1f9930357c7d137c463ae"
+  integrity sha512-GY0UiBTWM3qclfdCs2BM1mwW9Hs5fSksNXeoTkeHHZ90pHXTtjvQ+fe9GR9NdqFhALBiD7CEAGIIqnQ4eQ5VEw==
+
 "@types/node@*":
   version "20.6.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.6.0.tgz#9d7daa855d33d4efec8aea88cd66db1c2f0ebe16"

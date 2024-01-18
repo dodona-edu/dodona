@@ -1,15 +1,15 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { StateMap } from "state/state_system/StateMap";
 import { html, TemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { screen } from "@testing-library/dom";
 import { stateRecorder } from "state/state_system/StateRecorder";
+import { DodonaElement } from "components/meta/dodona_element";
 
 describe( "StateMap", () => {
     const stateMap: StateMap<string, string> = new StateMap<string, string>();
     @customElement("test-component")
-    class TestComponent extends ShadowlessLitElement {
+    class TestComponent extends DodonaElement {
         protected render(): TemplateResult {
             return html`<span>${stateMap.get("foo")}</span>`;
         }

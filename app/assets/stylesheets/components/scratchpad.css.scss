@@ -45,7 +45,7 @@
   flex-flow: column;
 
   // estimate of height of margins, paddings, etc...
-  --d-sp-lost-height: calc(var(--d-navbar-height) + 150px);
+  --d-sp-lost-height: calc(var(--d-navbar-height) + 130px);
 }
 
 .scratchpad-info {
@@ -99,8 +99,8 @@
 }
 
 #scratchpad-editor-wrapper .cm-editor {
-  max-height: calc(60vh - 0.6 * var(--d-sp-lost-height));
-  min-height: 250px;
+  height: calc(60vh - 0.6 * var(--d-sp-lost-height));
+  min-height: 300px;
 }
 
 #scrathcpad-output-wrapper {
@@ -143,6 +143,10 @@
 
 .tailwind ._tw-border-b-red-500 {
   border-bottom-color: var(--d-danger) !important;
+}
+
+.tailwind ._tw-text-blue-500 {
+  color: var(--d-primary) !important;
 }
 /* stylelint-enable selector-class-pattern */
 

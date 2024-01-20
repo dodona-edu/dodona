@@ -41,7 +41,7 @@
             <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
             <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
               <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
-        <% end %>
+            <% end %>
           <% end %>
         </td>
 

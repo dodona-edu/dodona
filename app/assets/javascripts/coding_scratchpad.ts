@@ -1,8 +1,10 @@
-import { CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
+import { BackendManager, CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
 import { rougeStyle, setCode } from "editor";
 import { syntaxHighlighting } from "@codemirror/language";
+import { BackendEventType } from "@dodona/papyros/dist/BackendEvent";
+import { Tab } from "bootstrap";
 
 /** Identifiers used in HTML for relevant elements */
 const CODE_EDITOR_PARENT_ID = "scratchpad-editor-wrapper";
@@ -14,6 +16,9 @@ const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
 const SUBMIT_TAB_ID = "activity-handin-link";
+const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
+const TRACE_TAB_ID = "scratchpad-trace-tab";
+const DESCRIPTION_TAB_ID = "scratchpad-description-tab";
 
 function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
@@ -48,22 +53,6 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                             serviceWorkerName: "inputServiceWorker.js"
                         }
                     });
-                editor ||= window.dodona.editor;
-                if (editor) {
-                    // Shortcut to copy code to editor
-                    papyros.addButton(
-                        {
-                            id: CODE_COPY_BUTTON_ID,
-                            buttonText: I18n.t("js.coding_scratchpad.copy_code")
-                        },
-                        () => {
-                            setCode(editor, papyros.getCode());
-                            closeButton.click();
-                            // Open submit panel if possible
-                            document.getElementById(SUBMIT_TAB_ID)?.click();
-                        }
-                    );
-                }
 
                 // Render once new button is added
                 papyros.render({
@@ -83,8 +72,29 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                             maxHeight: "10vh"
                         }
                     },
+                    traceOptions: {
+                        parentElementId: CODE_TRACE_PARENT_ID
+                    },
                     darkMode: themeState.theme === "dark"
                 });
+                editor ||= window.dodona.editor;
+                if (editor) {
+                    // Shortcut to copy code to editor
+                    papyros.addButton(
+                        {
+                            id: CODE_COPY_BUTTON_ID,
+                            buttonText: I18n.t("js.coding_scratchpad.copy_to_submit"),
+                            classNames: "btn-secondary",
+                            icon: "<i class=\"mdi mdi-clipboard-arrow-left-outline\"></i>"
+                        },
+                        () => {
+                            setCode(editor, papyros.getCode());
+                            closeButton.click();
+                            // Open submit panel if possible
+                            document.getElementById(SUBMIT_TAB_ID)?.click();
+                        }
+                    );
+                }
                 await papyros.launch();
 
                 papyros.codeRunner.editor.reconfigure([CodeEditor.STYLE, syntaxHighlighting(rougeStyle, {
@@ -105,6 +115,29 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                         confirm(I18n.t("js.coding_scratchpad.overwrite_code")))) {
                     papyros.setCode(editorCode);
                 }
+            }
+        });
+
+        // Hide Trace tab when a new run is started
+        BackendManager.subscribe(BackendEventType.Start, () => {
+            const traceTab = document.getElementById(TRACE_TAB_ID);
+            if (traceTab) {
+                traceTab.classList.add("hidden");
+                const descriptionTab = document.getElementById(DESCRIPTION_TAB_ID);
+                if (descriptionTab) {
+                    const tabTrigger = new Tab(descriptionTab.querySelector("a"));
+                    tabTrigger.show();
+                }
+            }
+        });
+
+        // Show Trace tab when a new frame is added
+        BackendManager.subscribe(BackendEventType.Frame, () => {
+            const traceTab = document.getElementById(TRACE_TAB_ID);
+            if (traceTab) {
+                traceTab.classList.remove("hidden");
+                const tabTrigger = new Tab(traceTab.querySelector("a"));
+                tabTrigger.show();
             }
         });
     }

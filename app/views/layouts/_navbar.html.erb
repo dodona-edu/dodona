@@ -8,7 +8,7 @@
         </button>
       <% end %>
       <%= link_to root_path, class: "brand" do %>
-        <span class="d-sm-inline d-none">Dodona</span>
+        <span class="d-md-inline d-none">Dodona</span>
         <i class="visible-xs mdi mdi-home"></i>
       <% end %>
     </div>
@@ -88,6 +88,7 @@
             </ul>
           </li>
         <% else %>
+          <li class="support"><%= link_to t("layout.menu.support_us"), support_us_path, class: "btn btn-outline"  %></li>
           <li class="sign-in"><%= link_to t("layout.menu.log_in"), sign_in_path, class: "dropdown-toggle"  %></li>
         <% end %>
         <li class="dropdown">

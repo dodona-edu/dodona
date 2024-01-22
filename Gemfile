@@ -179,7 +179,7 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
-  gem 'rubocop-minitest', '~> 0.34.4'
+  gem 'rubocop-minitest', '~> 0.34.5'
   gem 'rubocop-rails', '~> 2.23.1'
 
   # for opening letters

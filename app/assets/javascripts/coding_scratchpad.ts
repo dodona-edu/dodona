@@ -15,7 +15,7 @@ const OFFCANVAS_ID = "scratchpad-offcanvas";
 const SHOW_OFFCANVAS_BUTTON_ID = "scratchpad-offcanvas-show-btn";
 const CODE_COPY_BUTTON_ID = "scratchpad-code-copy-btn";
 const CLOSE_BUTTON_ID = "scratchpad-offcanvas-close-btn";
-const SUBMIT_BUTTON_ID = "editor-process-btn";
+const SUBMIT_TAB_ID = "activity-handin-link";
 const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
 const TRACE_TAB_ID = "scratchpad-trace-tab";
 const DESCRIPTION_TAB_ID = "scratchpad-description-tab";
@@ -83,15 +83,15 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     papyros.addButton(
                         {
                             id: CODE_COPY_BUTTON_ID,
-                            buttonText: I18n.t("js.coding_scratchpad.submit"),
+                            buttonText: I18n.t("js.coding_scratchpad.copy_to_submit"),
                             classNames: "btn-secondary",
-                            icon: "<i class=\"mdi mdi-send\"></i>"
+                            icon: "<i class=\"mdi mdi-clipboard-arrow-left-outline\"></i>"
                         },
                         () => {
                             setCode(editor, papyros.getCode());
                             closeButton.click();
-                            // Submit
-                            document.getElementById(SUBMIT_BUTTON_ID)?.click();
+                            // Open submit panel if possible
+                            document.getElementById(SUBMIT_TAB_ID)?.click();
                         }
                     );
                 }

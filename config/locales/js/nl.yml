@@ -187,7 +187,7 @@ nl:
     score_item:
       error: Fout bij bijwerken
     coding_scratchpad:
-      submit: Dien in
+      copy_to_submit: Naar indienbox
       overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
     submission_motivational_message:
       1: "👾 Monsterprogrammeur! Je hebt die oefening helemaal verslonden!"

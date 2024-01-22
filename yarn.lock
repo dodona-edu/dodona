@@ -1312,10 +1312,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@2.1.0-beta.17":
-  version "2.1.0-beta.17"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.1.0-beta.17.tgz#589ffdd0b536452ea81e0f90967065fff4405de7"
-  integrity sha512-NZxj6JqfKjH4Q+zT43aJdvgsa6WmUdyVx2YC08diXKsvs1XYQd4I3vF7VHXP8/MBIHu9zyPuiyg4WEZ2P6i4ow==
+"@dodona/papyros@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.1.0.tgz#c56c93f33285e494114b575804e7b1df6dfecf73"
+  integrity sha512-2heCejplOSYjZhOrLRoCqlxLpoGgIwg8HgJBbIxWx7V7Fea/EhyW7rImG/bfCeN/LaWXtSqmY126CF+bY7/6WQ==
   dependencies:
     "@codemirror/autocomplete" "^6.11.1"
     "@codemirror/commands" "^6.3.1"
@@ -1327,7 +1327,7 @@
     "@codemirror/state" "^6.3.2"
     "@codemirror/theme-one-dark" "^6.1.2"
     "@codemirror/view" "^6.22.1"
-    "@dodona/trace-component" "1.1.6-beta.0"
+    "@dodona/trace-component" "1.1.6"
     "@lezer/common" "^1.1.0"
     comlink "^4.4.1"
     comsync "^0.0.9"
@@ -1350,10 +1350,10 @@
     pyodide-worker-runner "^1.3.1"
     sync-message "^0.0.10"
 
-"@dodona/trace-component@1.1.6-beta.0":
-  version "1.1.6-beta.0"
-  resolved "https://registry.yarnpkg.com/@dodona/trace-component/-/trace-component-1.1.6-beta.0.tgz#7c6c9b8824b8c7d24849a312ba1a4bed73bc839c"
-  integrity sha512-zPXJd7btvBDpw62cE+x30i91GhSIaivQaU+P32KwmX/V3Re0xO34n0cj9/JdUEDs0Wm91peAJU8LgyL4Jn9HCw==
+"@dodona/trace-component@1.1.6":
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/@dodona/trace-component/-/trace-component-1.1.6.tgz#dc9e526d61db1cf2f050aab31fdd9539beefb69f"
+  integrity sha512-1aVhfQvsPjVqJmo920rv0wn+JfkMf/RkI+reOhBSC8JJTWGajltfiqW0KNhsR59YKEIoZf49dbpsw2atO/Omxw==
   dependencies:
     "@jsplumb/browser-ui" "^6.2.10"
     lit "^3.0.0"

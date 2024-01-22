@@ -170,7 +170,7 @@
       },
       "coding_scratchpad": {
         "copy_to_submit": "Finalize and submit",
-        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
+        "overwrite_code": "Do you want to overwrite the code in the sandbox with your latest changes?"
       },
       "configured-institution": "the configured institution",
       "copy-fail": "Press Ctrl-C to copy",
@@ -696,7 +696,7 @@
       },
       "coding_scratchpad": {
         "copy_to_submit": "Naar indienbox",
-        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?"
+        "overwrite_code": "Wil je de code in de sandbox overschrijven met je laatste aanpassingen?"
       },
       "configured-institution": "de ingestelde onderwijsinstelling",
       "copy-fail": "Druk Ctrl-C om te kopiëren",

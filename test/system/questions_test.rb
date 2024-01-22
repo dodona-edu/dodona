@@ -8,12 +8,17 @@ class QuestionsTest < ApplicationSystemTestCase
   # Make `assert_*` methods behave like Minitest assertions
   include Capybara::Minitest::Assertions
 
+  def new_submission
+    sub = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
+    sub.exercise.judge.renderer = PythiaRenderer
+    sub.exercise.judge.save
+    sub
+  end
+
   setup do
     @code_lines = Faker::Lorem.sentences(number: 5)
     @course = create :course, enabled_questions: true
-    @submission = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: @course
-    @submission.exercise.judge.renderer = PythiaRenderer
-    @submission.exercise.judge.save
+    @submission = new_submission
     @student = @submission.user
     sign_in @student
 
@@ -90,12 +95,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'student can mark a question as resolved' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -114,12 +120,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'Responding to a question should mark the question as answered' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -144,12 +151,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'An unanswered question should contain an icon to visualize its status' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -160,12 +168,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'The status icon should change to in progress when someone clicks reply' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -180,12 +189,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'The question becomes unanswered again when a teacher cancels the reply' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')

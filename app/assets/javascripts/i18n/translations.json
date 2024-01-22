@@ -169,7 +169,7 @@
         "copy-to-clipboard": "Copy code to clipboard"
       },
       "coding_scratchpad": {
-        "copy_to_submit": "To submitionbox",
+        "copy_to_submit": "Finalize and submit",
         "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
       },
       "configured-institution": "the configured institution",

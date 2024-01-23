@@ -4,17 +4,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.1.2'
+gem 'rails', '~> 7.1.3'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.5'
 # Use Puma as the app server
 gem 'puma', '~> 6.4.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.3.3'
+gem 'cssbundling-rails', '~> 1.4.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.2.2'
+gem 'jsbundling-rails', '~> 1.3.0'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -130,7 +130,7 @@ gem 'faker', '~> 3.2.3'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.0'
-gem 'stackprof', '~> 0.2.25'
+gem 'stackprof', '~> 0.2.26'
 
 gem 'ddtrace', '~> 1.19.0'
 

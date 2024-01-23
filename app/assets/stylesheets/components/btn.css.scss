@@ -1,4 +1,5 @@
-.btn {
+.btn,
+#scratchpad-offcanvas .papyros-button {
   height: 40px;
   display: inline-flex;
   align-items: center;
@@ -51,7 +52,9 @@
   --d-on-btn-color: var(--d-on-primary);
 }
 
-.btn.btn-filled {
+.btn.btn-filled,
+#scratchpad-offcanvas .papyros-button.btn-danger,
+#scratchpad-offcanvas .papyros-button.btn-primary {
   background: var(--d-btn-color);
   color: var(--d-on-btn-color);
 
@@ -60,7 +63,8 @@
   }
 }
 
-.btn.btn-tonal {
+.btn.btn-tonal,
+#scratchpad-offcanvas .papyros-button.btn-tonal {
   --d-btn-color: var(--d-secondary-container);
   --d-on-btn-color: var(--d-on-secondary-container);
 
@@ -81,6 +85,7 @@
 }
 
 .btn.btn-text,
+#scratchpad-offcanvas .papyros-button.btn-secondary,
 .btn.btn-outline {
   background: none;
   color: var(--d-btn-color);
@@ -119,7 +124,8 @@
   }
 }
 
-.btn.btn-outline {
+.btn.btn-outline,
+#scratchpad-offcanvas .papyros-button.btn-secondary {
   border: 1px solid var(--d-divider);
 
   &:hover,
@@ -351,7 +357,8 @@
 }
 
 // use d-btn-danger instead of btn-danger to avoid conflicts with bootstrap
-.btn.d-btn-danger {
+.btn.d-btn-danger,
+#scratchpad-offcanvas .papyros-button.btn-danger {
   --d-btn-color: var(--d-danger);
   --d-btn-color-rgb: var(--d-danger-rgb);
   --d-on-btn-color: var(--d-on-danger);

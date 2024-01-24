@@ -4,6 +4,7 @@ import * as d3 from "d3";
 import { RawData } from "./series_graph";
 import { SeriesExerciseGraph } from "./series_exercise_graph";
 import { themeState } from "state/Theme";
+import { i18n } from "i18n/i18n";
 
 export class TimeseriesGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/timeseries?series_id=";
@@ -75,8 +76,8 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                                 asDate.getHours() === (24 - timeZoneDiff) % 24 &&
                                 asDate.getMinutes() === 0
                             ) ?
-                            d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
-                            d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                            d3.timeFormat(i18n.t("date.formats.weekday_short"))(t):
+                            d3.timeFormat(i18n.t("time.formats.plain_time"))(t);
                     })
             )
             .selectAll("text")
@@ -149,7 +150,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("border-color", highColor);
 
         legend.append("span")
-            .text(I18n.t(`time.units.${units[i]}`, { smart_count: step }))
+            .text(i18n.t(`time.units.${units[i]}`, { smart_count: step }))
             .attr("class", "legend-text")
             .style("margin-left", "5px");
     }
@@ -252,31 +253,31 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
             .style("opacity", .9);
         let message = "";
         if (this.binStep < 24) {
-            const on = I18n.t("js.date_on");
-            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
-            const dateFormat = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const on = i18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(i18n.t("time.formats.plain_time"));
+            const dateFormat = d3.timeFormat(i18n.t("date.formats.weekday_long"));
             message = `
                 <b>${timeFormat(d.date)} - ${timeFormat(new Date(d.date + this.binStep * 3600000))}</b>
                 <br>${on} ${dateFormat(d.date)}:<br>
             `;
         } else if (this.binStep === 24) { // binning per day
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const format = d3.timeFormat(i18n.t("date.formats.weekday_long"));
             message = `${format(d.date)}:<br>`;
         } else if (this.binStep < 168) { // binning per multiple days
-            const format = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+            const format = d3.timeFormat(i18n.t("date.formats.weekday_long"));
             message = `
                 <b>${format(d.date)} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         } else { // binning per week(s)
-            const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
-            const monthDay = d3.timeFormat(I18n.t("date.formats.monthday_long"));
+            const weekDay = d3.timeFormat(i18n.t("date.formats.weekday_long"));
+            const monthDay = d3.timeFormat(i18n.t("date.formats.monthday_long"));
             message = `
                 <b>${weekDay(d.date)} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
                 <br>
             `;
         }
-        const subString = d.sum === 1 ? I18n.t("js.submission") : I18n.t("js.submissions");
+        const subString = d.sum === 1 ? i18n.t("js.submission") : i18n.t("js.submissions");
         message += `
             <b>${d.sum} ${subString}</b>
             `;
@@ -286,7 +287,7 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
                 <span style="display: flex; justify-items: center">
                 ${this.submissionStatusIcon(status)}
                 <b style="margin-right: 4px">${d[status]}</b>
-                ${I18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
+                ${i18n.t(`js.status.${status.replaceAll(" ", "_")}`)}
                 </span>`;
             }
         });

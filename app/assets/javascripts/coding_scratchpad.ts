@@ -3,6 +3,7 @@ import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
 import { rougeStyle, setCode } from "editor";
 import { syntaxHighlighting } from "@codemirror/language";
+import { i18n } from "i18n/i18n";
 import { BackendEventType } from "@dodona/papyros/dist/BackendEvent";
 import { Tab } from "bootstrap";
 
@@ -47,7 +48,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     {
                         programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),
                         standAlone: false,
-                        locale: I18n.locale,
+                        locale: i18n.locale(),
                         inputMode: InputMode.Interactive,
                         channelOptions: {
                             serviceWorkerName: "inputServiceWorker.js"
@@ -83,7 +84,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     papyros.addButton(
                         {
                             id: CODE_COPY_BUTTON_ID,
-                            buttonText: I18n.t("js.coding_scratchpad.copy_to_submit"),
+                            buttonText: i18n.t("js.coding_scratchpad.copy_to_submit"),
                             classNames: "btn-secondary",
                             icon: "<i class=\"mdi mdi-clipboard-arrow-left-outline\"></i>"
                         },
@@ -112,7 +113,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     // Neither code areas are empty, but they differ
                     (editorCode && currentCode !== editorCode &&
                         // and user chooses to overwrite current code with editor value
-                        confirm(I18n.t("js.coding_scratchpad.overwrite_code")))) {
+                        confirm(i18n.t("js.coding_scratchpad.overwrite_code")))) {
                     papyros.setCode(editorCode);
                 }
             }

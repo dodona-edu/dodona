@@ -1,6 +1,6 @@
 import { property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { searchQueryState } from "state/SearchQuery";
+import { DodonaElement } from "components/meta/dodona_element";
 
 export type Label = {id: string, name: string};
 export type FilterCollection = {
@@ -21,7 +21,7 @@ export type FilterCollection = {
  * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
-export class FilterCollectionElement extends ShadowlessLitElement {
+export class FilterCollectionElement extends DodonaElement {
     @property()
     param: string;
     @property({ type: Boolean })

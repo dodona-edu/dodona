@@ -6,6 +6,7 @@ import { ViolinGraph } from "visualisations/violin";
 import { StackedStatusGraph } from "visualisations/stacked_status";
 import { TimeseriesGraph } from "visualisations/timeseries";
 import { CTimeseriesGraph } from "visualisations/cumulative_timeseries";
+import { i18n } from "i18n/i18n";
 
 const DRAG_AND_DROP_ARGS = {
     table_selector: ".series-activity-list tbody",
@@ -107,13 +108,13 @@ function initSeriesEdit(): void {
     }
 
     function activityAdded(row: HTMLTableRowElement): void {
-        new Toast(I18n.t("js.activity-added-success"));
+        new Toast(i18n.t("js.activity-added-success"));
         row.querySelector("a.remove-activity").addEventListener("click", removeActivity);
         row.classList.remove("pending");
     }
 
     function addingActivityFailed(row: HTMLTableRowElement, addButton: HTMLButtonElement): void {
-        new Toast(I18n.t("js.activity-added-failed"));
+        new Toast(i18n.t("js.activity-added-failed"));
         row.classList.add("new");
         row.classList.remove("pending");
         addButton.classList.remove("hidden");
@@ -128,7 +129,7 @@ function initSeriesEdit(): void {
         setTimeout( () => {
             row.remove();
         }, 500);
-        new Toast(I18n.t("js.activity-removed-success"));
+        new Toast(i18n.t("js.activity-removed-success"));
         const addButton = document.querySelector(`a.add-activity[data-activity_id="${(row.querySelector("a.remove-activity") as HTMLElement).dataset.activity_id}"`);
         if (addButton) {
             addButton.classList.remove("hidden");
@@ -138,7 +139,7 @@ function initSeriesEdit(): void {
     function removingActivityFailed(row: HTMLTableRowElement, removeButton: HTMLButtonElement): void {
         row.classList.remove("pending");
         removeButton.classList.remove("hidden");
-        new Toast(I18n.t("js.activity-removed-failed"));
+        new Toast(i18n.t("js.activity-removed-failed"));
     }
 
     init();
@@ -161,9 +162,9 @@ function initSeriesShow(id: string): void {
             graph.init();
 
             const card = document.getElementById(`series-card-${seriesId}`);
-            card.querySelector(".graph-title span").textContent = I18n.t(`js.${type}_title`);
+            card.querySelector(".graph-title span").textContent = i18n.t(`js.${type}_title`);
             const info = card.querySelector(".graph-info");
-            info.setAttribute("title", I18n.t(`js.${type}_desc`));
+            info.setAttribute("title", i18n.t(`js.${type}_desc`));
             new window.bootstrap.Tooltip(info);
         });
     });

@@ -2,6 +2,7 @@
 // @ts-nocheck
 import * as d3 from "d3";
 import { RawData, SeriesGraph } from "./series_graph";
+import { i18n } from "i18n/i18n";
 
 export class CTimeseriesGraph extends SeriesGraph {
     protected readonly baseUrl = "/stats/cumulative_timeseries?series_id=";
@@ -157,8 +158,8 @@ export class CTimeseriesGraph extends SeriesGraph {
                             asDate.getHours() === (24 - timeZoneDiff) % 24 &&
                             asDate.getMinutes() === 0
                         ) ?
-                        d3.timeFormat(I18n.t("date.formats.weekday_short"))(t):
-                        d3.timeFormat(I18n.t("time.formats.plain_time"))(t);
+                        d3.timeFormat(i18n.t("date.formats.weekday_short"))(t):
+                        d3.timeFormat(i18n.t("time.formats.plain_time"))(t);
                 })
             )
             .selectAll("text")
@@ -351,13 +352,13 @@ export class CTimeseriesGraph extends SeriesGraph {
         let message = "";
 
         if (this.binStep < 24) {
-            const on = I18n.t("js.date_on");
-            const timeFormat = d3.timeFormat(I18n.t("time.formats.plain_time"));
+            const on = i18n.t("js.date_on");
+            const timeFormat = d3.timeFormat(i18n.t("time.formats.plain_time"));
             message += timeFormat(date);
             message += ` ${on} `;
         }
 
-        const weekDay = d3.timeFormat(I18n.t("date.formats.weekday_long"));
+        const weekDay = d3.timeFormat(i18n.t("date.formats.weekday_long"));
         message += weekDay(date);
 
         this.exOrder.forEach(e => {

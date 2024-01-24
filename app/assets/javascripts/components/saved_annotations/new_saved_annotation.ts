@@ -1,12 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import "./saved_annotation_form";
 import { modalMixin } from "components/modal_mixin";
 import { exerciseState } from "state/Exercises";
 import { courseState } from "state/Courses";
-import { i18nMixin } from "components/meta/i18n_mixin";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents an creation button for a saved annotation
@@ -20,7 +20,7 @@ import { i18nMixin } from "components/meta/i18n_mixin";
  * @prop {Number} courseId - the id of the course to which the annotation belongs
  */
 @customElement("d-new-saved-annotation")
-export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElement)) {
+export class NewSavedAnnotation extends modalMixin(DodonaElement) {
     @property({ type: Number, attribute: "from-annotation-id" })
     fromAnnotationId: number;
     @property({ type: String, attribute: "annotation-text" })
@@ -51,7 +51,7 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
     }
 
     async createSavedAnnotation(): Promise<void> {
-        if (this.isTitleTaken && !confirm(I18n.t("js.saved_annotation.confirm_title_taken"))) {
+        if (this.isTitleTaken && !confirm(i18n.t("js.saved_annotation.confirm_title_taken"))) {
             return;
         }
 
@@ -76,11 +76,11 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
 
     get filledModalTemplate(): TemplateResult {
         return this.modalTemplate(html`
-            ${I18n.t("js.saved_annotation.new.title")}
+            ${i18n.t("js.saved_annotation.new.title")}
         `, html`
             ${this.errors !== undefined ? html`
                 <div class="callout callout-danger">
-                    <h4>${I18n.t("js.saved_annotation.new.errors", { count: this.errors.length })}</h4>
+                    <h4>${i18n.t("js.saved_annotation.new.errors", { count: this.errors.length })}</h4>
                     <ul>
                         ${this.errors.map(error => html`
                             <li>${error}</li>`)}
@@ -96,7 +96,7 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
             ></d-saved-annotation-form>
         `, html`
             <button class="btn btn-text" @click=${() => this.createSavedAnnotation()}>
-                ${I18n.t("js.saved_annotation.new.save")}
+                ${i18n.t("js.saved_annotation.new.save")}
             </button>
         `);
     }
@@ -105,7 +105,7 @@ export class NewSavedAnnotation extends i18nMixin(modalMixin(ShadowlessLitElemen
         return html`
             <a @click="${() => this.showModal()}">
                 <i class="mdi mdi-content-save mdi-18"></i>
-                ${I18n.t("js.saved_annotation.new.button_title")}
+                ${i18n.t("js.saved_annotation.new.button_title")}
             </a>
         `;
     }

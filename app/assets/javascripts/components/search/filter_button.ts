@@ -1,9 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { css, html, LitElement, PropertyValues, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { initTooltips } from "utilities";
 import { searchQueryState } from "state/SearchQuery";
 import { StateController } from "state/state_system/StateController";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This is a very simple clickable component
@@ -61,7 +61,7 @@ export class FilterButton extends LitElement {
  * @prop {string} title - the title text that should be displayed when hovering the icon
  */
 @customElement("d-filter-icon")
-export class FilterIcon extends ShadowlessLitElement {
+export class FilterIcon extends DodonaElement {
     @property({ type: String })
     value: string;
     @property({ type: String, attribute: "icon-title" })

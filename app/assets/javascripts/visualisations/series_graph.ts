@@ -103,7 +103,7 @@ export abstract class SeriesGraph {
     }
 
     private getUrl(): string {
-        return `/${i18n.loc}${this.baseUrl}${this.seriesId}`;
+        return `/${i18n.locale()}${this.baseUrl}${this.seriesId}`;
     }
 
 

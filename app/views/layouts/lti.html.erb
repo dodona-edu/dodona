@@ -25,7 +25,7 @@
 <section class="toasts"></section>
 <script>
     i18n = dodona.i18n || {};
-    i18n.loc = "<%= I18n.locale %>";
+    i18n.locale("<%= I18n.locale %>");
     dodona.checkTimeZone(<%= @time_zone_offset %>);
 </script>
 </body>

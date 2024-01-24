@@ -48,7 +48,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
                     {
                         programmingLanguage: Papyros.toProgrammingLanguage(programmingLanguage),
                         standAlone: false,
-                        locale: i18n.loc,
+                        locale: i18n.locale(),
                         inputMode: InputMode.Interactive,
                         channelOptions: {
                             serviceWorkerName: "inputServiceWorker.js"

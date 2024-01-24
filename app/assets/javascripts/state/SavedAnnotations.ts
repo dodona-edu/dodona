@@ -36,7 +36,7 @@ class SavedAnnotationState extends State {
     @stateProperty private byId = new StateMap<number, SavedAnnotation>();
 
     private get url(): string {
-        return `/${i18n.loc}${URL}`;
+        return `/${i18n.locale()}${URL}`;
     }
 
     private async fetchList(url: string): Promise<Array<SavedAnnotation>> {

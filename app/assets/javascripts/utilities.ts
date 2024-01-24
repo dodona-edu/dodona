@@ -177,7 +177,7 @@ type DatePickerOptions = {
  */
 function initDatePicker(selector: string, options: DatePickerOptions = {}): object {
     function init(): object {
-        if (i18n.loc === "nl") {
+        if (i18n.locale() === "nl") {
             options.locale = Dutch;
         }
         return flatpickr(selector, options);

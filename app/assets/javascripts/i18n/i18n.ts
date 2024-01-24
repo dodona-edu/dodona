@@ -32,15 +32,7 @@ export class I18n extends Polyglot {
     constructor() {
         super();
         // set default locale, avoids a lot of errors when the locale is not yet set
-        this.loc = "en";
-    }
-
-    get loc(): string {
-        return this.locale();
-    }
-
-    set loc(locale: string) {
-        this.locale(locale);
+        this.locale("en");
     }
 
     /**
@@ -57,13 +49,13 @@ export class I18n extends Polyglot {
      * Polyglot does not do custom number formatting, thus we use the javascript api
      */
     formatNumber(number: number, options?: Record<string, unknown>): string {
-        return new Intl.NumberFormat(this.loc, options).format(number);
+        return new Intl.NumberFormat(this.locale(), options).format(number);
     }
 
     formatDate(date: string | number | Date | Dayjs, format: string): string {
         const d = dayjs(date);
         const f = super.t(format);
-        return d.locale(this.loc).format(f);
+        return d.locale(this.locale()).format(f);
     }
 }
 

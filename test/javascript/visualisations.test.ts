@@ -45,7 +45,7 @@ beforeAll(() => {
                 null, "Jan", "Feb", "Mrt", "Apr", "Mei", "Jun",
                 "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"]
         }[arg]) as string[]);
-    i18n.loc = "nl";
+    i18n.locale("nl");
 
 
     document.body.innerHTML = "" +

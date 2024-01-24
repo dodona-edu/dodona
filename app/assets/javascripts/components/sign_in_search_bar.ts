@@ -34,8 +34,6 @@ export class SignInSearchBar extends DodonaElement {
 
     constructor() {
         super();
-        // Reload when i18n is available
-        ready.then(() => this.requestUpdate());
 
         const localStorageInstitution = localStorage.getItem("institution");
         if (localStorageInstitution !== null) {

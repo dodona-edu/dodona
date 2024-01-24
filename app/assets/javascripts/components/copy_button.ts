@@ -51,13 +51,6 @@ export class CopyButton extends DodonaElement {
         initTooltips(this);
     }
 
-    constructor() {
-        super();
-
-        // Reload when i18n is loaded
-        ready.then(() => this.requestUpdate());
-    }
-
     protected render(): TemplateResult {
         return html`<button class="btn btn-icon copy-btn"
                             @click=${() => this.copyCode()}

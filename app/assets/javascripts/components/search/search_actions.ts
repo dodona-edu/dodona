@@ -124,13 +124,6 @@ export class SearchActions extends DodonaElement {
         return false;
     }
 
-    constructor() {
-        super();
-
-        // Reload when i18n is loaded
-        ready.then(() => this.requestUpdate());
-    }
-
 
     render(): TemplateResult {
         return html`

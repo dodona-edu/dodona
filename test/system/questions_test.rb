@@ -10,7 +10,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
   def new_submission
     sub = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
-    sub.exercise.judge.renderer = PythiaRenderer
+    sub.exercise.judge.renderer = FeedbackTableRenderer
     sub.exercise.judge.save
     sub
   end

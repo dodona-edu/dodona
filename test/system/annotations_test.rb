@@ -16,7 +16,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   end
 
   def new_submission
-    sub = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
+    sub = create :correct_submission, result: Rails.root.join('db/results/javascript-result.json').read, code: @code_lines.join("\n"), course: create(:course)
     sub.exercise.judge.renderer = FeedbackTableRenderer
     sub.exercise.judge.save
     sub
@@ -32,7 +32,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text 'Correct'
     end
     within '.card-tab .nav.nav-tabs' do
-      assert_text 'Correctheid'
+      assert_text 'Echo'
       assert_text 'Code'
     end
     within '.submission-summary .description' do
@@ -178,7 +178,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find_by_id('link-to-code-tab').click
 
-    click_on 'Correctheid'
+    click_on 'Echo'
     find_by_id('link-to-code-tab').click
 
     annot = create :annotation, submission: @instance, user: @zeus
@@ -190,7 +190,7 @@ class AnnotationsTest < ApplicationSystemTestCase
       assert_text annot.annotation_text
     end
 
-    click_on 'Correctheid'
+    click_on 'Echo'
     find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1

@@ -1,9 +1,9 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { userAnnotationState } from "state/UserAnnotations";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { submissionState } from "state/Submissions";
 import { annotationState } from "state/Annotations";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * A separate layer that contains the marking for the selection.
@@ -14,7 +14,7 @@ import { annotationState } from "state/Annotations";
  * @element d-selection-layer
  */
 @customElement("d-selection-layer")
-class SelectionLayer extends ShadowlessLitElement {
+class SelectionLayer extends DodonaElement {
     @property({ type: Number })
     row: number;
 

@@ -1,5 +1,6 @@
 import { fetch, createDelayer } from "utilities";
 import FeedbackActions from "feedback/actions";
+import { i18n } from "i18n/i18n";
 
 /**
  * Manages a single score in the feedback actions.
@@ -94,7 +95,7 @@ export default class ScoreForm {
         if (this.deleteButton) {
             this.deleteButton.addEventListener("click", e => {
                 e.preventDefault();
-                if (window.confirm(I18n.t("js.score.confirm"))) {
+                if (window.confirm(i18n.t("js.score.confirm"))) {
                     this.delete();
                 }
             });
@@ -195,10 +196,10 @@ export default class ScoreForm {
                 // Evaluate the response, which will update the view.
                 eval(await response.text());
             } else if ([403, 404, 422].includes(response.status)) {
-                new dodona.Toast(I18n.t("js.score.conflict"));
+                new dodona.Toast(i18n.t("js.score.conflict"));
                 await this.parent.refresh(this.id);
             } else {
-                new dodona.Toast(I18n.t("js.score.unknown"));
+                new dodona.Toast(i18n.t("js.score.unknown"));
                 await this.parent.refresh(this.id);
             }
             if (activeId) {

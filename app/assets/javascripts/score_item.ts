@@ -1,4 +1,5 @@
 import { fetch } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function commonCheckboxInit(
     element: HTMLElement,
@@ -22,7 +23,7 @@ function commonCheckboxInit(
                     eval(await response.text());
                 } else {
                     // Someone already deleted this score item.
-                    new dodona.Toast(I18n.t("js.score_item.error"));
+                    new dodona.Toast(i18n.t("js.score_item.error"));
                     checkbox.disabled = false;
                     checkbox.checked = !checkbox.checked;
                 }

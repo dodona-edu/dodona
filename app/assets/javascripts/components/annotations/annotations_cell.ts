@@ -1,5 +1,4 @@
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import { UserAnnotationFormData, userAnnotationState } from "state/UserAnnotations";
 import { annotationState, compareAnnotationOrders } from "state/Annotations";
@@ -12,6 +11,7 @@ import "components/annotations/thread";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import { evaluationState } from "state/Evaluations";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component represents a cell that groups all annotations for a specific line.
@@ -25,7 +25,7 @@ import { evaluationState } from "state/Evaluations";
  * @fires close-form - if the form should be closed
  */
 @customElement("d-annotations-cell")
-export class AnnotationsCell extends ShadowlessLitElement {
+export class AnnotationsCell extends DodonaElement {
     @property({ type: Boolean, attribute: "show-form" })
     formShown: boolean;
     @property({ type: Number })

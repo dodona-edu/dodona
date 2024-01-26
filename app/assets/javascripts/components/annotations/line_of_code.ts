@@ -1,4 +1,3 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
@@ -9,6 +8,7 @@ import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
 import "components/annotations/selection_layer";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { DodonaElement } from "components/meta/dodona_element";
 
 declare type range = {
     start: number;
@@ -33,7 +33,7 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
  * @element d-code-listing
  */
 @customElement("d-line-of-code")
-export class LineOfCode extends ShadowlessLitElement {
+export class LineOfCode extends DodonaElement {
     @property({ type: Number })
     row: number;
     @property({ type: String, attribute: "rendered-code" })

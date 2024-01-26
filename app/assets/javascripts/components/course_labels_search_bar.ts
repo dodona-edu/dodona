@@ -1,9 +1,9 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { Option } from "components/datalist_input";
-import { ready } from "utilities";
 import "components/datalist_input";
+import { i18n } from "i18n/i18n";
+import { DodonaElement } from "components/meta/dodona_element";
 /**
  * This component represents a list of the selected course labels
  *
@@ -11,7 +11,7 @@ import "components/datalist_input";
  * @prop {string[]} Labels - the labels of a user in a certain course
  */
 @customElement("d-course-labels")
-export class CourseLabelTokens extends ShadowlessLitElement {
+export class CourseLabelTokens extends DodonaElement {
     @property({ type: Array })
     labels: string[];
 
@@ -48,7 +48,7 @@ export class CourseLabelTokens extends ShadowlessLitElement {
  * @prop {string[]} SelectedLabels - the labels that have been added to the user
  */
 @customElement("d-course-labels-search-bar")
-export class CourseLabelsSearchBar extends ShadowlessLitElement {
+export class CourseLabelsSearchBar extends DodonaElement {
     @property({ type: Array })
     labels: {id: number, name: string}[];
 
@@ -63,12 +63,6 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
 
     get options(): Option[] {
         return this.labels.map(i => ({ label: i.name, value: i.id.toString() }));
-    }
-
-    constructor() {
-        super();
-        // Reload when I18n is available
-        ready.then(() => this.requestUpdate());
     }
 
     addLabel(): void {
@@ -102,11 +96,11 @@ export class CourseLabelsSearchBar extends ShadowlessLitElement {
                         .filter="${this.filter}"
                         .options=${this.options}
                         @input=${e => this.handleInput(e)}
-                        placeholder="${I18n.t("js.course_labels_search_bar.placeholder")}"
+                        placeholder="${i18n.t("js.course_labels_search_bar.placeholder")}"
                     ></d-datalist-input>
-                    <a type="button" class="btn btn-filled add-button" @click="${this.addLabel}">${I18n.t("js.course_labels_search_bar.add")}</a>
+                    <a type="button" class="btn btn-filled add-button" @click="${this.addLabel}">${i18n.t("js.course_labels_search_bar.add")}</a>
                 </div>
-                <span class="help-block">${I18n.t("js.course_labels_search_bar.edit_explanation")}</span>
+                <span class="help-block">${i18n.t("js.course_labels_search_bar.edit_explanation")}</span>
             </div>
         `;
     }

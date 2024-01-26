@@ -1,6 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
@@ -10,6 +9,8 @@ import { userAnnotationState } from "state/UserAnnotations";
 import { savedAnnotationState } from "state/SavedAnnotations";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 // Min and max of the annotation text is defined in the annotation model.
 const maxLength = 10_000;
@@ -23,13 +24,13 @@ const maxLength = 10_000;
  * @prop {String} savedAnnotationId - the id of the saved annotation
  * @prop {Boolean} disabled - disables all buttons
  * @prop {Boolean} hasErrors - Shows red validation styling
- * @prop {String} submitButtonText - the I18n key of the text for the submit button
+ * @prop {String} submitButtonText - the i18n key of the text for the submit button
  *
  * @fires cancel - if a users uses the cancel button
  * @fires submit - if the users presses the submit button, detail contains {text: string, savedAnnotationId: string}
  */
 @customElement("d-annotation-form")
-export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
+export class AnnotationForm extends watchMixin(DodonaElement) {
     @property({ type: String, attribute: "annotation-text" })
     annotationText: string;
     @property({ type: String, attribute: "saved-annotation-id" })
@@ -168,7 +169,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
             }
 
             if (this.saveAnnotation && this.isTitleTaken &&
-                !confirm(I18n.t("js.saved_annotation.confirm_title_taken"))) {
+                !confirm(i18n.t("js.saved_annotation.confirm_title_taken"))) {
                 this.disabled = false;
                 return; // User cancelled.
             }
@@ -256,12 +257,12 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                       @input="${() => this.handleTextInput()}"
                             ></textarea>
                             <div class="clearfix annotation-help-block">
-                                <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help"))}</span>
+                                <span class='help-block'>${unsafeHTML(i18n.t("js.user_annotation.help"))}</span>
                                 ${annotationState.isQuestionMode ? html`
-                                    <span class='help-block'>${unsafeHTML(I18n.t("js.user_annotation.help_student"))}</span>
+                                    <span class='help-block'>${unsafeHTML(i18n.t("js.user_annotation.help_student"))}</span>
                                 ` : ""}
                                 <span class="help-block float-end">
-                                    <span class="used-characters">${I18n.formatNumber(this._annotationText.length)}</span> / ${I18n.formatNumber(maxLength)}
+                                    <span class="used-characters">${i18n.formatNumber(this._annotationText.length)}</span> / ${i18n.formatNumber(maxLength)}
                                 </span>
                             </div>
                         </div>
@@ -291,7 +292,7 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                            .checked=${this.saveAnnotation}
                                     >
                                     <label class="form-check-label mt-2" for="check-save-annotation">
-                                        ${I18n.t("js.user_annotation.fields.saved_annotation_title")}
+                                        ${i18n.t("js.user_annotation.fields.saved_annotation_title")}
                                     </label>
                                 </div>
                                 ${this.saveAnnotation ? html`
@@ -304,9 +305,9 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                                @input=${() => this.handleUpdateTitle()}
                                                value=${this.savedAnnotationTitle}
                                                id="saved-annotation-title"
-                                               title="${this.isTitleTaken ? I18n.t("js.saved_annotation.title_taken") : ""}"
+                                               title="${this.isTitleTaken ? i18n.t("js.saved_annotation.title_taken") : ""}"
                                         >
-                                        <label for="saved-annotation-title">${I18n.t("js.saved_annotation.title")}:</label>
+                                        <label for="saved-annotation-title">${i18n.t("js.saved_annotation.title")}:</label>
                                     </div>
                                 `: ""}
                             </div>
@@ -318,14 +319,14 @@ export class AnnotationForm extends watchMixin(ShadowlessLitElement) {
                                 @click="${() => this.handleCancel()}"
                                 .disabled=${this.disabled}
                         >
-                            ${I18n.t("js.user_annotation.cancel")}
+                            ${i18n.t("js.user_annotation.cancel")}
                         </button>
                         <button class="btn btn-filled"
                                 type="button"
                                 @click="${() => this.handleSubmit()}"
                                 .disabled=${this.disabled}
                         >
-                            ${I18n.t(`js.${this.type}.${this.submitButtonText}`)}
+                            ${i18n.t(`js.${this.type}.${this.submitButtonText}`)}
                         </button>
                     </div>
                 </div>

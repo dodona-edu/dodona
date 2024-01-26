@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { FilterCollection, FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -45,7 +45,7 @@ export class SearchToken extends FilterCollectionElement {
  * @prop {Record<string, FilterCollection>} filterCollections - the filter collections for which tokens should be shown
  */
 @customElement("d-search-tokens")
-export class SearchTokens extends ShadowlessLitElement {
+export class SearchTokens extends DodonaElement {
     @property( { type: Array })
     filterCollections: Record<string, FilterCollection>;
 

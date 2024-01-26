@@ -27,15 +27,6 @@ declare class MathJaxObject {
     }
 }
 
-declare module I18n {
-    export function t(key: string, options?: {}): string;
-    export function t_a(key: string): string[];
-    export function formatNumber(number: number, options?: Record<string, unknown>): string;
-    export function formatDate(date: string | number | Date | import("dayjs").Dayjs, format: string): string;
-
-    export var locale: string;
-}
-
 // add parentIFrame and iFrameResize from iFrame Resizer to the window to make typescript happy
 declare interface Window {
     parentIFrame: any;

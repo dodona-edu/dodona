@@ -3,7 +3,7 @@ en:
     errors:
       models:
         activity:
-          no_valid_submission: "At least one correct submission is required, before the activity can be published."
+          no_valid_submission: "At least one correct submission is required, before the exercise can be published."
         course_membership:
           at_least_one_admin: The course should always have at least one course administrator.
         api_token:

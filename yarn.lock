@@ -1260,16 +1260,7 @@
   dependencies:
     "@codemirror/language" "^6.0.0"
 
-"@codemirror/lint@^6.0.0":
-  version "6.4.1"
-  resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-6.4.1.tgz#e4626ff8890c745209c6c24840843ff7933bc64f"
-  integrity sha512-2Hx945qKX7FBan5/gUdTM8fsMYrNG9clIgEcPXestbLVFAUyQYFAuju/5BMNf/PwgpVaX5pvRm4+ovjbp9D9gQ==
-  dependencies:
-    "@codemirror/state" "^6.0.0"
-    "@codemirror/view" "^6.0.0"
-    crelt "^1.0.5"
-
-"@codemirror/lint@^6.4.2":
+"@codemirror/lint@^6.0.0", "@codemirror/lint@^6.4.2":
   version "6.4.2"
   resolved "https://registry.yarnpkg.com/@codemirror/lint/-/lint-6.4.2.tgz#c13be5320bde9707efdc94e8bcd3c698abae0b92"
   integrity sha512-wzRkluWb1ptPKdzlsrbwwjYCPLgzU6N88YBAmlZi8WFyuiEduSd05MnJYNogzyc8rPK7pj6m95ptUApc8sHKVA==
@@ -1336,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.1.0.tgz#c56c93f33285e494114b575804e7b1df6dfecf73"
-  integrity sha512-2heCejplOSYjZhOrLRoCqlxLpoGgIwg8HgJBbIxWx7V7Fea/EhyW7rImG/bfCeN/LaWXtSqmY126CF+bY7/6WQ==
+"@dodona/papyros@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.1.1.tgz#eb156e942ed57659675e14785d2a2b51c5e693d9"
+  integrity sha512-QCwsbuLARc+sapKCJpQm1WJDA6KSzcXqfecdhJEjUddv5AZFpDDCY9TWggQ5xv9oipge/xz4c5FtM8eJr02zUQ==
   dependencies:
     "@codemirror/autocomplete" "^6.11.1"
     "@codemirror/commands" "^6.3.1"

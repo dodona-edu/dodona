@@ -57,7 +57,7 @@ class Activity < ApplicationRecord
   has_many :labels, through: :activity_labels
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
-  validate :require_valid_submission_before_publish
+  validate :require_valid_submission_before_publish, on: :update
 
   token_generator :repository_token, length: 64
   token_generator :access_token

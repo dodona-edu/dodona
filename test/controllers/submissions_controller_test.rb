@@ -461,7 +461,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :ok
   end
 
-  test 'show page should contain timing info for zeus' do
+  test "show page should contain timing info for zeus" do
     sign_in users(:zeus)
     submission = create :submission, :correct
     submission.result = '{
@@ -480,13 +480,12 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
       "runtime_metrics":{"wall_time":0.0035713919983209053},"score":24.0,"status":"wrong answer","messages":[{"format":"html","description":"\\u003cstrong\\u003eWorker:\\u003c/strong\\u003e mixpss","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003eMemory usage:\\u003c/strong\\u003e 23.93 MiB","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003ePrepare:\\u003c/strong\\u003e 0.04 seconds","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003eRuntime:\\u003c/strong\\u003e 0.93 seconds","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003eResult construction:\\u003c/strong\\u003e 0.01 seconds","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003eFinalize:\\u003c/strong\\u003e 0.00 seconds","permission":"zeus"},{"format":"html","description":"\\u003cstrong\\u003eTotal time:\\u003c/strong\\u003e 1.02 seconds","permission":"zeus"}]
     }'
     get submission_path(submission)
-
     assert_response :ok
-    assert_match(/Total time/, response.body)
-    assert_match(/Memory usage/, response.body)
+    assert_match /Total time/, response.body
+    assert_match /Memory usage/, response.body
   end
 
-  test 'show page should not contain timing for zeus in anonymous mode' do
+  test "show page should not contain timing for zeus in anonymous mode" do
     sign_in users(:zeus)
     submission = create :submission, :correct
     submission.result = '{
@@ -506,9 +505,8 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     }'
     post toggle_demo_mode_path format: :js
     get submission_path(submission)
-
     assert_response :ok
-    assert_no_match(/Total time/, response.body)
-    assert_no_match(/Memory usage/, response.body)
+    assert_no_match /Total time/, response.body
+    assert_no_match /Memory usage/, response.body
   end
 end

@@ -121,7 +121,7 @@ gem 'has_scope', '~> 0.8.2'
 gem 'rubyzip', '~> 2.3.2'
 
 # memcache
-gem 'dalli', '~> 3.2.6'
+gem 'dalli', '~> 3.2.7'
 
 # Generate 'random' values like usernames, emails, ...
 gem 'faker', '~> 3.2.3'

@@ -142,7 +142,8 @@ GEM
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
     daemons (1.4.1)
-    dalli (3.2.6)
+    dalli (3.2.7)
+      base64
     datadog-ci (0.6.0)
       msgpack
     date (3.3.4)
@@ -573,7 +574,7 @@ DEPENDENCIES
   capybara (~> 3.39.2)
   counter_culture (~> 3.5)
   cssbundling-rails (~> 1.4.0)
-  dalli (~> 3.2.6)
+  dalli (~> 3.2.7)
   ddtrace (~> 1.19.0)
   delayed_job_active_record (~> 4.1.8)
   delayed_job_web (~> 1.4.4)

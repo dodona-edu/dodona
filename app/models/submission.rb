@@ -165,9 +165,9 @@ class Submission < ApplicationRecord
     return '' if res.blank?
 
     json = JSON.parse(res, symbolize_names: true)
-    return json.to_json if user.zeus?
+    return json.to_json if user.zeus? && !Current.demo_mode
 
-    levels = if user.staff? || (course.present? && user.course_admin?(course))
+    levels = if user.staff? || (course.present? && user.course_admin?(course)) || (user.zeus? && Current.demo_mode)
                %w[student staff]
              else
                %w[student]

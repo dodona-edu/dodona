@@ -142,7 +142,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
     thread = find('d-thread')
     within thread do
-      assert_selector '.annotation', count: 1
+      assert_selector '.annotation-text', count: 1
 
       fake_answer_input = find('input')
       fake_answer_input.click
@@ -153,7 +153,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
       click_on 'Reply'
 
-      assert_selector '.annotation', count: 2
+      assert_selector '.annotation-text', count: 2
     end
 
     assert_equal 2, Question.where(submission: submission).count, 'There should be two questions now'

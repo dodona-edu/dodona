@@ -523,7 +523,7 @@ class Activity < ApplicationRecord
     return unless draft_was
     return if valid_submission?
 
-    errors.add(:draft, I18n.t('activerecord.errors.models.activity.no_valid_submission'))
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_valid_submission'))
     self.draft = true
   end
 end

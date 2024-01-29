@@ -2,6 +2,8 @@ nl:
   activerecord:
     errors:
       models:
+        activity:
+          no_valid_submission: "Er moet minstens één geldige oplossing zijn, vooraleer de activiteit kan worden gepubliceerd."
         course_membership:
           at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
         api_token:

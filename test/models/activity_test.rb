@@ -304,4 +304,20 @@ class ActivityTest < ActiveSupport::TestCase
     assert_empty Activity.repository_scope(scope: :my_institution, user: nil)
     assert_empty Activity.repository_scope(scope: :my_institution, user: create(:user, institution_id: nil))
   end
+
+  test 'should have at least one valid submission before publishing' do
+    activity = create :exercise, draft: true
+    activity.update(draft: false)
+
+    assert_not_empty activity.errors
+    assert_predicate activity.reload, :draft?
+
+    # reset errors
+    activity = Activity.find(activity.id)
+    create :correct_submission, exercise: activity
+    activity.update(draft: false)
+
+    assert_empty activity.errors
+    assert_not activity.reload.draft?
+  end
 end

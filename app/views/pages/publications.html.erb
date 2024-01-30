@@ -6,6 +6,41 @@
 
     <div class="card">
       <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Reproducing Predictive Learning Analytics in CS1: Toward Generalizable and Explainable Models for Enhancing Student Retention</h2>
+        <div class="card-subtitle-text">
+          Denis Zhidkikh, Ville Heilala, Charlotte Van Petegem, Peter Dawyndt, Miitta Järvinen, Sami Viitanen, Bram De Wever, Bart Mesuere, Vesa Lappalainen, Lauri Kettunen, Raija Hämäläinen
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-md-8">
+            <h4>Abstract</h4>
+            <p>
+              Predictive learning analytics has been widely explored in educational research to improve student retention and academic success in an introductory programming course in computer science (CS1).
+              General-purpose and interpretable dropout predictions still pose a challenge.
+              Our study aims to reproduce and extend the data analysis of a privacy-first student pass–fail prediction approach proposed by Van Petegem and colleagues (2022) in a different CS1 course.
+              Using student submission and self-report data, we investigated the reproducibility of the original approach, the effect of adding self-reports to the model, and the interpretability of the model features.
+              The results showed that the original approach for student dropout prediction could be successfully reproduced in a different course context and that adding self-report data to the prediction model improved accuracy for the first four weeks.
+              We also identified relevant features associated with dropout in the CS1 course, such as timely submission of tasks and iterative problem solving.
+              When analyzing student behaviour, submission data and self-report data were found to complement each other.
+              The results highlight the importance of transparency and generalizability in learning analytics and the need for future research to identify other factors beyond self-reported aptitude measures and student behaviour that can enhance dropout prediction.
+            </p>
+            <h4>Citation</h4>
+            <p>
+              Zhidkikh, D., Heilala, V., Van Petegem, C., Dawyndt, P., Järvinen, M., Viitanen, S., De Wever, B., Mesuere, B., Lappalainen, V., Kettunen, L., & Hämäläinen, R. (2024). Reproducing Predictive Learning Analytics in CS1: Toward Generalizable and Explainable Models for Enhancing Student Retention. Journal of Learning Analytics, 1-21. <%= link_to "https://doi.org/10.18608/jla.2024.7979", "https://doi.org/10.18608/jla.2024.7979" %>
+            </p>
+          </div>
+          <div class="col-md-4">
+            <%= link_to "https://doi.org/10.18608/jla.2024.7979", class: "publication-image" do %>
+              <%= image_tag "publications/zhidkikh-2024.png" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title card-title-colored">
         <h2 class="card-title-text">Dodona: Learn to code with a virtual co-teacher that supports active learning</h2>
         <div class="card-subtitle-text">
           Charlotte Van Petegem, Rien Maertens, Niko Strijbol, Jorg Van Renterghem, Felix Van der Jeugt, Bram De Wever, Peter Dawyndt, Bart Mesuere
@@ -30,7 +65,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/vanpetegem-2023-2.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1016/j.softx.2023.101578", class: "publication-image" do %>
+              <%= image_tag "publications/vanpetegem-2023-2.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -64,7 +101,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/maertens-2023.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1145/3587103.3594166", class: "publication-image" do %>
+              <%= image_tag "publications/maertens-2023.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -95,7 +134,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/vanpetegem-2023.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1145/3587103.3594165", class: "publication-image" do %>
+              <%= image_tag "publications/vanpetegem-2023.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -129,7 +170,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/strijbol-2023.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1145/3587103.3594189", class: "publication-image" do %>
+              <%= image_tag "publications/strijbol-2023.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -162,7 +205,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/strijbol-2022.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1016/j.softx.2023.101404", class: "publication-image" do %>
+              <%= image_tag "publications/strijbol-2022.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -191,7 +236,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/vanpetegem-2022.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1177/07356331221085595", class: "publication-image" do %>
+              <%= image_tag "publications/vanpetegem-2022.png" %>
+            <% end %>
           </div>
         </div>
       </div>
@@ -223,7 +270,9 @@
             </p>
           </div>
           <div class="col-md-4">
-            <%= image_tag "publications/maertens-2022.png", class: "publication-image" %>
+            <%= link_to "https://doi.org/10.1111/jcal.12662", class: "publication-image" do %>
+              <%= image_tag "publications/maertens-2022.png" %>
+            <% end %>
           </div>
         </div>
       </div>

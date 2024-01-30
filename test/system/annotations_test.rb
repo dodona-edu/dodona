@@ -42,9 +42,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Navigate to code tab' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
     within '.code-listing' do
       @code_lines.each { |code_line| assert_text code_line }
     end
@@ -52,9 +50,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Submission annotation button is present for each code line' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -68,9 +64,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Click on submission annotation button' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -85,9 +79,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Enter annotation and send' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -107,9 +99,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Character counter updates when typing' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -126,9 +116,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Cancel annotation form' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -144,9 +132,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: @instance, user: @zeus
 
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within '.annotation' do
       assert_text annot.annotation_text
@@ -173,9 +159,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: @instance, user: @zeus
 
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within '.annotation' do
       assert_text annot.annotation_text
@@ -192,20 +176,14 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'User moving back and forth over code and tests' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     click_on 'Echo'
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -213,9 +191,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     end
 
     click_on 'Echo'
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -226,9 +202,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   test 'Edit valid annotation -- Too large input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -255,9 +229,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   test 'Edit valid annotation -- Zero length input text' do
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -286,9 +258,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     # After reload, make sure no replacing has taken place
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -300,9 +270,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Enter invalid annotation and send - No content' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -322,18 +290,14 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     # After reload, make sure no creation has taken place
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 0
   end
 
   test 'Enter invalid annotation and send - Content too long' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -351,9 +315,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
   test 'Enter global annotation' do
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     click_on 'Add global comment'
 
@@ -371,9 +333,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     # After reload, make sure creation has taken place
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -385,9 +345,7 @@ class AnnotationsTest < ApplicationSystemTestCase
   test 'Edit global annotation' do
     annot = create :annotation, submission: @instance, user: @zeus, line_nr: nil
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -410,9 +368,7 @@ class AnnotationsTest < ApplicationSystemTestCase
 
     # After reload, make sure creation has taken place
     visit(submission_path(id: @instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -425,9 +381,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     instance = new_submission
     create :annotation, submission: instance, user: @zeus
     visit(submission_path(id: instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -451,9 +405,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: instance, user: @zeus
     create :annotation, submission: instance, user: @zeus, thread_root: annot
     visit(submission_path(id: instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within 'd-thread' do
       assert_selector '.annotation', count: 2
@@ -471,9 +423,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     annot = create :annotation, submission: instance, user: @zeus
     create :annotation, submission: instance, user: @zeus, thread_root: annot
     visit(submission_path(id: instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within 'd-thread' do
       assert_selector '.annotation', count: 2
@@ -499,9 +449,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     create :annotation, submission: instance, user: @zeus, thread_root: annot
     create :annotation, submission: instance, user: @zeus, thread_root: annot
     visit(submission_path(id: instance.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within 'd-thread' do
       assert_selector '.annotation', count: 3

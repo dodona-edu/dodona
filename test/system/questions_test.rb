@@ -32,9 +32,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask question for each line of the available lines of code' do
     visit(submission_path(id: @submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -58,9 +56,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask global question about code' do
     visit(submission_path(id: @submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     within '.code-table' do
       click_on 'Ask a question about your code'
@@ -72,9 +68,7 @@ class QuestionsTest < ApplicationSystemTestCase
   test 'Can submit a question' do
     submission = new_submission
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     question = Faker::Lorem.question
 
@@ -109,9 +103,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -136,9 +128,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -169,9 +159,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
 
@@ -188,9 +176,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -211,9 +197,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: submission.id))
-    find('body')
-    find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab').click
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do

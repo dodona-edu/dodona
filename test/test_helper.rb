@@ -44,7 +44,7 @@ class ActiveSupport::TestCase
   fixtures :all
 
   # Run tests in parallel with specified workers
-  parallelize(workers: 1)
+  parallelize(workers: :number_of_processors)
 
   parallelize_setup do |worker|
     SimpleCov.command_name "#{SimpleCov.command_name}-#{worker}"

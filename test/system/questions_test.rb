@@ -34,7 +34,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: @submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -60,7 +60,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: @submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within '.code-table' do
       click_on 'Ask a question about your code'
@@ -74,7 +74,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     question = Faker::Lorem.question
 
@@ -111,7 +111,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
     within thread do
@@ -138,7 +138,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
     within thread do
@@ -171,7 +171,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
 
@@ -190,7 +190,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
     within thread do
@@ -213,7 +213,7 @@ class QuestionsTest < ApplicationSystemTestCase
     visit(submission_path(id: submission.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
     within thread do

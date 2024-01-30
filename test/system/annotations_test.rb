@@ -44,7 +44,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
     within '.code-listing' do
       @code_lines.each { |code_line| assert_text code_line }
     end
@@ -54,7 +54,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -70,7 +70,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -87,7 +87,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -109,7 +109,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -128,7 +128,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -146,7 +146,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within '.annotation' do
       assert_text annot.annotation_text
@@ -175,7 +175,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within '.annotation' do
       assert_text annot.annotation_text
@@ -194,18 +194,18 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     click_on 'Echo'
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     annot = create :annotation, submission: @instance, user: @zeus
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -215,7 +215,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     click_on 'Echo'
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -228,7 +228,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -257,7 +257,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -288,7 +288,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -302,7 +302,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -324,7 +324,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 0
   end
@@ -333,7 +333,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -353,7 +353,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     click_on 'Add global comment'
 
@@ -373,7 +373,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -387,7 +387,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -412,7 +412,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: @instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     assert_selector '.annotation', count: 1
     within '.annotation' do
@@ -427,7 +427,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     thread = find('d-thread')
     within thread do
@@ -453,7 +453,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within 'd-thread' do
       assert_selector '.annotation', count: 2
@@ -473,7 +473,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within 'd-thread' do
       assert_selector '.annotation', count: 2
@@ -501,7 +501,7 @@ class AnnotationsTest < ApplicationSystemTestCase
     visit(submission_path(id: instance.id))
     find('body')
     find_by_id('page-wrapper')
-    find_by_id('link-to-code-tab', wait: 5).click
+    find_by_id('link-to-code-tab').click
 
     within 'd-thread' do
       assert_selector '.annotation', count: 3

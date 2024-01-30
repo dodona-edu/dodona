@@ -518,12 +518,20 @@ class Activity < ApplicationRecord
     submissions.any?(&:accepted?)
   end
 
+  def valid_config?
+    config
+    true
+  rescue ConfigParseError
+    false
+  end
+
   def require_correct_submission_before_publish
     return if draft?
     return unless draft_was
-    return if correct_submission?
 
-    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_correct_submission'))
-    self.draft = true
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_correct_submission')) unless correct_submission?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.not_valid')) if not_valid?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.invalid_config')) unless valid_config?
+    self.draft = true if errors.any?
   end
 end

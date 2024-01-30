@@ -57,7 +57,7 @@ class Activity < ApplicationRecord
   has_many :labels, through: :activity_labels
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
-  validate :require_valid_submission_before_publish, on: :update
+  validate :require_correct_submission_before_publish, on: :update
 
   token_generator :repository_token, length: 64
   token_generator :access_token
@@ -512,18 +512,18 @@ class Activity < ApplicationRecord
     hash
   end
 
-  def valid_submission?
+  def correct_submission?
     return true if content_page?
 
     submissions.any?(&:accepted?)
   end
 
-  def require_valid_submission_before_publish
+  def require_correct_submission_before_publish
     return if draft?
     return unless draft_was
-    return if valid_submission?
+    return if correct_submission?
 
-    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_valid_submission'))
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_correct_submission'))
     self.draft = true
   end
 end

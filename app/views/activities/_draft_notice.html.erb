@@ -1,13 +1,36 @@
 <% if @activity.draft? %>
-  <div class="alert alert-warning">
+  <div class="alert alert-warning draft-notice">
     <i class="mdi mdi-file-document-edit-outline"></i>
-    <%= t "activities.show.alert_draft_html" %>
+    <%= t "activities.show.alert_draft.text_html" %>
     <% if policy(@activity).edit? %>
       <% edit_path = @series.present? ?
                        course_series_activity_path(@series&.course, @series, @activity, {activity: {draft: false}}) :
                        activity_path(@activity, {activity: {draft: false}})
       %>
-      <%= link_to t("activities.show.alert_draft_edit"), edit_path, method: :put %>
+
+      <% if @activity.ok? && @activity.correct_submission? && @activity.valid_config?  %>
+        <%= link_to t("activities.show.alert_draft.edit"), edit_path, method: :put %>
+      <% else %>
+        <div style="margin-left: 5px; margin-top: 8px;">
+          <%= t("activities.show.alert_draft.before_publish") %>
+          <div style="margin-left: 16px;margin-top: 8px;">
+            <div class="form-check">
+              <input type="checkbox" id="valid-config" class="form-check-input" disabled <%= "checked" if @activity.valid_config? %>>
+              <label class="form-check-label" for="valid-config"><%= t('activities.show.alert_draft.valid_config') %></label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" id="is-valid" class="form-check-input" disabled <%= "checked" if @activity.ok? %>>
+              <label class="form-check-label" for="is-valid"><%= t('activities.show.alert_draft.is_valid') %></label>
+            </div>
+            <% if @activity.exercise? %>
+              <div class="form-check">
+                <input type="checkbox" id="correct-submission" class="form-check-input" disabled <%= "checked" if @activity.correct_submission? %>>
+                <label class="form-check-label" for="correct-submission"><%= t('activities.show.alert_draft.correct_submission') %></label>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
     <% end %>
   </div>

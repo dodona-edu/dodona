@@ -101,8 +101,13 @@ en:
       preloaded_info: "We have preloaded your latest submission into the editor."
       preloaded_clear: Clear editor.
       preloaded_restore: Restore the initial code.
-      alert_draft_html: This activity is a <a href="https://docs.dodona.be/en/faq/activities/#what-is-a-draft-activity" target="_blank">draft</a> and thus not visible for students.
-      alert_draft_edit: Publish activity.
+      alert_draft:
+        text_html: This activity is a <a href="https://docs.dodona.be/en/faq/activities/#what-is-a-draft-activity" target="_blank">draft</a> and thus not visible for students.
+        edit: Publish activity.
+        before_publish: "Before you can publish this activity, the following conditions must be met:"
+        valid_config: "The JSON configuration must be valid."
+        is_valid: "The activity must have a name and a description."
+        correct_submission: "There must be at least one correct submission."
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

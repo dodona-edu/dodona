@@ -443,6 +443,19 @@ class Activity < ApplicationRecord
     end
   end
 
+  def correct_submission?
+    return true if content_page?
+
+    submissions.any?(&:accepted?)
+  end
+
+  def valid_config?
+    config
+    true
+  rescue ConfigParseError
+    false
+  end
+
   private
 
   def activity_status_for(user, series = nil)
@@ -510,19 +523,6 @@ class Activity < ApplicationRecord
 
     hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
-  end
-
-  def correct_submission?
-    return true if content_page?
-
-    submissions.any?(&:accepted?)
-  end
-
-  def valid_config?
-    config
-    true
-  rescue ConfigParseError
-    false
   end
 
   def require_correct_submission_before_publish

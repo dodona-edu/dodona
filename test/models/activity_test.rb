@@ -305,11 +305,11 @@ class ActivityTest < ActiveSupport::TestCase
     assert_empty Activity.repository_scope(scope: :my_institution, user: create(:user, institution_id: nil))
   end
 
-  test 'should have at least one valid submission before publishing' do
+  test 'should have at least one valid submission and a valid config before publishing' do
     activity = create :exercise, draft: true
     activity.update(draft: false)
 
-    assert_not_empty activity.errors
+    assert_equal 2, activity.errors.count
     assert_predicate activity.reload, :draft?
 
     # reset errors
@@ -317,7 +317,19 @@ class ActivityTest < ActiveSupport::TestCase
     create :correct_submission, exercise: activity
     activity.update(draft: false)
 
-    assert_empty activity.errors
-    assert_not activity.reload.draft?
+    assert_equal 1, activity.errors.count
+    assert_predicate activity.reload, :draft?
+
+    # reset errors
+    activity = Activity.find(activity.id)
+    stub_status(activity, 'ok')
+    # don't do config related checks as there is no config
+    activity.stubs(:check_memory_limit)
+    activity.stubs(:update_config)
+
+    activity.update(draft: false)
+
+    assert_equal 0, activity.errors.count
+    assert_not_predicate activity.reload, :draft?
   end
 end

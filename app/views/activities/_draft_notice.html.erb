@@ -11,7 +11,7 @@
       <% if @activity.ok? && @activity.correct_submission? && @activity.valid_config?  %>
         <%= link_to t("activities.show.alert_draft.edit"), edit_path, method: :put %>
       <% else %>
-        <div style="margin-left: 5px; margin-top: 8px;">
+        <div style="margin-left: 30px; margin-top: 8px;">
           <%= t("activities.show.alert_draft.before_publish") %>
           <div style="margin-left: 16px;margin-top: 8px;">
             <div class="form-check">

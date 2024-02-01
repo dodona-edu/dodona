@@ -1327,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@2.1.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.1.1.tgz#eb156e942ed57659675e14785d2a2b51c5e693d9"
-  integrity sha512-QCwsbuLARc+sapKCJpQm1WJDA6KSzcXqfecdhJEjUddv5AZFpDDCY9TWggQ5xv9oipge/xz4c5FtM8eJr02zUQ==
+"@dodona/papyros@2.2.0-beta.0":
+  version "2.2.0-beta.0"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.2.0-beta.0.tgz#4fd9f1f98fc456335f271a664dbc582ca40a4e22"
+  integrity sha512-7xeZW+AzWeBsfgzZbjnPIjLPSLEL7geDQ2TJl8Wi7gWaoevEWg5tdqu+dO1OJn+G8jYauu1yq7paywWag2knXg==
   dependencies:
     "@codemirror/autocomplete" "^6.11.1"
     "@codemirror/commands" "^6.3.1"
@@ -1344,6 +1344,7 @@
     "@codemirror/view" "^6.22.1"
     "@dodona/trace-component" "1.1.6"
     "@lezer/common" "^1.1.0"
+    codemirror-readonly-ranges "^0.1.0-alpha.2"
     comlink "^4.4.1"
     comsync "^0.0.9"
     escape-html "^1.0.3"
@@ -3204,6 +3205,13 @@ codemirror-lang-r@^0.1.0-2:
   dependencies:
     "@codemirror/language" "^6.0.0"
     lezer-r "^0.1.0-5"
+
+codemirror-readonly-ranges@^0.1.0-alpha.2:
+  version "0.1.0-alpha.2"
+  resolved "https://registry.yarnpkg.com/codemirror-readonly-ranges/-/codemirror-readonly-ranges-0.1.0-alpha.2.tgz#90cf1245d81efb60e8b87b5511211b7be8141d0f"
+  integrity sha512-PjT/gDAn9cm7wN/YigxgBMsxYbO52bvPQLbN8dXG9seHNANNE9KELteFaS00/+1UR4fAnCq7Ueh+KmRTlPgFTw==
+  dependencies:
+    range-analyzer ">= 0.1.1-alpha.1"
 
 collect-v8-coverage@^1.0.0:
   version "1.0.2"
@@ -6880,6 +6888,11 @@ randombytes@^2.1.0:
   integrity sha512-vYl3iOX+4CKUWuxGi9Ukhie6fsqXqS9FE2Zaic4tNFD2N2QQaXOMFbuKK4QmDHC0JO6B1Zp41J0LpT0oR68amQ==
   dependencies:
     safe-buffer "^5.1.0"
+
+"range-analyzer@>= 0.1.1-alpha.1":
+  version "0.1.1-alpha.2"
+  resolved "https://registry.yarnpkg.com/range-analyzer/-/range-analyzer-0.1.1-alpha.2.tgz#2e8bf334fe3f53391a5e69cd157a3af7af85ef58"
+  integrity sha512-Ad9J4t3zljH/DHNSDthAFyQdd5DniHTaqES/oTwAFB7prV7E4u01et6WYCpqbJSmUDC05XlMMR2ycO84Hi1IvA==
 
 react-is@^17.0.1:
   version "17.0.2"

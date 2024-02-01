@@ -21,7 +21,7 @@
     "@codemirror/language-data": "^6.4.0",
     "@codemirror/state": "^6.3.3",
     "@codemirror/view": "^6.23.1",
-    "@dodona/papyros": "2.1.1",
+    "@dodona/papyros": "2.2.0-beta.0",
     "@dodona/pyodide-trace-library": "^2.0.7",
     "@lezer/common": "^1.2.1",
     "@lezer/highlight": "^1.2.0",

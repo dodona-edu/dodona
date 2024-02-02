@@ -57,6 +57,7 @@ class Activity < ApplicationRecord
   has_many :labels, through: :activity_labels
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
+  validate :require_correct_submission_before_publish, on: :update
 
   token_generator :repository_token, length: 64
   token_generator :access_token
@@ -442,6 +443,19 @@ class Activity < ApplicationRecord
     end
   end
 
+  def correct_submission?
+    return true if content_page?
+
+    submissions.any?(&:accepted?)
+  end
+
+  def valid_config?
+    config
+    true
+  rescue ConfigParseError
+    false
+  end
+
   private
 
   def activity_status_for(user, series = nil)
@@ -509,5 +523,15 @@ class Activity < ApplicationRecord
 
     hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
+  end
+
+  def require_correct_submission_before_publish
+    return if draft?
+    return unless draft_was
+
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_correct_submission')) unless correct_submission?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.not_valid')) if not_valid?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.invalid_config')) unless valid_config?
+    self.draft = true if errors.any?
   end
 end

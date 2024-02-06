@@ -9,18 +9,8 @@ import { Offcanvas } from "bootstrap";
 const DEBUG_BUTTON_ID = "__papyros-debug-code-btn";
 
 export function initTutor(submissionCode: string): void {
-    let traceGenerator: TraceGenerator;
-    let traceGeneratorReady: Promise<void>;
     function init(): void {
         initTutorLinks();
-        // if (document.querySelectorAll(".tutormodal").length == 1) {
-        //     // initFullScreen();
-        // } else {
-        //     const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
-        //     if (tutorModal) {
-        //         tutorModal.remove();
-        //     }
-        // }
     }
 
     function initTutorLinks(): void {
@@ -60,34 +50,6 @@ export function initTutor(submissionCode: string): void {
         }));
     }
 
-    // function initFullScreen(): void {
-    //     fscreen.addEventListener("fullscreenchange", resizeFullScreen);
-    //
-    //     document.querySelector("#tutor #fullscreen-button").addEventListener("click", () => {
-    //         const tutor = document.querySelector("#tutor");
-    //         if (fscreen.fullscreenElement) {
-    //             document.querySelector("#tutor .modal-dialog").classList.remove("modal-fullscreen");
-    //             fscreen.exitFullscreen();
-    //         } else {
-    //             document.querySelector("#tutor .modal-dialog").classList.add("modal-fullscreen");
-    //             fscreen.requestFullscreen(tutor);
-    //         }
-    //     });
-    // }
-
-    // function resizeFullScreen(): void {
-    //     const tutor = document.querySelector("#tutor");
-    //     const tutorviz = document.querySelector("#tutorviz") as HTMLElement;
-    //     if (!fscreen.fullscreenElement) {
-    //         tutor.classList.remove("fullscreen");
-    //         tutorviz.style.height = tutorviz.dataset.standardheight;
-    //     } else {
-    //         tutorviz.dataset.standardheight = `${tutorviz.clientHeight}px`;
-    //         tutor.classList.add("fullscreen");
-    //         tutorviz.style.height = "100%";
-    //     }
-    // }
-
     async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): Promise<void> {
         const papyros = await initPapyros(ProgrammingLanguage.Python);
 
@@ -96,81 +58,17 @@ export function initTutor(submissionCode: string): void {
         (papyros.codeRunner.inputManager.inputHandler as BatchInputHandler).batchEditor.setText(stdin);
         papyros.codeRunner.editor.testCode = statements;
 
+        // make full url from path
+        const hrefFilesFull = Object.keys(hrefFiles).reduce((result, key) => {
+            result[key] = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ""}/nl/exercises/${exerciseId}/${hrefFiles[key]}`;
+            return result;
+        }, {});
+
+        await papyros.codeRunner.provideFiles(inlineFiles, hrefFilesFull);
+
         new Offcanvas(document.getElementById(OFFCANVAS_ID)).show();
         document.getElementById(DEBUG_BUTTON_ID).click();
-        //
-        //
-        // if (!traceGenerator) {
-        //     // only setup the traceGenerator upon first use, as it is a heavy operation
-        //     traceGenerator = new TraceGenerator();
-        //     traceGeneratorReady = traceGenerator.setup();
-        // }
-        //
-        // const lines = studentCode.split("\n");
-        // // find and remove main
-        // let i = 0;
-        // let remove = false;
-        // const sourceArray = [];
-        // while (i < lines.length) {
-        //     if (remove && !lines[i].match(/^\s+.*/g)) {
-        //         remove = false;
-        //     }
-        //     if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {
-        //         remove = true;
-        //     }
-        //     if (!remove) {
-        //         sourceArray.push(lines[i]);
-        //     }
-        //     i += 1;
-        // }
-        // sourceArray.push(statements);
-        // const sourceCode = sourceArray.join("\n");
-        //
-        // // make full url from path
-        // const hrefFilesFull = Object.keys(hrefFiles).reduce((result, key) => {
-        //     result[key] = `${location.protocol}//${location.hostname}${location.port ? `:${location.port}` : ""}/nl/exercises/${exerciseId}/${hrefFiles[key]}`;
-        //     return result;
-        // }, {});
-        //
-        // showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
-        // const modalShown = new Promise<void>(resolve => {
-        //     const modal = document.querySelector("#tutor #info-modal");
-        //     modal.addEventListener("shown.bs.modal", () => resolve());
-        // });
-        //
-        // const content = document.querySelector("#tutorcontent");
-        // if (content) {
-        //     content.innerHTML = `<div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
-        //     <div class="progressbar bar bar1" style="width: 0%;"></div>
-        //     <div class="bufferbar bar bar2" style="width: 100%;"></div>
-        //     <div class="auxbar bar bar3" style="width: 0%;"></div>
-        // </div>`;
-        // }
-        //
-        // await traceGeneratorReady;
-        // const result = await traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull);
-        // await modalShown;
-        // createTutor(result);
     }
-
-    // function createTutor(codeTrace: string): void {
-    //     const modal = document.querySelector("#tutor #info-modal");
-    //
-    //     const content = document.querySelector("#tutorcontent");
-    //     if (content) {
-    //         content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
-    //         document.querySelector("#tutorviz").addEventListener("load", () => {
-    //             window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
-    //         });
-    //     }
-    //
-    //     modal.addEventListener("hidden.bs.modal", () => {
-    //         if (fscreen.fullscreenElement) {
-    //             document.querySelector("#tutor .modal-dialog").classList.remove("modal-fullscreen");
-    //             fscreen.exitFullscreen();
-    //         }
-    //     });
-    // }
 
     init();
 }

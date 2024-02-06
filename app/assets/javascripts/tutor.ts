@@ -64,9 +64,9 @@ export function initTutor(submissionCode: string): void {
             return result;
         }, {});
 
+        new Offcanvas(document.getElementById(OFFCANVAS_ID)).show();
         await papyros.codeRunner.provideFiles(inlineFiles, hrefFilesFull);
 
-        new Offcanvas(document.getElementById(OFFCANVAS_ID)).show();
         document.getElementById(DEBUG_BUTTON_ID).click();
     }
 

@@ -397,21 +397,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should retrieve input serviceworker script' do
-    @instance = create :exercise
-    get input_service_worker_activity_path(@instance)
-
-    assert_response :success
-    assert_equal('text/javascript', response.content_type)
-
-    series = create :series
-    series.exercises << @instance
-
-    get course_activity_input_service_worker_path(series.course, @instance)
-
-    assert_response :success
-    assert_equal('text/javascript', response.content_type)
-
-    get course_series_activity_input_service_worker_path(series.course, series, @instance)
+    get input_service_worker_path
 
     assert_response :success
     assert_equal('text/javascript', response.content_type)

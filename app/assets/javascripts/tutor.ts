@@ -1,7 +1,3 @@
-import fscreen from "fscreen";
-import { showInfoModal } from "modal";
-import { html } from "lit";
-import { TraceGenerator } from "@dodona/pyodide-trace-library";
 import { initPapyros, OFFCANVAS_ID } from "coding_scratchpad";
 import { InputMode, ProgrammingLanguage } from "@dodona/papyros";
 import { BatchInputHandler } from "@dodona/papyros/dist/input/BatchInputHandler";

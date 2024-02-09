@@ -43,6 +43,7 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
                 locale: i18n.locale(),
                 inputMode: InputMode.Interactive,
                 channelOptions: {
+                    root: "/",
                     serviceWorkerName: "inputServiceWorker.js"
                 }
             });

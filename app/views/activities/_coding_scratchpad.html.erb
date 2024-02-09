@@ -9,8 +9,8 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
 <div class="offcanvas offcanvas-end" tabindex="-1" id="scratchpad-offcanvas" data-bs-keyboard="false">
   <div class="scratchpad-header">
   <h4>
-      <%= activity_icon(@activity, 24) %>
-      &nbsp; <%= t('.title', programming_language: @activity.programming_language.name.titleize) %>
+      <%= activity_icon(activity, 24) %>
+      &nbsp; <%= t('.title', programming_language: activity.programming_language.name.titleize) %>
   </h4>
   <div class="flex-spacer"></div>
   <button class="btn-close btn-close-white" id="scratchpad-offcanvas-close-btn"
@@ -45,7 +45,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
         </div>
         <div class="tab-content" id="scratchpad-tab-content">
           <div  id="scratchpad-description" role="tabpanel" class="tab-pane fade show active">
-            <%= description_iframe @activity %>
+            <%= description_iframe activity %>
           </div>
           <div id="scratchpad-trace-wrapper" role="tabpanel" class="tab-pane fade"></div>
         </div>
@@ -56,7 +56,7 @@ data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="
 <script type="text/javascript">
   dodona.ready.then(function () {
         dodona.initCodingScratchpad(
-            "<%= escape_javascript @activity.programming_language&.name %>"
+            "<%= escape_javascript activity.programming_language&.name %>"
         );
     });
 </script>

@@ -460,30 +460,7 @@ class FeedbackTableRenderer
     @builder.script do
       escaped = escape_javascript(@code.strip)
       @builder << 'dodona.ready.then(function() {'
-      @builder << "document.body.append(document.getElementById('tutor'));"
       @builder << "dodona.initTutor(\"#{escaped}\");});"
-    end
-
-    # Tutor HTML
-    @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
-        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
-          @builder.div(class: 'modal-content') do
-            @builder.div(class: 'modal-header') do
-              @builder.h4(class: 'modal-title') {}
-              @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
-                  @builder.i('', class: 'mdi mdi-fullscreen')
-                end
-                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close')
-                end
-              end
-            end
-            @builder.div(class: 'modal-body') {}
-          end
-        end
-      end
     end
   end
 end

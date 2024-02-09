@@ -9,11 +9,6 @@ class FeedbacksController < ApplicationController
 
   has_scope :by_status, as: 'status'
 
-  content_security_policy only: %i[show] do |policy|
-    # allow sandboxed tutor
-    policy.frame_src -> { [sandbox_url] }
-  end
-
   def show
     @crumbs = [
       [@feedback.evaluation.series.course.name, course_url(@feedback.evaluation.series.course)],

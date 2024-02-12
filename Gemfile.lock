@@ -144,11 +144,11 @@ GEM
     daemons (1.4.1)
     dalli (3.2.7)
       base64
-    datadog-ci (0.6.0)
+    datadog-ci (0.7.0)
       msgpack
     date (3.3.4)
-    ddtrace (1.19.0)
-      datadog-ci (~> 0.6.0)
+    ddtrace (1.20.0)
+      datadog-ci (~> 0.7.0)
       debase-ruby_core_source (= 3.3.1)
       libdatadog (~> 5.0.0.1.0)
       libddwaf (~> 1.14.0.0.0)
@@ -575,7 +575,7 @@ DEPENDENCIES
   counter_culture (~> 3.5)
   cssbundling-rails (~> 1.4.0)
   dalli (~> 3.2.7)
-  ddtrace (~> 1.19.0)
+  ddtrace (~> 1.20.0)
   delayed_job_active_record (~> 4.1.8)
   delayed_job_web (~> 1.4.4)
   devise (~> 4.9.3)

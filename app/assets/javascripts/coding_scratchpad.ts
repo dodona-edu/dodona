@@ -129,8 +129,8 @@ export function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): 
         const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
         showButton.classList.add("offcanvas-show-btn");
         showButton.classList.remove("hidden");
-        showButton.addEventListener("click", () => {
-            initPapyros(programmingLanguage);
+        showButton.addEventListener("click", async () => {
+            const papyros = await initPapyros(programmingLanguage);
             editor ||= window.dodona.editor;
             if (editor) { // Start with code from the editor, if there is any
                 const editorCode = editor.state.doc.toString();

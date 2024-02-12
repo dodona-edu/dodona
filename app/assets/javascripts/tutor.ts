@@ -2,7 +2,7 @@ import { initPapyros, OFFCANVAS_ID } from "coding_scratchpad";
 import { InputMode, ProgrammingLanguage } from "@dodona/papyros";
 import { BatchInputHandler } from "@dodona/papyros/dist/input/BatchInputHandler";
 import { Offcanvas } from "bootstrap";
-const DEBUG_BUTTON_ID = "__papyros-debug-code-btn";
+import { RunMode } from "@dodona/papyros/dist/Backend";
 
 export function initTutor(submissionCode: string): void {
     function init(): void {
@@ -63,7 +63,7 @@ export function initTutor(submissionCode: string): void {
         new Offcanvas(document.getElementById(OFFCANVAS_ID)).show();
         await papyros.codeRunner.provideFiles(inlineFiles, hrefFilesFull);
 
-        document.getElementById(DEBUG_BUTTON_ID).click();
+        await papyros.codeRunner.runCode(RunMode.Debug);
     }
 
     init();

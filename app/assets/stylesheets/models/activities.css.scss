@@ -203,23 +203,3 @@ center img {
     background-color: var(--d-code-bg);
   }
 }
-
-.draft-notice {
-  .form-check-input[disabled] ~ .form-check-label, .form-check-input:disabled ~ .form-check-label {
-    opacity: 1;
-  }
-
-  .form-check-input:disabled {
-    opacity: 1;
-  }
-
-  .form-check-input:checked {
-    background-color: var(--d-warning);
-    border-color: var(--d-warning);
-  }
-
-  .form-check-input {
-    background-color: transparent;
-    border-color: var(--d-warning);
-  }
-}

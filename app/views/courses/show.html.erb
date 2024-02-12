@@ -53,10 +53,15 @@
 
       <% if current_user&.member_of? @course or policy(@course).copy? or policy(@course).scoresheet? %>
         <div class="card-actions card-border">
+          <% if @course.featured? and policy(@course).copy? %>
+            <%= link_to new_course_url(copy_options: {base_id: @course.id}), class: "btn btn-filled with-icon" do %>
+              <i class="mdi mdi-content-copy mdi-18"></i> <%= t(".copy") %>
+            <% end %>
+          <% end %>
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn btn-text', data: {confirm: t('general.are_you_sure')} %>
           <% end %>
-          <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
+          <% if (!@course.featured? and policy(@course).copy?) or policy(@course).scoresheet? or policy(@course).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">
               <i class="mdi mdi-dots-vertical"></i>
             </a>

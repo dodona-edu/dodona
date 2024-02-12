@@ -26,11 +26,7 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
         let papyros: Papyros | undefined = undefined;
         let editor: EditorView | undefined = undefined;
         const closeButton = document.getElementById(CLOSE_BUTTON_ID);
-        // To prevent horizontal scrollbar issues, we delay rendering the button
-        // until after the page is loaded
         const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
-        showButton.classList.add("offcanvas-show-btn");
-        showButton.classList.remove("hidden");
         showButton.addEventListener("click", async function () {
             if (!papyros) { // Only create Papyros once per session, but only when required
                 // Papyros registers a service worker on a specific path

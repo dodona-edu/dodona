@@ -123,6 +123,22 @@ end %>
               <div id="editor-window" class='tex2jax_ignore'>
                 <div class="highlighter-rouge" id="editor-text"><%= @code %></div>
               </div>
+              <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+                <div class="mt-1">
+                  <button class="btn btn-outline with-icon float-end" type="button" data-bs-toggle="offcanvas"
+                          data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
+                    <i class="mdi mdi-clipboard-arrow-right-outline"></i>
+                    <%= t '.to_sandbox' %>
+                  </button>
+                  <script type="text/javascript">
+                    dodona.ready.then(function () {
+                      dodona.initCodingScratchpad(
+                        "<%= escape_javascript @activity.programming_language&.name %>"
+                      );
+                    });
+                  </script>
+                </div>
+              <% end %>
               <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
             <% end %>
           </div>

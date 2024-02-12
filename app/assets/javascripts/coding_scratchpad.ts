@@ -21,8 +21,8 @@ const CODE_TRACE_PARENT_ID = "scratchpad-trace-wrapper";
 const TRACE_TAB_ID = "scratchpad-trace-tab";
 const DESCRIPTION_TAB_ID = "scratchpad-description-tab";
 
-let papyros: Papyros | undefined = undefined;
-let editor: EditorView | undefined = undefined;
+let papyros: Papyros | undefined;
+let editor: EditorView | undefined;
 export async function initPapyros(programmingLanguage: ProgrammingLanguage): Promise<Papyros> {
     if (!papyros) { // Only create Papyros once per session, but only when required
         // Papyros registers a service worker on a specific path

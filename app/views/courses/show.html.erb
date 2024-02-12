@@ -64,7 +64,7 @@
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn btn-text', data: {confirm: t('general.are_you_sure')} %>
-          <% elsif @course.featured? and policy(@course).copy?%>
+          <% elsif @course.featured? and policy(@course).copy? %>
             <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret if @course.secret_required?(current_user)), class: 'btn btn-text' %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>

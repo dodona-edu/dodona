@@ -32,7 +32,7 @@
               <%= markdown(@course.description) %>
             <% end %>
           </div>
-          <% if @course.featured? && policy(@course).copy?%>
+          <% if @course.featured? && policy(@course).copy? %>
             <div class="col-sm-6 col-12">
               <div class="callout callout-info">
                 <p><%= t(".copy_info_html") %></p>

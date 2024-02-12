@@ -122,7 +122,7 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
     return papyros;
 }
 
-function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
+export function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
         // To prevent horizontal scrollbar issues, we delay rendering the button
         // until after the page is loaded
@@ -146,5 +146,3 @@ function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
         });
     }
 }
-
-export { initCodingScratchpad };

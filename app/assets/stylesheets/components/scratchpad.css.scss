@@ -193,3 +193,31 @@
   font-size: 24px;
   line-height: 26px;
 }
+
+.papyros-test-code,
+.papyros-test-code.cm-active-line,
+.papyros-test-code-widget,
+.papyros-bottom-padding-widget div{
+  background-color: rgba(var(--d-success-rgb), 0.1);
+}
+
+.papyros-test-code-widget {
+  color: var(--d-on-surface-muted);
+}
+
+.papyros-icon-link {
+  color: var(--d-primary);
+
+  .mdi::before {
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  &:hover {
+    color: rgba(var(--d-primary-rgb), 0.8);
+  }
+}
+
+.papyros-state-card.cm-panels {
+  top: -29px;
+}

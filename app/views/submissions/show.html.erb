@@ -29,6 +29,9 @@
     </div>
   </div>
 </div>
+<% if @submission.exercise.programming_language&.name == 'python' %>
+  <%= render partial: 'activities/coding_scratchpad', locals: { activity: @submission.exercise } %>
+<% end %>
 <% if @submission.queued? || @submission.running? %>
   <script>setTimeout(function () {
       location.reload(1);

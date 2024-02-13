@@ -5,6 +5,7 @@ module CoursesHelper
 
     secret = args[:secret]
     membership = args[:membership]
+    css_class = args[:class] || 'btn btn-filled'
 
     if membership.nil? || membership.unsubscribed?
       if course.open_for_user?(current_user) || current_user.nil?
@@ -13,13 +14,13 @@ module CoursesHelper
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn btn-filled'
+                  class: css_class
         else
           link_to t('courses.show.subscribe'),
                   subscribe_course_path(@course, secret: secret),
                   title: t('courses.registration.registration-tooltip'),
                   method: :post,
-                  class: 'btn btn-filled'
+                  class: css_class
         end
       else
         tag.p t("courses.show.registration-#{@course.registration}-info", institution: @course.institution&.name)

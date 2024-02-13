@@ -788,6 +788,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     repo = create :repository, :git_stubbed
     repo.admins << user
     exercise = create :exercise, repository: repo, draft: true
+    create :correct_submission, exercise: exercise
 
     put activity_url(exercise), params: { activity: { draft: false } }
 

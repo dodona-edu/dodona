@@ -1,6 +1,7 @@
 import { Toast } from "./toast";
 import { fetch, getParentByClassName } from "utilities";
 import { i18n } from "i18n/i18n";
+import { SeriesIcon } from "components/series_icon";
 
 function initFavoriteButtons(doc: Document | HTMLElement = document): void {
     function init(): void {
@@ -44,6 +45,11 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
                 cloneFavButton.setAttribute("title", i18n.t("js.unfavorite-course-do"));
                 new bootstrap.Tooltip(cloneFavButton); // is enabled by default
                 cloneFavButton.addEventListener("click", toggleFavorite);
+                // hack to fix double rendering of content of lit element 'd-series-icon'
+                clone.querySelectorAll("d-series-icon").forEach((el: SeriesIcon) => {
+                    el.replaceChildren();
+                    el.requestUpdate();
+                });
             } else {
                 new Toast(i18n.t("js.favorite-course-failed"));
             }

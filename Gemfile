@@ -6,7 +6,7 @@ ruby '~> 3.1.2'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.1.3'
 # Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.5'
+gem 'mysql2', '~> 0.5.6'
 # Use Puma as the app server
 gem 'puma', '~> 6.4.2'
 
@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.17.1', require: false
+gem 'bootsnap', '~> 1.18.3', require: false
 
 # used to validate container responses
 gem 'json_schemer', '~> 2.1.1'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.0'
+gem 'nokogiri', '~> 1.16.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -132,10 +132,10 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.0'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.19.0'
+gem 'ddtrace', '~> 1.20.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.3.1'
+gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.5'

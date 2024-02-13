@@ -49,7 +49,7 @@ export function initTutor(submissionCode: string): void {
     async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): Promise<void> {
         const papyros = await initPapyros(ProgrammingLanguage.Python);
 
-        if (papyros.codeRunner.getState() != RunState.Ready && papyros.codeRunner.getState() != RunState.Loading) {
+        if (papyros.codeRunner.getState() !== RunState.Ready && papyros.codeRunner.getState() !== RunState.Loading) {
             // stop the code runner if it is running
             await papyros.codeRunner.stop();
 

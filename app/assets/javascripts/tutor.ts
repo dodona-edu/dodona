@@ -54,7 +54,7 @@ export function initTutor(submissionCode: string): void {
             await papyros.codeRunner.stop();
 
             // wait to make sure the code runner is stopped
-            while (papyros.codeRunner.getState() == RunState.Stopping) {
+            while (papyros.codeRunner.getState() === RunState.Stopping) {
                 await new Promise(resolve => setTimeout(resolve, 100));
             }
         }

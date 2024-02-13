@@ -137,7 +137,7 @@ nl:
         one: 1 gebruiker op de wachtlijst is afgewezen.
         other: "%{count} gebruikers op de wachtlijst zijn afgewezen."
       copy: "Deze cursus kopiëren"
-      copy_info_html: "Wil je met je eigen studenten aan de slag met deze cursus? Maak dan je eigen kopie. In onze <a href=\"https://docs.dodona.be/nl/guides/teachers/course-management/\">documentatie</a> vind je meer informatie over het beheren van je eigen cursus."
+      copy_info_html: "Wil je met aan de slag met deze cursus met jouw studenten? Maak dan je eigen kopie. Ontdek in <a href=\"https://docs.dodona.be/nl/guides/teachers/course-management/\">onze documentatie</a> hoe je jouw cursus moeiteloos kunt beheren."
       manage_series: "Reeksen beheren"
       download_deadlines: "Cursus toevoegen aan agenda"
       download_deadlines_tooltip: "Voeg deze link toe aan je agenda-applicatie om de deadlines van deze cursus in je kalender te zien"

@@ -141,7 +141,8 @@
   }
 }
 
-.btn.btn-icon {
+.btn.btn-icon,
+#scratchpad-offcanvas .papyros-button.btn-icon {
   width: 40px;
   padding: 0;
   color: var(--d-btn-color);

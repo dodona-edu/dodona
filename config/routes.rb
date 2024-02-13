@@ -90,14 +90,10 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-          get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-        end
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
-      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-      end
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
       resources :activity_read_states, only: [:index]
@@ -126,7 +122,6 @@ Rails.application.routes.draw do
 
     resources :activities, only: %i[index show edit update], concerns: %i[readable mediable submitable infoable] do
       member do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'activities#description', as: 'description'
@@ -270,6 +265,8 @@ Rails.application.routes.draw do
       get 'timeseries', to: 'statistics#timeseries'
       get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
+
+    get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

@@ -10,7 +10,7 @@ class FeedbacksController < ApplicationController
   has_scope :by_status, as: 'status'
 
   content_security_policy only: %i[show] do |policy|
-    # allow sandboxed tutor
+    # allow sandboxed description
     policy.frame_src -> { [sandbox_url] }
   end
 

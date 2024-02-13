@@ -27,12 +27,21 @@
 
       <% if @course.description.present? or current_user&.member_of?(@course).! %>
         <div class="card-supporting-text card-border row course-description">
-          <div class="col-sm-<%= current_user&.member_of?(@course).! ? '6' : '12' %> col-12">
+          <div class="col-sm-<%= (@course.featured? && policy(@course).copy?) || current_user&.member_of?(@course).! ? '6' : '12' %> col-12">
             <%= cache @course do %>
               <%= markdown(@course.description) %>
             <% end %>
           </div>
-          <% if current_user&.member_of?(@course).! %>
+          <% if @course.featured? && policy(@course).copy? %>
+            <div class="col-sm-6 col-12">
+              <div class="callout callout-info">
+                <p><%= t(".copy_info_html") %></p>
+                <%= link_to new_course_url(copy_options: {base_id: @course.id}), class: "btn btn-filled with-icon" do %>
+                  <i class="mdi mdi-content-copy mdi-18"></i> <%= t(".copy") %>
+                <% end %>
+              </div>
+            </div>
+          <% elsif current_user&.member_of?(@course).! %>
             <%= render partial: 'not_a_member_card' %>
             <% if @lti_launch %>
               <%= render partial: 'not_a_member_dialog' %>
@@ -55,6 +64,8 @@
         <div class="card-actions card-border">
           <% if current_user&.member_of? @course %>
             <%= button_to t('.unsubscribe'), unsubscribe_course_path(@course), class: 'btn btn-text', data: {confirm: t('general.are_you_sure')} %>
+          <% elsif @course.featured? and policy(@course).copy? %>
+            <%= registration_action_for course: @course, membership: @current_membership, secret: (@course.secret if @course.secret_required?(current_user)), class: 'btn btn-text' %>
           <% end %>
           <% if policy(@course).copy? or policy(@course).scoresheet? or policy(@course).download_submissions? %>
             <a class="btn btn-icon dropdown-toggle hidden-print" data-bs-toggle="dropdown">

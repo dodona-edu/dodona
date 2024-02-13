@@ -76,7 +76,25 @@ class PythiaRenderer < FeedbackTableRenderer
     # Initialize file viewers
     @builder.script do
       @builder << 'dodona.ready.then(function() {'
+      @builder << "document.body.append(document.getElementById('info-modal'));"
       @builder << "dodona.initFileViewers('#{activity_path(nil, @exercise)}');});"
+    end
+
+    # Add the modal which will be used to display the file viewer
+    @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
+      @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
+        @builder.div(class: 'modal-content') do
+          @builder.div(class: 'modal-header') do
+            @builder.h4(class: 'modal-title') {}
+            @builder.div(class: 'icons') do
+              @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
+                @builder.i('', class: 'mdi mdi-close')
+              end
+            end
+          end
+          @builder.div(class: 'modal-body') {}
+        end
+      end
     end
   end
 

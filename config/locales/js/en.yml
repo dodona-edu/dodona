@@ -13,7 +13,6 @@ en:
     activity-added-failed: Adding activity failed
     activity-removed-success: Activity removed
     activity-removed-failed: Removing activity failed
-    tutor-failed: Something went wrong while loading the online python tutor
     copy-to-clipboard: Click to copy
     copy-success: Copied!
     copy-fail: Press Ctrl-C to copy

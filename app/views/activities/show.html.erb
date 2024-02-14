@@ -126,12 +126,20 @@ end %>
               <div class="d-flex justify-content-between align-items-center mt-1">
                 <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
                 <% if @activity.exercise? && @activity.programming_language&.name === 'python' %>
-                  <button class="btn btn-outline with-icon" type="button" data-bs-toggle="offcanvas"
-                          title="<%= t '.sandbox_tooltip' %>"
-                          data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
-                    <i class="mdi mdi-clipboard-arrow-right-outline"></i>
-                    <%= t '.to_sandbox' %>
-                  </button>
+                  <span data-bs-toggle="tooltip"
+                        data-bs-placement="bottom"
+                        data-bs-trigger="hover"
+                        data-bs-delay='{"show": 500, "hide": 0}'
+                        title="<%= t '.sandbox_tooltip' %>">
+                    <button class="btn btn-outline with-icon"
+                            data-bs-toggle="offcanvas"
+                            data-bs-target="#scratchpad-offcanvas"
+                            aria-controls="scratchpad-offcanvas"
+                            id="scratchpad-offcanvas-show-btn">
+                      <i class="mdi mdi-clipboard-arrow-right-outline"></i>
+                      <%= t '.to_sandbox' %>
+                    </button>
+                  </span>
                   <script type="text/javascript">
                     dodona.ready.then(function () {
                       dodona.initCodingScratchpad(

@@ -91,7 +91,7 @@ en:
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
       to_sandbox: "To sandbox"
-      sandbox_tooltip: Run your code in your browser
+      sandbox_tooltip: Run your code in the browser
       navigation:
         back_to_course: Back to course
         previous: Previous activity

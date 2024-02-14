@@ -123,7 +123,7 @@ end %>
               <div id="editor-window" class='tex2jax_ignore'>
                 <div class="highlighter-rouge" id="editor-text"><%= @code %></div>
               </div>
-              <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+              <% if @activity.exercise? && @activity.programming_language&.name === 'python' %>
                 <div class="mt-1">
                   <button class="btn btn-outline with-icon float-end" type="button" data-bs-toggle="offcanvas"
                           title="<%= t '.sandbox_tooltip' %>"

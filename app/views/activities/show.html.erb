@@ -126,6 +126,7 @@ end %>
               <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
                 <div class="mt-1">
                   <button class="btn btn-outline with-icon float-end" type="button" data-bs-toggle="offcanvas"
+                          title="<%= t '.sandbox_tooltip' %>"
                           data-bs-target="#scratchpad-offcanvas" aria-controls="scratchpad-offcanvas" id="scratchpad-offcanvas-show-btn">
                     <i class="mdi mdi-clipboard-arrow-right-outline"></i>
                     <%= t '.to_sandbox' %>

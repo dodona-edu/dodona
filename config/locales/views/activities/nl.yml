@@ -91,6 +91,7 @@ nl:
       deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar de lesgever houdt er mogelijk geen rekening meer mee."
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
       to_sandbox: Naar sandbox
+      sandbox_tooltip: Voer je code uit in jouw browser
       navigation:
         back_to_course: Terug naar cursus
         previous: Vorige activiteit

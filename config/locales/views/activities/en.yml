@@ -90,6 +90,8 @@ en:
       alert_removed: This exercise is no longer available, but you can still see your old submissions.
       deadline_passed: "The deadline for this exercise was at %{deadline}. You can still submit, but your submissions may not be accounted for."
       deadline_in_5_minutes: "The deadline for this exercise is at %{deadline}, which is less than 5 minutes away."
+      to_sandbox: "To sandbox"
+      sandbox_tooltip: Run your code in the browser
       navigation:
         back_to_course: Back to course
         previous: Previous activity
@@ -155,6 +157,5 @@ en:
       title: "%{programming_language} sandbox"
       experimental_feature_html: This window allows you to run Python code without installing a thing. The code you write here is <b>not</b> automatically submitted to Dodona. This feature is still in full development, so we're happy to hear about your suggestions and issues using <a href="%{url}">the contact form</a>.
       close: Close
-      start_coding: Run your code
       description: "Description"
       debugger: Debugger

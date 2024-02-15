@@ -124,11 +124,7 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
 
 export function initCodingScratchpad(programmingLanguage: ProgrammingLanguage): void {
     if (Papyros.supportsProgrammingLanguage(programmingLanguage)) {
-        // To prevent horizontal scrollbar issues, we delay rendering the button
-        // until after the page is loaded
         const showButton = document.getElementById(SHOW_OFFCANVAS_BUTTON_ID);
-        showButton.classList.add("offcanvas-show-btn");
-        showButton.classList.remove("hidden");
         showButton.addEventListener("click", async () => {
             const papyros = await initPapyros(programmingLanguage);
             editor ||= window.dodona.editor;

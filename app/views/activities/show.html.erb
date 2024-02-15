@@ -125,7 +125,7 @@ end %>
               </div>
               <div class="d-flex justify-content-between align-items-center mt-1">
                 <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
-                <% if @activity.exercise? && @activity.programming_language&.name === 'python' %>
+                <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
                   <span data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         data-bs-trigger="hover"

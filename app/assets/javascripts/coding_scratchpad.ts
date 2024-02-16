@@ -1,10 +1,9 @@
-import { BackendManager, CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
+import { CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
 import { rougeStyle, setCode } from "editor";
 import { syntaxHighlighting } from "@codemirror/language";
 import { i18n } from "i18n/i18n";
-import { BackendEventType } from "@dodona/papyros/dist/BackendEvent";
 import { Tab } from "bootstrap";
 
 /** Identifiers used in HTML for relevant elements */

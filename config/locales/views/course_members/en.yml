@@ -33,3 +33,4 @@ en:
     upload_labels_csv:
       no_file: "Please upload a file."
       malformed: Something went wrong while reading the file. Check that the file you uploaded is in the correct format.
+      missing_column: "We couldn't find the column \"%{column}\". Check that the file you uploaded is in the correct format."

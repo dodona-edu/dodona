@@ -83,6 +83,11 @@ class CourseMembersController < ApplicationController
     return render json: { message: I18n.t('course_members.upload_labels_csv.no_file') }, status: :unprocessable_entity if params[:file] == 'undefined'
 
     begin
+      headers = CSV.foreach(params[:file].path).first
+      %w[id labels].each do |column|
+        return render json: { message: I18n.t('course_members.upload_labels_csv.missing_column', column: column) }, status: :unprocessable_entity unless headers&.include?(column)
+      end
+
       CSV.foreach(params[:file].path, headers: true) do |row|
         row = row.to_hash
         cm = CourseMembership.find_by(user_id: row['id'], course: @course)

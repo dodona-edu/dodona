@@ -85,7 +85,6 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         // scroll to tab top after tab is shown
         document.querySelectorAll("a[data-bs-toggle=\"tab\"]").forEach(tabEl => {
             tabEl.addEventListener("shown.bs.tab", event => {
-                console.log(event);
                 const shownTabId = (event.target as HTMLElement).getAttribute("href");
                 const shownTab = document.querySelector(shownTabId);
                 shownTab.scrollIntoView();

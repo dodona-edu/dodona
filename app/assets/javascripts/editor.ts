@@ -29,7 +29,7 @@ declare type EditorEventHandler = (event: FocusEvent, view: EditorView) => boole
 
 // A custom theme for CodeMirror that applies the same CSS as Rouge does,
 // meaning we can use our existing themes.
-const rougeStyle = HighlightStyle.define([
+export const rougeStyle = HighlightStyle.define([
     { tag: tags.comment, class: "c" },
     { tag: tags.lineComment, class: "c" },
     { tag: tags.blockComment, class: "cm" },

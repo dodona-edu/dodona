@@ -1,6 +1,7 @@
 import { FaviconManager } from "favicon";
 import { fetch } from "utilities";
 import { InactiveTimeout } from "auto_reload";
+import { i18n } from "i18n/i18n";
 
 /**
  * Model for a notification in the navbar. It adds three listeners to the notification view:
@@ -42,6 +43,9 @@ export class Notification {
         // We only want to install the click handler for the full element on the small notification view.
         if (installClickHandler) {
             this.element.addEventListener("click", event => {
+                // Use default browser behavior if the user clicked on the link itself.
+                if (event.target instanceof HTMLAnchorElement) return;
+
                 this.visit();
                 event.stopPropagation();
             });
@@ -60,10 +64,10 @@ export class Notification {
         this.read = body.read;
         const indicator = this.element.querySelector(".read-indicator");
         if (!this.read) {
-            indicator.setAttribute("title", I18n.t("js.mark_as_read"));
+            indicator.setAttribute("title", i18n.t("js.mark_as_read"));
             this.element.classList.add("unread");
         } else {
-            indicator.setAttribute("title", I18n.t("js.mark_as_unread"));
+            indicator.setAttribute("title", i18n.t("js.mark_as_unread"));
             this.element.classList.remove("unread");
         }
         if (document.querySelectorAll(".notification.unread").length === 0) {

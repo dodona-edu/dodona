@@ -76,8 +76,8 @@ nl:
       submission_correct: "Juiste oplossing, "
       submission_wrong: "Foute oplossing, "
     overview:
-      title: Evaluatie-overzicht
-      explanation: Een cursusbeheerder evalueerde je oplossingen voor de reeks "%{series}". Voor elke oefening werd je laatst ingediende oplossing voor %{deadline} automatisch geselecteerd, maar de cursusbeheerder selecteerde mogelijks handmatig een andere oplossing. Merk op dat deze evaluatie niet noodzakelijk betekent dat er feedback werd toevoegd aan elk van je oplossingen.
+      title: Evaluatie
+      explanation: Een lesgever heeft je werk voor de reeks "%{series}" bekeken. Dodona heeft automatisch je laatste inzending voor %{deadline} geselecteerd, maar mogelijk heeft de lesgever handmatig een andere gekozen. Houd er rekening mee dat deze evaluatie niet altijd feedback op al je oplossingen omvat.
       released: Er werd feedback gegeven op je code
       exercise: Oefening
       feedback: "Feedback"

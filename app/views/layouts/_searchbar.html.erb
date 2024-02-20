@@ -161,7 +161,7 @@
                 return course.id.toString();
             },
             multi: false,
-            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: course.name}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
             color: function () {
                 return "orange";
             }
@@ -193,6 +193,22 @@
               },
             };
         <% end %>
+      <% if local_assigns.fetch :draft, false %>
+        filterCollections["draft"] = {
+          param: "draft",
+          paramVal: function (s) {
+            return s.id.toString();
+          },
+          multi: false,
+          data: [
+            {id: true, name: "<%= t("activities.index.filters.draft") %>"},
+            {id: false, name: "<%= t("activities.index.filters.not_draft") %>"}
+          ],
+          color: function () {
+            return "brown";
+          },
+        };
+      <% end %>
 
         dodona.search.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 

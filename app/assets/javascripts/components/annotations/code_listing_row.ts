@@ -1,9 +1,7 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult, PropertyValues } from "lit";
 import "components/annotations/annotations_cell";
 import "components/annotations/hidden_annotations_dot";
-import { i18nMixin } from "components/meta/i18n_mixin";
 import { initTooltips } from "utilities";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
@@ -11,6 +9,7 @@ import { userAnnotationState } from "state/UserAnnotations";
 import "components/annotations/create_annotation_button";
 import { triggerSelectionStart } from "components/annotations/selectionHelpers";
 import "components/annotations/line_of_code";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component represents a row in the code listing.
@@ -23,7 +22,7 @@ import "components/annotations/line_of_code";
  * @prop {string} renderedCode - The code to display.
  */
 @customElement("d-code-listing-row")
-export class CodeListingRow extends i18nMixin(ShadowlessLitElement) {
+export class CodeListingRow extends DodonaElement {
     @property({ type: Number })
     row: number;
     @property({ type: String, attribute: "rendered-code" })

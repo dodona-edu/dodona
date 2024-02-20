@@ -169,8 +169,8 @@
         "copy-to-clipboard": "Copy code to clipboard"
       },
       "coding_scratchpad": {
-        "copy_code": "Copy to Dodona",
-        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
+        "copy_to_submit": "Finalize and submit",
+        "overwrite_code": "Do you want to overwrite the code in the sandbox with your latest changes?"
       },
       "configured-institution": "the configured institution",
       "copy-fail": "Press Ctrl-C to copy",
@@ -214,6 +214,7 @@
           "course_labels": "Member label",
           "courses": "Course",
           "description_languages": "Language",
+          "draft": "Draft",
           "event_types": "Event type",
           "exercises": "Exercise",
           "institutions": "Institution",
@@ -231,6 +232,11 @@
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
+      "feedbacks": {
+        "submission": {
+          "submit": "Submit this solution"
+        }
+      },
       "institutions": "Institutions",
       "judges": "Judges",
       "label-undeletable": "This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.",
@@ -421,7 +427,6 @@
       "timeseries_desc": "This graph shows on which moments the students submitted the most solutions.",
       "timeseries_title": "Submissions over time",
       "total": "total",
-      "tutor-failed": "Something went wrong while loading the online python tutor",
       "unfavorite-course-do": "Unfavorite",
       "unfavorite-course-failed": "Unfavoriting course failed",
       "unfavorite-course-succeeded": "Unfavorited course",
@@ -689,8 +694,8 @@
         "copy-to-clipboard": "Kopieer code naar klembord"
       },
       "coding_scratchpad": {
-        "copy_code": "Kopieer naar Dodona",
-        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?"
+        "copy_to_submit": "Naar indienbox",
+        "overwrite_code": "Wil je de code in de sandbox overschrijven met je laatste aanpassingen?"
       },
       "configured-institution": "de ingestelde onderwijsinstelling",
       "copy-fail": "Druk Ctrl-C om te kopiëren",
@@ -734,6 +739,7 @@
           "course_labels": "Gebruikerlabel",
           "courses": "Cursus",
           "description_languages": "Taal",
+          "draft": "Concept",
           "event_types": "Event type",
           "exercises": "Oefening",
           "institutions": "Onderwijsinstelling",
@@ -751,6 +757,11 @@
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",
+      "feedbacks": {
+        "submission": {
+          "submit": "Deze oplossing indienen"
+        }
+      },
       "institutions": "Onderwijsinstellingen",
       "judges": "Judges",
       "label-undeletable": "Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.",
@@ -941,7 +952,6 @@
       "timeseries_desc": "Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.",
       "timeseries_title": "Ingediende oplossingen over tijd",
       "total": "totaal aantal",
-      "tutor-failed": "Er ging iets fout bij het laden van de online python tutor",
       "unfavorite-course-do": "Verwijder uit favorieten",
       "unfavorite-course-failed": "Cursus uit favorieten verwijderen mislukt",
       "unfavorite-course-succeeded": "Cursus verwijderd uit favorieten",

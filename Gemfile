@@ -4,17 +4,17 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.1.2'
+gem 'rails', '~> 7.1.3'
 # Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.5'
+gem 'mysql2', '~> 0.5.6'
 # Use Puma as the app server
-gem 'puma', '~> 6.4.0'
+gem 'puma', '~> 6.4.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.3.3'
+gem 'cssbundling-rails', '~> 1.4.0'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.2.1'
+gem 'jsbundling-rails', '~> 1.3.0'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
@@ -34,10 +34,10 @@ gem 'jbuilder', '~> 2.11.5'
 gem 'image_processing', '~> 1.12.2'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.17.0', require: false
+gem 'bootsnap', '~> 1.18.3', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.0.0'
+gem 'json_schemer', '~> 2.1.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -60,7 +60,7 @@ gem 'builder', '~>3.2.4'
 gem 'diff-lcs', '~>1.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.15'
+gem 'autoprefixer-rails', '~>10.4.16'
 
 # saml authentication
 gem 'devise', '~>4.9.3'
@@ -73,7 +73,7 @@ gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
-gem 'jwt', '~> 2.7.1'
+gem 'jwt', '~> 2.8.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.15.4'
+gem 'nokogiri', '~> 1.16.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -121,21 +121,21 @@ gem 'has_scope', '~> 0.8.2'
 gem 'rubyzip', '~> 2.3.2'
 
 # memcache
-gem 'dalli', '~> 3.2.6'
+gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.2'
+gem 'faker', '~> 3.2.3'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.0.1'
-gem 'rack-mini-profiler', '~> 3.1.1'
-gem 'stackprof', '~> 0.2.25'
+gem 'rack-mini-profiler', '~> 3.3.1'
+gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.16.2'
+gem 'ddtrace', '~> 1.20.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.3.1'
+gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.5'
@@ -144,7 +144,7 @@ group :development, :test do
   # Use mocha for stubbing and mocking
   gem 'mocha', '~> 2.1.0'
   # Factory bot for factories
-  gem 'factory_bot_rails', '~> 6.2.0'
+  gem 'factory_bot_rails', '~> 6.4.3'
 
   # test template rendering
   gem 'rails-controller-testing', '~> 1.0.5'
@@ -153,8 +153,8 @@ group :development, :test do
   gem 'byebug', '~> 11.1.3', platforms: %i[mri mingw x64_mingw]
 
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 3.39.2'
-  gem 'selenium-webdriver', '~> 4.15.0'
+  gem 'capybara', '~> 3.40.0'
+  gem 'selenium-webdriver', '~> 4.17.0'
 end
 
 group :test do
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.2.3'
+  gem 'test-prof', '~> 1.3.1'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -177,13 +177,13 @@ group :development do
   gem 'web-console', '~> 4.2.1'
 
   gem 'rb-readline', '~> 0.5.5' # require for irb
-  gem 'rubocop-capybara', '~> 2.19.0'
-  gem 'rubocop-factory_bot', '~> 2.24'
-  gem 'rubocop-minitest', '~> 0.33.0'
-  gem 'rubocop-rails', '~> 2.22.1'
+  gem 'rubocop-capybara', '~> 2.20.0'
+  gem 'rubocop-factory_bot', '~> 2.25'
+  gem 'rubocop-minitest', '~> 0.34.5'
+  gem 'rubocop-rails', '~> 2.23.1'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.8.1'
+  gem 'letter_opener', '~> 1.9.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

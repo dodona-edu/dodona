@@ -9,18 +9,26 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
-import { triggerSelectionEnd } from "components/annotations/selectionHelpers";
+import {
+    anyRangeInAnnotation,
+    selectedRangeFromSelection,
+    triggerSelectionEnd
+} from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, questionMode = false): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, userIsStudent: boolean, canSubmitAsOwn: boolean): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
     userState.id = userId;
     submissionState.id = submissionId;
-    annotationState.isQuestionMode = questionMode;
+    annotationState.isQuestionMode = userIsStudent;
+
+    if (canSubmitAsOwn) {
+        userState.addPermission("submission.submit_as_own");
+    }
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
     const rows = table.querySelectorAll("tr");
@@ -50,7 +58,12 @@ function initAnnotateButtons(): void {
 
     // copy only the selected code, this avoids copying the line numbers or extra whitespace from the complex html
     document.addEventListener("copy", event => {
-        const selection = userAnnotationState.selectedRange;
+        const browserSelection = window.getSelection();
+        if (browserSelection.isCollapsed || anyRangeInAnnotation(browserSelection)) {
+            return; // selection is collapsed or contains an annotation, let the browser handle the copy event
+        }
+
+        const selection = selectedRangeFromSelection(browserSelection, true);
         if (!selection) {
             return; // if there is no code selection, let the browser handle the copy event
         }

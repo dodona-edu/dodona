@@ -19,13 +19,13 @@ const config = {
             },
             {
                 test: function (modulePath) {
-                    return modulePath.endsWith('.ts') && !modulePath.endsWith('test.ts');
+                    return modulePath.endsWith(".ts") && !modulePath.endsWith("test.ts");
                 },
                 exclude: /node_modules/,
                 use: [
                     "babel-loader",
                     {
-                        loader: 'ts-loader',
+                        loader: "ts-loader",
                         options: {
                             transpileOnly: true,
                         },
@@ -46,7 +46,11 @@ const config = {
             cacheGroups: {
                 commons: {
                     name: "commons",
-                    chunks: "initial",
+                    chunks(chunk) {
+                        // the chunk should be from a main entrypoint
+                        // exclude "inputServiceWorker" from commons chunk
+                        return chunk.name !== "inputServiceWorker" && Object.keys(sourceFiles).includes(chunk.name);
+                    },
                     minChunks: 2,
                 },
             },

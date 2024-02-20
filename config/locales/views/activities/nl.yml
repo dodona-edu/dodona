@@ -68,6 +68,9 @@ nl:
         featured: "Uitgelichte activiteiten"
         all: "Alle activiteiten"
       draft-notice: "Deze activiteit is nog een concept. Ze is niet zichtbaar voor studenten."
+      filters:
+        draft: "Conceptactivititeiten"
+        not_draft: "Gepubliceerde activiteiten"
     show:
       code: Code
       handin: Indienen
@@ -87,6 +90,8 @@ nl:
       alert_removed: Deze oefening is niet meer beschikbaar, maar je kan nog steeds je oude oplossingen bekijken.
       deadline_passed: "De deadline voor deze oefening was om %{deadline}. Je kan nog steeds indienen, maar de lesgever houdt er mogelijk geen rekening meer mee."
       deadline_in_5_minutes: "De deadline voor deze oefening is om %{deadline}, wat over minder dan 5 minuten is."
+      to_sandbox: Naar sandbox
+      sandbox_tooltip: Voer je code uit in de browser
       navigation:
         back_to_course: Terug naar cursus
         previous: Vorige activiteit
@@ -98,8 +103,13 @@ nl:
       preloaded_info: We hebben jouw laatste oplossing ingeladen in de editor.
       preloaded_clear: Maak de editor leeg.
       preloaded_restore: Zet de voorbeeldcode terug.
-      alert_draft_html: Deze oefening is nog een <a href="https://docs.dodona.be/nl/faq/activities/#wat-is-een-conceptactiviteit" target="_blank">concept</a>. Ze is niet zichtbaar voor studenten.
-      alert_draft_edit: Deze oefening publiceren.
+      alert_draft:
+        text_html: Deze oefening is momenteel een <a href="https://docs.dodona.be/nl/faq/activities/#wat-is-een-conceptactiviteit" target="_blank">concept</a> en nog niet zichtbaar voor studenten.
+        edit: Deze oefening publiceren.
+        before_publish: "Vooraleer je deze oefening kan publiceren, moet aan de volgende voorwaarden voldaan zijn:"
+        valid_config: "De oefening moet een geldig configuratiebestand hebben."
+        is_valid: "De oefening moet een naam en een beschrijving hebben."
+        correct_submission: "Je moet minstens één correcte oplossing indienen."
     series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:
@@ -145,8 +155,8 @@ nl:
       course_has_no_rights_with_fix: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Klik hier om deze rechten te geven.
       course_has_no_rights_with_contact: Deze cursus heeft niet de rechten om deze privé-oefening te gebruiken. Contacteer de auteur of verwijder deze oefening uit de cursus.
     coding_scratchpad:
-      title: "Voer %{programming_language} code uit in je browser"
+      title: "%{programming_language} sandbox"
       experimental_feature_html: In dit venster kan je Python-code uitvoeren zonder iets te moeten installeren. De code die je hier schrijft wordt <b>niet</b> automatisch ingediend in Dodona. Deze functie is nog in volle ontwikkeling. We horen graag je suggesties en problemen via <a href="%{url}">het contactformulier</a>.
       close: Sluiten
-      start_coding: Code uitvoeren
-      beta: BETA
+      description: Beschrijving
+      debugger: Debugger

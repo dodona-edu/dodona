@@ -7,6 +7,7 @@ import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
 import { EditorView } from "@codemirror/view";
+import { i18n } from "i18n/i18n";
 
 
 function showLightbox(content): void {
@@ -167,7 +168,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                         const message = await getErrorMessage(response);
                         submissionFailed(message);
                     }
-                }).catch(() => submissionFailed(I18n.t("js.submission-network"))); // fetch only fails promise because of network issues
+                }).catch(() => submissionFailed(i18n.t("js.submission-network"))); // fetch only fails promise because of network issues
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
@@ -260,7 +261,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
 
                 initTooltips();
             } else {
-                document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`;
+                document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${i18n.t("js.unknown-error-loading-feedback")}</div>`;
             }
         });
     }
@@ -308,7 +309,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                 }
                 showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);
-                new Toast(I18n.t("js.submission-processed"));
+                new Toast(i18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
@@ -357,7 +358,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
 
     function submissionSuccessful(data: {status: string, id: number, exercise_id: number, course_id: number, url: string}, userId: string): void {
         lastSubmission = data.id.toString();
-        new Toast(I18n.t("js.submission-saved"));
+        new Toast(i18n.t("js.submission-saved"));
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
@@ -380,20 +381,20 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                 const response = await request.json();
                 const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
-                    message = I18n.t("js.submission-emoji");
+                    message = i18n.t("js.submission-emoji");
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
-                    message = I18n.t("js.submission-rate-limit");
+                    message = i18n.t("js.submission-rate-limit");
                 } else if (errors.code && errors.code[0] === "too long") {
-                    message = I18n.t("js.submission-too-long");
+                    message = i18n.t("js.submission-too-long");
                 } else if (errors.exercise && errors.exercise[0] === "not permitted") {
-                    message = I18n.t("js.submission-not-allowed");
+                    message = i18n.t("js.submission-not-allowed");
                 }
             } catch (e) {
-                message = I18n.t("js.submission-failed");
+                message = i18n.t("js.submission-failed");
             }
         }
         if (message === undefined) {
-            message = I18n.t("js.submission-failed");
+            message = i18n.t("js.submission-failed");
         }
         return message;
     }

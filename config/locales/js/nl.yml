@@ -13,7 +13,6 @@ nl:
     activity-added-failed: Leeractiviteit toevoegen mislukt
     activity-removed-success: Leeractiviteit verwijderd
     activity-removed-failed: Leeractiviteit verwijderen mislukt
-    tutor-failed: Er ging iets fout bij het laden van de online python tutor
     copy-to-clipboard: Klik om te kopiëren
     copy-success: Gekopieerd!
     copy-fail: Druk Ctrl-C om te kopiëren
@@ -187,8 +186,8 @@ nl:
     score_item:
       error: Fout bij bijwerken
     coding_scratchpad:
-      copy_code: Kopieer naar Dodona
-      overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
+      copy_to_submit: Naar indienbox
+      overwrite_code: Wil je de code in de sandbox overschrijven met je laatste aanpassingen?
     submission_motivational_message:
       1: "👾 Monsterprogrammeur! Je hebt die oefening helemaal verslonden!"
       2: "🚀 Super programmeur! Je hebt die oefening gelanceerd als een raket!"
@@ -257,6 +256,7 @@ nl:
         question_states: Toestand
         popularity: Populariteit
         exercises: Oefening
+        draft: "Concept"
     saved_annotation:
       title: Titel
       annotation_text: Tekst
@@ -324,3 +324,6 @@ nl:
       dark: Donker
       system: Systeem
       theme: Stijl
+    feedbacks:
+      submission:
+        submit: Deze oplossing indienen

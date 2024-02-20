@@ -1,5 +1,6 @@
 // 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
 @import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/@dodona/papyros/dist/Papyros";
 
 // 2. Include any default variable overrides here
 @import "mixins.css.scss";
@@ -8,6 +9,7 @@
 @import "bootstrap_variable_overrides.css.scss";
 @import "theme/rouge.css.scss";
 @import "theme/codemirror.css.scss";
+@import "theme/trace-component.css.scss";
 
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../../../node_modules/bootstrap/scss/variables";
@@ -78,6 +80,7 @@
 
 // 6. Seasonal css sheets
 @import "seasonal/christmas.css.scss";
+@import "seasonal/december.css.scss";
 @import "seasonal/valentine.css.scss";
 @import "seasonal/mario-day.css.scss";
 @import "seasonal/pi-day.css.scss";

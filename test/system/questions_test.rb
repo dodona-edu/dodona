@@ -27,7 +27,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask question for each line of the available lines of code' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -42,7 +42,7 @@ class QuestionsTest < ApplicationSystemTestCase
           assert_css 'form.annotation-submission'
           # cancel form to limit page space taken
           within 'form.annotation-submission' do
-            click_button 'Cancel'
+            click_on 'Cancel'
           end
         end
       end
@@ -51,10 +51,10 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask global question about code' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     within '.code-table' do
-      click_button 'Ask a question about your code'
+      click_on 'Ask a question about your code'
 
       assert_css 'form.annotation-submission'
     end
@@ -62,12 +62,12 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can submit a question' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     question = Faker::Lorem.question
 
     within '.code-table' do
-      click_button 'Ask a question about your code'
+      click_on 'Ask a question about your code'
 
       form = find('form.annotation-submission')
 
@@ -76,7 +76,7 @@ class QuestionsTest < ApplicationSystemTestCase
         text_area.fill_in with: question
       end
 
-      click_button 'Ask question'
+      click_on 'Ask question'
 
       assert_text question
       # Also acts as sleep until full ajax call is completed
@@ -96,7 +96,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -120,7 +120,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -133,7 +133,7 @@ class QuestionsTest < ApplicationSystemTestCase
       answer_field = find('textarea')
       answer_field.fill_in with: answer
 
-      click_button 'Reply'
+      click_on 'Reply'
 
       assert_selector '.annotation', count: 2
     end
@@ -150,7 +150,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
 
@@ -166,7 +166,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -186,7 +186,7 @@ class QuestionsTest < ApplicationSystemTestCase
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -197,7 +197,7 @@ class QuestionsTest < ApplicationSystemTestCase
       assert_selector '.mdi-comment-processing-outline'
       assert_predicate q.reload, :in_progress?, 'Question should have moved onto in progress status'
 
-      click_button 'Cancel'
+      click_on 'Cancel'
 
       assert_selector '.mdi-comment-question-outline'
       assert_predicate q.reload, :unanswered?, 'Question should have moved onto unanswered status'

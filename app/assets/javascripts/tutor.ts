@@ -1,21 +1,12 @@
-import fscreen from "fscreen";
-import { showInfoModal } from "modal";
-import { html } from "lit";
-import { TraceGenerator } from "@dodona/pyodide-trace-library";
+import { initPapyros, OFFCANVAS_ID } from "coding_scratchpad";
+import { InputMode, ProgrammingLanguage, RunState } from "@dodona/papyros";
+import { BatchInputHandler } from "@dodona/papyros/dist/input/BatchInputHandler";
+import { Offcanvas } from "bootstrap";
+import { RunMode } from "@dodona/papyros/dist/Backend";
 
 export function initTutor(submissionCode: string): void {
-    let traceGenerator: TraceGenerator;
-    let traceGeneratorReady: Promise<void>;
     function init(): void {
         initTutorLinks();
-        if (document.querySelectorAll(".tutormodal").length == 1) {
-            initFullScreen();
-        } else {
-            const tutorModal = Array.from(document.querySelectorAll(".tutormodal")).pop();
-            if (tutorModal) {
-                tutorModal.remove();
-            }
-        }
     }
 
     function initTutorLinks(): void {
@@ -32,7 +23,7 @@ export function initTutor(submissionCode: string): void {
             const exerciseId = (document.querySelector(".feedback-table") as HTMLElement).dataset.exercise_id;
             const tutorLink = e.currentTarget as HTMLLinkElement;
             const group = tutorLink.closest(".group");
-            const stdin = tutorLink.dataset.stdin.slice(0, -1);
+            const stdin = tutorLink.dataset.stdin;
             const statements = tutorLink.dataset.statements;
             const files = { inline: {}, href: {} };
 
@@ -55,60 +46,23 @@ export function initTutor(submissionCode: string): void {
         }));
     }
 
-    function initFullScreen(): void {
-        fscreen.addEventListener("fullscreenchange", resizeFullScreen);
-
-        document.querySelector("#tutor #fullscreen-button").addEventListener("click", () => {
-            const tutor = document.querySelector("#tutor");
-            if (fscreen.fullscreenElement) {
-                document.querySelector("#tutor .modal-dialog").classList.remove("modal-fullscreen");
-                fscreen.exitFullscreen();
-            } else {
-                document.querySelector("#tutor .modal-dialog").classList.add("modal-fullscreen");
-                fscreen.requestFullscreen(tutor);
-            }
-        });
-    }
-
-    function resizeFullScreen(): void {
-        const tutor = document.querySelector("#tutor");
-        const tutorviz = document.querySelector("#tutorviz") as HTMLElement;
-        if (!fscreen.fullscreenElement) {
-            tutor.classList.remove("fullscreen");
-            tutorviz.style.height = tutorviz.dataset.standardheight;
-        } else {
-            tutorviz.dataset.standardheight = `${tutorviz.clientHeight}px`;
-            tutor.classList.add("fullscreen");
-            tutorviz.style.height = "100%";
-        }
-    }
-
     async function loadTutor(exerciseId: string, studentCode: string, statements: string, stdin: string, inlineFiles: Record<string, string>, hrefFiles: Record<string, string>): Promise<void> {
-        if (!traceGenerator) {
-            // only setup the traceGenerator upon first use, as it is a heavy operation
-            traceGenerator = new TraceGenerator();
-            traceGeneratorReady = traceGenerator.setup();
+        const papyros = await initPapyros(ProgrammingLanguage.Python);
+
+        if (papyros.codeRunner.getState() !== RunState.Ready && papyros.codeRunner.getState() !== RunState.Loading) {
+            // stop the code runner if it is running
+            await papyros.codeRunner.stop();
+
+            // wait to make sure the code runner is stopped
+            while (papyros.codeRunner.getState() === RunState.Stopping) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
         }
 
-        const lines = studentCode.split("\n");
-        // find and remove main
-        let i = 0;
-        let remove = false;
-        const sourceArray = [];
-        while (i < lines.length) {
-            if (remove && !lines[i].match(/^\s+.*/g)) {
-                remove = false;
-            }
-            if (lines[i].match(/if\s+__name__\s*==\s*(['"])__main__\s*\1:\s*/g)) {
-                remove = true;
-            }
-            if (!remove) {
-                sourceArray.push(lines[i]);
-            }
-            i += 1;
-        }
-        sourceArray.push(statements);
-        const sourceCode = sourceArray.join("\n");
+        papyros.setCode(studentCode);
+        papyros.codeRunner.inputManager.setInputMode(InputMode.Batch);
+        (papyros.codeRunner.inputManager.inputHandler as BatchInputHandler).batchEditor.setText(stdin);
+        papyros.codeRunner.editor.testCode = statements;
 
         // make full url from path
         const hrefFilesFull = Object.keys(hrefFiles).reduce((result, key) => {
@@ -116,44 +70,10 @@ export function initTutor(submissionCode: string): void {
             return result;
         }, {});
 
-        showInfoModal("Python Tutor", html`<div id="tutorcontent"></div>`, { allowFullscreen: true });
-        const modalShown = new Promise<void>(resolve => {
-            const modal = document.querySelector("#tutor #info-modal");
-            modal.addEventListener("shown.bs.modal", () => resolve());
-        });
+        new Offcanvas(document.getElementById(OFFCANVAS_ID)).show();
+        await papyros.codeRunner.provideFiles(inlineFiles, hrefFilesFull);
 
-        const content = document.querySelector("#tutorcontent");
-        if (content) {
-            content.innerHTML = `<div class="dodona-progress dodona-progress-indeterminate" style="visibility: visible">
-            <div class="progressbar bar bar1" style="width: 0%;"></div>
-            <div class="bufferbar bar bar2" style="width: 100%;"></div>
-            <div class="auxbar bar bar3" style="width: 0%;"></div>
-        </div>`;
-        }
-
-        await traceGeneratorReady;
-        const result = await traceGenerator.generateTrace(sourceCode, stdin, inlineFiles, hrefFilesFull);
-        await modalShown;
-        createTutor(result);
-    }
-
-    function createTutor(codeTrace: string): void {
-        const modal = document.querySelector("#tutor #info-modal");
-
-        const content = document.querySelector("#tutorcontent");
-        if (content) {
-            content.innerHTML = `<iframe id="tutorviz" width="100%" frameBorder="0" src="${window.dodona.sandboxUrl}/tutorviz/tutorviz.html"></iframe>`;
-            document.querySelector("#tutorviz").addEventListener("load", () => {
-                window.iFrameResize({ checkOrigin: false, onInit: frame => frame.iFrameResizer.sendMessage(JSON.parse(codeTrace)), scrolling: "omit" }, "#tutorviz");
-            });
-        }
-
-        modal.addEventListener("hidden.bs.modal", () => {
-            if (fscreen.fullscreenElement) {
-                document.querySelector("#tutor .modal-dialog").classList.remove("modal-fullscreen");
-                fscreen.exitFullscreen();
-            }
-        });
+        await papyros.codeRunner.runCode(RunMode.Debug);
     }
 
     init();

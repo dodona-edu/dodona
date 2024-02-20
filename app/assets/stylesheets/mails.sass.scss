@@ -1,7 +1,5 @@
-$theme: "light";
-
-@import "theme/m3-theme-light.css.scss";
-@import "theme/rouge.css.scss";
+@import "theme/m3-theme.css.scss";
+@import "theme/rouge-hardcoded-light.css.scss";
 
 body {
   font-size: 14px;
@@ -9,7 +7,7 @@ body {
 }
 
 a {
-  color: var(--d-primary);
+  color: $primary-40;
   text-decoration: none;
 }
 
@@ -25,7 +23,7 @@ a {
 
 .error-json {
   margin: 8px;
-  border-left: 3px solid var(--d-danger);
+  border-left: 3px solid $danger-60;
   padding-left: 8px;
   white-space: pre;
 }

@@ -116,7 +116,7 @@ class FeedbacksTest < ApplicationSystemTestCase
   test 'all zero works' do
     visit(feedback_path(id: @feedback.id))
 
-    click_button(id: 'zero-button')
+    click_on(id: 'zero-button')
 
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
@@ -127,7 +127,7 @@ class FeedbacksTest < ApplicationSystemTestCase
 
   test 'all max works' do
     visit(feedback_path(id: @feedback.id))
-    click_button(id: 'max-button')
+    click_on(id: 'max-button')
 
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')

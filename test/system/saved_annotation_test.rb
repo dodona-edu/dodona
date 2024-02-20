@@ -29,7 +29,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
   test 'Staff can save an annotation' do
     sign_in @staff
     visit(submission_path(id: @first.id))
-    click_link 'Code'
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -46,7 +46,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       find_by_id('check-save-annotation').check
 
       assert_equal 'The first five words of', find_by_id('saved-annotation-title').value
-      click_button 'Comment'
+      click_on 'Comment'
     end
 
     within '.annotation' do
@@ -60,7 +60,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
   test 'Student cannot save an annotation' do
     sign_in @student
     visit(submission_path(id: @first.id))
-    click_link 'Code'
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -71,7 +71,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       find('textarea.annotation-submission-input').fill_in with: initial
 
       assert_no_css '#check-save-annotation'
-      click_button 'Ask question'
+      click_on 'Ask question'
     end
 
     within '.annotation' do
@@ -87,7 +87,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     sa = create :saved_annotation, user: @staff, exercise: @first.exercise, course: @course
     visit(submission_path(id: @first.id))
 
-    click_link 'Code'
+    click_on 'Code'
 
     find('tr#line-1').hover
     find('.annotation-button a').click
@@ -100,7 +100,7 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert find_field('annotation-text', with: sa.annotation_text)
       assert_equal sa.annotation_text, find('textarea.annotation-submission-input').value
 
-      click_button 'Comment'
+      click_on 'Comment'
     end
 
     within '.annotation' do
@@ -109,5 +109,39 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_css 'i.mdi-comment-bookmark-outline'
     end
     sign_out @staff
+  end
+
+  test 'searching saved annotations shows activity names in correct language' do
+    sign_in @staff
+    exercise = create :exercise, name_en: 'Fools', name_nl: 'Bars'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'Tetris', annotation_text: 'text'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'TEST', annotation_text: 'text'
+    visit(saved_annotations_path)
+
+    assert_text 'Tetris'
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    visit(saved_annotations_path('nl'))
+
+    assert_text 'Tetris'
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
   end
 end

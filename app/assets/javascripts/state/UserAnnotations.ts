@@ -5,6 +5,8 @@ import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
 import { stateProperty } from "state/state_system/StateProperty";
 import { createStateFromInterface } from "state/state_system/CreateStateFromInterface";
+import { annotationState } from "state/Annotations";
+import { i18n } from "i18n/i18n";
 
 export interface UserAnnotationFormData {
     annotation_text: string;
@@ -209,7 +211,7 @@ class UserAnnotationState extends State {
                     }
                 });
             } catch (errors) {
-                alert(I18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
+                alert(i18n.t("js.saved_annotation.new.errors", { count: errors.length }) + "\n\n" + errors.join("\n"));
             }
         }
         if (data.saved_annotation_id) {
@@ -234,11 +236,12 @@ class UserAnnotationState extends State {
     }
 
     async update(annotation: UserAnnotation, formData: UserAnnotationFormData): Promise<void> {
+        const key = annotationState.isQuestionMode ? "question" : "annotation";
         const response = await fetch(annotation.url, {
             headers: { "Content-Type": "application/json" },
             method: "PATCH",
             body: JSON.stringify({
-                annotation: formData
+                [key]: formData
             })
         });
         const data = await response.json();
@@ -274,11 +277,11 @@ class UserAnnotationState extends State {
             await this.replaceInMap(json);
         } else if (response.status === 404) {
             // Someone already deleted this question.
-            new dodona.Toast(I18n.t("js.user_question.deleted"));
+            new dodona.Toast(i18n.t("js.user_question.deleted"));
             await this.removeFromMap(annotation);
         } else if (response.status == 403) {
             // Someone already changed the status of this question.
-            new dodona.Toast(I18n.t("js.user_question.conflict"));
+            new dodona.Toast(i18n.t("js.user_question.conflict"));
             // We now need to update the annotation, but we don't have the new data.
             // Get the annotation from the backend.
             await this.invalidate(annotation.id);

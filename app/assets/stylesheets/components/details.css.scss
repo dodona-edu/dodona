@@ -1,0 +1,16 @@
+details {
+  border: 1px solid var(--d-divider);
+  border-radius: var(--d-border-radius-base);
+  padding: 12px;
+  margin-bottom: .875rem;
+
+  summary {
+    font-size: 16px;
+  }
+}
+
+details[open] {
+  summary {
+    margin-bottom: 8px;
+  }
+}

@@ -93,7 +93,7 @@ class Institution < ApplicationRecord
                       .filter { |u| IGNORED_DOMAINS_FOR_SIMILARITY.exclude?(u[:domain]) && u[:count] > 1 }
 
       # we group by domain to get all institutions with the same domain, we update the similarity matrix for all pairs of institutions
-      domains.group_by { |u| u[:domain] }.each do |_, institution|
+      domains.group_by { |u| u[:domain] }.each_value do |institution|
         institution.combination(2).each do |i1, i2|
           overlap = [i1[:count], i2[:count]].min
           matrix[i1[:institution_id]][i2[:institution_id]] = [matrix[i1[:institution_id]][i2[:institution_id]], overlap].max
@@ -101,14 +101,14 @@ class Institution < ApplicationRecord
         end
       end
 
-      emails.group_by(&:email).each do |_, users|
+      emails.group_by(&:email).each_value do |users|
         users.combination(2).each do |u1, u2|
           matrix[u1.institution_id][u2.institution_id] += 1
           matrix[u2.institution_id][u1.institution_id] += 1
         end
       end
 
-      usernames.each { |u| u.username.downcase! }.group_by(&:username).each do |_, users|
+      usernames.each { |u| u.username.downcase! }.group_by(&:username).each_value do |users|
         users.combination(2).each do |u1, u2|
           matrix[u1.institution_id][u2.institution_id] += 1
           matrix[u2.institution_id][u1.institution_id] += 1

@@ -90,6 +90,8 @@ Style/HashSyntax:
 
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses
+FactoryBot/ExcessiveCreateList:
+  MaxAmount: 50
 
 Minitest/MultipleAssertions:
   Enabled: false

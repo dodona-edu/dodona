@@ -1,4 +1,3 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
@@ -9,6 +8,7 @@ import "components/annotations/annotation_marker";
 import "components/annotations/annotation_tooltip";
 import "components/annotations/selection_layer";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
+import { DodonaElement } from "components/meta/dodona_element";
 
 declare type range = {
     start: number;
@@ -33,7 +33,7 @@ function numberArrayEquals(a: number[], b: number[]): boolean {
  * @element d-code-listing
  */
 @customElement("d-line-of-code")
-export class LineOfCode extends ShadowlessLitElement {
+export class LineOfCode extends DodonaElement {
     @property({ type: Number })
     row: number;
     @property({ type: String, attribute: "rendered-code" })
@@ -107,7 +107,7 @@ export class LineOfCode extends ShadowlessLitElement {
     mergeRanges(ranges: { start: number, length: number, index: number }[]): { start: number, length: number, indexes: number[] }[] {
         const annotationsByPosition: number[][] = new Array(this.codeLength).fill(null).map(() => []);
         for (const range of ranges) {
-            for (let i = range.start; i < range.start + range.length; i++) {
+            for (let i = range.start; i < range.start + range.length && i < this.codeLength; i++) {
                 annotationsByPosition[i].push(range.index);
             }
         }
@@ -156,12 +156,14 @@ export class LineOfCode extends ShadowlessLitElement {
 
         for (const range of this.ranges) {
             const substring = this.code.substring(range.start, range.start + range.length);
+            // replace every non-whitespace character with a non-breaking space
+            const nonSearchableSubstring = substring.replace(/\S/g, "\u00a0");
             if (!range.annotations.length) {
-                backgroundLayer.push(substring);
-                tooltipLayer.push(substring);
+                backgroundLayer.push(nonSearchableSubstring);
+                tooltipLayer.push(nonSearchableSubstring);
             } else {
-                backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${substring}</d-annotation-marker>`);
-                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${substring}</d-annotation-tooltip>`);
+                backgroundLayer.push(html`<d-annotation-marker .annotations=${range.annotations}>${nonSearchableSubstring}</d-annotation-marker>`);
+                tooltipLayer.push(html`<d-annotation-tooltip .annotations=${range.annotations}>${nonSearchableSubstring}</d-annotation-tooltip>`);
             }
         }
 

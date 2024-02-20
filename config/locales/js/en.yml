@@ -13,7 +13,6 @@ en:
     activity-added-failed: Adding activity failed
     activity-removed-success: Activity removed
     activity-removed-failed: Removing activity failed
-    tutor-failed: Something went wrong while loading the online python tutor
     copy-to-clipboard: Click to copy
     copy-success: Copied!
     copy-fail: Press Ctrl-C to copy
@@ -187,8 +186,8 @@ en:
     score_item:
       error: Error while updating
     coding_scratchpad:
-      copy_code: Copy to Dodona
-      overwrite_code: Do you want to overwrite the code in the scratchpad with your latest changes?
+      copy_to_submit: Finalize and submit
+      overwrite_code: Do you want to overwrite the code in the sandbox with your latest changes?
     submission_motivational_message:
       1: "Code-tastic! You just crushed that exercise like a bug! 🐛"
       2: "🚀 Houston, we have a programmer! Great job on that exercise!"
@@ -257,6 +256,7 @@ en:
         question_states: Status
         popularity: Popularity
         exercises: Exercise
+        draft: "Draft"
     saved_annotation:
       title: Title
       annotation_text: Text
@@ -324,3 +324,6 @@ en:
       dark: Dark
       system: System
       theme: Theme
+    feedbacks:
+      submission:
+        submit: Submit this solution

@@ -22,7 +22,7 @@
 
 .card-outlined {
   box-shadow: none;
-  border: 1px solid var(--d-outline);
+  border: 1px solid var(--d-divider);
 }
 
 .card-media {
@@ -380,4 +380,9 @@ a.card-title-link:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.card-title .btn-icon {
+  margin-top: -6px;
+  margin-bottom: -6px;
 }

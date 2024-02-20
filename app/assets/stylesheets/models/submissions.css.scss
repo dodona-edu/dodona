@@ -10,6 +10,11 @@
 }
 
 .feedback-table {
+  .tab-pane {
+    // Offset for the navbar and the tab bar
+    scroll-margin-top: calc(var(--d-navbar-height) + 50px);
+  }
+
   .tab-summary {
     flex-grow: 1;
     display: flex;

@@ -1,10 +1,9 @@
-import { BackendManager, CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
+import { CodeEditor, InputMode, Papyros, ProgrammingLanguage } from "@dodona/papyros";
 import { themeState } from "state/Theme";
 import { EditorView } from "@codemirror/view";
 import { rougeStyle, setCode } from "editor";
 import { syntaxHighlighting } from "@codemirror/language";
 import { i18n } from "i18n/i18n";
-import { BackendEventType } from "@dodona/papyros/dist/BackendEvent";
 import { Tab } from "bootstrap";
 
 /** Identifiers used in HTML for relevant elements */
@@ -96,25 +95,16 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
             fallback: true
         })]);
 
-        // Hide Trace tab when a new run is started
-        BackendManager.subscribe(BackendEventType.Start, () => {
+        papyros.codeRunner.addEventListener("debug-mode", (event: CustomEvent<boolean>) => {
+            const debugMode = event.detail;
             const traceTab = document.getElementById(TRACE_TAB_ID);
-            if (traceTab) {
-                traceTab.classList.add("hidden");
-                const descriptionTab = document.getElementById(DESCRIPTION_TAB_ID);
-                if (descriptionTab) {
-                    const tabTrigger = new Tab(descriptionTab.querySelector("a"));
-                    tabTrigger.show();
-                }
-            }
-        });
-
-        // Show Trace tab when a new frame is added
-        BackendManager.subscribe(BackendEventType.Frame, () => {
-            const traceTab = document.getElementById(TRACE_TAB_ID);
-            if (traceTab) {
-                traceTab.classList.remove("hidden");
+            traceTab.classList.toggle("hidden", !debugMode);
+            if (debugMode) {
                 const tabTrigger = new Tab(traceTab.querySelector("a"));
+                tabTrigger.show();
+            } else {
+                const descriptionTab = document.getElementById(DESCRIPTION_TAB_ID);
+                const tabTrigger = new Tab(descriptionTab.querySelector("a"));
                 tabTrigger.show();
             }
         });

@@ -33,6 +33,7 @@ import "components/progress_bar";
 import "components/theme_picker";
 import { userState } from "state/Users";
 import "components/series_icon.ts";
+import { initMermaid } from "mermaid_graphs";
 
 // Initialize clipboard.js
 initClipboard();
@@ -41,6 +42,8 @@ initClipboard();
 ready.then(() => new Drawer());
 
 ready.then(initTooltips);
+
+ready.then(initMermaid);
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};

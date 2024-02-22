@@ -135,10 +135,12 @@ module ApplicationHelper
   def markdown_unsafe(source)
     source ||= ''
     Kramdown::Document.new(source,
-                           input: 'GFM',
+                           input: 'GitlabKramdown',
                            hard_wrap: false,
                            syntax_highlighter: 'rouge',
-                           math_engine_opts: { preview: true })
+                           math_engine_opts: { preview: true },
+                           clickable_images: false,
+                           gitlab_url: nil)
                       .to_html
                       .html_safe
   end

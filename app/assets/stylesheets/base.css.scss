@@ -118,3 +118,11 @@ figcaption {
   justify-content: space-between;
   flex-direction: row;
 }
+
+.mermaid {
+  display: none;
+
+  &[data-processed="true"] {
+    display: block;
+  }
+}

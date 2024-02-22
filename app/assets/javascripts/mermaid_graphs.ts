@@ -1,4 +1,3 @@
-import mermaid from "mermaid";
 import { Theme, themeState } from "state/Theme";
 
 const THEME_MAP: Record<Theme, string> = {
@@ -7,8 +6,13 @@ const THEME_MAP: Record<Theme, string> = {
 };
 
 
-export function initMermaid(): void {
-    mermaid.initialize({
+export async function initMermaid(): Promise<void> {
+    if (!document.querySelector(".mermaid")) {
+        return;
+    }
+
+    const mermaid = await import("mermaid");
+    mermaid.default.initialize({
         theme: THEME_MAP[themeState.theme],
     });
 }

@@ -9,6 +9,7 @@ window.bootstrap = bootstrap;
 import { initTooltips, ready, setHTMLExecuteScripts } from "utilities.ts";
 import { initClipboard } from "copy";
 import { themeState } from "state/Theme";
+import { initMermaid } from "mermaid_graphs";
 
 // Use a global dodona object to prevent polluting the global na
 const dodona = window.dodona || {};
@@ -22,3 +23,4 @@ window.dodona = dodona;
 initClipboard();
 
 ready.then(initTooltips);
+ready.then(initMermaid);

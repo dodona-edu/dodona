@@ -1,3 +1,5 @@
+require_relative '../../lib/dodona_kramdown/kramdown'
+
 module ApplicationHelper
   def custom_icon(name, **options)
     tag.i class: "custom-material-icons #{name} #{options[:class]}" do
@@ -135,12 +137,10 @@ module ApplicationHelper
   def markdown_unsafe(source)
     source ||= ''
     Kramdown::Document.new(source,
-                           input: 'GitlabKramdown',
+                           input: 'GFM',
                            hard_wrap: false,
                            syntax_highlighter: 'rouge',
-                           math_engine_opts: { preview: true },
-                           clickable_images: false,
-                           gitlab_url: nil)
+                           math_engine_opts: { preview: true })
                       .to_html
                       .html_safe
   end

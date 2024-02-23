@@ -181,11 +181,6 @@
       "course-removed-failed": "Removing course failed",
       "course-removed-success": "Course removed",
       "course_labels": "Member labels",
-      "course_labels_search_bar": {
-        "add": "Add",
-        "edit_explanation": "Add an existing userlabel or create a new one.",
-        "placeholder": "Label"
-      },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
       "ctimeseries_title": "Users with at least one correct submission",
@@ -241,6 +236,11 @@
       "judges": "Judges",
       "label-undeletable": "This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Add",
+        "edit_explanation": "Add an existing label or create a new one.",
+        "placeholder": "Label"
+      },
       "loading": "Loading...",
       "machine_annotation": {
         "external_url": "more information"
@@ -706,11 +706,6 @@
       "course-removed-failed": "Cursus verwijderen mislukt",
       "course-removed-success": "Cursus verwijderd",
       "course_labels": "Gebruikerlabels",
-      "course_labels_search_bar": {
-        "add": "Toevoegen",
-        "edit_explanation": "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan.",
-        "placeholder": "Label"
-      },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",
       "ctimeseries_title": "Gebruikers met minstens één correcte oplossing",
@@ -766,6 +761,11 @@
       "judges": "Judges",
       "label-undeletable": "Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Toevoegen",
+        "edit_explanation": "Voeg een bestaand label toe of maak een nieuwe aan.",
+        "placeholder": "Label"
+      },
       "loading": "Aan het laden...",
       "machine_annotation": {
         "external_url": "meer informatie"

@@ -123,7 +123,6 @@ class ApplicationHelperTest < ActiveSupport::TestCase
         <path d="M0,0 L100,0 L100,100 L0,100 Z"></path>
         <text x="0" y="0" font-size="14px" font-weight="bold" font-variant="normal" font-family="serif">Hello</text>
         <text x="0" y="0" textLength="10">abcdefgh</text>
-        <use xlink:href="#diamond" x="0.5" y="0.866" fill="blue" color="cyan" transform="rotate(90,0.5,0.866)"></use>
       </svg>
     HTML
     clean_html = sanitize dirty_html

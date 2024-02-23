@@ -12,9 +12,14 @@ class AnnotationsTest < ApplicationSystemTestCase
     @zeus = create :zeus
     sign_in @zeus
     @code_lines = Faker::Lorem.sentences(number: 5)
-    @instance = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
-    @instance.exercise.judge.renderer = PythiaRenderer
-    @instance.exercise.judge.save
+    @instance = new_submission
+  end
+
+  def new_submission
+    sub = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
+    sub.exercise.judge.renderer = PythiaRenderer
+    sub.exercise.judge.save
+    sub
   end
 
   test 'Can view submission page' do
@@ -373,8 +378,9 @@ class AnnotationsTest < ApplicationSystemTestCase
   end
 
   test 'Can reply to an annotation' do
-    create :annotation, submission: @instance, user: @zeus
-    visit(submission_path(id: @instance.id))
+    instance = new_submission
+    create :annotation, submission: instance, user: @zeus
+    visit(submission_path(id: instance.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -395,9 +401,10 @@ class AnnotationsTest < ApplicationSystemTestCase
   end
 
   test 'Cannot delete an annotation with replies' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
+    instance = new_submission
+    annot = create :annotation, submission: instance, user: @zeus
+    create :annotation, submission: instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: instance.id))
     click_on 'Code'
 
     within 'd-thread' do
@@ -412,9 +419,10 @@ class AnnotationsTest < ApplicationSystemTestCase
   end
 
   test 'Can delete an annotation after deleting all replies' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
+    instance = new_submission
+    annot = create :annotation, submission: instance, user: @zeus
+    create :annotation, submission: instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: instance.id))
     click_on 'Code'
 
     within 'd-thread' do
@@ -436,10 +444,11 @@ class AnnotationsTest < ApplicationSystemTestCase
   end
 
   test 'can delete the middle annotation in a thread' do
-    annot = create :annotation, submission: @instance, user: @zeus
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    create :annotation, submission: @instance, user: @zeus, thread_root: annot
-    visit(submission_path(id: @instance.id))
+    instance = new_submission
+    annot = create :annotation, submission: instance, user: @zeus
+    create :annotation, submission: instance, user: @zeus, thread_root: annot
+    create :annotation, submission: instance, user: @zeus, thread_root: annot
+    visit(submission_path(id: instance.id))
     click_on 'Code'
 
     within 'd-thread' do

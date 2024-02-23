@@ -1,6 +1,14 @@
-d-course-labels-search-bar {
+d-labels-search-bar {
   .labels-searchbar-group {
     padding-top: 10px;
+  }
+
+  d-datalist-input {
+    flex: auto;
+
+    input {
+      height: 33.5px;
+    }
   }
 
   .add-button {

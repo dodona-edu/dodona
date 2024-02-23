@@ -32,13 +32,15 @@ export class LabelTokens extends DodonaElement {
         }
 
         return html`
-            ${ this.labels.map( label => html`
-                    <span class="labels">
+            ${ this.labels.length > 0 ? html`
+                <div class="labels">
+                    ${ this.labels.map( label => html`
                         <span class="token accent-orange">${label}
                             <a href="#" class="close" tabindex="-1"  @click=${() => this.removeLabel(label)}>×</a>
                         </span>
-                    </span>
-            `)}
+                    `)}
+                </div>
+            ` : html`` }
             <input type="hidden" name="${this.name}" .value="${this.labels.join(",")}">
         `;
     }

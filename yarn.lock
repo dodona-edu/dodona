@@ -1327,10 +1327,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@2.3.2":
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.3.2.tgz#4572f1a7a70a4c0b731bc5d0d116e364e198af34"
-  integrity sha512-rCQYQxggtlWEPkj8srGYlJFX+dKH4JTJAEUeU4N+35bN3VfATdscLaqHd/kLRoM6fUsbl9IZRWsn7GIRSjI4OQ==
+"@dodona/papyros@2.3.4":
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.3.4.tgz#63c6f8b5734eea348673b64efb926a8dcc3bd55f"
+  integrity sha512-nDHa4pssDBAFdZSaYwkZAcgZRgtxqSRrV2/PPx70RJumsBzBqMEYwAqDbd7mj+Jx4yeB4yKoZuKXvG/Cl4drcg==
   dependencies:
     "@codemirror/autocomplete" "^6.11.1"
     "@codemirror/commands" "^6.3.1"

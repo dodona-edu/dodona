@@ -11,6 +11,9 @@ en:
       advanced_settings: Advanced settings
       activity_numbers_enabled: "Number learning activities"
       activity_numbers_enabled_help: "Each exercise and reading activity is given a sequential number, starting with 1. This number is displayed in titles and listings and can make it easier to communicate about these activities."
+      evaluate: "Evaluate"
+      evaluate_label: "Activate functions to manually evaluate and/or grade student submissions."
+      evaluate_help_html: "When activated, you can manually evaluate and/or grade student submissions. This will allow you to give feedback and/or a grade to students. This feedback comes on top of the automatic feedback that is given by the system. For more information, see the <a href='https://docs.dodona.be/nl/guides/teachers/grading/'>documentation</a>."
     index:
       title: All series
       load_more: Load more series

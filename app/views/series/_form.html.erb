@@ -22,6 +22,24 @@
       <div class="col-sm-6"><%= f.text_field :name, class: "form-control" %></div>
     </div>
     <div class="field form-group row">
+      <label class="col-sm-3 col-form-label">
+        <%= t('.evaluate') %>
+      </label>
+      <div class='col-sm-6 mt-2'>
+        <div class="form-check">
+          <input type="checkbox" name="create_evaluation" id="create_evaluation" class="form-check-input"
+            <%= series.evaluation.present? ? 'checked disabled' : '' %>
+          >
+          <label for="create_evaluation" class="form-check-label">
+            <%= t('.evaluate_label') %>
+          </label>
+        </div>
+      </div>
+      <span class="help-block offset-sm-3 col-sm-6">
+        <%= t('.evaluate_help_html') %>
+      </span>
+    </div>
+    <div class="field form-group row">
       <%= f.label :deadline, :class => "col-sm-3 col-form-label" %>
       <div class='col-sm-6'>
         <div class="input-group" id='deadline-group' data-wrap=true data-enable-time=true data-time_24hr=true>

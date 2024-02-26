@@ -114,6 +114,7 @@ class SeriesController < ApplicationController
     authorize @series
     respond_to do |format|
       if @series.save
+        create_evaluation
         format.html { redirect_to edit_series_path(@series), notice: I18n.t('controllers.created', model: Series.model_name.human) }
         format.json { render :show, status: :created, location: @series }
       else
@@ -128,6 +129,7 @@ class SeriesController < ApplicationController
   def update
     respond_to do |format|
       if @series.update(permitted_attributes(@series))
+        create_evaluation
         format.html { redirect_to course_path(@series.course, series: @series, anchor: @series.anchor), notice: I18n.t('controllers.updated', model: Series.model_name.human) }
         format.json { render :show, status: :ok, location: @series }
       else
@@ -295,5 +297,13 @@ class SeriesController < ApplicationController
               filename: zip[:filename],
               disposition: 'attachment',
               x_sendfile: true
+  end
+
+  def create_evaluation
+    return if @series.evaluation.present? || !params[:create_evaluation]
+
+    @evaluation = Evaluation.new(series: @series, deadline: @series.deadline)
+    authorize @evaluation
+    @evaluation.save
   end
 end

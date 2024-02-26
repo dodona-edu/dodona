@@ -11,6 +11,9 @@ nl:
       advanced_settings: Geavanceerde instellingen
       activity_numbers_enabled: "Nummer leeractiviteiten"
       activity_numbers_enabled_help: "Elke oefening en leesactiviteit krijgt een opeenvolgend nummer, beginnend bij 1. Dit nummer wordt weergegeven in titels en het reeksoverzicht en kan helpen om over de activiteit te communiceren."
+      evaluate: "Evalueer"
+      evaluate_label: "Activeer functies om oplossingen manueel te beoordelen."
+      evaluate_help_html: "Wanneer geactiveerd, kan je oplossingen manueel beoordelen. Dit laat je toe om feedback en/of een score te geven aan studenten. Deze feedback komt bovenop de automatische feedback die door het systeem gegeven wordt. Voor meer informatie, zie de <a href='https://docs.dodona.be/nl/guides/teachers/grading/'>documentatie</a>."
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden

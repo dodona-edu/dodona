@@ -27,7 +27,6 @@ class Evaluation < ApplicationRecord
   has_many :annotated_submissions, -> { distinct }, through: :annotations, source: :submission
 
   validates :deadline, presence: true
-  validate :deadline_in_past
 
   before_save :manage_feedbacks
   before_destroy :destroy_notification
@@ -136,10 +135,6 @@ class Evaluation < ApplicationRecord
   end
 
   private
-
-  def deadline_in_past
-    errors.add(:deadline, I18n.t('deadlines.validate.should_be_in_past')) if deadline.present? && deadline > Time.current
-  end
 
   def manage_feedbacks
     existing = feedbacks.to_a

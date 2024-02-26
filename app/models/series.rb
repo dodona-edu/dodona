@@ -34,6 +34,7 @@ class Series < ApplicationRecord
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token
   after_save :invalidate_activity_statuses, if: :saved_change_to_deadline?
+  after_save :update_evaluation_deadline, if: :saved_change_to_deadline?
 
   belongs_to :course
   has_many :series_memberships, dependent: :destroy
@@ -201,5 +202,9 @@ class Series < ApplicationRecord
     invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
+  end
+
+  def update_evaluation_deadline
+    evaluation&.update(deadline: deadline)
   end
 end

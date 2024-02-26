@@ -110,6 +110,9 @@ nl:
         valid_config: "De oefening moet een geldig configuratiebestand hebben."
         is_valid: "De oefening moet een naam en een beschrijving hebben."
         correct_submission: "Je moet minstens één correcte oplossing indienen."
+      tips:
+        title: Tip
+        deprecated_judge_html: "Je gebruikt de verouderde %{judge} judge. Voor nieuwe oefeningen raden we aan om over te schakelen naar de TESTed judge voor een betere ervaring. Zie <a href='https://docs.dodona.be/nl/guides/exercises/testsuites/' target='_blank'>onze documentatie</a> voor hoe je de overstap maakt."
     series_activities_add_table:
       course_added_to_usable: "Deze oefening toevoegen zal deze cursus toegang geven tot alle privé oefeningen in de repository van deze oefening. Ben je zeker?"
     edit:

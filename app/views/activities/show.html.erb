@@ -25,6 +25,15 @@ end %>
 
 <%= render partial: 'draft_notice' %>
 
+<% if @activity.draft? && @activity.exercise? && @activity.judge.deprecated? %>
+  <div class="callout callout-info">
+    <h4><%= t '.tips.title' %></h4>
+    <p>
+      <%= t '.tips.deprecated_judge_html', judge: @activity.judge.name %>
+    </p>
+  </div>
+<% end %>
+
 <div class="row">
   <% if @activity.exercise? %>
     <div class="col-md-1 p-0">

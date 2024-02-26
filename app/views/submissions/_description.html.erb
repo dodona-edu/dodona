@@ -80,7 +80,10 @@
 
 <% if submission.exercise.draft? && submission.internal_error? %>
   <div class="callout callout-info">
-    <h4><%= t 'submissions.show.tips.title' %></h4>
+    <h4>
+      <i class="mdi mdi-lightbulb-outline"></i>
+      <%= t 'submissions.show.tips.title' %>
+    </h4>
     <p>
       <%= t 'submissions.show.tips.internal_error_html' %>
     </p>

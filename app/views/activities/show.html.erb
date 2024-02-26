@@ -27,7 +27,10 @@ end %>
 
 <% if @activity.draft? && @activity.exercise? && @activity.judge.deprecated? %>
   <div class="callout callout-info">
-    <h4><%= t '.tips.title' %></h4>
+    <h4>
+      <i class="mdi mdi-lightbulb-outline"></i>
+      <%= t '.tips.title' %>
+    </h4>
     <p>
       <%= t '.tips.deprecated_judge_html', judge: @activity.judge.name %>
     </p>

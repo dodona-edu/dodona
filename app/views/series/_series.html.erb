@@ -223,6 +223,9 @@
       <% end %>
     </div>
   </div>
+  <% if series.evaluation.present? %>
+    <%= render partial: 'evaluations/small_overview', locals: {evaluation: series.evaluation} %>
+  <% end %>
 </div>
 
 <script type="text/javascript">

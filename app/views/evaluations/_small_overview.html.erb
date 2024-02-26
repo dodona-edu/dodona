@@ -1,0 +1,12 @@
+<% if current_user.admin_of?(evaluation.series.course) %>
+  <div class="card-footer d-flex">
+    <% if evaluation.score_items.present? %>
+      <%= link_to 'Edit scoring scheme', evaluation_path(evaluation), class: 'btn btn-text' %>
+    <% else %>
+      <%= link_to 'Create scoring scheme', evaluation_path(evaluation), class: 'btn btn-text' %>
+    <% end %>
+    <%= link_to 'Manage students', edit_evaluation_path(evaluation), class: 'btn btn-text' %>
+    <div class="flex-spacer"></div>
+    <%= link_to 'Evaluate', evaluation_path(evaluation), class:'btn btn-outline' %>
+  </div>
+<% end %>

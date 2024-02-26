@@ -53,6 +53,15 @@
               </div>
             </div>
             <p class="h3-info-text"><%= t ".manage_activities_info" %></p>
+            <% if @series.activities.count < 3 || @series.activities.count > 10 %>
+              <div class="callout callout-info">
+                <h4><%= t '.tips.title' %></h4>
+                <p>
+                  <%= t '.tips.ideal_activity_count' %>
+                  <%= @series.activities.count < 3 ? t('.tips.increase_activities') : t('.tips.decrease_activities')%>
+                </p>
+              </div>
+            <% end %>
             <h4><%= t ".activities_in_series" %></h4>
             <p class="h4-info-text"><%= t ".activities_in_series_info" %></p>
             <div class="series-activity-list">

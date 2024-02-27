@@ -4,6 +4,7 @@
                        .where(evaluation: evaluation, evaluation_users: { user: user })
                        .includes(:evaluation_exercise, scores: :score_item)
                        .order('evaluation_exercises.id') %>
+<% feedbacks = policy_scope(feedbacks) %>
 <table class="table table-resource grade-feedback-table">
   <thead>
   <tr>
@@ -66,7 +67,11 @@
         </strong>
       </td>
       <td class="actions align-top">
-        <% if fb.submission.present? %>
+        <% if policy(fb).show? %>
+          <%= link_to feedback_path(fb) do %>
+            <i class="mdi mdi-chevron-right"></i>
+          <% end %>
+        <% elsif fb.submission.present? %>
           <%= link_to submission_path(fb.submission, anchor: 'code') do %>
             <i class="mdi mdi-chevron-right"></i>
           <% end %>

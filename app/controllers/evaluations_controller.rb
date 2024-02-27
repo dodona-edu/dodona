@@ -158,7 +158,6 @@ class EvaluationsController < ApplicationController
       [I18n.t('evaluations.overview.title'), '#']
     ]
     @title = I18n.t('evaluations.overview.title')
-    @feedbacks = policy_scope(@feedbacks)
   end
 
   def export_grades

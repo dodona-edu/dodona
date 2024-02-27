@@ -8,6 +8,7 @@ en:
       save: "Save"
       course_overview: "Course overview for "
       send_mail: "Send an email to this user."
+      evaluations: "Evaluations"
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to separate labels"

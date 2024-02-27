@@ -58,6 +58,16 @@
         </div>
         <%= render partial: 'visualizations/punchcard', locals: {course: @course, user: @user} %>
         <%= render partial: 'visualizations/heatmap', locals: {course: @course, user: @user} %>
+        <% evaluated_series = @series.filter { |s| s.evaluation.present? && s.evaluation.users.include?(@user) } %>
+        <% if evaluated_series.any? %>
+          <h4><%= t ".evaluations" %></h4>
+          <% evaluated_series.each do |series| %>
+            <details>
+              <summary><%= series.name %></summary>
+              <%= render partial: 'evaluations/overview', locals: { evaluation: series.evaluation, user: @user } %>
+            </details>
+          <% end %>
+        <% end %>
       </div>
       <% if policy(@course_membership).update? or policy(@user).impersonate? %>
         <div class="card-actions card-border">

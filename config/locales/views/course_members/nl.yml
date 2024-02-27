@@ -8,6 +8,7 @@ nl:
       save: "Opslaan"
       course_overview: "Cursusoverzicht voor "
       send_mail: "Stuur een e-mail naar deze gebruiker."
+      evaluations: "Evaluaties"
     form:
       course_labels: "Labels"
       labels_delimiter: "Gebruik een komma om labels te scheiden"

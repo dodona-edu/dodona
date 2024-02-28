@@ -158,3 +158,7 @@ nl:
       supported_by: Met de steun van
       supported_p1_html: "Dodona wordt ontwikkeld door een klein team onderzoekers aan de <a href='https://www.ugent.be' target='_blank'>Universiteit Gent</a>. Het platform is volledig open source en alle code is beschikbaar op <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. De hosting wordt aangeboden door de Universiteit Gent. Daarnaast ontving Dodona al steun in de vorm van onderwijsinnovatieprojecten van de Universiteit Gent en de Faculteit Wetenschappen. Ook <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> ondersteunde dit project."
       support_button: Doe een gift
+    teacher_intro_card:
+      title: Maak je eigen cursus aan!
+      rights_request_html: "Wist je dat je je eigen cursussen op Dodona kunt maken? <a href='/nl/rights_requests/new/'>Vraag lesgeversrechten aan</a> om van start te gaan."
+      documentation_html: "Ontdek hoe je eigen cursus op Dodona kunt starten met hulp van <a href='https://docs.dodona.be/nl/guides/teachers/getting-started/' target='_blank'>onze documentatie</a>."

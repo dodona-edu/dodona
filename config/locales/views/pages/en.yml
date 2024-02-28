@@ -158,3 +158,8 @@ en:
       supported_by: Supported by
       supported_p1_html: "Dodona is run by a small team of researchers at <a href='https://www.ugent.be/en' target='_blank'>Ghent University</a>. The platform is open source and all code is available on <a href='https://github.com/dodona-edu/dodona' target='_blank'>GitHub</a>. The hosting is provided by Ghent University. In addition, Dodona is supported by educational innovation projects from Ghent University and the Faculty of Sciences. <a href='https://www.elixir-belgium.org/' target='_blank'>ELIXIR Belgium</a> also provides some funding."
       support_button: Make a donation
+    teacher_intro_card:
+      title: Start your own course today!
+      rights_request_html: "<a href='/en/rights_requests/new/'>Request teacher rights</a> to be able to create your own courses."
+      documentation_html: "Get detailed guidance on launching your own courses with Dodona by visiting <a href='https://docs.dodona.be/en/guides/teachers/getting-started/' target='_blank'>our documentation</a>."
+

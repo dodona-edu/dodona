@@ -110,6 +110,9 @@ en:
         valid_config: "The exercise must have a valid configuration file."
         is_valid: "The exercise must have a name and a description."
         correct_submission: "You must submit at least one correct solution."
+      tips:
+        title: Tip
+        deprecated_judge_html: "You are using the legacy %{judge} judge. For new exercises, we recommend switching to the TESTed judge for a better experience. See <a href='https://docs.dodona.be/nl/guides/exercises/testsuites/' target='_blank'>our documentation</a> for how to make the switch."
     series_activities_add_table:
       course_added_to_usable: "Adding this exercise will allow this course to use all of the private exercises in this exercise's repository. Are you sure?"
     edit:

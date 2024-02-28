@@ -111,6 +111,7 @@ function initSeriesEdit(): void {
         new Toast(i18n.t("js.activity-added-success"));
         row.querySelector("a.remove-activity").addEventListener("click", removeActivity);
         row.classList.remove("pending");
+        updateActivityCountCallout();
     }
 
     function addingActivityFailed(row: HTMLTableRowElement, addButton: HTMLButtonElement): void {
@@ -128,6 +129,7 @@ function initSeriesEdit(): void {
         row.classList.remove("pending");
         setTimeout( () => {
             row.remove();
+            updateActivityCountCallout();
         }, 500);
         new Toast(i18n.t("js.activity-removed-success"));
         const addButton = document.querySelector(`a.add-activity[data-activity_id="${(row.querySelector("a.remove-activity") as HTMLElement).dataset.activity_id}"`);
@@ -140,6 +142,12 @@ function initSeriesEdit(): void {
         row.classList.remove("pending");
         removeButton.classList.remove("hidden");
         new Toast(i18n.t("js.activity-removed-failed"));
+    }
+
+    function updateActivityCountCallout(): void {
+        const count = document.querySelector(".series-activity-list tbody").children.length;
+        document.getElementById("to-few-activities-info").classList.toggle("d-none", count >= 3);
+        document.getElementById("to-many-activities-info").classList.toggle("d-none", count <= 10);
     }
 
     init();

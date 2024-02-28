@@ -49,6 +49,11 @@ nl:
       confidential: Geheime links en tokens
       access-link: Geheime link
       access-help: Als de zichtbaarheid van de reeks op verborgen staat ingesteld, dan krijgen studenten met deze geheime link toegang.
+      tips:
+        title: Tip
+        ideal_activity_count: "Dodona werkt het best als reeksen 3 tot 10 oefeningen bevatten."
+        increase_activities: "Overweeg om meer oefeningen toe te voegen."
+        decrease_activities: "Het toevoegen van meer oefeningen kan de laadtijden beïnvloeden."
     delete:
       title: Reeks verwijderen
       confirm: Ben je zeker dat je deze reeks wilt verwijderen?

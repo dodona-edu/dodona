@@ -89,6 +89,7 @@ nl:
         image: Docker image
         path: Padnaam
         renderer: Renderklasse
+        deprecated: Deprecated
       repository:
         name: Naam
         remote: Clone URL

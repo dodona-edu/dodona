@@ -78,6 +78,18 @@
   </div>
 </div>
 
+<% if submission.exercise.draft? && submission.internal_error? %>
+  <div class="callout callout-info">
+    <h4>
+      <i class="mdi mdi-lightbulb-outline"></i>
+      <%= t 'submissions.show.tips.title' %>
+    </h4>
+    <p>
+      <%= t 'submissions.show.tips.internal_error_html' %>
+    </p>
+  </div>
+<% end %>
+
 <% unless submission.queued? or submission.running? %>
   <%= submission.judge.renderer.new(submission, current_user).parse %>
 <% end %>

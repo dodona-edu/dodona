@@ -53,6 +53,26 @@
               </div>
             </div>
             <p class="h3-info-text"><%= t ".manage_activities_info" %></p>
+            <div class="callout callout-info <%= @series.activities.count < 3 ? "" : "d-none" %>" id="to-few-activities-info">
+              <h4>
+                <i class="mdi mdi-lightbulb-outline"></i>
+                <%= t '.tips.title' %>
+              </h4>
+              <p>
+                <%= t '.tips.ideal_activity_count' %>
+                <%= t('.tips.increase_activities')%>
+              </p>
+            </div>
+            <div class="callout callout-info <%= @series.activities.count > 10 ? "" : "d-none" %>" id="to-many-activities-info">
+              <h4>
+                <i class="mdi mdi-lightbulb-outline"></i>
+                <%= t '.tips.title' %>
+              </h4>
+              <p>
+                <%= t '.tips.ideal_activity_count' %>
+                <%= t('.tips.decrease_activities')%>
+              </p>
+            </div>
             <h4><%= t ".activities_in_series" %></h4>
             <p class="h4-info-text"><%= t ".activities_in_series_info" %></p>
             <div class="series-activity-list">

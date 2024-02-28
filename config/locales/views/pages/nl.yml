@@ -160,5 +160,5 @@ nl:
       support_button: Doe een gift
     teacher_intro_card:
       title: Maak je eigen cursus aan!
-      rights_request_html: "<a href='/nl/rights_requests/new/'>Vraag lesgeversrechten aan</a> om eigen curussen te kunnen maken."
+      rights_request_html: "Wist je dat je je eigen cursussen op Dodona kunt maken? <a href='/nl/rights_requests/new/'>Vraag lesgeversrechten aan</a> om van start te gaan."
       documentation_html: "In <a href='https://docs.dodona.be/nl/guides/teachers/getting-started/' target='_blank'>onze documentatie</a> vind je alle informatie over hoe je vlot van start gaat met Dodona als leerkracht."

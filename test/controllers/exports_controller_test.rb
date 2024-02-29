@@ -4,15 +4,21 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   setup do
     stub_all_activities!
     @course = courses(:course1)
-    @students = [users(:student), users(:staff)]
+    @students = [users(:student), users(:staff), create(:student)]
     @course.enrolled_members.concat(@students)
     @series = create :series,
                      :with_submissions,
-                     exercise_count: 1,
-                     exercise_submission_count: 1,
+                     exercise_count: 2,
+                     exercise_submission_count: 0,
                      exercise_submission_users: @students,
                      course: @course,
                      deadline: Time.current
+    create :wrong_submission, exercise: @series.exercises.first, user: @students.first, course: @course
+    create :wrong_submission, exercise: @series.exercises.first, user: @students.first, course: @course
+    create :wrong_submission, exercise: @series.exercises.second, user: @students.first, course: @course
+    create :correct_submission, exercise: @series.exercises.second, user: @students.first, course: @course
+    create :correct_submission, exercise: @series.exercises.first, user: @students.second, course: @course
+    create :correct_submission, exercise: @series.exercises.first, user: @students.third, course: @course
     # make accessing all database-objects easier, no need for querying
     @data = { course: @course, users: @students, series: @series, exercises: @series.exercises, deadline: @series.deadline }
     sign_in users(:zeus)
@@ -73,7 +79,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       end
     end.flatten.length
 
-    post series_exports_path(@series), params: { all: true, all_students: true }
+    post series_exports_path(@series), params: { all: true, filter_students: 'all' }
 
     assert_redirected_to exports_path
     assert_zip ActiveStorage::Blob.last.download, solution_count: zip_submission_count, data: @data
@@ -99,7 +105,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should only download from specific exercises' do
     sample_exercises = @series.exercises.sample(3)
-    post series_exports_path(@series), params: { selected_ids: sample_exercises.map(&:id), all_students: true }
+    post series_exports_path(@series), params: { selected_ids: sample_exercises.map(&:id), filter_students: 'all' }
     zip_submission_count = @data[:users].map do |u|
       sample_exercises.map do |ex|
         subs = ex.submissions.of_user(u).in_course(@series.course)
@@ -115,7 +121,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     @series.update(deadline: Time.current)
     sample_exercises = @series.exercises.sample(3)
     options = { selected_ids: sample_exercises.map(&:id),
-                all_students: true,
+                filter_students: 'all',
                 only_last_submission: true,
                 deadline: @series.deadline,
                 course: @series.course,
@@ -196,7 +202,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       only_last_submission: true,
       deadline: true,
       group_by: 'user',
-      all_students: 'true',
+      filter_students: 'all',
       with_info: true,
       data: @data,
       all: true,
@@ -211,7 +217,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
   test 'should download all existing submissions from course and include all students in zip' do
     options = {
       group_by: 'exercise',
-      all_students: 'true',
+      filter_students: 'all',
       data: @data,
       all: true
     }
@@ -219,6 +225,30 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
       @course.users.map do |user|
         series.exercises.map do |exercise|
           [exercise.submissions.of_user(user).in_course(@course).count, 1].max
+        end.sum
+      end.sum
+    end.sum
+    post courses_exports_path(@course), params: options
+    options[:group_by] = 'series'
+
+    assert_zip ActiveStorage::Blob.last.download, options
+  end
+
+  test 'should download all existing submissions from course but only include students with at least one correct submission' do
+    options = {
+      group_by: 'exercise',
+      filter_students: 'correct',
+      data: @data,
+      all: true
+    }
+    options[:solution_count] = @course.series.map do |series|
+      @course.users.map do |user|
+        series.exercises.map do |exercise|
+          if exercise.submissions.of_user(user).in_course(@course).correct.any?
+            [exercise.submissions.of_user(user).in_course(@course).count, 1].max
+          else
+            0
+          end
         end.sum
       end.sum
     end.sum

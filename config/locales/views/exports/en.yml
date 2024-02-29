@@ -40,6 +40,8 @@ en:
       all_students_help: Students who never submitted have an empty folder in the result.
       only_submitted: Only students with at least one submission
       only_submitted_help: Students who never submitted will not be found anywhere in the result.
+      only_correct_submitted: Only students with at least one correct submission
+      only_correct_submitted_help: Students who never submitted a correct solution will not be found anywhere in the result.
       exercise: Exercise
       course: Course
       series: Series

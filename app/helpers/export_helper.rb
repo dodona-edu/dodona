@@ -219,17 +219,21 @@ module ExportHelper
     def write_scores(zio)
       case @item
       when Series
-        if @item.evaluation.present?
-          zio.put_next_entry('scores.csv')
-          zio.write @item.evaluation.grades_csv
-        end
+        evaluations = [@item.evaluation].compact
       when Course
         evaluations = @list.map(&:evaluation).compact
-        return if evaluations.empty?
+      when User
+        evaluations = @list.flat_map(&:series).map(&:evaluation).compact
+      end
 
-        evaluations.each do |evaluation|
+      return if evaluations.empty?
+
+      evaluations.each do |evaluation|
+        csv = evaluation.grades_csv(@users)
+
+        if csv.present?
           zio.put_next_entry("scores/#{series_fn(evaluation.series)}.csv")
-          zio.write evaluation.grades_csv
+          zio.write csv
         end
       end
     end

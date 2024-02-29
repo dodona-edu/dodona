@@ -114,7 +114,11 @@ class Evaluation < ApplicationRecord
     end
   end
 
-  def grades_csv
+  def grades_csv(for_users = nil)
+    csv_users = users
+    csv_users = csv_users.where(id: for_users) if for_users.present?
+    return if csv_users.empty?
+
     sheet = evaluation_sheet
     users_labels = series.course.course_memberships
                          .includes(:course_labels, :user)
@@ -124,7 +128,7 @@ class Evaluation < ApplicationRecord
       headers = ['id', 'username', 'last_name', 'first_name', 'full_name', 'email', 'labels', 'Total Score', 'Total Max']
       headers += sheet[:evaluation_exercises].flat_map { |e| ["#{e.exercise.name} Score", "#{e.exercise.name} Max"] }
       csv << headers
-      users.order(last_name: :asc, first_name: :asc).each do |user|
+      csv_users.order(last_name: :asc, first_name: :asc).each do |user|
         feedback_l = sheet[:feedbacks][user.id]
         total_score = sheet[:totals][user.id]
         total_max = sheet[:evaluation_exercises].map(&:maximum_score).compact.sum

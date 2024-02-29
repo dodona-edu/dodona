@@ -11,8 +11,9 @@ module SeriesZipHelper
         if entry.name == 'info.csv'
           has_info = true
           check_csv entry if with_info
-        elsif entry.name == 'scores.csv' || %r{scores/.*\.csv}.match(entry.name)
+        elsif %r{scores/.*\.csv}.match(entry.name)
           has_scores = true
+          check_scores_csv entry, options
         else
           check_entry(entry, options)
           other_entries += 1
@@ -43,6 +44,19 @@ module SeriesZipHelper
     %w[filename status submission_id exercise_id name_nl name_en].each do |h|
       assert_includes header, "\"#{h}\"", "info.csv header did not include #{h}"
     end
+  end
+
+  def check_scores_csv(entry, options)
+    csv = entry.get_input_stream.read
+    header = csv.split("\n").first
+
+    ['id', 'username', 'last_name', 'first_name', 'full_name', 'email', 'labels', 'Total Score', 'Total Max'].each do |h|
+      assert_includes header, "\"#{h}\"", "scores.csv header did not include #{h}"
+    end
+
+    return unless options[:is_student]
+
+    assert_equal 2, csv.split("\n").length, "scores.csv should only contain one line for students"
   end
 
   def check_entry(entry, options)

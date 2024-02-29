@@ -57,7 +57,7 @@
               <%= form_with class: "form-horizontal", id: "download_submissions" do |form| %>
                 <input type="hidden" id="all_submissions" name="all" value="false">
                 <%= render partial: 'option', locals: { name: 'with_info', explanation: t('.with_info_label'), details: t('.with_info_label_help') } %>
-                <% if @series&.evaluation.present? || @course&.series&.map(&:evaluation)&.any? %>
+                <% if @has_scores %>
                   <%= render partial: 'option', locals: { name: 'with_scores', explanation: t('.with_scores'), details: t('.with_scores_help') } %>
                 <% end %>
                 <div class="form-group">

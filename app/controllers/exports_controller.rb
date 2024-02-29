@@ -15,6 +15,7 @@ class ExportsController < ApplicationController
     @series = Series.find(params[:id])
     authorize @series, :export?
     authorize @user, :export? if @user
+    @has_scores = @user ? @series.evaluation&.users&.include?(@user) : @series.evaluation.present?
     @crumbs = [[@series.course.name, course_path(@series.course)], [@series.name, breadcrumb_series_path(@series, current_user)], [I18n.t('exports.download_submissions.title'), '#']]
     @data = { item: @series,
               users: ([@user] if @user),
@@ -30,6 +31,7 @@ class ExportsController < ApplicationController
     @course = Course.find(params[:id])
     authorize @course, :export?
     authorize @user, :export? if @user
+    @has_scores = @course.series.any? { |s| @user ? s.evaluation&.users&.include?(@user) : s.evaluation.present? }
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('exports.download_submissions.title'), '#']]
     @data = { item: @course,
               users: ([@user] if @user),
@@ -42,6 +44,7 @@ class ExportsController < ApplicationController
   def new_user_export
     @user = User.find(params[:id])
     authorize @user, :export?
+    @has_scores = @user.courses.any? { |c| c.series.any? { |s| s.evaluation&.users&.include?(@user) } }
     @crumbs = [[@user.full_name, user_path(@user)], [I18n.t('exports.download_submissions.title'), '#']]
     @data = { item: @user,
               list: @user.courses,

@@ -372,4 +372,13 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to exports_path
     assert_zip ActiveStorage::Blob.last.download, with_scores: false, data: @data
   end
+
+  test 'students should only see their own scores' do
+    create :evaluation, series: @series
+    sign_in @students[0]
+    post series_exports_path(@series), params: { with_scores: true, user_id: @students[0].id }
+
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, with_scores: true, data: @data, group_by: 'user', is_student: true
+  end
 end

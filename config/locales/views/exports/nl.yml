@@ -46,3 +46,5 @@ nl:
       course: Cursus
       series: Reeks
       no_series: geen-reeks
+      with_scores: Voeg de punten toe
+      with_scores_help: Een CSV-bestand zal toegevoegd worden voor elke geëvalueerde reeks met de punten van de studenten.

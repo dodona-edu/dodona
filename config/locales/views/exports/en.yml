@@ -46,3 +46,5 @@ en:
       course: Course
       series: Series
       no_series: no-series
+      with_scores: Include the scores
+      with_scores_help: A CSV-file will be added for each evaluated series containing the scores of the students.

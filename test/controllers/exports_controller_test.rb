@@ -119,6 +119,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
 
   test 'all options should be able to be used simultaneously' do
     @series.update(deadline: Time.current)
+    create :evaluation, series: @series
     sample_exercises = @series.exercises.sample(3)
     options = { selected_ids: sample_exercises.map(&:id),
                 filter_students: 'all',
@@ -126,6 +127,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
                 deadline: @series.deadline,
                 course: @series.course,
                 with_info: true,
+                with_scores: true,
                 group_by: 'exercise',
                 data: @data }
     options[:solution_count] = @data[:users].map do |u|
@@ -338,5 +340,36 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     post series_exports_path(@course.series.first, format: :json)
 
     assert_response :forbidden
+  end
+
+  test 'should be able to include scores for series with evaluation' do
+    create :evaluation, series: @series
+    post series_exports_path(@series), params: { all: true, with_scores: true }
+
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, with_scores: true, data: @data
+  end
+
+  test 'should only contain scores if option is given' do
+    create :evaluation, series: @series
+    post series_exports_path(@series), params: { all: true, with_scores: false }
+
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, with_scores: false, data: @data
+  end
+
+  test 'should be able to include scores for course with evaluation' do
+    create :evaluation, series: @series
+    post courses_exports_path(@course), params: { all: true, with_scores: true }
+
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, with_scores: true, data: @data, group_by: 'series'
+  end
+
+  test 'should not contain scores if no evaluations are present' do
+    post series_exports_path(@series), params: { all: true, with_scores: true }
+
+    assert_redirected_to exports_path
+    assert_zip ActiveStorage::Blob.last.download, with_scores: false, data: @data
   end
 end

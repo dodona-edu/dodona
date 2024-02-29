@@ -2,13 +2,17 @@ module SeriesZipHelper
   def assert_zip(zip_data, options = {})
     zipio = StringIO.new(zip_data)
     with_info = options[:with_info]
+    with_scores = options[:with_scores]
     Zip::File.open_buffer(zipio) do |zip|
       has_info = false
+      has_scores = false
       other_entries = 0
       zip.each do |entry|
         if entry.name == 'info.csv'
           has_info = true
           check_csv entry if with_info
+        elsif entry.name == 'scores.csv' || %r{scores/.*\.csv}.match(entry.name)
+          has_scores = true
         else
           check_entry(entry, options)
           other_entries += 1
@@ -19,6 +23,13 @@ module SeriesZipHelper
           assert has_info, 'zip file should contain info.csv but did not'
         else
           assert_not has_info, 'zip file should not contain info.csv but did'
+        end
+      end
+      unless with_scores.nil?
+        if with_scores
+          assert has_scores, 'zip file should contain scores but did not'
+        else
+          assert_not has_scores, 'zip file should not contain scores but did'
         end
       end
       assert_equal options[:solution_count], other_entries, 'unexpected submission count in csv' if options[:solution_count].present?

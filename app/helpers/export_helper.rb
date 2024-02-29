@@ -6,8 +6,8 @@ module ExportHelper
 
     attr_reader :users, :item, :errors
 
-    CONVERT_TO_BOOL = %w[deadline only_last_submission with_info all with_labels].freeze
-    SUPPORTED_OPTIONS = %w[deadline filter_students group_by only_last_submission with_info all with_labels].freeze
+    CONVERT_TO_BOOL = %w[deadline only_last_submission with_info all with_labels with_scores].freeze
+    SUPPORTED_OPTIONS = %w[deadline filter_students group_by only_last_submission with_info all with_labels with_scores].freeze
 
     # Keywords used:
     # :item    : A User, Course or Series for which submissions will be exported
@@ -76,6 +76,11 @@ module ExportHelper
     #  Add a CSV to the zip with information about the downloaded files
     def with_info?
       @options[:with_info].present?
+    end
+
+    # Add a CSV to the zip with the scores of the submissions
+    def with_scores?
+      @options[:with_scores].present?
     end
 
     # includes all students in the zip by adding an empty text file for exercises they did not finish
@@ -205,9 +210,28 @@ module ExportHelper
           zio.put_next_entry('info.csv')
           zio.write info
         end
+        write_scores(zio) if with_scores?
       end
       stringio.rewind
       stringio.sysread
+    end
+
+    def write_scores(zio)
+      case @item
+      when Series
+        if @item.evaluation.present?
+          zio.put_next_entry('scores.csv')
+          zio.write @item.evaluation.grades_csv
+        end
+      when Course
+        evaluations = @list.map(&:evaluation).compact
+        return if evaluations.empty?
+
+        evaluations.each do |evaluation|
+          zio.put_next_entry("scores/#{series_fn(evaluation.series)}.csv")
+          zio.write evaluation.grades_csv
+        end
+      end
     end
 
     def write_submission(zio, submission, filename)

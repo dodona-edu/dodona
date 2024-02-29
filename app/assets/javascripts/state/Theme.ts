@@ -14,11 +14,17 @@ class ThemeState extends State {
     @stateProperty computedStyle: CSSStyleDeclaration = getComputedStyle(document.documentElement);
 
     // the theme option selected by the user
-    get selectedTheme(): ThemeOption {
+    public get selectedTheme(): ThemeOption {
         return this._selectedTheme;
     }
 
-    set selectedTheme(theme: ThemeOption) {
+    public set selectedTheme(theme: ThemeOption) {
+        // update the theme of all iframes that have a theme parameter with the current theme
+        Array.from(document.getElementsByTagName("iframe")).forEach(iframe => {
+            if (getURLParameter("theme", iframe.src) === this._selectedTheme) {
+                iframe.src = updateURLParameter(iframe.src, "theme", theme);
+            }
+        });
         this._selectedTheme = theme;
         this.theme = theme === "system" ? this.systemTheme : theme;
     }
@@ -29,22 +35,16 @@ class ThemeState extends State {
     }
 
     // The theme that is currently applied to the page
-    get theme(): Theme {
+    public get theme(): Theme {
         return this._theme;
     }
 
-    set theme(theme: Theme) {
+    private set theme(theme: Theme) {
         // update the page theme
         document.documentElement.setAttribute("data-bs-theme", theme);
         // update the theme of all elements that have a data-bs-theme attribute with the current theme
         document.querySelectorAll(`[data-bs-theme="${this._theme}"]`).forEach(element => {
             element.setAttribute("data-bs-theme", theme);
-        });
-        // update the theme of all iframes that have a theme parameter with the current theme
-        Array.from(document.getElementsByTagName("iframe")).forEach(iframe => {
-            if (getURLParameter("theme", iframe.src) === this._theme) {
-                iframe.src = updateURLParameter(iframe.src, "theme", theme);
-            }
         });
         this._theme = theme;
         this.computedStyle = getComputedStyle(document.documentElement);

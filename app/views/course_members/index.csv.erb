@@ -1,0 +1,4 @@
+<%= CSV.generate_line %w[id username last_name first_name email labels], row_sep: nil %>
+<% @course_memberships.each do |cm| %>
+  <%= CSV.generate_line([cm.user.id, cm.user.username, cm.user.last_name, cm.user.first_name, cm.user.email, cm.course_labels.map(&:name).join(';')], row_sep: nil).html_safe  %>
+<% end %>

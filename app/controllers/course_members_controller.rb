@@ -33,11 +33,22 @@ class CourseMembersController < ApplicationController
     @course_memberships = apply_scopes(@course.course_memberships.order_by_status_in_course_and_name('ASC'))
                           .includes(:course_labels, user: [:institution])
                           .where(status: statuses)
-                          .paginate(page: parse_pagination_param(params[:page]))
 
     @title = I18n.t('courses.index.users')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), '#']]
     @course_labels = CourseLabel.where(course: @course)
+
+    respond_to do |format|
+      format.html do
+        @course_memberships = @course_memberships.paginate(page: parse_pagination_param(params[:page]))
+      end
+      format.js do
+        @course_memberships = @course_memberships.paginate(page: parse_pagination_param(params[:page]))
+      end
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{@course.name} - #{I18n.t('courses.index.users')}.csv\""
+      end
+    end
   end
 
   def show

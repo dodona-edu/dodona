@@ -992,10 +992,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.11.1", "@codemirror/autocomplete@^6.12.0", "@codemirror/autocomplete@^6.3.2", "@codemirror/autocomplete@^6.7.1":
-  version "6.12.0"
-  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-6.12.0.tgz#3fa620a8a3f42ded7751749916e8375f6bbbb333"
-  integrity sha512-r4IjdYFthwbCQyvqnSlx0WBHRHi8nBvU+WjJxFUij81qsBfhNudf/XKKmmC2j3m0LaOYUQTf3qiEK1J8lO1sdg==
+"@codemirror/autocomplete@^6.0.0", "@codemirror/autocomplete@^6.11.1", "@codemirror/autocomplete@^6.13.0", "@codemirror/autocomplete@^6.3.2", "@codemirror/autocomplete@^6.7.1":
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/autocomplete/-/autocomplete-6.13.0.tgz#fa7df3b2809863df0da4556f72ac4263ea4d7adb"
+  integrity sha512-SuDrho1klTINfbcMPnyro1ZxU9xJtwDMtb62R8TjL/tOl71IoOsvBo1a9x+hDvHhIzkTcJHy2VC+rmpGgYkRSw==
   dependencies:
     "@codemirror/language" "^6.0.0"
     "@codemirror/state" "^6.0.0"
@@ -1293,10 +1293,10 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/highlight" "^1.0.0"
 
-"@codemirror/view@^6.0.0", "@codemirror/view@^6.17.0", "@codemirror/view@^6.22.1", "@codemirror/view@^6.23.0", "@codemirror/view@^6.24.1":
-  version "6.24.1"
-  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.24.1.tgz#c151d589dc27f9197c68d395811b93c21c801767"
-  integrity sha512-sBfP4rniPBRQzNakwuQEqjEuiJDWJyF2kqLLqij4WXRoVwPPJfjx966Eq3F7+OPQxDtMt/Q9MWLoZLWjeveBlg==
+"@codemirror/view@^6.0.0", "@codemirror/view@^6.17.0", "@codemirror/view@^6.22.1", "@codemirror/view@^6.23.0", "@codemirror/view@^6.25.0":
+  version "6.25.0"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.25.0.tgz#7bf6cd15d1285e9354a83e39ee35cbf8f3957119"
+  integrity sha512-XnMGOm6qXB8znzCko0N7k97qZayVdvqpA0JebxA5fHtgBjC/XlCPhH9TK92TahsoCKMPQlaTCUep06Dwj/+GXQ==
   dependencies:
     "@codemirror/state" "^6.4.0"
     style-mod "^4.1.0"

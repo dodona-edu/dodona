@@ -95,8 +95,14 @@ export class SearchActions extends DodonaElement {
     }
 
     async performAction(action: SearchAction): Promise<boolean> {
-        if (!action.action && !action.js) {
+        if (!action.action && !action.js && !action.url) {
             return true;
+        }
+
+        if (action.url) {
+            const url: string = searchQueryState.addParametersToUrl(action.url);
+            window.open(url);
+            return false;
         }
 
         if (!action.action) {
@@ -147,7 +153,6 @@ export class SearchActions extends DodonaElement {
                     ${this.getSearchActions().map(action => html`
                         <li>
                             <a class="action dropdown-item"
-                               href='${action.url ? action.url : "#"}'
                                data-type="${action.type}"
                                @click=${() => this.performAction(action)}
                             >

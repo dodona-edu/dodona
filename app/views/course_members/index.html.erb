@@ -82,6 +82,11 @@
                                text: t(".edit_all_labels"),
                                js: 'bootstrap.Modal.getOrCreateInstance(document.querySelector("#labelsUploadModal")).show()',
                                type: 'enrolled'
+                           },
+                           {
+                               icon: 'cloud-download',
+                               text: t(".download_user_csv"),
+                               url: course_members_path(@course, format: :csv),
                            }
                        ],
                        course_labels: @course_labels,

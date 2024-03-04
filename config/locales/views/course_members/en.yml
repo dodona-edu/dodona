@@ -25,6 +25,7 @@ en:
       close: "Close"
       upload: "Upload changes"
       edit_all_labels: "Edit all labels"
+      download_user_csv: "Download user list"
       first_download_labels: "Download a list of all users and their labels as a CSV file."
       then_edit: "Open the file you just downloaded and edit the labels. Only changes to the labels column will be used. Note that the labels are in one field, separated by semicolons."
       finally_upload: "When you are happy with your changes, select the modified file below."

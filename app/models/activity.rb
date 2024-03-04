@@ -323,8 +323,8 @@ class Activity < ApplicationRecord
         return false unless course.visible_activities.pluck(:id).include? id
       end
       return true if user&.zeus?
-      return false unless access_public? \
-          || repository.allowed_courses.pluck(:id).include?(course&.id)
+      return false unless access_public? ||
+                          repository.allowed_courses.pluck(:id).include?(course&.id)
       return true if user&.course_admin? course
       return false if draft?
       return true if user&.member_of?(course)

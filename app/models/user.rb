@@ -395,8 +395,8 @@ class User < ApplicationRecord
     return false if errors.any?
 
     transaction do
-      other.permission = permission if (permission == 'staff' && other.permission == 'student') \
-                                    || (permission == 'zeus' && other.permission != 'zeus')
+      other.permission = permission if (permission == 'staff' && other.permission == 'student') ||
+                                       (permission == 'zeus' && other.permission != 'zeus')
 
       other.institution_id = institution_id if other.institution_id.nil?
 

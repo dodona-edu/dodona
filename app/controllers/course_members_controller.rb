@@ -81,15 +81,6 @@ class CourseMembersController < ApplicationController
     end
   end
 
-  def download_labels_csv
-    csv = @course.labels_csv
-    send_data csv[:data],
-              type: 'application/csv',
-              filename: csv[:filename],
-              disposition: 'attachment',
-              x_sendfile: true
-  end
-
   def upload_labels_csv
     return render json: { message: I18n.t('course_members.upload_labels_csv.no_file') }, status: :unprocessable_entity if params[:file] == 'undefined'
 

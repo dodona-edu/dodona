@@ -187,6 +187,11 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "download_button": {
+        "done": "Downloaded, go back",
+        "download": "Download",
+        "downloading": "Preparing submissions for download, this might take a couple of minutes. Do not close this page."
+      },
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -712,6 +717,11 @@
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "download_button": {
+        "done": "Gedownload, ga terug",
+        "download": "Downloaden",
+        "downloading": "Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit dit deze pagina niet."
+      },
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",

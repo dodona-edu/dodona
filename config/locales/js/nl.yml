@@ -327,3 +327,7 @@ nl:
     feedbacks:
       submission:
         submit: Deze oplossing indienen
+    download_button:
+      download: Downloaden
+      done: Gedownload, ga terug
+      downloading: Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit dit deze pagina niet.

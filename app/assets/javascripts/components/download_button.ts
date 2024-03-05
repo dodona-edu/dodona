@@ -2,6 +2,7 @@ import { DodonaElement } from "components/meta/dodona_element";
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import "components/search/loading_bar";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents a download button.
@@ -14,14 +15,14 @@ export class DownloadButton extends DodonaElement {
     @property({ state: true })
     ready = false;
     @property({ state: true })
-    exportUrl: string | undefined = undefined;
+    url: string | undefined = undefined;
 
     private get form(): HTMLFormElement {
         return document.querySelector("#download_submissions") as HTMLFormElement;
     }
 
     private get started(): boolean {
-        return this.exportUrl !== undefined;
+        return this.url !== undefined;
     }
 
     private async prepareDownload(): Promise<void> {
@@ -37,7 +38,7 @@ export class DownloadButton extends DodonaElement {
             }
         });
         const json = await response.json();
-        this.exportUrl = json.url;
+        this.url = json.url;
         this.tryDownload();
     }
 
@@ -46,7 +47,7 @@ export class DownloadButton extends DodonaElement {
             return;
         }
 
-        const response = await fetch(this.exportUrl);
+        const response = await fetch(this.url);
         const data = await response.json();
         if (data.ready) {
             window.location.href = data.url;
@@ -59,19 +60,20 @@ export class DownloadButton extends DodonaElement {
     render(): TemplateResult {
         if (!this.started) {
             return html`
-                <button @click=${() => this.prepareDownload()} class="btn btn-filled">Download</button>
+                <button @click=${() => this.prepareDownload()} class="btn btn-filled">
+                    ${i18n.t("js.download_button.download")}
+                </button>
             `;
         } else if (this.ready) {
             return html`
-                <button class="btn btn-filled" @click=${() => window.history.back()}>Done, go back</button>
+                <button class="btn btn-filled" @click=${() => window.history.back()}>
+                    ${i18n.t("js.download_button.done")}
+                </button>
             `;
         } else {
             return html`
                 <d-loading-bar loading="true"></d-loading-bar>
-                <p class="help-block">
-                    Preparing submissions for download, this might take a couple of minutes.
-                    Do not close this page.
-                </p>
+                <p class="help-block">${i18n.t("js.download_button.downloading")}</p>
             `;
         }
     }

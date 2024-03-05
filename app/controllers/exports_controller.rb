@@ -4,16 +4,19 @@ class ExportsController < ApplicationController
   before_action :set_user,
                 only: %i[new_series_export new_course_export create_series_export create_course_export]
 
-  def index
-    authorize Export
-    @title = I18n.t('exports.index.title')
-    @highlighted_id = (params[:highlighted] || 0).to_i
-    @exports = policy_scope(Export)
-  end
-
   def show
     @export = Export.find(params[:id])
     authorize @export
+    respond_to do |format|
+      format.json
+      format.any(:zip, :html) do
+        if @export.finished? && @export.archive.attached?
+          redirect_to rails_blob_path(@export.archive, disposition: "attachment")
+        else
+          head :not_found
+        end
+      end
+    end
   end
 
   def new_series_export
@@ -97,10 +100,6 @@ class ExportsController < ApplicationController
     export = Export.create(user: current_user)
     export.delay(queue: 'exports').start(item, list, ([@user] if @user), options)
     respond_to do |format|
-      format.html do
-        flash[:notice] = I18n.t('exports.index.export_started')
-        redirect_to action: 'index'
-      end
       format.json { render json: { url: export_path(export) } }
     end
   end

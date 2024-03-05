@@ -37,6 +37,6 @@ class Export < ApplicationRecord
     )
 
     delay(queue: 'cleaning', run_at: AUTOMATICALLY_DELETE_AFTER.from_now).destroy
-    update(status: :finished, notification: notification)
+    update(status: :finished)
   end
 end

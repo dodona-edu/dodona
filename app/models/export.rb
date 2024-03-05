@@ -12,7 +12,7 @@
 class Export < ApplicationRecord
   include ExportHelper
 
-  AUTOMATICALLY_DELETE_AFTER = 30.days
+  AUTOMATICALLY_DELETE_AFTER = 1.day
 
   belongs_to :user
   has_one_attached :archive

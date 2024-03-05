@@ -1,17 +1,7 @@
 import { DodonaElement } from "components/meta/dodona_element";
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-
-
-export type DownloadResponse = {
-    submissions: number;
-    statusUrl: string;
-    downloadUrl: string;
-}
-
-export type StatusResponse = {
-    ready: boolean;
-}
+import "components/search/loading_bar";
 
 /**
  * This component represents a download button.
@@ -21,38 +11,33 @@ export type StatusResponse = {
  */
 @customElement("d-download-button")
 export class DownloadButton extends DodonaElement {
-    downloadResponse: DownloadResponse;
     @property({ state: true })
     ready = false;
+    @property({ state: true })
+    exportUrl: string | undefined = undefined;
 
     private get form(): HTMLFormElement {
-        return this.closest("form") as HTMLFormElement;
+        return document.querySelector("#download_submissions") as HTMLFormElement;
     }
 
     private get started(): boolean {
-        return this.downloadResponse !== undefined;
-    }
-
-    private get duration(): string {
-        if (!this.started || this.ready) {
-            return "";
-        }
-
-        if (this.downloadResponse.submissions < 1000) {
-            return "This could take couple of seconds.";
-        } else if (this.downloadResponse.submissions < 10000) {
-            return "This could take a couple of minutes, you will receive a notification when the download is ready.";
-        } else {
-            return "This could take a while, you will receive a notification when the download is ready.";
-        }
+        return this.exportUrl !== undefined;
     }
 
     private async prepareDownload(): Promise<void> {
+        const data = new FormData(this.form);
+        // disable the form
+        this.form.querySelectorAll("input, button")
+            .forEach(e => e.setAttribute("disabled", "true"));
         const response = await fetch(this.form.action, {
             method: this.form.method,
-            body: new FormData(this.form)
+            body: data,
+            headers: {
+                "Accept": "application/json"
+            }
         });
-        this.downloadResponse = await response.json();
+        const json = await response.json();
+        this.exportUrl = json.url;
         this.tryDownload();
     }
 
@@ -61,10 +46,10 @@ export class DownloadButton extends DodonaElement {
             return;
         }
 
-        const response = await fetch(this.downloadResponse.statusUrl);
+        const response = await fetch(this.exportUrl);
         const data = await response.json();
         if (data.ready) {
-            window.location.href = data.downloadResponse;
+            window.location.href = data.url;
             this.ready = true;
         } else {
             setTimeout(() => this.tryDownload(), 1000);
@@ -78,12 +63,15 @@ export class DownloadButton extends DodonaElement {
             `;
         } else if (this.ready) {
             return html`
-                <a href="${this.downloadResponse.downloadUrl}" class="btn btn-filled">Download again</a>
+                <button class="btn btn-filled" @click=${() => window.history.back()}>Done, go back</button>
             `;
         } else {
             return html`
                 <d-loading-bar loading="true"></d-loading-bar>
-                <p>Preparing ${this.downloadResponse.submissions} submissions for download. ${this.duration}</p>
+                <p class="help-block">
+                    Preparing submissions for download, this might take a couple of minutes.
+                    Do not close this page.
+                </p>
             `;
         }
     }

@@ -11,6 +11,11 @@ class ExportsController < ApplicationController
     @exports = policy_scope(Export)
   end
 
+  def show
+    @export = Export.find(params[:id])
+    authorize @export
+  end
+
   def new_series_export
     @series = Series.find(params[:id])
     authorize @series, :export?
@@ -89,13 +94,14 @@ class ExportsController < ApplicationController
     # Only retain supported options from the received function parameters
     options = params.permit(Export::Zipper::SUPPORTED_OPTIONS)
 
-    Export.create(user: current_user).delay(queue: 'exports').start(item, list, ([@user] if @user), options)
+    export = Export.create(user: current_user)
+    export.delay(queue: 'exports').start(item, list, ([@user] if @user), options)
     respond_to do |format|
       format.html do
         flash[:notice] = I18n.t('exports.index.export_started')
         redirect_to action: 'index'
       end
-      format.json { head :accepted }
+      format.json { render json: { url: export_path(export) } }
     end
   end
 end

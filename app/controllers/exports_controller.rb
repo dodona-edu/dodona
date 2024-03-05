@@ -11,7 +11,7 @@ class ExportsController < ApplicationController
       format.json
       format.any(:zip, :html) do
         if @export.finished? && @export.archive.attached?
-          redirect_to rails_blob_path(@export.archive, disposition: "attachment")
+          redirect_to rails_blob_path(@export.archive, disposition: 'attachment')
         else
           head :not_found
         end

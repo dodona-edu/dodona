@@ -188,9 +188,11 @@
       "date_on": "on",
       "description_languages": "Language of the description",
       "download_button": {
-        "done": "Downloaded, go back",
         "download": "Download",
-        "downloading": "Preparing submissions for download, this might take a couple of minutes. Do not close this page."
+        "downloading": "Preparing submissions for download, this might take a couple of minutes. Do not close this page.",
+        "go_back": "Go back",
+        "ready": "Export is ready. The download should start automatically.",
+        "retry": "Retry"
       },
       "dropdown": {
         "multi": {
@@ -718,9 +720,11 @@
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
       "download_button": {
-        "done": "Gedownload, ga terug",
-        "download": "Downloaden",
-        "downloading": "Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit deze pagina niet."
+        "download": "Download",
+        "downloading": "Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit deze pagina niet.",
+        "go_back": "Keer terug",
+        "ready": "De export is klaar. De download start automatisch.",
+        "retry": "Probeer opnieuw"
       },
       "dropdown": {
         "multi": {

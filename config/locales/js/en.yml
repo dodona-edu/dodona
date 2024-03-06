@@ -329,6 +329,8 @@ en:
         submit: Submit this solution
     download_button:
       download: Download
-      done: Downloaded, go back
+      retry: Retry
+      go_back: Go back
+      ready: Export is ready. The download should start automatically.
       downloading: Preparing submissions for download, this might take a couple of minutes. Do not close this page.
 

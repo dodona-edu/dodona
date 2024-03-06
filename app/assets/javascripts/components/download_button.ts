@@ -14,16 +14,20 @@ import { exportLocation, prepareExport } from "export";
 @customElement("d-download-button")
 export class DownloadButton extends DodonaElement {
     @property({ state: true })
-    ready = false;
+    exportDataUrl: string | undefined = undefined;
     @property({ state: true })
-    url: string | undefined = undefined;
+    downloadUrl: string | undefined = undefined;
 
     private get form(): HTMLFormElement {
         return document.querySelector("#download_submissions") as HTMLFormElement;
     }
 
     private get started(): boolean {
-        return this.url !== undefined;
+        return this.exportDataUrl !== undefined;
+    }
+
+    private get ready(): boolean {
+        return this.downloadUrl !== undefined;
     }
 
     private async download(): Promise<void> {
@@ -31,9 +35,9 @@ export class DownloadButton extends DodonaElement {
         // disable the form
         this.form.querySelectorAll("input, button")
             .forEach(e => e.setAttribute("disabled", "true"));
-        this.url = await prepareExport(this.form.action, data);
-        window.location.href = await exportLocation(this.url);
-        this.ready = true;
+        this.exportDataUrl = await prepareExport(this.form.action, data);
+        this.downloadUrl = await exportLocation(this.exportDataUrl);
+        window.location.href = this.downloadUrl;
     }
 
     render(): TemplateResult {
@@ -45,8 +49,14 @@ export class DownloadButton extends DodonaElement {
             `;
         } else if (this.ready) {
             return html`
+                <p style="font-size: var(--d-font-size-base)">
+                    ${i18n.t("js.download_button.ready")}
+                </p>
+                <a href=${this.downloadUrl} class="btn btn-outline">
+                    ${i18n.t("js.download_button.retry")}
+                </a>
                 <button class="btn btn-filled" @click=${() => window.history.back()}>
-                    ${i18n.t("js.download_button.done")}
+                    ${i18n.t("js.download_button.go_back")}
                 </button>
             `;
         } else {

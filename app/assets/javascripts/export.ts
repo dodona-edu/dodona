@@ -1,4 +1,5 @@
 import { i18n } from "i18n/i18n";
+import { fetch } from "utilities";
 
 function initSelection(): void {
     const selectAll = document.querySelector("#check-all") as HTMLInputElement;

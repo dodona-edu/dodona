@@ -80,11 +80,11 @@ module ExportHelper
 
     # includes all students in the zip by adding an empty text file for exercises they did not finish
     def all_students?
-      @options[:filter_students].present? && @options[:filter_students] == 'all'
+      @options[:filter_students] == 'all'
     end
 
     def only_correct_submitted_students?
-      @options[:filter_students].present? && @options[:filter_students] == 'correct'
+      @options[:filter_students] == 'correct'
     end
 
     # Export all submissions, even those not part of a series/course

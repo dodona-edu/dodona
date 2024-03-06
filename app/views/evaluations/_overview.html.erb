@@ -35,12 +35,12 @@
           </strong>
           <br>
           <span class="text-muted small">
-                      <% if fb.submission.present? %>
-                        <%= t('.annotation_count', count: fb.submission.annotations.count) %>
-                      <% else %>
-                        <%= t('.no_submission') %>
-                      <% end %>
-                    </span>
+            <% if fb.submission.present? %>
+              <%= t('.annotation_count', count: fb.submission.annotations.count) %>
+            <% else %>
+              <%= t('.no_submission') %>
+            <% end %>
+          </span>
         <% else %>
           <% if fb.submission.present? %>
             <%= t('.annotation_count', count: fb.submission.annotations.count) %>
@@ -55,14 +55,14 @@
             <% if fb.maximum_score %>
               <%= format_score fb.score %> / <%= format_score fb.maximum_score %>
             <% elsif graded %>
-                        <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
-                          -
-                        </span>
+              <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".no_grading" %>">
+                -
+              </span>
             <% end %>
           <% else %>
-                      <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">
-                        -
-                      </span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t ".invisible_total" %>">
+              -
+            </span>
           <% end %>
         </strong>
       </td>
@@ -76,7 +76,8 @@
             <i class="mdi mdi-chevron-right"></i>
           <% end %>
         <% end %>
-        </tr>
+      </td>
+    </tr>
     <% scores.each do |score| %>
       <tr>
         <td class="subscore-row">

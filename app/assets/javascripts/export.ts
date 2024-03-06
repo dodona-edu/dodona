@@ -84,5 +84,37 @@ function initSelection(): void {
     init();
 }
 
-export { initSelection };
+/**
+ * Prepare the download of a file by sending a POST request to the server.
+ * Returns the URL of the metadata for the file to download.
+ * @param url The URL of the export endpoint
+ * @param data The export settings to send to the server
+ */
+async function prepareExport(url: string, data: FormData): Promise<string> {
+    const response = await fetch(url, {
+        method: "POST",
+        body: data,
+        headers: {
+            "Accept": "application/json"
+        }
+    });
+    const json = await response.json();
+    return json.url;
+}
+
+/**
+ * Returns the url of the blob to download when the download is ready.
+ * @param url The URL of the download endpoint
+ */
+async function exportLocation(url: string): Promise<string> {
+    const response = await fetch(url);
+    const data = await response.json();
+    if (!data.ready) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return await exportLocation(url);
+    }
+    return data.url;
+}
+
+export { initSelection, prepareExport, exportLocation };
 

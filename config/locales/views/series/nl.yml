@@ -2,7 +2,7 @@ nl:
   series:
     form:
       description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
-      visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
+      visibility-help_html: <b>Open</b> reeksen worden altijd op de cursuspagina getoond. <b>Getimede</b> reeksen worden enkel getoond tussen de start en eindtijd. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       class_progress_disable: "Verberg de \"Voortgang groep\" visualisatie voor studenten"
       class_progress_disable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
@@ -27,6 +27,11 @@ nl:
       make_visible_text: "Maak zichtbaar voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
+      series_timed:
+        shown_between: "Deze reeks is enkel zichtbaar voor studenten tussen %{start} en %{end}."
+        shown_from: "Deze reeks is enkel zichtbaar voor studenten vanaf %{start}."
+        shown_until: "Deze reeks is enkel zichtbaar voor studenten tot %{end}."
+        make_visible: "Verander zichtbaarheid naar altijd."
       activities_not_visible: De leeractiviteiten in deze reeks zijn niet zichtbaar voor studenten!
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).

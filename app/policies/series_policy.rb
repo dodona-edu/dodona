@@ -5,11 +5,11 @@ class SeriesPolicy < ApplicationPolicy
         scope.all
       elsif user
         @scope = scope.joins(course: :course_memberships)
-        scope.where(visibility: :open)
+        scope.visible
              .or(scope.where(course: { course_memberships: { status: :course_admin, user_id: user.id } }))
              .distinct
       else
-        scope.where(visibility: :open)
+        scope.visible
       end
     end
   end
@@ -95,7 +95,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline progress_enabled activities_visible activity_numbers_enabled]
+      %i[name description course_id visibility order deadline progress_enabled activities_visible activity_numbers_enabled visibility_start visibility_end]
     else
       []
     end

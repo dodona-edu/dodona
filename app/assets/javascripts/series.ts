@@ -28,6 +28,7 @@ function initSeriesEdit(): void {
         dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
         };
+        initTimedVisibility();
     }
 
     function initAddButtons(): void {
@@ -148,6 +149,14 @@ function initSeriesEdit(): void {
         const count = document.querySelector(".series-activity-list tbody").children.length;
         document.getElementById("to-few-activities-info").classList.toggle("d-none", count >= 3);
         document.getElementById("to-many-activities-info").classList.toggle("d-none", count <= 10);
+    }
+
+    function initTimedVisibility(): void {
+        const visibilitySelect = document.getElementById("series_visibility") as HTMLSelectElement;
+        const timingOptions = document.getElementById("timing-options");
+        visibilitySelect.addEventListener("change", () => {
+            timingOptions.classList.toggle("visually-hidden", visibilitySelect.value !== "timed");
+        });
     }
 
     init();

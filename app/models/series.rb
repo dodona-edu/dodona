@@ -16,6 +16,8 @@
 #  activities_visible       :boolean          default(TRUE), not null
 #  activities_count         :integer
 #  activity_numbers_enabled :boolean          default(FALSE), not null
+#  visibility_start         :datetime
+#  visibility_end           :datetime
 #
 
 require 'csv'
@@ -29,7 +31,7 @@ class Series < ApplicationRecord
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started/%<updated_at>s'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong/%<updated_at>s'.freeze
 
-  enum visibility: { open: 0, hidden: 1, closed: 2 }
+  enum visibility: { open: 0, hidden: 1, closed: 2, timed: 3 }
 
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token
@@ -44,10 +46,14 @@ class Series < ApplicationRecord
 
   validates :name, presence: true
   validates :visibility, presence: true
+  validate :visibility_start_before_visibility_end
 
   token_generator :access_token, length: 5
 
-  scope :visible, -> { where(visibility: :open) }
+  scope :past_visibility_start, -> { where('visibility_start is null or visibility_start < ?', Time.zone.now) }
+  scope :before_visibility_end, -> { where('visibility_end is null or visibility_end > ?', Time.zone.now) }
+  scope :visible, -> { where(visibility: :open).or(where(visibility: :timed).past_visibility_start.before_visibility_end) }
+  scope :accessible, -> { visible.or(where(visibility: :hidden)) }
   scope :with_deadline, -> { where.not(deadline: nil) }
   default_scope { order(order: :asc, id: :desc) }
 
@@ -201,5 +207,11 @@ class Series < ApplicationRecord
     invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
+  end
+
+  def visibility_start_before_visibility_end
+    return unless visibility_start && visibility_end && timed?
+
+    errors.add(:visibility_start, :before_end) if visibility_start > visibility_end
   end
 end

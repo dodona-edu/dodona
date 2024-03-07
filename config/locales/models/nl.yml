@@ -2,6 +2,10 @@ nl:
   activerecord:
     errors:
       models:
+        series:
+          attributes:
+            visibility_start:
+              before_end: "De startdatum van de zichtbaarheid moet voor de einddatum liggen."
         activity:
           no_correct_submission: "Er moet minstens één correcte oplossing zijn, vooraleer de oefening kan worden gepubliceerd."
           not_valid: "De oefening moet een naam en een beschrijving hebben."
@@ -104,10 +108,13 @@ nl:
         order: Volgorde
         deadline: Deadline
         activities_visible: Lesactiviteiten zichtbaar
+        visibility_start: Start van zichtbaarheid
+        visibility_end: Einde van zichtbaarheid
         visibilities:
           open: Open
           hidden: Verborgen
           closed: Gesloten
+          timed: Getimed
       submission:
         code: Code
         result: Resultaat

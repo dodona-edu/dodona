@@ -123,6 +123,18 @@
         <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
       </div>
     <% end %>
+    <% if current_user&.course_admin?(series.course) && series.timed? && (series.visibility_start.present? || series.visibility_end.present?) %>
+      <div class="alert alert-info hidden-print">
+        <% if series.visibility_start.present? && series.visibility_end.present?%>
+          <%= t "series.show.series_timed.shown_between", start: l(series.visibility_start, format: :long), end: l(series.visibility_end, format: :long) %>
+        <% elsif series.visibility_start.present? %>
+          <%= t "series.show.series_timed.shown_from", start: l(series.visibility_start, format: :long) %>
+        <% elsif series.visibility_end.present? %>
+          <%= t "series.show.series_timed.shown_until", end: l(series.visibility_end, format: :long) %>
+        <% end %>
+        <%= link_to t("series.show.series_timed.make_visible"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
+      </div>
+    <% end %>
     <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
       <div class="alert alert-info hidden-print">
         <%= t "series.show.activities_not_visible" %>

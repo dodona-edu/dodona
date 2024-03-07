@@ -2,7 +2,7 @@ en:
   series:
     form:
       description-help_html: Adding a description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting is supported.
-      visibility-help_html: Only <b>open</b> series are shown on the course page. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
+      visibility-help_html: <b>Open</b> series are always shown on the course page. <b>Timed</b> series are only shown between the given start and end time. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       class_progress_disable: 'Hide the "Class progress" visualisation for students'
       class_progress_disable_help: "This visualisation is an added value for students, but teachers may wish to disable it for exams."
@@ -26,6 +26,11 @@ en:
       download_all_solutions: Export student submissions
       make_visible_text: Make visible for students.
       series_not_visible: This series is only visible for students using the secret link!
+      series_timed:
+        shown_between: "This series is only visible for students between %{start} and %{end}."
+        shown_from: "This series is only visible for students from %{start}."
+        shown_until: "This series is only visible for students until %{end}."
+        make_visible: "Change visibility to always."
       series_not_accessible: This series is not accessible to students!
       activities_not_visible: The learning activities in this series are not visible to students!
       series_scoresheet: Series scoresheet

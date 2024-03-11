@@ -5,16 +5,18 @@ class DolosReportsController < ApplicationController
     authorize export, :show?
     return head :unprocessable_entity unless export.finished?
 
-    response = HTTParty.post(
-      'https://dolos.ugent.be/api/reports',
-      body: {
-        dataset: {
-          zipfile: export.archive,
-          name: export.archive.filename
+    export.archive.open do |file|
+      response = HTTParty.post(
+        'https://dolos.ugent.be/api/reports',
+        body: {
+          dataset: {
+            zipfile: file,
+            name: export.archive.filename
+          }
         }
-      }
-    )
+      )
 
-    render json: response
+      render json: response
+    end
   end
 end

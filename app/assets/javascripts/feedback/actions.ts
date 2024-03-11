@@ -226,6 +226,14 @@ export default class FeedbackActions {
             await this.nextFeedbackAction();
         });
 
+        document.addEventListener("keydown", event => {
+            if (event.ctrlKey && event.code === "Enter") {
+                event.preventDefault();
+                this.nextButton.click();
+                return false;
+            }
+        });
+
         this.autoMarkCheckBox?.addEventListener("input", async () => {
             autoMark = this.autoMarkCheckBox.checked;
             localStorage.setItem("feedbackPrefs", JSON.stringify({ autoMark, skipCompleted }));

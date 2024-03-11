@@ -26,6 +26,7 @@ en:
       progress: Progress
       direction:
         next: Next
+        tooltip: "Go the next student\nUse Ctrl + Enter as shortcut"
       mark_as_done: Mark as done
       evaluation_done: Evaluation completed
       undo: Undo

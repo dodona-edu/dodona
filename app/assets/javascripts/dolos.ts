@@ -1,9 +1,9 @@
 import { LoadingBar } from "components/search/loading_bar";
-import { exportLocation, prepareExport } from "export";
+import { exportData, prepareExport } from "export";
 import { fetch } from "utilities";
 
 const LOADER_ID = "dolos-loader";
-const DOLOS_URL = "https://dolos.ugent.be/api/reports";
+const DOLOS_URL = "/dolos_reports";
 
 export async function startDolos(url: string): Promise<void> {
     const loader = document.getElementById(LOADER_ID) as LoadingBar;
@@ -16,11 +16,11 @@ export async function startDolos(url: string): Promise<void> {
     settings.append("all_students", "false");
 
     const exportDataUrl = await prepareExport(url, settings);
-    const downloadUrl = await exportLocation(exportDataUrl);
+    const download = await exportData(exportDataUrl);
 
     const dolosResponse = await fetch(DOLOS_URL, {
         method: "POST",
-        body: JSON.stringify({ url: downloadUrl }),
+        body: JSON.stringify({ export_id: download.id }),
         headers: {
             "Accept": "application/json",
             "Content-Type": "application/json"

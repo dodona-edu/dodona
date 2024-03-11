@@ -267,6 +267,8 @@ Rails.application.routes.draw do
     end
 
     get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
+
+    resources :dolos_reports, only: %i[create]
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

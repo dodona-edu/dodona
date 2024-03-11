@@ -275,7 +275,7 @@ class SubmissionRunner
     start_final = Time.zone.now
 
     # remove path on file system used as temporary working directory for processing the submission
-    FileUtils.remove_entry_secure(@mountsrc, verbose: true)
+    FileUtils.remove_entry_secure(@mountsrc)
     @mountsrc = nil
     end_final = Time.zone.now
     @time_messages << build_message(format('<strong>Finalize:</strong> %<time>.2f seconds', time: (end_final - start_final)), 'zeus', 'html')

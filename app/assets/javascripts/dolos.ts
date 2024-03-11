@@ -26,6 +26,13 @@ export async function startDolos(url: string): Promise<void> {
             "Content-Type": "application/json"
         }
     });
+
+    if (!dolosResponse.ok) {
+        alert("An error occurred while creating the plagiarism report.");
+        loader.hide();
+        return;
+    }
+
     const json = await dolosResponse.json();
     window.open(json.url, "_blank");
     loader.hide();

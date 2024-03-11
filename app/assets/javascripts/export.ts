@@ -107,13 +107,7 @@ function initSelection(): void {
             const downloadUrl = await exportLocation(exportDataUrl);
 
             // Update the stepper content
-            downloadingPanel.querySelector(".stepper-part").replaceChildren(
-                document.createTextNode(i18n.t("js.export.ready"))
-            );
-            // Update the retry download button
-            const retryButton = document.getElementById("retry-download-button") as HTMLAnchorElement;
-            retryButton.href = downloadUrl;
-            retryButton.classList.remove("disabled");
+            downloadingPanel.querySelector(".stepper-part").innerHTML = i18n.t("js.export.ready_html", { url: downloadUrl });
 
             window.location.href = downloadUrl;
         });

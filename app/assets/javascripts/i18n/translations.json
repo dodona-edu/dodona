@@ -187,9 +187,6 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
-      "download_button": {
-        "ready": "Export is ready. The download should start automatically."
-      },
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -227,6 +224,9 @@
       },
       "en": "English",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "Export is ready. The download should start automatically. If not, click <a href=\"%{url}\">this link</a> to start the download."
+      },
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
@@ -753,7 +753,7 @@
       "en": "Engels",
       "event_types": "Event types",
       "export": {
-        "ready": "De export is klaar. De download start normaal automatisch."
+        "ready_html": "De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href=\"%{url}\">hier</a>."
       },
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",

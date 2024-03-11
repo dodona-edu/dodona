@@ -146,7 +146,34 @@
               <% end %>
             </div>
             <div class="stepper-actions stepper-border">
-              <d-download-button></d-download-button>
+              <button id="start-download" class="btn btn-filled"><%= t('.start_download') %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="downloading-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">3</span>
+            <a role="button" data-bs-toggle="collapse" data-parent="#stepper" href="#downloading-step"  aria-controls="collapseOne">
+              <%= t '.download' %>
+            </a>
+          </h4>
+        </div>
+        <div id="downloading-step" class="panel-collapse collapse show" role="tabpanel" aria-expanded="true">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <p><%= t '.downloading' %></p>
+              <d-loading-bar loading="true"></d-loading-bar>
+            </div>
+            <div class="stepper-actions stepper-border">
+              <a id='retry-download-button' class="btn btn-outline" disabled>
+                <%= t '.retry_download_button' %>
+              </a>
+              <button class="btn btn-filled" @click="window.history.back()">
+                <%= t '.back_button' %>
+              </button>
             </div>
           </div>
         </div>

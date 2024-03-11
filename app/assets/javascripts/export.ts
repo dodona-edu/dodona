@@ -113,7 +113,7 @@ function initSelection(): void {
             // Update the retry download button
             const retryButton = document.getElementById("retry-download-button") as HTMLAnchorElement;
             retryButton.href = downloadUrl;
-            retryButton.attributes.removeNamedItem("disabled");
+            retryButton.classList.remove("disabled");
 
             window.location.href = downloadUrl;
         });

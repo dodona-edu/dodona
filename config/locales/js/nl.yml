@@ -327,9 +327,5 @@ nl:
     feedbacks:
       submission:
         submit: Deze oplossing indienen
-    download_button:
-      download: Download
-      retry: Probeer opnieuw
-      go_back: Keer terug
-      ready: De export is klaar. De download start automatisch.
-      downloading: Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit deze pagina niet.
+    export:
+      ready_html: De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href="%{url}">hier</a>.

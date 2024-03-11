@@ -327,10 +327,6 @@ en:
     feedbacks:
       submission:
         submit: Submit this solution
-    download_button:
-      download: Download
-      retry: Retry
-      go_back: Go back
-      ready: Export is ready. The download should start automatically.
-      downloading: Preparing submissions for download, this might take a couple of minutes. Do not close this page.
+    export:
+      ready_html: Export is ready. The download should start automatically. If not, click <a href="%{url}">this link</a> to start the download.
 

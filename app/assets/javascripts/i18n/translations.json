@@ -187,13 +187,6 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
-      "download_button": {
-        "download": "Download",
-        "downloading": "Preparing submissions for download, this might take a couple of minutes. Do not close this page.",
-        "go_back": "Go back",
-        "ready": "Export is ready. The download should start automatically.",
-        "retry": "Retry"
-      },
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -231,6 +224,9 @@
       },
       "en": "English",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "Export is ready. The download should start automatically. If not, click <a href=\"%{url}\">this link</a> to start the download."
+      },
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
@@ -719,13 +715,6 @@
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
-      "download_button": {
-        "download": "Download",
-        "downloading": "Bezig met het voorbereiden van de download, dit kan enkele minuten duren. Sluit deze pagina niet.",
-        "go_back": "Keer terug",
-        "ready": "De export is klaar. De download start automatisch.",
-        "retry": "Probeer opnieuw"
-      },
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",
@@ -763,6 +752,9 @@
       },
       "en": "Engels",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href=\"%{url}\">hier</a>."
+      },
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",

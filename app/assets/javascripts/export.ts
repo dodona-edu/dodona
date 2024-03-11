@@ -1,5 +1,6 @@
 import { i18n } from "i18n/i18n";
 import { fetch } from "utilities";
+import { Collapse } from "bootstrap";
 
 function initSelection(): void {
     const selectAll = document.querySelector("#check-all") as HTMLInputElement;
@@ -8,23 +9,34 @@ function initSelection(): void {
 
     const errorWrapper = document.querySelector("#errors-wrapper");
     const choosePanel = document.querySelector("#choose-panel");
-    const chooseCollapse = new bootstrap.Collapse(choosePanel.querySelector(".panel-collapse"), { toggle: false });
+    const chooseCollapse = new Collapse(choosePanel.querySelector(".panel-collapse"), { toggle: false });
     const chooseOptionsPanel = document.querySelector("#choose-options-panel");
     const chooseOptionsElement = chooseOptionsPanel.querySelector(".panel-collapse");
-    const chooseOptionsCollapse = new bootstrap.Collapse(chooseOptionsElement, { toggle: false });
+    const chooseOptionsCollapse = new Collapse(chooseOptionsElement, { toggle: false });
 
     const form = document.querySelector("#download_submissions") as HTMLFormElement;
     const defaultAction = form.action;
 
+    const startDownload = document.getElementById("start-download") as HTMLButtonElement;
+    const downloadingPanel = document.getElementById("downloading-panel") as HTMLDivElement;
+    const downloadingCollapse = new Collapse(downloadingPanel.querySelector(".panel-collapse"), { toggle: false });
+
     function init(): void {
         initCheckboxes();
         initContinueButton();
+        initDownloadButton();
 
         choosePanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", () => {
             chooseOptionsCollapse.hide();
+            downloadingCollapse.hide();
         });
         chooseOptionsPanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", () => {
             chooseCollapse.hide();
+            downloadingCollapse.hide();
+        });
+        downloadingPanel.querySelector(".panel-collapse").addEventListener("show.bs.collapse", () => {
+            chooseCollapse.hide();
+            chooseOptionsCollapse.hide();
         });
     }
 
@@ -70,16 +82,36 @@ function initSelection(): void {
             if (formUrl) {
                 errorWrapper.classList.add("hidden");
                 chooseOptionsPanel.classList.remove("hidden"); // this panel is initially hidden
-                chooseCollapse.hide();
                 chooseOptionsCollapse.show();
                 form.action = formUrl;
             } else {
                 chooseCollapse.show();
-                chooseOptionsCollapse.hide();
                 errorWrapper.classList.remove("hidden");
                 document.querySelector("#warning-message-wrapper").innerHTML = i18n.t("js.no_selection");
             }
         }));
+    }
+
+    function initDownloadButton(): void {
+        startDownload.addEventListener("click", async () => {
+            const data = new FormData(form);
+            downloadingPanel.classList.remove("hidden");
+            downloadingCollapse.show();
+
+            // disable the collapse steppers
+            document.querySelectorAll(".panel-heading a").forEach(a => {
+                a.classList.add("disabled");
+                a.attributes.removeNamedItem("data-bs-toggle");
+            });
+
+            const exportDataUrl = await prepareExport(form.action, data);
+            const downloadUrl = await exportLocation(exportDataUrl);
+
+            // Update the stepper content
+            downloadingPanel.querySelector(".stepper-part").innerHTML = i18n.t("js.export.ready_html", { url: downloadUrl });
+
+            window.location.href = downloadUrl;
+        });
     }
 
     init();
@@ -118,4 +150,3 @@ async function exportLocation(url: string): Promise<string> {
 }
 
 export { initSelection, prepareExport, exportLocation };
-

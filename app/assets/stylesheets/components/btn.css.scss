@@ -134,7 +134,8 @@
     border-color: var(--d-btn-color);
   }
 
-  &:disabled {
+  &.disabled,
+  &:disabled{
     color: var(--d-on-surface);
     border: 1px solid rgba(var(--d-on-surface-rgb), 0.12);
     opacity: 0.38;

@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.18.3', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.1.1'
+gem 'json_schemer', '~> 2.2.0'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -73,7 +73,7 @@ gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
 
 # Json webtokens
-gem 'jwt', '~> 2.8.0'
+gem 'jwt', '~> 2.8.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
   gem 'rubocop-minitest', '~> 0.34.5'
-  gem 'rubocop-rails', '~> 2.23.1'
+  gem 'rubocop-rails', '~> 2.24.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.9.0'

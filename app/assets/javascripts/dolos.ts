@@ -13,7 +13,6 @@ export async function startDolos(url: string): Promise<void> {
     settings.append("with_info", "true");
     settings.append("only_last_submission", "true");
     settings.append("group_by", "user");
-    settings.append("all_students", "false");
 
     const exportDataUrl = await prepareExport(url, settings);
     const download = await exportData(exportDataUrl);

@@ -55,7 +55,6 @@ export class SearchOptionElement extends DodonaElement {
 /**
  * This component represents a list op boolean options for search
  * The options are displayed in a dropdown
- * Unless there is only one option, in which case it is displayed as a single checkbox
  *
  * @element d-search-options
  *
@@ -73,15 +72,12 @@ export class SearchOptions extends DodonaElement {
     render(): TemplateResult {
         if (this.options.length === 0) {
             return html``;
-        } else if (this.options.length === 1) {
-            return html`<d-search-option param="${this.options[0].param}" label="${this.options[0].label}"></d-search-option>`;
         }
-
 
         return html`
             <div class="dropdown dropdown-filter">
                 <a class="btn btn-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    ${this.activeOptions.map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-deep-purple left-icon"></i>`)}
+                    ${this.activeOptions.map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-gray left-icon"></i>`)}
                     ${i18n.t(`js.dropdown.multi.search_options`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>

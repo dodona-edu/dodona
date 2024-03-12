@@ -21,12 +21,12 @@
         </h2>
       </div>
       <div class="card-supporting-text" id="question-container">
-        <% actions = [] %>
+        <% options = [] %>
         <% if current_user&.a_course_admin? %>
-          <% actions << { text: t('questions.index.watch'), search: { refresh: true }, click: 'window.dodona.toggleIndexReload()' } %>
-          <% actions << { text: t('questions.index.everything'), search: { everything: true } } if @unfiltered %>
+          <% options << { text: t('questions.index.watch'), search: { refresh: true } } %>
+          <% options << { text: t('questions.index.everything'), search: { everything: true } } if @unfiltered %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: { actions: actions, refresh_element: "#question-container", courses: @courses, question_states: Question.question_states.keys } %>
+        <%= render partial: 'layouts/searchbar', locals: { options: options, refresh_element: "#question-container", courses: @courses, question_states: Question.question_states.keys } %>
         <div id="questions-table-wrapper">
           <%= render partial: 'questions_table_with_pagination', locals: { questions: @questions } %>
         </div>

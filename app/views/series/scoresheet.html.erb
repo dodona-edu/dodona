@@ -29,7 +29,7 @@
         </div>
         <% if @series.activities.any? %>
           <%= render partial: 'layouts/searchbar', locals: {
-              actions: [
+            options: [
                   { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
               ],
               course_labels: @course_labels

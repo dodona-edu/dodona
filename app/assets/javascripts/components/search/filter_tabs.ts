@@ -44,7 +44,7 @@ export class FilterTabs extends watchMixin(FilterCollectionElement) {
             <div class="card-tab">
                 <ul class="nav nav-tabs" role="tablist">
                     ${this.labels.map(label => html`
-                        <li role="presentation" data-bs-toggle="tooltip" data-bs-title="${label.title ? label.title : ""}" data-bs-trigger="hover">
+                        <li role="presentation" data-bs-toggle="tooltip" title="${label.title ? label.title : ""}" data-bs-trigger="hover">
                             <a href="#" @click=${e => this.processClick(e, label)} class="${this.isSelected(label) ? "active" : ""}">
                                 ${label.name}
                                 ${label.count ? html`<span class="badge rounded-pill colored-secondary" id="${label.id}-count">${label.count}</span>` : ""}

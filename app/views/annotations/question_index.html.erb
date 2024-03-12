@@ -23,8 +23,8 @@
       <div class="card-supporting-text" id="question-container">
         <% options = [] %>
         <% if current_user&.a_course_admin? %>
-          <% options << { text: t('questions.index.watch'), search: { refresh: true } } %>
-          <% options << { text: t('questions.index.everything'), search: { everything: true } } if @unfiltered %>
+          <% options << { label: t('questions.index.watch'), param: 'refresh' } %>
+          <% options << { label: t('questions.index.everything'), param: 'everything' } if @unfiltered %>
         <% end %>
         <%= render partial: 'layouts/searchbar', locals: { options: options, refresh_element: "#question-container", courses: @courses, question_states: Question.question_states.keys } %>
         <div id="questions-table-wrapper">

@@ -6,7 +6,7 @@ import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
 export type SearchAction = {
     url?: string,
-    type?: string,
+    filterValue?: string,
     text: string,
     action?: string,
     js?: string,
@@ -25,6 +25,8 @@ export type SearchAction = {
 export class SearchActions extends DodonaElement {
     @property({ type: Array })
     actions: SearchAction[] = [];
+    @property({ type: String, attribute: "filter-param" })
+    filterParam = undefined;
 
     async performAction(action: SearchAction): Promise<boolean> {
         if (!action.action && !action.js) {
@@ -56,16 +58,20 @@ export class SearchActions extends DodonaElement {
         return false;
     }
 
-
-    render(): TemplateResult | TemplateResult[] {
-        if (this.actions.length === 0) {
-            return html``;
+    get filteredActions(): SearchAction[] {
+        if (!this.filterParam) {
+            return this.actions;
         }
 
-        return this.actions.map(action => html`
+        const filterValue = searchQueryState.queryParams.get(this.filterParam);
+        return this.actions.filter(action => action.filterValue === undefined || action.filterValue === filterValue);
+    }
+
+
+    render(): TemplateResult[] {
+        return this.filteredActions.map(action => html`
             <a class="btn btn-outline with-icon m-2 me-0"
                href='${action.url ? action.url : "#"}'
-               data-type="${action.type}"
                @click=${() => this.performAction(action)}
             >
                 <i class='mdi mdi-${action.icon} mdi-18'></i>

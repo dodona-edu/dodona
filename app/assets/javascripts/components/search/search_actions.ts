@@ -57,31 +57,20 @@ export class SearchActions extends DodonaElement {
     }
 
 
-    render(): TemplateResult {
+    render(): TemplateResult | TemplateResult[] {
         if (this.actions.length === 0) {
             return html``;
         }
 
-        return html`
-            <div class="dropdown actions" id="kebab-menu">
-                <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="mdi mdi-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    ${this.actions.map(action => html`
-                        <li>
-                            <a class="action dropdown-item"
-                               href='${action.url ? action.url : "#"}'
-                               data-type="${action.type}"
-                               @click=${() => this.performAction(action)}
-                            >
-                                <i class='mdi mdi-${action.icon} mdi-18'></i>
-                                ${action.text}
-                            </a>
-                        </li>
-                    `)}
-                </ul>
-            </div>
-        `;
+        return this.actions.map(action => html`
+            <a class="btn btn-outline with-icon m-2 me-0"
+               href='${action.url ? action.url : "#"}'
+               data-type="${action.type}"
+               @click=${() => this.performAction(action)}
+            >
+                <i class='mdi mdi-${action.icon} mdi-18'></i>
+                ${action.text}
+            </a>
+        `);
     }
 }

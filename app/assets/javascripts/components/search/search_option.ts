@@ -4,7 +4,7 @@ import { searchQueryState } from "state/SearchQuery";
 import { html, TemplateResult } from "lit";
 import { i18n } from "i18n/i18n";
 
-type option = {param: string, label: string};
+export type Option = {param: string, label: string};
 
 /**
  * This component represents a boolean option for search using a checkbox
@@ -16,7 +16,7 @@ type option = {param: string, label: string};
  * @prop {string} label - the label to be displayed next to the checkbox
  */
 @customElement("d-search-option")
-export class SearchOptionElement extends DodonaElement {
+export class SearchOption extends DodonaElement {
     @property({ type: String })
     param = "";
     @property({ type: String })
@@ -58,14 +58,14 @@ export class SearchOptionElement extends DodonaElement {
  *
  * @element d-search-options
  *
- * @prop {option[]} options - the list of options to be displayed
+ * @prop {Option[]} options - the list of options to be displayed
  */
 @customElement("d-search-options")
 export class SearchOptions extends DodonaElement {
     @property({ type: Array })
-    options: option[] = [];
+    options: Option[] = [];
 
-    get activeOptions(): option[] {
+    get activeOptions(): Option[] {
         return this.options.filter(option => searchQueryState.queryParams.get(option.param) !== undefined);
     }
 

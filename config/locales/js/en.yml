@@ -327,3 +327,5 @@ en:
     feedbacks:
       submission:
         submit: Submit this solution
+    draft: Draft
+    popularity: Popularity

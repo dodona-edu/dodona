@@ -327,3 +327,5 @@ nl:
     feedbacks:
       submission:
         submit: Deze oplossing indienen
+    draft: Concept
+    popularity: Populariteit

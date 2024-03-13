@@ -70,6 +70,9 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
             },
             darkMode: themeState.theme === "dark"
         });
+
+        await papyros.launch();
+
         editor ||= window.dodona.editor;
         if (editor) {
             // Shortcut to copy code to editor
@@ -89,7 +92,6 @@ export async function initPapyros(programmingLanguage: ProgrammingLanguage): Pro
                 }
             );
         }
-        await papyros.launch();
 
         papyros.codeRunner.editor.reconfigure([CodeEditor.STYLE, syntaxHighlighting(rougeStyle, {
             fallback: true

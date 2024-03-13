@@ -39,7 +39,9 @@ nl:
       all_students: Alle ingeschreven studenten
       all_students_help: Studenten die nooit hebben ingediend zullen een lege map hebben in het resultaat.
       only_submitted: Enkel studenten die minstens één keer ingediend hebben
-      only_submitted_help: Studenten die nooit hebben ingediend zullen niet te vinden zijn in het resultaat.
+      only_submitted_help: Studenten die nooit hebben ingediend zullen niet opgenomen worden in het resultaat.
+      only_correct_submitted: Enkel studenten die minstens één correcte oplossing hebben ingediend
+      only_correct_submitted_help: Studenten die nooit een correcte oplossing hebben ingediend zullen niet opgenomen worden in het resultaat.
       exercise: Oefening
       course: Cursus
       series: Reeks

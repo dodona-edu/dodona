@@ -22,6 +22,10 @@ class SeriesPolicy < ApplicationPolicy
     return true if course_admin?
     return false if record.closed?
     return false if record.hidden? && user.nil?
+    return false if record.timed? && (
+      (record.visibility_end.present? && record.visibility_end < Time.zone.now) ||
+      (record.visibility_start.present? && record.visibility_start > Time.zone.now)
+    )
 
     course = record.course
     course.visible_for_all? ||

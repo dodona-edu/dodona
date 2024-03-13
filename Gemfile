@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.3.1'
+  gem 'test-prof', '~> 1.3.2'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -179,7 +179,7 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
-  gem 'rubocop-minitest', '~> 0.34.5'
+  gem 'rubocop-minitest', '~> 0.35.0'
   gem 'rubocop-rails', '~> 2.24.0'
 
   # for opening letters

@@ -71,6 +71,10 @@ class CoursePolicy < ApplicationPolicy
     course_admin?
   end
 
+  def live_statistics?
+    course_admin?
+  end
+
   def update_membership?
     course_admin?
   end

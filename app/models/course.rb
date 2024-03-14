@@ -223,6 +223,15 @@ class Course < ApplicationRecord
     result
   end
 
+  def activities_being_worked_on(limit = 3, time_range = 1.hour.ago..Time.zone.now)
+    exercises.joins('inner join submissions ON submissions.exercise_id = activities.id')
+             .where(submissions: { created_at: time_range, course_id: id })
+             .group('activities.id')
+             .select('activities.*, COUNT(*) as submission_count')
+             .reorder(Arel.sql('COUNT(*) DESC'))
+             .first(limit)
+  end
+
   def homepage_activities(user, limit = 3)
     result = []
     incomplete_activities = series.visible.joins(:activities) # all activities in visible series

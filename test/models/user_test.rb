@@ -1150,4 +1150,13 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     assert_not user.reload.open_questions?
   end
+
+  test 'online scope should return users that have been active in the last 5 minutes' do
+    user = create :user
+    assert_equal 0, User.online.count
+    user.update(seen_at: Time.zone.now)
+    assert_equal 1, User.online.count
+    user.update(seen_at: 6.minutes.ago)
+    assert_equal 0, User.online.count
+  end
 end

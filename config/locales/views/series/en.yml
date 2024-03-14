@@ -2,7 +2,6 @@ en:
   series:
     form:
       description-help_html: Adding a description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting is supported.
-      visibility-help_html: <b>Open</b> series are always shown on the course page. <b>Timed</b> series are only shown between the given start and end time. A <b>closed</b> series is never accessible to students, a <b>hidden</b> series only using the secret link (see below).
       deadline-help: "Setting a deadline is optional. Time zone: %{time_zone}"
       class_progress_disable: 'Hide the "Class progress" visualisation for students'
       class_progress_disable_help: "This visualisation is an added value for students, but teachers may wish to disable it for exams."
@@ -11,6 +10,17 @@ en:
       advanced_settings: Advanced settings
       activity_numbers_enabled: "Number learning activities"
       activity_numbers_enabled_help: "Each exercise and reading activity is given a sequential number, starting with 1. This number is displayed in titles and listings and can make it easier to communicate about these activities."
+      visibility:
+        title: Visibility
+        subtitle: "For whom is this series visible?"
+        open: "Visible for everyone"
+        open_help: "This series is always shown on the course page."
+        closed: "Hidden for students"
+        closed_help: "This series is not accessible to students. It is only visible to teachers."
+        hidden: "Only visible via secret link"
+        hidden_help: "This series is only visible to teachers. Students can access it via the secret link."
+        timed: "Visible for students between start and end time"
+        timed_help: "This series is visible to students between the given start and end time. It is also possible to only set the start time or end time."
     index:
       title: All series
       load_more: Load more series

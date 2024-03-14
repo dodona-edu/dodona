@@ -152,10 +152,13 @@ function initSeriesEdit(): void {
     }
 
     function initTimedVisibility(): void {
-        const visibilitySelect = document.getElementById("series_visibility") as HTMLSelectElement;
+        const timedVisibilityOption = document.getElementById("series_visibility_timed") as HTMLInputElement;
         const timingOptions = document.getElementById("timing-options");
-        visibilitySelect.addEventListener("change", () => {
-            timingOptions.classList.toggle("visually-hidden", visibilitySelect.value !== "timed");
+        const visibilityOptions = document.querySelectorAll("[name=\"series[visibility]\"]");
+        visibilityOptions.forEach( option => {
+            option.addEventListener("change", () => {
+                timingOptions.classList.toggle("visually-hidden", !timedVisibilityOption.checked);
+            });
         });
     }
 

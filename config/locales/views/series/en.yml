@@ -37,10 +37,10 @@ en:
       make_visible_text: Make visible for students.
       series_not_visible: This series is only visible for students using the secret link!
       series_timed:
-        shown_between: "This series is only visible for students between %{start} and %{end}."
-        shown_from: "This series is only visible for students from %{start}."
-        shown_until: "This series is only visible for students until %{end}."
-        make_visible: "Change visibility to always."
+        will_open: "This series is currently not visible for students. It will become visible at %{start}."
+        will_close: "This series is visible currently for students. It will close at %{end}."
+        is_closed: "This series is no longer visible for students."
+        make_visible: "Remove time restrictions."
       series_not_accessible: This series is not accessible to students!
       activities_not_visible: The learning activities in this series are not visible to students!
       series_scoresheet: Series scoresheet

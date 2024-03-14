@@ -38,10 +38,10 @@ nl:
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
       series_timed:
-        shown_between: "Deze reeks is enkel zichtbaar voor studenten tussen %{start} en %{end}."
-        shown_from: "Deze reeks is enkel zichtbaar voor studenten vanaf %{start}."
-        shown_until: "Deze reeks is enkel zichtbaar voor studenten tot %{end}."
-        make_visible: "Verander zichtbaarheid naar altijd."
+        will_open: "Deze reeks is momenteel niet zichtbaar voor studenten. Ze zal zichtbaar worden op %{start}."
+        will_close: "Deze reeks is momenteel zichtbaar voor studenten. Ze zal sluiten op %{end}."
+        is_closed: "Deze reeks is niet langer zichtbaar voor studenten."
+        make_visible: "Verwijder tijdrestricties."
       activities_not_visible: De leeractiviteiten in deze reeks zijn niet zichtbaar voor studenten!
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).

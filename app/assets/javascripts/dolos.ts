@@ -33,6 +33,6 @@ export async function startDolos(url: string): Promise<void> {
     }
 
     const json = await dolosResponse.json();
-    window.open(json.url, "_blank");
+    window.open(json.html_url, "_blank");
     loader.hide();
 }

@@ -20,7 +20,7 @@ nl:
         hidden: "Enkel zichtbaar via geheime link"
         hidden_help: "Deze reeks is enkel zichtbaar voor lesgevers. Studenten kunnen toegang krijgen via de geheime link."
         timed: "Zichtbaar voor studenten tussen start en eindtijd"
-        timed_help: "Deze reeks wordt zichtbaar voor studenten tussen de gegeven start en eindtijd. Het is ook mogelijk om enkel de starttijd of eindtijd in te stellen."
+        timed_help: "Deze reeks wordt zichtbaar voor studenten tussen de gegeven start- en eindtijd. Het is ook mogelijk om enkel de starttijd of eindtijd in te stellen."
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden

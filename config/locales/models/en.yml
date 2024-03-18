@@ -2,6 +2,10 @@ en:
   activerecord:
     errors:
       models:
+        series:
+          attributes:
+            visibility_start:
+              before_end: "The visibility start date should be before the end date."
         activity:
           no_correct_submission: "At least one correct submission is required, before the exercise can be published."
           not_valid: "The exercise must have a name and a description."
@@ -103,10 +107,13 @@ en:
         order: Order
         deadline: Deadline
         activities_visible: Activities visible
+        visibility_start: Start of visibility
+        visibility_end: End of visibility
         visibilities:
           open: Open
           hidden: Hidden
           closed: Closed
+          timed: Timed
       submission:
         code: Code
         result: Result

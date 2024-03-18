@@ -16,6 +16,8 @@
 #  activities_visible       :boolean          default(TRUE), not null
 #  activities_count         :integer
 #  activity_numbers_enabled :boolean          default(FALSE), not null
+#  visibility_start         :datetime
+#  visibility_end           :datetime
 #
 
 require 'test_helper'

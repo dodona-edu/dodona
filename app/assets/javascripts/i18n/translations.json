@@ -187,6 +187,7 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "draft": "Draft",
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -284,6 +285,7 @@
       "no_data": "There is not enough data to create a graph.",
       "no_selection": "You must select at least one item before being able to download solutions.",
       "options": "Options",
+      "popularity": "Popularity",
       "programming_languages": "Programming Languages",
       "progress_bar": {
         "series-admin-progress": {
@@ -713,6 +715,7 @@
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "draft": "Concept",
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",
@@ -810,6 +813,7 @@
       "no_data": "Er is niet genoeg data om een grafiek te maken.",
       "no_selection": "Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.",
       "options": "Opties",
+      "popularity": "Populariteit",
       "programming_languages": "Programmeertalen",
       "progress_bar": {
         "series-admin-progress": {

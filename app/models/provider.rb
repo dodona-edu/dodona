@@ -31,7 +31,7 @@ class Provider < ApplicationRecord
   scope :gsuite, -> { where(type: Provider::GSuite.name) }
   scope :lti, -> { where(type: Provider::Lti.name) }
   scope :office365, -> { where(type: Provider::Office365.name) }
-  scope :oidc, -> { where(type: Provider::Acmidm.name) }
+  scope :acmidm, -> { where(type: Provider::Acmidm.name) }
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
   scope :surf, -> { where(type: Provider::Surf.name) }

@@ -33,7 +33,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     try_login!
   end
 
-  def oidc
+  def acmidm
     generic_oauth
   end
 

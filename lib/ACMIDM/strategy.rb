@@ -1,6 +1,5 @@
-require_relative '../ent.rb'
+require_relative 'client.rb'
 require 'openid_connect'
-require 'openid_connect/response_object'
 
 # ACMIDM is an expension upon the OpenIDConnect Protocol
 # Changes are applied to support the specific requirements of the flemish government
@@ -8,9 +7,7 @@ require 'openid_connect/response_object'
 module OmniAuth
   module Strategies
     class ACMIDM < OmniAuth::Strategies::OpenIDConnect
-      include Rails.application.routes.url_helpers
-
-      option :name, 'oidc'
+      option :name, 'acmidm'
 
       info do
         {
@@ -43,4 +40,6 @@ module OmniAuth
     end
   end
 end
+
+OmniAuth.config.add_camelization 'acmidm', 'ACMIDM'
 

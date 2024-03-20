@@ -24,7 +24,7 @@ module ACMIDM
             client_options: {
               identifier: Rails.application.credentials.acmidm_client_id,
               private_key: private_key,
-              redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/oidc/callback"
+              redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/acmidm/callback"
             },
             discovery: true,
             response_mode: :form_post,

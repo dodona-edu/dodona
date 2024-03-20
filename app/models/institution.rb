@@ -65,7 +65,7 @@ class Institution < ApplicationRecord
     providers.any? { |provider| provider.type == Provider::Lti.name }
   end
 
-  def uses_oidc?
+  def uses_acmidm?
     providers.any? { |provider| provider.type == Provider::Acmidm.name }
   end
 

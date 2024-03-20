@@ -1,8 +1,9 @@
 ## LTI.
 require_relative '../../lib/LTI/auth.rb'
 
-## OIDC.
-require_relative '../../lib/ACMIDM/auth.rb'
+## ACM-IDM.
+require_relative '../../lib/ACMIDM/strategy.rb'
+require_relative '../../lib/ACMIDM/setup.rb'
 
 ## SAML.
 require_relative '../../lib/SAML/strategy.rb'

@@ -100,7 +100,7 @@ if Rails.env.development?
   Provider::Smartschool.create institution: college_ieper, identifier: 'https://college-ieper.smartschool.be'
 
   # OIDC
-  Provider::Oidc.create institution: vlaanderen, client_id: '12345', issuer: 'https://authenticatie.vlaanderen.be/op'
+  Provider::Acmidm.create institution: vlaanderen, client_id: '12345', issuer: 'https://authenticatie.vlaanderen.be/op'
 
   # Personal providers
   Provider::Office365.create identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil

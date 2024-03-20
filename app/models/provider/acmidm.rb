@@ -19,10 +19,10 @@
 #  issuer            :string(255)
 #  jwks_uri          :string(255)
 #
-class Provider::Oidc < Provider
+class Provider::Acmidm < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
-  validates :identifier, absence: true
-  validates :client_id, :issuer, presence: true
+  validates :identifier, uniqueness: { case_sensitive: false }
+  validates :client_id, :issuer, absence: true
 
   def self.sym
     :oidc

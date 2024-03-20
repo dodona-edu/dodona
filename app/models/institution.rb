@@ -66,7 +66,7 @@ class Institution < ApplicationRecord
   end
 
   def uses_oidc?
-    providers.any? { |provider| provider.type == Provider::Oidc.name }
+    providers.any? { |provider| provider.type == Provider::Acmidm.name }
   end
 
   def uses_smartschool?

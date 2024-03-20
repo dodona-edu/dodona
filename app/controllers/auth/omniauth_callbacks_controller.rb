@@ -34,11 +34,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def oidc
-    try_login!
+    generic_oauth
   end
 
   def surf
-    try_login!
+    generic_oauth
   end
 
   def elixir

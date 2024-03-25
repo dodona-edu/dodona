@@ -212,7 +212,7 @@ class User < ApplicationRecord
   }
 
   def provider_allows_blank_email
-    return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
+    return if institution&.uses_lti? || institution&.uses_flemish_government? || institution&.uses_smartschool?
 
     errors.add(:email, 'should not be blank') if email.blank?
   end

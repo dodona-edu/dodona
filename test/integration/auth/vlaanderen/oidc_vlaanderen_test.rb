@@ -31,7 +31,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
   TOKEN_URL = format('%s/v1/token', ISSUER).freeze
 
   def setup
-    @provider = create :oidc_provider, issuer: ISSUER
+    @provider = create :flemish_government_provider
 
     # Disable the test mode so that the whole flow is executed.
     OmniAuth.config.test_mode = false
@@ -48,11 +48,11 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
 
   def omniauth_callback_url
     # Strip the trailing slash.
-    user_oidc_omniauth_callback_url(locale: nil, protocol: 'https').to_s.chomp('/')
+    user_flemish_government_omniauth_callback_url(locale: nil, protocol: 'https').to_s.chomp('/')
   end
 
   def omniauth_url(provider)
-    user_oidc_omniauth_authorize_url(provider: provider)
+    user_flemish_government_omniauth_authorize_url(provider: provider)
   end
 
   def stub_discovery!
@@ -91,8 +91,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Validate the parameters.
     parameters = CGI.parse(redirect_url.query).symbolize_keys
 
-    # Client id must be equal to the one set in the provider.
-    assert_equal @provider.client_id, parameters[:client_id].first
+    # Client id must be equal to the one set in the secrets.
+    assert_equal Rails.application.credentials.acmidm_client_id, parameters[:client_id].first
 
     # Nonce must not be empty.
     assert_not_empty parameters[:nonce].first
@@ -108,12 +108,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     assert_equal 'code', parameters[:response_type].first
 
     # Scope must contain openid and profile.
-    assert_equal 'openid profile vo', parameters[:scope].first
-
-    # State must not be empty and must start with the id of the provider so that
-    # we can reconstruct this in the callback phase.
-    assert_not_empty parameters[:state].first
-    assert parameters[:state].first.to_s.start_with?(format('%s-', @provider.id))
+    assert_equal 'openid profile vo ov_leerling', parameters[:scope].first
   end
 
   test 'should handle the callback phase' do

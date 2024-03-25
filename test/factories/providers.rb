@@ -42,8 +42,7 @@ FactoryBot.define do
   factory :flemish_government_provider, class: 'Provider::FlemishGovernment' do
     institution
 
-    client_id { SecureRandom.uuid }
-    issuer { Faker::Internet.url }
+    identifier { institution.short_name }
   end
 
   factory :provider, aliases: [:saml_provider], class: 'Provider::Saml' do

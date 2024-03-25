@@ -100,7 +100,7 @@ if Rails.env.development?
   Provider::Smartschool.create institution: college_ieper, identifier: 'https://college-ieper.smartschool.be'
 
   # ACM-IDM
-  Provider::Acmidm.create institution: vlaanderen, identifier: 'vlaamse-overheid'
+  Provider::FlemishGovernment.create institution: vlaanderen, identifier: 'vlaamse-overheid'
 
   # Personal providers
   Provider::Office365.create identifier: '9188040d-6c67-4c5b-b112-36a304b66dad', institution: nil

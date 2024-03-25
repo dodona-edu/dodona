@@ -1,6 +1,6 @@
-# ACMIDM is an expension upon the OpenIDConnect Protocol
-# Changes are applied to support the specific requirements of the flemish government
-module ACMIDM
+# Flemish government is an extension upon the OpenIDConnect Protocol
+# Changes are applied to support the specific requirements of ACM IDM.
+module FlemishGovernment
   module Auth
     module OmniAuth
       class Setup
@@ -24,7 +24,7 @@ module ACMIDM
             client_options: {
               identifier: Rails.application.credentials.acmidm_client_id,
               private_key: private_key,
-              redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/acmidm/callback"
+              redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/flemish_government/callback"
             },
             discovery: true,
             response_mode: :form_post,

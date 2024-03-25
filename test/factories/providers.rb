@@ -39,7 +39,7 @@ FactoryBot.define do
     identifier { SecureRandom.uuid }
   end
 
-  factory :acmidm_provider, class: 'Provider::Acmidm' do
+  factory :flemish_government_provider, class: 'Provider::FlemishGovernment' do
     institution
 
     client_id { SecureRandom.uuid }

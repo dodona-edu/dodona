@@ -12,7 +12,7 @@ require 'test_helper'
 ###
 
 # Set the signing key.
-module ACMIDM::Auth::Settings
+module FlemishGovernment::Auth::Settings
   private
 
   def private_key_path

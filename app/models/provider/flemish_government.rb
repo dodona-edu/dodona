@@ -19,13 +19,13 @@
 #  issuer            :string(255)
 #  jwks_uri          :string(255)
 #
-class Provider::Acmidm < Provider
+class Provider::FlemishGovernment < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
   validates :identifier, uniqueness: { case_sensitive: false }
   validates :client_id, :issuer, absence: true
 
   def self.sym
-    :acmidm
+    :flemish_government
   end
 
   def self.logo

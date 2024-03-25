@@ -33,7 +33,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     try_login!
   end
 
-  def acmidm
+  def flemish_government
     generic_oauth
   end
 

@@ -1,9 +1,9 @@
 require "json/jwt"
 require "rack/oauth2/client/grant/authorization_code"
 
-# ACMIDM is an expension upon the OpenIDConnect Protocol
-# Changes are applied to support the specific requirements of the flemish government
-module ACMIDM
+# Flemish government is an extension upon the OpenIDConnect Protocol
+# Changes are applied to support the specific requirements of ACM IDM.
+module FlemishGovernment
   class Client < OpenIDConnect::Client
     # By default, the JWT grant will set the `grant type` to `jwtbearer`.
     # However, Vlaamse Overheid expects this to be authorization_code; hence we

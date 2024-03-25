@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
   end
 
   Warden::Manager.after_authentication do |user, _auth, _opts|
-    if user.email.blank? && !user.institution&.uses_lti? && !user.institution&.uses_acmidm? && !user.institution&.uses_smartschool?
+    if user.email.blank? && !user.institution&.uses_lti? && !user.institution&.uses_flemish_government? && !user.institution&.uses_smartschool?
       raise "User with id #{user.id} should not have a blank email " \
             'if the provider is not LTI, ACM-IDM or Smartschool'
     end

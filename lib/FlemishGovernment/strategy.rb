@@ -1,8 +1,8 @@
 require_relative 'client.rb'
 require 'openid_connect'
 
-# ACMIDM is an expension upon the OpenIDConnect Protocol
-# Changes are applied to support the specific requirements of the flemish government
+# Flemish government is an extension upon the OpenIDConnect Protocol
+# Changes are applied to support the specific requirements of ACM IDM.
 # This is used by both government officials and LeerID
 module OmniAuth
   module Strategies
@@ -26,7 +26,7 @@ module OmniAuth
         #
         # Token endpoint: https://authenticatie-ti.vlaanderen.be/op/v1/token.
         # Vlaamse Overheid wants: https://authenticatie-ti.vlaanderen.be/op.
-        @client ||= ::ACMIDM::Client.new(client_options.merge(audience: options.issuer))
+        @client ||= ::FlemishGovernment::Client.new(client_options.merge(audience: options.issuer))
       end
 
       def uid
@@ -40,6 +40,4 @@ module OmniAuth
     end
   end
 end
-
-OmniAuth.config.add_camelization 'acmidm', 'ACMIDM'
 

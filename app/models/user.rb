@@ -118,7 +118,7 @@ class User < ApplicationRecord
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
 
-  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 acmidm saml smartschool surf elixir]
+  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 flemish_government saml smartschool surf elixir]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }

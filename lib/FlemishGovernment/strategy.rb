@@ -6,8 +6,8 @@ require 'openid_connect'
 # This is used by both government officials and LeerID
 module OmniAuth
   module Strategies
-    class ACMIDM < OmniAuth::Strategies::OpenIDConnect
-      option :name, 'acmidm'
+    class FlemishGovernment < OmniAuth::Strategies::OpenIDConnect
+      option :name, 'flemish_government'
 
       info do
         {

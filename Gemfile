@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
   gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.24.0'
+  gem 'rubocop-rails', '~> 2.24.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.9.0'

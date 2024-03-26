@@ -20,6 +20,7 @@ class FlemishGovernment::Auth::OmniAuth::Setup
   end
 end
 
+
 class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
   include JwksHelper
 

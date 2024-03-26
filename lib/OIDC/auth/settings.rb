@@ -29,7 +29,7 @@ module OIDC
             identifier: Rails.application.credentials.flemish_government_client_id,
             private_key: private_key
           },
-          issuer: provider.issuer,
+          issuer: Rails.env.production? ? "https://authenticatie.vlaanderen.be/op" : "https://authenticatie-ti.vlaanderen.be/op",
           state: lambda { format("%d-%s", provider.id, SecureRandom::hex(16)) }
         }
       end

@@ -26,7 +26,7 @@ module OIDC
         {
           client_auth_method: :jwt_bearer,
           client_options: {
-            identifier: provider.client_id,
+            identifier: Rails.application.credentials.flemish_government_client_id,
             private_key: private_key
           },
           issuer: provider.issuer,

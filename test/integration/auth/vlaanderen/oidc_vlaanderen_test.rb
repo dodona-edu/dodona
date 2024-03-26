@@ -92,7 +92,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     parameters = CGI.parse(redirect_url.query).symbolize_keys
 
     # Client id must be equal to the one set in the provider.
-    assert_equal @provider.client_id, parameters[:client_id].first
+    assert_equal Rails.application.credentials.flemish_government_client_id, parameters[:client_id].first
 
     # Nonce must not be empty.
     assert_not_empty parameters[:nonce].first
@@ -126,8 +126,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Build an id token.
     id_token_body = {
       at_hash: Faker::Alphanumeric.alphanumeric,
-      aud: @provider.client_id,
-      azp: @provider.client_id,
+      aud: Rails.application.credentials.flemish_government_client_id,
+      azp: Rails.application.credentials.flemish_government_client_id,
       exp: Time.now.to_i + 3600,
       family_name: Faker::Name.last_name,
       given_name: Faker::Name.first_name,
@@ -171,8 +171,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
       client_assertion = decode_jwt(client_assertion_encoded).symbolize_keys
 
       assert_equal ISSUER, client_assertion[:aud]
-      assert_equal @provider.client_id, client_assertion[:iss]
-      assert_equal @provider.client_id, client_assertion[:sub]
+      assert_equal Rails.application.credentials.flemish_government_client_id, client_assertion[:iss]
+      assert_equal Rails.application.credentials.flemish_government_client_id, client_assertion[:sub]
 
       # Code must be equal to the code received from the provider.
       assert_equal authorization_response[:code], parameters[:code].first

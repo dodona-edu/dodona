@@ -22,7 +22,7 @@ module FlemishGovernment
         def configure
           {
             client_options: {
-              identifier: Rails.application.credentials.acmidm_client_id,
+              identifier: client_id,
               private_key: private_key,
               redirect_uri: "https://#{@env['HTTP_HOST']}/users/auth/flemish_government/callback"
             },
@@ -36,6 +36,11 @@ module FlemishGovernment
         end
 
         private
+
+        def client_id
+          # This function allows to override the key path in tests.
+          Rails.application.credentials.acmidm_client_id
+        end
 
         def private_key_path
           # This function allows to override the key path in tests.

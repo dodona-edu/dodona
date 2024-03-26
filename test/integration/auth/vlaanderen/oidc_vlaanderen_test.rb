@@ -12,7 +12,6 @@ require 'test_helper'
 ###
 CLIENT_ID = 'foo'.freeze
 
-
 # Set the signing key.
 class FlemishGovernment::Auth::OmniAuth::Setup
   private

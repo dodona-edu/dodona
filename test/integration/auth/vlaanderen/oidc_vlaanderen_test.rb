@@ -12,7 +12,7 @@ require 'test_helper'
 ###
 
 # Set the signing key.
-module FlemishGovernment::Auth::Settings
+class FlemishGovernment::Auth::OmniAuth::Setup
   private
 
   def private_key_path
@@ -29,6 +29,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
   KEYS_URL = format('%s/v1/keys', ISSUER).freeze
   KEY_ID = format('OIDC_VLAANDEREN_%d', Time.now.to_i).freeze
   TOKEN_URL = format('%s/v1/token', ISSUER).freeze
+  USER_INFO_URL = format('%s/v1/userinfo', ISSUER).freeze
 
   def setup
     @provider = create :flemish_government_provider
@@ -121,8 +122,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Build an id token.
     id_token_body = {
       at_hash: Faker::Alphanumeric.alphanumeric,
-      aud: @provider.client_id,
-      azp: @provider.client_id,
+      aud: Rails.application.credentials.acmidm_client_id,
+      azp: Rails.application.credentials.acmidm_client_id,
       exp: Time.now.to_i + 3600,
       family_name: Faker::Name.last_name,
       given_name: Faker::Name.first_name,
@@ -140,6 +141,9 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Stub the access token call.
     access_token_response = { access_token: Faker::Crypto.md5, expires_in: 3600, id_token: id_token, scope: 'profile', token_type: 'Bearer' }
     stub_request(:post, TOKEN_URL).to_return(body: access_token_response.to_json, headers: { 'Content-Type': 'application/json' }, status: 200)
+
+    # Stub the user info call.
+    stub_request(:get, USER_INFO_URL).to_return(body: {}.to_json, headers: { 'Content-Type': 'application/json' }, status: 200)
 
     # Call the callback url.
     authorization_response = { code: Faker::Alphanumeric.alpha, state: session['omniauth.state'] }
@@ -166,8 +170,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
       client_assertion = decode_jwt(client_assertion_encoded).symbolize_keys
 
       assert_equal ISSUER, client_assertion[:aud]
-      assert_equal @provider.client_id, client_assertion[:iss]
-      assert_equal @provider.client_id, client_assertion[:sub]
+      assert_equal Rails.application.credentials.acmidm_client_id, client_assertion[:iss]
+      assert_equal Rails.application.credentials.acmidm_client_id, client_assertion[:sub]
 
       # Code must be equal to the code received from the provider.
       assert_equal authorization_response[:code], parameters[:code].first

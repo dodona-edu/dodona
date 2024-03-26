@@ -10,7 +10,7 @@ require 'test_helper'
 # https://authenticatie.vlaanderen.be/docs/beveiligen-van-toepassingen/integratie-methoden/oidc/technische-info/discovery-url/
 # https://authenticatie.vlaanderen.be/docs/beveiligen-van-toepassingen/integratie-methoden/oidc/technische-info/scope-claims/
 ###
-CLIENT_ID = "foo".freeze
+CLIENT_ID = 'foo'.freeze
 
 
 # Set the signing key.

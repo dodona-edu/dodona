@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { search } from "search";
 import { DodonaElement } from "components/meta/dodona_element";
@@ -21,6 +21,15 @@ export class LoadingBar extends DodonaElement {
         super();
         if (this.searchBased) {
             search.loadingBars.push(this);
+        }
+    }
+
+    override updated(changedProperties: PropertyValues): void {
+        super.updated(changedProperties);
+        if (changedProperties.has("searchBased")) {
+            if (this.searchBased) {
+                search.loadingBars.push(this);
+            }
         }
     }
 

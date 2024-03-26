@@ -1,4 +1,5 @@
 import { i18n } from "i18n/i18n";
+import { fetch } from "utilities";
 import { Collapse } from "bootstrap";
 
 function initSelection(): void {
@@ -104,7 +105,7 @@ function initSelection(): void {
             });
 
             const exportDataUrl = await prepareExport(form.action, data);
-            const downloadUrl = await exportLocation(exportDataUrl);
+            const downloadUrl = (await exportData(exportDataUrl)).url;
 
             // Update the stepper content
             downloadingPanel.querySelector(".stepper-part").innerHTML = i18n.t("js.export.ready_html", { url: downloadUrl });
@@ -134,18 +135,24 @@ async function prepareExport(url: string, data: FormData): Promise<string> {
     return json.url;
 }
 
+type ExportData = {
+    ready: boolean;
+    url: string;
+    id: number;
+};
+
 /**
- * Returns the url of the blob to download when the download is ready.
+ * Returns the data of the blob to download when the download is ready.
  * @param url The URL of the download endpoint
  */
-async function exportLocation(url: string): Promise<string> {
+async function exportData(url: string): Promise<ExportData> {
     const response = await fetch(url);
     const data = await response.json();
     if (!data.ready) {
         await new Promise(resolve => setTimeout(resolve, 1000));
-        return await exportLocation(url);
+        return await exportData(url);
     }
-    return data.url;
+    return data;
 }
 
-export { initSelection, prepareExport, exportLocation };
+export { initSelection, prepareExport, exportData };

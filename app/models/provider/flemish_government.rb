@@ -19,12 +19,28 @@
 #  issuer            :string(255)
 #  jwks_uri          :string(255)
 #
-class Provider::Oidc < Provider
+class Provider::FlemishGovernment < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
-  validates :identifier, absence: true
-  validates :client_id, :issuer, presence: true
+  validates :identifier, uniqueness: { case_sensitive: false }
+  validates :client_id, :issuer, absence: true
 
   def self.sym
-    :oidc
+    :flemish_government
+  end
+
+  def self.logo
+    'vlaamse-overheid.png'
+  end
+
+  def self.readable_name
+    'Vlaamse Overheid'
+  end
+
+  def self.extract_institution_name(auth_hash)
+    institution_name = auth_hash&.info&.institution_name
+
+    return Provider.extract_institution_name(auth_hash) if institution_name.nil?
+
+    [institution_name, institution_name]
   end
 end

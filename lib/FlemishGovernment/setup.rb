@@ -31,7 +31,7 @@ module FlemishGovernment
             response_type: :code,
             scope: [:openid, :profile, :vo, :ov_leerling],
             client_auth_method: :jwt_bearer,
-            issuer: Rails.env.production? ? "https://authenticatie.vlaanderen.be/op" : "https://authenticatie-ti.vlaanderen.be/op",
+            issuer: "https://authenticatie-ti.vlaanderen.be/op",
           }
         end
 

@@ -241,6 +241,7 @@ en:
         courses: Courses
         question_states: Statuses
         popularity: Popularity
+        search_options: Options
       single:
         labels: Label
         programming_languages: Programming Language

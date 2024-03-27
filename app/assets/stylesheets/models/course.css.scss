@@ -8,8 +8,9 @@
   margin-bottom: 16px;
 }
 
-.badge-pending {
-  background-color: var(--d-danger);
+.badge.colored-secondary {
+  background-color: var(--d-secondary-container);
+  color: var(--d-on-secondary-container);
 }
 
 .card.course {

@@ -838,7 +838,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     get course_series_activity_url(right_course, wrong_series, right_exercise)
 
-    assert_redirected_to root_url
+    assert_redirected_to course_activity_url(right_course, right_exercise)
   end
 
   test 'should not show activity if series not in course' do

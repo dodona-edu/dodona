@@ -114,6 +114,9 @@ class ActivitiesController < ApplicationController
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 
     @series = Series.find_by(id: params[:series_id])
+    # Double check if activity still exists within this series, redirect to course activity if it does not
+    redirect_to helpers.activity_scoped_path(activity: @activity, course: @course) if @series&.activities&.exclude?(@activity)
+
     @not_registered = @course && !current_user&.member_of?(@course)
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @not_registered
     @current_membership = CourseMembership.where(course: @course, user: current_user).first if @lti_launch && @not_registered

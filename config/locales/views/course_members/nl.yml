@@ -26,6 +26,7 @@ nl:
       close: "Sluiten"
       upload: "Aanpassingen uploaden"
       edit_all_labels: "Alle labels bewerken"
+      download_user_csv: "Gebruikerslijst downloaden"
       first_download_labels: "Download een lijst van alle gebruikers en hun labels als een CSV bestand."
       then_edit: "Open het tekstbestand dat je net gedownload hebt, en pas de labels aan. Enkel wijzigingen aan de labels kolom zullen doorgevoerd worden. Merk op dat de labels in één veld zitten, gescheiden met puntkomma's."
       finally_upload: "Als je tevreden bent met je aanpassingen, selecteer hieronder dan het aangepaste bestand."

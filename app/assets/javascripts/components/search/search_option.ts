@@ -65,23 +65,17 @@ export class SearchOptions extends DodonaElement {
     @property({ type: Array })
     options: Option[] = [];
 
-    get activeOptions(): Option[] {
-        return this.options.filter(option => searchQueryState.queryParams.get(option.param) !== undefined);
-    }
-
     render(): TemplateResult {
         if (this.options.length === 0) {
             return html``;
         }
 
         return html`
-            <div class="dropdown dropdown-filter">
-                <a class="btn btn-outline dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    ${this.activeOptions.map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-gray left-icon"></i>`)}
-                    ${i18n.t(`js.dropdown.multi.search_options`)}
-                    <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
+            <div class="dropdown">
+                <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
+                    <i class="mdi mdi-dots-vertical"></i>
                 </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <ul class="dropdown-menu dropdown-menu-end">
                     ${this.options.map(o => html`
                         <li><span class="dropdown-item-text ">
                             <d-search-option param="${o.param}" label="${o.label}"></d-search-option>

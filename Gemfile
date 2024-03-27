@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.18.3', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.2.0'
+gem 'json_schemer', '~> 2.2.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>4.0.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.2.0'
+gem 'rouge', '4.2.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -103,7 +103,7 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 4.2.3'
-gem 'rails-i18n', '~> 7.0.8'
+gem 'rails-i18n', '~> 7.0.9'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.2'
+gem 'nokogiri', '~> 1.16.3'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.20.0'
+gem 'ddtrace', '~> 1.21.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
   gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.24.0'
+  gem 'rubocop-rails', '~> 2.24.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.9.0'

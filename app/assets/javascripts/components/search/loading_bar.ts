@@ -11,12 +11,17 @@ import { DodonaElement } from "components/meta/dodona_element";
  */
 @customElement("d-loading-bar")
 export class LoadingBar extends DodonaElement {
-    @property({ type: Boolean, state: true })
+    @property({ type: Boolean, attribute: "search-based" })
+    searchBased = false;
+
+    @property({ type: Boolean })
     loading = false;
 
     constructor() {
         super();
-        search.loadingBars.push(this);
+        if (this.searchBased) {
+            search.loadingBars.push(this);
+        }
     }
 
     show(): void {

@@ -328,5 +328,7 @@ nl:
     feedbacks:
       submission:
         submit: Deze oplossing indienen
+    export:
+      ready_html: De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href="%{url}">hier</a>.
     draft: Concept
     popularity: Populariteit

@@ -14,6 +14,6 @@
 python_repo:
   id: 1
   name: "Python exercises"
-  remote: "https://github.com"
+  remote: "git@github.com:dodona-edu/python-exercises.git"
   path: "path/to/repo"
   judge_id: 1

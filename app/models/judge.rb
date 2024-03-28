@@ -22,9 +22,7 @@ class Judge < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
-  # slightly modified regex from https://stackoverflow.com/questions/2514859/regular-expression-for-git-repository
-  # to allow for ssh:// and git@ urls, but not http(s)://
-  validates :remote, presence: true, uniqueness: { case_sensitive: false }, format: { with: /((git|ssh):\/\/|(git@[\w\.]+):)([\w\.@\:\/\-~]+)(\.git)(\/)?/ }
+  validates :remote, presence: true, uniqueness: { case_sensitive: false }, format: { without: /\Ahttp/ }
 
   validate :renderer_is_renderer
   validate :repo_is_accessible, on: :create

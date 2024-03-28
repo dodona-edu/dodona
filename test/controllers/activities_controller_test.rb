@@ -823,6 +823,40 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert exercise.reload.draft
     assert_equal 'new name', exercise.name_en
   end
+
+  test 'should not show activity if not in series' do
+    right_course = create :course
+    right_series = create :series, course: right_course
+    right_exercise = create :exercise
+    right_series.exercises << right_exercise
+
+    get course_series_activity_url(right_course, right_series, right_exercise)
+
+    assert_response :success
+
+    wrong_series = create :series, course: right_course
+
+    get course_series_activity_url(right_course, wrong_series, right_exercise)
+
+    assert_redirected_to course_activity_url(right_course, right_exercise)
+  end
+
+  test 'should not show activity if series not in course' do
+    right_course = create :course
+    right_series = create :series, course: right_course
+    right_exercise = create :exercise
+    right_series.exercises << right_exercise
+
+    get course_series_activity_url(right_course, right_series, right_exercise)
+
+    assert_response :success
+
+    wrong_course = create :course
+
+    get course_series_activity_url(wrong_course, right_series, right_exercise)
+
+    assert_redirected_to root_url
+  end
 end
 
 class ExerciseErrorMailerTest < ActionDispatch::IntegrationTest

@@ -463,16 +463,16 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
   test 'Remotes should not be http(s) urls' do
     assert_raises(ActiveRecord::RecordInvalid) do
-      create :repository, :git_stubbed,remote: 'http://foo.bar'
+      create :repository, :git_stubbed, remote: 'http://foo.bar'
     end
     assert_raises(ActiveRecord::RecordInvalid) do
-      create :repository, :git_stubbed,remote: 'https://foo.bar'
+      create :repository, :git_stubbed, remote: 'https://foo.bar'
     end
   end
 
   test 'git, ssh and local remotes should be valid' do
     create :repository, :git_stubbed, remote: 'git@foo.bar:baz.git'
-    create :repository, :git_stubbed,remote: 'ssh://foo.bar/baz.git'
-    create :repository, :git_stubbed,remote: '/foo/bar/baz.git'
+    create :repository, :git_stubbed, remote: 'ssh://foo.bar/baz.git'
+    create :repository, :git_stubbed, remote: '/foo/bar/baz.git'
   end
 end

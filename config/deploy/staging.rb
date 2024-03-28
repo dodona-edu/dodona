@@ -4,7 +4,6 @@ server 'naos.ugent.be', user: 'dodona', roles: %i[web app db worker], ssh_option
     port: 4840
 }
 
-set :branch, ENV['BRANCH'] || 'develop'
 set :rails_env, :staging
 
 set :default_env, {node_env: 'production'}
@@ -20,6 +19,15 @@ namespace :deploy do
     on roles(:web) do
       within release_path do
         execute :mv, 'public/robots.development.txt', 'public/robots.txt'
+      end
+    end
+  end
+  before :publishing, :asset_stuff do
+    on roles :web do
+      within release_path do
+        with rails_env: fetch(:rails_env) do
+          execute :rake, 'assets:nodigest'
+        end
       end
     end
   end

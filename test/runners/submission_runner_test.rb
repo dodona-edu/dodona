@@ -58,12 +58,14 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     assert_not_nil @submission.result, 'There should always be a result'
     assert_equal status, @submission.status, 'Wrong submission status'
     summary ||= I18n.t("activerecord.attributes.submission.statuses.#{status}", locale: @submission.user.lang)
+
     assert_equal summary, @submission.summary, 'Wrong submission summary'
     if message_includes
       result = JSON.parse(@submission.result)
       messages = result['messages']
       message_contents = messages.pluck('description')
       included = message_contents.any? { |m| m.include?(message_includes) }
+
       assert included,
              "Expected to find the text \n\"#{message_includes}\"\n" \
              "In one of the following messages of result:\n" \
@@ -91,13 +93,15 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       true
     end
     evaluate_with_stubbed_docker mock
+
     assert_equal 100, config['memory_limit']
     assert_equal 42, config['time_limit']
-    assert_equal true, config['network_enabled'] # overidden
+    assert config['network_enabled'] # overidden
     assert_equal @exercise.programming_language.name, config['programming_language']
     assert_equal @user.lang, config['natural_language']
     %w[resources source judge workdir].each do |key|
       path = config[key]
+
       assert_not_nil path
       assert path.starts_with?('/'), "Expected config[#{key}] to be an absolute path, but was '#{path}'"
     end
@@ -116,6 +120,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'correct',
       description: summary
     }
+
     assert_submission status: 'correct', summary: summary, accepted: true
   end
 
@@ -126,6 +131,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'compilation error',
       description: summary
     }
+
     assert_submission status: 'compilation error', summary: summary, accepted: false
   end
 
@@ -136,6 +142,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
       status: 'runtime error',
       description: summary
     }
+
     assert_submission status: 'runtime error', summary: summary, accepted: false
   end
 
@@ -155,6 +162,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'no output should result in internal error' do
     evaluate_with_stubbed_docker output: nil
+
     assert_submission status: 'internal error',
                       message_includes: 'No judge output',
                       accepted: false
@@ -162,12 +170,14 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   test 'broken output should result in internal error' do
     evaluate_with_stubbed_docker output: '{ status: "Aarhhg...'
+
     assert_submission status: 'internal error',
                       accepted: false
   end
 
   test 'too much output should result in output limit exceeded' do
     evaluate_with_stubbed_docker output: ('A' * 20 * 1024 * 1024)
+
     assert_submission status: 'output limit exceeded',
                       accepted: false
   end
@@ -263,6 +273,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
   test 'docker killed because of time limit should result in timeout' do
     Docker::Container.stubs(:create).returns(TimeoutDocker.new)
     @submission.evaluate
+
     assert_equal 'time limit exceeded', @submission.status
   end
 
@@ -286,6 +297,7 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
     Docker::Container.stubs(:create).returns(MemoryDocker.new)
     @submission.exercise.stubs(:merged_config).returns('evaluation' => { 'time_limit' => 1000 })
     @submission.evaluate
+
     assert_equal 'memory limit exceeded', @submission.status
   end
 end

@@ -6,6 +6,8 @@ import utc from "dayjs/plugin/utc";
 import minMax from "dayjs/plugin/minMax";
 import duration from "dayjs/plugin/duration";
 import isoWeek from "dayjs/plugin/isoWeek";
+import { themeState } from "state/Theme";
+import { i18n } from "i18n/i18n";
 dayjs.extend(utc);
 dayjs.extend(minMax);
 dayjs.extend(duration);
@@ -28,7 +30,7 @@ function setToAYStart(day: dayjs.Dayjs): dayjs.Dayjs {
 }
 
 function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined): void {
-    d3.select(selector).attr("class", "text-center").append("span").text(I18n.t("js.loading"));
+    d3.select(selector).attr("class", "text-center").append("span").text(i18n.t("js.loading"));
     const processor = function (data): void {
         if (data["status"] == "not available yet") {
             setTimeout(() => d3.json(url).then(processor), 1000);
@@ -70,14 +72,20 @@ function initHeatmap(url: string, oldestFirst: boolean, year: string | undefined
 }
 
 function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: string | undefined): void {
-    const darkMode = window.dodona.darkMode;
-    const emptyColor = darkMode ? "#303034" : "#fcfcff";
-    const lowColor = darkMode ? "#4a4046" : "#ffd9df";
-    const highColor = darkMode ? "#ffb2c0" : "#bc0049";
+    // redraw on theme change
+    themeState.subscribe(() => {
+        const container = document.querySelector(selector) as HTMLDivElement;
+        container.childNodes.forEach(n => n.remove());
+        drawHeatmap(data, oldestFirst, year);
+    }, "computedStyle");
 
-    const longMonthNames = monthKeys.map(k => I18n.t(`js.months.long.${k}`));
-    const shortMonthNames = monthKeys.map(k => I18n.t(`js.months.short.${k}`));
-    const weekdayNames = dayKeys.map(k => I18n.t(`js.weekdays.short.${k}`));
+    const emptyColor = themeState.getCSSVariable("--d-off-surface");
+    const highColor = themeState.getCSSVariable("--d-secondary");
+    const lowColor = d3.interpolateRgb(emptyColor, highColor)(0.2);
+
+    const longMonthNames = monthKeys.map(k => i18n.t(`js.months.long.${k}`));
+    const shortMonthNames = monthKeys.map(k => i18n.t(`js.months.short.${k}`));
+    const weekdayNames = dayKeys.map(k => i18n.t(`js.weekdays.short.${k}`));
 
     const container = d3.select(selector);
     const tooltip = container.append("div").attr("class", "d3-tooltip").style("opacity", 0);
@@ -193,7 +201,7 @@ function drawHeatmap(data: [dayjs.Dayjs, number][], oldestFirst: boolean, year: 
         })
         .on("mouseover", (event, d) => {
             tooltip.transition().duration(200).style("opacity", .9);
-            tooltip.html(`${d[1]} ${I18n.t("js.submissions_on")} ${d[0].format("D")} ${longMonthNames[d[0].month()].toLowerCase()} ${d[0].format("YYYY")}`);
+            tooltip.html(`${d[1]} ${i18n.t("js.submissions_on")} ${d[0].format("D")} ${longMonthNames[d[0].month()].toLowerCase()} ${d[0].format("YYYY")}`);
         })
         .transition().duration(500)
         .attr("width", unitSize - 2)

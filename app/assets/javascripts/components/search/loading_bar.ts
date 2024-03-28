@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { search } from "search";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component represents a loading bar.
@@ -10,13 +10,18 @@ import { search } from "search";
  * @element d-loading-bar
  */
 @customElement("d-loading-bar")
-export class LoadingBar extends ShadowlessLitElement {
-    @property({ type: Boolean, state: true })
+export class LoadingBar extends DodonaElement {
+    @property({ type: Boolean, attribute: "search-based" })
+    searchBased = false;
+
+    @property({ type: Boolean })
     loading = false;
 
     constructor() {
         super();
-        search.loadingBars.push(this);
+        if (this.searchBased) {
+            search.loadingBars.push(this);
+        }
     }
 
     show(): void {

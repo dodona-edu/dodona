@@ -3,6 +3,7 @@
     <thead>
       <tr>
         <th class="status-column"></th>
+        <th>#</th>
         <th><%= t "submissions.submissions_table.time" %></th>
         <th><%= t "submissions.submissions_table.status" %></th>
         <th><%= t "submissions.submissions_table.summary" %></th>
@@ -17,6 +18,9 @@
             <% if submission.annotated? %>
               <i class="mdi mdi-comment-text-outline mdi-18 colored-secondary" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= t('submissions.submissions_table.annotated') %>"></i>
             <% end %>
+          </td>
+          <td>
+            <%= link_to "##{submission.number}", submission_path(submission), title: t("submissions.submission.view_solution") %>
           </td>
           <td>
             <%= link_to (l submission.created_at, format: :submission), submission, title: t("submissions.submission.view_solution") %>

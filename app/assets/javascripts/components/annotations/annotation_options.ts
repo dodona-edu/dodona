@@ -1,11 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, TemplateResult } from "lit";
 import "components/annotations/annotations_toggles";
 import "components/annotations/hidden_annotations_dot";
-import { i18nMixin } from "components/meta/i18n_mixin";
 import { userState } from "state/Users";
 import { annotationState } from "state/Annotations";
+import { submissionState } from "state/Submissions";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 
 /**
@@ -15,9 +16,9 @@ import { annotationState } from "state/Annotations";
  * @element d-annotation-options
  */
 @customElement("d-annotation-options")
-export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
+export class AnnotationOptions extends DodonaElement {
     @property({ state: true })
-    showForm = false;
+    formShown = false;
 
     get canCreateAnnotation(): boolean {
         return userState.hasPermission("annotation.create");
@@ -25,8 +26,8 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
 
     get addAnnotationTitle(): string {
         return annotationState.isQuestionMode ?
-            I18n.t("js.annotations.options.add_global_question") :
-            I18n.t("js.annotations.options.add_global_annotation");
+            i18n.t("js.annotations.options.add_global_question") :
+            i18n.t("js.annotations.options.add_global_annotation");
     }
 
     protected render(): TemplateResult {
@@ -34,17 +35,22 @@ export class AnnotationOptions extends i18nMixin(ShadowlessLitElement) {
             <div class="feedback-table-options">
                 <d-hidden-annotations-dot .row=${0}></d-hidden-annotations-dot>
                 ${this.canCreateAnnotation ? html`
-                    <button class="btn btn-text" @click="${() => this.showForm = true}">
+                    <button class="btn btn-outline" @click="${() => this.formShown = true}">
                         ${this.addAnnotationTitle}
                     </button>
+                ` : html``}
+                ${submissionState.canResubmitSubmission ? html`
+                    <a class="btn btn-text resubmit-btn" href="${submissionState.resubmitPath}" target="_blank">
+                        ${i18n.t("js.feedbacks.submission.submit")}
+                    </a>
                 ` : html``}
                 <span class="flex-spacer"></span>
                 <d-annotations-toggles></d-annotations-toggles>
             </div>
             <div>
             <d-annotations-cell .row=${0}
-                                .showForm="${this.showForm}"
-                                @close-form=${() => this.showForm = false}
+                                .formShown="${this.formShown}"
+                                @close-form=${() => this.formShown = false}
                 ></d-annotations-cell>
             </div>
         `;

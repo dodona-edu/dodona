@@ -7,7 +7,8 @@ import { machineAnnotationState } from "state/MachineAnnotations";
 import userEvent from "@testing-library/user-event";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import { html } from "lit";
-import { userAnnotationState } from "state/UserAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
+import * as util from "utilities";
 window.bootstrap = bootstrap;
 
 beforeEach(async () => {
@@ -15,6 +16,11 @@ beforeEach(async () => {
     window.MathJax = {} as MathJaxObject;
     // Mock typeset function of MathJax
     window.MathJax.typeset = () => "";
+
+    jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
+        json: () => Promise.resolve({}),
+        headers: { get: h => h == "X-Pagination" ? JSON.stringify({ total_pages: 1, current_page: 1 }) : "" },
+    } as Response ));
 
     // Bootstrap incorrectly detects jquery, so we need to disable it
     document.body.setAttribute("data-bs-no-jquery", "true");
@@ -43,7 +49,7 @@ beforeEach(async () => {
             </table>
         </div>
     </div>`);
-    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", 3);
+    codeListing.initAnnotations(54, 1, 1, 1, "print(5 + 6)\nprint(6 + 3)\nprint(9 + 15)\n", false, false);
     annotationState.visibility = "all";
     userAnnotationState.reset();
     machineAnnotationState.setMachineAnnotations([]);
@@ -208,13 +214,12 @@ test("no double dots", async () => {
 });
 
 test("annotations should be transmitted into view", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -229,14 +234,13 @@ test("annotations should be transmitted into view", async () => {
         },
         "row": 1,
         "rows": 1,
-    });
-    await userAnnotationState.addToMap({
+    }));
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 2,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",
@@ -251,20 +255,19 @@ test("annotations should be transmitted into view", async () => {
         },
         "row": 2,
         "rows": 1,
-    });
+    }));
     await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
 test("feedback table should support more than 1 annotation per row", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -279,15 +282,14 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
 
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",
@@ -302,20 +304,19 @@ test("feedback table should support more than 1 annotation per row", async () =>
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
     await nextFrame();
 
     expect(document.querySelectorAll(".annotation").length).toBe(2);
 });
 
 test("feedback table should be able to contain both machine annotations and user annotations", async () => {
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 1,
         "line_nr": 1,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This could be shorter",
@@ -330,15 +331,14 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "row": 1,
         "rows": 1,
-    });
+    }));
 
-    await userAnnotationState.addToMap({
+    await userAnnotationState.addToMap(new UserAnnotation({
         "id": 2,
         "line_nr": 2,
         "created_at": "2023-03-02T15:15:48.776+01:00",
         "url": "http://dodona.localhost:3000/nl/annotations/1.json",
         "last_updated_by": { "name": "Zeus Kronosson" },
-        "course_id": 1,
         "responses": [],
         "type": "question",
         "annotation_text": "This should be faster",
@@ -353,7 +353,7 @@ test("feedback table should be able to contain both machine annotations and user
         },
         "row": 2,
         "rows": 1,
-    });
+    }));
 
     codeListing.addMachineAnnotations([
         { "text": "Value could be assigned", "row": 0, "type": "warning" },
@@ -379,9 +379,36 @@ test("click on comment button", async () => {
 
     await nextFrame();
     expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
-    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button");
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
     await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
     await userEvent.click(annotationButton);
     expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+});
+
+test("empty form should close on click outside", async () => {
+    codeListing.initAnnotateButtons();
+    await nextFrame();
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
+    await userEvent.click(annotationButton);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+});
+
+test("form should not close when it has content", async () => {
+    codeListing.initAnnotateButtons();
+    await nextFrame();
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
+    const annotationButton: HTMLButtonElement = document.querySelector(".annotation-button .btn");
+    await userEvent.click(annotationButton);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    const textarea: HTMLTextAreaElement = document.querySelector("d-annotation-form textarea");
+    await userEvent.type(textarea, "This is a test");
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(1);
+    await userEvent.clear(textarea);
+    await userEvent.click(document.body);
+    expect(document.querySelectorAll("d-annotation-form").length).toBe(0);
 });

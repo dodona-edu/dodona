@@ -16,8 +16,10 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(1, result.length)
     item = result[0]
+
     assert_equal(@course.name, item.title)
     assert_equal(lti_course_url(@course), item.url)
   end
@@ -32,8 +34,10 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(1, result.length)
     item = result[0]
+
     assert_equal(@course.name, item.title)
     assert_equal(lti_course_url(@course), item.url)
   end
@@ -47,8 +51,10 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(1, result.length)
     item = result[0]
+
     assert_equal(@series.name, item.title)
     assert_equal(lti_series_url(@series), item.url)
   end
@@ -64,8 +70,10 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(1, result.length)
     item = result[0]
+
     assert_equal(@series.name, item.title)
     assert_equal(lti_series_url(@series), item.url)
   end
@@ -81,8 +89,10 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(1, result.length)
     item = result[0]
+
     assert_equal(activity.name, item.title)
     assert_equal(lti_activity_url(@course.id, @series.id, activity), item.url)
   end
@@ -97,6 +107,7 @@ class LtiHelperTest < ActionDispatch::IntegrationTest
     }
 
     result = lti_resource_links_from(params)
+
     assert_equal(2, result.length)
   end
 end

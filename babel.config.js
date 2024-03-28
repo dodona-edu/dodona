@@ -16,6 +16,10 @@ module.exports = function (api) {
     }
 
     return {
+        assumptions: {
+            setPublicClassFields: true,
+            privateFieldsAsProperties: true,
+        },
         presets: [
             isTestEnv && ["@babel/preset-env", { targets: { node: "current" } }],
             (isProductionEnv || isDevelopmentEnv) && [
@@ -29,30 +33,17 @@ module.exports = function (api) {
                     exclude: ["transform-typeof-symbol"]
                 }
             ],
-            ["@babel/preset-typescript", {
-                allExtensions: true,
-                isTSX: true
-            }]
         ].filter(Boolean),
         ignore: [],
         plugins: [
             "babel-plugin-macros",
-            "@babel/plugin-syntax-dynamic-import",
-            "@babel/plugin-transform-for-of",
             isTestEnv && "babel-plugin-dynamic-import-node",
             isDevelopmentEnv && ["istanbul", { include: ["app/assets/javascripts/**/*.{js,ts}"], coverageGlobalScopeFunc: false, coverageGlobalScope: "window" }],
-            "@babel/plugin-transform-destructuring",
-            ["@babel/plugin-proposal-class-properties", { loose: true }],
-            ["@babel/plugin-proposal-decorators", { decoratorsBeforeExport: true }],
-            ["@babel/plugin-proposal-private-methods", { loose: true }],
-            ["@babel/plugin-proposal-object-rest-spread", { useBuiltIns: true }],
-            ["@babel/plugin-proposal-private-property-in-object", { loose: true }],
             ["@babel/plugin-transform-runtime", {
                 helpers: false,
                 regenerator: true,
                 corejs: false
             }],
-            ["@babel/plugin-transform-regenerator", { async: false }]
         ].filter(Boolean)
     };
 };

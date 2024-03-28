@@ -1,12 +1,11 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
-import { MachineAnnotationData, machineAnnotationState } from "state/MachineAnnotations";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { i18nMixin } from "components/meta/i18n_mixin";
-import { PropertyValues } from "@lit/reactive-element/development/reactive-element";
-import { initTooltips } from "util.js";
+import { html, TemplateResult, PropertyValues } from "lit";
+import { MachineAnnotation, machineAnnotationState } from "state/MachineAnnotations";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
+import { initTooltips } from "utilities";
 import { annotationState, compareAnnotationOrders } from "state/Annotations";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents a dot that shows the number of hidden annotations for a line.
@@ -16,19 +15,19 @@ import { annotationState, compareAnnotationOrders } from "state/Annotations";
  * @prop {number} row - The row number.
  */
 @customElement("d-hidden-annotations-dot")
-export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
+export class HiddenAnnotationsDot extends DodonaElement {
     @property({ type: Number })
     row: number;
 
-    get machineAnnotations(): MachineAnnotationData[] {
+    get machineAnnotations(): MachineAnnotation[] {
         return machineAnnotationState.byLine.get(this.row) || [];
     }
 
-    get userAnnotations(): UserAnnotationData[] {
+    get userAnnotations(): UserAnnotation[] {
         return userAnnotationState.rootIdsByLine.get(this.row)?.map(id => userAnnotationState.byId.get(id)) || [];
     }
 
-    get hiddenAnnotations(): (MachineAnnotationData | UserAnnotationData)[] {
+    get hiddenAnnotations(): (MachineAnnotation | UserAnnotation)[] {
         return [...this.machineAnnotations, ...this.userAnnotations].filter(a => !annotationState.isVisible(a));
     }
 
@@ -40,9 +39,9 @@ export class HiddenAnnotationsDot extends i18nMixin(ShadowlessLitElement) {
     get infoDotTitle(): string {
         const count = this.hiddenAnnotations.length;
         if (count === 1) {
-            return I18n.t("js.annotation.hidden.single");
+            return i18n.t("js.annotation.hidden.single");
         } else {
-            return I18n.t("js.annotation.hidden.plural", { count: count });
+            return i18n.t("js.annotation.hidden.plural", { count: count });
         }
     }
 

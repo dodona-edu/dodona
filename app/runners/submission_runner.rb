@@ -65,6 +65,7 @@ class SubmissionRunner
 
   def prepare
     @start = Time.zone.now
+    @time_messages = []
     # set the submission's status
     @submission.status = 'running'
     @submission.save
@@ -85,7 +86,6 @@ class SubmissionRunner
     copy_or_create(@judge.full_path, @mountsrc.join(@hidden_path, 'judge'))
 
     end_preparing = Time.zone.now
-    @time_messages = []
     @time_messages << build_message(format('<strong>Prepare:</strong> %<time>.2f seconds', time: (end_preparing - @start)), 'zeus', 'html')
   end
 
@@ -110,7 +110,7 @@ class SubmissionRunner
         Memory: memory_limit,
         MemorySwap: memory_limit, # memory including swap
         # WARNING: this will cause the container to hang if /dev/sda does not exist
-        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 }].filter { Rails.env.production? || Rails.env.staging? },
+        BlkioDeviceWriteBps: [{ Path: '/dev/sda', Rate: 1024 * 1024 * 10 }].filter { Rails.env.production? || Rails.env.staging? },
         PidsLimit: 256,
         Binds: ["#{@mountsrc}:#{@mountdst}",
                 "#{@mountsrc.join('workdir')}:#{@config['workdir']}"]
@@ -162,20 +162,34 @@ class SubmissionRunner
 
     timer = Thread.new do
       while Time.zone.now - before_time < time_limit
-        sleep 1
-        next if Rails.env.test?
-        # Check if container is still alive
-        next unless Docker::Container.all.select { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) }.any? && container.refresh!.info['State']['Running']
+        before_stats = Time.zone.now
 
-        stats = container.stats
-        # We check the maximum memory usage every second. This is obviously monotonic, but these stats aren't available after the container is/has stopped.
-        memory = stats['memory_stats']['max_usage'] / (1024.0 * 1024.0) if stats['memory_stats']&.fetch('max_usage', nil)
+        begin
+          # Check if container is still running
+          if !Rails.env.test? && (Docker::Container.all.any? { |c| c.id.starts_with?(container.id) || container.id.starts_with?(container.id) } && container.refresh!.info['State']['Running'])
+            # If we don't pass these extra options gathering stats takes 1+ seconds (https://github.com/moby/moby/issues/23188#issuecomment-223211481)
+            stats = container.stats({ 'one-shot': true, stream: false })
+            memory = [stats['memory_stats']['usage'] / (1024.0 * 1024.0), memory].max if stats['memory_stats']&.fetch('usage', nil)
+          end
+        rescue Docker::Error::TimeoutError, Docker::Error::ServerError
+          # The docker container might be in a bad state
+          # We just ignore this and try again later
+          # The timeout will clean up the container if this lasts too long
+          Rails.logger.warn "Failed to get stats from docker container #{container.id} for submission #{@submission.id}"
+        end
+
+        # Gathering stats still takes a long time, so if we spent enough time on
+        # that (aka, it didn't go wrong), skip sleeping
+        sleep 0.2 if (Time.zone.now - before_stats).in_milliseconds < 200
       end
       timeout_mutex.synchronize do
         container.stop
         timeout = true if timeout.nil?
       end
     end
+    # errors raised in the thread should also be raised in the main thread
+    # This ensures they are reported and handled correctly
+    timer.abort_on_exception = true
 
     begin
       outlines, errlines = container.tap(&:start).attach(
@@ -242,6 +256,7 @@ class SubmissionRunner
       else
         messages = [build_message(e.title, 'staff', 'plain')]
         messages << build_message(e.description, 'staff') unless e.description.nil?
+        messages << build_message(stdout.force_encoding('utf-8'), 'staff', 'plain')
         build_error 'internal error', 'internal error', messages
       end
     end
@@ -260,7 +275,7 @@ class SubmissionRunner
     start_final = Time.zone.now
 
     # remove path on file system used as temporary working directory for processing the submission
-    FileUtils.remove_entry_secure(@mountsrc, verbose: true)
+    FileUtils.remove_entry_secure(@mountsrc)
     @mountsrc = nil
     end_final = Time.zone.now
     @time_messages << build_message(format('<strong>Finalize:</strong> %<time>.2f seconds', time: (end_final - start_final)), 'zeus', 'html')

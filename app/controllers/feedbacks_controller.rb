@@ -10,7 +10,7 @@ class FeedbacksController < ApplicationController
   has_scope :by_status, as: 'status'
 
   content_security_policy only: %i[show] do |policy|
-    # allow sandboxed tutor
+    # allow sandboxed description
     policy.frame_src -> { [sandbox_url] }
   end
 
@@ -22,13 +22,6 @@ class FeedbacksController < ApplicationController
       [I18n.t('feedbacks.show.feedback'), '#']
     ]
     @title = I18n.t('feedbacks.show.feedback')
-
-    @user_labels = @feedback.evaluation
-                            .series
-                            .course
-                            .course_memberships
-                            .find_by(user_id: @feedback.user)
-                            .course_labels
 
     @score_map = @feedback.scores.index_by(&:score_item_id)
     # If we refresh all scores because of a conflict, we want to make

@@ -5,6 +5,7 @@
 import * as d3 from "d3";
 import { RawData } from "./series_graph";
 import { SeriesExerciseGraph } from "./series_exercise_graph";
+import { i18n } from "i18n/i18n";
 
 export class ViolinGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/violin?series_id=";
@@ -60,7 +61,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .attr("text-anchor", "middle")
             .attr("x", this.innerWidth / 2)
             .attr("y", this.innerHeight + 30)
-            .text(I18n.t("js.n_submissions"))
+            .text(i18n.t("js.n_submissions"))
             .attr("class", "violin-label")
             .attr("fill", "currentColor");
 
@@ -108,7 +109,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
             .duration(animation ? 500 : 0)
             .style("opacity", 1);
         dots.append("title")
-            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`);
+            .text(`${i18n.t("js.mean")} ${i18n.t("js.attempts")}`);
 
         // Additional metrics
         const metrics = this.graph.append("g")
@@ -126,7 +127,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
         metrics.append("text")
             .attr("x", (this.margin.right - 20) / 2)
             .attr("y", 10)
-            .text(`${I18n.t("js.mean")} ${I18n.t("js.attempts")}`)
+            .text(`${i18n.t("js.mean")} ${i18n.t("js.attempts")}`)
             .attr("text-anchor", "middle")
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);
@@ -220,7 +221,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
                 .attr("x1", this.x(i))
                 .attr("x2", this.x(i));
             // check if label doesn't go out of bounds
-            const labelMsg = `${i === this.maxSubmissions ? this.maxSubmissions + "+" : i} ${I18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
+            const labelMsg = `${i === this.maxSubmissions ? this.maxSubmissions + "+" : i} ${i18n.t(i === 1 ? "js.submission" : "js.submissions")}`;
             const switchSides = this.x(i) +
                 this.fontSize / 2 * labelMsg.length +
                 5 > this.innerWidth;
@@ -236,7 +237,7 @@ export class ViolinGraph extends SeriesExerciseGraph {
                 .text(d => {
                     const freq = d["freq"][Math.max(0, i)].length;
                     // check if plural is needed
-                    return `${freq} ${I18n.t(freq === 1 ? "js.user" : "js.users")}`;
+                    return `${freq} ${i18n.t(freq === 1 ? "js.user" : "js.users")}`;
                 })
                 .attr("text-anchor", switchSides ? "end" : "start")
                 .transition()

@@ -1,6 +1,6 @@
 d-histogram {
-  --d-histogram-baseline: #{$divider};
-  --d-histogram-bar: #{$secondary};
+  --d-histogram-baseline: var(--d-divider);
+  --d-histogram-bar: var(--d-secondary);
 
   max-width: 150px;
   margin: auto;

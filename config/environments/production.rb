@@ -4,7 +4,7 @@ Rails.application.configure do
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
-  config.cache_classes = true
+  config.enable_reloading = false
 
   # Eager load code on boot. This eager loads most of Rails and
   # your application in memory, allowing both threaded web servers
@@ -13,27 +13,26 @@ Rails.application.configure do
   config.eager_load = true
 
   # The main webapp
-  config.default_host = 'dodona.ugent.be'
-  config.action_mailer.default_url_options = { host: 'dodona.ugent.be' }
+  config.default_host = 'dodona.be'
+  config.action_mailer.default_url_options = { host: 'dodona.be' }
 
   # alternative host name
-  config.alt_host = 'dodona.be'
+  config.alt_host = 'dodona.ugent.be'
 
   config.web_hosts = [config.default_host, config.alt_host]
 
   # The sandboxed host with user provided content, without authentication
   config.sandbox_host = 'sandbox.dodona.be'
-  config.tutor_url = URI::HTTPS.build(host: 'pandora.ugent.be', path: '/tutor/cgi-bin/build_trace.py')
 
-  # Where we host our assets, can be / for current host or a domain
-  config.action_controller.asset_host = '/'
+  # Where we host our assets (a single domain, for caching)
+  config.action_controller.asset_host = 'dodona.be'
 
   # Allowed hostnames
   config.hosts << config.default_host << config.sandbox_host << config.alt_host
 
   # Where we host our assets (a single domain, for caching)
   # Enable serving of images, stylesheets, and JavaScripts from an asset server.
-  config.asset_host = 'dodona.ugent.be'
+  config.asset_host = 'dodona.be'
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
@@ -48,7 +47,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :terser
+  # config.assets.js_compressor = :terser
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -56,6 +55,9 @@ Rails.application.configure do
   # Asset digests allow you to set far-future HTTP expiration dates on all assets,
   # yet still be able to expire them through the digest params.
   config.assets.digest = true
+
+  # Enable serving of images, stylesheets, and JavaScripts from an asset server.
+  # config.asset_host = "http://assets.example.com"
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -69,15 +71,24 @@ Rails.application.configure do
   # config.action_cable.url = 'wss://example.com/cable'
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
+  # Assume all access to the app is happening through a SSL-terminating reverse proxy.
+  # Can be used together with config.force_ssl for Strict-Transport-Security and secure cookies.
+  # config.assume_ssl = true
+
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
+
+  # Log to STDOUT by default
+  # config.logger = ActiveSupport::Logger.new(STDOUT)
+  #   .tap  { |logger| logger.formatter = ::Logger::Formatter.new }
+  #   .then { |logger| ActiveSupport::TaggedLogging.new(logger) }
+
+  # Prepend all log lines with the following tags.
+  config.log_tags = [ :request_id ]
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :debug
-
-  # Prepend all log lines with the following tags.
-  config.log_tags = [ :request_id ]
 
   # Use a different cache store in production.
   config.cache_store = :mem_cache_store, 'calliope.ugent.be', {namespace: :"2"}
@@ -111,12 +122,24 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
+  # Enable DNS rebinding protection and other `Host` header attacks.
+  # config.hosts = [
+  #   "example.com",     # Allow requests from example.com
+  #   /.*\.example\.com/ # Allow requests from subdomains like `www.example.com`
+  # ]
+
   config.middleware.use ExceptionNotification::Rack,
                         ignore_crawlers: %w[Googlebot BingPreview bingbot Applebot],
                         ignore_if: lambda { |env, exception|
                           env['action_controller.instance'].is_a?(PagesController) &&
                             env['action_controller.instance'].action_name == 'create_contact' &&
                             exception.is_a?(ActionController::InvalidAuthenticityToken)
+                        },
+                        ignore_notifier_if: {
+                          email: lambda { |env, exception|
+                            exception.is_a?(InternalErrorException) ||
+                              exception.is_a?(SlowRequestException)
+                          }
                         },
                         email: {
                             email_prefix: '[Dodona] ',
@@ -128,7 +151,7 @@ Rails.application.configure do
                             channel: '#notifications',
                             username: 'Dodona-server',
                             additional_parameters: {
-                              icon_url: 'https://dodona.ugent.be/icon.png',
+                              icon_url: 'https://dodona.be/icon.png',
                               mrkdwn: true
                             }
                         }

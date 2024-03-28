@@ -54,15 +54,13 @@ nl:
     edit:
       title: "Oplossing van %{user} voor %{exercise} veranderen"
       short_title: "Selecteer een andere ingediende oplossing."
+      select_a_submission: "Selecteer toch een ingediende oplossing."
+      select_another_submission: "Selecteer een andere ingediende oplossing."
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
       confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
-    score_table:
+    score_card:
       total_score: Totaalscore
-      score_breakdown: Puntenverdeling
-    score_link:
-      score: "Score: %{score} / %{max}"
-      score_short: "%{score} / %{max}"
-      present: "Er zijn %{count} scoreonderdelen"
-      view_breakdown: Puntenverdeling bekijken
+      evaluation: Evaluatie
       view_feedback: Ga naar de feedback
+      info_html: "Deze oplossing werd manueel nagekeken door een lesgever als deel van <a href=\"%{url}\">een evaluatie</a>. Hieronder vind je jouw feedback."

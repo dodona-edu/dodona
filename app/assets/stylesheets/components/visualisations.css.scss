@@ -8,18 +8,18 @@
 }
 
 .metric-container {
-  stroke: $divider;
+  stroke: var(--d-divider);
   fill: none;
   stroke-width: 2;
 }
 
 .day-cell {
   &.empty {
-    fill: $off-surface;
+    fill: var(--d-off-surface);
   }
 
   &:hover {
-    stroke: $primary;
+    stroke: var(--d-primary);
     stroke-width: 2;
   }
 }

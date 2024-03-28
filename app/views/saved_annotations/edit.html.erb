@@ -1,0 +1,52 @@
+<%= javascript_include_tag "saved_annotation" %>
+<div class="row">
+  <div class="col-md-10 offset-md-1 col-12">
+    <div class="card">
+      <div class="card-title card-title-colored">
+        <h2 class="card-title-text"><%= t ".title" %></h2>
+      </div>
+      <div class="card-supporting-text">
+        <div class="callout callout-warning mt-0"><%= t ".warning_no_annotations_changed" %></div>
+        <%= form_for(@saved_annotation, html: { class: 'form-horizontal' }) do |f| %>
+          <% if @saved_annotation.errors.any? %>
+            <div class="callout callout-danger" id="error_explanation">
+              <h4><%= t('errors.validation_errors', count: @saved_annotation.errors.count) %></h4>
+              <ul>
+                <% @saved_annotation.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <div class="field form-group">
+            <%= f.label :title, class: "form-label" %>
+            <d-saved-annotation-title-input
+              value="<%= @saved_annotation.title %>"
+              course-id="<%= @saved_annotation.course_id %>"
+              exercise-id="<%= @saved_annotation.exercise_id %>"
+              user-id="<%= @saved_annotation.user_id %>"
+              saved-annotation-id="<%= @saved_annotation.id %>"
+            ></d-saved-annotation-title-input>
+          </div>
+          <div class="field form-group">
+            <%= f.label :annotation_text, class: "form-label" %>
+            <%= f.text_area :annotation_text, class: "form-control" %>
+            <span class="help-block"><%= t ".markdown_html" %></span>
+          </div>
+        <% end %>
+      </div>
+      <div class="card-actions card-border">
+        <% if policy(@saved_annotation).destroy? %>
+          <%= link_to @saved_annotation, method: :delete, data: { confirm: t("general.are_you_sure") }, class: "btn btn-filled with-icon d-btn-danger" do %>
+            <i class="mdi mdi-delete"></i>
+            <%= t ".destroy" %>
+          <% end %>
+        <% end %>
+        <button type="submit" class="btn btn-filled with-icon" form="<%= "edit_saved_annotation_#{@saved_annotation.id}"%>">
+          <i class="mdi mdi-send"></i>
+          <%= t ".save" %>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

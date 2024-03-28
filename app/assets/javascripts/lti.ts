@@ -1,5 +1,5 @@
 // Identifiers.
-import { fetch, makeInvisible, makeVisible } from "util.js";
+import { fetch, makeInvisible, makeVisible } from "utilities";
 import { isInIframe } from "iframe";
 
 const redirectButtonId = "lti_redirect_button";

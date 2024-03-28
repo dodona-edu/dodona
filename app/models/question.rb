@@ -33,6 +33,15 @@ class Question < Annotation
   # Used to authorize the transitions
   attr_accessor :transition_to, :transition_from
 
+  def self.reset_in_progress(id)
+    return unless exists?(id)
+
+    question = find(id)
+    return unless question.question_state == 'in_progress'
+
+    question.update(question_state: 'unanswered')
+  end
+
   def to_partial_path
     'annotations/annotation'
   end
@@ -58,15 +67,9 @@ class Question < Annotation
     @transition_from = nil
   end
 
-  def reset_in_progress
-    return unless question_state == 'in_progress'
-
-    update(question_state: 'unanswered')
-  end
-
   def schedule_reset_in_progress
     return unless question_state == 'in_progress'
 
-    delay(run_at: 1.hour.from_now).reset_in_progress
+    Question.delay(run_at: 1.hour.from_now).reset_in_progress(id)
   end
 end

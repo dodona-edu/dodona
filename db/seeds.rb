@@ -276,6 +276,9 @@ if Rails.env.development?
   puts activity_repo.errors.full_messages unless activity_repo.valid?
   activity_repo.process_activities
 
+  # remote must be unique for the repository, and we want to clone it again
+  activity_repo.update!(remote: '-')
+
   big_activity_repo = Repository.create name: 'A lot of python activities', remote: 'git@github.com:dodona-edu/example-exercises.git', judge: python_judge, allowed_courses: courses
   Delayed::Worker.delay_jobs = true
   Dir.glob("#{big_activity_repo.full_path}/*")
@@ -293,8 +296,11 @@ if Rails.env.development?
   RepositoryAdmin.create(repository: activity_repo, user: zeus)
   RepositoryAdmin.create(repository: big_activity_repo, user: zeus)
 
-  contents_list = ContentPage.all.to_a
-  exercises_list = Exercise.all.to_a
+  # remove draft status from all activities except the first 5
+  Activity.where.not(id: Activity.first(5)).update_all(draft: false)
+
+  contents_list = ContentPage.where(draft: false).to_a
+  exercises_list = Exercise.where(draft: false).all.to_a
 
   puts "Add series, content pages, exercises, read states and submissions to courses (#{Time.now - start})"
 

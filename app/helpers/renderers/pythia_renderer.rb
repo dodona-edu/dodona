@@ -1,19 +1,17 @@
 class PythiaRenderer < FeedbackTableRenderer
-  include ActionView::Helpers::JavaScriptHelper
-
   def parse
-    tutor_init
+    file_viewer_init
     super
   end
 
   def show_code_tab
     return true unless @result[:groups]
 
-    @result[:groups].none? { |t| t[:data][:source_annotations] }
+    @result[:groups].none? { |t| t[:data] && t[:data][:source_annotations] }
   end
 
-  def tab_content(t)
-    if t[:data][:source_annotations]
+  def tab_content(t, i)
+    if t[:data] && t[:data][:source_annotations]
       linting(t[:data][:source_annotations], @code)
     else
       super
@@ -21,7 +19,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def diff(t)
-    if t[:data][:diff]
+    if t[:data] && t[:data][:diff]
       pythia_diff(t[:data][:diff])
     else
       super
@@ -29,7 +27,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def test_accepted(t)
-    if t[:data][:diff]
+    if t[:data] && t[:data][:diff]
       @builder.div(class: 'test-accepted') do
         @builder.span(class: 'output') do
           html = t[:data][:diff].map do |l|
@@ -59,29 +57,6 @@ class PythiaRenderer < FeedbackTableRenderer
     end
   end
 
-  def group(g)
-    if g.key?(:data)
-      @builder.div(class: "group #{g[:accepted] ? 'correct' : 'wrong'}",
-                   'data-statements': (g[:data][:statements]).to_s,
-                   'data-stdin': (g[:data][:stdin]).to_s) do
-        @builder.div(class: 'tutor-strip tutorlink', title: 'Start debugger') do
-          @builder.div(class: 'tutor-strip-icon') do
-            @builder.i('', class: 'mdi mdi-launch mdi-18')
-          end
-        end
-        if g[:description]
-          @builder.div(class: 'col-12 description') do
-            message(g[:description])
-          end
-        end
-        messages(g[:messages])
-        g[:groups]&.each { |tc| testcase(tc) }
-      end
-    else
-      super(g)
-    end
-  end
-
   def testcase(tc)
     return super(tc) unless tc[:data] && tc[:data][:files]
 
@@ -90,41 +65,34 @@ class PythiaRenderer < FeedbackTableRenderer
         if @exercise.access_private? && value&.dig(:location) == 'href'
       [key, value]
     end.to_json
-    @builder.div(class: "row testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
+    @builder.div(class: "testcase #{tc[:accepted] ? 'correct' : 'wrong'} contains-file", 'data-files': jsonfiles) do
       testcase_content(tc)
     end
   end
 
   ## custom methods
 
-  def tutor_init
-    # Initialize tutor javascript
+  def file_viewer_init
+    # Initialize file viewers
     @builder.script do
-      escaped = escape_javascript(@code.strip)
       @builder << 'dodona.ready.then(function() {'
-      @builder << "$('#tutor').appendTo('body');"
-      @builder << "var code = \"#{escaped}\";"
-      @builder << "dodona.initPythiaSubmissionShow(code, '#{activity_path(nil, @exercise)}');});"
+      @builder << "document.body.append(document.getElementById('info-modal'));"
+      @builder << "dodona.initFileViewers('#{activity_path(nil, @exercise)}');});"
     end
 
-    # Tutor HTML
-    @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
-        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
-          @builder.div(class: 'modal-content') do
-            @builder.div(class: 'modal-header') do
-              @builder.h4(class: 'modal-title') {}
-              @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
-                  @builder.i('', class: 'mdi mdi-fullscreen')
-                end
-                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close')
-                end
+    # Add the modal which will be used to display the file viewer
+    @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
+      @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
+        @builder.div(class: 'modal-content') do
+          @builder.div(class: 'modal-header') do
+            @builder.h4(class: 'modal-title') {}
+            @builder.div(class: 'icons') do
+              @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
+                @builder.i('', class: 'mdi mdi-close')
               end
             end
-            @builder.div(class: 'modal-body') {}
           end
+          @builder.div(class: 'modal-body') {}
         end
       end
     end
@@ -277,7 +245,7 @@ class PythiaRenderer < FeedbackTableRenderer
   end
 
   def determine_diff_type(test)
-    if test[:data][:diff]
+    if test[:data] && test[:data][:diff]
       test[:data][:diff].each do |diff_line|
         # Not perfect, since there might be html in the diff_line items
         return 'unified' if !diff_line[2].nil? && strip_outer_html(diff_line[2]).length >= 55

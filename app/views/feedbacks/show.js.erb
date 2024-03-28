@@ -1,1 +1,1 @@
-$("#feedback-actions-holder").html("<%= escape_javascript(render partial: "feedbacks/feedback_actions") %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#feedback-actions-holder"), "<%= escape_javascript(render partial: "feedbacks/feedback_actions") %>");

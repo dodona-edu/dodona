@@ -1,9 +1,11 @@
-import { getParentByClassName } from "util.js";
+import { getParentByClassName } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function initSubmissionShow(parentClass: string, mediaPath: string, token: string): void {
     function init(): void {
         initDiffSwitchButtons();
         initTabLinks();
+        initCollapseButtons();
         initHideCorrect();
         contextualizeMediaPaths(parentClass, mediaPath, token);
     }
@@ -26,6 +28,16 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         });
     }
 
+    function initCollapseButtons(): void {
+        document.querySelectorAll(".group .btn-collapse").forEach(b => {
+            b.addEventListener("click", e => {
+                const button = e.currentTarget;
+                const group = getParentByClassName(button, "group");
+                group.classList.toggle("collapsed");
+            });
+        });
+    }
+
     function initHideCorrect(): void {
         document.querySelectorAll(".correct-switch-buttons .btn").forEach( b => {
             b.addEventListener("click", e => {
@@ -35,12 +47,12 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 tabButtons.forEach( b => b.classList.remove("active"));
                 button.classList.add("active");
                 if (button.dataset.show === "true") {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "block";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.remove("collapsed");
                     });
                 } else {
-                    tab.querySelectorAll(".group.correct").forEach((testcase: HTMLElement) => {
-                        testcase.style.display = "none";
+                    tab.querySelectorAll(".group.correct").forEach((group: HTMLElement) => {
+                        group.classList.add("collapsed");
                     });
                 }
             });
@@ -67,6 +79,15 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                     dodona.codeListing.clearHighlights();
                     dodona.codeListing.highlightLine(line, true);
                 }
+            });
+        });
+
+        // scroll to tab top after tab is shown
+        document.querySelectorAll(".feedback-table a[data-bs-toggle=\"tab\"]").forEach(tabEl => {
+            tabEl.addEventListener("shown.bs.tab", event => {
+                const shownTabId = (event.target as HTMLElement).getAttribute("href");
+                const shownTab = document.querySelector(shownTabId);
+                shownTab.scrollIntoView();
             });
         });
     }
@@ -107,7 +128,7 @@ function initCorrectSubmissionToNextLink(status: string): void {
     const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
     message.innerHTML = `
         <div class="callout callout-success mt-0" role="alert">
-            <span>${I18n.t(congrats)}</span>
+            <span>${i18n.t(congrats)}</span>
             <a href="${link.href}" class="m-1">
                 ${link.dataset.title}
             </a>
@@ -120,4 +141,11 @@ function initSubmissionHistory(id: string): void {
     element.scrollIntoView({ block: "center", inline: "nearest" });
 }
 
-export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink };
+function showLastTab(): void {
+    const tab = document.querySelector(".nav.nav-tabs li:last-child a");
+    if (tab) {
+        new bootstrap.Tab(tab).show();
+    }
+}
+
+export { initSubmissionShow, initSubmissionHistory, initCorrectSubmissionToNextLink, showLastTab };

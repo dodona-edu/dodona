@@ -25,11 +25,8 @@
     <% local_assigns[:activities].each do |activity| %>
       <tr>
         <td class='status-icon'>
-          <% if user_signed_in? %>
-            <% if current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course) %>
-              <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
-            <% end %>
-            <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+          <% if user_signed_in? && (current_user.repository_admin?(activity.repository) || current_user.course_admin?(@course)) %>
+            <%= render partial: 'activities/repository_status', locals: {activity: activity, series: local_assigns[:series]} %>
           <% end %>
         </td>
 
@@ -38,7 +35,10 @@
         </td>
 
         <td class="link">
-          <span class="ellipsis-overflow" title="<%= activity.name %>">
+          <span class="ellipsis-overflow activity-title" title="<%= activity.name %>">
+            <% if user_signed_in? %>
+              <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
+            <% end %>
             <% if activity.accessible?(current_user, @course) %>
               <%= link_to activity.name, get_activity_path.call(activity) %>
             <% elsif activity.access_public? %>

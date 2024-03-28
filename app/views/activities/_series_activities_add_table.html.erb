@@ -29,9 +29,7 @@
         <% end %>
       </td>
       <td class="status-icon">
-        <%= raw "<i class='mdi mdi-eye-off mdi-18' title='#{t("activities.index.private")}'></i>" if activity.access_private? %>
-        <%= raw "<i class='mdi mdi-delete mdi-18' title='#{t("activities.index.removed")}'></i>" if activity.removed? %>
-        <%= raw "<i class='mdi mdi-alert-circle mdi-18' title='#{t("activities.index.invalid")}'></i>" if activity.not_valid? %>
+        <%= render partial: 'activities/repository_status', locals: { activity: activity } %>
         <%= activity_icon(activity) %>
       </td>
       <td class="link">

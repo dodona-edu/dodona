@@ -1,18 +1,26 @@
-/* globals ace */
-import { initTooltips, updateURLParameter, fetch } from "util.js";
+import { configureEditor, setCode } from "editor";
+import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
 import GLightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
 import { submissionState } from "state/Submissions";
 import { render } from "lit";
 import { CopyButton } from "components/copy_button";
+import { EditorView } from "@codemirror/view";
+import { i18n } from "i18n/i18n";
+
 
 function showLightbox(content): void {
     const lightbox = new GLightbox(content);
     lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).
-        window.MathJax.typeset([".gslide-description"]);
+        try {
+            window.MathJax.typeset( Array.from(document.querySelectorAll(".gslide-description")));
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
     });
     lightbox.open();
 
@@ -131,17 +139,18 @@ function initExerciseDescription(): void {
     initCodeFragments();
 }
 
-function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): void {
-    let editor: AceAjax.Editor;
+async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): Promise<void> {
+    let editor: EditorView;
     let lastSubmission: string;
     let lastTimeout: number;
 
-    function init(): void {
+    async function init(): Promise<void> {
         if (editorShown) {
-            initEditor();
+            const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
             swapActionButtons();
+            await editorReady;
             initRestoreBoilerplateButton(boilerplate);
         }
 
@@ -149,7 +158,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         document.getElementById("editor-process-btn")?.addEventListener("click", () => {
             if (!loggedIn) return;
             // test submitted source code
-            const source = editor.getValue();
+            const source = editor.state.doc.toString();
             disableSubmitButton();
             submitSolution(source)
                 .then(async response => {
@@ -159,18 +168,17 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
                         const message = await getErrorMessage(response);
                         submissionFailed(message);
                     }
-                }).catch(() => submissionFailed(I18n.t("js.submission-network"))); // fetch only fails promise because of network issues
+                }).catch(() => submissionFailed(i18n.t("js.submission-network"))); // fetch only fails promise because of network issues
         });
 
         document.getElementById("submission-copy-btn")?.addEventListener("click", () => {
-            const codeString = submissionState.code;
-            editor.setValue(codeString, 1);
+            setCode(editor, submissionState.code);
             bootstrap.Tab.getInstance(document.getElementById("activity-handin-link")).show();
         });
 
         document.getElementById("activity-handin-link")?.addEventListener("shown.bs.tab", () => {
             // refresh editor after show
-            editor.resize(true);
+            editor.requestMeasure();
         });
 
         // secure external links
@@ -182,19 +190,9 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         window.dodona.feedbackTableLoaded = feedbackTableLoaded;
     }
 
-    function initEditor(): void {
-        // init editor
-        editor = ace.edit("editor-text");
-        editor.getSession().setMode("ace/mode/" + programmingLanguage);
-        editor.setOptions({
-            showPrintMargin: false,
-            enableBasicAutocompletion: true,
-        });
-        editor.getSession().setUseWrapMode(true);
-        editor.$blockScrolling = Infinity; // disable warning
+    async function initEditor(): Promise<void> {
+        editor = await configureEditor(document.getElementById("editor-text"), programmingLanguage, enableSubmitButton);
         editor.focus();
-        editor.on("focus", enableSubmitButton);
-        editor.commands.removeCommand("find"); // disable search box in ACE editor
         // Make editor available globally
         window.dodona.editor = editor;
     }
@@ -263,7 +261,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
                 initTooltips();
             } else {
-                document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${I18n.t("js.unknown-error-loading-feedback")}</div>`;
+                document.getElementById("submission-wrapper").innerHTML = `<div class="alert alert-danger">${i18n.t("js.unknown-error-loading-feedback")}</div>`;
             }
         });
     }
@@ -311,7 +309,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
                 }
                 showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);
-                new Toast(I18n.t("js.submission-processed"));
+                new Toast(i18n.t("js.submission-processed"));
                 lastSubmission = null;
             }
         }
@@ -336,10 +334,10 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
         const icon = fab.children[0];
         icon.classList.remove("mdi-pencil");
         if (status === "correct") {
-            fab.classList.add("correct");
+            fab.classList.add("d-btn-success");
             icon.classList.add(getPositiveEmoji());
         } else {
-            fab.classList.add("wrong");
+            fab.classList.add("d-btn-danger");
             icon.classList.add("mdi-emoticon-sad-outline");
         }
         setTimeout(resetFABStatus, 4000);
@@ -348,7 +346,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
     function resetFABStatus(): void {
         const fab = document.getElementById("submission-copy-btn");
         const icon = fab.children[0];
-        fab.classList.remove("correct", "wrong");
+        fab.classList.remove("d-btn-success", "d-btn-danger");
         icon.classList.remove(...icon.classList);
         icon.classList.add("mdi", "mdi-pencil");
     }
@@ -360,7 +358,7 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
 
     function submissionSuccessful(data: {status: string, id: number, exercise_id: number, course_id: number, url: string}, userId: string): void {
         lastSubmission = data.id.toString();
-        new Toast(I18n.t("js.submission-saved"));
+        new Toast(i18n.t("js.submission-saved"));
         let url = `/submissions.js?user_id=${userId}&activity_id=${data.exercise_id}`;
         if (data.course_id) {
             url += `&course_id=${data.course_id}`;
@@ -383,20 +381,20 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
                 const response = await request.json();
                 const errors = response.errors;
                 if (errors.code && errors.code[0] === "emoji found") {
-                    message = I18n.t("js.submission-emoji");
+                    message = i18n.t("js.submission-emoji");
                 } else if (errors.submission && errors.submission[0] === "rate limited") {
-                    message = I18n.t("js.submission-rate-limit");
+                    message = i18n.t("js.submission-rate-limit");
                 } else if (errors.code && errors.code[0] === "too long") {
-                    message = I18n.t("js.submission-too-long");
+                    message = i18n.t("js.submission-too-long");
                 } else if (errors.exercise && errors.exercise[0] === "not permitted") {
-                    message = I18n.t("js.submission-not-allowed");
+                    message = i18n.t("js.submission-not-allowed");
                 }
             } catch (e) {
-                message = I18n.t("js.submission-failed");
+                message = i18n.t("js.submission-failed");
             }
         }
         if (message === undefined) {
-            message = I18n.t("js.submission-failed");
+            message = i18n.t("js.submission-failed");
         }
         return message;
     }
@@ -459,10 +457,8 @@ function initExerciseShow(exerciseId: number, programmingLanguage: string, logge
             const wrapper = document.createElement("div");
             wrapper.innerHTML = boilerplate;
             const rawBoilerplate = wrapper.textContent || wrapper.innerText || "";
-
-            editor.setValue(rawBoilerplate);
+            setCode(editor, rawBoilerplate);
             editor.focus();
-            editor.clearSelection();
             restoreWarning.hidden = true;
         });
     }

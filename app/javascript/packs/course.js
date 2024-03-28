@@ -11,7 +11,7 @@ import {
     RefreshingQuestionTable,
     toggleQuestionNavDot
 } from "question_table.ts";
-import { setDocumentTitle } from "util.js";
+import { setDocumentTitle } from "utilities.ts";
 
 window.dodona.initSeriesReorder = initSeriesReorder;
 window.dodona.initCourseForm = initCourseForm;

@@ -28,6 +28,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
           to: to.id
         }
       }
+
       assert_response expected
       assert_equal 2, to.score_items.count if expected == :success
 
@@ -57,6 +58,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
           assert_equal 1, e.score_items.length
           e.update!(score_items: [])
         end
+
         assert_empty e.score_items
       end
       sign_out user if user.present?
@@ -83,6 +85,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
           maximum: '20.0'
         }
       }
+
       assert_response expected
       sign_out user if user.present?
     end
@@ -105,6 +108,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
           evaluation_exercise_id: @evaluation.evaluation_exercises.first.id
         }
       }
+
       assert_response expected
       sign_out user if user.present?
     end
@@ -118,6 +122,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
         evaluation_exercise_id: @evaluation.evaluation_exercises.first.id
       }
     }
+
     assert_response :unprocessable_entity
 
     # Negative maximum
@@ -128,6 +133,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
         evaluation_exercise_id: @evaluation.evaluation_exercises.first.id
       }
     }
+
     assert_response :unprocessable_entity
   end
 
@@ -139,6 +145,7 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
         maximum: '-20.0'
       }
     }
+
     assert_response :unprocessable_entity
   end
 
@@ -157,9 +164,11 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
       score_item = create :score_item, evaluation_exercise: exercise,
                                        description: 'Code re-use',
                                        maximum: '10.0'
+
       assert_equal 1, exercise.score_items.count
       sign_in user if user.present?
       delete evaluation_score_item_path(@evaluation, score_item, format: :json)
+
       assert_response expected
       exercise.score_items.reload
       assert_equal 0, exercise.score_items.count if response == :success

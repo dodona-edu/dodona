@@ -1,7 +1,8 @@
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { initTooltips, ready } from "util.js";
+import { initTooltips, ready } from "utilities";
+import { i18n } from "i18n/i18n";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * A button that copies the text content of a given element to the clipboard.
@@ -13,7 +14,7 @@ import { initTooltips, ready } from "util.js";
  * @property {HTMLElement} codeElement - The element whose text content is copied to the clipboard.
  */
 @customElement("d-copy-button")
-export class CopyButton extends ShadowlessLitElement {
+export class CopyButton extends DodonaElement {
     @property({ type: Object })
     codeElement: HTMLElement;
 
@@ -37,24 +38,17 @@ export class CopyButton extends ShadowlessLitElement {
     get tooltip(): string {
         switch (this.status) {
         case "success":
-            return I18n.t("js.copy-success");
+            return i18n.t("js.copy-success");
         case "error":
-            return I18n.t("js.copy-fail");
+            return i18n.t("js.copy-fail");
         default:
-            return I18n.t("js.code.copy-to-clipboard");
+            return i18n.t("js.code.copy-to-clipboard");
         }
     }
 
     protected updated(_changedProperties: PropertyValues): void {
         super.updated(_changedProperties);
         initTooltips(this);
-    }
-
-    constructor() {
-        super();
-
-        // Reload when I18n is loaded
-        ready.then(() => this.requestUpdate());
     }
 
     protected render(): TemplateResult {

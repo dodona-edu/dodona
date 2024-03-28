@@ -1,7 +1,6 @@
 require 'pathname'
 require 'fileutils'
 
-require 'concerns/gitable'
 module Gitable
   def git_repository
     GitRepository.new full_path

@@ -1,5 +1,6 @@
-import { fetch } from "util.js";
+import { fetch } from "utilities";
 import { InactiveTimeout } from "auto_reload";
+import { i18n } from "i18n/i18n";
 
 const questionContainerId = "question-container";
 const stateChangeLinkClass = "state-changer";
@@ -78,8 +79,6 @@ export class QuestionTable {
         fetch(this.getRefreshUrl(), {
             headers: {
                 "accept": "text/javascript",
-                "x-csrf-token": $("meta[name=\"csrf-token\"]").attr("content"),
-                "x-requested-with": "XMLHttpRequest",
             },
             credentials: "same-origin",
         })
@@ -117,9 +116,9 @@ export class QuestionTable {
             })
         }).then(response => {
             if (response.status == 404) {
-                new dodona.Toast(I18n.t("js.user_question.deleted"));
+                new dodona.Toast(i18n.t("js.user_question.deleted"));
             } else if (response.status == 403) {
-                new dodona.Toast(I18n.t("js.user_question.conflict"));
+                new dodona.Toast(i18n.t("js.user_question.conflict"));
             }
             this.refresh();
         });

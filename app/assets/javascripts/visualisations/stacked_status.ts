@@ -3,6 +3,8 @@
 import * as d3 from "d3";
 import { RawData } from "./series_graph";
 import { SeriesExerciseGraph } from "./series_exercise_graph";
+import { themeState } from "state/Theme";
+import { i18n } from "i18n/i18n";
 
 export class StackedStatusGraph extends SeriesExerciseGraph {
     protected readonly baseUrl = "/stats/stacked_status?series_id=";
@@ -19,7 +21,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
     protected override draw(animation=true): void {
         super.draw(animation);
 
-        const emptyColor = this.darkMode ? "#37474F" : "white";
+        const emptyColor = themeState.getCSSVariable("--d-off-surface");
 
         // X scale
         const x = d3.scaleLinear()
@@ -55,7 +57,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
         legend
             .append("span")
             .attr("class", "legend-text")
-            .text(status => I18n.t(`js.status.${status.replaceAll(" ", "_")}`))
+            .text(status => i18n.t(`js.status.${status.replaceAll(" ", "_")}`))
             .style("color", "currentColor")
             .style("font-size", `${this.fontSize}px`);
 
@@ -73,7 +75,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
                 tooltip.transition()
                     .duration(200)
                     .style("opacity", .9);
-                tooltip.html(`<b>${I18n.t(`js.status.${d.status.replaceAll(" ", "_")}`)}</b><br> ${d3.format(".1%")((d.count) / this.maxSum[d.exercise_id])} (${d.count}/${this.maxSum[d.exercise_id]})`);
+                tooltip.html(`<b>${i18n.t(`js.status.${d.status.replaceAll(" ", "_")}`)}</b><br> ${d3.format(".1%")((d.count) / this.maxSum[d.exercise_id])} (${d.count}/${this.maxSum[d.exercise_id]})`);
             })
             .on("mousemove", e => {
                 tooltip
@@ -119,7 +121,7 @@ export class StackedStatusGraph extends SeriesExerciseGraph {
         metrics.append("text")
             .attr("x", (this.margin.right - 20) / 2)
             .attr("y", 10)
-            .text(`${I18n.t("js.total")} ${I18n.t("js.submissions")}`)
+            .text(`${i18n.t("js.total")} ${i18n.t("js.submissions")}`)
             .attr("text-anchor", "middle")
             .attr("fill", "currentColor")
             .style("font-size", `${this.fontSize}px`);

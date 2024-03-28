@@ -31,6 +31,7 @@ class FeedbackCodeRendererTest < ActiveSupport::TestCase
   test 'Multiple instances result in unique html' do
     programming_language = 'python'
     tables = 5.times.collect { FeedbackCodeRenderer.new('print(5)', programming_language).add_code.html }
-    assert tables.uniq == tables
+
+    assert_equal tables.uniq, tables
   end
 end

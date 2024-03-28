@@ -66,19 +66,19 @@
     "datetime": {
       "distance_in_words": {
         "about_x_hours": {
-          "one": "about 1 hour",
+          "one": "about %{count} hour",
           "other": "about %{count} hours"
         },
         "about_x_months": {
-          "one": "about 1 month",
+          "one": "about %{count} month",
           "other": "about %{count} months"
         },
         "about_x_years": {
-          "one": "about 1 year",
+          "one": "about %{count} year",
           "other": "about %{count} years"
         },
         "almost_x_years": {
-          "one": "almost 1 year",
+          "one": "almost %{count} year",
           "other": "almost %{count} years"
         },
         "half_a_minute": "half a minute",
@@ -87,31 +87,31 @@
           "other": "less than %{count} minutes"
         },
         "less_than_x_seconds": {
-          "one": "less than 1 second",
+          "one": "less than %{count} second",
           "other": "less than %{count} seconds"
         },
         "over_x_years": {
-          "one": "over 1 year",
+          "one": "over %{count} year",
           "other": "over %{count} years"
         },
         "x_days": {
-          "one": "1 day",
+          "one": "%{count} day",
           "other": "%{count} days"
         },
         "x_minutes": {
-          "one": "1 minute",
+          "one": "%{count} minute",
           "other": "%{count} minutes"
         },
         "x_months": {
-          "one": "1 month",
+          "one": "%{count} month",
           "other": "%{count} months"
         },
         "x_seconds": {
-          "one": "1 second",
+          "one": "%{count} second",
           "other": "%{count} seconds"
         },
         "x_years": {
-          "one": "1 year",
+          "one": "%{count} year",
           "other": "%{count} years"
         }
       },
@@ -150,13 +150,13 @@
       },
       "annotations": {
         "options": {
-          "add_annotation": "Add a comment to this line",
-          "add_annotation_for_selection": "Add a comment",
+          "add_annotation": "Add comment",
+          "add_annotation_drop": "Release to add comment",
           "add_global_annotation": "Add global comment",
           "add_global_question": "Ask a question about your code",
-          "add_question": "Ask a question about this line",
-          "add_question_for_selection": "Ask a question",
-          "add_strikethrough": "Strike through"
+          "add_strikethrough": "Strike through",
+          "add_question": "Ask question",
+          "add_question_drop": "Release to ask question"
         },
         "toggles": {
           "hide_all": "Hide all annotations",
@@ -170,8 +170,8 @@
         "copy-to-clipboard": "Copy code to clipboard"
       },
       "coding_scratchpad": {
-        "copy_code": "Copy to Dodona",
-        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
+        "copy_to_submit": "Finalize and submit",
+        "overwrite_code": "Do you want to overwrite the code in the sandbox with your latest changes?"
       },
       "configured-institution": "the configured institution",
       "copy-fail": "Press Ctrl-C to copy",
@@ -182,17 +182,13 @@
       "course-removed-failed": "Removing course failed",
       "course-removed-success": "Course removed",
       "course_labels": "Member labels",
-      "course_labels_search_bar": {
-        "add": "Add",
-        "edit_explanation": "Add an existing userlabel or create a new one.",
-        "placeholder": "Label"
-      },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
       "ctimeseries_title": "Users with at least one correct submission",
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "draft": "Draft",
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -215,7 +211,9 @@
           "course_labels": "Member label",
           "courses": "Course",
           "description_languages": "Language",
+          "draft": "Draft",
           "event_types": "Event type",
+          "exercises": "Exercise",
           "institutions": "Institution",
           "judges": "Judge",
           "labels": "Label",
@@ -228,13 +226,26 @@
       },
       "en": "English",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "Export is ready. The download should start automatically. If not, click <a href=\"%{url}\">this link</a> to start the download."
+      },
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
+      "feedbacks": {
+        "submission": {
+          "submit": "Submit this solution"
+        }
+      },
       "institutions": "Institutions",
       "judges": "Judges",
       "label-undeletable": "This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Add",
+        "edit_explanation": "Add an existing label or create a new one.",
+        "placeholder": "Label"
+      },
       "loading": "Loading...",
       "machine_annotation": {
         "external_url": "more information"
@@ -277,6 +288,7 @@
       "no_data": "There is not enough data to create a graph.",
       "no_selection": "You must select at least one item before being able to download solutions.",
       "options": "Options",
+      "popularity": "Popularity",
       "programming_languages": "Programming Languages",
       "progress_bar": {
         "series-admin-progress": {
@@ -296,6 +308,8 @@
       "repositories": "Repositories",
       "saved_annotation": {
         "annotation_text": "Text",
+        "annotations_count": "Number of usages",
+        "confirm_title_taken": "This title is already taken. Are you sure you want to create another annotation with the same title?",
         "course": "Course",
         "delete": {
           "confirm": "Are you sure you want to delete this saved comment?"
@@ -315,7 +329,7 @@
         },
         "input": {
           "edited": "The current comment differs from the saved comment",
-          "help_html": "Saved annotations are automatically filtered by course and exercise. Click <a  href=\"/saved_annotations\" target=\"_blank\" >here</a> to manage all saved comments.",
+          "help_html": "Click <a  href=\"%{path}\" target=\"_blank\" >here</a> to manage all saved comments.",
           "placeholder": "Search saved comment",
           "title": "Reuse a saved comment"
         },
@@ -334,6 +348,7 @@
           "title": "Saved comments"
         },
         "title": "Title",
+        "title_taken": "This title is already taken",
         "user": "User"
       },
       "score": {
@@ -365,7 +380,7 @@
       "submission-failed": "Oops, something went wrong while saving your solution. Reload this page, try again, or contact the teaching assistant.",
       "submission-network": "Oops, we're unable to connect to the server. Please check your internet connection.",
       "submission-not-allowed": "Oops, you are not allowed to submit a solution to this exercise.",
-      "submission-processed": "Evaluation finished",
+      "submission-processed": "Testing finished",
       "submission-rate-limit": "Oops, you're submitting too fast! Please wait a moment between each submission.",
       "submission-saved": "Submission saved",
       "submission-too-long": "Oops, something went wrong while saving your solution. Your solution is too long. Try to make it shorter and try again.",
@@ -409,10 +424,15 @@
       },
       "submissions": "submissions",
       "submissions_on": "submissions on",
+      "theme": {
+        "dark": "Dark",
+        "light": "Light",
+        "system": "System",
+        "theme": "Theme"
+      },
       "timeseries_desc": "This graph shows on which moments the students submitted the most solutions.",
       "timeseries_title": "Submissions over time",
       "total": "total",
-      "tutor-failed": "Something went wrong while loading the online python tutor",
       "unfavorite-course-do": "Unfavorite",
       "unfavorite-course-failed": "Unfavoriting course failed",
       "unfavorite-course-succeeded": "Unfavorited course",
@@ -421,12 +441,12 @@
       "user_annotation": {
         "anonymous_message": "This comment is part of an evaluation",
         "cancel": "Cancel",
-        "delete": "Delete",
+        "delete": "Delete comment",
         "delete_confirm": "Are you sure you want to delete this comment?",
         "edit": "Edit comment",
         "fields": {
           "annotation_text": "Comment",
-          "saved_annotation_title": "Save comment for reuse"
+          "saved_annotation_title": "Save comment"
         },
         "help": "Press Shift + Enter to send. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> is supported.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Our guide</a> provides more information about asking questions.",
@@ -606,23 +626,23 @@
           "other": "meer dan %{count} jaar"
         },
         "x_days": {
-          "one": "1 dag",
+          "one": "%{count} dag",
           "other": "%{count} dagen"
         },
         "x_minutes": {
-          "one": "1 minuut",
+          "one": "%{count} minuut",
           "other": "%{count} minuten"
         },
         "x_months": {
-          "one": "1 maand",
+          "one": "%{count} maand",
           "other": "%{count} maanden"
         },
         "x_seconds": {
-          "one": "1 seconde",
+          "one": "%{count} seconde",
           "other": "%{count} seconden"
         },
         "x_years": {
-          "one": "1 jaar",
+          "one": "%{count} jaar",
           "other": "%{count} jaar"
         }
       },
@@ -661,13 +681,13 @@
       },
       "annotations": {
         "options": {
-          "add_annotation": "Voeg een opmerking toe aan deze regel",
-          "add_annotation_for_selection": "Voeg een opmerking toe",
+          "add_annotation": "Voeg opmerking toe",
+          "add_annotation_drop": "Voeg opmerking toe",
           "add_global_annotation": "Globale opmerking toevoegen",
           "add_global_question": "Stel een vraag over je code",
-          "add_question": "Stel een vraag over deze regel",
-          "add_question_for_selection": "Stel een vraag",
-          "add_strikethrough": "Doorstreep"
+          "add_strikethrough": "Doorstreep",
+          "add_question": "Stel een vraag",
+          "add_question_drop": "Stel een vraag"
         },
         "toggles": {
           "hide_all": "Verberg alle annotaties",
@@ -681,8 +701,8 @@
         "copy-to-clipboard": "Kopieer code naar klembord"
       },
       "coding_scratchpad": {
-        "copy_code": "Kopieer naar Dodona",
-        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?"
+        "copy_to_submit": "Naar indienbox",
+        "overwrite_code": "Wil je de code in de sandbox overschrijven met je laatste aanpassingen?"
       },
       "configured-institution": "de ingestelde onderwijsinstelling",
       "copy-fail": "Druk Ctrl-C om te kopiëren",
@@ -693,17 +713,13 @@
       "course-removed-failed": "Cursus verwijderen mislukt",
       "course-removed-success": "Cursus verwijderd",
       "course_labels": "Gebruikerlabels",
-      "course_labels_search_bar": {
-        "add": "Toevoegen",
-        "edit_explanation": "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan.",
-        "placeholder": "Label"
-      },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",
       "ctimeseries_title": "Gebruikers met minstens één correcte oplossing",
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "draft": "Concept",
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",
@@ -726,7 +742,9 @@
           "course_labels": "Gebruikerlabel",
           "courses": "Cursus",
           "description_languages": "Taal",
+          "draft": "Concept",
           "event_types": "Event type",
+          "exercises": "Oefening",
           "institutions": "Onderwijsinstelling",
           "judges": "Judge",
           "labels": "Label",
@@ -739,13 +757,26 @@
       },
       "en": "Engels",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href=\"%{url}\">hier</a>."
+      },
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",
+      "feedbacks": {
+        "submission": {
+          "submit": "Deze oplossing indienen"
+        }
+      },
       "institutions": "Onderwijsinstellingen",
       "judges": "Judges",
       "label-undeletable": "Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Toevoegen",
+        "edit_explanation": "Voeg een bestaand label toe of maak een nieuwe aan.",
+        "placeholder": "Label"
+      },
       "loading": "Aan het laden...",
       "machine_annotation": {
         "external_url": "meer informatie"
@@ -788,6 +819,7 @@
       "no_data": "Er is niet genoeg data om een grafiek te maken.",
       "no_selection": "Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.",
       "options": "Opties",
+      "popularity": "Populariteit",
       "programming_languages": "Programmeertalen",
       "progress_bar": {
         "series-admin-progress": {
@@ -807,6 +839,8 @@
       "repositories": "Repository's",
       "saved_annotation": {
         "annotation_text": "Tekst",
+        "annotations_count": "Aantal keer gebruikt",
+        "confirm_title_taken": "Deze titel is al in gebruik. Weet je zeker dat je nog een opmerking met dezelfde titel wil toevoegen?",
         "course": "Cursus",
         "delete": {
           "confirm": "Ben je zeker dat je deze opgeslagen opmerking wilt verwijderen?"
@@ -826,7 +860,7 @@
         },
         "input": {
           "edited": "De huidige opmerking verschilt van de opgeslagen opmerking",
-          "help_html": "Opgeslagen opmerkingen worden automatisch gefilterd per cursus en per oefening. Klik <a  href=\"/saved_annotations\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
+          "help_html": "Klik <a  href=\"%{path}\" target=\"_blank\" >hier</a> om alle opgeslagen opmerkingen te beheren.",
           "placeholder": "Zoek opgeslagen opmerking",
           "title": "Hergebruik een opgeslagen opmerking"
         },
@@ -845,6 +879,7 @@
           "title": "Opgeslagen opmerkingen"
         },
         "title": "Titel",
+        "title_taken": "Deze titel is al in gebruik",
         "user": "Gebruiker"
       },
       "score": {
@@ -876,7 +911,7 @@
       "submission-failed": "Oeps, er ging iets fout bij het opslaan van je oplossing. Herlaad de pagina, probeer opnieuw, of contacteer de assistent.",
       "submission-network": "Oeps, we kunnen niet verbinden met de server. Controleer je internetverbinding.",
       "submission-not-allowed": "Oeps, je bent niet toegelaten om een oplossing in te dienen voor deze oefening.",
-      "submission-processed": "Evaluatie afgerond",
+      "submission-processed": "Testen afgerond",
       "submission-rate-limit": "Oeps, je bent te snel! Wacht eventjes tussen het indienen van een nieuwe oplossing.",
       "submission-saved": "Oplossing opgeslagen",
       "submission-too-long": "Oeps, er ging iets fout bij het opslaan van je oplossing. Je oplossing is te lang. Maak ze korter en probeer opnieuw.",
@@ -920,10 +955,15 @@
       },
       "submissions": "oplossingen",
       "submissions_on": "ingediende oplossingen op",
+      "theme": {
+        "dark": "Donker",
+        "light": "Licht",
+        "system": "Systeem",
+        "theme": "Stijl"
+      },
       "timeseries_desc": "Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.",
       "timeseries_title": "Ingediende oplossingen over tijd",
       "total": "totaal aantal",
-      "tutor-failed": "Er ging iets fout bij het laden van de online python tutor",
       "unfavorite-course-do": "Verwijder uit favorieten",
       "unfavorite-course-failed": "Cursus uit favorieten verwijderen mislukt",
       "unfavorite-course-succeeded": "Cursus verwijderd uit favorieten",
@@ -932,12 +972,12 @@
       "user_annotation": {
         "anonymous_message": "Deze opmerking maakt deel uit van een evaluatie",
         "cancel": "Annuleren",
-        "delete": "Verwijderen",
+        "delete": "Opmerking verwijderen",
         "delete_confirm": "Ben je zeker dat je deze opmerking wil verwijderen?",
         "edit": "Opmerking bewerken",
         "fields": {
           "annotation_text": "Opmerking",
-          "saved_annotation_title": "Sla opmerking op om te hergebruiken"
+          "saved_annotation_title": "Sla opmerking op"
         },
         "help": "Druk Shift + Enter om te verzenden. <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> wordt ondersteund.",
         "help_student": "<a href='https://docs.dodona.be/nl/guides/students/exercises/#vragen-stellen'>Onze handleiding</a> bevat meer informatie over het stellen van vragen.",

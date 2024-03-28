@@ -2,6 +2,7 @@ require 'set'
 
 class RepositoriesController < ApplicationController
   before_action :set_repository, only: %i[show edit update destroy public hook reprocess admins add_admin remove_admin courses add_course remove_course]
+  skip_before_action :store_current_location, only: %i[public]
 
   # GET /repositories
   # GET /repositories.json

@@ -20,81 +20,92 @@ class InstitutionTest < ActiveSupport::TestCase
   end
 
   test 'get preferred provider' do
-    preferred = build :provider, institution: @institution
-    build_list :provider, 2, institution: @institution, mode: :redirect
+    preferred = create :provider, institution: @institution
+    create_list :provider, 2, institution: @institution, mode: :redirect
 
-    assert preferred, @institution.preferred_provider
+    assert_equal preferred, @institution.preferred_provider
   end
 
   test 'generated name is unmarked if name is updated' do
-    assert @institution.generated_name?
+    assert_predicate @institution, :generated_name?
 
     @institution.update(logo: 'blabla')
-    assert @institution.generated_name?
+
+    assert_predicate @institution, :generated_name?
 
     @institution.update(name: 'Hallo')
+
     assert_not @institution.generated_name?
   end
 
   test 'merge should remove institution' do
     institution_to_merge = create :institution
     institution_to_merge.merge_into(@institution)
-    assert institution_to_merge.destroyed?
+
+    assert_predicate institution_to_merge, :destroyed?
   end
 
   test 'merge should update courses' do
     institution_to_merge = create :institution
     courses = create_list :course, 2, institution: institution_to_merge
+
     assert institution_to_merge.merge_into(@institution)
     courses.each do |c|
       c.reload
+
       assert_equal @institution, c.institution
     end
   end
 
   test 'merge should update providers' do
     institution_to_merge = create :institution
-    provider = create(:provider, institution: institution_to_merge, mode: :prefer)
-    provider2 = create(:provider, institution: institution_to_merge, mode: :secondary)
-    provider3 = create(:provider, institution: institution_to_merge, mode: :redirect)
+    provider = create :provider, institution: institution_to_merge, mode: :prefer
+    provider2 = create :provider, institution: institution_to_merge, mode: :secondary
+    provider3 = create :provider, institution: institution_to_merge, mode: :redirect
     create :provider, institution: @institution, mode: :prefer
+
     assert institution_to_merge.merge_into(@institution)
     [provider, provider2, provider3].each do |p|
       p.reload
+
       assert_equal @institution, p.institution
     end
-    assert provider.secondary?
-    assert provider2.secondary?
-    assert provider3.redirect?
+    assert_predicate provider, :secondary?
+    assert_predicate provider2, :secondary?
+    assert_predicate provider3, :redirect?
   end
 
   test 'should merge if there are smartschool users with no email' do
     institution_to_merge = create :institution
-    provider = create(:smartschool_provider, institution: institution_to_merge, mode: :prefer)
+    provider = create :smartschool_provider, institution: institution_to_merge, mode: :prefer
     user = create :user, email: nil, institution: institution_to_merge
     create :identity, provider: provider, user: user
     institution = create :institution
     create :provider, institution: institution, mode: :prefer
     institution_to_merge.merge_into(institution)
-    assert institution_to_merge.destroyed?
+
+    assert_predicate institution_to_merge, :destroyed?
     assert_equal user.reload.institution_id, institution.id
   end
 
   test 'merge should update users' do
     institution_to_merge = create :institution
     users = create_list :user, 2, institution: institution_to_merge
+
     assert institution_to_merge.merge_into(@institution)
     users.each do |u|
       u.reload
+
       assert_equal @institution, u.institution
     end
   end
 
   test 'should not merge if there are link providers' do
     institution_to_merge = create :institution
-    provider = create(:provider, institution: institution_to_merge, mode: :prefer)
-    provider2 = create(:provider, institution: institution_to_merge, mode: :link)
+    provider = create :provider, institution: institution_to_merge, mode: :prefer
+    provider2 = create :provider, institution: institution_to_merge, mode: :link
     create :provider, institution: @institution, mode: :prefer
+
     assert_not institution_to_merge.merge_into(@institution)
     [provider, provider2].each do |p|
       p.reload
@@ -107,8 +118,10 @@ class InstitutionTest < ActiveSupport::TestCase
     institution_to_merge = create :institution
     user = create :user, institution: institution_to_merge
     create :user, institution: @institution, username: user.username
+
     assert_not institution_to_merge.merge_into(@institution)
     user.reload
+
     assert_equal institution_to_merge, user.institution
   end
 
@@ -119,6 +132,7 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i1, username: 'Random', email: 'random@b.com'
     create :user, institution: i2, username: 'Other', email: 'other@c.com'
     create :user, institution: i2, username: 'Test', email: 'test@c.com'
+
     assert_equal 0, i1.similarity(i2)
   end
 
@@ -128,11 +142,13 @@ class InstitutionTest < ActiveSupport::TestCase
 
     create :user, institution: i1, username: 'Foo', email: 'foo@b.com'
     create :user, institution: i2, username: 'Foo', email: 'foo@c.com'
+
     assert_equal 1, i1.similarity(i2)
 
     # username similarity is case insensitive
     create :user, institution: i1, username: 'BaR', email: 'bar@b.com'
     create :user, institution: i2, username: 'bar', email: 'bar@c.com'
+
     assert_equal 2, i1.similarity(i2)
   end
 
@@ -142,11 +158,13 @@ class InstitutionTest < ActiveSupport::TestCase
 
     create :user, institution: i1, email: 'foo@bar.com'
     create :user, institution: i2, email: 'foo@bar.com'
+
     assert_equal 1, i1.similarity(i2)
 
     # email similarity is case insensitive
     create :user, institution: i1, email: 'BaR@foo.com'
     create :user, institution: i2, email: 'bar@foo.com'
+
     assert_equal 2, i1.similarity(i2)
   end
 
@@ -157,14 +175,17 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i1, email: 'a@foo.com'
     create :user, institution: i2, email: 'b@foo.com'
     create :user, institution: i2, email: 'c@foo.com'
+
     assert_equal 0, i1.similarity(i2)
 
     create :user, institution: i1, email: 'd@foo.com'
     create :user, institution: i1, email: 'e@foo.com'
+
     assert_equal 2, i1.similarity(i2)
 
     create :user, institution: i1, email: 'f@foo.com'
     create :user, institution: i2, email: 'g@foo.com'
+
     assert_equal 3, i1.similarity(i2)
   end
 
@@ -184,6 +205,7 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i1, email: 'f@bar.com'
     create :user, institution: i2, email: 'b@bar.com'
     create :user, institution: i2, email: 'c@bar.com'
+
     assert_equal 3, i1.similarity(i2)
   end
 
@@ -203,6 +225,7 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i2, username: 'g', email: 'g@foo.com' # domain overlap
     create :user, institution: i2, username: 'e', email: 'e@bar.com' # username overlap and email overlap
     create :user, institution: i2, username: 'f-2', email: 'f@bar.com' # email overlap
+
     assert_equal 9, i1.similarity(i2)
   end
 
@@ -218,6 +241,7 @@ class InstitutionTest < ActiveSupport::TestCase
     create :user, institution: i2, username: 'c', email: 'c@foo.com'
     create :user, institution: i3, username: 'a', email: 'a@bar.com'
     create :user, institution: i3, username: 'c', email: 'c@bar.com'
+
     assert_equal 4, i1.similarity(i2)
     assert_equal 1, i1.similarity(i3)
     assert_equal 4, i2.similarity(i1)

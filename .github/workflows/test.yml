@@ -3,15 +3,15 @@ name: Test
 on:
   push:
     branches:
-      - master
-      - develop
+      - main
     tags:
       - '*'
   pull_request:
+  workflow_call:
 
 jobs:
   ruby:
-    name: Ruby
+    name: Test Ruby
     env:
       RAILS_ENV: "test"
       TEST_DATABASE_URL: "mysql2://root:dodona@127.0.0.1:3306/dodona_test"
@@ -22,24 +22,23 @@ jobs:
         env:
           MYSQL_DATABASE: "dodona_test"
           MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use ruby from .ruby-version
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
     - name: Use node 16
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 16.x
         cache: yarn
-    - name: Install JS dependencies
-      run: |
-        yarn install
     - name: Run tests
       env:
         CI: true
@@ -49,22 +48,20 @@ jobs:
         git config --global user.name "Dodona"
         sudo sysctl fs.inotify.max_user_watches=524288
         sudo sysctl -p
-        bin/rake css:build
-        yarn build:js
         bundle exec rails test
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         flags: rails
 
   javascript:
-    name: JavaScript
+    name: Test JavaScript
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 16.x
         cache: yarn
@@ -75,13 +72,13 @@ jobs:
       run: |
         yarn test --ci --runInBand --coverage
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         flags: javascript
 
   system:
-    name: System
+    name: Test System
     env:
       DISABLE_SPRING: "true"
       RAILS_ENV: "test"
@@ -93,26 +90,25 @@ jobs:
         env:
           MYSQL_DATABASE: "dodona_test"
           MYSQL_ROOT_PASSWORD: "dodona"
+          MARIADB_MYSQL_LOCALHOST_USER: 1
+          MARIADB_MYSQL_LOCALHOST_GRANTS: USAGE
           MYSQL_HOST: "localhost"
         ports:
         - 3306:3306
-        options: --health-cmd "mysqladmin ping -h localhost" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: --health-cmd="healthcheck.sh --su-mysql --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use ruby from .ruby-version
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
     - name: Use node 16
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 16.x
         cache: yarn
     - name: Setup chromium-chromedriver
       uses: nanasess/setup-chromedriver@master
-    - name: Install JS dependencies
-      run: |
-        yarn install
     - name: Show installed chrome version
       run: |
         google-chrome --version
@@ -127,7 +123,7 @@ jobs:
         bundle exec rails test:system
     - name: Upload screenshot artifacts
       if: failure()
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: screenshots-failure
         path: tmp/capybara
@@ -135,7 +131,7 @@ jobs:
       run: |
         yarn test:system:coverage:merge
     - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         flags: system

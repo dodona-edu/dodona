@@ -8,6 +8,7 @@ en:
       save: "Save"
       course_overview: "Course overview for "
       send_mail: "Send an email to this user."
+      evaluations: "Evaluations"
     form:
       course_labels: "Labels"
       labels_delimiter: "Use a comma to separate labels"
@@ -33,3 +34,4 @@ en:
     upload_labels_csv:
       no_file: "Please upload a file."
       malformed: Something went wrong while reading the file. Check that the file you uploaded is in the correct format.
+      missing_column: "We couldn't find the column \"%{column}\". Check that the file you uploaded is in the correct format."

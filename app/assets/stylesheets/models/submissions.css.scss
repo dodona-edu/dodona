@@ -1,5 +1,7 @@
-$feedback-diff-table-header-bg: $code-bg;
-$feedback-diff-table-header-fg: $on-background;
+:root {
+  --d-feedback-diff-table-header-bg: var(--d-code-bg);
+  --d-feedback-diff-table-header-fg: var(--d-on-background);
+}
 
 .submissions-table {
   th.status-column {
@@ -8,31 +10,81 @@ $feedback-diff-table-header-fg: $on-background;
 }
 
 .feedback-table {
-  .groups {
-    margin: 0 15px 0 0;
+  .tab-pane {
+    // Offset for the navbar and the tab bar
+    scroll-margin-top: calc(var(--d-navbar-height) + 50px);
+  }
 
+  .tab-summary {
+    flex-grow: 1;
+    display: flex;
+    align-self: center;
+
+    .tab-summary-text {
+      white-space: nowrap;
+      font-weight: 500;
+      margin-right: 4px;
+    }
+
+    .tab-summary-icons {
+      flex-grow: 1;
+      max-height: 40px;
+      overflow-y: scroll;
+      scrollbar-width: none;
+
+      // this needs to be here until chrome supports setting scrollbar-width
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      div {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        margin-right: 4px;
+
+        a {
+          color: var(--d-on-primary);
+        }
+
+        &.correct {
+          background-color: var(--d-success);
+        }
+
+        &.wrong {
+          background-color: var(--d-danger);
+        }
+      }
+    }
+  }
+
+  .groups {
     .badge {
       display: block;
       text-align: left;
       border-left: 3px solid;
       border-radius: 0;
+      margin-left: 0;
     }
 
     .badge.bg-danger {
-      color: $danger;
-      border-color: $danger;
-      background-color: $content-bg !important;
+      color: var(--d-danger);
+      border-color: var(--d-danger);
+      background-color: var(--d-surface) !important;
     }
 
     .badge.bg-success {
-      color: $success;
-      border-color: $success;
-      background-color: $content-bg !important;
+      color: var(--d-success);
+      border-color: var(--d-success);
+      background-color: var(--d-surface) !important;
     }
   }
 
   .description {
-    background-color: $code-bg;
+    background-color: var(--d-code-bg);
 
     pre {
       border: none;
@@ -40,53 +92,99 @@ $feedback-diff-table-header-fg: $on-background;
   }
 
   .group {
-    background-color: $content-bg;
-    margin-bottom: 12px;
-    border-left: 4px solid gray;
-    position: relative;
-    padding-left: 12px;
+    &.card {
+      box-shadow: none;
+      border: 1px solid var(--d-divider);
+      scroll-margin-top: calc(var(--d-navbar-height) + 50px + 64px + 5px);
+      overflow: clip; // must be clip, hidden doesn't work with scroll-margin-top
 
-    &.correct {
-      border-left-color: $success;
+      .card-title.card-title-colored-container {
+        border-radius: 0;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .group-status {
+          display: flex;
+        }
+
+        .btn {
+          margin-top: -12px;
+          margin-bottom: -12px;
+        }
+
+        .btn-collapse {
+          transition: transform 0.2s ease-in-out;
+        }
+      }
+
+      &:target .btn-collapse {
+        pointer-events: none;
+      }
+
+      // if a group is the target, never collapse
+      &.collapsed:not(:target) {
+        .card-supporting-text {
+          display: none;
+        }
+
+        .btn-collapse {
+          transform: rotate(90deg);
+        }
+      }
+
+      &.correct .group-status {
+        color: var(--d-green);
+      }
+
+      &.wrong .group-status {
+        color: var(--d-red);
+      }
     }
 
-    &.wrong {
-      border-left-color: $danger;
+    &:target {
+      border-color: var(--d-primary);
     }
   }
 
   .testcase {
+    >.description {
+      margin-left: -11px;
+      padding-left: 22px;
+    }
+
     .indicator {
       width: 15px;
       height: 15px;
-      margin: 0 -12px 3px 3px;
-      float: right;
+      margin: 0 6px 3px -21px;
+      float: left;
 
       span {
         margin: auto;
       }
     }
 
-    & > div {
+    &>div {
       margin-bottom: 3px;
+      margin-left: 12px;
     }
 
     &.correct {
       .indicator {
-        color: $success;
+        color: var(--d-success);
       }
     }
 
     &.wrong {
       .indicator {
-        color: $danger;
+        color: var(--d-danger);
       }
     }
   }
 
   .test .output,
   .code {
-    font-family: $font-family-monospace;
+    font-family: var(--d-font-monospace);
     font-size: 13px;
     white-space: pre-wrap;
     overflow-wrap: break-word;
@@ -106,14 +204,15 @@ $feedback-diff-table-header-fg: $on-background;
     td.line-nr {
       text-align: right;
       white-space: pre-wrap;
+      user-select: none;
     }
 
     th {
       font-weight: normal;
       padding-left: 5px;
       padding-right: 5px;
-      background: $feedback-diff-table-header-bg;
-      color: $feedback-diff-table-header-fg;
+      background: var(--d-feedback-diff-table-header-bg);
+      color: var(--d-feedback-diff-table-header-fg);
       vertical-align: center;
     }
 
@@ -123,10 +222,10 @@ $feedback-diff-table-header-fg: $on-background;
       text-decoration: none;
       padding-left: 5px;
       padding-right: 5px;
-      word-wrap: break-word;
+      overflow-wrap: anywhere;
       word-break: break-all;
       white-space: pre-wrap;
-      font-family: $font-family-monospace;
+      font-family: var(--d-font-monospace);
 
       strong {
         font-weight: normal;
@@ -135,28 +234,28 @@ $feedback-diff-table-header-fg: $on-background;
     }
 
     .ins {
-      background: $success-container;
-      color: $on-success-container;
+      background: var(--d-success-container);
+      color: var(--d-on-success-container);
     }
 
     .del {
-      background: $danger-container;
-      color: $on-success-container;
+      background: var(--d-danger-container);
+      color: var(--d-on-success-container);
     }
 
     .ins strong {
-      background: $success;
-      color: $on-success;
+      background: var(--d-success);
+      color: var(--d-on-success);
     }
 
     .del strong {
-      background: $danger;
-      color: $on-danger;
+      background: var(--d-danger);
+      color: var(--d-on-danger);
     }
 
     .line-nr {
-      background: $feedback-diff-table-header-bg;
-      color: $feedback-diff-table-header-fg;
+      background: var(--d-feedback-diff-table-header-bg);
+      color: var(--d-feedback-diff-table-header-fg);
       padding-left: 10px;
       padding-right: 10px;
     }
@@ -228,11 +327,48 @@ $feedback-diff-table-header-fg: $on-background;
     width: 100%;
     display: flex;
 
+    .resubmit-btn {
+      margin-left: 0.5em;
+    }
+
+    @include media-breakpoint-down(lg) {
+      flex-direction: column;
+
+      .btn {
+        width: fit-content;
+        margin-bottom: 0.5em;
+      }
+
+      .resubmit-btn {
+        margin-left: 0;
+      }
+    }
+
+    &.sticky {
+      margin-bottom: 0;
+      margin-top: -16px;
+      padding-bottom: 12px;
+      padding-top: 12px;
+      position: sticky;
+      top: 101px;
+      z-index: 4;
+      background-color: var(--d-surface);
+    }
+
     .switch-buttons {
       margin-left: 1em;
+      white-space: nowrap;
 
       span {
         margin-right: 0.5em;
+      }
+
+      @include media-breakpoint-down(xl) {
+        margin-left: 0;
+
+        span {
+          display: none;
+        }
       }
     }
 
@@ -250,7 +386,7 @@ $feedback-diff-table-header-fg: $on-background;
   }
 
   .linter pre.lineno {
-    border-right: 1px solid $divider;
+    border-right: 1px solid var(--d-divider);
     padding-right: 25px;
   }
 
@@ -281,14 +417,14 @@ $feedback-diff-table-header-fg: $on-background;
     margin-bottom: 9.5px;
   }
 
-  .row > .messages {
+  .row>.messages {
     margin-left: 1em;
     margin-right: 1em;
   }
 
   .message-zeus,
   .message-staff {
-    border-left: 3px solid $on-surface-muted;
+    border-left: 3px solid var(--d-on-surface-muted);
     padding-left: 25px;
   }
 
@@ -298,7 +434,7 @@ $feedback-diff-table-header-fg: $on-background;
   .tab-staff::before {
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
     font: normal normal normal 24px/1 "Material Design Icons";
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-size: 18px;
   }
 
@@ -323,24 +459,14 @@ $feedback-diff-table-header-fg: $on-background;
     content: "\F0474";
   }
 
-  .message-zeus + .message-zeus::before,
-  .message-staff + .message-staff::before {
+  .message-zeus+.message-zeus::before,
+  .message-staff+.message-staff::before {
     content: "";
   }
 
   .tab-link-marker {
-    background: $warning !important;
+    background: var(--d-warning) !important;
   }
-}
-
-#editor-text .ace-twilight {
-  background-color: $gray-10;
-}
-
-/* stylelint-disable-next-line selector-class-pattern */
-#editor-result .ace_content {
-  background-color: $code-bg;
-  cursor: default;
 }
 
 iframe.file {
@@ -353,19 +479,19 @@ iframe.file {
 }
 
 .colored-correct {
-  color: $success;
+  color: var(--d-success);
 }
 
 .colored-wrong {
-  color: $danger;
+  color: var(--d-danger);
 }
 
 .colored-warning {
-  color: $warning;
+  color: var(--d-warning);
 }
 
 .colored-secondary {
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .submission-summary {
@@ -387,10 +513,6 @@ iframe.file {
   .edit-score {
     margin-left: 10px;
   }
-}
-
-.score-details {
-  padding-bottom: 10px;
 }
 
 .submission-history {
@@ -419,6 +541,13 @@ iframe.file {
   }
 }
 
-d-saved-annotations-sidecard:empty {
-  display: none;
+.scores.card .card-title.card-title-colored-container .btn {
+  margin-top: -12px;
+  margin-bottom: -12px;
+}
+
+.demo-mode {
+  .message-zeus {
+    display: none;
+  }
 }

@@ -1,5 +1,9 @@
 module SeasonalHelper
   def christmas(current_time)
+    current_time.month == 12 && current_time.day.between?(24, 26)
+  end
+
+  def december(current_time)
     current_time.month == 12 && current_time.day > 6
   end
 
@@ -20,6 +24,7 @@ module SeasonalHelper
     current_time = Time.now.in_time_zone(config.time_zone)
 
     return 'christmas' if christmas(current_time)
+    return 'december' if december(current_time)
     return 'valentine' if valentine(current_time)
     return 'mario-day' if mario_day(current_time)
     return 'pi-day'    if pi_day(current_time)

@@ -13,4 +13,4 @@ template: |
   $CHANGES
 change-template: "- $TITLE (#$NUMBER)"
 branches:
-  - master
+  - main

@@ -1,4 +1,4 @@
-import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "util.js";
+import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateURLParameter } from "utilities";
 import { InactiveTimeout } from "auto_reload";
 import { LoadingBar } from "components/search/loading_bar";
 import { searchQueryState } from "state/SearchQuery";

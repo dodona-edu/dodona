@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.0
+    config.load_defaults 7.1
 
     config.dodona_email = 'dodona@ugent.be'
     # Configuration for the application, engines, and railties goes here.
@@ -26,7 +26,6 @@ module Dodona
 
     # The sandboxed host with user provided content, without authentication
     config.sandbox_host = 'sandbox.localhost'
-    config.tutor_url = URI::HTTP.build(host: 'tutor.localhost', port: 8080, path: "/cgi-bin/build_trace.py")
 
     # Where we host our assets (a single domain, for caching)
     # Port is needed somehow...

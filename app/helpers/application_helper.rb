@@ -144,8 +144,12 @@ module ApplicationHelper
   end
 
   def sanitize(html)
-    @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a + %w[table thead tbody tr td th colgroup col style svg circle line rect path summary details]
-    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a + %w[style target data-bs-toggle data-parent data-tab data-line data-element id x1 y1 x2 y2 stroke stroke-width fill cx cy r]
+    @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a +
+              %w[table thead tbody tr td th colgroup col style summary details] +
+              %w[svg g style circle line rect path polygon text defs]
+    @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a +
+                    %w[style target data-bs-toggle data-parent data-tab data-line data-element id] +
+                    %w[viewBox width height version style class transform id x y rx ry x1 y1 x2 y2 d points fill stroke stroke-width stroke-dasharray cx cy r font-size font-family font-weight font-variant textLength writing-mode glyph-orientation-vertical text-orientation color]
 
     # Filters allowed tags and attributes
     sanitized = ActionController::Base.helpers.sanitize html,
@@ -239,8 +243,8 @@ module ApplicationHelper
       tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
-    def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
+    def previous_or_next_page(page, text, classname, aria_label = nil)
+      tag :li, link(text, page || '#', class: 'page-link', 'aria-label': aria_label), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 
@@ -267,8 +271,8 @@ module ApplicationHelper
       tag :li, link('&hellip;', '#', class: 'page-link'), class: 'page-item disabled'
     end
 
-    def previous_or_next_page(page, text, classname)
-      tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link'), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
+    def previous_or_next_page(page, text, classname, aria_label = nil)
+      tag :li, link(text, page || '#', 'data-remote': true, class: 'page-link', 'aria-label': aria_label), class: [classname[0..3], classname, ('disabled' unless page), 'page-item'].join(' ')
     end
   end
 

@@ -17,7 +17,7 @@ class Auth::AuthenticationController < Devise::SessionsController
       # Provider.find_by(identifier: '33d8cf3c-2f14-48c0-9ad6-5d2825533673'), # AP
       Provider.find_by(identifier: 'b6e080ea-adb9-4c79-9303-6dcf826fb854'), # Artevelde
       # Provider.find_by(identifier: 'c2a59f2b-5d20-4b2a-a9a3-7a8605b14e3f'), # Erasmus
-      Provider.find_by(entity_id: 'https://idp.hogent.be/idp'), # HoGent
+      Provider.find_by(entity_id: 'https://sts.windows.net/5cf7310e-091a-4bc5-acd7-26c721d4cccd/'), # HoGent
       Provider.find_by(identifier: '4ded4bb1-6bff-42b3-aed7-6a36a503bf7a'), # HoWest
       # Provider.find_by(identifier: '850f9344-e078-467e-9c5e-84d82f208ac7'), # HS Leiden
       # Provider.find_by(identifier: 'ed1fc57f-8a97-47e7-9de1-9302dfd786ae'), # KdG

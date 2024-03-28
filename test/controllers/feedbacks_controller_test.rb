@@ -44,6 +44,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
   test 'Scores are reset when a submission is changed' do
     create :score, feedback: @feedback, score_item: @score_item1
     @feedback.reload
+
     assert_equal 1, @feedback.scores.count
 
     s = create :submission, exercise: @feedback.exercise, user: @feedback.user, course: @feedback.evaluation.series.course
@@ -54,12 +55,14 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
       }
     }
     @feedback.reload
+
     assert_equal s.id, @feedback.submission_id
     assert_equal 0, @feedback.scores.count
   end
 
   test 'scores are reset when a submission is changed from empty' do
     feedback = @evaluation.feedbacks.find_by(submission_id: nil, evaluation_exercise: @evaluation.evaluation_exercises.first)
+
     assert_not_empty feedback.scores
 
     s = create :submission, exercise: feedback.exercise, user: feedback.user, course: feedback.evaluation.series.course
@@ -70,6 +73,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
       }
     }
     feedback.reload
+
     assert_equal s.id, feedback.submission_id
     assert_empty feedback.scores
   end
@@ -84,6 +88,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
       create :score, feedback: @feedback, score_item: si
     end
     @feedback.reload
+
     assert_equal 10, @feedback.scores.count
 
     s = create :submission, exercise: @feedback.exercise, user: @feedback.user, course: @feedback.evaluation.series.course
@@ -94,6 +99,7 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
       }
     }
     @feedback.reload
+
     assert_equal s.id, @feedback.submission_id
     assert_equal 0, @feedback.scores.count
   end
@@ -101,12 +107,13 @@ class FeedbacksControllerTest < ActionDispatch::IntegrationTest
   test 'deleting all the scores of an evaluation works' do
     create :score, feedback: @feedback, score_item: @score_item1
     @feedback.reload
+
     assert_equal 1, @feedback.scores.count
 
     delete scores_feedback_path(@feedback)
 
     @feedback.reload
 
-    assert @feedback.scores.empty?
+    assert_empty @feedback.scores
   end
 end

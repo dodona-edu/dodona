@@ -30,6 +30,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
           feedback_id: @feedback.id
         }
       }
+
       assert_response expected
       sign_out user if user.present?
       Score.where(score_item: @score_item, feedback: @feedback).first.destroy! if expected == :created
@@ -43,6 +44,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
         feedback_id: @feedback.id
       }
     }
+
     assert_response :unprocessable_entity
   end
 
@@ -62,6 +64,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
           expected_score: score.score.to_s
         }
       }
+
       assert_response expected
       sign_out user if user.present?
     end
@@ -75,6 +78,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
         expected_score: score.score.to_s
       }
     }
+
     assert_response :unprocessable_entity
   end
 
@@ -87,6 +91,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
         expected_score: '11.0'
       }
     }
+
     assert_response :forbidden
   end
 
@@ -105,6 +110,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
           expected_score: score.score.to_s
         }
       }
+
       assert_response expected
       sign_out user if user.present?
       score.destroy!
@@ -119,6 +125,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
         expected_score: '11.0'
       }
     }
+
     assert_response :forbidden
   end
 
@@ -135,6 +142,7 @@ class ScoresControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     score = Score.find_by!(score_item: @score_item, feedback: @feedback)
+
     assert_equal BigDecimal('10'), score.score
   end
 end

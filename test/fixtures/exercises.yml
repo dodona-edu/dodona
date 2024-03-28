@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 python_exercise:
@@ -36,3 +37,4 @@ python_exercise:
   type: "Exercise"
   access_token: "12345"
   repository_token: "67890"
+  draft: false

@@ -1,4 +1,4 @@
-json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :saved_annotation_id, :created_at, :updated_at, :course_id, :column, :rows, :columns
+json.extract! annotation, :id, :line_nr, :annotation_text, :user_id, :submission_id, :created_at, :updated_at, :course_id, :column, :rows, :columns
 json.row annotation.line_nr || 0
 if annotation.is_a?(Question)
   json.extract! annotation, :question_state
@@ -41,3 +41,6 @@ json.responses annotation.responses do |response|
   json.partial! response, as: :annotation
 end
 json.thread_root_id annotation.thread_root_id
+
+# Only include the saved annotation id if the user is allowed to see it
+json.saved_annotation_id annotation.saved_annotation_id if annotation.saved_annotation.present? && SavedAnnotationPolicy.new(current_user, annotation.saved_annotation).show?

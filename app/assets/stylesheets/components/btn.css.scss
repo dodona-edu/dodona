@@ -1,4 +1,5 @@
-.btn {
+.btn,
+#scratchpad-offcanvas .papyros-button {
   height: 40px;
   display: inline-flex;
   align-items: center;
@@ -43,20 +44,32 @@
     opacity: 0.38;
     pointer-events: none;
   }
+
+  // define the default button colors
+  // makes it easier to combine with other classes such as d-btn-danger, d-btn-success, etc.
+  --d-btn-color: var(--d-primary);
+  --d-btn-color-rgb: var(--d-primary-rgb);
+  --d-on-btn-color: var(--d-on-primary);
 }
 
-.btn.btn-filled {
-  background: $primary;
-  color: $on-primary;
+.btn.btn-filled,
+#scratchpad-offcanvas .papyros-button.btn-danger,
+#scratchpad-offcanvas .papyros-button.btn-primary {
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
 
   &:hover {
     @include shadow-z2;
   }
 }
 
-.btn.btn-tonal {
-  background: $secondary-container;
-  color: $on-secondary-container;
+.btn.btn-tonal,
+#scratchpad-offcanvas .papyros-button.btn-tonal {
+  --d-btn-color: var(--d-secondary-container);
+  --d-on-btn-color: var(--d-on-secondary-container);
+
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
 
   &:hover {
     @include shadow-z1;
@@ -72,15 +85,16 @@
 }
 
 .btn.btn-text,
+#scratchpad-offcanvas .papyros-button.btn-secondary,
 .btn.btn-outline {
   background: none;
-  color: $primary;
+  color: var(--d-btn-color);
 
   &:hover,
   &:focus,
   &:active {
     opacity: 1;
-    background: rgba($primary, 0.1);
+    background: rgba(var(--d-btn-color-rgb), 0.1);
   }
 }
 
@@ -110,26 +124,29 @@
   }
 }
 
-.btn.btn-outline {
-  border: 1px solid $divider;
+.btn.btn-outline,
+#scratchpad-offcanvas .papyros-button.btn-secondary {
+  border: 1px solid var(--d-divider);
 
   &:hover,
   &:focus,
   &:active {
-    border-color: $primary;
+    border-color: var(--d-btn-color);
   }
 
+  &.disabled,
   &:disabled {
-    color: $on-surface;
-    border: 1px solid rgba($on-surface, 0.12);
+    color: var(--d-on-surface);
+    border: 1px solid rgba(var(--d-on-surface-rgb), 0.12);
     opacity: 0.38;
   }
 }
 
-.btn.btn-icon {
+.btn.btn-icon,
+#scratchpad-offcanvas .papyros-button.btn-icon {
   width: 40px;
   padding: 0;
-  color: $primary;
+  color: var(--d-btn-color);
 
   // enable pointer events to enable tooltips to be shown on disabled buttons
   &.disabled-with-tooltip {
@@ -142,12 +159,12 @@
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba($primary, 0.1);
+      background: rgba(var(--d-btn-color-rgb), 0.1);
     }
   }
 
   &.btn-icon-inverted {
-    color: $on-primary;
+    color: var(--d-on-btn-color);
 
     &:hover,
     &:focus,
@@ -158,34 +175,40 @@
   }
 
   &.btn-icon-muted {
-    color: $text-muted;
+    color: var(--d-text-muted);
 
     &:hover,
     &:focus,
     &:active {
       opacity: 1;
-      background: rgba($on-surface, 0.1);
+      background: rgba(var(--d-on-surface-rgb), 0.1);
     }
   }
 
   &.btn-icon-filled {
-    color: $on-primary;
+    color: var(--d-on-btn-color);
+    background: var(--d-btn-color);
 
     &:hover,
     &:focus,
     &:active {
-      opacity: 1;
-      filter: brightness(0.95);
+      @include shadow-z2;
     }
   }
 }
 
-.btn.btn-fab {
-  height: 56px;
-  width: 56px;
-  border-radius: 16px;
-  background: $secondary-container;
-  color: $on-secondary-container;
+.btn.btn-fab,
+.btn.btn-fab-small,
+.btn.btn-fab-small-extended {
+  --d-btn-color: var(--d-secondary-container);
+  --d-on-btn-color: var(--d-on-secondary-container);
+
+  // boostrap applies these variables, but they aren't set.
+  --bs-btn-active-bg: var(--d-btn-color);
+  --bs-btn-active-color: var(--d-on-btn-color);
+
+  background: var(--d-btn-color);
+  color: var(--d-on-btn-color);
 
   @include shadow-z2;
 
@@ -199,42 +222,52 @@
 
     @include shadow-z3;
   }
+}
 
-  &.correct {
-    background-color: $success;
-  }
+.btn.btn-fab {
+  height: 56px;
+  width: 56px;
+  border-radius: 16px;
+}
 
-  &.wrong {
-    background-color: $danger;
-  }
+.btn.btn-fab-small {
+  height: 40px;
+  width: 40px;
+  border-radius: 12px;
+  padding: 6px;
+}
+
+.btn.btn-fab-small-extended {
+  height: 40px;
+  border-radius: 12px;
 }
 
 .btn-group {
   & > .btn {
     padding-left: 12px;
     padding-right: 12px;
-    border: 1px solid $divider;
+    border: 1px solid var(--d-divider);
     border-right: 0;
 
     &:last-of-type {
-      border-right: 1px solid $divider;
+      border-right: 1px solid var(--d-divider);
     }
 
     &:hover,
     &:focus,
     &:active {
-      background: rgba($primary, 0.1);
+      background: rgba(var(--d-btn-color-rgb), 0.1);
     }
 
     &.active {
-      background: rgba($primary, 0.2);
+      background: rgba(var(--d-btn-color-rgb), 0.2);
     }
   }
 }
 
 .input-group {
   .btn {
-    border: 1px solid $outline;
+    border: 1px solid var(--d-outline);
     border-radius: 4px;
   }
 
@@ -255,7 +288,7 @@
   align-items: center;
   margin-bottom: 15px;
   padding: 12px;
-  background-color: $surface;
+  background-color: var(--d-surface);
   border-radius: 4px;
   transition: box-shadow 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 
@@ -303,24 +336,38 @@
 
 .single-zero-button:hover:not(:focus),
 #zero-button:hover:not(:focus) {
-  color: $danger;
+  color: var(--d-danger);
 }
 
 .single-max-button:hover:not(:focus),
 #max-button:hover:not(:focus) {
-  color: $success;
+  color: var(--d-success);
 }
 
 .single-zero-button:active,
 #zero-button:active {
-  background-color: rgba($danger, 0.6);
+  background-color: rgba(var(--d-danger-rgb), 0.6);
   color: unset;
   transition: background-color 0s;
 }
 
 .single-max-button:active,
 #max-button:active {
-  background-color: rgba($success, 0.6);
+  background-color: rgba(var(--d-success-rgb), 0.6);
   color: unset;
   transition: background-color 0s;
+}
+
+// use d-btn-danger instead of btn-danger to avoid conflicts with bootstrap
+.btn.d-btn-danger,
+#scratchpad-offcanvas .papyros-button.btn-danger {
+  --d-btn-color: var(--d-danger);
+  --d-btn-color-rgb: var(--d-danger-rgb);
+  --d-on-btn-color: var(--d-on-danger);
+}
+
+.btn.d-btn-success {
+  --d-btn-color: var(--d-success);
+  --d-btn-color-rgb: var(--d-success-rgb);
+  --d-on-btn-color: var(--d-on-success);
 }

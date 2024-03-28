@@ -1,6 +1,7 @@
 class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
+  include Sortable
 
   INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
 
@@ -24,20 +25,14 @@ class ActivitiesController < ApplicationController
   has_scope :by_description_languages, as: 'description_languages', type: :array
   has_scope :by_judge, as: 'judge_id'
   has_scope :by_popularities, as: 'popularity', type: :array
+  has_scope :is_draft, as: 'draft'
 
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Series.find(controller.params[:id]).course if controller.params[:id]
     scope.repository_scope(scope: value, user: controller.current_user, course: course)
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[name popularity].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  order_by :popularity, :name
 
   content_security_policy only: %i[show] do |policy|
     policy.frame_src -> { ["'self'", sandbox_url] }
@@ -66,6 +61,8 @@ class ActivitiesController < ApplicationController
     @activities = if params[:series_id]
                     @series = Series.find(params[:series_id])
                     authorize @series, :show?
+                    raise Pundit::NotAuthorizedError unless policy(@series).valid_token?(params[:token])
+
                     policy(@series).overview? ? @series.activities : []
                   else
                     policy_scope(Activity).order_by_popularity(:DESC)
@@ -112,11 +109,14 @@ class ActivitiesController < ApplicationController
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
 
     # Double check if activity still exists within this course (And throw a 404 when it does not)
-    @course&.activities&.find_by!(id: @activity.id) if current_user&.course_admin?(@course)
+    @course&.activities&.find(@activity.id) if current_user&.course_admin?(@course)
     # We still need to check access because an unauthenticated user should be able to see public activities
     raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 
     @series = Series.find_by(id: params[:series_id])
+    # Double check if activity still exists within this series, redirect to course activity if it does not
+    redirect_to helpers.activity_scoped_path(activity: @activity, course: @course) if @series&.activities&.exclude?(@activity)
+
     @not_registered = @course && !current_user&.member_of?(@course)
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @not_registered
     @current_membership = CourseMembership.where(course: @course, user: current_user).first if @lti_launch && @not_registered
@@ -237,6 +237,7 @@ class ActivitiesController < ApplicationController
                    Rails.application.assets_manifest.assets[INPUT_SERVICE_WORKER]
                  )
                end
+    headers['Service-Worker-Allowed'] = '/'
     # :nocov:
     send_file(filename,
               filename: INPUT_SERVICE_WORKER,

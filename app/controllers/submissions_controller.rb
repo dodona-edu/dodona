@@ -2,6 +2,7 @@ class SubmissionsController < ApplicationController
   include SeriesHelper
   include TimeHelper
   include ActionView::Helpers::DateHelper
+  include Sortable
 
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge show]
@@ -22,17 +23,10 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  has_scope :order_by, using: %i[column direction], type: :hash do |_controller, scope, value|
-    column, direction = value
-    if %w[ASC DESC].include?(direction) && %w[user exercise created_at status].include?(column)
-      scope.send "order_by_#{column}", direction
-    else
-      scope
-    end
-  end
+  order_by :user, :exercise, :created_at, :status
 
   content_security_policy only: %i[show] do |policy|
-    # allow sandboxed tutor
+    # allow sandboxed description
     policy.frame_src -> { [sandbox_url] }
   end
 
@@ -194,8 +188,20 @@ class SubmissionsController < ApplicationController
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?
 
+    return unless params[:most_recent_per_user]
+
     # this cannot use has_scope, because we need the scopes in this method
     # to be applied before this one
-    @submissions = @submissions.most_recent_per_user if params[:most_recent_per_user]
+    @submissions = @submissions.most_recent_per_user
+
+    if params[:order_by].present?
+      # reapplies the order_by scope if present in the params
+      # this is needed because the previous line creates a group by query, which breaks the order_by scope
+      @submissions = Submission.where(id: @submissions) # otherwise the group_by breaks order_by scopes that use joins
+      @submissions = apply_scopes(@submissions, { order_by: params[:order_by] })
+    else
+      # reapply the default order scope, as most_recent_per_user breaks it
+      @submissions = @submissions.reorder(id: :desc)
+    end
   end
 end

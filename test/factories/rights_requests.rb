@@ -11,7 +11,7 @@
 #
 FactoryBot.define do
   factory :rights_request do
-    association :user, :with_institution
+    user factory: %i[user with_institution]
     institution_name { Faker::University.unique.name.gsub(/[^[:ascii:]]/, '') }
     context { Faker::Lorem.paragraph(sentence_count: 25) }
   end

@@ -12,10 +12,9 @@
 class Export < ApplicationRecord
   include ExportHelper
 
-  AUTOMATICALLY_DELETE_AFTER = 30.days
+  AUTOMATICALLY_DELETE_AFTER = 1.day
 
   belongs_to :user
-  has_one :notification, as: :notifiable, dependent: :destroy
   has_one_attached :archive
   enum status: { started: 0, finished: 1, failed: 2 }
 
@@ -38,7 +37,6 @@ class Export < ApplicationRecord
     )
 
     delay(queue: 'cleaning', run_at: AUTOMATICALLY_DELETE_AFTER.from_now).destroy
-    notification = Notification.new(user: user, message: 'exports.index.ready_for_download')
-    update(status: :finished, notification: notification)
+    update(status: :finished)
   end
 end

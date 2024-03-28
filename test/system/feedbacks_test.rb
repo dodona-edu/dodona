@@ -17,7 +17,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     @staff_member = create :staff
     series = create :series, exercise_count: 2
     series.course.administrating_members << @staff_member
-    @users = [create(:user), create(:user)]
+    @users = create_list :user, 2
     @exercises = series.exercises
     @users.each do |u|
       series.course.enrolled_members << u
@@ -62,6 +62,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
+
     assert_equal BigDecimal('9.0'), @score.score
 
     # Add new score for second score_item
@@ -88,6 +89,7 @@ class FeedbacksTest < ApplicationSystemTestCase
     find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
 
     @score.reload
+
     assert_equal BigDecimal('6'), @score.score
   end
 
@@ -114,7 +116,7 @@ class FeedbacksTest < ApplicationSystemTestCase
   test 'all zero works' do
     visit(feedback_path(id: @feedback.id))
 
-    click_button(id: 'zero-button')
+    click_on(id: 'zero-button')
 
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
@@ -125,7 +127,7 @@ class FeedbacksTest < ApplicationSystemTestCase
 
   test 'all max works' do
     visit(feedback_path(id: @feedback.id))
-    click_button(id: 'max-button')
+    click_on(id: 'max-button')
 
     first_input = find(id: "#{@score_item_first.id}-score-form-wrapper").find('.score-input:not(.in-progress)')
     second_input = find(id: "#{@score_item_second.id}-score-form-wrapper").find('.score-input:not(.in-progress)')

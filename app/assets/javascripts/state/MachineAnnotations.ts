@@ -2,6 +2,8 @@ import { AnnotationType } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
+import { createStateFromInterface } from "state/state_system/CreateStateFromInterface";
+import { submissionState } from "state/Submissions";
 
 export interface MachineAnnotationData {
     type: AnnotationType;
@@ -13,18 +15,29 @@ export interface MachineAnnotationData {
     columns?: number;
 }
 
+export class MachineAnnotation extends createStateFromInterface<MachineAnnotationData>() {
+    @stateProperty public isHovered = false;
+}
+
 class MachineAnnotationState extends State {
-    @stateProperty public byLine = new StateMap<number, MachineAnnotationData[]>();
-    @stateProperty public byMarkedLine = new StateMap<number, MachineAnnotationData[]>();
+    @stateProperty public byLine = new StateMap<number, MachineAnnotation[]>();
+    @stateProperty public byMarkedLine = new StateMap<number, MachineAnnotation[]>();
     @stateProperty public count = 0;
 
     public setMachineAnnotations(annotations: MachineAnnotationData[]): void {
         this.count = annotations.length;
         this.byLine.clear();
         this.byMarkedLine.clear();
-        for (const annotation of annotations) {
+        for (const data of annotations) {
+            const annotation = new MachineAnnotation(data);
             const markedLength = annotation.rows ?? 1;
-            const line = annotation.row ? annotation.row + markedLength : 0;
+            let line = annotation.row ? annotation.row + markedLength : 1;
+
+            // show annotation on the last line if it is out of range
+            if (line > submissionState.codeByLine.length) {
+                line = submissionState.codeByLine.length;
+            }
+
             if (this.byLine.has(line)) {
                 this.byLine.get(line)?.push(annotation);
             } else {

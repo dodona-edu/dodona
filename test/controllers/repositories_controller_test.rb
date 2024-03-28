@@ -14,7 +14,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     sign_in @admin
   end
 
-  def request_public_image
+  def test_request_public_image
     get public_repository_url(@instance, 'CodersApprentice.png'), headers: { range: 'bytes=150-300' }
 
     assert_response :success
@@ -28,22 +28,24 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   test 'should reprocess activities' do
     Repository.any_instance.expects(:process_activities)
     get reprocess_repository_path(@instance)
+
     assert_redirected_to(@instance)
   end
 
   test 'should reprocess activities on judge change' do
     Repository.any_instance.expects(:process_activities)
     patch repository_path(@instance), params: { repository: { judge_id: create(:judge, :git_stubbed).id } }
+
     assert_redirected_to(@instance)
   end
 
   test 'should get public media' do
-    request_public_image
+    test_request_public_image
   end
 
   test 'public media should be public' do
     sign_out @admin
-    request_public_image
+    test_request_public_image
   end
 
   test 'should create repository admin on create' do
@@ -100,17 +102,20 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     @instance.admins << @admin
 
     post remove_admin_repository_url(@instance, user_id: @admin.id)
-    assert @instance.admins.include? @admin
+
+    assert_includes @instance.admins, @admin
   end
 
   test 'allowed courses should render' do
     course = courses(:course1)
     @instance.allowed_courses << course
     get courses_repository_url(@instance)
+
     assert_response :success
     user = users(:student)
     @instance.admins << user
     get courses_repository_url(@instance)
+
     assert_response :success
   end
 
@@ -159,8 +164,10 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
   test 'only zeus should be able to edit featured' do
     f = !@instance.featured
     patch repository_path(@instance), params: { repository: { featured: f }, format: :json }
+
     assert_response :success
     @instance.reload
+
     assert_equal f, @instance.featured
 
     sign_out @admin
@@ -171,6 +178,7 @@ class RepositoriesControllerTest < ActionDispatch::IntegrationTest
     f = !@instance.featured
     patch repository_path(@instance), params: { repository: { featured: f }, format: :json }
     @instance.reload
+
     assert_not_equal f, @instance.featured
 
     sign_out user
@@ -192,6 +200,8 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     @remote.update_json('echo/config.json', 'make echo private') do |config|
       config.update 'access' => 'private'
     end
+
+    @second_remote = local_remote('exercises/lasagna')
   end
 
   def find_echo
@@ -205,6 +215,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
 
   test 'webhook without commit info should update exercises' do
     post webhook_repository_path(@repository)
+
     assert_equal 'private', find_echo.access
   end
 
@@ -213,16 +224,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     user = users(:staff)
     judge = create :judge, :git_stubbed
     sign_in user
-    post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
+    post repositories_path, params: { repository: { name: 'test', remote: @second_remote.path, judge_id: judge.id } }
   end
 
   test 'should email during repository creation' do
     user = users(:staff)
     judge = create :judge, :git_stubbed
     sign_in user
-    @remote.update_file('echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
+    @second_remote.update_file('exercises/extra/echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
-      post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
+      post repositories_path, params: { repository: { name: 'test', remote: @second_remote.path, judge_id: judge.id } }
     end
   end
 
@@ -244,6 +255,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
       modified: ['echo/config.json']
     }]
     post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-GitHub-Event': 'push' }
+
     assert_equal 'private', find_echo.access
   end
 
@@ -260,6 +272,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
       modified: ['echo/config.json']
     }]
     post webhook_repository_path(@repository), params: { commits: commit_info }, headers: { 'X-Gitlab-Event': 'push' }
+
     assert_equal 'private', find_echo.access
   end
 
@@ -288,6 +301,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal ['a@ugent.be'], email.to
   end
 
@@ -308,6 +322,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal ['a@ugent.be'], email.to
   end
 
@@ -337,6 +352,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [user.email], email.to
   end
 
@@ -367,6 +383,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-GitHub-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [user.email], email.to
   end
 
@@ -393,6 +410,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [user.email], email.to
   end
 
@@ -420,6 +438,7 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     post webhook_repository_path(@repository), params: params, headers: { 'X-Gitlab-Event': 'push' }
 
     email = ActionMailer::Base.deliveries.last
+
     assert_equal [user.email], email.to
   end
 end

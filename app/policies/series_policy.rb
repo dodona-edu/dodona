@@ -129,6 +129,11 @@ class SeriesPolicy < ApplicationPolicy
     record.instance_of?(Series) && (record.progress_enabled || course_admin?)
   end
 
+  def valid_token?(token)
+    !record.hidden? || user&.course_admin?(record.course) ||
+      record.access_token == token
+  end
+
   private
 
   def course_member?

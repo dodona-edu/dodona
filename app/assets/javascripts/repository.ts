@@ -1,5 +1,6 @@
-import { fetch } from "./util.js";
+import { fetch } from "utilities";
 import { Toast } from "./toast";
+import { i18n } from "i18n/i18n";
 
 function initAdminsEdit(): void {
     function init(): void {
@@ -36,7 +37,7 @@ function initAdminsEdit(): void {
                 if (response.ok) {
                     adminAdded(button, oldRow);
                 } else {
-                    new Toast(I18n.t("js.admin-added-failed"));
+                    new Toast(i18n.t("js.admin-added-failed"));
                 }
             });
     }
@@ -56,13 +57,13 @@ function initAdminsEdit(): void {
                 if (response.ok) {
                     adminRemoved(userId);
                 } else {
-                    new Toast(I18n.t("js.admin-removed-failed"));
+                    new Toast(i18n.t("js.admin-removed-failed"));
                 }
             });
     }
 
     function adminAdded(addButton: HTMLButtonElement, oldRow: HTMLTableRowElement): void {
-        new Toast(I18n.t("js.admin-added-success"));
+        new Toast(i18n.t("js.admin-added-success"));
         const tablePlaceholder = document.querySelector(".table-placeholder");
         if (tablePlaceholder) {
             tablePlaceholder.remove();
@@ -74,14 +75,14 @@ function initAdminsEdit(): void {
         deleteButton.innerHTML = "<i class='mdi mdi-delete'></i>";
         deleteButton.classList.add("remove-admin");
         deleteButton.classList.add("btn-icon-filled");
-        deleteButton.classList.add("bg-danger");
+        deleteButton.classList.add("d-btn-danger");
         deleteButton.addEventListener("click", onRemoveClick);
         document.querySelector("#admin-table-wrapper table tbody").append(newRow);
         addButton.classList.add("invisible");
     }
 
     function adminRemoved(userId: string): void {
-        new Toast(I18n.t("js.admin-removed-success"));
+        new Toast(i18n.t("js.admin-removed-success"));
         document.querySelector(`#admin-table-wrapper td.repository-admin-button-cell[data-user_id="${userId}"]`).closest("tr").remove();
         const addButton = document.querySelector(`td[data-user_id="${userId}"]`).querySelector(".btn.add-admin");
         addButton.classList.remove("invisible");
@@ -125,7 +126,7 @@ function initCoursesEdit(): void {
                 if (response.ok) {
                     courseAdded(button, oldRow);
                 } else {
-                    new Toast(I18n.t("js.course-added-failed"));
+                    new Toast(i18n.t("js.course-added-failed"));
                 }
             });
     }
@@ -145,27 +146,27 @@ function initCoursesEdit(): void {
                 if (response.ok) {
                     courseRemoved(courseId);
                 } else {
-                    new Toast(I18n.t("js.course-removed-failed"));
+                    new Toast(i18n.t("js.course-removed-failed"));
                 }
             });
     }
 
     function courseAdded(addButton: HTMLButtonElement, oldRow: HTMLTableRowElement): void {
-        new Toast(I18n.t("js.course-added-success"));
+        new Toast(i18n.t("js.course-added-success"));
         const newRow = oldRow.cloneNode(true) as HTMLTableRowElement;
         const deleteButton = newRow.querySelector(".btn.add-course");
         deleteButton.classList.remove("add-course");
         deleteButton.innerHTML = "<i class='mdi mdi-delete'></i>";
         deleteButton.classList.add("remove-course");
         deleteButton.classList.add("btn-icon-filled");
-        deleteButton.classList.add("bg-danger");
+        deleteButton.classList.add("d-btn-danger");
         deleteButton.addEventListener("click", onRemoveClick);
         document.querySelector("#allowed-courses-table-wrapper table tbody").append(newRow);
         addButton.classList.add("invisible");
     }
 
     function courseRemoved(courseId: string): void {
-        new Toast(I18n.t("js.course-removed-success"));
+        new Toast(i18n.t("js.course-removed-success"));
         document.querySelector(`#allowed-courses-table-wrapper td.repository-course-button-cell[data-course_id="${courseId}"]`).closest("tr").remove();
         const addButton = document.querySelector(`td[data-course_id="${courseId}"]`).querySelector(".btn.add-course");
         addButton.classList.remove("invisible");

@@ -29,12 +29,10 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
   test 'Staff can save an annotation' do
     sign_in @staff
     visit(submission_path(id: @first.id))
-    click_link 'Code'
-
-    assert_no_css 'd-saved-annotations-sidecard'
+    click_on 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button a').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
@@ -45,39 +43,35 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       # assert checkbox to fill out title
       assert_css '#check-save-annotation'
       assert_no_css '#saved-annotation-title'
-      find('#check-save-annotation').check
-      assert_equal 'The first five words of', find('#saved-annotation-title').value
-      click_button 'Comment'
+      find_by_id('check-save-annotation').check
+
+      assert_equal 'The first five words of', find_by_id('saved-annotation-title').value
+      click_on 'Comment'
     end
 
     within '.annotation' do
       assert_text initial
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
-
-    # assert sidebar with saved annotations
-    assert_css 'd-saved-annotations-sidecard'
-    assert_css 'd-saved-annotations-sidecard td[title="The first five words of"]'
     sign_out @staff
   end
 
   test 'Student cannot save an annotation' do
     sign_in @student
     visit(submission_path(id: @first.id))
-    click_link 'Code'
-
-    assert_no_css 'd-saved-annotations-sidecard'
+    click_on 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button a').click
 
     initial = 'The first five words of this comment will be used as the title'
     within 'form.annotation-submission' do
       assert_no_css 'd-saved-annotation-input'
       find('textarea.annotation-submission-input').fill_in with: initial
+
       assert_no_css '#check-save-annotation'
-      click_button 'Ask question'
+      click_on 'Ask question'
     end
 
     within '.annotation' do
@@ -85,7 +79,6 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
       assert_no_css 'i.mdi-link-variant'
     end
 
-    assert_no_css 'd-saved-annotations-sidecard'
     sign_out @student
   end
 
@@ -94,28 +87,61 @@ class SavedAnnotationsTest < ApplicationSystemTestCase
     sa = create :saved_annotation, user: @staff, exercise: @first.exercise, course: @course
     visit(submission_path(id: @first.id))
 
-    click_link 'Code'
-    assert_css 'd-saved-annotations-sidecard'
-    # assert_css `d-saved-annotations-sidecard td[title="#{sa.title}"]`
+    click_on 'Code'
 
     find('tr#line-1').hover
-    find('button.annotation-button').click
+    find('.annotation-button a').click
 
     within 'form.annotation-submission' do
       assert_css 'd-saved-annotation-input'
 
       find('d-saved-annotation-input input[type="text"]').fill_in with: sa.title
-      assert find_field('Comment', with: sa.annotation_text)
+
+      assert find_field('annotation-text', with: sa.annotation_text)
       assert_equal sa.annotation_text, find('textarea.annotation-submission-input').value
 
-      click_button 'Comment'
+      click_on 'Comment'
     end
 
     within '.annotation' do
       assert_text sa.annotation_text
       # assert linked icon
-      assert_css 'i.mdi-link-variant'
+      assert_css 'i.mdi-comment-bookmark-outline'
     end
     sign_out @staff
+  end
+
+  test 'searching saved annotations shows activity names in correct language' do
+    sign_in @staff
+    exercise = create :exercise, name_en: 'Fools', name_nl: 'Bars'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'Tetris', annotation_text: 'text'
+    create :saved_annotation, user: @staff, exercise: exercise, course: @course, title: 'TEST', annotation_text: 'text'
+    visit(saved_annotations_path)
+
+    assert_text 'Tetris'
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_en
+    assert_no_text exercise.name_nl
+
+    visit(saved_annotations_path('nl'))
+
+    assert_text 'Tetris'
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
+
+    find('input.search-filter').fill_in with: 'TEST'
+
+    # wait for the search to complete
+    assert_no_text 'Tetris'
+
+    assert_text exercise.name_nl
+    assert_no_text exercise.name_en
   end
 end

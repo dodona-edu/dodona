@@ -1,6 +1,6 @@
 require 'json'
 require 'test_helper'
-require 'result_constructor'
+require_relative '../../app/runners/result_constructor'
 
 class ResultConstructorTest < ActiveSupport::TestCase
   MINIMAL_FULL_S =
@@ -44,6 +44,64 @@ class ResultConstructorTest < ActiveSupport::TestCase
     assert_raises ResultConstructorError do
       construct_result(['{ Aaargh'])
     end
+  end
+
+  test 'metadata should be accepted' do
+    assert_equal({
+      accepted: true,
+      status: 'correct',
+      description: 'Correct',
+      groups: [{
+        description: 'Tab One',
+        badgeCount: 0,
+        groups: [{
+          accepted: true,
+          groups: [{
+            description: 'case 1',
+            accepted: true
+          }],
+          data: {
+            statements: 'case 1',
+            stdin: '123'
+          }
+        }, {
+          accepted: true,
+          groups: [{
+            description: 'case 2',
+            accepted: true
+          }],
+          data: {
+            statements: 'case 2'
+          }
+        }, {
+          accepted: true,
+          groups: [{
+            description: 'case 3',
+            accepted: true
+          }],
+          data: {
+            stdin: '3'
+          }
+        }]
+      }]
+    }, construct_result([
+      '{ "command": "start-judgement" }',
+      '{ "command": "start-tab", "title": "Tab One" }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 1" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "statements": "case 1", "stdin": "123" } }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 2" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "statements": "case 2" } }',
+      '{ "command": "start-context" }',
+      '{ "command": "start-testcase", "description": "case 3" }',
+      '{ "command": "close-testcase" }',
+      '{ "command": "close-context", "data": { "stdin": "3" } }',
+      '{ "command": "close-tab" }',
+      '{ "command": "close-judgement" }'
+    ]))
   end
 
   test 'partial output should accumulated status' do
@@ -227,6 +285,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "close-tab" }',
       '{ "command": "close-judgement", "accepted": true }'
     ])
+
     assert_equal(1, result[:groups][0][:badgeCount])
     assert_equal(3, result[:groups][1][:badgeCount])
     assert_equal(0, result[:groups][2][:badgeCount])
@@ -246,6 +305,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
       '{ "command": "close-judgement" }'
     ])
+
     assert_equal('wrong', result[:status])
     result = construct_result([
       '{ "command": "start-judgement" }',
@@ -254,6 +314,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong 2" } }',
       '{ "command": "close-judgement" }'
     ])
+
     assert_equal('wrong', result[:status])
     assert_equal('Wrong 1', result[:description])
     result = construct_result([
@@ -262,24 +323,28 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "escalate-status", "status": { "enum": "internal error", "human": "Internal Error" } }',
       '{ "command": "close-judgement" }'
     ])
+
     assert_equal('internal error', result[:status])
     result = construct_result([
       '{ "command": "start-judgement" }',
       '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
       '{ "command": "close-judgement", "status": { "enum": "runtime error", "human": "Runtime" } }'
     ])
+
     assert_equal('runtime error', result[:status])
     result = construct_result([
       '{ "command": "start-judgement" }',
       '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
       '{ "command": "close-judgement", "status": { "enum": "memory limit exceeded", "human": "Runtime" } }'
     ])
+
     assert_equal('memory limit exceeded', result[:status])
     result = construct_result([
       '{ "command": "start-judgement" }',
       '{ "command": "escalate-status", "status": { "enum": "wrong", "human": "Wrong" } }',
       '{ "command": "close-judgement", "status": { "enum": "time limit exceeded", "human": "Runtime" } }'
     ])
+
     assert_equal('time limit exceeded', result[:status])
   end
 
@@ -318,6 +383,7 @@ class ResultConstructorTest < ActiveSupport::TestCase
       '{ "command": "close-tab" }',
       '{ "command": "close-judgement", "accepted": true }'
     ])
+
     %w[zeus staff student].each_with_index do |perm, index|
       assert_equal(perm, result[:groups][index][:permission])
     end

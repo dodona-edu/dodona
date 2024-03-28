@@ -1,7 +1,7 @@
 #punchcard-container {
   svg {
     circle {
-      fill: $secondary;
+      fill: var(--d-secondary);
     }
   }
 }

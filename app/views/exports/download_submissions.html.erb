@@ -64,13 +64,13 @@
                   <div class="col-sm-6 offset-sm-3">
                     <div class="form-check">
                       <input type="radio" id="only_last_submission" class="form-check-input" name="only_last_submission" checked value="1">
-                      <label class="form-check-label" for="only_last_submission"><%= t '.only_last_submission' %>
+                      <label class="form-check-label" for="only_last_submission"><%= t '.only_last_submission' %></label>
                     </div>
                   </div>
                   <div class="col-sm-6 offset-sm-3">
                     <div class="form-check">
                       <input type="radio" id="not_only_last_submissions" class="form-check-input" name="only_last_submission" value="0">
-                      <label class="form-check-label" for="not_only_last_submissions"><%= t '.all_submissions' %>
+                      <label class="form-check-label" for="not_only_last_submissions"><%= t '.all_submissions' %></label>
                     </div>
                   </div>
                 </div>
@@ -81,14 +81,14 @@
                   <div class="col-sm-6 offset-sm-3">
                     <div class="form-check">
                       <input type="radio" id="with_deadline" class="form-check-input" name="deadline" checked value="1">
-                      <label class="form-check-label" for="with_deadline"><%= t '.with_deadline' %>
+                      <label class="form-check-label" for="with_deadline"><%= t '.with_deadline' %></label>
                     </div>
                   </div>
                   <span class="help-block offset-sm-3 col-sm-6"><%= t '.with_deadline_help' %></span>
                   <div class="col-sm-6 offset-sm-3">
                     <div class="form-check">
                       <input type="radio"  id="no_deadline" class="form-check-input" name="deadline" value="0">
-                      <label class="form-check-label" for="no_deadline"><%= t '.no_deadline' %>
+                      <label class="form-check-label" for="no_deadline"><%= t '.no_deadline' %></label>
                     </div>
                   </div>
                   <span class="help-block offset-sm-3 col-sm-6"><%= t '.no_deadline_help' %></span>
@@ -104,14 +104,14 @@
                     <div class="col-sm-6 offset-sm-3">
                       <div class="form-check">
                         <input type="radio" id="group_by_student" class="form-check-input" name="group_by" checked value="user">
-                        <label class="form-check-label" for="group_by_student"><%= t '.group_by_student' %>
+                        <label class="form-check-label" for="group_by_student"><%= t '.group_by_student' %></label>
                       </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_student_help' %></span>
                     <div class="col-sm-6 offset-sm-3">
                       <div class="form-check">
                         <input type="radio"  id="group_by_exercise" class="form-check-input" name="group_by" value="exercise">
-                        <label class="form-check-label" for="group_by_exercise"><%= t '.group_by_exercise' %>
+                        <label class="form-check-label" for="group_by_exercise"><%= t '.group_by_exercise' %></label>
                       </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.group_by_exercise_help' %></span>
@@ -122,24 +122,50 @@
                   <div class="field form-group row">
                     <div class="col-sm-6 offset-sm-3">
                       <div class="form-check">
-                        <input type="radio" id="all_students" class="form-check-input" name="all_students" checked value="1">
-                        <label class="form-check-label" for="all_students"><%= t '.all_students' %>
+                        <input type="radio" id="all_students" class="form-check-input" name="filter_students" checked value="all">
+                        <label class="form-check-label" for="all_students"><%= t '.all_students' %></label>
                       </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.all_students_help' %></span>
                     <div class="col-sm-6 offset-sm-3">
                       <div class="form-check">
-                        <input type="radio"  id="only_submitted" class="form-check-input" name="all_students" value="0">
-                        <label class="form-check-label" for="only_submitted"><%= t '.only_submitted' %>
+                        <input type="radio"  id="only_submitted" class="form-check-input" name="filter_students" value="submitted">
+                        <label class="form-check-label" for="only_submitted"><%= t '.only_submitted' %></label>
                       </div>
                     </div>
                     <span class="help-block offset-sm-3 col-sm-6"><%= t '.only_submitted_help' %></span>
+                    <div class="col-sm-6 offset-sm-3">
+                      <div class="form-check">
+                        <input type="radio"  id="only_correct_submitted" class="form-check-input" name="filter_students" value="correct">
+                        <label class="form-check-label" for="only_correct_submitted"><%= t '.only_correct_submitted' %></label>
+                      </div>
+                    </div>
+                    <span class="help-block offset-sm-3 col-sm-6"><%= t '.only_correct_submitted_help' %></span>
                   </div>
                 <% end %>
               <% end %>
             </div>
             <div class="stepper-actions stepper-border">
-              <button type="submit" form="download_submissions" class="btn btn-filled"><%= t('.start_download') %></button>
+              <button id="start-download" class="btn btn-filled"><%= t('.start_download') %></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="downloading-panel" class="panel panel-default hidden">
+        <div class="panel-heading" role="tab">
+          <h4 class="panel-title">
+            <span class="step-circle">3</span>
+            <a role="button" data-bs-toggle="collapse" data-parent="#stepper" href="#downloading-step"  aria-controls="collapseOne">
+              <%= t '.download' %>
+            </a>
+          </h4>
+        </div>
+        <div id="downloading-step" class="panel-collapse collapse show" role="tabpanel" aria-expanded="true">
+          <div class="panel-body">
+            <div class="stepper-part">
+              <p><%= t '.downloading' %></p>
+              <d-loading-bar loading="true"></d-loading-bar>
             </div>
           </div>
         </div>

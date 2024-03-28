@@ -1,6 +1,6 @@
 .dropdown-menu a,
 .dropdown-menu a:hover {
-  font-size: $font-size-base;
+  font-size: var(--d-font-size-base);
 }
 
 .dropdown-item-text {

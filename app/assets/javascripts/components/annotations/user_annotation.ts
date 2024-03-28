@@ -1,15 +1,16 @@
 import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
-import { UserAnnotationData, userAnnotationState } from "state/UserAnnotations";
-import { i18nMixin } from "components/meta/i18n_mixin";
+import { UserAnnotation, userAnnotationState } from "state/UserAnnotations";
 import { AnnotationForm } from "components/annotations/annotation_form";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/new_saved_annotation";
-import { initTooltips } from "util.js";
+import { initTooltips } from "utilities";
 import "components/saved_annotations/saved_annotation_icon";
 import { annotationState } from "state/Annotations";
+import { savedAnnotationState } from "state/SavedAnnotations";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents a single user annotation.
@@ -18,12 +19,12 @@ import { annotationState } from "state/Annotations";
  *
  * @element d-user-annotation
  *
- * @prop {UserAnnotationData} data - the data of the annotation
+ * @prop {UserAnnotation} data - the annotation
  */
 @customElement("d-user-annotation")
-export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
+export class UserAnnotationComponent extends DodonaElement {
     @property({ type: Object })
-    data: UserAnnotationData;
+    data: UserAnnotation;
 
     @property({ state: true })
     editing = false;
@@ -32,13 +33,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
 
     get headerText(): string {
         if (!this.data.permission.can_see_annotator) {
-            return I18n.t("js.user_annotation.anonymous_message");
+            return i18n.t("js.user_annotation.anonymous_message");
         }
 
-        const timestamp = I18n.formatDate(this.data.created_at, "time.formats.annotation");
+        const timestamp = i18n.formatDate(this.data.created_at, "time.formats.annotation");
         const user = this.data.user?.name;
 
-        return I18n.t("js.user_annotation.meta", { user: user, time: timestamp });
+        return i18n.t("js.user_annotation.meta", { user: user, time: timestamp });
     }
 
     get type(): string {
@@ -50,7 +51,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
             ${this.headerText}
             ${!this.data.released ? html`
                         <i class="mdi mdi-eye-off mdi-18 annotation-meta-icon"
-                           title="${I18n.t("js.user_annotation.not_released")}"
+                           title="${i18n.t("js.user_annotation.not_released")}"
                            data-bs-toggle="tooltip"
                            data-bs-placement="top"
                         ></i>
@@ -62,7 +63,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     ·
                     <a href="${this.data.newer_submission_url}" target="_blank">
                         <i class="mdi mdi-information mdi-18 colored-info"
-                           title="${I18n.t("js.user_question.has_newer_submission")}"
+                           title="${i18n.t("js.user_question.has_newer_submission")}"
                            data-bs-toggle="tooltip"
                            data-bs-placement="top"
                         ></i>
@@ -71,21 +72,21 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
             ` : ""}
             ${ this.data.question_state == "unanswered" ? html`
                 <i class="mdi mdi-comment-question-outline mdi-18 annotation-meta-icon colored-secondary"
-                   title="${I18n.t("js.user_question.is_unanswered")}"
+                   title="${i18n.t("js.user_question.is_unanswered")}"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
                 ></i>
             ` : ""}
             ${ this.data.question_state == "in_progress" ? html`
                 <i class="mdi mdi-comment-processing-outline mdi-18 annotation-meta-icon"
-                   title="${I18n.t("js.user_question.is_in_progress")}"
+                   title="${i18n.t("js.user_question.is_in_progress")}"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
                 ></i>
             ` : ""}
             ${ this.data.question_state == "answered" ? html`
                 <i class="mdi mdi-comment-check-outline mdi-18 annotation-meta-icon"
-                   title="${I18n.t("js.user_question.is_answered")}"
+                   title="${i18n.t("js.user_question.is_answered")}"
                    data-bs-toggle="tooltip"
                    data-bs-placement="top"
                 ></i>
@@ -94,7 +95,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     }
 
     deleteAnnotation(): void {
-        if (confirm(I18n.t(`js.${this.type}.delete_confirm`))) {
+        if (confirm(i18n.t(`js.${this.type}.delete_confirm`))) {
             userAnnotationState.delete(this.data);
         }
     }
@@ -105,6 +106,15 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                 annotation_text: e.detail.text,
                 saved_annotation_id: e.detail.savedAnnotationId || undefined,
             });
+            if (e.detail.saveAnnotation) {
+                await savedAnnotationState.create( {
+                    from: this.data.id,
+                    saved_annotation: {
+                        title: e.detail.savedAnnotationTitle,
+                        annotation_text: e.detail.text,
+                    }
+                });
+            }
             this.editing = false;
         } catch (e) {
             this.annotationFormRef.value.hasErrors = true;
@@ -115,8 +125,13 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
     protected updated(_changedProperties: PropertyValues): void {
         super.updated(_changedProperties);
 
-        // Ask MathJax to search for math in the annotations
-        window.MathJax.typeset();
+        try {
+            // Ask MathJax to search for math in the annotations
+            window.MathJax.typeset([this]);
+        } catch (e) {
+            // MathJax is not loaded
+            console.warn("MathJax is not loaded");
+        }
         // Reinitialize tooltips
         initTooltips(this);
     }
@@ -132,25 +147,27 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
             options.push(html`
                 <li>
                     <a class="dropdown-item" @click="${() => this.editing = true}">
-                        <i class="mdi mdi-pencil mdi-18"></i> ${I18n.t(`js.${this.type}.edit`)}
+                        <i class="mdi mdi-pencil mdi-18"></i> ${i18n.t(`js.${this.type}.edit`)}
                     </a>
                 </li>
             `);
         }
-        if (this.data.permission.save) {
+        if (this.data.permission.save && !this.data.saved_annotation_id) {
             options.push(html`
-                <d-new-saved-annotation
-                    from-annotation-id="${this.data.id}"
-                    annotation-text="${this.data.annotation_text}"
-                    .savedAnnotationId="${this.data.saved_annotation_id}">
-                </d-new-saved-annotation>
+                <li>
+                    <d-new-saved-annotation
+                        class="dropdown-item"
+                        from-annotation-id="${this.data.id}"
+                        annotation-text="${this.data.annotation_text}">
+                    </d-new-saved-annotation>
+                </li>
             `);
         }
         if (this.data.permission.destroy) {
             options.push(html`
                 <li>
                     <a class="dropdown-item" @click="${() => this.deleteAnnotation()}">
-                        <i class="mdi mdi-delete mdi-18"></i> ${I18n.t(`js.user_annotation.delete`)}
+                        <i class="mdi mdi-delete mdi-18"></i> ${i18n.t(`js.user_annotation.delete`)}
                     </a>
                 </li>
             `);
@@ -159,7 +176,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
             options.push(html`
                 <li>
                     <a class="dropdown-item" @click="${() => this.reopenQuestion()}">
-                        <i class="mdi mdi-comment-question-outline mdi-18"></i> ${I18n.t("js.user_question.unresolve")}
+                        <i class="mdi mdi-comment-question-outline mdi-18"></i> ${i18n.t("js.user_question.unresolve")}
                     </a>
                 </li>
             `);
@@ -177,7 +194,9 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
 
     render(): TemplateResult {
         return html`
-            <div class="annotation ${this.colorClass}">
+            <div class="annotation ${this.colorClass}"
+                 @mouseenter="${() => this.data.isHovered = true}"
+                 @mouseleave="${() => this.data.isHovered = false}">
                 <div class="annotation-header">
                     <span class="annotation-meta">
                         ${this.header}
@@ -185,7 +204,7 @@ export class UserAnnotation extends i18nMixin(ShadowlessLitElement) {
                     ${this.dropdownOptions.length > 0 ? html`
                         <div class="dropdown actions float-end" id="kebab-menu">
                             <a class="btn btn-icon btn-icon-muted dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="mdi mdi-dots-horizontal text-muted"></i>
+                                <i class="mdi mdi-dots-vertical text-muted"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end">
                                 ${this.dropdownOptions}

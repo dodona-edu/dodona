@@ -21,19 +21,21 @@ class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
       sign_in user if user.present?
 
       evaluation_exercise.update!(visible_score: true)
-      assert evaluation_exercise.visible_score?
+
+      assert_predicate evaluation_exercise, :visible_score?
 
       patch evaluation_exercise_path(evaluation_exercise, format: :js), params: {
         evaluation_exercise: {
           visible_score: false
         }
       }
+
       assert_response expected
       evaluation_exercise.reload
       if expected == :success
         assert_not evaluation_exercise.visible_score?
       else
-        assert evaluation_exercise.visible_score?
+        assert_predicate evaluation_exercise, :visible_score?
       end
 
       sign_out user if user.present?

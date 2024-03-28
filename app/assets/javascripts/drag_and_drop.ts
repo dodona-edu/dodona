@@ -1,5 +1,5 @@
 import dragula from "dragula";
-import { fetch, getParentByClassName } from "util.js";
+import { fetch, getParentByClassName } from "utilities";
 
 /**
  * Custom type for arguments of the drag and drop initialization

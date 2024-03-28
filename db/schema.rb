@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_05_141148) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
     t.boolean "description_nl_present", default: false
     t.boolean "description_en_present", default: false
     t.integer "series_count", default: 0, null: false
+    t.boolean "draft", default: true
     t.index ["judge_id"], name: "index_activities_on_judge_id"
     t.index ["name_nl"], name: "index_activities_on_name_nl"
     t.index ["path", "repository_id"], name: "index_activities_on_path_and_repository_id", unique: true
@@ -332,6 +333,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
     t.string "renderer", null: false
     t.string "remote"
     t.integer "clone_status", default: 1, null: false
+    t.boolean "deprecated", default: false, null: false
     t.index ["name"], name: "index_judges_on_name", unique: true
   end
 
@@ -395,6 +397,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
     t.index ["judge_id"], name: "index_repositories_on_judge_id"
     t.index ["name"], name: "index_repositories_on_name", unique: true
     t.index ["path"], name: "index_repositories_on_path", unique: true
+    t.index ["remote"], name: "index_repositories_on_remote", unique: true
   end
 
   create_table "repository_admins", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
@@ -424,7 +427,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
     t.integer "annotations_count", default: 0
     t.index ["course_id"], name: "index_saved_annotations_on_course_id"
     t.index ["exercise_id"], name: "index_saved_annotations_on_exercise_id"
-    t.index ["title", "user_id", "exercise_id", "course_id"], name: "index_saved_annotations_title_uid_eid_cid", unique: true
     t.index ["user_id"], name: "index_saved_annotations_on_user_id"
   end
 
@@ -523,6 +525,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_25_073306) do
     t.datetime "seen_at", precision: nil
     t.datetime "sign_in_at", precision: nil
     t.integer "open_questions_count", default: 0, null: false
+    t.integer "theme", default: 0, null: false
     t.index ["email", "institution_id"], name: "index_users_on_email_and_institution_id", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"

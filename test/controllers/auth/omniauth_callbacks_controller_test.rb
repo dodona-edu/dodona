@@ -23,7 +23,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
         email: identity.user.email,
         first_name: identity.user.first_name,
         last_name: identity.user.last_name,
-        institution: identity.provider.identifier
+        institution: identity.provider.identifier,
+        username: identity.user.username
       },
       extra: {
         raw_info: {
@@ -240,6 +241,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       follow_redirect!
 
       user.reload
+
       assert_equal user, @controller.current_user
       assert_equal 'Flip', user.first_name
       assert_equal 'Flapstaart', user.last_name
@@ -268,9 +270,11 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       end
 
       user.reload
+
       assert_redirected_to root_path
       assert_nil @controller.current_user
       user.reload
+
       assert_not_equal other_user.email, user.email
 
       # Cleanup.
@@ -462,7 +466,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -498,7 +503,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_not_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -523,7 +529,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -545,7 +552,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -567,7 +575,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -603,7 +612,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_path
     assert_not_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -626,7 +636,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -650,7 +661,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
 
     assert_equal @controller.current_user, user
     identity.reload
-    assert_equal identity.identifier, 'NEW-UID'
+
+    assert_equal('NEW-UID', identity.identifier)
 
     # Cleanup.
     sign_out user
@@ -701,6 +713,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Test "inside iframe"
     post omniauth_url(provider)
     follow_redirect!
+
     assert_redirected_to lti_redirect_path(provider: main_provider.id, sym: main_provider.class.sym)
 
     # Test outside iframe
@@ -708,6 +721,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     follow_redirect!(headers: {
       'Sec-Fetch-Dest' => 'document'
     })
+
     assert_redirected_to omniauth_url(main_provider)
   end
 
@@ -723,6 +737,59 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Build, but don't save the identity for the second provider.
     # This allows us to log in with the second provider for the 'first' time.
     second_identity = build :identity, provider: second_provider, user: user
+    omniauth_mock_identity second_identity
+
+    # Simulate the user logging in with the second provider.
+    # It should not create a user.
+    assert_difference 'User.count', 0 do
+      post omniauth_url(second_provider)
+      follow_redirect!
+    end
+
+    # It should render the page where the user can choose.
+    assert_response :success
+
+    # It is actually the page we expect.
+    assert_select 'h1', t('auth.redirect_to_known_provider.title')
+    # The other provider is listed as a possibility.
+    assert_select 'a.institution-sign-in' do |link|
+      assert_equal omniauth_path(first_provider), link.attr('href').to_s
+    end
+
+    omniauth_mock_identity first_identity
+
+    # The user listens to what we say and clicks the button.
+    post omniauth_url(first_provider)
+    follow_redirect!
+
+    # It should have been linked.
+    assert_redirected_to root_path
+    assert_equal @controller.current_user, user
+
+    user.identities.reload
+
+    # The user should have two identities.
+    assert_equal 2, user.identities.length
+
+    # Done.
+    sign_out user
+  end
+
+  test 'existing users can link new provider within institution, based only on username' do
+    institution = create :institution
+    user = create :user, institution: institution, identities: [], username: 'foo'
+    first_provider = create :provider, institution: institution, mode: :prefer, identities: []
+    second_provider = create :provider, institution: institution, mode: :secondary, identities: []
+
+    # Link user to first provider.
+    first_identity = create :identity, provider: first_provider, user: user, identifier: 'bar'
+
+    # change user email but don't save
+    user.email = 'foo@bars.co'
+
+    # Build, but don't save the identity for the second provider.
+    # This allows us to log in with the second provider for the 'first' time.
+    second_identity = build :identity, provider: second_provider, user: user, identifier: 'bars'
     omniauth_mock_identity second_identity
 
     # Simulate the user logging in with the second provider.

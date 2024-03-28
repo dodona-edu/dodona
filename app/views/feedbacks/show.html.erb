@@ -4,7 +4,6 @@
     window.dodona.initMathJax();
   </script>
   <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
-  <%= javascript_include_tag 'pythia_submission' if @feedback.submission&.judge&.renderer == PythiaRenderer %>
 <% end %>
 
 <div class="row" id="feedback-page">
@@ -12,54 +11,46 @@
     <div class="card" id="feedback-actions-holder">
       <%= render partial: 'feedback_actions', locals: { evaluation: @feedback.evaluation, feedback: @feedback } %>
     </div>
-    <!-- REMOVE IF AFTER CLOSED BETA -->
-    <% if policy(SavedAnnotation).beta_course? @feedback.evaluation.series.course.id %>
-        <d-saved-annotations-sidecard course-id="<%= @feedback.evaluation.series.course.id %>"
-                                 exercise-id="<%= @feedback.exercise.id %>"
-                                 user-id="<%= current_user.id %>"
-        ></d-saved-annotations-sidecard>
-    <% end %>
   </div>
   <div class="col-12 order-lg-0 col-lg-8 col-xxl-9 feedback-submission">
     <div class="card feedback-show">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text"><span>
-          <%= t '.submission_for' %>
-          <%= link_to(@feedback.exercise.name, course_series_activity_path(@feedback.evaluation.series.course, @feedback.evaluation.series, @feedback.exercise)) %>
-          <%= t '.by' %>
-          <%= link_to(@feedback.user.full_name, course_member_path(@feedback.evaluation.series.course, @feedback.user)) %>
-        </span></h2>
-        <%=  %>
+        <h2 class="card-title-text">
+          <span>
+            <%= t '.submission_for' %>
+            <%= link_to(@feedback.exercise.name, course_series_activity_path(@feedback.evaluation.series.course, @feedback.evaluation.series, @feedback.exercise)) %>
+            <%= t '.by' %>
+            <%= link_to(@feedback.user.full_name, course_member_path(@feedback.evaluation.series.course, @feedback.user)) %>
+          </span>
+        </h2>
       </div>
       <div class="card-supporting-text card-border">
         <div class="row">
-        <% if @feedback.total_attempts > 0 %>
-          <div class="col-sm-6 order-sm-1">
-            <div class="feedback-metadata-submission">
-              <p>
-              <% if @feedback.submission.present? %>
-                <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
-                <% if @feedback.later_attempts > 0 %>
-                  <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
-                <% end %>
-                <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+          <% if @feedback.total_attempts > 0 %>
+            <div class="col-sm-6 order-sm-1">
+              <div class="feedback-metadata-submission">
+                <p>
+                <% if @feedback.submission.present? %>
+                  <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
+                  <% if @feedback.later_attempts > 0 %>
+                    <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
+                  <% end %>
+                  <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+                    <%= link_to edit_feedback_path(@feedback) do %>
+                      <%= t("feedbacks.edit.select_another_submission") %>
+                    <% end %>
+                  <% end %>
+                <% elsif @feedback.total_attempts > 0 %>
+                  <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
                   <%= link_to edit_feedback_path(@feedback) do %>
-                    <%= t("feedbacks.edit.short_title") %>
+                    <%= t("feedbacks.edit.select_a_submission") %>
                   <% end %>
                 <% end %>
-              <% elsif @feedback.total_attempts > 0 %>
-                <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>
-                <%= link_to edit_feedback_path(@feedback) do %>
-                  <%= t("feedbacks.edit.short_title") %>
-                <% end %>
-              <% end %>
-              </p>
+                </p>
+              </div>
             </div>
-          </div>
-          <div class="col-sm-6 order-sm-0">
-          <% else %>
-          <div class="col-sm-12">
           <% end %>
+          <div class="<%=@feedback.total_attempts > 0 ? "col-sm-6 order-sm-0" : "col-sm-12" %>">
             <% if @feedback.submission.present? %>
               <% submission = @feedback.submission %>
               <div class="submission-summary clearfix">
@@ -89,11 +80,14 @@
   </div>
 </div>
 <% if @feedback.submission.present? %>
+  <% if @feedback.submission.exercise.programming_language&.name == 'python' %>
+    <%= render partial: 'activities/coding_scratchpad', locals: { activity: @feedback.submission.exercise } %>
+  <% end %>
   <script>
       dodona.ready.then(function () {
         window.dodona.setEvaluationId(<%= @feedback.evaluation.id %>);
         window.dodona.setAnnotationVisibility("important");
-        $(".nav.nav-tabs li:last-child a").tab("show");
+        window.dodona.showLastTab();
       });
   </script>
 <% end %>

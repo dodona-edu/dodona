@@ -166,8 +166,10 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
 
       # Client assertion must be a JWT with the correct client id and audience.
       client_assertion_encoded = parameters[:client_assertion].first
+
       assert_not_empty client_assertion_encoded
       client_assertion = decode_jwt(client_assertion_encoded).symbolize_keys
+
       assert_equal ISSUER, client_assertion[:aud]
       assert_equal @provider.client_id, client_assertion[:iss]
       assert_equal @provider.client_id, client_assertion[:sub]
@@ -181,6 +183,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
 
     # Validate that the user is correctly logged in.
     current_user = @controller.current_user
+
     assert_equal id_token_body[:given_name], current_user.first_name
     assert_equal id_token_body[:family_name], current_user.last_name
     assert_equal id_token_body[:vo_email], current_user.email

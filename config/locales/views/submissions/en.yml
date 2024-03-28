@@ -49,6 +49,9 @@ en:
       submission_for: "Submission for"
       output: Output
       correct_tests: Correct tests
+      debug: Debug
+      correct_group: Correct
+      wrong_group: Wrong
       diff:
         split: Show output side-by-side
         unified: Show unified output
@@ -72,3 +75,6 @@ en:
       cut_off_message:
         one: Your output has been cut off as it is much longer than expected. You produced %{generated} characters while only one character was expected.
         other: Your output has been cut off as it is much longer than expected. You produced %{generated} characters while only %{count} characters were expected.
+      tips:
+        title: Tip
+        internal_error_html: "Facing an internal error? This usually indicates a problem with your exercise or test configuration. Check <a href='https://docs.dodona.be/en/guides/exercises/' target='_blank'>our documentation</a> for guidance or <a href='/en/contact' target='_blank'>reach out to us</a> for assistance."

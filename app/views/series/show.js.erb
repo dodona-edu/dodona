@@ -4,5 +4,5 @@
                           loaded: true,
                           user: @user,
                         } %>
-$("#series-card-<%= @series.id %>").replaceWith("<%= escape_javascript series_card %>");
+dodona.replaceHTMLExecuteScripts(document.getElementById("series-card-<%= @series.id %>"), "<%= escape_javascript series_card %>");
 dodona.ready.then(dodona.initTooltips)

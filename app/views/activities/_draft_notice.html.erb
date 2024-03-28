@@ -1,0 +1,37 @@
+<% if @activity.draft? %>
+  <div class="alert alert-warning draft-notice">
+    <i class="mdi mdi-file-document-edit-outline"></i>
+    <%= t "activities.show.alert_draft.text_html" %>
+    <% if policy(@activity).edit? %>
+      <% edit_path = @series.present? ?
+                       course_series_activity_path(@series&.course, @series, @activity, {activity: {draft: false}}) :
+                       activity_path(@activity, {activity: {draft: false}})
+      %>
+
+      <% if @activity.ok? && @activity.correct_submission? && @activity.valid_config?  %>
+        <%= link_to t("activities.show.alert_draft.edit"), edit_path, method: :put %>
+      <% else %>
+        <div style="margin-left: 30px; margin-top: 8px;">
+          <%= t("activities.show.alert_draft.before_publish") %>
+          <div style="margin-left: 16px;">
+            <div>
+              <i class="mdi <%= @activity.valid_config? ? "mdi-check-circle-outline" : "mdi-alert-circle-outline" %>"></i>
+              <span><%= t('activities.show.alert_draft.valid_config') %></span>
+            </div>
+            <div>
+              <i class="mdi <%= @activity.ok? ? "mdi-check-circle-outline" : "mdi-alert-circle-outline" %>"></i>
+              <span><%= t('activities.show.alert_draft.is_valid') %></span>
+            </div>
+            <% if @activity.exercise? %>
+              <div>
+                <i class="mdi <%= @activity.correct_submission? ? "mdi-check-circle-outline" : "mdi-alert-circle-outline" %>"></i>
+                <span><%= t('activities.show.alert_draft.correct_submission') %></span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+<% end %>

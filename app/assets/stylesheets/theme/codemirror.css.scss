@@ -1,0 +1,72 @@
+.cm-editor {
+  background: var(--d-code-bg);
+
+  .cm-gutters {
+    background: var(--d-surface);
+    color: var(--d-on-surface-muted);
+    border: none;
+    font-size: 12px;
+  }
+
+  .cm-content {
+    color: var(--d-on-background);
+  }
+
+  /* stylelint-disable selector-class-pattern */
+  .cm-activeLine, .cm-activeLineGutter {
+    background-color: rgba(var(--d-surface-variant-rgb), 0.3);
+  }
+
+  &.cm-focused {
+    outline: none !important;
+  }
+
+  .cm-selectionBackground {
+    background: var(--d-surface-variant) !important;
+  }
+
+  .cm-cursor, .cm-dropCursor {
+    // Sets the color of the cursor.
+    border-left: 1.2px solid var(--d-secondary) !important;
+  }
+
+  .cm-tooltip {
+    background: var(--d-surface) !important;
+    border: none;
+
+    @include shadow-z2;
+
+    li[aria-selected] {
+      background: var(--d-secondary) !important;
+      color: var(--d-on-secondary) !important;
+    }
+  }
+
+  .cm-panels {
+    background-color: var(--d-background);
+    color: var(--d-on-background);
+
+    &.cm-panels-top {
+      border-bottom: 2px solid var(--d-divider);
+    }
+
+    &.cm-panels-bottom {
+      border-top: 2px solid var(--d-divider);
+    }
+  }
+
+  .cm-searchMatch {
+    background-color: rgba(var(--d-secondary-rgb), 0.3);
+  }
+
+  .cm-searchMatch.cm-searchMatch-selected {
+    background-color: rgba(var(--d-surface-variant-rgb), 0.3);
+    outline: 1px solid var(--d-outline);
+  }
+
+  .cm-selectionMatch {
+    background-color: rgba(var(--d-secondary-rgb), 0.3);
+  }
+
+  /* stylelint-enable selector-class-pattern */
+}

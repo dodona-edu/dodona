@@ -32,6 +32,7 @@ nl:
       activities: Oefeningen
       courses: Cursussen
       support_us: Steun ons
+      publications: Publicaties
       contact: Contact
       my_submissions: Mijn oplossingen
       my_questions: Mijn vragen
@@ -57,6 +58,7 @@ nl:
       support_dodona: Steun Dodona
       ugent: Universiteit Gent
       your_data: Jouw data
+      publications: Publicaties
       privacy_statement: "Privacyverklaring"
     search:
       search: zoeken

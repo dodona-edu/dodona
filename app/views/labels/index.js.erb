@@ -1,1 +1,1 @@
-$("#labels-table-wrapper").html("<%= escape_javascript(render partial: 'labels_table', locals: { labels: @labels }) %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#labels-table-wrapper"), "<%= escape_javascript(render partial: 'labels_table', locals: { labels: @labels }) %>");

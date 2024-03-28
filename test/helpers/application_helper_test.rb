@@ -74,6 +74,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       <p>Hello
     HTML
     clean_html = sanitize dirty_html
+
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
     assert_match(/<p>Hello/, clean_html)
@@ -83,7 +84,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <table style="background:black;">
         <thead>
-          <td>Head</td>
+          <tr>
+            <td>Head</td>
+          </tr>
         </thead>
         <tbody>
           <tr>
@@ -93,6 +96,37 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       </table>
     HTML
     clean_html = sanitize dirty_html
+
+    assert_equal dirty_html, clean_html
+  end
+
+  test 'sanitize helper should allow a selection of svg tags' do
+    dirty_html = <<~HTML
+      <svg viewBox="0 0 100 100" width="300" height="100" version="1.1">
+        <style>line,circle{stroke-width:3px;stroke:black;stroke-linecap:round}</style>
+        <style>test{stroke-width:3px;stroke:black;stroke-dasharray:1;stroke-linecap:round}</style>
+        <style>text.vertical{writing-mode:tb;glyph-orientation-vertical:0;fill:grey;}</style>
+        <style>text.vertical{writing-mode:vertical-rl;text-orientation:upright;}</style>
+        <defs>
+          <g id="diamond">
+            <polygon points="0,-1 -0.5773,0 0.5773,0 0,-1"></polygon>
+            <polygon points="0,1 -0.5773,0 0.5773,0 0,1" fill="currentColor"></polygon>
+            <polygon class="border" points="0,1 -0.5773,0 0,-1 0.5773,0 0,1" fill="none"></polygon>
+          </g>
+        </defs>
+        <g id="group1" transform="translate(50,50)">
+          <circle cx="0" cy="0" r="40" fill="none"></circle>
+          <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>
+        </g>
+        <rect x="0" y="0" rx="1" ry="1" width="100" height="100" fill="none" stroke="black" stroke-width="3px"></rect>
+        <polygon points="0,0 100,0 100,100 0,100"></polygon>
+        <path d="M0,0 L100,0 L100,100 L0,100 Z"></path>
+        <text x="0" y="0" font-size="14px" font-weight="bold" font-variant="normal" font-family="serif">Hello</text>
+        <text x="0" y="0" textLength="10">abcdefgh</text>
+      </svg>
+    HTML
+    clean_html = sanitize dirty_html
+
     assert_equal dirty_html, clean_html
   end
 
@@ -101,21 +135,27 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       create :user
     end
     self.locale = 'nl-BE'
+
     assert_equal :nl, I18n.locale
 
     self.locale = 'nl'
+
     assert_equal :nl, I18n.locale
 
     self.locale = 'en'
+
     assert_equal :en, I18n.locale
 
     self.locale = 'en-UK'
+
     assert_equal :en, I18n.locale
 
     self.locale = :en
+
     assert_equal :en, I18n.locale
 
     self.locale = 'garbage-stuff-does-not_exist'
+
     assert_equal I18n.default_locale, I18n.locale
   end
 end

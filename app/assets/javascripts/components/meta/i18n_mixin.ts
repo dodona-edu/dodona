@@ -1,5 +1,5 @@
 import { LitElement } from "lit";
-import { ready } from "util.js";
+import { ready } from "utilities";
 
 type Constructor = new (...args: any[]) => LitElement;
 

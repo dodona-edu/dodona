@@ -29,17 +29,21 @@ class ScoreTest < ActiveSupport::TestCase
   test 'adding last score item should complete feedback' do
     assert_not @feedback.completed?
     create :score, feedback: @feedback, score_item: @score_item1
+
     assert_not @feedback.completed?
     create :score, feedback: @feedback, score_item: @score_item2
-    assert @feedback.completed?
+
+    assert_predicate @feedback, :completed?
   end
 
   test 'deleting score should uncomplete feedback' do
     @feedback.update!(completed: true)
     score = create :score, feedback: @feedback, score_item: @score_item1
     create :score, feedback: @feedback, score_item: @score_item2
-    assert @feedback.completed?
+
+    assert_predicate @feedback, :completed?
     score.destroy!
+
     assert_not @feedback.completed?
   end
 
@@ -49,9 +53,11 @@ class ScoreTest < ActiveSupport::TestCase
     create :score, feedback: @feedback, score_item: @score_item2
 
     @score_item1.destroy!
-    assert @feedback.completed?
+
+    assert_predicate @feedback, :completed?
     @score_item2.destroy!
-    assert @feedback.completed?
+
+    assert_predicate @feedback, :completed?
     assert_empty @feedback.score_items
   end
 

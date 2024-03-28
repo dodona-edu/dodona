@@ -20,18 +20,20 @@ class ApiTokenTest < ActiveSupport::TestCase
 
   test 'api token creation' do
     assert_not_nil @api_token
-    assert @api_token.token.length > 30
+    assert_operator @api_token.token.length, :>, 30
     assert_not_nil @api_token.token_digest
     assert_equal ApiToken.digest(@token), @api_token.token_digest
   end
 
   test 'api token find_token should find' do
     found = ApiToken.find_token(@token)
+
     assert_equal @api_token, found
   end
 
   test 'new token should not find anything' do
     new_token = SecureRandom.urlsafe_base64(32)
+
     assert_nil ApiToken.find_token(new_token)
   end
 
@@ -42,6 +44,7 @@ class ApiTokenTest < ActiveSupport::TestCase
 
   test 'token from database should only have digest' do
     found = ApiToken.find_token(@token)
+
     assert_nil found.token
     assert_not_nil found.token_digest
   end

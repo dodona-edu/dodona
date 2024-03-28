@@ -1,22 +1,5 @@
-import { fetch } from "util.js";
-
-export function initInlineEditButton(tableElement: HTMLElement): void {
-    tableElement.querySelectorAll(".edit-button").forEach(item => {
-        item.addEventListener("click", e => {
-            e.preventDefault();
-            const clicked = (e.target as HTMLElement).closest("a") as HTMLAnchorElement;
-            const scoreItemId = clicked.dataset.scoreItem;
-            const row = document.getElementById(`form-row-${scoreItemId}`);
-            if (row.classList.contains("hidden")) {
-                row.classList.remove("hidden");
-                clicked.innerHTML = "<i class='mdi mdi-close mdi-18' aria-hidden='true'></i>";
-            } else {
-                row.classList.add("hidden");
-                clicked.innerHTML = "<i class='mdi mdi-pencil mdi-18' aria-hidden='true'></i>";
-            }
-        });
-    });
-}
+import { fetch } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function commonCheckboxInit(
     element: HTMLElement,
@@ -40,7 +23,7 @@ function commonCheckboxInit(
                     eval(await response.text());
                 } else {
                     // Someone already deleted this score item.
-                    new dodona.Toast(I18n.t("js.score_item.error"));
+                    new dodona.Toast(i18n.t("js.score_item.error"));
                     checkbox.disabled = false;
                     checkbox.checked = !checkbox.checked;
                 }
@@ -70,38 +53,6 @@ function initItemVisibilityCheckboxes(element: HTMLElement): void {
             }
         };
     });
-}
-
-export function initScoreItemPanels(): void {
-    const $choicePanel = $("#choice-panel");
-    const $itemPanel = $("#items-panel");
-
-    function init(): void {
-        initPanelLogic();
-        // // Bootstrap's automatic collapsing of other elements in the parent breaks
-        // // when doing manual shows and hides, so we have to do this.
-        $choicePanel.find(".panel-collapse").on("show.bs.collapse", function () {
-            $itemPanel.find(".panel-collapse").collapse("hide");
-        });
-        $itemPanel.find(".panel-collapse").on("show.bs.collapse", function () {
-            $choicePanel.find(".panel-collapse").collapse("hide");
-        });
-    }
-
-    function initPanelLogic(): void {
-        $("#yes-grading").on("click", function () {
-            $itemPanel.find(".step-circle").html("2");
-            $(this)
-                .closest(".panel")
-                .find(".answer")
-                .html($(this).data("answer"));
-            $itemPanel.removeClass("hidden");
-            $itemPanel.find(".panel-collapse").collapse("show");
-            window.scrollTo(0, 0);
-        });
-    }
-
-    init();
 }
 
 export function initVisibilityCheckboxes(element: HTMLElement): void {

@@ -1,0 +1,2 @@
+class SlowRequestException < StandardError
+end

@@ -26,7 +26,7 @@ module LTI
     end
 
     def get_jwks_content(uri)
-      HTTPClient.new.get_content(uri)
+      HTTParty.get(uri , :headers => { 'Accept' => 'application/json' } ).body
     end
 
     private

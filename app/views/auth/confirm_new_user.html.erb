@@ -13,7 +13,7 @@
         <%= markdown t(".message_personal_p2") %>
       <% end %>
       <div>
-        <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-primary" %>
+        <%= link_to t(".create_new_account"), confirm_new_user_path, method: :post, class: "btn btn-filled" %>
       </div>
     </div>
     <% @users.each do |user| %>

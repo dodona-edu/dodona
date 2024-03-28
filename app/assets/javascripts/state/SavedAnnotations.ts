@@ -1,18 +1,20 @@
-import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "util.js";
+import { updateArrayURLParameter, updateURLParameter, fetch, createDelayer } from "utilities";
 import { MapWithDefault } from "map_with_default";
 import { userAnnotationState } from "state/UserAnnotations";
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
+import { i18n } from "i18n/i18n";
 
 export type SavedAnnotation = {
     annotations_count?: number;
     title: string,
     id: number,
     annotation_text: string,
-    user?: { name: string, url: string },
-    exercise?: { name: string, url: string },
-    course?: { name: string, url: string }
+    url?: string,
+    user?: { name: string, url: string, id: number },
+    exercise?: { name: string, url: string, id: number },
+    course?: { name: string, url: string, id: number }
 };
 export type Pagination = { total_pages: number, current_page: number };
 const URL = "/saved_annotations";
@@ -33,6 +35,10 @@ class SavedAnnotationState extends State {
     @stateProperty private paginationByURL = new StateMap<string, Pagination>();
     @stateProperty private byId = new StateMap<number, SavedAnnotation>();
 
+    private get url(): string {
+        return `/${i18n.locale()}${URL}`;
+    }
+
     private async fetchList(url: string): Promise<Array<SavedAnnotation>> {
         const response = await fetch(url);
         this.listByURL.set(url, await response.json());
@@ -41,14 +47,14 @@ class SavedAnnotationState extends State {
     }
 
     private async fetch(id: number): Promise<SavedAnnotation> {
-        const url = `${URL}/${id}.json`;
+        const url = `${this.url}/${id}.json`;
         const response = await fetch(url);
         this.byId.set(id, await response.json());
         return this.byId.get(id);
     }
 
     async create(data: { from: number, saved_annotation: { title: string, annotation_text: string } }): Promise<number> {
-        const url = `${URL}.json`;
+        const url = `${this.url}.json`;
         const response = await fetch(url, {
             method: "post",
             body: JSON.stringify(data),
@@ -64,41 +70,18 @@ class SavedAnnotationState extends State {
         return savedAnnotation.id;
     }
 
-    async update(id: number, data: { saved_annotation: SavedAnnotation }): Promise<void> {
-        const url = `${URL}/${id}`;
-        const response = await fetch(url, {
-            method: "put",
-            body: JSON.stringify(data),
-            headers: { "Content-type": "application/json" },
-        });
-        if (response.status === 422) {
-            const errors = await response.json();
-            throw errors;
-        }
-        const savedAnnotation: SavedAnnotation = await response.json();
-        this.invalidate(savedAnnotation.id, savedAnnotation);
-    }
-
-    async delete(id: number): Promise<void> {
-        const url = `${URL}/${id}`;
-        await fetch(url, {
-            method: "delete",
-        });
-        this.invalidate(id);
-    }
-
-    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> {
-        const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
+    getList(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Array<SavedAnnotation> | undefined {
+        const url = addParametersToUrl(`${this.url}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.listByURL.has(url)) {
                 this.fetchList(url);
             }
         }, 200);
-        return this.listByURL.get(url) || [];
+        return this.listByURL.get(url);
     }
 
     getPagination(params?: Map<string, string>, arrayParams?: Map<string, string[]>): Pagination {
-        const url = addParametersToUrl(`${URL}.json`, params, arrayParams);
+        const url = addParametersToUrl(`${this.url}.json`, params, arrayParams);
         delayerByURL.get(url)(() => {
             if (!this.paginationByURL.has(url)) {
                 this.fetchList(url);
@@ -128,6 +111,16 @@ class SavedAnnotationState extends State {
         } else {
             this.byId.delete(id);
         }
+    }
+
+    isTitleTaken(title: string, exerciseId: number, courseId: number, savedAnnotationId: number = undefined): boolean {
+        const params = new Map([
+            ["filter", title],
+            ["exercise_id", exerciseId.toString()],
+            ["course_id", courseId.toString()],
+        ]);
+        const list = this.getList(params);
+        return list?.find(annotation => annotation.title === title && annotation.id != savedAnnotationId) !== undefined;
     }
 }
 

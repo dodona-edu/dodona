@@ -48,6 +48,9 @@ nl:
       by: "door"
       submission_for: "Oplossing voor"
       output: Uitvoer
+      debug: Debuggen
+      correct_group: Correct
+      wrong_group: Fout
       correct_tests: Correcte testen
       diff:
         split: Toon uitvoer naast elkaar
@@ -72,3 +75,6 @@ nl:
       cut_off_message:
         one: De uitvoer van je programma is ingekort aangezien je veel meer uitvoer had dan het verwachte resultaat. Je genereerde %{generated} karakters terwijl er slechts één karakter verwacht werd.
         other: De uitvoer van je programma is ingekort aangezien je veel meer uitvoer had dan het verwachte resultaat. Je genereerde %{generated} karakters terwijl er slechts %{count} karakters verwacht werden.
+      tips:
+        title: Tip
+        internal_error_html: "Ervaar je een interne fout? Dit duidt meestal op een probleem met je oefening of testconfiguratie. Bekijk <a href='https://docs.dodona.be/nl/guides/exercises/' target='_blank'>onze documentatie</a> voor hulp of <a href='/nl/contact' target='_blank'>neem contact met ons op</a> voor assistentie."

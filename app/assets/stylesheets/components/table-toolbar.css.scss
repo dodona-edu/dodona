@@ -6,7 +6,7 @@
   font-size: 18px;
   min-height: 36px;
   width: 100%;
-  color: $on-surface;
+  color: var(--d-on-surface);
   margin-bottom: 6px;
 
   .btn {
@@ -34,7 +34,7 @@
 .table-toolbar .table-toolbar-tools > .mdi::before {
   margin-top: 3px;
   margin-left: 8px;
-  color: $on-surface-muted;
+  color: var(--d-on-surface-muted);
 }
 
 .table-toolbar .table-toolbar-tools .search {
@@ -45,7 +45,7 @@
     width: 100%;
     margin: 0;
     border: none;
-    color: $on-surface;
+    color: var(--d-on-surface);
     vertical-align: baseline;
   }
 
@@ -55,22 +55,22 @@
 
   /* stylelint-disable */
   input::-webkit-input-placeholder {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-weight: 300;
   }
 
   input::-moz-placeholder {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-weight: 300;
   }
 
   input:-ms-input-placeholder {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-weight: 300;
   }
 
   input::input-placeholder {
-    color: $on-surface-muted;
+    color: var(--d-on-surface-muted);
     font-weight: 300;
   }
   /* stylelint-enable */
@@ -102,13 +102,13 @@
 }
 
 .dodona-progress > .progressbar {
-  background-color: $on-secondary-container;
+  background-color: var(--d-on-secondary-container);
   z-index: 1;
   left: 0;
 }
 
 .dodona-progress > .bufferbar {
-  background-color: $secondary-container;
+  background-color: var(--d-secondary-container);
   z-index: 0;
   left: 0;
 }
@@ -119,7 +119,7 @@
 
 .dodona-progress.dodona-progress-indeterminate > .bar1,
 .dodona-progress.dodona-progress-indeterminate > .bar3 {
-  background-color: $on-secondary-container;
+  background-color: var(--d-on-secondary-container);
   animation-duration: 2s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;

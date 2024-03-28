@@ -1,27 +1,26 @@
 # Dodona
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/dodona-edu/dodona)
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dodona-edu/dodona/test.yml?branch=develop)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/dodona-edu/dodona/test.yml?branch=main)
 ![Codecov](https://img.shields.io/codecov/c/github/dodona-edu/dodona)
-[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me)
-[![General chat](https://img.shields.io/static/v1?label=general%20chat&message=on%20matrix&color=informational)](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be)
+[![Support chat](https://img.shields.io/static/v1?label=support%20chat&message=on%20slack&color=informational)](https://join.slack.com/t/dodona-edu/shared_invite/zt-24o2an3bp-fFR_TTM0fB_kmlCvkS2ckA)
 
 > Dodona is an online exercise platform for **learning to code**. It wants to teach students how to program in the most meaningful and effective way possible. Dodona acts as an **online co-teacher**, designed to give every student access to high quality education. The focus is on automatic corrections and giving **meaningful feedback** on the submitted solutions from students.
 
-This repository contains the source code of the web application. If you simply want to use Dodona, please go to [https://dodona.ugent.be](https://dodona.ugent.be).
+This repository contains the source code of the web application. If you simply want to use Dodona, please go to [https://dodona.be](https://dodona.be).
 
 The documentation for end users can be found at [https://docs.dodona.be](https://docs.dodona.be).
 
 ## Supporting Dodona
 
-Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundreds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.ugent.be/en/support-us/](https://dodona.ugent.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
+Dodona is free to use for schools and we would like to keep it that way! Keeping this platform up and running takes a lot of time, just as supporting hundreds of schools and thousands of students. If you would like to fund Dodona, you can find more information on [https://dodona.be/en/support-us/](https://dodona.be/en/support-us/) or get in touch by emailing us at dodona@ugent.be.
 
 ## Contacting us
 
 There are several ways to contact us:
 - To report a bug, please use [GitHub Issues](https://github.com/dodona-edu/dodona/issues).
 - If you have a question to which the answer might be of use to others, please use [GitHub Discussions](https://github.com/dodona-edu/dodona/discussions).
-- For more specific questions, use [our contact form](https://dodona.ugent.be/nl/contact/), send an email to [dodona@ugent.be](mailto:dodona@ugent.be) or come chat with us in our [general chat](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be) or our [support chat](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me).
+- For more specific questions, use [our contact form](https://dodona.be/nl/contact/), send an email to [dodona@ugent.be](mailto:dodona@ugent.be) or come chat with us in our [general chat](https://matrix.to/#/#dodona-general:vanpetegem.me?via=vanpetegem.me&via=matrix.org&via=beardhatcode.be) or our [support chat](https://matrix.to/#/#dodona-support:vanpetegem.me?via=vanpetegem.me).
 
 ## Local development
 

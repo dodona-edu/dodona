@@ -13,9 +13,24 @@ const config = {
     module: {
         rules: [
             {
-                test: /\.(js|jsx|ts|tsx|)$/,
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: ["babel-loader"],
+            },
+            {
+                test: function (modulePath) {
+                    return modulePath.endsWith(".ts") && !modulePath.endsWith("test.ts");
+                },
+                exclude: /node_modules/,
+                use: [
+                    "babel-loader",
+                    {
+                        loader: "ts-loader",
+                        options: {
+                            transpileOnly: true,
+                        },
+                    }
+                ],
             },
         ],
     },
@@ -31,7 +46,11 @@ const config = {
             cacheGroups: {
                 commons: {
                     name: "commons",
-                    chunks: "initial",
+                    chunks(chunk) {
+                        // the chunk should be from a main entrypoint
+                        // exclude "inputServiceWorker" from commons chunk
+                        return chunk.name !== "inputServiceWorker" && Object.keys(sourceFiles).includes(chunk.name);
+                    },
                     minChunks: 2,
                 },
             },
@@ -42,6 +61,7 @@ const config = {
         filename: "[name].js",
         sourceMapFilename: "[name].js.map",
         path: path.resolve(__dirname, "..", "..", "app/assets/builds"),
+        chunkFilename: "[name].[chunkhash].nodigest.js",
     },
     resolve: {
         modules: ["node_modules", "app/assets/javascripts"],
@@ -52,6 +72,11 @@ const config = {
 if (process.env.NODE_ENV === "development") {
     config.mode = "development";
     config.devtool = "inline-source-map";
+}
+
+// disable terser minimization when running
+if (process.env.RAILS_ENV === "test") {
+    config.optimization.minimize = false;
 }
 
 // Test, Staging and Production use default config

@@ -30,7 +30,6 @@ class RightsRequestsController < ApplicationController
 
   def approve
     @rights_request.approve
-    @requests = policy_scope(RightsRequest.all)
     respond_to do |format|
       format.html { redirect_to rights_requests_path, notice: I18n.t('rights_requests.approve.approved') }
       format.js
@@ -39,7 +38,6 @@ class RightsRequestsController < ApplicationController
 
   def reject
     @rights_request.reject
-    @requests = policy_scope(RightsRequest.all)
     respond_to do |format|
       format.html { redirect_to rights_requests_path, notice: I18n.t('rights_requests.reject.rejected') }
       format.js

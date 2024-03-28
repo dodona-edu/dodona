@@ -147,13 +147,13 @@ module OmniAuth
           el.text = 'UGent - Dodona'
           el = org.add_element 'md:OrganizationURL',
                                'xml:lang' => 'en'
-          el.text = 'https://dodona.ugent.be'
+          el.text = 'https://dodona.be'
           el = org.add_element 'md:OrganizationURL',
                                'xml:lang' => 'nl'
-          el.text = 'https://dodona.ugent.be'
+          el.text = 'https://dodona.be'
           el = org.add_element 'md:OrganizationURL',
                                'xml:lang' => 'fr'
-          el.text = 'https://dodona.ugent.be'
+          el.text = 'https://dodona.be'
 
           cp = root.add_element 'md:ContactPerson',
                                 'contactType' => 'technical'

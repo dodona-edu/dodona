@@ -11,7 +11,7 @@ class RougeTest < ActiveSupport::TestCase
     input_javascript = "```javascript\nfunction mySum(a, b, c){\n    return a + b + c;\n}\n```\n"
 
     [input_python, input_java, input_javascript].each do |input|
-      assert markdown(input).include? 'class'
+      assert_includes markdown(input), 'class'
     end
   end
 
@@ -27,7 +27,8 @@ class RougeTest < ActiveSupport::TestCase
         lexer = (Rouge::Lexer.find(input[:format].downcase) || Rouge::Lexers::PlainText).new
         builder << formatter.format(lexer.lex(input[:description]))
       end
-      assert builder.html_safe.include? 'class'
+
+      assert_includes builder.html_safe, 'class'
     end
   end
 end

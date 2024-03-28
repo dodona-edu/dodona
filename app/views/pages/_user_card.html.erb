@@ -15,6 +15,27 @@
   </div>
 </div>
 
+<% if @draft_exercises.present? %>
+  <div class="card home-summary-card user">
+    <div class="card-supporting-text recents">
+      <h5><%= t ".draft-exercises" %></h5>
+      <% @draft_exercises.first(5).each do |exercise| %>
+        <p>
+          <%= link_to activity_submissions_path(exercise), class: 'btn-icon float-end' do %>
+            <i class="mdi mdi-chevron-right"></i>
+          <% end %>
+          <span class='float-start'><%= activity_icon exercise %></span>
+          <%= link_to exercise.name, activity_path(exercise), class: "course-link #{'blur' if Current.demo_mode }", title: exercise.name %>
+          <%= link_to exercise.repository.name, repository_path(exercise.repository), class: "small text-muted course-link #{'blur' if Current.demo_mode }", title: exercise.repository.name %>
+        </p>
+      <% end %>
+      <% if @draft_exercises.count > 5 %>
+        <%= link_to t(".all-draft-exercises"), activities_path(draft: true) %>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+
 <% deadlines = @homepage_series %>
 <% if deadlines.any? %>
   <div class="card home-summary-card user">
@@ -51,12 +72,12 @@
           <% end %>
           <span class='float-start'><%= submission_status_icon(submission) %></span>
           <% if exercise.accessible?(current_user, submission.course) %>
-            <%= link_to exercise.name, activity_scoped_path(course: submission.course, activity: exercise), class: "course-link", title: exercise.name %>
+            <%= link_to exercise.name, activity_scoped_path(course: submission.course, activity: exercise), class: "course-link #{'blur' if Current.demo_mode }", title: exercise.name %>
           <% else %>
-            <span title="<%= exercise.name %>"><%= exercise.name %></span>
+            <span title="<%= exercise.name %>"  <%='class="blur"' if Current.demo_mode %>><%= exercise.name %></span>
           <% end %>
           <% unless submission.course.nil? %>
-            <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link", title: submission.course.name %>
+            <%= link_to submission.course.name, course_path(submission.course), class: "small text-muted course-link #{'blur' if Current.demo_mode }", title: submission.course.name %>
           <% end %>
         </p>
       <% end %>

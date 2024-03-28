@@ -4,7 +4,7 @@ import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { html } from "lit";
-import * as util from "util.js";
+import * as util from "utilities";
 import { searchQueryState } from "state/SearchQuery";
 
 describe("SearchActions", () => {

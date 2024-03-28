@@ -22,6 +22,7 @@
 #  description_nl_present  :boolean          default(FALSE)
 #  description_en_present  :boolean          default(FALSE)
 #  series_count            :integer          default(0), not null
+#  draft                   :boolean          default(TRUE)
 #
 
 require 'pathname'
@@ -56,6 +57,7 @@ class Activity < ApplicationRecord
   has_many :labels, through: :activity_labels
 
   validates :path, uniqueness: { scope: :repository_id, case_sensitive: false }, allow_nil: true
+  validate :require_correct_submission_before_publish, on: :update
 
   token_generator :repository_token, length: 64
   token_generator :access_token
@@ -80,6 +82,7 @@ class Activity < ApplicationRecord
   scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
   scope :by_type, ->(type) { where(type: type) }
   scope :by_judge, ->(judge) { where(judge_id: judge) }
+  scope :is_draft, ->(value = true) { where(draft: value) }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'
@@ -103,7 +106,6 @@ class Activity < ApplicationRecord
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
 
-  enum popularity: { unpopular: 0, neutral: 1, popular: 2, very_popular: 3 }, _prefix: true
   POPULARITY_THRESHOLDS = {
     unpopular: { min: 0, max: 2 },
     neutral: { min: 3, max: 10 },
@@ -321,14 +323,17 @@ class Activity < ApplicationRecord
         return false unless course.visible_activities.pluck(:id).include? id
       end
       return true if user&.zeus?
-      return false unless access_public? \
-          || repository.allowed_courses.pluck(:id).include?(course&.id)
-      return true if user&.member_of? course
+      return false unless access_public? ||
+                          repository.allowed_courses.pluck(:id).include?(course&.id)
+      return true if user&.course_admin? course
+      return false if draft?
+      return true if user&.member_of?(course)
       return false if course.moderated && access_private?
 
       course.open_for_user?(user)
     else
       return true if user&.repository_admin? repository
+      return false if draft?
 
       access_public?
     end
@@ -438,6 +443,19 @@ class Activity < ApplicationRecord
     end
   end
 
+  def correct_submission?
+    return true if content_page?
+
+    submissions.any?(&:accepted?)
+  end
+
+  def valid_config?
+    config
+    true
+  rescue ConfigParseError
+    false
+  end
+
   private
 
   def activity_status_for(user, series = nil)
@@ -446,14 +464,14 @@ class Activity < ApplicationRecord
   end
 
   def activity_status_for!(user, series = nil)
-    first_try = true
+    tries = 0
     begin
-      ActivityStatus.create_or_find_by(activity: self, series: series, user: user)
+      ActivityStatus.find_or_create_by(activity: self, series: series, user: user)
     rescue StandardError
-      # https://github.com/dodona-edu/dodona/pull/4547
-      raise unless first_try
+      # https://github.com/dodona-edu/dodona/pull/4903
+      raise unless tries < 3
 
-      first_try = false
+      tries += 1
       retry
     end
   end
@@ -465,7 +483,7 @@ class Activity < ApplicationRecord
 
   def read_config_locations(location)
     repository.read_config_file(location)
-        &.deep_transform_values! { location }
+              &.deep_transform_values! { location }
   end
 
   def config_locations
@@ -496,7 +514,7 @@ class Activity < ApplicationRecord
   def lowercase_labels(hash)
     return unless hash
 
-    hash['labels'] = hash['labels'].map(&:downcase).uniq if hash.key? 'labels'
+    hash['labels'] = hash['labels'].map(&:to_s).map(&:downcase).uniq if hash.key? 'labels'
     hash
   end
 
@@ -505,5 +523,15 @@ class Activity < ApplicationRecord
 
     hash['labels'] = hash['labels'].uniq if hash.key? 'labels'
     hash
+  end
+
+  def require_correct_submission_before_publish
+    return if draft?
+    return unless draft_was
+
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.no_correct_submission')) unless correct_submission?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.not_valid')) if not_valid?
+    errors.add(:base, I18n.t('activerecord.errors.models.activity.invalid_config')) unless valid_config?
+    self.draft = true if errors.any?
   end
 end

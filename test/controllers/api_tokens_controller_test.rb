@@ -21,6 +21,7 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
 
   test 'should get index for user' do
     get user_api_tokens_url(@instance.user), params: { format: :json }
+
     assert_response :success
   end
 
@@ -29,7 +30,7 @@ class ApiTokensControllerTest < ActionDispatch::IntegrationTest
     assert_difference('ApiToken.count', 0) do
       post user_api_tokens_url(:nl, @other_user), params: model_params(generate_attr_hash)
     end
-    assert_equal flash[:alert], I18n.t('errors.models.api_token.attributes.not_permitted')
+    assert_equal flash[:alert], I18n.t('activerecord.errors.models.api_token.not_permitted')
   end
 
   test 'should not be able to delete token from other user' do
@@ -55,14 +56,17 @@ class ApiTokensSignInTest < ActionDispatch::IntegrationTest
 
   test 'should login with token' do
     fetch_root_with_token(@token)
+
     assert_response :success
     result = response.parsed_body
+
     assert_not_nil result['user']
     assert_equal result['user']['email'], @user.email
   end
 
   test 'should not login with wrong token' do
     fetch_root_with_token('Not a correct token')
+
     assert_response :unauthorized
   end
 end

@@ -1,6 +1,6 @@
-$("#info-panel .answer").text("<%= l @evaluation.deadline, format: :long %>");
-$("#users-step-wrapper").html("<%= raw escape_javascript(render partial: 'add_users') %>");
+document.querySelector("#info-panel .answer").innerText = "<%= l @evaluation.deadline, format: :long %>";
+dodona.setHTMLExecuteScripts(document.querySelector("#users-step-wrapper"), "<%= raw escape_javascript(render partial: 'add_users') %>");
 window.dodona.initTooltips();
 window.dodona.toUsersStep();
 window.dodona.setEvaluationUrl("<%= evaluation_url(@evaluation) %>");
-$("#items-step").html("<%= raw escape_javascript(render partial: 'score_items') %>");
+dodona.setHTMLExecuteScripts(document.querySelector("#items-step"), "<%= raw escape_javascript(render partial: 'score_items') %>");

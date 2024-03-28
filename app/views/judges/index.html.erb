@@ -37,7 +37,7 @@
                     <% end %>
                   <% end %>
                   <% if policy(judge).destroy? %>
-                    <%= link_to judge, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled bg-danger" do %>
+                    <%= link_to judge, method: :delete, data: {confirm: t("general.are_you_sure")}, class: "btn btn-icon btn-icon-filled d-btn-danger" do %>
                       <i class="mdi mdi-delete"></i>
                     <% end %>
                   <% end %>

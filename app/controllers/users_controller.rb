@@ -122,6 +122,6 @@ class UsersController < ApplicationController
 
   def set_users
     authorize User
-    @users = apply_scopes(User).all.order(permission: :desc, last_name: :asc, first_name: :asc).paginate(page: parse_pagination_param(params[:page]))
+    @users = apply_scopes(User).order(permission: :desc, last_name: :asc, first_name: :asc).paginate(page: parse_pagination_param(params[:page]))
   end
 end

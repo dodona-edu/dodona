@@ -14,6 +14,16 @@ class EvaluationUser < ApplicationRecord
   has_many :feedbacks, dependent: :destroy
   validates :user_id, uniqueness: { scope: :evaluation_id }
 
+  def score
+    mapped = feedbacks.map(&:score).filter(&:present?)
+    mapped.sum if mapped.any?
+  end
+
+  def graded?
+    mapped = feedbacks.map(&:score).filter(&:present?)
+    mapped.count > 0
+  end
+
   def metadata
     {
       done: feedbacks.complete.count,

@@ -1,12 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import "components/datalist_input";
 import { SavedAnnotation, savedAnnotationState } from "state/SavedAnnotations";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { userState } from "state/Users";
 import { courseState } from "state/Courses";
 import { exerciseState } from "state/Exercises";
+import { DodonaElement } from "components/meta/dodona_element";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component represents an input for a saved annotation id.
@@ -17,44 +17,41 @@ import { exerciseState } from "state/Exercises";
  * @prop {String} name - name of the input field (used in form submit)
  * @prop {String} value - the initial saved annotation id
  * @prop {String} annotationText - the current text of the real annotation, used to detect if there are manual changes from the selected saved annotation
+ * @prop {Boolean} disabled - whether the input is disabled
  *
  * @fires input - on value change, event details contain {title: string, id: string, annotation_text: string}
  */
 @customElement("d-saved-annotation-input")
-export class SavedAnnotationInput extends ShadowlessLitElement {
+export class SavedAnnotationInput extends DodonaElement {
     @property({ type: String })
     name = "";
     @property({ type: String })
     value: string;
     @property( { type: String, attribute: "annotation-text" })
     annotationText: string;
+    @property({ type: Boolean })
+    disabled = false;
 
     @property({ state: true })
     __label: string;
-
-    get userId(): number {
-        return userState.id;
-    }
 
     get label(): string {
         return this.value ? savedAnnotationState.get(parseInt(this.value))?.title : this.__label;
     }
 
+    lastSavedAnnotations: SavedAnnotation[] = [];
     get savedAnnotations(): SavedAnnotation[] {
-        return savedAnnotationState.getList(new Map([
+        const savedAnnotations = savedAnnotationState.getList(new Map([
             ["course_id", courseState.id.toString()],
             ["exercise_id", exerciseState.id.toString()],
-            ["user_id", this.userId.toString()],
             ["filter", this.__label]
         ]));
-    }
-
-    get potentialSavedAnnotationsExist(): boolean {
-        return savedAnnotationState.getList(new Map([
-            ["course_id", courseState.id.toString()],
-            ["exercise_id", exerciseState.id.toString()],
-            ["user_id", this.userId.toString()]
-        ])).length > 0;
+        if (savedAnnotations === undefined) {
+            // return last saved annotations if the updated list is not yet available
+            return this.lastSavedAnnotations;
+        }
+        this.lastSavedAnnotations = savedAnnotations;
+        return savedAnnotations;
     }
 
     get selectedAnnotation(): SavedAnnotation {
@@ -63,6 +60,10 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
 
     get options(): {label: string, value: string}[] {
         return this.savedAnnotations.map(sa => ({ label: sa.title, value: sa.id.toString(), extra: sa.annotation_text }));
+    }
+
+    get savedAnnotationsPath(): string {
+        return `/saved_annotations?course_id=${courseState.id}&exercise_id=${exerciseState.id}`;
     }
 
     get icon(): string {
@@ -87,31 +88,29 @@ export class SavedAnnotationInput extends ShadowlessLitElement {
     }
 
     render(): TemplateResult {
-        return this.potentialSavedAnnotationsExist ? html`
+        return html`
             <div class="field form-group">
-                <label class="form-label">
-                    ${I18n.t("js.saved_annotation.input.title")}
-                </label>
                 <div class="position-relative">
                     <d-datalist-input
                         name="${this.name}"
                         .options=${this.options}
                         .value=${this.value}
+                        .disabled=${this.disabled}
                         @input="${e => this.processInput(e)}"
-                        placeholder="${I18n.t("js.saved_annotation.input.placeholder")}"
+                        placeholder="${i18n.t("js.saved_annotation.input.placeholder")}"
                     ></d-datalist-input>
                     ${ this.selectedAnnotation && this.selectedAnnotation.annotation_text !== this.annotationText ? html`
                         <i
                             class="mdi mdi-not-equal-variant colored-info position-absolute"
-                            style="left: 165px; top: 3px;"
-                            title="${I18n.t("js.saved_annotation.input.edited")}"
+                            style="right: 5px; top: 3px;"
+                            title="${i18n.t("js.saved_annotation.input.edited")}"
                         ></i>
                     ` : ""}
                 </div>
                 <div class="help-block">
-                    ${unsafeHTML(I18n.t("js.saved_annotation.input.help_html"))}
+                    ${unsafeHTML(i18n.t("js.saved_annotation.input.help_html", { path: this.savedAnnotationsPath }))}
                 </div>
             </div>
-        ` : html``;
+        `;
     }
 }

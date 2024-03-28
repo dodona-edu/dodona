@@ -1,6 +1,6 @@
 import { State } from "state/state_system/State";
 import { StateMap } from "state/state_system/StateMap";
-import { updateArrayURLParameter, updateURLParameter } from "util.js";
+import { updateArrayURLParameter, updateURLParameter } from "utilities";
 
 class SearchQueryState extends State {
     readonly arrayQueryParams: StateMap<string, string[]> = new StateMap();

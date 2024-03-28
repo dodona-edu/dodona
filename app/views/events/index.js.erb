@@ -1,1 +1,1 @@
-$("#events-table-wrapper").html("<%= escape_javascript(render partial: 'events/events_table', locals: {events: @events}) %>")
+dodona.setHTMLExecuteScripts(document.querySelector("#events-table-wrapper"), "<%= escape_javascript(render partial: 'events/events_table', locals: {events: @events}) %>")

@@ -53,6 +53,26 @@
               </div>
             </div>
             <p class="h3-info-text"><%= t ".manage_activities_info" %></p>
+            <div class="callout callout-info <%= @series.activities.count < 3 ? "" : "d-none" %>" id="to-few-activities-info">
+              <h4>
+                <i class="mdi mdi-lightbulb-outline"></i>
+                <%= t '.tips.title' %>
+              </h4>
+              <p>
+                <%= t '.tips.ideal_activity_count' %>
+                <%= t('.tips.increase_activities')%>
+              </p>
+            </div>
+            <div class="callout callout-info <%= @series.activities.count > 10 ? "" : "d-none" %>" id="to-many-activities-info">
+              <h4>
+                <i class="mdi mdi-lightbulb-outline"></i>
+                <%= t '.tips.title' %>
+              </h4>
+              <p>
+                <%= t '.tips.ideal_activity_count' %>
+                <%= t('.tips.decrease_activities')%>
+              </p>
+            </div>
             <h4><%= t ".activities_in_series" %></h4>
             <p class="h4-info-text"><%= t ".activities_in_series_info" %></p>
             <div class="series-activity-list">
@@ -67,7 +87,7 @@
           <div class="col-12">
             <h4 id="add-activities"><%= t ".add_activities" %></h4>
             <d-filter-tabs labels="<%= @tabs.to_json %>"></d-filter-tabs>
-            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], popularity: Activity.popularities.keys, local_storage_key: 'seriesActivitySearch'} %>
+            <%= render partial: 'layouts/searchbar', locals: {baseUrl: available_activities_series_path(@series), eager: true, labels: @labels, programming_languages: @programming_languages, repositories: @repositories, activity_types: [ContentPage, Exercise], description_languages: ["en", "nl"], popularity: Activity::POPULARITY_THRESHOLDS.keys, local_storage_key: 'seriesActivitySearch', draft: current_user&.draft_exercises&.any?} %>
             <div id="activities-table-wrapper">
             </div>
           </div>

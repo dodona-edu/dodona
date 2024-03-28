@@ -18,6 +18,7 @@
 #  seen_at              :datetime
 #  sign_in_at           :datetime
 #  open_questions_count :integer          default(0), not null
+#  theme                :integer          default("system"), not null
 #
 
 require 'securerandom'
@@ -33,6 +34,7 @@ class User < ApplicationRecord
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
   enum permission: { student: 0, staff: 1, zeus: 2 }
+  enum theme: { system: 0, light: 1, dark: 2 }
 
   belongs_to :institution, optional: true
 
@@ -105,6 +107,13 @@ class User < ApplicationRecord
   has_many :repositories,
            through: :repository_admins,
            source: :repository
+  has_many :draft_exercises,
+           lambda {
+             where activities:
+                        { draft: true }
+           },
+           through: :repositories,
+           source: :exercises
 
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
@@ -248,7 +257,7 @@ class User < ApplicationRecord
   def email
     return self[:email] unless Current.demo_mode && Current.user != self
 
-    "#{first_name}.#{last_name}@dodona.ugent.be"
+    "#{first_name}.#{last_name}@dodona.be"
   end
 
   def short_name
@@ -386,8 +395,8 @@ class User < ApplicationRecord
     return false if errors.any?
 
     transaction do
-      other.permission = permission if (permission == 'staff' && other.permission == 'student') \
-                                    || (permission == 'zeus' && other.permission != 'zeus')
+      other.permission = permission if (permission == 'staff' && other.permission == 'student') ||
+                                       (permission == 'zeus' && other.permission != 'zeus')
 
       other.institution_id = institution_id if other.institution_id.nil?
 
@@ -471,6 +480,9 @@ class User < ApplicationRecord
     # Don't give information about the exercise if the submission was within a course, but not within a visible series
     # This is to prevent students from seeing exercises that are not made public explicitly
     if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
+      # Don't show complete courses
+      return [] if latest_submission.course.incomplete_series(self).blank?
+
       return [{
         submission: nil,
         activity: nil,
@@ -495,17 +507,19 @@ class User < ApplicationRecord
     if latest_submission.series.present? && (latest_submission.series.open? || course_admin?(latest_submission.course))
       next_activity = latest_submission.series.next_activity(latest_submission.exercise)
       if next_activity.present?
-        # start working on the next exercise
-        result << {
-          submission: nil,
-          activity: next_activity,
-          series: latest_submission.series,
-          course: latest_submission.course,
-          text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_exercise_success') : I18n.t('pages.clickable_homepage_cards.next_exercise')
-        }
+        # start working on the next exercise, if that one was not accepted
+        unless next_activity.accepted_for?(self, latest_submission.series)
+          result << {
+            submission: nil,
+            activity: next_activity,
+            series: latest_submission.series,
+            course: latest_submission.course,
+            text: result.empty? ? I18n.t('pages.clickable_homepage_cards.next_exercise_success') : I18n.t('pages.clickable_homepage_cards.next_exercise')
+          }
+        end
 
-        if latest_submission.series.next_activity(next_activity).present?
-          # there is another exercise after the next one, so show the series
+        if latest_submission.series.next_activity(next_activity).present? && !latest_submission.series.completed?(user: self)
+          # there is another exercise after the next one and the series is not yet completed, so show the series
           result << {
             submission: nil,
             activity: nil,
@@ -529,7 +543,7 @@ class User < ApplicationRecord
       end
     end
 
-    if latest_submission.course.present?
+    if latest_submission.course.present? && latest_submission.course.incomplete_series(self).present?
       # continue working on this course
       result << {
         submission: nil,

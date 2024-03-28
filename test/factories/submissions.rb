@@ -28,11 +28,11 @@ FactoryBot.define do
     initialize_with { new(attributes) }
 
     trait :generated_user do
-      association :user
+      user
     end
 
     trait :generated_exercise do
-      association :exercise
+      exercise
     end
 
     trait :correct do

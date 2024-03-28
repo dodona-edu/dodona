@@ -9,18 +9,26 @@ import "components/annotations/annotation_options";
 import "components/annotations/annotations_count_badge";
 import { annotationState } from "state/Annotations";
 import { exerciseState } from "state/Exercises";
-import { triggerSelectionEnd } from "components/annotations/select";
+import {
+    anyRangeInAnnotation,
+    selectedRangeFromSelection,
+    triggerSelectionEnd
+} from "components/annotations/selectionHelpers";
 
 const MARKING_CLASS = "marked";
 
-function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, codeLines: number, questionMode = false): void {
+function initAnnotations(submissionId: number, courseId: number, exerciseId: number, userId: number, code: string, userIsStudent: boolean, canSubmitAsOwn: boolean): void {
     userAnnotationState.reset();
     submissionState.code = code;
     courseState.id = courseId;
     exerciseState.id = exerciseId;
     userState.id = userId;
     submissionState.id = submissionId;
-    annotationState.isQuestionMode = questionMode;
+    annotationState.isQuestionMode = userIsStudent;
+
+    if (canSubmitAsOwn) {
+        userState.addPermission("submission.submit_as_own");
+    }
 
     const table = document.querySelector<HTMLTableElement>("table.code-listing");
     const rows = table.querySelectorAll("tr");
@@ -43,6 +51,31 @@ function initAnnotateButtons(): void {
     userState.addPermission("annotation.create");
 
     document.addEventListener("pointerup", () => triggerSelectionEnd());
+
+    // make the whole document a valid target for dropping the create annotation button
+    document.addEventListener("dragover", e => e.preventDefault());
+    document.addEventListener("drop", e => e.preventDefault());
+
+    // copy only the selected code, this avoids copying the line numbers or extra whitespace from the complex html
+    document.addEventListener("copy", event => {
+        const browserSelection = window.getSelection();
+        if (browserSelection.isCollapsed || anyRangeInAnnotation(browserSelection)) {
+            return; // selection is collapsed or contains an annotation, let the browser handle the copy event
+        }
+
+        const selection = selectedRangeFromSelection(browserSelection, true);
+        if (!selection) {
+            return; // if there is no code selection, let the browser handle the copy event
+        }
+
+        const selectedCode = submissionState.code.split("\n").slice(selection.row - 1, selection.row + selection.rows - 1);
+        // on the first and last line, selection might only cover part of the line
+        // only copy the selected columns/characters
+        selectedCode[0] = selectedCode[0].slice(selection.column);
+        selectedCode[selectedCode.length - 1] = selectedCode[selectedCode.length - 1].slice(0, selection.columns);
+        event.clipboardData.setData("text/plain", selectedCode.join("\n"));
+        event.preventDefault();
+    });
 }
 
 function loadUserAnnotations(): void {

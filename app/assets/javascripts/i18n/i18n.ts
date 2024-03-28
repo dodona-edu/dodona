@@ -2,6 +2,7 @@ import Polyglot from "node-polyglot";
 import translations from "./translations.json";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/nl.js";
+import warning from "warning";
 
 export class I18n extends Polyglot {
     /**
@@ -23,7 +24,7 @@ export class I18n extends Polyglot {
         if (Array.isArray(this.array_phrases[key])) {
             return this.array_phrases[key];
         } else {
-            super.warn("Missing array translation for key: '" + key + "'");
+            warning(false, "Missing array translation for key: '" + key + "'");
             return [];
         }
     }
@@ -31,33 +32,31 @@ export class I18n extends Polyglot {
     constructor() {
         super();
         // set default locale, avoids a lot of errors when the locale is not yet set
-        this.locale = "en";
-    }
-
-    get locale(): string {
-        return super.locale();
+        this.locale("en");
     }
 
     /**
      * When locale changes we need to switch the list of phrases used by polyglot
      */
-    set locale(locale: string) {
+    locale(locale?: string): string {
         if (locale == "en" || locale == "nl") {
             super.replace(translations[locale]);
         }
-        super.locale(locale);
+        return super.locale(locale);
     }
 
     /**
      * Polyglot does not do custom number formatting, thus we use the javascript api
      */
     formatNumber(number: number, options?: Record<string, unknown>): string {
-        return new Intl.NumberFormat(this.locale, options).format(number);
+        return new Intl.NumberFormat(this.locale(), options).format(number);
     }
 
     formatDate(date: string | number | Date | Dayjs, format: string): string {
         const d = dayjs(date);
         const f = super.t(format);
-        return d.locale(this.locale).format(f);
+        return d.locale(this.locale()).format(f);
     }
 }
+
+export const i18n = new I18n();

@@ -1,20 +1,20 @@
 name: Lint
 
 on:
+  workflow_call:
   push:
     branches:
-      - master
-      - develop
+      - main
     tags:
       - '*'
   pull_request:
 
 jobs:
   ruby:
-    name: Ruby
+    name: Lint Ruby
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use ruby from .ruby-version
       uses: ruby/setup-ruby@v1
       with:
@@ -26,12 +26,12 @@ jobs:
         bundle exec rubocop -c  .rubocop.yml
 
   javascript:
-    name: JavaScript
+    name: Lint JavaScript
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set up Node
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: 16.x
         cache: yarn
@@ -46,12 +46,12 @@ jobs:
         yarn typeCheck
 
   css:
-    name: CSS
+    name: Lint CSS
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up Node
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16.x
           cache: yarn

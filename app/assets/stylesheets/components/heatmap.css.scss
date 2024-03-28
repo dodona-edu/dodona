@@ -8,11 +8,11 @@
 
     .day-cell {
       &.empty {
-        fill: $off-surface;
+        fill: var(--d-off-surface);
       }
 
       &:hover {
-        stroke: $primary;
+        stroke: var(--d-primary);
         stroke-width: 2;
       }
     }
@@ -23,7 +23,7 @@
   position: absolute;
   background: black;
   border: 0;
-  border-radius: $border-radius-base;
+  border-radius: var(--d-border-radius-base);
   color: white;
   padding: 5px;
   pointer-events: none;

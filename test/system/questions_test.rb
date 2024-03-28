@@ -27,7 +27,7 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask question for each line of the available lines of code' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     within '.code-listing' do
       (1..@code_lines.length).each do |index|
@@ -36,12 +36,13 @@ class QuestionsTest < ApplicationSystemTestCase
         line_element.hover
 
         within line_element do
-          button = find('button.annotation-button')
+          button = find('.annotation-button a')
           button.click
+
           assert_css 'form.annotation-submission'
           # cancel form to limit page space taken
           within 'form.annotation-submission' do
-            click_button 'Cancel'
+            click_on 'Cancel'
           end
         end
       end
@@ -50,22 +51,23 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'Can ask global question about code' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     within '.code-table' do
-      click_button 'Ask a question about your code'
+      click_on 'Ask a question about your code'
+
       assert_css 'form.annotation-submission'
     end
   end
 
   test 'Can submit a question' do
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     question = Faker::Lorem.question
 
     within '.code-table' do
-      click_button 'Ask a question about your code'
+      click_on 'Ask a question about your code'
 
       form = find('form.annotation-submission')
 
@@ -74,7 +76,7 @@ class QuestionsTest < ApplicationSystemTestCase
         text_area.fill_in with: question
       end
 
-      click_button 'Ask question'
+      click_on 'Ask question'
 
       assert_text question
       # Also acts as sleep until full ajax call is completed
@@ -82,38 +84,43 @@ class QuestionsTest < ApplicationSystemTestCase
 
     assert_equal 1, Question.count, 'Too little or too many questions were created'
     q = Question.first
+
     assert_equal q.question_text, question, 'Something went wrong in saving the question'
-    assert q.unanswered?, 'Should be an unanswered question'
+    assert_predicate q, :unanswered?, 'Should be an unanswered question'
   end
 
   test 'student can mark a question as resolved' do
     q = create :question, submission: @submission, user: @student
+
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
-    assert q.unanswered?, 'Question should start as unanswered'
+    assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
       resolve_button = find('.btn', text: 'Mark as answered')
       resolve_button.click
+
       assert_no_css '.mdi-comment-question-outline'
     end
 
     assert_equal 1, Question.count, 'There should still only be one question'
     q = Question.first
+
     assert_not q.unanswered?, 'Question should have moved onto answered status'
-    assert q.answered?, 'Question should have moved onto answered status'
+    assert_predicate q, :answered?, 'Question should have moved onto answered status'
   end
 
   test 'Responding to a question should mark the question as answered' do
     q = create :question, submission: @submission, user: @student
+
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
-    assert q.unanswered?, 'Question should start as unanswered'
+    assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
@@ -126,25 +133,27 @@ class QuestionsTest < ApplicationSystemTestCase
       answer_field = find('textarea')
       answer_field.fill_in with: answer
 
-      click_button 'Reply'
+      click_on 'Reply'
 
       assert_selector '.annotation', count: 2
     end
 
     assert_equal 2, Question.count, 'There should be two questions now'
     assert_not q.reload.unanswered?, 'Question should have moved onto answered status'
-    assert q.reload.answered?, 'Question should have moved onto answered status'
+    assert_predicate q.reload, :answered?, 'Question should have moved onto answered status'
   end
 
   test 'An unanswered question should contain an icon to visualize its status' do
     q = create :question, submission: @submission, user: @student
+
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
-    assert q.unanswered?, 'Question should start as unanswered'
+    assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
+
     within thread do
       assert_selector '.mdi-comment-question-outline'
     end
@@ -152,41 +161,46 @@ class QuestionsTest < ApplicationSystemTestCase
 
   test 'The status icon should change to in progress when someone clicks reply' do
     q = create :question, submission: @submission, user: @student
+
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
-    assert q.unanswered?, 'Question should start as unanswered'
+    assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
       assert_selector '.mdi-comment-question-outline'
       fake_answer_input = find('input')
       fake_answer_input.click
+
       assert_selector '.mdi-comment-processing-outline'
-      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
+      assert_predicate q.reload, :in_progress?, 'Question should have moved onto in progress status'
     end
   end
 
   test 'The question becomes unanswered again when a teacher cancels the reply' do
     q = create :question, submission: @submission, user: @student
+
     assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
-    assert q.unanswered?, 'Question should start as unanswered'
+    assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
     visit(submission_path(id: @submission.id))
-    click_link 'Code'
+    click_on 'Code'
 
     thread = find('d-thread')
     within thread do
       assert_selector '.mdi-comment-question-outline'
       fake_answer_input = find('input')
       fake_answer_input.click
-      assert_selector '.mdi-comment-processing-outline'
-      assert q.reload.in_progress?, 'Question should have moved onto in progress status'
 
-      click_button 'Cancel'
+      assert_selector '.mdi-comment-processing-outline'
+      assert_predicate q.reload, :in_progress?, 'Question should have moved onto in progress status'
+
+      click_on 'Cancel'
+
       assert_selector '.mdi-comment-question-outline'
-      assert q.reload.unanswered?, 'Question should have moved onto unanswered status'
+      assert_predicate q.reload, :unanswered?, 'Question should have moved onto unanswered status'
     end
   end
 end

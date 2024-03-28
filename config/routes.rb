@@ -33,12 +33,12 @@ Rails.application.routes.draw do
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
     get '/profile' => 'pages#profile', as: 'profile'
+    get '/publications' => 'pages#publications'
     get '/support-us' => 'pages#support'
 
     get '/contact' => 'pages#contact'
     post '/contact' => 'pages#create_contact', as: 'create_contact'
     post '/toggle_demo_mode' => 'pages#toggle_demo_mode'
-    post '/toggle_dark_mode' => 'pages#toggle_dark_mode'
 
     get '/status' => redirect("https://p.datadoghq.com/sb/sil3oh7xurb0ujwu-3dfa8d0b077b83f3afbee49f0641abfd"), :as => :status
 
@@ -79,7 +79,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exports, except: %i[show edit update new destroy create] do
+    resources :exports, except: %i[edit update new destroy create] do
       get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'
       post 'users/:id', on: :collection, to: 'exports#create_user_export'
       get 'courses/:id', on: :collection, to: 'exports#new_course_export', as: 'courses'
@@ -90,14 +90,10 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-          get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-        end
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
-      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-      end
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
       resources :activity_read_states, only: [:index]
@@ -126,7 +122,6 @@ Rails.application.routes.draw do
 
     resources :activities, only: %i[index show edit update], concerns: %i[readable mediable submitable infoable] do
       member do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'activities#description', as: 'description'
@@ -175,7 +170,7 @@ Rails.application.routes.draw do
 
     resources :annotations, only: %i[index show create update destroy]
 
-    resources :saved_annotations, only: %i[index show create update destroy]
+    resources :saved_annotations, only: %i[index show create update destroy edit new]
 
     get 'questions', to: 'annotations#question_index'
 
@@ -270,6 +265,8 @@ Rails.application.routes.draw do
       get 'timeseries', to: 'statistics#timeseries'
       get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
+
+    get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

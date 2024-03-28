@@ -22,7 +22,7 @@ class Judge < ApplicationRecord
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
   validates :image, presence: true
-  validates :remote, presence: true, uniqueness: { case_sensitive: false }, format: { without: /\Ahttp/ }
+  validates :remote, presence: true, format: { without: /\Ahttp/ }
 
   validate :renderer_is_renderer
   validate :repo_is_accessible, on: :create

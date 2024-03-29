@@ -6,6 +6,7 @@ import codeListing from "code_listing";
 import { annotationState } from "state/Annotations";
 import { initTutor } from "tutor";
 import { initFileViewers } from "file_viewer";
+import { initFeedbackMetaData } from "evaluation";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
 window.dodona.codeListing = codeListing;
@@ -18,6 +19,7 @@ window.dodona.setAnnotationVisibility = visibility => annotationState.visibility
 window.dodona.showLastTab = showLastTab;
 window.dodona.initTutor = initTutor;
 window.dodona.initFileViewers = initFileViewers;
+window.dodona.initFeedbackMetaData = initFeedbackMetaData;
 
 // will automatically bind to window.iFrameResize()
 require("iframe-resizer"); // eslint-disable-line no-undef

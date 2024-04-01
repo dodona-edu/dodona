@@ -183,7 +183,7 @@ group :development do
   gem 'rubocop-rails', '~> 2.24.1'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.9.0'
+  gem 'letter_opener', '~> 1.10.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

@@ -4603,10 +4603,10 @@ get-value@^2.0.3, get-value@^2.0.6:
   resolved "https://registry.yarnpkg.com/get-value/-/get-value-2.0.6.tgz#dc15ca1c672387ca76bd37ac0a395ba2042a2c28"
   integrity sha512-Ln0UQDlxH1BapMu3GPtf7CuYNwRZf2gwCuPqbyG6pB8WfmFpzqcy4xtAaAMUhnNqjMKTiCPZG2oMT3YSx8U2NA==
 
-glightbox@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/glightbox/-/glightbox-3.2.0.tgz#d460e6ffc70ba2dcc2842e0b31d51a2e03266ba2"
-  integrity sha512-iit1xYixqL4YVL+I2YJLfMeyJwvLi6FE6kY3qNKeZHEJgRIz80QU8Rm7YCyw1wOTgXvmNDnXGVhHOHRCwnDltQ==
+glightbox@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/glightbox/-/glightbox-3.3.0.tgz#5f16b2a16fbbf690475738b1327a04d8ff6c3e77"
+  integrity sha512-SJukatHBZZ/POMOpLUQ6/dhXf/wJTDx1wZ/FwApjseXw2WrRj3Ze9DzNCFYzca0oU7RjXQhi9o02aIZ9SuCz1A==
 
 glob-parent@^5.1.2, glob-parent@~5.1.2:
   version "5.1.2"

@@ -42,6 +42,10 @@
               <%= custom_icon("stacked-line-chart", class: "mdi svg-icon-btn") %>
             </button>
           </div>
+        <% elsif series.evaluation.present? && policy(series.evaluation).overview? %>
+          <%= link_to overview_evaluation_path(series.evaluation), class: "btn with-icon btn-outline" do %>
+            <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
+          <% end %>
         <% end %>
         <div class="dropdown">
           <a class="btn btn-icon dropdown-toggle series-dropdown hidden-print" data-bs-toggle="dropdown">
@@ -198,7 +202,7 @@
       </div>
     </div>
   </div>
-  <% if policy(series).scoresheet? || policy(series).create_evaluation? || (series.evaluation.present? && policy(series.evaluation).overview?) %>
+  <% if current_user&.course_admin?(series.course) %>
     <div class="card-actions card-border">
       <div class="float-end">
         <% if policy(series).scoresheet? %>
@@ -215,11 +219,6 @@
             <%= link_to new_evaluation_path(series_id: series.id), class: "btn with-icon btn-text" do %>
               <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
             <% end %>
-          <% end %>
-        <% end %>
-        <% if series.evaluation.present? && policy(series.evaluation).overview? %>
-          <%= link_to overview_evaluation_path(series.evaluation), class: "btn with-icon btn-text" do %>
-            <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
           <% end %>
         <% end %>
       </div>

@@ -117,24 +117,3 @@ export function initEvaluationStepper(): void {
 
     init();
 }
-
-/**
- * This function inits an observer that updates the max height of the feedback metadata
- * based on the visible height of the footer
- * This way the top of the metadata will be aligned with the top of the page
- * Even when the footer is visible
- */
-export function initFeedbackMetaData(): void {
-    const metaData = document.querySelector(".feedback-metadata");
-    const footer = document.querySelector(".footer");
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            const footerHeight = entry.intersectionRect.height;
-            metaData.setAttribute("style", `max-height: calc(100vh - (var(--d-navbar-height) + 20px + ${footerHeight}px));`);
-        });
-    }, {
-        threshold: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
-    });
-    observer.observe(footer);
-}

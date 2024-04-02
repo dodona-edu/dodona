@@ -306,6 +306,12 @@ a.card-title-link:hover {
   top: var(--d-navbar-height);
   z-index: 4;
   background-color: var(--d-surface);
+  overflow-x: scroll;
+  flex-wrap: nowrap;
+
+  li {
+    min-width: fit-content;
+  }
 }
 
 .card-nav .card-title .btn-icon:hover {

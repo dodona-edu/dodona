@@ -13,7 +13,7 @@
       <d-search-options options='<%= raw (local_assigns.fetch :options, false).to_json %>'></d-search-options>
     <% end %>
   </div>
-  <div class="d-flex">
+  <div class="d-flex align-items-center">
     <d-dropdown-filters class="dropdown-filters"></d-dropdown-filters>
     <% if local_assigns[:actions]&.any? %>
       <div class="flex-spacer"></div>

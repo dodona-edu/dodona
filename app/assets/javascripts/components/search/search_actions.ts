@@ -70,7 +70,7 @@ export class SearchActions extends DodonaElement {
 
     render(): TemplateResult[] {
         return this.filteredActions.map(action => html`
-            <a class="btn btn-outline with-icon m-2 me-0"
+            <a class="btn btn-outline with-icon ml-2"
                href='${action.url ? action.url : "#"}'
                @click=${() => this.performAction(action)}
             >

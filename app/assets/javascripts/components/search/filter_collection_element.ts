@@ -7,7 +7,7 @@ export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" |
 export type FilterCollection = {
     data: Label[],
     multi: boolean,
-    color: AccentColor,
+    color?: AccentColor,
     param: string
 };
 
@@ -16,18 +16,27 @@ export type FilterCollection = {
  * The class manages selection and deselection of filter labels
  * It interacts with the searchQuery using the listener paradigm to keep the selected filters up to date
  *
- * @prop {string} param - the searchQuery param to be used for this filter
- * @prop {boolean} multi - whether one or more labels can be selected at the same time
- * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
- * @prop {[Label]} labels - all labels that could potentially be selected
+ * @prop {FilterCollection} filterCollection - the filter collection to be displayed
  */
 export class FilterCollectionElement extends DodonaElement {
-    @property()
-    param: string;
-    @property({ type: Boolean })
-    multi: boolean;
-    @property({ type: Array })
-    labels: Array<Label> = [];
+    @property({ type: Object, attribute: "filter-collection" })
+    filterCollection: FilterCollection;
+
+    get param(): string {
+        return this.filterCollection.param;
+    }
+
+    get multi(): boolean {
+        return this.filterCollection.multi;
+    }
+
+    get labels(): Label[] {
+        return this.filterCollection.data;
+    }
+
+    get color(): AccentColor | undefined {
+        return this.filterCollection.color;
+    }
 
     update(changedProperties: Map<string, unknown>): void {
         if ((changedProperties.has("param") || changedProperties.has("multi")) &&

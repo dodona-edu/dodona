@@ -2,7 +2,6 @@ import { customElement, property } from "lit/decorators.js";
 import { DodonaElement } from "components/meta/dodona_element";
 import { searchQueryState } from "state/SearchQuery";
 import { html, TemplateResult } from "lit";
-import { i18n } from "i18n/i18n";
 
 export type Option = {param: string, label: string};
 

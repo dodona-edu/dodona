@@ -15,11 +15,16 @@ import { DodonaElement } from "components/meta/dodona_element";
  *
  * @element d-dropdown-filter
  *
+ * @prop {AccentColor} color - the color associated with the filter
  * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
- * @prop {FilterCollection} filterCollection - the filter collection for which the dropdown should be displayed
+ * @prop {string} param - the searchQuery param to be used for this filter
+ * @prop {boolean} multi - whether one or more labels can be selected at the same time
+ * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-dropdown-filter")
 export class DropdownFilter extends FilterCollectionElement {
+    @property({ type: String })
+    color: AccentColor;
     @property()
     type: string;
 
@@ -89,7 +94,10 @@ export class DropdownFilters extends DodonaElement {
         return html`
             ${this.filterCollections.map(([type, c]) => html`
                 <d-dropdown-filter
-                    .filterCollection=${c}
+                    .labels=${c.data}
+                    .color=${c.color}
+                    .param=${c.param}
+                    .multi=${c.multi}
                     .type=${type}
                 >
                 </d-dropdown-filter>

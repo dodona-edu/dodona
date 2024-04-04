@@ -15,12 +15,10 @@ import { watchMixin } from "components/meta/watch_mixin";
  */
 @customElement("d-standalone-dropdown-filter")
 export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement) {
+    @property()
+    multi = false;
     @property({ type: String })
     default;
-
-    get multi(): boolean {
-        return false;
-    }
 
     watch = {
         default: () => {

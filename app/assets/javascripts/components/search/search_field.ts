@@ -17,7 +17,10 @@ import { i18n } from "i18n/i18n";
  * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
  * @prop {string} filter - The string for which typeahead suggestions should be provided
  * @prop {number} index - bookkeeping param to remember the order across multiple elements
- * @prop { FilterCollection } filterCollection - the filter collection for which the dropdown should be displayed
+ * @prop {string} param - the searchQuery param to be used for this filter
+ * @prop {boolean} multi - whether one or more labels can be selected at the same time
+ * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
+ * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-search-field-suggestion")
 export class SearchFieldSuggestion extends FilterCollectionElement {
@@ -165,9 +168,11 @@ export class SearchField extends DodonaElement {
             <ul class="dropdown-menu ${this.filter && this.hasSuggestions ? "show-search-dropdown" : ""}">
                 ${Object.entries(this.filterCollections).map(([type, c], i) => html`
                     <d-search-field-suggestion
+                        .labels=${c.data}
                         .type=${type}
                         .filter=${this.filter}
-                        .filterCollection=${c}
+                        .param=${c.param}
+                        .multi=${c.multi}
                         .index=${i}
                         ${ref(this.suggestionFieldChanged)}
                     >

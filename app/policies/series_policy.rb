@@ -22,10 +22,7 @@ class SeriesPolicy < ApplicationPolicy
     return true if course_admin?
     return false if record.closed?
     return false if record.hidden? && user.nil?
-    return false if record.timed? && (
-      (record.visibility_end.present? && record.visibility_end < Time.zone.now) ||
-      (record.visibility_start.present? && record.visibility_start > Time.zone.now)
-    )
+    return false if record.timed? && record.visibility_start > Time.zone.now
 
     course = record.course
     course.visible_for_all? ||
@@ -99,7 +96,7 @@ class SeriesPolicy < ApplicationPolicy
   def permitted_attributes
     # record is the Series class on create
     if course_admin? || record == Series
-      %i[name description course_id visibility order deadline progress_enabled activities_visible activity_numbers_enabled visibility_start visibility_end]
+      %i[name description course_id visibility order deadline progress_enabled activities_visible activity_numbers_enabled visibility_start]
     else
       []
     end

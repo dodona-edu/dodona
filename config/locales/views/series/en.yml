@@ -19,8 +19,8 @@ en:
         closed_help: "This series is not accessible to students. It is only visible to teachers."
         hidden: "Only visible via secret link"
         hidden_help: "This series is only visible to teachers. Students can access it via the secret link."
-        timed: "Visible for students between start and end time"
-        timed_help: "This series is visible to students between the given start and end time. It is also possible to only set the start time or end time."
+        timed: "Visible for students after start time"
+        timed_help: "This series is not visible to students. It will become visible at the given start time."
     index:
       title: All series
       load_more: Load more series
@@ -38,9 +38,7 @@ en:
       series_not_visible: This series is only visible for students using the secret link!
       series_timed:
         will_open: "This series is currently not visible for students. It will become visible at %{start}."
-        will_close: "This series is visible currently for students. It will close at %{end}."
-        is_closed: "This series is no longer visible for students."
-        make_visible: "Remove time restrictions."
+        make_visible: "Make visible now."
       series_not_accessible: This series is not accessible to students!
       activities_not_visible: The learning activities in this series are not visible to students!
       series_scoresheet: Series scoresheet

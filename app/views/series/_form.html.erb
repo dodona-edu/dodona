@@ -64,16 +64,6 @@
           </div>
         </div>
       </div>
-      <div class="field form-group row">
-        <%= f.label :visibility_end, :class => "col-sm-3 col-form-label" %>
-        <div class='col-sm-6'>
-          <div class="input-group" id='end-group' data-wrap=true data-enable-time=true data-time_24hr=true>
-            <%= f.text_field :visibility_end, class: "form-control", 'data-input': true %>
-            <button class="btn btn-icon" type="button" data-toggle><i class='mdi mdi-calendar-blank'></i></button>
-            <button class="btn btn-icon" type="button" data-clear><i class='mdi mdi-close'></i></button>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -118,6 +108,5 @@
     dodona.ready.then(function () {
       dodona.initDeadlinePicker("#deadline-group");
       dodona.initDeadlinePicker("#start-group");
-      dodona.initDeadlinePicker("#end-group");
     });
 </script>

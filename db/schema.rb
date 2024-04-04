@@ -469,7 +469,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.integer "activities_count"
     t.boolean "activity_numbers_enabled", default: false, null: false
     t.datetime "visibility_start"
-    t.datetime "visibility_end"
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"

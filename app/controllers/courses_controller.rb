@@ -164,7 +164,6 @@ class CoursesController < ApplicationController
           description: s.description,
           visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
           visibility_start: @copy_options[:hide_series] ? nil : s.visibility_start,
-          visibility_end: @copy_options[:hide_series] ? nil : s.visibility_end,
           deadline: @copy_options[:deadlines] ? s.deadline : nil,
           order: s.order,
           progress_enabled: s.progress_enabled

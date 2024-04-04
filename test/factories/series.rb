@@ -17,7 +17,6 @@
 #  activities_count         :integer
 #  activity_numbers_enabled :boolean          default(FALSE), not null
 #  visibility_start         :datetime
-#  visibility_end           :datetime
 #
 
 FactoryBot.define do

@@ -8,7 +8,6 @@ export type FilterCollection = {
     data: Label[],
     multi: boolean,
     color: AccentColor,
-    paramVal: (l: Label) => string,
     param: string
 };
 
@@ -27,8 +26,6 @@ export class FilterCollectionElement extends DodonaElement {
     param: string;
     @property({ type: Boolean })
     multi: boolean;
-    @property()
-    paramVal: (l: Label) => string;
     @property({ type: Array })
     labels: Array<Label> = [];
 
@@ -48,24 +45,20 @@ export class FilterCollectionElement extends DodonaElement {
         super.update(changedProperties);
     }
 
-    private str(label: Label): string {
-        return this.paramVal(label).toString();
-    }
-
     private get multiSelected(): string[] {
         return searchQueryState.arrayQueryParams.get(this.param) || [];
     }
 
     private multiUnSelect(label: Label): void {
-        searchQueryState.arrayQueryParams.set(this.param, this.multiSelected.filter(s => s !== this.str(label)));
+        searchQueryState.arrayQueryParams.set(this.param, this.multiSelected.filter(s => s !== label.id));
     }
 
     private multiIsSelected(label: Label): boolean {
-        return this.multiSelected.includes(this.str(label));
+        return this.multiSelected.includes(label.id);
     }
 
     private multiSelect(label: Label): void {
-        searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, this.str(label)]);
+        searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, label.id]);
     }
 
     private singleUnSelect(label: Label): void {
@@ -73,11 +66,11 @@ export class FilterCollectionElement extends DodonaElement {
     }
 
     private singleSelect(label: Label): void {
-        searchQueryState.queryParams.set(this.param, this.str(label));
+        searchQueryState.queryParams.set(this.param, label.id);
     }
 
     private singleIsSelected(label: Label): boolean {
-        return searchQueryState.queryParams.get(this.param) === this.str(label);
+        return searchQueryState.queryParams.get(this.param) === label.id;
     }
 
     isSelected = this.singleIsSelected;

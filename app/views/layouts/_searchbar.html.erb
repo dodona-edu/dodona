@@ -33,159 +33,122 @@
         <% if local_assigns.fetch :labels, false %>
         filterCollections["labels"] = {
             param: "labels",
-            paramVal: function(l) { return l.name.toString(); },
             multi: true,
-            data: <%= raw render template: 'labels/index', formats: :json %>,
+            data: <%= raw @labels.map { |l| {id: l.name.to_s, name: l.name.to_s}}.to_json %>,
             color: "purple"
         };
         <% end %>
         <% if local_assigns.fetch :programming_languages, false %>
         filterCollections["programming_languages"] = {
             param: "programming_language",
-            paramVal: function(p) { return p.name.toString(); },
             multi: false,
-            data: <%= raw render template: 'programming_languages/index', formats: :json %>,
+            data: <%= raw @programming_languages.map { |l| {id: l.name.to_s, name: l.name.to_s}}.to_json %>,
             color: "red",
         };
         <% end %>
         <% if local_assigns.fetch :repositories, false %>
         filterCollections["repositories"] = {
             param: "repository_id",
-            paramVal: function(r) { return r.id.toString(); },
             multi: false,
-            data: <%= raw render template: 'repositories/index', formats: :json %>,
+            data: <%= raw @repositories.map { |l| {id: l.id.to_s, name: l.name.to_s}}.to_json %>,
             color: "blue-gray",
         };
         <% end %>
         <% if local_assigns.fetch(:institutions, []).length > 1 %>
         filterCollections["institutions"] = {
             param: "institution_id",
-            paramVal: function(i) { return i.id.toString(); },
             multi: false,
-            data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id.to_s, name: i.name.to_s}}.to_json %>,
             color: "pink",
         };
         <% end %>
         <% if local_assigns.fetch :course_labels, false %>
         filterCollections["course_labels"] = {
             param: "course_labels",
-            paramVal: function (cl) {
-                return cl.name.toString();
-            },
             multi: true,
-            data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.name.to_s, name: cl.name.to_s}}.to_json %>,
             color: "orange",
         };
         <% end %>
         <% if local_assigns.fetch :statuses, false %>
         filterCollections["statuses"] = {
             param: "status",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s.to_s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
             color: "indigo",
         };
         <% end %>
         <% if local_assigns.fetch :question_states, false %>
         filterCollections["question_states"] = {
             param: "question_state",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s.to_s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
             color: "indigo",
         };
         <% end %>
         <% if local_assigns.fetch :event_types, false %>
         filterCollections["event_types"] = {
             param: "type",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s.to_s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
             color: "deep-purple",
         };
         <% end %>
         <% if local_assigns.fetch :activity_types, false %>
         filterCollections["activity_types"] = {
             param: "type",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:activity_types, []).map{|s| {id: s.name, name: s.model_name.human}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:activity_types, []).map{|s| {id: s.name.to_s, name: s.model_name.human}}.to_json %>,
             color: "deep-purple",
         };
         <% end %>
         <% if local_assigns.fetch :description_languages, false %>
         filterCollections["description_languages"] = {
             param: "description_languages",
-            paramVal: function (lang) {
-                return lang.id.toString();
-            },
             multi: true,
-            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l.to_s, name: t("js.#{l}")}}.to_json %>,
             color: "orange",
         };
         <% end %>
         <% if local_assigns.fetch :judges, false %>
         filterCollections["judges"] = {
             param: "judge_id",
-            paramVal: function(judge) {
-                return judge.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:judges, []).map{|judge| {id: judge.id, name: "#{judge.name}-judge"}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:judges, []).map{|judge| {id: judge.id.to_s, name: "#{judge.name}-judge"}}.to_json %>,
             color: "red",
         }
         <% end %>
         <% if local_assigns.fetch :courses, false %>
         filterCollections["courses"] = {
             param: "course_id",
-            paramVal: function(course) {
-                return course.id.toString();
-            },
             multi: false,
-            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
+            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id.to_s, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
             color: "orange"
         };
         <% end %>
         <% if local_assigns.fetch :exercises, false %>
         filterCollections["exercises"] = {
           param: "exercise_id",
-          paramVal: function(exercise) {
-            return exercise.id.toString();
-          },
           multi: false,
-          data: <%= raw local_assigns.fetch(:exercises, []).map{|exercise| {id: exercise.id, name: exercise.name}}.to_json %>,
+          data: <%= raw local_assigns.fetch(:exercises, []).map{|exercise| {id: exercise.id.to_s, name: exercise.name}}.to_json %>,
           color: "blue-gray"
         };
         <% end %>
         <% if local_assigns.fetch :popularity, false %>
             filterCollections["popularity"] = {
               param: "popularity",
-              paramVal: function (s) {
-                return s.id.toString();
-              },
               multi: true,
-              data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
+              data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s.to_s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
               color: "pink",
             };
         <% end %>
       <% if local_assigns.fetch :draft, false %>
         filterCollections["draft"] = {
           param: "draft",
-          paramVal: function (s) {
-            return s.id.toString();
-          },
           multi: false,
           data: [
-            {id: true, name: "<%= t("activities.index.filters.draft") %>"},
-            {id: false, name: "<%= t("activities.index.filters.not_draft") %>"}
+            {id: "true", name: "<%= t("activities.index.filters.draft") %>"},
+            {id: "false", name: "<%= t("activities.index.filters.not_draft") %>"}
           ],
           color: "indigo",
         };

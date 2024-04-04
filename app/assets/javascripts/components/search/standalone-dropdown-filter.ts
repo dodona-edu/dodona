@@ -17,15 +17,13 @@ import { watchMixin } from "components/meta/watch_mixin";
 export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement) {
     @property()
     multi = false;
-    @property()
-    paramVal = (label: Label): string => label.id.toString();
     @property({ type: String })
     default;
 
     watch = {
         default: () => {
             if (this.getSelectedLabels().length === 0) {
-                this.select(this.labels.find(label => this.paramVal(label) === this.default));
+                this.select(this.labels.find(label => label.id === this.default));
             }
         }
     };

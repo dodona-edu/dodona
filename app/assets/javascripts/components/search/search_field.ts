@@ -3,7 +3,7 @@ import { html, TemplateResult } from "lit";
 import { createDelayer } from "utilities";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
-import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { FilterCollection, FilterCollectionElement, Label } from "components/search/filter_collection_element";
 import { searchQueryState } from "state/SearchQuery";
 import { search } from "search";
 import { DodonaElement } from "components/meta/dodona_element";
@@ -83,7 +83,7 @@ export class SearchField extends DodonaElement {
     @property({ type: Boolean })
     eager: boolean;
     @property( { type: Array })
-    filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
+    filterCollections: Record<string, FilterCollection>;
 
     @property({ state: true })
     filter?: string = "";
@@ -171,7 +171,6 @@ export class SearchField extends DodonaElement {
                         .labels=${c.data}
                         .type=${type}
                         .filter=${this.filter}
-                        .paramVal=${c.paramVal}
                         .param=${c.param}
                         .multi=${c.multi}
                         .index=${i}

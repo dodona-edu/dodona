@@ -66,7 +66,6 @@ export class SearchTokens extends DodonaElement {
                 <d-search-token
                     .labels=${c.data}
                     .color=${c.color}
-                    .paramVal=${c.paramVal}
                     .param=${c.param}
                     .multi=${c.multi}
                 >

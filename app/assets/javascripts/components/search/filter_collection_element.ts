@@ -3,10 +3,11 @@ import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
 
 export type Label = {id: string, name: string};
+export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" | "teal" | "orange" | "brown" | "blue-gray";
 export type FilterCollection = {
     data: Label[],
     multi: boolean,
-    color: (l: Label) => string,
+    color: AccentColor,
     paramVal: (l: Label) => string,
     param: string
 };

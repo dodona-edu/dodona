@@ -1,6 +1,11 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollection, Label, FilterCollectionElement } from "components/search/filter_collection_element";
+import {
+    FilterCollection,
+    Label,
+    FilterCollectionElement,
+    AccentColor
+} from "components/search/filter_collection_element";
 import { i18n } from "i18n/i18n";
 import { DodonaElement } from "components/meta/dodona_element";
 
@@ -10,7 +15,7 @@ import { DodonaElement } from "components/meta/dodona_element";
  *
  * @element d-dropdown-filter
  *
- * @prop {(s: Label) => string} color - a function that fetches the color associated with each label
+ * @prop {AccentColor} color - the color associated with the filter
  * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
  * @prop {string} param - the searchQuery param to be used for this filter
  * @prop {boolean} multi - whether one or more labels can be selected at the same time
@@ -19,8 +24,8 @@ import { DodonaElement } from "components/meta/dodona_element";
  */
 @customElement("d-dropdown-filter")
 export class DropdownFilter extends FilterCollectionElement {
-    @property()
-    color: (s: Label) => string;
+    @property({ type: String })
+    color: AccentColor;
     @property()
     type: string;
 
@@ -43,7 +48,7 @@ export class DropdownFilter extends FilterCollectionElement {
         return html`
             <div class="dropdown dropdown-filter">
                 <a class="token token-bordered" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)} left-icon"></i>`)}
+                    ${this.getSelectedLabels().map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color} left-icon"></i>`)}
                     ${i18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>

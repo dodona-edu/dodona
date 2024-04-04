@@ -1,6 +1,11 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollection, FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import {
+    AccentColor,
+    FilterCollection,
+    FilterCollectionElement,
+    Label
+} from "components/search/filter_collection_element";
 import { DodonaElement } from "components/meta/dodona_element";
 
 /**
@@ -9,7 +14,7 @@ import { DodonaElement } from "components/meta/dodona_element";
  *
  * @element d-search-token
  *
- * @prop {(s: Label) => string} color - a function that fetches the color associated with each label
+ * @prop {AccentColor} color - the color associated with the filter
  * @prop {string} param - the searchQuery param to be used for this filter
  * @prop {boolean} multi - whether one or more labels can be selected at the same time
  * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
@@ -17,8 +22,8 @@ import { DodonaElement } from "components/meta/dodona_element";
  */
 @customElement("d-search-token")
 export class SearchToken extends FilterCollectionElement {
-    @property()
-    color: (l: Label) => string;
+    @property({ type: String })
+    color: AccentColor;
 
     processClick(e: Event, label: Label): void {
         this.unSelect(label);
@@ -28,7 +33,7 @@ export class SearchToken extends FilterCollectionElement {
     render(): TemplateResult {
         return html`
             ${ this.getSelectedLabels().map( label => html`
-                <div class="token accent-${this.color(label)}">
+                <div class="token accent-${this.color}">
                     <span class="token-label">${label.name}</span>
                     <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>
                         <i class="mdi mdi-close mdi-18"></i>

@@ -36,9 +36,7 @@
             paramVal: function(l) { return l.name.toString(); },
             multi: true,
             data: <%= raw render template: 'labels/index', formats: :json %>,
-            color: function (label) {
-                return label.color;
-            },
+            color: "purple"
         };
         <% end %>
         <% if local_assigns.fetch :programming_languages, false %>
@@ -47,9 +45,7 @@
             paramVal: function(p) { return p.name.toString(); },
             multi: false,
             data: <%= raw render template: 'programming_languages/index', formats: :json %>,
-            color: function () {
-                return "red";
-            },
+            color: "red",
         };
         <% end %>
         <% if local_assigns.fetch :repositories, false %>
@@ -58,9 +54,7 @@
             paramVal: function(r) { return r.id.toString(); },
             multi: false,
             data: <%= raw render template: 'repositories/index', formats: :json %>,
-            color: function () {
-                return "blue-gray";
-            },
+            color: "blue-gray",
         };
         <% end %>
         <% if local_assigns.fetch(:institutions, []).length > 1 %>
@@ -69,9 +63,7 @@
             paramVal: function(i) { return i.id.toString(); },
             multi: false,
             data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
-            color: function () {
-                return "pink";
-            },
+            color: "pink",
         };
         <% end %>
         <% if local_assigns.fetch :course_labels, false %>
@@ -82,9 +74,7 @@
             },
             multi: true,
             data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
-            color: function () {
-                return "orange";
-            },
+            color: "orange",
         };
         <% end %>
         <% if local_assigns.fetch :statuses, false %>
@@ -95,9 +85,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
-            color: function () {
-                return "indigo";
-            },
+            color: "indigo",
         };
         <% end %>
         <% if local_assigns.fetch :question_states, false %>
@@ -108,9 +96,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
-            color: function () {
-                return "indigo";
-            },
+            color: "indigo",
         };
         <% end %>
         <% if local_assigns.fetch :event_types, false %>
@@ -121,9 +107,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
-            color: function () {
-                return "deep-purple";
-            },
+            color: "deep-purple",
         };
         <% end %>
         <% if local_assigns.fetch :activity_types, false %>
@@ -134,9 +118,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:activity_types, []).map{|s| {id: s.name, name: s.model_name.human}}.to_json %>,
-            color: function () {
-                return "deep-purple";
-            },
+            color: "deep-purple",
         };
         <% end %>
         <% if local_assigns.fetch :description_languages, false %>
@@ -147,9 +129,7 @@
             },
             multi: true,
             data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
-            color: function () {
-                return "orange";
-            },
+            color: "orange",
         };
         <% end %>
         <% if local_assigns.fetch :judges, false %>
@@ -160,9 +140,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:judges, []).map{|judge| {id: judge.id, name: "#{judge.name}-judge"}}.to_json %>,
-            color: function () {
-                return "red";
-            }
+            color: "red",
         }
         <% end %>
         <% if local_assigns.fetch :courses, false %>
@@ -173,9 +151,7 @@
             },
             multi: false,
             data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
-            color: function () {
-                return "orange";
-            }
+            color: "orange"
         };
         <% end %>
         <% if local_assigns.fetch :exercises, false %>
@@ -186,9 +162,7 @@
           },
           multi: false,
           data: <%= raw local_assigns.fetch(:exercises, []).map{|exercise| {id: exercise.id, name: exercise.name}}.to_json %>,
-          color: function () {
-            return "blue-gray";
-          }
+          color: "blue-gray"
         };
         <% end %>
         <% if local_assigns.fetch :popularity, false %>
@@ -199,9 +173,7 @@
               },
               multi: true,
               data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
-              color: function () {
-                return "pink";
-              },
+              color: "pink",
             };
         <% end %>
       <% if local_assigns.fetch :draft, false %>
@@ -215,9 +187,7 @@
             {id: true, name: "<%= t("activities.index.filters.draft") %>"},
             {id: false, name: "<%= t("activities.index.filters.not_draft") %>"}
           ],
-          color: function () {
-            return "indigo";
-          },
+          color: "indigo",
         };
       <% end %>
 

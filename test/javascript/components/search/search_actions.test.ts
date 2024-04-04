@@ -58,7 +58,16 @@ describe("SearchActions", () => {
     });
 
     test("clicking a link action should navigate to the url", async () => {
-        expect(screen.getByText("link-test").closest("a").href).toBe("https://test.dodona.be/");
+        jest.spyOn(window, "open").mockImplementation(() => window);
+        await userEvent.click(screen.queryByText("link-test"));
+        expect(window.open).toHaveBeenCalledWith("https://test.dodona.be");
+    });
+
+    test("clicking a link action should add query params to the url", async () => {
+        jest.spyOn(window, "open").mockImplementation(() => window);
+        searchQueryState.queryParams.set("foo", "bar");
+        await userEvent.click(screen.queryByText("link-test"));
+        expect(window.open).toHaveBeenCalledWith("https://test.dodona.be/?foo=bar");
     });
 
     test("clicking a confirm action should show a confirmation dialog", async () => {

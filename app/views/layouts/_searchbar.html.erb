@@ -29,7 +29,7 @@
 
 <script type="text/javascript">
     dodona.ready.then(function () {
-        const filterCollections = {};
+        let filterCollections = {};
         <% if local_assigns.fetch :labels, false %>
         filterCollections["labels"] = {
             param: "labels",
@@ -153,6 +153,10 @@
           color: "indigo",
         };
       <% end %>
+
+        <% if @filters.present? %>
+          filterCollections = <%= raw @filters.map { |v| [v[:param], v] }.to_h.to_json %>;
+        <% end %>
 
         dodona.search.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 

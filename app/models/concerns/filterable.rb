@@ -29,10 +29,10 @@ module Filterable
       }
 
       define_singleton_method("#{name}_filter_options") do
-        count = group(column).count
+        count = joins(associations).group(column).count
         names = name_hash.call(count.keys)
 
-        count.map { |key, value| { id: key, name: names[key], count: value } }
+        count.map { |key, value| { id: key.to_s, name: names[key], count: value } }
       end
 
     end

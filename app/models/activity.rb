@@ -80,7 +80,7 @@ class Activity < ApplicationRecord
   filterable_by :status, value_check: ->(value) { value.in? statuses }
   filterable_by :access, value_check: ->(value) { value.in? accesses }
   filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
-  filterable_by :type, name_hash: -> { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
+  filterable_by :type, name_hash: ->(value) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
   filterable_by :judge, column: 'judge_id', name_hash: ->(values) { Judge.where(id: values).to_h { |j| [j.id, j.name] } }
   scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
   scope :is_draft, ->(value = true) { where(draft: value) }

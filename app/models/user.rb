@@ -136,6 +136,8 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :identities, limit: 1
 
+  search_by :username, :first_name, :last_name
+
   scope :by_permission, ->(permission) { where(permission: permission) }
   scope :by_institution, ->(institution) { where(institution: institution) }
 
@@ -382,10 +384,6 @@ class User < ApplicationRecord
     return nil if username.blank?
 
     find_by(username: username, institution_id: institution_id)
-  end
-
-  def set_search
-    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 
   # Be careful when using force institution. This expects the providers to be updated externally

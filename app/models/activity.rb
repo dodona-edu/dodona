@@ -76,6 +76,7 @@ class Activity < ApplicationRecord
   scope :in_repository, ->(repository) { where repository: repository }
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
+  search_by :name_nl, :name_en, :path
   filterable_by :status, value_check: ->(value) { value.in? statuses }
   filterable_by :access, value_check: ->(value) { value.in? accesses }
   filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
@@ -422,10 +423,6 @@ class Activity < ApplicationRecord
     return if series_memberships.any?
 
     destroy
-  end
-
-  def set_search
-    self.search = "#{Activity.human_enum_name(:status, status, locale: :nl)} #{Activity.human_enum_name(:status, status, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
   end
 
   def self.parse_type(type)

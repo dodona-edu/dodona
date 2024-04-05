@@ -161,6 +161,7 @@ class Course < ApplicationRecord
   validate :should_have_institution_when_visible_for_institution
   validate :should_have_institution_when_open_for_institution
 
+  search_by :name, :teacher, :year
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
@@ -411,10 +412,6 @@ class Course < ApplicationRecord
 
   def self.format_year(year)
     year.sub(/ ?- ?/, '–')
-  end
-
-  def set_search
-    self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
   def color

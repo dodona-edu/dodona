@@ -1,12 +1,16 @@
 module Filterable
   extend ActiveSupport::Concern
 
-  included do
-    before_save :set_search
-    scope :by_filter, ->(filter) { filter.split.map(&:strip).select(&:present?).inject(self) { |query, part| query.where("#{table_name}.search LIKE ?", "%#{part}%") } }
-  end
-
   class_methods do
+    def search_by(*columns)
+      define_method(:set_search) do
+        self.search = columns.map { |column| send(column) || '' }.join(' ')
+      end
+
+      before_save :set_search
+      scope :by_filter, ->(filter) { filter.split.map(&:strip).select(&:present?).inject(self) { |query, part| query.where("#{table_name}.search LIKE ?", "%#{part}%") } }
+    end
+
     # Creates a scope for the column, with the name `by_#{column}`
     # It also creates a method `#{column}_filter_options` that returns the possible values for the column, with the count of each value
     # params:

@@ -304,7 +304,7 @@ a.card-title-link:hover {
 .nav-tabs.sticky {
   position: sticky;
   top: var(--d-navbar-height);
-  z-index: 4;
+  z-index: 5;
   background-color: var(--d-surface);
   overflow-x: auto;
   flex-wrap: nowrap;

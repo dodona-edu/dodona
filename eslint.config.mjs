@@ -1,0 +1,98 @@
+import noJquery from 'eslint-plugin-no-jquery';
+import typescriptParser from '@typescript-eslint/parser';
+import typescript from '@typescript-eslint/eslint-plugin';
+import js from "@eslint/js";
+import globals from "globals";
+import google from "eslint-config-google";
+import { FlatCompat } from "@eslint/eslintrc";
+
+const compat = new FlatCompat();
+
+export default [
+    {
+        files: ["**/*.ts", "**/*.js"],
+        ...js.configs.recommended, // Recommended config applied to all files
+        ...google, // Google's style guide
+    },
+    ...compat.extends( // old eslintrc style configs, converted to new style by the compat object
+        "plugin:jest/recommended",
+        "plugin:no-jquery/all",
+        "plugin:wc/recommended",
+        "plugin:lit/recommended"),
+    {
+        files: ["**/*.ts", "**/*.js"],
+        plugins: {
+            "no-jquery": noJquery
+        },
+        languageOptions: {
+            ecmaVersion: 2020,
+            sourceType: "module",
+            globals: {
+                ...globals.browser,
+                ...globals.es2020,
+                ...globals.jest,
+                d3: "readonly",
+                dodona: "readonly"
+            },
+        },
+        rules: {
+            "arrow-parens": ["error", "as-needed"],
+            "comma-dangle": ["error", {
+                "arrays": "only-multiline",
+                "objects": "only-multiline",
+                "imports": "only-multiline",
+                "exports": "only-multiline",
+                "functions": "never"
+            }],
+            "indent": "off",
+            "max-len": ["warn", { "code": 100 }],
+            "no-invalid-this": "warn",
+            "no-param-reassign": ["error", { "props": false }],
+            "object-curly-spacing": ["error", "always"],
+            "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+            "require-jsdoc": "off",
+            "valid-jsdoc": "off",
+            "space-before-function-paren": [
+                "error",
+                { "anonymous": "always", "named": "never", "asyncArrow": "always" }
+            ]
+        },
+    }, {
+        files: ["*.ts"],
+        ...typescript.configs.recommended,
+        plugins: {
+            "@typescript-eslint": typescript
+        },
+        rules: {
+            "@typescript-eslint/explicit-member-accessibility": "off",
+            "@typescript-eslint/explicit-function-return-type": [
+                "error",
+                { "allowExpressions": true }
+            ],
+            "@typescript-eslint/no-parameter-properties": "off",
+            "@typescript-eslint/indent": [
+                "error",
+                4,
+                {
+                    "ignoredNodes": [
+                        "FunctionExpression > .params[decorators.length > 0]",
+                        "FunctionExpression > .params > :matches(Decorator, :not(:first-child))",
+                        "ClassBody.body > PropertyDefinition[decorators.length > 0] > .key",
+                        "TSTypeParameterInstantiation",
+                        "PropertyDefinition"
+                    ]
+                }
+            ],
+        },
+        languageOptions: {
+            parser: typescriptParser,
+        },
+    },{
+        ignores: [
+            "app/assets/config/manifest.js",
+            "app/assets/javascripts/i18n/translations.js",
+            "app/assets/javascripts/types/index.d.ts",
+            "app/assets/javascripts/inputServiceWorker.js",
+        ]
+    }
+]

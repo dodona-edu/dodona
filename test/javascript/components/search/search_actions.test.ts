@@ -51,7 +51,6 @@ describe("SearchActions", () => {
     });
 
     test("clicking a js action should execute the js", async () => {
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
         jest.spyOn(window, "alert").mockImplementation(() => {});
         await userEvent.click(screen.queryByText("js-test"));
         expect(window.alert).toHaveBeenCalledWith("test");
@@ -81,7 +80,7 @@ describe("SearchActions", () => {
         jest.spyOn(util, "fetch").mockImplementation(() => Promise.resolve({
             json: () => Promise.resolve({ js: "window.alert('test')" }),
         } as Response));
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
+
         jest.spyOn(window, "alert").mockImplementation(() => {});
         await userEvent.click(screen.queryByText("bar"));
         expect(util.fetch).toHaveBeenCalledWith("https://test.dodona.be/destroy", {

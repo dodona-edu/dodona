@@ -31,7 +31,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         >;
 
     // data
-    // eslint-disable-next-line camelcase
+
     private data: { ex_id: string, ex_data: { bin: d3.Bin<Date, Date>, cSum: number }[] }[] = [];
     private studentCount: number; // amount of subscribed students
     private maxSum = 0; // largest y-value == max value
@@ -187,7 +187,7 @@ export class CTimeseriesGraph extends SeriesGraph {
     // eslint-disable-next-line camelcase
     protected override processData({ data, exercises, student_count, deadline }: RawData): void {
         this.data = [];
-        // eslint-disable-next-line camelcase
+
         data as { ex_id: number, ex_data: (string | Date)[] }[];
 
         this.parseExercises(exercises, data.map(ex => ex.ex_id));

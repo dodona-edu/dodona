@@ -293,18 +293,20 @@ function initCourseNew(): void {
     const formCollapse = new bootstrap.Collapse(formCollapseElement, { toggle: false });
 
     function initPanelLogic(): void {
-        document.getElementById("new-course").addEventListener("click", function () {
+        const newCourseButton = document.getElementById("new-course");
+        newCourseButton.addEventListener("click", function () {
             choosePanel.classList.add("hidden");
             formPanel.querySelector(".step-circle").innerHTML = "2";
-            this.closest(".panel")
+            newCourseButton.closest(".panel")
                 .querySelector(".answer")
-                .textContent = this.dataset.answer;
+                .textContent = newCourseButton.dataset.answer;
             fetch("/courses/new.js")
                 .then(req => req.text())
                 .then(resp => eval(resp));
         });
 
-        document.getElementById("copy-course").addEventListener("click", function () {
+        const copyCourseButton = document.getElementById("copy-course");
+        copyCourseButton.addEventListener("click", function () {
             choosePanel.classList.remove("hidden");
             chooseCollapse.show();
             choosePanel.querySelectorAll<HTMLInputElement>(`input[type="radio"]`).forEach(el => {
@@ -312,20 +314,20 @@ function initCourseNew(): void {
             });
             formPanel.classList.add("hidden");
             formPanel.querySelector(".step-circle").innerHTML = "3";
-            this.closest(".panel")
+            copyCourseButton.closest(".panel")
                 .querySelector(".answer")
-                .textContent = this.dataset.answer;
+                .textContent = copyCourseButton.dataset.answer;
         });
     }
 
     function copyCoursesLoaded(): void {
-        document.querySelectorAll("[data-course_id]").forEach(el => {
+        document.querySelectorAll("[data-course_id]").forEach((el: HTMLElement) => {
             el.addEventListener("click", function () {
-                this.querySelector(`input[type="radio"]`).checked = true;
-                this.closest(".panel")
+                (el.querySelector(`input[type="radio"]`) as HTMLInputElement).checked = true;
+                el.closest(".panel")
                     .querySelector(".answer")
-                    .textContent = this.dataset.answer;
-                fetch(`/courses/new.js?copy_options[base_id]=${this.dataset.course_id}`)
+                    .textContent = el.dataset.answer;
+                fetch(`/courses/new.js?copy_options[base_id]=${el.dataset.course_id}`)
                     .then(req => req.text())
                     .then(resp => eval(resp));
             });

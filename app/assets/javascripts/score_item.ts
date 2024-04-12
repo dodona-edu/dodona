@@ -35,9 +35,9 @@ function commonCheckboxInit(
 function initTotalVisibilityCheckboxes(element: HTMLElement): void {
     commonCheckboxInit(element, ".total-visibility-checkbox", checked => {
         return {
-            // eslint-disable-next-line camelcase
+
             evaluation_exercise: {
-                // eslint-disable-next-line camelcase
+
                 visible_score: checked
             }
         };
@@ -47,7 +47,7 @@ function initTotalVisibilityCheckboxes(element: HTMLElement): void {
 function initItemVisibilityCheckboxes(element: HTMLElement): void {
     commonCheckboxInit(element, ".visibility-checkbox", checked => {
         return {
-            // eslint-disable-next-line camelcase
+
             score_item: {
                 visible: checked
             }

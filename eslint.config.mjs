@@ -1,32 +1,28 @@
 import noJquery from 'eslint-plugin-no-jquery';
-import typescriptParser from '@typescript-eslint/parser';
-import typescript from '@typescript-eslint/eslint-plugin';
-import js from "@eslint/js";
+import ts_eslint from 'typescript-eslint';
+import eslint from "@eslint/js";
 import globals from "globals";
-import google from "eslint-config-google";
+import google_eslint from "eslint-config-google";
+import jest_eslint from "eslint-plugin-jest"
+
 import { FlatCompat } from "@eslint/eslintrc";
 
 const compat = new FlatCompat();
 
-export default [
-    {
-        files: ["**/*.ts", "**/*.js"],
-        ...js.configs.recommended, // Recommended config applied to all files
-        ...google, // Google's style guide
-    },
+export default ts_eslint.config(
+    eslint.configs.recommended,
+    ...ts_eslint.configs.recommended,
+    google_eslint,
     ...compat.extends( // old eslintrc style configs, converted to new style by the compat object
-        "plugin:jest/recommended",
-        "plugin:no-jquery/all",
-        "plugin:wc/recommended",
-        "plugin:lit/recommended"),
+                "plugin:no-jquery/all",
+                "plugin:wc/recommended",
+                "plugin:lit/recommended",
+    ),
     {
-        files: ["**/*.ts", "**/*.js"],
         plugins: {
             "no-jquery": noJquery
         },
         languageOptions: {
-            ecmaVersion: 2020,
-            sourceType: "module",
             globals: {
                 ...globals.browser,
                 ...globals.es2020,
@@ -55,15 +51,7 @@ export default [
             "space-before-function-paren": [
                 "error",
                 { "anonymous": "always", "named": "never", "asyncArrow": "always" }
-            ]
-        },
-    }, {
-        files: ["*.ts"],
-        ...typescript.configs.recommended,
-        plugins: {
-            "@typescript-eslint": typescript
-        },
-        rules: {
+            ],
             "@typescript-eslint/explicit-member-accessibility": "off",
             "@typescript-eslint/explicit-function-return-type": [
                 "error",
@@ -84,9 +72,6 @@ export default [
                 }
             ],
         },
-        languageOptions: {
-            parser: typescriptParser,
-        },
     },{
         ignores: [
             "app/assets/config/manifest.js",
@@ -94,5 +79,8 @@ export default [
             "app/assets/javascripts/types/index.d.ts",
             "app/assets/javascripts/inputServiceWorker.js",
         ]
+    }, {
+        files: ['test/**'],
+        ...jest_eslint.configs['flat/recommended'],
     }
-]
+);

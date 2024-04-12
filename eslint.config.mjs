@@ -23,7 +23,6 @@ export default ts_eslint.config(
             "no-jquery": noJquery
         },
         languageOptions: {
-            ecmaVersion: 2020,
             globals: {
                 ...globals.browser,
                 ...globals.es2020,

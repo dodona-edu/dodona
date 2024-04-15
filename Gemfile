@@ -63,7 +63,7 @@ gem 'diff-lcs', '~>1.5'
 gem 'autoprefixer-rails', '~>10.4.16'
 
 # saml authentication
-gem 'devise', '~>4.9.3'
+gem 'devise', '~>4.9.4'
 gem 'ruby-saml', '~> 1.16.0'
 
 # omniauth

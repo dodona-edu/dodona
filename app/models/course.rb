@@ -274,6 +274,10 @@ class Course < ApplicationRecord
     series.visible.reject { |s| s.completed?(user: user) }
   end
 
+  def incomplete_unreleased_feedbacks
+    feedbacks.joins(:evaluation).where(evaluation: { released: false }).incomplete
+  end
+
   def formatted_year
     Course.format_year year
   end

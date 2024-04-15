@@ -609,4 +609,26 @@ class CourseTest < ActiveSupport::TestCase
 
     assert_equal 1, course.homepage_series(user).count
   end
+
+  test 'Incomplete unreleased feedbacks should return feedbacks that are not completed and are in unreleased evaluations' do
+    course = create :course, series_count: 2, exercises_per_series: 1
+    3.times do
+      user = create :user
+      course.enrolled_members << user
+      create :correct_submission, course: course, exercise: course.series.first.exercises.first, user: user, created_at: DateTime.now - 1.hour
+      create :correct_submission, course: course, exercise: course.series.second.exercises.first, user: user, created_at: DateTime.now - 1.hour
+    end
+    create :evaluation, series: course.series.first
+    create :evaluation, series: course.series.second
+
+    assert_equal 6, course.incomplete_unreleased_feedbacks.count
+
+    course.evaluations.first.feedbacks.first.update(completed: true)
+
+    assert_equal 5, course.incomplete_unreleased_feedbacks.count
+
+    course.evaluations.first.update(released: true)
+
+    assert_equal 3, course.incomplete_unreleased_feedbacks.count
+  end
 end

@@ -43,6 +43,7 @@ export class DropdownFilter extends FilterCollectionElement {
         if (this.labels.length === 0) {
             return html``;
         }
+        console.log(this.labels);
 
         return html`
             <div class="dropdown dropdown-filter">
@@ -58,12 +59,13 @@ export class DropdownFilter extends FilterCollectionElement {
                             <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${i18n.t("js.dropdown.search")}">
                         </span></li>
                     ` : ""}
-                    ${this.filteredLabels.map(s => html`
+                    ${this.filteredLabels.sort((a, b) => b.count - a.count).map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
                                     <label class="form-check-label" for="check-${this.param}-${s.id}">
                                         ${s.name}
+                                        ${s.count ? html`<span class="badge colored-secondary rounded-pill float-end">${s.count}</span>` : ""}
                                     </label>
                                 </div>
                             </span></li>

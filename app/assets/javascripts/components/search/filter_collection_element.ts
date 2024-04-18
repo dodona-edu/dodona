@@ -2,7 +2,7 @@ import { property } from "lit/decorators.js";
 import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
 
-export type Label = {id: string, name: string};
+export type Label = {id: string, name: string, count?: number};
 export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" | "teal" | "orange" | "brown" | "blue-gray";
 export type FilterCollection = {
     data: Label[],

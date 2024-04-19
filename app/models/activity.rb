@@ -82,7 +82,7 @@ class Activity < ApplicationRecord
   filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
   filterable_by :type, name_hash: ->(value) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
   filterable_by :judge, column: 'judge_id', name_hash: ->(values) { Judge.where(id: values).to_h { |j| [j.id, j.name] } }
-  scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
+  filterable_by :labels, multi: true, associations: :labels, column: 'labels.name'
   scope :is_draft, ->(value = true) { where(draft: value) }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes

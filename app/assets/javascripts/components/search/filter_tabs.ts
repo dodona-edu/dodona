@@ -1,6 +1,6 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { FilterElement, Label } from "components/search/filter_element";
 import { watchMixin } from "components/meta/watch_mixin";
 
 type TabInfo = {id: string, name: string, title?: string, count?: number};
@@ -14,7 +14,7 @@ type TabInfo = {id: string, name: string, title?: string, count?: number};
  * @prop {{id: string, name: string, title: string}[]} labels - all labels that could potentially be selected
  */
 @customElement("d-filter-tabs")
-export class FilterTabs extends watchMixin(FilterCollectionElement) {
+export class FilterTabs extends watchMixin(FilterElement) {
     @property()
     multi = false;
     @property()

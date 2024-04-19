@@ -2,11 +2,10 @@ import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import {
     AccentColor,
-    FilterCollection,
-    FilterCollectionElement,
+    FilterElement,
     Label
-} from "components/search/filter_collection_element";
-import { DodonaElement } from "components/meta/dodona_element";
+} from "components/search/filter_element";
+import { FilterCollection } from "components/search/filter_collection";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -21,7 +20,7 @@ import { DodonaElement } from "components/meta/dodona_element";
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-search-token")
-export class SearchToken extends FilterCollectionElement {
+export class SearchToken extends FilterElement {
     @property({ type: String })
     color: AccentColor;
 
@@ -49,20 +48,18 @@ export class SearchToken extends FilterCollectionElement {
  *
  * @element d-search-tokens
  *
- * @prop {Record<string, FilterCollection>} filterCollections - the filter collections for which tokens should be shown
+ * @prop {FilterOptions[]} filters - the list of filterOptions for which tokens could be created
+ * @prop {string[]} hide - the list of filter params that should never be shown
  */
 @customElement("d-search-tokens")
-export class SearchTokens extends DodonaElement {
-    @property( { type: Array })
-    filterCollections: Record<string, FilterCollection>;
-
+export class SearchTokens extends FilterCollection {
     render(): TemplateResult {
-        if (!this.filterCollections) {
+        if (!this.visibleFilters) {
             return html``;
         }
 
         return html`
-            ${Object.values(this.filterCollections).map(c => html`
+            ${this.visibleFilters.map(c => html`
                 <d-search-token
                     .labels=${c.data}
                     .color=${c.color}

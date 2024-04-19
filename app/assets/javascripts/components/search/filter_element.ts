@@ -4,7 +4,7 @@ import { DodonaElement } from "components/meta/dodona_element";
 
 export type Label = {id: string, name: string, count?: number};
 export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" | "teal" | "orange" | "brown" | "blue-gray";
-export type FilterCollection = {
+export type FilterOptions = {
     data: Label[],
     multi: boolean,
     color: AccentColor,
@@ -21,7 +21,7 @@ export type FilterCollection = {
  * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
-export class FilterCollectionElement extends DodonaElement {
+export class FilterElement extends DodonaElement {
     @property()
     param: string;
     @property({ type: Boolean })

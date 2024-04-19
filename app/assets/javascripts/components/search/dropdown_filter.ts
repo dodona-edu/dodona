@@ -1,13 +1,12 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import {
-    FilterCollection,
     Label,
-    FilterCollectionElement,
+    FilterElement,
     AccentColor
-} from "components/search/filter_collection_element";
+} from "components/search/filter_element";
 import { i18n } from "i18n/i18n";
-import { DodonaElement } from "components/meta/dodona_element";
+import { FilterCollection } from "components/search/filter_collection";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -22,11 +21,9 @@ import { DodonaElement } from "components/meta/dodona_element";
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-dropdown-filter")
-export class DropdownFilter extends FilterCollectionElement {
+export class DropdownFilter extends FilterElement {
     @property({ type: String })
     color: AccentColor;
-    @property()
-    type: string;
 
     @property({ state: true })
     filter = "";
@@ -49,7 +46,7 @@ export class DropdownFilter extends FilterCollectionElement {
             <div class="dropdown dropdown-filter">
                 <a class="token token-bordered" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     ${this.getSelectedLabels().map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color} left-icon"></i>`)}
-                    ${i18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
+                    ${i18n.t(`js.search.filter.${this.param}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
@@ -81,26 +78,23 @@ export class DropdownFilter extends FilterCollectionElement {
  *
  * @element d-dropdown-filters
  *
- * @prop {[string, FilterCollection][]} filterCollections - the list of filterCollections for which a dropdown should be displayed
+ * @prop {FilterOptions[]} filters - the list of filterOptions for which a dropdown should be displayed
+ * @prop {string[]} hide - the list of filter params that should be hidden
  */
 @customElement("d-dropdown-filters")
-export class DropdownFilters extends DodonaElement {
-    @property( { type: Array })
-    filterCollections: [string, FilterCollection][];
-
+export class DropdownFilters extends FilterCollection {
     render(): TemplateResult {
-        if (!this.filterCollections) {
+        if (!this.visibleFilters) {
             return html``;
         }
 
         return html`
-            ${this.filterCollections.map(([type, c]) => html`
+            ${this.visibleFilters.map(c => html`
                 <d-dropdown-filter
                     .labels=${c.data}
                     .color=${c.color}
                     .param=${c.param}
                     .multi=${c.multi}
-                    .type=${type}
                 >
                 </d-dropdown-filter>
             `)}

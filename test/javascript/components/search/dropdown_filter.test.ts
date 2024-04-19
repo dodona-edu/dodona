@@ -4,7 +4,7 @@ import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByLabelText, screen } from "@testing-library/dom";
 import { html } from "lit/development";
-import { Label } from "components/search/filter_collection_element";
+import { Label } from "../../../../app/assets/javascripts/components/search/filter_element";
 import { searchQueryState } from "state/SearchQuery";
 
 describe("DropdownFilter", () => {

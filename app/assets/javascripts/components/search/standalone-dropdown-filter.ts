@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { FilterElement, Label } from "components/search/filter_element";
 import { html, TemplateResult } from "lit";
 import { watchMixin } from "components/meta/watch_mixin";
 
@@ -14,7 +14,7 @@ import { watchMixin } from "components/meta/watch_mixin";
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-standalone-dropdown-filter")
-export class StandaloneDropdownFilter extends watchMixin(FilterCollectionElement) {
+export class StandaloneDropdownFilter extends watchMixin(FilterElement) {
     @property()
     multi = false;
     @property({ type: String })

@@ -73,8 +73,6 @@ class Activity < ApplicationRecord
   scope :content_pages, -> { where(type: ContentPage.name) }
   scope :exercises, -> { where(type: Exercise.name) }
 
-  scope :in_repository, ->(repository) { where repository: repository }
-
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   search_by :name_nl, :name_en, :path
   filterable_by :status, value_check: ->(value) { value.in? statuses }
@@ -83,7 +81,8 @@ class Activity < ApplicationRecord
   filterable_by :type, name_hash: ->(value) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
   filterable_by :judge, column: 'judge_id', name_hash: ->(values) { Judge.where(id: values).to_h { |j| [j.id, j.name] } }
   filterable_by :labels, multi: true, associations: :labels, column: 'labels.name'
-  scope :is_draft, ->(value = true) { where(draft: value) }
+  filterable_by :repository, column: 'repository_id', name_hash: ->(values) { Repository.where(id: values).to_h { |r| [r.id, r.name] } }
+  filterable_by :draft, name_hash: ->(values) { { true => I18n.t('activities.index.filters.draft'), false => I18n.t('activities.index.filters.not_draft') } }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'

@@ -36,14 +36,14 @@ export class DropdownFilter extends FilterElement {
         return this.showFilter ? this.labels.filter(s => s.name.toLowerCase().includes(this.filter.toLowerCase())) : this.labels;
     }
 
-    render(): TemplateResult {
-        if (this.labels.length === 0) {
-            return html``;
-        }
+    get disabled(): boolean {
+        return this.labels.length === 0 || (!this.multi && this.labels.length === 1);
+    }
 
+    render(): TemplateResult {
         return html`
             <div class="dropdown dropdown-filter">
-                <a class="token token-bordered" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="token token-bordered ${this.disabled ? "disabled" : ""}" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
                     ${this.getSelectedLabels().map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color} left-icon"></i>`)}
                     ${i18n.t(`js.search.filter.${this.param}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
@@ -59,9 +59,9 @@ export class DropdownFilter extends FilterElement {
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
-                                    <label class="form-check-label" for="check-${this.param}-${s.id}">
+                                    <label class="form-check-label" for="check-${this.param}-${s.id}" style="min-width: max-content">
                                         ${s.name}
-                                        ${s.count ? html`<span class="badge colored-secondary rounded-pill float-end">${s.count}</span>` : ""}
+                                        ${s.count ? html`<span class="badge colored-secondary rounded-pill float-end ms-1">${s.count}</span>` : ""}
                                     </label>
                                 </div>
                             </span></li>

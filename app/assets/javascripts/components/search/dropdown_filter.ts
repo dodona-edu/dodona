@@ -40,7 +40,6 @@ export class DropdownFilter extends FilterElement {
         if (this.labels.length === 0) {
             return html``;
         }
-        console.log(this.labels);
 
         return html`
             <div class="dropdown dropdown-filter">

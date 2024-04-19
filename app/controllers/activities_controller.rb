@@ -19,14 +19,14 @@ class ActivitiesController < ApplicationController
   protect_from_forgery except: %i[media input_service_worker]
 
   has_scope :by_filter, as: 'filter'
-  has_scope :by_description_languages, as: 'description_languages', type: :array
-  has_scope :by_popularities, as: 'popularity', type: :array
   has_filter :programming_language, 'red'
   has_filter :type, 'deep-purple'
   has_filter :judge, 'red'
   has_filter :labels, 'purple', multi: true
   has_filter :repository, 'blue-gray'
   has_filter :draft, 'indigo'
+  has_filter :popularity, 'pink'
+  has_filter :description_languages, 'orange', multi: true
 
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Series.find(controller.params[:id]).course if controller.params[:id]

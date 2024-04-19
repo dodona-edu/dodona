@@ -89,19 +89,31 @@ class Activity < ApplicationRecord
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language
   }
+  define_singleton_method('description_languages_filter_options') do
+    count_by_description_languages = unscoped.where(id: select(:id)).select(
+      'COUNT(CASE WHEN description_nl_present THEN 1 ELSE NULL END) AS nl',
+      'COUNT(CASE WHEN description_en_present THEN 1 ELSE NULL END) AS en'
+    )
+    count_by_description_languages.first.attributes.except('id').map do |lang, count|
+      { id: lang, name: I18n.t("js.#{lang}"), count: count }
+    end.filter { |lang| lang[:count].positive? }
+  end
   scope :by_popularity, lambda { |popularity|
     thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]
     filtered = where("series_count >= #{thresholds[:min]}")
     filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
     filtered
   }
-  scope :by_popularities, lambda { |popularities|
-    filtered = by_popularity(popularities.first)
-    popularities.drop(1).each do |popularity|
-      filtered = filtered.or(by_popularity(popularity))
-    end
-    filtered
-  }
+  define_singleton_method('popularity_filter_options') do
+    count_by_popularity = unscoped.where(id: select(:id)).select(
+      POPULARITY_THRESHOLDS.map do |popularity, thresholds|
+        "COUNT(CASE WHEN series_count >= #{thresholds[:min]} #{thresholds[:max].present? ? "AND series_count <= #{thresholds[:max]}" : ''} THEN 1 ELSE NULL END) AS #{popularity}"
+      end
+    )
+    count_by_popularity.first.attributes.except('id').map do |popularity, count|
+      { id: popularity, name: human_enum_name(:popularity, popularity), count: count }
+    end.filter { |popularity| popularity[:count].positive? }
+  end
 
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }

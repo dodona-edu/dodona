@@ -73,7 +73,14 @@ class ActivityReadStatesController < ApplicationController
 
     if params[:course_id]
       @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) if @user.blank? && current_user&.course_admin?(@course)
+      if @user.blank? && current_user&.course_admin?(@course)
+        @filters = [{
+          param: 'course_labels',
+          multi: true,
+          data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
+          color: 'orange'
+        }]
+      end
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]

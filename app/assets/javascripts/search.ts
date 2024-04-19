@@ -128,9 +128,9 @@ class Search {
             });
     }
 
-    public updateFilters(filterOptions: FilterOptions[]): void {
+    public updateFilters(filterOptions: FilterOptions[] | undefined): void {
         this.filterCollections.forEach(collection => {
-            collection.filters = filterOptions;
+            collection.filters = filterOptions || [];
         });
     }
 }

@@ -63,11 +63,11 @@ gem 'diff-lcs', '~>1.5'
 gem 'autoprefixer-rails', '~>10.4.16'
 
 # saml authentication
-gem 'devise', '~>4.9.3'
+gem 'devise', '~>4.9.4'
 gem 'ruby-saml', '~> 1.16.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.1.1'
+gem 'omniauth-google-oauth2', '~> 1.1.2'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.21.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.3'
+gem 'nokogiri', '~> 1.16.4'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.3'
+gem 'faker', '~> 3.3.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.5'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.1.0'
+  gem 'mocha', '~> 2.2.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.18.1'
+  gem 'selenium-webdriver', '~> 4.19.0'
 end
 
 group :test do
@@ -183,7 +183,7 @@ group :development do
   gem 'rubocop-rails', '~> 2.24.1'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.9.0'
+  gem 'letter_opener', '~> 1.10.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

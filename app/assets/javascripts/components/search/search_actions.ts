@@ -29,8 +29,14 @@ export class SearchActions extends DodonaElement {
     filterParam = undefined;
 
     async performAction(action: SearchAction): Promise<boolean> {
-        if (!action.action && !action.js) {
+        if (!action.action && !action.js && !action.url) {
             return true;
+        }
+
+        if (action.url) {
+            const url: string = searchQueryState.addParametersToUrl(action.url);
+            window.open(url);
+            return false;
         }
 
         if (!action.action) {
@@ -67,11 +73,9 @@ export class SearchActions extends DodonaElement {
         return this.actions.filter(action => action.filterValue === undefined || action.filterValue === filterValue);
     }
 
-
     render(): TemplateResult[] {
         return this.filteredActions.map(action => html`
             <a class="btn btn-outline with-icon ml-2"
-               href='${action.url ? action.url : "#"}'
                @click=${() => this.performAction(action)}
             >
                 <i class='mdi mdi-${action.icon} mdi-18'></i>

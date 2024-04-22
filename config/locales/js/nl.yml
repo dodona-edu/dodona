@@ -241,6 +241,7 @@ nl:
         courses: Cursussen
         question_states: Toestanden
         popularity: Populariteit
+        search_options: Opties
       single:
         labels: Label
         programming_languages: Programmeertaal

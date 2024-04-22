@@ -202,6 +202,7 @@
           "programming_languages": "Programming Languages",
           "question_states": "Statuses",
           "repositories": "Repositories",
+          "search_options": "Options",
           "statuses": "Statuses"
         },
         "search": "Search",
@@ -732,6 +733,7 @@
           "programming_languages": "Programmeertalen",
           "question_states": "Toestanden",
           "repositories": "Repository's",
+          "search_options": "Opties",
           "statuses": "Statussen"
         },
         "search": "Zoeken",

@@ -16,7 +16,7 @@
     "@babel/plugin-transform-runtime": "^7.24.3",
     "@babel/preset-env": "^7.24.4",
     "@codemirror/autocomplete": "^6.16.0",
-    "@codemirror/commands": "^6.3.3",
+    "@codemirror/commands": "^6.5.0",
     "@codemirror/language": "^6.10.1",
     "@codemirror/language-data": "^6.5.1",
     "@codemirror/state": "^6.4.1",

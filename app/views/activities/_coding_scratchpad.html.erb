@@ -10,8 +10,10 @@
       &nbsp; <%= t('.title', programming_language: activity.programming_language.name.titleize) %>
   </h4>
   <div class="flex-spacer"></div>
-  <button class="btn-close btn-close-white" id="scratchpad-offcanvas-close-btn"
-  data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>"></button>
+  <button class="btn btn-icon btn-icon-inverted" id="scratchpad-offcanvas-close-btn"
+  data-bs-dismiss="offcanvas" aria-label="<%= t '.close' %>">
+    <i class="mdi mdi-close mdi-24"></i>
+  </button>
   </div>
   <div class="offcanvas-body scratchpad-margin">
     <div class="row scratchpad-body">

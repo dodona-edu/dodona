@@ -21,9 +21,9 @@ class ActivitiesController < ApplicationController
   has_scope :by_filter, as: 'filter'
   has_filter :programming_language, 'red'
   has_filter :type, 'deep-purple'
-  has_filter :judge, 'red'
+  has_filter :judge_id, 'red'
   has_filter :labels, 'purple', multi: true
-  has_filter :repository, 'blue-gray'
+  has_filter :repository_id, 'blue-gray'
   has_filter :draft, 'indigo'
   has_filter :popularity, 'pink'
   has_filter :description_languages, 'orange', multi: true
@@ -68,6 +68,11 @@ class ActivitiesController < ApplicationController
                   else
                     policy_scope(Activity).order_by_popularity(:DESC)
                   end
+
+    if params[:repository_id]
+      @repository = Repository.find(params[:repository_id])
+      @activities = @activities.by_repoitory_id(params[:repository_id])
+    end
 
     unless @activities.empty?
       @filters = filters(@activities)

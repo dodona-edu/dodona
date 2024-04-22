@@ -2215,10 +2215,10 @@
     "@types/d3-transition" "*"
     "@types/d3-zoom" "*"
 
-"@types/dragula@^3.7.4":
-  version "3.7.4"
-  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.4.tgz#b374f6a2a4fcf4b885581a783cfd9a010510fd67"
-  integrity sha512-cjg5MNq8CnXyJTScWM2t9fc0FC77rrBxYBs6/R3FiwW9NOTdHPB2nJq52I0tfxiBnhFb451S2j5ok4wW7sKmvA==
+"@types/dragula@^3.7.5":
+  version "3.7.5"
+  resolved "https://registry.yarnpkg.com/@types/dragula/-/dragula-3.7.5.tgz#a9707f38f8de6f3d307122d6084118d0ae99c226"
+  integrity sha512-jojr2JVJB8DawAKXApGnollMvVOMyiMKpchH8gLeoExx35Eq0BQ4WgAiAHoBoEn7h/9eDrIl0yz//cM6ALIJbg==
 
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"

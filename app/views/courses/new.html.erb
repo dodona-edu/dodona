@@ -69,7 +69,7 @@
         <div id="choose-step" class="panel-collapse collapse" role="tabpanel">
           <div class="panel-body">
             <div class="stepper-part">
-              <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(copy_courses: true), eager: true, institutions: Institution.all}) %>
+              <%= render(partial: 'layouts/searchbar', locals: {baseUrl: courses_path(copy_courses: true), eager: true}) %>
               <div id="courses-table-wrapper"></div>
             </div>
           </div>

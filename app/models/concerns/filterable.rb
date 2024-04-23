@@ -36,6 +36,7 @@ module Filterable
         names = name_hash.call(count.keys)
 
         count.map { |key, value| { id: key.to_s, name: names[key].to_s, count: value } }
+             .filter { |option| option[:name].present? }
       end
     end
   end

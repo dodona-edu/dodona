@@ -6,7 +6,7 @@
       </div>
       <div class="card-supporting-text">
         <d-filter-tabs labels="<%= @tabs.to_json %>"></d-filter-tabs>
-        <%= render partial: 'layouts/searchbar', locals: {labels: @labels, no_dropdown_for: ["judge"]} %>
+        <%= render partial: 'layouts/searchbar', locals: {labels: @labels, no_dropdown_for: ["judge_id"]} %>
         <div id="activities-table-wrapper">
           <%= render partial: 'activities_table', locals: {activities: @activities} %>
         </div>

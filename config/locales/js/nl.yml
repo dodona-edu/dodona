@@ -231,18 +231,18 @@ nl:
       filter:
         labels: Labels
         programming_language: Programmeertaal
-        judge: Judge
-        repository: Repository
-        institution: Onderwijsinstelling
+        judge_id: Judge
+        repository_id: Repository
+        institution_id: Onderwijsinstelling
         course_labels: Gebruikerlabels
         status: Status
         type: Type
         description_languages: Talen
-        course: Cursus
+        course_id: Cursus
         question_state: Toestand
         popularity: Populariteit
         search_options: Opties
-        exercise: Oefening
+        exercise_id: Oefening
         draft: "Concept"
     saved_annotation:
       title: Titel

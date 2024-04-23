@@ -22,6 +22,7 @@
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
+  include Filterable
 
   belongs_to :course
   belongs_to :submission
@@ -58,6 +59,7 @@ class Annotation < ApplicationRecord
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
   scope :by_exercise, ->(exercise_id) { where(submission: { exercise_id: exercise_id }) }
+  filterable_by :course_id, name_hash: ->(values) { Course.where(id: values).to_h { |c| [c.id, c.name] } }
 
   scope :order_by_annotation_text, ->(direction) { reorder(annotation_text: direction) }
   scope :order_by_created_at, ->(direction) { reorder(created_at: direction) }

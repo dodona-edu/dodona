@@ -231,17 +231,17 @@ en:
       filter:
         labels: Labels
         programming_language: Programming Language
-        judge: Judge
-        repository: Repository
-        institution: Institution
+        judge_id: Judge
+        repository_id: Repository
+        institution_id: Institution
         course_labels: Member labels
         status: Status
         type: Type
         description_languages: Languages
-        course: Course
+        course_id: Course
         question_state: Status
         popularity: Popularity
-        exercise: Exercise
+        exercise_id: Exercise
         draft: "Draft"
     saved_annotation:
       title: Title

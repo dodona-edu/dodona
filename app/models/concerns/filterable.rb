@@ -22,7 +22,7 @@ module Filterable
     def filterable_by(name, column: name, associations: [], multi: false, value_check: ->(value) { true }, name_hash: ->(values) { values.to_h { |value| [value, value] } })
       scope "by_#{name}", lambda { |value|
         if value_check.call(value) && (!multi || value.is_a?(Array))
-          scope = includes(associations).where(column => value)
+          scope = joins(associations).where(column => value)
           scope = scope.group(:id).having("COUNT(DISTINCT(#{column})) = ?", value.uniq.length) if multi
           scope
         else

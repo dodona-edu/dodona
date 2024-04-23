@@ -12,6 +12,7 @@
 #
 
 class CourseMembership < ApplicationRecord
+  include Filterable
   enum status: { pending: 0, course_admin: 1, student: 2, unsubscribed: 3 }
 
   belongs_to :course
@@ -28,15 +29,11 @@ class CourseMembership < ApplicationRecord
   after_save :invalidate_caches
   after_save :delete_unused_course_labels
 
-  scope :by_institution, ->(institution) { where(user: User.by_institution(institution)) }
   scope :by_permission, ->(permission) { where(user: User.by_permission(permission)) }
   scope :by_filter, ->(filter) { where(user: User.by_filter(filter)) }
-  scope :by_course_labels, lambda { |course_labels|
-    includes(:course_labels)
-      .where(course_labels: { name: course_labels })
-      .group(:id)
-      .having('COUNT(DISTINCT(course_membership_labels.course_label_id)) = ?', course_labels.uniq.length)
-  }
+  filterable_by :course_labels, associations: :course_labels, column: 'course_labels.name', multi: true
+  filterable_by :institution_id, associations: { user: [:institution] }, column: 'institutions.id',
+                name_hash: ->(values) { Institution.find(values).to_h { |i| [i.id, i.name] } }
 
   scope :order_by_status_in_course_and_name, ->(direction) { joins(:user).merge(User.order_by_status_in_course_and_name(direction)) }
   scope :order_by_progress, ->(direction, course) { joins(:user).merge(User.order_by_progress(direction, course)) }

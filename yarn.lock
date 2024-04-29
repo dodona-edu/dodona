@@ -1886,10 +1886,10 @@
     "@open-wc/dedupe-mixin" "^1.4.0"
     lit "^3.0.0"
 
-"@open-wc/testing-helpers@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-3.0.0.tgz#cb9b142838347f7d916718da332effa0dc32ba93"
-  integrity sha512-zkR39b7ljH/TqZgzBB9ekHKg1OLvR/JQYCEaW76V0RuASfV/vkgx2xfUQNe8DlEOLOetRZ3agFqssEREF45ClA==
+"@open-wc/testing-helpers@^3.0.1":
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/@open-wc/testing-helpers/-/testing-helpers-3.0.1.tgz#f356690fc3495467503a30a2172288aa8baef6f8"
+  integrity sha512-hyNysSatbgT2FNxHJsS3rGKcLEo6+HwDFu1UQL6jcSQUabp/tj3PyX7UnXL3H5YGv0lJArdYLSnvjLnjn3O2fw==
   dependencies:
     "@open-wc/scoped-elements" "^3.0.2"
     lit "^2.0.0 || ^3.0.0"

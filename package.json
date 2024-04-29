@@ -60,11 +60,12 @@
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
-    "@open-wc/testing-helpers": "^2.3.2",
+    "@open-wc/testing-helpers": "^3.0.1",
     "@testing-library/dom": "^9.3.4",
     "@testing-library/user-event": "^14.5.2",
     "@typescript-eslint/eslint-plugin": "^5.62.0",
     "@typescript-eslint/parser": "^5.62.0",
+    "@webcomponents/scoped-custom-element-registry": "^0.0.9",
     "babel-plugin-istanbul": "^6.1.1",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",

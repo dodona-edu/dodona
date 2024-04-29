@@ -1,7 +1,7 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { ShadowlessLitElement } from "components/meta/shadowless_lit_element";
 import { FilterCollection, FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { DodonaElement } from "components/meta/dodona_element";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -30,7 +30,9 @@ export class SearchToken extends FilterCollectionElement {
             ${ this.getSelectedLabels().map( label => html`
                 <div class="token accent-${this.color(label)}">
                     <span class="token-label">${label.name}</span>
-                    <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>×</a>
+                    <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>
+                        <i class="mdi mdi-close mdi-18"></i>
+                    </a>
                 </div>
             `)}
         `;
@@ -45,7 +47,7 @@ export class SearchToken extends FilterCollectionElement {
  * @prop {Record<string, FilterCollection>} filterCollections - the filter collections for which tokens should be shown
  */
 @customElement("d-search-tokens")
-export class SearchTokens extends ShadowlessLitElement {
+export class SearchTokens extends DodonaElement {
     @property( { type: Array })
     filterCollections: Record<string, FilterCollection>;
 

@@ -397,21 +397,7 @@ class ActivitiesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should retrieve input serviceworker script' do
-    @instance = create :exercise
-    get input_service_worker_activity_path(@instance)
-
-    assert_response :success
-    assert_equal('text/javascript', response.content_type)
-
-    series = create :series
-    series.exercises << @instance
-
-    get course_activity_input_service_worker_path(series.course, @instance)
-
-    assert_response :success
-    assert_equal('text/javascript', response.content_type)
-
-    get course_series_activity_input_service_worker_path(series.course, series, @instance)
+    get input_service_worker_path
 
     assert_response :success
     assert_equal('text/javascript', response.content_type)
@@ -802,6 +788,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
     repo = create :repository, :git_stubbed
     repo.admins << user
     exercise = create :exercise, repository: repo, draft: true
+    create :correct_submission, exercise: exercise
 
     put activity_url(exercise), params: { activity: { draft: false } }
 
@@ -835,6 +822,40 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     assert exercise.reload.draft
     assert_equal 'new name', exercise.name_en
+  end
+
+  test 'should not show activity if not in series' do
+    right_course = create :course
+    right_series = create :series, course: right_course
+    right_exercise = create :exercise
+    right_series.exercises << right_exercise
+
+    get course_series_activity_url(right_course, right_series, right_exercise)
+
+    assert_response :success
+
+    wrong_series = create :series, course: right_course
+
+    get course_series_activity_url(right_course, wrong_series, right_exercise)
+
+    assert_redirected_to course_activity_url(right_course, right_exercise)
+  end
+
+  test 'should not show activity if series not in course' do
+    right_course = create :course
+    right_series = create :series, course: right_course
+    right_exercise = create :exercise
+    right_series.exercises << right_exercise
+
+    get course_series_activity_url(right_course, right_series, right_exercise)
+
+    assert_response :success
+
+    wrong_course = create :course
+
+    get course_series_activity_url(wrong_course, right_series, right_exercise)
+
+    assert_redirected_to root_url
   end
 end
 
@@ -987,5 +1008,47 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
     activities_json = response.parsed_body
 
     assert_equal [other_exercise.id, exercise.id], activities_json.pluck('id')
+  end
+
+  test 'activities for hidden series should only be shown with token' do
+    course = courses(:course1)
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden
+
+    sign_in users(:student)
+
+    get series_activities_url(series, format: :json)
+
+    # should return 403
+    assert_response :forbidden
+
+    get series_activities_url(series, format: :json, token: series.access_token)
+
+    assert_response :success
+    activities_json = response.parsed_body
+
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
+  end
+
+  test 'admin should be able to see hidden series' do
+    course = courses(:course1)
+    exercise = exercises(:python_exercise)
+    other_exercise = create :exercise
+    series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden
+
+    sign_in users(:staff)
+
+    get series_activities_url(series, format: :json)
+
+    assert_response :forbidden
+
+    course.administrating_members << users(:staff)
+    get series_activities_url(series, format: :json)
+
+    assert_response :success
+    activities_json = response.parsed_body
+
+    assert_equal [exercise.id, other_exercise.id], activities_json.pluck('id')
   end
 end

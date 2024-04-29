@@ -1,0 +1,13 @@
+<div class="alert alert-secondary">
+  <h2 class="card-title-text mb-3">
+    <%= t ".title" %>
+  </h2>
+  <% if current_user.student? %>
+    <p>
+      <%= t ".rights_request_html" %>
+    </p>
+  <% end %>
+  <p>
+    <%= t ".documentation_html" %>
+  </p>
+</div>

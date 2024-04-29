@@ -13,6 +13,10 @@
   --d-on-primary-container-rgb: #{color.red($primary-90)}, #{color.green($primary-90)}, #{color.blue($primary-90)};
   --d-banner: #{$primary-20};
   --d-on-banner: #{$primary-90};
+  --d-primary-surface: #{$primary-10};
+  --d-primary-surface-container: #{$primary-20};
+  --d-primary-outline: #{$primary-60};
+  --d-primary-outline-variant: #{$primary-30};
 
   // secondary
   --d-secondary: #{$secondary-80};
@@ -20,12 +24,20 @@
   --d-on-secondary: #{$secondary-20};
   --d-on-secondary-container: #{$secondary-90};
   --d-secondary-rgb: #{color.red($secondary-80)}, #{color.green($secondary-80)}, #{color.blue($secondary-80)};
+  --d-secondary-surface: #{$secondary-10};
+  --d-secondary-surface-container: #{$secondary-20};
+  --d-secondary-outline: #{$secondary-60};
+  --d-secondary-on-surface: #{$secondary-90};
 
   // tertiary
   --d-tertiary: #{$tertiary-80};
   --d-tertiary-container: #{$tertiary-30};
   --d-on-tertiary: #{$tertiary-20};
   --d-on-tertiary-container: #{$tertiary-90};
+  --d-tertiary-surface: #{$tertiary-10};
+  --d-tertiary-surface-container: #{$tertiary-20};
+  --d-tertiary-outline: #{$tertiary-60};
+  --d-tertiary-on-surface: #{$tertiary-90};
 
   // neutral
   --d-surface: #{$neutral-20};

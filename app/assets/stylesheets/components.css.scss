@@ -20,13 +20,13 @@
 @import "components/table-toolbar.css.scss";
 @import "components/toast.css.scss";
 @import "components/token.css.scss";
-@import "components/tutor.css.scss";
 @import "components/visualisations.css.scss";
 @import "components/search_field.css.scss";
 @import "components/dropdown-filter.css.scss";
 @import "components/courselabel-edit.css.scss";
 @import "components/action-card.css.scss";
 @import "components/progress_bar.css.scss";
+@import "components/details.css.scss";
 
 .flex-spacer {
   flex-grow: 1;
@@ -127,10 +127,10 @@ blockquote {
   color: var(--d-on-surface-muted);
 }
 
-.blur {
+.blur:not(:hover) {
   filter: blur(5px);
 
-  &:hover {
-    filter: none;
+  .progress-chart line {
+    stroke: var(--d-divider);
   }
 }

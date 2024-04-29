@@ -13,7 +13,6 @@ nl:
     activity-added-failed: Leeractiviteit toevoegen mislukt
     activity-removed-success: Leeractiviteit verwijderd
     activity-removed-failed: Leeractiviteit verwijderen mislukt
-    tutor-failed: Er ging iets fout bij het laden van de online python tutor
     copy-to-clipboard: Klik om te kopiëren
     copy-success: Gekopieerd!
     copy-fail: Druk Ctrl-C om te kopiëren
@@ -187,8 +186,8 @@ nl:
     score_item:
       error: Fout bij bijwerken
     coding_scratchpad:
-      copy_code: Kopieer naar Dodona
-      overwrite_code: Wil je de code in het kladblok overschrijven met je laatste aanpassingen?
+      copy_to_submit: Naar indienbox
+      overwrite_code: Wil je de code in de sandbox overschrijven met je laatste aanpassingen?
     submission_motivational_message:
       1: "👾 Monsterprogrammeur! Je hebt die oefening helemaal verslonden!"
       2: "🚀 Super programmeur! Je hebt die oefening gelanceerd als een raket!"
@@ -242,6 +241,7 @@ nl:
         courses: Cursussen
         question_states: Toestanden
         popularity: Populariteit
+        search_options: Opties
       single:
         labels: Label
         programming_languages: Programmeertaal
@@ -257,6 +257,7 @@ nl:
         question_states: Toestand
         popularity: Populariteit
         exercises: Oefening
+        draft: "Concept"
     saved_annotation:
       title: Titel
       annotation_text: Tekst
@@ -297,10 +298,10 @@ nl:
     sign_in_search_bar:
       institution_search: "Typ om jouw school te vinden"
       log_in: Aanmelden
-    course_labels_search_bar:
+    labels_search_bar:
       placeholder: "Label"
       add: "Toevoegen"
-      edit_explanation: "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan."
+      edit_explanation: "Voeg een bestaand label toe of maak een nieuwe aan."
     progress_bar:
       series-admin-progress:
         key: ".singular |||| .plural"
@@ -324,3 +325,10 @@ nl:
       dark: Donker
       system: Systeem
       theme: Stijl
+    feedbacks:
+      submission:
+        submit: Deze oplossing indienen
+    export:
+      ready_html: De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href="%{url}">hier</a>.
+    draft: Concept
+    popularity: Populariteit

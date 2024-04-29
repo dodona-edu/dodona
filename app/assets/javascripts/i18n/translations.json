@@ -169,8 +169,8 @@
         "copy-to-clipboard": "Copy code to clipboard"
       },
       "coding_scratchpad": {
-        "copy_code": "Copy to Dodona",
-        "overwrite_code": "Do you want to overwrite the code in the scratchpad with your latest changes?"
+        "copy_to_submit": "Finalize and submit",
+        "overwrite_code": "Do you want to overwrite the code in the sandbox with your latest changes?"
       },
       "configured-institution": "the configured institution",
       "copy-fail": "Press Ctrl-C to copy",
@@ -181,17 +181,13 @@
       "course-removed-failed": "Removing course failed",
       "course-removed-success": "Course removed",
       "course_labels": "Member labels",
-      "course_labels_search_bar": {
-        "add": "Add",
-        "edit_explanation": "Add an existing userlabel or create a new one.",
-        "placeholder": "Label"
-      },
       "courses": "Courses",
       "ctimeseries_desc": "This graph shows the evolution of the percentage of students that correctly solved each exercise.",
       "ctimeseries_title": "Users with at least one correct submission",
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "draft": "Draft",
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -206,6 +202,7 @@
           "programming_languages": "Programming Languages",
           "question_states": "Statuses",
           "repositories": "Repositories",
+          "search_options": "Options",
           "statuses": "Statuses"
         },
         "search": "Search",
@@ -214,6 +211,7 @@
           "course_labels": "Member label",
           "courses": "Course",
           "description_languages": "Language",
+          "draft": "Draft",
           "event_types": "Event type",
           "exercises": "Exercise",
           "institutions": "Institution",
@@ -228,13 +226,26 @@
       },
       "en": "English",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "Export is ready. The download should start automatically. If not, click <a href=\"%{url}\">this link</a> to start the download."
+      },
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
+      "feedbacks": {
+        "submission": {
+          "submit": "Submit this solution"
+        }
+      },
       "institutions": "Institutions",
       "judges": "Judges",
       "label-undeletable": "This label can't be deleted because it was set in the dirconfig file of a parent directory of the learning activity.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Add",
+        "edit_explanation": "Add an existing label or create a new one.",
+        "placeholder": "Label"
+      },
       "loading": "Loading...",
       "machine_annotation": {
         "external_url": "more information"
@@ -277,6 +288,7 @@
       "no_data": "There is not enough data to create a graph.",
       "no_selection": "You must select at least one item before being able to download solutions.",
       "options": "Options",
+      "popularity": "Popularity",
       "programming_languages": "Programming Languages",
       "progress_bar": {
         "series-admin-progress": {
@@ -421,7 +433,6 @@
       "timeseries_desc": "This graph shows on which moments the students submitted the most solutions.",
       "timeseries_title": "Submissions over time",
       "total": "total",
-      "tutor-failed": "Something went wrong while loading the online python tutor",
       "unfavorite-course-do": "Unfavorite",
       "unfavorite-course-failed": "Unfavoriting course failed",
       "unfavorite-course-succeeded": "Unfavorited course",
@@ -689,8 +700,8 @@
         "copy-to-clipboard": "Kopieer code naar klembord"
       },
       "coding_scratchpad": {
-        "copy_code": "Kopieer naar Dodona",
-        "overwrite_code": "Wil je de code in het kladblok overschrijven met je laatste aanpassingen?"
+        "copy_to_submit": "Naar indienbox",
+        "overwrite_code": "Wil je de code in de sandbox overschrijven met je laatste aanpassingen?"
       },
       "configured-institution": "de ingestelde onderwijsinstelling",
       "copy-fail": "Druk Ctrl-C om te kopiëren",
@@ -701,17 +712,13 @@
       "course-removed-failed": "Cursus verwijderen mislukt",
       "course-removed-success": "Cursus verwijderd",
       "course_labels": "Gebruikerlabels",
-      "course_labels_search_bar": {
-        "add": "Toevoegen",
-        "edit_explanation": "Voeg een bestaand gebruikerlabel toe of maak een nieuwe aan.",
-        "placeholder": "Label"
-      },
       "courses": "Cursussen",
       "ctimeseries_desc": "Deze grafiek geeft de evolutie weer van het percentage studenten dat een oefening correct had.",
       "ctimeseries_title": "Gebruikers met minstens één correcte oplossing",
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "draft": "Concept",
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",
@@ -726,6 +733,7 @@
           "programming_languages": "Programmeertalen",
           "question_states": "Toestanden",
           "repositories": "Repository's",
+          "search_options": "Opties",
           "statuses": "Statussen"
         },
         "search": "Zoeken",
@@ -734,6 +742,7 @@
           "course_labels": "Gebruikerlabel",
           "courses": "Cursus",
           "description_languages": "Taal",
+          "draft": "Concept",
           "event_types": "Event type",
           "exercises": "Oefening",
           "institutions": "Onderwijsinstelling",
@@ -748,13 +757,26 @@
       },
       "en": "Engels",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href=\"%{url}\">hier</a>."
+      },
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",
+      "feedbacks": {
+        "submission": {
+          "submit": "Deze oplossing indienen"
+        }
+      },
       "institutions": "Onderwijsinstellingen",
       "judges": "Judges",
       "label-undeletable": "Dit label kan niet verwijderd worden omdat het werd ingesteld in het dirconfig bestand van een bovenliggende map.",
       "labels": "Labels",
+      "labels_search_bar": {
+        "add": "Toevoegen",
+        "edit_explanation": "Voeg een bestaand label toe of maak een nieuwe aan.",
+        "placeholder": "Label"
+      },
       "loading": "Aan het laden...",
       "machine_annotation": {
         "external_url": "meer informatie"
@@ -797,6 +819,7 @@
       "no_data": "Er is niet genoeg data om een grafiek te maken.",
       "no_selection": "Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.",
       "options": "Opties",
+      "popularity": "Populariteit",
       "programming_languages": "Programmeertalen",
       "progress_bar": {
         "series-admin-progress": {
@@ -941,7 +964,6 @@
       "timeseries_desc": "Deze grafiek toont op welke momenten het meest aan een bepaalde oefening werd gewerkt.",
       "timeseries_title": "Ingediende oplossingen over tijd",
       "total": "totaal aantal",
-      "tutor-failed": "Er ging iets fout bij het laden van de online python tutor",
       "unfavorite-course-do": "Verwijder uit favorieten",
       "unfavorite-course-failed": "Cursus uit favorieten verwijderen mislukt",
       "unfavorite-course-succeeded": "Cursus verwijderd uit favorieten",

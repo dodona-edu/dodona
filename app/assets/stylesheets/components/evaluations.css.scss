@@ -4,6 +4,8 @@
     top: calc(var(--d-navbar-height) + 20px) !important;
     min-height: 100px;
     max-height: calc(100vh - (var(--d-navbar-height) + 20px));
+    padding-bottom: var(--d-footer-height);
+    margin-bottom: calc(var(--d-footer-height) * -1);
     overflow-y: auto;
   }
 }

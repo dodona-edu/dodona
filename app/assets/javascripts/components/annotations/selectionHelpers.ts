@@ -5,12 +5,26 @@ import { submissionState } from "state/Submissions";
 
 /**
  * @param node The node to get the offset for
- * @param offset The offset within the current node
+ * @param childIndex The offset within the current node
  *
  * @returns The offset in number of characters from the start of the `closest` PRE element
  * If the element is not inside a PRE element, returns undefined
  */
-export function getOffset(node: Node, offset: number): number | undefined {
+export function getOffset(node: Node, childIndex: number): number | undefined {
+    let offset = 0;
+    if (node.nodeType === Node.TEXT_NODE) {
+        offset += childIndex;
+    } else {
+        let precedingText = "";
+        for (let i = 0; i < node.childNodes.length && i < childIndex; i++) {
+            const child = node.childNodes[i];
+            if (child.nodeType !== Node.COMMENT_NODE) {
+                precedingText += child.textContent;
+            }
+        }
+        offset += precedingText.length;
+    }
+
     if (node.nodeName === "PRE") {
         return offset;
     }
@@ -19,31 +33,25 @@ export function getOffset(node: Node, offset: number): number | undefined {
     if (!parent) {
         return undefined;
     }
+    const indexInParent = Array.from(parent.childNodes).indexOf(node as ChildNode);
 
-    let precedingText = "";
-    for (const child of parent.childNodes) {
-        if (child === node) {
-            break;
-        }
-        if (child.nodeType !== Node.COMMENT_NODE) {
-            precedingText += child.textContent;
-        }
-    }
-    return getOffset(parent, offset + precedingText.length);
+    const offsetInParent = getOffset(parent, indexInParent);
+    return offsetInParent !== undefined ? offsetInParent + offset: undefined;
 }
 
 /**
  * This function translates a selection into a range within the code listing.
  * If the selection is not inside a code listing row, returns undefined.
  *
- * Multiline selections will always return the whole line for each line in the selection.
+ * If exact is false, the range will be expanded to include the entire row if the selection spans multiple rows.
  * In this case the selection param might be modified to match the returned range.
  *
  * @param selection The selection to get the range for
+ * @param exact If false, the range will be expanded to include the entire row if the selection spans multiple rows
  * @returns The range of the selection in the code listing
  * Unless both the start and end of the selection are inside a code listing row, returns undefined
  */
-export function selectedRangeFromSelection(selection: Selection): SelectedRange | undefined {
+export function selectedRangeFromSelection(selection: Selection, exact = false): SelectedRange | undefined {
     // Selection.anchorNode does not behave as expected in firefox, see https://bugzilla.mozilla.org/show_bug.cgi?id=1420854
     // So we use the startContainer of the range instead
     const anchorNode = selection.getRangeAt(0).startContainer;
@@ -94,6 +102,11 @@ export function selectedRangeFromSelection(selection: Selection): SelectedRange 
             columns: anchorColumn - focusColumn,
         };
     }
+
+    if ( exact ) {
+        return range;
+    }
+
     const codeLines = submissionState.code.split("\n");
 
     // If we have selected nothing on the last row, we don't want to include that row
@@ -156,7 +169,7 @@ function rangeInAnnotation(range: Range): boolean {
     return annotation !== null;
 }
 
-function anyRangeInAnnotation(selection: Selection): boolean {
+export function anyRangeInAnnotation(selection: Selection): boolean {
     for (let i = 0; i < selection.rangeCount; i++) {
         if (rangeInAnnotation(selection.getRangeAt(i))) {
             return true;

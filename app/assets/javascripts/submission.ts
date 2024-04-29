@@ -1,4 +1,5 @@
 import { getParentByClassName } from "utilities";
+import { i18n } from "i18n/i18n";
 
 function initSubmissionShow(parentClass: string, mediaPath: string, token: string): void {
     function init(): void {
@@ -80,6 +81,15 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 }
             });
         });
+
+        // scroll to tab top after tab is shown
+        document.querySelectorAll(".feedback-table a[data-bs-toggle=\"tab\"]").forEach(tabEl => {
+            tabEl.addEventListener("shown.bs.tab", event => {
+                const shownTabId = (event.target as HTMLElement).getAttribute("href");
+                const shownTab = document.querySelector(shownTabId);
+                shownTab.scrollIntoView();
+            });
+        });
     }
 
     init();
@@ -118,7 +128,7 @@ function initCorrectSubmissionToNextLink(status: string): void {
     const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
     message.innerHTML = `
         <div class="callout callout-success mt-0" role="alert">
-            <span>${I18n.t(congrats)}</span>
+            <span>${i18n.t(congrats)}</span>
             <a href="${link.href}" class="m-1">
                 ${link.dataset.title}
             </a>

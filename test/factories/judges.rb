@@ -11,6 +11,7 @@
 #  renderer     :string(255)      not null
 #  remote       :string(255)
 #  clone_status :integer          default("queued"), not null
+#  deprecated   :boolean          default(FALSE), not null
 #
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"

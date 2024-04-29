@@ -15,7 +15,7 @@ class TempRepository < GitRepository
   REMOTES_LOCATION = Rails.root.join('test/remotes')
 
   def initialize
-    super Dir.mktmpdir
+    super(Dir.mktmpdir)
     init_git
   end
 

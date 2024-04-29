@@ -2,6 +2,10 @@ nl:
   activerecord:
     errors:
       models:
+        activity:
+          no_correct_submission: "Er moet minstens één correcte oplossing zijn, vooraleer de oefening kan worden gepubliceerd."
+          not_valid: "De oefening moet een naam en een beschrijving hebben."
+          invalid_config: "De JSON-configuratie is ongeldig."
         course_membership:
           at_least_one_admin: Een cursus moet altijd minstens één cursusbeheerder hebben.
         api_token:
@@ -85,6 +89,7 @@ nl:
         image: Docker image
         path: Padnaam
         renderer: Renderklasse
+        deprecated: Deprecated
       repository:
         name: Naam
         remote: Clone URL

@@ -54,10 +54,10 @@ class ActivitiesTest < ApplicationSystemTestCase
   end
 
   test 'should not break on complex unicode characters' do
-    Exercise.any_instance.stubs(:boilerplate).returns('`<script>alert("😀")</script>`')
+    Exercise.any_instance.stubs(:boilerplate).returns('`<script>alert("😀\\n")</script>\\n\n\\0`')
     visit exercise_path(id: @instance.id)
 
-    assert_text '`<script>alert("😀")</script>`'
+    assert_text '`<script>alert("😀\\n")</script>\\n\n\\0`'
 
     create :submission, exercise: @instance, user: @user, status: :correct, code: 'print("😀")'
     visit exercise_path(id: @instance.id)
@@ -66,6 +66,6 @@ class ActivitiesTest < ApplicationSystemTestCase
     assert_text 'Restore the initial code.'
     find('a', text: 'Restore the initial code.').click
 
-    assert_text '`<script>alert("😀")</script>`'
+    assert_text '`<script>alert("😀\\n")</script>\\n\n\\0`'
   end
 end

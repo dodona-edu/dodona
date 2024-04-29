@@ -153,10 +153,10 @@ class FeedbackTableRenderer
       # summary of tests
       @builder.div(class: 'tab-summary') do
         if groups_total > 0
-          @builder.span(class: 'tab-summary-text') do
+          @builder.div(class: 'tab-summary-text d-none d-md-block') do
             @builder.text! "#{groups_correct}/#{groups_total} #{I18n.t('submissions.show.correct_group').downcase}:"
           end
-          @builder.div(class: 'tab-summary-icons') do
+          @builder.div(class: 'tab-summary-icons d-none d-md-block') do
             t[:groups]&.each_with_index do |g, i|
               @builder.div(class: g[:accepted] ? 'correct' : 'wrong') do
                 @builder.a(href: "#tab-#{tab_i + 1}-group-#{i + 1}", title: "##{i + 1}") do
@@ -460,30 +460,7 @@ class FeedbackTableRenderer
     @builder.script do
       escaped = escape_javascript(@code.strip)
       @builder << 'dodona.ready.then(function() {'
-      @builder << "document.body.append(document.getElementById('tutor'));"
       @builder << "dodona.initTutor(\"#{escaped}\");});"
-    end
-
-    # Tutor HTML
-    @builder.div(id: 'tutor', class: 'tutormodal') do
-      @builder.div(id: 'info-modal', class: 'modal fade', 'data-backdrop': true, tabindex: -1) do
-        @builder.div(class: 'modal-dialog modal-xl modal-fullscreen-lg-down tutor') do
-          @builder.div(class: 'modal-content') do
-            @builder.div(class: 'modal-header') do
-              @builder.h4(class: 'modal-title') {}
-              @builder.div(class: 'icons') do
-                @builder.button(id: 'fullscreen-button', type: 'button', class: 'btn btn-icon') do
-                  @builder.i('', class: 'mdi mdi-fullscreen')
-                end
-                @builder.button(type: 'button', class: 'btn btn-icon', 'data-bs-dismiss': 'modal') do
-                  @builder.i('', class: 'mdi mdi-close')
-                end
-              end
-            end
-            @builder.div(class: 'modal-body') {}
-          end
-        end
-      end
     end
   end
 end

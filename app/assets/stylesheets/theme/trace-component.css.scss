@@ -1,0 +1,22 @@
+tc-trace, tc-trace * {
+  --tc-surface-color: var(--d-surface);
+  --tc-on-surface-color: var(--d-on-surface);
+  --tc-surface-container-color: var(--d-primary-surface-container);
+  --tc-outline-color: var(--d-primary-outline);
+  --tc-outline-variant-color: var(--d-primary-outline-variant);
+  --tc-primary-color: var(--d-primary);
+
+  // secondary
+  --tc-secondary-surface-color: var(--d-secondary-surface);
+  --tc-secondary-on-surface-color: var(--d-secondary-on-surface);
+  --tc-secondary-surface-container-color: var(--d-secondary-surface-container);
+  --tc-secondary-outline-color: var(--d-secondary-outline);
+  --tc-secondary-color: var(--d-secondary);
+
+  // tertiary
+  --tc-tertiary-surface-color: var(--d-tertiary-surface);
+  --tc-tertiary-on-surface-color: var(--d-tertiary-on-surface);
+  --tc-tertiary-surface-container-color: var(--d-tertiary-surface-container);
+  --tc-tertiary-outline-color: var(--d-tertiary-outline);
+  --tc-tertiary-color: var(--d-tertiary);
+}

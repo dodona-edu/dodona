@@ -1,4 +1,4 @@
-import { closeBrackets, closeBracketsKeymap, autocompletion } from "@codemirror/autocomplete";
+import { closeBrackets, closeBracketsKeymap, autocompletion, acceptCompletion } from "@codemirror/autocomplete";
 import { defaultKeymap, history, historyKeymap, indentWithTab } from "@codemirror/commands";
 import {
     bracketMatching,
@@ -25,11 +25,11 @@ import { tags } from "@lezer/highlight";
 import { Extension } from "@codemirror/state";
 
 declare type EditorEventHandler = (event: FocusEvent, view: EditorView) => boolean | void;
-
+const tabCompletionKeyMap = [{ key: "Tab", run: acceptCompletion }];
 
 // A custom theme for CodeMirror that applies the same CSS as Rouge does,
 // meaning we can use our existing themes.
-const rougeStyle = HighlightStyle.define([
+export const rougeStyle = HighlightStyle.define([
     { tag: tags.comment, class: "c" },
     { tag: tags.lineComment, class: "c" },
     { tag: tags.blockComment, class: "cm" },
@@ -132,6 +132,7 @@ const editorSetup = (() => [
         ...defaultKeymap,
         ...historyKeymap,
         ...foldKeymap,
+        ...tabCompletionKeyMap,
         indentWithTab
     ]),
     syntaxHighlighting(rougeStyle, {

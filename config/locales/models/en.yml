@@ -2,6 +2,10 @@ en:
   activerecord:
     errors:
       models:
+        activity:
+          no_correct_submission: "At least one correct submission is required, before the exercise can be published."
+          not_valid: "The exercise must have a name and a description."
+          invalid_config: "The JSON configuration is invalid."
         course_membership:
           at_least_one_admin: The course should always have at least one course administrator.
         api_token:
@@ -84,6 +88,7 @@ en:
         image: Docker image
         path: Path
         renderer: Rendering class
+        deprecated: Deprecated
       repository:
         name: Name
         remote: Clone URL

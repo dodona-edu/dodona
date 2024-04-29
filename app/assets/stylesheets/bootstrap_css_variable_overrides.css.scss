@@ -38,10 +38,11 @@
   --bs-danger-rgb: var(--d-danger-rgb);
   --bs-light: $neutral-90;
   --bs-dark: $neutral-25;
+  --bs-secondary-text-emphasis: var(--d-on-secondary-container);
+  --bs-secondary-bg-subtle: var(--d-secondary-container);
 
   // not overwritten
   // --bs-primary-text-emphasis: #052c65;
-  // --bs-secondary-text-emphasis: #2b2f32;
   // --bs-success-text-emphasis: #0a3622;
   // --bs-info-text-emphasis: #055160;
   // --bs-warning-text-emphasis: #664d03;
@@ -113,6 +114,10 @@
   --bs-body-font-family: var(--bs-font-sans-serif);
   --bs-body-font-size: var(--d-font-size-base);
   --bs-body-font-weight: 400;
+
+  .offcanvas {
+    --bs-offcanvas-width: calc(100% - 56px);
+  }
 
   .pagination {
     --bs-pagination-active-bg: var(--d-primary);

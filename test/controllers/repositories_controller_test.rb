@@ -200,6 +200,8 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     @remote.update_json('echo/config.json', 'make echo private') do |config|
       config.update 'access' => 'private'
     end
+
+    @second_remote = local_remote('exercises/lasagna')
   end
 
   def find_echo
@@ -222,16 +224,16 @@ class RepositoryGitControllerTest < ActionDispatch::IntegrationTest
     user = users(:staff)
     judge = create :judge, :git_stubbed
     sign_in user
-    post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
+    post repositories_path, params: { repository: { name: 'test', remote: @second_remote.path, judge_id: judge.id } }
   end
 
   test 'should email during repository creation' do
     user = users(:staff)
     judge = create :judge, :git_stubbed
     sign_in user
-    @remote.update_file('echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
+    @second_remote.update_file('exercises/extra/echo/config.json', 'break config') { '(╯°□°)╯︵ ┻━┻' }
     assert_difference 'ActionMailer::Base.deliveries.size', +1 do
-      post repositories_path, params: { repository: { name: 'test', remote: @remote.path, judge_id: judge.id } }
+      post repositories_path, params: { repository: { name: 'test', remote: @second_remote.path, judge_id: judge.id } }
     end
   end
 

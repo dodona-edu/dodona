@@ -9,19 +9,20 @@
    end %>
 <% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
 
-<div class="card card-supporting-text series"
+<div class="card series"
      id="series-card-<%= series.id %>"
-     data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>">
-  <div class="card-subtitle">
-    <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
-    <div class="hidden-print">
-      <%= render partial: 'series/series_status', locals: {loaded: loaded, series: series, user: user} %>
-    </div>
-    <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
-      <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && loaded ? series.completed_before_deadline?(user) : false} %>
-    </h4>
-    <div class="flex-spacer"></div>
-    <div class="card-subtitle-actions d-flex">
+     data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>"
+     data-loaded="<%= loaded %>">
+  <div class="card-supporting-text">
+    <div class="card-subtitle">
+      <a class="anchor" id="<%= series.anchor %>" name="series-<%= series.id %>"></a>
+      <div class="hidden-print">
+        <%= render partial: 'series/series_status', locals: {loaded: loaded, series: series, user: user} %>
+      </div>
+      <h4 class="ellipsis-overflow" title="<%= series.name %>"><%= series.name %><br>
+        <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && loaded ? series.completed_before_deadline?(user) : false} %>
+      </h4>
+      <div class="flex-spacer"></div>
       <% if policy(series).statistics? %>
         <div id="series-view-<%= series.id %>" class="btn-group btn-toggle nav d-none d-sm-flex" role="tablist">
           <button class="btn active" data-bs-target="#series-content-<%= series.id %>" data-bs-toggle="tab" role="tab" title="<%= t("series.show.series_overview") %>">
@@ -41,12 +42,148 @@
           </button>
         </div>
       <% end %>
-      <div class="dropdown">
-        <a class="btn btn-icon dropdown-toggle series-dropdown hidden-print" data-bs-toggle="dropdown">
-          <i class="mdi mdi-dots-vertical"></i>
-        </a>
-        <ul class="dropdown-menu dropdown-menu-end">
-          <% if current_user&.course_admin?(series.course) %>
+      <% unless current_user&.course_admin?(series.course) %>
+        <div class="card-subtitle-actions d-flex">
+          <% if series.evaluation.present? && policy(series.evaluation).overview? %>
+            <%= link_to overview_evaluation_path(series.evaluation), class: "btn with-icon btn-outline" do %>
+              <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
+            <% end %>
+          <% end %>
+          <div class="dropdown">
+            <a class="btn btn-icon dropdown-toggle series-dropdown hidden-print" data-bs-toggle="dropdown">
+              <i class="mdi mdi-dots-vertical"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <% if policy(series).overview? %>
+                <li>
+                  <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
+                    <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
+                  <% end %>
+                </li>
+              <% end %>
+              <% if policy(series).download_submissions? %>
+                <li>
+                  <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
+                    <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <% if current_user&.course_admin?(series.course) && series.hidden? %>
+      <div class="alert alert-info hidden-print">
+        <%= t "series.show.series_not_visible" %>
+        <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
+      </div>
+    <% end %>
+    <% if current_user&.course_admin?(series.course) && series.closed? %>
+      <div class="alert alert-info hidden-print">
+        <%= t "series.show.series_not_accessible" %>
+        <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
+      </div>
+    <% end %>
+    <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
+      <div class="alert alert-info hidden-print">
+        <%= t "series.show.activities_not_visible" %>
+        <%= link_to t("series.show.make_visible_text"), series_path(series, series: {activities_visible: true}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
+      </div>
+    <% end %>
+    <div class="tab-content">
+      <% if policy(series).statistics? %>
+        <div class="tab-pane" id="series-graph-<%= series.id %>">
+          <div class="graph-header">
+            <div class="graph-title">
+              <span></span>
+              <a class="hidden-print" >
+                <i class="mdi mdi-information graph-info"></i>
+              </a>
+            </div>
+          </div>
+          <div class="daterange-picker" id="daterange-<%= series.id %>">
+            <div class="input-group date-picker" id="scope-start-<%= series.id %>" data-wrap=true data-enable-time=true>
+              <input type="text" class="form-control" data-input autocomplete="off">
+              <button class="btn btn-icon" data-toggle><i class='mdi mdi-calendar-start'></i></button>
+            </div>
+            <div class="input-group date-picker" id="scope-end-<%= series.id %>" data-wrap=true data-enable-time=true>
+              <input type="text" class="form-control" data-input autocomplete="off">
+              <button class="btn btn-icon" data-toggle><i class='mdi mdi-calendar-end'></i></button>
+            </div>
+          </div>
+          <div class="stats-container" id="stats-container-<%= series.id %>"></div>
+        </div>
+      <% end %>
+
+      <div class="series-content tab-pane active" id="series-content-<%= series.id %>">
+        <div class="series-description">
+          <%= cache series do %>
+            <%= markdown(series.description) %>
+          <% end %>
+        </div>
+
+        <% if policy(series).overview? && series.activity_count > 0 %>
+          <div class="series-activities-table-wrapper">
+            <% if loaded %>
+              <%= render partial: 'activities/series_activities_table', locals: {
+                  series: series,
+                  activities: series.activities,
+                  get_activity_path: get_activity_path,
+                  user: user
+              } %>
+            <% else %>
+              <table class="table activity-table table-resource skeleton-table">
+                <tr class="">
+                  <th class='status-icon'></th>
+                  <th class='type-icon'></th>
+                  <th><%= t "activities.index.activity_title" %></th>
+                  <th class='count d-none d-sm-table-cell'>
+                    <%= t "activities.index.class_progress" %>
+                  </th>
+                  <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
+                  <th class='status-icon'></th>
+                </tr>
+                <% series.activities.each do |activity| %>
+                  <tr>
+                    <td></td><td></td>
+                    <td><%= activity.name %></td>
+                    <td class="sk-p"></td>
+                    <td class="sk-s"></td>
+                    <td><i class="sk-i mdi mdi-chevron-right"></i></td>
+                  </tr>
+                <% end %>
+              </table>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% if current_user&.course_admin?(series.course) %>
+    <div class="card-actions card-border">
+      <div class="float-end">
+        <% if policy(series).scoresheet? %>
+          <%= link_to scoresheet_series_path(series), class: "btn with-icon btn-text" do %>
+            <i class='mdi mdi-view-list mdi-18'></i> <%= t("series.show.series_scoresheet") %>
+          <% end %>
+        <% end %>
+        <% if policy(series).create_evaluation? %>
+          <% if series.evaluation.present? %>
+            <%= link_to evaluation_path(series.evaluation), class: "btn with-icon btn-filled" do %>
+              <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.show.view_evaluation") %>
+            <% end %>
+          <% else %>
+            <%= link_to new_evaluation_path(series_id: series.id), class: "btn with-icon btn-text" do %>
+              <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <div class="dropdown d-inline-block">
+          <a class="btn btn-icon dropdown-toggle series-dropdown hidden-print" data-bs-toggle="dropdown">
+            <i class="mdi mdi-dots-vertical"></i>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
             <% if policy(series).edit? %>
               <li>
                 <%= link_to edit_series_path(series), class: "dropdown-item" do %>
@@ -57,26 +194,13 @@
             <% if policy(series).destroy? %>
               <li>
                 <%
-                    confirm = t('series.delete.confirm')
-                    if series.evaluation.present?
-                      confirm += " " + t('series.delete.confirm_evaluation')
-                    end
-                 %>
+                  confirm = t('series.delete.confirm')
+                  if series.evaluation.present?
+                    confirm += " " + t('series.delete.confirm_evaluation')
+                  end
+                %>
                 <%= link_to series_path(series), method: :delete, data: {confirm: confirm}, class: "dropdown-item" do %>
                   <i class='mdi mdi-delete mdi-18'></i> <%= t("series.delete.title") %>
-                <% end %>
-              </li>
-            <% end %>
-            <% if policy(series).create_evaluation? %>
-              <li>
-                <% if series.evaluation.present? %>
-                  <%= link_to evaluation_path(series.evaluation), class: "dropdown-item" do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.show.view_evaluation") %>
-                  <% end %>
-                <% else %>
-                  <%= link_to new_evaluation_path(series_id: series.id), class: "dropdown-item" do %>
-                    <i class='mdi mdi-message-draw mdi-18'></i> <%= t("evaluations.new.create_evaluation") %>
-                  <% end %>
                 <% end %>
               </li>
             <% end %>
@@ -85,13 +209,6 @@
                 <%= link_to series_path(series, token: series.access_token), class: "dropdown-item" do %>
                   <i class="mdi mdi-link mdi-18"></i>
                   <%= t 'series.show.token_link' %>
-                <% end %>
-              </li>
-            <% end %>
-            <% if policy(series).scoresheet? %>
-              <li>
-                <%= link_to scoresheet_series_path(series), class: "dropdown-item" do %>
-                  <i class='mdi mdi-view-list mdi-18'></i> <%= t("series.show.series_scoresheet") %>
                 <% end %>
               </li>
             <% end %>
@@ -110,118 +227,25 @@
               </li>
             <% end %>
             <li role="separator" class="dropdown-divider"></li>
-          <% end %>
-          <% if policy(series).overview? %>
-            <li>
-              <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
-                <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if policy(series).download_submissions? %>
-            <li>
-              <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
-                <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
-              <% end %>
-            </li>
-          <% end %>
-          <% if series.evaluation.present? && policy(series.evaluation).overview? %>
-            <li>
-              <%= link_to overview_evaluation_path(series.evaluation), class: "dropdown-item" do %>
-                <i class='mdi mdi-message-draw mdi-18'></i> <%= t("series.show.evaluation_overview") %>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
+            <% if policy(series).overview? %>
+              <li>
+                <%= link_to overview_series_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
+                  <i class='mdi mdi-eye mdi-18'></i> <%= t("series.show.show_overview") %>
+                <% end %>
+              </li>
+            <% end %>
+            <% if policy(series).download_submissions? %>
+              <li>
+                <%= link_to series_exports_path(series, token: (series.access_token if series.hidden?), user_id: (user.id if user&.id)), class: "dropdown-item" do %>
+                  <i class='mdi mdi-cloud-download mdi-18'></i> <%= t("series.show.download_submissions") %>
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
       </div>
     </div>
-  </div>
-  <% if current_user&.course_admin?(series.course) && series.hidden? %>
-    <div class="alert alert-info hidden-print">
-      <%= t "series.show.series_not_visible" %>
-      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
-    </div>
   <% end %>
-  <% if current_user&.course_admin?(series.course) && series.closed? %>
-    <div class="alert alert-info hidden-print">
-      <%= t "series.show.series_not_accessible" %>
-      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
-    </div>
-  <% end %>
-  <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
-    <div class="alert alert-info hidden-print">
-      <%= t "series.show.activities_not_visible" %>
-      <%= link_to t("series.show.make_visible_text"), series_path(series, series: {activities_visible: true}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
-    </div>
-  <% end %>
-  <div class="tab-content">
-    <% if policy(series).statistics? %>
-      <div class="tab-pane" id="series-graph-<%= series.id %>">
-        <div class="graph-header">
-          <div class="graph-title">
-            <span></span>
-            <a class="hidden-print" >
-              <i class="mdi mdi-information graph-info"></i>
-            </a>
-          </div>
-        </div>
-        <div class="daterange-picker" id="daterange-<%= series.id %>">
-          <div class="input-group date-picker" id="scope-start-<%= series.id %>" data-wrap=true data-enable-time=true>
-            <input type="text" class="form-control" data-input autocomplete="off">
-            <button class="btn btn-icon" data-toggle><i class='mdi mdi-calendar-start'></i></button>
-          </div>
-          <div class="input-group date-picker" id="scope-end-<%= series.id %>" data-wrap=true data-enable-time=true>
-            <input type="text" class="form-control" data-input autocomplete="off">
-            <button class="btn btn-icon" data-toggle><i class='mdi mdi-calendar-end'></i></button>
-          </div>
-        </div>
-        <div class="stats-container" id="stats-container-<%= series.id %>"></div>
-      </div>
-    <% end %>
-
-    <div class="series-content tab-pane active" id="series-content-<%= series.id %>">
-      <div class="series-description">
-        <%= cache series do %>
-          <%= markdown(series.description) %>
-        <% end %>
-      </div>
-
-      <% if policy(series).overview? && series.activity_count > 0 %>
-        <div class="series-activities-table-wrapper">
-          <% if loaded %>
-            <%= render partial: 'activities/series_activities_table', locals: {
-                series: series,
-                activities: series.activities,
-                get_activity_path: get_activity_path,
-                user: user
-            } %>
-          <% else %>
-            <table class="table activity-table table-resource skeleton-table">
-              <tr class="">
-                <th class='status-icon'></th>
-                <th class='type-icon'></th>
-                <th><%= t "activities.index.activity_title" %></th>
-                <th class='count d-none d-sm-table-cell'>
-                  <%= t "activities.index.class_progress" %>
-                </th>
-                <th class='status ellipsis-overflow' title="<%= t "activities.index.status" %>"><%= t "activities.index.status" %></th>
-                <th class='status-icon'></th>
-              </tr>
-              <% series.activities.each do |activity| %>
-                <tr>
-                  <td></td><td></td>
-                  <td><%= activity.name %></td>
-                  <td class="sk-p"></td>
-                  <td class="sk-s"></td>
-                  <td><i class="sk-i mdi mdi-chevron-right"></i></td>
-                </tr>
-              <% end %>
-            </table>
-          <% end %>
-        </div>
-      <% end %>
-    </div>
-  </div>
 </div>
 
 <script type="text/javascript">

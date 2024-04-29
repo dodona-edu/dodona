@@ -1,3 +1,6 @@
+<% content_for :javascripts do %>
+  <% javascript_include_tag 'label_search_bar' %>
+<% end %>
 <%= form_for(activity.becomes(Activity), :url => activity_scoped_path(activity: activity, course: @course, series: @series), :html => {:class => 'form-horizontal'}) do |f| %>
   <% if activity.errors.any? %>
    <div class="callout callout-danger" id="error_explanation">
@@ -23,8 +26,13 @@
   </div>
   <div class="field form-group row">
     <%= f.label :labels, :class => "col-sm-3 col-12 col-form-label" %>
-    <div class="col-sm-6 col-12"><%= f.text_field :labels, class: 'form-control', disable: !f.permission?(:labels), value: activity.labels.map(&:name).join(','), placeholder: t(".labels") %></div>
-    <span class="help-block offset-sm-3 col-sm-6 col-12"><%= t '.labels_delimiter' %></span>
+    <div class="col-sm-6 col-12">
+      <d-labels-search-bar
+        labels="<%= activity.repository.labels.map{|l| {id: l.id, name: l.name}}.to_json %>"
+        selected_labels="<%=  activity.labels.map(&:name).to_json %>"
+        name="activity[labels]"
+      ></d-labels-search-bar>
+    </div>
   </div>
   <div class="field form-group row">
     <label class="col-sm-3 col-12 col-form-label"><%= t ".edit_activity" %></label>

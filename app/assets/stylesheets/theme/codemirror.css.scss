@@ -25,9 +25,9 @@
     background: var(--d-surface-variant) !important;
   }
 
-  .cm-cursor {
+  .cm-cursor, .cm-dropCursor {
     // Sets the color of the cursor.
-    border-left: 1.2px solid var(--d-secondary);
+    border-left: 1.2px solid var(--d-secondary) !important;
   }
 
   .cm-tooltip {
@@ -41,5 +41,32 @@
       color: var(--d-on-secondary) !important;
     }
   }
+
+  .cm-panels {
+    background-color: var(--d-background);
+    color: var(--d-on-background);
+
+    &.cm-panels-top {
+      border-bottom: 2px solid var(--d-divider);
+    }
+
+    &.cm-panels-bottom {
+      border-top: 2px solid var(--d-divider);
+    }
+  }
+
+  .cm-searchMatch {
+    background-color: rgba(var(--d-secondary-rgb), 0.3);
+  }
+
+  .cm-searchMatch.cm-searchMatch-selected {
+    background-color: rgba(var(--d-surface-variant-rgb), 0.3);
+    outline: 1px solid var(--d-outline);
+  }
+
+  .cm-selectionMatch {
+    background-color: rgba(var(--d-secondary-rgb), 0.3);
+  }
+
   /* stylelint-enable selector-class-pattern */
 }

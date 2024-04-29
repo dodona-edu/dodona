@@ -274,6 +274,10 @@ class Course < ApplicationRecord
     series.visible.reject { |s| s.completed?(user: user) }
   end
 
+  def incomplete_unreleased_feedbacks
+    feedbacks.joins(:evaluation).where(evaluation: { released: false }).incomplete
+  end
+
   def formatted_year
     Course.format_year year
   end
@@ -391,22 +395,6 @@ class Course < ApplicationRecord
       series: sorted_series,
       hash: hash
     }
-  end
-
-  def labels_csv
-    sorted_course_memberships = course_memberships
-                                .where.not(status: %i[unsubscribed pending])
-                                .includes(:user)
-                                .order(status: :asc)
-                                .order(Arel.sql('users.permission ASC'))
-                                .order(Arel.sql('users.last_name ASC'), Arel.sql('users.first_name ASC'))
-    data = CSV.generate(force_quotes: true) do |csv|
-      csv << %w[id username last_name first_name email labels]
-      sorted_course_memberships.each do |cm|
-        csv << [cm.user.id, cm.user.username, cm.user.last_name, cm.user.first_name, cm.user.email, cm.course_labels.map(&:name).join(';')]
-      end
-    end
-    { filename: "#{name}-users-labels.csv", data: data }
   end
 
   def self.format_year(year)

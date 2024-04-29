@@ -49,6 +49,11 @@ en:
       confidential: Confidential information
       access-link: Secret link
       access-help: If the visibility of the series is set to hidden, students will get access to it when using this secret link.
+      tips:
+        title: Tip
+        ideal_activity_count: "Dodona works best if series contain between 3 and 10 exercises."
+        increase_activities: "Consider adding more exercises below."
+        decrease_activities: "Adding more can affect loading times."
     delete:
       title: Delete series
       confirm: Please confirm you want to delete this series.

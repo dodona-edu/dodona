@@ -47,7 +47,7 @@ Rails.application.configure do
   config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :terser
+  # config.assets.js_compressor = :terser
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
   config.assets.compile = false
@@ -134,6 +134,12 @@ Rails.application.configure do
                           env['action_controller.instance'].is_a?(PagesController) &&
                             env['action_controller.instance'].action_name == 'create_contact' &&
                             exception.is_a?(ActionController::InvalidAuthenticityToken)
+                        },
+                        ignore_notifier_if: {
+                          email: lambda { |env, exception|
+                            exception.is_a?(InternalErrorException) ||
+                              exception.is_a?(SlowRequestException)
+                          }
                         },
                         email: {
                             email_prefix: '[Dodona] ',

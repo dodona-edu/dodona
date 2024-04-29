@@ -33,6 +33,7 @@ Rails.application.routes.draw do
     get '/data' => 'pages#data'
     get '/privacy' => 'pages#privacy'
     get '/profile' => 'pages#profile', as: 'profile'
+    get '/publications' => 'pages#publications'
     get '/support-us' => 'pages#support'
 
     get '/contact' => 'pages#contact'
@@ -78,7 +79,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exports, except: %i[show edit update new destroy create] do
+    resources :exports, except: %i[edit update new destroy create] do
       get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'
       post 'users/:id', on: :collection, to: 'exports#create_user_export'
       get 'courses/:id', on: :collection, to: 'exports#new_course_export', as: 'courses'
@@ -89,19 +90,14 @@ Rails.application.routes.draw do
 
     resources :courses do
       resources :series, only: %i[new index] do
-        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-          get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-        end
+        resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
         resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       end
-      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable] do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
-      end
+      resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable]
       resources :activities, only: %i[show edit update], concerns: %i[mediable readable submitable infoable], path: '/exercises', as: 'exercises'
       resources :submissions, only: [:index]
       resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
-        get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
       end
       member do
@@ -125,7 +121,6 @@ Rails.application.routes.draw do
 
     resources :activities, only: %i[index show edit update], concerns: %i[readable mediable submitable infoable] do
       member do
-        get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
         scope 'description/:token/' do
           constraints host: Rails.configuration.sandbox_host do
             root to: 'activities#description', as: 'description'
@@ -269,6 +264,8 @@ Rails.application.routes.draw do
       get 'timeseries', to: 'statistics#timeseries'
       get 'cumulative_timeseries', to: 'statistics#cumulative_timeseries'
     end
+
+    get 'inputServiceWorker.js', to: 'activities#input_service_worker', as: 'input_service_worker'
   end
 
 # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

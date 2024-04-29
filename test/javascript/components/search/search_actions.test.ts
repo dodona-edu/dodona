@@ -1,5 +1,5 @@
 import "components/search/search_actions";
-import { SearchAction, SearchActions, SearchOption } from "components/search/search_actions";
+import { SearchAction, SearchActions } from "components/search/search_actions";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
@@ -12,42 +12,23 @@ describe("SearchActions", () => {
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
         searchQueryState.arrayQueryParams.clear();
-        const actions: (SearchOption | SearchAction)[] = [
-            { text: "foo", search: { foo: "bar", fool: "bars" } },
+        const actions: SearchAction[] = [
             { text: "bar", icon: "replay", confirm: "Are you sure?", action: "https://test.dodona.be/destroy" },
             { icon: "test", text: "js-test", js: "window.alert('test')" },
             { icon: "link", text: "link-test", url: "https://test.dodona.be" },
+            { icon: "play", text: "bars", filterValue: "bar", url: "https://test.dodona.be" },
         ];
         await fixture(`<div class="toasts"></div>`);
         searchActions = await fixture(html`
             <d-search-actions .actions=${actions}
+                              filter-param="foo"
             ></d-search-actions>`);
     });
 
-    it("should render the search options/actions", () => {
-        expect(screen.queryByText("foo")).not.toBeNull();
+    it("should render the search actions", () => {
         expect(screen.queryByText("bar")).not.toBeNull();
         expect(screen.queryByText("js-test")).not.toBeNull();
         expect(screen.queryByText("link-test")).not.toBeNull();
-    });
-
-    it("should show a checkbox for the search options", () => {
-        expect(screen.queryByLabelText("foo")).not.toBeNull();
-    });
-
-    test("the search options should be checked when they are active", async () => {
-        const checkbox = screen.queryByLabelText("foo") as HTMLInputElement;
-        expect(checkbox.checked).toBe(false);
-        await userEvent.click(checkbox);
-        expect(checkbox.checked).toBe(true);
-        expect(searchQueryState.queryParams.get("foo")).toBe("bar");
-        expect(searchQueryState.queryParams.get("fool")).toBe("bars");
-        searchQueryState.queryParams.set("foo", undefined);
-        await nextFrame();
-        expect(checkbox.checked).toBe(false);
-        searchQueryState.queryParams.set("foo", "bar");
-        await nextFrame();
-        expect(checkbox.checked).toBe(true);
     });
 
     test("clicking a js action should execute the js", async () => {
@@ -58,7 +39,16 @@ describe("SearchActions", () => {
     });
 
     test("clicking a link action should navigate to the url", async () => {
-        expect(screen.getByText("link-test").closest("a").href).toBe("https://test.dodona.be/");
+        jest.spyOn(window, "open").mockImplementation(() => window);
+        await userEvent.click(screen.queryByText("link-test"));
+        expect(window.open).toHaveBeenCalledWith("https://test.dodona.be");
+    });
+
+    test("clicking a link action should add query params to the url", async () => {
+        jest.spyOn(window, "open").mockImplementation(() => window);
+        searchQueryState.queryParams.set("foo", "bar");
+        await userEvent.click(screen.queryByText("link-test"));
+        expect(window.open).toHaveBeenCalledWith("https://test.dodona.be/?foo=bar");
     });
 
     test("clicking a confirm action should show a confirmation dialog", async () => {
@@ -106,5 +96,15 @@ describe("SearchActions", () => {
                 "Content-Type": "application/json",
             },
         });
+    });
+
+    test("actions with a filterValue should only be shown when the filterOaram is set to the filterValue", async () => {
+        expect(screen.queryByText("bars")).toBeNull();
+        searchQueryState.queryParams.set("foo", "bar");
+        await nextFrame();
+        expect(screen.queryByText("bars")).not.toBeNull();
+        searchQueryState.queryParams.set("foo", "baz");
+        await nextFrame();
+        expect(screen.queryByText("bars")).toBeNull();
     });
 });

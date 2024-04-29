@@ -33,11 +33,22 @@ class CourseMembersController < ApplicationController
     @course_memberships = apply_scopes(@course.course_memberships.order_by_status_in_course_and_name('ASC'))
                           .includes(:course_labels, user: [:institution])
                           .where(status: statuses)
-                          .paginate(page: parse_pagination_param(params[:page]))
 
     @title = I18n.t('courses.index.users')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), '#']]
     @course_labels = CourseLabel.where(course: @course)
+
+    respond_to do |format|
+      format.html do
+        @course_memberships = @course_memberships.paginate(page: parse_pagination_param(params[:page]))
+      end
+      format.js do
+        @course_memberships = @course_memberships.paginate(page: parse_pagination_param(params[:page]))
+      end
+      format.csv do
+        headers['Content-Disposition'] = "attachment; filename=\"#{@course.name} - #{I18n.t('courses.index.users')}.csv\""
+      end
+    end
   end
 
   def show
@@ -70,19 +81,15 @@ class CourseMembersController < ApplicationController
     end
   end
 
-  def download_labels_csv
-    csv = @course.labels_csv
-    send_data csv[:data],
-              type: 'application/csv',
-              filename: csv[:filename],
-              disposition: 'attachment',
-              x_sendfile: true
-  end
-
   def upload_labels_csv
     return render json: { message: I18n.t('course_members.upload_labels_csv.no_file') }, status: :unprocessable_entity if params[:file] == 'undefined'
 
     begin
+      headers = CSV.foreach(params[:file].path).first
+      %w[id labels].each do |column|
+        return render json: { message: I18n.t('course_members.upload_labels_csv.missing_column', column: column) }, status: :unprocessable_entity unless headers&.include?(column)
+      end
+
       CSV.foreach(params[:file].path, headers: true) do |row|
         row = row.to_hash
         cm = CourseMembership.find_by(user_id: row['id'], course: @course)

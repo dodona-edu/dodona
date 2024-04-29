@@ -26,7 +26,7 @@ class SubmissionsController < ApplicationController
   order_by :user, :exercise, :created_at, :status
 
   content_security_policy only: %i[show] do |policy|
-    # allow sandboxed tutor
+    # allow sandboxed description
     policy.frame_src -> { [sandbox_url] }
   end
 

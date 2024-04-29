@@ -1,20 +1,3 @@
-.offcanvas-show-btn {
-  white-space: nowrap;
-  font-size: 16px;
-  background-color: var(--d-surface);
-  border-bottom-left-radius: 0;
-  border-bottom-right-radius: 0;
-  border-color: var(--d-divider);
-  border-bottom: 0;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  position: fixed;
-  bottom: 100px;
-  left: 100%;
-  transform-origin: 0% 100%;
-  transform: rotate(270deg);
-}
-
 .scratchpad-header {
   color: var(--d-on-primary);
   background-color: var(--d-primary);
@@ -32,19 +15,45 @@
   align-items: center;
 }
 
-.scratchpad-info {
-  padding-left: 20px;
-  font-size: 14px;
-  color: var(--d-on-surface-muted);
-
+.scratchpad-margin {
   // Header has absolute position, simulate its height using margin-top
-  margin-top: var(--d-navbar-height) + 5;
+  margin-top: calc(var(--d-navbar-height));
 }
 
-#scratchpad-code-copy-btn {
-  color: white;
-  background-color: var(--d-blue-gray);
-  white-space: nowrap;
+.offcanvas-body {
+  padding-top: 0;
+  padding-bottom: 0;
+  height: calc(100% - var(--d-navbar-height));
+  display: flex;
+  flex-flow: column;
+
+  // estimate of height of margins, paddings, etc...
+  --d-sp-lost-height: calc(var(--d-navbar-height) + 130px);
+}
+
+.scratchpad-info {
+  margin-bottom: var(--d-card-supporting-text-padding);
+  font-size: 14px;
+  color: var(--d-on-surface-muted);
+  flex: 0 1 auto;
+}
+
+.scratchpad-body {
+  flex: 1 1 auto;
+}
+
+.scratchpad-panel {
+  overflow: scroll;
+  height: calc(100vh - var(--d-navbar-height));
+  padding: var(--d-card-supporting-text-padding);
+
+  .nav-link {
+    cursor: pointer;
+  }
+}
+
+.scratchpad-panel + .scratchpad-panel {
+  border-left: 1px solid var(--d-divider);
 }
 
 .scratchpad-content {
@@ -57,6 +66,10 @@
 // Wrapper around editor provides margin
 #scratchpad-editor-wrapper {
   margin-bottom: 20px;
+
+  :focus-visible {
+    outline: none;
+  }
 }
 
 // Wrapper and its child should take up as much space as possible
@@ -68,6 +81,11 @@
   overflow-y: auto;
 }
 
+#scratchpad-editor-wrapper .cm-editor {
+  height: calc(60vh - 0.6 * var(--d-sp-lost-height));
+  min-height: 300px;
+}
+
 #scrathcpad-output-wrapper {
   margin-bottom: 10px;
   flex: 0 1 auto;
@@ -75,14 +93,114 @@
 
 // First child is the output area, limit its size
 #scratchpad-output-wrapper > div:first-child {
-  max-height: 20vh !important;
+  max-height: calc(20vh - 0.2 * var(--d-sp-lost-height)) !important;
+  min-height: 100px;
   flex: 0 1 auto;
 }
 
 #scratchpad-input-wrapper {
   flex: 0 1 auto;
+
+  .cm-editor {
+    max-height: calc(10vh - 0.1 * var(--d-sp-lost-height)) !important;
+    min-height: 50px;
+  }
 }
 
 #scratchpad-offcanvas.show {
   @include shadow-z3;
+}
+
+/* stylelint-disable selector-class-pattern */
+.tailwind ._tw-border-gray-200 {
+  border-color: var(--d-divider) !important;
+}
+
+.tailwind :is(._tw-dark .dark\:_tw-border-dark-mode-content) {
+  border-color: var(--d-divider) !important;
+}
+
+.tailwind * {
+  border-color: var(--d-divider) !important;
+}
+
+.tailwind ._tw-border-b-red-500 {
+  border-bottom-color: var(--d-danger) !important;
+}
+
+.tailwind ._tw-text-blue-500 {
+  color: var(--d-primary) !important;
+}
+/* stylelint-enable selector-class-pattern */
+
+/* stylelint-disable selector-id-pattern */
+#__papyros-code-input-area {
+  background-color: var(--d-code-bg) !important;
+  color: var(--d-on-background);
+  caret-color: var(--d-secondary);
+  padding: 0 12px !important;
+}
+/* stylelint-enable selector-id-pattern */
+
+#scratchpad-panel-wrapper {
+  border-bottom: 0 !important;
+}
+
+#scratchpad-offcanvas {
+  .papyros-button {
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 24px;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    vertical-align: middle;
+    border-radius: 20px;
+  }
+}
+
+#scratchpad-tab-content {
+  // 50px tab bar height + 16 px margin + 32px container padding + 1px to always avoid outer scrollbar
+  height: calc(100vh - var(--d-navbar-height) - 50px - 16px - 32px - 1px);
+  overflow: scroll;
+}
+
+.papyros-button.with-icon svg{
+  height: 24px;
+  width: 24px;
+  margin-right: .25em;
+}
+
+.papyros-button.with-icon .mdi::before {
+  font-size: 24px;
+  line-height: 26px;
+}
+
+.papyros-test-code,
+.papyros-test-code.cm-active-line,
+.papyros-test-code-widget,
+.papyros-bottom-padding-widget div{
+  background-color: rgba(var(--d-success-rgb), 0.1);
+}
+
+.papyros-test-code-widget {
+  color: var(--d-on-surface-muted);
+}
+
+.papyros-icon-link {
+  color: var(--d-primary);
+
+  .mdi::before {
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  &:hover {
+    color: rgba(var(--d-primary-rgb), 0.8);
+  }
+}
+
+.papyros-state-card.cm-panels {
+  top: -29px;
 }

@@ -22,7 +22,7 @@
 
 .card-outlined {
   box-shadow: none;
-  border: 1px solid var(--d-outline);
+  border: 1px solid var(--d-divider);
 }
 
 .card-media {
@@ -304,8 +304,14 @@ a.card-title-link:hover {
 .nav-tabs.sticky {
   position: sticky;
   top: var(--d-navbar-height);
-  z-index: 4;
+  z-index: 5;
   background-color: var(--d-surface);
+  overflow-x: auto;
+  flex-wrap: nowrap;
+
+  li {
+    min-width: fit-content;
+  }
 }
 
 .card-nav .card-title .btn-icon:hover {
@@ -380,4 +386,9 @@ a.card-title-link:hover {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+}
+
+.card-title .btn-icon {
+  margin-top: -6px;
+  margin-bottom: -6px;
 }

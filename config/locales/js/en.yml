@@ -13,7 +13,6 @@ en:
     activity-added-failed: Adding activity failed
     activity-removed-success: Activity removed
     activity-removed-failed: Removing activity failed
-    tutor-failed: Something went wrong while loading the online python tutor
     copy-to-clipboard: Click to copy
     copy-success: Copied!
     copy-fail: Press Ctrl-C to copy
@@ -187,8 +186,8 @@ en:
     score_item:
       error: Error while updating
     coding_scratchpad:
-      copy_code: Copy to Dodona
-      overwrite_code: Do you want to overwrite the code in the scratchpad with your latest changes?
+      copy_to_submit: Finalize and submit
+      overwrite_code: Do you want to overwrite the code in the sandbox with your latest changes?
     submission_motivational_message:
       1: "Code-tastic! You just crushed that exercise like a bug! 🐛"
       2: "🚀 Houston, we have a programmer! Great job on that exercise!"
@@ -242,6 +241,7 @@ en:
         courses: Courses
         question_states: Statuses
         popularity: Popularity
+        search_options: Options
       single:
         labels: Label
         programming_languages: Programming Language
@@ -257,6 +257,7 @@ en:
         question_states: Status
         popularity: Popularity
         exercises: Exercise
+        draft: "Draft"
     saved_annotation:
       title: Title
       annotation_text: Text
@@ -297,10 +298,10 @@ en:
     sign_in_search_bar:
       institution_search: "Type to search for your institution"
       log_in: Sign in
-    course_labels_search_bar:
+    labels_search_bar:
       placeholder: "Label"
       add: "Add"
-      edit_explanation: "Add an existing userlabel or create a new one."
+      edit_explanation: "Add an existing label or create a new one."
     progress_bar:
       series-admin-progress:
         key: ".singular |||| .plural"
@@ -324,3 +325,10 @@ en:
       dark: Dark
       system: System
       theme: Theme
+    feedbacks:
+      submission:
+        submit: Submit this solution
+    export:
+      ready_html: Export is ready. The download should start automatically. If not, click <a href="%{url}">this link</a> to start the download.
+    draft: Draft
+    popularity: Popularity

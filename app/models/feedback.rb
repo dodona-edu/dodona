@@ -85,6 +85,15 @@ class Feedback < ApplicationRecord
     mapped.sum if mapped.any?
   end
 
+  def user_labels
+    evaluation
+      .series
+      .course
+      .course_memberships
+      .find_by(user_id: user)
+      .course_labels
+  end
+
   private
 
   def determine_submission

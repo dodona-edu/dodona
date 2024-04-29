@@ -75,8 +75,8 @@ en:
       submission_correct: "Correct submission, "
       submission_wrong: "Wrong submission, "
     overview:
-      title: Evaluation overview
-      explanation: A course admin has evaluated your submissions for the series "%{series}". For each exercise, your last submission before %{deadline} was automatically selected, but the course admin may have manually selected a different one. Note that this evaluation doesn't necessarily mean that feedback has been added to all of your submissions.
+      title: Evaluation
+      explanation: A teacher reviewed your work for the "%{series}" series. They automatically picked your last submission before %{deadline}, but they might have chosen a different one manually. Keep in mind, this evaluation doesn't always include feedback on all your submissions.
       released: Feedback was added to your code.
       exercise: Exercise
       no_annotations: "# comments"

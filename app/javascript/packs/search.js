@@ -10,5 +10,6 @@ import "components/search/dropdown_filter";
 import "components/search/filter_tabs";
 import "components/search/standalone-dropdown-filter";
 import "components/search/loading_bar";
+import "components/search/search_option.ts";
 
 window.dodona.search = search;

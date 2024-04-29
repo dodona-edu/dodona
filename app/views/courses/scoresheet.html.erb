@@ -26,8 +26,8 @@
           <% end %>
         </div>
         <%= render partial: 'layouts/searchbar', locals: {
-            actions: [
-                { text: t('.at_least_one_started'), search: { at_least_one_started: true } }
+          options: [
+                { label: t('.at_least_one_started'), param: 'at_least_one_started' }
             ],
             course_labels: @course_labels,
             eager: true

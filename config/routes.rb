@@ -98,7 +98,6 @@ Rails.application.routes.draw do
       resources :submissions, only: [:index]
       resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
-        get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
       end
       member do

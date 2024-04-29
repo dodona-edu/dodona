@@ -266,14 +266,14 @@ export class TimeseriesGraph extends SeriesExerciseGraph {
         } else if (this.binStep < 168) { // binning per multiple days
             const format = d3.timeFormat(i18n.t("date.formats.weekday_long"));
             message = `
-                <b>${format(d.date)} - ${format(new Date(d.date - this.binStep * 3600000))}:</b>
+                <b>${format(new Date(d.date - this.binStep * 3600000))} - ${format(d.date)}:</b>
                 <br>
             `;
         } else { // binning per week(s)
             const weekDay = d3.timeFormat(i18n.t("date.formats.weekday_long"));
             const monthDay = d3.timeFormat(i18n.t("date.formats.monthday_long"));
             message = `
-                <b>${weekDay(d.date)} - ${monthDay(new Date(d.date - this.binStep * 3600000))}:</b>
+                <b>${weekDay(new Date(d.date - this.binStep * 3600000))} - ${monthDay(d.date)}:</b>
                 <br>
             `;
         }

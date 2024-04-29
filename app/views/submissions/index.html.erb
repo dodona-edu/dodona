@@ -43,7 +43,7 @@
         <% if current_user&.course_admin?(@course) %>
           <%
              actions << {icon: 'replay', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, activity_id: @activity&.id, course_id: @course&.id, series_id: @series&.id, judge_id: @judge&.id)} if policy(Submission).mass_rejudge?
-             actions << {icon: 'graph-outline', text: 'detect plagiarism', js: "window.dodona.startDolos(\"#{series_exports_path(@series, token: (@series.access_token if @series.hidden?), selected_ids: [@activity.id])}\")" } if @series && @activity
+             actions << {icon: 'graph-outline', text: t('.detect_plagiarism'), js: "window.dodona.startDolos(\"#{series_exports_path(@series, token: (@series.access_token if @series.hidden?), selected_ids: [@activity.id])}\")" } if @series && @activity
              options << {label: t('.most_recent'), param: 'most_recent_per_user'} if @activity
              options << {label: t('.watch_submissions'), param: 'refresh'}
           %>

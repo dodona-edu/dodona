@@ -3,11 +3,14 @@ import { exportData, prepareExport } from "export";
 import { fetch } from "utilities";
 
 const LOADER_ID = "dolos-loader";
+const BTN_ID = "dolos-btn";
 const DOLOS_URL = "/dolos_reports";
 
 export async function startDolos(url: string): Promise<void> {
     const loader = document.getElementById(LOADER_ID) as LoadingBar;
     loader.show();
+    const btn = document.getElementById(BTN_ID) as HTMLLinkElement;
+    btn.classList.add("disabled");
 
     const settings = new FormData();
     settings.append("with_info", "true");
@@ -35,4 +38,5 @@ export async function startDolos(url: string): Promise<void> {
     const json = await dolosResponse.json();
     window.open(json.html_url, "_blank");
     loader.hide();
+    btn.classList.remove("disabled");
 }

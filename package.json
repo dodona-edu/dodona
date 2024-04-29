@@ -44,7 +44,7 @@
     "codemirror-lang-r": "^0.1.0-2",
     "core-js": "^3.37.0",
     "d3": "^7.9.0",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "dragula": "^3.7.3",
     "flatpickr": "^4.6.13",
     "fscreen": "^1.2.0",

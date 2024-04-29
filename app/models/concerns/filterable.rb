@@ -39,5 +39,31 @@ module Filterable
              .filter { |option| option[:name].present? }
       end
     end
+
+    def filterable_by_course_labels(through_user: false)
+      if through_user
+        has_many :course_memberships, through: :user
+        has_many :course_labels, through: :course_memberships
+      end
+
+      scope :by_course_labels, lambda { |labels, course_id|
+        unscoped.where(id: select(:id))
+                .joins(:course_labels)
+                .where(course_memberships: { course_id: course_id } )
+                .where(course_labels: { name: labels })
+                .group(:id).having('COUNT(DISTINCT(course_labels.id)) = ?', labels.uniq.length)
+      }
+
+      define_singleton_method('course_labels_filter_options') do |course_id|
+        count = unscoped.where(id: select(:id))
+                        .joins(:course_labels)
+                        .where(course_memberships: { course_id: course_id } )
+                        .group('course_labels.name')
+                        .count
+
+        count.map { |key, value| { id: key.to_s, name: key.to_s, count: value } }
+             .filter { |option| option[:name].present? }
+      end
+    end
   end
 end

@@ -19,6 +19,7 @@
 class Submission < ApplicationRecord
   include Cacheable
   include ActiveModel::Dirty
+  include Filterable
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/timezone/%<timezone>s/punchcard_matrix'.freeze
@@ -75,7 +76,7 @@ class Submission < ApplicationRecord
       scopes.any? ? merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
   }
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  filterable_by_course_labels through_user: true
 
   scope :most_recent, lambda {
     submissions = select('MAX(submissions.id) as id')

@@ -236,6 +236,12 @@ class CoursesController < ApplicationController
     unless request.format == :html
       scores = @course.scoresheet
       @users = apply_scopes(scores[:users])
+      @filters = [{
+        param: 'course_labels',
+        multi: true,
+        data: @users.course_labels_filter_options(@course.id),
+        color: 'orange'
+      }]
       @series = scores[:series]
 
       # this maps a [user_id, series_id] tuple to an object containing the number of accepted and started exercises

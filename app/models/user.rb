@@ -117,6 +117,7 @@ class User < ApplicationRecord
 
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
+  has_many :course_labels, through: :course_memberships
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf elixir]
 
@@ -139,10 +140,10 @@ class User < ApplicationRecord
   search_by :username, :first_name, :last_name
 
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_institution, ->(institution) { where(institution: institution) }
+  filterable_by :institution_id, name_hash: ->(ids) { Institution.where(id: ids).to_h { |i| [i.id, i.name] } }
 
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
-  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
+  filterable_by_course_labels
   scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }

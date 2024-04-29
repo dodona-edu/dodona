@@ -45,7 +45,7 @@
              options << {label: t('.watch_submissions'), param: 'refresh'}
           %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: {actions: actions, options: options, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
+        <%= render partial: 'layouts/searchbar', locals: {actions: actions, options: options, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user} %>
         </div>

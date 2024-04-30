@@ -103,6 +103,7 @@ class ActivitiesController < ApplicationController
     authorize @series, :edit?
     @activities = policy_scope(Activity)
     @activities = @activities.or(Activity.where(repository: @course.usable_repositories)).order_by_popularity(:DESC)
+    @filters = filters(@activities)
     @activities = apply_scopes(@activities)
     @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
   end

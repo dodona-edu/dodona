@@ -66,8 +66,7 @@ class Submission < ApplicationRecord
   # As this scope is used for the progress bars on the course page, the speedup was relevant
   scope :judged, -> { where(status: ['unknown', 'correct', 'wrong', 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'internal error', 'output limit exceeded']) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
-  filterable_by :status, name_hash: ->(values) { statuses.to_h { |s| [s, human_enum_name(:status, s)] } },
-                         value_check: ->(value) { value.in? statuses }
+  filterable_by :status, is_enum: true
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
     filter.split.map(&:strip).select(&:present?).map do |part|

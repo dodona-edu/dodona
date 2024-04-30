@@ -75,8 +75,8 @@ class Activity < ApplicationRecord
 
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
   search_by :name_nl, :name_en, :path
-  filterable_by :status, value_check: ->(value) { value.in? statuses }
-  filterable_by :access, value_check: ->(value) { value.in? accesses }
+  filterable_by :status, is_enum: true
+  filterable_by :access, is_enum: true
   filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
   filterable_by :type, name_hash: ->(value) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
   filterable_by :judge_id, name_hash: ->(values) { Judge.where(id: values).to_h { |j| [j.id, j.name] } }

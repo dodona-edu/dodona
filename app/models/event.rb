@@ -18,7 +18,6 @@ class Event < ApplicationRecord
   validates :event_type, presence: true
   validates :message, presence: true
 
-  filterable_by :event_type, name_hash: ->(values) { Event.event_types.to_h { |s| [s, human_enum_name(:event_type, s)] } },
-                             value_check: ->(value) { value.in? event_types }
+  filterable_by :event_type, is_enum: true
   default_scope { order(id: :desc) }
 end

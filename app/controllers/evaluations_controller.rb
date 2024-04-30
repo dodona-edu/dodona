@@ -23,8 +23,16 @@ class EvaluationsController < ApplicationController
       return
     end
     @feedbacks = @evaluation.evaluation_sheet
+    @filters = filters(@evaluation.users)
     @users = apply_scopes(@evaluation.users)
-    set_filters(@evaluation.users)
+
+    course = @evaluation.series.course
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: @users.course_labels_filter_options(course.id),
+      color: 'orange'
+    }
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
   end
@@ -48,7 +56,13 @@ class EvaluationsController < ApplicationController
   def edit
     @should_confirm = params[:confirm].present?
     @course = @evaluation.series.course
-    set_filters(@course.course_memberships)
+    @filters = filters(@course.course_memberships)
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      color: 'orange'
+    }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
                           .order(status: :asc)
@@ -73,7 +87,13 @@ class EvaluationsController < ApplicationController
     authorize @evaluation
     @evaluation.exercises = @evaluation.series.exercises
     @course = @evaluation.series.course
-    set_filters(@course.course_memberships)
+    @filters = filters(@course.course_memberships)
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      color: 'orange'
+    }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
                           .order(status: :asc)
@@ -178,17 +198,5 @@ class EvaluationsController < ApplicationController
 
   def set_series
     @series = Series.find(params[:series_id])
-  end
-
-  def set_filters(users)
-    @filters = filters(users)
-
-    course = @evaluation.series.course
-    @filters << {
-      param: 'course_labels',
-      multi: true,
-      data: users.course_labels_filter_options(course.id),
-      color: 'orange'
-    }
   end
 end

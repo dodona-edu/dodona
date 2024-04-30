@@ -33,7 +33,7 @@ class CourseMembership < ApplicationRecord
   scope :by_filter, ->(filter) { where(user: User.by_filter(filter)) }
   filterable_by :course_labels, associations: :course_labels, column: 'course_labels.name', multi: true
   filterable_by :institution_id, associations: { user: [:institution] }, column: 'institutions.id',
-                name_hash: ->(values) { Institution.find(values).to_h { |i| [i.id, i.name] } }
+                                 name_hash: ->(values) { Institution.find(values).to_h { |i| [i.id, i.name] } }
 
   scope :order_by_status_in_course_and_name, ->(direction) { joins(:user).merge(User.order_by_status_in_course_and_name(direction)) }
   scope :order_by_progress, ->(direction, course) { joins(:user).merge(User.order_by_progress(direction, course)) }

@@ -71,7 +71,7 @@ class ActivitiesController < ApplicationController
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
-      @activities = @activities.by_repoitory_id(params[:repository_id])
+      @activities = @activities.by_repository_id(params[:repository_id])
     end
 
     unless @activities.empty?

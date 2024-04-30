@@ -243,6 +243,7 @@ en:
         popularity: Popularity
         exercise_id: Exercise
         draft: "Draft"
+        event_type: Type
     saved_annotation:
       title: Title
       annotation_text: Text

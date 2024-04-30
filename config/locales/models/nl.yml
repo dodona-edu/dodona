@@ -174,6 +174,7 @@ nl:
           permission_change: Verandering in toegangsniveau
           exercise_repository: Aanmaak van oefeningenrepository
           error: Error
+          no_auth_id_sign_in: Gebruiker heeft ingelogd zonder auth_id
       export:
         statuses:
           started: Begonnen

@@ -244,6 +244,7 @@ nl:
         search_options: Opties
         exercise_id: Oefening
         draft: "Concept"
+        event_type: type
     saved_annotation:
       title: Titel
       annotation_text: Tekst

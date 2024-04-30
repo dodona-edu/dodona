@@ -173,6 +173,7 @@ en:
           permission_change: Change in permission level
           exercise_repository: Creation of exercise repository
           error: Error
+          no_auth_id_sign_in: User logged in without auth_id
       export:
         statuses:
           started: Started

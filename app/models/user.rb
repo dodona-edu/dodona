@@ -140,7 +140,7 @@ class User < ApplicationRecord
   search_by :username, :first_name, :last_name
 
   scope :by_permission, ->(permission) { where(permission: permission) }
-  filterable_by :institution_id, name_hash: ->(ids) { Institution.where(id: ids).to_h { |i| [i.id, i.name] } }
+  filterable_by :institution_id, model: Institution
 
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
   filterable_by_course_labels

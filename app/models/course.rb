@@ -165,7 +165,7 @@ class Course < ApplicationRecord
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
-  filterable_by :institution_id, name_hash: ->(values) { Institution.where(id: values).to_h { |i| [i.id, i.name] } }
+  filterable_by :institution_id, model: Institution
   scope :can_register, lambda { |user|
     if user&.institutional?
       where(registration: %i[open_for_all open_for_institutional_users])

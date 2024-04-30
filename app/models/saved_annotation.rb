@@ -25,8 +25,8 @@ class SavedAnnotation < ApplicationRecord
   has_many :submissions, through: :annotations
 
   scope :by_user, ->(user_id) { where user_id: user_id }
-  filterable_by :exercise_id, name_hash: ->(values) { Exercise.where(id: values).to_h { |exercise| [exercise.id, exercise.name] } }
-  filterable_by :course_id, name_hash: ->(values) { Course.where(id: values).to_h { |course| [course.id, course.name] } }
+  filterable_by :exercise_id, model: Exercise
+  filterable_by :course_id, model: Course
   scope :by_filter, ->(filter) { where 'title LIKE ? or annotation_text LIKE ?', "%#{filter}%", "%#{filter}%" }
 
   scope :order_by_annotations_count, ->(direction) { reorder(annotations_count: direction) }

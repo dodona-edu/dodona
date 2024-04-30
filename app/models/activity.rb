@@ -79,9 +79,9 @@ class Activity < ApplicationRecord
   filterable_by :access, is_enum: true
   filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
   filterable_by :type, name_hash: ->(value) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
-  filterable_by :judge_id, name_hash: ->(values) { Judge.where(id: values).to_h { |j| [j.id, j.name] } }
+  filterable_by :judge_id, model: Judge
   filterable_by :labels, multi: true, associations: :labels, column: 'labels.name'
-  filterable_by :repository_id, name_hash: ->(values) { Repository.where(id: values).to_h { |r| [r.id, r.name] } }
+  filterable_by :repository_id, model: Repository
   filterable_by :draft, name_hash: ->(values) { { true => I18n.t('activities.index.filters.draft'), false => I18n.t('activities.index.filters.not_draft') } }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes

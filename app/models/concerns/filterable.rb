@@ -19,13 +19,20 @@ module Filterable
     # +associations+:: The associations to include in the scope
     # +value_check+:: A lambda that must return true for a value, otherwise the scope will return an empty relation
     # +name_hash+:: a lambda that takes a list af column values and returns a hash with the human readable name for each column value
-    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, name_hash: ->(values) { values.to_h { |value| [value, value] } })
-      if is_enum
-        value_check = ->(value) { value.in? send(column.to_s.pluralize.to_s) }
-        name_hash = ->(values) { send(column.to_s.pluralize.to_s).to_h { |s| [s, human_enum_name(column.to_s.pluralize.to_s, s)] } }
-      else
-        value_check = ->(value) { true }
-      end
+    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, model: nil, name_hash: nil)
+      value_check = if is_enum
+                      ->(value) { value.in? send(column.to_s.pluralize.to_s) }
+                    else
+                      ->(value) { true }
+                    end
+
+      name_hash ||= if is_enum
+                      ->(values) { values.to_h { |s| [s, human_enum_name(column.to_s.pluralize.to_s, s)] } }
+                    elsif model
+                      ->(values) { model.where(id: values).to_h { |s| [s.id, s.name] } }
+                    else
+                      ->(values) { values.to_h { |s| [s, s] } }
+                    end
 
       scope "by_#{name}", lambda { |value|
         if value_check.call(value) && (!multi || value.is_a?(Array))

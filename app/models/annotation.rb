@@ -58,8 +58,9 @@ class Annotation < ApplicationRecord
   scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
-  scope :by_exercise, ->(exercise_id) { where(submission: { exercise_id: exercise_id }) }
   filterable_by :course_id, name_hash: ->(values) { Course.where(id: values).to_h { |c| [c.id, c.name] } }
+  filterable_by :exercise_id, associations: :submission, column: 'submissions.exercise_id',
+                              name_hash: ->(values) { Exercise.where(id: values).to_h { |e| [e.id, e.name] } }
 
   scope :order_by_annotation_text, ->(direction) { reorder(annotation_text: direction) }
   scope :order_by_created_at, ->(direction) { reorder(created_at: direction) }

@@ -29,5 +29,11 @@ module HasFilter
 
       filter_options << [name, multi, color]
     end
+
+    def set_filter_headers(options = {})
+      after_action(options) do
+        headers['X-Filters'] = @filters.to_json
+      end
+    end
   end
 end

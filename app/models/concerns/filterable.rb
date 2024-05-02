@@ -62,10 +62,8 @@ module Filterable
 
       scope :by_course_labels, lambda { |labels, course_id|
         unscoped.where(id: select(:id))
-                .joins(:course_labels)
-                .where(course_memberships: { course_id: course_id } )
-                .where(course_labels: { name: labels })
-                .group(:id).having('COUNT(DISTINCT(course_labels.id)) = ?', labels.uniq.length)
+                .joins(:course_memberships)
+                .where(course_memberships: { id: CourseMembership.where(course_id: course_id).by_course_labels(labels) })
       }
 
       define_singleton_method('course_labels_filter_options') do |course_id|

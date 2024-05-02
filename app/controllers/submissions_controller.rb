@@ -36,7 +36,7 @@ class SubmissionsController < ApplicationController
     @submissions = @submissions.includes(:annotations).paginate(page: parse_pagination_param(params[:page]))
 
     # If the result is the same, don't send it.
-    # return unless stale?(@submissions)
+    return unless stale?(@submissions)
     # If returning non-HTML, we are done.
     return unless request.format.html?
 

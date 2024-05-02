@@ -24,7 +24,6 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  include Filterable
   include StringHelper
   include Cacheable
   include Tokenable

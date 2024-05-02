@@ -23,7 +23,6 @@ require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
-  include Filterable
   include Cacheable
   include Tokenable
   include ActionView::Helpers::SanitizeHelper

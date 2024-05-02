@@ -12,7 +12,6 @@
 #
 
 class CourseMembership < ApplicationRecord
-  include Filterable
   enum status: { pending: 0, course_admin: 1, student: 2, unsubscribed: 3 }
 
   belongs_to :course

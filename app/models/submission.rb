@@ -19,7 +19,6 @@
 class Submission < ApplicationRecord
   include Cacheable
   include ActiveModel::Dirty
-  include Filterable
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/timezone/%<timezone>s/punchcard_matrix'.freeze

@@ -30,7 +30,6 @@ require 'action_view'
 
 class Activity < ApplicationRecord
   include ActionView::Helpers::DateHelper
-  include Filterable
   include StringHelper
   include Cacheable
   include Tokenable

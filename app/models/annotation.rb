@@ -54,7 +54,6 @@ class Annotation < ApplicationRecord
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :released, -> { left_joins(:evaluation).where(evaluation_id: nil).or(where(evaluations: { released: true })) }
-  scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
   filterable_by :course_id, model: Course

@@ -16,7 +16,6 @@ describe("SearchFieldSuggestion", () => {
             <d-search-field-suggestion param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                        type="test"
-                                       .paramVal=${(l: Label) => l.id}
                                        filter="ba"
                                        .multi=${false}>
             </d-search-field-suggestion>`) as SearchFieldSuggestion;
@@ -65,8 +64,8 @@ describe("SearchField", () => {
     let searchField: SearchField;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
-        const filterCollections: Record<string, FilterOptions> = {
-            first: {
+        const filters: FilterOptions[] = [
+            {
                 param: "foo",
                 data: [
                     { name: "fool", id: "1" },
@@ -74,10 +73,9 @@ describe("SearchField", () => {
                     { name: "baz", id: "3" },
                 ],
                 multi: false,
-                color: () => "red",
-                paramVal: (l: Label) => l.id,
+                color: "red",
             },
-            second: {
+            {
                 param: "bar",
                 data: [
                     { name: "food", id: "1" },
@@ -85,14 +83,13 @@ describe("SearchField", () => {
                     { name: "baz", id: "3" },
                 ],
                 multi: false,
-                color: () => "red",
-                paramVal: (l: Label) => l.id,
+                color: "red",
             }
-        };
+        ];
 
         searchField = await fixture(html`
             <d-search-field placeholder="Search"
-                            .filterCollections="${filterCollections}"
+                            .filters="${filters}"
             ></d-search-field>
         `);
     });

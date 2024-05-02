@@ -30,7 +30,7 @@ class EvaluationsController < ApplicationController
     @filters << {
       param: 'course_labels',
       multi: true,
-      data: @users.course_labels_filter_options(course.id),
+      data: @users.course_labels_filter_options(course.id)
     }
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
@@ -59,7 +59,7 @@ class EvaluationsController < ApplicationController
     @filters << {
       param: 'course_labels',
       multi: true,
-      data: apply_scopes(@course.course_memberships).course_labels_filter_options,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options
     }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
@@ -89,7 +89,7 @@ class EvaluationsController < ApplicationController
     @filters << {
       param: 'course_labels',
       multi: true,
-      data: apply_scopes(@course.course_memberships).course_labels_filter_options,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options
     }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])

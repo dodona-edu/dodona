@@ -22,7 +22,7 @@ class ActivitiesController < ApplicationController
   has_filter :programming_language
   has_filter :type
   has_filter :judge_id
-  has_filter :labels,  multi: true
+  has_filter :labels, multi: true
   has_filter :repository_id
   has_filter :draft
   has_filter :popularity

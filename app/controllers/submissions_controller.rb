@@ -190,7 +190,7 @@ class SubmissionsController < ApplicationController
       @filters << {
         param: 'course_labels',
         multi: true,
-        data: @submissions.course_labels_filter_options(@course.id),
+        data: @submissions.course_labels_filter_options(@course.id)
       }
     end
 

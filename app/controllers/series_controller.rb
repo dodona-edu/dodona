@@ -207,7 +207,7 @@ class SeriesController < ApplicationController
     @filters = [{
       param: 'course_labels',
       multi: true,
-      data: @users.course_labels_filter_options(@course.id),
+      data: @users.course_labels_filter_options(@course.id)
     }]
     @activities = scores[:activities]
     @submissions = scores[:submissions]

@@ -56,6 +56,7 @@ export class SearchFieldSuggestion extends FilterElement {
             ${ this.getFilteredLabels().map( label => html`
                 <li><a class="dropdown-item" href="#" @click=${e => this.handleClick(e, label)}>
                     ${unsafeHTML(this.getHighlightedLabel(label.name))}
+                    ${label.count ? html`<span class="badge colored-secondary rounded-pill float-end ms-1">${label.count}</span>` : ""}
                 </a></li>
             `)}
         `;

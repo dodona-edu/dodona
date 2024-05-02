@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  include HasFilter
   before_action :set_user, only: %i[show edit update destroy impersonate token_sign_in]
   before_action :set_users, only: %i[index available_for_repository]
 

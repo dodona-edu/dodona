@@ -3,6 +3,7 @@ class SubmissionsController < ApplicationController
   include TimeHelper
   include ActionView::Helpers::DateHelper
   include Sortable
+  include HasFilter
 
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge show]

@@ -1,5 +1,6 @@
 class FeedbacksController < ApplicationController
   include SeriesHelper
+  include HasFilter
 
   before_action :set_feedback, only: %i[show edit update destroy_scores]
 

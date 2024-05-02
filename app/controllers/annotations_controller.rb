@@ -1,4 +1,5 @@
 class AnnotationsController < ApplicationController
+  include HasFilter
   before_action :set_submission, only: %i[create]
   before_action :set_annotation, only: %i[show update destroy]
 

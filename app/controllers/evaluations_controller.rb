@@ -1,6 +1,7 @@
 class EvaluationsController < ApplicationController
   include SeriesHelper
   include EvaluationHelper
+  include HasFilter
 
   before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]

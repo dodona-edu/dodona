@@ -1,4 +1,5 @@
 class CourseMembersController < ApplicationController
+  include HasFilter
   before_action :set_course
   before_action :set_course_membership_and_user, only: %i[show edit update]
 

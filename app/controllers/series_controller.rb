@@ -1,6 +1,7 @@
 class SeriesController < ApplicationController
   include ExportHelper
   include SetLtiMessage
+  include HasFilter
 
   before_action :set_series, except: %i[index new create]
   before_action :check_token, only: %i[show overview]

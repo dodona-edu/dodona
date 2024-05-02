@@ -163,7 +163,6 @@ class Course < ApplicationRecord
   search_by :name, :teacher, :year
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
-  scope :by_institution, ->(institution) { where(institution: institution) }
   filterable_by :institution_id, model: Institution
   scope :can_register, lambda { |user|
     if user&.institutional?

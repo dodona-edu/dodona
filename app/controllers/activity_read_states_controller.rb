@@ -71,9 +71,7 @@ class ActivityReadStatesController < ApplicationController
       @read_states = @read_states.of_user(@user)
     end
 
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
-    end
+    @course = Course.find(params[:course_id]) if params[:course_id]
 
     @series = Series.find(params[:series_id]) if params[:series_id]
     @activity = ContentPage.find(params[:activity_id]) if params[:activity_id]

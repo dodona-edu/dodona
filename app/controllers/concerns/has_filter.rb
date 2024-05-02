@@ -20,7 +20,8 @@ module HasFilter
 
   class_methods do
     attr_accessor :filter_options
-    def has_filter(name, color, multi: false)
+
+    def has_filter(name, color, multi: false) # rubocop:disable Naming/PredicateName
       if multi
         has_scope "by_#{name}", as: name, type: :array, if: ->(this) { this.params[name].is_a?(Array) }
       else

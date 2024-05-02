@@ -60,7 +60,7 @@ class EvaluationsController < ApplicationController
     @filters << {
       param: 'course_labels',
       multi: true,
-      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options,
       color: 'orange'
     }
     @course_memberships = apply_scopes(@course.course_memberships)
@@ -91,7 +91,7 @@ class EvaluationsController < ApplicationController
     @filters << {
       param: 'course_labels',
       multi: true,
-      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options,
       color: 'orange'
     }
     @course_memberships = apply_scopes(@course.course_memberships)

@@ -17,17 +17,19 @@ module Filterable
     # +name+:: The name of the scope
     # +column+:: The column to create the scope for
     # +associations+:: The associations to include in the scope
-    # +value_check+:: A lambda that must return true for a value, otherwise the scope will return an empty relation
+    # +multi+:: If the scope should accept multiple values
+    # +is_enum+:: If the column is an enum
+    # +model+:: If the column is a foreign key, the model to use to get the human readable name for the column values
     # +name_hash+:: a lambda that takes a list af column values and returns a hash with the human readable name for each column value
-    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, model: nil, name_hash: nil)
+    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, model: nil, name_hash: nil) # rubocop:disable Metrics/ParameterLists
       value_check = if is_enum
                       ->(value) { value.in? send(column.to_s.pluralize.to_s) }
                     else
-                      ->(value) { true }
+                      ->(_) { true }
                     end
 
       name_hash ||= if is_enum
-                      ->(values) { values.to_h { |s| [s, human_enum_name(column.to_s.pluralize.to_s, s)] } }
+                      ->(values) { values.index_with { |s| human_enum_name(column.to_s.pluralize.to_s, s) } }
                     elsif model
                       ->(values) { model.where(id: values).to_h { |s| [s.id, s.name] } }
                     else
@@ -69,7 +71,7 @@ module Filterable
       define_singleton_method('course_labels_filter_options') do |course_id|
         count = unscoped.where(id: select(:id))
                         .joins(:course_labels)
-                        .where(course_memberships: { course_id: course_id } )
+                        .where(course_memberships: { course_id: course_id })
                         .group('course_labels.name')
                         .count
 

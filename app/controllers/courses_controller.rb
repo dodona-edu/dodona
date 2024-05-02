@@ -227,11 +227,11 @@ class CoursesController < ApplicationController
     @title = I18n.t('courses.scoresheet.scoresheet')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.scoresheet.scoresheet'), '#']]
     @filters = [{
-                  param: 'course_labels',
-                  multi: true,
-                  data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
-                  color: 'orange'
-                }]
+      param: 'course_labels',
+      multi: true,
+      data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
+      color: 'orange'
+    }]
 
     unless request.format == :html
       scores = @course.scoresheet

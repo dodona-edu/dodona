@@ -31,8 +31,9 @@ class CourseMembersController < ApplicationController
                  %w[course_admin student]
                end
 
-    @course_memberships = @course.course_memberships.order_by_status_in_course_and_name('ASC')
-                                                    .where(status: statuses)
+    @course_memberships = @course.course_memberships
+                                 .order_by_status_in_course_and_name('ASC')
+                                 .where(status: statuses)
     @filters = filters(@course_memberships)
     @course_memberships = apply_scopes(@course_memberships)
                           .includes(:course_labels, user: [:institution])

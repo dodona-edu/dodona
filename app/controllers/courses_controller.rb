@@ -226,11 +226,6 @@ class CoursesController < ApplicationController
   def scoresheet
     @title = I18n.t('courses.scoresheet.scoresheet')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.scoresheet.scoresheet'), '#']]
-    @filters = [{
-      param: 'course_labels',
-      multi: true,
-      data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
-    }]
 
     unless request.format == :html
       scores = @course.scoresheet
@@ -238,7 +233,7 @@ class CoursesController < ApplicationController
       @filters = [{
         param: 'course_labels',
         multi: true,
-        data: @users.course_labels_filter_options(@course.id),
+        data: @users.course_labels_filter_options(@course.id)
       }]
       @series = scores[:series]
 

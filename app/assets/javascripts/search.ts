@@ -2,7 +2,7 @@ import { createDelayer, fetch, getURLParameter, updateArrayURLParameter, updateU
 import { InactiveTimeout } from "auto_reload";
 import { LoadingBar } from "components/search/loading_bar";
 import { searchQueryState } from "state/SearchQuery";
-import { FilterOptions } from "components/search/filter_element";
+import { ACCENT_COLORS, FilterOptions } from "components/search/filter_element";
 import { FilterCollection } from "components/search/filter_collection";
 const RELOAD_SECONDS = 2;
 
@@ -129,8 +129,11 @@ class Search {
     }
 
     public updateFilters(filterOptions: FilterOptions[] | undefined): void {
+        const coloredFilterOptions = (filterOptions || []).map((filterOption, index) => {
+            return { ...filterOption, color: ACCENT_COLORS[index % ACCENT_COLORS.length] };
+        });
         this.filterCollections.forEach(collection => {
-            collection.filters = filterOptions || [];
+            collection.filters = coloredFilterOptions;
         });
     }
 }

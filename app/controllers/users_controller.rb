@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :set_users, only: %i[index available_for_repository]
 
   has_scope :by_permission
-  has_filter :institution_id, 'pink'
+  has_filter :institution_id
   has_scope :by_filter, as: 'filter'
 
   # GET /users

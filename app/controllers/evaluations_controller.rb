@@ -6,7 +6,7 @@ class EvaluationsController < ApplicationController
   before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
-  has_filter :institution_id, 'pink'
+  has_filter :institution_id
   has_scope :by_filter, as: 'filter'
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     if controller.params[:action] == 'show'
@@ -31,7 +31,6 @@ class EvaluationsController < ApplicationController
       param: 'course_labels',
       multi: true,
       data: @users.course_labels_filter_options(course.id),
-      color: 'orange'
     }
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
@@ -61,7 +60,6 @@ class EvaluationsController < ApplicationController
       param: 'course_labels',
       multi: true,
       data: apply_scopes(@course.course_memberships).course_labels_filter_options,
-      color: 'orange'
     }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
@@ -92,7 +90,6 @@ class EvaluationsController < ApplicationController
       param: 'course_labels',
       multi: true,
       data: apply_scopes(@course.course_memberships).course_labels_filter_options,
-      color: 'orange'
     }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])

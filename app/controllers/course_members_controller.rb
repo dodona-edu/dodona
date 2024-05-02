@@ -5,8 +5,8 @@ class CourseMembersController < ApplicationController
 
   has_scope :by_permission
   has_scope :by_filter, as: 'filter'
-  has_filter :course_labels, 'orange', multi: true
-  has_filter :institution_id, 'pink'
+  has_filter :course_labels, multi: true
+  has_filter :institution_id
 
   has_scope :order_by, using: %i[column direction], type: :hash do |controller, scope, value|
     column, direction = value

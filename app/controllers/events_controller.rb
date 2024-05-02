@@ -1,7 +1,7 @@
 class EventsController < ApplicationController
   include HasFilter
 
-  has_filter :event_type, 'deep-purple'
+  has_filter :event_type
 
   def index
     authorize Event

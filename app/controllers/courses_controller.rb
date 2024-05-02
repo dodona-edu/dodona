@@ -9,7 +9,7 @@ class CoursesController < ApplicationController
   before_action :set_lti_provider, only: %i[show]
 
   has_scope :by_filter, as: 'filter'
-  has_filter :institution_id, 'pink'
+  has_filter :institution_id
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
     scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
@@ -230,7 +230,6 @@ class CoursesController < ApplicationController
       param: 'course_labels',
       multi: true,
       data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
-      color: 'orange'
     }]
 
     unless request.format == :html
@@ -240,7 +239,6 @@ class CoursesController < ApplicationController
         param: 'course_labels',
         multi: true,
         data: @users.course_labels_filter_options(@course.id),
-        color: 'orange'
       }]
       @series = scores[:series]
 

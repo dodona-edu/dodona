@@ -6,8 +6,8 @@ class SavedAnnotationsController < ApplicationController
   before_action :set_saved_annotation, only: %i[show update destroy edit]
 
   has_scope :by_user, as: 'user_id'
-  has_filter :course_id, 'orange'
-  has_filter :exercise_id, 'blue-gray'
+  has_filter :course_id
+  has_filter :exercise_id
   has_scope :by_filter, as: 'filter'
 
   order_by :annotations_count, :title, :annotation_text, :created_at

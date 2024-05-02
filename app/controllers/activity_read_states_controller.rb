@@ -93,8 +93,7 @@ class ActivityReadStatesController < ApplicationController
       @filters = [{
         param: 'course_labels',
         multi: true,
-        data: @read_states.course_labels_filter_options(@course.id),
-        color: 'orange'
+        data: @read_states.course_labels_filter_options(@course.id)
       }]
     end
 

@@ -4,10 +4,11 @@ import { DodonaElement } from "components/meta/dodona_element";
 
 export type Label = {id: string, name: string, count?: number};
 export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" | "teal" | "orange" | "brown" | "blue-gray";
+export const ACCENT_COLORS: AccentColor[] = ["pink", "deep-purple", "teal", "orange", "brown", "blue-gray", "red", "purple", "indigo"];
 export type FilterOptions = {
     data: Label[],
     multi: boolean,
-    color: AccentColor,
+    color?: AccentColor,
     param: string
 };
 

@@ -8,7 +8,7 @@ class FeedbacksController < ApplicationController
     scope.by_filter(value, skip_user: true, skip_exercise: true)
   end
 
-  has_filter :status, 'indigo'
+  has_filter :status
 
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed description

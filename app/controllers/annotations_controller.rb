@@ -5,8 +5,8 @@ class AnnotationsController < ApplicationController
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
-  has_filter :course_id, 'orange'
-  has_filter :question_state, 'indigo'
+  has_filter :course_id
+  has_filter :question_state
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:exercise_id].present?)

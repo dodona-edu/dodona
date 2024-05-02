@@ -13,7 +13,7 @@ class SubmissionsController < ApplicationController
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:activity_id].present?)
   end
 
-  has_filter :status, 'indigo'
+  has_filter :status
 
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     course = Course.find_by(id: controller.params[:course_id]) if controller.params[:course_id].present?
@@ -191,7 +191,6 @@ class SubmissionsController < ApplicationController
         param: 'course_labels',
         multi: true,
         data: @submissions.course_labels_filter_options(@course.id),
-        color: 'orange'
       }
     end
 

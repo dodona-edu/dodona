@@ -227,37 +227,23 @@ en:
       36: "🎸 Rock that code!"
     dropdown:
       search: Search
-      multi:
+    search:
+      filter:
         labels: Labels
-        programming_languages: Programming Languages
-        judges: Judges
-        repositories: Repositories
-        institutions: Institutions
+        programming_language: Programming Language
+        judge_id: Judge
+        repository_id: Repository
+        institution_id: Institution
         course_labels: Member labels
-        statuses: Statuses
-        event_types: Event types
-        activity_types: Activity types
+        status: Status
+        type: Type
         description_languages: Languages
-        courses: Courses
-        question_states: Statuses
+        course_id: Course
+        question_state: Status
         popularity: Popularity
-        search_options: Options
-      single:
-        labels: Label
-        programming_languages: Programming Language
-        judges: Judge
-        repositories: Repository
-        institutions: Institution
-        course_labels: Member label
-        statuses: Status
-        event_types: Event type
-        activity_types: Activity type
-        description_languages: Language
-        courses: Course
-        question_states: Status
-        popularity: Popularity
-        exercises: Exercise
+        exercise_id: Exercise
         draft: "Draft"
+        event_type: Type
     saved_annotation:
       title: Title
       annotation_text: Text

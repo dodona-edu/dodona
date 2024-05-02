@@ -227,37 +227,24 @@ nl:
       36: "Bravo! Je hebt deze oefening tot een goed einde gebracht."
     dropdown:
       search: Zoeken
-      multi:
+    search:
+      filter:
         labels: Labels
-        programming_languages: Programmeertalen
-        judges: Judges
-        repositories: Repository's
-        institutions: Onderwijsinstellingen
+        programming_language: Programmeertaal
+        judge_id: Judge
+        repository_id: Repository
+        institution_id: Onderwijsinstelling
         course_labels: Gebruikerlabels
-        statuses: Statussen
-        event_types: Event types
-        activity_types: Activiteitstypes
+        status: Status
+        type: Type
         description_languages: Talen
-        courses: Cursussen
-        question_states: Toestanden
+        course_id: Cursus
+        question_state: Toestand
         popularity: Populariteit
         search_options: Opties
-      single:
-        labels: Label
-        programming_languages: Programmeertaal
-        judges: Judge
-        repositories: Repository
-        institutions: Onderwijsinstelling
-        course_labels: Gebruikerlabel
-        statuses: Status
-        event_types: Event type
-        activity_types: Activiteitstype
-        description_languages: Taal
-        courses: Cursus
-        question_states: Toestand
-        popularity: Populariteit
-        exercises: Oefening
+        exercise_id: Oefening
         draft: "Concept"
+        event_type: type
     saved_annotation:
       title: Titel
       annotation_text: Tekst

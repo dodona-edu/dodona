@@ -2,12 +2,12 @@ import { property } from "lit/decorators.js";
 import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
 
-export type Label = {id: string, name: string};
-export type FilterCollection = {
+export type Label = {id: string, name: string, count?: number};
+export type AccentColor = "red" | "pink" | "purple" | "deep-purple" | "indigo" | "teal" | "orange" | "brown" | "blue-gray";
+export type FilterOptions = {
     data: Label[],
     multi: boolean,
-    color: (l: Label) => string,
-    paramVal: (l: Label) => string,
+    color: AccentColor,
     param: string
 };
 
@@ -21,13 +21,11 @@ export type FilterCollection = {
  * @prop {function(Label): string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
-export class FilterCollectionElement extends DodonaElement {
+export class FilterElement extends DodonaElement {
     @property()
     param: string;
     @property({ type: Boolean })
     multi: boolean;
-    @property()
-    paramVal: (l: Label) => string;
     @property({ type: Array })
     labels: Array<Label> = [];
 
@@ -47,24 +45,20 @@ export class FilterCollectionElement extends DodonaElement {
         super.update(changedProperties);
     }
 
-    private str(label: Label): string {
-        return this.paramVal(label).toString();
-    }
-
     private get multiSelected(): string[] {
         return searchQueryState.arrayQueryParams.get(this.param) || [];
     }
 
     private multiUnSelect(label: Label): void {
-        searchQueryState.arrayQueryParams.set(this.param, this.multiSelected.filter(s => s !== this.str(label)));
+        searchQueryState.arrayQueryParams.set(this.param, this.multiSelected.filter(s => s !== label.id));
     }
 
     private multiIsSelected(label: Label): boolean {
-        return this.multiSelected.includes(this.str(label));
+        return this.multiSelected.includes(label.id);
     }
 
     private multiSelect(label: Label): void {
-        searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, this.str(label)]);
+        searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, label.id]);
     }
 
     private singleUnSelect(label: Label): void {
@@ -72,11 +66,11 @@ export class FilterCollectionElement extends DodonaElement {
     }
 
     private singleSelect(label: Label): void {
-        searchQueryState.queryParams.set(this.param, this.str(label));
+        searchQueryState.queryParams.set(this.param, label.id);
     }
 
     private singleIsSelected(label: Label): boolean {
-        return searchQueryState.queryParams.get(this.param) === this.str(label);
+        return searchQueryState.queryParams.get(this.param) === label.id;
     }
 
     isSelected = this.singleIsSelected;

@@ -5,7 +5,7 @@ class EvaluationsController < ApplicationController
   before_action :set_evaluation, only: %i[show edit update destroy overview set_multi_user add_user remove_user mark_undecided_complete export_grades modify_grading_visibility]
   before_action :set_series, only: %i[new]
 
-  has_scope :by_institution, as: 'institution_id'
+  has_filter :institution_id, 'pink'
   has_scope :by_filter, as: 'filter'
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     if controller.params[:action] == 'show'
@@ -22,8 +22,16 @@ class EvaluationsController < ApplicationController
       return
     end
     @feedbacks = @evaluation.evaluation_sheet
+    @filters = filters(@evaluation.users)
     @users = apply_scopes(@evaluation.users)
-    @course_labels = CourseLabel.where(course: @evaluation.series.course)
+
+    course = @evaluation.series.course
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: @users.course_labels_filter_options(course.id),
+      color: 'orange'
+    }
     @crumbs = [[@evaluation.series.course.name, course_url(@evaluation.series.course)], [@evaluation.series.name, breadcrumb_series_path(@evaluation.series, current_user)], [I18n.t('evaluations.show.evaluation'), '#']]
     @title = I18n.t('evaluations.show.evaluation')
   end
@@ -47,7 +55,13 @@ class EvaluationsController < ApplicationController
   def edit
     @should_confirm = params[:confirm].present?
     @course = @evaluation.series.course
-    @course_labels = CourseLabel.where(course: @course)
+    @filters = filters(@course.course_memberships)
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      color: 'orange'
+    }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
                           .order(status: :asc)
@@ -72,7 +86,13 @@ class EvaluationsController < ApplicationController
     authorize @evaluation
     @evaluation.exercises = @evaluation.series.exercises
     @course = @evaluation.series.course
-    @course_labels = CourseLabel.where(course: @course)
+    @filters = filters(@course.course_memberships)
+    @filters << {
+      param: 'course_labels',
+      multi: true,
+      data: apply_scopes(@course.course_memberships).course_labels_filter_options(),
+      color: 'orange'
+    }
     @course_memberships = apply_scopes(@course.course_memberships)
                           .includes(:course_labels, user: [:institution])
                           .order(status: :asc)

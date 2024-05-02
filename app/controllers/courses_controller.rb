@@ -8,7 +8,7 @@ class CoursesController < ApplicationController
   before_action :set_lti_provider, only: %i[show]
 
   has_scope :by_filter, as: 'filter'
-  has_scope :by_institution, as: 'institution_id'
+  has_filter :institution_id, 'pink'
   has_scope :at_least_one_started, type: :boolean, only: :scoresheet do |controller, scope|
     scope.at_least_one_started_in_course(Course.find(controller.params[:id])).or(scope.at_least_one_read_in_course(Course.find(controller.params[:id])))
   end
@@ -50,6 +50,7 @@ class CoursesController < ApplicationController
     @show_institution_courses = current_user&.institution && @courses.where(institution: current_user.institution).count > 0
 
     if params[:copy_courses]
+      @filters = filters(@courses)
       @courses = apply_scopes(@courses)
       @courses = @courses.reorder(featured: :desc, year: :desc, name: :asc)
       @own_courses = @courses.select { |course| current_user&.admin_of?(course) }
@@ -60,8 +61,10 @@ class CoursesController < ApplicationController
         @courses = @courses.where(institution: current_user.institution)
       elsif current_user && params[:tab] == 'my'
         @courses = current_user.subscribed_courses
+        @filters = filters(@courses)
       elsif params[:tab] == 'featured'
         @courses = @courses.where(featured: true)
+        @filters = filters(@courses)
       end
       @courses = apply_scopes(@courses)
     end
@@ -96,6 +99,7 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
+    @filters = filters(Course.all)
     if params[:copy_options]&.fetch(:base_id).present?
       @copy_options = copy_options
       @copy_options[:base] = Course.find(@copy_options[:base_id])
@@ -221,11 +225,22 @@ class CoursesController < ApplicationController
   def scoresheet
     @title = I18n.t('courses.scoresheet.scoresheet')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.scoresheet.scoresheet'), '#']]
-    @course_labels = CourseLabel.where(course: @course)
+    @filters = [{
+                  param: 'course_labels',
+                  multi: true,
+                  data: CourseLabel.where(course: @course).map { |cl| { id: cl.name.to_s, name: cl.name.to_s } },
+                  color: 'orange'
+                }]
 
     unless request.format == :html
       scores = @course.scoresheet
       @users = apply_scopes(scores[:users])
+      @filters = [{
+        param: 'course_labels',
+        multi: true,
+        data: @users.course_labels_filter_options(@course.id),
+        color: 'orange'
+      }]
       @series = scores[:series]
 
       # this maps a [user_id, series_id] tuple to an object containing the number of accepted and started exercises

@@ -12,7 +12,7 @@ class SubmissionsController < ApplicationController
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:activity_id].present?)
   end
 
-  has_scope :by_status, as: 'status'
+  has_filter :status, 'indigo'
 
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     course = Course.find_by(id: controller.params[:course_id]) if controller.params[:course_id].present?
@@ -35,7 +35,7 @@ class SubmissionsController < ApplicationController
     @submissions = @submissions.includes(:annotations).paginate(page: parse_pagination_param(params[:page]))
 
     # If the result is the same, don't send it.
-    return unless stale?(@submissions)
+    # return unless stale?(@submissions)
     # If returning non-HTML, we are done.
     return unless request.format.html?
 
@@ -157,14 +157,13 @@ class SubmissionsController < ApplicationController
   # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
   # changes made here are potentially applicable to both functions
   def set_submissions
-    @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
+    @submissions = policy_scope(Submission)
     if params[:user_id]
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)
     end
     if params[:course_id]
       @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) if @user.blank? && current_user&.course_admin?(@course)
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]
@@ -184,6 +183,17 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.in_course(@course)
     elsif @judge
       @submissions = @submissions.of_judge(@judge)
+    end
+
+    @filters = filters(@submissions)
+    @submissions = apply_scopes(@submissions)
+    if @course.present? && @user.blank? && current_user&.course_admin?(@course)
+      @filters << {
+        param: 'course_labels',
+        multi: true,
+        data: @submissions.course_labels_filter_options(@course.id),
+        color: 'orange'
+      }
     end
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?

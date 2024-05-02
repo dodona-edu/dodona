@@ -17,6 +17,6 @@ class Event < ApplicationRecord
   validates :event_type, presence: true
   validates :message, presence: true
 
-  scope :by_type, ->(type) { where(event_type: type.in?(event_types) ? type : -1) }
+  filterable_by :event_type, is_enum: true
   default_scope { order(id: :desc) }
 end

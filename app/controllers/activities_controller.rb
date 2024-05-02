@@ -18,14 +18,14 @@ class ActivitiesController < ApplicationController
   protect_from_forgery except: %i[media input_service_worker]
 
   has_scope :by_filter, as: 'filter'
-  has_scope :by_labels, as: 'labels', type: :array, if: ->(this) { this.params[:labels].is_a?(Array) }
-  has_scope :by_programming_language, as: 'programming_language'
-  has_scope :by_type, as: 'type'
-  has_scope :in_repository, as: 'repository_id'
-  has_scope :by_description_languages, as: 'description_languages', type: :array
-  has_scope :by_judge, as: 'judge_id'
-  has_scope :by_popularities, as: 'popularity', type: :array
-  has_scope :is_draft, as: 'draft'
+  has_filter :programming_language, 'red'
+  has_filter :type, 'deep-purple'
+  has_filter :judge_id, 'red'
+  has_filter :labels, 'purple', multi: true
+  has_filter :repository_id, 'blue-gray'
+  has_filter :draft, 'indigo'
+  has_filter :popularity, 'pink'
+  has_filter :description_languages, 'orange', multi: true
 
   has_scope :repository_scope, as: 'tab' do |controller, scope, value|
     course = Series.find(controller.params[:id]).course if controller.params[:id]
@@ -70,10 +70,11 @@ class ActivitiesController < ApplicationController
 
     if params[:repository_id]
       @repository = Repository.find(params[:repository_id])
-      @activities = @activities.in_repository(@repository)
+      @activities = @activities.by_repository_id(params[:repository_id])
     end
 
     unless @activities.empty?
+      @filters = filters(@activities)
       @activities = apply_scopes(@activities)
       @activities = @activities.paginate(page: parse_pagination_param(params[:page]))
     end
@@ -101,6 +102,7 @@ class ActivitiesController < ApplicationController
     authorize @series, :edit?
     @activities = policy_scope(Activity)
     @activities = @activities.or(Activity.where(repository: @course.usable_repositories)).order_by_popularity(:DESC)
+    @filters = filters(@activities)
     @activities = apply_scopes(@activities)
     @activities = @activities.order("name_#{I18n.locale}").order(path: :asc).paginate(page: parse_pagination_param(params[:page]))
   end

@@ -7,7 +7,7 @@ class FeedbacksController < ApplicationController
     scope.by_filter(value, skip_user: true, skip_exercise: true)
   end
 
-  has_scope :by_status, as: 'status'
+  has_filter :status, 'indigo'
 
   content_security_policy only: %i[show] do |policy|
     # allow sandboxed description
@@ -43,9 +43,11 @@ class FeedbacksController < ApplicationController
   end
 
   def edit
-    @submissions = apply_scopes(Submission)
+    @submissions = Submission
                    .in_series(@feedback.evaluation.series)
                    .where(user: @feedback.user, exercise: @feedback.exercise)
+    @filters = filters(@submissions)
+    @submissions = apply_scopes(@submissions)
                    .paginate(page: parse_pagination_param(params[:page]))
     @crumbs = [
       [@feedback.evaluation.series.course.name, course_url(@feedback.evaluation.series.course)],

@@ -3,9 +3,9 @@ class CourseMembersController < ApplicationController
   before_action :set_course_membership_and_user, only: %i[show edit update]
 
   has_scope :by_permission
-  has_scope :by_institution, as: 'institution_id'
   has_scope :by_filter, as: 'filter'
-  has_scope :by_course_labels, as: 'course_labels', type: :array
+  has_filter :course_labels, 'orange', multi: true
+  has_filter :institution_id, 'pink'
 
   has_scope :order_by, using: %i[column direction], type: :hash do |controller, scope, value|
     column, direction = value
@@ -30,13 +30,14 @@ class CourseMembersController < ApplicationController
                  %w[course_admin student]
                end
 
-    @course_memberships = apply_scopes(@course.course_memberships.order_by_status_in_course_and_name('ASC'))
+    @course_memberships = @course.course_memberships.order_by_status_in_course_and_name('ASC')
+                                                    .where(status: statuses)
+    @filters = filters(@course_memberships)
+    @course_memberships = apply_scopes(@course_memberships)
                           .includes(:course_labels, user: [:institution])
-                          .where(status: statuses)
 
     @title = I18n.t('courses.index.users')
     @crumbs = [[@course.name, course_path(@course)], [I18n.t('courses.index.users'), '#']]
-    @course_labels = CourseLabel.where(course: @course)
 
     respond_to do |format|
       format.html do

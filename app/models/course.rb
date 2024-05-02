@@ -23,7 +23,6 @@ require 'securerandom'
 require 'csv'
 
 class Course < ApplicationRecord
-  include Filterable
   include Cacheable
   include Tokenable
   include ActionView::Helpers::SanitizeHelper
@@ -161,9 +160,11 @@ class Course < ApplicationRecord
   validate :should_have_institution_when_visible_for_institution
   validate :should_have_institution_when_open_for_institution
 
+  search_by :name, :teacher, :year
   scope :by_name, ->(name) { where('name LIKE ?', "%#{name}%") }
   scope :by_teacher, ->(teacher) { where('teacher LIKE ?', "%#{teacher}%") }
   scope :by_institution, ->(institution) { where(institution: institution) }
+  filterable_by :institution_id, model: Institution
   scope :can_register, lambda { |user|
     if user&.institutional?
       where(registration: %i[open_for_all open_for_institutional_users])
@@ -399,10 +400,6 @@ class Course < ApplicationRecord
 
   def self.format_year(year)
     year.sub(/ ?- ?/, '–')
-  end
-
-  def set_search
-    self.search = "#{teacher || ''} #{name || ''} #{year || ''}"
   end
 
   def color

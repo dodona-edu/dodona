@@ -27,6 +27,7 @@ class Question < Annotation
   after_save :schedule_reset_in_progress, if: :saved_change_to_question_state?
   after_commit :clear_transition
 
+  filterable_by :question_state, is_enum: true
   enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
   alias_attribute :question_text, :annotation_text
 

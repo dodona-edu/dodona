@@ -203,6 +203,12 @@ class SeriesController < ApplicationController
 
     scores = @series.scoresheet
     @users = apply_scopes(scores[:users])
+    @filters = [{
+      param: 'course_labels',
+      multi: true,
+      data: @users.course_labels_filter_options(@course.id),
+      color: 'orange'
+    }]
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]

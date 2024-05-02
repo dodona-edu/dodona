@@ -37,7 +37,7 @@ class ActivityReadState < ApplicationRecord
     end.reduce(&:merge)
   }
 
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  filterable_by_course_labels through_user: true
 
   def invalidate_caches
     activity.invalidate_delayed_users_read

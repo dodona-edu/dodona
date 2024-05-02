@@ -65,7 +65,7 @@ class Submission < ApplicationRecord
   # As this scope is used for the progress bars on the course page, the speedup was relevant
   scope :judged, -> { where(status: ['unknown', 'correct', 'wrong', 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'internal error', 'output limit exceeded']) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
-  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  filterable_by :status, is_enum: true
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
     filter.split.map(&:strip).select(&:present?).map do |part|
@@ -75,7 +75,7 @@ class Submission < ApplicationRecord
       scopes.any? ? merge(scopes.reduce(&:or)) : self
     end.reduce(&:merge)
   }
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  filterable_by_course_labels through_user: true
 
   scope :most_recent, lambda {
     submissions = select('MAX(submissions.id) as id')

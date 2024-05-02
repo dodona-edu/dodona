@@ -1,6 +1,4 @@
 class EventsController < ApplicationController
-  include HasFilter
-
   has_filter :event_type, 'deep-purple'
 
   def index

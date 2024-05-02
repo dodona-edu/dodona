@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
   include SetCurrentRequestDetails
   include ApplicationHelper
+  include HasFilter
 
   MAX_STORED_URL_LENGTH = 1024
 

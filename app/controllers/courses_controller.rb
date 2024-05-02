@@ -2,7 +2,6 @@ require 'will_paginate/array'
 
 class CoursesController < ApplicationController
   include SetLtiMessage
-  include HasFilter
 
   before_action :set_course_and_current_membership, except: %i[index new create]
   before_action :set_lti_message, only: %i[show]

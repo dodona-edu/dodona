@@ -2,7 +2,6 @@ class ActivitiesController < ApplicationController
   include SeriesHelper
   include SetLtiMessage
   include Sortable
-  include HasFilter
 
   INPUT_SERVICE_WORKER = 'inputServiceWorker.js'.freeze
 

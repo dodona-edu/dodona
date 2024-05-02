@@ -1,6 +1,5 @@
 class SavedAnnotationsController < ApplicationController
   include Sortable
-  include HasFilter
   set_pagination_headers :saved_annotations, only: [:index]
   set_filter_headers only: [:index]
   before_action :set_saved_annotation, only: %i[show update destroy edit]

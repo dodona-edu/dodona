@@ -33,15 +33,20 @@
           </td>
           <td class="actions submissions-table">
             <% if @feedback.submission&.id == submission.id %>
-              <button class="btn btn-outline" disabled>
-                <%= t 'submissions.submissions_table.selected' %>
-              </button>
+              <%= link_to feedback_path(@feedback, feedback: { submission_id: nil }),
+                          class: "btn btn-outline d-btn-danger with-icon",
+                          title: t(".undo_selection_tip"),
+                          data: { confirm: t('.undo_selection_confirm') },
+                          method: :patch do %>
+                <i class="mdi mdi-delete mdi-18"></i>
+                <%= (t '.undo_selection') %>
+              <% end %>
             <% else %>
               <%= link_to (t 'submissions.submissions_table.select'),
                           feedback_path(@feedback, feedback: { submission_id: submission.id }),
                           class: "btn btn-outline",
                           title: t(".update-submission"),
-                          confirm: t('.confirm'),
+                          data: { confirm: t('.confirm') },
                           method: :patch %>
             <% end %>
           </td>

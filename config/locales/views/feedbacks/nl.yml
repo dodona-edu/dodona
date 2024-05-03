@@ -59,6 +59,9 @@ nl:
     submissions_table:
       update-submission: "Veranderen naar deze oplossing"
       confirm: "Ben je zeker? Alle opmerkingen op de vorige oplossing zullen verwijderd worden."
+      undo_selection: Selectie wissen
+      undo_selection_tip: Selectie van deze oplossing ongedaan maken
+      undo_selection_confirm: "Ben je zeker? Alle opmerkingen op de huidige oplossing zullen verwijderd worden."
     score_card:
       total_score: Totaalscore
       evaluation: Evaluatie

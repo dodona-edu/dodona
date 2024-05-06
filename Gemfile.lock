@@ -143,6 +143,7 @@ GEM
       addressable
     cssbundling-rails (1.4.0)
       railties (>= 6.0.0)
+    csv (3.3.0)
     daemons (1.4.1)
     dalli (3.2.8)
     datadog-ci (0.8.3)
@@ -211,7 +212,8 @@ GEM
     hcaptcha (7.1.0)
       json
     htmlentities (4.3.4)
-    httparty (0.21.0)
+    httparty (0.22.0)
+      csv
       mini_mime (>= 1.0.0)
       multi_xml (>= 0.5.2)
     i18n (1.14.4)
@@ -291,7 +293,8 @@ GEM
       ruby2_keywords (>= 0.0.5)
     msgpack (1.7.2)
     multi_json (1.15.0)
-    multi_xml (0.6.0)
+    multi_xml (0.7.1)
+      bigdecimal (~> 3.1)
     mustermann (3.0.0)
       ruby2_keywords (~> 0.0.1)
     mutex_m (0.2.0)
@@ -596,7 +599,7 @@ DEPENDENCIES
   flamegraph (~> 0.9.5)
   has_scope (~> 0.8.2)
   hcaptcha (~> 7.1.0)
-  httparty (~> 0.21.0)
+  httparty (~> 0.22.0)
   i18n-js (~> 4.2.3)
   icalendar (~> 2.10)
   image_processing (~> 1.12.2)

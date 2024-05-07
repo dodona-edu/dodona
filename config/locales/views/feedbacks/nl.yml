@@ -8,9 +8,9 @@ nl:
       submission:
         time_html: "Deze oplossing werd om <b>%{time}</b> gemaakt."
         previous_attempts_html:
-          zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor deze oefening."
-          one: "De gebruiker had <b>1 voorgaande poging</b> voor deze oefening."
-          other: "De gebruiker had <b>%{count} voorgaande pogingen</b> voor deze oefening."
+          zero: "De gebruiker heeft <b>geen voorgaande poging</b> voor <a href='%{href}'>deze oplossing</a>."
+          one: "De gebruiker had <b>1 voorgaande poging</b> voor <a href='%{href}'>deze oplossing</a>."
+          other: "De gebruiker had <b>%{count} voorgaande pogingen</b> voor <a href='%{href}'>deze oplossing</a>."
         later_attempts_html:
           zero: "De gebruiker had <b>geen latere poging</b> voor deze oefening."
           one: "De gebruiker heeft <b>1 latere poging</b> voor deze oefening."

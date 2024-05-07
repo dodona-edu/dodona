@@ -34,7 +34,7 @@
           <td class="actions submissions-table">
             <% if @feedback.submission&.id == submission.id %>
               <%= link_to feedback_path(@feedback, feedback: { submission_id: nil }),
-                          class: "btn btn-outline d-btn-danger with-icon",
+                          class: "btn btn-outline d-btn-danger",
                           title: t(".undo_selection_tip"),
                           data: { confirm: t('.undo_selection_confirm') },
                           method: :patch do %>

@@ -59,6 +59,9 @@ en:
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All comments on the previous submission will be deleted."
+      undo_selection: Deselect
+      undo_selection_tip: Undo the selection of this submission
+      undo_selection_confirm: Are you sure? All comments on the current submission will be deleted.
     score_card:
       total_score: Total grade
       evaluation: Evaluation

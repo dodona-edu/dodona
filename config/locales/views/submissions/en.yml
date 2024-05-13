@@ -24,6 +24,7 @@ en:
       most_recent: Most recent submissions per user
       watch_submissions: Automatically reload submissions
       reevaluate_submissions: Retest submissions
+      detect_plagiarism: Detect plagiarism
       confirm_reevaluate_submissions: Are you sure you want to retest these submissions?
       reevaluating_submissions:
         one: Re-evaluating 1 submission

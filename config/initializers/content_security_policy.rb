@@ -15,11 +15,13 @@ Rails.application.configure do
       policy.connect_src :self,
                          'https://cdn.jsdelivr.net/pyodide/',
                          'https://*.googleapis.com',
-                         'http://localhost:3035', 'ws://localhost:3035'
+                         'http://localhost:3035', 'ws://localhost:3035',
+                         'https://dolos.ugent.be/api/reports'
     else
       policy.connect_src :self,
                          'https://cdn.jsdelivr.net/pyodide/',
-                         'https://cdn.jsdelivr.net/npm/mathjax@3/'
+                         'https://cdn.jsdelivr.net/npm/mathjax@3/',
+                         'https://dolos.ugent.be/api/reports'
     end
 
     policy.font_src    :self, 'https://fonts.gstatic.com',

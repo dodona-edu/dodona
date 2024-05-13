@@ -332,3 +332,5 @@ en:
       ready_html: Export is ready. The download should start automatically. If not, click <a href="%{url}">this link</a> to start the download.
     draft: Draft
     popularity: Popularity
+    dolos:
+      view_report: Open plagiarism report

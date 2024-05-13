@@ -1,4 +1,4 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { search } from "search";
 import { DodonaElement } from "components/meta/dodona_element";

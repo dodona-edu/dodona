@@ -58,7 +58,7 @@ export class DropdownFilter extends FilterElement {
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
-                                    <label class="form-check-label" for="check-${this.param}-${s.id}" style="min-width: max-content">
+                                    <label class="form-check-label" for="check-${this.param}-${s.id}">
                                         ${s.name}
                                         ${s.count ? html`<span class="text-muted float-end ms-4">${s.count}</span>` : ""}
                                     </label>

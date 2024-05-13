@@ -60,7 +60,7 @@ export class DropdownFilter extends FilterElement {
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
                                     <label class="form-check-label" for="check-${this.param}-${s.id}" style="min-width: max-content">
                                         ${s.name}
-                                        ${s.count ? html`<span class="badge colored-secondary rounded-pill float-end ms-1">${s.count}</span>` : ""}
+                                        ${s.count ? html`<span class="text-muted float-end ms-4">${s.count}</span>` : ""}
                                     </label>
                                 </div>
                             </span></li>

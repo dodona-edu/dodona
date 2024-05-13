@@ -110,9 +110,9 @@
 
     <div class="card">
       <div class="card-title card-title-colored">
-        <h2 class="card-title-text">Dolos 2.0: Towards Seamless Source Code Plagiarism Detection in Online Learning Environments</h2>
+        <h2 class="card-title-text">Discovering and exploring cases of educational source code plagiarism with Dolos</h2>
         <div class="card-subtitle-text">
-          Rien Maertens, Peter Dawyndt, Bart Mesuere
+          Rien Maertens, Charlotte Van Petegem, Niko Strijbol, Toon Baeyens, Arne Carla Jacobs, Peter Dawyndt, Bart Mesuere
         </div>
       </div>
       <div class="card-supporting-text">
@@ -120,24 +120,25 @@
           <div class="col-md-8">
             <h4>Abstract</h4>
             <p>
-              With the increasing demand for programming skills comes a trend towards more online programming courses and assessments.
-              While this allows educators to teach larger groups of students, it also opens the door to dishonest student behaviour, such as copying code from other students.
-              When teachers use assignments where all students write code for the same problem, source code similarity tools can help to combat plagiarism.
-              Unfortunately, teachers often do not use these tools to prevent such behaviour.
-              In response to this challenge, we have developed a new source code plagiarism detection tool named Dolos.
-              Dolos is open-source, supports a wide range of programming languages, and is designed to be user-friendly.
-              It enables teachers to detect, prove and prevent plagiarism in programming courses by using fast algorithms and powerful visualisations.
-              We present further enhancements to Dolos and discuss how it can be integrated into modern computing education courses to meet the challenges of online learning and assessment.
-              By lowering the barriers for teachers to detect, prove and prevent plagiarism in programming courses, Dolos can help protect academic integrity and ensure that students earn their grades honestly.
+              Source code plagiarism is a significant issue in educational practice, and educators need user-friendly tools to cope with such academic dishonesty.
+              This article introduces the latest version of Dolos, a state-of-the-art ecosystem of tools for detecting and preventing plagiarism in educational source code.
+              In this new version, the primary focus has been on enhancing the user experience.
+              Educators can now run the entire plagiarism detection pipeline from a new web app in their browser, eliminating the need for any installation or configuration.
+              Completely redesigned analytics dashboards provide an instant assessment of whether a collection of source files contains suspected cases of plagiarism and how widespread plagiarism is within the collection.
+              The dashboards support hierarchically structured navigation to facilitate zooming in and out of suspect cases.
+              Clusters are an essential new component of the dashboard design, reflecting the observation that plagiarism can occur among larger groups of students.
+              To meet various user needs, the Dolos software stack for source code plagiarism detection now includes a self-hostable web app, a JSON application programming interface (API), a command line interface (CLI), a JavaScript library and a preconfigured Docker container.
+              Clear documentation and a free-to-use instance of the web app can be found at <a href="https://dolos.ugent.be">https://dolos.ugent.be</a>.
+              The source code is also available on GitHub.
             </p>
             <h4>Citation</h4>
             <p>
-              Maertens, R., Dawyndt, P., & Mesuere, B. (2023). Dolos 2.0: Towards Seamless Source Code Plagiarism Detection in Online Learning Environments. Proceedings of the 2023 Conference on Innovation and Technology in Computer Science Education V. 2, 632. <%= link_to "https://doi.org/10.1145/3587103.3594166", "https://doi.org/10.1145/3587103.3594166" %>
+              Maertens, R., Van Neyghem, M., Geldhof, M., Van Petegem, C., Strijbol, N., Dawyndt, P., Mesuere, B., 2024. Discovering and exploring cases of educational source code plagiarism with Dolos. SoftwareX 26, 101755. <%= link_to "https://doi.org/10.1016/j.softx.2024.101755", "https://doi.org/10.1016/j.softx.2024.101755" %>
             </p>
           </div>
           <div class="col-md-4">
-            <%= link_to "https://doi.org/10.1145/3587103.3594166", class: "publication-image" do %>
-              <%= image_tag "publications/maertens-2023.png" %>
+            <%= link_to "https://doi.org/10.1016/j.softx.2024.101755", class: "publication-image" do %>
+              <%= image_tag "publications/maertens-2024.png" %>
             <% end %>
           </div>
         </div>

@@ -6,6 +6,34 @@
 
     <div class="card">
       <div class="card-title card-title-colored">
+        <h2 class="card-title-text">Mining patterns in syntax trees to automate code reviews of student solutions for programming exercise</h2>
+        <div class="card-subtitle-text">
+          Charlotte Van Petegem, Kasper Demeyere, Rien Maertens, Niko Strijbol, Bram De Wever, Bart Mesuere, Peter Dawyndt
+        </div>
+      </div>
+      <div class="card-supporting-text">
+        <div class="row">
+          <div class="col-md-8">
+            <h4>Abstract</h4>
+            <p>
+              In programming education, providing manual feedback is essential but labour-intensive, posing challenges in consistency and timeliness. We introduce ECHO, a machine learning method to automate the reuse of feedback in educational code reviews by analysing patterns in abstract syntax trees. This study investigates two primary questions: whether ECHO can predict feedback annotations to specific lines of student code based on previously added annotations by human reviewers (RQ1), and whether its training and prediction speeds are suitable for using ECHO for real-time feedback during live code reviews by human reviewers (RQ2). Our results, based on annotations from both automated linting tools and human reviewers, show that ECHO can accurately and quickly predict appropriate feedback annotations. Its efficiency in processing and its flexibility in adapting to feedback patterns can significantly reduce the time and effort required for manual feedback provisioning in educational settings.
+            </p>
+            <h4>Citation</h4>
+            <p>
+              Van Petegem, C., Demeyere, K., Maertens, R., Strijbol, N., De Wever, B., Mesuere, B., Dawyndt, P., 2024. arXiv preprint. <%= link_to "https://doi.org/10.48550/arXiv.2402.10853" "https://doi.org/10.48550/arXiv.2402.10853" %>
+            </p>
+          </div>
+          <div class="col-md-4">
+            <%= link_to "https://doi.org/10.48550/arXiv.2402.10853", class: "publication-image" do %>
+              <%= image_tag "publications/vanpetegem-2024.png" %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title card-title-colored">
         <h2 class="card-title-text">Blink: An educational software debugger for Scratch</h2>
         <div class="card-subtitle-text">
           Niko Strijbol, Robbe De Proft, Klaas Goethals, Bart Mesuere, Peter Dawyndt, Christophe Scholliers

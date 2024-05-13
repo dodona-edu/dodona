@@ -187,6 +187,9 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "dolos": {
+        "view_report": "Open plagiarism report"
+      },
       "draft": "Draft",
       "dropdown": {
         "multi": {
@@ -718,6 +721,9 @@
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "dolos": {
+        "view_report": "Plagiaat bekijken"
+      },
       "draft": "Concept",
       "dropdown": {
         "multi": {

@@ -1,6 +1,8 @@
 import { LoadingBar } from "components/search/loading_bar";
 import { exportData, prepareExport } from "export";
 import { fetch } from "utilities";
+import { html, render } from "lit";
+import { i18n } from "i18n/i18n";
 
 const LOADER_ID = "dolos-loader";
 const BTN_ID = "dolos-btn";
@@ -36,7 +38,15 @@ export async function startDolos(url: string): Promise<void> {
     }
 
     const json = await dolosResponse.json();
-    window.open(json.html_url, "_blank");
+    const dolosUrl = json.html_url;
+    window.open(dolosUrl, "_blank");
     loader.hide();
-    btn.classList.remove("disabled");
+
+    const newBtn = html`
+        <a id="${BTN_ID}" class="btn btn-outline with-icon" href="${dolosUrl}" target="_blank">
+            <i class="mdi mdi-graph-outline mdi-18"></i> ${i18n.t("js.dolos.view_report")}
+        </a>
+    `;
+    render(newBtn, btn.parentElement, { renderBefore: btn });
+    btn.remove();
 }

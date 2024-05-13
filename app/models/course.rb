@@ -74,14 +74,14 @@ class Course < ApplicationRecord
 
   has_many :accessible_activities,
            lambda {
-             where(series: { visibility: %i[open hidden] }).distinct
+             merge(Series.accessible).distinct
            },
            through: :series,
            source: :activities
 
   has_many :visible_activities,
            lambda {
-             where(series: { visibility: %i[open] }).distinct
+             merge(Series.visible).distinct
            },
            through: :series,
            source: :activities

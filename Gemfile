@@ -70,7 +70,7 @@ gem 'ruby-saml', '~> 1.16.0'
 gem 'omniauth-google-oauth2', '~> 1.1.2'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.7.1'
-gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
+gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
 gem 'jwt', '~> 2.8.1'
@@ -83,7 +83,7 @@ gem 'mail_form', '~> 1.10.1'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.1'
+gem 'pundit', '~> 2.3.2'
 
 # impersonate users
 gem 'pretender', '~> 0.5.0'
@@ -107,7 +107,7 @@ gem 'rails-i18n', '~> 7.0.9'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
-gem 'httparty', '~> 0.21.0'
+gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.22.0'
+gem 'ddtrace', '~> 1.23.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'

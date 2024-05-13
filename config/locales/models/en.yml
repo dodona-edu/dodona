@@ -103,10 +103,12 @@ en:
         order: Order
         deadline: Deadline
         activities_visible: Activities visible
+        visibility_start: Start of visibility
         visibilities:
           open: Open
           hidden: Hidden
           closed: Closed
+          timed: Timed
       submission:
         code: Code
         result: Result

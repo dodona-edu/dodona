@@ -8,9 +8,9 @@ en:
       submission:
         time_html: "This submission was made at <b>%{time}</b>"
         previous_attempts_html:
-          zero: "The user made <b>no attempts</b> before this submission."
-          one: "The user made <b>1 attempt</b> before this submission."
-          other: "The user made <b>%{count} attempts</b> before this submission."
+          zero: "The user made <b>no attempts</b> before <a href='%{href}'>this submission</a>."
+          one: "The user made <b>1 attempt</b> before <a href='%{href}'>this submission</a>."
+          other: "The user made <b>%{count} attempts</b> before <a href='%{href}'>this submission</a>."
         later_attempts_html:
           zero: "The user made <b>no attempts</b> after this submission."
           one: "The user made <b>1 attempt</b> after this submission."
@@ -59,6 +59,9 @@ en:
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All comments on the previous submission will be deleted."
+      undo_selection: Deselect
+      undo_selection_tip: Undo the selection of this submission
+      undo_selection_confirm: Are you sure? All comments on the current submission will be deleted.
     score_card:
       total_score: Total grade
       evaluation: Evaluation

@@ -31,11 +31,13 @@
               <div class="feedback-metadata-submission">
                 <p>
                 <% if @feedback.submission.present? %>
-                  <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts) %>
+                  <%= t('.submission.previous_attempts_html', count: @feedback.previous_attempts, href: submission_path(@feedback.submission)) %>
                   <% if @feedback.later_attempts > 0 %>
+                      <br/>
                     <%= t('.submission.later_attempts_html', count: @feedback.later_attempts) %>
                   <% end %>
                   <% if @feedback.later_attempts + @feedback.previous_attempts > 0 %>
+                      <br/>
                     <%= link_to edit_feedback_path(@feedback) do %>
                       <%= t("feedbacks.edit.select_another_submission") %>
                     <% end %>

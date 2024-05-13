@@ -168,6 +168,7 @@ class CoursesController < ApplicationController
           name: s.name,
           description: s.description,
           visibility: @copy_options[:hide_series] ? :hidden : s.visibility,
+          visibility_start: @copy_options[:hide_series] ? nil : s.visibility_start,
           deadline: @copy_options[:deadlines] ? s.deadline : nil,
           order: s.order,
           progress_enabled: s.progress_enabled
@@ -442,7 +443,7 @@ class CoursesController < ApplicationController
   end
 
   def ical
-    series = @course.series.where(visibility: :open)
+    series = @course.series.visible
 
     cal = Icalendar::Calendar.new
     cal.x_wr_calname = "Dodona: #{@course.name}"

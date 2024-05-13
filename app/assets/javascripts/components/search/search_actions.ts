@@ -11,7 +11,8 @@ export type SearchAction = {
     action?: string,
     js?: string,
     confirm?: string,
-    icon: string
+    icon: string,
+    id?: string
 };
 
 /**
@@ -77,6 +78,7 @@ export class SearchActions extends DodonaElement {
         return this.filteredActions.map(action => html`
             <a class="btn btn-outline with-icon ml-2"
                @click=${() => this.performAction(action)}
+                id=${action.id}
             >
                 <i class='mdi mdi-${action.icon} mdi-18'></i>
                 ${action.text}

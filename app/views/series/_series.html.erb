@@ -85,6 +85,12 @@
         <%= link_to t("series.show.make_visible_text"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
       </div>
     <% end %>
+    <% if current_user&.course_admin?(series.course) && series.timed? && series.visibility_start > Time.zone.now %>
+      <div class="alert alert-info hidden-print">
+          <%= t "series.show.series_timed.will_open", start: l(series.visibility_start, format: :long) %>
+        <%= link_to t("series.show.series_timed.make_visible"), series_path(series, series: {visibility: :open}), method: :patch, data: {confirm: t('general.are_you_sure')} %>
+      </div>
+    <% end %>
     <% if current_user&.course_admin?(series.course) && !series.activities_visible %>
       <div class="alert alert-info hidden-print">
         <%= t "series.show.activities_not_visible" %>

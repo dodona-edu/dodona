@@ -24,7 +24,7 @@ gem 'sprockets-rails', '~> 3.4.2'
 # gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11.5'
+gem 'jbuilder', '~> 2.12.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -37,7 +37,7 @@ gem 'image_processing', '~> 1.12.2'
 gem 'bootsnap', '~> 1.18.3', require: false
 
 # used to validate container responses
-gem 'json_schemer', '~> 2.2.0'
+gem 'json_schemer', '~> 2.2.1'
 
 # delayed jobs
 gem 'delayed_job_active_record', '~> 4.1.8'
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>4.0.0'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.2.0'
+gem 'rouge', '4.2.1'
 
 # feedback table builder
 gem 'builder', '~>3.2.4'
@@ -63,11 +63,11 @@ gem 'diff-lcs', '~>1.5'
 gem 'autoprefixer-rails', '~>10.4.16'
 
 # saml authentication
-gem 'devise', '~>4.9.3'
+gem 'devise', '~>4.9.4'
 gem 'ruby-saml', '~> 1.16.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.1.1'
+gem 'omniauth-google-oauth2', '~> 1.1.2'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.1'
@@ -103,15 +103,15 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 4.2.3'
-gem 'rails-i18n', '~> 7.0.8'
+gem 'rails-i18n', '~> 7.0.9'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
-gem 'httparty', '~> 0.21.0'
+gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.2'
+gem 'nokogiri', '~> 1.16.4'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.2.3'
+gem 'faker', '~> 3.3.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.1'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.20.0'
+gem 'ddtrace', '~> 1.22.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.5'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.1.0'
+  gem 'mocha', '~> 2.2.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.18.1'
+  gem 'selenium-webdriver', '~> 4.20.1'
 end
 
 group :test do
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.3.2'
+  gem 'test-prof', '~> 1.3.3'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -180,10 +180,10 @@ group :development do
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
   gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.24.0'
+  gem 'rubocop-rails', '~> 2.24.1'
 
   # for opening letters
-  gem 'letter_opener', '~> 1.9.0'
+  gem 'letter_opener', '~> 1.10.0'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

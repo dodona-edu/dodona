@@ -460,4 +460,36 @@ class EchoRepositoryTest < ActiveSupport::TestCase
 
     assert_not_includes Repository.featured, @repository
   end
+
+  test 'https remote should be converted to ssh' do
+    repository = create :repository, :git_stubbed, remote: 'https://github.com/dodona-edu/dodona.git'
+
+    assert_equal 'git@github.com:dodona-edu/dodona.git', repository.remote
+
+    repository = create :repository, :git_stubbed, remote: 'https://gitlab.com/dodona-edu/dodona.git'
+
+    assert_equal 'git@gitlab.com:dodona-edu/dodona.git', repository.remote
+
+    repository = create :repository, :git_stubbed, remote: 'http://github.ugent.be/dodona-edu/dodona'
+
+    assert_equal 'git@github.ugent.be:dodona-edu/dodona.git', repository.remote
+
+    repository = create :repository, :git_stubbed, remote: 'http://foo.gitlab.bar/bazz.git'
+
+    assert_equal 'git@foo.gitlab.bar:bazz.git', repository.remote
+  end
+
+  test 'non github/gitlab remote should not be converted to ssh' do
+    repository = create :repository, :git_stubbed, remote: 'https://foo.bar/bazz'
+
+    assert_equal 'https://foo.bar/bazz', repository.remote
+
+    repository = create :repository, :git_stubbed, remote: 'git@foo.bar/bazz.git'
+
+    assert_equal 'git@foo.bar/bazz.git', repository.remote
+
+    repository = create :repository, :git_stubbed, remote: 'git@github.ugent.be:dodona-edu/dodona.git'
+
+    assert_equal 'git@github.ugent.be:dodona-edu/dodona.git', repository.remote
+  end
 end

@@ -187,6 +187,7 @@
       "date_before": "before",
       "date_on": "on",
       "description_languages": "Language of the description",
+      "draft": "Draft",
       "dropdown": {
         "multi": {
           "activity_types": "Activity types",
@@ -201,6 +202,7 @@
           "programming_languages": "Programming Languages",
           "question_states": "Statuses",
           "repositories": "Repositories",
+          "search_options": "Options",
           "statuses": "Statuses"
         },
         "search": "Search",
@@ -224,6 +226,9 @@
       },
       "en": "English",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "Export is ready. The download should start automatically. If not, click <a href=\"%{url}\">this link</a> to start the download."
+      },
       "favorite-course-do": "Favorite",
       "favorite-course-failed": "Favoriting course failed",
       "favorite-course-succeeded": "Favorited course",
@@ -283,6 +288,7 @@
       "no_data": "There is not enough data to create a graph.",
       "no_selection": "You must select at least one item before being able to download solutions.",
       "options": "Options",
+      "popularity": "Popularity",
       "programming_languages": "Programming Languages",
       "progress_bar": {
         "series-admin-progress": {
@@ -712,6 +718,7 @@
       "date_before": "voor",
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
+      "draft": "Concept",
       "dropdown": {
         "multi": {
           "activity_types": "Activiteitstypes",
@@ -726,6 +733,7 @@
           "programming_languages": "Programmeertalen",
           "question_states": "Toestanden",
           "repositories": "Repository's",
+          "search_options": "Opties",
           "statuses": "Statussen"
         },
         "search": "Zoeken",
@@ -749,6 +757,9 @@
       },
       "en": "Engels",
       "event_types": "Event types",
+      "export": {
+        "ready_html": "De export is klaar. De download start normaal automatisch. Als dit niet gebeurt, klik dan <a href=\"%{url}\">hier</a>."
+      },
       "favorite-course-do": "Voeg toe aan favorieten",
       "favorite-course-failed": "Cursus aan favorieten toevoegen mislukt",
       "favorite-course-succeeded": "Cursus toegevoegd aan favorieten",
@@ -808,6 +819,7 @@
       "no_data": "Er is niet genoeg data om een grafiek te maken.",
       "no_selection": "Er moet ten minste één iets gekozen worden om oplossingen te kunnen downloaden.",
       "options": "Opties",
+      "popularity": "Populariteit",
       "programming_languages": "Programmeertalen",
       "progress_bar": {
         "series-admin-progress": {

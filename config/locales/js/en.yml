@@ -241,6 +241,7 @@ en:
         courses: Courses
         question_states: Statuses
         popularity: Popularity
+        search_options: Options
       single:
         labels: Label
         programming_languages: Programming Language
@@ -327,3 +328,7 @@ en:
     feedbacks:
       submission:
         submit: Submit this solution
+    export:
+      ready_html: Export is ready. The download should start automatically. If not, click <a href="%{url}">this link</a> to start the download.
+    draft: Draft
+    popularity: Popularity

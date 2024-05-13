@@ -1,8 +1,15 @@
 require 'open3'
 module Gitable
   extend ActiveSupport::Concern
+  # regex to detect github or gitlab https remotes
+  # group 1: protocol
+  # group 2: domain
+  # group 6: user + repo
+  HTTPS_GITHUB_REMOTE_REGEX = %r{^(https?://)(([^/]+\.)?(github|gitlab)([^/]*))/([^.]*)(\.git)?$}
 
   included do
+    before_create :fix_remote
+
     enum clone_status: { queued: 1, running: 2, complete: 3, failed: 4 }, _prefix: :clone
   end
 
@@ -59,5 +66,11 @@ module Gitable
 
   def github_remote?
     remote =~ %r{^(git@)|(https://)(github|gitlab)}
+  end
+
+  def fix_remote
+    return unless remote =~ HTTPS_GITHUB_REMOTE_REGEX
+
+    self.remote = remote.gsub(HTTPS_GITHUB_REMOTE_REGEX, 'git@\2:\6.git')
   end
 end

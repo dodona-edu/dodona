@@ -79,7 +79,7 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :exports, except: %i[show edit update new destroy create] do
+    resources :exports, except: %i[edit update new destroy create] do
       get 'users/:id', on: :collection, to: 'exports#new_user_export', as: 'users'
       post 'users/:id', on: :collection, to: 'exports#create_user_export'
       get 'courses/:id', on: :collection, to: 'exports#new_course_export', as: 'courses'
@@ -98,7 +98,6 @@ Rails.application.routes.draw do
       resources :submissions, only: [:index]
       resources :activity_read_states, only: [:index]
       resources :members, only: %i[index show edit update], controller: :course_members do
-        get 'download_labels_csv', on: :collection
         post 'upload_labels_csv', on: :collection
       end
       member do

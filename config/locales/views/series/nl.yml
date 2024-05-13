@@ -2,7 +2,6 @@ nl:
   series:
     form:
       description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden.
-      visibility-help_html: Enkel <b>open</b> reeksen worden op de cursuspagina getoond. Een <b>gesloten</b> reeks is nooit toegankelijk voor studenten, een <b>verborgen</b> reeks enkel via de geheime link (zie hieronder).
       deadline-help: "Een deadline instellen is optioneel. Tijdzone: %{time_zone}"
       class_progress_disable: "Verberg de \"Voortgang groep\" visualisatie voor studenten"
       class_progress_disable_help: "Deze visualisatie is een meerwaarde voor studenten, maar lesgevers willen ze misschien uitschakelen voor examens"
@@ -11,6 +10,17 @@ nl:
       advanced_settings: Geavanceerde instellingen
       activity_numbers_enabled: "Nummer leeractiviteiten"
       activity_numbers_enabled_help: "Elke oefening en leesactiviteit krijgt een opeenvolgend nummer, beginnend bij 1. Dit nummer wordt weergegeven in titels en het reeksoverzicht en kan helpen om over de activiteit te communiceren."
+      visibility:
+        title: Zichtbaarheid
+        subtitle: "Voor wie is deze reeks zichtbaar?"
+        open: "Zichtbaar voor iedereen"
+        open_help: "Deze reeks wordt altijd getoond op de cursuspagina."
+        closed: "Verborgen voor studenten"
+        closed_help: "Deze reeks is niet toegankelijk voor studenten. Ze is enkel zichtbaar voor lesgevers."
+        hidden: "Enkel zichtbaar via geheime link"
+        hidden_help: "Deze reeks is enkel zichtbaar voor lesgevers. Studenten kunnen toegang krijgen via de geheime link."
+        timed: "Zichtbaar voor studenten na starttijd"
+        timed_help: "Deze reeks is enkel zichtbaar voor studenten na de opgegeven starttijd."
     index:
       title: Alle reeksen
       load_more: Meer reeksen laden
@@ -27,6 +37,9 @@ nl:
       make_visible_text: "Maak zichtbaar voor studenten."
       series_not_visible: Deze reeks is enkel zichtbaar voor studenten via de geheime link!
       series_not_accessible: Deze reeks is niet toegankelijk voor studenten!
+      series_timed:
+        will_open: "Deze reeks is momenteel niet zichtbaar voor studenten. Ze zal zichtbaar worden op %{start}."
+        make_visible: "Nu zichtbaar maken."
       activities_not_visible: De leeractiviteiten in deze reeks zijn niet zichtbaar voor studenten!
       series_scoresheet: Statusoverzicht
       best_is_not_last: Jouw beste oplossing is niet je laatste! Klik om jouw beste oplossing te bekijken (en aan te passen/indienen).

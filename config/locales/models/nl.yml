@@ -104,10 +104,12 @@ nl:
         order: Volgorde
         deadline: Deadline
         activities_visible: Lesactiviteiten zichtbaar
+        visibility_start: Start van zichtbaarheid
         visibilities:
           open: Open
           hidden: Verborgen
           closed: Gesloten
+          timed: Getimed
       submission:
         code: Code
         result: Resultaat

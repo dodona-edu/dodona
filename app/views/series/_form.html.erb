@@ -33,14 +33,37 @@
       <span class="help-block offset-sm-3 col-sm-6"><%= t(".deadline-help", time_zone: current_user.time_zone) %></span>
     </div>
     <div class="field form-group row">
-      <%= f.label :visibility, :class => "col-sm-3 col-form-label" %>
-      <div class="col-sm-6"><%= f.select :visibility, Series.visibilities.map {|key, value| [Series.human_enum_name(:visibility, key), key]}, {}, {:class => 'form-select'} %></div>
-      <span class="help-block offset-sm-3 col-sm-6"><%= t ".visibility-help_html" %></span>
-    </div>
-    <div class="field form-group row">
       <%= f.label :description, :class => "col-sm-3 col-form-label" %>
       <div class="col-sm-6"><%= f.text_area :description, class: "form-control", rows: "8" %></div>
       <span class="help-block offset-sm-3 col-sm-6"><%= t ".description-help_html" %></span>
+    </div>
+  </div>
+
+  <div class="card-supporting-text card-border">
+    <h4><%= t('.visibility.title') %></h4>
+    <div class="field form-group row">
+      <label class="col-sm-3 col-form-label pt-0"><%= t('.visibility.subtitle') %></label>
+      <% Series.visibilities.keys.each.with_index do |v, i| %>
+        <div class="col-sm-6 <%= i > 0 ? "offset-sm-3" : "" %>">
+          <div class="form-check">
+            <%= f.radio_button :visibility, v, class: "form-check-input" %>
+            <%= f.label :visibility, t(".visibility.#{v}"), value: v, class: "form-check-label" %>
+          </div>
+        </div>
+        <span class="help-block offset-sm-3 col-sm-6"><%= t ".visibility.#{v}_help" %></span>
+      <% end %>
+    </div>
+    <div id="timing-options" class="<%= series.timed? ? "" : "visually-hidden" %>">
+      <div class="field form-group row">
+        <%= f.label :visibility_start, :class => "col-sm-3 col-form-label" %>
+        <div class='col-sm-6'>
+          <div class="input-group" id='start-group' data-wrap=true data-enable-time=true data-time_24hr=true>
+            <%= f.text_field :visibility_start, class: "form-control", 'data-input': true %>
+            <button class="btn btn-icon" type="button" data-toggle><i class='mdi mdi-calendar-blank'></i></button>
+            <button class="btn btn-icon" type="button" data-clear><i class='mdi mdi-close'></i></button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -83,6 +106,7 @@
 <% end %>
 <script type="text/javascript">
     dodona.ready.then(function () {
-        dodona.initDeadlinePicker("#deadline-group");
+      dodona.initDeadlinePicker("#deadline-group");
+      dodona.initDeadlinePicker("#start-group");
     });
 </script>

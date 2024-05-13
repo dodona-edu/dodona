@@ -16,6 +16,7 @@
 #  activities_visible       :boolean          default(TRUE), not null
 #  activities_count         :integer
 #  activity_numbers_enabled :boolean          default(FALSE), not null
+#  visibility_start         :datetime
 #
 
 FactoryBot.define do

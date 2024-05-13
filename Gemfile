@@ -24,7 +24,7 @@ gem 'sprockets-rails', '~> 3.4.2'
 # gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.11.5'
+gem 'jbuilder', '~> 2.12.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -107,7 +107,7 @@ gem 'rails-i18n', '~> 7.0.9'
 
 # email exceptions
 gem 'exception_notification', '~> 4.5.0'
-gem 'httparty', '~> 0.21.0'
+gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.19.0'
+  gem 'selenium-webdriver', '~> 4.20.1'
 end
 
 group :test do

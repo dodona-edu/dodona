@@ -62,11 +62,10 @@ class CoursesController < ApplicationController
         @courses = @courses.where(institution: current_user.institution)
       elsif current_user && params[:tab] == 'my'
         @courses = current_user.subscribed_courses
-        @filters = filters(@courses)
       elsif params[:tab] == 'featured'
         @courses = @courses.where(featured: true)
-        @filters = filters(@courses)
       end
+      @filters = filters(@courses) unless current_user && params[:tab] == 'institution'
       @courses = apply_scopes(@courses)
     end
 

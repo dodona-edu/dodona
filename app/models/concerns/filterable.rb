@@ -56,7 +56,9 @@ module Filterable
         if value_check.call(value)
           scope = joins(associations).where(column => value)
           # If the scope accepts multiple values, we should only return the results that match all the values
-          scope = scope.group(:id).having("COUNT(DISTINCT(#{column})) = ?", value.uniq.length) if multi
+          # This is done by grouping the results by id and checking if the count of distinct values is equal to the number of values
+          # To avoid the group by clause to impact future scopes, we reselect the currently filtered elements by id
+          scope = unscoped.where(id: scope.group(:id).having("COUNT(DISTINCT(#{column})) = ?", value.uniq.length).select(:id)) if multi
           scope
         else
           none
@@ -66,9 +68,7 @@ module Filterable
       # The method that returns the possible values for the column
       # It returns a list of hashes with the id, name and count of each value
       define_singleton_method("#{name}_filter_options") do
-        # the current scope might already have a group by clause
-        # to get be able to write a new group by clause we reselect the currently filtered elements by id
-        count = unscoped.where(id: select(:id)).joins(associations).group(column).count
+        count = joins(associations).group(column).count
 
         names = name_hash.call(count.keys)
 

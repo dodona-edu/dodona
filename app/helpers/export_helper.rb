@@ -93,7 +93,9 @@ module ExportHelper
     end
 
     def zip_filename
-      @item.is_a?(User) ? "#{@item.full_name.parameterize}.zip" : "#{@item.name.parameterize}.zip"
+      name_source = @item
+      name_source = @list.first if @list.present? && @list.length == 1
+      name_source.is_a?(User) ? "#{name_source.full_name.parameterize}.zip" : "#{name_source.name.parameterize}.zip"
     end
 
     def ex_fn(ex)

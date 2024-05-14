@@ -89,13 +89,11 @@ class Activity < ApplicationRecord
     by_language
   }
   define_singleton_method('description_languages_filter_options') do
-    count_by_description_languages = unscoped.where(id: select(:id)).select(
-      'COUNT(CASE WHEN description_nl_present THEN 1 ELSE NULL END) AS nl',
-      'COUNT(CASE WHEN description_en_present THEN 1 ELSE NULL END) AS en'
-    )
-    count_by_description_languages.first.attributes.except('id').map do |lang, count|
-      { id: lang, name: I18n.t("js.#{lang}"), count: count }
-    end.filter { |lang| lang[:count].positive? }
+    scope = unscoped.where(id: select(:id))
+
+    [{ id: 'nl', name: I18n.t('js.nl'), count: scope.where(description_nl_present: true).count },
+     { id: 'en', name: I18n.t('js.en'), count: scope.where(description_en_present: true).count }]
+      .filter { |lang| lang[:count].positive? }
   end
   scope :by_popularity, lambda { |popularity|
     thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]

@@ -11,7 +11,7 @@ class DolosReportsController < ApplicationController
         body: {
           dataset: {
             zipfile: file,
-            name: export.archive.filename.base.gsub('-', ' ')
+            name: export.archive.filename.base
           }
         }
       )

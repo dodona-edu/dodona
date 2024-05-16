@@ -7,7 +7,7 @@
       <th class="status-icon"></th>
       <th><%= t "activities.index.activity_title" %></th>
       <th class='count'><%= t "evaluations.show.evaluation_progress" %></th>
-      <th class="status-icon"></th>
+      <th class="actions"></th>
     </tr>
     </thead>
     <tbody>
@@ -30,7 +30,7 @@
               </span>
         </td>
 
-        <td>
+        <td class="actions">
           <% if meta[:next_incomplete_feedback].present? %>
             <%= link_to meta[:next_incomplete_feedback], title: t('evaluations.show.next_incomplete_feedback'), class: 'btn btn-outline with-icon' do %>
               <i class="mdi mdi-message-draw mdi-18"></i>

@@ -22,9 +22,6 @@ class AnnotationsController < ApplicationController
     @user = User.find(params[:user_id]) if params[:user_id]
 
     @questions = policy_scope(Question)
-    @filters = filters(@questions)
-    @questions = @questions.merge(apply_scopes(Question).all)
-    @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
 
     @unfiltered = @user.nil? && params[:course_id].nil?
 
@@ -35,6 +32,10 @@ class AnnotationsController < ApplicationController
         course_id: current_user.administrating_courses.map(&:id)
       )
     end
+
+    @filters = filters(@questions)
+    @questions = @questions.merge(apply_scopes(Question).all)
+    @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
 
     # Preload dependencies for efficiency
     @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])

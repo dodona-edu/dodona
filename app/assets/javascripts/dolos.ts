@@ -5,13 +5,22 @@ import { html, render } from "lit";
 import { i18n } from "i18n/i18n";
 
 const LOADER_ID = "dolos-loader";
-const BTN_ID = "dolos-btn";
 const DOLOS_URL = "/dolos_reports";
 
-export async function startDolos(url: string): Promise<void> {
+const handledBtns = new Set<string>();
+export function initDolosBtn(btnID: string, url: string): void {
+    if (handledBtns.has(btnID)) {
+        return;
+    }
+    const btn = document.getElementById(btnID) as HTMLLinkElement;
+    btn.addEventListener("click", () => startDolos(btn, url));
+    handledBtns.add(btnID);
+}
+
+export async function startDolos(btn: HTMLLinkElement, url: string): Promise<void> {
+    console.log("Starting Dolos report generation", btn.id);
     const loader = document.getElementById(LOADER_ID) as LoadingBar;
     loader.show();
-    const btn = document.getElementById(BTN_ID) as HTMLLinkElement;
     btn.classList.add("disabled");
 
     const settings = new FormData();
@@ -43,7 +52,7 @@ export async function startDolos(url: string): Promise<void> {
     loader.hide();
 
     const newBtn = html`
-        <a id="${BTN_ID}" class="btn btn-outline with-icon" href="${dolosUrl}" target="_blank">
+        <a id="${btn.id}" class="btn btn-outline with-icon" href="${dolosUrl}" target="_blank">
             <i class="mdi mdi-graph-outline mdi-18"></i> ${i18n.t("js.dolos.view_report")}
         </a>
     `;

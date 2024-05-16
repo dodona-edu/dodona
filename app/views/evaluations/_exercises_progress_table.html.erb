@@ -1,4 +1,6 @@
+<%= javascript_include_tag 'dolos' %>
 <div class="table-scroll-wrapper">
+  <d-loading-bar id="dolos-loader"></d-loading-bar>
   <table class="table activity-table table-resource">
     <thead>
     <tr>
@@ -30,12 +32,25 @@
 
         <td>
           <% if meta[:next_incomplete_feedback].present? %>
-            <%= link_to meta[:next_incomplete_feedback], title: t('evaluations.show.next_incomplete_feedback'), class: 'btn btn-icon' do %>
-              <i class="mdi mdi-chevron-right"></i>
+            <%= link_to meta[:next_incomplete_feedback], title: t('evaluations.show.next_incomplete_feedback'), class: 'btn btn-outline with-icon' do %>
+              <i class="mdi mdi-message-draw mdi-18"></i>
+              Evaluate
             <% end %>
           <% else %>
-            <span><i class="mdi mdi-check colored-correct"></i></span>
+            <a class="btn btn-outline disabled with-icon">
+              <i class="mdi mdi-check mdi-18"></i>
+              Evaluated
+            </a>
           <% end %>
+          <a class="btn btn-outline with-icon" id="dolos-btn-<%= meta[:exercise].id %>">
+            <i class="mdi mdi-graph-outline mdi-18"></i>
+            <%= t "submissions.index.detect_plagiarism" %>
+          </a>
+          <script>
+            dodona.ready.then(() =>{
+              dodona.initDolosBtn('dolos-btn-<%= meta[:exercise].id %>', "<%= series_exports_path(@evaluation.series, token: (@evaluation.series.access_token if @evaluation.series.hidden?), selected_ids: [meta[:exercise].id], evaluation: true) %>");
+            })
+          </script>
         </td>
       </tr>
     <% end %>

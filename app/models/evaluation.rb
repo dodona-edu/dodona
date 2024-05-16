@@ -23,6 +23,7 @@ class Evaluation < ApplicationRecord
   has_many :users, through: :evaluation_users
   has_many :exercises, through: :evaluation_exercises
   has_many :score_items, through: :evaluation_exercises
+  has_many :submissions, through: :feedbacks
 
   has_many :annotated_submissions, -> { distinct }, through: :annotations, source: :submission
 

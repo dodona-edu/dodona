@@ -6,6 +6,8 @@ import {
     Label
 } from "components/search/filter_element";
 import { FilterCollection } from "components/search/filter_collection";
+import { searchQueryState } from "state/SearchQuery";
+import { i18n } from "i18n/i18n";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -53,6 +55,28 @@ export class SearchToken extends FilterElement {
  */
 @customElement("d-search-tokens")
 export class SearchTokens extends FilterCollection {
+    get activeFilters(): number {
+        let count = 0;
+        this.visibleFilters.forEach(f => {
+            if (f.multi) {
+                count += searchQueryState.arrayQueryParams.get(f.param)?.length || 0;
+            } else {
+                count += searchQueryState.queryParams.get(f.param) ? 1 : 0;
+            }
+        });
+        return count;
+    }
+
+    clearAll(): void {
+        this.visibleFilters.forEach(f => {
+            if (f.multi) {
+                searchQueryState.arrayQueryParams.set(f.param, []);
+            } else {
+                searchQueryState.queryParams.set(f.param, undefined);
+            }
+        });
+    }
+
     render(): TemplateResult {
         if (!this.visibleFilters) {
             return html``;
@@ -68,6 +92,14 @@ export class SearchTokens extends FilterCollection {
                 >
                 </d-search-token>
             `)}
+            ${this.activeFilters > 0 ? html`
+                <div class="help-block ms-1">
+                    ${i18n.t("js.search.tokens.active_filters", { smart_count: this.activeFilters })}
+                    <a href="#" @click=${() => this.clearAll()}>
+                        ${i18n.t("js.search.tokens.clear")}
+                    </a>
+                </div>
+            ` : html``}
         `;
     }
 }

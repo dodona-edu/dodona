@@ -228,6 +228,9 @@ en:
     dropdown:
       search: Search
     search:
+      tokens:
+        active_filters: "%{smart_count} active filter |||| %{smart_count} active filters"
+        clear: Clear all
       filter:
         labels: Labels
         programming_language: Programming Language

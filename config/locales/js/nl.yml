@@ -228,6 +228,9 @@ nl:
     dropdown:
       search: Zoeken
     search:
+      tokens:
+        active_filters: "%{smart_count} filter actief |||| %{smart_count} filters actief"
+        clear: Alles wissen
       filter:
         labels: Labels
         programming_language: Programmeertaal

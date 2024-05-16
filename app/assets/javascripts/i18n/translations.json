@@ -346,6 +346,10 @@
           "repository_id": "Repository",
           "status": "Status",
           "type": "Type"
+        },
+        "tokens": {
+          "active_filters": "%{smart_count} active filter |||| %{smart_count} active filters",
+          "clear": "Clear all"
         }
       },
       "sign_in_search_bar": {
@@ -867,6 +871,10 @@
           "search_options": "Opties",
           "status": "Status",
           "type": "Type"
+        },
+        "tokens": {
+          "active_filters": "%{smart_count} filter actief |||| %{smart_count} filters actief",
+          "clear": "Alles wissen"
         }
       },
       "sign_in_search_bar": {

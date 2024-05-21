@@ -7,14 +7,9 @@ import { i18n } from "i18n/i18n";
 const LOADER_ID = "dolos-loader";
 const DOLOS_URL = "/dolos_reports";
 
-const handledBtns = new Set<string>();
 export function initDolosBtn(btnID: string, url: string): void {
-    if (handledBtns.has(btnID)) {
-        return;
-    }
     const btn = document.getElementById(btnID) as HTMLLinkElement;
     btn.addEventListener("click", () => startDolos(btn, url));
-    handledBtns.add(btnID);
 }
 
 export async function startDolos(btn: HTMLLinkElement, url: string): Promise<void> {

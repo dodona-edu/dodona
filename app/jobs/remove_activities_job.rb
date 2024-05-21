@@ -13,7 +13,7 @@ class RemoveActivitiesJob < ApplicationJob
   queue_as :cleaning
 
   def perform
-    ContentPage.where(status: 'removed').where('updated_at < ?', 1.month.ago).find_each do |activity|
+    ContentPage.where(status: 'removed').where(updated_at: ...1.month.ago).find_each do |activity|
       if activity.draft? || activity.series_memberships.empty?
         # destroy series memberships first explicitly, as they are dependent: :restrict_with_error
         activity.series_memberships.destroy_all
@@ -22,7 +22,7 @@ class RemoveActivitiesJob < ApplicationJob
       end
     end
 
-    Exercise.where(status: 'removed').where('updated_at < ?', 1.month.ago).find_each do |activity|
+    Exercise.where(status: 'removed').where(updated_at: ...1.month.ago).find_each do |activity|
       unless activity.draft?
         next if activity.series_memberships.present?
         next if activity.submissions.count >= 25

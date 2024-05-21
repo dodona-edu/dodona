@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.5'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.2.0'
+  gem 'mocha', '~> 2.3.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.20.1'
+  gem 'selenium-webdriver', '~> 4.21.1'
 end
 
 group :test do

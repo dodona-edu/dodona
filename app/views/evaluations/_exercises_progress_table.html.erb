@@ -34,12 +34,12 @@
           <% if meta[:next_incomplete_feedback].present? %>
             <%= link_to meta[:next_incomplete_feedback], title: t('evaluations.show.next_incomplete_feedback'), class: 'btn btn-outline with-icon' do %>
               <i class="mdi mdi-message-draw mdi-18"></i>
-              Evaluate
+              <%= t(".evaluate") %>
             <% end %>
           <% else %>
             <a class="btn btn-outline disabled with-icon">
               <i class="mdi mdi-check mdi-18"></i>
-              Evaluated
+              <%= t(".evaluated") %>
             </a>
           <% end %>
           <a class="btn btn-outline with-icon" id="dolos-btn-<%= meta[:exercise].id %>">

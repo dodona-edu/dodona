@@ -1,8 +1,9 @@
 module HasFilter
   extend ActiveSupport::Concern
   included do
-    delegate :filter_options, to: :class
+    class_attribute :filter_options
     self.filter_options = []
+
     def filters(target)
       filter_options.map do |name, multi|
         scope_params = params.except(:controller, :action, :page)
@@ -17,8 +18,6 @@ module HasFilter
   end
 
   class_methods do
-    attr_accessor :filter_options
-
     def has_filter(name, multi: false) # rubocop:disable Naming/PredicateName
       if multi
         has_scope "by_#{name}", as: name, type: :array, if: ->(this) { this.params[name].is_a?(Array) }

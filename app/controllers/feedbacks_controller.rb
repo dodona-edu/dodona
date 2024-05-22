@@ -44,7 +44,7 @@ class FeedbacksController < ApplicationController
   end
 
   def edit
-    @submissions = Submission
+    @submissions = Submission.all
                    .in_series(@feedback.evaluation.series)
                    .where(user: @feedback.user, exercise: @feedback.exercise)
     @filters = filters(@submissions)

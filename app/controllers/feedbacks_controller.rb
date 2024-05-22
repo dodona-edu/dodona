@@ -44,9 +44,8 @@ class FeedbacksController < ApplicationController
   end
 
   def edit
-    @submissions = Submission.all
-                   .in_series(@feedback.evaluation.series)
-                   .where(user: @feedback.user, exercise: @feedback.exercise)
+    @submissions = Submission.in_series(@feedback.evaluation.series)
+                             .where(user: @feedback.user, exercise: @feedback.exercise)
     @filters = filters(@submissions)
     @submissions = apply_scopes(@submissions)
                    .paginate(page: parse_pagination_param(params[:page]))

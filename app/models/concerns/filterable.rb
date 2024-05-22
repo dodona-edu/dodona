@@ -20,6 +20,12 @@ module Filterable
       scope :by_filter, ->(filter) { filter.split.map(&:strip).select(&:present?).inject(self) { |query, part| query.where("#{table_name}.search LIKE ?", "%#{part}%") } }
     end
 
+    # Creates a method that returns the possible values for the column
+    # The return value should be a list of hashes with the id, name and count of each value
+    def filter_options_for(name, &block)
+      define_singleton_method("#{name}_filter_options", &block)
+    end
+
     # Creates a scope for the column, with the name `by_#{column}`
     # It also creates a method `#{column}_filter_options` that returns the possible values for the column, with the count of each value
     # params:
@@ -67,7 +73,7 @@ module Filterable
 
       # The method that returns the possible values for the column
       # It returns a list of hashes with the id, name and count of each value
-      define_singleton_method("#{name}_filter_options") do
+      filter_options_for name do
         count = joins(associations).group(column).count
 
         names = name_hash.call(count.keys)

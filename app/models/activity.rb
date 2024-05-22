@@ -89,11 +89,9 @@ class Activity < ApplicationRecord
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language
   }
-  define_singleton_method('description_languages_filter_options') do
-    scope = unscoped.where(id: select(:id))
-
-    [{ id: 'nl', name: I18n.t('js.nl'), count: scope.where(description_nl_present: true).count },
-     { id: 'en', name: I18n.t('js.en'), count: scope.where(description_en_present: true).count }]
+  filter_options_for :description_languages do
+    [{ id: 'nl', name: I18n.t('js.nl'), count: where(description_nl_present: true).count },
+     { id: 'en', name: I18n.t('js.en'), count: where(description_en_present: true).count }]
       .filter { |lang| lang[:count].positive? }
   end
   scope :by_popularity, lambda { |popularity|
@@ -102,8 +100,8 @@ class Activity < ApplicationRecord
     filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
     filtered
   }
-  define_singleton_method('popularity_filter_options') do
-    count_by_popularity = unscoped.where(id: select(:id)).select(
+  filter_options_for :popularity do
+    count_by_popularity = select(
       POPULARITY_THRESHOLDS.map do |popularity, thresholds|
         "COUNT(CASE WHEN series_count >= #{thresholds[:min]} #{thresholds[:max].present? ? "AND series_count <= #{thresholds[:max]}" : ''} THEN 1 ELSE NULL END) AS #{popularity}"
       end

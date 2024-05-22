@@ -28,6 +28,7 @@ class User < ApplicationRecord
   include Cacheable
   include Tokenable
   include ActiveModel::Dirty
+  include FilterableByCourseLabels
 
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze

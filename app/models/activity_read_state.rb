@@ -10,6 +10,8 @@
 #  updated_at  :datetime         not null
 #
 class ActivityReadState < ApplicationRecord
+  include FilterableByCourseLabels
+
   belongs_to :activity
   belongs_to :course, optional: true
   belongs_to :user

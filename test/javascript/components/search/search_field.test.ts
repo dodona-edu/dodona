@@ -3,7 +3,7 @@ import { aTimeout, fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { SearchField, SearchFieldSuggestion } from "components/search/search_field";
-import { Label, FilterOptions } from "../../../../app/assets/javascripts/components/search/filter_element";
+import { FilterOptions } from "components/search/filter_element";
 import { html } from "lit";
 import { searchQueryState } from "state/SearchQuery";
 import { textContentMatcher } from "../../test_helpers";

@@ -17,6 +17,7 @@ nl:
       unauthenticated: "Je moet eerst inloggen of aanmelden, voordat je verder kunt gaan."
       unconfirmed: "Je moet eerst je account bevestigen, voordat je verder kunt gaan"
       smartschool_co_account: "Smartschool co-accounts worden niet ondersteund door Dodona. Gebruik een leerlingaccount om aan te melden."
+      no_auth_id: "Geen authenticatie ID gevonden."
     mailer:
       confirmation_instructions:
         subject: "Bevestigingsinstructies"

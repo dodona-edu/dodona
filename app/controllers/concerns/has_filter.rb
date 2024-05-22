@@ -25,6 +25,9 @@ module HasFilter
         has_scope "by_#{name}", as: name
       end
 
+      # inherit filter options from parent controller, but don't modify it
+      self.filter_options = filter_options.dup
+
       filter_options << [name, multi]
     end
 

@@ -13,6 +13,7 @@
 #  annotations_count :integer          default(0)
 #
 class SavedAnnotation < ApplicationRecord
+  include Filterable
   validates :title, presence: true
   validates :annotation_text, presence: true
 

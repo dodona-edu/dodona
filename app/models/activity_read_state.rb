@@ -11,6 +11,7 @@
 #
 class ActivityReadState < ApplicationRecord
   include FilterableByCourseLabels
+  include Filterable
 
   belongs_to :activity
   belongs_to :course, optional: true

@@ -22,6 +22,7 @@
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
+  include Filterable
 
   belongs_to :course
   belongs_to :submission

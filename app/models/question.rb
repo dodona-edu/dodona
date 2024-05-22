@@ -21,6 +21,7 @@
 #  columns             :integer
 #
 class Question < Annotation
+  include Filterable
   belongs_to :user, inverse_of: :questions
   counter_culture :user, column_name: proc { |question| question.answered? ? nil : 'open_questions_count' }
 

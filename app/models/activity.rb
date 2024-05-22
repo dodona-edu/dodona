@@ -33,6 +33,7 @@ class Activity < ApplicationRecord
   include StringHelper
   include Cacheable
   include Tokenable
+  include Filterable
 
   USERS_READ_CACHE_STRING = '/course/%<course_id>s/activity/%<id>s/users_read'.freeze
   CONFIG_FILE = 'config.json'.freeze

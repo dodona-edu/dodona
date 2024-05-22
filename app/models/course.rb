@@ -26,6 +26,7 @@ class Course < ApplicationRecord
   include Cacheable
   include Tokenable
   include ActionView::Helpers::SanitizeHelper
+  include Filterable
 
   SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING = '/courses/%<id>d/subscribed_members_count'.freeze
   ACTIVITIES_COUNT_CACHE_STRING = '/courses/%<id>d/activities_count'.freeze

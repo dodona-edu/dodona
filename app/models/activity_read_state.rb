@@ -27,7 +27,7 @@ class ActivityReadState < ApplicationRecord
   scope :in_course, ->(course) { where course_id: course.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(activity: series.content_pages) }
   scope :of_user, ->(user) { where user_id: user.id }
-  scope :before_deadline, ->(deadline) { where('created_at < ?', deadline) }
+  scope :before_deadline, ->(deadline) { where(created_at: ...deadline) }
 
   scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }

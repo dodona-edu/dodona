@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.4'
+gem 'nokogiri', '~> 1.16.5'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.5'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.2.0'
+  gem 'mocha', '~> 2.3.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.20.1'
+  gem 'selenium-webdriver', '~> 4.21.1'
 end
 
 group :test do
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.20.0'
   gem 'rubocop-factory_bot', '~> 2.25'
   gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.24.1'
+  gem 'rubocop-rails', '~> 2.25.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

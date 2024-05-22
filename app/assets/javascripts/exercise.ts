@@ -479,8 +479,10 @@ function afterResize(details): void {
      */
     if (details.type === "init") {
         const hash = location.hash;
-        location.hash = "#"; // some browsers only scroll after a change
-        location.hash = hash;
+        if (hash && hash.length > 1) {
+            location.hash = "#"; // some browsers only scroll after a change
+            location.hash = hash;
+        }
     }
 }
 

@@ -52,6 +52,7 @@ function showRealFile(name: string, activityPath: string, filePath: string): voi
 }
 export function initFileViewers(activityPath: string): void {
     document.querySelectorAll("a.file-link").forEach(l => l.addEventListener("click", e => {
+        e.preventDefault();
         const link = e.currentTarget as HTMLLinkElement;
         const fileName = link.innerText;
         const tc = link.closest(".testcase.contains-file") as HTMLDivElement;

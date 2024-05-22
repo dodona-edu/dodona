@@ -370,7 +370,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
       @course.pending_members = students
       post mass_accept_pending_course_url(@course), params: { format: :json }
 
-      assert_response 200
+      assert_response :ok
 
       @course.reload
 
@@ -391,7 +391,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
 
       post mass_decline_pending_course_url(@course), params: { format: :json }
 
-      assert_response 200
+      assert_response :ok
 
       @course.reload
 

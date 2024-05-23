@@ -67,6 +67,10 @@ Rails.application.routes.draw do
     resources :series, except: %i[new index] do
       resources :activities, only: [:index]
       resources :activities, only: [:index], path: '/exercises'
+      resources :users, only: %i[index create destroy], controller: :series_users do
+        delete on: :collection, to: 'series_users#destroy_all'
+        patch on: :collection, to: 'series_users#create_all'
+      end
       member do
         get 'available_activities', to: 'activities#available'
         get 'overview'

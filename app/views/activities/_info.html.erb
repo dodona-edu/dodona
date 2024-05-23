@@ -1,0 +1,216 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag 'submission' %>
+<% end %>
+<%
+  solutions = if @activity.exercise?
+                @activity.solutions.sort(&method(:compare_solutions))
+              end
+%>
+<div class="row">
+        <% if @activity.labels.any? %>
+          <div class="row">
+            <div class="col-12 labels" title="<%= activity_config_explanation 'labels' %>">
+              <p>
+                <% @activity.labels.each do |label| %>
+                  <%= link_to label_path(label) do %>
+                    <span class="token accent-purple"><%= label.name %></span>
+                  <% end %>
+                <% end %>
+                </div>
+          </div>
+        <% end %>
+        <div class="row">
+          <div class="col-md-4 col-12 order-md-1">
+            <div class="row">
+              <div class="col-12 repo-details">
+                <div class="row">
+                  <% if (contact_info = @config['contact'] || @repository.first_admin&.pretty_email) %>
+                    <div class="col-md-12 col-6">
+                      <p title="<%= t '.contact' %>">
+                        <i class="mdi mdi-account-box"></i>
+                        <%= mail_to(contact_info) %>
+                    </div>
+                  <% end %>
+                  <% if @activity.exercise? %>
+                    <div class="col-md-12 col-6">
+                      <p title="<%= t '.judge' %>">
+                        <i class="mdi mdi-gavel"></i>
+                        <% if policy(@activity.judge).show? %>
+                          <%= link_to @activity.judge.name, judge_path(@activity.judge) %>
+                        <% else %>
+                          <%= @activity.judge.name %>
+                        <% end %>
+                    </div>
+                  <% end %>
+                  <div class="col-md-12 col-6">
+                    <p title="<%= t '.repository' %>">
+                      <i class="mdi mdi-server"></i>
+                      <% if policy(@repository).show? %>
+                        <%= link_to @repository.name, repository_path(@repository) %>
+                      <% else %>
+                        <%= @repository.name %>
+                      <% end %>
+                  </div>
+                  <div class="col-md-12 col-6">
+                    <% if current_user&.repository_admin?(@repository) %>
+                      <p title="<%= t '.repository_path' %>">
+                        <i class="mdi mdi-file-search"></i>
+                        <%= github_link @repository, @activity.path %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 col-12 order-md-0">
+            <div class="row activity-details">
+              <% if @activity.exercise? %>
+                <div title="<%= activity_config_explanation 'programming_language' %>" class="col-lg-4 col-6 activity-detail">
+                  <h1><%= @activity.programming_language ? @activity.programming_language.name.titlecase : "n/a" %></h1>
+                  <%= t '.programming_language' %>
+                </div>
+              <% end %>
+              <div title="<%= t '.description_files', path: './' + @activity.path + '/' + Activity::DESCRIPTION_DIR  + '/' %>" class="col-lg-4 col-6 activity-detail">
+                <h1><%= @activity.description_languages.join(', ') %></h1>
+                <%= t '.natural_language' %>
+              </div>
+              <% if @activity.exercise? %>
+                <div class="col-lg-4 col-6 activity-detail" title="<%= activity_config_explanation 'evaluation', 'time_limit' %>">
+                  <h1><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h1>
+                  <%= t '.time_limit' %>
+                </div>
+                <div title="<%= activity_config_explanation 'evaluation', 'memory_limit' %>" class="col-lg-4 col-6 activity-detail">
+                  <h1>
+                    <%= human_bytes (@config.dig('evaluation', 'memory_limit') || SubmissionRunner.default_config['memory_limit']).to_i %>
+                  </h1>
+                  <%= t '.memory_limit' %>
+                </div>
+                <div title="<%= activity_config_explanation 'network_enabled' %>" class="col-lg-4 col-6 activity-detail">
+                  <%
+                    if @config.dig('evaluation', 'network_enabled')
+                      network_icon = 'mdi-wan'
+                      network_config_name = t('.network_enabled')
+                    else
+                      network_icon = 'mdi-lan-disconnect'
+                      network_config_name = t('.network_disabled')
+                    end
+                  %>
+                  <h1>
+                    <i class="mdi mdi-36 <%= network_icon %>"></i>
+                  </h1>
+                  <%= network_config_name %>
+                </div>
+                <div title="<%= t '.submission_details', correct: @activity.submissions.correct.count, total: @activity.submissions.count, users: @activity.users_tried %>" class="col-lg-4 col-6 activity-detail">
+                  <h1><%= number_with_delimiter @activity.submissions.count, delimiter: " " %></h1>
+                  <%= t '.submission_count' %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          <div class="col-12 order-md-2">
+            <span class="small text-muted"><%= raw t('.config_info', doc_site: link_to(t('.doc_site'), 'https://docs.dodona.be/references/exercise-config/')) %></span>
+          </div>
+        </div>
+
+      <hr class="divider mt-2"/>
+
+
+        <div class="row">
+          <div class="col-12">
+            <% if @activity.about.present? %>
+              <%= markdown @activity.about %>
+            <% else %>
+              <span class="text-muted"><%= t '.no_readme_present' %></span>
+              <% if current_user&.repository_admin?(@repository) && @repository.github_url.present? %>
+                <%= github_link @repository,
+                                "?filename=#{@activity.path}/readme.#{I18n.locale.to_s}.md",
+                                name: t('.click_here_to_create_one'),
+                                mode: 'new' %>
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+<% if @activity.exercise? %>
+  <div class="row">
+
+    <hr class="divider mt-4"/>
+          <h3><%= t ".sample_solutions" %></h3>
+          <% if solutions.any? %>
+            <div class="card-tab">
+              <ul class="nav nav-tabs">
+                <% solutions.map(&:first).each_with_index do |fname, i| %>
+                  <li>
+                    <a href="#solution-<%= i %>" data-bs-toggle="tab" aria-expanded="false"><%= fname %></a>
+                  </li>
+                <% end %>
+              </ul>
+              <div class="tab-content">
+                <div class="tab-pane active">
+                  <span class="text-muted"><%= t '.sample_solutions_hint' %></span>
+                </div>
+                <% solutions.each_with_index do |(fname, code), i| %>
+                  <div id="solution-<%= i %>" class="tab-pane feedback-table">
+                    <div class="feedback-table-options">
+                      <%= link_to t('.sample_solution_submit'), activity_scoped_url(activity: @activity, series: @series, course: @course, options: {from_solution: fname}), class: "btn btn-text" %>
+                    </div>
+                    <div class="code-table">
+                      <%= raw FeedbackCodeRenderer.new(code, @activity.programming_language&.renderer_name).add_code.html %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% else %>
+            <span class="text-muted"><%= t '.no_solutions' %></span>
+          <% end %>
+        </div>
+<% end %>
+
+<div class="row">
+
+  <hr class="divider mt-4"/>
+        <h3><%= t ".usage" %></h3>
+        <p><%= t('.courses_using_this_activity', count: @courses_series.count) %></p>
+        <% if @courses_series.any? %>
+          <div class="table-scroll-wrapper">
+            <table class="table table-index table-resource">
+              <thead>
+              <tr>
+                <th><%= Course.human_attribute_name("name") %></th>
+                <th><%= Course.human_attribute_name("series") %></th>
+                <th><%= Course.human_attribute_name("teacher") %></th>
+                <th><%= Course.human_attribute_name("year") %></th>
+                <th><%= Course.human_attribute_name("institution") %></th>
+                <th><%= t 'courses.index.users' %></th>
+                <th></th>
+              </tr>
+              </thead>
+              <tbody>
+              <% @courses_series.each do |course, series| %>
+                <tr>
+                  <td title="<%= course.name %>" class="text">
+                    <span><%= link_to course.name, course %></span>
+                  </td>
+                  <td class="text">
+                    <%= raw series.map{ |s| link_to(s.name, s, class: "course-link", title: s.name).html_safe }.to_sentence %>
+                  </td>
+                  <td title="<%= course.teacher %>" class="text"><span><%= course.teacher %></span></td>
+                  <td><%= course.formatted_year %></td>
+                  <td title="<%= course.institution&.name %>"><%= course.institution&.short_name || t('courses.form.no_institution') %></td>
+                  <td><%= course.subscribed_members_count %></td>
+                  <td class="actions">
+                    <% if policy(course).edit? %>
+                      <%= link_to edit_course_path(course), class: "btn btn-icon" do %>
+                        <i class="mdi mdi-pencil"></i>
+                      <% end %>
+                    <% end %>
+                  </td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+          </div>
+        <% end %>

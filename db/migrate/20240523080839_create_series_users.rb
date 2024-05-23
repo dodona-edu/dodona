@@ -1,7 +1,6 @@
 class CreateSeriesUsers < ActiveRecord::Migration[7.1]
   def change
     create_table :series_users do |t|
-      t.primary_key :id
       t.integer :user_id
       t.integer :series_id
 

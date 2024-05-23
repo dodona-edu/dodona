@@ -40,6 +40,8 @@ class Series < ApplicationRecord
   has_many :series_memberships, dependent: :destroy
   has_many :activities, through: :series_memberships
   has_many :activity_statuses, dependent: :destroy
+  has_many :series_users, dependent: :destroy
+  has_many :users, through: :series_users
 
   has_one :evaluation, dependent: :destroy
 

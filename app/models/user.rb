@@ -53,6 +53,7 @@ class User < ApplicationRecord
   has_many :evaluation_users, inverse_of: :user, dependent: :restrict_with_error
   has_one  :rights_request, dependent: :destroy
   has_many :announcement_views, dependent: :destroy
+  has_many :series_users, dependent: :destroy
 
   has_many :subscribed_courses,
            lambda {
@@ -464,6 +465,14 @@ class User < ApplicationRecord
           av.destroy!
         else
           av.update!(user: other)
+        end
+      end
+
+      series_users.each do |su|
+        if other.series_users.find { |osu| osu.series_id == su.series_id }
+          su.destroy!
+        else
+          su.update!(user: other)
         end
       end
 

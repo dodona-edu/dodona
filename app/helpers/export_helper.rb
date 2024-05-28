@@ -6,8 +6,8 @@ module ExportHelper
 
     attr_reader :users, :item, :errors
 
-    CONVERT_TO_BOOL = %w[deadline only_last_submission with_info all with_labels].freeze
-    SUPPORTED_OPTIONS = %w[deadline filter_students group_by only_last_submission with_info all with_labels].freeze
+    CONVERT_TO_BOOL = %w[deadline only_last_submission with_info all with_labels evaluation].freeze
+    SUPPORTED_OPTIONS = %w[deadline filter_students group_by only_last_submission with_info all with_labels evaluation].freeze
 
     # Keywords used:
     # :item    : A User, Course or Series for which submissions will be exported
@@ -32,6 +32,7 @@ module ExportHelper
                              .to_h { |m| [m.user, m.course_labels] }
 
         @users = @users_labels.keys if users.nil?
+        @users = @item.evaluation.users if evaluation?
       when Course
         @list = @item.series if all?
         @users_labels = @item.course_memberships
@@ -90,6 +91,10 @@ module ExportHelper
     # Export all submissions, even those not part of a series/course
     def all?
       @options[:all].present?
+    end
+
+    def evaluation?
+      @options[:evaluation].present? && @item.is_a?(Series) && @item.evaluation.present?
     end
 
     def zip_filename
@@ -242,6 +247,8 @@ module ExportHelper
     end
 
     def get_submissions_for_series(series, selected_exercises, users)
+      return policy_scope(series.evaluation.submissions.where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id))) if evaluation?
+
       submissions = policy_scope(Submission).where(user_id: users.map(&:id), exercise_id: selected_exercises.map(&:id), course: series.course_id).includes(:user, :exercise)
       submissions = submissions.before_deadline(@options[:deadline]) if deadline?
       submissions = submissions.group(:user_id, :exercise_id).most_recent if only_last_submission?

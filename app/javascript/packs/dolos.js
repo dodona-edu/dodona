@@ -1,3 +1,3 @@
-import { startDolos } from "dolos.ts";
+import { initDolosBtn } from "dolos.ts";
 
-window.dodona.startDolos = startDolos;
+window.dodona.initDolosBtn = initDolosBtn;

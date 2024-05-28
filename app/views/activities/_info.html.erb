@@ -7,18 +7,23 @@
               end
 %>
 <div class="row">
+  <div class="card card-outlined">
+    <div class="card-supporting-text">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>
+          <%= activity_icon(@activity, 24) %>
+          <%= @activity.numbered_name(@series) %>
+        </h2>
         <% if @activity.labels.any? %>
-          <div class="row">
-            <div class="col-12 labels" title="<%= activity_config_explanation 'labels' %>">
-              <p>
-                <% @activity.labels.each do |label| %>
-                  <%= link_to label_path(label) do %>
-                    <span class="token accent-purple"><%= label.name %></span>
-                  <% end %>
-                <% end %>
-                </div>
+          <div class="labels" title="<%= activity_config_explanation 'labels' %>">
+            <% @activity.labels.each do |label| %>
+              <%= link_to label_path(label) do %>
+                <span class="token accent-purple"><%= label.name %></span>
+              <% end %>
+            <% end %>
           </div>
         <% end %>
+      </div>
         <div class="row">
           <div class="col-md-4 col-12 order-md-1">
             <div class="row">
@@ -66,23 +71,23 @@
             <div class="row activity-details">
               <% if @activity.exercise? %>
                 <div title="<%= activity_config_explanation 'programming_language' %>" class="col-lg-4 col-6 activity-detail">
-                  <h1><%= @activity.programming_language ? @activity.programming_language.name.titlecase : "n/a" %></h1>
+                  <h3><%= @activity.programming_language ? @activity.programming_language.name.titlecase : "n/a" %></h3>
                   <%= t '.programming_language' %>
                 </div>
               <% end %>
               <div title="<%= t '.description_files', path: './' + @activity.path + '/' + Activity::DESCRIPTION_DIR  + '/' %>" class="col-lg-4 col-6 activity-detail">
-                <h1><%= @activity.description_languages.join(', ') %></h1>
+                <h3><%= @activity.description_languages.join(', ') %></h3>
                 <%= t '.natural_language' %>
               </div>
               <% if @activity.exercise? %>
                 <div class="col-lg-4 col-6 activity-detail" title="<%= activity_config_explanation 'evaluation', 'time_limit' %>">
-                  <h1><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h1>
+                  <h3><%= @config.dig('evaluation', 'time_limit') || SubmissionRunner.default_config['time_limit']  %>s</h3>
                   <%= t '.time_limit' %>
                 </div>
                 <div title="<%= activity_config_explanation 'evaluation', 'memory_limit' %>" class="col-lg-4 col-6 activity-detail">
-                  <h1>
+                  <h3>
                     <%= human_bytes (@config.dig('evaluation', 'memory_limit') || SubmissionRunner.default_config['memory_limit']).to_i %>
-                  </h1>
+                  </h3>
                   <%= t '.memory_limit' %>
                 </div>
                 <div title="<%= activity_config_explanation 'network_enabled' %>" class="col-lg-4 col-6 activity-detail">
@@ -95,13 +100,13 @@
                       network_config_name = t('.network_disabled')
                     end
                   %>
-                  <h1>
+                  <h3>
                     <i class="mdi mdi-36 <%= network_icon %>"></i>
-                  </h1>
+                  </h3>
                   <%= network_config_name %>
                 </div>
                 <div title="<%= t '.submission_details', correct: @activity.submissions.correct.count, total: @activity.submissions.count, users: @activity.users_tried %>" class="col-lg-4 col-6 activity-detail">
-                  <h1><%= number_with_delimiter @activity.submissions.count, delimiter: " " %></h1>
+                  <h3><%= number_with_delimiter @activity.submissions.count, delimiter: " " %></h3>
                   <%= t '.submission_count' %>
                 </div>
               <% end %>
@@ -111,30 +116,28 @@
             <span class="small text-muted"><%= raw t('.config_info', doc_site: link_to(t('.doc_site'), 'https://docs.dodona.be/references/exercise-config/')) %></span>
           </div>
         </div>
+    </div>
 
-      <hr class="divider mt-2"/>
-
-
-        <div class="row">
-          <div class="col-12">
-            <% if @activity.about.present? %>
-              <%= markdown @activity.about %>
-            <% else %>
-              <span class="text-muted"><%= t '.no_readme_present' %></span>
-              <% if current_user&.repository_admin?(@repository) && @repository.github_url.present? %>
-                <%= github_link @repository,
-                                "?filename=#{@activity.path}/readme.#{I18n.locale.to_s}.md",
-                                name: t('.click_here_to_create_one'),
-                                mode: 'new' %>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
-      </div>
-
+  </div>
+</div>
+<div class="row">
+  <h3>README</h3>
+  <div class="col-12">
+  <% if @activity.about.present? %>
+    <%= markdown @activity.about %>
+  <% else %>
+    <span class="text-muted"><%= t '.no_readme_present' %></span>
+    <% if current_user&.repository_admin?(@repository) && @repository.github_url.present? %>
+      <%= github_link @repository,
+                      "?filename=#{@activity.path}/readme.#{I18n.locale.to_s}.md",
+                      name: t('.click_here_to_create_one'),
+                      mode: 'new' %>
+    <% end %>
+  <% end %>
+  </div>
+</div>
 <% if @activity.exercise? %>
   <div class="row">
-
     <hr class="divider mt-4"/>
           <h3><%= t ".sample_solutions" %></h3>
           <% if solutions.any? %>

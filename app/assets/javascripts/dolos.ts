@@ -13,7 +13,6 @@ export function initDolosBtn(btnID: string, url: string): void {
 }
 
 export async function startDolos(btn: HTMLLinkElement, url: string): Promise<void> {
-    console.log("Starting Dolos report generation", btn.id);
     const loader = document.getElementById(LOADER_ID) as LoadingBar;
     loader.show();
     btn.classList.add("disabled");

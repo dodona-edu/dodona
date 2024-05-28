@@ -1,6 +1,8 @@
 <%= render 'activities/navbar_links' if @activity %>
 <%= render 'courses/navbar_links' if @course && !@activity %>
-<%= javascript_include_tag 'dolos' %>
+<%= content_for :javascripts do %>
+  <%= javascript_include_tag 'dolos' %>
+<% end %>
 <div class="row">
   <div class="col-12">
     <div class="card">

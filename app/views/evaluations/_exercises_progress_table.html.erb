@@ -1,4 +1,6 @@
-<%= javascript_include_tag 'dolos' %>
+<%= content_for :javascripts do %>
+  <%= javascript_include_tag 'dolos' %>
+<% end %>
 <div class="table-scroll-wrapper">
   <d-loading-bar id="dolos-loader"></d-loading-bar>
   <table class="table activity-table table-resource">

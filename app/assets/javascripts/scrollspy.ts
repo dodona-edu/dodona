@@ -75,13 +75,12 @@ export class ScrollSpy {
     getCurrentSection(): HTMLElement | null {
         this.sections = document.querySelectorAll(this.options.sectionSelector);
         for (let i = 0; i < this.sections.length; i++) {
-            /**
-            * @type {HTMLElement}
-            */
-            const section = this.sections[i];
-            // get the parent of the parent of the anchor
-            const startAt = section.parentElement.parentElement.offsetTop;
-            const endAt = startAt + section.parentElement.parentElement.offsetHeight;
+            const section: HTMLElement = this.sections[i];
+            // this is a series card specific modification
+            // it gets the series card encapsulating the anchor tag
+            const seriesCard = section.closest<HTMLElement>(".series");
+            const startAt = seriesCard.offsetTop;
+            const endAt = startAt + seriesCard.offsetHeight;
             const currentPosition =
                 (document.documentElement.scrollTop ||
                     document.body.scrollTop) + this.options.offset;

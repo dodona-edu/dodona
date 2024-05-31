@@ -1,11 +1,3 @@
-# make rails credentials available to capistrano
-require File.expand_path("./environment", __dir__)
-
-# Set the sentry auth token as an environment variable
-set :default_environment, {
-  SENTRY_AUTH_TOKEN: Rails.application.credentials.sentry_auth_token,
-}
-
 # config valid only for current version of Capistrano
 lock '~> 3.9'
 
@@ -137,3 +129,11 @@ namespace :deploy do
     end
   end
 end
+
+# make rails credentials available to capistrano
+require File.expand_path("./environment", __dir__)
+
+# Set the sentry auth token as an environment variable
+set :default_environment, {
+  SENTRY_AUTH_TOKEN: Rails.application.credentials.sentry_auth_token,
+}

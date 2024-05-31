@@ -80,8 +80,8 @@ export class ScrollSpy {
             */
             const section = this.sections[i];
             // get the parent of the parent of the anchor
-            const startAt = section.parentElement.parentElement.offsetTop;
-            const endAt = startAt + section.parentElement.parentElement.offsetHeight;
+            const startAt = section.parentElement.parentElement.parentElement.offsetTop;
+            const endAt = startAt + section.parentElement.parentElement.parentElement.offsetHeight;
             const currentPosition =
                 (document.documentElement.scrollTop ||
                     document.body.scrollTop) + this.options.offset;

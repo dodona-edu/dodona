@@ -77,8 +77,8 @@ export class ScrollSpy {
         for (let i = 0; i < this.sections.length; i++) {
             const section: HTMLElement = this.sections[i];
             // this is a series card specific modification
-            // it gets the great grand parent of the anchor tag, which is the series card
-            const seriesCard = section.parentElement.parentElement.parentElement;
+            // it gets the series card encapsulating the anchor tag
+            const seriesCard = section.closest<HTMLElement>(".series");
             const startAt = seriesCard.offsetTop;
             const endAt = startAt + seriesCard.offsetHeight;
             const currentPosition =

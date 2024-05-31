@@ -130,9 +130,6 @@ namespace :deploy do
   end
 end
 
-# make rails credentials available to capistrano
-require File.expand_path("./environment.rb", __dir__)
-
 # Set the sentry auth token as an environment variable
 set :default_env, {
   'SENTRY_AUTH_TOKEN' => YAML.load(`rails credentials:show`)['sentry_auth_token']

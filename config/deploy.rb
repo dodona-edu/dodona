@@ -1,3 +1,6 @@
+# make rails credentials available to capistrano
+require File.expand_path("./environment", __dir__)
+
 # config valid only for current version of Capistrano
 lock '~> 3.9'
 

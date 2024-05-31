@@ -130,7 +130,8 @@ namespace :deploy do
   end
 end
 
+include CredentialLoader
 # Set the sentry auth token as an environment variable
 set :default_env, {
-  'SENTRY_AUTH_TOKEN' => YAML.load(`rails credentials:show`)['sentry_auth_token']
+  'SENTRY_AUTH_TOKEN': read_credentials(environment: fetch(:stage))["sentry_auth_token"]
 }

@@ -130,7 +130,17 @@ namespace :deploy do
   end
 end
 
+require "active_support/encrypted_configuration"
+require "active_support/core_ext/hash/keys"
+
 # Set the sentry auth token as an environment variable
 set :default_env, {
-  'SENTRY_AUTH_TOKEN' => YAML.load(`rails credentials:show`)['sentry_auth_token']
+  'SENTRY_AUTH_TOKEN' => YAML.load(
+    ActiveSupport::EncryptedConfiguration.new(
+      config_path: "config/credentials.yml.enc",
+      key_path: "config/master.key",
+      env_key: "RAILS_MASTER_KEY",
+      raise_if_missing_key: true
+    ).read
+  )['sentry_auth_token']
 }

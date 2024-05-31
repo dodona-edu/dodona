@@ -118,7 +118,7 @@ class User < ApplicationRecord
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
 
-  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf elixir]
+  devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 flemish_government saml smartschool surf elixir]
 
   validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validates :email, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
@@ -212,7 +212,7 @@ class User < ApplicationRecord
   }
 
   def provider_allows_blank_email
-    return if institution&.uses_lti? || institution&.uses_oidc? || institution&.uses_smartschool?
+    return if institution&.uses_lti? || institution&.uses_flemish_government? || institution&.uses_smartschool?
 
     errors.add(:email, 'should not be blank') if email.blank?
   end

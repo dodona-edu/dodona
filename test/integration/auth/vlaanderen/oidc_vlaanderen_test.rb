@@ -10,13 +10,18 @@ require 'test_helper'
 # https://authenticatie.vlaanderen.be/docs/beveiligen-van-toepassingen/integratie-methoden/oidc/technische-info/discovery-url/
 # https://authenticatie.vlaanderen.be/docs/beveiligen-van-toepassingen/integratie-methoden/oidc/technische-info/scope-claims/
 ###
+CLIENT_ID = 'foo'.freeze
 
 # Set the signing key.
-module OIDC::Auth::Settings
+class FlemishGovernment::Auth::OmniAuth::Setup
   private
 
   def private_key_path
     JwksHelper.private_key_path
+  end
+
+  def client_id
+    CLIENT_ID
   end
 end
 
@@ -29,9 +34,10 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
   KEYS_URL = format('%s/v1/keys', ISSUER).freeze
   KEY_ID = format('OIDC_VLAANDEREN_%d', Time.now.to_i).freeze
   TOKEN_URL = format('%s/v1/token', ISSUER).freeze
+  USER_INFO_URL = format('%s/v1/userinfo', ISSUER).freeze
 
   def setup
-    @provider = create :oidc_provider, issuer: ISSUER
+    @provider = create :flemish_government_provider
 
     # Disable the test mode so that the whole flow is executed.
     OmniAuth.config.test_mode = false
@@ -48,11 +54,11 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
 
   def omniauth_callback_url
     # Strip the trailing slash.
-    user_oidc_omniauth_callback_url(locale: nil, protocol: 'https').to_s.chomp('/')
+    user_flemish_government_omniauth_callback_url(locale: nil, protocol: 'https').to_s.chomp('/')
   end
 
   def omniauth_url(provider)
-    user_oidc_omniauth_authorize_url(provider: provider)
+    user_flemish_government_omniauth_authorize_url(provider: provider)
   end
 
   def stub_discovery!
@@ -91,8 +97,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Validate the parameters.
     parameters = CGI.parse(redirect_url.query).symbolize_keys
 
-    # Client id must be equal to the one set in the provider.
-    assert_equal @provider.client_id, parameters[:client_id].first
+    # Client id must be equal to the one set in the secrets.
+    assert_equal CLIENT_ID, parameters[:client_id].first
 
     # Nonce must not be empty.
     assert_not_empty parameters[:nonce].first
@@ -108,12 +114,7 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     assert_equal 'code', parameters[:response_type].first
 
     # Scope must contain openid and profile.
-    assert_equal 'openid profile vo', parameters[:scope].first
-
-    # State must not be empty and must start with the id of the provider so that
-    # we can reconstruct this in the callback phase.
-    assert_not_empty parameters[:state].first
-    assert parameters[:state].first.to_s.start_with?(format('%s-', @provider.id))
+    assert_equal 'openid profile vo ov_leerling', parameters[:scope].first
   end
 
   test 'should handle the callback phase' do
@@ -126,8 +127,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Build an id token.
     id_token_body = {
       at_hash: Faker::Alphanumeric.alphanumeric,
-      aud: @provider.client_id,
-      azp: @provider.client_id,
+      aud: CLIENT_ID,
+      azp: CLIENT_ID,
       exp: Time.now.to_i + 3600,
       family_name: Faker::Name.last_name,
       given_name: Faker::Name.first_name,
@@ -145,6 +146,9 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
     # Stub the access token call.
     access_token_response = { access_token: Faker::Crypto.md5, expires_in: 3600, id_token: id_token, scope: 'profile', token_type: 'Bearer' }
     stub_request(:post, TOKEN_URL).to_return(body: access_token_response.to_json, headers: { 'Content-Type': 'application/json' }, status: 200)
+
+    # Stub the user info call.
+    stub_request(:get, USER_INFO_URL).to_return(body: {}.to_json, headers: { 'Content-Type': 'application/json' }, status: 200)
 
     # Call the callback url.
     authorization_response = { code: Faker::Alphanumeric.alpha, state: session['omniauth.state'] }
@@ -171,8 +175,8 @@ class AuthOIDCVlaanderenTest < ActionDispatch::IntegrationTest
       client_assertion = decode_jwt(client_assertion_encoded).symbolize_keys
 
       assert_equal ISSUER, client_assertion[:aud]
-      assert_equal @provider.client_id, client_assertion[:iss]
-      assert_equal @provider.client_id, client_assertion[:sub]
+      assert_equal CLIENT_ID, client_assertion[:iss]
+      assert_equal CLIENT_ID, client_assertion[:sub]
 
       # Code must be equal to the code received from the provider.
       assert_equal authorization_response[:code], parameters[:code].first

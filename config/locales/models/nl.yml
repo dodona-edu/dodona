@@ -162,7 +162,7 @@ nl:
         office365: Office 365
         smartschool: Smartschool
         google_oauth2: Google Workspace
-        oidc: OpenID Connect
+        flemish_government: Vlaamse Overheid
         lti: LTI
         surf: SURFconext
         elixir: Elixir

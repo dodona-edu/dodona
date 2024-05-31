@@ -26,7 +26,7 @@ class Auth::AuthenticationController < Devise::SessionsController
       Provider.find_by(identifier: 'e638861b-15d9-4de6-a65d-b48789ae1f08') # UCLL
     ].compact
     @other = [
-      Provider.find_by(issuer: 'https://authenticatie.vlaanderen.be/op'),
+      Provider::FlemishGovernment, # Vlaamse Overheid
       Provider::Elixir # Elixir
     ].compact
 

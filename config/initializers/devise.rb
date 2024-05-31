@@ -1,8 +1,9 @@
 ## LTI.
 require_relative '../../lib/LTI/auth.rb'
 
-## OIDC.
-require_relative '../../lib/OIDC/auth.rb'
+## ACM-IDM.
+require_relative '../../lib/FlemishGovernment/strategy.rb'
+require_relative '../../lib/FlemishGovernment/setup.rb'
 
 ## SAML.
 require_relative '../../lib/SAML/strategy.rb'
@@ -272,7 +273,7 @@ Devise.setup do |config|
                   Rails.application.credentials.office365_client_id,
                   Rails.application.credentials.office365_client_secret
 
-  config.omniauth :oidc, setup: OIDC::Auth::OmniAuth::Setup
+  config.omniauth :flemish_government, setup: FlemishGovernment::Auth::OmniAuth::Setup
 
   config.omniauth :surf, setup: Surf::Auth::OmniAuth::Setup
 

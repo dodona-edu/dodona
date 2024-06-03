@@ -59,3 +59,6 @@ junit.xml
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# Sentry Config File
+.env.sentry-build-plugin

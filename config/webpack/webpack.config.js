@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const { sentryWebpackPlugin } = require("@sentry/webpack-plugin");
 
 // https://stackoverflow.com/questions/34907999/best-way-to-have-all-files-in-a-directory-be-entry-points-in-webpack
 const sourceDirectory = "./app/javascript/packs";
@@ -67,6 +68,16 @@ const config = {
         modules: ["node_modules", "app/assets/javascripts"],
         extensions: [".tsx", ".ts", ".mjs", ".js", ".sass", ".scss", ".css", ".module.sass", ".module.scss", ".module.css", ".png", ".svg", ".gif", ".jpeg", ".jpg"]
     },
+    devtool: "source-map", // Source map generation must be turned on
+    plugins: [
+        // Put the Sentry Webpack plugin after all other plugins
+        sentryWebpackPlugin({
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: "dodona",
+            project: "dodona-frontend",
+        }),
+    ],
+
 };
 
 if (process.env.NODE_ENV === "development") {

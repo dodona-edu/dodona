@@ -14,6 +14,9 @@ import Rails from "@rails/ujs";
 
 Rails.start();
 
+import { initSentry } from "sentry";
+initSentry();
+
 import { i18n } from "i18n/i18n";
 
 // bootstrap

@@ -16,12 +16,14 @@ Rails.application.configure do
                          'https://cdn.jsdelivr.net/pyodide/',
                          'https://*.googleapis.com',
                          'http://localhost:3035', 'ws://localhost:3035',
-                         'https://dolos.ugent.be/api/reports'
+                         'https://dolos.ugent.be/api/reports',
+                         'https://o4507329115783168.ingest.de.sentry.io/api/'
     else
       policy.connect_src :self,
                          'https://cdn.jsdelivr.net/pyodide/',
                          'https://cdn.jsdelivr.net/npm/mathjax@3/',
-                         'https://dolos.ugent.be/api/reports'
+                         'https://dolos.ugent.be/api/reports',
+                         'https://o4507329115783168.ingest.de.sentry.io/api/'
     end
 
     policy.font_src    :self, 'https://fonts.gstatic.com',

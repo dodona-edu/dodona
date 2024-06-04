@@ -149,7 +149,9 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
             const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
-            swapActionButtons();
+            if (loggedIn) {
+                swapActionButtons();
+            }
             await editorReady;
             initRestoreBoilerplateButton(boilerplate);
         }

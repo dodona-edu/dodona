@@ -56,6 +56,7 @@ en:
       short_title: "Select another submission."
       select_a_submission: "Do select a submission."
       select_another_submission: "Select another submission."
+      select_no_submission: "De-select this submission."
     submissions_table:
       update-submission: "Change to this submission"
       confirm: "Are you sure? All comments on the previous submission will be deleted."

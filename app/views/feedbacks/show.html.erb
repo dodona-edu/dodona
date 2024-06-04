@@ -41,6 +41,11 @@
                     <%= link_to edit_feedback_path(@feedback) do %>
                       <%= t("feedbacks.edit.select_another_submission") %>
                     <% end %>
+                  <% else %>
+                      <br/>
+                    <%= link_to edit_feedback_path(@feedback) do %>
+                      <%= t("feedbacks.edit.select_no_submission") %>
+                    <% end %>
                   <% end %>
                 <% elsif @feedback.total_attempts > 0 %>
                   <%= t('.submission.total_attempts_html', count: @feedback.total_attempts) %>

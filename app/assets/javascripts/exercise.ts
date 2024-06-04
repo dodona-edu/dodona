@@ -318,7 +318,9 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function enableSubmitButton(): void {
-        if (!loggedIn) return;
+        if (!loggedIn) {
+            return;
+        }
 
         const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = false;
@@ -327,7 +329,9 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function disableSubmitButton(): void {
-        if (!loggedIn) return;
+        if (!loggedIn) {
+            return;
+        }
 
         const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = true;

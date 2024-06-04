@@ -2,7 +2,7 @@ import * as Sentry from "@sentry/browser";
 
 export function initSentry(): void {
     const environmentTag = document.querySelector("meta[name='environment']");
-    const environment = environmentTag ? environmentTag.getAttribute("content") : "unknown";
+    const environment = environmentTag?.getAttribute("content") ?? "unknown";
     const releaseTag = document.querySelector("meta[name='version']");
     const release = releaseTag ? releaseTag.getAttribute("content") : "unknown";
 

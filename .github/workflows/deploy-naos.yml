@@ -32,3 +32,18 @@ jobs:
         token: ${{secrets.GITHUB_TOKEN}}
         label: deploy naos
         type: remove
+    - name: Get tag name
+      id: tag_name
+      run: echo "tag_name=$(date +'%Y.%m.%d-%H:%M')" >> "$GITHUB_ENV"
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Create Sentry release
+      uses: getsentry/action-release@v1
+      env:
+        SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+        SENTRY_ORG: dodona
+        SENTRY_PROJECT: dodona-frontend
+      with:
+        environment: staging
+        version: ${{ env.tag_name }}

@@ -1,5 +1,7 @@
 import "core-js/stable";
 import "regenerator-runtime/runtime";
+import { initSentry } from "sentry";
+initSentry();
 
 // bootstrap
 import { Alert, Button, Collapse, Dropdown, Modal, Popover, Tab, Tooltip } from "bootstrap";

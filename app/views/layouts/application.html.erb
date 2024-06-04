@@ -16,6 +16,8 @@
   <meta property="og:image" content="<%= root_url(locale: nil) %>social-image.png">
   <meta name="msapplication-TileColor" content="#2196F3"/>
   <meta name="msapplication-TileImage" content="/icon.png"/>
+  <meta name="version" content="<%= Dodona::Application::VERSION %>">
+  <meta name="environment" content="<%= Rails.env %>">
   <link rel="apple-touch-icon-precomposed" href="/icon.png"/>
   <link rel="shortcut icon" sizes="192x192" href="<%= @dot_icon&.any? ? "/icon-not.png" : "/icon.png" %>">
   <link rel="shortcut icon" href="<%= @dot_icon&.any? ? "/favicon-not.ico" : "/favicon.ico" %>">

@@ -4,7 +4,7 @@ export function initSentry(): void {
     const environmentTag = document.querySelector("meta[name='environment']");
     const environment = environmentTag?.getAttribute("content") ?? "unknown";
     const releaseTag = document.querySelector("meta[name='version']");
-    const release = releaseTag ? releaseTag.getAttribute("content") : "unknown";
+    const release = releaseTag?.getAttribute("content") ?? "unknown";
 
     // config options can be found at https://docs.sentry.io/platforms/javascript/configuration/
     Sentry.init({

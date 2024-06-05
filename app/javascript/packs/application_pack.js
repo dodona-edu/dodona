@@ -36,6 +36,7 @@ import "components/progress_bar";
 import "components/theme_picker";
 import { userState } from "state/Users";
 import "components/series_icon.ts";
+import "components/copy_container.ts";
 
 // Initialize clipboard.js
 initClipboard();

@@ -121,17 +121,6 @@ module ApplicationHelper
     link_to(url, options, &)
   end
 
-  def clipboard_button_for(selector)
-    selector = selector.to_s
-    selector.prepend('#') unless selector.starts_with?('#')
-    button_tag class: 'btn btn-icon',
-               type: 'button',
-               title: t('js.copy-to-clipboard'),
-               data: { clipboard_target: selector } do
-      tag.i(class: 'mdi mdi-clipboard-outline')
-    end
-  end
-
   def markdown_unsafe(source)
     source ||= ''
     Kramdown::Document.new(source,

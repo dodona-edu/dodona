@@ -49,10 +49,7 @@
           <div class="callout callout-info">
             <h4>Webhook</h4>
             <p><%= t ".webhook_html" %></p>
-            <div class="input-group">
-              <%= text_field_tag :webhook_link, webhook_judge_url(@judge), readonly: true, class: 'form-control' %>
-              <%= clipboard_button_for :webhook_link %>
-            </div>
+            <d-copy-container content="<%= webhook_judge_url(@judge) %>"></d-copy-container>
           </div>
         </div>
       </div>

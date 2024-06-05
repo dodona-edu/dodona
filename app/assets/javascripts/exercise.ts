@@ -127,7 +127,7 @@ function initCodeFragments(): void {
         const wrapper = codeElement.parentElement;
         wrapper.classList.add("code-wrapper");
         const copyButton = new CopyButton();
-        copyButton.codeElement = codeElement;
+        copyButton.target = codeElement;
 
         render(copyButton, wrapper, { renderBefore: codeElement });
     });

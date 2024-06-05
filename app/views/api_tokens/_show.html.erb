@@ -3,11 +3,7 @@
 <div class="form-horizontal">
   <div class="field form-group row">
     <div class="col-md-6">
-      <div class="input-group ">
-        <% name = "fresh-token-value" %>
-        <%= text_field_tag name, token.token, readonly: true, class: 'form-control' %>
-        <%= clipboard_button_for name %>
-      </div>
+      <d-copy-container content="<%= token.token %>"></d-copy-container>
     </div>
   </div>
 </div>

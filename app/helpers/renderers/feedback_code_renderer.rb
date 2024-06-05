@@ -1,19 +1,10 @@
 class FeedbackCodeRenderer
   require 'json'
   include Rails.application.routes.url_helpers
-
-  @instances = 0
-
-  class << self
-    attr_accessor :instances
-  end
-
   def initialize(code, programming_language)
     @code = code
     @programming_language = programming_language
     @builder = Builder::XmlMarkup.new
-    self.class.instances += 1
-    @instance = self.class.instances
   end
 
   def add_code

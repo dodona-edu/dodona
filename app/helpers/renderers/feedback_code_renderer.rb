@@ -21,17 +21,7 @@ class FeedbackCodeRenderer
       parse
       # Only display copy button when the submission is not empty
       if @code.present?
-        # Not possible to use clipboard_button_for here since the behaviour is different.
-        @builder.button(class: 'btn btn-icon copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-          @builder.i(class: 'mdi mdi-clipboard-outline') {}
-        end
-      end
-      @builder.script(type: 'application/javascript') do
-        @builder << <<~HEREDOC
-          window.dodona.ready.then(() => {
-            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", #{@code.to_json});
-          });
-        HEREDOC
+        @builder.tag!('d-copy-button', code: @code) {}
       end
     end
     self

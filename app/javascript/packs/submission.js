@@ -1,6 +1,5 @@
 import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory, showLastTab } from "submission.ts";
 import { initMathJax, onFrameMessage, onFrameScroll } from "exercise.ts";
-import { attachClipboard } from "copy";
 import { evaluationState } from "state/Evaluations";
 import codeListing from "code_listing";
 import { annotationState } from "state/Annotations";
@@ -9,7 +8,6 @@ import { initFileViewers } from "file_viewer";
 
 window.dodona.initSubmissionShow = initSubmissionShow;
 window.dodona.codeListing = codeListing;
-window.dodona.attachClipboard = attachClipboard;
 window.dodona.initMathJax = initMathJax;
 window.dodona.initCorrectSubmissionToNextLink = initCorrectSubmissionToNextLink;
 window.dodona.initSubmissionHistory = initSubmissionHistory;

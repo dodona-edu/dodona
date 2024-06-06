@@ -24,6 +24,6 @@ export class CopyContainer extends DodonaElement {
     }
 
     protected render(): TemplateResult {
-        return html`<pre class="code-wrapper"><code id="${this.containerId}">${this.content}</code><d-copy-button targetId="${this.containerId}"></d-copy-button></pre>`;
+        return html`<pre class="code-wrapper"><code id="${this.containerId}">${this.content}</code><d-copy-button target-id="${this.containerId}"></d-copy-button></pre>`;
     }
 }

@@ -11,7 +11,7 @@ class FeedbackCodeRenderer
     @builder.div(class: 'code-listing-container') do
       parse
       # Only display copy button when the submission is not empty
-      @builder.tag!('d-copy-button', code: @code) {} if @code.present?
+      @builder.tag!('d-copy-button', text: @code) {} if @code.present?
     end
     self
   end

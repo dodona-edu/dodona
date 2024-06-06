@@ -3,7 +3,6 @@ import { customElement, property } from "lit/decorators.js";
 import { initTooltips } from "utilities";
 import { i18n } from "i18n/i18n";
 import { DodonaElement } from "components/meta/dodona_element";
-import { userAnnotationState } from "state/UserAnnotations";
 
 /**
  * A button that copies the text content of a given element to the clipboard.
@@ -54,15 +53,11 @@ export class CopyButton extends DodonaElement {
             if (this.target) {
                 // Select the text in the code element so the user can copy it manually.
                 window.getSelection().selectAllChildren(this.target);
+                this.status = "error";
             } else {
-                // no element is given for the more complex code listings
-                // use the userAnnotationState to select the text
-                userAnnotationState.selectedRange = {
-                    row: 0,
-                    rows: this._text.split("\n").length
-                };
+                // rethrow the error if there is no target
+                throw err;
             }
-            this.status = "error";
         }
     }
 

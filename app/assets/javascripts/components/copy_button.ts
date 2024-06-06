@@ -24,7 +24,6 @@ export class CopyButton extends DodonaElement {
     _target: HTMLElement;
     @property({ type: Object })
     get target(): HTMLElement {
-        console.log("target", this._target, document.getElementById(this.targetId));
         return this._target ?? document.getElementById(this.targetId);
     }
 
@@ -36,7 +35,6 @@ export class CopyButton extends DodonaElement {
 
     @property({ type: String })
     get text(): string {
-        console.log("text", this._text, this.target?.textContent);
         return this._text ?? this.target?.textContent;
     }
 

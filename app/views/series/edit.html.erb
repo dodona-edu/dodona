@@ -20,7 +20,7 @@
                 <div class="field form-group row">
                   <%= label_tag :access_token, t('.access-link'), class: 'col-sm-3 col-form-label' %>
                   <div class="col-sm-9">
-                    <div class="input-group" id="access_token_field">
+                    <div class="d-flex" id="access_token_field">
                       <%= render partial: 'token_field',
                                  locals: {
                                      name: :access_token,

@@ -28,7 +28,6 @@ import { Drawer } from "drawer";
 import { Toast } from "toast";
 import { Notification } from "notification";
 import { checkTimeZone, checkIframe, initTooltips, ready, setHTMLExecuteScripts, replaceHTMLExecuteScripts } from "utilities.ts";
-import { initClipboard } from "copy";
 import { FaviconManager } from "favicon";
 import { themeState } from "state/Theme";
 import "components/saved_annotations/saved_annotation_list";
@@ -36,9 +35,7 @@ import "components/progress_bar";
 import "components/theme_picker";
 import { userState } from "state/Users";
 import "components/series_icon.ts";
-
-// Initialize clipboard.js
-initClipboard();
+import "components/copy_container.ts";
 
 // Init drawer
 ready.then(() => new Drawer());

@@ -1,4 +1,4 @@
-<pre class="code-wrapper"><code id="token-field"><%= value %></code><d-copy-button targetId="token-field"></d-copy-button></pre>
+<d-copy-container content="<%= value %>"></d-copy-container>
 <% if reset_url.present? %>
   <%= link_to reset_url,
               method: :post,

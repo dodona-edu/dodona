@@ -38,13 +38,13 @@ class Evaluation < ApplicationRecord
   def users=(new_users)
     removed = users - new_users
     evaluation_users.where(user: removed).destroy_all
-    super(new_users)
+    super
   end
 
   def exercises=(new_exercises)
     removed = exercises - new_exercises
     evaluation_exercises.where(exercise: removed).destroy_all
-    super(new_exercises)
+    super
   end
 
   def metadata

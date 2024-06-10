@@ -54,7 +54,7 @@ gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '4.2.1'
 
 # feedback table builder
-gem 'builder', '~>3.2.4'
+gem 'builder', '~>3.3.0'
 
 # generate diffs
 gem 'diff-lcs', '~>1.5'

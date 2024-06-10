@@ -46,7 +46,7 @@ gem 'delayed_job_active_record', '~> 4.1.8'
 gem 'delayed_job_web', '~>1.4.4'
 
 # pagination
-gem 'will_paginate', '~>4.0.0'
+gem 'will_paginate', '~>4.0.1'
 
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'

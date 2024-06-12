@@ -19,6 +19,25 @@ const DRAG_AND_DROP_ARGS = {
     },
 };
 
+function initSeriesForm(): void {
+    function init(): void {
+        initTimedVisibility();
+    }
+
+    function initTimedVisibility(): void {
+        const timedVisibilityOption = document.getElementById("series_visibility_timed") as HTMLInputElement;
+        const timingOptions = document.getElementById("timing-options");
+        const visibilityOptions = document.querySelectorAll("[name=\"series[visibility]\"]");
+        visibilityOptions.forEach( option => {
+            option.addEventListener("change", () => {
+                timingOptions.classList.toggle("visually-hidden", !timedVisibilityOption.checked);
+            });
+        });
+    }
+
+    init();
+}
+
 function initSeriesEdit(): void {
     function init(): void {
         initAddButtons();
@@ -28,7 +47,6 @@ function initSeriesEdit(): void {
         dodona.seriesEditActivitiesLoaded = () => {
             initAddButtons();
         };
-        initTimedVisibility();
     }
 
     function initAddButtons(): void {
@@ -151,17 +169,6 @@ function initSeriesEdit(): void {
         document.getElementById("to-many-activities-info").classList.toggle("d-none", count <= 10);
     }
 
-    function initTimedVisibility(): void {
-        const timedVisibilityOption = document.getElementById("series_visibility_timed") as HTMLInputElement;
-        const timingOptions = document.getElementById("timing-options");
-        const visibilityOptions = document.querySelectorAll("[name=\"series[visibility]\"]");
-        visibilityOptions.forEach( option => {
-            option.addEventListener("change", () => {
-                timingOptions.classList.toggle("visually-hidden", !timedVisibilityOption.checked);
-            });
-        });
-    }
-
     init();
 }
 
@@ -190,4 +197,4 @@ function initSeriesShow(id: string): void {
     });
 }
 
-export { initSeriesEdit, initSeriesShow };
+export { initSeriesEdit, initSeriesShow, initSeriesForm };

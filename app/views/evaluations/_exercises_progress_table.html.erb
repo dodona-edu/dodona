@@ -50,7 +50,7 @@
           </a>
           <script>
             dodona.ready.then(() =>{
-              dodona.initDolosBtn('dolos-btn-<%= meta[:exercise].id %>', "<%= series_exports_path(@evaluation.series, token: (@evaluation.series.access_token if @evaluation.series.hidden?), selected_ids: [meta[:exercise].id], evaluation: true) %>");
+              dodona.initDolosBtn('dolos-btn-<%= meta[:exercise].id %>', "<%= series_exports_path(@evaluation.series, token: (@evaluation.series.access_token if @evaluation.series.hidden?), selected_ids: [meta[:exercise].id], evaluation: true) %>", "<%= meta[:exercise].programming_language.renderer_name %>");
             })
           </script>
         </td>

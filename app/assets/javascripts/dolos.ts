@@ -6,9 +6,19 @@ import { i18n } from "i18n/i18n";
 
 const LOADER_ID = "dolos-loader";
 const DOLOS_URL = "/dolos_reports";
+// List from https://github.com/dodona-edu/dolos/issues/1029 on 2024-06-13
+const SUPPORTED_LANGUAGES = new Set(["sh", "c", "cpp", "csharp", "elm", "java", "javascript", "python", "typescript", "tsx"]);
 
-export function initDolosBtn(btnID: string, url: string): void {
+export function initDolosBtn(btnID: string, url: string, lang: string): void {
     const btn = document.getElementById(btnID) as HTMLLinkElement;
+
+    const langName = lang.toLowerCase();
+    if (!SUPPORTED_LANGUAGES.has(langName)) {
+        btn.classList.add("disabled-with-tooltip");
+        btn.title = i18n.t("js.dolos.unsupported_language", { lang: lang });
+        return;
+    }
+
     btn.addEventListener("click", () => startDolos(btn, url));
 }
 

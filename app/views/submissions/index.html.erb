@@ -52,7 +52,7 @@
             <% actions << {icon: 'graph-outline', text: t('.detect_plagiarism'), id: "dolos-btn" } if @series && @activity %>
             <script>
               dodona.ready.then(() => {
-                dodona.initDolosBtn("dolos-btn", "<%= series_exports_path(@series, token: (@series.access_token if @series.hidden?), selected_ids: [@activity.id]) %>");
+                dodona.initDolosBtn("dolos-btn", "<%= series_exports_path(@series, token: (@series.access_token if @series.hidden?), selected_ids: [@activity.id]) %>", "<%= @activity.programming_language.renderer_name %>");
               });
             </script>
           <% end %>

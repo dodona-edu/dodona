@@ -334,3 +334,4 @@ en:
     popularity: Popularity
     dolos:
       view_report: Open plagiarism report
+      unsupported_language: "%{lang} is not supported by the plagiarism checker."

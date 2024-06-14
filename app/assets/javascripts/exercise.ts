@@ -139,7 +139,7 @@ function initExerciseDescription(): void {
     initCodeFragments();
 }
 
-async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): Promise<void> {
+async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string, seriesId: number): Promise<void> {
     let editor: EditorView;
     let lastSubmission: string;
     let lastTimeout: number;
@@ -228,6 +228,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                     code: code,
                     exercise_id: exerciseId,
                     course_id: courseId,
+                    series_id: seriesId,
                 },
             }),
             "headers": {

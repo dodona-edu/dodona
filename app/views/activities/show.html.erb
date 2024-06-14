@@ -218,6 +218,7 @@ end %>
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
             "<%= submissions_url %>",
             `<%= escape_javascript (@activity.exercise? && @activity.boilerplate)|| "" %>`,
+            <%= @series&.id || "null" %>,
         );
     });
 </script>

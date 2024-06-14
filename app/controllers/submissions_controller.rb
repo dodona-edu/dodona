@@ -95,8 +95,11 @@ class SubmissionsController < ApplicationController
       format.html do
         if @submission.course.nil?
           redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        else
+        elsif @submission.series.nil?
+          Rails.logger.debug 'Redirecting to course_activity_url==========================================================='
           redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        else
+          redirect_to course_series_activity_url(@submission.course, @submission.series, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         end
       end
     end

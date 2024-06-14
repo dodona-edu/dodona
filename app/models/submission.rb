@@ -14,6 +14,7 @@
 #  fs_key      :string(24)
 #  number      :integer
 #  annotated   :boolean          default(FALSE), not null
+#  series_id   :integer
 #
 
 class Submission < ApplicationRecord
@@ -32,6 +33,7 @@ class Submission < ApplicationRecord
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
   belongs_to :course, optional: true
+  belongs_to :series, optional: true
   has_one :judge, through: :exercise
   has_one :notification, as: :notifiable, dependent: :destroy
   has_many :annotations, dependent: :destroy

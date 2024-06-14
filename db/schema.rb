@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_14_111643) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -487,6 +487,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
   end
 
+  create_table "series_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "series_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["series_id"], name: "index_series_users_on_series_id"
+    t.index ["user_id", "series_id"], name: "index_series_users_on_user_id_and_series_id", unique: true
+  end
+
   create_table "submissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "user_id"
@@ -499,6 +508,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.string "fs_key", limit: 24
     t.integer "number"
     t.boolean "annotated", default: false, null: false
+    t.integer "series_id"
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"
     t.index ["exercise_id", "status", "course_id"], name: "ex_st_co_idx"
@@ -506,6 +516,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index"
     t.index ["exercise_id"], name: "index_submissions_on_exercise_id"
     t.index ["fs_key"], name: "index_submissions_on_fs_key", unique: true
+    t.index ["series_id"], name: "index_submissions_on_series_id"
     t.index ["status"], name: "index_submissions_on_status"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end

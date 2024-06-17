@@ -479,7 +479,7 @@ class User < ApplicationRecord
 
     # Don't give information about the exercise if the submission was within a course, but not within a visible series
     # This is to prevent students from seeing exercises that are not made public explicitly
-    if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
+    if latest_submission.course.present? && !latest_submission.series&.visible_to?(self)
       # Don't show complete courses
       return [] if latest_submission.course.incomplete_series(self).blank?
 
@@ -504,7 +504,7 @@ class User < ApplicationRecord
       }
     end
 
-    if latest_submission.series.present? && (latest_submission.series.open? || course_admin?(latest_submission.course))
+    if latest_submission.series.present? && latest_submission.series.visible_to?(self)
       next_activity = latest_submission.series.next_activity(latest_submission.exercise)
       if next_activity.present?
         # start working on the next exercise, if that one was not accepted
@@ -531,7 +531,7 @@ class User < ApplicationRecord
       end
 
       next_series = latest_submission.series.next
-      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course)) && !next_series.completed?(user: self)
+      if next_series.present? && next_series.visible_to?(self) && !next_series.completed?(user: self)
         # start working on the next series
         result << {
           submission: nil,

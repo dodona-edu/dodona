@@ -135,6 +135,10 @@ class SeriesPolicy < ApplicationPolicy
       record.access_token == token
   end
 
+  def media?
+    show?
+  end
+
   private
 
   def course_member?

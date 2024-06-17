@@ -55,7 +55,7 @@ class ActivityReadStateTest < ActiveSupport::TestCase
 
     series.update(visibility: :closed)
 
-    assert_not content_page.accessible?(user, series.course)
+    assert_not content_page.accessible?(user, course: series.course)
     assert_predicate read_state, :valid?
     assert read_state.update(updated_at: Time.current)
   end

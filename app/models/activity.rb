@@ -313,8 +313,12 @@ class Activity < ApplicationRecord
     access_public? || course.usable_repositories.pluck(:id).include?(repository.id)
   end
 
-  def accessible?(user, course)
-    if course.present?
+  def accessible?(user, course: nil, series: nil)
+    if series.present?
+      course = series.course
+      return false unless series.accessible_to?(user) && series.activities.pluck(:id).include?(id)
+    elsif course.present?
+      # no series specified, so check if the activity is accessible in any series
       if user&.course_admin? course
         return false unless course.activities.pluck(:id).include? id
       elsif user&.member_of? course
@@ -322,6 +326,9 @@ class Activity < ApplicationRecord
       else
         return false unless course.visible_activities.pluck(:id).include? id
       end
+    end
+
+    if course.present?
       return true if user&.zeus?
       return false unless access_public? ||
                           repository.allowed_courses.pluck(:id).include?(course&.id)

@@ -65,6 +65,6 @@ class ActivityReadState < ApplicationRecord
   end
 
   def activity_accessible_for_user?
-    errors.add(:activity, 'not accessible') unless activity.accessible?(user, course)
+    errors.add(:activity, 'not accessible') unless activity.accessible?(user, course: course)
   end
 end

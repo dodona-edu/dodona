@@ -54,7 +54,6 @@ class ScoreItemsController < ApplicationController
       return render json: { message: I18n.t('course_members.upload_labels_csv.malformed') }, status: :unprocessable_entity
     end
 
-
     respond_to do |format|
       format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @evaluation_exercise.reload } }
       format.json { head :no_content }

@@ -22,6 +22,13 @@ class ScoreItemsController < ApplicationController
     end
   end
 
+  def index
+    @evaluation_exercise = EvaluationExercise.find(params[:evaluation_exercise_id])
+    authorize @evaluation_exercise, :show?
+
+    @score_items = policy_scope(@evaluation_exercise.score_items)
+  end
+
   def create
     @score_item = ScoreItem.new(permitted_attributes(ScoreItem))
     @score_item.last_updated_by = current_user

@@ -228,6 +228,10 @@ Rails.application.routes.draw do
         post 'add_all', on: :collection
       end
       resources :scores, only: %i[show create update destroy]
+
+      resources :evaluation_exercise do
+        resources :score_items, only: %i[index]
+      end
     end
     resources :feedbacks, only: %i[show edit update] do
       delete 'scores', action: :destroy_scores, controller: :feedbacks, on: :member

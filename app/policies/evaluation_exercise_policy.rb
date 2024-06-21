@@ -6,6 +6,14 @@ class EvaluationExercisePolicy < ApplicationPolicy
     record.visible_score? && record.evaluation.released?
   end
 
+  def show?
+    return true if course_admin?
+
+    return false unless evaluation_member?
+
+    record&.visible_score? && record&.evaluation&.released?
+  end
+
   def permitted_attributes
     %i[visible_score]
   end
@@ -15,5 +23,9 @@ class EvaluationExercisePolicy < ApplicationPolicy
   def course_admin?
     course = record&.evaluation&.series&.course
     user&.course_admin?(course)
+  end
+
+  def evaluation_member?
+    record&.evaluation&.users&.include?(user)
   end
 end

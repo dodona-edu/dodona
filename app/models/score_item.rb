@@ -22,6 +22,7 @@ class ScoreItem < ApplicationRecord
   after_update :uncomplete_feedbacks_if_maximum_changed
 
   validates :maximum, numericality: { greater_than: 0, less_than: 1000 }
+  validates :name, presence: true
 
   default_scope { order(id: :asc) }
 

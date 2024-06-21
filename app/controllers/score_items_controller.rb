@@ -36,21 +36,24 @@ class ScoreItemsController < ApplicationController
         return render json: { message: I18n.t('course_members.upload_labels_csv.missing_column', column: column) }, status: :unprocessable_entity unless headers&.include?(column)
       end
 
-      # Remove existing score items.
-      @evaluation_exercise.score_items.destroy_all
+      ScoreItem.transaction do
+        # Remove existing score items.
+        @evaluation_exercise.score_items.destroy_all
 
-      CSV.foreach(file.path, headers: true) do |row|
-        row = row.to_hash
-        score_item = ScoreItem.new(
-          name: row['name'],
-          maximum: row['maximum'],
-          visible: row.key?('visible') ? row['visible'] : true,
-          description: row.key?('description') ? row['description'] : nil,
-          evaluation_exercise: @evaluation_exercise
-        )
-        score_item.save!
+        CSV.foreach(file.path, headers: true) do |row|
+          row = row.to_hash
+          score_item = ScoreItem.new(
+            name: row['name'],
+            maximum: row['maximum'],
+            visible: row.key?('visible') ? row['visible'] : true,
+            description: row.key?('description') ? row['description'] : nil,
+            evaluation_exercise: @evaluation_exercise
+          )
+
+          score_item.save!
+        end
       end
-    rescue CSV::MalformedCSVError
+    rescue CSV::MalformedCSVError, ActiveRecord::RecordInvalid
       return render json: { message: I18n.t('course_members.upload_labels_csv.malformed') }, status: :unprocessable_entity
     end
 

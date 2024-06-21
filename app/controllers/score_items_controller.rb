@@ -22,6 +22,45 @@ class ScoreItemsController < ApplicationController
     end
   end
 
+  def upload
+    return render json: { message: I18n.t('course_members.upload_labels_csv.no_file') }, status: :unprocessable_entity if params[:upload].nil? || params[:upload][:file] == 'undefined' || params[:upload][:file].nil?
+
+    file = params[:upload][:file]
+
+    @evaluation_exercise = EvaluationExercise.find(params[:evaluation_exercise_id])
+    authorize @evaluation_exercise, :update?
+
+    begin
+      headers = CSV.foreach(file.path).first
+      %w[name maximum].each do |column|
+        return render json: { message: I18n.t('course_members.upload_labels_csv.missing_column', column: column) }, status: :unprocessable_entity unless headers&.include?(column)
+      end
+
+      # Remove existing score items.
+      @evaluation_exercise.score_items.destroy_all
+
+      CSV.foreach(file.path, headers: true) do |row|
+        row = row.to_hash
+        score_item = ScoreItem.new(
+          name: row['name'],
+          maximum: row['maximum'],
+          visible: row.key?('visible') ? row['visible'] : true,
+          description: row.key?('description') ? row['description'] : nil,
+          evaluation_exercise: @evaluation_exercise
+        )
+        score_item.save!
+      end
+    rescue CSV::MalformedCSVError
+      return render json: { message: I18n.t('course_members.upload_labels_csv.malformed') }, status: :unprocessable_entity
+    end
+
+
+    respond_to do |format|
+      format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @evaluation_exercise.reload } }
+      format.json { head :no_content }
+    end
+  end
+
   def index
     @evaluation_exercise = EvaluationExercise.find(params[:evaluation_exercise_id])
     authorize @evaluation_exercise, :show?

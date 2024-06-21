@@ -55,3 +55,9 @@ en:
         Show or hide the calculated total score in Dodona for this exercise when the feedback is released.
         Individual score items are still visible if they are marked as such.
       visibility: Show or hide this score item.
+      upload: Upload score items
+      download: Download score items
+    upload:
+      title: Upload csv with score items
+      upload: Upload
+      confirm: Are you sure you want to upload these score items? Existing score items will be overwritten.

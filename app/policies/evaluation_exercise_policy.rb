@@ -14,6 +14,10 @@ class EvaluationExercisePolicy < ApplicationPolicy
     record&.visible_score? && record&.evaluation&.released?
   end
 
+  def update?
+    course_admin?
+  end
+
   def permitted_attributes
     %i[visible_score]
   end

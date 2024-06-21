@@ -230,7 +230,9 @@ Rails.application.routes.draw do
       resources :scores, only: %i[show create update destroy]
 
       resources :evaluation_exercise do
-        resources :score_items, only: %i[index]
+        resources :score_items, only: %i[index] do
+          post 'upload', on: :collection
+        end
       end
     end
     resources :feedbacks, only: %i[show edit update] do

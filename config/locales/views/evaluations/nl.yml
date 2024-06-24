@@ -15,7 +15,6 @@ nl:
       evaluation_progress: Evaluatie voortgang
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."
       evaluation_details: Detailoverzicht
-      evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie. <br/> Je ziet de status van de oplossinge indien de student had ingediend. Daarnaast geeft het vinkje aan of de oplossing al geëvalueerd is.
       grading_details: Puntenoverzicht
       grading_details_info_html: Deze tabel toont het puntenoverzicht voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br>Als nog niet alle punten zijn ingegeven voor een oplossing wordt het punt in grijs getoond.
     new:

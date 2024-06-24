@@ -1,26 +1,10 @@
 <%
   classes = "btn btn-text with-icon"
-
-  if feedback.submission.blank?
-    submission_status_text = t ".no_submission"
-  else
-    submission_status_text = Submission.human_enum_name(:status, feedback.submission.status)
-  end
-
-  if feedback.completed?
-    title_text = t ".feedback_finished", status: submission_status_text
-    classes += " text-muted"
-  else
-    title_text = t ".feedback_unstarted", status: submission_status_text
-  end
-
-  if local_assigns[:current] == feedback
-    classes += " active"
-  end
+  classes += " text-muted" if feedback.completed?
 %>
 
 <%= link_to evaluation_feedback_path(evaluation, feedback),
-            title: title_text,
+            title: feedback_title(feedback),
             class: classes do %>
   <% if feedback&.submission.present? %>
     <%= submission_status_icon feedback.submission %>

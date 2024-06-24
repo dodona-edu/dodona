@@ -13,11 +13,7 @@
         <% feedback_l = feedbacks[:feedbacks][user.id] %>
         <tr>
           <td class="user-name ellipsis-overflow">
-            <%= link_to user.full_name,
-                        evaluation_feedback_path(@evaluation, feedback_l.first),
-                        title: t('.evaluate_user', user: user.full_name ),
-                        class: "ellipsis-overflow",
-                        target: "_blank" %>
+          <td class="user-name ellipsis-overflow"><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
           </td>
           <% feedback_l.each do |feedback| %>
             <td class="status">

@@ -21,7 +21,7 @@
           </td>
           <% feedback_l.each do |feedback| %>
             <td class="status">
-              <%= render partial: 'feedback_status', locals: {feedback: feedback, evaluation: @evaluation} %>
+              <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
             </td>
           <% end %>
         </tr>

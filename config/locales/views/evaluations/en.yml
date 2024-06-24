@@ -70,7 +70,7 @@ en:
       total: Total
       average: Average
     feedback_status:
-      no_submission: no submissions
+      no_submission: No submissions
       feedback_finished: "%{status}, feedback given, look at the feedback"
       feedback_unstarted: "%{status}, no feedback given, evaluate this submission"
     overview:
@@ -98,3 +98,4 @@ en:
     exercises_progress_table:
       evaluate: Evaluate
       evaluated: Evaluated
+      evaluating: Evaluating

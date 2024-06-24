@@ -71,7 +71,7 @@ nl:
       total: Totaal
       average: Gemiddelde
     feedback_status:
-      no_submission: geen oplossingen
+      no_submission: Geen oplossingen
       feedback_finished: "%{status}, feedback gegeven, bekijk de feedback"
       feedback_unstarted: "%{status}, geen feedback gegeven, deze oplossing evalueren"
     overview:
@@ -98,3 +98,4 @@ nl:
     exercises_progress_table:
       evaluate: Evalueren
       evaluated: Geëvalueerd
+      evaluating: Aan het evalueren

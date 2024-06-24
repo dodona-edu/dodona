@@ -72,7 +72,6 @@ en:
     feedback_status:
       feedback_finished: Submission evaluated
       feedback_unstarted: Submission not evaluated
-      show_feedback: Evaluate submission
       submission_not-started: "No submission, "
       submission_correct: "Correct submission, "
       submission_wrong: "Wrong submission, "

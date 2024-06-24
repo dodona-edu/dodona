@@ -21,21 +21,18 @@
           </td>
           <% feedback_l.each do |feedback| %>
             <td class="status">
-              <span class="status-icon">
+              <%= link_to evaluation_feedback_path(@evaluation, feedback),
+                          class: "btn btn-text with-icon #{feedback.completed? ? "text-muted" : ""}" do %>
                 <% if feedback&.submission.present? %>
-                  <span title="<%= Submission.human_enum_name(:status, feedback.submission.status) %>">
                     <%= submission_status_icon feedback.submission %>
-                  </span>
+                <% else %>
+                    <i class="mdi mdi-18 mdi-cancel text-muted"></i>
                 <% end %>
-              </span>
-              <% if feedback.completed? %>
-               <i class="mdi mdi-18 mdi-comment-check-outline" title="<%= t "evaluations.feedback_status.feedback_finished" %>"></i>
-              <% else %>
-                <i class="mdi mdi-18 mdi-comment-outline" title="<%= t "evaluations.feedback_status.feedback_unstarted" %>"></i>
-              <% end %>
-              <%= link_to evaluation_feedback_path(@evaluation, feedback), class: "btn btn-icon" do %>
-                <i class="mdi mdi-chevron-right" title="<%= t "evaluations.feedback_status.show_feedback" %>"
-                ></i>
+                <% if feedback.completed? %>
+                 <%= t "evaluations.exercises_progress_table.evaluated" %>
+                <% else %>
+                  <%= t "evaluations.exercises_progress_table.evaluate" %>
+                <% end %>
               <% end %>
             </td>
           <% end %>

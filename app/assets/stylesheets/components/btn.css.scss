@@ -98,8 +98,7 @@
 
   &:hover,
   &:focus,
-  &:active,
-  &.active {
+  &:active {
     opacity: 1;
     background: rgba(var(--d-btn-color-rgb), 0.1);
 

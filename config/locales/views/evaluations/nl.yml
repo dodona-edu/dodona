@@ -70,8 +70,9 @@ nl:
       total: Totaal
       average: Gemiddelde
     feedback_status:
-      feedback_finished: evaluatie afgewerkt
-      feedback_unstarted: evaluatie nog niet afgewerkt
+      feedback_finished: Oplossing geëvalueerd
+      feedback_unstarted: Oplossing niet geëvalueerd
+      show_feedback: Oplossing evalueren
       submission_not-started: "Geen oplossing, "
       submission_correct: "Juiste oplossing, "
       submission_wrong: "Foute oplossing, "

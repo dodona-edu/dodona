@@ -1,20 +1,24 @@
 <%
   if feedback.submission.blank?
-    submission_status = "not-started"
-  elsif feedback.submission.accepted
-    submission_status = "correct"
+    submission_status_text = t "evaluations.feedback_status.no_submission"
   else
-    submission_status = "wrong"
+    submission_status_text = Submission.human_enum_name(:status, feedback.submission.status)
+  end
+
+  if feedback.completed?
+    title_text = t "evaluations.feedback_status.feedback_finished", status: submission_status_text
+  else
+    title_text = t "evaluations.feedback_status.feedback_unstarted", status: submission_status_text
   end
 %>
 <span class='feedback score-text <%= "active" if local_assigns[:current] == feedback %>'>
   <%= link_to evaluation_feedback_path(evaluation, feedback) do %>
     <% if feedback.completed? %>
-      <span title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_finished" %>">
+      <span title="<%= title_text %>">
         <%= format_score feedback.score %>
       </span>
     <% else %>
-      <span class="provisional" title="<%= feedback.exercise.name %>: <%= t "evaluations.feedback_status.submission_" + submission_status %><%= t "evaluations.feedback_status.feedback_unstarted" %>">
+      <span class="provisional" title="<%= title_text %>">
         <%= format_score feedback.score %>
       </span>
     <% end %>

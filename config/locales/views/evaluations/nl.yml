@@ -71,11 +71,9 @@ nl:
       total: Totaal
       average: Gemiddelde
     feedback_status:
-      feedback_finished: Oplossing geëvalueerd
-      feedback_unstarted: Oplossing niet geëvalueerd
-      submission_not-started: "Geen oplossing, "
-      submission_correct: "Juiste oplossing, "
-      submission_wrong: "Foute oplossing, "
+      no_submission: geen oplossingen
+      feedback_finished: "%{status}, feedback gegeven, bekijk de feedback"
+      feedback_unstarted: "%{status}, geen feedback gegeven, deze oplossing evalueren"
     overview:
       title: Evaluatie
       explanation: Een lesgever heeft je werk voor de reeks "%{series}" bekeken. Dodona heeft automatisch je laatste inzending voor %{deadline} geselecteerd, maar mogelijk heeft de lesgever handmatig een andere gekozen. Houd er rekening mee dat deze evaluatie niet altijd feedback op al je oplossingen omvat.

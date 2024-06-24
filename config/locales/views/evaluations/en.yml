@@ -70,11 +70,9 @@ en:
       total: Total
       average: Average
     feedback_status:
-      feedback_finished: Submission evaluated
-      feedback_unstarted: Submission not evaluated
-      submission_not-started: "No submission, "
-      submission_correct: "Correct submission, "
-      submission_wrong: "Wrong submission, "
+      no_submission: no submissions
+      feedback_finished: "%{status}, feedback given, look at the feedback"
+      feedback_unstarted: "%{status}, no feedback given, evaluate this submission"
     overview:
       title: Evaluation
       explanation: A teacher reviewed your work for the "%{series}" series. They automatically picked your last submission before %{deadline}, but they might have chosen a different one manually. Keep in mind, this evaluation doesn't always include feedback on all your submissions.

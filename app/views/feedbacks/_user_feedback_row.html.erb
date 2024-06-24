@@ -2,5 +2,12 @@
   Feedback.find_by(evaluation_user: current_feedback.evaluation_user,
                    evaluation_exercise: ex)
 end.each do |feedback| %>
-  <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: current_feedback } %>
+  <div class="row mt-1">
+    <div class="col-6 align-content-center ellipsis-overflow" title="<%= feedback.exercise.name %>">
+        <%= feedback.exercise.name %>
+    </div>
+    <div class="col-6">
+      <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: current_feedback } %>
+    </div>
+  </div>
 <% end %>

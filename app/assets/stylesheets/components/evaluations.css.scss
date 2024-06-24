@@ -33,7 +33,6 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    padding-bottom: 5px;
 
     .name {
       flex-shrink: 0;
@@ -179,23 +178,6 @@
   .done:hover,
   .provisional:hover {
     color: var(--d-on-surface);
-  }
-}
-
-.user-feedback-row {
-  display: flex;
-  justify-content: space-around;
-
-  a .done {
-    color: var(--d-on-surface-muted);
-  }
-
-  .active a {
-    background-color: var(--d-info-container);
-
-    i {
-      color: var(--d-info);
-    }
   }
 }
 

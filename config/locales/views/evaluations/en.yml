@@ -65,6 +65,7 @@ en:
       deadline-help_html: "<p>The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used.</p><p><b>Warning:</b> You can't change the deadline later, but you can select a different solution for individual students.</p>"
     evaluation_table:
       user: User
+      evaluate_user: "Evaluate %{user}"
     evaluation_grade_table:
       total: Total
       average: Average

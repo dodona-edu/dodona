@@ -22,7 +22,7 @@ import {
     lineNumbers
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
-import { Extension } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 
 declare type EditorEventHandler = (event: FocusEvent, view: EditorView) => boolean | void;
 const tabCompletionKeyMap = [{ key: "Tab", run: acceptCompletion }];
@@ -127,6 +127,7 @@ const editorSetup = (() => [
     bracketMatching(),
     closeBrackets(),
     highlightActiveLine(),
+    EditorState.allowMultipleSelections.of(true),
     keymap.of([
         ...closeBracketsKeymap,
         ...defaultKeymap,

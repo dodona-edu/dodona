@@ -52,10 +52,7 @@
             <div class="callout callout-info">
               <h4>Webhook</h4>
               <p><%= t ".webhook_html" %></p>
-              <div class="input-group intput-froup-sm">
-                <%= text_field_tag :webhook_link, webhook_repository_url(@repository), readonly: true, class: 'form-control' %>
-                <%= clipboard_button_for :webhook_link %>
-              </div>
+              <d-copy-container content="<%= webhook_repository_url(@repository) %>"></d-copy-container>
             </div>
           </div>
         <% end %>

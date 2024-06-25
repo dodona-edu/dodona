@@ -77,13 +77,13 @@ function getArrayURLParameter(name: string, _url?: string): string[] {
 
 function checkTimeZone(offset: number): void {
     if (offset !== new Date().getTimezoneOffset()) {
-        document.querySelector("#time-zone-warning").classList.remove("hidden");
+        document.querySelector("#time-zone-warning")?.classList?.remove("hidden");
     }
 }
 
 function checkIframe(): void {
     if (isInIframe()) {
-        document.querySelector("#iframe-warning").classList.remove("hidden");
+        document.querySelector("#iframe-warning")?.classList?.remove("hidden");
     }
 }
 

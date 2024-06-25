@@ -324,4 +324,5 @@ nl:
     popularity: Populariteit
     dolos:
       view_report: Rapport bekijken
+      unsupported_language: "%{lang} wordt niet ondersteund door Dolos"
 

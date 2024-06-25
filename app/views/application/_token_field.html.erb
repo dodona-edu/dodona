@@ -1,12 +1,10 @@
-<%= text_field_tag name, value, readonly: true, class: 'form-control' %>
-<%= clipboard_button_for name %>
+<d-copy-container content="<%= value %>"></d-copy-container>
 <% if reset_url.present? %>
   <%= link_to reset_url,
-              title: t('general.generate_token'),
               method: :post,
               data: {confirm: t('general.confirm_reset_token')},
               remote: true,
-              class: 'btn btn-icon' do %>
-    <i class="mdi mdi-refresh mdi-18"></i>
+              class: 'btn btn-outline btn-icon ms-1 flex-shrink-0' do %>
+    <i class="mdi mdi-refresh mdi-24"></i>
   <% end %>
 <% end %>

@@ -53,12 +53,12 @@ class PythiaRenderer < FeedbackTableRenderer
         @builder.text! m[:description]
       end
     else
-      super(m)
+      super
     end
   end
 
   def testcase(tc)
-    return super(tc) unless tc[:data] && tc[:data][:files]
+    return super unless tc[:data] && tc[:data][:files]
 
     jsonfiles = tc[:data][:files].to_a.to_h do |key, value|
       value[:content] = "#{value[:content]}?token=#{@exercise.access_token}" \

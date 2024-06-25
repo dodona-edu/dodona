@@ -188,6 +188,7 @@
       "date_on": "on",
       "description_languages": "Language of the description",
       "dolos": {
+        "unsupported_language": "%{lang} is not supported by the plagiarism checker.",
         "view_report": "Open plagiarism report"
       },
       "draft": "Draft",
@@ -712,6 +713,7 @@
       "date_on": "op",
       "description_languages": "Taal van de beschrijving",
       "dolos": {
+        "unsupported_language": "%{lang} wordt niet ondersteund door Dolos",
         "view_report": "Rapport bekijken"
       },
       "draft": "Concept",

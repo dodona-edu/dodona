@@ -1,38 +1,17 @@
 class FeedbackCodeRenderer
   require 'json'
   include Rails.application.routes.url_helpers
-
-  @instances = 0
-
-  class << self
-    attr_accessor :instances
-  end
-
   def initialize(code, programming_language)
     @code = code
     @programming_language = programming_language
     @builder = Builder::XmlMarkup.new
-    self.class.instances += 1
-    @instance = self.class.instances
   end
 
   def add_code
     @builder.div(class: 'code-listing-container') do
       parse
       # Only display copy button when the submission is not empty
-      if @code.present?
-        # Not possible to use clipboard_button_for here since the behaviour is different.
-        @builder.button(class: 'btn btn-icon copy-btn', id: "copy-to-clipboard-#{@instance}", title: I18n.t('js.code.copy-to-clipboard'), 'data-bs-toggle': 'tooltip', 'data-bs-placement': 'top') do
-          @builder.i(class: 'mdi mdi-clipboard-outline') {}
-        end
-      end
-      @builder.script(type: 'application/javascript') do
-        @builder << <<~HEREDOC
-          window.dodona.ready.then(() => {
-            window.dodona.attachClipboard("#copy-to-clipboard-#{@instance}", #{@code.to_json});
-          });
-        HEREDOC
-      end
+      @builder.tag!('d-copy-button', text: @code) {} if @code.present?
     end
     self
   end

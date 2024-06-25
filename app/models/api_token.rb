@@ -26,7 +26,7 @@ class ApiToken < ApplicationRecord
   attr_reader :token
 
   def initialize(*params)
-    super(*params)
+    super
 
     # If there is no digest (we have a new instance)
     # generate a new random token

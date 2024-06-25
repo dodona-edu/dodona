@@ -5,21 +5,17 @@
         <h2 class="card-title-text"><%= t('.title', series: @evaluation.series.name) %></h2>
       </div>
       <div class="card-supporting-text">
-        <div class="row">
-          <div class="col-lg-6 col-md-12 order-lg-1">
-            <div class="callout callout-info">
-              <h4><%= t ".explanation_title" %></h4>
-              <% if @evaluation.score_items.empty? %>
-                <%= t ".explanation_no_grading_html" %>
-              <% else %>
-                <%= t ".explanation_yes_grading_html" %>
-              <% end %>
-            </div>
-          </div>
-          <div class="col-lg-6 col-md-12 order-lg-0">
-            <p><%= t '.deadline_html', users: @evaluation.users.count, exercises: @evaluation.exercises.count, deadline: l(@evaluation.deadline, format: :submission) %></p>
-            <%= render partial: 'exercises_progress_table', locals: { metadata: @evaluation.metadata, series: @evaluation.series } %>
-          </div>
+        <details>
+          <summary><%= t ".explanation_title" %></summary>
+          <% if @evaluation.score_items.empty? %>
+            <%= t ".explanation_no_grading_html" %>
+          <% else %>
+            <%= t ".explanation_yes_grading_html" %>
+          <% end %>
+        </details>
+        <div>
+          <p><%= t '.deadline_html', users: @evaluation.users.count, exercises: @evaluation.exercises.count, deadline: l(@evaluation.deadline, format: :submission) %></p>
+          <%= render partial: 'exercises_progress_table', locals: { metadata: @evaluation.metadata, series: @evaluation.series } %>
         </div>
       </div>
       <div class="card-actions card-border">

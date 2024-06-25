@@ -127,7 +127,7 @@ function initCodeFragments(): void {
         const wrapper = codeElement.parentElement;
         wrapper.classList.add("code-wrapper");
         const copyButton = new CopyButton();
-        copyButton.codeElement = codeElement;
+        copyButton.target = codeElement;
 
         render(copyButton, wrapper, { renderBefore: codeElement });
     });
@@ -149,7 +149,9 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
             const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
-            swapActionButtons();
+            if (loggedIn) {
+                swapActionButtons();
+            }
             await editorReady;
             initRestoreBoilerplateButton(boilerplate);
         }
@@ -316,6 +318,10 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function enableSubmitButton(): void {
+        if (!loggedIn) {
+            return;
+        }
+
         const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = false;
         btn.classList.remove("busy", "mdi-timer-sand-empty", "mdi-spin");
@@ -323,6 +329,10 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function disableSubmitButton(): void {
+        if (!loggedIn) {
+            return;
+        }
+
         const btn = document.getElementById("editor-process-btn") as HTMLButtonElement;
         btn.disabled = true;
         btn.classList.remove("mdi-send");

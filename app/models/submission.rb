@@ -122,7 +122,7 @@ class Submission < ApplicationRecord
     @evaluate = params.delete(:evaluate)
     code = params.delete(:code)
     result = params.delete(:result)
-    super(params)
+    super
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
     self.result = result.to_s unless result.nil?

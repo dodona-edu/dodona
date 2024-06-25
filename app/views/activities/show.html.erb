@@ -213,7 +213,7 @@ end %>
             <%= @activity.id %>,
             "<%= @activity.programming_language&.editor_name || "text" %>",
             <%= user_signed_in? %>,
-            <%= policy(@activity).submit? || !user_signed_in? %>,
+            <%= @activity.exercise? && (policy(@activity).submit? || !user_signed_in?) %>,
             <%= @course&.id || "null" %>,
             <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
             "<%= submissions_url %>",

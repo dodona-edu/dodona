@@ -44,6 +44,9 @@ updates:
     testing-library:
       patterns:
         - "@testing-library*"
+    sentry:
+      patterns:
+        - "@sentry*"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:

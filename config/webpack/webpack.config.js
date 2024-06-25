@@ -82,7 +82,7 @@ if (process.env.RAILS_ENV === "test") {
 
 // only enable sentry in production
 // as it slows down the build process
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
     config.devtool = "source-map"; // Source map generation must be turned on for sentry to work
     config. plugins= [
         // Put the Sentry Webpack plugin after all other plugins

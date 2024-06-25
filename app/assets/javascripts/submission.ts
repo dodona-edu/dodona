@@ -7,6 +7,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         initTabLinks();
         initCollapseButtons();
         initHideCorrect();
+        initTabSummaryLinks();
         contextualizeMediaPaths(parentClass, mediaPath, token);
     }
 
@@ -34,6 +35,16 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 const button = e.currentTarget;
                 const group = getParentByClassName(button, "group");
                 group.classList.toggle("collapsed");
+            });
+        });
+    }
+
+    function initTabSummaryLinks(): void {
+        document.querySelectorAll(".tab-summary-icons a").forEach(l => {
+            l.addEventListener("click", () => {
+                const groupId = l.attributes["href"].value;
+                const group = document.getElementById(groupId.substring(1));
+                group.classList.remove("collapsed");
             });
         });
     }

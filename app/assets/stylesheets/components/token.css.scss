@@ -36,6 +36,12 @@
 .token.token-bordered {
   border: 1px solid var(--d-divider);
   color: var(--d-on-surface);
+
+  &.disabled {
+    opacity: 0.38;
+    cursor: initial;
+    pointer-events: none;
+  }
 }
 
 a.token {

@@ -5,7 +5,7 @@
         <h2 class="card-title-text"><%= t(".title") %></h2>
       </div>
       <div class="card-supporting-text">
-        <%= render partial: 'layouts/searchbar', locals: {event_types: Event.event_types.keys} %>
+        <%= render partial: 'layouts/searchbar'%>
         <div id="events-table-wrapper">
           <%= render partial: 'events_table', locals: {events: @events} %>
         </div>

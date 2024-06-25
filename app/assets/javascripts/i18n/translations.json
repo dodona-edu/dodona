@@ -193,40 +193,7 @@
       },
       "draft": "Draft",
       "dropdown": {
-        "multi": {
-          "activity_types": "Activity types",
-          "course_labels": "Member labels",
-          "courses": "Courses",
-          "description_languages": "Languages",
-          "event_types": "Event types",
-          "institutions": "Institutions",
-          "judges": "Judges",
-          "labels": "Labels",
-          "popularity": "Popularity",
-          "programming_languages": "Programming Languages",
-          "question_states": "Statuses",
-          "repositories": "Repositories",
-          "search_options": "Options",
-          "statuses": "Statuses"
-        },
-        "search": "Search",
-        "single": {
-          "activity_types": "Activity type",
-          "course_labels": "Member label",
-          "courses": "Course",
-          "description_languages": "Language",
-          "draft": "Draft",
-          "event_types": "Event type",
-          "exercises": "Exercise",
-          "institutions": "Institution",
-          "judges": "Judge",
-          "labels": "Label",
-          "popularity": "Popularity",
-          "programming_languages": "Programming Language",
-          "question_states": "Status",
-          "repositories": "Repository",
-          "statuses": "Status"
-        }
+        "search": "Search"
       },
       "en": "English",
       "event_types": "Event types",
@@ -362,6 +329,29 @@
       },
       "score_item": {
         "error": "Error while updating"
+      },
+      "search": {
+        "filter": {
+          "course_id": "Course",
+          "course_labels": "Member labels",
+          "description_languages": "Languages",
+          "draft": "Draft",
+          "event_type": "Type",
+          "exercise_id": "Exercise",
+          "institution_id": "Institution",
+          "judge_id": "Judge",
+          "labels": "Labels",
+          "popularity": "Popularity",
+          "programming_language": "Programming Language",
+          "question_state": "Status",
+          "repository_id": "Repository",
+          "status": "Status",
+          "type": "Type"
+        },
+        "tokens": {
+          "active_filters": "%{smart_count} active filter |||| %{smart_count} active filters",
+          "clear": "Clear all"
+        }
       },
       "sign_in_search_bar": {
         "institution_search": "Type to search for your institution",
@@ -728,40 +718,7 @@
       },
       "draft": "Concept",
       "dropdown": {
-        "multi": {
-          "activity_types": "Activiteitstypes",
-          "course_labels": "Gebruikerlabels",
-          "courses": "Cursussen",
-          "description_languages": "Talen",
-          "event_types": "Event types",
-          "institutions": "Onderwijsinstellingen",
-          "judges": "Judges",
-          "labels": "Labels",
-          "popularity": "Populariteit",
-          "programming_languages": "Programmeertalen",
-          "question_states": "Toestanden",
-          "repositories": "Repository's",
-          "search_options": "Opties",
-          "statuses": "Statussen"
-        },
-        "search": "Zoeken",
-        "single": {
-          "activity_types": "Activiteitstype",
-          "course_labels": "Gebruikerlabel",
-          "courses": "Cursus",
-          "description_languages": "Taal",
-          "draft": "Concept",
-          "event_types": "Event type",
-          "exercises": "Oefening",
-          "institutions": "Onderwijsinstelling",
-          "judges": "Judge",
-          "labels": "Label",
-          "popularity": "Populariteit",
-          "programming_languages": "Programmeertaal",
-          "question_states": "Toestand",
-          "repositories": "Repository",
-          "statuses": "Status"
-        }
+        "search": "Zoeken"
       },
       "en": "Engels",
       "event_types": "Event types",
@@ -897,6 +854,30 @@
       },
       "score_item": {
         "error": "Fout bij bijwerken"
+      },
+      "search": {
+        "filter": {
+          "course_id": "Cursus",
+          "course_labels": "Gebruikerlabels",
+          "description_languages": "Talen",
+          "draft": "Concept",
+          "event_type": "type",
+          "exercise_id": "Oefening",
+          "institution_id": "Onderwijsinstelling",
+          "judge_id": "Judge",
+          "labels": "Labels",
+          "popularity": "Populariteit",
+          "programming_language": "Programmeertaal",
+          "question_state": "Toestand",
+          "repository_id": "Repository",
+          "search_options": "Opties",
+          "status": "Status",
+          "type": "Type"
+        },
+        "tokens": {
+          "active_filters": "%{smart_count} filter actief |||| %{smart_count} filters actief",
+          "clear": "Alles wissen"
+        }
       },
       "sign_in_search_bar": {
         "institution_search": "Typ om jouw school te vinden",

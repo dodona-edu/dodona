@@ -3,7 +3,7 @@ import { aTimeout, fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { SearchField, SearchFieldSuggestion } from "components/search/search_field";
-import { Label, FilterCollection } from "components/search/filter_collection_element";
+import { FilterOptions } from "components/search/filter_element";
 import { html } from "lit";
 import { searchQueryState } from "state/SearchQuery";
 import { textContentMatcher } from "../../test_helpers";
@@ -16,7 +16,6 @@ describe("SearchFieldSuggestion", () => {
             <d-search-field-suggestion param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                        type="test"
-                                       .paramVal=${(l: Label) => l.id}
                                        filter="ba"
                                        .multi=${false}>
             </d-search-field-suggestion>`) as SearchFieldSuggestion;
@@ -65,8 +64,8 @@ describe("SearchField", () => {
     let searchField: SearchField;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
-        const filterCollections: Record<string, FilterCollection> = {
-            first: {
+        const filters: FilterOptions[] = [
+            {
                 param: "foo",
                 data: [
                     { name: "fool", id: "1" },
@@ -74,10 +73,9 @@ describe("SearchField", () => {
                     { name: "baz", id: "3" },
                 ],
                 multi: false,
-                color: () => "red",
-                paramVal: (l: Label) => l.id,
+                color: "red",
             },
-            second: {
+            {
                 param: "bar",
                 data: [
                     { name: "food", id: "1" },
@@ -85,14 +83,13 @@ describe("SearchField", () => {
                     { name: "baz", id: "3" },
                 ],
                 multi: false,
-                color: () => "red",
-                paramVal: (l: Label) => l.id,
+                color: "red",
             }
-        };
+        ];
 
         searchField = await fixture(html`
             <d-search-field placeholder="Search"
-                            .filterCollections="${filterCollections}"
+                            .filters="${filters}"
             ></d-search-field>
         `);
     });

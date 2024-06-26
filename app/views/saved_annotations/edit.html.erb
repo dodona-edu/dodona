@@ -33,6 +33,14 @@
             <%= f.text_area :annotation_text, class: "form-control" %>
             <span class="help-block"><%= t ".markdown_html" %></span>
           </div>
+          <div class="field form-group">
+            <%= f.label :course, class: "form-label" %>
+            <d-datalist-input name="saved_annotation[course_id]"
+                              value="<%= @saved_annotation.course_id %>"
+                              options="<%= @courses.map { |c| { value: c.id.to_s, label: c.name } }.to_json %>"
+                              placeholder="<%= t ".course_placeholder" %>"
+            ></d-datalist-input>
+          </div>
         <% end %>
       </div>
       <div class="card-actions card-border">

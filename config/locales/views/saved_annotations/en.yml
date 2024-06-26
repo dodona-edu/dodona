@@ -12,5 +12,7 @@ en:
       warning_no_annotations_changed: Existing comments will not be updated. These changes will only be applied to new comments.
       destroy: Delete
       save: Save
+      course_placeholder: This comment is reusable in all courses.
+      exercise_placeholder: This comment is reusable in all exercises.
     new:
       title: Save comment

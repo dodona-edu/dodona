@@ -316,9 +316,9 @@ class Activity < ApplicationRecord
   def accessible?(user, course: nil, series: nil)
     if series.present?
       return false if course.present? && course != series.course
+      return false unless series.accessible_to?(user) && series.activities.pluck(:id).include?(id)
 
       course = series.course
-      return false unless series.accessible_to?(user) && series.activities.pluck(:id).include?(id)
     elsif course.present?
       # no series specified, so check if the activity is accessible in any series
       if user&.course_admin? course

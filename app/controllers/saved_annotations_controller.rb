@@ -56,6 +56,7 @@ class SavedAnnotationsController < ApplicationController
     @title = I18n.t('saved_annotations.edit.title')
     @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)], [I18n.t('saved_annotations.edit.title'), '#']]
     @courses = current_user.administrating_courses
+    @exercises = @courses.map(&:activities).flatten
   end
 
   def create
@@ -85,6 +86,7 @@ class SavedAnnotationsController < ApplicationController
         format.html do
           @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path], [@saved_annotation.title, saved_annotation_path(@saved_annotation)], [I18n.t('saved_annotations.edit.title'), '#']]
           @courses = current_user.administrating_courses
+          @exercises = @courses.map(&:activities).flatten
           render :edit
         end
       end

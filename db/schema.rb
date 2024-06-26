@@ -85,7 +85,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_141422) do
     t.integer "series_id"
     t.index ["activity_id", "course_id", "user_id"], name: "activity_read_states_unique", unique: true
     t.index ["course_id"], name: "fk_rails_f674cacc14"
-    t.index ["series_id"], name: "index_activity_read_states_on_series_id"
     t.index ["user_id"], name: "fk_rails_96d00253e9"
   end
 
@@ -489,15 +488,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_141422) do
     t.index ["series_id"], name: "index_series_memberships_on_series_id"
   end
 
-  create_table "series_users", charset: "utf8mb4", collation: "utf8mb4_general_ci", force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "series_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["series_id"], name: "index_series_users_on_series_id"
-    t.index ["user_id", "series_id"], name: "index_series_users_on_user_id_and_series_id", unique: true
-  end
-
   create_table "submissions", id: :integer, charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "exercise_id"
     t.integer "user_id"
@@ -518,7 +508,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_17_141422) do
     t.index ["exercise_id", "user_id", "status", "created_at"], name: "ex_us_st_cr_index"
     t.index ["exercise_id"], name: "index_submissions_on_exercise_id"
     t.index ["fs_key"], name: "index_submissions_on_fs_key", unique: true
-    t.index ["series_id"], name: "index_submissions_on_series_id"
     t.index ["status"], name: "index_submissions_on_status"
     t.index ["user_id"], name: "index_submissions_on_user_id"
   end

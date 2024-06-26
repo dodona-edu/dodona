@@ -42,8 +42,10 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
     function initTabSummaryLinks(): void {
         document.querySelectorAll(".tab-summary-icons a").forEach(l => {
             l.addEventListener("click", () => {
-                const groupId = l.attributes["href"].value;
-                const group = document.getElementById(groupId.substring(1));
+                // The href is a hash followed by the id of the group
+                // We remove the hash and get the group by id
+                const groupId = l.attributes["href"].value.substring(1);
+                const group = document.getElementById(groupId);
                 group.classList.remove("collapsed");
             });
         });

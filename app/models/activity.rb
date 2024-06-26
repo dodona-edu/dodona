@@ -314,10 +314,13 @@ class Activity < ApplicationRecord
   end
 
   def accessible?(user, course: nil, series: nil)
+    # first validate the course/series accessibility for the user
+    # and make sure the activity is present in the course/series
     if series.present?
       return false if course.present? && course != series.course
       return false unless series.accessible_to?(user) && series.activities.pluck(:id).include?(id)
 
+      # if course was not present, set to series.course
       course = series.course
     elsif course.present?
       # no series specified, so check if the activity is accessible in any series
@@ -330,20 +333,31 @@ class Activity < ApplicationRecord
       end
     end
 
+    # we are now sure that the activity is present within the course or series
+    # and the user has access to the course and series
+
+    # now validate the activity specific access
     if course.present?
       return true if user&.zeus?
+      # repositories must give courses access to private activities
       return false unless access_public? ||
                           repository.allowed_courses.pluck(:id).include?(course&.id)
+      # course admins can access all other activities
       return true if user&.course_admin? course
+      # only course admins can access private activities
       return false if draft?
+      # course members can access al other activities
       return true if user&.member_of?(course)
+      # non-members can only access public activities of moderated courses
       return false if course.moderated && access_private?
 
+      # non-members can access all activities of courses to which they can freely subscribe
       course.open_for_user?(user)
     else
       return true if user&.repository_admin? repository
       return false if draft?
 
+      # non draft public activities are always accessible
       access_public?
     end
   end

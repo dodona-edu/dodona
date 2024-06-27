@@ -61,6 +61,14 @@ class Series {
         return this._bottom;
     }
 
+    private get cardId(): string {
+        return `series-card-${this.id}`;
+    }
+
+    private get card(): HTMLElement {
+        return document.getElementById(this.cardId);
+    }
+
     static findAll(cardsSelector = ".series.card"): Array<Series> {
         const cards = document.querySelectorAll(cardsSelector);
         return Array.from(cards, card => new Series(card));
@@ -79,6 +87,7 @@ class Series {
         this.loading = false;
         this._top = card.getBoundingClientRect().top + window.scrollY;
         this._bottom = this.top + card.getBoundingClientRect().height;
+        this.initCollapse();
     }
 
     needsLoading(): boolean {
@@ -93,9 +102,30 @@ class Series {
             if (response.ok) {
                 eval(await response.text());
                 this.loading = false;
-                this.reselect(document.getElementById(`series-card-${this.id}`));
+                this.reselect(this.card);
             }
         });
+    }
+
+    collapse(): void {
+        this.card.classList.add("collapsed");
+        localStorage.setItem(this.cardId, "collapsed");
+    }
+
+    expand(): void {
+        this.card.classList.remove("collapsed");
+        localStorage.removeItem(this.cardId);
+    }
+
+    initCollapse(): void {
+        this.card.classList.toggle("collapsed", localStorage.getItem(this.cardId) === "collapsed");
+
+        if (this.loaded) {
+            const expandButton = this.card.querySelector(".expand-button");
+            expandButton.addEventListener("click", this.expand.bind(this));
+            const collapseButton = this.card.querySelector(".collapse-button");
+            collapseButton.addEventListener("click", this.collapse.bind(this));
+        }
     }
 }
 

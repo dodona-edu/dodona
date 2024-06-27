@@ -9,7 +9,7 @@
    end %>
 <% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
 
-<div class="card series collapsed"
+<div class="card series"
      id="series-card-<%= series.id %>"
      data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>"
      data-loaded="<%= loaded %>">
@@ -250,6 +250,11 @@
                 <% end %>
               </li>
             <% end %>
+            <li>
+              <a class="dropdown-item collapse-button">
+                <i class='mdi mdi-eye-off mdi-18'></i> Collapse
+              </a>
+            </li>
           </ul>
         </div>
       </div>

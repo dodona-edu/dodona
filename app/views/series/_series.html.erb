@@ -9,7 +9,7 @@
    end %>
 <% ActivityStatus.add_status_for_user_and_series(user, series, [:last_submission, :best_submission]) if loaded %>
 
-<div class="card series"
+<div class="card series collapsed"
      id="series-card-<%= series.id %>"
      data-series-url="<%= user&.id ? series_path(series, format: :js, user_id: user.id) : series_path(series, format: :js) %>"
      data-loaded="<%= loaded %>">
@@ -23,6 +23,9 @@
         <%= render partial: 'deadlines/absolute', locals: {deadline: series.deadline, met: user && loaded ? series.completed_before_deadline?(user) : false} %>
       </h4>
       <div class="flex-spacer"></div>
+      <button class="btn btn-text expand-button">
+        Expand
+      </button>
       <% if policy(series).statistics? %>
         <div id="series-view-<%= series.id %>" class="btn-group btn-toggle nav d-none d-sm-flex" role="tablist">
           <button class="btn active" data-bs-target="#series-content-<%= series.id %>" data-bs-toggle="tab" role="tab" title="<%= t("series.show.series_overview") %>">

@@ -48,6 +48,8 @@ nl:
       series_overview: Reeksoverzicht
       apply: toepassen
       hidden_not_registered: Je bent niet ingeschreven voor deze cursus. Je kan de oefeningen pas oplossen nadat je je ingeschreven hebt.
+      collapse: Inklappen
+      expand: Uitklappen
     edit:
       title: Reeks bewerken
       add_activities: Activiteiten toevoegen

@@ -48,6 +48,8 @@ en:
       series_overview: Series overview
       apply: apply
       hidden_not_registered: You are not registered for this course. You must register before you can start solving the exercises.
+      collapse: Collapse
+      expand: Expand
     edit:
       title: Edit series
       add_activities: Add activities

@@ -24,7 +24,7 @@
       </h4>
       <div class="flex-spacer"></div>
       <button class="btn btn-text expand-button">
-        Expand
+        <%= t "series.show.expand" %>
       </button>
       <% if policy(series).statistics? %>
         <div id="series-view-<%= series.id %>" class="btn-group btn-toggle nav d-none d-sm-flex" role="tablist">
@@ -73,7 +73,7 @@
               <% end %>
               <li>
                 <a class="dropdown-item collapse-button">
-                  <i class='mdi mdi-eye-off mdi-18'></i> Collapse
+                  <i class='mdi mdi-eye-off mdi-18'></i> <%= t "series.show.collapse" %>
                 </a>
               </li>
             </ul>
@@ -257,7 +257,7 @@
             <% end %>
             <li>
               <a class="dropdown-item collapse-button">
-                <i class='mdi mdi-eye-off mdi-18'></i> Collapse
+                <i class='mdi mdi-eye-off mdi-18'></i> <%= t "series.show.collapse" %>
               </a>
             </li>
           </ul>

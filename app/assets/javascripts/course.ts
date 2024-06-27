@@ -69,6 +69,11 @@ class Series {
         return document.getElementById(this.cardId);
     }
 
+    private get scrollspy(): HTMLElement {
+        const anchor = this.card.querySelector(".anchor");
+        return document.querySelector(`#scrollspy-nav a[href="#${anchor.id}"]`);
+    }
+
     static findAll(cardsSelector = ".series.card"): Array<Series> {
         const cards = document.querySelectorAll(cardsSelector);
         return Array.from(cards, card => new Series(card));
@@ -108,17 +113,17 @@ class Series {
     }
 
     collapse(): void {
-        this.card.classList.add("collapsed");
         localStorage.setItem(this.cardId, "collapsed");
+        this.renderCollapsed();
     }
 
     expand(): void {
-        this.card.classList.remove("collapsed");
         localStorage.removeItem(this.cardId);
+        this.renderCollapsed();
     }
 
     initCollapse(): void {
-        this.card.classList.toggle("collapsed", localStorage.getItem(this.cardId) === "collapsed");
+        this.renderCollapsed();
 
         if (this.loaded) {
             const expandButton = this.card.querySelector(".expand-button");
@@ -126,6 +131,12 @@ class Series {
             const collapseButton = this.card.querySelector(".collapse-button");
             collapseButton.addEventListener("click", this.collapse.bind(this));
         }
+    }
+
+    renderCollapsed(): void {
+        const collapsed = localStorage.getItem(this.cardId) === "collapsed";
+        this.card.classList.toggle("collapsed", collapsed);
+        this.scrollspy.classList.toggle("d-none", collapsed);
     }
 }
 

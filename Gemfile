@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.2'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.23.2'
+gem 'ddtrace', '~> 1.23.3'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'

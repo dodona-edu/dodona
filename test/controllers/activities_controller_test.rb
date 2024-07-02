@@ -1012,6 +1012,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
   test 'activities for hidden series should only be shown with token' do
     course = courses(:course1)
+    course.subscribed_members << users(:student)
     exercise = exercises(:python_exercise)
     other_exercise = create :exercise
     series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden

@@ -1,1 +1,2 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#questions-table-wrapper"), "<%= escape_javascript(render partial: 'annotations/annotations_table', locals: { annotations: @annotations, allow_save: true }) %>");
+dodona.search.updateFilters(<%= raw @filters.to_json %>);

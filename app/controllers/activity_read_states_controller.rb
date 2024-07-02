@@ -71,10 +71,7 @@ class ActivityReadStatesController < ApplicationController
       @read_states = @read_states.of_user(@user)
     end
 
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) if @user.blank? && current_user&.course_admin?(@course)
-    end
+    @course = Course.find(params[:course_id]) if params[:course_id]
 
     @series = Series.find(params[:series_id]) if params[:series_id]
     @activity = ContentPage.find(params[:activity_id]) if params[:activity_id]
@@ -90,6 +87,14 @@ class ActivityReadStatesController < ApplicationController
       @read_states = @read_states.in_series(@series)
     elsif @course
       @read_states = @read_states.in_course(@course)
+    end
+
+    if @course.present? && @user.blank? && current_user&.course_admin?(@course)
+      @filters = [{
+        param: 'course_labels',
+        multi: true,
+        data: @read_states.course_labels_filter_options(@course.id)
+      }]
     end
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?

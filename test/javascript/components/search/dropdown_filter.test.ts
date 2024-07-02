@@ -4,7 +4,6 @@ import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByLabelText, screen } from "@testing-library/dom";
 import { html } from "lit/development";
-import { Label } from "components/search/filter_collection_element";
 import { searchQueryState } from "state/SearchQuery";
 
 describe("DropdownFilter", () => {
@@ -15,9 +14,7 @@ describe("DropdownFilter", () => {
         dropdownFilter = await fixture(html`
             <d-dropdown-filter param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
-                                       type="test"
-                                       .paramVal=${(l: Label) => l.id}
-                                       .color=${() => "pink"}
+                                       color="pink"
                                        .multi=${false}>
             </d-dropdown-filter>`) as DropdownFilter;
     });

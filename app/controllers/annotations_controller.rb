@@ -1,10 +1,12 @@
 class AnnotationsController < ApplicationController
+  include HasFilter
   before_action :set_submission, only: %i[create]
   before_action :set_annotation, only: %i[show update destroy]
 
   has_scope :by_submission, as: :submission_id
   has_scope :by_user, as: :user_id
-  has_scope :by_course, as: :course_id
+  has_filter :course_id
+  has_filter :question_state
 
   has_scope :by_filter, as: 'filter' do |controller, scope, value|
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:exercise_id].present?)
@@ -19,8 +21,7 @@ class AnnotationsController < ApplicationController
     authorize Question, :index?
     @user = User.find(params[:user_id]) if params[:user_id]
 
-    @questions = policy_scope(Question).merge(apply_scopes(Question).all)
-    @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
+    @questions = policy_scope(Question)
 
     @unfiltered = @user.nil? && params[:course_id].nil?
 
@@ -32,11 +33,12 @@ class AnnotationsController < ApplicationController
       )
     end
 
+    @filters = filters(@questions)
+    @questions = @questions.merge(apply_scopes(Question).all)
+    @questions = @questions.where(question_state: params[:question_state]) if params[:question_state]
+
     # Preload dependencies for efficiency
     @questions = @questions.includes(:user, :last_updated_by, submission: %i[exercise course])
-
-    @courses = policy_scope(Course.where(id: @questions.pluck(:course_id)))
-
     @questions = @questions.order(created_at: :desc).paginate(page: parse_pagination_param(params[:page]))
     @title = I18n.t('questions.index.title')
     @crumbs = []

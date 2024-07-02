@@ -1,12 +1,21 @@
 <%= content_for :javascripts do %>
   <%= javascript_include_tag 'search' %>
 <% end %>
+<%
+  no_filter_for = local_assigns.fetch :no_filter_for, []
+  no_dropdown_for = local_assigns.fetch :no_dropdown_for, []
+  no_dropdown_for += no_filter_for
+%>
 <div class='table-toolbar'>
-  <d-search-tokens class="search-tokens"></d-search-tokens>
+  <d-search-tokens class="search-tokens"
+                   hide="<%= no_filter_for.to_json %>"></d-search-tokens>
   <div class='table-toolbar-tools'>
     <i class="mdi mdi-magnify"></i>
     <form class='search' onsubmit="return false;">
-      <d-search-field placeholder="<%= t("layout.search.search") %>"></d-search-field>
+      <d-search-field placeholder="<%= t("layout.search.search") %>"
+                      eager="<%= local_assigns.fetch :eager, false %>"
+                      hide="<%= no_filter_for.to_json %>"
+      ></d-search-field>
       <d-loading-bar search-based></d-loading-bar>
     </form>
     <% if local_assigns[:options]&.any? %>
@@ -14,7 +23,9 @@
     <% end %>
   </div>
   <div class="d-flex align-items-center">
-    <d-dropdown-filters class="dropdown-filters"></d-dropdown-filters>
+    <d-dropdown-filters class="dropdown-filters"
+                        hide="<%= no_dropdown_for.to_json %>"
+    ></d-dropdown-filters>
     <% if local_assigns[:actions]&.any? %>
       <div class="flex-spacer"></div>
       <d-search-actions
@@ -29,198 +40,6 @@
 
 <script type="text/javascript">
     dodona.ready.then(function () {
-        const filterCollections = {};
-        <% if local_assigns.fetch :labels, false %>
-        filterCollections["labels"] = {
-            param: "labels",
-            paramVal: function(l) { return l.name.toString(); },
-            multi: true,
-            data: <%= raw render template: 'labels/index', formats: :json %>,
-            color: function (label) {
-                return label.color;
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :programming_languages, false %>
-        filterCollections["programming_languages"] = {
-            param: "programming_language",
-            paramVal: function(p) { return p.name.toString(); },
-            multi: false,
-            data: <%= raw render template: 'programming_languages/index', formats: :json %>,
-            color: function () {
-                return "red";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :repositories, false %>
-        filterCollections["repositories"] = {
-            param: "repository_id",
-            paramVal: function(r) { return r.id.toString(); },
-            multi: false,
-            data: <%= raw render template: 'repositories/index', formats: :json %>,
-            color: function () {
-                return "blue-gray";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch(:institutions, []).length > 1 %>
-        filterCollections["institutions"] = {
-            param: "institution_id",
-            paramVal: function(i) { return i.id.toString(); },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:institutions, []).map{|i| {id: i.id, name: i.name}}.to_json %>,
-            color: function () {
-                return "pink";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :course_labels, false %>
-        filterCollections["course_labels"] = {
-            param: "course_labels",
-            paramVal: function (cl) {
-                return cl.name.toString();
-            },
-            multi: true,
-            data: <%= raw local_assigns.fetch(:course_labels, []).map{|cl| {id: cl.id, name: cl.name}}.to_json %>,
-            color: function () {
-                return "orange";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :statuses, false %>
-        filterCollections["statuses"] = {
-            param: "status",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:statuses, []).map{|s| {id: s, name: Submission.human_enum_name(:status, s)}}.to_json %>,
-            color: function () {
-                return "indigo";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :question_states, false %>
-        filterCollections["question_states"] = {
-            param: "question_state",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:question_states, []).map{|s| {id: s, name: Question.human_enum_name(:question_state, s)}}.to_json %>,
-            color: function () {
-                return "indigo";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :event_types, false %>
-        filterCollections["event_types"] = {
-            param: "type",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:event_types, []).map{|s| {id: s, name: Event.human_enum_name(:event_type, s)}}.to_json %>,
-            color: function () {
-                return "deep-purple";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :activity_types, false %>
-        filterCollections["activity_types"] = {
-            param: "type",
-            paramVal: function (s) {
-                return s.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:activity_types, []).map{|s| {id: s.name, name: s.model_name.human}}.to_json %>,
-            color: function () {
-                return "deep-purple";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :description_languages, false %>
-        filterCollections["description_languages"] = {
-            param: "description_languages",
-            paramVal: function (lang) {
-                return lang.id.toString();
-            },
-            multi: true,
-            data: <%= raw local_assigns.fetch(:description_languages, []).map{|l| {id: l, name: t("js.#{l}")}}.to_json %>,
-            color: function () {
-                return "orange";
-            },
-        };
-        <% end %>
-        <% if local_assigns.fetch :judges, false %>
-        filterCollections["judges"] = {
-            param: "judge_id",
-            paramVal: function(judge) {
-                return judge.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:judges, []).map{|judge| {id: judge.id, name: "#{judge.name}-judge"}}.to_json %>,
-            color: function () {
-                return "red";
-            }
-        }
-        <% end %>
-        <% if local_assigns.fetch :courses, false %>
-        filterCollections["courses"] = {
-            param: "course_id",
-            paramVal: function(course) {
-                return course.id.toString();
-            },
-            multi: false,
-            data: <%= raw local_assigns.fetch(:courses, []).map{|course| {id: course.id, name: "#{course.name} (#{course.formatted_year})"}}.to_json %>,
-            color: function () {
-                return "orange";
-            }
-        };
-        <% end %>
-        <% if local_assigns.fetch :exercises, false %>
-        filterCollections["exercises"] = {
-          param: "exercise_id",
-          paramVal: function(exercise) {
-            return exercise.id.toString();
-          },
-          multi: false,
-          data: <%= raw local_assigns.fetch(:exercises, []).map{|exercise| {id: exercise.id, name: exercise.name}}.to_json %>,
-          color: function () {
-            return "blue-gray";
-          }
-        };
-        <% end %>
-        <% if local_assigns.fetch :popularity, false %>
-            filterCollections["popularity"] = {
-              param: "popularity",
-              paramVal: function (s) {
-                return s.id.toString();
-              },
-              multi: true,
-              data: <%= raw local_assigns.fetch(:popularity, []).map{|s| {id: s, name: Activity.human_enum_name(:popularity, s)}}.to_json %>,
-              color: function () {
-                return "pink";
-              },
-            };
-        <% end %>
-      <% if local_assigns.fetch :draft, false %>
-        filterCollections["draft"] = {
-          param: "draft",
-          paramVal: function (s) {
-            return s.id.toString();
-          },
-          multi: false,
-          data: [
-            {id: true, name: "<%= t("activities.index.filters.draft") %>"},
-            {id: false, name: "<%= t("activities.index.filters.not_draft") %>"}
-          ],
-          color: function () {
-            return "indigo";
-          },
-        };
-      <% end %>
-
         dodona.search.setRefreshElement("<%= local_assigns.fetch :refresh_element, "" %>");
 
         // load the given localStorageKey if present. This key is used to retrieve the values stored in localStorage
@@ -229,20 +48,6 @@
         dodona.search.autoSearch = <%= local_assigns.fetch :autoSearch, true %>;
         dodona.search.setLocalStorageKey(localStorageKey);
 
-        const searchFields = Array.from(document.getElementsByTagName("d-search-field"));
-        searchFields.forEach( searchField => {
-          searchField.filterCollections = filterCollections;
-          searchField.eager = <%= local_assigns.fetch :eager, false %>;
-          searchField.placeholder = '<%= t("layout.search.search") %>';
-        });
-
-        const searchTokens = Array.from(document.getElementsByTagName("d-search-tokens"));
-        searchTokens.forEach(st => st.filterCollections = filterCollections);
-
-        const noDropdownFilters = <%= raw (local_assigns.fetch :no_dropdown_for, []).to_json %>;
-        const dropdownFilterCollections = Object.entries(filterCollections).filter(([type, _]) => !noDropdownFilters.includes(type))
-        const dropdownFilters = Array.from(document.getElementsByTagName("d-dropdown-filters"));
-        dropdownFilters.forEach(df => df.filterCollections = dropdownFilterCollections);
-
+        dodona.search.updateFilters(<%= raw @filters.to_json %>);
     });
 </script>

@@ -1,6 +1,7 @@
 class SeriesController < ApplicationController
   include ExportHelper
   include SetLtiMessage
+  include HasFilter
 
   before_action :set_series, except: %i[index new create]
   before_action :check_token, only: %i[show overview]
@@ -191,6 +192,11 @@ class SeriesController < ApplicationController
 
     scores = @series.scoresheet
     @users = apply_scopes(scores[:users])
+    @filters = [{
+      param: 'course_labels',
+      multi: true,
+      data: @users.course_labels_filter_options(@course.id)
+    }]
     @activities = scores[:activities]
     @submissions = scores[:submissions]
     @read_states = scores[:read_states]

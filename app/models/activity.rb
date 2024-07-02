@@ -30,10 +30,10 @@ require 'action_view'
 
 class Activity < ApplicationRecord
   include ActionView::Helpers::DateHelper
-  include Filterable
   include StringHelper
   include Cacheable
   include Tokenable
+  include Filterable
 
   USERS_READ_CACHE_STRING = '/course/%<course_id>s/activity/%<id>s/users_read'.freeze
   CONFIG_FILE = 'config.json'.freeze
@@ -73,35 +73,43 @@ class Activity < ApplicationRecord
   scope :content_pages, -> { where(type: ContentPage.name) }
   scope :exercises, -> { where(type: Exercise.name) }
 
-  scope :in_repository, ->(repository) { where repository: repository }
-
   scope :by_name, ->(name) { where('name_nl LIKE ? OR name_en LIKE ? OR path LIKE ?', "%#{name}%", "%#{name}%", "%#{name}%") }
-  scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
-  scope :by_access, ->(access) { where(access: access.in?(accesses) ? access : -1) }
-  scope :by_labels, ->(labels) { includes(:labels).where(labels: { name: labels }).group(:id).having('COUNT(DISTINCT(activity_labels.label_id)) = ?', labels.uniq.length) }
-  scope :by_programming_language, ->(programming_language) { includes(:programming_language).where(programming_languages: { name: programming_language }) }
-  scope :by_type, ->(type) { where(type: type) }
-  scope :by_judge, ->(judge) { where(judge_id: judge) }
-  scope :is_draft, ->(value = true) { where(draft: value) }
+  search_by :name_nl, :name_en, :path
+  filterable_by :status, is_enum: true
+  filterable_by :access, is_enum: true
+  filterable_by :programming_language, column: 'programming_languages.name', associations: :programming_language
+  filterable_by :type, name_hash: ->(_) { { Exercise.name => Exercise.model_name.human, ContentPage.name => ContentPage.model_name.human } }
+  filterable_by :judge_id, model: Judge
+  filterable_by :labels, multi: true, associations: :labels, column: 'labels.name'
+  filterable_by :repository_id, model: Repository
+  filterable_by :draft, name_hash: ->(_) { { true => I18n.t('activities.index.filters.draft'), false => I18n.t('activities.index.filters.not_draft') } }
   scope :by_description_languages, lambda { |languages|
     by_language = all # allow chaining of scopes
     by_language = by_language.where(description_en_present: true) if languages.include? 'en'
     by_language = by_language.where(description_nl_present: true) if languages.include? 'nl'
     by_language
   }
+  filter_options_for :description_languages do
+    [{ id: 'nl', name: I18n.t('js.nl'), count: where(description_nl_present: true).count },
+     { id: 'en', name: I18n.t('js.en'), count: where(description_en_present: true).count }]
+      .filter { |lang| lang[:count].positive? }
+  end
   scope :by_popularity, lambda { |popularity|
     thresholds = POPULARITY_THRESHOLDS[popularity.to_sym]
     filtered = where("series_count >= #{thresholds[:min]}")
     filtered = filtered.where("series_count <= #{thresholds[:max]}") if thresholds[:max].present?
     filtered
   }
-  scope :by_popularities, lambda { |popularities|
-    filtered = by_popularity(popularities.first)
-    popularities.drop(1).each do |popularity|
-      filtered = filtered.or(by_popularity(popularity))
-    end
-    filtered
-  }
+  filter_options_for :popularity do
+    count_by_popularity = select(
+      POPULARITY_THRESHOLDS.map do |popularity, thresholds|
+        "COUNT(CASE WHEN series_count >= #{thresholds[:min]} #{thresholds[:max].present? ? "AND series_count <= #{thresholds[:max]}" : ''} THEN 1 ELSE NULL END) AS #{popularity}"
+      end
+    )
+    count_by_popularity.first.attributes.except('id').map do |popularity, count|
+      { id: popularity, name: human_enum_name(:popularity, popularity), count: count }
+    end.filter { |popularity| popularity[:count].positive? }
+  end
 
   scope :order_by_name, ->(direction) { reorder(Arel.sql("name_#{I18n.locale} IS NULL, name_#{I18n.locale} #{direction}")).order(path: direction) }
   scope :order_by_popularity, ->(direction) { reorder("series_count #{direction}") }
@@ -422,10 +430,6 @@ class Activity < ApplicationRecord
     return if series_memberships.any?
 
     destroy
-  end
-
-  def set_search
-    self.search = "#{Activity.human_enum_name(:status, status, locale: :nl)} #{Activity.human_enum_name(:status, status, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :en)} #{Activity.human_enum_name(:access, access, locale: :nl)} #{name_nl} #{name_en} #{path}"
   end
 
   def self.parse_type(type)

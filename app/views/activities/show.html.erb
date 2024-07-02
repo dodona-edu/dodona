@@ -8,7 +8,8 @@
     <script id="MathJax-script" src='https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'></script>
   <% end %>
 <% end %>
-<%= render 'navbar_links' %>
+<% content_for :container_class do %>container-fluid<% end %>
+
 
 <% if @not_registered && @lti_launch %>
   <%= render 'courses/not_a_member_dialog' %>
@@ -38,106 +39,76 @@ end %>
 <% end %>
 
 <div class="row">
-  <% if @activity.exercise? %>
-    <div class="col-md-1 p-0">
-      <%= link_to '#submission-card', class: "btn btn-lg btn-down d-none d-md-block hidden-print", title: t('.handin') do %>
-        <span class='d-none d-lg-inline'><%= t('.handin') %></span><br>
-        <i class="mdi mdi-chevron-down"></i>
-      <% end %>
-    </div>
-  <% else %>
-    <div class="col-md-1 d-none d-md-block hidden-print">&nbsp;</div>
-  <% end %>
-  <div class="col-md-10 col-12">
-    <div class="card activity-description">
-      <div class="card-title card-title-colored">
-        <h2 class="card-title-text">
-          <%= activity_icon(@activity, 24) %>
-          &nbsp;
-          <%= @activity.numbered_name(@series) %>
-        </h2>
-        <% if @series.present? %>
-          <div class="card-title-navigation hidden-print">
-            <%= link_to previous_link, class: 'btn btn-icon btn-icon-inverted', title: previous_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top'} do %>
-              <i class="mdi mdi-chevron-left"></i>
-            <% end %>
-            <%= link_to next_link, class: 'btn btn-icon btn-icon-inverted', title: next_tooltip, data: {'bs-toggle': 'tooltip', placement: 'top', title: next_tooltip_actionable}, id: 'next-exercise-link' do %>
-                <i class="mdi mdi-chevron-right"></i>
-            <% end %>
-          </div>
-        <% end %>
-      </div>
-      <%= description_iframe @activity %>
-    </div>
-  </div>
-
   <% if @series.present? %>
-    <nav class="col-md-1 d-none d-md-block hidden-print activity-sidebar">
-      <ul class="nav affix">
-        <li class="header ellipsis-overflow" title="<%= @series.name %>"><%= @series.name %></li>
+    <nav class="d-none d-md-block hidden-print" style="width: 12%">
+      <h1 class="drawer-group-title" title="<%= @series.name %>"><%= @series.name %></h1>
+      <ul class="drawer-list">
         <% @series.activities.each_with_index do |activity, index| %>
           <% numbered_name = @series.activity_numbers_enabled? ? "#{index + 1}. #{activity.name}" : activity.name %>
-          <li><%= link_to numbered_name, activity_scoped_path(activity: activity, series: @series), class: "ellipsis-overflow #{' active' if activity.id == @activity.id }", title: activity.name %> </li>
+          <li class="drawer-item">
+            <%= link_to activity_scoped_path(activity: activity, series: @series), class: "drawer-list-item #{' active' if activity.id == @activity.id }", title: activity.name do %>
+              <%= activity_icon(activity, 18) %>
+              <%= numbered_name %>
+            <% end %>
+          </li>
         <% end %>
       </ul>
     </nav>
   <% end %>
-
-</div>
-<% if @activity.exercise? %>
-<div class="row hidden-print">
-  <a class="anchor" id="submission-card"></a>
-  <div class="col-md-10 offset-md-1 col-12">
-    <div class="card card-nav">
-      <div class="card-title card-title-colored">
-        <% if policy(@activity).submit? %>
-          <div class="card-title-fab">
-            <button class="btn btn-fab mdi mdi-send" id="editor-process-btn" data-user_id="<%= current_user.id %>">
-            </button>
-            <a class="btn btn-fab hidden" id="submission-copy-btn">
-              <i class="mdi mdi-pencil"></i>
-            </a>
-          </div>
+  <div class="col-lg-5 col-md-10">
+        <h2>
+          <%= activity_icon(@activity, 24) %>
+          <%= @activity.numbered_name(@series) %>
+        </h2>
+      <%= description_iframe @activity %>
+  </div>
+  <div class="col-lg-5 col-md-10">
+    <div class="card-tab">
+      <ul class="nav nav-tabs">
+        <% if policy(@activity).submit? || !user_signed_in? %>
+          <li class="nav-item"><a href="#handin" id="activity-handin-link" data-bs-toggle="tab" class="nav-link active"><%= t ".handin" %></a></li>
         <% end %>
-        <ul class="nav nav-tabs">
-          <% if policy(@activity).submit? || !user_signed_in? %>
-            <li><a href="#handin" id="activity-handin-link" data-bs-toggle="tab" class="active"><%= t ".handin" %></a></li>
-          <% end %>
-          <li>
-            <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link' class="<%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>"><%= t ".solutions" %></a></li>
-          <li><a href="#feedback" data-bs-toggle="tab" id='activity-feedback-link' class='hidden'><%= t ".feedback" %></a>
-          </li>
-        </ul>
-      </div>
-      <div class="card-supporting-text">
-        <div class="tab-content">
-          <div class="tab-pane fade show active" id="handin">
-            <% if !user_signed_in? %>
-              <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
-            <% end %>
-            <% if policy(@activity).submit? || !user_signed_in? %>
-              <% if @series.present? && @series.deadline.present? %>
-                <div id="deadline-info" class="alert alert-info" hidden>
-                  <%= t('.deadline_in_5_minutes', deadline: @series.deadline.strftime("%R")) %>
-                </div>
-                <div id="deadline-warning" class="alert alert-warning" hidden>
-                  <%= t('.deadline_passed', deadline: @series.deadline.today? ? @series.deadline.strftime('%R') : @series.deadline.strftime('%F %R')) %>
-                </div>
+        <li class="nav-item">
+          <a href="#submissions" data-bs-toggle="tab" id='activity-submission-link' class="nav-link <%= 'active' if !(policy(@activity).submit? || !user_signed_in?) %>"><%= t ".solutions" %></a></li>
+        <li class="nav-item"><a href="#feedback" data-bs-toggle="tab" id='activity-feedback-link' class='nav-link'><%= t ".feedback" %></a>
+        </li>
+        <li class="nav-item">
+          <a href="#information" data-bs-toggle="tab" id='activity-feedback-link' class='nav-link'>
+            <i class="mdi mdi-school mdi-18"></i>
+            Informatie
+          </a>
+        </li>
+      </ul>
+    </div>
+        <div class="card-supporting-text">
+          <div class="tab-content">
+            <div class="tab-pane fade show active" id="handin">
+              <% if !user_signed_in? %>
+                <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
               <% end %>
-              <% if !@edit_submission && !@solution && @last_submission %>
-                <div class="callout callout-info mt-0" id="restore-boilerplate">
-                  <%= t ".preloaded_info" %>
-                  <a class="link-primary">
-                    <%= t(@activity.boilerplate ? ".preloaded_restore" : ".preloaded_clear") %>
-                  </a>
+              <% if policy(@activity).submit? || !user_signed_in? %>
+                <% if @series.present? && @series.deadline.present? %>
+                  <div id="deadline-info" class="alert alert-info" hidden>
+                    <%= t('.deadline_in_5_minutes', deadline: @series.deadline.strftime("%R")) %>
+                  </div>
+                  <div id="deadline-warning" class="alert alert-warning" hidden>
+                    <%= t('.deadline_passed', deadline: @series.deadline.today? ? @series.deadline.strftime('%R') : @series.deadline.strftime('%F %R')) %>
+                  </div>
+                <% end %>
+                <% if !@edit_submission && !@solution && @last_submission %>
+                  <div class="callout callout-info mt-0" id="restore-boilerplate">
+                    <%= t ".preloaded_info" %>
+                    <a class="link-primary">
+                      <%= t(@activity.boilerplate ? ".preloaded_restore" : ".preloaded_clear") %>
+                    </a>
+                  </div>
+                <% end %>
+                <div id="editor-window" class='tex2jax_ignore'>
+                  <div class="highlighter-rouge" id="editor-text"><%= @code %></div>
                 </div>
-              <% end %>
-              <div id="editor-window" class='tex2jax_ignore'>
-                <div class="highlighter-rouge" id="editor-text"><%= @code %></div>
-              </div>
-              <div class="d-flex justify-content-between align-items-center mt-1">
-                <span class="header-info-text"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></span>
-                <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
+                <div class="header-info-text mt-1"><i class="mdi mdi-information mdi-18"></i> <%= t ".hand_in_info" %></div>
+                <div class="float-end mt-1">
+                  <% if @activity.exercise? && @activity.programming_language&.name == 'python' %>
                   <span data-bs-toggle="tooltip"
                         data-bs-placement="bottom"
                         data-bs-trigger="hover"
@@ -152,36 +123,45 @@ end %>
                       <%= t '.to_sandbox' %>
                     </button>
                   </span>
-                  <script type="text/javascript">
-                    dodona.ready.then(function () {
-                      dodona.initCodingScratchpad(
-                        "<%= escape_javascript @activity.programming_language&.name %>"
-                      );
-                    });
-                  </script>
-                <% end %>
-              </div>
-            <% end %>
-          </div>
-          <div class="tab-pane fade <%= 'show active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
-            <div id="submissions-table-wrapper">
-              <% if !user_signed_in? %>
-                <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
-              <% elsif @submissions.length > 0 %>
-                <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: current_user} %>
-              <% else %>
-                <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
+                    <button class="btn btn-filled with-icon">
+                      <i class="mdi mdi-send"></i>
+                      Submit
+                    </button>
+                    <script type="text/javascript">
+                      dodona.ready.then(function () {
+                        dodona.initCodingScratchpad(
+                          "<%= escape_javascript @activity.programming_language&.name %>"
+                        );
+                      });
+                    </script>
+                  <% end %>
+                </div>
               <% end %>
             </div>
-          </div>
-          <div class="tab-pane fade hidden" id="feedback">
-            <div id="submission-wrapper"></div>
+            <div class="tab-pane fade <%= 'show active' if !(policy(@activity).submit? || !user_signed_in?) %>" id="submissions">
+              <%= render partial: 'layouts/searchbar', locals: {statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
+              <div id="submissions-table-wrapper">
+                <% if !user_signed_in? %>
+                  <div class="alert alert-info"><%= t ".not_logged_in_html", :url => sign_in_path %></div>
+                <% elsif @submissions.length > 0 %>
+                  <%= render partial: 'submissions/submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: current_user} %>
+                <% else %>
+                  <div class="alert alert-info"><%= t ".hand_in_tooltip" %></div>
+                <% end %>
+              </div>
+            </div>
+            <div class="tab-pane fade hidden" id="feedback">
+              <div id="submission-wrapper"></div>
+            </div>
+            <div class="tab-pane fade" id="information">
+              <%= render partial: "info" %>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 </div>
+<% if @activity.exercise? %>
+
 <% elsif @activity.content_page? %>
 <div class="row hidden-print">
   <div class="col-md-10 offset-md-1 col-12">

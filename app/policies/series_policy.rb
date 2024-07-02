@@ -19,15 +19,9 @@ class SeriesPolicy < ApplicationPolicy
   end
 
   def show?
-    return true if course_admin?
-    return false if record.closed?
-    return false if record.hidden? && user.nil?
-    return false if record.timed? && record.visibility_start > Time.zone.now
+    return false unless record.accessible_to?(user)
 
-    course = record.course
-    course.visible_for_all? ||
-      (course.visible_for_institution? && course.institution == user&.institution) ||
-      user&.member_of?(course)
+    record.course.visible_for_user?(user)
   end
 
   def info?

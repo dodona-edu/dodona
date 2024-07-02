@@ -95,8 +95,10 @@ class SubmissionsController < ApplicationController
       format.html do
         if @submission.course.nil?
           redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        else
+        elsif @submission.series.nil?
           redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        else
+          redirect_to course_series_activity_url(@submission.course, @submission.series, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         end
       end
     end
@@ -108,13 +110,18 @@ class SubmissionsController < ApplicationController
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
+    # check if user is member of course
     course = Course.find(para[:course_id]) if para[:course_id].present?
     para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
+    # check if series is part of course
+    series = Series.find(para[:series_id]) if para[:series_id].present? && para[:course_id].present?
+    para.delete(:series_id) if para[:series_id].present? && course.series.exclude?(series)
+
     submission = Submission.new(para)
     can_submit = true
     if submission.exercise.present?
       can_submit &&= Pundit.policy!(current_user, submission.exercise).submit?
-      can_submit &&= submission.exercise.accessible?(current_user, course)
+      can_submit &&= submission.exercise.accessible?(current_user, course: course, series: series)
     end
     if can_submit && submission.save
       render json: { status: 'ok', id: submission.id, exercise_id: submission.exercise_id, course_id: submission.course_id, url: submission_url(submission, format: :json) }

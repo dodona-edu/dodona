@@ -866,7 +866,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     series = course.series.first
     series.exercises << create(:exercise)
     series.exercises << create(:exercise)
-    submission = create :wrong_submission, user: user, course: course, exercise: course.series.first.exercises.first
+    submission = create :wrong_submission, user: user, course: course, exercise: course.series.first.exercises.first, series: course.series.first
 
     assert_equal submission, user.jump_back_in.first[:submission]
     assert_equal submission.exercise, user.jump_back_in.first[:activity]
@@ -908,7 +908,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     series.exercises << a1
     series.exercises << a2
     course.series.second.exercises << create(:exercise)
-    create :correct_submission, user: user, course: course, exercise: a1
+    create :correct_submission, user: user, course: course, exercise: a1, series: series
 
     assert_nil user.jump_back_in.first[:submission]
     assert_equal a2, user.jump_back_in.first[:activity]
@@ -939,7 +939,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     series1.exercises << a1
     series1.exercises << a2
     series2.exercises << create(:exercise)
-    create :correct_submission, user: user, course: course, exercise: a2
+    create :correct_submission, user: user, course: course, exercise: a2, series: series1
 
     assert_nil user.jump_back_in.first[:submission]
     assert_nil user.jump_back_in.first[:activity]
@@ -1002,38 +1002,67 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     course = create :course, series_count: 2, exercises_per_series: 1
     series = course.series.first
-    create :correct_submission, user: user, course: course, exercise: series.exercises.first
+    create :wrong_submission, user: user, course: course, exercise: series.exercises.first, series: series
+
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
+    assert_equal 3, user.jump_back_in.count
 
     course.series.second.update(visibility: :hidden)
 
-    assert_empty user.jump_back_in
+    assert_equal 2, user.jump_back_in.count
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_nil user.jump_back_in.second[:series]
 
     course.series.second.update(visibility: :closed)
 
-    assert_empty user.jump_back_in
+    assert_equal 2, user.jump_back_in.count
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_nil user.jump_back_in.second[:series]
+
+    course.series.first.update(visibility: :hidden)
+
+    # no vissible series in course
+    assert_equal 0, user.jump_back_in.count
 
     course.series.second.update(visibility: :open)
 
-    assert_equal course.series.second, user.jump_back_in.first[:series]
+    # the series of the submission is hidden. thus only refer the course
+    assert_equal 1, user.jump_back_in.count
+    assert_nil user.jump_back_in.first[:submission]
+    assert_nil user.jump_back_in.first[:activity]
+    assert_nil user.jump_back_in.first[:series]
+    assert_equal course, user.jump_back_in.first[:course]
 
+    course.series.first.update(visibility: :open)
     CourseMembership.create user: user, course: course, status: :course_admin
 
     # Refetch user to fix cached course_admin? method
     user = User.find(user.id)
 
     assert user.course_admin?(course)
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
 
     course.series.second.update(visibility: :hidden)
 
-    assert_equal course.series.second, user.jump_back_in.first[:series]
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
 
     course.series.second.update(visibility: :closed)
 
-    assert_equal course.series.second, user.jump_back_in.first[:series]
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
+
+    course.series.first.update(visibility: :hidden)
+
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
 
     course.series.second.update(visibility: :open)
 
-    assert_equal course.series.second, user.jump_back_in.first[:series]
+    assert_equal course.series.first, user.jump_back_in.first[:series]
+    assert_equal course.series.second, user.jump_back_in.second[:series]
   end
 
   test 'jump back in should only return activities the user has access to' do
@@ -1042,7 +1071,7 @@ class UserHasManyTest < ActiveSupport::TestCase
     course = create :course, series_count: 2, exercises_per_series: 1
     series = course.series.first
     a1 = series.exercises.first
-    s = create :wrong_submission, user: user, course: course, exercise: a1
+    s = create :wrong_submission, user: user, course: course, exercise: a1, series: series
 
     assert_equal 3, user.jump_back_in.count
     assert_equal s, user.jump_back_in.first[:submission]
@@ -1074,13 +1103,13 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     series.update(visibility: :hidden)
 
-    assert_equal 1, user.jump_back_in.count
-    assert_nil user.jump_back_in.first[:activity]
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
 
     series.update(visibility: :closed)
 
-    assert_equal 1, user.jump_back_in.count
-    assert_nil user.jump_back_in.first[:activity]
+    assert_equal 3, user.jump_back_in.count
+    assert_equal a1, user.jump_back_in.first[:activity]
 
     series.update(visibility: :open)
 

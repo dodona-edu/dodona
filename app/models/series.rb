@@ -206,4 +206,24 @@ class Series < ApplicationRecord
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
   end
+
+  def visible_to?(user)
+    return true if user&.course_admin? course
+
+    return true if open?
+
+    return false if hidden?
+
+    return false if closed?
+
+    return false if timed? && visibility_start > Time.zone.now
+
+    true
+  end
+
+  def accessible_to?(user)
+    return true if visible_to?(user)
+
+    user&.member_of?(course) && hidden?
+  end
 end

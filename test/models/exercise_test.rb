@@ -60,106 +60,137 @@ class ExerciseTest < ActiveSupport::TestCase
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
 
-    assert_not @exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course: course)
   end
 
   test 'accessible? should return false if user is not course admin of course and exercise is not in course' do
     course = create :course, users: [@user]
 
-    assert_not @exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course: course)
   end
 
   test 'accessible? should return false if user is not course admin of course and series is not visible course' do
     course = create :course, users: [@user]
-    create :series, course: course, visibility: 'closed', exercises: [@exercise]
+    series = create :series, course: course, visibility: 'closed', exercises: [@exercise]
 
-    assert_not @exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course: course)
+    assert_not @exercise.accessible?(@user, course: course, series: series)
+    assert_not @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return true if user is course admin of course, repository admin and exercise is in course' do
     course = create :course, users: [@user]
     User.any_instance.stubs(:course_admin?).returns(true)
     User.any_instance.stubs(:repository_admin?).returns(true)
-    create :series, course: course, exercises: [@exercise]
+    series = create :series, course: course, exercises: [@exercise]
 
-    assert @exercise.accessible?(@user, course)
+    assert @exercise.accessible?(@user, course: course)
+    assert @exercise.accessible?(@user, course: course, series: series)
+    assert @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return true if user is repository admin and series is visible' do
     User.any_instance.stubs(:repository_admin?).returns(true)
-    create :series, course: @course, exercises: [@exercise]
+    series = create :series, course: @course, exercises: [@exercise]
 
-    assert @exercise.accessible?(@user, @course)
+    assert @exercise.accessible?(@user, course: @course)
+    assert @exercise.accessible?(@user, course: @course, series: series)
+    assert @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return false if not allowed to use exercise' do
     exercise = create :exercise, access: 'private'
-    create :series, course: @course, exercises: [exercise]
+    series = create :series, course: @course, exercises: [exercise]
 
-    assert_not exercise.accessible?(@user, @course)
+    assert_not exercise.accessible?(@user, course: @course)
+    assert_not exercise.accessible?(@user, course: @course, series: series)
+    assert_not @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return true if repository allows access to course' do
     exercise = create :exercise, access: :private
-    create :series, course: @course, exercises: [exercise]
+    series = create :series, course: @course, exercises: [exercise]
     exercise.repository.allowed_courses << @course
 
-    assert exercise.accessible?(@user, @course)
+    assert exercise.accessible?(@user, course: @course)
+    assert exercise.accessible?(@user, course: @course, series: series)
+    assert exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return false if user is not a member of the course' do
     course = create :course, registration: 'closed'
-    create :series, course: course, exercises: [@exercise]
+    series = create :series, course: course, exercises: [@exercise]
 
-    assert_not @exercise.accessible?(@user, course)
+    assert_not @exercise.accessible?(@user, course: course)
+    assert_not @exercise.accessible?(@user, course: course, series: series)
+    assert_not @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return true if user is a member of the course' do
     course = create :course, users: [@user]
-    create :series, course: course, exercises: [@exercise]
+    series = create :series, course: course, exercises: [@exercise]
 
-    assert @exercise.accessible?(@user, course)
+    assert @exercise.accessible?(@user, course: course)
+    assert @exercise.accessible?(@user, course: course, series: series)
+    assert @exercise.accessible?(@user, series: series)
   end
 
   test 'accessible? should return true if user repository admin of repository' do
     exercise = create :exercise, access: 'private'
     User.any_instance.stubs(:repository_admin?).returns(true)
 
-    assert exercise.accessible?(@user, nil)
+    assert exercise.accessible?(@user)
   end
 
   test 'accessible? should return true if exercise is public' do
-    assert @exercise.accessible?(@user, nil)
+    assert @exercise.accessible?(@user)
   end
 
   test 'accessible? should return false if exercise is private' do
     exercise = build :exercise, access: 'private'
 
-    assert_not exercise.accessible?(@user, nil)
+    assert_not exercise.accessible?(@user)
   end
 
   test 'exercise should be accessible if private and included in unmoderated open course' do
     exercise = create :exercise, access: 'private'
     course = create :course, moderated: false, registration: :open_for_all
     exercise.repository.allowed_courses << course
-    create :series, course: course, exercises: [exercise]
+    series = create :series, course: course, exercises: [exercise]
 
-    assert exercise.accessible?(@user, course)
+    assert exercise.accessible?(@user, course: course)
+    assert exercise.accessible?(@user, course: course, series: series)
+    assert exercise.accessible?(@user, series: series)
   end
 
   test 'exercise should not be accessible if private and included in a moderated but open course' do
     exercise = create :exercise, access: 'private'
     course = create :course, moderated: true, registration: :open_for_all
     exercise.repository.allowed_courses << course
-    create :series, course: course, exercises: [exercise]
+    series = create :series, course: course, exercises: [exercise]
 
-    assert_not exercise.accessible?(@user, course)
+    assert_not exercise.accessible?(@user, course: course)
+    assert_not exercise.accessible?(@user, course: course, series: series)
+    assert_not exercise.accessible?(@user, series: series)
   end
 
   test 'exercise should not be accessible if included via hidden series and user is not a member' do
-    create :series, course: @course, exercises: [@exercise], visibility: :hidden
+    series = create :series, course: @course, exercises: [@exercise], visibility: :hidden
 
-    assert_not @exercise.accessible?(@user, @course)
+    assert_not @exercise.accessible?(@user, course: @course)
+    assert_not @exercise.accessible?(@user, course: @course, series: series)
+    assert_not @exercise.accessible?(@user, series: series)
+  end
+
+  test 'exercise should only be accessible in series if included in series' do
+    series = create :series, course: @course, exercises: []
+    second_series = create :series, course: @course, exercises: [@exercise]
+
+    assert @exercise.accessible?(@user, course: @course)
+    assert_not @exercise.accessible?(@user, course: @course, series: series)
+    assert_not @exercise.accessible?(@user, series: series)
+    assert @exercise.accessible?(@user, course: @course, series: second_series)
+    assert @exercise.accessible?(@user, series: second_series)
   end
 
   test 'convert_visibility_to_access should convert "visible" to "public"' do

@@ -303,6 +303,10 @@ class Course < ApplicationRecord
     open_for_all? || (open_for_institution? && institution == user&.institution) || (open_for_institutional_users? && user&.institutional?)
   end
 
+  def visible_for_user?(user)
+    visible_for_all? || (visible_for_institution? && institution == user&.institution) || user&.member_of?(self)
+  end
+
   def invalidate_subscribed_members_count_cache
     Rails.cache.delete(format(SUBSCRIBED_MEMBERS_COUNT_CACHE_STRING, id: id))
   end

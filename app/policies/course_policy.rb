@@ -37,9 +37,7 @@ class CoursePolicy < ApplicationPolicy
   def copy?
     create? && (
       user&.zeus? ||
-      record.visible_for_all? ||
-      (record.visible_for_institution? && record.institution == user&.institution) ||
-      record.subscribed_members.include?(user)
+      record.visible_for_user?(user)
     )
   end
 

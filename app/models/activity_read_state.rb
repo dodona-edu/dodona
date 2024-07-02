@@ -8,10 +8,12 @@
 #  user_id     :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  series_id   :integer
 #
 class ActivityReadState < ApplicationRecord
   belongs_to :activity
   belongs_to :course, optional: true
+  belongs_to :series, optional: true
   belongs_to :user
 
   validates :activity, uniqueness: { scope: %i[user course] }
@@ -65,6 +67,6 @@ class ActivityReadState < ApplicationRecord
   end
 
   def activity_accessible_for_user?
-    errors.add(:activity, 'not accessible') unless activity.accessible?(user, course)
+    errors.add(:activity, 'not accessible') unless activity.accessible?(user, course: course, series: series)
   end
 end

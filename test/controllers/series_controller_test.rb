@@ -297,13 +297,22 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
   test 'student should see hidden series with token' do
     sign_in @student
+    @series.course.subscribed_members << @student
     @series.update(visibility: :hidden)
 
     assert_show_and_overview true, token: @series.access_token
   end
 
+  test 'student that is not member of course should not see hidden series with token' do
+    sign_in @student
+    @series.update(visibility: :hidden)
+
+    assert_show_and_overview false, token: @series.access_token
+  end
+
   test 'student should not see hidden series with wrong token' do
     sign_in @student
+    @series.course.subscribed_members << @student
     @series.update(visibility: :hidden)
 
     assert_show_and_overview false, token: 'hunter2'
@@ -311,6 +320,7 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
   test 'student should not see closed series with token' do
     sign_in @student
+    @series.course.subscribed_members << @student
     @series.update(visibility: :closed)
 
     assert_show_and_overview false, token: @series.access_token

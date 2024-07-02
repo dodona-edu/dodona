@@ -838,7 +838,7 @@ class ActivitiesPermissionControllerTest < ActionDispatch::IntegrationTest
 
     get course_series_activity_url(right_course, wrong_series, right_exercise)
 
-    assert_redirected_to course_activity_url(right_course, right_exercise)
+    assert_redirected_to root_url
   end
 
   test 'should not show activity if series not in course' do
@@ -1012,6 +1012,7 @@ class ExerciseDescriptionTest < ActionDispatch::IntegrationTest
 
   test 'activities for hidden series should only be shown with token' do
     course = courses(:course1)
+    course.subscribed_members << users(:student)
     exercise = exercises(:python_exercise)
     other_exercise = create :exercise
     series = create :series, course: course, exercises: [exercise, other_exercise], visibility: :hidden

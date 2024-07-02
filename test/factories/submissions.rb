@@ -14,6 +14,7 @@
 #  fs_key      :string(24)
 #  number      :integer
 #  annotated   :boolean          default(FALSE), not null
+#  series_id   :integer
 #
 
 FactoryBot.define do

@@ -12,12 +12,19 @@
       <div class="card-supporting-text">
         <p><strong><%= @saved_annotation.title %></strong></p>
         <blockquote><%= markdown @saved_annotation.annotation_text %></blockquote>
-        <%= t ".usage_info_html",
-          exercise_path: course_activity_path(@saved_annotation.course ,@saved_annotation.exercise),
-          exercise_name: @saved_annotation.exercise.name,
-          course_path: course_path(@saved_annotation.course),
-          course_name: @saved_annotation.course.name
-         %><br/>
+        <%= t ".usage_info" %>
+        <% if @saved_annotation.exercise.present?  %>
+          <%= t ".exercise_info_html",
+            exercise_path: activity_scoped_path(activity: @saved_annotation.exercise, course: @saved_annotation.course),
+            exercise_name: @saved_annotation.exercise.name
+           %>
+        <% end %>
+        <% if @saved_annotation.course.present?  %>
+          <%= t ".course_info_html",
+            course_path: course_path(@saved_annotation.course),
+            course_name: @saved_annotation.course.name
+           %>
+        <% end %><br/>
         <%= t ".count_info_html", count: @saved_annotation.annotations_count %>
       </div>
       <div class="card-supporting-text card-border">

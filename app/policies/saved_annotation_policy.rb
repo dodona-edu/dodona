@@ -38,6 +38,6 @@ class SavedAnnotationPolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[title annotation_text]
+    %i[title annotation_text course_id exercise_id]
   end
 end

@@ -51,7 +51,7 @@ gem 'will_paginate', '~>4.0.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.2.1'
+gem 'rouge', '4.3.0'
 
 # feedback table builder
 gem 'builder', '~>3.3.0'
@@ -73,7 +73,7 @@ gem 'omniauth_openid_connect', '~> 0.7.1'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.8.1'
+gem 'jwt', '~> 2.8.2'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.5'
+gem 'nokogiri', '~> 1.16.6'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -128,21 +128,21 @@ gem 'faker', '~> 3.4.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
-gem 'memory_profiler', '~> 1.0.1'
+gem 'memory_profiler', '~> 1.0.2'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.23.1'
+gem 'ddtrace', '~> 1.23.3'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.5'
+gem 'counter_culture', '~> 3.7'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.3.0'
+  gem 'mocha', '~> 2.4.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.21.1'
+  gem 'selenium-webdriver', '~> 4.22.0'
 end
 
 group :test do
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.25.0'
+  gem 'rubocop-rails', '~> 2.25.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

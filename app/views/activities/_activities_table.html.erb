@@ -39,7 +39,7 @@
             <% if user_signed_in? %>
               <%= render partial: 'activities/user_status_icon', locals: {activity: activity, series: local_assigns[:series], user: user} %>
             <% end %>
-            <% if activity.accessible?(current_user, @course) %>
+            <% if activity.accessible?(current_user, course: @course, series: local_assigns[:series]) %>
               <%= link_to activity.name, get_activity_path.call(activity) %>
             <% elsif activity.access_public? %>
               <%= link_to activity.name, activity_path(activity) %>

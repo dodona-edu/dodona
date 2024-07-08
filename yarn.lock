@@ -1358,10 +1358,10 @@
   resolved "https://registry.yarnpkg.com/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz#1d572bfbbe14b7704e0ba0f39b74815b84870d70"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
-"@dodona/papyros@2.3.5":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.3.5.tgz#3bc036c444a72bbebc67a1df6c0e39f2b8536747"
-  integrity sha512-EvLWMuGQQ7rGuwguXM1YQ19krQlHD02DSTX7sbYPNkebwIwmfqqbWHxbNFkUjmv8H1xQWFfxdaykDKAvvgFrBg==
+"@dodona/papyros@2.3.6":
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/@dodona/papyros/-/papyros-2.3.6.tgz#0a2170c1c21aac4f1ebdfa91af6badfe7bf5701a"
+  integrity sha512-NnDuhgcnbOdlcSWWaxh1pMOoZkEc+bvKGmNIOrtVMc7AG7At4sswwSP6EtrVHl9Fe73AtepbmiVwB5RjRimZ9Q==
   dependencies:
     "@codemirror/autocomplete" "^6.11.1"
     "@codemirror/commands" "^6.3.1"
@@ -1373,7 +1373,7 @@
     "@codemirror/state" "^6.3.2"
     "@codemirror/theme-one-dark" "^6.1.2"
     "@codemirror/view" "^6.28.0"
-    "@dodona/trace-component" "1.1.6"
+    "@dodona/trace-component" "1.2.0"
     "@lezer/common" "^1.1.0"
     codemirror-readonly-ranges "^0.1.0-alpha.2"
     comlink "^4.4.1"
@@ -1385,13 +1385,13 @@
     pyodide-worker-runner "1.3.2"
     sync-message "^0.0.12"
 
-"@dodona/trace-component@1.1.6":
-  version "1.1.6"
-  resolved "https://registry.yarnpkg.com/@dodona/trace-component/-/trace-component-1.1.6.tgz#dc9e526d61db1cf2f050aab31fdd9539beefb69f"
-  integrity sha512-1aVhfQvsPjVqJmo920rv0wn+JfkMf/RkI+reOhBSC8JJTWGajltfiqW0KNhsR59YKEIoZf49dbpsw2atO/Omxw==
+"@dodona/trace-component@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@dodona/trace-component/-/trace-component-1.2.0.tgz#4c567e90413b090e964cd41c9deac7a0976162df"
+  integrity sha512-N8lJQ6mvUE2QgotmXdYoh2/2WUKc7o1HHEeCZHpTw/6Xltw13mKxbZX1b7vo8/JnLHi+Lw336jL30j3tHiD40Q==
   dependencies:
     "@jsplumb/browser-ui" "^6.2.10"
-    lit "^3.0.0"
+    lit "^3.1.4"
 
 "@eslint-community/eslint-utils@^4.2.0":
   version "4.4.0"

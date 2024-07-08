@@ -5113,10 +5113,10 @@ iconv-lite@0.6:
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
 
-iframe-resizer@^4.4.2:
-  version "4.4.2"
-  resolved "https://registry.yarnpkg.com/iframe-resizer/-/iframe-resizer-4.4.2.tgz#4d319d42c5e16439f5c3ad530dc64ac51e99bcfd"
-  integrity sha512-2SupFCq9V9osWac4q+PodF0E9QdWY5A9VdCpKrrE7HlDrcIsaTp7D6k14mkGXWoWMS9jCavYusik25wTc0YB2Q==
+iframe-resizer@^4.4.4:
+  version "4.4.4"
+  resolved "https://registry.yarnpkg.com/iframe-resizer/-/iframe-resizer-4.4.4.tgz#39f7cbbed2237295673fee0fd947d1338f0c6525"
+  integrity sha512-9E4+pTpOPEeSz3P/o04uy5hpG+z/fy+BDzQnM3PT/G1zINRqgVJNdHgO8bJ8s8szLFztjKugnjtvZdvBJ5UXWQ==
 
 ignore@^5.2.0, ignore@^5.2.4:
   version "5.2.4"

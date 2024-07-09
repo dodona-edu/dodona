@@ -5,6 +5,7 @@ import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { StateMap } from "state/state_system/StateMap";
 import { i18n } from "i18n/i18n";
+import { FilterOptions } from "components/search/filter_element";
 
 export type SavedAnnotation = {
     annotations_count?: number;
@@ -33,6 +34,7 @@ function addParametersToUrl(url: string, params?: Map<string, string>, arrayPara
 class SavedAnnotationState extends State {
     @stateProperty private listByURL = new StateMap<string, SavedAnnotation[]>();
     @stateProperty private paginationByURL = new StateMap<string, Pagination>();
+    @stateProperty private filtersByURL = new StateMap<string, FilterOptions[]>();
     @stateProperty private byId = new StateMap<number, SavedAnnotation>();
 
     private get url(): string {
@@ -43,6 +45,7 @@ class SavedAnnotationState extends State {
         const response = await fetch(url);
         this.listByURL.set(url, await response.json());
         this.paginationByURL.set(url, JSON.parse(response.headers.get("X-Pagination")));
+        this.filtersByURL.set(url, JSON.parse(response.headers.get("X-Filters")));
         return this.listByURL.get(url);
     }
 
@@ -88,6 +91,16 @@ class SavedAnnotationState extends State {
             }
         }, 200);
         return this.paginationByURL.get(url);
+    }
+
+    getFilters(params?: Map<string, string>, arrayParams?: Map<string, string[]>): FilterOptions[] {
+        const url = addParametersToUrl(`${this.url}.json`, params, arrayParams);
+        delayerByURL.get(url)(() => {
+            if (!this.paginationByURL.has(url)) {
+                this.fetchList(url);
+            }
+        }, 200);
+        return this.filtersByURL.get(url);
     }
 
     get(id: number): SavedAnnotation {

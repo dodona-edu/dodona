@@ -11,7 +11,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text" id="refresh-element">
-        <%= render partial: 'layouts/searchbar', locals: { courses: @courses, exercises: @exercises, autoSearch: false } %>
+        <%= render partial: 'layouts/searchbar', locals: { autoSearch: false } %>
         <div id="questions-table-wrapper">
           <d-saved-annotation-list></d-saved-annotation-list>
         </div>

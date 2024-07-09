@@ -6,7 +6,7 @@
         <h2 class="card-title-text"><%= t('.title', user: @feedback.user.full_name, exercise: @feedback.exercise.name) %></h2>
       </div>
       <div class="card-supporting-text card-border">
-        <%= render partial: 'layouts/searchbar', locals: { statuses: Submission.statuses.keys } %>
+        <%= render partial: 'layouts/searchbar' %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: { submissions: @submissions } %>
         </div>

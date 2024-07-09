@@ -3,10 +3,18 @@
 
   .form-check-label {
     width: 100%;
+    min-width: max-content;
   }
 
   .dropdown-menu {
     max-height: 450px;
     overflow-y: auto;
+  }
+
+  &.disabled {
+    .dropdown-toggle {
+      background-color: #f8f9fa;
+      color: #6c757d;
+    }
   }
 }

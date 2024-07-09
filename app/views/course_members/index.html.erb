@@ -86,8 +86,6 @@
                                url: course_members_path(@course, format: :csv),
                            }
                        ],
-                       course_labels: @course_labels,
-                       institutions: Institution.of_course_by_members(@course)
                    } %>
         <div id="users-table-wrapper">
           <%= render partial: 'members_table',

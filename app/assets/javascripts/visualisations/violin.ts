@@ -15,13 +15,13 @@ export class ViolinGraph extends SeriesExerciseGraph {
 
     // tooltips things
     private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
-    private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, any>;
-    private tooltipLabel: d3.Selection<SVGTextElement, unknown, HTMLElement, any>;
+    private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, unknown>;
+    private tooltipLabel: d3.Selection<SVGTextElement, unknown, HTMLElement, unknown>;
     private tooltipLabels: d3.Selection<
         Element | SVGTextElement | d3.EnterElement | Document | Window | null,
         unknown,
         SVGGElement,
-        any
+        unknown
     >;
 
     // data

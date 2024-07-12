@@ -105,7 +105,7 @@ export abstract class SeriesGraph {
     }
 
 
-    protected draw(animation=true): void {
+    protected draw(): void {
         console.log("Drawing graph");
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;

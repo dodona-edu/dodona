@@ -1,5 +1,5 @@
 import "components/search/search_actions";
-import { SearchAction, SearchActions } from "components/search/search_actions";
+import { SearchAction } from "components/search/search_actions";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
@@ -8,7 +8,6 @@ import * as util from "utilities";
 import { searchQueryState } from "state/SearchQuery";
 
 describe("SearchActions", () => {
-    let searchActions: SearchActions;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
         searchQueryState.arrayQueryParams.clear();
@@ -19,7 +18,7 @@ describe("SearchActions", () => {
             { icon: "play", text: "bars", filterValue: "bar", url: "https://test.dodona.be" },
         ];
         await fixture(`<div class="toasts"></div>`);
-        searchActions = await fixture(html`
+        await fixture(html`
             <d-search-actions .actions=${actions}
                               filter-param="foo"
             ></d-search-actions>`);

@@ -1,6 +1,6 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { initTooltips, ready } from "../utilities";
+import { initTooltips } from "../utilities";
 import { i18n } from "i18n/i18n";
 import { DodonaElement } from "components/meta/dodona_element";
 
@@ -38,7 +38,7 @@ export class ProgressBar extends DodonaElement {
         return i18n.t(this.titleKey + i18n.t(this.titleKey + ".key", index), { index: index, smart_count: value });
     }
 
-    updated(changedProperties: Map<string, any>): void {
+    updated(changedProperties: PropertyValues): void {
         initTooltips(this);
         super.updated(changedProperties);
     }

@@ -1,7 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, TemplateResult } from "lit";
 import { Option } from "components/datalist_input";
-import { ready } from "utilities";
 import "components/datalist_input";
 import { DodonaElement } from "components/meta/dodona_element";
 import { i18n } from "i18n/i18n";

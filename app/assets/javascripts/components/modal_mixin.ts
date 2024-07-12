@@ -1,4 +1,4 @@
-import { html, TemplateResult, render } from "lit";
+import { html, TemplateResult, render, PropertyValues } from "lit";
 import { ref } from "lit/directives/ref.js";
 import { Modal as Modal } from "bootstrap";
 import { DodonaElement } from "components/meta/dodona_element";
@@ -20,6 +20,7 @@ export declare abstract class ModalMixinInterface {
     hideModal(): void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor<T> = abstract new (...args: any[]) => T;
 
 export function modalMixin<T extends Constructor<DodonaElement>>(superClass: T): Constructor<ModalMixinInterface> & T {
@@ -60,7 +61,7 @@ export function modalMixin<T extends Constructor<DodonaElement>>(superClass: T):
         // This can cause unexpected behaviour if update is triggered on a modal component which is different from the currently active modalcomponent
         // (As there is only one real html modal, the wrong `filledModalTemplate` will be displayed)
         // This could be solved by tracking which modalcomponent is currently active
-        update(changedProperties: Map<string, any>): void {
+        update(changedProperties: PropertyValues): void {
             super.update(changedProperties);
             this.renderModal();
         }

@@ -22,7 +22,7 @@ export class StateMap<K, V> extends State implements Map<K, V> {
         return this.map.delete(key);
     }
 
-    public forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
+    public forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: never): void {
         this.recordRead();
         this.map.forEach(callbackfn, thisArg);
     }

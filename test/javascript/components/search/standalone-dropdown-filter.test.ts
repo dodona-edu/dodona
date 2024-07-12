@@ -1,5 +1,4 @@
 import "components/search/standalone-dropdown-filter";
-import { StandaloneDropdownFilter } from "components/search/standalone-dropdown-filter";
 import { fixture } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { getByText, queryByText, screen } from "@testing-library/dom";
@@ -8,12 +7,11 @@ import { searchQueryState } from "state/SearchQuery";
 
 
 describe("DropdownFilter", () => {
-    let standaloneDropdownFilter: StandaloneDropdownFilter;
     let dropdownMenu: HTMLElement;
     let dropdownButton: HTMLElement;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
-        standaloneDropdownFilter = await fixture(html`
+        await fixture(html`
             <d-standalone-dropdown-filter param="foo"
                                        labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                         default="1">

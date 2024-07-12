@@ -22,12 +22,12 @@ export class CTimeseriesGraph extends SeriesGraph {
     // tooltips things
     private tooltip: d3.Selection<HTMLDivElement, unknown, HTMLElement, unknown>;
     private tooltipIndex = -1; // used to prevent unnecessary tooltip updates
-    private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, any>;
+    private tooltipLine: d3.Selection<SVGLineElement, unknown, HTMLElement, unknown>;
     private tooltipDots: d3.Selection<
         Element | SVGCircleElement | d3.EnterElement | Document | Window | null,
         unknown,
         SVGGElement,
-        any
+        unknown
         >;
 
     // data

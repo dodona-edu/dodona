@@ -69,7 +69,7 @@ gem 'ruby-saml', '~> 1.16.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.2'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.7.1'
+gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.0.2'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.23.3'
+gem 'datadog', '~> 2.1.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'

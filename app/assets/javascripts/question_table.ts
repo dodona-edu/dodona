@@ -110,7 +110,7 @@ export class QuestionTable {
             body: JSON.stringify({
                 from: from,
                 question: {
-                    // eslint-disable-next-line camelcase
+
                     question_state: to
                 }
             })

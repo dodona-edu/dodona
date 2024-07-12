@@ -1,5 +1,6 @@
-import { LitElement } from "lit";
+import { LitElement, PropertyValues } from "lit";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor = abstract new (...args: any[]) => LitElement;
 
 export function watchMixin<T extends Constructor>(superClass: T): T {
@@ -9,7 +10,7 @@ export function watchMixin<T extends Constructor>(superClass: T): T {
     abstract class WatchMixinClass extends superClass {
         abstract get watch(): {[key: string]: (old: unknown) => void};
 
-        update(changedProperties: Map<string, unknown>): void {
+        update(changedProperties: PropertyValues): void {
             for (const [key, f] of Object.entries(this.watch)) {
                 if (changedProperties.has(key)) {
                     f.bind(this);

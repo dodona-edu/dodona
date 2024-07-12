@@ -253,7 +253,7 @@ export default class FeedbackActions {
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             this.update({
-                // eslint-disable-next-line camelcase
+
                 scores_attributes: values
             });
         });
@@ -266,7 +266,7 @@ export default class FeedbackActions {
             });
             const values = this.scoreForms.map(f => f.getDataForNested());
             this.update({
-                // eslint-disable-next-line camelcase
+
                 scores_attributes: values
             });
         });

@@ -17,7 +17,7 @@ function showLightbox(content): void {
         // MathJax to search for new math (but only in the captions).
         try {
             window.MathJax.typeset( Array.from(document.querySelectorAll(".gslide-description")));
-        } catch (e) {
+        } catch {
             // MathJax is not loaded
             console.warn("MathJax is not loaded");
         }
@@ -410,7 +410,7 @@ async function initExerciseShow(options: {
                 } else if (errors.exercise && errors.exercise[0] === "not permitted") {
                     message = i18n.t("js.submission-not-allowed");
                 }
-            } catch (e) {
+            } catch {
                 message = i18n.t("js.submission-failed");
             }
         }

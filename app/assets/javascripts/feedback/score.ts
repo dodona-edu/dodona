@@ -130,7 +130,7 @@ export default class ScoreForm {
         } else {
             return {
                 score: this.input.value,
-                // eslint-disable-next-line camelcase
+
                 score_item_id: this.scoreItemId
             };
         }
@@ -148,15 +148,15 @@ export default class ScoreForm {
         if (this.existing) {
             data = {
                 score: this.input.value,
-                // eslint-disable-next-line camelcase
+
                 expected_score: this.expectedScore.value
             };
         } else {
             data = {
                 score: this.input.value,
-                // eslint-disable-next-line camelcase
+
                 feedback_id: this.parent.options.feedbackId,
-                // eslint-disable-next-line camelcase
+
                 score_item_id: this.scoreItemId
             };
         }
@@ -173,7 +173,7 @@ export default class ScoreForm {
 
     private delete(): void {
         this.doRequest("delete", {
-            // eslint-disable-next-line camelcase
+
             expected_score: this.expectedScore.value
         });
     }

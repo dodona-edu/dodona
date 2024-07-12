@@ -11,9 +11,9 @@ export abstract class SeriesExerciseGraph extends SeriesGraph {
         "time limit exceeded", "memory limit exceeded", "output limit exceeded",
     ];
 
-    protected override draw(animation=true): void {
+    protected override draw(): void {
         this.height = 60 * this.exOrder.length + this.margin.top + this.margin.bottom;
-        super.draw(animation);
+        super.draw();
 
         // y-scale for exercises
         this.y = d3.scaleBand()

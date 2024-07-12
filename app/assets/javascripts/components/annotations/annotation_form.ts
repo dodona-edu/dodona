@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { watchMixin } from "components/meta/watch_mixin";
 import { createRef, Ref, ref } from "lit/directives/ref.js";
 import "components/saved_annotations/saved_annotation_input";
@@ -210,7 +210,7 @@ export class AnnotationForm extends watchMixin(DodonaElement) {
         this.inputRef.value.focus();
     }
 
-    updated(changedProperties: Map<string, any>): void {
+    updated(changedProperties: PropertyValues): void {
         // Focus the newly shown title input if the user wants to save the annotation.
         if (changedProperties.has("saveAnnotation") && this.saveAnnotation) {
             this.titleRef.value.focus();

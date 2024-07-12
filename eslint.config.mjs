@@ -41,7 +41,7 @@ export default ts_eslint.config(
                 "functions": "never"
             }],
             "indent": "off",
-            "max-len": ["warn", { "code": 100 }],
+            "max-len": "off",
             "no-invalid-this": "warn",
             "no-param-reassign": ["error", { "props": false }],
             "object-curly-spacing": ["error", "always"],

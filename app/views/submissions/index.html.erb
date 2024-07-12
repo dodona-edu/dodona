@@ -1,5 +1,8 @@
 <%= render 'activities/navbar_links' if @activity %>
 <%= render 'courses/navbar_links' if @course && !@activity %>
+<%= content_for :javascripts do %>
+  <%= javascript_include_tag 'dolos' %>
+<% end %>
 <div class="row">
   <div class="col-12">
     <div class="card">
@@ -33,16 +36,28 @@
           </div>
         <% end %>
       </div>
+      <d-loading-bar id="dolos-loader"></d-loading-bar>
       <div class="card-supporting-text" id="refresh_element">
-        <% actions = [] %>
+        <%
+          actions = []
+          options = []
+        %>
         <% if current_user&.course_admin?(@course) %>
           <%
              actions << {icon: 'replay', text: t(".reevaluate_submissions"), confirm: t(".confirm_reevaluate_submissions"), action: mass_rejudge_submissions_path(user_id: @user&.id, activity_id: @activity&.id, course_id: @course&.id, series_id: @series&.id, judge_id: @judge&.id)} if policy(Submission).mass_rejudge?
-             actions << {icon: 'done', text: t('.most_recent'), search: {most_recent_per_user: true}} if @activity
-             actions << {icon: 'file-eye', text: t('.watch_submissions'), search: {refresh: true}}
+             options << {label: t('.most_recent'), param: 'most_recent_per_user'} if @activity
+             options << {label: t('.watch_submissions'), param: 'refresh'}
           %>
+          <% if @series.present? %>
+            <% actions << {icon: 'graph-outline', text: t('.detect_plagiarism'), id: "dolos-btn" } if @series && @activity %>
+            <script>
+              dodona.ready.then(() => {
+                dodona.initDolosBtn("dolos-btn", "<%= series_exports_path(@series, token: (@series.access_token if @series.hidden?), selected_ids: [@activity.id]) %>", "<%= @activity.programming_language&.renderer_name %>");
+              });
+            </script>
+          <% end %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: {actions: actions, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
+        <%= render partial: 'layouts/searchbar', locals: {actions: actions, options: options, course_labels: @course_labels, statuses: Submission.statuses.keys, refresh_element: "#refresh_element"} %>
         <div id="submissions-table-wrapper">
           <%= render partial: 'submissions_table', locals: {submissions: @submissions, exercise: @activity, course: @course, user: @user} %>
         </div>

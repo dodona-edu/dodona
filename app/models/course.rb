@@ -75,14 +75,14 @@ class Course < ApplicationRecord
 
   has_many :accessible_activities,
            lambda {
-             where(series: { visibility: %i[open hidden] }).distinct
+             merge(Series.accessible).distinct
            },
            through: :series,
            source: :activities
 
   has_many :visible_activities,
            lambda {
-             where(series: { visibility: %i[open] }).distinct
+             merge(Series.visible).distinct
            },
            through: :series,
            source: :activities
@@ -272,6 +272,10 @@ class Course < ApplicationRecord
 
   def incomplete_series(user)
     series.visible.reject { |s| s.completed?(user: user) }
+  end
+
+  def incomplete_unreleased_feedbacks
+    feedbacks.joins(:evaluation).where(evaluation: { released: false }).incomplete
   end
 
   def formatted_year

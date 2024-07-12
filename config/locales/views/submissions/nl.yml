@@ -24,6 +24,7 @@ nl:
       watch_submissions: Oplossingen automatisch herladen
       most_recent: Meest recente oplossing per gebruiker
       reevaluate_submissions: Oplossingen hertesten
+      detect_plagiarism: Plagiaat detecteren
       confirm_reevaluate_submissions: Ben je zeker dat je deze oplossingen wil hertesten?
       reevaluating_submissions:
         one: 1 oplossing wordt geherevalueerd

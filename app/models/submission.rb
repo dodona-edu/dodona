@@ -54,7 +54,7 @@ class Submission < ApplicationRecord
   default_scope { order(id: :desc) }
   scope :of_user, ->(user) { where user_id: user.id }
   scope :of_exercise, ->(exercise) { where exercise_id: exercise.id }
-  scope :before_deadline, ->(deadline) { where('submissions.created_at < ?', deadline) }
+  scope :before_deadline, ->(deadline) { where(submissions: { created_at: ...deadline }) }
   scope :in_time_range, ->(start_date, end_date) { where(created_at: start_date.to_datetime..end_date.to_datetime) }
   scope :in_course, ->(course) { where course_id: course&.id }
   scope :in_series, ->(series) { where(course_id: series.course.id).where(exercise: series.exercises) }
@@ -113,7 +113,7 @@ class Submission < ApplicationRecord
     @evaluate = params.delete(:evaluate)
     code = params.delete(:code)
     result = params.delete(:result)
-    super(params)
+    super
     # We need to do this after the rest of the fields are initialized, because we depend on the course_id, user_id, ...
     self.code = code.to_s unless code.nil?
     self.result = result.to_s unless result.nil?

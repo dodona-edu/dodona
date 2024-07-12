@@ -113,17 +113,11 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # Ensure that an appropriate provider is used.
     return redirect_to_preferred_provider! if provider.redirect?
 
-    identity = nil
+    # ensure that an auth uid is present
+    return redirect_with_flash!(I18n.t('devise.failure.no_auth_id')) if auth_uid.blank?
+
     # First try to find an existing identity
-    if auth_uid.present?
-      # Basic case
-      identity = find_identity_by_uid
-    else
-      # For providers without auth uid
-      user = find_user_in_institution
-      identity = find_identity_by_user(user) if user.present?
-      Event.create(event_type: :no_auth_id_sign_in, user: user, message: "User #{user.id} logged in without auth_id using identity #{identity.id}") if identity.present? && user.present?
-    end
+    identity = find_identity_by_uid
     # At this point identity should have a value if it exists in our database
 
     if identity.blank?

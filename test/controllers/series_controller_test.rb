@@ -242,6 +242,8 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
   test 'student should only see visible series in course' do
     @hidden_series = create :series, visibility: :hidden, course: @course
     @closed_series = create :series, visibility: :closed, course: @course
+    @timed_series_now = create :series, visibility: :timed, course: @course, visibility_start: 1.day.ago
+    @timed_series_future = create :series, visibility: :timed, course: @course, visibility_start: 1.day.from_now
 
     sign_in @student
     get course_series_index_url(@course, format: :json)
@@ -250,14 +252,16 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     result_series = response.parsed_body
 
-    assert_equal 1, result_series.count, 'expected only one (visible) series'
+    assert_equal 2, result_series.count, 'expected exactly 2 (visible, timed_now) series'
 
-    assert_equal @series.id, result_series.first['id']
+    assert_equal [@series.id, @timed_series_now.id].to_set, result_series.pluck(:id).to_set
   end
 
   test 'course admin should see all series in course' do
     @hidden_series = create :series, visibility: :hidden, course: @course
     @closed_series = create :series, visibility: :closed, course: @course
+    @timed_series_now = create :series, visibility: :timed, course: @course, visibility_start: 1.day.ago
+    @timed_series_future = create :series, visibility: :timed, course: @course, visibility_start: 1.day.from_now
 
     sign_in @course_admin
     get course_series_index_url(@course, format: :json)
@@ -266,11 +270,14 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     result_series = response.parsed_body
 
-    assert_equal 3, result_series.count, 'expected all series (open, visible and closed)'
+    assert_equal 5, result_series.count, 'expected all series (open, hidden, closed, timed_now, timed_future)'
   end
 
   test 'student should see visible series' do
     sign_in @student
+
+    assert_show_and_overview true
+    @series.update(visibility: :timed, visibility_start: 1.day.ago)
 
     assert_show_and_overview true
   end
@@ -281,6 +288,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     assert_show_and_overview false
     @series.update(visibility: :closed)
+
+    assert_show_and_overview false
+    @series.update(visibility: :timed, visibility_start: 1.day.from_now)
 
     assert_show_and_overview false
   end
@@ -304,6 +314,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     @series.update(visibility: :closed)
 
     assert_show_and_overview false, token: @series.access_token
+    @series.update(visibility: :timed, visibility_start: 1.day.from_now)
+
+    assert_show_and_overview false, token: @series.access_token
   end
 
   test 'not logged in should not see hidden or closed series' do
@@ -311,6 +324,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     assert_show_and_overview false
     @series.update(visibility: :closed)
+
+    assert_show_and_overview false
+    @series.update(visibility: :timed, visibility_start: 1.day.from_now)
 
     assert_show_and_overview false
   end
@@ -351,6 +367,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
     @series.update(visibility: :closed)
 
     assert_show_and_overview true
+    @series.update(visibility: :timed, visibility_start: 1.day.from_now)
+
+    assert_show_and_overview true
   end
 
   test 'zeus should see hidden and closed series without token' do
@@ -359,6 +378,9 @@ class SeriesVisibilityTest < ActionDispatch::IntegrationTest
 
     assert_show_and_overview true
     @series.update(visibility: :closed)
+
+    assert_show_and_overview true
+    @series.update(visibility: :timed, visibility_start: 1.day.from_now)
 
     assert_show_and_overview true
   end

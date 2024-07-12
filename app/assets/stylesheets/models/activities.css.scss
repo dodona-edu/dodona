@@ -1,9 +1,5 @@
 // activity table
 .activity-table {
-  th.status-icon {
-    width: 30px;
-  }
-
   td.popularity-icon {
     color: var(--d-on-surface-muted);
   }
@@ -16,12 +12,22 @@
   td.type-icon {
     width: 18px;
     color: var(--d-on-surface-muted);
-    padding-left: 0;
+    padding-left: 4px;
     padding-right: 0;
   }
 
-  td.status-icon {
-    padding-left: 4px;
+  td.status-icon,
+  th.status-icon,
+  th.repository-status-icon,
+  td.repository-status-icon {
+    width: 0;
+    padding-left: 0;
+    padding-right: 0;
+
+    .mdi {
+      margin-left: 4px;
+      margin-right: 4px;
+    }
   }
 
   .status {
@@ -192,7 +198,7 @@ center img {
 
   code {
     overflow: auto;
-    width: 100%;
+    width: calc(100%);
     display: block;
   }
 

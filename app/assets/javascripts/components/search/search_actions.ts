@@ -1,78 +1,19 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { Toast } from "toast";
-import { fetch, ready } from "utilities";
+import { fetch } from "utilities";
 import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
-import { i18n } from "i18n/i18n";
-
-export type SearchOption = {search: Record<string, string>, type?: string, text: string};
 export type SearchAction = {
     url?: string,
-    type?: string,
+    filterValue?: string,
     text: string,
     action?: string,
     js?: string,
     confirm?: string,
-    icon: string
+    icon: string,
+    id?: string
 };
-
-const isSearchOption = (opt): opt is SearchOption => (opt as SearchOption).search !== undefined;
-const isSearchAction = (act): act is SearchAction => (act as SearchAction).js !== undefined || (act as SearchAction).action !== undefined || (act as SearchAction).url !== undefined;
-
-/**
- * This component represents a SearchOption using a checkbox to be used in a dropdown list
- * The checkbox tracks whether the searchoption is curently active
- *
- * @element d-search-option
- *
- * @prop {SearchOption} searchOption - the search option which can be activated or disabled
- * @prop {number} key - unique identifier used to differentiate from other search options
- */
-@customElement("d-search-option")
-export class SearchOptionElement extends DodonaElement {
-    @property({ type: Object })
-    searchOption: SearchOption;
-    @property( { type: Number })
-    key: number;
-
-    get active(): boolean {
-        return Object.entries(this.searchOption.search).every(([key, value]) => {
-            return searchQueryState.queryParams.get(key) == value.toString();
-        });
-    }
-
-    performSearch(): void {
-        if (!this.active) {
-            Object.entries(this.searchOption.search).forEach(([key, value]) => {
-                searchQueryState.queryParams.set(key, value.toString());
-            });
-        } else {
-            Object.keys(this.searchOption.search).forEach(key => {
-                searchQueryState.queryParams.set(key, undefined);
-            });
-        }
-    }
-
-    render(): TemplateResult {
-        return html`
-                    <li><span class="dropdown-item-text ">
-                        <div class="form-check">
-                            <input
-                                class="form-check-input"
-                                type="checkbox"
-                                .checked=${this.active}
-                                @click="${() => this.performSearch()}"
-                                id="check-${this.searchOption.type}-${this.key}"
-                            >
-                            <label class="form-check-label" for="check-${this.searchOption.type}-${this.key}">
-                                ${this.searchOption.text}
-                            </label>
-                        </div>
-                    </span></li>
-        `;
-    }
-}
 
 /**
  * This component represents a dropdown containing a combination of SearchOptions and SearchActions
@@ -84,15 +25,9 @@ export class SearchOptionElement extends DodonaElement {
 @customElement("d-search-actions")
 export class SearchActions extends DodonaElement {
     @property({ type: Array })
-    actions: (SearchOption|SearchAction)[] = [];
-
-    getSearchOptions(): Array<SearchOption> {
-        return this.actions.filter(isSearchOption);
-    }
-
-    getSearchActions(): Array<SearchAction> {
-        return this.actions.filter(isSearchAction);
-    }
+    actions: SearchAction[] = [];
+    @property({ type: String, attribute: "filter-param" })
+    filterParam = undefined;
 
     async performAction(action: SearchAction): Promise<boolean> {
         if (!action.action && !action.js && !action.url) {
@@ -130,39 +65,24 @@ export class SearchActions extends DodonaElement {
         return false;
     }
 
+    get filteredActions(): SearchAction[] {
+        if (!this.filterParam) {
+            return this.actions;
+        }
 
-    render(): TemplateResult {
-        return html`
-            <div class="dropdown actions" id="kebab-menu">
-                <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
-                    <i class="mdi mdi-dots-vertical"></i>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end">
-                    ${this.getSearchOptions().length > 0 ? html`
-                        <li><h6 class='dropdown-header'>${i18n.t("js.options")}</h6></li>
-                    ` : html``}
-                    ${this.getSearchOptions().map((opt, id) => html`
-                        <d-search-option .searchOption=${opt}
-                                         .key=${id}>
-                        </d-search-option>
-                    `)}
+        const filterValue = searchQueryState.queryParams.get(this.filterParam);
+        return this.actions.filter(action => action.filterValue === undefined || action.filterValue === filterValue);
+    }
 
-                    ${this.getSearchActions().length > 0 ? html`
-                        <li><h6 class='dropdown-header'>${i18n.t("js.actions")}</h6></li>
-                    ` : html``}
-                    ${this.getSearchActions().map(action => html`
-                        <li>
-                            <a class="action dropdown-item"
-                               data-type="${action.type}"
-                               @click=${() => this.performAction(action)}
-                            >
-                                <i class='mdi mdi-${action.icon} mdi-18'></i>
-                                ${action.text}
-                            </a>
-                        </li>
-                    `)}
-                </ul>
-            </div>
-        `;
+    render(): TemplateResult[] {
+        return this.filteredActions.map(action => html`
+            <a class="btn btn-outline with-icon ml-2"
+               @click=${() => this.performAction(action)}
+                id=${action.id}
+            >
+                <i class='mdi mdi-${action.icon} mdi-18'></i>
+                ${action.text}
+            </a>
+        `);
     }
 }

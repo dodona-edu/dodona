@@ -2,7 +2,7 @@
 # Order is important; the last matching pattern takes the most
 # precedence.
 
-*               @dodona-edu/review
+*               @bmesuere
 package.json    @jorg-vr
 yarn.lock       @jorg-vr
 Gemfile         @jorg-vr

@@ -30,7 +30,9 @@ export class SearchToken extends FilterCollectionElement {
             ${ this.getSelectedLabels().map( label => html`
                 <div class="token accent-${this.color(label)}">
                     <span class="token-label">${label.name}</span>
-                    <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>×</a>
+                    <a href="#" class="close" tabindex="-1"  @click=${e => this.processClick(e, label)}>
+                        <i class="mdi mdi-close mdi-18"></i>
+                    </a>
                 </div>
             `)}
         `;

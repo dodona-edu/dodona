@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_05_141148) do
+ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -468,6 +468,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_05_141148) do
     t.boolean "activities_visible", default: true, null: false
     t.integer "activities_count"
     t.boolean "activity_numbers_enabled", default: false, null: false
+    t.datetime "visibility_start"
     t.index ["access_token"], name: "index_series_on_access_token"
     t.index ["course_id"], name: "index_series_on_course_id"
     t.index ["deadline"], name: "index_series_on_deadline"

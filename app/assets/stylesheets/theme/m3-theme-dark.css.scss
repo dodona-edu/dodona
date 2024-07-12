@@ -206,6 +206,10 @@
     display: unset;
   }
 
+  .dark-invert {
+    filter: invert(100%);
+  }
+
   :root {
     color-scheme: dark;
   }

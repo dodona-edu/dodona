@@ -34,7 +34,7 @@
         <% end %>
       </div>
       <div class="card-supporting-text" id="refresh_element">
-        <%= render partial: 'layouts/searchbar', locals: {actions: [], course_labels: @course_labels,  refresh_element: "#refresh_element"} %>
+        <%= render partial: 'layouts/searchbar', locals: {course_labels: @course_labels,  refresh_element: "#refresh_element"} %>
         <div id="read-states-table-wrapper">
           <%= render partial: 'read_states_table', locals: { read_states: @read_states, activity: @activity, course: @course, user: @user} %>
         </div>

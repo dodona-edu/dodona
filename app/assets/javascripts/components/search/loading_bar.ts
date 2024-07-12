@@ -1,7 +1,8 @@
-import { html, TemplateResult } from "lit";
+import { html, PropertyValues, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { search } from "search";
 import { DodonaElement } from "components/meta/dodona_element";
+import { watchMixin } from "components/meta/watch_mixin";
 
 /**
  * This component represents a loading bar.
@@ -10,7 +11,7 @@ import { DodonaElement } from "components/meta/dodona_element";
  * @element d-loading-bar
  */
 @customElement("d-loading-bar")
-export class LoadingBar extends DodonaElement {
+export class LoadingBar extends watchMixin(DodonaElement) {
     @property({ type: Boolean, attribute: "search-based" })
     searchBased = false;
 
@@ -23,6 +24,14 @@ export class LoadingBar extends DodonaElement {
             search.loadingBars.push(this);
         }
     }
+
+    watch = {
+        searchBased: () => {
+            if (this.searchBased) {
+                search.loadingBars.push(this);
+            }
+        }
+    };
 
     show(): void {
         this.loading = true;

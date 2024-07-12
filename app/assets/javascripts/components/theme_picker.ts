@@ -27,7 +27,7 @@ export class ThemePicker extends DodonaElement {
     protected render(): TemplateResult {
         return html`
             <li >
-                <a href="#" class="dropdown-item">
+                <a class="dropdown-item">
                     <i class="mdi mdi-theme-light-dark"></i>
                     ${i18n.t(`js.theme.theme`)}
                     <i class="mdi mdi-menu-right float-end"></i>

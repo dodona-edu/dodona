@@ -70,7 +70,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "@webcomponents/scoped-custom-element-registry": "^0.0.9",
     "babel-plugin-istanbul": "^7.0.0",
-    "eslint": "^9.7.0",
+    "eslint": "^9.8.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-jest": "^28.6.0",
     "eslint-plugin-lit": "^1.14.0",

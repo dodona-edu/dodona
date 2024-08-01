@@ -33,6 +33,7 @@ class Submission < ApplicationRecord
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
   belongs_to :course, optional: true
+  belongs_to :series, optional: true
   has_one :judge, through: :exercise
   has_one :notification, as: :notifiable, dependent: :destroy
   has_many :annotations, dependent: :destroy
@@ -144,17 +145,6 @@ class Submission < ApplicationRecord
   def result=(result)
     FileUtils.mkdir_p fs_path
     File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
-  end
-
-  def series
-    return nil if course.nil?
-
-    series = course.series
-    # we want to avoid accidentally linking a hidden series to a student
-    series = series.visible
-    # There could actually be multiple series with the same exercise and the same course
-    # But for now we just return the first one, as there is only one in most cases
-    series.joins(:series_memberships).find_by(series_memberships: { activity: exercise })
   end
 
   def clean_messages(messages, levels)

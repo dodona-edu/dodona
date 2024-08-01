@@ -31,12 +31,12 @@ function initDragAndDrop(args: DragAndDropArguments): void {
     const tableBody = document.querySelectorAll(args.table_selector)[0];
 
     dragula([tableBody], {
-        moves: (el, source, handle, sibling) => {
+        moves: (el, source, handle) => {
             return handle.classList.contains("drag-handle") || getParentByClassName(handle, "drag-handle") !== null;
         },
         mirrorContainer: tableBody,
     })
-        .on("cloned", (clone, original, type) => {
+        .on("cloned", (clone, original) => {
             copyWidth(clone, original, "td");
         })
         .on("drop", () => {

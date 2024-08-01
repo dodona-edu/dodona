@@ -116,7 +116,7 @@ export class UserAnnotationComponent extends DodonaElement {
                 });
             }
             this.editing = false;
-        } catch (e) {
+        } catch {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
         }
@@ -128,7 +128,7 @@ export class UserAnnotationComponent extends DodonaElement {
         try {
             // Ask MathJax to search for math in the annotations
             window.MathJax.typeset([this]);
-        } catch (e) {
+        } catch {
             // MathJax is not loaded
             console.warn("MathJax is not loaded");
         }

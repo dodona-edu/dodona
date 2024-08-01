@@ -1,5 +1,5 @@
 import { initPapyros, OFFCANVAS_ID } from "coding_scratchpad";
-import { InputMode, ProgrammingLanguage, RunState } from "@dodona/papyros";
+import { InputMode, ProgrammingLanguage } from "@dodona/papyros";
 import { BatchInputHandler } from "@dodona/papyros/dist/input/BatchInputHandler";
 import { Offcanvas } from "bootstrap";
 import { RunMode } from "@dodona/papyros/dist/Backend";

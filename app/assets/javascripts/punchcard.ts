@@ -4,7 +4,7 @@ import { i18n } from "i18n/i18n";
 const containerSelector = "#punchcard-container";
 const margin = { top: 10, right: 10, bottom: 20, left: 70 };
 
-type chartType = d3.Selection<SVGGElement, unknown, HTMLElement, any>;
+type chartType = d3.Selection<SVGGElement, unknown, HTMLElement, unknown>;
 
 function initPunchcard(url: string): void {
     // If this is defined outside of a function, the locale always defaults to "en".

@@ -1,6 +1,7 @@
 import { LitElement } from "lit";
 import { ready } from "utilities";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Constructor = new (...args: any[]) => LitElement;
 
 export function i18nMixin<T extends Constructor>(superClass: T): T {
@@ -9,6 +10,7 @@ export function i18nMixin<T extends Constructor>(superClass: T): T {
      * It also makes sure that the component is rerendered when the language becomes available
      */
     class I18nMixinClass extends superClass {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         constructor(...args: any[]) {
             super(args);
             // Reload when I18n is available

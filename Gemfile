@@ -60,7 +60,7 @@ gem 'builder', '~>3.3.0'
 gem 'diff-lcs', '~>1.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.16'
+gem 'autoprefixer-rails', '~>10.4.19'
 
 # saml authentication
 gem 'devise', '~>4.9.4'

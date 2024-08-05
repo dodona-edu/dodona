@@ -43,7 +43,7 @@
     "bootstrap": "5.3.3",
     "codemirror-lang-prolog": "^0.1.0",
     "codemirror-lang-r": "^0.1.0-2",
-    "core-js": "^3.37.1",
+    "core-js": "^3.38.0",
     "d3": "^7.9.0",
     "dayjs": "^1.11.12",
     "dragula": "^3.7.3",

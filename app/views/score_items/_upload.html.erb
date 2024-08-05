@@ -1,0 +1,25 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title"><%= t "score_items.upload.title" %></h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<%= t("score_items.form.close") %>"></button>
+  </div>
+
+  <%= form_for(:upload, url: upload_evaluation_evaluation_exercise_score_items_path(evaluation_exercise.evaluation_id, evaluation_exercise.id), html: { class: 'form-horizontal' }, namespace: evaluation_exercise.id, remote: true) do |f| %>
+    <div class="modal-body">
+      <div class="field form-group row">
+        <div class="col-12">
+          <%= f.file_field :file,
+                           class: "form-control",
+                           accept: '.csv',
+                           required: true
+          %>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <%= f.submit t("score_items.upload.upload"),
+                   class: "btn btn-filled",
+                   data: { confirm: t('score_items.upload.confirm') } %>
+    </div>
+  <% end %>
+</div>

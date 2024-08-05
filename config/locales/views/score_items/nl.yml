@@ -55,3 +55,9 @@ nl:
         Toon of verberg de berekende totaalscore in Dodona voor deze oefening als de feedback vrijgegeven wordt.
         Individuele scoreonderdelen zijn nog wel zichtbaar als ze als zodanig gemarkeerd zijn.
       visibility: Toon of verberg dit scoreonderdeel.
+      upload: Scoreonderdelen uploaden
+      download: Scoreonderdelen downloaden
+    upload:
+      title: CSV met scoreonderdelen uploaden
+      upload: Uploaden
+      confirm: Ben je zeker dat je deze scoreonderdelen wil uploaden? Bestaande scoreonderdelen zullen overschreven worden.

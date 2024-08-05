@@ -15,7 +15,6 @@ nl:
       evaluation_progress: Evaluatie voortgang
       progress_html: "<b>%{feedback_count} van de %{feedback_total}</b> oplossingen hebben afgewerkte feedback."
       evaluation_details: Detailoverzicht
-      evaluation_details_info_html: Deze tabel geeft een detailoverzicht van alle oplossingen in de evaluatie.<br> Het gekleurde streepje geeft de status van de oplossing aan (niet ingediend, correct of fout), het vinkje in de tekstballon of deze oplossing al afgewerkt is.
       grading_details: Puntenoverzicht
       grading_details_info_html: Deze tabel toont het puntenoverzicht voor deze evaluatie. Het totaal per gebruiker is de som van de punten van de oefeningen.<br>Als nog niet alle punten zijn ingegeven voor een oplossing wordt het punt in grijs getoond.
     new:
@@ -66,15 +65,14 @@ nl:
       deadline-help_html: "<p>Voor elke student zal de laatst ingediende oplossing voor deze deadline opgenomen worden in de evaluatie.</p><p><b>Let op:</b> je kan deze deadline achteraf niet meer aanpassen, maar kan voor individuele studenten steeds een andere oplossing selecteren.</p>"
     evaluation_table:
       user: Gebruiker
+      evaluate_user: "%{user} evalueren"
     evaluation_grade_table:
       total: Totaal
       average: Gemiddelde
     feedback_status:
-      feedback_finished: evaluatie afgewerkt
-      feedback_unstarted: evaluatie nog niet afgewerkt
-      submission_not-started: "Geen oplossing, "
-      submission_correct: "Juiste oplossing, "
-      submission_wrong: "Foute oplossing, "
+      no_submission: Geen oplossingen
+      feedback_finished: "%{status}, feedback gegeven, bekijk de feedback"
+      feedback_unstarted: "%{status}, geen feedback gegeven, deze oplossing evalueren"
     overview:
       title: Evaluatie
       explanation: Een lesgever heeft je werk voor de reeks "%{series}" bekeken. Dodona heeft automatisch je laatste inzending voor %{deadline} geselecteerd, maar mogelijk heeft de lesgever handmatig een andere gekozen. Houd er rekening mee dat deze evaluatie niet altijd feedback op al je oplossingen omvat.
@@ -99,3 +97,4 @@ nl:
     exercises_progress_table:
       evaluate: Evalueren
       evaluated: Geëvalueerd
+      evaluating: Aan het evalueren

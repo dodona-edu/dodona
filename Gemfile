@@ -11,7 +11,7 @@ gem 'mysql2', '~> 0.5.6'
 gem 'puma', '~> 6.4.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.4.0'
+gem 'cssbundling-rails', '~> 1.4.1'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
 gem 'jsbundling-rails', '~> 1.3.0'

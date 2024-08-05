@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import { State } from "state/state_system/State";
 import { stateProperty } from "state/state_system/StateProperty";
 import { stateRecorder } from "state/state_system/StateRecorder";

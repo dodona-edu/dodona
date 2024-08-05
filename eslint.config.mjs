@@ -4,6 +4,7 @@ import eslint from "@eslint/js";
 import globals from "globals";
 import google_eslint from "eslint-config-google";
 import jest_eslint from "eslint-plugin-jest"
+import stylistic from "@stylistic/eslint-plugin";
 
 import { FlatCompat } from "@eslint/eslintrc";
 
@@ -20,7 +21,8 @@ export default ts_eslint.config(
     ),
     {
         plugins: {
-            "no-jquery": noJquery
+            "no-jquery": noJquery,
+            "@stylistic": stylistic,
         },
         languageOptions: {
             globals: {
@@ -58,7 +60,7 @@ export default ts_eslint.config(
                 { "allowExpressions": true }
             ],
             "@typescript-eslint/no-parameter-properties": "off",
-            "@typescript-eslint/indent": [
+            "@stylistic/indent": [
                 "error",
                 4,
                 {

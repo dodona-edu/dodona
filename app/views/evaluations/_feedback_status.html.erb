@@ -1,5 +1,5 @@
 <%
-  classes = "btn btn-text with-icon"
+  classes = "btn btn-text"
   classes += " text-muted" if feedback.completed?
 %>
 
@@ -12,8 +12,8 @@
     <i class="mdi mdi-18 mdi-cancel text-muted"></i>
   <% end %>
   <% if feedback.completed? %>
-    <%= t "evaluations.exercises_progress_table.evaluated" %>
+    <i class="mdi mdi-18 mdi-comment-check-outline ms-2"></i>
   <% else %>
-    <%= t "evaluations.exercises_progress_table.evaluate" %>
+    <i class="mdi mdi-18 mdi-comment-outline ms-2"></i>
   <% end %>
 <% end %>

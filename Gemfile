@@ -18,7 +18,7 @@ gem 'jsbundling-rails', '~> 1.3.0'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
-gem 'sprockets-rails', '~> 3.5.1'
+gem 'sprockets-rails', '~> 3.5.2'
 
 # Use Terser as compressor for JavaScript assets
 # gem 'terser', '>= 1.1.1'

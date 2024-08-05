@@ -118,12 +118,7 @@
         }
       }
 
-      &:target .btn-collapse {
-        pointer-events: none;
-      }
-
-      // if a group is the target, never collapse
-      &.collapsed:not(:target) {
+      &.collapsed {
         .card-supporting-text {
           display: none;
         }

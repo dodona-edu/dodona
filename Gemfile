@@ -31,7 +31,7 @@ gem 'jbuilder', '~> 2.12.0'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Active Storage variant
-gem 'image_processing', '~> 1.12.2'
+gem 'image_processing', '~> 1.13.0'
 
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '~> 1.18.3', require: false
@@ -69,11 +69,11 @@ gem 'ruby-saml', '~> 1.16.0'
 # omniauth
 gem 'omniauth-google-oauth2', '~> 1.1.2'
 gem 'omniauth-oauth2', '~> 1.8.0'
-gem 'omniauth_openid_connect', '~> 0.7.1'
+gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.8.1'
+gem 'jwt', '~> 2.8.2'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.6'
+gem 'nokogiri', '~> 1.16.7'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.4.1'
+gem 'faker', '~> 3.4.2'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,17 +132,17 @@ gem 'memory_profiler', '~> 1.0.2'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'ddtrace', '~> 1.23.2'
+gem 'datadog', '~> 2.2.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.5'
+gem 'counter_culture', '~> 3.7'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.4.0'
+  gem 'mocha', '~> 2.4.5'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.21.1'
+  gem 'selenium-webdriver', '~> 4.23.0'
 end
 
 group :test do
@@ -179,8 +179,8 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
-  gem 'rubocop-minitest', '~> 0.35.0'
-  gem 'rubocop-rails', '~> 2.25.0'
+  gem 'rubocop-minitest', '~> 0.35.1'
+  gem 'rubocop-rails', '~> 2.25.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'
@@ -190,7 +190,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api', '~> 2.2.0'
+gem 'docker-api', '~> 2.3.0'
 
 # Used for syncing deadlines with an external calendar
 gem 'icalendar', '~> 2.10'

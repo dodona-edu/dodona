@@ -68,16 +68,6 @@ const config = {
         modules: ["node_modules", "app/assets/javascripts"],
         extensions: [".tsx", ".ts", ".mjs", ".js", ".sass", ".scss", ".css", ".module.sass", ".module.scss", ".module.css", ".png", ".svg", ".gif", ".jpeg", ".jpg"]
     },
-    devtool: "source-map", // Source map generation must be turned on
-    plugins: [
-        // Put the Sentry Webpack plugin after all other plugins
-        sentryWebpackPlugin({
-            authToken: process.env.SENTRY_AUTH_TOKEN,
-            org: "dodona",
-            project: "dodona-frontend",
-        }),
-    ],
-
 };
 
 if (process.env.NODE_ENV === "development") {
@@ -88,6 +78,20 @@ if (process.env.NODE_ENV === "development") {
 // disable terser minimization when running
 if (process.env.RAILS_ENV === "test") {
     config.optimization.minimize = false;
+}
+
+// only enable sentry in production
+// as it slows down the build process
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+    config.devtool = "source-map"; // Source map generation must be turned on for sentry to work
+    config. plugins= [
+        // Put the Sentry Webpack plugin after all other plugins
+        sentryWebpackPlugin({
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+            org: "dodona",
+            project: "dodona-frontend",
+        }),
+    ];
 }
 
 // Test, Staging and Production use default config

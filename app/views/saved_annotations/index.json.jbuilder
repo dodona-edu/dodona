@@ -6,14 +6,18 @@ json.array! @saved_annotations do |saved_annotation|
     json.url user_url(saved_annotation.user)
     json.id saved_annotation.user.id
   end
-  json.exercise do
-    json.name saved_annotation.exercise.name
-    json.url activity_url(saved_annotation.exercise)
-    json.id saved_annotation.exercise.id
+  if saved_annotation.exercise.present?
+    json.exercise do
+      json.name saved_annotation.exercise.name
+      json.url activity_url(saved_annotation.exercise)
+      json.id saved_annotation.exercise.id
+    end
   end
-  json.course do
-    json.name saved_annotation.course.name
-    json.url course_url(saved_annotation.course)
-    json.id saved_annotation.course.id
+  if saved_annotation.course.present?
+    json.course do
+      json.name saved_annotation.course.name
+      json.url course_url(saved_annotation.course)
+      json.id saved_annotation.course.id
+    end
   end
 end

@@ -20,6 +20,6 @@ class ActivityReadStatePolicy < ApplicationPolicy
   end
 
   def permitted_attributes
-    %i[activity_id course_id]
+    %i[activity_id course_id series_id]
   end
 end

@@ -18,14 +18,19 @@ import {
     highlightActiveLine,
     highlightActiveLineGutter,
     highlightSpecialChars,
+    KeyBinding,
     keymap,
     lineNumbers
 } from "@codemirror/view";
 import { tags } from "@lezer/highlight";
-import { Extension } from "@codemirror/state";
+import { EditorState, Extension } from "@codemirror/state";
 
 declare type EditorEventHandler = (event: FocusEvent, view: EditorView) => boolean | void;
-const tabCompletionKeyMap = [{ key: "Tab", run: acceptCompletion }];
+const tabCompletionKeyMap: KeyBinding = { key: "Tab", run: acceptCompletion };
+const submitKeyMap: KeyBinding = { key: "Mod-Enter", run: () => {
+    document.getElementById("editor-process-btn")?.click();
+    return true;
+} };
 
 // A custom theme for CodeMirror that applies the same CSS as Rouge does,
 // meaning we can use our existing themes.
@@ -127,12 +132,14 @@ const editorSetup = (() => [
     bracketMatching(),
     closeBrackets(),
     highlightActiveLine(),
+    EditorState.allowMultipleSelections.of(true),
     keymap.of([
+        submitKeyMap,
         ...closeBracketsKeymap,
         ...defaultKeymap,
         ...historyKeymap,
         ...foldKeymap,
-        ...tabCompletionKeyMap,
+        tabCompletionKeyMap,
         indentWithTab
     ]),
     syntaxHighlighting(rougeStyle, {

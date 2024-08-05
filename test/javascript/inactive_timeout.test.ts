@@ -35,13 +35,13 @@ test("does not schedule before start", () => {
     const tracked = document.getElementById("tracked");
     const timeout = new InactiveTimeout(tracked, 2000, callback);
     jest.advanceTimersByTime(3000);
-    expect(callback).not.toBeCalled();
+    expect(callback).not.toHaveBeenCalled();
     timeout.start();
     jest.advanceTimersByTime(2000);
-    expect(callback).toBeCalledTimes(1);
+    expect(callback).toHaveBeenCalledTimes(1);
     timeout.end();
     jest.advanceTimersByTime(2000);
-    expect(callback).toBeCalledTimes(1);
+    expect(callback).toHaveBeenCalledTimes(1);
 });
 
 test("callback is called", () => {
@@ -50,9 +50,9 @@ test("callback is called", () => {
     const time = new InactiveTimeout(tracked, 2000, callback);
     time.start();
     jest.advanceTimersByTime(1000);
-    expect(callback).not.toBeCalled();
+    expect(callback).not.toHaveBeenCalled();
     jest.advanceTimersByTime(2000);
-    expect(callback).toBeCalled();
+    expect(callback).toHaveBeenCalled();
 });
 
 test("scrolling prevents callback", () => {
@@ -61,12 +61,12 @@ test("scrolling prevents callback", () => {
     const time = new InactiveTimeout(tracked, 2000, callback);
     time.start();
     jest.advanceTimersByTime(1000);
-    expect(callback).not.toBeCalled();
+    expect(callback).not.toHaveBeenCalled();
     document.dispatchEvent(new window.Event("scroll"));
     jest.advanceTimersByTime(1500);
-    expect(callback).not.toBeCalled();
+    expect(callback).not.toHaveBeenCalled();
     jest.advanceTimersByTime(1000);
-    expect(callback).toBeCalled();
+    expect(callback).toHaveBeenCalled();
 });
 
 describe("backoff works", () => {

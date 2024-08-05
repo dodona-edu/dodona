@@ -1,15 +1,13 @@
 import "components/search/filter_tabs";
-import { FilterTabs } from "components/search/filter_tabs";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
 import { searchQueryState } from "state/SearchQuery";
 
 describe("FilterTabs", () => {
-    let filterTabs: FilterTabs;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
-        filterTabs = await fixture(`<d-filter-tabs labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
+        await fixture(`<d-filter-tabs labels='[{ "name": "fool", "id": "1" }, { "name": "bar", "id": "2" }, { "name": "baz", "id": "3" }]'
                                        ></d-filter-tabs>`);
     });
 

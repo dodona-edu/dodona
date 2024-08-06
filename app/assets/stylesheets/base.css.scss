@@ -64,6 +64,10 @@
 @import "../../../node_modules/bootstrap/scss/offcanvas";
 @import "../../../node_modules/bootstrap/scss/utilities/api";
 
+// jspreadsheet styles
+@import "../../../node_modules/jspreadsheet-ce/dist/jspreadsheet";
+@import "../../../node_modules/jsuites/dist/jsuites";
+
 :root {
   --scrollbar-width: 20px;
 }

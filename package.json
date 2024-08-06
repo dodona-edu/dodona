@@ -51,6 +51,7 @@
     "fscreen": "^1.2.0",
     "glightbox": "^3.2.0",
     "iframe-resizer": "^4.4.5",
+    "jspreadsheet-ce": "^4.2.1",
     "lit": "^3.1.4",
     "node-polyglot": "^2.6.0",
     "sass": "^1.77.8",
@@ -83,8 +84,8 @@
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^34.0.0",
     "stylelint-config-standard-scss": "^11.1.0",
-    "typescript-eslint": "^7.17.0",
     "ts-jest": "^26.5.6",
+    "typescript-eslint": "^7.17.0",
     "webpack-bundle-analyzer": "^4.10.2"
   }
 }

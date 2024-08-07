@@ -59,7 +59,7 @@ export class ScoreItemInputTable extends DodonaElement {
                 id: row[0] as number | null,
                 name: row[1] as string,
                 description: row[2] as string,
-                maximum: row[3] as number,
+                maximum: parseFloat(row[3] as string),
                 visible: row[4] as boolean,
                 order: index
             };
@@ -92,11 +92,41 @@ export class ScoreItemInputTable extends DodonaElement {
             minSpareRows: 1,
             parseFormulas: false,
             selectionCopy: false,
-            wordWrap: true
+            wordWrap: true,
+            onafterchanges: () => {
+                this.validate();
+            }
         });
     }
 
+    validate(): boolean {
+        // Remove all error classes
+        this.tableRef.value.querySelectorAll("td.error").forEach(cell => {
+            cell.classList.remove("error");
+        });
+
+        const invalidCells: string[] = [];
+        const data = this.editedScoreItems;
+        data.forEach(item => {
+            const row = item.order + 1;
+            if (item.name === "") {
+                invalidCells.push("B" + row);
+            }
+            if (isNaN(item.maximum) || item.maximum <= 0) {
+                invalidCells.push("D" + row);
+            }
+        });
+        invalidCells.forEach(cell => {
+            this.table.getCell(cell).classList.add("error");
+        });
+        return invalidCells.length === 0;
+    }
+
     async save(): Promise<void> {
+        if (!this.validate()) {
+            return;
+        }
+
         const response = await fetch(this.route, {
             method: "PATCH",
             headers: {

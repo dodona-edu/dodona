@@ -56,7 +56,7 @@ class ScoreItemsController < ApplicationController
     authorize @evaluation_exercise, :update?
 
     ScoreItem.transaction do
-      new_items = params[:score_items].filter { |item| item[:id].nil? }
+      new_items = params[:score_items].filter { |item| item[:id].blank? }
       updated_items = params[:score_items].filter { |item| item[:id].present? }
       @evaluation_exercise.score_items.each do |item|
         if (updated_item = updated_items.find { |i| i[:id].to_i == item.id })

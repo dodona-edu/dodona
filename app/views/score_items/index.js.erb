@@ -1,11 +1,2 @@
-<%# Refreshes the score items for one exercise. %>
-const vissibleModal = document.querySelector(".modal-<%= evaluation_exercise.id %>.show")
-if (vissibleModal){
-    vissibleModal.addEventListener("hidden.bs.modal", () => {
-        dodona.setHTMLExecuteScripts(document.querySelector("#card-<%= evaluation_exercise.id %>"), "<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
-    }, { once: true });
-    bootstrap.Modal.getOrCreateInstance(vissibleModal).hide();
-} else {
-    dodona.setHTMLExecuteScripts(document.querySelector("#card-<%= evaluation_exercise.id %>"), "<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
-}
+dodona.setHTMLExecuteScripts(document.querySelector("#card-<%= evaluation_exercise.id %>"), "<%= escape_javascript(render 'score_items/exercise', evaluation_exercise: evaluation_exercise, new: new) %>");
 dodona.setHTMLExecuteScripts(document.querySelector(".summary-text"), "<%= t('score_items.new.summary_html', count: @evaluation.score_items.count, score: format_score(@evaluation.maximum_score)) %>");

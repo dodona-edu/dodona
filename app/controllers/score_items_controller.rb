@@ -4,24 +4,6 @@ class ScoreItemsController < ApplicationController
   before_action :set_score_item, only: %i[destroy update]
   before_action :set_evaluation
 
-  def copy
-    from = EvaluationExercise.find(params[:copy][:from])
-    to = EvaluationExercise.find(params[:copy][:to])
-
-    from.score_items.each do |score_item|
-      new_score_item = score_item.dup
-      new_score_item.evaluation_exercise = to
-      new_score_item.last_updated_by = current_user
-      new_score_item.save
-    end
-
-    # Score items have changed.
-    @evaluation.score_items.reload
-    respond_to do |format|
-      format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: to } }
-    end
-  end
-
   def create
     @score_item = ScoreItem.new(permitted_attributes(ScoreItem))
     @score_item.last_updated_by = current_user
@@ -74,19 +56,6 @@ class ScoreItemsController < ApplicationController
       format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @evaluation_exercise.reload } }
       format.json { head :no_content }
     end
-  end
-
-  def add_all
-    @score_item = ScoreItem.new(permitted_attributes(ScoreItem, :create))
-    @score_item.last_updated_by = current_user
-    # Add all score items or none.
-    @evaluation.transaction do
-      @evaluation.evaluation_exercises.each do |evaluation_exercise|
-        new_score_item = @score_item.dup
-        evaluation_exercise.score_items << new_score_item
-      end
-    end
-    @evaluation.reload
   end
 
   def destroy

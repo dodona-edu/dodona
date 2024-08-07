@@ -12,7 +12,6 @@
       <th><%= ScoreItem.human_attribute_name(:description) %></th>
       <th><%= ScoreItem.human_attribute_name(:maximum) %></th>
       <th><%= ScoreItem.human_attribute_name(:visible) %></th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -31,20 +30,6 @@
               <%= f.check_box :visible, class: "form-check-input visibility-checkbox", title: t(".visibility") %>
             <% end %>
           </td>
-          <td class="actions">
-            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-icon edit-button',
-                        data: { "bs-toggle": "modal" } do %>
-              <i class="mdi mdi-pencil" aria-hidden='true'></i>
-            <% end %>
-            <%= button_to evaluation_score_item_path(@evaluation, score_item),
-                          title: t('.delete_title'),
-                          method: :delete,
-                          remote: true,
-                          data: { confirm: t('general.are_you_sure') },
-                          class: 'btn btn-icon btn-icon-filled d-btn-danger' do %>
-              <i class="mdi mdi-delete" aria-hidden='true'></i>
-            <% end %>
-          </td>
         </tr>
       <% end %>
     <% end %>
@@ -61,49 +46,10 @@
                           title: t(".total_visibility") %>
         <% end %>
       </td>
-      <td class="actions">
-        <%= link_to "#copy-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-icon',
-                    title: t('.copy_title', name: evaluation_exercise.exercise.name),
-                    data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-content-copy" aria-hidden='true'></i>
-        <% end %>
-        <%= link_to "#new-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-icon btn-icon-filled bg-primary',
-                    title: t('.add_title', name: evaluation_exercise.exercise.name),
-                    data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-plus" aria-hidden='true'></i>
-        <% end %>
-      </td>
     </tr>
     </tbody>
 
   </table>
-  <% evaluation_exercise.score_items.each do |score_item| %>
-    <div class="modal fade modal-<%= evaluation_exercise.id %>" id="edit-form-<%= score_item.id %>" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <%= render 'score_items/form',
-                   models: [@evaluation, score_item],
-                   evaluation_exercise: evaluation_exercise,
-                   title: t('.edit_item_title', title: score_item.name),
-                   form_options: {namespace: evaluation_exercise.id, remote: true} %>
-      </div>
-    </div>
-  <% end %>
-  <div class="modal fade modal-<%= evaluation_exercise.id %>" id="new-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <%= render 'score_items/form',
-                 models: [@evaluation, new || ScoreItem.new],
-                 evaluation_exercise: evaluation_exercise,
-                 title: t('.add_title', name: evaluation_exercise.exercise.name),
-                 form_options: {namespace: evaluation_exercise.id, remote: true} %>
-    </div>
-  </div>
-  <div class="modal fade modal-<%= evaluation_exercise.id %>" id="copy-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <%= render 'score_items/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
-    </div>
-  </div>
   <d-score-item-input-table
     route="<%=evaluation_evaluation_exercise_score_items_path(@evaluation.id, evaluation_exercise.id, format: :js) %>"
     score-items="<%= evaluation_exercise.score_items.to_json %>"

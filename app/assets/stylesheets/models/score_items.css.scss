@@ -88,3 +88,13 @@ a.option-btn {
     }
   }
 }
+
+.score-items {
+  .collapsing {
+    transition: none;
+  }
+
+  .collapse.show {
+    transition: height 0.35s ease;
+  }
+}

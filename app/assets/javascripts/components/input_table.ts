@@ -32,7 +32,7 @@ export class ScoreItemInputTable extends DodonaElement {
 
     get descriptionColWidth(): number {
         // full width - borders - name column - maximum column - visible column - index column
-        const variableWidth = this.tableWidth - 6 - 200 - 100 - 100 - 50;
+        const variableWidth = this.tableWidth - 14 - 200 - 100 - 100 - 50;
         return Math.max(200, variableWidth);
     }
 
@@ -97,6 +97,13 @@ export class ScoreItemInputTable extends DodonaElement {
                 this.validate();
             }
         });
+
+        // update description column width when the window is resized
+        new ResizeObserver(() => {
+            // if (Math.abs(parseInt(this.table.getWidth(2) as string) - this.descriptionColWidth) > 10) {
+            this.table.setWidth(2, this.descriptionColWidth);
+            // }
+        }).observe(this.tableRef.value);
     }
 
     validate(): boolean {
@@ -145,7 +152,7 @@ export class ScoreItemInputTable extends DodonaElement {
 
     render(): TemplateResult {
         return html`
-            <div ${ref(this.tableRef)}></div>
+            <div style="width: 100%" ${ref(this.tableRef)}></div>
             <button @click=${this.save} class="btn btn-filled">Opslaan</button>
         `;
     }

@@ -9,9 +9,10 @@ type CellData = string | number | boolean;
 type ScoreItem = {
     id: number | null;
     name: string;
-    description: string;
+    description?: string;
     maximum: number;
     visible: boolean;
+    order?: number;
 }
 
 
@@ -53,13 +54,14 @@ export class ScoreItemInputTable extends DodonaElement {
             tableData.pop();
         }
 
-        return tableData.map((row: CellData[]) => {
+        return tableData.map((row: CellData[], index: number) => {
             return {
                 id: row[0] as number | null,
                 name: row[1] as string,
                 description: row[2] as string,
                 maximum: row[3] as number,
-                visible: row[4] as boolean
+                visible: row[4] as boolean,
+                order: index
             };
         });
     }

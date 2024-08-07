@@ -60,13 +60,13 @@ class ScoreItemsController < ApplicationController
       updated_items = params[:score_items].filter { |item| item[:id].present? }
       @evaluation_exercise.score_items.each do |item|
         if (updated_item = updated_items.find { |i| i[:id].to_i == item.id })
-          item.update!(updated_item.permit(:name, :description, :maximum, :visible))
+          item.update!(updated_item.permit(:name, :description, :maximum, :visible, :order))
         else
           item.destroy
         end
       end
       new_items.each do |item|
-        @evaluation_exercise.score_items.create!(item.permit(:name, :description, :maximum, :visible))
+        @evaluation_exercise.score_items.create!(item.permit(:name, :description, :maximum, :visible, :order))
       end
     end
 

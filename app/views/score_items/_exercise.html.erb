@@ -104,7 +104,10 @@
       <%= render 'score_items/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
     </div>
   </div>
-  <d-input-table></d-input-table>
+  <d-score-item-input-table
+    route="<%=evaluation_evaluation_exercise_score_items_path(@evaluation.id, evaluation_exercise.id, format: :js) %>"
+    score-items="<%= evaluation_exercise.score_items.to_json %>"
+  ></d-score-item-input-table>
 </div>
 <script>
     window.dodona.initVisibilityCheckboxes(document.getElementById("score-items-<%= evaluation_exercise.id %>"));

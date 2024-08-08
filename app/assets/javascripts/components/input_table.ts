@@ -108,6 +108,7 @@ export class ScoreItemInputTable extends DodonaElement {
             parseFormulas: false,
             selectionCopy: false,
             wordWrap: true,
+            defaultRowHeight: 30,
         });
 
         // update description column width when the window is resized

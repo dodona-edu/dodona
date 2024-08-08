@@ -5,6 +5,7 @@ import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
 import { fetch } from "utilities";
 import { i18n } from "i18n/i18n";
+import { Tooltip } from "bootstrap";
 
 type CellData = string | number | boolean;
 type ScoreItem = {
@@ -15,6 +16,8 @@ type ScoreItem = {
     visible: boolean;
     order?: number;
 }
+
+type ColumnWithTooltip = Column & { tooltip?: string };
 
 
 @customElement("d-score-item-input-table")
@@ -67,13 +70,13 @@ export class ScoreItemInputTable extends DodonaElement {
         });
     }
 
-    get columnConfig(): Column[] {
+    get columnConfig(): ColumnWithTooltip[] {
         return [
             { type: "hidden", title: "id" },
             { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
-            { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left" },
-            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100 },
-            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100 }
+            { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
+            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100, tooltip: i18n.t("js.score_items.maximum_help") },
+            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100, tooltip: i18n.t("js.score_items.visible_help") },
         ];
     }
 
@@ -154,13 +157,23 @@ export class ScoreItemInputTable extends DodonaElement {
         }
     }
 
+    updateTitlesAndTooltips(): void {
+        this.columnConfig.forEach((column, index) => {
+            this.table.setHeader(index, column.title);
+
+            const td = this.tableRef.value.querySelector(`thead td[data-x="${index}"]`);
+            if (td && column.tooltip) {
+                td.setAttribute("title", column.tooltip);
+                new Tooltip(td);
+            }
+        });
+    }
+
 
     render(): TemplateResult {
         if (this.table) {
             // Reset column headers as language might have changed
-            this.columnConfig.forEach((column, index) => {
-                this.table.setHeader(index, column.title);
-            });
+            this.updateTitlesAndTooltips();
         }
 
         return html`

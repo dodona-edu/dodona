@@ -48,13 +48,16 @@ export class ScoreItemInputTable extends DodonaElement {
     }
 
     get data(): CellData[][] {
-        return this.scoreItems.map(item => [
-            item.id,
-            item.name,
-            item.description,
-            item.maximum,
-            item.visible
-        ]);
+        return [
+            ...this.scoreItems.map(item => [
+                item.id,
+                item.name,
+                item.description,
+                item.maximum,
+                item.visible
+            ]),
+            ["", "", "", "", false]
+        ];
     }
 
     get editedScoreItems(): ScoreItem[] {

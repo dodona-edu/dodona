@@ -12,7 +12,7 @@ type ScoreItem = {
     id: number | null;
     name: string;
     description?: string;
-    maximum: number;
+    maximum: string;
     visible: boolean;
     order?: number;
 }
@@ -70,7 +70,7 @@ export class ScoreItemInputTable extends DodonaElement {
                 id: row[0] as number | null,
                 name: row[1] as string,
                 description: row[2] as string,
-                maximum: parseFloat(row[3] as string),
+                maximum: row[3] as string,
                 visible: row[4] as boolean,
                 order: index
             };
@@ -131,7 +131,8 @@ export class ScoreItemInputTable extends DodonaElement {
             if (item.name === "") {
                 invalidCells.push("B" + row);
             }
-            if (isNaN(item.maximum) || item.maximum <= 0) {
+            const max = parseFloat(item.maximum);
+            if (isNaN(max) || max <= 0) {
                 invalidCells.push("D" + row);
             }
         });
@@ -142,8 +143,29 @@ export class ScoreItemInputTable extends DodonaElement {
         return !this.hasErrors;
     }
 
+    confirmWarnings(): boolean {
+        const old = this.scoreItems;
+        const edited = this.editedScoreItems;
+        const removed = old.some(item => !edited.some(e => e.id === item.id));
+        const maxEdited = old.some(item => edited.some(e => e.id === item.id && e.maximum !== item.maximum));
+
+        let warnings = "";
+        if (removed) {
+            warnings += i18n.t("js.score_items.deleted_warning") + "\n";
+        }
+        if (maxEdited) {
+            warnings += i18n.t("js.score_items.modified_warning") + "\n";
+        }
+
+        return warnings === "" || confirm(warnings);
+    }
+
     async save(): Promise<void> {
         if (!this.validate()) {
+            return;
+        }
+
+        if (!this.confirmWarnings()) {
             return;
         }
 

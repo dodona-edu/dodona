@@ -53,6 +53,7 @@ class ScoreItemsController < ApplicationController
     end
 
     respond_to do |format|
+      @evaluation.reload
       format.js { render 'score_items/index', locals: { new: nil, evaluation_exercise: @evaluation_exercise.reload } }
       format.json { head :no_content }
     end

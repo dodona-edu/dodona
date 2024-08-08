@@ -35,6 +35,10 @@ export class ScoreItemInputTable extends DodonaElement {
     }
 
     get descriptionColWidth(): number {
+        if (!this.tableRef.value) {
+            return 200;
+        }
+
         // full width - borders - name column - maximum column - visible column - index column
         const variableWidth = this.tableWidth - 14 - 200 - 100 - 100 - 50;
         return Math.max(200, variableWidth);
@@ -171,7 +175,7 @@ export class ScoreItemInputTable extends DodonaElement {
 
 
     render(): TemplateResult {
-        if (this.table) {
+        if (this.table && this.tableRef.value) {
             // Reset column headers as language might have changed
             this.updateTitlesAndTooltips();
         }

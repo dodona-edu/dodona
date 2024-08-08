@@ -317,3 +317,4 @@ en:
       deleted_warning: You have deleted one or more score items. This will also delete all scores for these items.
       validation_warning: All score items must have a name and a maximum score, and the maximum score must be greater than 0.
       save: Save
+      cancel: Cancel

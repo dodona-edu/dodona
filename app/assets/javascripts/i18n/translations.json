@@ -364,6 +364,7 @@
         "error": "Error while updating"
       },
       "score_items": {
+        "cancel": "Cancel",
         "deleted_warning": "You have deleted one or more score items. This will also delete all scores for these items.",
         "description": "Description",
         "description_help": "A description is optional. Markdown formatting can be used. This is visible to the students.",
@@ -882,6 +883,7 @@
         "error": "Fout bij bijwerken"
       },
       "score_items": {
+        "cancel": "Annuleren",
         "deleted_warning": "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen.",
         "description": "Beschrijving",
         "description_help": "Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.",

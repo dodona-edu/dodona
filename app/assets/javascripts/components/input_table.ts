@@ -196,6 +196,13 @@ export class ScoreItemInputTable extends DodonaElement {
         });
     }
 
+    cancel(): void {
+        if (this.table) {
+            this.table.setData(this.data);
+        }
+        this.dispatchEvent(new Event("cancel"));
+    }
+
 
     render(): TemplateResult {
         if (this.table && this.tableRef.value) {
@@ -206,9 +213,14 @@ export class ScoreItemInputTable extends DodonaElement {
         return html`
             ${this.hasErrors ? html`<div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
             <div style="width: 100%" ${ref(this.tableRef)}></div>
-            <button @click=${this.save} class="btn btn-filled">
-                ${i18n.t("js.score_items.save")}
-            </button>
+            <div class="d-flex justify-content-end">
+                <button @click=${this.cancel} class="btn btn-outline">
+                    ${i18n.t("js.score_items.cancel")}
+                </button>
+                <button @click=${this.save} class="btn btn-filled">
+                    ${i18n.t("js.score_items.save")}
+                </button>
+            </div>
         `;
     }
 }

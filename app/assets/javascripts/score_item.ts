@@ -1,5 +1,6 @@
 import { fetch } from "utilities";
 import { i18n } from "i18n/i18n";
+import { ScoreItemInputTable } from "components/input_table";
 
 function commonCheckboxInit(
     element: HTMLElement,
@@ -58,4 +59,23 @@ function initItemVisibilityCheckboxes(element: HTMLElement): void {
 export function initVisibilityCheckboxes(element: HTMLElement): void {
     initTotalVisibilityCheckboxes(element);
     initItemVisibilityCheckboxes(element);
+}
+
+export function initEditButton(element: HTMLElement): void {
+    const editBtn = element.querySelector(".edit-btn") as HTMLAnchorElement;
+    const table = element.querySelector(".score-items-table") as HTMLTableElement;
+    const form = element.querySelector("d-score-item-input-table") as ScoreItemInputTable;
+
+    editBtn.addEventListener("click", event => {
+        event.preventDefault();
+        table.classList.add("d-none");
+        editBtn.classList.add("d-none");
+        form.classList.remove("d-none");
+    });
+
+    form.addEventListener("cancel", () => {
+        table.classList.remove("d-none");
+        editBtn.classList.remove("d-none");
+        form.classList.add("d-none");
+    });
 }

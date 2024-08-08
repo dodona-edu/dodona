@@ -2,17 +2,15 @@
   <%= javascript_include_tag 'score_item' %>
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
-<div class="score-items" id="score-items-<%= evaluation_exercise.id %>">
+<div id="score-items-<%= evaluation_exercise.id %>">
   <h4 class="d-flex justify-content-between">
     <%= evaluation_exercise.exercise.name %>
-    <a class="btn btn-icon"
-       data-bs-toggle="collapse"
-       data-bs-target=".toggle-score-items-<%= evaluation_exercise.id %>">
+    <a class="btn btn-icon edit-btn">
       <i class="mdi mdi-pencil"></i>
     </a>
   </h4>
 
-  <table class="table table-resource score-items-table toggle-score-items-<%= evaluation_exercise.id %> collapse show" id="table-for-<%= evaluation_exercise.id %>">
+  <table class="table table-resource score-items-table" id="table-for-<%= evaluation_exercise.id %>">
     <thead>
     <tr>
       <th><%= ScoreItem.human_attribute_name(:name) %></th>
@@ -58,11 +56,12 @@
 
   </table>
   <d-score-item-input-table
-    class="toggle-score-items-<%= evaluation_exercise.id %> collapse"
+    class="d-none"
     route="<%=evaluation_evaluation_exercise_score_items_path(@evaluation.id, evaluation_exercise.id, format: :js) %>"
     score-items="<%= evaluation_exercise.score_items.to_json %>"
   ></d-score-item-input-table>
 </div>
 <script>
     window.dodona.initVisibilityCheckboxes(document.getElementById("score-items-<%= evaluation_exercise.id %>"));
+    window.dodona.initEditButton(document.getElementById("score-items-<%= evaluation_exercise.id %>"));
 </script>

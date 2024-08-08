@@ -30,6 +30,9 @@ export class ScoreItemInputTable extends DodonaElement {
     tableRef: Ref<HTMLDivElement> = createRef();
     table: JspreadsheetInstance;
 
+    @property({ state: true })
+    hasErrors: boolean = false;
+
     get tableWidth(): number {
         return this.tableRef.value.clientWidth;
     }
@@ -105,9 +108,6 @@ export class ScoreItemInputTable extends DodonaElement {
             parseFormulas: false,
             selectionCopy: false,
             wordWrap: true,
-            onafterchanges: () => {
-                this.validate();
-            }
         });
 
         // update description column width when the window is resized
@@ -138,7 +138,8 @@ export class ScoreItemInputTable extends DodonaElement {
         invalidCells.forEach(cell => {
             this.table.getCell(cell).classList.add("error");
         });
-        return invalidCells.length === 0;
+        this.hasErrors = invalidCells.length > 0;
+        return !this.hasErrors;
     }
 
     async save(): Promise<void> {
@@ -181,6 +182,7 @@ export class ScoreItemInputTable extends DodonaElement {
         }
 
         return html`
+            ${this.hasErrors ? html`<div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
             <div style="width: 100%" ${ref(this.tableRef)}></div>
             <button @click=${this.save} class="btn btn-filled">
                 ${i18n.t("js.score_items.save")}

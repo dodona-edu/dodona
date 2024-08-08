@@ -316,5 +316,6 @@ nl:
       save: Opslaan
       modified_warning: "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden."
       deleted_warning: "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen."
+      validation_warning: "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een positief getal zijn."
 
 

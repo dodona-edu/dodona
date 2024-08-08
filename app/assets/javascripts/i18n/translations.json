@@ -372,6 +372,7 @@
         "modified_warning": "You have changed the maximum score of one or more score items. This will mark all completed evaluations with this score item as uncompleted.",
         "name": "Name",
         "save": "Save",
+        "validation_warning": "All score items must have a name and a maximum score, and the maximum score must be greater than 0.",
         "visible": "Visible",
         "visible_help": "Make the score item visible to students once the evaluation is released."
       },
@@ -889,6 +890,7 @@
         "modified_warning": "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden.",
         "name": "Naam",
         "save": "Opslaan",
+        "validation_warning": "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een positief getal zijn.",
         "visible": "Zichtbaar",
         "visible_help": "Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is."
       },

@@ -315,4 +315,5 @@ en:
       maximum_help: The maximum grade for this score item. The grade should be greater than 0, and works in increments of 0.25.
       modified_warning: You have changed the maximum score of one or more score items. This will mark all completed evaluations with this score item as uncompleted.
       deleted_warning: You have deleted one or more score items. This will also delete all scores for these items.
+      validation_warning: All score items must have a name and a maximum score, and the maximum score must be greater than 0.
       save: Save

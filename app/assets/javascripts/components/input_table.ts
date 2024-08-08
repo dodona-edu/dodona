@@ -104,12 +104,12 @@ export class ScoreItemInputTable extends DodonaElement {
             allowRenameColumn: false,
             columnResize: false,
             columnSorting: false,
-            csvFileName: "scoresheet",
             minSpareRows: 1,
             parseFormulas: false,
             selectionCopy: false,
             wordWrap: true,
             defaultRowHeight: 30,
+            allowExport: false,
         });
 
         // update description column width when the window is resized

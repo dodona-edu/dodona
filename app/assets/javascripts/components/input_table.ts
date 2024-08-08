@@ -159,7 +159,7 @@ export class ScoreItemInputTable extends DodonaElement {
         if (this.table) {
             // Reset column headers as language might have changed
             this.columnConfig.forEach((column, index) => {
-                this.table.setHeader(index + 1, column.title);
+                this.table.setHeader(index, column.title);
             });
         }
 

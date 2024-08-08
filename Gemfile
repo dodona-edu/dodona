@@ -11,14 +11,14 @@ gem 'mysql2', '~> 0.5.6'
 gem 'puma', '~> 6.4.2'
 
 # Use dart-sass for stylesheets
-gem 'cssbundling-rails', '~> 1.4.0'
+gem 'cssbundling-rails', '~> 1.4.1'
 
 # Use jsbundling to bundle javascript in app/javascript with webpack
-gem 'jsbundling-rails', '~> 1.3.0'
+gem 'jsbundling-rails', '~> 1.3.1'
 
 # Load sprockets ourselves because rails 7 no longer autoloads this
 # This is still used for all javascript in app/assets/javascripts
-gem 'sprockets-rails', '~> 3.5.1'
+gem 'sprockets-rails', '~> 3.5.2'
 
 # Use Terser as compressor for JavaScript assets
 # gem 'terser', '>= 1.1.1'
@@ -34,7 +34,7 @@ gem 'jbuilder', '~> 2.12.0'
 gem 'image_processing', '~> 1.13.0'
 
 # Reduces boot times through caching; required in config/boot.rb
-gem 'bootsnap', '~> 1.18.3', require: false
+gem 'bootsnap', '~> 1.18.4', require: false
 
 # used to validate container responses
 gem 'json_schemer', '~> 2.3.0'
@@ -60,7 +60,7 @@ gem 'builder', '~>3.3.0'
 gem 'diff-lcs', '~>1.5'
 
 # auto css prefixer
-gem 'autoprefixer-rails', '~>10.4.16'
+gem 'autoprefixer-rails', '~>10.4.19'
 
 # saml authentication
 gem 'devise', '~>4.9.4'

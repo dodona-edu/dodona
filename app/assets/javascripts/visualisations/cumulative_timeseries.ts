@@ -28,7 +28,7 @@ export class CTimeseriesGraph extends SeriesGraph {
         unknown,
         SVGGElement,
         unknown
-        >;
+    >;
 
     // data
 
@@ -182,13 +182,11 @@ export class CTimeseriesGraph extends SeriesGraph {
     /**
      * Transforms the data from the server into a form usable by the graph.
      *
-     * @param {RawData} raw The unprocessed return value of the fetch
+     * @param {RawData<string | Date>} raw The unprocessed return value of the fetch
      */
     // eslint-disable-next-line camelcase
-    protected override processData({ data, exercises, student_count, deadline }: RawData): void {
+    protected override processData({ data, exercises, student_count, deadline }: RawData<string | Date>): void {
         this.data = [];
-
-        data as { ex_id: number, ex_data: (string | Date)[] }[];
 
         this.parseExercises(exercises, data.map(ex => ex.ex_id));
 

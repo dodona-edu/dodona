@@ -63,21 +63,19 @@ export class ScoreItemInputTable extends DodonaElement {
     get editedScoreItems(): ScoreItem[] {
         const tableData = this.table.getData();
 
-        // Remove the last row if it is empty
-        if (tableData[tableData.length - 1].every(cell => cell === "" || cell === false)) {
-            tableData.pop();
-        }
-
-        return tableData.map((row: CellData[], index: number) => {
+        const scoreItems = tableData.map((row: CellData[], index: number) => {
             return {
                 id: row[0] as number | null,
                 name: row[1] as string,
                 description: row[2] as string,
                 maximum: row[3] as string,
                 visible: row[4] as boolean,
-                order: index
+                order: index,
             };
         });
+
+        // filter out empty rows
+        return scoreItems.filter(item => !(item.name === "" && item.maximum === "" && item.description === "" && item.visible === false));
     }
 
     get columnConfig(): ColumnWithTooltip[] {

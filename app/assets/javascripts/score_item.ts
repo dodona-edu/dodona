@@ -45,20 +45,8 @@ function initTotalVisibilityCheckboxes(element: HTMLElement): void {
     });
 }
 
-function initItemVisibilityCheckboxes(element: HTMLElement): void {
-    commonCheckboxInit(element, ".visibility-checkbox", checked => {
-        return {
-
-            score_item: {
-                visible: checked
-            }
-        };
-    });
-}
-
 export function initVisibilityCheckboxes(element: HTMLElement): void {
     initTotalVisibilityCheckboxes(element);
-    initItemVisibilityCheckboxes(element);
 }
 
 export function initEditButton(element: HTMLElement): void {

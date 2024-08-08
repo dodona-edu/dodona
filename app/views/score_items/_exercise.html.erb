@@ -31,8 +31,10 @@
           <td class="description"><%= markdown score_item.description %></td>
           <td class="maximum"><%= format_score score_item.maximum %></td>
           <td class="visibility">
-            <%= form_for [@evaluation, score_item], namespace: "#{evaluation_exercise.id}_#{score_item.id}", method: :patch, remote: :true do |f| %>
-              <%= f.check_box :visible, class: "form-check-input visibility-checkbox", title: t(".visibility") %>
+            <% if score_item.visible %>
+              <i class="mdi mdi-eye"></i>
+            <% else %>
+              <i class="mdi mdi-eye-off"></i>
             <% end %>
           </td>
         </tr>
@@ -45,10 +47,13 @@
       </td>
       <td class="visibility">
         <%= form_for evaluation_exercise, namespace: evaluation_exercise.id, method: :patch, remote: :true do |f| %>
-          <%= f.check_box :visible_score,
-                          class: "form-check-input total-visibility-checkbox",
-                          disabled: maximum_score.nil?,
-                          title: t(".total_visibility") %>
+          <div class="form-check form-switch">
+            <%= f.check_box :visible_score,
+                            class: "form-check-input total-visibility-checkbox",
+                            disabled: maximum_score.nil?,
+                            title: t(".total_visibility"),
+                            'data-bs-toggle': "tooltip" %>
+          </div>
         <% end %>
       </td>
     </tr>

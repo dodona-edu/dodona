@@ -36,4 +36,3 @@ en:
       total_visibility: >
         Show or hide the calculated total score in Dodona for this exercise when the feedback is released.
         Individual score items are still visible if they are marked as such.
-      visibility: Show or hide this score item.

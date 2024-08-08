@@ -305,4 +305,15 @@ nl:
     dolos:
       view_report: Rapport bekijken
       unsupported_language: "%{lang} wordt niet ondersteund door Dolos"
+    score_items:
+      name: Naam
+      description: Beschrijving
+      maximum: Maximum
+      visible: Zichtbaar
+      description_help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden. Dit is zichtbaar voor de studenten.
+      visible_help: Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is.
+      save: Opslaan
+      modified_warning: "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden."
+      deleted_warning: "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen."
+
 

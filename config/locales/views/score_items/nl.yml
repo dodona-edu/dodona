@@ -1,17 +1,5 @@
 nl:
   score_items:
-    form:
-      description-help_html: Een beschrijving is optioneel en kan in <a href="https://docs.dodona.be/nl/references/exercise-description/#markdown" target="_blank">Markdown</a> geschreven worden. Dit is zichtbaar voor de studenten.
-      visible-help: Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is.
-      save: Opslaan
-      add: Toevoegen
-      close: Sluiten
-      modify-help: Als je het maximum aanpast zullen alle afgewerkte evaluaties met dit scoreonderdeel terug als onafgewerkt gemarkeerd worden.
-      score-help: Het maximaal aantal punten voor dit scoreonderdeel. Het maximum moet groter dan 0 zijn, en werkt in stappen van 0,25.
-    copy:
-      copy: Kopiëren
-      exercise: Oefening
-      choose: "-- Kies een oefening --"
     table:
       total: "Totaal"
       total-description: "Som van alle scoreonderdelen"
@@ -44,13 +32,7 @@ nl:
       info: Je kan op Dodona punten geven aan de oplossingen in deze evaluatie. Dit is optioneel en kan later altijd aangepast worden.
     exercise:
       nothing: Er zijn nog geen scoreonderdelen voor deze oefening. Je kan pas punten geven als er minstens één scoreonderdeel is.
-      copy_title: Scoreonderdeel kopiëren van een andere oefening naar %{name}
-      add_title: Nieuw scoreonderdeel toevoegen aan %{name}
-      all: Scoreonderdeel toevoegen aan alle oefeningen
       max: Maximumscore
-      edit_title: Bewerk dit scoreonderdeel
-      delete_title: Verwijder dit scoreonderdeel
-      edit_item_title: "%{title} bewerken"
       total_visibility: >
         Toon of verberg de berekende totaalscore in Dodona voor deze oefening als de feedback vrijgegeven wordt.
         Individuele scoreonderdelen zijn nog wel zichtbaar als ze als zodanig gemarkeerd zijn.

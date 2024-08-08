@@ -305,3 +305,14 @@ en:
     dolos:
       view_report: Open plagiarism report
       unsupported_language: "%{lang} is not supported by the plagiarism checker."
+    score_items:
+      name: Name
+      description: Description
+      visible: Visible
+      maximum: Maximum
+      description_help_html: A description is optional. <a href="https://docs.dodona.be/en/references/exercise-description/#markdown" target="_blank">Markdown</a> formatting can be used. This is visible to the students.
+      visible_help: Make the score item visible to students once the evaluation is released.
+      score_help: The maximum grade for this score item. The grade should be greater than 0, and works in increments of 0.25.
+      modified_warning: You have changed the maximum score of one or more score items. This will mark all completed evaluations with this score item as uncompleted.
+      deleted_warning: You have deleted one or more score items. This will also delete all scores for these items.
+      save: Save

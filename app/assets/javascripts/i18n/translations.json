@@ -363,6 +363,18 @@
       "score_item": {
         "error": "Error while updating"
       },
+      "score_items": {
+        "deleted_warning": "You have deleted one or more score items. This will also delete all scores for these items.",
+        "description": "Description",
+        "description_help_html": "A description is optional. <a href=\"https://docs.dodona.be/en/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> formatting can be used. This is visible to the students.",
+        "maximum": "Maximum",
+        "modified_warning": "You have changed the maximum score of one or more score items. This will mark all completed evaluations with this score item as uncompleted.",
+        "name": "Name",
+        "save": "Save",
+        "score_help": "The maximum grade for this score item. The grade should be greater than 0, and works in increments of 0.25.",
+        "visible": "Visible",
+        "visible_help": "Make the score item visible to students once the evaluation is released."
+      },
       "sign_in_search_bar": {
         "institution_search": "Type to search for your institution",
         "log_in": "Sign in"
@@ -867,6 +879,17 @@
       },
       "score_item": {
         "error": "Fout bij bijwerken"
+      },
+      "score_items": {
+        "deleted_warning": "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen.",
+        "description": "Beschrijving",
+        "description_help_html": "Een beschrijving is optioneel en kan in <a href=\"https://docs.dodona.be/nl/references/exercise-description/#markdown\" target=\"_blank\">Markdown</a> geschreven worden. Dit is zichtbaar voor de studenten.",
+        "maximum": "Maximum",
+        "modified_warning": "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden.",
+        "name": "Naam",
+        "save": "Opslaan",
+        "visible": "Zichtbaar",
+        "visible_help": "Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is."
       },
       "sign_in_search_bar": {
         "institution_search": "Typ om jouw school te vinden",

@@ -1,9 +1,10 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, TemplateResult } from "lit";
-import jspreadsheet, { JspreadsheetInstance } from "jspreadsheet-ce";
+import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
 import { fetch } from "utilities";
+import { i18n } from "i18n/i18n";
 
 type CellData = string | number | boolean;
 type ScoreItem = {
@@ -66,18 +67,22 @@ export class ScoreItemInputTable extends DodonaElement {
         });
     }
 
+    get columnConfig(): Column[] {
+        return [
+            { type: "hidden", title: "id" },
+            { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
+            { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left" },
+            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100 },
+            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100 }
+        ];
+    }
+
     protected firstUpdated(_changedProperties: PropertyValues): void {
         super.firstUpdated(_changedProperties);
         this.table = jspreadsheet(this.tableRef.value, {
             root: this,
             data: this.data,
-            columns: [
-                { type: "hidden", title: "id" },
-                { type: "text", title: "Naam", width: 200, align: "left" },
-                { type: "text", title: "Beschrijving", width: this.descriptionColWidth, align: "left" },
-                { type: "numeric", title: "Maximum", width: 100 },
-                { type: "checkbox", title: "Zichtbaar", width: 100 }
-            ],
+            columns: this.columnConfig,
             about: false,
             allowDeleteColumn: false,
             allowDeleteRow: true,
@@ -151,9 +156,18 @@ export class ScoreItemInputTable extends DodonaElement {
 
 
     render(): TemplateResult {
+        if (this.table) {
+            // Reset column headers as language might have changed
+            this.columnConfig.forEach((column, index) => {
+                this.table.setHeader(index + 1, column.title);
+            });
+        }
+
         return html`
             <div style="width: 100%" ${ref(this.tableRef)}></div>
-            <button @click=${this.save} class="btn btn-filled">Opslaan</button>
+            <button @click=${this.save} class="btn btn-filled">
+                ${i18n.t("js.score_items.save")}
+            </button>
         `;
     }
 }

@@ -8,63 +8,6 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
     sign_in @staff_member
   end
 
-  test 'should copy score items if course administrator' do
-    from = @evaluation.evaluation_exercises.first
-    create :score_item, evaluation_exercise: from
-    create :score_item, evaluation_exercise: from
-
-    [
-      [@staff_member, :success],
-      [users(:student), :forbidden],
-      [create(:staff), :forbidden],
-      [users(:zeus), :success],
-      [nil, :unauthorized]
-    ].each do |user, expected|
-      to = create :evaluation_exercise, evaluation: @evaluation
-      sign_in user if user.present?
-      post copy_evaluation_score_items_path(@evaluation, format: :js), params: {
-        copy: {
-          from: from.id,
-          to: to.id
-        }
-      }
-
-      assert_response expected
-      assert_equal 2, to.score_items.count if expected == :success
-
-      sign_out user if user.present?
-    end
-  end
-
-  test 'should add score items to all if course administrator' do
-    [
-      [@staff_member, :ok],
-      [users(:student), :no],
-      [create(:staff), :no],
-      [users(:zeus), :ok],
-      [nil, :no]
-    ].each do |user, expected|
-      sign_in user if user.present?
-      post add_all_evaluation_score_items_path(@evaluation, format: :js), params: {
-        score_item: {
-          name: 'Test',
-          description: 'Test',
-          maximum: '20.0'
-        }
-      }
-      @evaluation.evaluation_exercises.reload
-      @evaluation.evaluation_exercises.each do |e|
-        if expected == :ok
-          assert_equal 1, e.score_items.length
-          e.update!(score_items: [])
-        end
-
-        assert_empty e.score_items
-      end
-      sign_out user if user.present?
-    end
-  end
-
   test 'should update score item if course administrator' do
     exercise = @evaluation.evaluation_exercises.first
     score_item = create :score_item, evaluation_exercise: exercise,
@@ -87,6 +30,51 @@ class ScoreItemsControllerTest < ActionDispatch::IntegrationTest
       }
 
       assert_response expected
+      sign_out user if user.present?
+    end
+  end
+
+  test 'should update all score items if course administrator' do
+    exercise = @evaluation.evaluation_exercises.first
+    score_items = create_list :score_item, 3, evaluation_exercise: exercise,
+                                              description: 'Before test',
+                                              maximum: '10.0'
+
+    [
+      [@staff_member, :success],
+      [users(:student), :forbidden],
+      [create(:staff), :forbidden],
+      [users(:zeus), :success],
+      [nil, :unauthorized]
+    ].each do |user, expected|
+      sign_in user if user.present?
+      patch evaluation_evaluation_exercise_score_items_path(@evaluation, exercise, format: :json), params: {
+        score_items: [
+          { id: score_items[0].id, name: 'edited', description: 'After test', maximum: '20.0' },
+          { name: 'new', description: 'new value', maximum: '25.0' }
+        ]
+      }
+
+      assert_response expected
+
+      exercise.score_items.reload
+      if expected == :success
+        assert_equal 2, exercise.score_items.count
+        assert_equal 'After test', exercise.score_items.first.description
+        assert_in_delta(20.0, exercise.score_items.first.maximum)
+        assert_equal 'new', exercise.score_items.last.name
+        assert_equal 'new value', exercise.score_items.last.description
+        assert_in_delta(25.0, exercise.score_items.last.maximum)
+
+        # reset
+        exercise.score_items.each(&:destroy)
+        score_items = create_list :score_item, 3, evaluation_exercise: exercise,
+                                                  description: 'Before test',
+                                                  maximum: '10.0'
+      else
+        assert_equal 3, exercise.score_items.count
+      end
+
       sign_out user if user.present?
     end
   end

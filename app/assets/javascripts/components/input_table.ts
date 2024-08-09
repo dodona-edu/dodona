@@ -134,7 +134,7 @@ export class ScoreItemInputTable extends DodonaElement {
                 invalidCells.push("B" + row);
             }
             const max = parseFloat(item.maximum);
-            if (isNaN(max) || max <= 0) {
+            if (Number.isNaN(max) || max <= 0) {
                 invalidCells.push("D" + row);
             }
         });

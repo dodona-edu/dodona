@@ -3,7 +3,7 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
-import { fetch } from "utilities";
+import { fetch, ready } from "utilities";
 import { i18n } from "i18n/i18n";
 import { Tooltip } from "bootstrap";
 
@@ -97,12 +97,21 @@ export class ScoreItemInputTable extends DodonaElement {
         ];
     }
 
-    protected firstUpdated(_changedProperties: PropertyValues): void {
-        super.firstUpdated(_changedProperties);
+    async initTable(): Promise<void> {
+        // Wait for translations to be present
+        await ready;
+
         this.table = jspreadsheet(this.tableRef.value, {
             root: this,
             data: this.data,
             columns: this.columnConfig,
+            text: {
+                copy: i18n.t("js.score_items.jspreadsheet.copy"),
+                deleteSelectedRows: i18n.t("js.score_items.jspreadsheet.deleteSelectedRows"),
+                insertANewRowAfter: i18n.t("js.score_items.jspreadsheet.insertNewRowAfter"),
+                insertANewRowBefore: i18n.t("js.score_items.jspreadsheet.insertNewRowBefore"),
+                paste: i18n.t("js.score_items.jspreadsheet.paste"),
+            },
             about: false,
             allowDeleteColumn: false,
             allowDeleteRow: true,
@@ -121,10 +130,26 @@ export class ScoreItemInputTable extends DodonaElement {
             allowExport: false,
         });
 
+        // init tooltips
+        this.columnConfig.forEach((column, index) => {
+            const td = this.tableRef.value.querySelector(`thead td[data-x="${index}"]`);
+            if (td && column.tooltip) {
+                td.setAttribute("title", column.tooltip);
+                new Tooltip(td);
+            }
+        });
+
+
         // update description column width when the window is resized
         new ResizeObserver(() => {
             this.table.setWidth(2, this.descriptionColWidth);
         }).observe(this.tableRef.value);
+    }
+
+    protected firstUpdated(_changedProperties: PropertyValues): void {
+        super.firstUpdated(_changedProperties);
+
+        this.initTable();
     }
 
     validate(): boolean {
@@ -193,18 +218,6 @@ export class ScoreItemInputTable extends DodonaElement {
         }
     }
 
-    updateTitlesAndTooltips(): void {
-        this.columnConfig.forEach((column, index) => {
-            this.table.setHeader(index, column.title);
-
-            const td = this.tableRef.value.querySelector(`thead td[data-x="${index}"]`);
-            if (td && column.tooltip) {
-                td.setAttribute("title", column.tooltip);
-                new Tooltip(td);
-            }
-        });
-    }
-
     cancel(): void {
         if (this.table) {
             this.table.setData(this.data);
@@ -214,11 +227,6 @@ export class ScoreItemInputTable extends DodonaElement {
 
 
     render(): TemplateResult {
-        if (this.table && this.tableRef.value) {
-            // Reset column headers as language might have changed
-            this.updateTitlesAndTooltips();
-        }
-
         return html`
             ${this.hasErrors ? html`<div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
             <div style="width: 100%" ${ref(this.tableRef)}></div>

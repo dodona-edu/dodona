@@ -318,3 +318,9 @@ en:
       validation_warning: All score items must have a name and a maximum score, and the maximum score must be greater than 0.
       save: Save
       cancel: Cancel
+      jspreadsheet:
+        copy: Copy...
+        deleteSelectedRows: Delete selected rows
+        insertNewRowAfter: Insert new row after
+        insertNewRowBefore: Insert new row before
+        paste: Paste...

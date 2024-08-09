@@ -19,7 +19,16 @@ type ScoreItem = {
 
 type ColumnWithTooltip = Column & { tooltip?: string };
 
-
+/**
+ * A spreadsheet table to edit score items.
+ *
+ * @element d-score-item-input-table
+ *
+ * @fires cancel - When the cancel button is clicked.
+ *
+ * @prop {string} route - The route to send the updated score items to.
+ * @prop {ScoreItem[]} scoreItems - The original score items, that will be displayed in the table.
+ */
 @customElement("d-score-item-input-table")
 export class ScoreItemInputTable extends DodonaElement {
     @property({ type: String })

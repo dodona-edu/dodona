@@ -114,9 +114,7 @@ export class ScoreItemInputTable extends DodonaElement {
 
         // update description column width when the window is resized
         new ResizeObserver(() => {
-            // if (Math.abs(parseInt(this.table.getWidth(2) as string) - this.descriptionColWidth) > 10) {
             this.table.setWidth(2, this.descriptionColWidth);
-            // }
         }).observe(this.tableRef.value);
     }
 

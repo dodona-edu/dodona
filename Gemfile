@@ -40,7 +40,7 @@ gem 'bootsnap', '~> 1.18.4', require: false
 gem 'json_schemer', '~> 2.3.0'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.8'
+gem 'delayed_job_active_record', '~> 4.1.9'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'

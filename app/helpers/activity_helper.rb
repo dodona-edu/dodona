@@ -69,19 +69,10 @@ module ActivityHelper
     url = description_activity_url(activity,
                                    token: activity.access_token,
                                    theme: theme).html_safe
-    resizeframe = %{
-      window.iFrameResize({
-          onResized: dodona.afterResize,
-          onMessage: dodona.onFrameMessage,
-          onScroll: dodona.onFrameScroll,
-          inPageLinks: true,
-        },
-        '##{id}')
-    }
     tag.iframe id: id,
                class: 'dodona-iframe',
                scrolling: 'no',
-               onload: resizeframe,
+               onload: "dodona.initIframeResize('#{id}')",
                allow: 'clipboard-write; fullscreen https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com/ ',
                src: url,
                height: '500px'

@@ -1571,6 +1571,23 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.3.0.tgz#6d86b8cb322660f03d3f0aa94b99bdd8e172d570"
   integrity sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==
 
+"@iframe-resizer/child@^5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/child/-/child-5.2.6.tgz#2f10bb69a40a48c6edff0d5b03307e320d76f6f8"
+  integrity sha512-Dl9tlkgG5qOcXjQo2H5Cs3cs4n+bh+0xXpISagBmH5hs4nrKNXTFGYuxM1bGYKvMQu8yTMIMrPgywsFo0LRtWg==
+
+"@iframe-resizer/core@5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/core/-/core-5.2.6.tgz#570196b337ee5072b420488d5d3e8531478530bc"
+  integrity sha512-lKt25OAYfZIak2HAfvfg4jT24P9Ap++uru8tujmkcn7aZFTHOMHPv9zxvG6OgzHCAI26EvMbRv9OpX8Ng3BV9w==
+
+"@iframe-resizer/parent@^5.2.6":
+  version "5.2.6"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/parent/-/parent-5.2.6.tgz#5804c4d9a9e0ea4c3fc6adca95ab5686021445f4"
+  integrity sha512-Z+jGWDjIRTvq7HgGYEKupP+UWkrA5LyPF4p3SGDlG99yIl3cK+/7paPS/sasAiIPxrgtRSarAzLj/NR1u2A3bA==
+  dependencies:
+    "@iframe-resizer/core" "5.2.6"
+
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz#fd3db1d59ecf7cf121e80650bb86712f9b55eced"
@@ -5208,11 +5225,6 @@ iconv-lite@0.6:
   integrity sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
-
-iframe-resizer@^4.4.5:
-  version "4.4.5"
-  resolved "https://registry.yarnpkg.com/iframe-resizer/-/iframe-resizer-4.4.5.tgz#f5048636e7f2fb5d9a09cc2ae78eb2da55ad555c"
-  integrity sha512-U8bCywf/Gh07O69RXo6dXAzTtODQrxaHGHRI7Nt4ipXsuq6EMxVsOP/jjaP43YtXz/ibESS0uSVDN3sOGCzSmw==
 
 ignore@^5.2.0, ignore@^5.2.4, ignore@^5.3.1:
   version "5.3.1"

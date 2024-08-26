@@ -1,9 +1,5 @@
-import { initExerciseShow, afterResize, onFrameMessage, onFrameScroll } from "exercise.ts";
+import { initExerciseShow, initIframeResize } from "exercise.ts";
 
 window.dodona.initExerciseShow = initExerciseShow;
-window.dodona.afterResize = afterResize;
-window.dodona.onFrameMessage = onFrameMessage;
-window.dodona.onFrameScroll = onFrameScroll;
+window.dodona.initIframeResize = initIframeResize;
 
-// will automatically bind to window.iFrameResize()
-require("iframe-resizer"); // eslint-disable-line no-undef,@typescript-eslint/no-require-imports

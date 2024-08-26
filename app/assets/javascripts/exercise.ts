@@ -8,6 +8,8 @@ import { render } from "lit";
 import { CopyButton } from "components/copy_button";
 import { EditorView } from "@codemirror/view";
 import { i18n } from "i18n/i18n";
+import iframeResize from "@iframe-resizer/parent";
+import "@iframe-resizer/child"; // sets window.parentIFrame
 
 
 function showLightbox(content): void {
@@ -517,7 +519,17 @@ function onFrameScroll(position): boolean {
     return false;
 }
 
+function initIframeResize(id: string): void {
+    iframeResize({
+        license: "GPLv3",
+        onResized: afterResize,
+        onMessage: onFrameMessage,
+        onScroll: onFrameScroll,
+        inPageLinks: true,
+    },
+    "#" + id);
+}
+
 export {
-    initMathJax, initExerciseShow, initExerciseDescription, afterResize,
-    onFrameMessage, onFrameScroll
+    initMathJax, initExerciseShow, initExerciseDescription, initIframeResize
 };

@@ -30,7 +30,7 @@ class Series < ApplicationRecord
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started/%<updated_at>s'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong/%<updated_at>s'.freeze
 
-  enum visibility: { open: 0, hidden: 1, closed: 2, timed: 3 }
+  enum :visibility, { open: 0, hidden: 1, closed: 2, timed: 3 }
 
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token

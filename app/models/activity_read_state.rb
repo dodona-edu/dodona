@@ -31,7 +31,7 @@ class ActivityReadState < ApplicationRecord
   scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_content_page:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_activity_name(part) unless skip_content_page
       scopes << by_username(part) unless skip_user

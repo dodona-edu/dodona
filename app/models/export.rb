@@ -16,7 +16,7 @@ class Export < ApplicationRecord
 
   belongs_to :user
   has_one_attached :archive
-  enum status: { started: 0, finished: 1, failed: 2 }
+  enum :status, { started: 0, finished: 1, failed: 2 }
 
   default_scope { order(id: :desc) }
 

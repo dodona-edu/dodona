@@ -1,5 +1,5 @@
 import { initSubmissionShow, initCorrectSubmissionToNextLink, initSubmissionHistory, showLastTab } from "submission.ts";
-import { initMathJax, onFrameMessage, onFrameScroll } from "exercise.ts";
+import { initMathJax, initIframeResize } from "exercise.ts";
 import { evaluationState } from "state/Evaluations";
 import codeListing from "code_listing";
 import { annotationState } from "state/Annotations";
@@ -17,8 +17,4 @@ window.dodona.showLastTab = showLastTab;
 window.dodona.initTutor = initTutor;
 window.dodona.initFileViewers = initFileViewers;
 
-window.dodona.afterResize = () => {};
-window.dodona.onFrameMessage = onFrameMessage;
-window.dodona.onFrameScroll = onFrameScroll;
-// will automatically bind to window.iFrameResize()
-require("iframe-resizer"); // eslint-disable-line no-undef,@typescript-eslint/no-require-imports
+window.dodona.initIframeResize = initIframeResize;

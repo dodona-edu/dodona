@@ -42,8 +42,8 @@ class Activity < ApplicationRecord
   MEDIA_DIR = File.join(DESCRIPTION_DIR, 'media').freeze
 
   # We need to prefix, otherwise Rails can't generate the public? method
-  enum access: { public: 0, private: 1 }, _prefix: true
-  enum status: { ok: 0, not_valid: 1, removed: 2 }
+  enum :access, { public: 0, private: 1 }, prefix: true
+  enum :status, { ok: 0, not_valid: 1, removed: 2 }
 
   belongs_to :repository
   belongs_to :judge, optional: true

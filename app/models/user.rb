@@ -33,8 +33,8 @@ class User < ApplicationRecord
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
-  enum permission: { student: 0, staff: 1, zeus: 2 }
-  enum theme: { system: 0, light: 1, dark: 2 }
+  enum :permission, { student: 0, staff: 1, zeus: 2 }
+  enum :theme, { system: 0, light: 1, dark: 2 }
 
   belongs_to :institution, optional: true
 

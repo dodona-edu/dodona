@@ -40,7 +40,7 @@ gem 'bootsnap', '~> 1.18.4', require: false
 gem 'json_schemer', '~> 2.3.0'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.8'
+gem 'delayed_job_active_record', '~> 4.1.10'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.3.3'
+  gem 'test-prof', '~> 1.4.1'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-minitest', '~> 0.35.1'
-  gem 'rubocop-rails', '~> 2.25.1'
+  gem 'rubocop-rails', '~> 2.26.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

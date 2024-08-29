@@ -97,15 +97,15 @@
 
     // Drawer toggle & brand link
     .drawer-toggle {
-      i {
-        line-height: var(--d-navbar-height);
-        font-size: 24px;
-      }
-
       border: none;
       outline: none;
       background: none;
       color: var(--d-on-primary);
+
+      i {
+        line-height: var(--d-navbar-height);
+        font-size: 24px;
+      }
     }
 
     .brand {

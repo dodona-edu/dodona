@@ -201,19 +201,6 @@
   --d-code-bg: #{$neutral-95};
   --d-skeleton-color: var(--d-surface-variant);
 
-  // this should be fixed using css and not in scss
-  .dark-only {
-    display: none;
-  }
-
-  .light-only {
-    display: unset;
-  }
-
-  :root {
-    color-scheme: light;
-  }
-
   // font
   --d-font-monospace: sfmono-regular, menlo, monaco, consolas, "Liberation Mono", "Courier New", monospace;
   --d-font-sans-serif: roboto, "Helvetica Neue", helvetica, arial, sans-serif;
@@ -237,6 +224,19 @@
   @include wavy-underline(--d-annotation-error-background-intense, $danger-60, 1.7);
   @include wavy-underline(--d-annotation-info-background, $info-40, 0.7);
   @include wavy-underline(--d-annotation-info-background-intense, $info-40, 1.7);
+
+  // this should be fixed using css and not in scss
+  .dark-only {
+    display: none;
+  }
+
+  .light-only {
+    display: unset;
+  }
+
+  :root {
+    color-scheme: light;
+  }
 
   .image-bright {
     // $gray-10 converted to filter using https://codepen.io/sosuke/pen/Pjoqqp

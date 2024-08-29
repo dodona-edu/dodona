@@ -7,25 +7,8 @@
     border-color 145ms ease,
     background-color 145ms ease;
   box-shadow: none;
-
-  .card-subtitle {
-    margin-bottom: 0.125rem;
-    height: 48px;
-
-    h4 {
-      width: 100%;
-      line-height: 20px;
-      min-height: 24px;
-
-      small {
-        font-size: 65%;
-      }
-    }
-
-    .card-title-icon {
-      margin-right: 1rem;
-    }
-  }
+  background: var(--clickable-card-color);
+  color: var(--on-clickable-card-color);
 
   --clickable-card-color: var(--d-primary);
   --on-clickable-card-color: var(--d-on-primary);
@@ -39,9 +22,6 @@
     --clickable-card-color: var(--d-success);
     --on-clickable-card-color: var(--d-on-success);
   }
-
-  background: var(--clickable-card-color);
-  color: var(--on-clickable-card-color);
 
   small {
     color: var(--on-clickable-card-color);
@@ -71,5 +51,24 @@
   &.disabled {
     opacity: 0.38;
     pointer-events: none;
+  }
+
+  .card-subtitle {
+    margin-bottom: 0.125rem;
+    height: 48px;
+
+    h4 {
+      width: 100%;
+      line-height: 20px;
+      min-height: 24px;
+
+      small {
+        font-size: 65%;
+      }
+    }
+
+    .card-title-icon {
+      margin-right: 1rem;
+    }
   }
 }

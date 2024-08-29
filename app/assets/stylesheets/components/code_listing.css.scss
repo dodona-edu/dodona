@@ -373,11 +373,11 @@
       /* stylelint-enable selector-class-pattern */
 
       .annotation-meta-icon {
+        margin-left: 4px;
+
         &::before {
           vertical-align: bottom;
         }
-
-        margin-left: 4px;
       }
 
       .annotation-warning::before {

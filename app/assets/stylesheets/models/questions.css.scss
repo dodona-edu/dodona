@@ -1,4 +1,6 @@
 .question-table {
+  table-layout: fixed;
+
   col.actions {
     width: 50px;
   }
@@ -22,8 +24,6 @@
       background-color: var(--d-table-hover-bg);
     }
   }
-
-  table-layout: fixed;
 }
 
 @include media-breakpoint-up(md) {

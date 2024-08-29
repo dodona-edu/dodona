@@ -12,6 +12,12 @@
     border-color 145ms ease,
     background-color 145ms ease;
 
+  // define the default button colors
+  // makes it easier to combine with other classes such as d-btn-danger, d-btn-success, etc.
+  --d-btn-color: var(--d-primary);
+  --d-btn-color-rgb: var(--d-primary-rgb);
+  --d-on-btn-color: var(--d-on-primary);
+
   &.with-icon {
     padding-left: 16px;
     padding-right: 24px;
@@ -50,12 +56,6 @@
     pointer-events: auto;
     cursor: default;
   }
-
-  // define the default button colors
-  // makes it easier to combine with other classes such as d-btn-danger, d-btn-success, etc.
-  --d-btn-color: var(--d-primary);
-  --d-btn-color-rgb: var(--d-primary-rgb);
-  --d-on-btn-color: var(--d-on-primary);
 }
 
 .btn.btn-filled,

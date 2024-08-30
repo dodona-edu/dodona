@@ -19,7 +19,7 @@ class Institution < ApplicationRecord
   IGNORED_DOMAINS_FOR_SIMILARITY = %w[gmail.com hotmail.com outlook.com yahoo.com live.com msn.com aol.com icloud.com telenet.be gmail.be live.be outlook.be hotmail.be].freeze
   NEW_INSTITUTION_NAME = 'n/a'.freeze
 
-  enum category: { secondary: 0, higher: 1, other: 2 }
+  enum :category, { secondary: 0, higher: 1, other: 2 }
 
   has_many :users, dependent: :restrict_with_error
   has_many :providers, inverse_of: :institution, dependent: :restrict_with_error

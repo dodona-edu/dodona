@@ -97,15 +97,15 @@
 
     // Drawer toggle & brand link
     .drawer-toggle {
-      i {
-        line-height: var(--d-navbar-height);
-        font-size: 24px;
-      }
-
       border: none;
       outline: none;
       background: none;
       color: var(--d-on-primary);
+
+      i {
+        line-height: var(--d-navbar-height);
+        font-size: 24px;
+      }
     }
 
     .brand {
@@ -305,16 +305,16 @@
   }
 
   .dodona-navbar-toggle {
-    @include media-breakpoint-up(md) {
-      display: none;
-    }
-
     position: absolute;
     top: 0;
     right: 10px;
     border: none;
     background: none;
     color: var(--d-on-primary);
+
+    @include media-breakpoint-up(md) {
+      display: none;
+    }
 
     i {
       line-height: var(--d-navbar-height);
@@ -363,19 +363,18 @@
     }
 
     .dropdown-title {
+      display: inline-block;
+      transform: translateY(-0.5em);
+
       @include media-breakpoint-up(md) {
         @include media-breakpoint-down(lg) {
           display: none;
         }
       }
 
-      display: inline-block;
-
       @include media-breakpoint-down(md) {
         padding-left: 25px;
       }
-
-      transform: translateY(-0.5em);
     }
   }
 

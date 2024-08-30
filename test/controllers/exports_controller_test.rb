@@ -34,7 +34,7 @@ class ExportsControllerTest < ActionDispatch::IntegrationTest
     post series_exports_path(@series), params: { all: true, only_last_submission: true, with_info: true, format: :json }
 
     assert_response :success
-    count = @students.map { |u| @series.exercises.map { |e| e.last_submission(u, @series) } }.flatten.select(&:present?).count
+    count = @students.map { |u| @series.exercises.map { |e| e.last_submission(u, @series) } }.flatten.compact_blank.count
 
     assert_zip ActiveStorage::Blob.last.download, with_info: true, solution_count: count, data: @data
   end

@@ -77,4 +77,6 @@ Rails.application.configure do
 
   routes.default_url_options[:trailing_slash] = true
   routes.default_url_options[:locale] = 'en'
+
+  config.active_job.queue_adapter = :test
 end

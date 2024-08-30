@@ -125,7 +125,7 @@ class ApplicationController < ActionController::Base
     elsif current_user.nil?
       redirect_to sign_in_path
     else
-      flash[:alert] = I18n.t('errors.no_rights')
+      flash[:alert] = I18n.t('errors.no_rights') # rubocop:disable Rails/ActionControllerFlashBeforeRender
       if request.referer.present? && URI.parse(request.referer).host == request.host
         redirect_to(request.referer)
       else

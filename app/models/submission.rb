@@ -28,7 +28,7 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
+  enum :status, { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
 
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
@@ -70,7 +70,7 @@ class Submission < ApplicationRecord
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user

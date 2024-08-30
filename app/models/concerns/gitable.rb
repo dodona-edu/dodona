@@ -10,7 +10,7 @@ module Gitable
   included do
     before_create :fix_remote
 
-    enum clone_status: { queued: 1, running: 2, complete: 3, failed: 4 }, _prefix: :clone
+    enum :clone_status, { queued: 1, running: 2, complete: 3, failed: 4 }, prefix: :clone
   end
 
   def full_path

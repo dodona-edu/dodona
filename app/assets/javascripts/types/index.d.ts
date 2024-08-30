@@ -30,7 +30,6 @@ declare class MathJaxObject {
 // add parentIFrame and iFrameResize from iFrame Resizer to the window to make typescript happy
 declare interface Window {
     parentIFrame: any;
-    iFrameResize: any;
 }
 
 declare var dodona;

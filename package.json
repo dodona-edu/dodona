@@ -74,7 +74,7 @@
     "babel-plugin-istanbul": "^7.0.0",
     "eslint": "^9.9.1",
     "eslint-config-google": "^0.14.0",
-    "eslint-plugin-jest": "^28.8.0",
+    "eslint-plugin-jest": "^28.8.2",
     "eslint-plugin-lit": "^1.14.0",
     "eslint-plugin-no-jquery": "^3.0.2",
     "eslint-plugin-wc": "^2.1.1",

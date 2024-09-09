@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
-    "@eslint/js": "^9.9.1",
+    "@eslint/js": "^9.10.0",
     "@open-wc/testing-helpers": "^3.0.1",
     "@stylistic/eslint-plugin": "^2.6.4",
     "@testing-library/dom": "^10.4.0",

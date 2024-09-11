@@ -827,4 +827,47 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     # Done.
     sign_out user
   end
+
+  test 'can create new user with same email and username as existing user' do
+    institution = create :institution
+    user = create :user, institution: institution, identities: []
+    first_provider = create :provider, institution: institution, mode: :prefer, identities: []
+    second_provider = create :provider, institution: institution, mode: :secondary, identities: []
+
+    # Link user to first provider.
+    create :identity, provider: first_provider, user: user
+
+    # Build, but don't save the identity for the second provider.
+    # This allows us to log in with the second provider for the 'first' time.
+    second_identity = build :identity, provider: second_provider, user: user
+    omniauth_mock_identity second_identity
+
+    # Simulate the user logging in with the second provider.
+    # It should not create a user.
+    assert_difference 'User.count', 0 do
+      post omniauth_url(second_provider)
+      follow_redirect!
+    end
+
+    # It should render the page where the user can choose.
+    assert_response :success
+
+    # It is actually the page we expect.
+    assert_select 'h1', t('auth.redirect_to_known_provider.title')
+    # There should be a button to create a new user
+    assert_select 'a', t('auth.redirect_to_known_provider.create_new_account')
+
+    # Confirming the new user should create a new user
+    assert_difference 'User.count', 1 do
+      post confirm_new_user_path
+      follow_redirect!
+    end
+
+    # After confirm a new user is created
+    assert_equal @controller.current_user.username, user.username
+    assert_equal @controller.current_user.email, user.email
+    assert_not_equal @controller.current_user.id, user.id
+
+    sign_out @controller.current_user
+  end
 end

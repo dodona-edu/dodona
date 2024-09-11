@@ -252,16 +252,15 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'update attributes should be checked for validity' do
-    OAUTH_PROVIDERS.each do |provider_name|
+    EMAIL_REQUIRED_PROVIDERS.each do |provider_name|
       # Setup.
       provider = create provider_name
       user = create :user, institution: provider.institution
-      other_user = create :user, institution: provider.institution
       identity = create :identity, provider: provider, user: user
 
       omniauth_mock_identity identity,
                              info: {
-                               email: other_user.email
+                               email: nil
                              }
 
       assert_emails 1 do
@@ -275,7 +274,7 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
       assert_nil @controller.current_user
       user.reload
 
-      assert_not_equal other_user.email, user.email
+      assert_not_nil user.email
 
       # Cleanup.
       sign_out user

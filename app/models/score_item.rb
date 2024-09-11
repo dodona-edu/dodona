@@ -10,7 +10,6 @@
 #  description            :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  order                  :integer
 #
 class ScoreItem < ApplicationRecord
   belongs_to :evaluation_exercise

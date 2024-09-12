@@ -469,7 +469,7 @@ GEM
       rubocop (>= 1.52.0, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
-    ruby-saml (1.16.0)
+    ruby-saml (1.17.0)
       nokogiri (>= 1.13.10)
       rexml
     ruby-vips (2.2.2)
@@ -629,7 +629,7 @@ DEPENDENCIES
   rubocop-factory_bot (~> 2.26)
   rubocop-minitest (~> 0.35.1)
   rubocop-rails (~> 2.26.0)
-  ruby-saml (~> 1.16.0)
+  ruby-saml (~> 1.17.0)
   rubyzip (~> 2.3.2)
   selenium-webdriver (~> 4.24.0)
   simplecov (~> 0.22.0)

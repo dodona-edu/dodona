@@ -219,7 +219,40 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     # In case of provider without uids, don't return any identity (As it won't be matching a unique user)
     return nil if auth_uid.nil?
 
-    Identity.find_by(identifier: auth_uid, provider: provider)
+    identity = Identity.find_by(identifier: auth_uid, provider: provider)
+
+    return identity unless identity.nil?
+
+    if provider.class.sym == :office365 && auth_email.present?
+      # This code supports a migration of the office365 oauth api from v1 to v2
+      # Try to find the user by the legacy identifier
+      identity = Identity.find_by(identifier: auth_email.split('@').first, provider: provider, identifier_based_on_email: true)
+
+      # Try to find user by preferred username
+      identity = Identity.find_by(identifier: auth_hash.extra.preferred_username.split('@').first, provider: provider, identifier_based_on_email: true) if identity.nil? && auth_hash&.extra&.preferred_username.present?
+
+      # Try to find user by name
+      identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
+      return nil if identity.nil?
+
+      # Update the identifier to the new uid
+      identity.update(identifier: auth_uid, identifier_based_on_email: false)
+    elsif provider.class.sym == :smartschool && auth_username.present?
+      # This code supports a migration of smartschool usernames to userID as identifier
+      # Try to find user by username
+      identity = Identity.find_by(identifier: auth_username, provider: provider, identifier_based_on_username: true)
+
+      # Try to find user by email
+      identity = Identity.joins(:user).find_by(user: { email: auth_email }, provider: provider, identifier_based_on_username: true) if identity.nil?
+
+      # Try to find user by name
+      identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_username: true) if identity.nil?
+      return nil if identity.nil?
+
+      # Update the identifier to the new uid
+      identity.update(identifier: auth_uid, identifier_based_on_username: false)
+    end
+    identity
   end
 
   def find_identity_by_user(user)

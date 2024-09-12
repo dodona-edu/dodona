@@ -498,9 +498,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     post omniauth_url(provider)
     follow_redirect!
 
-    # Assert successful authentication.
-    assert_redirected_to root_path
-    assert_not_equal @controller.current_user, user
+    # assert not signed in because of double account (first has to confirm new account)
+    assert_nil @controller.current_user
     identity.reload
 
     assert_equal('NEW-UID', identity.identifier)
@@ -607,8 +606,8 @@ class OmniauthCallbacksControllerTest < ActionDispatch::IntegrationTest
     post omniauth_url(provider)
     follow_redirect!
 
-    # Assert successful authentication.
-    assert_redirected_to root_path
+    # assert not signed in because of double account (first has to confirm new account)
+    assert_nil @controller.current_user
     assert_not_equal @controller.current_user, user
     identity.reload
 

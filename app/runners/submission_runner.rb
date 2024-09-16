@@ -292,7 +292,9 @@ class SubmissionRunner
     finalize
     @time_messages << build_message(format('<strong>Total time:</strong> %<time>.2f seconds', time: (Time.zone.now - @start)), 'zeus', 'html')
     result[:messages]&.concat @time_messages
-    result
+    # By placing the return here, we also silence the warning (ie, no exception can be caught in surrounding code)
+    # Instead the normal flow will be followed with the following return value
+    return result # rubocop:disable Lint/EnsureReturn
   end
 
   private

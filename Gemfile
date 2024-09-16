@@ -83,7 +83,7 @@ gem 'mail_form', '~> 1.10.1'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.2'
+gem 'pundit', '~> 2.4.0'
 
 # impersonate users
 gem 'pretender', '~> 0.5.0'
@@ -179,8 +179,8 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
-  gem 'rubocop-minitest', '~> 0.35.1'
-  gem 'rubocop-rails', '~> 2.26.0'
+  gem 'rubocop-minitest', '~> 0.36.0'
+  gem 'rubocop-rails', '~> 2.26.1'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

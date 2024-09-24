@@ -22,7 +22,7 @@
     "@codemirror/state": "^6.4.1",
     "@codemirror/view": "^6.33.0",
     "@dodona/papyros": "2.3.6",
-    "@iframe-resizer/child": "^5.2.6",
+    "@iframe-resizer/child": "^5.3.1",
     "@iframe-resizer/parent": "^5.3.1",
     "@lezer/common": "^1.2.1",
     "@lezer/highlight": "^1.2.1",

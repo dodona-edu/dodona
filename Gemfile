@@ -73,7 +73,7 @@ gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.8.2'
+gem 'jwt', '~> 2.9.0'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'

@@ -1576,17 +1576,17 @@
   resolved "https://registry.yarnpkg.com/@iframe-resizer/child/-/child-5.2.6.tgz#2f10bb69a40a48c6edff0d5b03307e320d76f6f8"
   integrity sha512-Dl9tlkgG5qOcXjQo2H5Cs3cs4n+bh+0xXpISagBmH5hs4nrKNXTFGYuxM1bGYKvMQu8yTMIMrPgywsFo0LRtWg==
 
-"@iframe-resizer/core@5.2.6":
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/@iframe-resizer/core/-/core-5.2.6.tgz#570196b337ee5072b420488d5d3e8531478530bc"
-  integrity sha512-lKt25OAYfZIak2HAfvfg4jT24P9Ap++uru8tujmkcn7aZFTHOMHPv9zxvG6OgzHCAI26EvMbRv9OpX8Ng3BV9w==
+"@iframe-resizer/core@5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/core/-/core-5.3.1.tgz#62f1289d645ae9c3062644a6969dd236c415cf97"
+  integrity sha512-ZGZN/BY4s0Bb4oWOwN+zNwgIGwSZmu+eO/jXX/Rk/HPlQJcyfPR6/BOmSrhlHJ/McVdbWi3rqWA0I4Z3Ie+N3w==
 
-"@iframe-resizer/parent@^5.2.6":
-  version "5.2.6"
-  resolved "https://registry.yarnpkg.com/@iframe-resizer/parent/-/parent-5.2.6.tgz#5804c4d9a9e0ea4c3fc6adca95ab5686021445f4"
-  integrity sha512-Z+jGWDjIRTvq7HgGYEKupP+UWkrA5LyPF4p3SGDlG99yIl3cK+/7paPS/sasAiIPxrgtRSarAzLj/NR1u2A3bA==
+"@iframe-resizer/parent@^5.3.1":
+  version "5.3.1"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/parent/-/parent-5.3.1.tgz#18b1a19133bcefd2f9aab269c7263d84d1ecb1f0"
+  integrity sha512-j8M9LlLCEbBcbEpRVVAMqIQS/PiDO1jeJp42xUamMHikzJWGNk0xD/ilMSOzdanvqt5s624QV5jFDBSWd3QRvw==
   dependencies:
-    "@iframe-resizer/core" "5.2.6"
+    "@iframe-resizer/core" "5.3.1"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"

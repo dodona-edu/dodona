@@ -31,7 +31,7 @@
     "@rails/activestorage": "^7.2.100",
     "@rails/ujs": "^7.1.400",
     "@replit/codemirror-lang-csharp": "^6.2.0",
-    "@sentry/browser": "^8.31.0",
+    "@sentry/browser": "^8.33.0",
     "@sentry/webpack-plugin": "^2.22.4",
     "@types/bootstrap": "^5.2.10",
     "@types/d3": "^7.4.3",

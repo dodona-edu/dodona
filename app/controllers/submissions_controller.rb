@@ -175,7 +175,9 @@ class SubmissionsController < ApplicationController
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]
-    @activity = Exercise.find(params[:activity_id]) if params[:activity_id]
+    # both /activities/:id/submissions and /exercises/:id/submissions are valid routes
+    activity_id = params[:activity_id] || params[:exercise_id]
+    @activity = Exercise.find(activity_id) if activity_id
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @activity

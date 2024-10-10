@@ -460,4 +460,11 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
   end
+
+  test 'should be able to use legacy paths containing `exercise`' do
+    course = create :course, series_count: 1, activities_per_series: 1
+    get course_series_exercise_submissions_path(course, course.series.first, course.series.first.exercises.first)
+
+    assert_response :ok
+  end
 end

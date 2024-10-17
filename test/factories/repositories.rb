@@ -6,7 +6,7 @@
 #  name         :string(255)
 #  remote       :string(255)
 #  path         :string(255)
-#  judge_id     :integer
+#  judge_id     :integer          default(17)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  clone_status :integer          default("queued"), not null

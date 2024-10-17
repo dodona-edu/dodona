@@ -138,7 +138,7 @@ gem 'datadog', '~> 2.3.0'
 gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.7'
+gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

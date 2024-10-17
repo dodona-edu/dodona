@@ -52,7 +52,7 @@
     "flatpickr": "^4.6.13",
     "fscreen": "^1.2.0",
     "glightbox": "^3.2.0",
-    "lit": "^3.2.0",
+    "lit": "^3.2.1",
     "node-polyglot": "^2.6.0",
     "sass": "^1.79.3",
     "tippy.js": "^6.3.7",

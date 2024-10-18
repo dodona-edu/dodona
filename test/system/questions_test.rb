@@ -8,12 +8,17 @@ class QuestionsTest < ApplicationSystemTestCase
   # Make `assert_*` methods behave like Minitest assertions
   include Capybara::Minitest::Assertions
 
+  def new_submission
+    sub = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: create(:course)
+    sub.exercise.judge.renderer = PythiaRenderer
+    sub.exercise.judge.save
+    sub
+  end
+
   setup do
     @code_lines = Faker::Lorem.sentences(number: 5)
     @course = create :course, enabled_questions: true
-    @submission = create :correct_submission, result: Rails.root.join('db/results/python-result.json').read, code: @code_lines.join("\n"), course: @course
-    @submission.exercise.judge.renderer = PythiaRenderer
-    @submission.exercise.judge.save
+    @submission = new_submission
     @student = @submission.user
     sign_in @student
 
@@ -61,7 +66,8 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'Can submit a question' do
-    visit(submission_path(id: @submission.id))
+    submission = new_submission
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     question = Faker::Lorem.question
@@ -82,7 +88,7 @@ class QuestionsTest < ApplicationSystemTestCase
       # Also acts as sleep until full ajax call is completed
     end
 
-    assert_equal 1, Question.count, 'Too little or too many questions were created'
+    assert_equal 1, Question.where(submission: submission).count, 'Too little or too many questions were created'
     q = Question.first
 
     assert_equal q.question_text, question, 'Something went wrong in saving the question'
@@ -90,12 +96,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'student can mark a question as resolved' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
-    assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
+    assert_equal 1, Question.where(submission: submission).count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -106,7 +113,7 @@ class QuestionsTest < ApplicationSystemTestCase
       assert_no_css '.mdi-comment-question-outline'
     end
 
-    assert_equal 1, Question.count, 'There should still only be one question'
+    assert_equal 1, Question.where(submission: submission).count, 'There should still only be one question'
     q = Question.first
 
     assert_not q.unanswered?, 'Question should have moved onto answered status'
@@ -114,17 +121,18 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'Responding to a question should mark the question as answered' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
-    assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
+    assert_equal 1, Question.where(submission: submission).count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
     within thread do
-      assert_selector '.annotation', count: 1
+      assert_selector '.annotation-text', count: 1
 
       fake_answer_input = find('input')
       fake_answer_input.click
@@ -135,21 +143,22 @@ class QuestionsTest < ApplicationSystemTestCase
 
       click_on 'Reply'
 
-      assert_selector '.annotation', count: 2
+      assert_selector '.annotation-text', count: 2
     end
 
-    assert_equal 2, Question.count, 'There should be two questions now'
+    assert_equal 2, Question.where(submission: submission).count, 'There should be two questions now'
     assert_not q.reload.unanswered?, 'Question should have moved onto answered status'
     assert_predicate q.reload, :answered?, 'Question should have moved onto answered status'
   end
 
   test 'An unanswered question should contain an icon to visualize its status' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
-    assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
+    assert_equal 1, Question.where(submission: submission).count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -160,12 +169,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'The status icon should change to in progress when someone clicks reply' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
-    assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
+    assert_equal 1, Question.where(submission: submission).count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')
@@ -180,12 +190,13 @@ class QuestionsTest < ApplicationSystemTestCase
   end
 
   test 'The question becomes unanswered again when a teacher cancels the reply' do
-    q = create :question, submission: @submission, user: @student
+    submission = new_submission
+    q = create :question, submission: submission, user: submission.user
 
-    assert_equal 1, Question.count, 'Test is invalid if magically no or more questions appear here'
+    assert_equal 1, Question.where(submission: submission).count, 'Test is invalid if magically no or more questions appear here'
     assert_predicate q, :unanswered?, 'Question should start as unanswered'
 
-    visit(submission_path(id: @submission.id))
+    visit(submission_path(id: submission.id))
     click_on 'Code'
 
     thread = find('d-thread')

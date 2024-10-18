@@ -1,0 +1,9 @@
+<%= CSV.generate_line %w[name maximum description visible], row_sep: nil %>
+<% @score_items.each do |cm| %>
+<%= CSV.generate_line([
+  cm.name,
+  cm.maximum,
+  cm.description,
+  cm.visible
+], row_sep: nil).html_safe  %>
+<% end %>

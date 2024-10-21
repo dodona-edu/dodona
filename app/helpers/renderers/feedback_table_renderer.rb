@@ -322,17 +322,13 @@ class FeedbackTableRenderer
   def with_differ_class(t)
     if t[:format] == 'csv'
       begin
-        if CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
-          yield(CsvDiffer)
-        else
-          yield(TextDiffer)
-        end
+        return yield(CsvDiffer) if CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
       rescue CSV::MalformedCSVError
-        yield(TextDiffer)
+        # use the default differ
       end
-    else
-      yield(TextDiffer)
     end
+
+    yield(TextDiffer)
   end
 
   def test_accepted(t)

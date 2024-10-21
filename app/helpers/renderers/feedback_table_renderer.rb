@@ -319,31 +319,27 @@ class FeedbackTableRenderer
     end
   end
 
-  def render_accepted(builder, t)
+  def with_differ_class(t)
     if t[:format] == 'csv'
       begin
-        return CsvDiffer.render_accepted(builder, t[:expected]) if CsvDiffer.limited_columns?(t[:expected])
+        if CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
+          yield(CsvDiffer)
+        else
+          yield(TextDiffer)
+        end
       rescue CSV::MalformedCSVError
-        # default to text if parsing failed
+        yield(TextDiffer)
       end
+    else
+      yield(TextDiffer)
     end
-    TextDiffer.render_accepted(builder, t[:expected])
-  end
-
-  def differ(t)
-    if t[:format] == 'csv'
-      begin
-        return CsvDiffer.new(t[:generated], t[:expected]) if CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
-      rescue CSV::MalformedCSVError
-        # default to text if parsing failed
-      end
-    end
-    TextDiffer.new(t[:generated], t[:expected])
   end
 
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      render_accepted(@builder, t)
+      with_differ_class(t) do |differ_class|
+        differ_class.render_accepted(@builder, t[:expected])
+      end
     end
   end
 
@@ -354,10 +350,12 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    differ = differ(t)
-    @builder.div(class: "diffs show-#{@diff_type}") do
-      @builder << differ.split
-      @builder << differ.unified
+    with_differ_class(t) do |differ_class|
+      differ = differ_class.new(t[:generated], t[:expected])
+      @builder.div(class: "diffs show-#{@diff_type}") do
+        @builder << differ.split
+        @builder << differ.unified
+      end
     end
   end
 

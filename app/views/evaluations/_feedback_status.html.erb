@@ -1,19 +1,19 @@
 <%
-  if feedback.submission.blank?
-    submission_status = "not-started"
-  elsif feedback.submission.accepted
-    submission_status = "correct"
-  else
-    submission_status = "wrong"
-  end
+  classes = "btn btn-text"
+  classes += " text-muted" if feedback.completed?
 %>
 
-<span class='feedback <%= submission_status %> <%= "active" if local_assigns[:current] == feedback %>'>
-  <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
-    <% if feedback.completed? %>
-      <i class="mdi mdi-comment-check-outline done" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_finished" %>"></i>
-    <% else %>
-      <i class="mdi mdi-comment-outline" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_unstarted" %>"></i>
-    <% end %>
+<%= link_to evaluation_feedback_path(evaluation, feedback),
+            title: feedback_title(feedback),
+            class: classes do %>
+  <% if feedback&.submission.present? %>
+    <%= submission_status_icon feedback.submission %>
+  <% else %>
+    <i class="mdi mdi-18 mdi-cancel text-muted"></i>
   <% end %>
-</span>
+  <% if feedback.completed? %>
+    <i class="mdi mdi-18 mdi-comment-check-outline ms-2"></i>
+  <% else %>
+    <i class="mdi mdi-18 mdi-comment-outline ms-2"></i>
+  <% end %>
+<% end %>

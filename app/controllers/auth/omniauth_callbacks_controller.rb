@@ -235,6 +235,7 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
       return nil if identity.nil?
 
+      Event.new
       # Update the identifier to the new uid
       identity.update(identifier: auth_uid, identifier_based_on_email: false)
     elsif provider.class.sym == :smartschool && auth_username.present?

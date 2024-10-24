@@ -1,13 +1,13 @@
 class AnnotationPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      annotations = scope.joins('INNER JOIN submissions AS submission ON submission.id = annotations.submission_id')
       if user&.zeus?
-        annotations.all
+        scope.all
       elsif user
-        annotations.released.where(submission: { user: user }).or(annotations.where(submission: { course_id: user.administrating_courses.map(&:id) }))
+        common = scope.joins(:submission)
+        common.released.where(submission: { user: user }).or(common.where(submission: { course_id: user.administrating_courses.map(&:id) }))
       else
-        annotations.none
+        scope.none
       end
     end
   end

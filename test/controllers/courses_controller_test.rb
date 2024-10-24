@@ -905,6 +905,68 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     end
   end
 
+  test 'super admins are able to view questions in JSON format' do
+    add_admins
+    super_admins = @admins.reject(&:student?)
+    with_users_signed_in super_admins do |who|
+      # Create some questions so we actually render something
+      submission = create :submission, course: @course
+      create :question, question_state: :answered, submission: submission
+      create :question, question_state: :unanswered, submission: submission
+      create :question, question_state: :in_progress, submission: submission
+      get questions_course_path(@course), as: :json
+
+      assert_response :ok, "#{who} should be able to view questions in JSON format"
+    end
+  end
+
+  test 'super admins get correct question info in JSON format' do
+    add_admins
+    super_admins = @admins.reject(&:student?)
+    with_users_signed_in super_admins do |_who|
+      submission = create :submission, course: @course
+      create :question, question_state: :answered, submission: submission
+      create :question, question_state: :unanswered, submission: submission
+      create :question, question_state: :in_progress, submission: submission
+      get questions_course_path(@course), as: :json
+
+      json_response = response.parsed_body
+
+      assert json_response.key?('unanswered'), "The 'unanswered' key should be present in the JSON response"
+      assert json_response.key?('in_progress'), "The 'in_progress' key should be present in the JSON response"
+      assert json_response.key?('answered'), "The 'answered' key should be present in the JSON response"
+
+      assert_equal 1, json_response['unanswered'].size, 'There should be 1 unanswered question in the JSON response'
+      assert_equal 1, json_response['in_progress'].size, 'There should be 1 in_progress question in the JSON response'
+      assert_equal 1, json_response['answered'].size, 'There should be 1 answered question in the JSON response'
+    end
+  end
+
+  test 'super admins can view empty question lists' do
+    add_admins
+    super_admins = @admins.reject(&:student?)
+    with_users_signed_in super_admins do |_who|
+      get questions_course_path(@course), as: :json
+
+      assert_response :ok
+
+      json_response = response.parsed_body
+
+      assert_empty json_response['unanswered'], 'There should be 0 unanswered questions in the JSON response'
+      assert_empty json_response['in_progress'], 'There should be 0 in_progress questions in the JSON response'
+      assert_empty json_response['answered'], 'There should be 0 answered questions in the JSON response'
+    end
+  end
+
+  test 'non admins cannot view questions in JSON format' do
+    add_not_admins
+    with_users_signed_in @not_admins do |who|
+      get questions_course_path(@course), as: :json
+
+      assert :ok, "#{who} should not be able to view questions in JSON format"
+    end
+  end
+
   test 'Icalendar link exports valid and correct ics file' do
     time1 = DateTime.now
     time2 = DateTime.now + 1.day + 1.hour + 1.second

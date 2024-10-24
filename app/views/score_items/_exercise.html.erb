@@ -2,8 +2,30 @@
   <%= javascript_include_tag 'score_item' %>
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
-<div id="score-items-<%= evaluation_exercise.id %>">
-  <h4><%= evaluation_exercise.exercise.name %></h4>
+<div id="score-items-<%= evaluation_exercise.id %>" class="mb-2">
+  <div class="d-flex flex-row align-items-center">
+    <h4><%= evaluation_exercise.exercise.name %></h4>
+    <div class="flex-spacer"></div>
+    <div class="dropdown">
+      <a class="btn btn-icon dropdown-toggle" data-bs-toggle="dropdown">
+        <i class="mdi mdi-dots-vertical"></i>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li>
+          <%= link_to evaluation_evaluation_exercise_score_items_path(evaluation_exercise.evaluation_id, evaluation_exercise.id, format: :csv), class: "dropdown-item" do %>
+            <i class="mdi mdi-download mdi-18"></i>
+            <%= I18n.t "score_items.exercise.download" %>
+          <% end %>
+        </li>
+        <li>
+          <a href="#upload-form-<%=evaluation_exercise.id%>" data-bs-toggle="modal" class="dropdown-item">
+            <i class="mdi mdi-upload mdi-18"></i>
+            <%= I18n.t "score_items.exercise.upload" %>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
 
   <table class="table table-resource score-items-table" id="table-for-<%= evaluation_exercise.id %>">
     <thead>
@@ -102,6 +124,11 @@
   <div class="modal fade modal-<%= evaluation_exercise.id %>" id="copy-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <%= render 'score_items/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
+    </div>
+  </div>
+  <div class="modal fade modal-<%= evaluation_exercise.id %>" id="upload-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <%= render partial: 'score_items/upload', locals: {evaluation_exercise: evaluation_exercise} %>
     </div>
   </div>
 </div>

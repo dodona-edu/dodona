@@ -924,21 +924,26 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_admins
     super_admins = @admins.reject(&:student?)
     with_users_signed_in super_admins do |_who|
-      submission = create :submission, course: @course
-      create :question, question_state: :answered, submission: submission
-      create :question, question_state: :unanswered, submission: submission
-      create :question, question_state: :in_progress, submission: submission
-      get questions_course_path(@course), as: :json
 
-      json_response = response.parsed_body
+      # without delayed jobs, in progress is automatically reset to unanswered
+      with_delayed_jobs do
+        submission = create :submission, course: @course
+        create :question, question_state: :answered, submission: submission
+        create :question, question_state: :unanswered, submission: submission
+        create :question, question_state: :in_progress, submission: submission
+        get questions_course_path(@course), as: :json
 
-      assert json_response.key?('unanswered'), "The 'unanswered' key should be present in the JSON response"
-      assert json_response.key?('in_progress'), "The 'in_progress' key should be present in the JSON response"
-      assert json_response.key?('answered'), "The 'answered' key should be present in the JSON response"
+        json_response = response.parsed_body
 
-      assert_equal 1, json_response['unanswered'].size, 'There should be 1 unanswered question in the JSON response'
-      assert_equal 1, json_response['in_progress'].size, 'There should be 1 in_progress question in the JSON response'
-      assert_equal 1, json_response['answered'].size, 'There should be 1 answered question in the JSON response'
+        assert json_response.key?('unanswered'), "The 'unanswered' key should be present in the JSON response"
+        assert json_response.key?('in_progress'), "The 'in_progress' key should be present in the JSON response"
+        assert json_response.key?('answered'), "The 'answered' key should be present in the JSON response"
+
+        assert_equal 1, json_response['unanswered'].size, 'There should be 1 unanswered question in the JSON response'
+        assert_equal 1, json_response['in_progress'].size, 'There should be 1 in_progress question in the JSON response'
+        assert_equal 1, json_response['answered'].size, 'There should be 1 answered question in the JSON response'
+      end
+      run_delayed_jobs
     end
   end
 

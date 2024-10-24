@@ -924,7 +924,6 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_admins
     super_admins = @admins.reject(&:student?)
     with_users_signed_in super_admins do |_who|
-
       # without delayed jobs, in progress is automatically reset to unanswered
       with_delayed_jobs do
         submission = create :submission, course: @course

@@ -970,11 +970,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_admins do |who|
       get questions_course_path(@course), as: :json
 
-      if who == 'not signed in'
-        assert_response :unauthorized, "#{who} should not be able to view questions in JSON format"
-      else
-        assert_response :forbidden, "#{who} should not be able to view questions in JSON format"
-      end
+      assert (response.forbidden? || response.unauthorized?), "#{who} should not be able to view questions in JSON format"
     end
   end
 

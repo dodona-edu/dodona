@@ -5,7 +5,7 @@ class AnnotationPolicy < ApplicationPolicy
         scope.all
       elsif user
         common = scope.joins(:submission)
-        common.released.where(submissions: { user: user }).or(common.where(submissions: { course_id: user.administrating_courses.map(&:id) }))
+        common.released.where(submission: { user: user }).or(common.where(submission: { course_id: user.administrating_courses.map(&:id) }))
       else
         scope.none
       end

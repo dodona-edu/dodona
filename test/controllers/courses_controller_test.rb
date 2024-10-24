@@ -909,14 +909,17 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     add_admins
     super_admins = @admins.reject(&:student?)
     with_users_signed_in super_admins do |who|
-      # Create some questions so we actually render something
-      submission = create :submission, course: @course
-      create :question, question_state: :answered, submission: submission
-      create :question, question_state: :unanswered, submission: submission
-      create :question, question_state: :in_progress, submission: submission
-      get questions_course_path(@course), as: :json
+      # without delayed jobs, in progress is automatically reset to unanswered
+      with_delayed_jobs do
+        # Create some questions so we actually render something
+        submission = create :submission, course: @course
+        create :question, question_state: :answered, submission: submission
+        create :question, question_state: :unanswered, submission: submission
+        create :question, question_state: :in_progress, submission: submission
+        get questions_course_path(@course), as: :json
 
-      assert_response :ok, "#{who} should be able to view questions in JSON format"
+        assert_response :ok, "#{who} should be able to view questions in JSON format"
+      end
     end
   end
 
@@ -967,7 +970,11 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     with_users_signed_in @not_admins do |who|
       get questions_course_path(@course), as: :json
 
-      assert :ok, "#{who} should not be able to view questions in JSON format"
+      if who == 'not signed in'
+        assert_response :unauthorized, "#{who} should not be able to view questions in JSON format"
+      else
+        assert_response :forbidden, "#{who} should not be able to view questions in JSON format"
+      end
     end
   end
 

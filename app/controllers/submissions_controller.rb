@@ -111,11 +111,15 @@ class SubmissionsController < ApplicationController
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
     # check if user is member of course
-    course = Course.find(para[:course_id]) if para[:course_id].present?
-    para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
+    if para[:course_id].present?
+      course = Course.find(para[:course_id])
+      para.delete(:course_id) if course.subscribed_members.exclude?(current_user)
+    end
     # check if series is part of course
-    series = Series.find(para[:series_id]) if para[:series_id].present? && para[:course_id].present?
-    para.delete(:series_id) if para[:series_id].present? && course.series.exclude?(series)
+    if para[:series_id].present? && para[:course_id].present?
+      series = Series.find(para[:series_id])
+      para.delete(:series_id) if course.series.exclude?(series)
+    end
 
     submission = Submission.new(para)
     can_submit = true
@@ -175,7 +179,9 @@ class SubmissionsController < ApplicationController
     end
 
     @series = Series.find(params[:series_id]) if params[:series_id]
-    @activity = Exercise.find(params[:activity_id]) if params[:activity_id]
+    # both /activities/:id/submissions and /exercises/:id/submissions are valid routes
+    activity_id = params[:activity_id] || params[:exercise_id]
+    @activity = Exercise.find(activity_id) if activity_id
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @activity

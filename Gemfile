@@ -67,13 +67,13 @@ gem 'devise', '~>4.9.4'
 gem 'ruby-saml', '~> 1.17.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.1.3'
+gem 'omniauth-google-oauth2', '~> 1.2.0'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.9.1'
+gem 'jwt', '~> 2.9.3'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -124,7 +124,7 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.4.2'
+gem 'faker', '~> 3.5.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
@@ -132,13 +132,13 @@ gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'datadog', '~> 2.3.0'
+gem 'datadog', '~> 2.4.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.7'
+gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking

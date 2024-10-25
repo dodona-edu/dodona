@@ -92,8 +92,8 @@ export class ScoreItemInputTable extends DodonaElement {
             { type: "hidden", title: "id" },
             { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
             { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
-            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100, tooltip: i18n.t("js.score_items.maximum_help") },
-            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100, tooltip: i18n.t("js.score_items.visible_help") },
+            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
+            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100, align: "left", tooltip: i18n.t("js.score_items.visible_help") },
         ];
     }
 

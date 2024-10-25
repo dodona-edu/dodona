@@ -54,12 +54,15 @@ export function initEditButton(element: HTMLElement): void {
     const table = element.querySelector(".score-items-table") as HTMLTableElement;
     const form = element.querySelector("d-score-item-input-table") as ScoreItemInputTable;
 
-    editBtn.addEventListener("click", event => {
-        event.preventDefault();
+    const activateEditMode = (e: MouseEvent): void => {
+        e.preventDefault();
         table.classList.add("d-none");
         editBtn.classList.add("d-none");
         form.classList.remove("d-none");
-    });
+    };
+
+    editBtn.addEventListener("click", activateEditMode);
+    table.addEventListener("click", activateEditMode);
 
     form.addEventListener("cancel", () => {
         table.classList.remove("d-none");

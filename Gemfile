@@ -8,7 +8,7 @@ gem 'rails', '~> 7.2.1'
 # Use mysql as the database for Active Record
 gem 'mysql2', '~> 0.5.6'
 # Use Puma as the app server
-gem 'puma', '~> 6.4.2'
+gem 'puma', '~> 6.4.3'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.4.1'
@@ -24,7 +24,7 @@ gem 'sprockets-rails', '~> 3.5.2'
 # gem 'terser', '>= 1.1.1'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.12.0'
+gem 'jbuilder', '~> 2.13.0'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use ActiveModel has_secure_password
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>4.0.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.3.0'
+gem 'rouge', '4.4.0'
 
 # feedback table builder
 gem 'builder', '~>3.3.0'
@@ -64,16 +64,16 @@ gem 'autoprefixer-rails', '~>10.4.19'
 
 # saml authentication
 gem 'devise', '~>4.9.4'
-gem 'ruby-saml', '~> 1.16.0'
+gem 'ruby-saml', '~> 1.17.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.1.2'
+gem 'omniauth-google-oauth2', '~> 1.2.0'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.8.2'
+gem 'jwt', '~> 2.9.3'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -83,7 +83,7 @@ gem 'mail_form', '~> 1.10.1'
 gem 'mail', '~> 2.8.1'
 
 # authorization
-gem 'pundit', '~> 2.3.2'
+gem 'pundit', '~> 2.4.0'
 
 # impersonate users
 gem 'pretender', '~> 0.5.0'
@@ -124,21 +124,21 @@ gem 'rubyzip', '~> 2.3.2'
 gem 'dalli', '~> 3.2.8'
 
 # Generate 'random' values like usernames, emails, ...
-gem 'faker', '~> 3.4.2'
+gem 'faker', '~> 3.5.1'
 
 # Profiling
 gem 'flamegraph', '~> 0.9.5'
-gem 'memory_profiler', '~> 1.0.2'
+gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'datadog', '~> 2.3.0'
+gem 'datadog', '~> 2.4.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
 
 # More advanced counter_cache that allows conditions
-gem 'counter_culture', '~> 3.7'
+gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.23.0'
+  gem 'selenium-webdriver', '~> 4.25.0'
 end
 
 group :test do
@@ -162,7 +162,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.4.1'
+  gem 'test-prof', '~> 1.4.2'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'
@@ -179,8 +179,8 @@ group :development do
   gem 'rb-readline', '~> 0.5.5' # require for irb
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
-  gem 'rubocop-minitest', '~> 0.35.1'
-  gem 'rubocop-rails', '~> 2.26.0'
+  gem 'rubocop-minitest', '~> 0.36.0'
+  gem 'rubocop-rails', '~> 2.26.2'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

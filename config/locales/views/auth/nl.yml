@@ -22,6 +22,9 @@ nl:
       message_p1_personal: "Er bestaat al een gebruiker met dezelfde gebruikersnaam (**%{username}**) of hetzelfde e-mailadres (**%{email}**) op Dodona. Waarschijnlijk ben jij dit, maar gebruikte je vorige keer een andere loginmethode."
       message_p2: "Om ook via **%{provider}** aan je gegevens te kunnen, moeten we even je bestaande account koppelen. Klik daarvoor op de aanmeldknop hieronder en log nogmaals in."
       providers_title: "Accounts koppelen"
+      new_account: "Nieuwe account aanmaken"
+      new_account_help: "Als het bestaande account niet van jou is, of als je een nieuwe account wilt aanmaken, klik dan op de knop hieronder."
+      create_new_account: "Maak een nieuwe account"
       "contact_support_html": "Ben jij dit niet of blijf je problemen hebben? Vul het %{form} in en we helpen je zo snel mogelijk verder."
       contact_form: "contactformulier"
     privacy_prompt:

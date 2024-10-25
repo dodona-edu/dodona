@@ -88,8 +88,8 @@ export class AnnotationsCell extends DodonaElement {
                     <d-thread .rootId=${a}></d-thread>
                 `)}
                 ${this.machineAnnotations
-        .filter(a => annotationState.isVisible(a))
-        .sort(compareAnnotationOrders).map(a => html`
+                    .filter(a => annotationState.isVisible(a))
+                    .sort(compareAnnotationOrders).map(a => html`
                         <d-machine-annotation .data=${a}></d-machine-annotation>
                 `)}
             </div>

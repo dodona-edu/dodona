@@ -5,36 +5,6 @@ import flatpickr from "flatpickr";
 import { i18n } from "i18n/i18n";
 
 /**
- * This function takes a string representation of a number and converts it to a format that can be parsed by parseFloat.
- * Supported conversions are:
- * - 1,5 -> 1.5
- * - 1.5 -> 1.5
- * - 1,000.5 -> 1000.5
- * - 1.000,5 -> 1000.5
- * - 1 000.5 -> 1000.5
- * - 1 000,5 -> 1000.5
- * - 1.000 -> 1.000
- * - 1,000 -> 1.000
- * - 1 000 -> 1000
- * - 1,234,567 -> 1234.567
- * - 1.234.567 -> 1234.567
- * - 1 234 567 -> 1234567
- * - 15 -> 15
- * @param input The string representation of the number.
- */
-function convertToFloatRepresentation(input: string): string {
-    const withoutSpaces = input;
-    const parts = withoutSpaces.split(/\.|,/);
-    if (parts.length === 1) {
-        return parts[0];
-    }
-
-    const decimals = parts.pop();
-    const integer = parts.join("");
-    return integer + "." + decimals;
-}
-
-/**
  * Create a function that will delay all subsequent calls on the same timer.
  * You don't necessarily have to call the delayer with the same function.
  *
@@ -299,6 +269,5 @@ export {
     ready,
     getParentByClassName,
     setHTMLExecuteScripts,
-    replaceHTMLExecuteScripts,
-    convertToFloatRepresentation
+    replaceHTMLExecuteScripts
 };

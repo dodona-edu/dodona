@@ -3,7 +3,7 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
-import { convertToFloatRepresentation, fetch, ready } from "utilities";
+import { fetch, ready } from "utilities";
 import { i18n } from "i18n/i18n";
 import { Tooltip } from "bootstrap";
 
@@ -167,7 +167,7 @@ export class ScoreItemInputTable extends DodonaElement {
             }
             // Check if maximum is a positive number < 1000
             // we use a regex instead of parseFloat because parseFloat is too lenient
-            if (! /^\d{1,3}(.\d*)?$/.test(item.maximum)) {
+            if (! /^\d{1,3}(.\d*)?$/.test(item.maximum) || parseFloat(item.maximum) <= 0) {
                 invalidCells.push("D" + row);
             }
         });

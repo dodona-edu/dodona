@@ -312,12 +312,12 @@ nl:
       visible: Zichtbaar
       description_help: Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.
       visible_help: Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is.
-      maximum_help: De maximumscore voor dit scoreonderdeel. Dit moet een positief getal zijn en gaat in stappen van 0.25.
+      maximum_help: De maximumscore voor dit scoreonderdeel. Dit moet een getal zijn tussen 0 en 1000 en gaat in stappen van 0.25.
       save: Opslaan
       cancel: Annuleren
       modified_warning: "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden."
       deleted_warning: "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen."
-      validation_warning: "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een positief getal zijn."
+      validation_warning: "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een getal zijn tussen 0 en 1000."
       jspreadsheet:
         copy: Kopiëer...
         deleteSelectedRows: Verwijder geselecteerde rijen

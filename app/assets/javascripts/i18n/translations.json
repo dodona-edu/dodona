@@ -376,11 +376,11 @@
           "paste": "Paste..."
         },
         "maximum": "Maximum",
-        "maximum_help": "The maximum grade for this score item. The grade should be greater than 0, and works in increments of 0.25.",
+        "maximum_help": "The maximum grade for this score item. The grade should be between 0 and 1000, and works in increments of 0.25.",
         "modified_warning": "You have changed the maximum score of one or more score items. This will mark all completed evaluations with this score item as uncompleted.",
         "name": "Name",
         "save": "Save",
-        "validation_warning": "All score items must have a name and a maximum score, and the maximum score must be greater than 0.",
+        "validation_warning": "All score items must have a name and a maximum score, and the maximum score must be between 0 and 1000.",
         "visible": "Visible",
         "visible_help": "Make the score item visible to students once the evaluation is released."
       },
@@ -902,11 +902,11 @@
           "paste": "Plak..."
         },
         "maximum": "Maximum",
-        "maximum_help": "De maximumscore voor dit scoreonderdeel. Dit moet een positief getal zijn en gaat in stappen van 0.25.",
+        "maximum_help": "De maximumscore voor dit scoreonderdeel. Dit moet een getal zijn tussen 0 en 1000 en gaat in stappen van 0.25.",
         "modified_warning": "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden.",
         "name": "Naam",
         "save": "Opslaan",
-        "validation_warning": "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een positief getal zijn.",
+        "validation_warning": "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een getal zijn tussen 0 en 1000.",
         "visible": "Zichtbaar",
         "visible_help": "Maak het scoreonderdeel zichtbaar voor studenten eens de evaluatie vrijgegeven is."
       },

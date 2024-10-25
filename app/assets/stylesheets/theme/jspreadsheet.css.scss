@@ -29,6 +29,10 @@
   border-right: 1px solid transparent;
   border-bottom: 1px solid transparent;
   background-color: var(--d-code-bg);
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0;
+  font-size: 12px;
 }
 
 .jexcel > thead > tr > td.dragging {
@@ -41,6 +45,10 @@
 
 .jexcel > tbody > tr > td:first-child {
   background-color: var(--d-code-bg);
+  font-weight: 700;
+  line-height: 16px;
+  letter-spacing: 0;
+  font-size: 12px;
 }
 
 .jexcel > tbody > tr.dragging > td {

@@ -3,7 +3,7 @@ import { html, PropertyValues, TemplateResult } from "lit";
 import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
-import { fetch, ready } from "utilities";
+import { convertToFloatRepresentation, fetch, ready } from "utilities";
 import { i18n } from "i18n/i18n";
 import { Tooltip } from "bootstrap";
 
@@ -77,7 +77,7 @@ export class ScoreItemInputTable extends DodonaElement {
                 id: row[0] as number | null,
                 name: row[1] as string,
                 description: row[2] as string,
-                maximum: row[3] as string,
+                maximum: (row[3] as string).replace(",", "."), // replace comma with dot for float representation
                 visible: row[4] as boolean,
                 order: index,
             };
@@ -165,8 +165,9 @@ export class ScoreItemInputTable extends DodonaElement {
             if (item.name === "") {
                 invalidCells.push("B" + row);
             }
-            const max = parseFloat(item.maximum);
-            if (Number.isNaN(max) || max <= 0) {
+            // Check if maximum is a positive number < 1000
+            // we use a regex instead of parseFloat because parseFloat is too lenient
+            if (! /^\d{1,3}(.\d*)?$/.test(item.maximum)) {
                 invalidCells.push("D" + row);
             }
         });

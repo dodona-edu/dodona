@@ -176,6 +176,7 @@ nl:
           permission_change: Verandering in toegangsniveau
           exercise_repository: Aanmaak van oefeningenrepository
           error: Error
+          other: Overige
       export:
         statuses:
           started: Begonnen

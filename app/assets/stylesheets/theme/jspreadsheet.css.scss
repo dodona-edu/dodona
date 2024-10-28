@@ -23,6 +23,10 @@
   border-bottom: 1px solid var(--d-divider);
 }
 
+.jexcel td::selection {
+  background-color: transparent;
+}
+
 .jexcel > thead > tr > td {
   border-top: 1px solid var(--d-divider);
   border-left: 1px solid var(--d-divider);

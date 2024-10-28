@@ -871,6 +871,25 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal u2, a2.reload.last_updated_by
   end
 
+  test 'merge should transfer scores last updated by' do
+    u1 = create :user
+    u2 = create :user
+
+    evaluation = create :evaluation, :with_submissions
+    exercise = evaluation.evaluation_exercises.first
+    score_item1 = create :score_item, evaluation_exercise: exercise,
+                                      description: 'First item',
+                                      maximum: '10.0'
+    feedback = evaluation.feedbacks.first
+    s = create :score, last_updated_by: u1, score_item: score_item1, score: 5, feedback: feedback
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal u2, s.reload.last_updated_by
+  end
+
   test 'jump back in should return most recent incomplete activity' do
     user = create :user
 

@@ -433,6 +433,7 @@ class User < ApplicationRecord
       annotations.each { |a| a.update!(user: other) }
       Annotation.where(last_updated_by_id: id).find_each { |a| a.update!(last_updated_by: other) }
       questions.each { |q| q.update!(user: other) }
+      Score.where(last_updated_by_id: id).find_each { |s| s.update!(last_updated_by: other) }
 
       evaluation_users.each do |eu|
         if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }

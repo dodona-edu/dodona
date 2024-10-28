@@ -1562,10 +1562,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.3.1.tgz#c72a5c76a9fbaf3488e231b13dc52c0da7bab42a"
   integrity sha512-JBxkERygn7Bv/GbN5Rv8Ul6LVknS+5Bp6RgDC/O8gEBU/yeH5Ui5C/OlWrTb6qct7LjjfT6Re2NxB0ln0yYybA==
 
-"@iframe-resizer/child@^5.3.1":
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/@iframe-resizer/child/-/child-5.3.1.tgz#bcd5a73bea4bd67a6b6b93ad935e2e6ebb93bb26"
-  integrity sha512-0Ihy0cbmpna22MRl2NVuKVRSiLwL7449bZJIBV77zZVxTUg3AhG5JzW/SZw9ArXlmm2vz4viRT1LBjkWrJ2miQ==
+"@iframe-resizer/child@^5.3.2":
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/@iframe-resizer/child/-/child-5.3.2.tgz#a7035d277cd9dab69f5e4a04db5b4a765c2f1f18"
+  integrity sha512-y4uX26NzdAU1XRURiFCQCNTuLI04WTGUFQNcG4hfNZGvWO/BnfQ3fiVokQwZjnaQH7mzbGE2SLJqYUb1JIqF1Q==
 
 "@iframe-resizer/core@5.3.1":
   version "5.3.1"

@@ -85,7 +85,7 @@ class Repository < ApplicationRecord
   end
 
   def commit(msg)
-    author = if Current.user&.full_name && Current.user&.email
+    author = if Current.user&.full_name && Current.user.email
                "#{Current.user.full_name} <#{Current.user.email}>"
              else
                'Dodona <dodona@ugent.be>'

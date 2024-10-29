@@ -430,8 +430,10 @@ class User < ApplicationRecord
       events.each { |e| e.update!(user: other) }
       exports.each { |e| e.update!(user: other) }
       notifications.each { |n| n.update!(user: other) }
-      annotations.each { |a| a.update!(user: other, last_updated_by_id: other.id) }
+      annotations.each { |a| a.update!(user: other) }
+      Annotation.where(last_updated_by_id: id).find_each { |a| a.update!(last_updated_by: other) }
       questions.each { |q| q.update!(user: other) }
+      Score.where(last_updated_by_id: id).find_each { |s| s.update!(last_updated_by: other) }
 
       evaluation_users.each do |eu|
         if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }

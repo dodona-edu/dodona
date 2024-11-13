@@ -49,4 +49,25 @@ class SavedAnnotationControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :forbidden
   end
+
+  test 'staff should be able to filter existing annotations on new page' do
+    get new_saved_annotation_path
+
+    assert_response :success
+
+    get new_saved_annotation_path, params: { exercise_id: 1 }
+
+    assert_response :success
+  end
+
+  test 'zeus should be able to filter existing annotations on new page' do
+    sign_in users(:zeus)
+    get new_saved_annotation_path
+
+    assert_response :success
+
+    get new_saved_annotation_path, params: { exercise_id: 1 }
+
+    assert_response :success
+  end
 end

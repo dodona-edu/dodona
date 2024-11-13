@@ -99,7 +99,6 @@ class CoursesController < ApplicationController
   # GET /courses/new
   def new
     authorize Course
-    @filters = filters(Course.all)
     if params[:copy_options]&.fetch(:base_id).present?
       @copy_options = copy_options
       @copy_options[:base] = Course.find(@copy_options[:base_id])

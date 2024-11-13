@@ -3,5 +3,5 @@ const gradeTable = document.querySelector("#evaluation-grade-table-wrapper");
 if(gradeTable) {
     dodona.setHTMLExecuteScripts(gradeTable, "<%= escape_javascript(render 'evaluation_grade_table', feedbacks: @feedbacks, evaluation: @evaluation, users: @users) %>")
 }
-dodona.search.updateFilters(<%= raw @filters.to_json %>);
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);
 

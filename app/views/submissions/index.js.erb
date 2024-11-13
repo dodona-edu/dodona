@@ -6,4 +6,4 @@ if (dodona.feedbackTableLoaded) {
         <%= raw "#{@course&.id || 'undefined'}" %>
     );
 }
-dodona.search.updateFilters(<%= raw @filters.to_json %>);
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

@@ -1,2 +1,2 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#activities-table-wrapper"),"<%= escape_javascript(render partial: 'activities_table', locals: {activities: @activities}) %>");
-dodona.search.updateFilters(<%= raw @filters.to_json %>);
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

@@ -1,2 +1,2 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#submissions-table-wrapper"), "<%= escape_javascript(render partial: 'submissions_table', locals: { submissions: @submissions }) %>")
-dodona.search.updateFilters(<%= raw @filters.to_json %>);
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

@@ -48,6 +48,6 @@
         dodona.search.autoSearch = <%= local_assigns.fetch :autoSearch, true %>;
         dodona.search.setLocalStorageKey(localStorageKey);
 
-        dodona.search.updateFilters(<%= raw @filters.to_json %>);
+        dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);
     });
 </script>

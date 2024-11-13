@@ -42,8 +42,9 @@ class SavedAnnotationsController < ApplicationController
     authorize SavedAnnotation
     @annotations = AnnotationPolicy::Scope.new(current_user, Annotation.all).resolve
     @annotations = @annotations.where(saved_annotation_id: nil).where(user_id: current_user.id)
-    @courses = Course.where(id: @annotations.joins(:submission).pluck('submissions.course_id').uniq)
-    @exercises = Activity.where(id: @annotations.joins(:submission).pluck('submissions.exercise_id').uniq)
+    submissions = Submission.where(id: @annotations.pluck(:submission_id).uniq)
+    @courses = Course.where(id: submissions.pluck(:course_id).uniq)
+    @exercises = Activity.where(id: submissions.pluck(:exercise_id).uniq)
     @annotations = apply_scopes(@annotations.order_by_created_at(:DESC))
                    .includes(:course).includes(:user).includes(:submission)
                    .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))

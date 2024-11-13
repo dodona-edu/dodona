@@ -17,7 +17,7 @@ module Filterable
       end
 
       before_save :set_search
-      scope :by_filter, ->(filter) { filter.split.map(&:strip).select(&:present?).inject(self) { |query, part| query.where("#{table_name}.search LIKE ?", "%#{part}%") } }
+      scope :by_filter, ->(filter) { filter.split.map(&:strip).compact_blank.inject(self) { |query, part| query.where("#{table_name}.search LIKE ?", "%#{part}%") } }
     end
 
     # Creates a method that returns the possible values for the column

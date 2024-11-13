@@ -214,7 +214,6 @@ nl:
         course_id: Cursus
         question_state: Toestand
         popularity: Populariteit
-        search_options: Opties
         exercise_id: Oefening
         draft: "Concept"
         event_type: type

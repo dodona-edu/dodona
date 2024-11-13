@@ -52,6 +52,8 @@ export function initVisibilityCheckboxes(element: HTMLElement): void {
 export function initEditButton(element: HTMLElement): void {
     const editBtn = element.querySelector(".edit-btn") as HTMLAnchorElement;
     const table = element.querySelector(".score-items-table") as HTMLTableElement;
+    const allRowsButLast = table.querySelectorAll("tr:not(:last-child)");
+    const tableHeader = table.querySelector("thead") as HTMLTableSectionElement;
     const form = element.querySelector("d-score-item-input-table") as ScoreItemInputTable;
 
     const activateEditMode = (e: MouseEvent): void => {
@@ -62,7 +64,8 @@ export function initEditButton(element: HTMLElement): void {
     };
 
     editBtn.addEventListener("click", activateEditMode);
-    table.addEventListener("click", activateEditMode);
+    allRowsButLast.forEach(row => row.addEventListener("click", activateEditMode));
+    tableHeader.addEventListener("click", activateEditMode);
 
     form.addEventListener("cancel", () => {
         table.classList.remove("d-none");

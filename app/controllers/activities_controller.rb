@@ -8,7 +8,7 @@ class ActivitiesController < ApplicationController
 
   before_action :set_activity, only: %i[show description edit update media info]
   before_action :set_course, only: %i[show edit update media info]
-  before_action :set_series, only: %i[show edit update info]
+  before_action :set_series, only: %i[show edit update media info]
   before_action :ensure_trailing_slash, only: :show
   before_action :set_lti_message, only: %i[show]
   before_action :set_lti_provider, only: %i[show]
@@ -113,10 +113,10 @@ class ActivitiesController < ApplicationController
 
     # Double check if activity still exists within this course (And throw a 404 when it does not)
     @course&.activities&.find(@activity.id) if current_user&.course_admin?(@course)
-    # We still need to check access because an unauthenticated user should be able to see public activities
-    raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, @course)
 
-    @series = Series.find_by(id: params[:series_id])
+    # We still need to check access because an unauthenticated user should be able to see public activities
+    raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.accessible?(current_user, course: @course, series: @series)
+
     # Double check if activity still exists within this series, redirect to course activity if it does not
     redirect_to helpers.activity_scoped_path(activity: @activity, course: @course) if @series&.activities&.exclude?(@activity)
 
@@ -202,7 +202,7 @@ class ActivitiesController < ApplicationController
   def media
     if params.key?(:token)
       raise Pundit::NotAuthorizedError, 'Not allowed' unless @activity.access_token == params[:token]
-    elsif !@activity.accessible?(current_user, @course)
+    elsif !@activity.accessible?(current_user, course: @course, series: @series)
       raise Pundit::NotAuthorizedError, 'Not allowed'
     end
 

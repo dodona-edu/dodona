@@ -9,9 +9,13 @@ Bundler.require(*Rails.groups)
 module Dodona
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
-    config.load_defaults 7.1
+    config.load_defaults 7.2
 
     config.dodona_email = 'dodona@ugent.be'
+
+    # Don't eager load the lib directory, this causes issues with the autoloader
+    # config.autoload_lib(ignore: %w[assets tasks])
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files

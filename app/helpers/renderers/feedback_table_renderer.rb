@@ -319,17 +319,23 @@ class FeedbackTableRenderer
     end
   end
 
-  def differ(t)
-    if t[:format] == 'csv' && CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
-      CsvDiffer
-    else
-      TextDiffer
+  def with_differ_class(t)
+    if t[:format] == 'csv'
+      begin
+        return yield(CsvDiffer) if CsvDiffer.limited_columns?(t[:generated]) && CsvDiffer.limited_columns?(t[:expected])
+      rescue CSV::MalformedCSVError
+        # use the default differ
+      end
     end
+
+    yield(TextDiffer)
   end
 
   def test_accepted(t)
     @builder.div(class: 'test-accepted') do
-      differ(t).render_accepted(@builder, t[:generated])
+      with_differ_class(t) do |differ_class|
+        differ_class.render_accepted(@builder, t[:expected])
+      end
     end
   end
 
@@ -340,10 +346,12 @@ class FeedbackTableRenderer
   end
 
   def diff(t)
-    differ = differ(t).new(t[:generated], t[:expected])
-    @builder.div(class: "diffs show-#{@diff_type}") do
-      @builder << differ.split
-      @builder << differ.unified
+    with_differ_class(t) do |differ_class|
+      differ = differ_class.new(t[:generated], t[:expected])
+      @builder.div(class: "diffs show-#{@diff_type}") do
+        @builder << differ.split
+        @builder << differ.unified
+      end
     end
   end
 

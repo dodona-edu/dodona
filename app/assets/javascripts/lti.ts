@@ -115,7 +115,7 @@ export function initLtiContentSelection(payloadUrl: string,
             activities: activities,
             series: seriesSelect ? seriesSelect.value : null,
             course: courseSelect.value,
-            // eslint-disable-next-line camelcase
+
             decoded_token: decodedToken
         };
         const responseRaw = await fetch(payloadUrl, {

@@ -8,6 +8,8 @@ import { render } from "lit";
 import { CopyButton } from "components/copy_button";
 import { EditorView } from "@codemirror/view";
 import { i18n } from "i18n/i18n";
+import iframeResize from "@iframe-resizer/parent";
+import "@iframe-resizer/child"; // sets window.parentIFrame
 
 
 function showLightbox(content): void {
@@ -17,7 +19,7 @@ function showLightbox(content): void {
         // MathJax to search for new math (but only in the captions).
         try {
             window.MathJax.typeset( Array.from(document.querySelectorAll(".gslide-description")));
-        } catch (e) {
+        } catch {
             // MathJax is not loaded
             console.warn("MathJax is not loaded");
         }
@@ -139,26 +141,36 @@ function initExerciseDescription(): void {
     initCodeFragments();
 }
 
-async function initExerciseShow(exerciseId: number, programmingLanguage: string, loggedIn: boolean, editorShown: boolean, courseId: number, _deadline: string, baseSubmissionsUrl: string, boilerplate: string): Promise<void> {
+async function initExerciseShow(options: {
+    exerciseId: number,
+    programmingLanguage: string,
+    loggedIn: boolean,
+    editorShown: boolean,
+    courseId: number,
+    deadline: string,
+    baseSubmissionsUrl: string,
+    boilerplate: string,
+    seriesId: number
+}): Promise<void> {
     let editor: EditorView;
     let lastSubmission: string;
     let lastTimeout: number;
 
     async function init(): Promise<void> {
-        if (editorShown) {
+        if (options.editorShown) {
             const editorReady = initEditor();
             initDeadlineTimeout();
             enableSubmissionTableLinks();
-            if (loggedIn) {
+            if (options.loggedIn) {
                 swapActionButtons();
             }
             await editorReady;
-            initRestoreBoilerplateButton(boilerplate);
+            initRestoreBoilerplateButton(options.boilerplate);
         }
 
         // submit source code if button is clicked on editor panel
         document.getElementById("editor-process-btn")?.addEventListener("click", () => {
-            if (!loggedIn) return;
+            if (!options.loggedIn) return;
             // test submitted source code
             const source = editor.state.doc.toString();
             disableSubmitButton();
@@ -193,7 +205,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     async function initEditor(): Promise<void> {
-        editor = await configureEditor(document.getElementById("editor-text"), programmingLanguage, enableSubmitButton);
+        editor = await configureEditor(document.getElementById("editor-text"), options.programmingLanguage, enableSubmitButton);
         editor.focus();
         // Make editor available globally
         window.dodona.editor = editor;
@@ -226,8 +238,9 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
             "body": JSON.stringify({
                 submission: {
                     code: code,
-                    exercise_id: exerciseId,
-                    course_id: courseId,
+                    exercise_id: options.exerciseId,
+                    course_id: options.courseId,
+                    series_id: options.seriesId,
                 },
             }),
             "headers": {
@@ -275,7 +288,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                     return;
                 }
                 event.preventDefault();
-                loadFeedback(baseSubmissionsUrl + element.dataset.submission_id, element.dataset.submission_id);
+                loadFeedback(options.baseSubmissionsUrl + element.dataset.submission_id, element.dataset.submission_id);
             });
         });
     }
@@ -307,7 +320,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                     (submissionRow.querySelector(".load-submission") as HTMLButtonElement).click();
                 } else if (document.getElementById("activity-feedback-link").classList.contains("active") &&
                     document.getElementById("activity-feedback-link").dataset.submission_id === lastSubmission) {
-                    loadFeedback(baseSubmissionsUrl + lastSubmission, lastSubmission);
+                    loadFeedback(options.baseSubmissionsUrl + lastSubmission, lastSubmission);
                 }
                 showFABStatus(status);
                 setTimeout(enableSubmitButton, 100);
@@ -318,7 +331,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function enableSubmitButton(): void {
-        if (!loggedIn) {
+        if (!options.loggedIn) {
             return;
         }
 
@@ -329,7 +342,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function disableSubmitButton(): void {
-        if (!loggedIn) {
+        if (!options.loggedIn) {
             return;
         }
 
@@ -399,7 +412,7 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
                 } else if (errors.exercise && errors.exercise[0] === "not permitted") {
                     message = i18n.t("js.submission-not-allowed");
                 }
-            } catch (e) {
+            } catch {
                 message = i18n.t("js.submission-failed");
             }
         }
@@ -428,12 +441,12 @@ async function initExerciseShow(exerciseId: number, programmingLanguage: string,
     }
 
     function initDeadlineTimeout(): void {
-        if (!_deadline) {
+        if (!options.deadline) {
             return;
         }
         const deadlineWarningElement = document.getElementById("deadline-warning");
         const deadlineInfoElement = document.getElementById("deadline-info");
-        const deadline = new Date(_deadline);
+        const deadline = new Date(options.deadline);
         const infoDeadline = new Date(deadline.getTime() - (5 * 60 * 1000));
 
         function showDeadlineAlerts(): void {
@@ -506,7 +519,17 @@ function onFrameScroll(position): boolean {
     return false;
 }
 
+function initIframeResize(id: string): void {
+    iframeResize({
+        license: "GPLv3",
+        onResized: afterResize,
+        onMessage: onFrameMessage,
+        onScroll: onFrameScroll,
+        inPageLinks: true,
+    },
+    "#" + id);
+}
+
 export {
-    initMathJax, initExerciseShow, initExerciseDescription, afterResize,
-    onFrameMessage, onFrameScroll
+    initMathJax, initExerciseShow, initExerciseDescription, initIframeResize
 };

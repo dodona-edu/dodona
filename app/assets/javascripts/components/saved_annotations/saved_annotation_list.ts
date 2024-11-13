@@ -87,8 +87,12 @@ export class SavedAnnotationList extends DodonaElement {
                                     <a href="${sa.url}">${sa.title}</a>
                                 </td>
                                 <td class="ellipsis-overflow" title="${sa.annotation_text}">${sa.annotation_text}</td>
-                                <td><d-filter-button param="course_id" value="${sa.course.id}">${sa.course.name}</td></td>
-                                <td><d-filter-button param="exercise_id" value="${sa.exercise.id}">${sa.exercise.name}</td></td>
+                                <td>
+                                    ${sa.course ? html`<d-filter-button param="course_id" value="${sa.course.id}">${sa.course.name}</d-filter-button>` : ""}
+                                </td>
+                                <td>
+                                    ${sa.exercise ? html`<d-filter-button param="exercise_id" value="${sa.exercise.id}">${sa.exercise.name}</d-filter-button>` : ""}
+                                </td>
                             </tr>
                         `)}
                     </tbody>

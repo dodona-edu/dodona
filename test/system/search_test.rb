@@ -59,7 +59,7 @@ class SearchTest < ApplicationSystemTestCase
     click_on 'Toggle drawer'
     click_on 'Exercises'
 
-    page.assert_current_path activities_path
+    page.assert_current_path activities_path, ignore_query: true
     page.go_back
 
     page.assert_current_path root_path

@@ -2,7 +2,7 @@
 name: Feature request
 about: Suggest a new feature for Dodona
 title: ''
-labels: feature
+type: feature
 assignees: ''
 
 ---

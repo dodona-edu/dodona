@@ -22,6 +22,9 @@ en:
       message_p1_personal: "A user with the same username (**%{username}**) or email address (**%{email}**) already exists on Dodona. This is probably you, but you have used a different sign in method on previous occasions."
       message_p2: "Before you can access your data using **%{provider}**, we have to link your existing account. To proceed, click on one of the sign in methods below and sign in again."
       providers_title: "Link accounts"
+      new_account: "Create new account"
+      new_account_help: "If the existing account is not yours, or if you want to create a new account, click on the button below."
+      create_new_account: "Create new account"
       "contact_support_html": "If this isn't you or you keep having issues? Fill in the %{form} and we will assist you as soon as possible."
       contact_form: "contact form"
     privacy_prompt:

@@ -36,7 +36,8 @@ module Filterable
     # +is_enum+:: If the column is an enum
     # +model+:: If the column is a foreign key, the model to use to get the human readable name for the column values
     # +name_hash+:: a lambda that takes a list af column values and returns a hash with the human readable name for each column value
-    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, model: nil, name_hash: nil) # rubocop:disable Metrics/ParameterLists
+    # +always_match_nil+:: If the scope should always match nil values (ie. nil is treated as a wildcard, that should match all values)
+    def filterable_by(name, column: name, associations: [], multi: false, is_enum: false, model: nil, name_hash: nil, always_match_nil: false) # rubocop:disable Metrics/ParameterLists
       value_check = if is_enum
                       # We should only allow filtering with valid options in the enum
                       ->(value) { value.in? send(column.to_s.pluralize.to_s) }
@@ -61,6 +62,7 @@ module Filterable
       scope "by_#{name}", lambda { |value|
         if value_check.call(value)
           scope = joins(associations).where(column => value)
+          scope = scope.or(joins(associations).where(column => nil)) if always_match_nil
           # If the scope accepts multiple values, we should only return the results that match all the values
           # This is done by grouping the results by id and checking if the count of distinct values is equal to the number of values
           # To avoid the group by clause to impact future scopes, we reselect the currently filtered elements by id
@@ -78,8 +80,12 @@ module Filterable
 
         names = name_hash.call(count.keys)
 
-        count.map { |key, value| { id: key.to_s, name: names[key].to_s, count: value } }
-             .filter { |option| option[:name].present? } # Remove empty values
+        nil_count = count[nil] || 0
+
+        result = count.map { |key, value| { id: key.to_s, name: names[key].to_s, count: value } }
+        result = result.filter { |option| option[:name].present? } # Remove empty values
+        result = result.map { |o| { id: o[:id], name: o[:name], count: o[:count] + nil_count } } if always_match_nil
+        result
       end
     end
   end

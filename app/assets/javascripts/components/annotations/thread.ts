@@ -56,7 +56,7 @@ export class Thread extends DodonaElement {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.formShown = false;
-        } catch (err) {
+        } catch {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
         }

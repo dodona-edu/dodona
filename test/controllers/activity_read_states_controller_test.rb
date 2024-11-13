@@ -122,6 +122,28 @@ class ActivityReadStatesControllerTest < ActionDispatch::IntegrationTest
     assert_predicate ActivityReadState.where(user: @user, activity: cp, course: course), :any?
   end
 
+  test 'should mark content_page as read within series' do
+    course = create :course, series_count: 1, content_pages_per_series: 1, subscribed_members: [@user]
+    series = course.series.first
+    cp = series.content_pages.first
+    post activity_activity_read_states_url(cp, format: :js), params: { activity_read_state: { activity_id: cp.id, course_id: course.id, series_id: series.id } }
+
+    assert_response :success
+
+    assert_predicate ActivityReadState.where(user: @user, activity: cp, course: course, series: series), :any?
+  end
+
+  test 'Should not mark content_page as read in other series' do
+    course = create :course, series_count: 2, content_pages_per_series: 1, subscribed_members: [@user]
+    series = course.series.first
+    cp = course.series.second.content_pages.first
+    post activity_activity_read_states_url(cp, format: :js), params: { activity_read_state: { activity_id: cp.id, course_id: course.id, series_id: series.id } }
+
+    assert_response :unprocessable_entity
+
+    assert_not_predicate ActivityReadState.where(user: @user, activity: cp, course: course, series: series), :any?
+  end
+
   test 'should mark content_page as read as json' do
     cp = create :content_page
     post activity_activity_read_states_url(cp, format: :json), params: { activity_read_state: { activity_id: cp.id } }

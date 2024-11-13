@@ -46,6 +46,12 @@ class CsvDiffer
     columncount.nil? || columncount <= 20
   end
 
+  # Make sure all rows have the same number of columns by padding them with empty strings
+  def padded_table(table)
+    max_length = table.map(&:length).max
+    table.map { |row| row + Array.new(max_length - row.length, '') }
+  end
+
   # Create a new csv differ, this differ can then be used to create a split and
   # a unified view.
   #
@@ -56,8 +62,8 @@ class CsvDiffer
   # @param [String] generated The csv-encoded generated output as received from the judge
   # @param [String] expected  The csv-encoded expected output as received from the judge
   def initialize(generated, expected)
-    @generated = CSV.parse((generated || '').lstrip, nil_value: '')
-    @expected = CSV.parse((expected || '').lstrip, nil_value: '')
+    @generated = padded_table(CSV.parse((generated || '').lstrip, nil_value: ''))
+    @expected = padded_table(CSV.parse((expected || '').lstrip, nil_value: ''))
 
     @gen_headers, *@generated = @generated
     @gen_headers ||= []

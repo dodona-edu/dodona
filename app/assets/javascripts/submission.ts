@@ -7,6 +7,7 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
         initTabLinks();
         initCollapseButtons();
         initHideCorrect();
+        initTabSummaryLinks();
         contextualizeMediaPaths(parentClass, mediaPath, token);
     }
 
@@ -34,6 +35,18 @@ function initSubmissionShow(parentClass: string, mediaPath: string, token: strin
                 const button = e.currentTarget;
                 const group = getParentByClassName(button, "group");
                 group.classList.toggle("collapsed");
+            });
+        });
+    }
+
+    function initTabSummaryLinks(): void {
+        document.querySelectorAll(".tab-summary-icons a").forEach(l => {
+            l.addEventListener("click", () => {
+                // The href is a hash followed by the id of the group
+                // We remove the hash and get the group by id
+                const groupId = l.attributes["href"].value.substring(1);
+                const group = document.getElementById(groupId);
+                group.classList.remove("collapsed");
             });
         });
     }
@@ -125,7 +138,7 @@ function initCorrectSubmissionToNextLink(status: string): void {
         return;
     }
     const message = document.getElementById("submission-motivational-message");
-    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 36)}`;
+    const congrats = `js.submission_motivational_message.${Math.ceil(Math.random() * 6)}`;
     message.innerHTML = `
         <div class="callout callout-success mt-0" role="alert">
             <span>${i18n.t(congrats)}</span>

@@ -6,14 +6,14 @@ import { SeriesIcon } from "components/series_icon";
 function initFavoriteButtons(doc: Document | HTMLElement = document): void {
     function init(): void {
         doc.querySelectorAll(".favorite-button")
-            .forEach(btn => btn.addEventListener("click", toggleFavorite));
+            .forEach((btn: HTMLElement) => btn.addEventListener("click", () => toggleFavorite(btn)));
     }
 
-    function toggleFavorite(): void {
-        if (this.classList.contains("favorited")) {
-            unfavoriteCourse(this);
+    function toggleFavorite(btn: HTMLElement): void {
+        if (btn.classList.contains("favorited")) {
+            unfavoriteCourse(btn);
         } else {
-            favoriteCourse(this);
+            favoriteCourse(btn);
         }
     }
 
@@ -44,7 +44,7 @@ function initFavoriteButtons(doc: Document | HTMLElement = document): void {
                 const cloneFavButton = clone.querySelector<HTMLButtonElement>(".favorite-button");
                 cloneFavButton.setAttribute("title", i18n.t("js.unfavorite-course-do"));
                 new bootstrap.Tooltip(cloneFavButton); // is enabled by default
-                cloneFavButton.addEventListener("click", toggleFavorite);
+                cloneFavButton.addEventListener("click", () => toggleFavorite(cloneFavButton));
                 // hack to fix double rendering of content of lit element 'd-series-icon'
                 clone.querySelectorAll("d-series-icon").forEach((el: SeriesIcon) => {
                     el.replaceChildren();

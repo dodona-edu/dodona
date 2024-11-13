@@ -63,7 +63,7 @@ export class FilterElement extends DodonaElement {
         searchQueryState.arrayQueryParams.set(this.param, [...this.multiSelected, label.id]);
     }
 
-    private singleUnSelect(label: Label): void {
+    private singleUnSelect(): void {
         searchQueryState.queryParams.set(this.param, undefined);
     }
 
@@ -76,7 +76,7 @@ export class FilterElement extends DodonaElement {
     }
 
     isSelected = this.singleIsSelected;
-    unSelect = this.singleUnSelect;
+    unSelect: (label: Label) => void = this.singleUnSelect;
     select = this.singleSelect;
 
     toggle(label: Label): void {

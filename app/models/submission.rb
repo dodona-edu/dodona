@@ -14,6 +14,7 @@
 #  fs_key      :string(24)
 #  number      :integer
 #  annotated   :boolean          default(FALSE), not null
+#  series_id   :integer
 #
 
 class Submission < ApplicationRecord
@@ -28,11 +29,12 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
+  enum :status, { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
 
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
   belongs_to :course, optional: true
+  belongs_to :series, optional: true
   has_one :judge, through: :exercise
   has_one :notification, as: :notifiable, dependent: :destroy
   has_many :annotations, dependent: :destroy
@@ -73,7 +75,7 @@ class Submission < ApplicationRecord
   end
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user
@@ -152,17 +154,6 @@ class Submission < ApplicationRecord
   def result=(result)
     FileUtils.mkdir_p fs_path
     File.binwrite(File.join(fs_path, RESULT_FILENAME), ActiveSupport::Gzip.compress(result.force_encoding('UTF-8')))
-  end
-
-  def series
-    return nil if course.nil?
-
-    series = course.series
-    # we want to avoid accidentally linking a hidden series to a student
-    series = series.visible
-    # There could actually be multiple series with the same exercise and the same course
-    # But for now we just return the first one, as there is only one in most cases
-    series.joins(:series_memberships).find_by(series_memberships: { activity: exercise })
   end
 
   def clean_messages(messages, levels)

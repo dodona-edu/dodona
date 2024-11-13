@@ -5,11 +5,9 @@ import { initDatePicker } from "utilities";
 import { themeState } from "state/Theme";
 import { i18n } from "i18n/i18n";
 
-export type RawData = {
-    // eslint-disable-next-line camelcase
-    data: { ex_id: number, ex_data: unknown[] }[],
+export type RawData<T=unknown> = {
+    data: { ex_id: number, ex_data: T[] }[],
     exercises: [number, string][],
-    // eslint-disable-next-line camelcase
     student_count: number,
 }
 
@@ -107,7 +105,7 @@ export abstract class SeriesGraph {
     }
 
 
-    protected draw(animation=true): void {
+    protected draw(): void {
         console.log("Drawing graph");
         this.innerWidth = this.width - this.margin.left - this.margin.right;
         this.innerHeight = this.height - this.margin.top - this.margin.bottom;

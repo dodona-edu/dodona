@@ -1,5 +1,4 @@
 import "components/search/search_options";
-import { SearchOptions } from "components/search/search_option";
 import { fixture, nextFrame } from "@open-wc/testing-helpers";
 import userEvent from "@testing-library/user-event";
 import { screen } from "@testing-library/dom";
@@ -8,7 +7,6 @@ import { searchQueryState } from "state/SearchQuery";
 import { Option } from "components/search/search_option";
 
 describe("SearchOptions", () => {
-    let searchOptions: SearchOptions;
     beforeEach(async () => {
         searchQueryState.queryParams.clear();
         searchQueryState.arrayQueryParams.clear();
@@ -17,7 +15,7 @@ describe("SearchOptions", () => {
             { param: "bar", label: "fool" },
         ];
         await fixture(`<div class="toasts"></div>`);
-        searchOptions = await fixture(html`
+        await fixture(html`
             <d-search-options .options=${options}
             ></d-search-options>`);
     });

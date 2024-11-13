@@ -209,15 +209,21 @@ end %>
 <% end %>
 <script type="text/javascript">
     dodona.ready.then(async function() {
-        await dodona.initExerciseShow(
-            <%= @activity.id %>,
-            "<%= @activity.programming_language&.editor_name || "text" %>",
-            <%= user_signed_in? %>,
-            <%= @activity.exercise? && (policy(@activity).submit? || !user_signed_in?) %>,
-            <%= @course&.id || "null" %>,
-            <%= raw "\"#{@series&.deadline&.httpdate}\"" || "null" %>,
-            "<%= submissions_url %>",
-            `<%= escape_javascript (@activity.exercise? && @activity.boilerplate)|| "" %>`,
-        );
+
+      const options = <%= raw({
+        exerciseId: @activity.id,
+        programmingLanguage: @activity.programming_language&.editor_name || "text",
+        loggedIn: user_signed_in?,
+        editorShown: @activity.exercise? && (policy(@activity).submit? || !user_signed_in?),
+        courseId: @course&.id,
+        deadline: "\"#{@series&.deadline&.httpdate}\"",
+        baseSubmissionsUrl: submissions_url,
+        seriesId: @series&.id
+      }.to_json.html_safe) %>;
+
+      // boilerplate cannot be part of hash, because we need to escape it
+      options.boilerplate = `<%= escape_javascript(@activity.exercise? && @activity.boilerplate)|| "" %>`
+
+      await dodona.initExerciseShow(options);
     });
 </script>

@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+
 import { State } from "state/state_system/State";
 import { StateController } from "state/state_system/StateController";
 import { LitElement } from "lit";

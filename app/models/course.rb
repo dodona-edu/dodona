@@ -54,8 +54,8 @@ class Course < ApplicationRecord
 
   has_many :course_labels, dependent: :destroy
 
-  enum visibility: { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
-  enum registration: { open_for_all: 3, open_for_institutional_users: 0, open_for_institution: 1, closed: 2 }
+  enum :visibility, { visible_for_all: 0, visible_for_institution: 1, hidden: 2 }
+  enum :registration, { open_for_all: 3, open_for_institutional_users: 0, open_for_institution: 1, closed: 2 }
 
   # TODO: Remove and use activities?
   has_many :content_pages,
@@ -302,6 +302,10 @@ class Course < ApplicationRecord
 
   def open_for_user?(user)
     open_for_all? || (open_for_institution? && institution == user&.institution) || (open_for_institutional_users? && user&.institutional?)
+  end
+
+  def visible_for_user?(user)
+    visible_for_all? || (visible_for_institution? && institution == user&.institution) || user&.member_of?(self)
   end
 
   def invalidate_subscribed_members_count_cache

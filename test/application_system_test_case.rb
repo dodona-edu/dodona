@@ -40,6 +40,8 @@ Capybara.configure do |config|
   config.default_max_wait_time = 10
 end
 
+Capybara.threadsafe = true
+
 class ApplicationSystemTestCase < ActionDispatch::SystemTestCase
   driven_by :chrome
 

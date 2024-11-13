@@ -14,7 +14,7 @@ export const createStateFromInterface = <T>(): new (data: T) => (T & State) => {
         constructor(data: T) {
             super();
             Object.keys(data).forEach(key => {
-                (this as any)[key] = data[key];
+                this[key] = data[key];
             });
         }
     }

@@ -175,6 +175,7 @@ en:
           permission_change: Change in permission level
           exercise_repository: Creation of exercise repository
           error: Error
+          other: Other
       export:
         statuses:
           started: Started

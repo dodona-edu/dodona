@@ -61,7 +61,7 @@ export class AnnotationsCell extends DodonaElement {
             const mode = annotationState.isQuestionMode ? "question" : "annotation";
             await userAnnotationState.create(annotationData, submissionState.id, mode, e.detail.saveAnnotation, e.detail.savedAnnotationTitle);
             this.closeForm();
-        } catch (err) {
+        } catch {
             this.annotationFormRef.value.hasErrors = true;
             this.annotationFormRef.value.disabled = false;
         }
@@ -88,8 +88,8 @@ export class AnnotationsCell extends DodonaElement {
                     <d-thread .rootId=${a}></d-thread>
                 `)}
                 ${this.machineAnnotations
-        .filter(a => annotationState.isVisible(a))
-        .sort(compareAnnotationOrders).map(a => html`
+                    .filter(a => annotationState.isVisible(a))
+                    .sort(compareAnnotationOrders).map(a => html`
                         <d-machine-annotation .data=${a}></d-machine-annotation>
                 `)}
             </div>

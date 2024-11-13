@@ -96,8 +96,10 @@ class SubmissionsController < ApplicationController
       format.html do
         if @submission.course.nil?
           redirect_to activity_url(@submission.exercise, anchor: 'submission-card', edit_submission: @submission)
-        else
+        elsif @submission.series.nil?
           redirect_to course_activity_url(@submission.course, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
+        else
+          redirect_to course_series_activity_url(@submission.course, @submission.series, @submission.exercise, anchor: 'submission-card', edit_submission: @submission)
         end
       end
     end
@@ -109,13 +111,22 @@ class SubmissionsController < ApplicationController
     para[:user_id] = current_user.id
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
-    course = Course.find(para[:course_id]) if para[:course_id].present?
-    para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
+    # check if user is member of course
+    if para[:course_id].present?
+      course = Course.find(para[:course_id])
+      para.delete(:course_id) if course.subscribed_members.exclude?(current_user)
+    end
+    # check if series is part of course
+    if para[:series_id].present? && para[:course_id].present?
+      series = Series.find(para[:series_id])
+      para.delete(:series_id) if course.series.exclude?(series)
+    end
+
     submission = Submission.new(para)
     can_submit = true
     if submission.exercise.present?
       can_submit &&= Pundit.policy!(current_user, submission.exercise).submit?
-      can_submit &&= submission.exercise.accessible?(current_user, course)
+      can_submit &&= submission.exercise.accessible?(current_user, course: course, series: series)
     end
     if can_submit && submission.save
       render json: { status: 'ok', id: submission.id, exercise_id: submission.exercise_id, course_id: submission.course_id, url: submission_url(submission, format: :json) }
@@ -166,7 +177,9 @@ class SubmissionsController < ApplicationController
 
     @course = Course.find(params[:course_id]) if params[:course_id]
     @series = Series.find(params[:series_id]) if params[:series_id]
-    @activity = Exercise.find(params[:activity_id]) if params[:activity_id]
+    # both /activities/:id/submissions and /exercises/:id/submissions are valid routes
+    activity_id = params[:activity_id] || params[:exercise_id]
+    @activity = Exercise.find(activity_id) if activity_id
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @activity

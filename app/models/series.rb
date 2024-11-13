@@ -30,7 +30,7 @@ class Series < ApplicationRecord
   USER_STARTED_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/started/%<updated_at>s'.freeze
   USER_WRONG_CACHE_STRING = '/series/%<id>s/user/%<user_id>s/wrong/%<updated_at>s'.freeze
 
-  enum visibility: { open: 0, hidden: 1, closed: 2, timed: 3 }
+  enum :visibility, { open: 0, hidden: 1, closed: 2, timed: 3 }
 
   before_save :regenerate_activity_tokens, if: :visibility_changed?
   before_create :generate_access_token
@@ -205,5 +205,25 @@ class Series < ApplicationRecord
     invalidate_completed?(user: user, deadline: deadline) if deadline.present?
     invalidate_started?(user: user)
     invalidate_wrong?(user: user)
+  end
+
+  def visible_to?(user)
+    return true if user&.course_admin? course
+
+    return true if open?
+
+    return false if hidden?
+
+    return false if closed?
+
+    return false if timed? && visibility_start > Time.zone.now
+
+    true
+  end
+
+  def accessible_to?(user)
+    return true if visible_to?(user)
+
+    user&.member_of?(course) && hidden?
   end
 end

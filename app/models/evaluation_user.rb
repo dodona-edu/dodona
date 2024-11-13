@@ -15,12 +15,12 @@ class EvaluationUser < ApplicationRecord
   validates :user_id, uniqueness: { scope: :evaluation_id }
 
   def score
-    mapped = feedbacks.map(&:score).filter(&:present?)
+    mapped = feedbacks.map(&:score).compact_blank
     mapped.sum if mapped.any?
   end
 
   def graded?
-    mapped = feedbacks.map(&:score).filter(&:present?)
+    mapped = feedbacks.map(&:score).compact_blank
     mapped.count > 0
   end
 

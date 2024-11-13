@@ -6,7 +6,7 @@
 #  name         :string(255)
 #  remote       :string(255)
 #  path         :string(255)
-#  judge_id     :integer
+#  judge_id     :integer          default(17)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  clone_status :integer          default("queued"), not null
@@ -85,7 +85,7 @@ class Repository < ApplicationRecord
   end
 
   def commit(msg)
-    author = if Current.user&.full_name && Current.user&.email
+    author = if Current.user&.full_name && Current.user.email
                "#{Current.user.full_name} <#{Current.user.email}>"
              else
                'Dodona <dodona@ugent.be>'

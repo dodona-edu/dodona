@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_17_143229) do
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -82,6 +82,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "series_id"
     t.index ["activity_id", "course_id", "user_id"], name: "activity_read_states_unique", unique: true
     t.index ["course_id"], name: "fk_rails_f674cacc14"
     t.index ["user_id"], name: "fk_rails_96d00253e9"
@@ -389,7 +390,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.string "name"
     t.string "remote"
     t.string "path"
-    t.integer "judge_id"
+    t.integer "judge_id", default: 17
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.integer "clone_status", default: 1, null: false
@@ -420,8 +421,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.string "title", null: false
     t.text "annotation_text", size: :medium
     t.integer "user_id", null: false
-    t.integer "exercise_id", null: false
-    t.integer "course_id", null: false
+    t.integer "exercise_id"
+    t.integer "course_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "annotations_count", default: 0
@@ -499,6 +500,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.string "fs_key", limit: 24
     t.integer "number"
     t.boolean "annotated", default: false, null: false
+    t.integer "series_id"
     t.index ["accepted"], name: "index_submissions_on_accepted"
     t.index ["course_id"], name: "index_submissions_on_course_id"
     t.index ["exercise_id", "status", "course_id"], name: "ex_st_co_idx"
@@ -527,10 +529,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_07_124219) do
     t.datetime "sign_in_at", precision: nil
     t.integer "open_questions_count", default: 0, null: false
     t.integer "theme", default: 0, null: false
-    t.index ["email", "institution_id"], name: "index_users_on_email_and_institution_id", unique: true
     t.index ["institution_id"], name: "index_users_on_institution_id"
     t.index ["token"], name: "index_users_on_token"
-    t.index ["username", "institution_id"], name: "index_users_on_username_and_institution_id", unique: true
     t.index ["username"], name: "index_users_on_username"
   end
 

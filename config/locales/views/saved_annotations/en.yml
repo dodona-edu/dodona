@@ -4,7 +4,9 @@ en:
       title: Saved comments
     show:
       linked_submissions: Linked submissions
-      usage_info_html: This comment can be reused on all submissions for the exercise <a href="%{exercise_path}">%{exercise_name}</a> in the course <a href="%{course_path}">%{course_name}</a>.
+      usage_info: This comment can be reused on all submissions
+      exercise_info_html: for the exercise <a href="%{exercise_path}">%{exercise_name}</a>
+      course_info_html: in the course <a href="%{course_path}">%{course_name}</a>
       count_info_html: This comment is used %{count} times.
     edit:
       title: Edit saved comment
@@ -12,5 +14,7 @@ en:
       warning_no_annotations_changed: Existing comments will not be updated. These changes will only be applied to new comments.
       destroy: Delete
       save: Save
+      course_placeholder: This comment is reusable in all courses.
+      exercise_placeholder: This comment is reusable in all exercises.
     new:
       title: Save comment

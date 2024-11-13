@@ -34,8 +34,8 @@ class User < ApplicationRecord
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
-  enum permission: { student: 0, staff: 1, zeus: 2 }
-  enum theme: { system: 0, light: 1, dark: 2 }
+  enum :permission, { student: 0, staff: 1, zeus: 2 }
+  enum :theme, { system: 0, light: 1, dark: 2 }
 
   belongs_to :institution, optional: true
 
@@ -122,8 +122,6 @@ class User < ApplicationRecord
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf elixir]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validate :max_one_institution
   validate :provider_allows_blank_email
 
@@ -432,8 +430,10 @@ class User < ApplicationRecord
       events.each { |e| e.update!(user: other) }
       exports.each { |e| e.update!(user: other) }
       notifications.each { |n| n.update!(user: other) }
-      annotations.each { |a| a.update!(user: other, last_updated_by_id: other.id) }
+      annotations.each { |a| a.update!(user: other) }
+      Annotation.where(last_updated_by_id: id).find_each { |a| a.update!(last_updated_by: other) }
       questions.each { |q| q.update!(user: other) }
+      Score.where(last_updated_by_id: id).find_each { |s| s.update!(last_updated_by: other) }
 
       evaluation_users.each do |eu|
         if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }
@@ -479,7 +479,7 @@ class User < ApplicationRecord
 
     # Don't give information about the exercise if the submission was within a course, but not within a visible series
     # This is to prevent students from seeing exercises that are not made public explicitly
-    if latest_submission.course.present? && (latest_submission.series.nil? || !latest_submission.series.open?)
+    if latest_submission.course.present? && !latest_submission.series&.visible_to?(self)
       # Don't show complete courses
       return [] if latest_submission.course.incomplete_series(self).blank?
 
@@ -504,7 +504,7 @@ class User < ApplicationRecord
       }
     end
 
-    if latest_submission.series.present? && (latest_submission.series.open? || course_admin?(latest_submission.course))
+    if latest_submission.series.present? && latest_submission.series.visible_to?(self)
       next_activity = latest_submission.series.next_activity(latest_submission.exercise)
       if next_activity.present?
         # start working on the next exercise, if that one was not accepted
@@ -531,7 +531,7 @@ class User < ApplicationRecord
       end
 
       next_series = latest_submission.series.next
-      if next_series.present? && (next_series.open? || course_admin?(latest_submission.course)) && !next_series.completed?(user: self)
+      if next_series.present? && next_series.visible_to?(self) && !next_series.completed?(user: self)
         # start working on the next series
         result << {
           submission: nil,

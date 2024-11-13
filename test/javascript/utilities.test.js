@@ -12,7 +12,7 @@ describe("Url functions", () => {
     const oneParameterURL = "https://example.com/test_functions?param1=paramVal1";
     const twoParameterURL = "https://example.com/test_functions?param1=paramVal1&param2=paramVal2";
     // "[]" is converted to "%5B%5D" in a URL
-    // eslint-disable-next-line max-len
+
     const multipleValueUrl = "https://example.com/test_functions?param%5B%5D=paramVal1&param%5B%5D=paramVal2&param%5B%5D=paramVal3";
 
     test("return correct parameter value", () => {
@@ -53,12 +53,12 @@ describe("Url functions", () => {
     test("update array URL parameter", () => {
         let updatedURL = updateArrayURLParameter(relativePath, "param",
             ["paramVal1", "paramVal1", "paramVal2"]);
-        // eslint-disable-next-line max-len
+
         expect(updatedURL).toEqual(`${window.location.origin}${relativePath}?param%5B%5D=paramVal1&param%5B%5D=paramVal2`);
 
         updatedURL = updateArrayURLParameter(noParameterURL, "param",
             ["paramVal1", "paramVal1", "paramVal2", "paramVal3"]);
-        // eslint-disable-next-line max-len
+
         expect(updatedURL).toEqual(`${noParameterURL}?param%5B%5D=paramVal1&param%5B%5D=paramVal2&param%5B%5D=paramVal3`);
 
         updatedURL = updateArrayURLParameter(oneParameterURL, "param2", ["paramVal2"]);

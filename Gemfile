@@ -40,7 +40,7 @@ gem 'bootsnap', '~> 1.18.4', require: false
 gem 'json_schemer', '~> 2.3.0'
 
 # delayed jobs
-gem 'delayed_job_active_record', '~> 4.1.10'
+gem 'delayed_job_active_record', '~> 4.1.11'
 
 # dashboard
 gem 'delayed_job_web', '~>1.4.4'
@@ -51,7 +51,7 @@ gem 'will_paginate', '~>4.0.1'
 # markdown rendering and syntax highlighting
 gem 'kramdown', '~>2.4.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
-gem 'rouge', '4.4.0'
+gem 'rouge', '4.5.0'
 
 # feedback table builder
 gem 'builder', '~>3.3.0'
@@ -132,7 +132,7 @@ gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'datadog', '~> 2.4.0'
+gem 'datadog', '~> 2.6.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.4.0'
@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.4.5'
+  gem 'mocha', '~> 2.5.0'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.3'
 
@@ -154,7 +154,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.25.0'
+  gem 'selenium-webdriver', '~> 4.26.0'
 end
 
 group :test do
@@ -180,7 +180,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-minitest', '~> 0.36.0'
-  gem 'rubocop-rails', '~> 2.26.2'
+  gem 'rubocop-rails', '~> 2.27.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'
@@ -190,7 +190,7 @@ end
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # interfacing with docker
-gem 'docker-api', '~> 2.3.0'
+gem 'docker-api', '~> 2.4.0'
 
 # Used for syncing deadlines with an external calendar
 gem 'icalendar', '~> 2.10'

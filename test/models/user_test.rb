@@ -846,6 +846,50 @@ class UserHasManyTest < ActiveSupport::TestCase
     assert_equal 2, u2.announcement_views.count
   end
 
+  test 'merge should transfer last_updated_by of non owned annotations' do
+    u1 = create :user
+    u2 = create :user
+
+    student = create :user
+
+    c = create :course, series_count: 1, exercises_per_series: 1
+    c.administrating_members << u1
+    c.enrolled_members << student
+
+    s = create :submission, user: student, course: c
+
+    a1 = create :annotation, user: u1, submission: s
+    a2 = create :annotation, user: create(:user), submission: s
+
+    a2.update(last_updated_by: u1)
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal u2, a1.reload.last_updated_by
+    assert_equal u2, a2.reload.last_updated_by
+  end
+
+  test 'merge should transfer scores last updated by' do
+    u1 = create :user
+    u2 = create :user
+
+    evaluation = create :evaluation, :with_submissions
+    exercise = evaluation.evaluation_exercises.first
+    score_item1 = create :score_item, evaluation_exercise: exercise,
+                                      description: 'First item',
+                                      maximum: '10.0'
+    feedback = evaluation.feedbacks.first
+    s = create :score, last_updated_by: u1, score_item: score_item1, score: 5, feedback: feedback
+
+    result = u1.merge_into(u2)
+
+    assert result
+    assert_not u1.persisted?
+    assert_equal u2, s.reload.last_updated_by
+  end
+
   test 'jump back in should return most recent incomplete activity' do
     user = create :user
 

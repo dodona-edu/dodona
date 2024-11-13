@@ -1,11 +1,13 @@
 class SavedAnnotationsController < ApplicationController
   include Sortable
+  include HasFilter
   set_pagination_headers :saved_annotations, only: [:index]
+  set_filter_headers only: [:index]
   before_action :set_saved_annotation, only: %i[show update destroy edit]
 
   has_scope :by_user, as: 'user_id'
-  has_scope :by_course, as: 'course_id'
-  has_scope :by_exercise, as: 'exercise_id'
+  has_filter :course_id
+  has_filter :exercise_id
   has_scope :by_filter, as: 'filter'
 
   order_by :annotations_count, :title, :annotation_text, :created_at
@@ -14,10 +16,9 @@ class SavedAnnotationsController < ApplicationController
     authorize SavedAnnotation
     @title = I18n.t('saved_annotations.index.title')
     @crumbs = [[I18n.t('saved_annotations.index.title'), saved_annotations_path]]
-    saved_annotations = policy_scope(SavedAnnotation.order_by_annotations_count(:DESC))
-    @courses = Course.where(id: saved_annotations.pluck(:course_id).uniq)
-    @exercises = Activity.where(id: saved_annotations.pluck(:exercise_id).uniq)
-    @saved_annotations = apply_scopes(saved_annotations)
+    saved_annotations = policy_scope(SavedAnnotation)
+    @filters = filters(saved_annotations)
+    @saved_annotations = apply_scopes(saved_annotations.order_by_annotations_count(:DESC))
                          .includes(:course).includes(:user).includes(:exercise)
                          .paginate(page: parse_pagination_param(params[:page]), per_page: parse_pagination_param(params[:per_page]))
   end
@@ -42,6 +43,7 @@ class SavedAnnotationsController < ApplicationController
     authorize SavedAnnotation
     @annotations = AnnotationPolicy::Scope.new(current_user, Annotation.all).resolve
     @annotations = @annotations.where(saved_annotation_id: nil).where(user_id: current_user.id)
+    @filters = filters(@annotations)
     submissions = Submission.where(id: @annotations.pluck(:submission_id).uniq)
     @courses = Course.where(id: submissions.pluck(:course_id).uniq)
     @exercises = Activity.where(id: submissions.pluck(:exercise_id).uniq)

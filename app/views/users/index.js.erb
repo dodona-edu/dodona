@@ -1,1 +1,2 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#users-table-wrapper"), "<%= escape_javascript(render partial: 'users/users_table', locals: {users: @users, pagination_opts: @pagination_opts }) %>");
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

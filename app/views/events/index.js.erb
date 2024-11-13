@@ -1,1 +1,2 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#events-table-wrapper"), "<%= escape_javascript(render partial: 'events/events_table', locals: {events: @events}) %>")
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

@@ -24,11 +24,12 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  include Filterable
   include StringHelper
   include Cacheable
   include Tokenable
   include ActiveModel::Dirty
+  include FilterableByCourseLabels
+  include Filterable
 
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
@@ -117,6 +118,7 @@ class User < ApplicationRecord
 
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
+  has_many :course_labels, through: :course_memberships
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf elixir]
 
@@ -134,11 +136,13 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :identities, limit: 1
 
+  search_by :username, :first_name, :last_name
+
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_institution, ->(institution) { where(institution: institution) }
+  filterable_by :institution_id, model: Institution
 
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
-  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
+  filterable_by_course_labels
   scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
@@ -380,10 +384,6 @@ class User < ApplicationRecord
     return nil if username.blank?
 
     find_by(username: username, institution_id: institution_id)
-  end
-
-  def set_search
-    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
   end
 
   # Be careful when using force institution. This expects the providers to be updated externally

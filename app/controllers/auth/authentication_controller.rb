@@ -1,7 +1,7 @@
 class Auth::AuthenticationController < Devise::SessionsController
   # A sign-out route is inherited from the parent controller.
 
-  has_scope :by_institution, as: 'institution_id'
+  has_scope :by_institution_id, as: 'institution_id'
 
   skip_before_action :verify_authenticity_token, raise: false
 

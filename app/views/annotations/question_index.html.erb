@@ -26,7 +26,7 @@
           <% options << { label: t('questions.index.watch'), param: 'refresh' } %>
           <% options << { label: t('questions.index.everything'), param: 'everything' } if @unfiltered %>
         <% end %>
-        <%= render partial: 'layouts/searchbar', locals: { options: options, refresh_element: "#question-container", courses: @courses, question_states: Question.question_states.keys } %>
+        <%= render partial: 'layouts/searchbar', locals: { options: options, refresh_element: "#question-container"} %>
         <div id="questions-table-wrapper">
           <%= render partial: 'questions_table_with_pagination', locals: { questions: @questions } %>
         </div>

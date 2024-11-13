@@ -1,8 +1,12 @@
 import { html, TemplateResult } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { FilterCollection, Label, FilterCollectionElement } from "components/search/filter_collection_element";
+import {
+    Label,
+    FilterElement,
+    AccentColor
+} from "components/search/filter_element";
 import { i18n } from "i18n/i18n";
-import { DodonaElement } from "components/meta/dodona_element";
+import { FilterCollection } from "components/search/filter_collection";
 
 /**
  * This component inherits from FilterCollectionElement.
@@ -10,19 +14,15 @@ import { DodonaElement } from "components/meta/dodona_element";
  *
  * @element d-dropdown-filter
  *
- * @prop {(s: Label) => string} color - a function that fetches the color associated with each label
- * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
+ * @prop {AccentColor} color - the color associated with the filter
  * @prop {string} param - the searchQuery param to be used for this filter
  * @prop {boolean} multi - whether one or more labels can be selected at the same time
- * @prop {(l: Label) => string} paramVal - a function that extracts the value that should be used in a searchQuery for a selected label
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-dropdown-filter")
-export class DropdownFilter extends FilterCollectionElement {
-    @property()
-    color: (s: Label) => string;
-    @property()
-    type: string;
+export class DropdownFilter extends FilterElement {
+    @property({ type: String })
+    color: AccentColor;
 
     @property({ state: true })
     filter = "";
@@ -35,16 +35,16 @@ export class DropdownFilter extends FilterCollectionElement {
         return this.showFilter ? this.labels.filter(s => s.name.toLowerCase().includes(this.filter.toLowerCase())) : this.labels;
     }
 
-    render(): TemplateResult {
-        if (this.labels.length === 0) {
-            return html``;
-        }
+    get disabled(): boolean {
+        return this.labels.length === 0 || (!this.multi && this.labels.length === 1);
+    }
 
+    render(): TemplateResult {
         return html`
             <div class="dropdown dropdown-filter">
-                <a class="token token-bordered" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                    ${this.getSelectedLabels().map( s => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color(s)} left-icon"></i>`)}
-                    ${i18n.t(`js.dropdown.${this.multi?"multi":"single"}.${this.type}`)}
+                <a class="token token-bordered ${this.disabled ? "disabled" : ""}" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    ${this.getSelectedLabels().map( () => html`<i class="mdi mdi-circle mdi-12 mdi-colored-accent accent-${this.color} left-icon"></i>`)}
+                    ${i18n.t(`js.search.filter.${this.param}`)}
                     <i class="mdi mdi-chevron-down mdi-18 right-icon"></i>
                 </a>
 
@@ -54,12 +54,13 @@ export class DropdownFilter extends FilterCollectionElement {
                             <input type="text" class="form-control " @input=${e => this.filter = e.target.value} placeholder="${i18n.t("js.dropdown.search")}">
                         </span></li>
                     ` : ""}
-                    ${this.filteredLabels.map(s => html`
+                    ${this.filteredLabels.sort((a, b) => b.count - a.count).map(s => html`
                             <li><span class="dropdown-item-text ">
                                 <div class="form-check">
                                     <input class="form-check-input" type="${this.multi?"checkbox":"radio"}" .checked=${this.isSelected(s)} @click="${() => this.toggle(s)}" id="check-${this.param}-${s.id}">
                                     <label class="form-check-label" for="check-${this.param}-${s.id}">
                                         ${s.name}
+                                        ${s.count ? html`<span class="text-muted float-end ms-4">${s.count}</span>` : ""}
                                     </label>
                                 </div>
                             </span></li>
@@ -75,27 +76,23 @@ export class DropdownFilter extends FilterCollectionElement {
  *
  * @element d-dropdown-filters
  *
- * @prop {[string, FilterCollection][]} filterCollections - the list of filterCollections for which a dropdown should be displayed
+ * @prop {FilterOptions[]} filters - the list of filterOptions for which a dropdown should be displayed
+ * @prop {string[]} hide - the list of filter params that should be hidden
  */
 @customElement("d-dropdown-filters")
-export class DropdownFilters extends DodonaElement {
-    @property( { type: Array })
-    filterCollections: [string, FilterCollection][];
-
+export class DropdownFilters extends FilterCollection {
     render(): TemplateResult {
-        if (!this.filterCollections) {
+        if (!this.visibleFilters) {
             return html``;
         }
 
         return html`
-            ${this.filterCollections.map(([type, c]) => html`
+            ${this.visibleFilters.map(c => html`
                 <d-dropdown-filter
                     .labels=${c.data}
                     .color=${c.color}
-                    .paramVal=${c.paramVal}
                     .param=${c.param}
                     .multi=${c.multi}
-                    .type=${type}
                 >
                 </d-dropdown-filter>
             `)}

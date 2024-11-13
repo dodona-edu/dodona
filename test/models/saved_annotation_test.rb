@@ -26,9 +26,9 @@ class SavedAnnotationTest < ActiveSupport::TestCase
     s2 = create :saved_annotation, course: course, user: user
     s3 = create :saved_annotation, course: create(:course), user: user
 
-    assert_includes SavedAnnotation.by_course(course), s1
-    assert_includes SavedAnnotation.by_course(course), s2
-    assert_not_includes SavedAnnotation.by_course(course), s3
+    assert_includes SavedAnnotation.by_course_id(course.id), s1
+    assert_includes SavedAnnotation.by_course_id(course.id), s2
+    assert_not_includes SavedAnnotation.by_course_id(course.id), s3
   end
 
   test 'filtering by exercise_id should contain nil values' do
@@ -38,8 +38,8 @@ class SavedAnnotationTest < ActiveSupport::TestCase
     s2 = create :saved_annotation, exercise: exercise, user: user
     s3 = create :saved_annotation, exercise: create(:exercise), user: user
 
-    assert_includes SavedAnnotation.by_exercise(exercise), s1
-    assert_includes SavedAnnotation.by_exercise(exercise), s2
-    assert_not_includes SavedAnnotation.by_exercise(exercise), s3
+    assert_includes SavedAnnotation.by_exercise_id(exercise.id), s1
+    assert_includes SavedAnnotation.by_exercise_id(exercise.id), s2
+    assert_not_includes SavedAnnotation.by_exercise_id(exercise.id), s3
   end
 end

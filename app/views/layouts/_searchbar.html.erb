@@ -13,7 +13,6 @@
     <i class="mdi mdi-magnify"></i>
     <form class='search' onsubmit="return false;">
       <d-search-field placeholder="<%= t("layout.search.search") %>"
-                      eager="<%= local_assigns.fetch :eager, false %>"
                       hide="<%= no_filter_for.to_json %>"
       ></d-search-field>
       <d-loading-bar search-based></d-loading-bar>
@@ -49,5 +48,9 @@
         dodona.search.setLocalStorageKey(localStorageKey);
 
         dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);
+
+        <% if local_assigns.fetch :eager, false %>
+            dodona.search.search();
+        <% end %>
     });
 </script>

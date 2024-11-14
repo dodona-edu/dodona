@@ -22,6 +22,7 @@
                   <div class="col-sm-9">
                     <div class="d-flex" id="access_token_field">
                       <%= render partial: 'token_field',
+                                 formats: [:html],
                                  locals: {
                                      name: :access_token,
                                      value: series_url(@series, token: @series.access_token),

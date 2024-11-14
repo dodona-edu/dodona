@@ -79,8 +79,6 @@ export class SearchFieldSuggestion extends FilterElement {
 export class SearchField extends FilterCollection {
     @property({ type: String })
     placeholder: string;
-    @property({ type: Boolean })
-    eager: boolean;
 
     @property({ state: true })
     filter?: string = "";
@@ -108,13 +106,6 @@ export class SearchField extends FilterCollection {
         const setFilter = (): string => this.filter = searchQueryState.queryParams.get("filter") || "";
         searchQueryState.queryParams.subscribe(setFilter, "filter");
         setFilter();
-    }
-
-    update(changedProperties: Map<string, unknown>): void {
-        if (changedProperties.has("eager") && this.eager) {
-            search.search();
-        }
-        super.update(changedProperties);
     }
 
     keydown(e: KeyboardEvent): void {

@@ -49,7 +49,7 @@
 
         dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);
 
-        <%= if local_assigns.fetch :eager, false %>
+        <% if local_assigns.fetch :eager, false %>
             dodona.search.search();
         <% end %>
     });

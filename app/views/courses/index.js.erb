@@ -11,3 +11,4 @@ if (dodona.copyCoursesLoaded) {
 <% else %>
 dodona.setHTMLExecuteScripts(document.querySelector("#courses-table-wrapper"), "<%= escape_javascript(render partial: 'courses/courses_table', locals: {courses: @courses}) %>")
 <% end %>
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

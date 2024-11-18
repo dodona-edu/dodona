@@ -13,6 +13,7 @@
 #  annotations_count :integer          default(0)
 #
 class SavedAnnotation < ApplicationRecord
+  include Filterable
   validates :title, presence: true
   validates :annotation_text, presence: true
 
@@ -24,8 +25,8 @@ class SavedAnnotation < ApplicationRecord
   has_many :submissions, through: :annotations
 
   scope :by_user, ->(user_id) { where user_id: user_id }
-  scope :by_course, ->(course_id) { where(course_id: course_id).or(where(course_id: nil)) }
-  scope :by_exercise, ->(exercise_id) { where(exercise_id: exercise_id).or(where(exercise_id: nil)) }
+  filterable_by :exercise_id, model: Exercise, always_match_nil: true
+  filterable_by :course_id, model: Course, always_match_nil: true
   scope :by_filter, ->(filter) { where 'title LIKE ? or annotation_text LIKE ?', "%#{filter}%", "%#{filter}%" }
 
   scope :order_by_annotations_count, ->(direction) { reorder(annotations_count: direction) }

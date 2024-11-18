@@ -5,6 +5,8 @@ import "components/pagination";
 import { searchQueryState } from "state/SearchQuery";
 import { DodonaElement } from "components/meta/dodona_element";
 import { i18n } from "i18n/i18n";
+import { FilterOptions } from "components/search/filter_element";
+import { search } from "search";
 
 /**
  * This component represents a list of saved annotations
@@ -43,7 +45,19 @@ export class SavedAnnotationList extends DodonaElement {
         return pagination;
     }
 
+    lastFilters: FilterOptions[] = [];
+    get filters(): FilterOptions[] {
+        const filters = savedAnnotationState.getFilters(this.queryParams, this.arrayQueryParams);
+        if (filters === undefined) {
+            // return last filters if the updated filters are not yet available
+            return this.lastFilters;
+        }
+        this.lastFilters = filters;
+        return filters;
+    }
+
     render(): TemplateResult {
+        search.updateFilters(this.filters);
         return this.savedAnnotations.length > 0 ? html`
             <div class="table-scroll-wrapper">
                 <table class="table table-index table-resource">

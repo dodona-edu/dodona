@@ -35,7 +35,7 @@ class Provider < ApplicationRecord
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
   scope :surf, -> { where(type: Provider::Surf.name) }
-  scope :by_institution, ->(institution) { where(institution_id: institution) }
+  scope :by_institution_id, ->(institution) { where(institution_id: institution) }
 
   validates :mode, presence: true
   validate :at_least_one_preferred

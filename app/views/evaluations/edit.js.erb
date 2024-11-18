@@ -1,3 +1,4 @@
 dodona.setHTMLExecuteScripts(document.querySelector("#users-table-wrapper"), "<%= escape_javascript(render partial: 'members_table', locals: {course_memberships: @course_memberships, confirm: @should_confirm}) %>")
 window.dodona.initTooltips();
 window.dodona.initCheckboxes();
+dodona.search.updateFilters(<%= raw json_escape(@filters.to_json) %>);

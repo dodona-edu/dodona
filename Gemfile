@@ -49,7 +49,7 @@ gem 'delayed_job_web', '~>1.4.4'
 gem 'will_paginate', '~>4.0.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.4.0'
+gem 'kramdown', '~>2.5.0'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '4.5.1'
 

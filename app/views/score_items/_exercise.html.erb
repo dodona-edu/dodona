@@ -3,10 +3,10 @@
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
 <div id="score-items-<%= evaluation_exercise.id %>">
-  <h4 class="d-flex justify-content-between">
+  <h4 class="d-flex justify-content-between align-items-baseline">
     <%= evaluation_exercise.exercise.name %>
-    <a class="btn btn-icon edit-btn">
-      <i class="mdi mdi-pencil"></i>
+    <a class="btn btn-text edit-btn">
+      <%= t "score_items.table.edit" %>
     </a>
   </h4>
 

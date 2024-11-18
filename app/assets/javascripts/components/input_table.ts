@@ -1,5 +1,5 @@
 import { customElement, property } from "lit/decorators.js";
-import { html, PropertyValues, TemplateResult } from "lit";
+import { html, PropertyValues, render, TemplateResult } from "lit";
 import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
@@ -51,8 +51,8 @@ export class ScoreItemInputTable extends DodonaElement {
             return 200;
         }
 
-        // full width - borders - name column - maximum column - visible column - index column
-        const variableWidth = this.tableWidth - 14 - 200 - 100 - 100 - 50;
+        // full width - borders - name column - maximum column - visible column - index column - delete column
+        const variableWidth = this.tableWidth - 14 - 200 - 75 - 75 - 50 - 50;
         return Math.max(200, variableWidth);
     }
 
@@ -87,13 +87,30 @@ export class ScoreItemInputTable extends DodonaElement {
         return scoreItems.filter(item => !(item.name === "" && item.maximum === "" && item.description === "" && item.visible === false));
     }
 
+    deleteCellRow(cell: HTMLTableCellElement): void {
+        const row = cell.parentElement as HTMLTableRowElement;
+        this.table.deleteRow(row.rowIndex-1);
+    }
+
+    createDeleteButton(cell: HTMLTableCellElement): HTMLTableCellElement {
+        const button = html`<button
+            class="btn btn-icon d-btn-danger" style="margin: -20px" @click="${() => this.deleteCellRow(cell)}">
+                <i class="mdi mdi-18 mdi-delete"></i>
+            </button>`;
+        render(button, cell);
+        return cell;
+    }
+
     get columnConfig(): ColumnWithTooltip[] {
         return [
             { type: "hidden", title: "id" },
             { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
             { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
-            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 100, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
-            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 100, align: "left", tooltip: i18n.t("js.score_items.visible_help") },
+            { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 75, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
+            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 75, align: "left", tooltip: i18n.t("js.score_items.visible_help") },
+            { type: "html", title: " ", width: 50, align: "center", readOnly: true, editor: {
+                createCell: (cell: HTMLTableCellElement) => this.createDeleteButton(cell),
+            } },
         ];
     }
 

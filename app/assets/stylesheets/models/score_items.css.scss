@@ -90,3 +90,13 @@ a.option-btn {
     }
   }
 }
+
+d-score-item-input-table .jexcel tr:last-child td:last-child button {
+  opacity: 0.38;
+  pointer-events: none;
+
+  &:focus {
+    opacity: 0.38;
+    pointer-events: none;
+  }
+}

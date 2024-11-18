@@ -62,7 +62,7 @@
     "webpack-cli": "^5.1.4"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.0.2",
+    "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.15.0",
     "@open-wc/testing-helpers": "^3.0.1",
     "@stylistic/eslint-plugin": "^2.10.1",

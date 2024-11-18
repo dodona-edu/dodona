@@ -337,6 +337,7 @@
         "description_help": "A description is optional. Markdown formatting can be used. This is visible to the students.",
         "jspreadsheet": {
           "copy": "Copy...",
+          "deleteRow": "Delete row",
           "deleteSelectedRows": "Delete selected rows",
           "insertNewRowAfter": "Insert new row after",
           "insertNewRowBefore": "Insert new row before",
@@ -853,6 +854,7 @@
         "description_help": "Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.",
         "jspreadsheet": {
           "copy": "Kopiëer...",
+          "deleteRow": "Verwijder rij",
           "deleteSelectedRows": "Verwijder geselecteerde rijen",
           "insertNewRowAfter": "Voeg nieuwe rij toe na deze",
           "insertNewRowBefore": "Voeg nieuwe rij toe voor deze",

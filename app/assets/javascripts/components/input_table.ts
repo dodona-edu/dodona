@@ -52,7 +52,7 @@ export class ScoreItemInputTable extends DodonaElement {
         }
 
         // full width - borders - name column - maximum column - visible column - index column - delete column
-        const variableWidth = this.tableWidth - 14 - 200 - 75 - 75 - 50 - 50;
+        const variableWidth = this.tableWidth - 14 - 200 - 75 - 75 - 50 - 30;
         return Math.max(200, variableWidth);
     }
 
@@ -94,7 +94,10 @@ export class ScoreItemInputTable extends DodonaElement {
 
     createDeleteButton(cell: HTMLTableCellElement): HTMLTableCellElement {
         const button = html`<button
-            class="btn btn-icon d-btn-danger" style="margin: -20px" @click="${() => this.deleteCellRow(cell)}">
+            class="btn btn-icon d-btn-danger"
+            style="margin: -20px"
+            title="${i18n.t("js.score_items.jspreadsheet.deleteRow")}"
+            @click="${() => this.deleteCellRow(cell)}">
                 <i class="mdi mdi-18 mdi-delete"></i>
             </button>`;
         render(button, cell);
@@ -108,7 +111,7 @@ export class ScoreItemInputTable extends DodonaElement {
             { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
             { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 75, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
             { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 75, align: "left", tooltip: i18n.t("js.score_items.visible_help") },
-            { type: "html", title: " ", width: 50, align: "center", readOnly: true, editor: {
+            { type: "html", title: " ", width: 30, align: "center", readOnly: true, editor: {
                 createCell: (cell: HTMLTableCellElement) => this.createDeleteButton(cell),
             } },
         ];

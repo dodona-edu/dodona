@@ -309,6 +309,7 @@ nl:
       validation_warning: "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een getal zijn tussen 0 en 1000."
       jspreadsheet:
         copy: Kopiëer...
+        deleteRow: Verwijder rij
         deleteSelectedRows: Verwijder geselecteerde rijen
         insertNewRowAfter: Voeg nieuwe rij toe na deze
         insertNewRowBefore: Voeg nieuwe rij toe voor deze

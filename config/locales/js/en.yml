@@ -309,6 +309,7 @@ en:
       cancel: Cancel
       jspreadsheet:
         copy: Copy...
+        deleteRow: Delete row
         deleteSelectedRows: Delete selected rows
         insertNewRowAfter: Insert new row after
         insertNewRowBefore: Insert new row before

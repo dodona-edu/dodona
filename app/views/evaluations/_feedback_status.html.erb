@@ -1,6 +1,6 @@
 <%= link_to evaluation_feedback_path(evaluation, feedback),
             title: feedback_title(feedback),
-            class: "btn btn-icon" do %>
+            class: "btn btn-icon #{active ? 'disabled' : ''}" do %>
   <svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" >
     <g>
       <foreignObject x="0" y="0"  height="24" width="24">

@@ -68,8 +68,6 @@
     "@stylistic/eslint-plugin": "^2.10.1",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/user-event": "^14.5.2",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
     "@webcomponents/scoped-custom-element-registry": "^0.0.9",
     "babel-jest": "^29.7.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",
@@ -88,7 +86,7 @@
     "stylelint-config-standard": "^34.0.0",
     "stylelint-config-standard-scss": "^11.1.0",
     "ts-jest": "^26.5.6",
-    "typescript-eslint": "^8.14.0",
+    "typescript-eslint": "^8.15.0",
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"

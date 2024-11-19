@@ -1,6 +1,6 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, render, TemplateResult } from "lit";
-import jspreadsheet, { Column, JspreadsheetInstance } from "jspreadsheet-ce";
+import jspreadsheet, { CellValue, Column, CustomEditor, JspreadsheetInstance } from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
 import { fetch, ready } from "utilities";
@@ -18,6 +18,10 @@ type ScoreItem = {
 }
 
 type ColumnWithTooltip = Column & { tooltip?: string };
+
+const toBoolean = (value: CellValue): boolean => {
+    return value === "true" || value === true;
+};
 
 /**
  * A spreadsheet table to edit score items.
@@ -78,7 +82,7 @@ export class ScoreItemInputTable extends DodonaElement {
                 name: row[1] as string,
                 description: row[2] as string,
                 maximum: (row[3] as string).replace(",", "."), // replace comma with dot for float representation
-                visible: row[4] as boolean,
+                visible: toBoolean(row[4]),
                 order: index,
             };
         });
@@ -104,13 +108,44 @@ export class ScoreItemInputTable extends DodonaElement {
         return cell;
     }
 
+    customCheckboxEditor(): CustomEditor {
+        const updateCell = (cell: HTMLTableCellElement): void => {
+            this.table.setValue(cell, !toBoolean(this.table.getValue(cell)));
+        };
+        return {
+            createCell: (cell: HTMLTableCellElement) => {
+                const current = cell.innerHTML === "true";
+                const checkbox = html`<div class="form-check" contenteditable="false" style="margin: -16px 0;">
+                    <input type="checkbox"
+                           class="form-check-input"
+                           ?checked="${current}"
+                           @change="${() => updateCell(cell)}">
+                </div>`;
+                cell.innerHTML = "";
+                render(checkbox, cell);
+                return cell;
+            },
+            openEditor: () => false,
+            closeEditor: (cell: HTMLTableCellElement) => {
+                return toBoolean(this.table.getValue(cell));
+            },
+            updateCell: (cell: HTMLTableCellElement, value: CellValue) => {
+                const checkbox = cell.querySelector("input");
+                if (checkbox) {
+                    checkbox.checked = toBoolean(value);
+                }
+                return toBoolean(value);
+            }
+        };
+    }
+
     get columnConfig(): ColumnWithTooltip[] {
         return [
             { type: "hidden", title: "id" },
             { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
             { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
             { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 75, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
-            { type: "checkbox", title: i18n.t("js.score_items.visible"), width: 75, align: "left", tooltip: i18n.t("js.score_items.visible_help") },
+            { type: "html", title: i18n.t("js.score_items.visible"), width: 75, align: "left", tooltip: i18n.t("js.score_items.visible_help"), editor: this.customCheckboxEditor() },
             { type: "html", title: " ", width: 30, align: "center", readOnly: true, editor: {
                 createCell: (cell: HTMLTableCellElement) => this.createDeleteButton(cell),
             } },

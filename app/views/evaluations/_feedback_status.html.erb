@@ -1,19 +1,23 @@
-<%
-  classes = "btn btn-text"
-  classes += " text-muted" if feedback.completed?
-%>
-
 <%= link_to evaluation_feedback_path(evaluation, feedback),
             title: feedback_title(feedback),
-            class: classes do %>
-  <% if feedback&.submission.present? %>
-    <%= submission_status_icon feedback.submission %>
-  <% else %>
-    <i class="mdi mdi-18 mdi-cancel text-muted"></i>
-  <% end %>
-  <% if feedback.completed? %>
-    <i class="mdi mdi-18 mdi-comment-check-outline ms-2"></i>
-  <% else %>
-    <i class="mdi mdi-18 mdi-comment-outline ms-2"></i>
-  <% end %>
+            class: "btn btn-icon" do %>
+  <svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" >
+    <g>
+      <foreignObject x="0" y="0"  height="24" width="24">
+        <% if feedback.completed? %>
+          <i class="mdi mdi-comment-check-outline"></i>
+        <% else %>
+          <i class="mdi mdi-comment-outline"></i>
+        <% end %>
+      </foreignObject>
+      <circle cx="21" cy="22.25" r= "9" fill="var(--d-surface)"></circle>
+      <foreignObject x="12" y="12"  height="18" width="18">
+        <% if feedback&.submission.present? %>
+          <%= submission_status_icon feedback.submission %>
+        <% else %>
+          <i class="mdi mdi-18 mdi-cancel text-muted"></i>
+        <% end %>
+      </foreignObject>
+    </g>
+  </svg>
 <% end %>

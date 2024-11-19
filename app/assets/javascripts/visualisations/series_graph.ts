@@ -5,8 +5,8 @@ import { initDatePicker } from "utilities";
 import { themeState } from "state/Theme";
 import { i18n } from "i18n/i18n";
 
-export type RawData = {
-    data: { ex_id: number, ex_data: unknown[] }[],
+export type RawData<T=unknown> = {
+    data: { ex_id: number, ex_data: T[] }[],
     exercises: [number, string][],
     student_count: number,
 }

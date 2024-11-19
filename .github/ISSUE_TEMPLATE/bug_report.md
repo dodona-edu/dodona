@@ -2,7 +2,7 @@
 name: Bug report
 about: Notify us of an issue with Dodona
 title: ''
-labels: bug
+type: bug
 assignees: ''
 
 ---

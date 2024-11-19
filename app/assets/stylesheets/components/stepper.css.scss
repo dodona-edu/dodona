@@ -51,14 +51,13 @@
       @include shadow-z2;
 
       background-color: var(--d-surface);
+      border: none;
+      border-radius: var(--d-border-radius-base);
+      padding: 0;
 
       @include media-breakpoint-up(sm) {
         margin-left: 45px;
       }
-
-      border: none;
-      border-radius: var(--d-border-radius-base);
-      padding: 0;
 
       &.panel-body-transparent {
         background-color: transparent;

@@ -3,6 +3,7 @@ class SubmissionsController < ApplicationController
   include TimeHelper
   include ActionView::Helpers::DateHelper
   include Sortable
+  include HasFilter
 
   before_action :set_submission, only: %i[show download evaluate edit media]
   before_action :set_submissions, only: %i[index mass_rejudge show]
@@ -12,7 +13,7 @@ class SubmissionsController < ApplicationController
     scope.by_filter(value, skip_user: controller.params[:user_id].present?, skip_exercise: controller.params[:activity_id].present?)
   end
 
-  has_scope :by_status, as: 'status'
+  has_filter :status
 
   has_scope :by_course_labels, as: 'course_labels', type: :array do |controller, scope, value|
     course = Course.find_by(id: controller.params[:course_id]) if controller.params[:course_id].present?
@@ -111,11 +112,15 @@ class SubmissionsController < ApplicationController
     para[:code].gsub!(/\r\n?/, "\n")
     para[:evaluate] = true # immediately evaluate after create
     # check if user is member of course
-    course = Course.find(para[:course_id]) if para[:course_id].present?
-    para.delete(:course_id) if para[:course_id].present? && course.subscribed_members.exclude?(current_user)
+    if para[:course_id].present?
+      course = Course.find(para[:course_id])
+      para.delete(:course_id) if course.subscribed_members.exclude?(current_user)
+    end
     # check if series is part of course
-    series = Series.find(para[:series_id]) if para[:series_id].present? && para[:course_id].present?
-    para.delete(:series_id) if para[:series_id].present? && course.series.exclude?(series)
+    if para[:series_id].present? && para[:course_id].present?
+      series = Series.find(para[:series_id])
+      para.delete(:series_id) if course.series.exclude?(series)
+    end
 
     submission = Submission.new(para)
     can_submit = true
@@ -164,18 +169,17 @@ class SubmissionsController < ApplicationController
   # The logic here is very similar to that of set_activity_read_states in activity_read_states_controller
   # changes made here are potentially applicable to both functions
   def set_submissions
-    @submissions = policy_scope(Submission).merge(apply_scopes(Submission).all)
+    @submissions = policy_scope(Submission)
     if params[:user_id]
       @user = User.find(params[:user_id])
       @submissions = @submissions.of_user(@user)
     end
-    if params[:course_id]
-      @course = Course.find(params[:course_id])
-      @course_labels = CourseLabel.where(course: @course) if @user.blank? && current_user&.course_admin?(@course)
-    end
 
+    @course = Course.find(params[:course_id]) if params[:course_id]
     @series = Series.find(params[:series_id]) if params[:series_id]
-    @activity = Exercise.find(params[:activity_id]) if params[:activity_id]
+    # both /activities/:id/submissions and /exercises/:id/submissions are valid routes
+    activity_id = params[:activity_id] || params[:exercise_id]
+    @activity = Exercise.find(activity_id) if activity_id
     @judge = Judge.find(params[:judge_id]) if params[:judge_id]
 
     if @activity
@@ -191,6 +195,16 @@ class SubmissionsController < ApplicationController
       @submissions = @submissions.in_course(@course)
     elsif @judge
       @submissions = @submissions.of_judge(@judge)
+    end
+
+    @filters = filters(@submissions)
+    @submissions = apply_scopes(@submissions)
+    if @course.present? && @user.blank? && current_user&.course_admin?(@course)
+      @filters << {
+        param: 'course_labels',
+        multi: true,
+        data: @submissions.course_labels_filter_options(@course.id)
+      }
     end
 
     @course_membership = CourseMembership.find_by(user: @user, course: @course) if @user.present? && @course.present?

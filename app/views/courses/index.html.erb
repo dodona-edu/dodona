@@ -25,7 +25,7 @@
           labels << { name: t('courses.index.my_courses'), id: 'my' } if @show_my_courses
         %>
         <d-filter-tabs labels="<%= labels.to_json %>"></d-filter-tabs>
-        <%= render partial: 'layouts/searchbar', locals: {institutions: Institution.all, eager: true, no_dropdown_for: ["institutions"], options: [{param: 'can_register', label: "#{t(".only_show_can_register")}"}]  } %>
+        <%= render partial: 'layouts/searchbar', locals: {eager: true, no_dropdown_for: ["institutions"], options: [{param: 'can_register', label: "#{t(".only_show_can_register")}"}]  } %>
         <div id="courses-table-wrapper"></div>
       </div>
     </div>

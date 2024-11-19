@@ -20,7 +20,7 @@
 #  jwks_uri          :string(255)
 #
 class Provider < ApplicationRecord
-  enum mode: { prefer: 0, redirect: 1, link: 2, secondary: 3 }
+  enum :mode, { prefer: 0, redirect: 1, link: 2, secondary: 3 }
 
   PROVIDERS = [Provider::GSuite, Provider::Lti, Provider::Office365, Provider::Oidc, Provider::Saml, Provider::Smartschool, Provider::Surf, Provider::Elixir].freeze
 
@@ -35,7 +35,7 @@ class Provider < ApplicationRecord
   scope :saml, -> { where(type: Provider::Saml.name) }
   scope :smartschool, -> { where(type: Provider::Smartschool.name) }
   scope :surf, -> { where(type: Provider::Surf.name) }
-  scope :by_institution, ->(institution) { where(institution_id: institution) }
+  scope :by_institution_id, ->(institution) { where(institution_id: institution) }
 
   validates :mode, presence: true
   validate :at_least_one_preferred

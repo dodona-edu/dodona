@@ -11,6 +11,9 @@
 #  series_id   :integer
 #
 class ActivityReadState < ApplicationRecord
+  include FilterableByCourseLabels
+  include Filterable
+
   belongs_to :activity
   belongs_to :course, optional: true
   belongs_to :series, optional: true
@@ -31,7 +34,7 @@ class ActivityReadState < ApplicationRecord
   scope :by_activity_name, ->(name) { where(activity: Activity.by_name(name)) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_content_page:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_activity_name(part) unless skip_content_page
       scopes << by_username(part) unless skip_user
@@ -39,7 +42,7 @@ class ActivityReadState < ApplicationRecord
     end.reduce(&:merge)
   }
 
-  scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  filterable_by_course_labels through_user: true
 
   def invalidate_caches
     activity.invalidate_delayed_users_read

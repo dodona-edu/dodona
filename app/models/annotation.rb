@@ -22,6 +22,7 @@
 #
 class Annotation < ApplicationRecord
   include ApplicationHelper
+  include Filterable
 
   belongs_to :course
   belongs_to :submission
@@ -54,10 +55,10 @@ class Annotation < ApplicationRecord
   scope :by_submission, ->(submission_id) { where(submission_id: submission_id) }
   scope :by_user, ->(user_id) { where(user_id: user_id) }
   scope :released, -> { left_joins(:evaluation).where(evaluation_id: nil).or(where(evaluations: { released: true })) }
-  scope :by_course, ->(course_id) { where(submission: Submission.in_course(Course.find(course_id))) }
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_exercise_name, ->(name) { where(submission: Submission.by_exercise_name(name)) }
-  scope :by_exercise, ->(exercise_id) { where(submission: { exercise_id: exercise_id }) }
+  filterable_by :course_id, model: Course
+  filterable_by :exercise_id, associations: :submission, column: 'submissions.exercise_id', model: Exercise
 
   scope :order_by_annotation_text, ->(direction) { reorder(annotation_text: direction) }
   scope :order_by_created_at, ->(direction) { reorder(created_at: direction) }
@@ -71,7 +72,7 @@ class Annotation < ApplicationRecord
   after_save :create_notification
 
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user

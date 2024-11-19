@@ -3,18 +3,17 @@ import { html, TemplateResult } from "lit";
 import { createDelayer } from "utilities";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
 import { ref } from "lit/directives/ref.js";
-import { FilterCollectionElement, Label } from "components/search/filter_collection_element";
+import { FilterElement, Label } from "components/search/filter_element";
 import { searchQueryState } from "state/SearchQuery";
 import { search } from "search";
-import { DodonaElement } from "components/meta/dodona_element";
 import { i18n } from "i18n/i18n";
+import { FilterCollection } from "components/search/filter_collection";
 /**
  * This component inherits from FilterCollectionElement.
  * It represents a list of filters to be used in a dropdown as typeahead suggestions
  *
  * @element d-search-field-suggestion
  *
- * @prop {string} type - The type of the filter collection, used to determine the dropdown button text
  * @prop {string} filter - The string for which typeahead suggestions should be provided
  * @prop {number} index - bookkeeping param to remember the order across multiple elements
  * @prop {string} param - the searchQuery param to be used for this filter
@@ -23,9 +22,7 @@ import { i18n } from "i18n/i18n";
  * @prop {[Label]} labels - all labels that could potentially be selected
  */
 @customElement("d-search-field-suggestion")
-export class SearchFieldSuggestion extends FilterCollectionElement {
-    @property()
-    type: string;
+export class SearchFieldSuggestion extends FilterElement {
     @property()
     filter: string;
     @property({ type: Number })
@@ -54,11 +51,12 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
     render(): TemplateResult {
         return this.getFilteredLabels().length == 0 ? html`` : html`
             <li>
-                <h6 class='dropdown-header'>${i18n.t(`js.${this.type}`)}</h6>
+                <h6 class='dropdown-header'>${i18n.t(`js.search.filter.${this.param}`)}</h6>
             </li>
             ${ this.getFilteredLabels().map( label => html`
                 <li><a class="dropdown-item" href="#" @click=${e => this.handleClick(e, label)}>
                     ${unsafeHTML(this.getHighlightedLabel(label.name))}
+                    ${label.count ? html`<span class="text-muted float-end ms-4">${label.count}</span>` : ""}
                 </a></li>
             `)}
         `;
@@ -73,17 +71,14 @@ export class SearchFieldSuggestion extends FilterCollectionElement {
  *
  * @prop {string} placeholder - The placeholder text for an empty searchfield
  * @prop {boolean} eager - if true a search will be run before user input happens
- * @prop {Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>} filterCollections
+ * @prop {FilterOptions[]} filters - The list of filter lists to be used as search suggestions
+ * @prop {string[]} hide - The list of filter lists to be ignored as search suggestions
  *  - The list of filter lists to be used as search suggestions
  */
 @customElement("d-search-field")
-export class SearchField extends DodonaElement {
+export class SearchField extends FilterCollection {
     @property({ type: String })
     placeholder: string;
-    @property({ type: Boolean })
-    eager: boolean;
-    @property( { type: Array })
-    filterCollections: Record<string, { data: Label[], multi: boolean, paramVal: (l: Label) => string, param: string }>;
 
     @property({ state: true })
     filter?: string = "";
@@ -111,13 +106,6 @@ export class SearchField extends DodonaElement {
         const setFilter = (): string => this.filter = searchQueryState.queryParams.get("filter") || "";
         searchQueryState.queryParams.subscribe(setFilter, "filter");
         setFilter();
-    }
-
-    update(changedProperties: Map<string, unknown>): void {
-        if (changedProperties.has("eager") && this.eager) {
-            search.search();
-        }
-        super.update(changedProperties);
     }
 
     keydown(e: KeyboardEvent): void {
@@ -150,7 +138,7 @@ export class SearchField extends DodonaElement {
     }
 
     render(): TemplateResult {
-        if (!this.filterCollections) {
+        if (!this.visibleFilters) {
             return html``;
         }
 
@@ -166,12 +154,10 @@ export class SearchField extends DodonaElement {
                 @keydown=${e => this.keydown(e)}
             />
             <ul class="dropdown-menu ${this.filter && this.hasSuggestions ? "show-search-dropdown" : ""}">
-                ${Object.entries(this.filterCollections).map(([type, c], i) => html`
+                ${this.visibleFilters.map((c, i) => html`
                     <d-search-field-suggestion
                         .labels=${c.data}
-                        .type=${type}
                         .filter=${this.filter}
-                        .paramVal=${c.paramVal}
                         .param=${c.param}
                         .multi=${c.multi}
                         .index=${i}

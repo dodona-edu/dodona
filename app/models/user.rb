@@ -24,17 +24,18 @@
 require 'securerandom'
 
 class User < ApplicationRecord
-  include Filterable
   include StringHelper
   include Cacheable
   include Tokenable
   include ActiveModel::Dirty
+  include FilterableByCourseLabels
+  include Filterable
 
   ATTEMPTED_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/attempted_exercises'.freeze
   CORRECT_EXERCISES_CACHE_STRING = '/courses/%<course_id>s/user/%<id>s/correct_exercises'.freeze
 
-  enum permission: { student: 0, staff: 1, zeus: 2 }
-  enum theme: { system: 0, light: 1, dark: 2 }
+  enum :permission, { student: 0, staff: 1, zeus: 2 }
+  enum :theme, { system: 0, light: 1, dark: 2 }
 
   belongs_to :institution, optional: true
 
@@ -117,11 +118,10 @@ class User < ApplicationRecord
 
   has_many :annotations, dependent: :restrict_with_error
   has_many :questions, dependent: :restrict_with_error
+  has_many :course_labels, through: :course_memberships
 
   devise :omniauthable, omniauth_providers: %i[google_oauth2 lti office365 oidc saml smartschool surf elixir]
 
-  validates :username, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
-  validates :email, uniqueness: { case_sensitive: false, allow_blank: true, scope: :institution }
   validate :max_one_institution
   validate :provider_allows_blank_email
 
@@ -136,11 +136,13 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :identities, limit: 1
 
+  search_by :username, :first_name, :last_name
+
   scope :by_permission, ->(permission) { where(permission: permission) }
-  scope :by_institution, ->(institution) { where(institution: institution) }
+  filterable_by :institution_id, model: Institution
 
   scope :in_course, ->(course) { joins(:course_memberships).where(course_memberships: { course_id: course.id }) }
-  scope :by_course_labels, ->(labels, course_id) { where(id: CourseMembership.where(course_id: course_id).by_course_labels(labels).select(:user_id)) }
+  filterable_by_course_labels
   scope :at_least_one_started_in_series, ->(series) { where(id: Submission.where(course_id: series.course_id, exercise_id: series.exercises).select('DISTINCT(user_id)')) }
   scope :at_least_one_read_in_series, ->(series) { where(id: ActivityReadState.in_series(series).select('DISTINCT(user_id)')) }
   scope :at_least_one_started_in_course, ->(course) { where(id: Submission.where(course_id: course.id, exercise_id: course.exercises).select('DISTINCT(user_id)')) }
@@ -384,10 +386,6 @@ class User < ApplicationRecord
     find_by(username: username, institution_id: institution_id)
   end
 
-  def set_search
-    self.search = "#{username || ''} #{first_name || ''} #{last_name || ''}"
-  end
-
   # Be careful when using force institution. This expects the providers to be updated externally
   def merge_into(other, force: false, force_institution: false)
     errors.add(:merge, 'User belongs to different institution') if !force_institution && other.institution_id != institution_id && other.institution_id.present? && institution_id.present?
@@ -432,8 +430,10 @@ class User < ApplicationRecord
       events.each { |e| e.update!(user: other) }
       exports.each { |e| e.update!(user: other) }
       notifications.each { |n| n.update!(user: other) }
-      annotations.each { |a| a.update!(user: other, last_updated_by_id: other.id) }
+      annotations.each { |a| a.update!(user: other) }
+      Annotation.where(last_updated_by_id: id).find_each { |a| a.update!(last_updated_by: other) }
       questions.each { |q| q.update!(user: other) }
+      Score.where(last_updated_by_id: id).find_each { |s| s.update!(last_updated_by: other) }
 
       evaluation_users.each do |eu|
         if other.evaluation_users.find { |oeu| oeu.evaluation_id == eu.evaluation_id }

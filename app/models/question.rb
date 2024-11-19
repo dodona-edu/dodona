@@ -21,13 +21,15 @@
 #  columns             :integer
 #
 class Question < Annotation
+  include Filterable
   belongs_to :user, inverse_of: :questions
   counter_culture :user, column_name: proc { |question| question.answered? ? nil : 'open_questions_count' }
 
   after_save :schedule_reset_in_progress, if: :saved_change_to_question_state?
   after_commit :clear_transition
 
-  enum question_state: { unanswered: 0, in_progress: 1, answered: 2 }
+  filterable_by :question_state, is_enum: true
+  enum :question_state, { unanswered: 0, in_progress: 1, answered: 2 }
   alias_attribute :question_text, :annotation_text
 
   # Used to authorize the transitions

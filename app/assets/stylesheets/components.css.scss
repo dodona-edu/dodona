@@ -84,12 +84,12 @@
 }
 
 .col-form-label {
+  text-align: right;
+  font-weight: bold;
+
   @include media-breakpoint-down(sm) {
     text-align: left;
   }
-
-  text-align: right;
-  font-weight: bold;
 }
 
 h1 small,

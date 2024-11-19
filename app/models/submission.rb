@@ -20,6 +20,7 @@
 class Submission < ApplicationRecord
   include Cacheable
   include ActiveModel::Dirty
+  include Filterable
 
   SECONDS_BETWEEN_SUBMISSIONS = 5 # Used for rate limiting
   PUNCHCARD_MATRIX_CACHE_STRING = '/courses/%<course_id>s/user/%<user_id>s/timezone/%<timezone>s/punchcard_matrix'.freeze
@@ -28,7 +29,7 @@ class Submission < ApplicationRecord
   CODE_FILENAME = 'code'.freeze
   RESULT_FILENAME = 'result.json.gz'.freeze
 
-  enum status: { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
+  enum :status, { unknown: 0, correct: 1, wrong: 2, 'time limit exceeded': 3, running: 4, queued: 5, 'runtime error': 6, 'compilation error': 7, 'memory limit exceeded': 8, 'internal error': 9, 'output limit exceeded': 10 }
 
   belongs_to :exercise, optional: false
   belongs_to :user, optional: false
@@ -68,9 +69,13 @@ class Submission < ApplicationRecord
   scope :judged, -> { where(status: ['unknown', 'correct', 'wrong', 'time limit exceeded', 'runtime error', 'compilation error', 'memory limit exceeded', 'internal error', 'output limit exceeded']) }
   scope :by_exercise_name, ->(name) { where(exercise: Exercise.by_name(name)) }
   scope :by_status, ->(status) { where(status: status.in?(statuses) ? status : -1) }
+  filter_options_for :status do
+    # Filter options without count as this is a very expensive operation
+    statuses.map { |key, _| { id: key.to_s, name: human_enum_name(:status, key) } }
+  end
   scope :by_username, ->(name) { where(user: User.by_filter(name)) }
   scope :by_filter, lambda { |filter, skip_user:, skip_exercise:|
-    filter.split.map(&:strip).select(&:present?).map do |part|
+    filter.split.map(&:strip).compact_blank.map do |part|
       scopes = []
       scopes << by_exercise_name(part) unless skip_exercise
       scopes << by_username(part) unless skip_user
@@ -78,6 +83,10 @@ class Submission < ApplicationRecord
     end.reduce(&:merge)
   }
   scope :by_course_labels, ->(labels, course_id) { where(user: CourseMembership.where(course_id: course_id).by_course_labels(labels).map(&:user)) }
+  filter_options_for :course_labels do |course_id|
+    # Filter options without count as this is a very expensive operation
+    CourseLabel.where(course: course_id).map { |label| { id: label.name, name: label.name } }
+  end
 
   scope :most_recent, lambda {
     submissions = select('MAX(submissions.id) as id')

@@ -128,13 +128,10 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # If no identity exist, we want to check if it is a new user or an existing user using a new provider
       # Try to find an existing user
       user = find_user_in_institution
-      # If we found an existing user, which already has an identity for this provider
-      # This will require a manual intervention by the development team, notify the user and the team
-      return redirect_duplicate_email_for_provider! if user&.providers&.exists?(id: provider.id)
       # If we found an existing user with the same username or email within the same institution
       # We will ask the user to verify if this was the user they wanted to sign in to
       # if yes => redirect to a previously used provider for this user
-      # if no => contact dodona for a manual intervention
+      # if no => create a new user or contact support
       return redirect_to_known_provider!(user) if user.present?
 
       # Try to find if the email address is already in use in an other institution
@@ -238,6 +235,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_email: true) if identity.nil?
       return nil if identity.nil?
 
+      Event.new(event_type: :other, message: 'Office365 user signed in with legacy identifier').save!
+
       # Update the identifier to the new uid
       identity.update(identifier: auth_uid, identifier_based_on_email: false)
     elsif provider.class.sym == :smartschool && auth_username.present?
@@ -251,6 +250,8 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
       # Try to find user by name
       identity = Identity.joins(:user).find_by(user: { first_name: auth_hash.info.first_name, last_name: auth_hash.info.last_name }, provider: provider, identifier_based_on_username: true) if identity.nil?
       return nil if identity.nil?
+
+      Event.new(event_type: :other, message: 'Smartschool user signed in with legacy identifier').save!
 
       # Update the identifier to the new uid
       identity.update(identifier: auth_uid, identifier_based_on_username: false)
@@ -373,6 +374,9 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   end
 
   def redirect_to_known_provider!(user)
+    # information required if the user wants to create a new account
+    store_hash_in_session!
+    # information required if the user wants to link the new sign in method to an existing account
     store_identity_in_session!
     session[:auth_original_user_id] = user.id
     @provider = provider
@@ -384,17 +388,6 @@ class Auth::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def redirect_to_confirm_new_user!
     store_hash_in_session!
     redirect_to confirm_new_user_path
-  end
-
-  def redirect_duplicate_email_for_provider!
-    ApplicationMailer.with(
-      authinfo: auth_hash,
-      errors: I18n.t('devise.omniauth_callbacks.duplicate_email_for_provider', email_address: auth_email, provider: provider.class.sym.to_s)
-    ).user_unable_to_log_in.deliver_later
-
-    set_flash_message :alert, :duplicate_email_for_provider, email_address: auth_email, provider: provider.class.sym.to_s
-    flash[:options] = [{ url: contact_path, message: I18n.t('pages.contact.prompt') }]
-    redirect_to root_path
   end
 
   def flash_wrong_provider(tried_provider, user_provider)

@@ -853,7 +853,7 @@
         "description": "Beschrijving",
         "description_help": "Een beschrijving is optioneel en kan in Markdown geschreven worden. Dit is zichtbaar voor de studenten.",
         "jspreadsheet": {
-          "copy": "Kopiëer...",
+          "copy": "Kopieer...",
           "deleteRow": "Verwijder rij",
           "deleteSelectedRows": "Verwijder geselecteerde rijen",
           "insertNewRowAfter": "Voeg nieuwe rij toe na deze",

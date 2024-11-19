@@ -194,6 +194,10 @@ export class ScoreItemInputTable extends DodonaElement {
             }
         });
 
+        // mark header and menu as non-editable
+        this.tableRef.value.querySelector("thead").setAttribute("contenteditable", "false");
+        this.tableRef.value.querySelector(".jexcel_contextmenu").setAttribute("contenteditable", "false");
+
 
         // update description column width when the window is resized
         new ResizeObserver(() => {

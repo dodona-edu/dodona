@@ -1223,4 +1223,14 @@ class UserHasManyTest < ActiveSupport::TestCase
 
     assert_not user.reload.open_questions?
   end
+
+  test 'should be able to search by email' do
+    first = create :user, email: 'foo@bar.com'
+    second = create :user, email: 'foo@bax.com'
+
+    assert_equal first, User.by_filter('foo@bar.com').first
+    assert_equal second, User.by_filter('ax.com').first
+    assert_empty User.by_filter('baz')
+    assert_equal 2, User.by_filter('foo@ba').count
+  end
 end

@@ -1,5 +1,6 @@
 <%= link_to evaluation_feedback_path(evaluation, feedback),
             title: feedback_title(feedback),
+            "data-bs-toggle": "tooltip",
             class: "btn btn-icon #{local_assigns.fetch(:active, false) ? 'disabled' : ''}" do %>
   <svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" >
     <g>

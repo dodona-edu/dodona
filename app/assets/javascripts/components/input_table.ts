@@ -277,6 +277,7 @@ export class ScoreItemInputTable extends DodonaElement {
     cancel(): void {
         if (this.table) {
             this.table.setData(this.data);
+            this.hasErrors = false;
         }
         this.dispatchEvent(new Event("cancel"));
     }

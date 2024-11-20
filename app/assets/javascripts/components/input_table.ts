@@ -226,7 +226,7 @@ export class ScoreItemInputTable extends DodonaElement {
             }
             // Check if maximum is a positive number < 1000
             // we use a regex instead of parseFloat because parseFloat is too lenient
-            if (! /^\d{1,3}(\.\d*)?$/.test(item.maximum) || parseFloat(item.maximum) <= 0) {
+            if (!/^\d{1,3}(\.\d+)?$/.test(item.maximum) || parseFloat(item.maximum) <= 0) {
                 invalidCells.push("D" + row);
             }
         });

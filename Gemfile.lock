@@ -598,7 +598,6 @@ DEPENDENCIES
   kramdown-parser-gfm (~> 1.1.0)
   letter_opener (~> 1.10.0)
   listen (~> 3.9.0)
-  mail (~> 2.8.1)
   mail_form (~> 1.10.1)
   memory_profiler (~> 1.1.0)
   minitest-ci (~> 3.4.0)

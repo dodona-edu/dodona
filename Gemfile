@@ -108,8 +108,9 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
+gem 'css_parser', '~> 1.19.1' # dependency for premailer, set to higher version for ruby 3.3 support
 gem 'nokogiri', '~> 1.16.7'
-# gem 'premailer-rails', '~> 1.12.0'
+gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
 gem 'has_scope', '~> 0.8.2'

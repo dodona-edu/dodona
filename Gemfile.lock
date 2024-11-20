@@ -137,6 +137,8 @@ GEM
       bigdecimal
       rexml
     crass (1.0.6)
+    css_parser (1.19.1)
+      addressable
     cssbundling-rails (1.4.1)
       railties (>= 6.0.0)
     csv (3.3.0)
@@ -208,6 +210,7 @@ GEM
     hashie (5.0.0)
     hcaptcha (7.1.0)
       json
+    htmlentities (4.3.4)
     httparty (0.22.0)
       csv
       mini_mime (>= 1.0.0)
@@ -356,6 +359,14 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
+    premailer (1.18.0)
+      addressable
+      css_parser (>= 1.12.0)
+      htmlentities (>= 4.0.0)
+    premailer-rails (1.12.0)
+      actionmailer (>= 3)
+      net-smtp
+      premailer (~> 1.7, >= 1.7.9)
     pretender (0.5.0)
       actionpack (>= 6.1)
     psych (5.2.0)
@@ -571,6 +582,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.7.6)
   capybara (~> 3.40.0)
   counter_culture (~> 3.8)
+  css_parser (~> 1.19.1)
   cssbundling-rails (~> 1.4.1)
   dalli (~> 3.2.8)
   datadog (~> 2.7.0)
@@ -609,6 +621,7 @@ DEPENDENCIES
   omniauth-oauth2 (~> 1.8.0)
   omniauth-rails_csrf_protection (~> 1.0.2)
   omniauth_openid_connect (~> 0.8.0)
+  premailer-rails (~> 1.12.0)
   pretender (~> 0.5.0)
   puma (~> 6.4.3)
   pundit (~> 2.4.0)

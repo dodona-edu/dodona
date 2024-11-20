@@ -5,8 +5,8 @@ ruby '~> 3.1.2'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
-# Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.6'
+# Use trilogy to interact with mysql as the database for Active Record
+gem 'trilogy', '~> 2.9.0'
 # Use Puma as the app server
 gem 'puma', '~> 6.4.3'
 

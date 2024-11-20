@@ -34,7 +34,7 @@ test:
 # On Heroku and other platform providers, you may have a full connection URL
 # available as an environment variable. For example:
 #
-#   DATABASE_URL="mysql2://myuser:mypass@localhost/somedatabase"
+#   DATABASE_URL="trilogy://myuser:mypass@localhost/somedatabase"
 #
 # You can use this database configuration with:
 #

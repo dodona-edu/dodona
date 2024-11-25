@@ -275,7 +275,8 @@ class Repository < ApplicationRecord
 
     act.save
   rescue ConfigParseError => e
-    # add error to the list of errors
+    # Add error to the list of errors encountered during processing
+    # This way the error will be picked up and aggregated in the process_activities method
     errors.push e
   end
 

@@ -274,6 +274,9 @@ class Repository < ApplicationRecord
     end
 
     act.save
+  rescue ConfigParseError => e
+    # add error to the list of errors
+    errors.push e
   end
 
   def github_url(path = nil, mode: nil)

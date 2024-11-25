@@ -162,9 +162,9 @@ class Repository < ApplicationRecord
                           .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
                           # rubocop:disable Style/CollectionCompact
                           # This is a false positive for Hash#compact, where this is Array#compact
-                          .reject { |_, e| e.nil? }
+                          .reject { |_, a| a.nil? }
                           # rubocop:enable Style/CollectionCompact
-                          .group_by { |_, e| e }
+                          .group_by { |_, a| a }
                           .transform_values { |l| l.pluck(0) }
     handled_directories = []
     handled_activity_ids = []

@@ -154,7 +154,7 @@ class Repository < ApplicationRecord
       read_config_file(full_path.join(Activity::DIRCONFIG_FILE))
     rescue ConfigParseError => e
       errors.push e
-      raise AggregatedConfigErrors.new(self, errors)
+      activity_dirs_and_configs = []
     end
 
     existing_activities = activity_dirs_and_configs

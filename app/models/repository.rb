@@ -136,6 +136,8 @@ class Repository < ApplicationRecord
     dirs = activity_dirs
     errors = []
 
+    # Read all config files and dirconfig files in the activity directories
+    # filter out the invalid ones and keep track of them to make a single error report at the end
     activity_dirs_and_configs = dirs.map do |d|
       Pathname.new('./').join(activity_relative_path(d)).parent.descend.each do |p|
         read_config_file(full_path.join(p, Activity::DIRCONFIG_FILE))
@@ -145,6 +147,15 @@ class Repository < ApplicationRecord
       errors.push e
       nil
     end.compact
+
+    # Read the outermost dirconfig file
+    # if it contains errors, don't process any activities
+    begin
+      read_config_file(full_path.join(Activity::DIRCONFIG_FILE))
+    rescue ConfigParseError => e
+      errors.push e
+      raise AggregatedConfigErrors.new(self, errors)
+    end
 
     existing_activities = activity_dirs_and_configs
                           .reject { |_, c| c['internals'].nil? || c['internals']['token'].nil? }
@@ -274,10 +285,6 @@ class Repository < ApplicationRecord
     end
 
     act.save
-  rescue ConfigParseError => e
-    # Add error to the list of errors encountered during processing
-    # This way the error will be picked up and aggregated in the process_activities method
-    errors.push e
   end
 
   def github_url(path = nil, mode: nil)

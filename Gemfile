@@ -8,7 +8,7 @@ gem 'rails', '~> 7.2.2'
 # Use trilogy to interact with mysql as the database for Active Record
 gem 'trilogy', '~> 2.9.0'
 # Use Puma as the app server
-gem 'puma', '~> 6.4.3'
+gem 'puma', '~> 6.5.0'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.4.1'

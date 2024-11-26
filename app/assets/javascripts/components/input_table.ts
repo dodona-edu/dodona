@@ -115,7 +115,7 @@ export class ScoreItemInputTable extends DodonaElement {
         return {
             createCell: (cell: HTMLTableCellElement) => {
                 const current = cell.innerHTML === "true";
-                const checkbox = html`<div class="form-check" contenteditable="false" style="margin: -16px 0;">
+                const checkbox = html`<div class="form-check" contenteditable="false" style="white-space: normal;">
                     <input type="checkbox"
                            class="form-check-input"
                            ?checked="${current}"

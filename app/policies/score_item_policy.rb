@@ -1,4 +1,3 @@
-# This policy contains no query methods, as they are covered by score_items? on the evaluation policy.
 class ScoreItemPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve

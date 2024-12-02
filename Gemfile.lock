@@ -289,7 +289,7 @@ GEM
       minitest (>= 5.0.6)
     minitest-utils (0.4.8)
       minitest
-    mocha (2.6.0)
+    mocha (2.6.1)
       ruby2_keywords (>= 0.0.5)
     msgpack (1.7.5)
     multi_json (1.15.0)
@@ -614,7 +614,7 @@ DEPENDENCIES
   memory_profiler (~> 1.1.0)
   minitest-ci (~> 3.4.0)
   minitest-utils (~> 0.4.8)
-  mocha (~> 2.6.0)
+  mocha (~> 2.6.1)
   nokogiri (~> 1.16.7)
   omniauth-google-oauth2 (~> 1.2.0)
   omniauth-oauth2 (~> 1.8.0)

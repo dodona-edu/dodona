@@ -17,12 +17,4 @@ class ScoreItemPolicy < ApplicationPolicy
       end
     end
   end
-
-  def permitted_attributes_for_create
-    %i[evaluation_exercise_id maximum name visible description]
-  end
-
-  def permitted_attributes_for_update
-    %i[maximum name visible description]
-  end
 end

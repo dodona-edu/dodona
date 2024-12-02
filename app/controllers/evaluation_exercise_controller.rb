@@ -7,7 +7,7 @@ class EvaluationExerciseController < ApplicationController
     if params[:evaluation_exercise].key?(:score_items)
       score_items = params[:evaluation_exercise][:score_items]
       ScoreItem.transaction do
-        new_items = score_items.filter { |item| item[:id].blank? }
+        new_items = score_items.filter { |item| !item.key?(:id) || item[:id].blank? }
         updated_items = score_items.filter { |item| item[:id].present? }
         @evaluation_exercise.score_items.each do |item|
           if (updated_item = updated_items.find { |i| i[:id].to_i == item.id })
@@ -19,6 +19,8 @@ class EvaluationExerciseController < ApplicationController
         new_items.each do |item|
           @evaluation_exercise.score_items.create!(item.permit(:name, :description, :maximum, :visible, :order))
         end
+      rescue ActiveRecord::RecordInvalid => e
+        return render json: { errors: e.record.errors }, status: :unprocessable_entity
       end
     end
 

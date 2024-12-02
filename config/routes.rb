@@ -223,14 +223,7 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update]
       resources :scores, only: %i[show create update destroy]
-
-      resources :evaluation_exercise do
-        resources :score_items do
-          patch '/', on: :collection, to: 'score_items#update_all'
-        end
-      end
     end
     resources :feedbacks, only: %i[show edit update] do
       delete 'scores', action: :destroy_scores, controller: :feedbacks, on: :member

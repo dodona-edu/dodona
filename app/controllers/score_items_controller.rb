@@ -34,7 +34,6 @@ class ScoreItemsController < ApplicationController
 
   def update_all
     @evaluation_exercise = EvaluationExercise.find(params[:evaluation_exercise_id])
-    Rails.logger.debug { "update_all: #{params[:score_items]}" }
     authorize @evaluation_exercise, :update?
 
     ScoreItem.transaction do

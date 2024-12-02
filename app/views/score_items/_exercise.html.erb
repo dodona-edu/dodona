@@ -53,14 +53,10 @@
         <%= format_score maximum_score %>
       </td>
       <td class="visibility">
-        <%= form_for evaluation_exercise, namespace: evaluation_exercise.id, method: :patch, remote: :true do |f| %>
-          <div class="form-check form-switch">
-            <%= f.check_box :visible_score,
-                            class: "form-check-input total-visibility-checkbox",
-                            disabled: maximum_score.nil?,
-                            title: t(".total_visibility"),
-                            'data-bs-toggle': "tooltip" %>
-          </div>
+        <% if evaluation_exercise.visible_score %>
+          <i class="mdi mdi-18 mdi-eye"></i>
+        <% else %>
+          <i class="mdi mdi-18 mdi-eye-off"></i>
         <% end %>
       </td>
     </tr>
@@ -69,8 +65,11 @@
   </table>
   <d-score-item-input-table
     class="d-none"
-    route="<%=evaluation_evaluation_exercise_score_items_path(@evaluation.id, evaluation_exercise.id, format: :js) %>"
+    route="<%=evaluation_exercise_path(evaluation_exercise.id, format: :js) %>"
     score-items="<%= evaluation_exercise.score_items.to_json %>"
+    <% if evaluation_exercise.visible_score? %>
+      total-visible="true"
+    <% end %>
   ></d-score-item-input-table>
 </div>
 <script>

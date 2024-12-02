@@ -6,6 +6,7 @@ import { DodonaElement } from "components/meta/dodona_element";
 import { fetch, ready } from "utilities";
 import { i18n } from "i18n/i18n";
 import { Tooltip } from "bootstrap";
+import { watchMixin } from "components/meta/watch_mixin";
 
 type CellData = string | number | boolean;
 type ScoreItem = {
@@ -34,17 +35,31 @@ const toBoolean = (value: CellValue): boolean => {
  * @prop {ScoreItem[]} scoreItems - The original score items, that will be displayed in the table.
  */
 @customElement("d-score-item-input-table")
-export class ScoreItemInputTable extends DodonaElement {
+export class ScoreItemInputTable extends watchMixin(DodonaElement) {
     @property({ type: String })
     route: string = "";
     @property({ type: Array, attribute: "score-items" })
     scoreItems: ScoreItem[] = [];
+    @property({ type: Boolean, attribute: "total-visible" })
+    totalVisible: boolean = false;
 
     tableRef: Ref<HTMLDivElement> = createRef();
     table: JspreadsheetInstance;
 
     @property({ state: true })
     hasErrors: boolean = false;
+    @property({ state: true })
+    _totalVisible: boolean = false;
+
+    watch = {
+        totalVisible: () => {
+            this._totalVisible = this.totalVisible;
+        }
+    };
+
+    toggleTotalVisible(): void {
+        this._totalVisible = !this._totalVisible;
+    }
 
     get tableWidth(): number {
         return this.tableRef.value.clientWidth;
@@ -269,7 +284,10 @@ export class ScoreItemInputTable extends DodonaElement {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                score_items: this.editedScoreItems
+                evaluation_exercise: {
+                    visible_score: this._totalVisible,
+                    score_items: this.editedScoreItems
+                }
             })
         });
         if (response.ok) {
@@ -281,6 +299,7 @@ export class ScoreItemInputTable extends DodonaElement {
     cancel(): void {
         if (this.table) {
             this.table.setData(this.data);
+            this._totalVisible = this.totalVisible;
             this.hasErrors = false;
         }
         this.dispatchEvent(new Event("cancel"));
@@ -289,8 +308,19 @@ export class ScoreItemInputTable extends DodonaElement {
 
     render(): TemplateResult {
         return html`
-            ${this.hasErrors ? html`<div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
+            ${this.hasErrors ? html`
+                <div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
             <div style="width: 100%" ${ref(this.tableRef)} contenteditable="true"></div>
+            <div class="form-check">
+                <label class="form-check-label" for="total-visible">
+                    ${i18n.t("js.score_items.show_hidden")}
+                </label>
+                <input type="checkbox"
+                       class="form-check-input"
+                       id="total-visible"
+                       ?checked=${this._totalVisible}
+                       @change=${() => this.toggleTotalVisible()}>
+            </div>
             <div class="d-flex justify-content-end">
                 <button @click=${this.cancel} class="btn btn-text me-1">
                     ${i18n.t("js.score_items.cancel")}

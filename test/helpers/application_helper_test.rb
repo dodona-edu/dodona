@@ -110,6 +110,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <img src="https://example.com/image.jpg" alt="Image">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
+      <img alt="Red dot SVG" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxlbGxpcHNlIHN0eWxlPSJmaWxsOnJlZDsgc3Ryb2tlOm5vbmUiIGN4PSI1IiBjeT0iNSIgcng9IjUiIHJ5PSI1Ii8+Cjwvc3ZnPg==" />
     HTML
     clean_html = sanitize dirty_html
 

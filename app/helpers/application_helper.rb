@@ -134,7 +134,7 @@ module ApplicationHelper
 
   def sanitize(html)
     @tags ||= Rails::Html::SafeListSanitizer.allowed_tags.to_a +
-              %w[table thead tbody tr td th colgroup col style summary details] +
+              %w[table thead tbody tr td th colgroup col style summary details img] +
               %w[svg g style circle line rect path polygon polyline text defs]
     @attributes ||= Rails::Html::SafeListSanitizer.allowed_attributes.to_a +
                     %w[style target data-bs-toggle data-parent data-tab data-line data-element id] +

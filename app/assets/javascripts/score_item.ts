@@ -50,23 +50,16 @@ export function initVisibilityCheckboxes(element: HTMLElement): void {
 }
 
 export function initEditButton(element: HTMLElement): void {
-    const editBtn = element.querySelector(".edit-btn") as HTMLAnchorElement;
     const table = element.querySelector(".score-items-table") as HTMLTableElement;
     const form = element.querySelector("d-score-item-input-table") as ScoreItemInputTable;
 
-    const activateEditMode = (e: MouseEvent): void => {
-        e.preventDefault();
+    table.addEventListener("click", () => {
         table.classList.add("d-none");
-        editBtn.classList.add("d-none");
         form.classList.remove("d-none");
-    };
-
-    editBtn.addEventListener("click", activateEditMode);
-    table.addEventListener("click", activateEditMode);
+    });
 
     form.addEventListener("cancel", () => {
         table.classList.remove("d-none");
-        editBtn.classList.remove("d-none");
         form.classList.add("d-none");
     });
 }

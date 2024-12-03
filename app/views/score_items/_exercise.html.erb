@@ -3,14 +3,13 @@
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
 <div id="score-items-<%= evaluation_exercise.id %>">
-  <h4 class="d-flex justify-content-between align-items-baseline">
+  <h4>
     <%= evaluation_exercise.exercise.name %>
-    <a class="btn btn-text edit-btn">
-      <%= t ".edit" %>
-    </a>
   </h4>
 
-  <table class="table table-resource score-items-table" id="table-for-<%= evaluation_exercise.id %>">
+  <table class="table table-resource score-items-table"
+         id="table-for-<%= evaluation_exercise.id %>"
+         title="<%= t ".edit" %>">
     <thead>
     <tr>
       <th><%= ScoreItem.human_attribute_name(:name) %></th>

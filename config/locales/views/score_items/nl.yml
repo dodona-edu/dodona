@@ -32,7 +32,7 @@ nl:
       info: Je kan op Dodona punten geven aan de oplossingen in deze evaluatie. Dit is optioneel en kan later altijd aangepast worden.
     exercise:
       nothing: Er zijn nog geen scoreonderdelen voor deze oefening. Je kan pas punten geven als er minstens één scoreonderdeel is.
-      max: Maximumscore
+      max: Totaal
       total_visibility: >
         Toon of verberg de berekende totaalscore in Dodona voor deze oefening als de feedback vrijgegeven wordt.
         Individuele scoreonderdelen zijn nog wel zichtbaar als ze als zodanig gemarkeerd zijn.

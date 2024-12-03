@@ -32,7 +32,7 @@ en:
       info: Dodona allows you to grade the submissions in this evaluation. This is optional and can always be changed later.
     exercise:
       nothing: There are no score items for this exercise yet. You can only grade exercises with at least one score item.
-      max: Maximum score
+      max: Total score
       total_visibility: >
         Show or hide the calculated total score in Dodona for this exercise when the feedback is released.
         Individual score items are still visible if they are marked as such.

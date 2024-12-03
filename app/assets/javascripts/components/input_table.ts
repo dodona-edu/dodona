@@ -113,8 +113,7 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
 
     createDeleteButton(cell: HTMLTableCellElement): HTMLTableCellElement {
         const button = html`<button
-            class="btn btn-icon d-btn-danger"
-            style="margin: -20px"
+            class="btn btn-icon d-btn-danger btn-icon-inline"
             title="${i18n.t("js.score_items.jspreadsheet.deleteRow")}"
             @click="${() => this.deleteCellRow(cell)}">
                 <i class="mdi mdi-18 mdi-delete"></i>

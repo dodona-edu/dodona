@@ -43,8 +43,8 @@ class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update all score items if course administrator' do
     score_items = create_list :score_item, 3, evaluation_exercise: @exercise,
-                              description: 'Before test',
-                              maximum: '10.0'
+                                              description: 'Before test',
+                                              maximum: '10.0'
 
     [
       [@staff_member, :success],
@@ -77,8 +77,8 @@ class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
         # reset
         @exercise.score_items.each(&:destroy)
         score_items = create_list :score_item, 3, evaluation_exercise: @exercise,
-                                  description: 'Before test',
-                                  maximum: '10.0'
+                                                  description: 'Before test',
+                                                  maximum: '10.0'
       else
         assert_equal 3, @exercise.score_items.count
       end
@@ -136,7 +136,7 @@ class EvaluationExerciseControllerTest < ActionDispatch::IntegrationTest
       [users(:zeus), :success],
       [nil, :unauthorized]
     ].each do |user, expected|
-      score_item = create :score_item, evaluation_exercise: @exercise,
+      create :score_item, evaluation_exercise: @exercise,
                           description: 'Code re-use',
                           maximum: '10.0'
 

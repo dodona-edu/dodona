@@ -71,12 +71,17 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <script>alert(1)</script>
       <img src=x onerror=alert(1)>
+      <svg>
+        <script>alert(1)</script>
+        <use xlink:href="javascript:alert(1)"/>
+      </svg>
       <p>Hello
     HTML
     clean_html = sanitize dirty_html
 
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
+    assert_no_match(/<use/, clean_html)
     assert_match(/<p>Hello/, clean_html)
   end
 
@@ -94,6 +99,17 @@ class ApplicationHelperTest < ActiveSupport::TestCase
           </tr>
         </tbody>
       </table>
+    HTML
+    clean_html = sanitize dirty_html
+
+    assert_equal dirty_html, clean_html
+  end
+
+  test 'sanitize helper should allow images' do
+    # test link image and base64 image
+    dirty_html = <<~HTML
+      <img src="https://example.com/image.jpg" alt="Image">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
     HTML
     clean_html = sanitize dirty_html
 

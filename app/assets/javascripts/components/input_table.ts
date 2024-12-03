@@ -311,9 +311,9 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
             ${this.hasErrors ? html`
                 <div class="alert alert-danger">${i18n.t("js.score_items.validation_warning")}</div>` : ""}
             <div style="width: 100%" ${ref(this.tableRef)} contenteditable="true"></div>
-            <div class="form-check">
+            <div class="form-check ms-1">
                 <label class="form-check-label" for="total-visible">
-                    ${i18n.t("js.score_items.show_hidden")}
+                    ${i18n.t("js.score_items.total_visible")}
                 </label>
                 <input type="checkbox"
                        class="form-check-input"

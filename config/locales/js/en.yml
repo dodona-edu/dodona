@@ -307,6 +307,7 @@ en:
       validation_warning: All score items must have a name and a maximum score, and the maximum score must be between 0 and 1000.
       save: Save
       cancel: Cancel
+      total_visible: Make the total score visible to students once the evaluation is released.
       jspreadsheet:
         copy: Copy...
         deleteRow: Delete row

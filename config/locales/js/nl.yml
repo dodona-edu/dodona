@@ -307,6 +307,7 @@ nl:
       modified_warning: "Je hebt de maximumscore van een of meerdere scoreonderdelen aangepast. Alle afgewerkte evaluaties met dit scoreonderdeel zullen terug als onafgewerkt gemarkeerd worden."
       deleted_warning: "Je hebt een of meerdere scoreonderdelen verwijderd. Dit zal ook de bijhorende scores van de studenten verwijderen."
       validation_warning: "Alle scoreonderdelen moeten een naam en een maximumscore hebben. De maximumscore moet een getal zijn tussen 0 en 1000."
+      total_visible: Maak totaal score zichtbaar voor studenten eens de evaluatie vrijgegeven is.
       jspreadsheet:
         copy: Kopieer...
         deleteRow: Verwijder rij

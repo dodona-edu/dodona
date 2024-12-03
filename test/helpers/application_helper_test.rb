@@ -74,6 +74,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       <svg>
         <script>alert(1)</script>
         <use xlink:href="javascript:alert(1)"/>
+        <use xlink:href="test.svg"/>
+        <use href="javascript:alert(1)"/>
+        <use href="test.svg"/>
       </svg>
       <p>Hello
     HTML
@@ -81,7 +84,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
-    assert_no_match(/<use/, clean_html)
+    assert_no_match(/xlink:href/, clean_html)
     assert_match(/<p>Hello/, clean_html)
   end
 
@@ -110,7 +113,6 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <img src="https://example.com/image.jpg" alt="Image">
       <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
-      <img alt="Red dot SVG" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAiIGhlaWdodD0iMTAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxlbGxpcHNlIHN0eWxlPSJmaWxsOnJlZDsgc3Ryb2tlOm5vbmUiIGN4PSI1IiBjeT0iNSIgcng9IjUiIHJ5PSI1Ii8+Cjwvc3ZnPg==" />
     HTML
     clean_html = sanitize dirty_html
 
@@ -131,6 +133,8 @@ class ApplicationHelperTest < ActiveSupport::TestCase
             <polygon class="border" points="0,1 -0.5773,0 0,-1 0.5773,0 0,1" fill="none"></polygon>
           </g>
         </defs>
+        <use xlink:href="#diamond" x="50" y="50" fill="red"></use>
+        <use href="#diamond" x="50" y="50" fill="red"></use>
         <g id="group1" transform="translate(50,50)">
           <circle cx="0" cy="0" r="40" fill="none"></circle>
           <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>

@@ -5,6 +5,15 @@
 }
 
 .score-items-table {
+  cursor: text;
+
+  tr:not(:last-child) {
+    td:hover {
+      background: rgba(var(--d-primary-rgb), 0.1);
+    }
+  }
+
+
   td.description {
     max-width: 150px;
 
@@ -86,5 +95,15 @@ a.option-btn {
     .collapsed-icon {
       display: none;
     }
+  }
+}
+
+d-score-item-input-table .jexcel tr:last-child td:last-child button {
+  opacity: 0.38;
+  pointer-events: none;
+
+  &:focus {
+    opacity: 0.38;
+    pointer-events: none;
   }
 }

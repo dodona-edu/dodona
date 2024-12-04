@@ -127,7 +127,7 @@ class EvaluationsController < ApplicationController
   def modify_grading_visibility
     new_visibility = ActiveModel::Type::Boolean.new.cast(params[:visible])
     @evaluation.change_grade_visibility!(new_visibility)
-    redirect_back fallback_location: evaluation_score_items_path(@evaluation)
+    redirect_back fallback_location: edit_evaluation_path(@evaluation)
   end
 
   def set_multi_user

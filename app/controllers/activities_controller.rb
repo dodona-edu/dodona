@@ -109,6 +109,12 @@ class ActivitiesController < ApplicationController
   end
 
   def show
+    @repository = @activity.repository
+    @config = @activity.ok? ? @activity.merged_config : {}
+    @config_locations = @activity.ok? ? @activity.merged_config_locations : {}
+    @courses_series = policy_scope(@activity.series).group_by(&:course).sort do |a, b|
+      [b.first.year, a.first.name] <=> [a.first.year, b.first.name]
+    end
     flash.now[:alert] = I18n.t('activities.show.not_a_member') if @course && !current_user&.member_of?(@course)
 
     # Double check if activity still exists within this course (And throw a 404 when it does not)

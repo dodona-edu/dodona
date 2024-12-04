@@ -74,6 +74,9 @@ class ApplicationHelperTest < ActiveSupport::TestCase
       <svg>
         <script>alert(1)</script>
         <use xlink:href="javascript:alert(1)"/>
+        <use xlink:href="test.svg"/>
+        <use href="javascript:alert(1)"/>
+        <use href="test.svg"/>
       </svg>
       <p>Hello
     HTML
@@ -81,7 +84,7 @@ class ApplicationHelperTest < ActiveSupport::TestCase
 
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
-    assert_no_match(/<use/, clean_html)
+    assert_no_match(/xlink:href/, clean_html)
     assert_match(/<p>Hello/, clean_html)
   end
 
@@ -130,6 +133,8 @@ class ApplicationHelperTest < ActiveSupport::TestCase
             <polygon class="border" points="0,1 -0.5773,0 0,-1 0.5773,0 0,1" fill="none"></polygon>
           </g>
         </defs>
+        <use xlink:href="#diamond" x="50" y="50" fill="red"></use>
+        <use href="#diamond" x="50" y="50" fill="red"></use>
         <g id="group1" transform="translate(50,50)">
           <circle cx="0" cy="0" r="40" fill="none"></circle>
           <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>

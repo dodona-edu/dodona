@@ -1,6 +1,15 @@
-<% current_feedback.evaluation.evaluation_exercises.map do |ex|
-  Feedback.find_by(evaluation_user: current_feedback.evaluation_user,
-                   evaluation_exercise: ex)
-end.each do |feedback| %>
-  <%= render partial: 'evaluations/feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback, current: current_feedback } %>
-<% end %>
+<table class="table activity-table">
+  <% current_feedback.evaluation.evaluation_exercises.map do |ex|
+    Feedback.find_by(evaluation_user: current_feedback.evaluation_user,
+                     evaluation_exercise: ex)
+  end.each do |feedback| %>
+    <tr>
+      <td class="ellipsis-overflow name" title="<%= feedback.exercise.name %>">
+        <%= feedback.exercise.name %>
+      </td>
+      <td class="buttons">
+        <%= render partial: "evaluations/feedback_status", locals: { evaluation: feedback.evaluation, feedback: feedback, active: feedback == current_feedback} %>
+      </td>
+    </tr>
+  <% end %>
+</table>

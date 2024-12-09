@@ -1,4 +1,3 @@
-# This policy contains no query methods, as they are covered by score_items? on the evaluation policy.
 class ScoreItemPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
@@ -16,13 +15,5 @@ class ScoreItemPolicy < ApplicationPolicy
         scope.none
       end
     end
-  end
-
-  def permitted_attributes_for_create
-    %i[evaluation_exercise_id maximum name visible description]
-  end
-
-  def permitted_attributes_for_update
-    %i[maximum name visible description]
   end
 end

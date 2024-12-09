@@ -439,6 +439,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_17_143229) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order"
     t.index ["evaluation_exercise_id"], name: "index_score_items_on_evaluation_exercise_id"
   end
 

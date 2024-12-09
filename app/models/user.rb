@@ -136,7 +136,7 @@ class User < ApplicationRecord
 
   accepts_nested_attributes_for :identities, limit: 1
 
-  search_by :username, :first_name, :last_name
+  search_by :username, :first_name, :last_name, :email
 
   scope :by_permission, ->(permission) { where(permission: permission) }
   filterable_by :institution_id, model: Institution

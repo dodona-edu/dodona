@@ -57,4 +57,14 @@ class CoursesTest < ApplicationSystemTestCase
     # assert redirected to login page
     assert_selector 'h1', text: 'Sign in'
   end
+
+  test 'zeus should see activities in hidden courses' do
+    course = create :course, visibility: :hidden, series_count: 1, activities_per_series: 1
+
+    sign_in users(:zeus)
+    visit(course_path(:en, course.id))
+
+    # assert activity table is visible
+    assert_selector '.activity-table'
+  end
 end

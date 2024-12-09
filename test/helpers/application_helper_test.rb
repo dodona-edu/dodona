@@ -71,12 +71,20 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     dirty_html = <<~HTML
       <script>alert(1)</script>
       <img src=x onerror=alert(1)>
+      <svg>
+        <script>alert(1)</script>
+        <use xlink:href="javascript:alert(1)"/>
+        <use xlink:href="test.svg"/>
+        <use href="javascript:alert(1)"/>
+        <use href="test.svg"/>
+      </svg>
       <p>Hello
     HTML
     clean_html = sanitize dirty_html
 
     assert_no_match(/<script>/, clean_html)
     assert_no_match(/onerror/, clean_html)
+    assert_no_match(/xlink:href/, clean_html)
     assert_match(/<p>Hello/, clean_html)
   end
 
@@ -100,6 +108,17 @@ class ApplicationHelperTest < ActiveSupport::TestCase
     assert_equal dirty_html, clean_html
   end
 
+  test 'sanitize helper should allow images' do
+    # test link image and base64 image
+    dirty_html = <<~HTML
+      <img src="https://example.com/image.jpg" alt="Image">
+      <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot">
+    HTML
+    clean_html = sanitize dirty_html
+
+    assert_equal dirty_html, clean_html
+  end
+
   test 'sanitize helper should allow a selection of svg tags' do
     dirty_html = <<~HTML
       <svg viewBox="0 0 100 100" width="300" height="100" version="1.1">
@@ -114,6 +133,8 @@ class ApplicationHelperTest < ActiveSupport::TestCase
             <polygon class="border" points="0,1 -0.5773,0 0,-1 0.5773,0 0,1" fill="none"></polygon>
           </g>
         </defs>
+        <use xlink:href="#diamond" x="50" y="50" fill="red"></use>
+        <use href="#diamond" x="50" y="50" fill="red"></use>
         <g id="group1" transform="translate(50,50)">
           <circle cx="0" cy="0" r="40" fill="none"></circle>
           <line class="test" x1="0" y1="0" x2="0" y2="-40"></line>

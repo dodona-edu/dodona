@@ -305,7 +305,7 @@ class Course < ApplicationRecord
   end
 
   def visible_for_user?(user)
-    visible_for_all? || (visible_for_institution? && institution == user&.institution) || user&.member_of?(self)
+    visible_for_all? || (visible_for_institution? && institution == user&.institution) || user&.member_of?(self) || user&.zeus?
   end
 
   def invalidate_subscribed_members_count_cache

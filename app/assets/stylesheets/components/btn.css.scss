@@ -383,3 +383,7 @@
   --d-btn-color-rgb: var(--d-success-rgb);
   --d-on-btn-color: var(--d-on-success);
 }
+
+.btn-toggle {
+  min-width: fit-content;
+}

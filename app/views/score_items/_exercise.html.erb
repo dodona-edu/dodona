@@ -22,12 +22,7 @@
     <% if evaluation_exercise.score_items.empty? %>
       <tr>
         <td class="placeholder-text" colspan="4">
-          <div><%= t 'score_items.exercise.nothing' %></div>
-          <div>
-            <a class="btn btn-text edit-btn">
-              <%= t ".add" %>
-            </a>
-          </div>
+          <%= t 'score_items.exercise.nothing' %>
         </td>
       </tr>
     <% else %>
@@ -47,7 +42,12 @@
       <% end %>
     <% end %>
     <tr class="maximum-row">
-      <td colspan="2" class="wide-description"><%= t '.max' %></td>
+      <td class="name"><%= t '.max' %></td>
+      <td class="add-score-items">
+        <a class="btn btn-text edit-btn">
+          <%= t ".add" %>
+        </a>
+      </td>
       <td class="maximum">
         <%= format_score maximum_score %>
       </td>

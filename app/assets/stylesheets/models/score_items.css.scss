@@ -23,11 +23,11 @@
   }
 
   td.visibility {
-    width: 20px;
+    width: 60px;
   }
 
   td.maximum {
-    width: 105px;
+    width: 100px;
     padding-right: 20px;
   }
 
@@ -40,8 +40,13 @@
     width: 250px;
   }
 
-  td.wide-description {
-    width: 650px;
+  td.add-score-items {
+    text-align: center;
+
+    // padding is used to center the button
+    // padding-right: 90px = 250px (td.name)  - 60px (td.visibility) - 100px (td.maximum)
+    // top and bottom padding is 0 to avoid double padding with the button
+    padding: 0 90px 0 0;
   }
 
   .maximum-row {

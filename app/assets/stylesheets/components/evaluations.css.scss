@@ -154,30 +154,14 @@
 }
 
 .feedback {
-  padding-bottom: 6px;
+  color: var(--d-on-surface) !important;
 
-  &.correct {
-    border-bottom: 3px solid var(--d-success);
+  i {
+    color: inherit;
   }
 
-  &.wrong {
-    border-bottom: 3px solid var(--d-danger);
-  }
-
-  &.not-started {
-    border-bottom: 3px solid var(--d-divider);
-  }
-
-  .done,
-  .provisional {
-    color: var(--d-on-surface-muted);
-  }
-
-  a:hover .done,
-  a:hover .provisional,
-  .done:hover,
-  .provisional:hover {
-    color: var(--d-on-surface);
+  &.completed {
+    color: var(--d-secondary) !important;
   }
 }
 

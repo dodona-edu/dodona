@@ -33,7 +33,6 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    padding-bottom: 5px;
 
     .name {
       flex-shrink: 0;
@@ -155,47 +154,14 @@
 }
 
 .feedback {
-  padding-bottom: 6px;
+  color: var(--d-on-surface-muted) !important;
 
-  &.correct {
-    border-bottom: 3px solid var(--d-success);
+  i {
+    color: inherit;
   }
 
-  &.wrong {
-    border-bottom: 3px solid var(--d-danger);
-  }
-
-  &.not-started {
-    border-bottom: 3px solid var(--d-divider);
-  }
-
-  .done,
-  .provisional {
-    color: var(--d-on-surface-muted);
-  }
-
-  a:hover .done,
-  a:hover .provisional,
-  .done:hover,
-  .provisional:hover {
-    color: var(--d-on-surface);
-  }
-}
-
-.user-feedback-row {
-  display: flex;
-  justify-content: space-around;
-
-  a .done {
-    color: var(--d-on-surface-muted);
-  }
-
-  .active a {
-    background-color: var(--d-info-container);
-
-    i {
-      color: var(--d-info);
-    }
+  i.completed {
+    color: var(--d-secondary) !important;
   }
 }
 

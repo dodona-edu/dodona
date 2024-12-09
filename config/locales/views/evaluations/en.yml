@@ -13,7 +13,6 @@ en:
       next_incomplete_feedback: Go to the next incomplete solution
       evaluation_progress: Evaluation progress
       evaluation_details: Evaluation details
-      evaluation_details_info_html: This table gives an overview of all submissions in this evaluation.<br> The colored bar shows the status of the submission (no submission, correct or wrong) and the tick in the speech bubble if the submission has already been completed.
       progress_html: "<b>%{feedback_count} of the %{feedback_total}</b> submissions have completed feedback."
       grading_details: Grade overview
       grading_details_info_html: This table shows the grade overview for the evaluation. The total per user is the sum of the scores for the exercises.<br>If not all scores have been entered for a submission, the score is shown in gray.
@@ -65,15 +64,14 @@ en:
       deadline-help_html: "<p>The deadline is used to select the default submission you give feedback on. The last submission before this deadline is used.</p><p><b>Warning:</b> You can't change the deadline later, but you can select a different solution for individual students.</p>"
     evaluation_table:
       user: User
+      evaluate_user: "Evaluate %{user}"
     evaluation_grade_table:
       total: Total
       average: Average
     feedback_status:
-      feedback_finished: evaluation completed
-      feedback_unstarted: evaluation not yet completed
-      submission_not-started: "No submission, "
-      submission_correct: "Correct submission, "
-      submission_wrong: "Wrong submission, "
+      no_submission: No submissions
+      feedback_finished: "%{status}, feedback given, look at the feedback"
+      feedback_unstarted: "%{status}, no feedback given, evaluate this submission"
     overview:
       title: Evaluation
       explanation: A teacher reviewed your work for the "%{series}" series. They automatically picked your last submission before %{deadline}, but they might have chosen a different one manually. Keep in mind, this evaluation doesn't always include feedback on all your submissions.
@@ -99,3 +97,4 @@ en:
     exercises_progress_table:
       evaluate: Evaluate
       evaluated: Evaluated
+      evaluating: Evaluating

@@ -1,15 +1,18 @@
-<table class="table activity-table">
+<ul class="feedback-list">
   <% current_feedback.evaluation.evaluation_exercises.map do |ex|
     Feedback.find_by(evaluation_user: current_feedback.evaluation_user,
                      evaluation_exercise: ex)
   end.each do |feedback| %>
-    <tr>
-      <td class="ellipsis-overflow name" title="<%= feedback.exercise.name %>">
-        <%= feedback.exercise.name %>
-      </td>
-      <td class="buttons">
-        <%= render partial: "evaluations/feedback_status", locals: { evaluation: feedback.evaluation, feedback: feedback, active: feedback == current_feedback} %>
-      </td>
-    </tr>
+    <li >
+      <%= link_to evaluation_feedback_path(feedback.evaluation, feedback),
+                  title: feedback_title(feedback),
+                  "data-bs-toggle": "tooltip",
+                  class: current_feedback == feedback ? "active" : "" do %>
+        <%= render partial: "evaluations/feedback_status", locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+        <div class="ellipsis-overflow">
+          <%= feedback.exercise.name %>
+        </div>
+      <% end %>
+    </li>
   <% end %>
-</table>
+</ul>

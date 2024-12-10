@@ -15,7 +15,12 @@
           <td class="user-name ellipsis-overflow"><%= link_to user.full_name, course_member_path(@evaluation.series.course, user), title: user.full_name, class: "ellipsis-overflow", target: "_blank" %></td>
           <% feedback_l.each do |feedback| %>
             <td class="status">
-              <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+              <%= link_to evaluation_feedback_path(evaluation, feedback),
+                         title: feedback_title(feedback),
+                         "data-bs-toggle": "tooltip",
+                         class: "btn btn-icon d-btn-secondary" do %>
+                <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
+              <% end %>
             </td>
           <% end %>
         </tr>

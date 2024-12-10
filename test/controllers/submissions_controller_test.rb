@@ -498,7 +498,7 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
   end
 
-  test 'should not be able to submit to valid exercise' do
+  test 'should be able to submit to valid exercise' do
     attrs = generate_attr_hash
 
     sign_in create(:staff)

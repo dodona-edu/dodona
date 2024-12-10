@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.16.7'
+gem 'nokogiri', '~> 1.17.0'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -142,7 +142,7 @@ gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.6.1'
+  gem 'mocha', '~> 2.7.1'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.4'
 

@@ -58,6 +58,7 @@ class ActivityPolicy < ApplicationPolicy
   def submit?
     return false if record.removed?
     return false if user.blank?
+    return false if record.not_valid?
     return true if user.admin?
     return true if record.ok?
 

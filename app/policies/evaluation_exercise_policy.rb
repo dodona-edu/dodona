@@ -10,6 +10,10 @@ class EvaluationExercisePolicy < ApplicationPolicy
     %i[visible_score]
   end
 
+  def update?
+    course_admin?
+  end
+
   private
 
   def course_admin?

@@ -2,6 +2,7 @@ import {
     updateArrayURLParameter, updateURLParameter, getURLParameter, getArrayURLParameter,
     delay, createDelayer
 } from "utilities.ts";
+import { convertToFloatRepresentation } from "../../app/assets/javascripts/utilities";
 
 jest.useFakeTimers();
 

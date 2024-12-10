@@ -223,10 +223,6 @@ Rails.application.routes.draw do
         post 'modify_grading_visibility'
       end
       resources :feedbacks, only: %i[show edit update]
-      resources :score_items, only: %i[create destroy update] do
-        post 'copy', on: :collection
-        post 'add_all', on: :collection
-      end
       resources :scores, only: %i[show create update destroy]
     end
     resources :feedbacks, only: %i[show edit update] do

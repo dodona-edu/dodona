@@ -15,10 +15,6 @@ class EvaluationPolicy < ApplicationPolicy
     course_admin?
   end
 
-  def score_items?
-    course_admin?
-  end
-
   def manage_scores?
     course_admin?
   end

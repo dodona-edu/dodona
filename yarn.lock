@@ -2023,17 +2023,17 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@rails/activestorage@^7.2.102":
-  version "7.2.102"
-  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-7.2.102.tgz#6c44033e4698ea92466a764515d3b156d58c6530"
-  integrity sha512-indJKK6bhETIfyYqUtbE3neUQCZ7Qm3lcPXSHqlVBYsJ3DnUKKejqvaIHHA5MrmqTKNbnnrX4zyeA1mrJgLk9Q==
+"@rails/activestorage@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/activestorage/-/activestorage-8.0.0.tgz#be5dd10acc141b95ffa2b3026e61790c36f1679c"
+  integrity sha512-qoA7U1gMcWXhDnImwDIyRQDXkQKzThT2lu2Xpim8CnTOCEeAgkQ5Co2kzodpAI2grF1JSDvwXSPYNWwVAswndA==
   dependencies:
     spark-md5 "^3.0.1"
 
-"@rails/ujs@^7.1.402":
-  version "7.1.402"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.402.tgz#5d4e7e5d1e2e22df081bf5693fc75f0725635130"
-  integrity sha512-q9dDlIR+anDtuGcV56rLnqHAxtWo8vkSnvfFt7juthvHc+97NEtGlnM++uhvnlDbR+7EGkX8nGqQIF8R93oWMQ==
+"@rails/ujs@^7.1.500":
+  version "7.1.500"
+  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.500.tgz#84bb037b6a823ec7fb7782a2ac03452deb505128"
+  integrity sha512-PfPtQrxFOn55RlJ4ygXkcIHFkoPO1JMTRJcSdPb0EavcSZ3Ekl9ujAAPrrqj2zKwkbe0pGGR79RJhnUr5ngQjw==
 
 "@replit/codemirror-lang-csharp@^6.2.0":
   version "6.2.0"

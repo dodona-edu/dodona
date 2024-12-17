@@ -1,6 +1,12 @@
 import { customElement, property } from "lit/decorators.js";
 import { html, PropertyValues, render, TemplateResult } from "lit";
-import jspreadsheet, { CellValue, Column, CustomEditor, JspreadsheetInstance } from "jspreadsheet-ce";
+import jspreadsheet, {
+    CellValue,
+    Column,
+    CustomEditor,
+    JspreadsheetInstance,
+    JspreadsheetInstanceElement
+} from "jspreadsheet-ce";
 import { createRef, ref, Ref } from "lit/directives/ref.js";
 import { DodonaElement } from "components/meta/dodona_element";
 import { fetch, ready } from "utilities";
@@ -78,13 +84,13 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
     get data(): CellData[][] {
         return [
             ...this.scoreItems.map(item => [
-                item.id,
                 item.name,
                 item.description,
                 item.maximum,
-                item.visible
+                item.visible,
+                item.id,
             ]),
-            ["", "", "", "", false]
+            ["", "", "", false, ""]
         ];
     }
 
@@ -93,11 +99,11 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
 
         const scoreItems = tableData.map((row: CellData[], index: number) => {
             return {
-                id: row[0] as number | null,
-                name: row[1] as string,
-                description: row[2] as string,
-                maximum: (row[3] as string).replace(",", "."), // replace comma with dot for float representation
-                visible: toBoolean(row[4]),
+                name: row[0] as string,
+                description: row[1] as string,
+                maximum: (row[2] as string).replace(",", "."), // replace comma with dot for float representation
+                visible: toBoolean(row[3]),
+                id: row[4] as number | null,
                 order: index,
             };
         });
@@ -155,11 +161,11 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
 
     get columnConfig(): ColumnWithTooltip[] {
         return [
-            { type: "hidden", title: "id" },
             { type: "text", title: i18n.t("js.score_items.name"), width: 200, align: "left" },
             { type: "text", title: i18n.t("js.score_items.description"), width: this.descriptionColWidth, align: "left", tooltip: i18n.t("js.score_items.description_help") },
             { type: "numeric", title: i18n.t("js.score_items.maximum"), width: 75, align: "left", tooltip: i18n.t("js.score_items.maximum_help") },
             { type: "html", title: i18n.t("js.score_items.visible"), width: 75, align: "left", tooltip: i18n.t("js.score_items.visible_help"), editor: this.customCheckboxEditor() },
+            { type: "hidden", title: "id" },
             { type: "html", title: " ", width: 30, align: "center", readOnly: true, editor: {
                 createCell: (cell: HTMLTableCellElement) => this.createDeleteButton(cell),
             } },
@@ -215,7 +221,7 @@ export class ScoreItemInputTable extends watchMixin(DodonaElement) {
 
         // update description column width when the window is resized
         new ResizeObserver(() => {
-            this.table.setWidth(2, this.descriptionColWidth);
+            this.table.setWidth(1, this.descriptionColWidth);
         }).observe(this.tableRef.value);
     }
 

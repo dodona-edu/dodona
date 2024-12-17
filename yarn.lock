@@ -1736,11 +1736,6 @@
   resolved "https://registry.yarnpkg.com/@jsplumb/browser-ui/-/browser-ui-6.2.10.tgz#86b85ed42110563d2816e3712677cdbbbf33366f"
   integrity sha512-trk++mK5q6hceJL79teemzcilJ+8DrZT/lMK0+B80AtHqZHr0YwMCf+so2JBb2Z/MDZ0fUEU9MbELY6OPhhs5g==
 
-"@jspreadsheet/formula@^2.0.2":
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/@jspreadsheet/formula/-/formula-2.0.2.tgz#e0529f275c086fd7d34179b50450a98aeb56fd58"
-  integrity sha512-PDQYf9REQA53I7tVYkvkeyQxrd5jcjUeHgItYnRpjN2QiIQwawSqBDtGGEVQTSboTG+JwgGCuhvOpj7FxeKwew==
-
 "@lezer/common@^1.0.0", "@lezer/common@^1.0.2", "@lezer/common@^1.1.0", "@lezer/common@^1.2.0", "@lezer/common@^1.2.3":
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/@lezer/common/-/common-1.2.3.tgz#138fcddab157d83da557554851017c6c1e5667fd"
@@ -6059,18 +6054,17 @@ json5@2.x, json5@^2.1.2, json5@^2.2.3:
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
-jspreadsheet-ce@^4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/jspreadsheet-ce/-/jspreadsheet-ce-4.2.1.tgz#66cba61fb28d65d6cf89e6aa495aecd89f63a710"
-  integrity sha512-kQ+bUwH0MEeyr3Ojdd+tB0BJik3NsnQlhC1E52uwrURvqBu3GnrDtRZZS3cAwtL0FzHBZDsJJB9afTdReBm6Hg==
+jspreadsheet-ce@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/jspreadsheet-ce/-/jspreadsheet-ce-4.6.0.tgz#38514e25ff87f53e6c5ee33665d696d6002eed3f"
+  integrity sha512-kLDO+PmwLmpDj0ltCKwBLXGN4eZV3zyt/MWAmWtA8zl8oonrYg53Z1eChaXWFrMwGNnu1DqgChBfPppa5XYZjg==
   dependencies:
-    "@jspreadsheet/formula" "^2.0.2"
-    jsuites "^5.3.0"
+    jsuites "^4.0.0"
 
-jsuites@^5.3.0:
-  version "5.4.6"
-  resolved "https://registry.yarnpkg.com/jsuites/-/jsuites-5.4.6.tgz#0d8dc2aa3cdffda4ce0f07df8aa3a2177b3a3cec"
-  integrity sha512-/Do37lqZ+EhBKvWi3L1r7wHjP9PHAtjDPLNepp84Pqi4pWrH6ZisTuJZyI6SRHYqshsfMr+cg5CkPbPC6J6o4Q==
+jsuites@^4.0.0:
+  version "4.17.7"
+  resolved "https://registry.yarnpkg.com/jsuites/-/jsuites-4.17.7.tgz#f967477dd62d47ba7c618471e5be4835cb8f8ee4"
+  integrity sha512-qxR9bXsrN2a5nz1hhJjBwKafIg/dFVJY3AZbm1Idvo6rI98t8tlH9oIZVr6nNMGisVbD44HNtLr1juYHlsXpmg==
 
 keyv@^4.5.3, keyv@^4.5.4:
   version "4.5.4"

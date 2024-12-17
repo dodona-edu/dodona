@@ -1262,12 +1262,12 @@
     "@codemirror/view" "^6.0.0"
     "@lezer/highlight" "^1.0.0"
 
-"@codemirror/view@^6.0.0", "@codemirror/view@^6.17.0", "@codemirror/view@^6.23.0", "@codemirror/view@^6.27.0", "@codemirror/view@^6.28.0", "@codemirror/view@^6.35.2":
-  version "6.35.2"
-  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.35.2.tgz#27f1a063ea7fc4654674c55abdb230dc8816f706"
-  integrity sha512-u04R04XFCYCNaHoNRr37WUUAfnxKPwPdqV+370NiO6i85qB1J/qCD/WbbMJsyJfRWhXIJXAe2BG/oTzAggqv4A==
+"@codemirror/view@^6.0.0", "@codemirror/view@^6.17.0", "@codemirror/view@^6.23.0", "@codemirror/view@^6.27.0", "@codemirror/view@^6.28.0", "@codemirror/view@^6.35.3":
+  version "6.35.3"
+  resolved "https://registry.yarnpkg.com/@codemirror/view/-/view-6.35.3.tgz#329de3755cfb347df3e32c354c675d0e83df2406"
+  integrity sha512-ScY7L8+EGdPl4QtoBiOzE4FELp7JmNUsBvgBcCakXWM2uiv/K89VAzU3BMDscf0DsACLvTKePbd5+cFDTcei6g==
   dependencies:
-    "@codemirror/state" "^6.4.0"
+    "@codemirror/state" "^6.5.0"
     style-mod "^4.1.0"
     w3c-keyname "^2.2.4"
 

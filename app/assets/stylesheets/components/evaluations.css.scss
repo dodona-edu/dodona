@@ -182,12 +182,12 @@ ul.feedback-list {
     &:hover,
     &:focus {
       font-weight: 400;
-      background: var(--d-secondary-container);
-      color: var(--d-on-secondary-container);
+      background: var(--d-primary-container);
+      color: var(--d-on-primary-container);
       opacity: 0.75;
 
       .feedback-icon .circle {
-        fill: var(--d-secondary-container);
+        fill: var(--d-primary-container);
         opacity: 0.75;
       }
     }
@@ -214,8 +214,10 @@ ul.feedback-list {
     color: inherit;
   }
 
-  i.completed {
-    color: var(--d-secondary) !important;
+  &.completed {
+    i {
+      color: var(--d-primary) !important;
+    }
   }
 
   .circle {

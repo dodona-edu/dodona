@@ -18,7 +18,7 @@
               <%= link_to evaluation_feedback_path(evaluation, feedback),
                          title: feedback_title(feedback),
                          "data-bs-toggle": "tooltip",
-                         class: "btn btn-icon d-btn-secondary" do %>
+                         class: "btn btn-icon" do %>
                 <%= render partial: 'feedback_status', locals: { evaluation: feedback.evaluation, feedback: feedback } %>
               <% end %>
             </td>

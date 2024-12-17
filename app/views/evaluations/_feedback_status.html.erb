@@ -1,11 +1,11 @@
-<svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" class="feedback-icon" >
+<svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" class="feedback-icon <%= feedback.completed? ? 'completed' : '' %>">
   <g>
     <foreignObject x="0" y="0"  height="24" width="24">
       <i class="mdi mdi-comment-outline"></i>
     </foreignObject>
     <% if feedback.completed? %>
       <foreignObject x="6" y="1" height="16" width="12">
-        <i class="mdi mdi-check-bold mdi-12 completed"></i>
+        <i class="mdi mdi-check-bold mdi-12"></i>
       </foreignObject>
     <% end %>
     <circle cx="21" cy="22.25" r= "9" class="circle"></circle>

@@ -70,8 +70,8 @@ class ActivitiesTest < ApplicationSystemTestCase
   end
 
   test 'should not be able to submit to invalid exercise' do
-    @instance.update!(status: :not_valid)
-    visit exercise_path(id: @instance.id)
+    exercise = create :exercise, status: :not_valid
+    visit exercise_path(id: exercise.id)
 
     assert_no_selector '#editor-process-btn'
   end

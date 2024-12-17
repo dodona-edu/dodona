@@ -3,22 +3,27 @@
 <% end %>
 <% maximum_score = evaluation_exercise.maximum_score %>
 <div id="score-items-<%= evaluation_exercise.id %>">
-  <h4><%= evaluation_exercise.exercise.name %></h4>
+  <h4>
+    <%= evaluation_exercise.exercise.name %>
+  </h4>
 
-  <table class="table table-resource score-items-table" id="table-for-<%= evaluation_exercise.id %>">
+  <table class="table table-resource score-items-table"
+         id="table-for-<%= evaluation_exercise.id %>"
+         title="<%= t ".edit" %>">
     <thead>
     <tr>
       <th><%= ScoreItem.human_attribute_name(:name) %></th>
       <th><%= ScoreItem.human_attribute_name(:description) %></th>
       <th><%= ScoreItem.human_attribute_name(:maximum) %></th>
       <th><%= ScoreItem.human_attribute_name(:visible) %></th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <% if evaluation_exercise.score_items.empty? %>
       <tr>
-        <td class="placeholder-text" colspan="5"><%= t 'score_items.exercise.nothing' %></td>
+        <td class="placeholder-text" colspan="4">
+          <%= t 'score_items.exercise.nothing' %>
+        </td>
       </tr>
     <% else %>
       <% evaluation_exercise.score_items.each do |score_item| %>
@@ -27,84 +32,46 @@
           <td class="description"><%= markdown score_item.description %></td>
           <td class="maximum"><%= format_score score_item.maximum %></td>
           <td class="visibility">
-            <%= form_for [@evaluation, score_item], namespace: "#{evaluation_exercise.id}_#{score_item.id}", method: :patch, remote: :true do |f| %>
-              <%= f.check_box :visible, class: "form-check-input visibility-checkbox", title: t(".visibility") %>
-            <% end %>
-          </td>
-          <td class="actions">
-            <%= link_to "#edit-form-#{score_item.id}", title: t('.edit_title'), class: 'btn btn-icon edit-button',
-                        data: { "bs-toggle": "modal" } do %>
-              <i class="mdi mdi-pencil" aria-hidden='true'></i>
-            <% end %>
-            <%= button_to evaluation_score_item_path(@evaluation, score_item),
-                          title: t('.delete_title'),
-                          method: :delete,
-                          remote: true,
-                          data: { confirm: t('general.are_you_sure') },
-                          class: 'btn btn-icon btn-icon-filled d-btn-danger' do %>
-              <i class="mdi mdi-delete" aria-hidden='true'></i>
+            <% if score_item.visible %>
+              <i class="mdi mdi-18 mdi-eye"></i>
+            <% else %>
+              <i class="mdi mdi-18 mdi-eye-off"></i>
             <% end %>
           </td>
         </tr>
       <% end %>
     <% end %>
     <tr class="maximum-row">
-      <td colspan="2" class="wide-description"><%= t '.max' %></td>
+      <td class="name"><%= t '.max' %></td>
+      <td class="add-score-items">
+        <a class="btn btn-text edit-btn">
+          <%= t ".add" %>
+        </a>
+      </td>
       <td class="maximum">
         <%= format_score maximum_score %>
       </td>
       <td class="visibility">
-        <%= form_for evaluation_exercise, namespace: evaluation_exercise.id, method: :patch, remote: :true do |f| %>
-          <%= f.check_box :visible_score,
-                          class: "form-check-input total-visibility-checkbox",
-                          disabled: maximum_score.nil?,
-                          title: t(".total_visibility") %>
-        <% end %>
-      </td>
-      <td class="actions">
-        <%= link_to "#copy-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-icon',
-                    title: t('.copy_title', name: evaluation_exercise.exercise.name),
-                    data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-content-copy" aria-hidden='true'></i>
-        <% end %>
-        <%= link_to "#new-form-#{evaluation_exercise.id}",
-                    class: 'btn btn-icon btn-icon-filled bg-primary',
-                    title: t('.add_title', name: evaluation_exercise.exercise.name),
-                    data: { "bs-toggle": 'modal' } do %>
-          <i class="mdi mdi-plus" aria-hidden='true'></i>
+        <% if evaluation_exercise.visible_score %>
+          <i class="mdi mdi-18 mdi-eye"></i>
+        <% else %>
+          <i class="mdi mdi-18 mdi-eye-off"></i>
         <% end %>
       </td>
     </tr>
     </tbody>
 
   </table>
-  <% evaluation_exercise.score_items.each do |score_item| %>
-    <div class="modal fade modal-<%= evaluation_exercise.id %>" id="edit-form-<%= score_item.id %>" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <%= render 'score_items/form',
-                   models: [@evaluation, score_item],
-                   evaluation_exercise: evaluation_exercise,
-                   title: t('.edit_item_title', title: score_item.name),
-                   form_options: {namespace: evaluation_exercise.id, remote: true} %>
-      </div>
-    </div>
-  <% end %>
-  <div class="modal fade modal-<%= evaluation_exercise.id %>" id="new-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <%= render 'score_items/form',
-                 models: [@evaluation, new || ScoreItem.new],
-                 evaluation_exercise: evaluation_exercise,
-                 title: t('.add_title', name: evaluation_exercise.exercise.name),
-                 form_options: {namespace: evaluation_exercise.id, remote: true} %>
-    </div>
-  </div>
-  <div class="modal fade modal-<%= evaluation_exercise.id %>" id="copy-form-<%= evaluation_exercise.id %>" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <%= render 'score_items/copy', evaluation_exercise: evaluation_exercise, evaluation: @evaluation %>
-    </div>
-  </div>
+  <d-score-item-input-table
+    class="d-none"
+    route="<%=evaluation_exercise_path(evaluation_exercise.id, format: :js) %>"
+    score-items="<%= evaluation_exercise.score_items.to_json %>"
+    <% if evaluation_exercise.visible_score? %>
+      total-visible="true"
+    <% end %>
+  ></d-score-item-input-table>
 </div>
 <script>
     window.dodona.initVisibilityCheckboxes(document.getElementById("score-items-<%= evaluation_exercise.id %>"));
+    window.dodona.initEditButton(document.getElementById("score-items-<%= evaluation_exercise.id %>"));
 </script>

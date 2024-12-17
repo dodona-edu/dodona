@@ -111,7 +111,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'nokogiri', '~> 1.17.0'
+gem 'nokogiri', '~> 1.17.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -132,10 +132,10 @@ gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'datadog', '~> 2.7.1'
+gem 'datadog', '~> 2.8.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.4.0'
+gem 'after_commit_everywhere', '~> 1.5.0'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.8'

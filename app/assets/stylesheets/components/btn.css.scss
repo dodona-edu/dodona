@@ -207,6 +207,20 @@
       @include shadow-z2;
     }
   }
+
+  &.btn-icon-inline {
+    padding: 0;
+    width: auto;
+    height: auto;
+    color: var(--d-text-muted);
+
+    &:hover,
+    &:focus,
+    &:active {
+      background: none;
+      color: var(--d-btn-color);
+    }
+  }
 }
 
 .btn.btn-fab,

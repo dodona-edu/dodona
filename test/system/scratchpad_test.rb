@@ -17,12 +17,6 @@ class ScratchpadTest < ApplicationSystemTestCase
     @course.series.first.activities << @exercise
 
     sign_in @zeus
-
-    # Open Papyros ready for use
-    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
-
-    assert_selector '#scratchpad-offcanvas-show-btn'
-    find_by_id('scratchpad-offcanvas-show-btn').click
   end
 
   def codemirror_send_keys(parent, code)
@@ -40,6 +34,12 @@ class ScratchpadTest < ApplicationSystemTestCase
 
   test 'Scratchpad can run code' do
     skip("This test fails infrequently, but i haven't figured out why yet")
+
+    # Open Papyros ready for use
+    visit(course_activity_path(course_id: @course.id, id: @exercise.id))
+
+    assert_selector '#scratchpad-offcanvas-show-btn'
+    find_by_id('scratchpad-offcanvas-show-btn').click
 
     ## Hello World!
     code = "print(\"Hello World!\")\n"

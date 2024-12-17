@@ -486,4 +486,24 @@ class SubmissionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
   end
+
+  test 'should not be able to submit to invalid exercise' do
+    attrs = generate_attr_hash
+    exercise = Exercise.find(attrs[:exercise_id])
+    exercise.update!(status: :not_valid)
+
+    sign_in create(:staff)
+    create_request(attr_hash: attrs)
+
+    assert_response :unprocessable_entity
+  end
+
+  test 'should be able to submit to valid exercise' do
+    attrs = generate_attr_hash
+
+    sign_in create(:staff)
+    create_request(attr_hash: attrs)
+
+    assert_response :success
+  end
 end

@@ -68,4 +68,11 @@ class ActivitiesTest < ApplicationSystemTestCase
 
     assert_text '`<script>alert("😀\\n")</script>\\n\n\\0`'
   end
+
+  test 'should not be able to submit to invalid exercise' do
+    exercise = create :exercise, status: :not_valid
+    visit exercise_path(id: exercise.id)
+
+    assert_no_selector '#editor-process-btn'
+  end
 end

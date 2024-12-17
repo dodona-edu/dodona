@@ -10,6 +10,7 @@
 #  description            :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  order                  :integer
 #
 class ScoreItem < ApplicationRecord
   belongs_to :evaluation_exercise
@@ -23,7 +24,7 @@ class ScoreItem < ApplicationRecord
 
   validates :maximum, numericality: { greater_than: 0, less_than: 1000 }
 
-  default_scope { order(id: :asc) }
+  default_scope { order(order: :asc, id: :asc) }
 
   private
 

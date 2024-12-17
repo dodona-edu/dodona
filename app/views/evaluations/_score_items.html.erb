@@ -25,12 +25,6 @@
                 <%= t("score_items.new.hide_all") %>
               <% end %>
             </li>
-            <li>
-              <a href="#add-score-item-to-all" data-bs-toggle="modal" class="dropdown-item">
-                <i class="mdi mdi-table-row-plus-after mdi-18"></i>
-                <%= t 'score_items.new.add_all' %>
-              </a>
-            </li>
           </ul>
         </div>
       </div>
@@ -47,14 +41,5 @@
     <% else %>
       <%= link_to t('score_items.new.to_evaluation'), evaluation_path(@evaluation), class: "btn btn-outline" %>
     <% end %>
-  </div>
-</div>
-<div class="modal fade" id="add-score-item-to-all" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <%= render 'score_items/form',
-               score_item: ScoreItem.new,
-               evaluation_exercise: nil,
-               title: t("score_items.new.add_all"),
-               form_options: { url: add_all_evaluation_score_items_path(@evaluation), remote: true } %>
   </div>
 </div>

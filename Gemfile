@@ -135,7 +135,7 @@ gem 'stackprof', '~> 0.2.26'
 gem 'datadog', '~> 2.7.1'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.4.0'
+gem 'after_commit_everywhere', '~> 1.5.0'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.8'

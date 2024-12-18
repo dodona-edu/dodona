@@ -398,6 +398,12 @@
   --d-on-btn-color: var(--d-on-success);
 }
 
+.btn.d-btn-secondary {
+  --d-btn-color: var(--d-secondary);
+  --d-btn-color-rgb: var(--d-secondary-rgb);
+  --d-on-btn-color: var(--d-on-secondary);
+}
+
 .btn-toggle {
   min-width: fit-content;
 }

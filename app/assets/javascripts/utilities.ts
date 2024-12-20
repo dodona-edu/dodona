@@ -269,5 +269,5 @@ export {
     ready,
     getParentByClassName,
     setHTMLExecuteScripts,
-    replaceHTMLExecuteScripts,
+    replaceHTMLExecuteScripts
 };

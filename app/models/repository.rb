@@ -136,6 +136,8 @@ class Repository < ApplicationRecord
     dirs = activity_dirs
     errors = []
 
+    # Read all config files and dirconfig files in the activity directories
+    # filter out the invalid ones and keep track of them to make a single error report at the end
     activity_dirs_and_configs = dirs.map do |d|
       Pathname.new('./').join(activity_relative_path(d)).parent.descend.each do |p|
         read_config_file(full_path.join(p, Activity::DIRCONFIG_FILE))
@@ -146,14 +148,23 @@ class Repository < ApplicationRecord
       nil
     end.compact
 
+    # Read the outermost dirconfig file
+    # if it contains errors, don't process any activities
+    begin
+      read_config_file(full_path.join(Activity::DIRCONFIG_FILE))
+    rescue ConfigParseError => e
+      errors.push e
+      activity_dirs_and_configs = []
+    end
+
     existing_activities = activity_dirs_and_configs
                           .reject { |_, c| c['internals'].nil? || c['internals']['token'].nil? }
                           .map { |d, c| [d, Activity.find_by(repository_token: c['internals']['token'], repository_id: id)] }
                           # rubocop:disable Style/CollectionCompact
                           # This is a false positive for Hash#compact, where this is Array#compact
-                          .reject { |_, e| e.nil? }
+                          .reject { |_, a| a.nil? }
                           # rubocop:enable Style/CollectionCompact
-                          .group_by { |_, e| e }
+                          .group_by { |_, a| a }
                           .transform_values { |l| l.pluck(0) }
     handled_directories = []
     handled_activity_ids = []

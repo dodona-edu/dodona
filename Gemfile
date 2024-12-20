@@ -5,10 +5,10 @@ ruby '~> 3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
-# Use mysql as the database for Active Record
-gem 'mysql2', '~> 0.5.6'
+# Use trilogy to interact with mysql as the database for Active Record
+gem 'trilogy', '~> 2.9.0'
 # Use Puma as the app server
-gem 'puma', '~> 6.4.3'
+gem 'puma', '~> 6.5.0'
 
 # Use dart-sass for stylesheets
 gem 'cssbundling-rails', '~> 1.4.1'
@@ -49,7 +49,7 @@ gem 'delayed_job_web', '~>1.4.4'
 gem 'will_paginate', '~>4.0.1'
 
 # markdown rendering and syntax highlighting
-gem 'kramdown', '~>2.5.0'
+gem 'kramdown', '~>2.5.1'
 gem 'kramdown-parser-gfm', '~>1.1.0'
 gem 'rouge', '4.5.1'
 
@@ -109,7 +109,7 @@ gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
 gem 'css_parser', '~> 1.19.1' # dependency for premailer, set to higher version for ruby 3.3 support
-gem 'nokogiri', '~> 1.16.7'
+gem 'nokogiri', '~> 1.17.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -130,17 +130,17 @@ gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.26'
 
-gem 'datadog', '~> 2.7.0'
+gem 'datadog', '~> 2.8.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
-gem 'after_commit_everywhere', '~> 1.4.0'
+gem 'after_commit_everywhere', '~> 1.5.0'
 
 # More advanced counter_cache that allows conditions
 gem 'counter_culture', '~> 3.8'
 
 group :development, :test do
   # Use mocha for stubbing and mocking
-  gem 'mocha', '~> 2.5.0'
+  gem 'mocha', '~> 2.7.1'
   # Factory bot for factories
   gem 'factory_bot_rails', '~> 6.4.4'
 
@@ -152,7 +152,7 @@ group :development, :test do
 
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '~> 3.40.0'
-  gem 'selenium-webdriver', '~> 4.26.0'
+  gem 'selenium-webdriver', '~> 4.27.0'
 end
 
 group :test do

@@ -109,7 +109,7 @@ gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
 gem 'css_parser', '~> 1.19.1' # dependency for premailer, set to higher version for ruby 3.3 support
-gem 'nokogiri', '~> 1.17.2'
+gem 'nokogiri', '~> 1.18.1'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering

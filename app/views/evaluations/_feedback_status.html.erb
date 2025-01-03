@@ -1,19 +1,20 @@
-<%
-  if feedback.submission.blank?
-    submission_status = "not-started"
-  elsif feedback.submission.accepted
-    submission_status = "correct"
-  else
-    submission_status = "wrong"
-  end
-%>
-
-<span class='feedback <%= submission_status %> <%= "active" if local_assigns[:current] == feedback %>'>
-  <%= link_to evaluation_feedback_path(evaluation, feedback), class: "btn btn-icon" do %>
+<svg viewBox="0 0 24 24" width="24px" height="24px" style="overflow: visible" class="feedback-icon <%= feedback.completed? ? 'completed' : '' %>">
+  <g>
+    <foreignObject x="0" y="0"  height="24" width="24">
+      <i class="mdi mdi-comment-outline"></i>
+    </foreignObject>
     <% if feedback.completed? %>
-      <i class="mdi mdi-comment-check-outline done" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_finished" %>"></i>
-    <% else %>
-      <i class="mdi mdi-comment-outline" title="<%= feedback.exercise.name %>: <%= t ".submission_" + submission_status %><%= t ".feedback_unstarted" %>"></i>
+      <foreignObject x="6" y="1" height="16" width="12">
+        <i class="mdi mdi-check-bold mdi-12"></i>
+      </foreignObject>
     <% end %>
-  <% end %>
-</span>
+    <circle cx="21" cy="22.25" r= "9" class="circle"></circle>
+    <foreignObject x="12" y="12"  height="18" width="18">
+      <% if feedback&.submission.present? %>
+        <%= submission_status_icon feedback.submission %>
+      <% else %>
+        <i class="mdi mdi-18 mdi-cancel"></i>
+      <% end %>
+    </foreignObject>
+  </g>
+</svg>

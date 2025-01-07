@@ -42,10 +42,7 @@ class ScorePolicy < ApplicationPolicy
   private
 
   def course_admin?
-    return false unless user
-    return false unless record
-
-    course = record.feedback.evaluation.series.course
-    user.course_admin?(course)
+    course = record&.feedback&.evaluation&.series&.course
+    user&.course_admin?(course)
   end
 end

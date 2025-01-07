@@ -62,9 +62,6 @@ class EvaluationPolicy < ApplicationPolicy
   private
 
   def course_admin?
-    return false unless user
-    return false unless record
-
-    user.course_admin?(record.series.course)
+    user&.course_admin?(record&.series&.course)
   end
 end

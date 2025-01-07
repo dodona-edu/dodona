@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.1.2'
+ruby '~> 3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 7.2.2'
@@ -79,9 +79,6 @@ gem 'jwt', '~> 2.9.3'
 gem 'hcaptcha', '~> 7.1.0'
 gem 'mail_form', '~> 1.10.1'
 
-# set fixed to keep an old version until https://github.com/mikel/mail/issues/1538 is fixed
-gem 'mail', '~> 2.8.1'
-
 # authorization
 gem 'pundit', '~> 2.4.0'
 
@@ -111,6 +108,7 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
+gem 'css_parser', '~> 1.19.1' # dependency for premailer, set to higher version for ruby 3.3 support
 gem 'nokogiri', '~> 1.17.2'
 gem 'premailer-rails', '~> 1.12.0'
 
@@ -162,7 +160,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.4.2'
+  gem 'test-prof', '~> 1.4.3'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

@@ -1,5 +1,3 @@
-require 'set'
-
 class FeedbackPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve

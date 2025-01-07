@@ -21,8 +21,8 @@ class SubmissionRunnerTest < ActiveSupport::TestCase
 
   STRIKE_ERROR = 'DE HAVENVAKBOND STAAKT!!1!'.freeze
 
-  def evaluate_with_stubbed_docker(obj = nil, **kwargs)
-    obj ||= docker_mock(**kwargs)
+  def evaluate_with_stubbed_docker(obj = nil, **)
+    obj ||= docker_mock(**)
     Docker::Container.stubs(:create).returns(obj)
     @submission.evaluate
   end

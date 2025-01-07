@@ -73,7 +73,7 @@ gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
 
 # Json webtokens
-gem 'jwt', '~> 2.9.3'
+gem 'jwt', '~> 2.10.1'
 
 # contact mail form
 gem 'hcaptcha', '~> 7.1.0'
@@ -91,7 +91,7 @@ gem 'annotate', '~> 3.2.0'
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'
 gem 'capistrano-passenger', '~> 0.2.1', group: :development
-gem 'capistrano-rails', '~> 1.6.3', group: :development
+gem 'capistrano-rails', '~> 1.7.0', group: :development
 gem 'capistrano-rvm', '~> 0.1.2', group: :development
 gem 'capistrano-yarn', '~> 2.0.2'
 
@@ -108,15 +108,15 @@ gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
-gem 'css_parser', '~> 1.19.1' # dependency for premailer, set to higher version for ruby 3.3 support
-gem 'nokogiri', '~> 1.17.2'
+gem 'css_parser', '~> 1.21.0' # dependency for premailer, set to higher version for ruby 3.3 support
+gem 'nokogiri', '~> 1.18.1'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
 gem 'has_scope', '~> 0.8.2'
 
 # generating zip files
-gem 'rubyzip', '~> 2.3.2'
+gem 'rubyzip', '~> 2.4.1'
 
 # memcache
 gem 'dalli', '~> 3.2.8'
@@ -160,7 +160,7 @@ group :test do
   gem 'minitest-ci', '~> 3.4.0'
   gem 'simplecov', '~> 0.22.0', require: false
   gem 'simplecov-cobertura', '~> 2.1.0', require: false
-  gem 'test-prof', '~> 1.4.3'
+  gem 'test-prof', '~> 1.4.4'
 
   # Mocking HTTP requests to third parties.
   gem 'webmock'

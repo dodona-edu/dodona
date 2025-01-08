@@ -747,7 +747,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_includes course.subscribed_members, user
   end
 
-  test 'a course copied by staff who isn't course admin should not include hidden/closed series' do
+  test "a course copied by staff who isn't course admin should not include hidden/closed series" do
     user = create :user, permission: :staff
     course = create :course
     course.enrolled_members << user

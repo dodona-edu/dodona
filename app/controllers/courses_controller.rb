@@ -155,7 +155,7 @@ class CoursesController < ApplicationController
         deadlines: false
       }.merge(@copy_options).symbolize_keys
 
-      @course.series = policy_scope(@copy_options[:base].series).map do |s|
+      @course.series = policy_scope(@copy_options[:base].series.reorder(id: :asc)).map do |s|
         # rubocop:disable Style/MultilineTernaryOperator
         Series.new(
           series_memberships: @copy_options[:exercises] ?
@@ -169,7 +169,9 @@ class CoursesController < ApplicationController
           visibility_start: @copy_options[:hide_series] ? nil : s.visibility_start,
           deadline: @copy_options[:deadlines] ? s.deadline : nil,
           order: s.order,
-          progress_enabled: s.progress_enabled
+          progress_enabled: s.progress_enabled,
+          activities_visible: s.activities_visible,
+          activity_numbers_enabled: s.activity_numbers_enabled
         )
         # rubocop:enable Style/MultilineTernaryOperator
       end

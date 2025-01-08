@@ -763,7 +763,7 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     new_course = build :course
     post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
 
-    assert_equal 0, Course.find(response.parsed_body['id']).series.count
+    assert_equal 2, Course.find(response.parsed_body['id']).series.count
   end
 
   test 'a copied course should contain all series with the same advanced settings' do

@@ -87,6 +87,8 @@ Style/OptionalBooleanParameter:
   Enabled: false
 Style/HashSyntax:
   EnforcedShorthandSyntax: never
+Style/SafeNavigationChainLength:
+  Max: 4
 
 FactoryBot/ConsistentParenthesesStyle:
   EnforcedStyle: omit_parentheses

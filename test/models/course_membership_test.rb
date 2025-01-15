@@ -3,12 +3,12 @@
 # Table name: course_memberships
 #
 #  id         :integer          not null, primary key
-#  course_id  :integer          not null
-#  user_id    :integer          not null
+#  favorite   :boolean          default(FALSE)
 #  status     :integer          default("student"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  favorite   :boolean          default(FALSE)
+#  course_id  :integer          not null
+#  user_id    :integer          not null
 #
 
 require 'test_helper'

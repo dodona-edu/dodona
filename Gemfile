@@ -103,7 +103,7 @@ gem 'i18n-js', '~> 4.2.3'
 gem 'rails-i18n', '~> 8.0.1'
 
 # email exceptions
-gem "exception_notification", git: "https://github.com/smartinez87/exception_notification.git", branch: "master" # following master until fix is released for https://github.com/smartinez87/exception_notification/issues/545
+gem 'exception_notification', git: 'https://github.com/smartinez87/exception_notification.git', branch: 'master' # following master until fix is released for https://github.com/smartinez87/exception_notification/issues/545
 gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 

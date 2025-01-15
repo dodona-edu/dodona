@@ -747,18 +747,67 @@ class CoursesPermissionControllerTest < ActionDispatch::IntegrationTest
     assert_includes course.subscribed_members, user
   end
 
-  test 'a course copied by a regular student should not include hidden/closed series' do
-    add_students
-    user = @students.first
-    user.update(permission: :staff)
+  test "a course copied by staff who isn't course admin should not include hidden/closed series" do
+    user = create :user, permission: :staff
     course = create :course
-    _series = create :series, course: course, visibility: :hidden
+    course.enrolled_members << user
+    create :series, course: course, visibility: :hidden
+    create :series, course: course, visibility: :closed
+    create :series, course: course, visibility: :timed, visibility_start: 1.day.from_now
+    create :series, course: course, visibility: :timed, visibility_start: 1.day.ago
+    create :series, course: course, visibility: :open
+
+    assert_equal 5, course.reload.series.count
 
     sign_in user
     new_course = build :course
     post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
 
-    assert_equal 0, Course.find(response.parsed_body['id']).series.count
+    assert_equal 2, Course.find(response.parsed_body['id']).series.count
+  end
+
+  test 'a copied course should contain all series with the same advanced settings' do
+    user = create :user, permission: :staff
+    course = create :course
+    course.administrating_members << user
+    create :series, course: course, progress_enabled: false, activities_visible: false, activity_numbers_enabled: true, name: 'foo'
+    create :series, course: course, progress_enabled: true, activities_visible: true, activity_numbers_enabled: false, name: 'bar'
+
+    sign_in user
+    new_course = build :course
+    post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
+    new_course = Course.find(response.parsed_body['id'])
+
+    assert_equal 2, new_course.series.count
+
+    new_course.series.zip(course.series).each do |series, original_series|
+      assert_equal original_series.name, series.name
+      assert_equal original_series.progress_enabled, series.progress_enabled
+      assert_equal original_series.activities_visible, series.activities_visible
+      assert_equal original_series.activity_numbers_enabled, series.activity_numbers_enabled
+    end
+  end
+
+  test 'a copied course should maintain the same series order' do
+    user = create :user, permission: :staff
+    course = create :course
+    course.administrating_members << user
+    create :series, course: course, name: 'second'
+    create :series, course: course, name: 'first'
+    create :series, course: course, name: 'third', order: 1
+    create :series, course: course, name: 'fifth', order: 3
+    create :series, course: course, name: 'fourth', order: 2
+
+    sign_in user
+    new_course = build :course
+    post courses_url, params: { course: { name: new_course.name, description: new_course.description, visibility: new_course.visibility, registration: new_course.registration, teacher: new_course.teacher }, copy_options: { base_id: course.id }, format: :json }
+    new_course = Course.find(response.parsed_body['id'])
+
+    assert_equal course.series.pluck(:name), new_course.series.pluck(:name)
+    new_course.series.zip(course.series).each do |series, original_series|
+      assert_equal original_series.name, series.name
+      assert_equal original_series.order, series.order
+    end
   end
 
   test 'hidden course page shown to unsubscribed student should include registration url with secret' do

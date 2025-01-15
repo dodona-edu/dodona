@@ -28,7 +28,7 @@
     "@lezer/highlight": "^1.2.1",
     "@lezer/lr": "^1.4.2",
     "@popperjs/core": "^2.11.8",
-    "@rails/activestorage": "^7.2.102",
+    "@rails/activestorage": "^8.0.100",
     "@rails/ujs": "^7.1.402",
     "@replit/codemirror-lang-csharp": "^6.2.0",
     "@sentry/browser": "^8.47.0",

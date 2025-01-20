@@ -55,7 +55,7 @@
     "jspreadsheet-ce": "^4.15.0",
     "lit": "^3.2.1",
     "node-polyglot": "^2.6.0",
-    "sass": "^1.83.1",
+    "sass": "^1.83.4",
     "tippy.js": "^6.3.7",
     "ts-loader": "^9.5.2",
     "typescript": "^5.7.3",

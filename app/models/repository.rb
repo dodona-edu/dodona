@@ -12,17 +12,6 @@
 #  updated_at   :datetime         not null
 #  judge_id     :integer          default(17)
 #
-# Indexes
-#
-#  index_repositories_on_judge_id  (judge_id)
-#  index_repositories_on_name      (name) UNIQUE
-#  index_repositories_on_path      (path) UNIQUE
-#  index_repositories_on_remote    (remote) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (judge_id => judges.id)
-#
 require 'open3'
 require 'pathname'
 

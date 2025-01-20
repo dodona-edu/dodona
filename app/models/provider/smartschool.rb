@@ -19,14 +19,6 @@
 #  entity_id         :string(255)
 #  institution_id    :bigint
 #
-# Indexes
-#
-#  fk_rails_ba691498dd  (institution_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (institution_id => institutions.id) ON DELETE => cascade
-#
 class Provider::Smartschool < Provider
   validates :certificate, :entity_id, :sso_url, :slo_url, absence: true
   validates :authorization_uri, :client_id, :issuer, :jwks_uri, absence: true

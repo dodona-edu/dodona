@@ -24,22 +24,6 @@
 #  programming_language_id :bigint
 #  repository_id           :integer
 #
-# Indexes
-#
-#  fk_rails_f60feebafd                         (programming_language_id)
-#  index_activities_on_judge_id                (judge_id)
-#  index_activities_on_name_nl                 (name_nl)
-#  index_activities_on_path_and_repository_id  (path,repository_id) UNIQUE
-#  index_activities_on_repository_id           (repository_id)
-#  index_activities_on_repository_token        (repository_token) UNIQUE
-#  index_activities_on_status                  (status)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (judge_id => judges.id)
-#  fk_rails_...  (programming_language_id => programming_languages.id)
-#  fk_rails_...  (repository_id => repositories.id)
-#
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
 using StubHelper

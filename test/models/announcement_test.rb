@@ -13,14 +13,6 @@
 #  updated_at          :datetime         not null
 #  institution_id      :bigint
 #
-# Indexes
-#
-#  index_announcements_on_institution_id  (institution_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (institution_id => institutions.id)
-#
 require 'test_helper'
 
 class AnnouncementTest < ActiveSupport::TestCase

@@ -18,15 +18,6 @@
 #  updated_at        :datetime         not null
 #  institution_id    :bigint
 #
-# Indexes
-#
-#  index_courses_on_featured        (featured)
-#  index_courses_on_institution_id  (institution_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (institution_id => institutions.id)
-#
 
 FactoryBot.define do
   factory :course do

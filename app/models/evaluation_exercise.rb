@@ -9,17 +9,6 @@
 #  evaluation_id :bigint
 #  exercise_id   :integer
 #
-# Indexes
-#
-#  index_evaluation_exercises_on_evaluation_id                  (evaluation_id)
-#  index_evaluation_exercises_on_exercise_id                    (exercise_id)
-#  index_evaluation_exercises_on_exercise_id_and_evaluation_id  (exercise_id,evaluation_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (evaluation_id => evaluations.id)
-#  fk_rails_...  (exercise_id => activities.id)
-#
 class EvaluationExercise < ApplicationRecord
   belongs_to :exercise
   belongs_to :evaluation

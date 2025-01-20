@@ -12,14 +12,6 @@
 #  updated_at             :datetime         not null
 #  evaluation_exercise_id :bigint           not null
 #
-# Indexes
-#
-#  index_score_items_on_evaluation_exercise_id  (evaluation_exercise_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (evaluation_exercise_id => evaluation_exercises.id)
-#
 FactoryBot.define do
   factory :score_item do
     sequence(:name) { |n| "Score item #{n}" }

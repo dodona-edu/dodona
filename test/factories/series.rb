@@ -18,18 +18,6 @@
 #  updated_at               :datetime         not null
 #  course_id                :integer
 #
-# Indexes
-#
-#  index_series_on_access_token  (access_token)
-#  index_series_on_course_id     (course_id)
-#  index_series_on_deadline      (deadline)
-#  index_series_on_name          (name)
-#  index_series_on_visibility    (visibility)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (course_id => courses.id)
-#
 
 FactoryBot.define do
   factory :series do

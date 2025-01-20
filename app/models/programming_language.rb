@@ -11,10 +11,6 @@
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #
-# Indexes
-#
-#  index_programming_languages_on_name  (name) UNIQUE
-#
 
 class ProgrammingLanguage < ApplicationRecord
   DEFAULT_ICON = 'file-document-edit-outline'.freeze

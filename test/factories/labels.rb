@@ -6,10 +6,6 @@
 #  color :integer          not null
 #  name  :string(255)      not null
 #
-# Indexes
-#
-#  index_labels_on_name  (name) UNIQUE
-#
 
 FactoryBot.define do
   factory :label do

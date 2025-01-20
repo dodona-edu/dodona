@@ -12,18 +12,6 @@
 #  exercise_id       :integer
 #  user_id           :integer          not null
 #
-# Indexes
-#
-#  index_saved_annotations_on_course_id    (course_id)
-#  index_saved_annotations_on_exercise_id  (exercise_id)
-#  index_saved_annotations_on_user_id      (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (course_id => courses.id)
-#  fk_rails_...  (exercise_id => activities.id)
-#  fk_rails_...  (user_id => users.id)
-#
 require 'test_helper'
 
 class SavedAnnotationTest < ActiveSupport::TestCase

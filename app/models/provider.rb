@@ -19,14 +19,6 @@
 #  entity_id         :string(255)
 #  institution_id    :bigint
 #
-# Indexes
-#
-#  fk_rails_ba691498dd  (institution_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (institution_id => institutions.id) ON DELETE => cascade
-#
 class Provider < ApplicationRecord
   enum :mode, { prefer: 0, redirect: 1, link: 2, secondary: 3 }
 

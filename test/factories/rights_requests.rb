@@ -9,14 +9,6 @@
 #  updated_at       :datetime         not null
 #  user_id          :integer          not null
 #
-# Indexes
-#
-#  index_rights_requests_on_user_id  (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (user_id => users.id)
-#
 FactoryBot.define do
   factory :rights_request do
     user factory: %i[user with_institution]

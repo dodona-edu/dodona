@@ -9,17 +9,6 @@
 #  activity_id :integer
 #  series_id   :integer
 #
-# Indexes
-#
-#  index_series_memberships_on_activity_id                (activity_id)
-#  index_series_memberships_on_series_id                  (series_id)
-#  index_series_memberships_on_series_id_and_activity_id  (series_id,activity_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (activity_id => activities.id)
-#  fk_rails_...  (series_id => series.id)
-#
 
 class SeriesMembership < ApplicationRecord
   belongs_to :series, counter_cache: :activities_count

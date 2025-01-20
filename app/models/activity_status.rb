@@ -19,22 +19,6 @@
 #  series_id                   :integer
 #  user_id                     :integer          not null
 #
-# Indexes
-#
-#  fk_rails_1bc42c2178                                            (series_id)
-#  index_activity_statuses_on_accepted_and_user_id_and_series_id  (accepted,user_id,series_id)
-#  index_activity_statuses_on_activity_id                         (activity_id)
-#  index_activity_statuses_on_started_and_user_id_and_series_id   (started,user_id,series_id)
-#  index_as_on_started_and_user_and_last_submission               (started,user_id,last_submission_id)
-#  index_as_on_user_and_series_and_last_submission                (user_id,series_id,last_submission_id)
-#  index_on_user_id_series_id_non_nil_activity_id                 (user_id,series_id_non_nil,activity_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (activity_id => activities.id) ON DELETE => cascade
-#  fk_rails_...  (series_id => series.id) ON DELETE => cascade
-#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
-#
 class ActivityStatus < ApplicationRecord
   # the reverse relations aren't defined because this doesn't make sense and there are no
   # indexes defined to allow fast retrieval

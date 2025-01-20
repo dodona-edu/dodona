@@ -9,14 +9,6 @@
 #  updated_at :datetime         not null
 #  series_id  :integer
 #
-# Indexes
-#
-#  index_evaluations_on_unique_series_id  (series_id) UNIQUE
-#
-# Foreign Keys
-#
-#  fk_rails_...  (series_id => series.id)
-#
 FactoryBot.define do
   factory :evaluation do
     series { association :series, deadline: DateTime.now - 1.minute }

@@ -13,10 +13,6 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-# Indexes
-#
-#  index_judges_on_name  (name) UNIQUE
-#
 
 require "#{File.dirname(__FILE__)}/../testhelpers/stub_helper.rb"
 using StubHelper

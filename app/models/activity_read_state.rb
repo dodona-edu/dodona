@@ -10,18 +10,6 @@
 #  series_id   :integer
 #  user_id     :integer          not null
 #
-# Indexes
-#
-#  activity_read_states_unique  (activity_id,course_id,user_id) UNIQUE
-#  fk_rails_96d00253e9          (user_id)
-#  fk_rails_f674cacc14          (course_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (activity_id => activities.id) ON DELETE => cascade
-#  fk_rails_...  (course_id => courses.id) ON DELETE => cascade
-#  fk_rails_...  (user_id => users.id) ON DELETE => cascade
-#
 class ActivityReadState < ApplicationRecord
   include FilterableByCourseLabels
   include Filterable

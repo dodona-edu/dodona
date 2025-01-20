@@ -11,20 +11,6 @@
 #  evaluation_user_id     :bigint
 #  submission_id          :integer
 #
-# Indexes
-#
-#  index_feedbacks_on_evaluation_exercise_id  (evaluation_exercise_id)
-#  index_feedbacks_on_evaluation_id           (evaluation_id)
-#  index_feedbacks_on_evaluation_user_id      (evaluation_user_id)
-#  index_feedbacks_on_submission_id           (submission_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (evaluation_exercise_id => evaluation_exercises.id)
-#  fk_rails_...  (evaluation_id => evaluations.id)
-#  fk_rails_...  (evaluation_user_id => evaluation_users.id)
-#  fk_rails_...  (submission_id => submissions.id)
-#
 require 'test_helper'
 
 class FeedbackTest < ActiveSupport::TestCase

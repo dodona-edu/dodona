@@ -9,12 +9,6 @@
 #  updated_at   :datetime         not null
 #  user_id      :bigint
 #
-# Indexes
-#
-#  index_api_tokens_on_token_digest             (token_digest)
-#  index_api_tokens_on_user_id                  (user_id)
-#  index_api_tokens_on_user_id_and_description  (user_id,description) UNIQUE
-#
 
 require 'test_helper'
 

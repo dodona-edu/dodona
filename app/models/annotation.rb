@@ -20,24 +20,6 @@
 #  thread_root_id      :integer
 #  user_id             :integer
 #
-# Indexes
-#
-#  index_annotations_on_course_id_and_type_and_question_state  (course_id,type,question_state)
-#  index_annotations_on_evaluation_id                          (evaluation_id)
-#  index_annotations_on_last_updated_by_id                     (last_updated_by_id)
-#  index_annotations_on_saved_annotation_id                    (saved_annotation_id)
-#  index_annotations_on_submission_id                          (submission_id)
-#  index_annotations_on_user_id                                (user_id)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (course_id => courses.id)
-#  fk_rails_...  (evaluation_id => evaluations.id)
-#  fk_rails_...  (last_updated_by_id => users.id)
-#  fk_rails_...  (saved_annotation_id => saved_annotations.id)
-#  fk_rails_...  (submission_id => submissions.id)
-#  fk_rails_...  (user_id => users.id)
-#
 class Annotation < ApplicationRecord
   include ApplicationHelper
   include Filterable

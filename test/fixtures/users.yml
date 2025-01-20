@@ -20,16 +20,6 @@
 #  updated_at           :datetime         not null
 #  institution_id       :bigint
 #
-# Indexes
-#
-#  index_users_on_institution_id  (institution_id)
-#  index_users_on_token           (token)
-#  index_users_on_username        (username)
-#
-# Foreign Keys
-#
-#  fk_rails_...  (institution_id => institutions.id)
-#
 
 zeus:
   id: 1

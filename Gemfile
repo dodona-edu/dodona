@@ -178,7 +178,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-minitest', '~> 0.36.0'
-  gem 'rubocop-rails', '~> 2.28.0'
+  gem 'rubocop-rails', '~> 2.29.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

@@ -3,18 +3,18 @@
 # Table name: submissions
 #
 #  id          :integer          not null, primary key
-#  exercise_id :integer
-#  user_id     :integer
+#  accepted    :boolean          default(FALSE)
+#  annotated   :boolean          default(FALSE), not null
+#  fs_key      :string(24)
+#  number      :integer
+#  status      :integer
 #  summary     :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  status      :integer
-#  accepted    :boolean          default(FALSE)
 #  course_id   :integer
-#  fs_key      :string(24)
-#  number      :integer
-#  annotated   :boolean          default(FALSE), not null
+#  exercise_id :integer
 #  series_id   :integer
+#  user_id     :integer
 #
 
 FactoryBot.define do

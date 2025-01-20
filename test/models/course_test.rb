@@ -3,20 +3,20 @@
 # Table name: courses
 #
 #  id                :integer          not null, primary key
-#  name              :string(255)
-#  year              :string(255)
-#  secret            :string(255)
-#  created_at        :datetime         not null
-#  updated_at        :datetime         not null
 #  description       :text(4294967295)
-#  visibility        :integer          default("visible_for_all")
-#  registration      :integer          default("open_for_institutional_users")
-#  teacher           :string(255)
-#  institution_id    :bigint
-#  search            :string(4096)
-#  moderated         :boolean          default(FALSE), not null
 #  enabled_questions :boolean          default(TRUE), not null
 #  featured          :boolean          default(FALSE), not null
+#  moderated         :boolean          default(FALSE), not null
+#  name              :string(255)
+#  registration      :integer          default("open_for_institutional_users")
+#  search            :string(4096)
+#  secret            :string(255)
+#  teacher           :string(255)
+#  visibility        :integer          default("visible_for_all")
+#  year              :string(255)
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#  institution_id    :bigint
 #
 
 require 'test_helper'

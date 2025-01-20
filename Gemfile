@@ -86,7 +86,7 @@ gem 'pundit', '~> 2.4.0'
 gem 'pretender', '~> 0.5.0'
 
 # db annotations
-gem 'annotate', '~> 3.2.0'
+gem 'annotaterb', '~> 4.13.0'
 
 # Use Capistrano for deployment
 gem 'capistrano3-delayed-job', '~> 1.7.6'

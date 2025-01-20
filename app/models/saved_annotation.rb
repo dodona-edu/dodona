@@ -3,14 +3,14 @@
 # Table name: saved_annotations
 #
 #  id                :bigint           not null, primary key
-#  title             :string(255)      not null
 #  annotation_text   :text(16777215)
-#  user_id           :integer          not null
-#  exercise_id       :integer
-#  course_id         :integer
+#  annotations_count :integer          default(0)
+#  title             :string(255)      not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  annotations_count :integer          default(0)
+#  course_id         :integer
+#  exercise_id       :integer
+#  user_id           :integer          not null
 #
 class SavedAnnotation < ApplicationRecord
   include Filterable

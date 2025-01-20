@@ -3,6 +3,18 @@
 
 :root {
   --d-navbar-height: 50px;
+  --d-navbar-user-name-width: 100px;
+  --d-navbar-dropdown-padding: 20px;
+  --d-navbar-language-width: 15px; // measured width of 2-letter language code
+  --d-navbar-dropdown-width: 55px; // measured width of a dropdown with icon
+  --d-navbar-right-minimal-width: 24px; // measured with of 3 dots dropdown
+  --d-navbar-right-narrow-width: calc(var(--d-navbar-dropdown-width) * 2 + var(--d-navbar-dropdown-padding) * 2);
+  --d-navbar-right-wide-width: calc(var(--d-navbar-right-narrow-width) + var(--d-navbar-user-name-width) + var(--d-navbar-language-width));
+  --d-navbar-left-minimal-width: 104px; // measured width of drawer toggle + home icon
+  --d-navbar-left-wide-width: 142px; // measured width of drawer toggle + brand text
+  --d-navbar-center-minimal-width: calc(100vw - var(--d-navbar-left-minimal-width) - var(--d-navbar-right-minimal-width));
+  --d-navbar-center-narrow-width: calc(100vw - var(--d-navbar-left-wide-width) - var(--d-navbar-right-narrow-width));
+  --d-navbar-center-wide-width: calc(100vw - var(--d-navbar-left-wide-width) - var(--d-navbar-right-wide-width));
 }
 
 .dodona-navbar {
@@ -64,24 +76,24 @@
     flex-shrink: 1;
     flex-grow: 100;
 
-    @include media-breakpoint-up(md) {
-      max-width: calc(100vw - 240px);
+    @include media-breakpoint-down(md) {
+      max-width: var(--d-navbar-center-minimal-width);
     }
 
     @include media-breakpoint-up(md) {
-      max-width: math.div(map.get($container-max-widths, "md"), 12) * 10;
+      max-width: min(math.div(map.get($container-max-widths, "md"), 12) * 10, var(--d-navbar-center-narrow-width));
     }
 
     @include media-breakpoint-up(lg) {
-      max-width: math.div(map.get($container-max-widths, "lg"), 12) * 10;
+      max-width: min(math.div(map.get($container-max-widths, "lg"), 12) * 10, var(--d-navbar-center-narrow-width));
     }
 
     @include media-breakpoint-up(xl) {
-      max-width: math.div(map.get($container-max-widths, "xl"), 12) * 10;
+      max-width: min(math.div(map.get($container-max-widths, "xl"), 12) * 10, var(--d-navbar-center-wide-width));
     }
 
     @include media-breakpoint-up(xxl) {
-      max-width: math.div(map.get($container-max-widths, "xxl"), 12) * 10;
+      max-width: min(math.div(map.get($container-max-widths, "xxl"), 12) * 10, var(--d-navbar-center-wide-width));
     }
   }
 
@@ -132,24 +144,24 @@
     flex-shrink: 1;
     flex-grow: 1;
 
-    @include media-breakpoint-up(md) {
-      max-width: calc(100vw - 240px);
+    @include media-breakpoint-down(md) {
+      max-width: calc(var(--d-navbar-center-minimal-width) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(md) {
-      max-width: calc((#{map.get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc(min((#{map.get($container-max-widths, "md")} / 12 * 10), var(--d-navbar-center-narrow-width)) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(lg) {
-      max-width: calc((#{map.get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc(min((#{map.get($container-max-widths, "lg")} / 12 * 10), var(--d-navbar-center-narrow-width)) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(xl) {
-      max-width: calc((#{map.get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc(min((#{map.get($container-max-widths, "xl")} / 12 * 10), var(--d-navbar-center-wide-width)) - #{$grid-gutter-width});
     }
 
     @include media-breakpoint-up(xxl) {
-      max-width: calc((#{map.get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
+      max-width: calc(min((#{map.get($container-max-widths, "xxl")} / 12 * 10), var(--d-navbar-center-wide-width)) - #{$grid-gutter-width});
     }
 
     .actions {
@@ -188,8 +200,8 @@
     margin-top: auto;
 
     .dropdown-nav {
-      padding-right: 20px;
-      padding-left: 20px;
+      padding-right: var(--d-navbar-dropdown-padding);
+      padding-left: var(--d-navbar-dropdown-padding);
       margin-bottom: 0;
 
       .notification-dropdown {
@@ -367,7 +379,12 @@
       transform: translateY(-0.5em);
 
       @include media-breakpoint-up(md) {
-        @include media-breakpoint-down(lg) {
+        display: table-cell;
+        max-width: var(--d-navbar-user-name-width);
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        @include media-breakpoint-down(xl) {
           display: none;
         }
       }

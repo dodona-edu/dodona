@@ -3,11 +3,11 @@
 # Table name: evaluation_exercises
 #
 #  id            :bigint           not null, primary key
-#  evaluation_id :bigint
-#  exercise_id   :integer
+#  visible_score :boolean          default(TRUE), not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  visible_score :boolean          default(TRUE), not null
+#  evaluation_id :bigint
+#  exercise_id   :integer
 #
 FactoryBot.define do
   factory :evaluation_exercise do

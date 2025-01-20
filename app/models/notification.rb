@@ -4,12 +4,12 @@
 #
 #  id              :bigint           not null, primary key
 #  message         :string(255)      not null
-#  read            :boolean          default(FALSE), not null
-#  user_id         :integer          not null
 #  notifiable_type :string(255)
-#  notifiable_id   :bigint
+#  read            :boolean          default(FALSE), not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  notifiable_id   :bigint
+#  user_id         :integer          not null
 #
 
 class Notification < ApplicationRecord

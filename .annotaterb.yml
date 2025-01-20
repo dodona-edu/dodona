@@ -26,8 +26,8 @@
 :include_version: false
 :show_check_constraints: false
 :show_complete_foreign_keys: false
-:show_foreign_keys: true
-:show_indexes: true
+:show_foreign_keys: false
+:show_indexes: false
 :simple_indexes: false
 :sort: false
 :timestamp: false
@@ -52,7 +52,7 @@
 :classes_default_to_s: []
 :additional_file_patterns: []
 :model_dir:
-- app/models
+  - app/models
 :require: []
 :root_dir:
-- ''
+  - ''

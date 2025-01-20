@@ -3,13 +3,13 @@
 # Table name: feedbacks
 #
 #  id                     :bigint           not null, primary key
-#  submission_id          :integer
-#  evaluation_id          :bigint
-#  evaluation_user_id     :bigint
-#  evaluation_exercise_id :bigint
 #  completed              :boolean          default(FALSE), not null
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  evaluation_exercise_id :bigint
+#  evaluation_id          :bigint
+#  evaluation_user_id     :bigint
+#  submission_id          :integer
 #
 require 'test_helper'
 

@@ -176,6 +176,14 @@ const additionalLanguages = [
             return import("@replit/codemirror-lang-csharp").then(m => m.csharp());
         }
     }),
+    LanguageDescription.of({
+        name: "postgresql",
+        alias: ["psql"],
+        extensions: ["sql"],
+        load() {
+            return import("@codemirror/lang-sql").then(m => m.sql({ dialect: m.PostgreSQL }));
+        }
+    })
 ];
 
 

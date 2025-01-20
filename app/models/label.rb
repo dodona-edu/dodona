@@ -3,8 +3,8 @@
 # Table name: labels
 #
 #  id    :bigint           not null, primary key
-#  name  :string(255)      not null
 #  color :integer          not null
+#  name  :string(255)      not null
 #
 
 class Label < ApplicationRecord

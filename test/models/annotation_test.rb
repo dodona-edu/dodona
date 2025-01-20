@@ -3,22 +3,22 @@
 # Table name: annotations
 #
 #  id                  :bigint           not null, primary key
-#  annotation_text     :text(16777215)
-#  column              :integer
-#  columns             :integer
 #  line_nr             :integer
-#  question_state      :integer
-#  rows                :integer          default(1), not null
-#  type                :string(255)      default("Annotation"), not null
+#  submission_id       :integer
+#  user_id             :integer
+#  annotation_text     :text(16777215)
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  course_id           :integer          not null
 #  evaluation_id       :bigint
+#  type                :string(255)      default("Annotation"), not null
+#  question_state      :integer
 #  last_updated_by_id  :integer          not null
+#  course_id           :integer          not null
 #  saved_annotation_id :bigint
-#  submission_id       :integer
 #  thread_root_id      :integer
-#  user_id             :integer
+#  column              :integer
+#  rows                :integer          default(1), not null
+#  columns             :integer
 #
 require 'test_helper'
 

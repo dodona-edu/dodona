@@ -3,11 +3,11 @@
 # Table name: evaluations
 #
 #  id         :bigint           not null, primary key
-#  deadline   :datetime         not null
+#  series_id  :integer
 #  released   :boolean          default(FALSE), not null
+#  deadline   :datetime         not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  series_id  :integer
 #
 
 require 'csv'

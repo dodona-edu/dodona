@@ -3,10 +3,10 @@
 # Table name: exports
 #
 #  id         :bigint           not null, primary key
+#  user_id    :integer
 #  status     :integer          default("started"), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  user_id    :integer
 #
 
 FactoryBot.define do

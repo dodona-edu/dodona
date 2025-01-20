@@ -3,10 +3,10 @@
 # Table name: announcement_views
 #
 #  id              :bigint           not null, primary key
-#  created_at      :datetime         not null
-#  updated_at      :datetime         not null
 #  announcement_id :bigint           not null
 #  user_id         :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 class AnnouncementView < ApplicationRecord
   belongs_to :announcement

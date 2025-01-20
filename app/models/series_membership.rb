@@ -3,11 +3,11 @@
 # Table name: series_memberships
 #
 #  id          :integer          not null, primary key
+#  series_id   :integer
+#  activity_id :integer
 #  order       :integer          default(999)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  activity_id :integer
-#  series_id   :integer
 #
 
 class SeriesMembership < ApplicationRecord

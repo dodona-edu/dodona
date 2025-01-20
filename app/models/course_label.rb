@@ -3,10 +3,10 @@
 # Table name: course_labels
 #
 #  id         :bigint           not null, primary key
+#  course_id  :integer          not null
 #  name       :string(255)      not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  course_id  :integer          not null
 #
 
 class CourseLabel < ApplicationRecord

@@ -26,8 +26,8 @@
 :include_version: false
 :show_check_constraints: false
 :show_complete_foreign_keys: false
-:show_foreign_keys: false
-:show_indexes: false
+:show_foreign_keys: true
+:show_indexes: true
 :simple_indexes: false
 :sort: false
 :timestamp: false

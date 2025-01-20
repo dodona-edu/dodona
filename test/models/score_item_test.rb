@@ -3,14 +3,14 @@
 # Table name: score_items
 #
 #  id                     :bigint           not null, primary key
-#  description            :text(65535)
+#  evaluation_exercise_id :bigint           not null
 #  maximum                :decimal(5, 2)    not null
 #  name                   :string(255)      not null
-#  order                  :integer
 #  visible                :boolean          default(TRUE), not null
+#  description            :text(65535)
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
-#  evaluation_exercise_id :bigint           not null
+#  order                  :integer
 #
 require 'test_helper'
 

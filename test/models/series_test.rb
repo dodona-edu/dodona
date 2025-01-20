@@ -3,20 +3,20 @@
 # Table name: series
 #
 #  id                       :integer          not null, primary key
-#  access_token             :string(255)
-#  activities_count         :integer
-#  activities_visible       :boolean          default(TRUE), not null
-#  activity_numbers_enabled :boolean          default(FALSE), not null
-#  deadline                 :datetime
-#  description              :text(4294967295)
+#  course_id                :integer
 #  name                     :string(255)
-#  order                    :integer          default(0), not null
-#  progress_enabled         :boolean          default(TRUE), not null
+#  description              :text(4294967295)
 #  visibility               :integer
-#  visibility_start         :datetime
+#  order                    :integer          default(0), not null
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  course_id                :integer
+#  deadline                 :datetime
+#  access_token             :string(255)
+#  progress_enabled         :boolean          default(TRUE), not null
+#  activities_visible       :boolean          default(TRUE), not null
+#  activities_count         :integer
+#  activity_numbers_enabled :boolean          default(FALSE), not null
+#  visibility_start         :datetime
 #
 
 require 'test_helper'

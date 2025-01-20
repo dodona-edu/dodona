@@ -3,18 +3,18 @@
 # Table name: submissions
 #
 #  id          :integer          not null, primary key
-#  accepted    :boolean          default(FALSE)
-#  annotated   :boolean          default(FALSE), not null
-#  fs_key      :string(24)
-#  number      :integer
-#  status      :integer
+#  exercise_id :integer
+#  user_id     :integer
 #  summary     :string(255)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  status      :integer
+#  accepted    :boolean          default(FALSE)
 #  course_id   :integer
-#  exercise_id :integer
+#  fs_key      :string(24)
+#  number      :integer
+#  annotated   :boolean          default(FALSE), not null
 #  series_id   :integer
-#  user_id     :integer
 #
 
 class Submission < ApplicationRecord

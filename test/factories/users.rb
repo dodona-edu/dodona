@@ -3,22 +3,22 @@
 # Table name: users
 #
 #  id                   :integer          not null, primary key
-#  email                :string(255)
+#  username             :string(255)
 #  first_name           :string(255)
-#  lang                 :string(255)      default("nl")
 #  last_name            :string(255)
-#  open_questions_count :integer          default(0), not null
+#  email                :string(255)
 #  permission           :integer          default("student")
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  lang                 :string(255)      default("nl")
+#  token                :string(255)
+#  time_zone            :string(255)      default("Brussels")
+#  institution_id       :bigint
 #  search               :string(4096)
 #  seen_at              :datetime
 #  sign_in_at           :datetime
+#  open_questions_count :integer          default(0), not null
 #  theme                :integer          default("system"), not null
-#  time_zone            :string(255)      default("Brussels")
-#  token                :string(255)
-#  username             :string(255)
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
-#  institution_id       :bigint
 #
 
 FactoryBot.define do

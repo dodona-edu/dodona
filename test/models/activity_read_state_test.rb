@@ -3,12 +3,12 @@
 # Table name: activity_read_states
 #
 #  id          :bigint           not null, primary key
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
 #  activity_id :integer          not null
 #  course_id   :integer
-#  series_id   :integer
 #  user_id     :integer          not null
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  series_id   :integer
 #
 
 require 'test_helper'

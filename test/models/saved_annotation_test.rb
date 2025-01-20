@@ -3,14 +3,14 @@
 # Table name: saved_annotations
 #
 #  id                :bigint           not null, primary key
-#  annotation_text   :text(16777215)
-#  annotations_count :integer          default(0)
 #  title             :string(255)      not null
+#  annotation_text   :text(16777215)
+#  user_id           :integer          not null
+#  exercise_id       :integer
+#  course_id         :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  course_id         :integer
-#  exercise_id       :integer
-#  user_id           :integer          not null
+#  annotations_count :integer          default(0)
 #
 require 'test_helper'
 

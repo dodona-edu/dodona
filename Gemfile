@@ -130,7 +130,7 @@ gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
 gem 'stackprof', '~> 0.2.27'
 
-gem 'datadog', '~> 2.8.0'
+gem 'datadog', '~> 2.9.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.5.0'

@@ -517,7 +517,7 @@ GEM
     sshkit (1.21.5)
       net-scp (>= 1.1.2)
       net-ssh (>= 2.8.0)
-    stackprof (0.2.26)
+    stackprof (0.2.27)
     stringio (3.1.2)
     swd (2.0.3)
       activesupport (>= 3)
@@ -641,7 +641,7 @@ DEPENDENCIES
   simplecov-cobertura (~> 2.1.0)
   slack-notifier (~> 2.4.0)
   sprockets-rails (~> 3.5.2)
-  stackprof (~> 0.2.26)
+  stackprof (~> 0.2.27)
   test-prof (~> 1.4.4)
   trilogy (~> 2.9.0)
   tzinfo-data

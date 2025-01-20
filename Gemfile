@@ -128,7 +128,7 @@ gem 'faker', '~> 3.5.1'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
-gem 'stackprof', '~> 0.2.26'
+gem 'stackprof', '~> 0.2.27'
 
 gem 'datadog', '~> 2.8.0'
 

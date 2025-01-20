@@ -13,13 +13,13 @@
       <% end %>
     </div>
   </div>
-  <div class="center flex">
-    <div class="content">
+  <div class="center">
+    <div class="center-left">
       <%= render 'layouts/breadcrumbs' %>
-      <ul class="actions">
-        <%= content_for :navbar %>
-      </ul>
     </div>
+    <ul class="actions center-right">
+      <%= content_for :navbar %>
+    </ul>
   </div>
   <div class="right flex">
     <div class="content">
@@ -102,10 +102,10 @@
           </ul>
         </li>
       </ul>
-      <button type="button" class="dodona-navbar-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <a type="button" class="dodona-navbar-toggle dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="visually-hidden">Toggle navigation</span>
         <i class="mdi mdi-dots-vertical"></i>
-      </button>
+      </a>
     </div>
   </div>
 </nav>

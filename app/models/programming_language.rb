@@ -3,13 +3,17 @@
 # Table name: programming_languages
 #
 #  id            :bigint           not null, primary key
-#  name          :string(255)      not null
 #  editor_name   :string(255)      not null
 #  extension     :string(255)      not null
+#  icon          :string(255)
+#  name          :string(255)      not null
+#  renderer_name :string(255)      not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
-#  icon          :string(255)
-#  renderer_name :string(255)      not null
+#
+# Indexes
+#
+#  index_programming_languages_on_name  (name) UNIQUE
 #
 
 class ProgrammingLanguage < ApplicationRecord

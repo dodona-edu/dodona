@@ -80,9 +80,7 @@ GEM
       activesupport
     airbrussh (1.4.1)
       sshkit (>= 1.6.1, != 1.7.0)
-    annotate (3.2.0)
-      activerecord (>= 3.2, < 8.0)
-      rake (>= 10.4, < 14.0)
+    annotaterb (4.13.0)
     ast (2.4.2)
     attr_required (1.0.2)
     autoprefixer-rails (10.4.19.0)
@@ -571,7 +569,7 @@ PLATFORMS
 
 DEPENDENCIES
   after_commit_everywhere (~> 1.5.0)
-  annotate (~> 3.2.0)
+  annotaterb (~> 4.13.0)
   autoprefixer-rails (~> 10.4.19)
   bcrypt_pbkdf
   bootsnap (~> 1.18.4)

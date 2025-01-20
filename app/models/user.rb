@@ -3,22 +3,32 @@
 # Table name: users
 #
 #  id                   :integer          not null, primary key
-#  username             :string(255)
-#  first_name           :string(255)
-#  last_name            :string(255)
 #  email                :string(255)
-#  permission           :integer          default("student")
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  first_name           :string(255)
 #  lang                 :string(255)      default("nl")
-#  token                :string(255)
-#  time_zone            :string(255)      default("Brussels")
-#  institution_id       :bigint
+#  last_name            :string(255)
+#  open_questions_count :integer          default(0), not null
+#  permission           :integer          default("student")
 #  search               :string(4096)
 #  seen_at              :datetime
 #  sign_in_at           :datetime
-#  open_questions_count :integer          default(0), not null
 #  theme                :integer          default("system"), not null
+#  time_zone            :string(255)      default("Brussels")
+#  token                :string(255)
+#  username             :string(255)
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  institution_id       :bigint
+#
+# Indexes
+#
+#  index_users_on_institution_id  (institution_id)
+#  index_users_on_token           (token)
+#  index_users_on_username        (username)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (institution_id => institutions.id)
 #
 
 require 'securerandom'

@@ -3,11 +3,22 @@
 # Table name: series_memberships
 #
 #  id          :integer          not null, primary key
-#  series_id   :integer
-#  activity_id :integer
 #  order       :integer          default(999)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  activity_id :integer
+#  series_id   :integer
+#
+# Indexes
+#
+#  index_series_memberships_on_activity_id                (activity_id)
+#  index_series_memberships_on_series_id                  (series_id)
+#  index_series_memberships_on_series_id_and_activity_id  (series_id,activity_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (activity_id => activities.id)
+#  fk_rails_...  (series_id => series.id)
 #
 
 class SeriesMembership < ApplicationRecord

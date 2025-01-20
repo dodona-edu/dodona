@@ -3,10 +3,18 @@
 # Table name: course_labels
 #
 #  id         :bigint           not null, primary key
-#  course_id  :integer          not null
 #  name       :string(255)      not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  course_id  :integer          not null
+#
+# Indexes
+#
+#  index_course_labels_on_course_id_and_name  (course_id,name) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (course_id => courses.id) ON DELETE => cascade
 #
 
 class CourseLabel < ApplicationRecord

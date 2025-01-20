@@ -3,11 +3,17 @@
 # Table name: api_tokens
 #
 #  id           :bigint           not null, primary key
-#  user_id      :bigint
-#  token_digest :string(255)
 #  description  :string(255)
+#  token_digest :string(255)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  user_id      :bigint
+#
+# Indexes
+#
+#  index_api_tokens_on_token_digest             (token_digest)
+#  index_api_tokens_on_user_id                  (user_id)
+#  index_api_tokens_on_user_id_and_description  (user_id,description) UNIQUE
 #
 
 FactoryBot.define do

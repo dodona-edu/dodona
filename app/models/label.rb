@@ -3,8 +3,12 @@
 # Table name: labels
 #
 #  id    :bigint           not null, primary key
-#  name  :string(255)      not null
 #  color :integer          not null
+#  name  :string(255)      not null
+#
+# Indexes
+#
+#  index_labels_on_name  (name) UNIQUE
 #
 
 class Label < ApplicationRecord

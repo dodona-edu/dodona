@@ -3,20 +3,32 @@
 # Table name: series
 #
 #  id                       :integer          not null, primary key
-#  course_id                :integer
-#  name                     :string(255)
+#  access_token             :string(255)
+#  activities_count         :integer
+#  activities_visible       :boolean          default(TRUE), not null
+#  activity_numbers_enabled :boolean          default(FALSE), not null
+#  deadline                 :datetime
 #  description              :text(4294967295)
-#  visibility               :integer
+#  name                     :string(255)
 #  order                    :integer          default(0), not null
+#  progress_enabled         :boolean          default(TRUE), not null
+#  visibility               :integer
+#  visibility_start         :datetime
 #  created_at               :datetime         not null
 #  updated_at               :datetime         not null
-#  deadline                 :datetime
-#  access_token             :string(255)
-#  progress_enabled         :boolean          default(TRUE), not null
-#  activities_visible       :boolean          default(TRUE), not null
-#  activities_count         :integer
-#  activity_numbers_enabled :boolean          default(FALSE), not null
-#  visibility_start         :datetime
+#  course_id                :integer
+#
+# Indexes
+#
+#  index_series_on_access_token  (access_token)
+#  index_series_on_course_id     (course_id)
+#  index_series_on_deadline      (deadline)
+#  index_series_on_name          (name)
+#  index_series_on_visibility    (visibility)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (course_id => courses.id)
 #
 
 FactoryBot.define do

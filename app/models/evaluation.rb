@@ -3,11 +3,19 @@
 # Table name: evaluations
 #
 #  id         :bigint           not null, primary key
-#  series_id  :integer
-#  released   :boolean          default(FALSE), not null
 #  deadline   :datetime         not null
+#  released   :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  series_id  :integer
+#
+# Indexes
+#
+#  index_evaluations_on_unique_series_id  (series_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (series_id => series.id)
 #
 
 require 'csv'

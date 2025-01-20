@@ -6,6 +6,16 @@
 #  repository_id :integer          not null
 #  user_id       :integer          not null
 #
+# Indexes
+#
+#  fk_rails_6b59ad362c                                   (user_id)
+#  index_repository_admins_on_repository_id_and_user_id  (repository_id,user_id) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (repository_id => repositories.id)
+#  fk_rails_...  (user_id => users.id)
+#
 
 class RepositoryAdmin < ApplicationRecord
   before_destroy :at_least_one_admin_per_repository

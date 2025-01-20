@@ -3,14 +3,25 @@
 # Table name: repositories
 #
 #  id           :integer          not null, primary key
-#  name         :string(255)
-#  remote       :string(255)
-#  path         :string(255)
-#  judge_id     :integer          default(17)
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
 #  clone_status :integer          default("queued"), not null
 #  featured     :boolean          default(FALSE)
+#  name         :string(255)
+#  path         :string(255)
+#  remote       :string(255)
+#  created_at   :datetime         not null
+#  updated_at   :datetime         not null
+#  judge_id     :integer          default(17)
+#
+# Indexes
+#
+#  index_repositories_on_judge_id  (judge_id)
+#  index_repositories_on_name      (name) UNIQUE
+#  index_repositories_on_path      (path) UNIQUE
+#  index_repositories_on_remote    (remote) UNIQUE
+#
+# Foreign Keys
+#
+#  fk_rails_...  (judge_id => judges.id)
 #
 require 'open3'
 require 'pathname'

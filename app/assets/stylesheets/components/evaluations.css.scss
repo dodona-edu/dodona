@@ -33,7 +33,6 @@
     display: flex;
     align-items: center;
     white-space: nowrap;
-    padding-bottom: 5px;
 
     .name {
       flex-shrink: 0;
@@ -154,48 +153,75 @@
   }
 }
 
-.feedback {
-  padding-bottom: 6px;
+ul.feedback-list {
+  width: 100%;
+  letter-spacing: 0.04em;
+  text-decoration: inherit;
+  text-transform: inherit;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  color: var(--d-on-surface-variant);
 
-  &.correct {
-    border-bottom: 3px solid var(--d-success);
-  }
-
-  &.wrong {
-    border-bottom: 3px solid var(--d-danger);
-  }
-
-  &.not-started {
-    border-bottom: 3px solid var(--d-divider);
-  }
-
-  .done,
-  .provisional {
-    color: var(--d-on-surface-muted);
-  }
-
-  a:hover .done,
-  a:hover .provisional,
-  .done:hover,
-  .provisional:hover {
+  li a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-transform: inherit;
+    position: relative;
+    padding-left: 16px;
+    padding-right: 24px;
+    margin-bottom: 4px;
+    outline: none;
     color: var(--d-on-surface);
+    text-decoration: none;
+    height: 56px;
+    border-radius: 28px;
+
+    &.active,
+    &:hover,
+    &:focus {
+      font-weight: 400;
+      background: var(--d-primary-container);
+      color: var(--d-on-primary-container);
+      opacity: 0.75;
+
+      .feedback-icon .circle {
+        fill: var(--d-primary-container);
+        opacity: 0.75;
+      }
+    }
+
+    .feedback-icon {
+      margin-right: 12px;
+    }
   }
 }
 
-.user-feedback-row {
-  display: flex;
-  justify-content: space-around;
+.btn-icon {
+  &:hover,
+  &:focus {
+    .feedback-icon .circle {
+      opacity: 0;
+    }
+  }
+}
 
-  a .done {
-    color: var(--d-on-surface-muted);
+.feedback-icon {
+  color: var(--d-on-surface-muted) !important;
+
+  i {
+    color: inherit;
   }
 
-  .active a {
-    background-color: var(--d-info-container);
-
+  &.completed {
     i {
-      color: var(--d-info);
+      color: var(--d-primary) !important;
     }
+  }
+
+  .circle {
+    fill: var(--d-surface);
   }
 }
 

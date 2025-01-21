@@ -37,6 +37,24 @@
   .count {
     width: 130px;
   }
+
+  td.name {
+    vertical-align: middle;
+    max-width: 95px;
+  }
+
+  td.buttons{
+    vertical-align: middle;
+    text-align: right;
+    width: fit-content;
+    max-width: fit-content;
+
+    .btn {
+      margin-top: -6px;
+      margin-bottom: -6px;
+      margin-right: -12px;
+    }
+  }
 }
 
 /* stylelint-disable-next-line selector-class-pattern */

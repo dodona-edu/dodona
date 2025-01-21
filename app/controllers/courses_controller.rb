@@ -530,11 +530,10 @@ class CoursesController < ApplicationController
   end
 
   def copy_options
-    params.require(:copy_options)
-          .permit(:base_id,
-                  :admins,
-                  :hide_series,
-                  :exercises,
-                  :deadlines)
+    params.expect(copy_options: %i[base_id
+                                   admins
+                                   hide_series
+                                   exercises
+                                   deadlines])
   end
 end

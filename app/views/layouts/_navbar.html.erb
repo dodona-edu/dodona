@@ -1,5 +1,5 @@
 <nav class="dodona-navbar hidden-print">
-  <div class="left flex">
+  <div class="left">
     <div class="content">
       <% if user_signed_in? %>
         <button type="button" class="drawer-toggle" data-bs-target="#drawer" aria-expanded="false" aria-controls="drawer">
@@ -21,7 +21,7 @@
       <%= content_for :navbar %>
     </ul>
   </div>
-  <div class="right flex">
+  <div class="right">
     <div class="content">
       <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>

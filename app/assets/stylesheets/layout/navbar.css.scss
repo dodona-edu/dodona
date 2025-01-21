@@ -95,18 +95,10 @@
     display: inline-block;
   }
 
-  .flex {
-    display: flex;
-
-    >.content {
-      display: inline-flex;
-    }
-  }
-
   .left .content {
     padding-left: 10px;
     padding-right: 20px;
-    flex-shrink: 0;
+    display: inline-flex;
     margin-right: auto;
 
     // Drawer toggle & brand link
@@ -168,15 +160,10 @@
   }
 
   .right .content {
-    flex-shrink: 0;
-    align-self: flex-end;
-    margin-bottom: auto;
-    margin-top: auto;
     margin-left: auto;
 
     .dropdown-nav {
       padding-right: 20px;
-      padding-left: 20px;
       margin-bottom: 0;
 
       .notification-dropdown {
@@ -240,6 +227,11 @@
         li a {
           padding-left: 20px;
         }
+
+        .dropdown-toggle i {
+          font-size: 24px;
+          line-height: var(--d-navbar-height);
+        }
       }
 
       li a .dropdown-box::before {
@@ -261,7 +253,7 @@
         }
       }
 
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         .caret {
           vertical-align: text-top;
         }
@@ -270,14 +262,11 @@
       @include media-breakpoint-down(md) {
         .dropdown-toggle {
           .caret {
-            @include media-breakpoint-down(lg) {
-              vertical-align: text-top;
-            }
+            vertical-align: text-top;
           }
         }
 
         .dropdown-menu {
-          position: relative;
           left: unset;
           float: none;
           margin-top: 0;
@@ -294,7 +283,11 @@
   .dodona-navbar-toggle {
     padding-right: 20px;
     padding-left: 20px;
-    color: var(--d-on-primary);
+
+    i {
+      font-size: 24px;
+      line-height: var(--d-navbar-height);
+    }
 
     @include media-breakpoint-up(md) {
       display: none;
@@ -347,7 +340,7 @@
       transform: translateY(-0.5em);
 
       @include media-breakpoint-up(md) {
-        display: table-cell;
+        transform: unset;
         max-width: var(--d-navbar-user-name-width);
         text-overflow: ellipsis;
         overflow: hidden;

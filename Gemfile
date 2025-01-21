@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.3.6'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 7.2.2'
+gem 'rails', '~> 8.0.1'
 # Use trilogy to interact with mysql as the database for Active Record
 gem 'trilogy', '~> 2.9.0'
 # Use Puma as the app server
@@ -100,10 +100,10 @@ gem 'ed25519'
 
 # i18n
 gem 'i18n-js', '~> 4.2.3'
-gem 'rails-i18n', '~> 7.0.10'
+gem 'rails-i18n', '~> 8.0.1'
 
 # email exceptions
-gem 'exception_notification', '~> 4.5.0'
+gem 'exception_notification', git: 'https://github.com/smartinez87/exception_notification.git', branch: 'master' # following master until fix is released for https://github.com/smartinez87/exception_notification/issues/545
 gem 'httparty', '~> 0.22.0'
 gem 'slack-notifier', '~> 2.4.0'
 

@@ -17,7 +17,7 @@
 #
 translations:
 - file: "app/assets/javascripts/i18n/translations.json"
-  patterns: ['*.date', '*.time', 'en.js', 'nl.js']
+  patterns: ['*.date.*', '*.time.*', 'en.js.*', 'nl.js.*']
 #
 # If you're running an old version, you can use something
 # like this:

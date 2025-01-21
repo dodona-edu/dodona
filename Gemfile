@@ -67,7 +67,7 @@ gem 'devise', '~>4.9.4'
 gem 'ruby-saml', '~> 1.17.0'
 
 # omniauth
-gem 'omniauth-google-oauth2', '~> 1.2.0'
+gem 'omniauth-google-oauth2', '~> 1.2.1'
 gem 'omniauth-oauth2', '~> 1.8.0'
 gem 'omniauth_openid_connect', '~> 0.8.0'
 gem 'omniauth-rails_csrf_protection', '~> 1.0.2'
@@ -109,7 +109,7 @@ gem 'slack-notifier', '~> 2.4.0'
 
 # css styles for emails
 gem 'css_parser', '~> 1.21.0' # dependency for premailer, set to higher version for ruby 3.3 support
-gem 'nokogiri', '~> 1.18.1'
+gem 'nokogiri', '~> 1.18.2'
 gem 'premailer-rails', '~> 1.12.0'
 
 # filtering
@@ -128,9 +128,9 @@ gem 'faker', '~> 3.5.1'
 gem 'flamegraph', '~> 0.9.5'
 gem 'memory_profiler', '~> 1.1.0'
 gem 'rack-mini-profiler', '~> 3.3.1'
-gem 'stackprof', '~> 0.2.26'
+gem 'stackprof', '~> 0.2.27'
 
-gem 'datadog', '~> 2.8.0'
+gem 'datadog', '~> 2.9.0'
 
 # Make sure filesystem changes only happen at the end of a transaction
 gem 'after_commit_everywhere', '~> 1.5.0'
@@ -178,7 +178,7 @@ group :development do
   gem 'rubocop-capybara', '~> 2.21.0'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-minitest', '~> 0.36.0'
-  gem 'rubocop-rails', '~> 2.28.0'
+  gem 'rubocop-rails', '~> 2.29.0'
 
   # for opening letters
   gem 'letter_opener', '~> 1.10.0'

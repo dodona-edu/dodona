@@ -3,6 +3,30 @@
 
 :root {
   --d-navbar-height: 50px;
+  --d-navbar-user-name-width: 100px;
+
+  // The ideal width for the center matches the width of 10 columns in the bootstrap grid
+  @include media-breakpoint-down(md) {
+    --d-ideal-navbar-center-width: 100vw;
+  }
+
+  @include media-breakpoint-up(md) {
+    --d-ideal-navbar-center-width: calc((#{map.get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
+  }
+
+  @include media-breakpoint-up(lg) {
+    --d-ideal-navbar-center-width: calc((#{map.get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
+  }
+
+  @include media-breakpoint-up(xl) {
+    --d-ideal-navbar-center-width: calc((#{map.get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
+  }
+
+  @include media-breakpoint-up(xxl) {
+    --d-ideal-navbar-center-width: calc((#{map.get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
+  }
+
+  --d-ideal-navbar-side-width: calc((100vw - var(--d-ideal-navbar-center-width)) / 2);
 }
 
 .dodona-navbar {
@@ -18,6 +42,39 @@
   z-index: 10;
   width: 100vw;
   max-width: 100vw;
+
+  // Left and right content should always completely be visible
+  // These parts can grow to fill more space, but not shrink
+  // They both try to achieve the same ideal width, with the same growth param
+  // which keeps them equal in size and the center in the middle
+  .left, .right {
+    flex-basis: var(--d-ideal-navbar-side-width);
+    flex-grow: 100;
+    min-width: fit-content;
+  }
+
+  // Center should try to take up ideal space, but can shrink if needed
+  .center {
+    flex-basis: var(--d-ideal-navbar-center-width);
+    flex-shrink: 100;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+
+    // Center-right should always be completely visible (If the center is large enough)
+    .center-right {
+      flex-shrink: 0;
+      min-width: fit-content;
+    }
+
+    // Center-left can take all remaining space, but should shrink if needed
+    .center-left {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 
   ul {
     margin-bottom: 9px;
@@ -36,64 +93,11 @@
     display: inline-block;
   }
 
-  .flex {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-
-    >.content {
-      display: inline-flex;
-      justify-content: center;
-    }
-  }
-
-  .flex:first-child > .content {
-    margin-right: auto;
-  }
-
-  .flex:last-child > .content {
-    margin-left: auto;
-  }
-
-  .left {
-    flex-shrink: 0;
-    flex-grow: 1;
-  }
-
-  .center {
-    flex-shrink: 1;
-    flex-grow: 100;
-
-    @include media-breakpoint-up(md) {
-      max-width: calc(100vw - 240px);
-    }
-
-    @include media-breakpoint-up(md) {
-      max-width: math.div(map.get($container-max-widths, "md"), 12) * 10;
-    }
-
-    @include media-breakpoint-up(lg) {
-      max-width: math.div(map.get($container-max-widths, "lg"), 12) * 10;
-    }
-
-    @include media-breakpoint-up(xl) {
-      max-width: math.div(map.get($container-max-widths, "xl"), 12) * 10;
-    }
-
-    @include media-breakpoint-up(xxl) {
-      max-width: math.div(map.get($container-max-widths, "xxl"), 12) * 10;
-    }
-  }
-
-  .right {
-    flex-shrink: 0;
-    flex-grow: 1;
-  }
-
   .left .content {
     padding-left: 10px;
     padding-right: 20px;
-    flex-shrink: 0;
+    display: inline-flex;
+    margin-right: auto;
 
     // Drawer toggle & brand link
     .drawer-toggle {
@@ -127,69 +131,38 @@
     }
   }
 
-  .center .content {
-    justify-content: space-between;
-    flex-shrink: 1;
-    flex-grow: 1;
+  .center .actions {
+    align-self: flex-end;
 
-    @include media-breakpoint-up(md) {
-      max-width: calc(100vw - 240px);
+    @include media-breakpoint-down(md) {
+      display: none;
     }
 
-    @include media-breakpoint-up(md) {
-      max-width: calc((#{map.get($container-max-widths, "md")} / 12 * 10) - #{$grid-gutter-width});
+    .dropdown-title {
+      display: none;
     }
 
-    @include media-breakpoint-up(lg) {
-      max-width: calc((#{map.get($container-max-widths, "lg")} / 12 * 10) - #{$grid-gutter-width});
-    }
+    li a {
+      padding-left: 8px;
+      padding-right: 8px;
 
-    @include media-breakpoint-up(xl) {
-      max-width: calc((#{map.get($container-max-widths, "xl")} / 12 * 10) - #{$grid-gutter-width});
-    }
+      @include media-breakpoint-up(md) {
+        padding-bottom: 11px;
 
-    @include media-breakpoint-up(xxl) {
-      max-width: calc((#{map.get($container-max-widths, "xxl")} / 12 * 10) - #{$grid-gutter-width});
-    }
-
-    .actions {
-      @include media-breakpoint-down(md) {
-        display: none;
-      }
-
-      flex-shrink: 0;
-      align-self: flex-end;
-      align-content: flex-end;
-
-      .dropdown-title {
-        display: none;
-      }
-
-      li a {
-        padding-left: 8px;
-        padding-right: 8px;
-
-        @include media-breakpoint-up(md) {
-          padding-bottom: 11px;
-
-          &.active {
-            padding-bottom: 8px;
-            border-bottom: solid var(--d-on-primary) 3px;
-          }
+        &.active {
+          padding-bottom: 8px;
+          border-bottom: solid var(--d-on-primary) 3px;
         }
       }
     }
   }
 
   .right .content {
-    flex-shrink: 0;
-    align-self: flex-end;
-    margin-bottom: auto;
-    margin-top: auto;
+    width: fit-content;
+    margin-left: auto;
 
     .dropdown-nav {
       padding-right: 20px;
-      padding-left: 20px;
       margin-bottom: 0;
 
       .notification-dropdown {
@@ -253,6 +226,11 @@
         li a {
           padding-left: 20px;
         }
+
+        .dropdown-toggle i {
+          font-size: 24px;
+          line-height: var(--d-navbar-height);
+        }
       }
 
       li a .dropdown-box::before {
@@ -274,7 +252,7 @@
         }
       }
 
-      @include media-breakpoint-up(lg) {
+      @include media-breakpoint-up(xl) {
         .caret {
           vertical-align: text-top;
         }
@@ -283,14 +261,11 @@
       @include media-breakpoint-down(md) {
         .dropdown-toggle {
           .caret {
-            @include media-breakpoint-down(lg) {
-              vertical-align: text-top;
-            }
+            vertical-align: text-top;
           }
         }
 
         .dropdown-menu {
-          position: relative;
           left: unset;
           float: none;
           margin-top: 0;
@@ -305,19 +280,16 @@
   }
 
   .dodona-navbar-toggle {
-    position: absolute;
-    top: 0;
-    right: 10px;
-    border: none;
-    background: none;
-    color: var(--d-on-primary);
+    padding-right: 20px;
+    padding-left: 20px;
+
+    i {
+      font-size: 24px;
+      line-height: var(--d-navbar-height);
+    }
 
     @include media-breakpoint-up(md) {
       display: none;
-    }
-
-    i {
-      line-height: var(--d-navbar-height);
     }
   }
 
@@ -367,7 +339,12 @@
       transform: translateY(-0.5em);
 
       @include media-breakpoint-up(md) {
-        @include media-breakpoint-down(lg) {
+        transform: unset;
+        max-width: var(--d-navbar-user-name-width);
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        @include media-breakpoint-down(xl) {
           display: none;
         }
       }
@@ -411,11 +388,6 @@
 
 /* breadcrumbs */
 .crumbs {
-  max-width: calc(100vw - 180px);
-  flex-shrink: 1;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
   display: flex;
   line-height: var(--d-navbar-height);
 

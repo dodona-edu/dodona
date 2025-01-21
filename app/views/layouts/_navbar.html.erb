@@ -1,5 +1,5 @@
 <nav class="dodona-navbar hidden-print">
-  <div class="left flex">
+  <div class="left">
     <div class="content">
       <% if user_signed_in? %>
         <button type="button" class="drawer-toggle" data-bs-target="#drawer" aria-expanded="false" aria-controls="drawer">
@@ -13,15 +13,15 @@
       <% end %>
     </div>
   </div>
-  <div class="center flex">
-    <div class="content">
+  <div class="center">
+    <div class="center-left">
       <%= render 'layouts/breadcrumbs' %>
-      <ul class="actions">
-        <%= content_for :navbar %>
-      </ul>
     </div>
+    <ul class="actions center-right">
+      <%= content_for :navbar %>
+    </ul>
   </div>
-  <div class="right flex">
+  <div class="right">
     <div class="content">
       <ul id="navbar" class="dropdown-nav collapse">
         <%= content_for :navbar %>
@@ -102,10 +102,10 @@
           </ul>
         </li>
       </ul>
-      <button type="button" class="dodona-navbar-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
+      <a type="button" class="dodona-navbar-toggle dropdown-toggle" data-bs-toggle="collapse" data-bs-target="#navbar" aria-expanded="false" aria-controls="navbar">
         <span class="visually-hidden">Toggle navigation</span>
         <i class="mdi mdi-dots-vertical"></i>
-      </button>
+      </a>
     </div>
   </div>
 </nav>

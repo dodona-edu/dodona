@@ -68,7 +68,7 @@
     "@open-wc/testing-helpers": "^3.0.1",
     "@stylistic/eslint-plugin": "^2.13.0",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/user-event": "^14.6.0",
+    "@testing-library/user-event": "^14.6.1",
     "@webcomponents/scoped-custom-element-registry": "^0.0.9",
     "babel-jest": "^29.7.0",
     "babel-plugin-dynamic-import-node": "^2.3.3",

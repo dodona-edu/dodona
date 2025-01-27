@@ -2618,10 +2618,10 @@
   resolved "https://registry.yarnpkg.com/@types/retry/-/retry-0.12.1.tgz#d8f1c0d0dc23afad6dc16a9e993a0865774b4065"
   integrity sha512-xoDlM2S4ortawSWORYqsdU+2rxdh4LRW9ytc3zmT37RIKQh6IHyKwwtKhKis9ah8ol07DCkZxPt8BBvPjC6v4g==
 
-"@types/serviceworker@^0.0.114":
-  version "0.0.114"
-  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.114.tgz#df1136207f2ad1dca21f0c0d45d5af1ba3c61168"
-  integrity sha512-5uoB6MuriKr3it4FCC7j+f/5Kj3N3uD9+rmjFc+sKUIUpWc9dL4NAGc6hPX6SwIZeJHhXsi9mtm5wWwFmJY/nw==
+"@types/serviceworker@^0.0.117":
+  version "0.0.117"
+  resolved "https://registry.yarnpkg.com/@types/serviceworker/-/serviceworker-0.0.117.tgz#dd3bce74466661a00a58cf17a8d35dce4e9d0ba8"
+  integrity sha512-dsxlvbFqeyhoN453F7n68ncqrn/UiqZkvZIZdu9zd9c1K0Gm/N4olV7w6tJ3I7yOeip32J4uQ25Na3NwlSaJkQ==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"

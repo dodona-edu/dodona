@@ -1,7 +1,7 @@
 import { configureEditor, setCode } from "editor";
 import { initTooltips, updateURLParameter, fetch } from "utilities";
 import { Toast } from "./toast";
-import GLightbox from "glightbox";
+import glightbox from "glightbox";
 import { IFrameMessageData } from "iframe-resizer";
 import { submissionState } from "state/Submissions";
 import { render } from "lit";
@@ -13,8 +13,7 @@ import "@iframe-resizer/child"; // sets window.parentIFrame
 
 
 function showLightbox(content): void {
-    // eslint-disable-next-line new-cap
-    const lightbox = GLightbox(content);
+    const lightbox = glightbox(content);
     lightbox.on("slide_changed", () => {
         // There might have been math in the image captions, so ask
         // MathJax to search for new math (but only in the captions).

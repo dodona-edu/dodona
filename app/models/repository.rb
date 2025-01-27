@@ -293,7 +293,7 @@ class Repository < ApplicationRecord
     mode ||= 'tree'
 
     url = remote.sub(':', '/').sub(/^git@/, 'https://').sub(/\.git$/, '')
-    url += "/#{mode}/master/#{path&.to_s}"
+    url += "/#{mode}/master/#{path}"
     url
   end
 
